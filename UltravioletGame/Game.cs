@@ -84,11 +84,6 @@ namespace SafeProjectName
             this.textFormatter = new StringFormatter();
             this.textBuffer = new StringBuilder();
 
-            this.song = content.Load<Song>("Deep Haze");
-            this.songPlayer = SongPlayer.Create();
-            this.songPlayer.Play(this.song, true);
-            this.songPlayer.SlidePitch(1f, TimeSpan.FromSeconds(30));
-
             GC.Collect(2);
 
             base.OnLoadingContent();
@@ -141,8 +136,6 @@ namespace SafeProjectName
         /// <param name="time">Time elapsed since the last call to Update.</param>
         protected override void OnUpdating(UltravioletTime time)
         {
-            this.songPlayer.Update(time);
-
             if (Ultraviolet.GetInput().GetActions().ExitApplication.IsPressed())
             {
                 Exit();
@@ -208,8 +201,5 @@ namespace SafeProjectName
         private TextRenderer textRenderer;
         private StringFormatter textFormatter;
         private StringBuilder textBuffer;
-
-        private Song song;
-        private SongPlayer songPlayer;
     }
 }
