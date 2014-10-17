@@ -135,6 +135,10 @@
     <PreBuildEvent Condition=" '$(OS)' == 'Windows_NT' ">cd "$(SolutionDir)Dependencies"
 call update.bat</PreBuildEvent>
   </PropertyGroup>
+  <PropertyGroup>
+    <PreBuildEvent>cd "$(SolutionDir)Dependencies"
+if exist update.bat call update.bat</PreBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
