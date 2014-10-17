@@ -1,0 +1,63 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<LocalizedStrings>
+  <String Key="ONLY_SUPPORTED_ON_WINDOWS">
+    <en-US>
+      <Variant>The XiliumCef layout provider is only supported on Windows.</Variant>
+    </en-US>
+  </String>
+  <String Key="RUNTIME_ERROR">
+    <en-US>
+      <Variant>An error occurred in the Chromium Embedded Framework runtime.</Variant>
+    </en-US>
+  </String>
+  <String Key="LAYOUT_NOT_INITIALIZED">
+    <en-US>
+      <Variant>The current operation is only valid after the layout has been initialized.</Variant>
+    </en-US>
+  </String>
+  <String Key="LAYOUT_NOT_READY">
+    <en-US>
+      <Variant>The current operation is only valid after the layout is ready.</Variant>
+    </en-US>
+  </String>
+  <String Key="NOT_A_DELEGATE">
+    <en-US>
+      <Variant>The specified type is not a delegate.</Variant>
+    </en-US>
+  </String>
+  <String Key="API_REGISTRY_ALREADY_CREATED">
+    <en-US>
+      <Variant>An API registry is already registered for the specified browser instance.</Variant>
+    </en-US>
+  </String>
+  <String Key="API_REGISTRY_DOES_NOT_EXIST">
+    <en-US>
+      <Variant>An API registry does not exist for the specified browser instance.</Variant>
+    </en-US>
+  </String>
+  <String Key="UNABLE_TO_BIND_API_CALL">
+    <en-US>
+      <Variant>Unable to bind to an API method named '{0}' with the specified parameters.</Variant>
+    </en-US>
+  </String>
+  <String Key="INVALID_SCRIPT_RESULT">
+    <en-US>
+      <Variant>Invalid or malformed script result.</Variant>
+    </en-US>
+  </String>
+  <String Key="INVALID_LAYOUT_SOURCE">
+    <en-US>
+      <Variant>Layout definition contains a missing or invalid Source attribute.</Variant>
+    </en-US>
+  </String>
+  <String Key="SCRIPT_MUST_RETURN_VOID_OR_TASK">
+    <en-US>
+      <Variant>Layout script delegates must return void or Task&lt;T&gt;.</Variant>
+    </en-US>
+  </String>
+  <String Key="UNRECOGNIZED_TASK_ID">
+    <en-US>
+      <Variant>Unrecognized asynchronous task identifier.</Variant>
+    </en-US>
+  </String>
+</LocalizedStrings>

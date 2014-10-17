@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<LocalizedStrings>
+  <String Key="COULD_NOT_LOAD_FUNCTION">
+    <en-US>
+      <Variant>!! WARNING: could not load {0}</Variant>
+    </en-US>
+  </String>
+  <String Key="LOADED_OPENGL_VERSION">
+    <en-US>
+      <Variant>GLUON: Loaded OpenGL version {0} ({1})</Variant>
+    </en-US>
+  </String>
+  <String Key="OPENGL_NOT_INITIALIZED">
+    <en-US>
+      <Variant>OpenGL has not been initialized.</Variant>
+    </en-US>
+  </String>
+  <String Key="OPENGL_ALREADY_INITIALIZED">
+    <en-US>
+      <Variant>OpenGL has already been initialized.</Variant>
+    </en-US>
+  </String>
+  <String Key="FUNCTION_NOT_PROVIDED_BY_DRIVER">
+    <en-US>
+      <Variant>The OpenGL function {0} is not provided by the current driver.</Variant>
+    </en-US>
+  </String>
+  <String Key="MISSING_REQUIRED_EXTENSION">
+    <en-US>
+      <Variant>Driver does not support required extension {0}.</Variant>
+    </en-US>
+  </String>
+  <String Key="DRIVER_RETURNED_NULL_POINTER">
+    <en-US>
+      <Variant>Extension {0} is supported, but the driver returned a null function pointer for {1}.</Variant>
+    </en-US>
+  </String>
+</LocalizedStrings>

@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<SpriteFont>
+  <Face Style="Regular">
+    <Texture>GaramondTexture</Texture>
+    <TextureRegion>0 0 386 188</TextureRegion>
+    <Kernings DefaultAdjustment="-2">
+      <Kerning Pair="av">-3</Kerning>
+      <Kerning Pair="an">-3</Kerning>
+      <Kerning Pair="fo">-4</Kerning>
+      <Kerning Pair="vi">-3</Kerning>
+    </Kernings>
+  </Face>
+  <Face Style="Bold">
+    <Texture>GaramondTexture</Texture>
+    <TextureRegion>0 188 386 188</TextureRegion>
+    <Kernings DefaultAdjustment="-2">
+      <Kerning Pair="ld">-3</Kerning>
+    </Kernings>
+  </Face>
+  <Face Style="Italic">
+    <Texture>GaramondTexture</Texture>
+    <TextureRegion>0 376 386 188</TextureRegion>
+    <Kernings DefaultAdjustment="-2">
+      <Kerning Pair="it">-1</Kerning>
+      <Kerning Pair="li">-3</Kerning>
+      <Kerning Pair="re">-3</Kerning>
+    </Kernings>
+  </Face>
+  <Face Style="BoldItalic">
+    <Texture>GaramondTexture</Texture>
+    <TextureRegion>0 564 386 188</TextureRegion>
+    <Kernings DefaultAdjustment="-3">
+      <Kerning Pair="it">-2</Kerning>
+      <Kerning Pair="li">-4</Kerning>
+      <Kerning Pair="ld">-4</Kerning>
+    </Kernings>
+  </Face>
+</SpriteFont>

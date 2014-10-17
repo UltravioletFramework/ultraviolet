@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Sprite>
+  <Animations>
+    <Animation>
+      <Frames Texture="Textures/Cancel">
+        <Frame X="0" Y="0" Width="14" Height="17" />
+      </Frames>
+    </Animation>
+  </Animations>
+</Sprite>

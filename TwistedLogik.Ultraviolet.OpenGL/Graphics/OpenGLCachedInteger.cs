@@ -1,0 +1,138 @@
+﻿using System;
+using System.Diagnostics;
+using TwistedLogik.Gluon;
+
+namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
+{
+    /// <summary>
+    /// Represents a value associated with an OpenGL context that is cached by the OpenGL/SDL2 implementation
+    /// of Ultraviolet in order to avoid costly calls to glGet() functions.
+    /// </summary>
+    internal class OpenGLCachedInteger
+    {
+        /// <summary>
+        /// Initializes a new instance of the OpenGLCachedValue class.
+        /// </summary>
+        /// <param name="name">The human-readable name of this value.</param>
+        /// <param name="pname">The property name of this value when retrieved via glGet().</param>
+        public OpenGLCachedInteger(String name, UInt32 pname)
+        {
+            this.name  = name;
+            this.pname = pname;
+        }
+
+        /// <summary>
+        /// Implicitly converts a cached value to an integer.
+        /// </summary>
+        /// <param name="value">The cached value to convert.</param>
+        /// <returns>The converted integer.</returns>
+        public static implicit operator Int32(OpenGLCachedInteger value)
+        {
+            return value.value;
+        }
+
+        /// <summary>
+        /// Implicitly converts a cached value to an integer.
+        /// </summary>
+        /// <param name="value">The cached value to convert.</param>
+        /// <returns>The converted integer.</returns>
+        public static implicit operator UInt32(OpenGLCachedInteger value)
+        {
+            return (UInt32)value.value;
+        }
+
+        /// <summary>
+        /// Resets the state of the cached integer.
+        /// </summary>
+        public void Reset()
+        {
+            this.value = 0;
+        }
+
+        /// <summary>
+        /// Verifies that the cached value matches the value that is currently
+        /// set on the current OpenGL context.
+        /// </summary>
+        [Conditional("VERIFY_OPENGL_CACHE")]
+        public void Verify()
+        {
+            var valueOnContext = gl.GetInteger(pname);
+            if (valueOnContext != value)
+            {
+                throw new InvalidOperationException(OpenGLStrings.StaleOpenGLCache.Format(name));
+            }
+        }
+
+        /// <summary>
+        /// Updates the cached value.
+        /// </summary>
+        /// <param name="value">The new value.</param>
+        /// <returns>The old value.</returns>
+        public Int32 Update(Int32 value)
+        {
+            var old = this.value;
+            this.value = value;
+            return old;
+        }
+
+        /// <summary>
+        /// Updates the cached value.
+        /// </summary>
+        /// <param name="value">The new value.</param>
+        /// <returns>The old value.</returns>
+        public UInt32 Update(UInt32 value)
+        {
+            var old = (uint)this.value;
+            this.value = (int)value;
+            return old;
+        }
+
+        /// <summary>
+        /// Updates the cached value if GL_EXT_direct_state_access is not available; otherwise, does nothing.
+        /// </summary>
+        /// <param name="value">The new value.</param>
+        /// <returns>The old value.</returns>
+        public Int32 UpdateIfNoDSA(Int32 value)
+        {
+            if (OpenGLCache.EXT_direct_state_access)
+                return this.value;
+
+            return Update(value);
+        }
+
+        /// <summary>
+        /// Updates the cached value if GL_EXT_direct_state_access is not available; otherwise, does nothing.
+        /// </summary>
+        /// <param name="value">The new value.</param>
+        /// <returns>The old value.</returns>
+        public UInt32 UpdateIfNoDSA(UInt32 value)
+        {
+            if (OpenGLCache.EXT_direct_state_access)
+                return (uint)this.value;
+
+            return Update(value);
+        }
+
+        /// <summary>
+        /// Converts the object to a human-readable string.
+        /// </summary>
+        /// <returns>A human-readable string that represents the object.</returns>
+        public override String ToString()
+        {
+            return String.Format("{0} = {1}", Name, value);
+        }
+
+        /// <summary>
+        /// Gets the value's human-readable name.
+        /// </summary>
+        public String Name
+        {
+            get { return name; }
+        }
+
+        // State values.
+        private readonly String name;
+        private readonly UInt32 pname;
+        private Int32 value;
+    }
+}

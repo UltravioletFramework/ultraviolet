@@ -1,0 +1,163 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<LocalizedStrings>
+  <String Key="UNSUPPORTED_GRAPHICS_DEVICE">
+    <en-US>
+      <Variant>No supported graphics device was found.</Variant>
+    </en-US>
+  </String>
+  <String Key="UNSUPPORTED_SHADER_TYPE">
+    <en-US>
+      <Variant>Unsupported shader type.</Variant>
+    </en-US>
+  </String>
+  <String Key="UNSUPPORTED_DATA_TYPE">
+    <en-US>
+      <Variant>Unsupported data type.</Variant>
+    </en-US>
+  </String>
+  <String Key="UNSUPPORTED_ELEMENT_TYPE">
+    <en-US>
+      <Variant>Unsupported element type.</Variant>
+    </en-US>
+  </String>
+  <String Key="UNSUPPORTED_IMAGE_TYPE">
+    <en-US>
+      <Variant>Unsupported image type.</Variant>
+    </en-US>
+  </String>
+  <String Key="UNSUPPORTED_VERTEX_FORMAT">
+    <en-US>
+      <Variant>Unsupported vertex format.</Variant>
+    </en-US>
+  </String>
+  <String Key="UNSUPPORTED_INDEX_FORMAT">
+    <en-US>
+      <Variant>Unsupported index format.</Variant>
+    </en-US>
+  </String>
+  <String Key="UNSUPPORTED_PRIMITIVE_TYPE">
+    <en-US>
+      <Variant>Unsupported primitive type.</Variant>
+    </en-US>
+  </String>
+  <String Key="DATA_TOO_LARGE_FOR_BUFFER">
+    <en-US>
+      <Variant>The specified data is too large to be contained by this buffer.</Variant>
+    </en-US>
+  </String>
+  <String Key="NO_GEOMETRY_STREAM">
+    <en-US>
+      <Variant>Not geometry stream has been set.</Variant>
+    </en-US>
+  </String>
+  <String Key="INVALID_GEOMETRY_STREAM">
+    <en-US>
+      <Variant>The current geometry stream is invalid.</Variant>
+    </en-US>
+  </String>
+  <String Key="NO_EFFECT">
+    <en-US>
+      <Variant>Not effect has been set.</Variant>
+    </en-US>
+  </String>
+  <String Key="INVALID_SPRITEFONT_TEXTURE">
+    <en-US>
+      <Variant>Invalid texture.</Variant>
+    </en-US>
+  </String>
+  <String Key="INVALID_SPRITEFONT_KERNING_PAIR">
+    <en-US>
+      <Variant>Invalid kerning pair.</Variant>
+    </en-US>
+  </String>
+  <String Key="BUFFER_IS_TOO_SMALL">
+    <en-US>
+      <Variant>Buffer '{0}' is too small for the requested data.</Variant>
+    </en-US>
+  </String>
+  <String Key="RENDER_TARGET_NEEDS_BUFFERS">
+    <en-US>
+      <Variant>The specified render target is not ready for rendering because no render buffers are attached.</Variant>
+    </en-US>
+  </String>
+  <String Key="RENDER_TARGET_FRAMEBUFFER_IS_NOT_COMPLETE">
+    <en-US>
+      <Variant>The specified render target is not ready for rendering because its framebuffer is not complete: {0}</Variant>
+    </en-US>
+  </String>
+  <String Key="RENDER_TARGET_CANNOT_BE_USED_AS_TEXTURE">
+    <en-US>
+      <Variant>A render target cannot be used as a texture while it is bound to the device for writing.</Variant>
+    </en-US>
+  </String>
+  <String Key="RENDER_BUFFER_IS_WRONG_SIZE">
+    <en-US>
+      <Variant>The size of the specified render buffer does not match the size of this render target.</Variant>
+    </en-US>
+  </String>
+  <String Key="RESOURCE_ALREADY_BOUND">
+    <en-US>
+      <Variant>The resource is already bound to the device.</Variant>
+    </en-US>
+  </String>
+  <String Key="RESOURCE_NOT_BOUND">
+    <en-US>
+      <Variant>The resource is not bound to the device.</Variant>
+    </en-US>
+  </String>
+  <String Key="STALE_OPENGL_CACHE">
+    <en-US>
+      <Variant>The value of {0} in Ultraviolet's cache of OpenGL state values is stale. Is external code modifying the OpenGL context?</Variant>
+    </en-US>
+  </String>
+  <String Key="EFFECT_UNIFORM_TYPE_MISMATCH">
+    <en-US>
+      <Variant>The uniform '{0}' is defined multiple times with different types.</Variant>
+    </en-US>
+  </String>
+  <String Key="IMMUTABLE_VALUE_ALREADY_SET">
+    <en-US>
+      <Variant>An immutable value can only be set once.</Variant>
+    </en-US>
+  </String>
+  <String Key="INVALID_EFFECT_PASS">
+    <en-US>
+      <Variant>Invalid effect pass.</Variant>
+    </en-US>
+  </String>
+  <String Key="EFFECT_MUST_HAVE_VERTEX_AND_FRAGMENT_SHADER">
+    <en-US>
+      <Variant>An effect must have at least a vertex shader and a fragment shader.</Variant>
+    </en-US>
+  </String>
+  <String Key="EFFECT_MUST_HAVE_TECHNIQUES">
+    <en-US>
+      <Variant>An effect must have at least one technique.</Variant>
+    </en-US>
+  </String>
+  <String Key="EFFECT_TECHNIQUE_MUST_HAVE_PASSES">
+    <en-US>
+      <Variant>An effect technique must have at least one pass.</Variant>
+    </en-US>
+  </String>
+  <String Key="INVALID_AUDIO_ASSEMBLY">
+    <en-US>
+      <Variant>Invalid audio subsystem assembly.</Variant>
+    </en-US>
+  </String>
+  <String Key="TECHNIQUE_BELONGS_TO_DIFFERENT_EFFECT">
+    <en-US>
+      <Variant>The specified technique belongs to a different effect.</Variant>
+    </en-US>
+  </String>
+  <String Key="DEBUG_OUTPUT_NOT_SUPPORTED">
+    <en-US>
+      <Variant>Cannot enable debug output because GL_ARB_debug_output is not supported by the current driver.</Variant>
+    </en-US>
+  </String>
+  <String Key="SHADER_UNIFORM_HAS_NO_SOURCE">
+    <en-US>
+      <Variant>Cannot set the shader uniform because it has no data source.</Variant>
+    </en-US>
+  </String>
+</LocalizedStrings>

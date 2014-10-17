@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<LocalizedStrings>
+  <String Key="ULTRAVIOLET_FORM_REQUIRED">
+    <en-US>
+      <Variant>An UltravioletPanel must have an UltravioletForm as its top-level control.</Variant>
+    </en-US>
+  </String>
+  <String Key="PANEL_ALREADY_ENLISTED">
+    <en-US>
+      <Variant>Panel has already been enlisted.</Variant>
+    </en-US>
+  </String>
+  <String Key="PANEL_NOT_ENLISTED">
+    <en-US>
+      <Variant>Panel has not been enlisted.</Variant>
+    </en-US>
+  </String>
+</LocalizedStrings>

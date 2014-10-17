@@ -1,0 +1,137 @@
+﻿using System;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using TwistedLogik.Ultraviolet.Testing;
+
+namespace TwistedLogik.Ultraviolet.Tests
+{
+    [TestClass]
+    public class Size3FTests : UltravioletTestFramework
+    {
+        [TestMethod]
+        public void Size3F_IsConstructedProperly()
+        {
+            var result = new Size3F(123.45f, 456.78f, 789.99f);
+
+            TheResultingValue(result)
+                .ShouldBe(123.45f, 456.78f, 789.99f);
+        }
+
+        [TestMethod]
+        public void Size3F_OpEquality()
+        {
+            var volume1 = new Size3F(123.45f, 456.78f, 789.99f);
+            var volume2 = new Size3F(123.45f, 456.78f, 789.99f);
+            var volume3 = new Size3F(123.45f, 555, 789.99f);
+            var volume4 = new Size3F(222, 456.78f, 789.99f);
+            var volume5 = new Size3F(123.45f, 456.78f, 999);
+
+            TheResultingValue(volume1 == volume2).ShouldBe(true);
+            TheResultingValue(volume1 == volume3).ShouldBe(false);
+            TheResultingValue(volume1 == volume4).ShouldBe(false);
+            TheResultingValue(volume1 == volume5).ShouldBe(false);
+        }
+
+        [TestMethod]
+        public void Size3F_OpInequality()
+        {
+            var volume1 = new Size3F(123.45f, 456.78f, 789.99f);
+            var volume2 = new Size3F(123.45f, 456.78f, 789.99f);
+            var volume3 = new Size3F(123.45f, 555, 789.99f);
+            var volume4 = new Size3F(222, 456.78f, 789.99f);
+            var volume5 = new Size3F(123.45f, 456.78f, 999);
+
+            TheResultingValue(volume1 != volume2).ShouldBe(false);
+            TheResultingValue(volume1 != volume3).ShouldBe(true);
+            TheResultingValue(volume1 != volume4).ShouldBe(true);
+            TheResultingValue(volume1 != volume5).ShouldBe(true);
+        }
+
+        [TestMethod]
+        public void Size3F_EqualsObject()
+        {
+            var volume1 = new Size3F(123.45f, 456.78f, 789.99f);
+            var volume2 = new Size3F(123.45f, 456.78f, 789.99f);
+
+            TheResultingValue(volume1.Equals((Object)volume2)).ShouldBe(true);
+            TheResultingValue(volume1.Equals("This is a test")).ShouldBe(false);
+        }
+
+        [TestMethod]
+        public void Size3F_EqualsSize3F()
+        {
+            var volume1 = new Size3F(123.45f, 456.78f, 789.99f);
+            var volume2 = new Size3F(123.45f, 456.78f, 789.99f);
+            var volume3 = new Size3F(123.45f, 555, 789.99f);
+            var volume4 = new Size3F(222, 456.78f, 789.99f);
+            var volume5 = new Size3F(123.45f, 456.78f, 999);
+
+            TheResultingValue(volume1.Equals(volume2)).ShouldBe(true);
+            TheResultingValue(volume1.Equals(volume3)).ShouldBe(false);
+            TheResultingValue(volume1.Equals(volume4)).ShouldBe(false);
+            TheResultingValue(volume1.Equals(volume5)).ShouldBe(false);
+        }
+
+        [TestMethod]
+        public void Size3F_TryParse_SucceedsForValidStrings()
+        {
+            var str    = "123.45 456.78 789.99";
+            var result = default(Size3F);
+            if (!Size3F.TryParse(str, out result))
+                throw new InvalidOperationException("Unable to parse string to Size3F.");
+
+            TheResultingValue(result)
+                .ShouldBe(123.45f, 456.78f, 789.99f);
+        }
+
+        [TestMethod]
+        public void Size3F_TryParse_FailsForInvalidStrings()
+        {
+            var result    = default(Size3F);
+            var succeeded = Size3F.TryParse("foo", out result);
+
+            TheResultingValue(succeeded).ShouldBe(false);
+        }
+
+        [TestMethod]
+        public void Size3F_Parse_SucceedsForValidStrings()
+        {
+            var str    = "123.45 456.78 789.99";
+            var result = Size3F.Parse(str);
+
+            TheResultingValue(result)
+                .ShouldBe(123.45f, 456.78f, 789.99f);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(FormatException))]
+        public void Size3F_Parse_FailsForInvalidStrings()
+        {
+            Size3F.Parse("foo");
+        }
+
+        [TestMethod]
+        public void Size3F_Parse_CanRoundTrip()
+        {
+            var size1 = Size3F.Parse("123.4 456.7 789.1");
+            var size2 = Size3F.Parse(size1.ToString());
+
+            TheResultingValue(size1 == size2).ShouldBe(true);
+        }
+
+        [TestMethod]
+        public void Size3F_Volume_IsCalculatedCorrectly()
+        {
+            var volume1width  = 123.45f;
+            var volume1height = 456.78f;
+            var volume1depth  = 789.99f;
+            var volume1 = new Size3F(volume1width, volume1height, volume1depth);
+            TheResultingValue(volume1.Volume).ShouldBe(volume1width * volume1height * volume1depth);
+
+            var volume2width  = 222.22f;
+            var volume2height = 555.55f;
+            var volume2depth  = 999.99f;
+            var volume2       = new Size3F(volume2width, volume2height, volume2depth);
+            TheResultingValue(volume2.Volume).ShouldBe(volume2width * volume2height * volume2depth);
+        }
+    }
+}

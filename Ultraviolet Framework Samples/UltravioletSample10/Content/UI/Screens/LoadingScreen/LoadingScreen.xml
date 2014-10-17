@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<UIPanelDefinition
+  DefaultOpenTransitionDuration="250.0"
+  DefaultCloseTransitionDuration="250.0">
+  <Layout />
+</UIPanelDefinition>

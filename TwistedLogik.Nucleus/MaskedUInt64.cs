@@ -1,0 +1,108 @@
+﻿using System;
+
+namespace TwistedLogik.Nucleus
+{
+    /// <summary>
+    /// Represents a masked 64-bit integer.
+    /// </summary>
+    [CLSCompliant(false)]
+    public struct MaskedUInt64
+    {
+        /// <summary>
+        /// Initializes a new instance of the MaskedUInt64 structure.
+        /// </summary>
+        /// <param name="value">The underlying value.</param>
+        public MaskedUInt64(UInt64 value)
+        {
+            Value = value;
+        }
+
+        /// <summary>
+        /// Retrieves a human-readable string that represents the object.
+        /// </summary>
+        /// <returns>A human-readable string that represents the object.</returns>
+        public override string ToString()
+        {
+            return Value.ToString();
+        }
+
+        /// <summary>
+        /// Implicitly converts the masked integer to a 32-bit unsigned integer.
+        /// </summary>
+        /// <param name="masked">The masked integer to convert.</param>
+        /// <returns>The converted integer.</returns>
+        public static implicit operator UInt64(MaskedUInt64 masked)
+        {
+            return masked.Value;
+        }
+
+        /// <summary>
+        /// Implicitly converts a 32-bit unsigned integer to a masked integer.
+        /// </summary>
+        /// <param name="value">The integer to convert.</param>
+        /// <returns>The converted masked integer.</returns>
+        public static implicit operator MaskedUInt64(UInt64 value)
+        {
+            return new MaskedUInt64(value);
+        }
+
+        /// <summary>
+        /// Creates a copy of this integer with the specified byte set to the specified value.
+        /// </summary>
+        /// <param name="byteIndex">The index of the byte to set.</param>
+        /// <param name="byteValue">The value to set in the specified byte.</param>
+        public MaskedUInt64 WithByte(Int32 byteIndex, Byte byteValue)
+        {
+            var value = Value;
+            value |= (ulong)((ulong)byteValue << (byteIndex * 8));
+            return new MaskedUInt64(value);
+        }
+
+        /// <summary>
+        /// Gets the mask for this value.
+        /// </summary>
+        /// <returns>The mask for this value.</returns>
+        public byte GetMask()
+        {
+            byte mask = 0;
+            for (int i = 0; i < sizeof(long); i++)
+                if (GetByte(i) != 0) mask |= (byte)(1 << i);
+            return mask;
+        }
+
+        /// <summary>
+        /// Gets the value of the byte with the specified index.
+        /// </summary>
+        /// <param name="ix">The index of the byte to retrieve.</param>
+        /// <returns>The value of the byte with the specified index.</returns>
+        public byte GetByte(Int32 ix)
+        {
+            var shift = (ix * 8);
+            var mask = (ulong)0xFF << shift;
+            return (byte)((Value & mask) >> shift);
+        }
+
+        /// <summary>
+        /// Gets the size of the integer in bytes.
+        /// </summary>
+        /// <returns>The size of the integer in bytes.</returns>
+        internal Int32 GetSizeInBytes()
+        {
+            var size = 1;
+            if ((Value & 0x00000000000000FF) != 0) size++;
+            if ((Value & 0x000000000000FF00) != 0) size++;
+            if ((Value & 0x0000000000FF0000) != 0) size++;
+            if ((Value & 0x00000000FF000000) != 0) size++;
+            if ((Value & 0x000000FF00000000) != 0) size++;
+            if ((Value & 0x0000FF0000000000) != 0) size++;
+            if ((Value & 0x00FF000000000000) != 0) size++;
+            if ((Value & 0xFF00000000000000) != 0) size++;
+            return size;
+        }
+
+        /// <summary>
+        /// Gets the underlying integer value.
+        /// </summary>
+        public readonly UInt64 Value;
+    }
+}

@@ -1,0 +1,10 @@
+﻿using System;
+
+namespace TwistedLogik.Gluon
+{
+    public static unsafe partial class gl
+    {
+        public const UInt32 GL_NUM_SHADING_LANGUAGE_VERSIONS = 0x82E9;
+        public const UInt32 GL_VERTEX_ATTRIB_ARRAY_LONG = 0x874E;
+    }
+}

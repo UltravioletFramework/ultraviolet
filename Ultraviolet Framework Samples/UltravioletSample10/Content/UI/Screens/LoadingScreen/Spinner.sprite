@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Sprite>
+  <Animations>
+    <Animation>
+      <Frames Texture="SpinnerTexture" Width="64" Height="64" OriginX="32" OriginY="32" Duration="75">
+        <Frame X="0" Y="0" />
+        <Frame X="64" Y="0" />
+        <Frame X="128" Y="0" />
+        <Frame X="192" Y="0" />
+        <Frame X="256" Y="0" />
+        <Frame X="320" Y="0" />
+        <Frame X="384" Y="0" />
+        <Frame X="448" Y="0" />
+      </Frames>
+    </Animation>
+  </Animations>
+</Sprite>

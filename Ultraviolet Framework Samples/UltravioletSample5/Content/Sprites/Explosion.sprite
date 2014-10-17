@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Sprite>
+  <Animations>
+    <Animation Name="Explosion">
+      <Frames Atlas="Textures/Explosion" Duration="50" OriginX="50" OriginY="50">
+        <Frame AtlasCell="Explosion_01" />
+        <Frame AtlasCell="Explosion_02" />
+        <Frame AtlasCell="Explosion_03" />
+        <Frame AtlasCell="Explosion_04" />
+        <Frame AtlasCell="Explosion_05" />
+        <Frame AtlasCell="Explosion_06" />
+        <Frame AtlasCell="Explosion_07" />
+        <Frame AtlasCell="Explosion_08" />
+        <Frame AtlasCell="Explosion_09" />
+        <Frame AtlasCell="Explosion_10" />
+        <Frame AtlasCell="Explosion_11" />
+        <Frame AtlasCell="Explosion_12" />
+        <Frame AtlasCell="Explosion_13" />
+        <Frame AtlasCell="Explosion_14" />
+        <Frame AtlasCell="Explosion_15" />
+        <Frame AtlasCell="Explosion_16" />
+        <Frame AtlasCell="Explosion_17" />
+        <Frame AtlasCell="Explosion_18" />
+        <Frame AtlasCell="Explosion_19" />
+        <Frame AtlasCell="Explosion_20" />
+        <Frame AtlasCell="Explosion_21" />
+        <Frame AtlasCell="Explosion_22" />
+        <Frame AtlasCell="Explosion_23" />
+        <Frame AtlasCell="Explosion_24" />
+        <Frame AtlasCell="Explosion_25" />
+        <Frame AtlasCell="Explosion_26" />
+        <Frame AtlasCell="Explosion_27" />
+        <Frame AtlasCell="Explosion_28" />
+        <Frame AtlasCell="Explosion_29" />
+      </Frames>
+    </Animation>
+  </Animations>
+</Sprite>

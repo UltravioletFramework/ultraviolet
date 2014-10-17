@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Table Width="300">
+  <Row>
+    <Cell Binding="Name"
+          Format="|font:header||b||c:FFFF8000|{0}" TextFlags="AlignLeft | AlignMiddle" />
+  </Row>
+  <Row>
+    <Cell Binding="Type"
+          Format="|font:text||c:FF808080|{0}" TextFlags="AlignLeft | AlignTop" />
+    <Cell Binding="Subtype"
+          Format="|font:text||c:FF808080|{0}" TextFlags="AlignRight | AlignTop" />
+  </Row>
+  <Row>
+    <Cell Binding="Description"
+          Format="|font:text|{0}" TextFlags="AlignLeft | AlignTop" />
+  </Row>
+</Table>

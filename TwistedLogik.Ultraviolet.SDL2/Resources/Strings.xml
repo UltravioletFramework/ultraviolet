@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<LocalizedStrings>
+  <String Key="BUFFER_IS_TOO_SMALL">
+    <en-US>
+      <Variant>Buffer '{0}' is too small for the requested data.</Variant>
+    </en-US>
+  </String>
+  <String Key="SURFACE_ALREADY_PREPARED_FOR_EXPORT">
+    <en-US>
+      <Variant>The surface has already been prepared for export.</Variant>
+    </en-US>
+  </String>
+</LocalizedStrings>

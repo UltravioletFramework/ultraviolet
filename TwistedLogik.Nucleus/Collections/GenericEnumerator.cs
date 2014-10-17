@@ -1,0 +1,112 @@
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+
+namespace TwistedLogik.Nucleus.Collections
+{
+    /// <summary>
+    /// Represents a method which produces items for a generic enumerator.
+    /// Producing a value of default(T) indicates that the enumerator has reached the end of the collection.
+    /// </summary>
+    /// <param name="state">A state object to pass to the generation function.</param>
+    /// <param name="index">A value indicating the index of the item that should be generated, respective to its collection.</param>
+    /// <param name="result">The item that was generated.</param>
+    /// <returns>true if a valid item was generated; otherwise, false.</returns>
+    public delegate Boolean GenericEnumeratorGenerator<T>(Object state, Int32 index, out T result);
+
+    /// <summary>
+    /// Represents a method which produces a version number associated with
+    /// the enumerated collection.
+    /// </summary>
+    /// <param name="state">A state object to pass to the versioning function.</param>
+    /// <returns>The current version of the enumerated collection.</returns>
+    public delegate Int32 GenericEnumeratorVersionFunction(Object state);
+
+    /// <summary>
+    /// Represents a generic list enumerator implemented as a mutable struct.
+    /// </summary>
+    public struct GenericEnumerator<T> : IEnumerator<T>
+    {
+        /// <summary>
+        /// Initializes a new instance of the GenericEnumerator structure.
+        /// </summary>
+        /// <param name="state">A state object to pass to the generation function.</param>
+        /// <param name="generator">A function which produces objects from the enumerated collection.</param>
+        /// <param name="versioner">A function which produces the collection's version number.</param>
+        public GenericEnumerator(Object state, GenericEnumeratorGenerator<T> generator, GenericEnumeratorVersionFunction versioner = null)
+        {
+            this.state = state;
+            this.generator = generator;
+            this.versioner = versioner ?? DefaultVersioner;
+            this.current = default(T);
+            this.index = 0;
+            this.version = (versioner == null) ? 0 : versioner(state);
+        }
+
+        /// <summary>
+        /// Releases resources associated with the object.
+        /// </summary>
+        public void Dispose()
+        {
+
+        }
+
+        /// <summary>
+        /// Resets the enumerator to its initial state.
+        /// </summary>
+        public void Reset()
+        {
+            if (versioner(state) != version)
+            {
+                throw new InvalidOperationException(NucleusStrings.CollectionChanged);
+            }
+            index = 0;
+            current = default(T);
+        }
+
+        /// <summary>
+        /// Advances the enumerator to the next item in the collection.
+        /// </summary>
+        /// <returns>true if the enumerator advanced to the next item; otherwise, false.</returns>
+        public Boolean MoveNext()
+        {
+            if (versioner(state) != version)
+            {
+                throw new InvalidOperationException(NucleusStrings.CollectionChanged);
+            }
+            if (generator(state, index, out current))
+            {
+                index++;
+                return true;
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Gets the current object.
+        /// </summary>
+        public T Current
+        {
+            get { return current; }
+        }
+
+        /// <summary>
+        /// Gets the current object.
+        /// </summary>
+        Object IEnumerator.Current
+        {
+            get { return current; }
+        }
+
+        // The default function used to version generic enumerators.  If this is used, versioning is disabled.
+        private static readonly GenericEnumeratorVersionFunction DefaultVersioner = new GenericEnumeratorVersionFunction(state => 0);
+
+        // State values.
+        private readonly Object state;
+        private readonly GenericEnumeratorGenerator<T> generator;
+        private readonly GenericEnumeratorVersionFunction versioner;
+        private T current;
+        private Int32 index;
+        private Int32 version;
+    }
+}

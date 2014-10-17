@@ -1,0 +1,444 @@
+﻿using System;
+using System.Runtime.InteropServices;
+
+namespace TwistedLogik.Gluon
+{
+    public static unsafe partial class gl
+    {
+        private delegate void glColorMaskiDelegate(uint buf, bool red, bool green, bool blue, bool alpha);
+        [Require(MinVersion = "3.0")]
+        private static readonly glColorMaskiDelegate glColorMaski = null;
+
+        public static void ColorMaski(uint buf, bool red, bool green, bool blue, bool alpha) { glColorMaski(buf, red, green, blue, alpha); }
+
+        private delegate void glGetBooleani_vDelegate(uint pname, uint index, bool* data);
+        [Require(MinVersion = "3.0")]
+        private static readonly glGetBooleani_vDelegate glGetBooleani_v = null;
+
+        public static void GetBooleani_v(uint pname, uint index, bool* data) { glGetBooleani_v(pname, index, data); }
+
+        public static bool GetBooleani(uint pname, uint index)
+        {
+            bool value;
+            glGetBooleani_v(pname, index, &value);
+            return value;
+        }
+
+        private delegate void glEnableiDelegate(uint cap, uint index);
+        [Require(MinVersion = "3.0")]
+        private static readonly glEnableiDelegate glEnablei = null;
+
+        public static void Enablei(uint cap, uint index) { glEnablei(cap, index); }
+
+        private delegate void glDisableiDelegate(uint cap, uint index);
+        [Require(MinVersion = "3.0")]
+        private static readonly glDisableiDelegate glDisablei = null;
+
+        public static void Disablei(uint cap, uint index) { glDisablei(cap, index); }
+
+        private delegate bool glIsEnablediDelegate(uint cap, uint index);
+        [Require(MinVersion = "3.0")]
+        private static readonly glIsEnablediDelegate glIsEnabledi = null;
+
+        public static bool IsEnabledi(uint cap, uint index) { return glIsEnabledi(cap, index); }
+
+        private delegate void glBeginTransformFeedbackDelegate(uint primitiveMode);
+        [Require(MinVersion = "3.0")]
+        private static readonly glBeginTransformFeedbackDelegate glBeginTransformFeedback = null;
+
+        public static void BeginTransformFeedback(uint primitiveMode) { glBeginTransformFeedback(primitiveMode); }
+
+        private delegate void glEndTransformFeedbackDelegate();
+        private delegate void glTransformFeedbackVaryingsDelegate(uint program, int count, sbyte** varyings, uint bufferMode);
+        [Require(MinVersion = "3.0")]
+        private static readonly glTransformFeedbackVaryingsDelegate glTransformFeedbackVaryings = null;
+
+        public static void TransformFeedbackVaryings(uint program, int count, sbyte** varyings, uint bufferMode) { glTransformFeedbackVaryings(program, count, varyings, bufferMode); }
+
+        private delegate void glGetTransformFeedbackVaryingDelegate(uint program, uint index, int bufSize, int* length, int* size, uint* type, sbyte* name);
+        [Require(MinVersion = "3.0")]
+        private static readonly glGetTransformFeedbackVaryingDelegate glGetTransformFeedbackVarying = null;
+
+        public static void GetTransformFeedbackVarying(uint program, uint index, int bufSize, int* length, int* size, uint* type, sbyte* name) { glGetTransformFeedbackVarying(program, index, bufSize, length, size, type, name); }
+
+        private delegate void glClampColorDelegate(uint target, uint clamp);
+        [Require(MinVersion = "3.0")]
+        private static readonly glClampColorDelegate glClampColor = null;
+
+        public static void ClampColor(uint target, uint clamp) { glClampColor(target, clamp); }
+
+        private delegate void glBeginConditionalRenderDelegate(uint id, uint mode);
+        [Require(MinVersion = "3.0")]
+        private static readonly glBeginConditionalRenderDelegate glBeginConditionalRender = null;
+
+        public static void BeginConditionalRender(uint id, uint mode) { glBeginConditionalRender(id, mode); }
+
+        private delegate void glEndConditionalRenderDelegate();
+        private delegate void glVertexAttribI1iDelegate(uint index, int v0);
+        [Require(MinVersion = "3.0")]
+        private static readonly glVertexAttribI1iDelegate glVertexAttribI1i = null;
+
+        public static void VertexAttribI1i(uint index, int v0) { glVertexAttribI1i(index, v0); }
+
+        private delegate void glVertexAttribI2iDelegate(uint index, int v0, int v1);
+        [Require(MinVersion = "3.0")]
+        private static readonly glVertexAttribI2iDelegate glVertexAttribI2i = null;
+
+        public static void VertexAttribI2i(uint index, int v0, int v1) { glVertexAttribI2i(index, v0, v1); }
+
+        private delegate void glVertexAttribI3iDelegate(uint index, int v0, int v1, int v2);
+        [Require(MinVersion = "3.0")]
+        private static readonly glVertexAttribI3iDelegate glVertexAttribI3i = null;
+
+        public static void VertexAttribI3i(uint index, int v0, int v1, int v2) { glVertexAttribI3i(index, v0, v1, v2); }
+
+        private delegate void glVertexAttribI4iDelegate(uint index, int v0, int v1, int v2, int v3);
+        [Require(MinVersion = "3.0")]
+        private static readonly glVertexAttribI4iDelegate glVertexAttribI4i = null;
+
+        public static void VertexAttribI4i(uint index, int v0, int v1, int v2, int v3) { glVertexAttribI4i(index, v0, v1, v2, v3); }
+
+        private delegate void glVertexAttribI1uiDelegate(uint index, uint v0);
+        [Require(MinVersion = "3.0")]
+        private static readonly glVertexAttribI1uiDelegate glVertexAttribI1ui = null;
+
+        public static void VertexAttribI1ui(uint index, uint v0) { glVertexAttribI1ui(index, v0); }
+
+        private delegate void glVertexAttribI2uiDelegate(uint index, uint v0, uint v1);
+        [Require(MinVersion = "3.0")]
+        private static readonly glVertexAttribI2uiDelegate glVertexAttribI2ui = null;
+
+        public static void VertexAttribI2ui(uint index, uint v0, uint v1) { glVertexAttribI2ui(index, v0, v1); }
+
+        private delegate void glVertexAttribI3uiDelegate(uint index, uint v0, uint v1, uint v2);
+        [Require(MinVersion = "3.0")]
+        private static readonly glVertexAttribI3uiDelegate glVertexAttribI3ui = null;
+
+        public static void VertexAttribI3ui(uint index, uint v0, uint v1, uint v2) { glVertexAttribI3ui(index, v0, v1, v2); }
+
+        private delegate void glVertexAttribI4uiDelegate(uint index, uint v0, uint v1, uint v2, uint v3);
+        [Require(MinVersion = "3.0")]
+        private static readonly glVertexAttribI4uiDelegate glVertexAttribI4ui = null;
+
+        public static void VertexAttribI4ui(uint index, uint v0, uint v1, uint v2, uint v3) { glVertexAttribI4ui(index, v0, v1, v2, v3); }
+
+        private delegate void glVertexAttribI1ivDelegate(uint index, int* v);
+        [Require(MinVersion = "3.0")]
+        private static readonly glVertexAttribI1ivDelegate glVertexAttribI1iv = null;
+
+        public static void VertexAttribI1iv(uint index, int* v) { glVertexAttribI1iv(index, v); }
+
+        private delegate void glVertexAttribI2ivDelegate(uint index, int* v);
+        [Require(MinVersion = "3.0")]
+        private static readonly glVertexAttribI2ivDelegate glVertexAttribI2iv = null;
+
+        public static void VertexAttribI2iv(uint index, int* v) { glVertexAttribI2iv(index, v); }
+
+        private delegate void glVertexAttribI3ivDelegate(uint index, int* v);
+        [Require(MinVersion = "3.0")]
+        private static readonly glVertexAttribI3ivDelegate glVertexAttribI3iv = null;
+
+        public static void VertexAttribI3iv(uint index, int* v) { glVertexAttribI3iv(index, v); }
+
+        private delegate void glVertexAttribI4ivDelegate(uint index, int* v);
+        [Require(MinVersion = "3.0")]
+        private static readonly glVertexAttribI4ivDelegate glVertexAttribI4iv = null;
+
+        public static void VertexAttribI4iv(uint index, int* v) { glVertexAttribI4iv(index, v); }
+
+        private delegate void glVertexAttribI1uivDelegate(uint index, uint* v);
+        [Require(MinVersion = "3.0")]
+        private static readonly glVertexAttribI1uivDelegate glVertexAttribI1uiv = null;
+
+        public static void VertexAttribI1uiv(uint index, uint* v) { glVertexAttribI1uiv(index, v); }
+
+        private delegate void glVertexAttribI2uivDelegate(uint index, uint* v);
+        [Require(MinVersion = "3.0")]
+        private static readonly glVertexAttribI2uivDelegate glVertexAttribI2uiv = null;
+
+        public static void VertexAttribI2uiv(uint index, uint* v) { glVertexAttribI2uiv(index, v); }
+
+        private delegate void glVertexAttribI3uivDelegate(uint index, uint* v);
+        [Require(MinVersion = "3.0")]
+        private static readonly glVertexAttribI3uivDelegate glVertexAttribI3uiv = null;
+
+        public static void VertexAttribI3uiv(uint index, uint* v) { glVertexAttribI3uiv(index, v); }
+
+        private delegate void glVertexAttribI4uivDelegate(uint index, uint* v);
+        [Require(MinVersion = "3.0")]
+        private static readonly glVertexAttribI4uivDelegate glVertexAttribI4uiv = null;
+
+        public static void VertexAttribI4uiv(uint index, uint* v) { glVertexAttribI4uiv(index, v); }
+
+        private delegate void glVertexAttribI4bvDelegate(uint index, sbyte* v);
+        [Require(MinVersion = "3.0")]
+        private static readonly glVertexAttribI4bvDelegate glVertexAttribI4bv = null;
+
+        public static void VertexAttribI4bv(uint index, sbyte* v) { glVertexAttribI4bv(index, v); }
+
+        private delegate void glVertexAttribI4svDelegate(uint index, short* v);
+        [Require(MinVersion = "3.0")]
+        private static readonly glVertexAttribI4svDelegate glVertexAttribI4sv = null;
+
+        public static void VertexAttribI4sv(uint index, short* v) { glVertexAttribI4sv(index, v); }
+
+        private delegate void glVertexAttribI4ubvDelegate(uint index, byte* v);
+        [Require(MinVersion = "3.0")]
+        private static readonly glVertexAttribI4ubvDelegate glVertexAttribI4ubv = null;
+
+        public static void VertexAttribI4ubv(uint index, byte* v) { glVertexAttribI4ubv(index, v); }
+
+        private delegate void glVertexAttribI4usvDelegate(uint index, ushort* v);
+        [Require(MinVersion = "3.0")]
+        private static readonly glVertexAttribI4usvDelegate glVertexAttribI4usv = null;
+
+        public static void VertexAttribI4usv(uint index, ushort* v) { glVertexAttribI4usv(index, v); }
+
+        private delegate void glVertexAttribIPointerDelegate(uint index, int size, uint type, int stride, void* pointer);
+        [Require(MinVersion = "3.0")]
+        private static readonly glVertexAttribIPointerDelegate glVertexAttribIPointer = null;
+
+        public static void VertexAttribIPointer(uint index, int size, uint type, int stride, void* pointer) { glVertexAttribIPointer(index, size, type, stride, pointer); }
+
+        private delegate void glGetVertexAttribIivDelegate(uint index, uint pname, int* @params);
+        [Require(MinVersion = "3.0")]
+        private static readonly glGetVertexAttribIivDelegate glGetVertexAttribIiv = null;
+
+        public static void GetVertexAttribIiv(uint index, uint pname, int* @params) { glGetVertexAttribIiv(index, pname, @params); }
+
+        private delegate void glGetVertexAttribIuivDelegate(uint index, uint pname, uint* @params);
+        [Require(MinVersion = "3.0")]
+        private static readonly glGetVertexAttribIuivDelegate glGetVertexAttribIuiv = null;
+
+        public static void GetVertexAttribIuiv(uint index, uint pname, uint* @params) { glGetVertexAttribIuiv(index, pname, @params); }
+
+        private delegate void glGetUniformuivDelegate(uint program, int location, uint* @params);
+        [Require(MinVersion = "3.0")]
+        private static readonly glGetUniformuivDelegate glGetUniformuiv = null;
+
+        public static void GetUniformuiv(uint program, int location, uint* @params) { glGetUniformuiv(program, location, @params); }
+
+        private delegate void glBindFragDataLocationDelegate(uint program, uint colorNumber, sbyte* name);
+        [Require(MinVersion = "3.0")]
+        private static readonly glBindFragDataLocationDelegate glBindFragDataLocation = null;
+
+        public static void BindFragDataLocation(uint program, uint colorNumber, sbyte* name) { glBindFragDataLocation(program, colorNumber, name); }
+
+        private delegate int glGetFragDataLocationDelegate(uint program, sbyte* name);
+        [Require(MinVersion = "3.0")]
+        private static readonly glGetFragDataLocationDelegate glGetFragDataLocation = null;
+
+        public static int GetFragDataLocation(uint program, sbyte* name) { return glGetFragDataLocation(program, name); }
+
+        private delegate void glUniform1uiDelegate(int location, uint v0);
+        [Require(MinVersion = "3.0")]
+        private static readonly glUniform1uiDelegate glUniform1ui = null;
+
+        public static void Uniform1ui(int location, uint v0) { glUniform1ui(location, v0); }
+
+        private delegate void glUniform2uiDelegate(int location, uint v0, uint v1);
+        [Require(MinVersion = "3.0")]
+        private static readonly glUniform2uiDelegate glUniform2ui = null;
+
+        public static void Uniform2ui(int location, uint v0, uint v1) { glUniform2ui(location, v0, v1); }
+
+        private delegate void glUniform3uiDelegate(int location, uint v0, uint v1, uint v2);
+        [Require(MinVersion = "3.0")]
+        private static readonly glUniform3uiDelegate glUniform3ui = null;
+
+        public static void Uniform3ui(int location, uint v0, uint v1, uint v2) { glUniform3ui(location, v0, v1, v2); }
+
+        private delegate void glUniform4uiDelegate(int location, uint v0, uint v1, uint v2, uint v3);
+        [Require(MinVersion = "3.0")]
+        private static readonly glUniform4uiDelegate glUniform4ui = null;
+
+        public static void Uniform4ui(int location, uint v0, uint v1, uint v2, uint v3) { glUniform4ui(location, v0, v1, v2, v3); }
+
+        private delegate void glUniform1uivDelegate(int location, int count, uint* value);
+        [Require(MinVersion = "3.0")]
+        private static readonly glUniform1uivDelegate glUniform1uiv = null;
+
+        public static void Uniform1uiv(int location, int count, uint* value) { glUniform1uiv(location, count, value); }
+
+        private delegate void glUniform2uivDelegate(int location, int count, uint* value);
+        [Require(MinVersion = "3.0")]
+        private static readonly glUniform2uivDelegate glUniform2uiv = null;
+
+        public static void Uniform2uiv(int location, int count, uint* value) { glUniform2uiv(location, count, value); }
+
+        private delegate void glUniform3uivDelegate(int location, int count, uint* value);
+        [Require(MinVersion = "3.0")]
+        private static readonly glUniform3uivDelegate glUniform3uiv = null;
+
+        public static void Uniform3uiv(int location, int count, uint* value) { glUniform3uiv(location, count, value); }
+
+        private delegate void glUniform4uivDelegate(int location, int count, uint* value);
+        [Require(MinVersion = "3.0")]
+        private static readonly glUniform4uivDelegate glUniform4uiv = null;
+
+        public static void Uniform4uiv(int location, int count, uint* value) { glUniform4uiv(location, count, value); }
+
+        private delegate void glTexParameterIivDelegate(uint target, uint pname, int* @params);
+        [Require(MinVersion = "3.0")]
+        private static readonly glTexParameterIivDelegate glTexParameterIiv = null;
+
+        public static void TexParameterIiv(uint target, uint pname, int* @params) { glTexParameterIiv(target, pname, @params); }
+
+        private delegate void glTexParameterIuivDelegate(uint target, uint pname, uint* @params);
+        [Require(MinVersion = "3.0")]
+        private static readonly glTexParameterIuivDelegate glTexParameterIuiv = null;
+
+        public static void TexParameterIuiv(uint target, uint pname, uint* @params) { glTexParameterIuiv(target, pname, @params); }
+
+        private delegate void glGetTexParameterIivDelegate(uint target, uint pname, int* @params);
+        [Require(MinVersion = "3.0")]
+        private static readonly glGetTexParameterIivDelegate glGetTexParameterIiv = null;
+
+        public static void GetTexParameterIiv(uint target, uint pname, int* @params) { glGetTexParameterIiv(target, pname, @params); }
+
+        private delegate void glGetTexParameterIuivDelegate(uint target, uint pname, uint* @params);
+        [Require(MinVersion = "3.0")]
+        private static readonly glGetTexParameterIuivDelegate glGetTexParameterIuiv = null;
+
+        public static void GetTexParameterIuiv(uint target, uint pname, uint* @params) { glGetTexParameterIuiv(target, pname, @params); }
+
+        private delegate void glClearBufferivDelegate(uint buffer, int drawBuffer, int* value);
+        [Require(MinVersion = "3.0")]
+        private static readonly glClearBufferivDelegate glClearBufferiv = null;
+
+        public static void ClearBufferiv(uint buffer, int drawBuffer, int* value) { glClearBufferiv(buffer, drawBuffer, value); }
+
+        private delegate void glClearBufferuivDelegate(uint buffer, int drawBuffer, uint* value);
+        [Require(MinVersion = "3.0")]
+        private static readonly glClearBufferuivDelegate glClearBufferuiv = null;
+
+        public static void ClearBufferuiv(uint buffer, int drawBuffer, uint* value) { glClearBufferuiv(buffer, drawBuffer, value); }
+
+        private delegate void glClearBufferfvDelegate(uint buffer, int drawBuffer, float* value);
+        [Require(MinVersion = "3.0")]
+        private static readonly glClearBufferfvDelegate glClearBufferfv = null;
+
+        public static void ClearBufferfv(uint buffer, int drawBuffer, float* value) { glClearBufferfv(buffer, drawBuffer, value); }
+
+        private delegate void glClearBufferfiDelegate(uint buffer, int drawBuffer, float depth, int stencil);
+        [Require(MinVersion = "3.0")]
+        private static readonly glClearBufferfiDelegate glClearBufferfi = null;
+
+        public static void ClearBufferfi(uint buffer, int drawBuffer, float depth, int stencil) { glClearBufferfi(buffer, drawBuffer, depth, stencil); }
+
+        private delegate byte* glGetStringiDelegate(uint name, uint index);
+        [Require(MinVersion = "3.0")]
+        private static readonly glGetStringiDelegate glGetStringi = null;
+
+        public static String GetStringi(uint name, uint index)
+        {
+            return Marshal.PtrToStringAnsi((IntPtr)glGetStringi(name, index));
+        }
+
+        public const UInt32 GL_MAX_CLIP_DISTANCES = GL_MAX_CLIP_PLANES;
+        public const UInt32 GL_CLIP_DISTANCE5 = GL_CLIP_PLANE5;
+        public const UInt32 GL_CLIP_DISTANCE1 = GL_CLIP_PLANE1;
+        public const UInt32 GL_CLIP_DISTANCE3 = GL_CLIP_PLANE3;
+        public const UInt32 GL_COMPARE_REF_TO_TEXTURE = GL_COMPARE_R_TO_TEXTURE_ARB;
+        public const UInt32 GL_CLIP_DISTANCE0 = GL_CLIP_PLANE0;
+        public const UInt32 GL_CLIP_DISTANCE4 = GL_CLIP_PLANE4;
+        public const UInt32 GL_CLIP_DISTANCE2 = GL_CLIP_PLANE2;
+        public const UInt32 GL_MAX_VARYING_COMPONENTS = GL_MAX_VARYING_FLOATS;
+        public const UInt32 GL_CONTEXT_FLAG_FORWARD_COMPATIBLE_BIT = 0x0001;
+        public const UInt32 GL_MAJOR_VERSION = 0x821B;
+        public const UInt32 GL_MINOR_VERSION = 0x821C;
+        public const UInt32 GL_NUM_EXTENSIONS = 0x821D;
+        public const UInt32 GL_CONTEXT_FLAGS = 0x821E;
+        public const UInt32 GL_DEPTH_BUFFER = 0x8223;
+        public const UInt32 GL_STENCIL_BUFFER = 0x8224;
+        public const UInt32 GL_RGBA32F = 0x8814;
+        public const UInt32 GL_RGB32F = 0x8815;
+        public const UInt32 GL_RGBA16F = 0x881A;
+        public const UInt32 GL_RGB16F = 0x881B;
+        public const UInt32 GL_VERTEX_ATTRIB_ARRAY_INTEGER = 0x88FD;
+        public const UInt32 GL_MAX_ARRAY_TEXTURE_LAYERS = 0x88FF;
+        public const UInt32 GL_MIN_PROGRAM_TEXEL_OFFSET = 0x8904;
+        public const UInt32 GL_MAX_PROGRAM_TEXEL_OFFSET = 0x8905;
+        public const UInt32 GL_CLAMP_VERTEX_COLOR = 0x891A;
+        public const UInt32 GL_CLAMP_FRAGMENT_COLOR = 0x891B;
+        public const UInt32 GL_CLAMP_READ_COLOR = 0x891C;
+        public const UInt32 GL_FIXED_ONLY = 0x891D;
+        public const UInt32 GL_TEXTURE_RED_TYPE = 0x8C10;
+        public const UInt32 GL_TEXTURE_GREEN_TYPE = 0x8C11;
+        public const UInt32 GL_TEXTURE_BLUE_TYPE = 0x8C12;
+        public const UInt32 GL_TEXTURE_ALPHA_TYPE = 0x8C13;
+        public const UInt32 GL_TEXTURE_LUMINANCE_TYPE = 0x8C14;
+        public const UInt32 GL_TEXTURE_INTENSITY_TYPE = 0x8C15;
+        public const UInt32 GL_TEXTURE_DEPTH_TYPE = 0x8C16;
+        public const UInt32 GL_TEXTURE_1D_ARRAY = 0x8C18;
+        public const UInt32 GL_PROXY_TEXTURE_1D_ARRAY = 0x8C19;
+        public const UInt32 GL_TEXTURE_2D_ARRAY = 0x8C1A;
+        public const UInt32 GL_PROXY_TEXTURE_2D_ARRAY = 0x8C1B;
+        public const UInt32 GL_TEXTURE_BINDING_1D_ARRAY = 0x8C1C;
+        public const UInt32 GL_TEXTURE_BINDING_2D_ARRAY = 0x8C1D;
+        public const UInt32 GL_R11F_G11F_B10F = 0x8C3A;
+        public const UInt32 GL_UNSIGNED_INT_10F_11F_11F_REV = 0x8C3B;
+        public const UInt32 GL_RGB9_E5 = 0x8C3D;
+        public const UInt32 GL_UNSIGNED_INT_5_9_9_9_REV = 0x8C3E;
+        public const UInt32 GL_TEXTURE_SHARED_SIZE = 0x8C3F;
+        public const UInt32 GL_TRANSFORM_FEEDBACK_VARYING_MAX_LENGTH = 0x8C76;
+        public const UInt32 GL_TRANSFORM_FEEDBACK_BUFFER_MODE = 0x8C7F;
+        public const UInt32 GL_MAX_TRANSFORM_FEEDBACK_SEPARATE_COMPONENTS = 0x8C80;
+        public const UInt32 GL_TRANSFORM_FEEDBACK_VARYINGS = 0x8C83;
+        public const UInt32 GL_TRANSFORM_FEEDBACK_BUFFER_START = 0x8C84;
+        public const UInt32 GL_TRANSFORM_FEEDBACK_BUFFER_SIZE = 0x8C85;
+        public const UInt32 GL_PRIMITIVES_GENERATED = 0x8C87;
+        public const UInt32 GL_TRANSFORM_FEEDBACK_PRIMITIVES_WRITTEN = 0x8C88;
+        public const UInt32 GL_RASTERIZER_DISCARD = 0x8C89;
+        public const UInt32 GL_MAX_TRANSFORM_FEEDBACK_INTERLEAVED_COMPONENTS = 0x8C8A;
+        public const UInt32 GL_MAX_TRANSFORM_FEEDBACK_SEPARATE_ATTRIBS = 0x8C8B;
+        public const UInt32 GL_INTERLEAVED_ATTRIBS = 0x8C8C;
+        public const UInt32 GL_SEPARATE_ATTRIBS = 0x8C8D;
+        public const UInt32 GL_TRANSFORM_FEEDBACK_BUFFER = 0x8C8E;
+        public const UInt32 GL_TRANSFORM_FEEDBACK_BUFFER_BINDING = 0x8C8F;
+        public const UInt32 GL_RGBA32UI = 0x8D70;
+        public const UInt32 GL_RGB32UI = 0x8D71;
+        public const UInt32 GL_RGBA16UI = 0x8D76;
+        public const UInt32 GL_RGB16UI = 0x8D77;
+        public const UInt32 GL_RGBA8UI = 0x8D7C;
+        public const UInt32 GL_RGB8UI = 0x8D7D;
+        public const UInt32 GL_RGBA32I = 0x8D82;
+        public const UInt32 GL_RGB32I = 0x8D83;
+        public const UInt32 GL_RGBA16I = 0x8D88;
+        public const UInt32 GL_RGB16I = 0x8D89;
+        public const UInt32 GL_RGBA8I = 0x8D8E;
+        public const UInt32 GL_RGB8I = 0x8D8F;
+        public const UInt32 GL_RED_INTEGER = 0x8D94;
+        public const UInt32 GL_GREEN_INTEGER = 0x8D95;
+        public const UInt32 GL_BLUE_INTEGER = 0x8D96;
+        public const UInt32 GL_ALPHA_INTEGER = 0x8D97;
+        public const UInt32 GL_RGB_INTEGER = 0x8D98;
+        public const UInt32 GL_RGBA_INTEGER = 0x8D99;
+        public const UInt32 GL_BGR_INTEGER = 0x8D9A;
+        public const UInt32 GL_BGRA_INTEGER = 0x8D9B;
+        public const UInt32 GL_SAMPLER_1D_ARRAY = 0x8DC0;
+        public const UInt32 GL_SAMPLER_2D_ARRAY = 0x8DC1;
+        public const UInt32 GL_SAMPLER_1D_ARRAY_SHADOW = 0x8DC3;
+        public const UInt32 GL_SAMPLER_2D_ARRAY_SHADOW = 0x8DC4;
+        public const UInt32 GL_SAMPLER_CUBE_SHADOW = 0x8DC5;
+        public const UInt32 GL_UNSIGNED_INT_VEC2 = 0x8DC6;
+        public const UInt32 GL_UNSIGNED_INT_VEC3 = 0x8DC7;
+        public const UInt32 GL_UNSIGNED_INT_VEC4 = 0x8DC8;
+        public const UInt32 GL_INT_SAMPLER_1D = 0x8DC9;
+        public const UInt32 GL_INT_SAMPLER_2D = 0x8DCA;
+        public const UInt32 GL_INT_SAMPLER_3D = 0x8DCB;
+        public const UInt32 GL_INT_SAMPLER_CUBE = 0x8DCC;
+        public const UInt32 GL_INT_SAMPLER_1D_ARRAY = 0x8DCE;
+        public const UInt32 GL_INT_SAMPLER_2D_ARRAY = 0x8DCF;
+        public const UInt32 GL_UNSIGNED_INT_SAMPLER_1D = 0x8DD1;
+        public const UInt32 GL_UNSIGNED_INT_SAMPLER_2D = 0x8DD2;
+        public const UInt32 GL_UNSIGNED_INT_SAMPLER_3D = 0x8DD3;
+        public const UInt32 GL_UNSIGNED_INT_SAMPLER_CUBE = 0x8DD4;
+        public const UInt32 GL_UNSIGNED_INT_SAMPLER_1D_ARRAY = 0x8DD6;
+        public const UInt32 GL_UNSIGNED_INT_SAMPLER_2D_ARRAY = 0x8DD7;
+        public const UInt32 GL_QUERY_WAIT = 0x8E13;
+        public const UInt32 GL_QUERY_NO_WAIT = 0x8E14;
+        public const UInt32 GL_QUERY_BY_REGION_WAIT = 0x8E15;
+        public const UInt32 GL_QUERY_BY_REGION_NO_WAIT = 0x8E16;
+    }
+}

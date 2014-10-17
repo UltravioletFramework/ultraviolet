@@ -1,0 +1,106 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{BF3C3975-5E7C-40C0-B49B-9A0CBD22BFCB}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>TwistedLogik.Ultraviolet.Testing</RootNamespace>
+    <AssemblyName>TwistedLogik.Ultraviolet.Testing</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BitmapResult.cs" />
+    <Compile Include="IUltravioletTestApplication.cs" />
+    <Compile Include="UltravioletApplicationTestFramework.cs" />
+    <Compile Include="UltravioletTestApplication.cs" />
+    <Compile Include="Vector4Result.cs" />
+    <Compile Include="Vector3Result.cs" />
+    <Compile Include="Vector2Result.cs" />
+    <Compile Include="Size3FResult.cs" />
+    <Compile Include="Size3Result.cs" />
+    <Compile Include="Size2Result.cs" />
+    <Compile Include="Size2FResult.cs" />
+    <Compile Include="RectangleResult.cs" />
+    <Compile Include="RectangleFResult.cs" />
+    <Compile Include="RadiansResult.cs" />
+    <Compile Include="ColorResult.cs" />
+    <Compile Include="CircleResult.cs" />
+    <Compile Include="CircleFResult.cs" />
+    <Compile Include="UltravioletTestFramework.cs" />
+    <Compile Include="MatrixResult.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\TwistedLogik.Gluon\TwistedLogik.Gluon.csproj">
+      <Project>{0e4bafbf-5211-4e2f-af39-092ec6671581}</Project>
+      <Name>TwistedLogik.Gluon</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TwistedLogik.Nucleus.Testing\TwistedLogik.Nucleus.Testing.csproj">
+      <Project>{6a17d1a8-ac32-4bb4-8446-d76f6b160246}</Project>
+      <Name>TwistedLogik.Nucleus.Testing</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TwistedLogik.Nucleus\TwistedLogik.Nucleus.csproj">
+      <Project>{7da6158b-a0b9-4100-904e-22fd86949608}</Project>
+      <Name>TwistedLogik.Nucleus</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TwistedLogik.Ultraviolet.BASS\TwistedLogik.Ultraviolet.BASS.csproj">
+      <Project>{ea948cf3-ad34-480a-b8ce-e7ec5caa4d77}</Project>
+      <Name>TwistedLogik.Ultraviolet.BASS</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TwistedLogik.Ultraviolet.OpenGL\TwistedLogik.Ultraviolet.OpenGL.csproj">
+      <Project>{40d272db-90e1-4332-a32f-6effeb44fe87}</Project>
+      <Name>TwistedLogik.Ultraviolet.OpenGL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TwistedLogik.Ultraviolet.SDL2\TwistedLogik.Ultraviolet.SDL2.csproj">
+      <Project>{50aefa93-fe53-414a-89fc-c061c165c673}</Project>
+      <Name>TwistedLogik.Ultraviolet.SDL2</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TwistedLogik.Ultraviolet\TwistedLogik.Ultraviolet.csproj">
+      <Project>{f071abe3-05e5-4df9-a929-cf71b01ec50a}</Project>
+      <Name>TwistedLogik.Ultraviolet</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
