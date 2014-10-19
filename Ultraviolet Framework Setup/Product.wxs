@@ -68,10 +68,6 @@
       VS2013EXPRESS_IDE_X64
     </SetProperty>
 
-    <Property Id="SAMPLESDIR_FOO" Secure="yes">
-      <RegistrySearch Key="SOFTWARE\TwistedLogik\Ultraviolet Framework 1.0" Root="HKLM" Type="raw" Id="SAMPLESDIR_REGSEARCH" Name="SamplesDir" />
-    </Property>
-
     <!-- Visual Studio project template installers -->
     <CustomActionRef Id="VS2010InstallVSTemplates" />
     <CustomActionRef Id="VCSHARP2010InstallVSTemplates" />
