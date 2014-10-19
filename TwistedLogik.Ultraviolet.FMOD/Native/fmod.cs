@@ -3,6 +3,7 @@
 /* FMOD Ex - C# Wrapper . Copyright (c), Firelight Technologies Pty, Ltd. 2004-2014.          */
 /*                                                                                            */
 /* ========================================================================================== */
+#pragma warning disable 1591
 
 using System;
 using System.Runtime.InteropServices;

@@ -2,6 +2,8 @@
 using System.Runtime.InteropServices;
 using SDL_JoystickID = System.Int32;
 
+#pragma warning disable 1591
+
 namespace TwistedLogik.Ultraviolet.SDL2.Native
 {
     [StructLayout(LayoutKind.Sequential)]

@@ -22,6 +22,7 @@ namespace TwistedLogik.Ultraviolet
 
         private static readonly LocalizationDatabase StringDatabase = new LocalizationDatabase();
 
+#pragma warning disable 1591
         public static readonly StringResource OnlySupportedOnWindows     = new StringResource(StringDatabase, "ONLY_SUPPORTED_ON_WINDOWS");
         public static readonly StringResource CefRuntimeError            = new StringResource(StringDatabase, "RUNTIME_ERROR");
         public static readonly StringResource LayoutNotInitialized       = new StringResource(StringDatabase, "LAYOUT_NOT_INITIALIZED");
@@ -34,5 +35,6 @@ namespace TwistedLogik.Ultraviolet
         public static readonly StringResource InvalidLayoutSource        = new StringResource(StringDatabase, "INVALID_LAYOUT_SOURCE");
         public static readonly StringResource ScriptMustReturnVoidOrTask = new StringResource(StringDatabase, "SCRIPT_MUST_RETURN_VOID_OR_TASK");
         public static readonly StringResource UnrecognizedTaskID         = new StringResource(StringDatabase, "UNRECOGNIZED_TASK_ID");
+#pragma warning restore 1591
     }
 }

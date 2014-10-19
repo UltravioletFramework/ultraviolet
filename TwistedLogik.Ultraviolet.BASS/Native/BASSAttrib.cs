@@ -1,7 +1,7 @@
 ﻿
 namespace TwistedLogik.Ultraviolet.BASS.Native
 {
-    public enum BASSAttrib : uint
+    internal enum BASSAttrib : uint
     {
         ATTRIB_FREQ             = 1,
         ATTRIB_VOL              = 2,

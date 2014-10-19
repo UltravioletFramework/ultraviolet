@@ -7,6 +7,7 @@
 /* DSP effects and generators.                                                                */
 /*                                                                                            */
 /* ========================================================================================== */
+#pragma warning disable 1591
 
 using System;
 using System.Runtime.InteropServices;

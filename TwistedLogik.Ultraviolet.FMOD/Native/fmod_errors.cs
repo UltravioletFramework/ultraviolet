@@ -5,6 +5,7 @@
 /* the FMOD error codes.                                                                           */
 /*                                                                                                 */
 /* =============================================================================================== */
+#pragma warning disable 1591
 
 namespace TwistedLogik.Ultraviolet.FMODNative
 {

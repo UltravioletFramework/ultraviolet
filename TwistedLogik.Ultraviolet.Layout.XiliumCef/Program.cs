@@ -4,9 +4,12 @@ using Xilium.CefGlue;
 
 namespace TwistedLogik.Ultraviolet.Layout.XiliumCef
 {
-    public sealed class Program
+    /// <summary>
+    /// Contains the entry point for the Chromium subprocess.
+    /// </summary>
+    internal sealed class Program
     {
-        public static Int32 Main(string[] args)
+        internal static Int32 Main(string[] args)
         {
             LibraryLoader.Load("libcef");
 

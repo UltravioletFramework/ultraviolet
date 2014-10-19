@@ -3,6 +3,8 @@ using System.Runtime.InteropServices;
 using System.Security;
 using TwistedLogik.Nucleus;
 
+#pragma warning disable 1591
+
 namespace TwistedLogik.Ultraviolet.SDL2.Native
 {
     /// <summary>

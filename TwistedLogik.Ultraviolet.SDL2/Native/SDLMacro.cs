@@ -1,5 +1,7 @@
 ﻿using System;
 
+#pragma warning disable 1591
+
 namespace TwistedLogik.Ultraviolet.SDL2.Native
 {
     /// <summary>

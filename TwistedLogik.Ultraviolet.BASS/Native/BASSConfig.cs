@@ -1,7 +1,7 @@
 ﻿
 namespace TwistedLogik.Ultraviolet.BASS.Native
 {
-    public enum BASSConfig : uint
+    internal enum BASSConfig : uint
     {
         CONFIG_BUFFER			= 0,
         CONFIG_UPDATEPERIOD	    = 1,

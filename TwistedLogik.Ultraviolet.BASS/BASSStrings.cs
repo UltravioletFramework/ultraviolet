@@ -22,7 +22,9 @@ namespace TwistedLogik.Ultraviolet.BASS
 
         private static readonly LocalizationDatabase StringDatabase = new LocalizationDatabase();
 
+#pragma warning disable 1591
         public static readonly StringResource StreamsNotSupported = new StringResource(StringDatabase, "STREAMS_NOT_SUPPORTED");
         public static readonly StringResource NotCurrentlyValid   = new StringResource(StringDatabase, "NOT_CURRENTLY_VALID");
+#pragma warning restore 1591
     }
 }
