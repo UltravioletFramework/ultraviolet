@@ -10,6 +10,7 @@ namespace TwistedLogik.Ultraviolet.Content
         /// <summary>
         /// Creates an instance of the specified metadata type based on the metadata in this object.
         /// </summary>
+        /// <typeparam name="T">The metadata type to create.</typeparam>
         /// <returns>A new instance of the specified metadata type.</returns>
         T As<T>() where T : new();
 

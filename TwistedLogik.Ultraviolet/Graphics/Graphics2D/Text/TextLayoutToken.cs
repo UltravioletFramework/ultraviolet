@@ -38,7 +38,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// Gets a value indicating whether this token's style matches another token's style.
         /// </summary>
         /// <param name="token">The token to compare against this token.</param>
-        /// <returns>true if the tokens have matching styles; otherwise, false.</returns>
+        /// <returns><c>true</c> if the tokens have matching styles; otherwise, <c>false</c>.</returns>
         public Boolean MatchesStyle(TextLayoutToken token)
         {
             return MatchesStyleRef(ref token);
@@ -48,7 +48,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// Gets a value indicating whether this token's style matches another token's style.
         /// </summary>
         /// <param name="token">The token to compare against this token.</param>
-        /// <returns>true if the tokens have matching styles; otherwise, false.</returns>
+        /// <returns><c>true</c> if the tokens have matching styles; otherwise, <c>false</c>.</returns>
         [CLSCompliant(false)]
         public Boolean MatchesStyleRef(ref TextLayoutToken token)
         {

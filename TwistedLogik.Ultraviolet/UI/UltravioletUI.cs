@@ -66,7 +66,7 @@ namespace TwistedLogik.Ultraviolet.UI
         /// Gets the screen stack associated with the specified window.
         /// </summary>
         /// <param name="window">The window for which to retrieve a screen stack, 
-        /// or null to retrieve the screen stack for the primary window.</param>
+        /// or <c>null</c> to retrieve the screen stack for the primary window.</param>
         /// <returns>The screen stack associated with the specified window.</returns>
         public UIScreenStack GetScreens(IUltravioletWindow window)
         {
@@ -143,7 +143,7 @@ namespace TwistedLogik.Ultraviolet.UI
         /// <summary>
         /// Releases resources associated with this object.
         /// </summary>
-        /// <param name="disposing">true if the object is being disposed; false if the object is being finalized.</param>
+        /// <param name="disposing"><c>true</c> if the object is being disposed; <c>false</c> if the object is being finalized.</param>
         protected override void Dispose(Boolean disposing)
         {
             if (disposing && !Disposed)

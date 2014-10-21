@@ -10,7 +10,7 @@ namespace TwistedLogik.Ultraviolet.Content
     public class ContentImporterAttribute : Attribute
     {
         /// <summary>
-        /// Initializes a new instance of the ContentImporterAttribute class.
+        /// Initializes a new instance of the <see cref="ContentImporterAttribute"/> class.
         /// </summary>
         /// <param name="extension">The file extension for which the importer is used.</param>
         public ContentImporterAttribute(String extension)
@@ -22,7 +22,7 @@ namespace TwistedLogik.Ultraviolet.Content
         }
 
         /// <summary>
-        /// Gets the file extensions for which the importer is used.
+        /// Gets the file extension which is handled by the importer.
         /// </summary>
         public String Extension
         {

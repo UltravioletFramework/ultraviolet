@@ -1,9 +1,10 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 
 namespace TwistedLogik.Ultraviolet.Content
 {
     /// <summary>
-    /// Contains extensoin methods for the BinaryWriter class.
+    /// Contains extensoin methods for the <see cref="System.IO.BinaryReader"/> class.
     /// </summary>
     public static class ContentBinaryWriterExtensions
     {
@@ -11,7 +12,7 @@ namespace TwistedLogik.Ultraviolet.Content
         /// Writes an asset identifier to the stream.
         /// </summary>
         /// <param name="writer">The binary writer with which to write the asset identifier.</param>
-        /// <param name="id">The asset identifier to write to the stream.</param>
+        /// <param name="id">The <see cref="AssetID"/> structure to write to the stream.</param>
         public static void Write(this BinaryWriter writer, AssetID id)
         {
             writer.Write(id.IsValid);
@@ -27,7 +28,7 @@ namespace TwistedLogik.Ultraviolet.Content
         /// Writes an asset identifier to the stream.
         /// </summary>
         /// <param name="writer">The binary writer with which to write the asset identifier.</param>
-        /// <param name="id">The asset identifier to write to the stream.</param>
+        /// <param name="id">The <see cref="Nullable{AssetID}"/> structure to write to the stream.</param>
         public static void Write(this BinaryWriter writer, AssetID? id)
         {
             writer.Write(id.HasValue);

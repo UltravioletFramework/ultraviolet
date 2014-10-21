@@ -63,7 +63,7 @@ namespace TwistedLogik.Ultraviolet
         /// </summary>
         /// <param name="m1">The first matrix to compare.</param>
         /// <param name="m2">The second matrix to compare.</param>
-        /// <returns>true if the specified matrices are equal; otherwise, false.</returns>
+        /// <returns><c>true</c> if the specified matrices are equal; otherwise, <c>false</c>.</returns>
         public static Boolean operator ==(Matrix m1, Matrix m2)
         {
             return m1.Equals(m2);
@@ -74,7 +74,7 @@ namespace TwistedLogik.Ultraviolet
         /// </summary>
         /// <param name="m1">The first matrix to compare.</param>
         /// <param name="m2">The second matrix to compare.</param>
-        /// <returns>true if the specified matrices are unequal; otherwise, false.</returns>
+        /// <returns><c>true</c> if the specified matrices are unequal; otherwise, <c>false</c>.</returns>
         public static Boolean operator !=(Matrix m1, Matrix m2)
         {
             return !m1.Equals(m2);
@@ -189,7 +189,7 @@ namespace TwistedLogik.Ultraviolet
         /// </summary>
         /// <param name="s">A string containing a matrix to convert.</param>
         /// <param name="matrix">A variable to populate with the converted value.</param>
-        /// <returns>true if <paramref name="s"/> was converted successfully; otherwise, false.</returns>
+        /// <returns><c>true</c> if <paramref name="s"/> was converted successfully; otherwise, <c>false</c>.</returns>
         public static Boolean TryParse(String s, out Matrix matrix)
         {
             return TryParse(s, NumberStyles.Number, NumberFormatInfo.CurrentInfo, out matrix);
@@ -213,7 +213,7 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="style">A set of <see cref="System.Globalization.NumberStyles"/> values indicating which elements are present in <paramref name="s"/>.</param>
         /// <param name="provider">A format provider that provides culture-specific formatting information.</param>
         /// <param name="matrix">A variable to populate with the converted value.</param>
-        /// <returns>true if <paramref name="s"/> was converted successfully; otherwise, false.</returns>
+        /// <returns><c>true</c> if <paramref name="s"/> was converted successfully; otherwise, <c>false</c>.</returns>
         public static Boolean TryParse(String s, NumberStyles style, IFormatProvider provider, out Matrix matrix)
         {
             matrix = default(Matrix);
@@ -1714,7 +1714,7 @@ namespace TwistedLogik.Ultraviolet
         /// Determines whether this instance is equal to the specified object.
         /// </summary>
         /// <param name="obj">The object to compare to this instance.</param>
-        /// <returns>true if this instance is equal to the specified object; otherwise, false.</returns>
+        /// <returns><c>true</c> if this instance is equal to the specified object; otherwise, <c>false</c>.</returns>
         public override Boolean Equals(Object obj)
         {
             if (!(obj is Matrix))
@@ -1726,7 +1726,7 @@ namespace TwistedLogik.Ultraviolet
         /// Determines whether this instance is equal to the specified object.
         /// </summary>
         /// <param name="other">The object to compare to this instance.</param>
-        /// <returns>true if this instance is equal to the specified object; otherwise, false.</returns>
+        /// <returns><c>true</c> if this instance is equal to the specified object; otherwise, <c>false</c>.</returns>
         public Boolean Equals(Matrix other)
         {
             return

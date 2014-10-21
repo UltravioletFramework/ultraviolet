@@ -105,7 +105,7 @@ namespace TwistedLogik.Ultraviolet.Input
         /// <summary>
         /// Saves the input actions to the specified stream.
         /// </summary>
-        /// <param name="stream">The stream to which to save the input actions.</param>
+        /// <param name="stream">The <see cref="Stream"/> to which to save the input actions.</param>
         public void Save(Stream stream)
         {
             Contract.Require(stream, "stream");
@@ -145,7 +145,7 @@ namespace TwistedLogik.Ultraviolet.Input
         /// <summary>
         /// Loads the input actions from the specified stream.
         /// </summary>
-        /// <param name="stream">The stream from which to load the input actions.</param>
+        /// <param name="stream">The <see cref="Stream"/> from which to load the input actions.</param>
         public void Load(Stream stream)
         {
             Contract.Require(stream, "stream");

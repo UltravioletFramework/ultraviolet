@@ -137,13 +137,13 @@ namespace TwistedLogik.Ultraviolet.Graphics
         /// <summary>
         /// Saves the surface as a JPEG image to the specified stream.
         /// </summary>
-        /// <param name="stream">The stream to which to save the image data.</param>
+        /// <param name="stream">The <see cref="Stream"/> to which to save the image data.</param>
         public abstract void SaveAsJpeg(Stream stream);
 
         /// <summary>
         /// Saves the surface as a PNG image to the specified stream.
         /// </summary>
-        /// <param name="stream">The stream to which to save the image data.</param>
+        /// <param name="stream">The <see cref="Stream"/> to which to save the image data.</param>
         public abstract void SaveAsPng(Stream stream);
 
         /// <summary>

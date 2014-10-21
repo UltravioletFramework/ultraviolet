@@ -24,7 +24,7 @@ namespace TwistedLogik.Ultraviolet.Platform
         /// <summary>
         /// Sets the window's fullscreen display mode.
         /// </summary>
-        /// <param name="displayMode">The fullscreen display mode to set, or null to use the desktop display mode.</param>
+        /// <param name="displayMode">The fullscreen display mode to set, or <c>null</c> to use the desktop display mode.</param>
         void SetFullscreenDisplayMode(DisplayMode displayMode);
 
         /// <summary>
@@ -39,7 +39,7 @@ namespace TwistedLogik.Ultraviolet.Platform
         /// <summary>
         /// Gets the window's fullscreen display mode.
         /// </summary>
-        /// <returns>The window's fullscreen display mode, or null if the window is using the desktop display mode.</returns>
+        /// <returns>The window's fullscreen display mode, or <c>null</c> if the window is using the desktop display mode.</returns>
         DisplayMode GetFullscreenDisplayMode();
 
         /// <summary>

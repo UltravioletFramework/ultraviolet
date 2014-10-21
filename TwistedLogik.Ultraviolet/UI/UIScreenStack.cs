@@ -217,7 +217,7 @@ namespace TwistedLogik.Ultraviolet.UI
         /// <param name="screen">The screen to close.</param>
         /// <param name="duration">The amount of time over which to transition the screen's state, or
         /// null to use the default transition time.</param>
-        /// <returns>true if the screen was closed; otherwise, false.</returns>
+        /// <returns><c>true</c> if the screen was closed; otherwise, <c>false</c>.</returns>
         public Boolean Close(UIScreen screen, TimeSpan? duration = null)
         {
             Contract.Require(screen, "screen");
@@ -257,7 +257,7 @@ namespace TwistedLogik.Ultraviolet.UI
         /// <param name="predicate">The predicate with which to determine which screens to close.</param>
         /// <param name="duration">The amount of time over which to transition the screens' states, or
         /// null to use the default transition time.</param>
-        /// <returns>true if any screens were closed; otherwise, false.</returns>
+        /// <returns><c>true</c> if any screens were closed; otherwise, <c>false</c>.</returns>
         public Boolean Close(Func<UIScreen, Boolean> predicate, TimeSpan? duration = null)
         {
             Contract.Require(predicate, "predicate");
@@ -316,7 +316,7 @@ namespace TwistedLogik.Ultraviolet.UI
         /// </summary>
         /// <param name="closing">The screen to close.</param>
         /// <param name="opening">The screen to open.</param>
-        /// <returns>true if the first screen needed to be closed; otherwise, false.</returns>
+        /// <returns><c>true</c> if the first screen needed to be closed; otherwise, <c>false</c>.</returns>
         public Boolean CloseThenOpen(UIScreen closing, UIScreen opening)
         {
             Contract.Require(closing, "closing");
@@ -335,7 +335,7 @@ namespace TwistedLogik.Ultraviolet.UI
         /// <param name="closingDuration">The amount of time over which to close the screen.</param>
         /// <param name="opening">The screen to open.</param>
         /// <param name="openingDuration">The amount of time over which to open the screen.</param>
-        /// <returns>true if the first screen needed to be closed; otherwise, false.</returns>
+        /// <returns><c>true</c> if the first screen needed to be closed; otherwise, <c>false</c>.</returns>
         public Boolean CloseThenOpen(UIScreen closing, TimeSpan closingDuration, UIScreen opening, TimeSpan openingDuration)
         {
             Contract.Require(closing, "closing");
@@ -351,7 +351,7 @@ namespace TwistedLogik.Ultraviolet.UI
         /// Gets a value indicating whether the screen stack contains the specified screen.
         /// </summary>
         /// <param name="screen">The screen to evaluate.</param>
-        /// <returns>true if the screen stack contains the specified screen; otherwise, false.</returns>
+        /// <returns><c>true</c> if the screen stack contains the specified screen; otherwise, <c>false</c>.</returns>
         public Boolean Contains(UIScreen screen)
         {
             Contract.Require(screens, "screens");
@@ -498,7 +498,7 @@ namespace TwistedLogik.Ultraviolet.UI
         /// <param name="closingDuration">The amount of time over which to close the screen.</param>
         /// <param name="opening">The screen to open.</param>
         /// <param name="openingDuration">The amount of time over which to open the screen.</param>
-        /// <returns>true if the first screen needed to be closed; otherwise, false.</returns>
+        /// <returns><c>true</c> if the first screen needed to be closed; otherwise, <c>false</c>.</returns>
         private Boolean CloseThenOpenInternal(UIScreen closing, TimeSpan closingDuration, UIScreen opening, TimeSpan openingDuration)
         {
             if (closing.State == UIPanelState.Closed)

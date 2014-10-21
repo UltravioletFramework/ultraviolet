@@ -32,7 +32,7 @@ namespace TwistedLogik.Ultraviolet.Input
             /// Adds a binding to the group.
             /// </summary>
             /// <param name="binding">The binding to add to the group.</param>
-            /// <returns>true if the binding was added to the group; otherwise, false.</returns>
+            /// <returns><c>true</c> if the binding was added to the group; otherwise, <c>false</c>.</returns>
             public Boolean Add(InputBinding binding)
             {
                 Contract.Require(binding, "binding");
@@ -49,7 +49,7 @@ namespace TwistedLogik.Ultraviolet.Input
             /// Removes a binding from the group.
             /// </summary>
             /// <param name="binding">The binding to remove from the group.</param>
-            /// <returns>true if the binding was removed from the group; otherwise, false.</returns>
+            /// <returns><c>true</c> if the binding was removed from the group; otherwise, <c>false</c>.</returns>
             public Boolean Remove(InputBinding binding)
             {
                 return bindings.Remove(binding);

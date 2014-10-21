@@ -10,12 +10,12 @@ using TwistedLogik.Nucleus.Xml;
 namespace TwistedLogik.Ultraviolet.Content
 {
     /// <summary>
-    /// Contains methods for managing a collection of game assets.
+    /// Represents a collection of related content assets.
     /// </summary>
     public sealed class ContentManager : UltravioletResource
     {
         /// <summary>
-        /// Initializes a new instance of the ContentManager class.
+        /// Initializes a new instance of the <see cref="ContentManager"/> class with the specified root directory.
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
         /// <param name="rootDirectory">The content manager's root directory.</param>
@@ -26,10 +26,10 @@ namespace TwistedLogik.Ultraviolet.Content
         }
 
         /// <summary>
-        /// Creates a new content manager.
+        /// Creates a new <see cref="ContentManager"/> with the specified root directory.
         /// </summary>
         /// <param name="rootDirectory">The content manager's root directory.</param>
-        /// <returns>The content manager that was created.</returns>
+        /// <returns>The <see cref="ContentManager"/> that was created.</returns>
         public static ContentManager Create(String rootDirectory = null)
         {
             var uv = UltravioletContext.DemandCurrent();
@@ -37,10 +37,10 @@ namespace TwistedLogik.Ultraviolet.Content
         }
 
         /// <summary>
-        /// Creates a new content manager.
+        /// Creates a new <see cref="ContentManager"/> with the specified root directory.
         /// </summary>
         /// <param name="rootDirectoryPaths">An array containing the parts of the path to the content manager's root directory.</param>
-        /// <returns>The content manager that was created.</returns>
+        /// <returns>The <see cref="ContentManager"/> that was created.</returns>
         public static ContentManager Create(params String[] rootDirectoryPaths)
         {
             return Create(Path.Combine(rootDirectoryPaths));
@@ -89,9 +89,9 @@ namespace TwistedLogik.Ultraviolet.Content
         }
 
         /// <summary>
-        /// Loads all of the assets in the specified content manifest into the content manager's asset cache.
+        /// Loads all of the assets in the specified <see cref="ContentManifest"/> into the content manager's asset cache.
         /// </summary>
-        /// <param name="manifest">The content manifest to load.</param>
+        /// <param name="manifest">The <see cref="ContentManifest"/> to load.</param>
         public void Load(ContentManifest manifest)
         {
             Contract.Require(manifest, "manifest"); 
@@ -108,13 +108,14 @@ namespace TwistedLogik.Ultraviolet.Content
         }
 
         /// <summary>
-        /// Loads the specified content file.
+        /// Loads the specified asset file.
         /// </summary>
+        /// <typeparam name="TOutput">The type of object being loaded.</typeparam>
         /// <remarks>Content managers maintain a cache of references to all loaded assets, so calling Load() multiple
         /// times on a content manager with the same parameter will return the same object rather than reloading the source file.</remarks>
-        /// <param name="asset">The asset to load.</param>
+        /// <param name="asset">The path to the asset to load.</param>
         /// <param name="cache">A value indicating whether to add the asset to the manager's cache.</param>
-        /// <returns>The content that was loaded from the specified file.</returns>
+        /// <returns>The asset that was loaded from the specified file.</returns>
         public TOutput Load<TOutput>(String asset, Boolean cache = true)
         {
             Contract.EnsureNotDisposed(this, Disposed);
@@ -130,13 +131,14 @@ namespace TwistedLogik.Ultraviolet.Content
         }
 
         /// <summary>
-        /// Loads the specified content file.
+        /// Loads the specified asset file.
         /// </summary>
+        /// <typeparam name="TOutput">The type of object being loaded.</typeparam>
         /// <remarks>Content managers maintain a cache of references to all loaded assets, so calling Load() multiple
         /// times on a content manager with the same parameter will return the same object rather than reloading the source file.</remarks>
-        /// <param name="asset">The asset to load.</param>
+        /// <param name="asset">The path to the asset to load.</param>
         /// <param name="cache">A value indicating whether to add the asset to the manager's cache.</param>
-        /// <returns>The content that was loaded from the specified file.</returns>
+        /// <returns>The asset that was loaded from the specified file.</returns>
         public TOutput Load<TOutput>(AssetID asset, Boolean cache = true)
         {
             Contract.Ensure<ArgumentException>(asset.IsValid, "asset");
@@ -147,9 +149,10 @@ namespace TwistedLogik.Ultraviolet.Content
         /// <summary>
         /// Loads the specified asset stream.
         /// </summary>
-        /// <param name="stream">The stream that contains the asset to load.</param>
+        /// <typeparam name="TOutput">The type of object being loaded.</typeparam>
+        /// <param name="stream">The <see cref="Stream"/> that contains the asset to load.</param>
         /// <param name="extension">The file extension to use to search for a content importer.</param>
-        /// <returns>The content that was loaded from the specified stream.</returns>
+        /// <returns>The asset that was loaded from the specified stream.</returns>
         public TOutput LoadFromStream<TOutput>(Stream stream, String extension)
         {
             Contract.Require(stream, "stream");
@@ -162,6 +165,7 @@ namespace TwistedLogik.Ultraviolet.Content
         /// <summary>
         /// Imports the specified asset, but does not process it.
         /// </summary>
+        /// <typeparam name="TOutput">The type of the intermediate object produced by the content importer.</typeparam>
         /// <param name="paths">An array of parts of the path to the asset to import.</param>
         /// <returns>The imported asset in its intermediate form.</returns>
         public TOutput Import<TOutput>(params String[] paths)
@@ -172,7 +176,8 @@ namespace TwistedLogik.Ultraviolet.Content
         /// <summary>
         /// Imports the specified asset, but does not process it.
         /// </summary>
-        /// <param name="asset">The asset to import.</param>
+        /// <typeparam name="TOutput">The type of the intermediate object produced by the content importer.</typeparam>
+        /// <param name="asset">The path to the asset to import.</param>
         /// <returns>The imported asset in its intermediate form.</returns>
         public TOutput Import<TOutput>(String asset)
         {
@@ -183,7 +188,8 @@ namespace TwistedLogik.Ultraviolet.Content
         /// <summary>
         /// Imports the specified asset, but does not process it.
         /// </summary>
-        /// <param name="asset">The asset to import.</param>
+        /// <typeparam name="TOutput">The type of the intermediate object produced by the content importer.</typeparam>
+        /// <param name="asset">The path to the asset to import.</param>
         /// <param name="outputType">The output type of the content importer which was used.</param>
         /// <returns>The imported asset in its intermediate form.</returns>
         public TOutput Import<TOutput>(String asset, out Type outputType)
@@ -203,7 +209,8 @@ namespace TwistedLogik.Ultraviolet.Content
         /// <summary>
         /// Imports the specified asset, but does not process it.
         /// </summary>
-        /// <param name="asset">The asset to import.</param>
+        /// <typeparam name="TOutput">The type of the intermediate object produced by the content importer.</typeparam>
+        /// <param name="asset">The path to the asset to import.</param>
         /// <returns>The imported asset in its intermediate form.</returns>
         public TOutput Import<TOutput>(AssetID asset)
         {
@@ -214,7 +221,8 @@ namespace TwistedLogik.Ultraviolet.Content
         /// <summary>
         /// Imports the specified asset, but does not process it.
         /// </summary>
-        /// <param name="asset">The asset to import.</param>
+        /// <typeparam name="TOutput">The type of the intermediate object produced by the content importer.</typeparam>
+        /// <param name="asset">The path to the asset to import.</param>
         /// <param name="outputType">The output type of the content importer which was used.</param>
         /// <returns>The imported asset in its intermediate form.</returns>
         public TOutput Import<TOutput>(AssetID asset, out Type outputType)
@@ -227,7 +235,8 @@ namespace TwistedLogik.Ultraviolet.Content
         /// <summary>
         /// Imports the specified asset from the specified stream, but does not process it.
         /// </summary>
-        /// <param name="stream">The stream that contains the asset data.</param>
+        /// <typeparam name="TOutput">The type of the intermediate object produced by the content importer.</typeparam>
+        /// <param name="stream">The <see cref="Stream"/> that contains the asset data.</param>
         /// <param name="extension">The file extension to use to search for a content importer.</param>
         /// <returns>The imported asset in its intermediate form.</returns>
         public TOutput ImportFromStream<TOutput>(Stream stream, String extension)
@@ -243,9 +252,10 @@ namespace TwistedLogik.Ultraviolet.Content
         }
 
         /// <summary>
-        /// Processes an intermediate data type into an asset.
+        /// Processes an intermediate object into an asset object.
         /// </summary>
-        /// <param name="intermediate">The intermediate data type to process.</param>
+        /// <typeparam name="TOutput">The type of the asset object produced by the content processor.</typeparam>
+        /// <param name="intermediate">The intermediate object to process.</param>
         /// <param name="metadata">The processor metadata, if any.</param>
         /// <returns>The processed asset.</returns>
         public TOutput Process<TOutput>(Object intermediate, XElement metadata = null)
@@ -261,9 +271,11 @@ namespace TwistedLogik.Ultraviolet.Content
         }
 
         /// <summary>
-        /// Processes an intermediate data type into an asset.
+        /// Processes an intermediate object into an asset object.
         /// </summary>
-        /// <param name="intermediate">The intermediate data type to process.</param>
+        /// <typeparam name="TInput">The type of the intermediate object being processed.</typeparam>
+        /// <typeparam name="TOutput">The type of the asset object produced by the content processor.</typeparam>
+        /// <param name="intermediate">The intermediate object to process.</param>
         /// <param name="metadata">The processor metadata, if any.</param>
         /// <returns>The processed asset.</returns>
         public TOutput Process<TInput, TOutput>(TInput intermediate, XElement metadata = null) where TInput : class
@@ -304,7 +316,7 @@ namespace TwistedLogik.Ultraviolet.Content
         /// </summary>
         /// <param name="asset">The asset to preprocess.</param>
         /// <param name="delete">A value indicating whether to delete the original file after preprocessing it.</param>
-        /// <returns>true if the asset was preprocessed; otherwise, false.</returns>
+        /// <returns><c>true</c> if the asset was preprocessed; otherwise, <c>false</c>.</returns>
         public Boolean Preprocess<TOutput>(String asset, Boolean delete = false)
         {
             Contract.RequireNotEmpty(asset, "asset");
@@ -320,7 +332,7 @@ namespace TwistedLogik.Ultraviolet.Content
         /// </summary>
         /// <param name="asset">The asset to preprocess.</param>
         /// <param name="delete">A value indicating whether to delete the original file after preprocessing it.</param>
-        /// <returns>true if the asset was preprocessed; otherwise, false.</returns>
+        /// <returns><c>true</c> if the asset was preprocessed; otherwise, <c>false</c>.</returns>
         public Boolean Preprocess<TOutput>(AssetID asset, Boolean delete = false)
         {
             Contract.Ensure<ArgumentException>(asset.IsValid, "asset");
@@ -423,6 +435,10 @@ namespace TwistedLogik.Ultraviolet.Content
         /// <summary>
         /// Gets the content manager's collection of override directories.
         /// </summary>
+        /// <remarks>Override directories are alternative paths where the content manager will search for asset files.
+        /// If multiple override directories contain an asset with the same path, directories which have higher indices 
+        /// within this collection will take priority over directories with lower indices, "overriding" the other values
+        /// of the asset in question. All override directories take precedence over the content manager's root directory.</remarks>
         public ContentOverrideDirectoryCollection OverrideDirectories
         {
             get 
@@ -434,25 +450,9 @@ namespace TwistedLogik.Ultraviolet.Content
         }
 
         /// <summary>
-        /// Converts the specified path to a path which is relative to the specified root directory.
-        /// </summary>
-        /// <param name="root">The root directory.</param>
-        /// <param name="path">The path to convert.</param>
-        /// <returns>The converted path.</returns>
-        private static String GetRelativePath(String root, String path)
-        {
-            root = root.EndsWith("/") ? root : root + "/";
-
-            var rootUri = new Uri(Path.GetFullPath(root), UriKind.Absolute);
-            var pathUri = new Uri(Path.GetFullPath(path), UriKind.Absolute);
-
-            return rootUri.MakeRelativeUri(pathUri).ToString();
-        }
-
-        /// <summary>
         /// Releases resources associated with this object.
         /// </summary>
-        /// <param name="disposing">true if the object is being disposed; false if the object is being finalized.</param>
+        /// <param name="disposing"><c>true</c> if the object is being disposed; <c>false</c> if the object is being finalized.</param>
         protected override void Dispose(Boolean disposing)
         {
             if (Disposed)
@@ -472,6 +472,22 @@ namespace TwistedLogik.Ultraviolet.Content
             assetCache.Clear();
 
             base.Dispose(disposing);
+        }
+
+        /// <summary>
+        /// Converts the specified path to a path which is relative to the specified root directory.
+        /// </summary>
+        /// <param name="root">The root directory.</param>
+        /// <param name="path">The path to convert.</param>
+        /// <returns>The converted path.</returns>
+        private static String GetRelativePath(String root, String path)
+        {
+            root = root.EndsWith("/") ? root : root + "/";
+
+            var rootUri = new Uri(Path.GetFullPath(root), UriKind.Absolute);
+            var pathUri = new Uri(Path.GetFullPath(path), UriKind.Absolute);
+
+            return rootUri.MakeRelativeUri(pathUri).ToString();
         }
 
         /// <summary>
@@ -522,7 +538,7 @@ namespace TwistedLogik.Ultraviolet.Content
         /// <param name="preprocess">A value indicating whether to preprocess the loaded asset.</param>
         /// <param name="delete">A value indicating whether to delete the original file after preprocessing it.</param>
         /// <param name="result">The asset that was loaded.</param>
-        /// <returns>true if the asset was loaded or preprocessed successfully; otherwise, false.</returns>
+        /// <returns><c>true</c> if the asset was loaded or preprocessed successfully; otherwise, <c>false</c>.</returns>
         private Boolean LoadInternal(String asset, Type type, Boolean cache, Boolean preprocess, Boolean delete, out Object result)
         {
             result = null;
@@ -568,7 +584,7 @@ namespace TwistedLogik.Ultraviolet.Content
         /// Loads a raw asset from a stream.
         /// </summary>
         /// <param name="type">The type of asset to load.</param>
-        /// <param name="stream">The stream that contains the asset to load.</param>
+        /// <param name="stream">The <see cref="Stream"/> that contains the asset to load.</param>
         /// <param name="extension">The file extension to use to search for a content importer.</param>
         /// <returns>The asset that was loaded.</returns>
         private Object LoadInternalFromStream(Type type, Stream stream, String extension)
@@ -672,7 +688,7 @@ namespace TwistedLogik.Ultraviolet.Content
         /// <param name="metadata">The asset metadata.</param>
         /// <param name="processor">The content processor for the asset.</param>
         /// <param name="intermediate">The intermediate form of the asset to preprocess.</param>
-        /// <returns>true if the asset was preprocessed; otherwise, false.</returns>
+        /// <returns><c>true</c> if the asset was preprocessed; otherwise, <c>false</c>.</returns>
         private Boolean PreprocessInternal(String asset, AssetMetadata metadata, IContentProcessor processor, Object intermediate)
         {
             if (!processor.SupportsPreprocessing)
@@ -698,7 +714,7 @@ namespace TwistedLogik.Ultraviolet.Content
         /// Gets a value indicating whether the specified file is preprocessed.
         /// </summary>
         /// <param name="filename">The filename to evaluate.</param>
-        /// <returns>true if the specified file is preprocessed; otherwise, false.</returns>
+        /// <returns><c>true</c> if the specified file is preprocessed; otherwise, <c>false</c>.</returns>
         private Boolean IsPreprocessedFile(String filename)
         {
             return Path.GetExtension(filename) == PreprocessedFileExtension;
@@ -708,7 +724,7 @@ namespace TwistedLogik.Ultraviolet.Content
         /// Gets a value indicating whether the specified file contains asset metadata.
         /// </summary>
         /// <param name="filename">The filename to evaluate.</param>
-        /// <returns>true if the specified file contains asset metadata; otherwise, false.</returns>
+        /// <returns><c>true</c> if the specified file contains asset metadata; otherwise, <c>false</c>.</returns>
         private Boolean IsMetadataFile(String filename)
         {
             return Path.GetExtension(filename) == MetadataFileExtension;
@@ -719,7 +735,7 @@ namespace TwistedLogik.Ultraviolet.Content
         /// </summary>
         /// <param name="root">The root directory.</param>
         /// <param name="asset">The asset name.</param>
-        /// <param name="extension">The required file extension, if any; otherwise, null.</param>
+        /// <param name="extension">The required file extension, if any; otherwise, <c>null</c>.</param>
         /// <returns>The path of the specified asset relative to the specified root directory.</returns>
         private String GetAssetPathFromDirectory(String root, String asset, ref String extension)
         {
@@ -757,7 +773,7 @@ namespace TwistedLogik.Ultraviolet.Content
         /// Gets the path to the specified asset.
         /// </summary>
         /// <param name="asset">The asset name.</param>
-        /// <param name="extension">The extension for which to search, or null to search for any extension.</param>
+        /// <param name="extension">The extension for which to search, or <c>null</c> to search for any extension.</param>
         /// <param name="directory">The directory in which the asset was found.</param>
         /// <returns>The path of the specified asset.</returns>
         private String GetAssetPath(String asset, String extension, out String directory)

@@ -43,7 +43,7 @@ namespace TwistedLogik.Ultraviolet.Graphics
         /// Gets a value indicating whether the texture atlas contains a cell with the specified name.
         /// </summary>
         /// <param name="cell">The name of the cell to evaluate.</param>
-        /// <returns>true if the texture atlas contains a cell with the specified name; otherwise, false.</returns>
+        /// <returns><c>true</c> if the texture atlas contains a cell with the specified name; otherwise, <c>false</c>.</returns>
         public Boolean ContainsCell(String cell)
         {
             Contract.EnsureNotDisposed(this, Disposed);
@@ -137,7 +137,7 @@ namespace TwistedLogik.Ultraviolet.Graphics
         /// <summary>
         /// Releases resources associated with the object.
         /// </summary>
-        /// <param name="disposing">true if the object is being disposed; false if the object is being finalized.</param>
+        /// <param name="disposing"><c>true</c> if the object is being disposed; <c>false</c> if the object is being finalized.</param>
         protected override void Dispose(Boolean disposing)
         {
             if (disposing)

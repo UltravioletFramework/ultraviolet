@@ -7,12 +7,12 @@ namespace TwistedLogik.Ultraviolet.Content
     partial class ContentImporterRegistry
     {
         /// <summary>
-        /// Represents an entry in the content importer registry.
+        /// Represents an entry in a content importer registry.
         /// </summary>
         private struct RegistryEntry
         {
             /// <summary>
-            /// Initializes a new instance of the RegistryEntry structure.
+            /// Initializes a new instance of the <see cref="RegistryEntry"/> structure.
             /// </summary>
             /// <param name="importer">The registered importer instance.</param>
             public RegistryEntry(IContentImporter importer)

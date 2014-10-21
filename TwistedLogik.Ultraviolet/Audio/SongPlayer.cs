@@ -3,25 +3,25 @@
 namespace TwistedLogik.Ultraviolet.Audio
 {
     /// <summary>
-    /// Represents a factory method which constructs instances of the SongPlayer class.
+    /// Represents a factory method which constructs instances of the <see cref="SongPlayer"/> class.
     /// </summary>
     /// <param name="uv">The Ultraviolet context.</param>
-    /// <returns>The instance of SongPlayer that was created.</returns>
+    /// <returns>The instance of <see cref="SongPlayer"/> that was created.</returns>
     public delegate SongPlayer SongPlayerFactory(UltravioletContext uv);
 
     /// <summary>
-    /// Represents the method that is called when a song player raises an event.
+    /// Represents the method that is called when a <see cref="SongPlayer"/> raises an event.
     /// </summary>
-    /// <param name="songPlayer">The song player that raised the event.</param>
+    /// <param name="songPlayer">The <see cref="SongPlayer"/> that raised the event.</param>
     public delegate void SongPlayerEventHandler(SongPlayer songPlayer);
 
     /// <summary>
-    /// Represents an object which plays sound effects.
+    /// Represents an object which plays <see cref="Song"/> resources.
     /// </summary>
     public abstract class SongPlayer : UltravioletResource
     {
         /// <summary>
-        /// Initializes a new instance of the SongPlayer class.
+        /// Initializes a new instance of the <see cref="SongPlayer"/> class.
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
         protected SongPlayer(UltravioletContext uv)
@@ -31,9 +31,9 @@ namespace TwistedLogik.Ultraviolet.Audio
         }
 
         /// <summary>
-        /// Creates a new instance of the SongPlayer class.
+        /// Creates a new instance of the <see cref="SongPlayer"/> class.
         /// </summary>
-        /// <returns>The instance of SongPlayer that was created.</returns>
+        /// <returns>The instance of <see cref="SongPlayer"/> that was created.</returns>
         public static SongPlayer Create()
         {
             var uv = UltravioletContext.DemandCurrent();
@@ -47,22 +47,22 @@ namespace TwistedLogik.Ultraviolet.Audio
         public abstract void Update(UltravioletTime time);
 
         /// <summary>
-        /// Plays the specified song.
+        /// Plays the specified <see cref="Song"/>.
         /// </summary>
-        /// <param name="song">The song to play.</param>
+        /// <param name="song">The <see cref="Song"/> to play.</param>
         /// <param name="loop">A value indicating whether to loop the song.</param>
-        /// <returns>true if the song began playing successfully; otherwise, false.</returns>
+        /// <returns><c>true</c> if the song began playing successfully; otherwise, <c>false</c>.</returns>
         public abstract Boolean Play(Song song, Boolean loop = false);
 
         /// <summary>
-        /// Plays the specified song.
+        /// Plays the specified <see cref="Song"/>.
         /// </summary>
-        /// <param name="song">The song to play.</param>
+        /// <param name="song">The <see cref="Song"/> to play.</param>
         /// <param name="volume">A value from 0.0 (silent) to 1.0 (full volume) representing the song's volume.</param>
         /// <param name="pitch">A value from -1.0 (down one octave) to 1.0 (up one octave) indicating the song's pitch adjustment.</param>
         /// <param name="pan">A value from -1.0 (full left) to 1.0 (full right) representing the song's panning position.</param>
         /// <param name="loop">A value indicating whether to loop the song.</param>
-        /// <returns>true if the song began playing successfully; otherwise, false.</returns>
+        /// <returns><c>true</c> if the song began playing successfully; otherwise, <c>false</c>.</returns>
         public abstract Boolean Play(Song song, Single volume, Single pitch, Single pan, Boolean loop = false);
 
         /// <summary>
@@ -102,7 +102,7 @@ namespace TwistedLogik.Ultraviolet.Audio
         public abstract void SlidePan(Single pan, TimeSpan time);
 
         /// <summary>
-        /// Gets the song's current playback state.
+        /// Gets the song player's current playback state.
         /// </summary>
         public abstract PlaybackState State
         {
@@ -110,7 +110,7 @@ namespace TwistedLogik.Ultraviolet.Audio
         }
 
         /// <summary>
-        /// Gets a value indicating whether the song is playing.
+        /// Gets a value indicating whether the song player is playing a song.
         /// </summary>
         public abstract Boolean IsPlaying
         {
@@ -118,7 +118,7 @@ namespace TwistedLogik.Ultraviolet.Audio
         }
 
         /// <summary>
-        /// Gets a value indicating whether the song is looping.
+        /// Gets a value indicating whether the song player is looping.
         /// </summary>
         public abstract Boolean IsLooping
         {
@@ -127,7 +127,7 @@ namespace TwistedLogik.Ultraviolet.Audio
         }
 
         /// <summary>
-        /// Gets or sets the song's current playback position.
+        /// Gets or sets the song player's position within the currently-playing song.
         /// </summary>
         public abstract TimeSpan Position
         {
@@ -136,7 +136,7 @@ namespace TwistedLogik.Ultraviolet.Audio
         }
 
         /// <summary>
-        /// Gets the song's duration.
+        /// Gets the duration of the currently-playing song.
         /// </summary>
         public abstract TimeSpan Duration
         {
@@ -144,7 +144,7 @@ namespace TwistedLogik.Ultraviolet.Audio
         }
 
         /// <summary>
-        /// Gets or sets a value from 0.0 (silent) to 1.0 (full volume) representing the song's volume.
+        /// Gets or sets a value from 0.0 (silent) to 1.0 (full volume) representing the volume of the currently-playing song.
         /// </summary>
         public abstract Single Volume
         {
@@ -153,7 +153,7 @@ namespace TwistedLogik.Ultraviolet.Audio
         }
 
         /// <summary>
-        /// Gets or sets a value from -1.0 (down one octave) to 1.0 (up one octave) indicating the song's pitch adjustment.
+        /// Gets or sets a value from -1.0 (down one octave) to 1.0 (up one octave) indicating the pitch adjustment of the currently-playing song.
         /// </summary>
         public abstract Single Pitch
         {
@@ -162,7 +162,7 @@ namespace TwistedLogik.Ultraviolet.Audio
         }
 
         /// <summary>
-        /// Gets or sets a value from -1.0 (full left) to 1.0 (full right) representing the song's panning position.
+        /// Gets or sets a value from -1.0 (full left) to 1.0 (full right) representing the panning position of the currently-playing song.
         /// </summary>
         public abstract Single Pan
         {
@@ -181,12 +181,12 @@ namespace TwistedLogik.Ultraviolet.Audio
         public event SongPlayerEventHandler SongEnded;
 
         /// <summary>
-        /// Occurs when the song's playback state changes.
+        /// Occurs when the song player's playback state changes.
         /// </summary>
         public event SongPlayerEventHandler StateChanged;
 
         /// <summary>
-        /// Raises the SongStarted event.
+        /// Raises the <see cref="SongStarted"/> event.
         /// </summary>
         protected void OnSongStarted()
         {
@@ -198,7 +198,7 @@ namespace TwistedLogik.Ultraviolet.Audio
         }
 
         /// <summary>
-        /// Raises the SongEnded event.
+        /// Raises the <see cref="SongEnded"/> event.
         /// </summary>
         protected void OnSongEnded()
         {
@@ -210,7 +210,7 @@ namespace TwistedLogik.Ultraviolet.Audio
         }
 
         /// <summary>
-        /// Raises the StateChanged event.
+        /// Raises the <see cref="StateChanged"/> event.
         /// </summary>
         protected void OnStateChanged()
         {

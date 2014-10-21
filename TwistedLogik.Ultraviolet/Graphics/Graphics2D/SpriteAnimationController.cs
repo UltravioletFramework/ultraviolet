@@ -75,7 +75,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// then the controller will return to the currently playing animation.
         /// </summary>
         /// <param name="animation">The animation to play.</param>
-        /// <param name="playbackTime">The desired playback time in milliseconds, or null to use the standard playback time.</param>
+        /// <param name="playbackTime">The desired playback time in milliseconds, or <c>null</c> to use the standard playback time.</param>
         public void FireAndForget(SpriteAnimation animation, Double? playbackTime = null)
         {
             FireAndForget(animation, this.animation, playbackTime);
@@ -87,7 +87,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// </summary>
         /// <param name="animation">The animation to play.</param>
         /// <param name="defaultAnimation">The animation to play once the fire-and-forget animation has completed.</param>
-        /// <param name="playbackTime">The desired playback time in milliseconds, or null to use the standard playback time.</param>
+        /// <param name="playbackTime">The desired playback time in milliseconds, or <c>null</c> to use the standard playback time.</param>
         public void FireAndForget(SpriteAnimation animation, SpriteAnimation defaultAnimation, Double? playbackTime = null)
         {
             this.animation = animation;

@@ -5,12 +5,12 @@ using TwistedLogik.Nucleus.Data;
 namespace TwistedLogik.Ultraviolet.Content
 {
     /// <summary>
-    /// Represents the metadata for an asset which is being loaded.
+    /// Represents the metadata for an asset which is being loaded by the Ultraviolet content pipeline.
     /// </summary>
     internal sealed class AssetMetadata : IContentImporterMetadata, IContentProcessorMetadata
     {
         /// <summary>
-        /// Initializes a new instance of the AssetMetadata class.
+        /// Initializes a new instance of the <see cref="AssetMetadata"/> class.
         /// </summary>
         /// <param name="assetPath">The asset path of the asset being loaded.</param>
         /// <param name="assetFilePath">The path to the file that contains the asset being loaded.</param>
@@ -33,6 +33,7 @@ namespace TwistedLogik.Ultraviolet.Content
         /// <summary>
         /// Creates an instance of the specified metadata type based on the metadata in this object.
         /// </summary>
+        /// <typeparam name="T">The metadata type to create.</typeparam>
         /// <returns>A new instance of the specified metadata type.</returns>
         T IContentImporterMetadata.As<T>()
         {
@@ -46,6 +47,7 @@ namespace TwistedLogik.Ultraviolet.Content
         /// <summary>
         /// Creates an instance of the specified metadata type based on the metadata in this object.
         /// </summary>
+        /// <typeparam name="T">The metadata type to create.</typeparam>
         /// <returns>A new instance of the specified metadata type.</returns>
         T IContentProcessorMetadata.As<T>()
         {

@@ -5,17 +5,18 @@ using TwistedLogik.Nucleus;
 namespace TwistedLogik.Ultraviolet.Content
 {
     /// <summary>
-    /// Represents a content importer.
-    /// Content importers take raw file data and transform them into intermediate data structures,
-    /// which are then used by content processors to produce game assets.
+    /// <para>Represents a content importer.</para>
+    /// <para>Content importers take raw file data and transform them into intermediate data structures,
+    /// which are then used by content processors to produce game assets.</para>
     /// </summary>
+    /// <typeparam name="T">The intermediate asset type which is produced by the content importer.</typeparam>
     public abstract class ContentImporter<T> : IContentImporter
     {
         /// <summary>
         /// Imports the data from the specified file.
         /// </summary>
         /// <param name="metadata">The asset metadata for the asset to import.</param>
-        /// <param name="stream">The stream that contains the data to import.</param>
+        /// <param name="stream">The <see cref="Stream"/> that contains the data to import.</param>
         /// <returns>The data structure that was imported from the file.</returns>
         Object IContentImporter.Import(IContentImporterMetadata metadata, Stream stream)
         {
@@ -26,7 +27,7 @@ namespace TwistedLogik.Ultraviolet.Content
         /// Imports the data from the specified file.
         /// </summary>
         /// <param name="metadata">The asset metadata for the asset to import.</param>
-        /// <param name="stream">The stream that contains the data to import.</param>
+        /// <param name="stream">The <see cref="Stream"/> that contains the data to import.</param>
         /// <returns>The data structure that was imported from the file.</returns>
         public abstract T Import(IContentImporterMetadata metadata, Stream stream);
 

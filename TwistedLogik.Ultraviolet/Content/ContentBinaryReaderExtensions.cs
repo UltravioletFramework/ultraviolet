@@ -1,10 +1,11 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using TwistedLogik.Nucleus;
 
 namespace TwistedLogik.Ultraviolet.Content
 {
     /// <summary>
-    /// Contains extension methods for the BinaryReader class.
+    /// Contains extension methods for the <see cref="System.IO.BinaryReader"/> class.
     /// </summary>
     public static class ContentBinaryReaderExtensions
     {
@@ -13,7 +14,8 @@ namespace TwistedLogik.Ultraviolet.Content
         /// belonging to the current Ultraviolet context.
         /// </summary>
         /// <param name="reader">The binary reader from which to read the asset identifier.</param>
-        /// <returns>The asset identifier that was read from the stream.</returns>
+        /// <returns>An instance of the <see cref="AssetID"/> structure representing the 
+        /// asset identifier that was read from the stream.</returns>
         public static AssetID ReadAssetID(this BinaryReader reader)
         {
             Contract.Require(reader, "reader");
@@ -26,7 +28,8 @@ namespace TwistedLogik.Ultraviolet.Content
         /// belonging to the current Ultraviolet context.
         /// </summary>
         /// <param name="reader">The binary reader from which to read the asset identifier.</param>
-        /// <returns>The asset identifier that was read from the stream.</returns>
+        /// <returns>An instance of the <see cref="Nullable{AssetID}"/> structure representing the 
+        /// asset identifier that was read from the stream.</returns>
         public static AssetID? ReadNullableAssetID(this BinaryReader reader)
         {
             Contract.Require(reader, "reader");
@@ -39,7 +42,8 @@ namespace TwistedLogik.Ultraviolet.Content
         /// </summary>
         /// <param name="reader">The binary reader from which to read the asset identifier.</param>
         /// <param name="manifests">The registry that contains the application's loaded manifests.</param>
-        /// <returns>The asset identifier that was read from the stream.</returns>
+        /// <returns>An instance of the <see cref="AssetID"/> structure representing the
+        /// asset identifier that was read from the stream.</returns>
         public static AssetID ReadAssetID(this BinaryReader reader, ContentManifestRegistry manifests)
         {
             Contract.Require(reader, "reader");
@@ -74,7 +78,8 @@ namespace TwistedLogik.Ultraviolet.Content
         /// </summary>
         /// <param name="reader">The binary reader from which to read the asset identifier.</param>
         /// <param name="manifests">The registry that contains the application's loaded manifests.</param>
-        /// <returns>The asset identifier that was read from the stream.</returns>
+        /// <returns>An instance of the <see cref="Nullable{AssetID}"/> structure representing the
+        /// asset identifier that was read from the stream.</returns>
         public static AssetID? ReadNullableAssetID(this BinaryReader reader, ContentManifestRegistry manifests)
         {
             Contract.Require(reader, "reader");

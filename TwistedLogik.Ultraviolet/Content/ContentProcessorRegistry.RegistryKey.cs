@@ -6,12 +6,12 @@ namespace TwistedLogik.Ultraviolet.Content
     partial class ContentProcessorRegistry
     {
         /// <summary>
-        /// Represents a content processor's key within the registry.
+        /// Represents a content processor's key within a content processor registry.
         /// </summary>
         private struct RegistryKey : IEquatable<RegistryKey>
         {
             /// <summary>
-            /// Initializes a new instance of the ContentProcessorKey structure.
+            /// Initializes a new instance of the <see cref="RegistryKey"/> structure.
             /// </summary>
             /// <param name="input">The input type.</param>
             /// <param name="output">The output type.</param>
@@ -28,7 +28,7 @@ namespace TwistedLogik.Ultraviolet.Content
             /// Checks two objects for equality.
             /// </summary>
             /// <param name="other">The object to compare against this object for equality.</param>
-            /// <returns>true if this object is equal to the specified object; otherwise, false.</returns>
+            /// <returns><c>true</c> if this object is equal to the specified object; otherwise, <c>false</c>.</returns>
             public Boolean Equals(RegistryKey other)
             {
                 return Input == other.Input && Output == other.Output;

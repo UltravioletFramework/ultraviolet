@@ -9,7 +9,7 @@ namespace TwistedLogik.Ultraviolet.Content
     public struct AssetID : IEquatable<AssetID>
     {
         /// <summary>
-        /// Initializes a new instance of the AssetID structure.
+        /// Initializes a new instance of the <see cref="AssetID"/> structure.
         /// </summary>
         /// <param name="manifestName">The name of the content manifest that contains the asset.</param>
         /// <param name="manifestGroup">The name of the content manifest group that contains the asset.</param>
@@ -31,7 +31,7 @@ namespace TwistedLogik.Ultraviolet.Content
         }
 
         /// <summary>
-        /// Returns true if the specified asset identifiers are equal.
+        /// Returns <c>true</c> if the specified asset identifiers are equal.
         /// </summary>
         public static Boolean operator ==(AssetID id1, AssetID id2)
         {
@@ -39,7 +39,7 @@ namespace TwistedLogik.Ultraviolet.Content
         }
 
         /// <summary>
-        /// Returns true if the specified asset identifiers are not equal.
+        /// Returns <c>true</c> if the specified asset identifiers are not equal.
         /// </summary>
         public static Boolean operator !=(AssetID id1, AssetID id2)
         {
@@ -47,11 +47,11 @@ namespace TwistedLogik.Ultraviolet.Content
         }
 
         /// <summary>
-        /// Converts the string representation of an asset identifier to an instance of the AssetID structure
+        /// Converts the string representation of an asset identifier to an instance of the <see cref="AssetID"/> structure
         /// using the content manifest registry provided by the current Ultraviolet context.
         /// </summary>
         /// <param name="s">A string containing the asset identifier to convert.</param>
-        /// <returns>An instance of the AssetID structure that is equivalent to the specified string.</returns>
+        /// <returns>An instance of the <see cref="AssetID"/> structure that is equivalent to the specified string.</returns>
         public static AssetID Parse(String s)
         {
             Contract.Require(s, "s");
@@ -65,12 +65,12 @@ namespace TwistedLogik.Ultraviolet.Content
         }
 
         /// <summary>
-        /// Converts the string representation of an asset identifier to an instance of the AssetID structure
+        /// Converts the string representation of an asset identifier to an instance of the <see cref="AssetID"/> structure
         /// using the content manifest registry provided by the current Ultraviolet context.
         /// </summary>
         /// <param name="s">A string containing the asset identifier to convert.</param>
-        /// <param name="value">An instance of the AssetID structure that is equivalent to the specified string.</param>
-        /// <returns>true if the string was successfully parsed; otherwise, false.</returns>
+        /// <param name="value">An instance of the <see cref="AssetID"/> structure that is equivalent to the specified string.</param>
+        /// <returns><c>true</c> if the string was successfully parsed; otherwise, <c>false</c>.</returns>
         public static Boolean TryParse(String s, out AssetID value)
         {
             Contract.Require(s, "s");
@@ -79,11 +79,11 @@ namespace TwistedLogik.Ultraviolet.Content
         }
 
         /// <summary>
-        /// Converts the string representation of an asset identifier to an instance of the AssetID structure.
+        /// Converts the string representation of an asset identifier to an instance of the <see cref="AssetID"/> structure.
         /// </summary>
         /// <param name="manifests">The content manifest registry that contains the currently-loaded content manifests.</param>
         /// <param name="s">A string containing the asset identifier to convert.</param>
-        /// <returns>An instance of the AssetID structure that is equivalent to the specified string.</returns>
+        /// <returns>An instance of the <see cref="AssetID"/> structure that is equivalent to the specified string.</returns>
         public static AssetID Parse(ContentManifestRegistry manifests, String s)
         {
             Contract.Require(manifests, "manifests");
@@ -98,12 +98,12 @@ namespace TwistedLogik.Ultraviolet.Content
         }
 
         /// <summary>
-        /// Converts the string representation of an asset identifier to an instance of the AssetID structure.
+        /// Converts the string representation of an asset identifier to an instance of the <see cref="AssetID"/> structure.
         /// </summary>
         /// <param name="manifests">The content manifest registry that contains the currently-loaded content manifests.</param>
         /// <param name="s">A string containing the asset identifier to convert.</param>
-        /// <param name="value">An instance of the AssetID structure that is equivalent to the specified string.</param>
-        /// <returns>true if the string was successfully parsed; otherwise, false.</returns>
+        /// <param name="value">An instance of the <see cref="AssetID"/> structure that is equivalent to the specified string.</param>
+        /// <returns><c>true</c> if the string was successfully parsed; otherwise, <c>false</c>.</returns>
         public static Boolean TryParse(ContentManifestRegistry manifests, String s, out AssetID value)
         {
             Contract.Require(manifests, "manifests");
@@ -243,7 +243,7 @@ namespace TwistedLogik.Ultraviolet.Content
         /// Determines whether this object is equal to the specified object.
         /// </summary>
         /// <param name="obj">The object to compare to this object.</param>
-        /// <returns>true if this object is equal to the specified object; otherwise, false.</returns>
+        /// <returns><c>true</c> if this object is equal to the specified object; otherwise, <c>false</c>.</returns>
         public override Boolean Equals(Object obj)
         {
             return obj is AssetID && Equals((AssetID)obj);
@@ -253,7 +253,7 @@ namespace TwistedLogik.Ultraviolet.Content
         /// Determines whether this object is equal to the specified object.
         /// </summary>
         /// <param name="other">The object to compare to this object.</param>
-        /// <returns>true if this object is equal to the specified object; otherwise, false.</returns>
+        /// <returns><c>true</c> if this object is equal to the specified object; otherwise, <c>false</c>.</returns>
         public Boolean Equals(AssetID other)
         {
             return
@@ -281,12 +281,12 @@ namespace TwistedLogik.Ultraviolet.Content
         }
 
         /// <summary>
-        /// Converts the string representation of an asset identifier to an instance of the AssetID structure.
+        /// Converts the string representation of an asset identifier to an instance of the <see cref="AssetID"/> structure.
         /// </summary>
         /// <param name="manifests">The content manifest registry that contains the currently-loaded content manifests.</param>
         /// <param name="s">A string containing the asset identifier to convert.</param>
-        /// <param name="value">An instance of the AssetID structure that is equivalent to the specified string.</param>
-        /// <returns>true if the string was successfully parsed; otherwise, false.</returns>
+        /// <param name="value">An instance of the <see cref="AssetID"/> structure that is equivalent to the specified string.</param>
+        /// <returns><c>true</c> if the string was successfully parsed; otherwise, <c>false</c>.</returns>
         private static Boolean TryParseInternal(ContentManifestRegistry manifests, String s, out AssetID value)
         {
             value = default(AssetID);

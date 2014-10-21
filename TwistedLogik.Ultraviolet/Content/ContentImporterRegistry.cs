@@ -7,12 +7,12 @@ using TwistedLogik.Nucleus;
 namespace TwistedLogik.Ultraviolet.Content
 {
     /// <summary>
-    /// Represents the global content importer registry.
+    /// Represents an Ultraviolet context's registry of content importers.
     /// </summary>
     public sealed partial class ContentImporterRegistry
     {
         /// <summary>
-        /// Initializes a new instance of the ContentImporterRegistry class.
+        /// Initializes a new instance of the <see cref="ContentImporterRegistry"/> class.
         /// </summary>
         internal ContentImporterRegistry()
         {
@@ -55,7 +55,7 @@ namespace TwistedLogik.Ultraviolet.Content
         /// Finds the appropriate importer for the specified file extension.
         /// </summary>
         /// <param name="extension">The file extension for which to find a content importer.</param>
-        /// <returns>The content importer for the specified file extension, or null if no appropriate importer could be found.</returns>
+        /// <returns>The content importer for the specified file extension, or <c>null</c> if no appropriate importer could be found.</returns>
         public IContentImporter FindImporter(String extension)
         {
             Type outputType;
@@ -67,7 +67,7 @@ namespace TwistedLogik.Ultraviolet.Content
         /// </summary>
         /// <param name="extension">The file extension for which to find a content importer.</param>
         /// <param name="outputType">The importer's output type.</param>
-        /// <returns>The content importer for the specified file extension, or null if no appropriate importer could be found.</returns>
+        /// <returns>The content importer for the specified file extension, or <c>null</c> if no appropriate importer could be found.</returns>
         public IContentImporter FindImporter(String extension, out Type outputType)
         {
             Contract.RequireNotEmpty(extension, "extension");

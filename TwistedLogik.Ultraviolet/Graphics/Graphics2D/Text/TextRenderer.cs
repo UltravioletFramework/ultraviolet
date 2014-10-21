@@ -22,7 +22,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// Unregisters the style with the specified name.
         /// </summary>
         /// <param name="name">The name of the style to unregister.</param>
-        /// <returns>true if the style was unregistered; otherwise, false.</returns>
+        /// <returns><c>true</c> if the style was unregistered; otherwise, <c>false</c>.</returns>
         public bool UnregisterStyle(String name)
         {
             return layoutEngine.UnregisterStyle(name);
@@ -42,7 +42,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// Unregisters the font with the specified name.
         /// </summary>
         /// <param name="name">The name of the font to unregister.</param>
-        /// <returns>true if the font was unregistered; otherwise, false.</returns>
+        /// <returns><c>true</c> if the font was unregistered; otherwise, <c>false</c>.</returns>
         public bool UnregisterFont(String name)
         {
             return layoutEngine.UnregisterFont(name);
@@ -62,7 +62,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// Unregisters the icon with the specified name.
         /// </summary>
         /// <param name="name">The name of the icon to unregister.</param>
-        /// <returns>true if the icon was unregistered; otherwise, false.</returns>
+        /// <returns><c>true</c> if the icon was unregistered; otherwise, <c>false</c>.</returns>
         public bool UnregisterIcon(String name)
         {
             return layoutEngine.UnregisterIcon(name);

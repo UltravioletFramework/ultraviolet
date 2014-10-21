@@ -115,7 +115,7 @@ namespace TwistedLogik.Ultraviolet.UI
         /// <summary>
         /// Releases resources associated with this object.
         /// </summary>
-        /// <param name="disposing">true if the object is being disposed; false if the object is being finalized.</param>
+        /// <param name="disposing"><c>true</c> if the object is being disposed; <c>false</c> if the object is being finalized.</param>
         private void Dispose(Boolean disposing)
         {
             if (disposing && !disposed)

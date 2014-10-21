@@ -11,7 +11,7 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Gets a value indicating whether the current platform supports keyboard input.
         /// </summary>
-        /// <returns>true if the current platform supports keyboard input; otherwise, false.</returns>
+        /// <returns><c>true</c> if the current platform supports keyboard input; otherwise, <c>false</c>.</returns>
         Boolean IsKeyboardSupported();
 
         /// <summary>
@@ -24,7 +24,7 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Gets a value indicating whether the current platform supports mouse input.
         /// </summary>
-        /// <returns>true if the current platform supports mouse input; otherwise, false.</returns>
+        /// <returns><c>true</c> if the current platform supports mouse input; otherwise, <c>false</c>.</returns>
         Boolean IsMouseSupported();
 
         /// <summary>

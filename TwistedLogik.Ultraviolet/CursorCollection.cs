@@ -23,7 +23,7 @@ namespace TwistedLogik.Ultraviolet
         /// Gets the cursor with the specified name.
         /// </summary>
         /// <param name="name">The name of the cursor to retrieve.</param>
-        /// <returns>The cursor with the specified name, or null if no such cursor exists.</returns>
+        /// <returns>The cursor with the specified name, or <c>null</c> if no such cursor exists.</returns>
         public Cursor this[String name]
         {
             get
@@ -44,7 +44,7 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Releases resources associated with the object.
         /// </summary>
-        /// <param name="disposing">true if the object is being disposed; false if the object is being finalized.</param>
+        /// <param name="disposing"><c>true</c> if the object is being disposed; <c>false</c> if the object is being finalized.</param>
         protected override void Dispose(Boolean disposing)
         {
             if (Disposed)

@@ -44,7 +44,7 @@ namespace TwistedLogik.Ultraviolet
         /// </summary>
         /// <param name="r1">The first value to compare.</param>
         /// <param name="r2">The second value to compare.</param>
-        /// <returns>true if the two values are equal; otherwise, false.</returns>
+        /// <returns><c>true</c> if the two values are equal; otherwise, <c>false</c>.</returns>
         public static Boolean operator ==(Radians r1, Radians r2)
         {
             return r1.Equals(r2);
@@ -55,7 +55,7 @@ namespace TwistedLogik.Ultraviolet
         /// </summary>
         /// <param name="r1">The first value to compare.</param>
         /// <param name="r2">The second value to compare.</param>
-        /// <returns>true if the two values are unequal; otherwise, false.</returns>
+        /// <returns><c>true</c> if the two values are unequal; otherwise, <c>false</c>.</returns>
         public static Boolean operator !=(Radians r1, Radians r2)
         {
             return !(r1 == r2);
@@ -165,7 +165,7 @@ namespace TwistedLogik.Ultraviolet
         /// </summary>
         /// <param name="s">A string containing an angle to convert.</param>
         /// <param name="radians">A variable to populate with the converted value.</param>
-        /// <returns>true if <paramref name="s"/> was converted successfully; otherwise, false.</returns>
+        /// <returns><c>true</c> if <paramref name="s"/> was converted successfully; otherwise, <c>false</c>.</returns>
         public static Boolean TryParse(String s, out Radians radians)
         {
             return TryParse(s, NumberStyles.Number, NumberFormatInfo.CurrentInfo, out radians);
@@ -189,7 +189,7 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="style">A set of <see cref="System.Globalization.NumberStyles"/> values indicating which elements are present in <paramref name="s"/>.</param>
         /// <param name="provider">A format provider that provides culture-specific formatting information.</param>
         /// <param name="radians">A variable to populate with the converted value.</param>
-        /// <returns>true if <paramref name="s"/> was converted successfully; otherwise, false.</returns>
+        /// <returns><c>true</c> if <paramref name="s"/> was converted successfully; otherwise, <c>false</c>.</returns>
         public static Boolean TryParse(String s, NumberStyles style, IFormatProvider provider, out Radians radians)
         {
             radians = Radians.Zero;
@@ -283,7 +283,7 @@ namespace TwistedLogik.Ultraviolet
         /// Gets a value indicating whether this instance and another instance represent the same value.
         /// </summary>
         /// <param name="other">The other instance to evaluate.</param>
-        /// <returns>true if this instance and the specified instance represent the same value; otherwise, false.</returns>
+        /// <returns><c>true</c> if this instance and the specified instance represent the same value; otherwise, <c>false</c>.</returns>
         public override Boolean Equals(Object other)
         {
             if (!(other is Radians))
@@ -295,7 +295,7 @@ namespace TwistedLogik.Ultraviolet
         /// Gets a value indicating whether this instance and another instance represent the same value.
         /// </summary>
         /// <param name="other">The other instance to evaluate.</param>
-        /// <returns>true if this instance and the specified instance represent the same value; otherwise, false.</returns>
+        /// <returns><c>true</c> if this instance and the specified instance represent the same value; otherwise, <c>false</c>.</returns>
         public Boolean Equals(Radians other)
         {
             return value.Equals(other.value);
@@ -435,7 +435,7 @@ namespace TwistedLogik.Ultraviolet
         /// </summary>
         /// <param name="s">The string to evaluate for a suffix.</param>
         /// <param name="factor">The scaling factor to apply to the string's numeric portion.</param>
-        /// <returns>The string's suffix, or null if it has no suffix.</returns>
+        /// <returns>The string's suffix, or <c>null</c> if it has no suffix.</returns>
         private static String EvaluateSuffix(String s, out Single factor)
         {
             if (s.EndsWith("tau"))
@@ -469,7 +469,7 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="style">A set of <see cref="System.Globalization.NumberStyles"/> values indicating which elements are present in <paramref name="s"/>.</param>
         /// <param name="provider">A format provider that provides culture-specific formatting information.</param>
         /// <param name="fraction">A single-precision floating point value that is equivalent to the specified string.</param>
-        /// <returns>true if the string was able to be parsed; otherwise, false.</returns>
+        /// <returns><c>true</c> if the string was able to be parsed; otherwise, <c>false</c>.</returns>
         private static Boolean TryParseFraction(String s, NumberStyles style, IFormatProvider provider, out Single fraction)
         {
             var ix = s.IndexOf('/');

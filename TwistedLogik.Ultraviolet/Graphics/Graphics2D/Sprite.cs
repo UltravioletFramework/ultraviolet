@@ -47,7 +47,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// Retrieves the animation with the specified name.
         /// </summary>
         /// <param name="name">The name of the animation to retrieve.</param>
-        /// <returns>The animation with the specified name, or null if no such animation exists.</returns>
+        /// <returns>The animation with the specified name, or <c>null</c> if no such animation exists.</returns>
         public SpriteAnimation this[string name]
         {
             get

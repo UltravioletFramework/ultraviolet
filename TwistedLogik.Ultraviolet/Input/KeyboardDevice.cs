@@ -66,14 +66,14 @@ namespace TwistedLogik.Ultraviolet.Input
         /// Gets a value indicating whether the specified key is currently down.
         /// </summary>
         /// <param name="key">The key to evaluate.</param>
-        /// <returns>true if the key is down; otherwise, false.</returns>
+        /// <returns><c>true</c> if the key is down; otherwise, <c>false</c>.</returns>
         public abstract Boolean IsKeyDown(Key key);
 
         /// <summary>
         /// Gets a value indicating whether the specified key is currently up.
         /// </summary>
         /// <param name="key">The key to evaluate.</param>
-        /// <returns>true if the key is up; otherwise, false.</returns>
+        /// <returns><c>true</c> if the key is up; otherwise, <c>false</c>.</returns>
         public abstract Boolean IsKeyUp(Key key);
 
         /// <summary>
@@ -83,14 +83,14 @@ namespace TwistedLogik.Ultraviolet.Input
         /// event after the first is marked as a "repeat" event and should be handled accordingly.</remarks>
         /// <param name="key">The key to evaluate.</param>
         /// <param name="ignoreRepeats">A value indicating whether to ignore repeated key press events on devices which support them.</param>
-        /// <returns>true if the key is pressed; otherwise, false.</returns>        
+        /// <returns><c>true</c> if the key is pressed; otherwise, <c>false</c>.</returns>        
         public abstract Boolean IsKeyPressed(Key key, Boolean ignoreRepeats = true);
 
         /// <summary>
         /// Gets a value indicating whether the specified key is currently released.
         /// </summary>
         /// <param name="key">The key to evaluate.</param>
-        /// <returns>true if the key is released; otherwise, false.</returns>
+        /// <returns><c>true</c> if the key is released; otherwise, <c>false</c>.</returns>
         public abstract Boolean IsKeyReleased(Key key);
 
         /// <summary>

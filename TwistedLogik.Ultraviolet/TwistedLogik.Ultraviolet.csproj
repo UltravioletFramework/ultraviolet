@@ -116,6 +116,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Audio\NamespaceDoc.cs" />
     <Compile Include="Audio\PlaybackState.cs" />
     <Compile Include="Audio\Song.cs" />
     <Compile Include="Audio\SongPlayer.cs" />
@@ -149,6 +150,7 @@
     <Compile Include="Content\IContentImporter.cs" />
     <Compile Include="Content\IContentImporterMetadata.cs" />
     <Compile Include="Content\IContentProcessorMetadata.cs" />
+    <Compile Include="Content\NamespaceDoc.cs" />
     <Compile Include="Content\UltravioletContent.cs" />
     <Compile Include="Content\XmlContentProcessor.cs" />
     <Compile Include="Content\TextContentProcessor.cs" />
@@ -170,6 +172,7 @@
     <Compile Include="Graphics\Graphics2D\Graphics2DBinaryWriterExtensions.cs" />
     <Compile Include="Graphics\Graphics2D\ContentManagerExtensions.cs" />
     <Compile Include="Graphics\Graphics2D\ISpriteBatchEffect.cs" />
+    <Compile Include="Graphics\Graphics2D\NamespaceDoc.cs" />
     <Compile Include="Graphics\Graphics2D\SpriteAnimationID.cs" />
     <Compile Include="Graphics\Graphics2D\sspack\OutOfSpaceException.cs" />
     <Compile Include="Graphics\Graphics2D\sspack\Packing\ArevaloRectanglePacker.cs" />
@@ -191,6 +194,7 @@
     <Compile Include="Graphics\DynamicVertexBuffer.cs" />
     <Compile Include="Graphics\FillMode.cs" />
     <Compile Include="Graphics\GeometryStream.cs" />
+    <Compile Include="Graphics\Graphics2D\Text\NamespaceDoc.cs" />
     <Compile Include="Graphics\Graphics2D\Text\TextTableLayoutProcessor.cs" />
     <Compile Include="Graphics\Graphics2D\Text\TextFlags.cs" />
     <Compile Include="Graphics\Graphics2D\Text\TextLayoutEngine.cs" />
@@ -215,6 +219,7 @@
     <Compile Include="Graphics\Graphics2D\Text\TextTableCellCollection.cs" />
     <Compile Include="Graphics\Graphics2D\Text\TextTableRowCollection.cs" />
     <Compile Include="Graphics\IEffectMatrices.cs" />
+    <Compile Include="Graphics\NamespaceDoc.cs" />
     <Compile Include="Graphics\RenderBuffer2D.cs" />
     <Compile Include="Graphics\RenderTarget2D.cs" />
     <Compile Include="Graphics\RenderBufferFormat.cs" />
@@ -235,6 +240,7 @@
     <Compile Include="Input\InputDevice.cs" />
     <Compile Include="Input\MouseInputBinding.cs" />
     <Compile Include="Input\KeyboardInputBinding.cs" />
+    <Compile Include="Input\NamespaceDoc.cs" />
     <Compile Include="Input\Scancode.cs" />
     <Compile Include="Input\MouseButton.cs" />
     <Compile Include="Input\MouseDevice.cs" />
@@ -247,11 +253,13 @@
     <Compile Include="IUltravioletPlatform.cs" />
     <Compile Include="IUltravioletUI.cs" />
     <Compile Include="Matrix.cs" />
+    <Compile Include="NamespaceDoc.cs" />
     <Compile Include="Platform\DisplayMode.cs" />
     <Compile Include="Platform\IUltravioletDisplay.cs" />
     <Compile Include="Platform\IUltravioletDisplayInfo.cs" />
     <Compile Include="Platform\IUltravioletWindow.cs" />
     <Compile Include="Platform\IUltravioletWindowInfo.cs" />
+    <Compile Include="Platform\NamespaceDoc.cs" />
     <Compile Include="Platform\WindowFlags.cs" />
     <Compile Include="Radians.cs" />
     <Compile Include="Rectangle.cs" />
@@ -262,6 +270,7 @@
     <Compile Include="Size3F.cs" />
     <Compile Include="TaskUtil.cs" />
     <Compile Include="Tweening.cs" />
+    <Compile Include="UI\NamespaceDoc.cs" />
     <Compile Include="UI\UIPanelDefinition.cs" />
     <Compile Include="UI\UIPanelDefinitionProcessor.cs" />
     <Compile Include="UI\IUILayout.cs" />

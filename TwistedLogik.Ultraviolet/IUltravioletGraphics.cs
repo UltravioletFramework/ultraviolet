@@ -25,7 +25,7 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Sets the render target.
         /// </summary>
-        /// <param name="rt">The render target to set, or null to revert to the default render target.</param>
+        /// <param name="rt">The render target to set, or <c>null</c> to revert to the default render target.</param>
         void SetRenderTarget(RenderTarget2D rt);
 
         /// <summary>

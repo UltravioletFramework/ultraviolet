@@ -7,12 +7,12 @@ using TwistedLogik.Nucleus;
 namespace TwistedLogik.Ultraviolet.Content
 {
     /// <summary>
-    /// Represents the global content processor registry.
+    /// Represents an Ultraviolet context's registry of content processors.
     /// </summary>
     public sealed partial class ContentProcessorRegistry
     {        
         /// <summary>
-        /// Initializes a new instance of the ContentProcessorRegistry class.
+        /// Initializes a new instance of the <see cref="ContentProcessorRegistry"/> class.
         /// </summary>
         internal ContentProcessorRegistry()
         {
@@ -20,9 +20,9 @@ namespace TwistedLogik.Ultraviolet.Content
         }
 
         /// <summary>
-        /// Registers the processors in the specified assembly.
+        /// Registers any content processors which are defined in the specified assembly.
         /// </summary>
-        /// <param name="asm">The assembly that contains the processors to register.</param>
+        /// <param name="asm">The assembly that contains the content processors to register.</param>
         public void RegisterAssembly(Assembly asm)
         {
             Contract.Require(asm, "asm");
@@ -59,7 +59,7 @@ namespace TwistedLogik.Ultraviolet.Content
         /// </summary>
         /// <param name="input">The processor's input type.</param>
         /// <param name="output">The processor's output type.</param>
-        /// <returns>The content processor that takes the specified types, or null if no such processor exists.</returns>
+        /// <returns>The content processor that takes the specified types, or <c>null</c> if no such processor exists.</returns>
         public IContentProcessor FindProcessor(Type input, Type output)
         {
             Contract.Require(input, "input");
@@ -73,15 +73,18 @@ namespace TwistedLogik.Ultraviolet.Content
         /// <summary>
         /// Finds the content processor that takes the specified input type and produces the specified output type.
         /// </summary>
-        /// <returns>The content processor that takes the specified types, or null if no such processor exists.</returns>
-        public IContentProcessor FindProcessor<Input, Output>()
+        /// <typeparam name="TInput">The processor's input type.</typeparam>
+        /// <typeparam name="TOutput">The processor's output type.</typeparam>
+        /// <returns>The content processor that takes the specified types, or <c>null</c> if no such processor exists.</returns>
+        public IContentProcessor FindProcessor<TInput, TOutput>()
         {
-            return FindProcessor(typeof(Input), typeof(Output));
+            return FindProcessor(typeof(TInput), typeof(TOutput));
         }
 
         /// <summary>
         /// Registers a content processor.
         /// </summary>
+        /// <typeparam name="T">The type of content processor to register.</typeparam>
         public void RegisterProcessor<T>() where T : IContentProcessor
         {
             var processorType = typeof(T);
@@ -106,6 +109,7 @@ namespace TwistedLogik.Ultraviolet.Content
         /// <summary>
         /// Unregisters a content processor.
         /// </summary>
+        /// <typeparam name="T">The type of content processor to unregister.</typeparam>
         public void UnregisterProcessor<T>() where T : IContentProcessor
         {
             var baseProcessorType = GetBaseContentProcessorType(typeof(T));
@@ -119,10 +123,10 @@ namespace TwistedLogik.Ultraviolet.Content
         }
 
         /// <summary>
-        /// Gets the ContentProcessor type from which the specified type is derived.
+        /// Gets the <see cref="IContentProcessor"/> type from which the specified type is derived.
         /// </summary>
         /// <param name="type">The type to evaluate.</param>
-        /// <returns>The ContentProcessor type from which the specified type is derived.</returns>
+        /// <returns>The <see cref="IContentProcessor"/> type from which the specified type is derived.</returns>
         internal static Type GetBaseContentProcessorType(Type type)
         {
             var current = type;

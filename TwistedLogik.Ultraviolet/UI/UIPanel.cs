@@ -36,7 +36,7 @@ namespace TwistedLogik.Ultraviolet.UI
         /// <summary>
         /// Initializes a new instance of the UIPanel class.
         /// </summary>
-        /// <param name="size">The panel's default size, or null to fit the panel to the primary window.</param>
+        /// <param name="size">The panel's default size, or <c>null</c> to fit the panel to the primary window.</param>
         internal UIPanel(Size2? size = null)
             : this(null, size)
         {
@@ -47,7 +47,7 @@ namespace TwistedLogik.Ultraviolet.UI
         /// Initializes a new instance of the UIPanel class.
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
-        /// <param name="size">The panel's default size, or null to fit the panel to the primary window.</param>
+        /// <param name="size">The panel's default size, or <c>null</c> to fit the panel to the primary window.</param>
         internal UIPanel(UltravioletContext uv, Size2? size = null)
             : base(uv ?? UltravioletContext.DemandCurrent())
         {
@@ -398,7 +398,7 @@ namespace TwistedLogik.Ultraviolet.UI
         /// <summary>
         /// Releases resources associated with the object.
         /// </summary>
-        /// <param name="disposing">true if the object is being disposed; false if the object is being finalized.</param>
+        /// <param name="disposing"><c>true</c> if the object is being disposed; <c>false</c> if the object is being finalized.</param>
         protected override void Dispose(Boolean disposing)
         {
             if (disposing)
@@ -616,7 +616,7 @@ namespace TwistedLogik.Ultraviolet.UI
         /// </summary>
         /// <param name="content">The content manager with which to load layout content.</param>
         /// <param name="definition">The panel definition to load into the panel's layout.</param>
-        /// <returns>true if the layout was loaded; otherwise, false.</returns>
+        /// <returns><c>true</c> if the layout was loaded; otherwise, <c>false</c>.</returns>
         protected Boolean LoadLayout(ContentManager content, UIPanelDefinition definition)
         {
             if (layout != null)

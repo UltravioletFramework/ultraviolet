@@ -5,15 +5,15 @@ using TwistedLogik.Nucleus;
 namespace TwistedLogik.Ultraviolet.Content
 {
     /// <summary>
-    /// Represents a content processor.
-    /// Content processors take the data structures created by content importers and transform them into game assets.
+    /// <para>Represents a content processor.</para>
+    /// <para>Content processors take the data structures created by content importers and transform them into game assets.</para>
     /// </summary>
     public abstract class ContentProcessor<Input, Output> : IContentProcessor
     {
         /// <summary>
         /// Exports an asset to a preprocessed binary stream.
         /// </summary>
-        /// <param name="manager">The content manager with which the asset is being processed.</param>
+        /// <param name="manager">The <see cref="ContentManager"/> with which the asset is being processed.</param>
         /// <param name="metadata">The asset's metadata.</param>
         /// <param name="writer">A writer on the stream to which to export the asset.</param>
         /// <param name="input">The asset to export to the stream.</param>
@@ -25,7 +25,7 @@ namespace TwistedLogik.Ultraviolet.Content
         /// <summary>
         /// Imports an asset from the specified preprocessed binary stream.
         /// </summary>
-        /// <param name="manager">The content manager with which the asset is being processed.</param>
+        /// <param name="manager">The <see cref="ContentManager"/> with which the asset is being processed.</param>
         /// <param name="metadata">The asset's metadata.</param>
         /// <param name="reader">A reader on the stream that contains the asset to import.</param>
         /// <returns>The asset that was imported from the stream.</returns>
@@ -37,7 +37,7 @@ namespace TwistedLogik.Ultraviolet.Content
         /// <summary>
         /// Processes the specified data structure into a game asset.
         /// </summary>
-        /// <param name="manager">The content manager with which the asset is being processed.</param>
+        /// <param name="manager">The <see cref="ContentManager"/> with which the asset is being processed.</param>
         /// <param name="metadata">The asset's metadata.</param>
         /// <param name="input">The input data structure to process.</param>
         /// <returns>The game asset that was created.</returns>
@@ -49,7 +49,7 @@ namespace TwistedLogik.Ultraviolet.Content
         /// <summary>
         /// Exports an asset to a preprocessed binary stream.
         /// </summary>
-        /// <param name="manager">The content manager with which the asset is being processed.</param>
+        /// <param name="manager">The <see cref="ContentManager"/> with which the asset is being processed.</param>
         /// <param name="metadata">The asset's metadata.</param>
         /// <param name="writer">A writer on the stream to which to export the asset.</param>
         /// <param name="obj">The asset to export to the stream.</param>
@@ -61,7 +61,7 @@ namespace TwistedLogik.Ultraviolet.Content
         /// <summary>
         /// Imports an asset from the specified preprocessed binary stream.
         /// </summary>
-        /// <param name="manager">The content manager with which the asset is being processed.</param>
+        /// <param name="manager">The <see cref="ContentManager"/> with which the asset is being processed.</param>
         /// <param name="metadata">The asset's metadata.</param>
         /// <param name="reader">A reader on the stream that contains the asset to import.</param>
         /// <returns>The asset that was imported from the stream.</returns>
@@ -73,7 +73,7 @@ namespace TwistedLogik.Ultraviolet.Content
         /// <summary>
         /// Processes the specified data structure into a game asset.
         /// </summary>
-        /// <param name="manager">The content manager with which the asset is being processed.</param>
+        /// <param name="manager">The <see cref="ContentManager"/> with which the asset is being processed.</param>
         /// <param name="metadata">The asset's metadata.</param>
         /// <param name="input">The input data structure to process.</param>
         /// <returns>The game asset that was created.</returns>
@@ -82,7 +82,7 @@ namespace TwistedLogik.Ultraviolet.Content
         /// <summary>
         /// Gets a value indicating whether the processor supports preprocessing assets.
         /// </summary>
-        public virtual Boolean SupportsPreprocessing 
+        public virtual Boolean SupportsPreprocessing
         {
             get { return false; } 
         }

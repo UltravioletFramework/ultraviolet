@@ -9,12 +9,12 @@ using TwistedLogik.Nucleus.Xml;
 namespace TwistedLogik.Ultraviolet.Content
 {
     /// <summary>
-    /// Represents a manifest containing a list of content assets.
+    /// Represents a manifest containing a list of related content assets.
     /// </summary>
     public sealed class ContentManifest : UltravioletNamedCollection<ContentManifestGroup>
     {
         /// <summary>
-        /// Initializes a new instance of the ContentManifest class.
+        /// Initializes a new instance of the <see cref="ContentManifest"/> class.
         /// </summary>
         /// <param name="name">The content manifest's name.</param>
         /// <param name="groups">The content manifest's group definitions.</param>
@@ -35,7 +35,7 @@ namespace TwistedLogik.Ultraviolet.Content
         /// Loads a content manifest from the file at the specified path.
         /// </summary>
         /// <param name="path">The path to the file to load.</param>
-        /// <returns>The content manifest that was loaded from the specified file.</returns>
+        /// <returns>The <see cref="ContentManifest"/> that was loaded from the specified file.</returns>
         public static ContentManifest Load(String path)
         {
             Contract.RequireNotEmpty(path, "path");
@@ -47,8 +47,8 @@ namespace TwistedLogik.Ultraviolet.Content
         /// <summary>
         /// Loads a content manifst from the specified stream.
         /// </summary>
-        /// <param name="stream">The stream that contains the content manifest to load.</param>
-        /// <returns>The content manifest that was loaded from the specified stream.</returns>
+        /// <param name="stream">The <see cref="Stream"/> that contains the content manifest to load.</param>
+        /// <returns>The <see cref="ContentManifest"/> that was loaded from the specified stream.</returns>
         public static ContentManifest Load(Stream stream)
         {
             Contract.Require(stream, "stream");

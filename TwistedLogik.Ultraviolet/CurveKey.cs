@@ -33,7 +33,7 @@ namespace TwistedLogik.Ultraviolet
         /// </summary>
         /// <param name="key1">The first curve keys to compare.</param>
         /// <param name="key2">The second curve keys to compare.</param>
-        /// <returns>true if the specified curve keys are equal; otherwise, false.</returns>
+        /// <returns><c>true</c> if the specified curve keys are equal; otherwise, <c>false</c>.</returns>
         public static Boolean operator ==(CurveKey key1, CurveKey key2)
         {
             if (key1 == null || key2 == null)
@@ -48,7 +48,7 @@ namespace TwistedLogik.Ultraviolet
         /// </summary>
         /// <param name="key1">The first curve keys to compare.</param>
         /// <param name="key2">The second curve keys to compare.</param>
-        /// <returns>true if the specified curve keys are unequal; otherwise, false.</returns>
+        /// <returns><c>true</c> if the specified curve keys are unequal; otherwise, <c>false</c>.</returns>
         public static Boolean operator !=(CurveKey key1, CurveKey key2)
         {
             if (key1 == null || key2 == null)
@@ -99,7 +99,7 @@ namespace TwistedLogik.Ultraviolet
         /// Determines whether this instance is equal to the specified object.
         /// </summary>
         /// <param name="obj">The object to compare to this instance.</param>
-        /// <returns>true if this instance is equal to the specified object; otherwise, false.</returns>
+        /// <returns><c>true</c> if this instance is equal to the specified object; otherwise, <c>false</c>.</returns>
         public override Boolean Equals(Object obj)
         {
             return obj is CurveKey && Equals((CurveKey)obj);
@@ -109,7 +109,7 @@ namespace TwistedLogik.Ultraviolet
         /// Determines whether this instance is equal to the specified object.
         /// </summary>
         /// <param name="obj">The object to compare to this instance.</param>
-        /// <returns>true if this instance is equal to the specified object; otherwise, false.</returns>
+        /// <returns><c>true</c> if this instance is equal to the specified object; otherwise, <c>false</c>.</returns>
         public Boolean Equals(CurveKey obj)
         {
             if (obj == null) 

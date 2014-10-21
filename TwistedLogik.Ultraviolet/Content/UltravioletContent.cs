@@ -10,7 +10,7 @@ namespace TwistedLogik.Ultraviolet.Content
     public sealed class UltravioletContent : UltravioletResource, IUltravioletContent
     {
         /// <summary>
-        /// Initializes a new instance of the UltravioletContent class.
+        /// Initializes a new instance of the <see cref="UltravioletContent"/> class.
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
         public UltravioletContent(UltravioletContext uv)
@@ -20,7 +20,7 @@ namespace TwistedLogik.Ultraviolet.Content
         }
 
         /// <summary>
-        /// Registers any content importers or processors defined in the Ultraviolet Core assembly or
+        /// Registers any content importers or processors defined in the Ultraviolet core assembly or
         /// any assembly containing the implementation of one of the Ultraviolet context's subsystems.
         /// </summary>
         public void RegisterImportersAndProcessors()
@@ -112,7 +112,7 @@ namespace TwistedLogik.Ultraviolet.Content
         public event UltravioletSubsystemUpdateEventHandler Updating;
 
         /// <summary>
-        /// Raises the Updating event.
+        /// Raises the <see cref="Updating"/> event.
         /// </summary>
         /// <param name="time">Time elapsed since the last call to Update.</param>
         private void OnUpdating(UltravioletTime time)

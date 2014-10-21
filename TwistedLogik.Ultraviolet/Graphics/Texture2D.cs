@@ -68,7 +68,7 @@ namespace TwistedLogik.Ultraviolet.Graphics
         /// Sets the texture's data.
         /// </summary>
         /// <param name="level">The mipmap level for which to set data.</param>
-        /// <param name="rect">A rectangle describing the position and size of the data to set, or null to set the entire texture.</param>
+        /// <param name="rect">A rectangle describing the position and size of the data to set, or <c>null</c> to set the entire texture.</param>
         /// <param name="data">An array containing the data to set.</param>
         /// <param name="offset">The index of the first element to set.</param>
         /// <param name="count">The number of elements to set.</param>
@@ -79,7 +79,7 @@ namespace TwistedLogik.Ultraviolet.Graphics
         /// Sets the texture's data.
         /// </summary>
         /// <param name="level">The mipmap level for which to set data.</param>
-        /// <param name="rect">A rectangle describing the position and size of the data to set, or null to set the entire texture.</param>
+        /// <param name="rect">A rectangle describing the position and size of the data to set, or <c>null</c> to set the entire texture.</param>
         /// <param name="data">A pointer to the data to set.</param>
         /// <param name="offset">The index of the first element to set.</param>
         /// <param name="count">The number of elements to set.</param>

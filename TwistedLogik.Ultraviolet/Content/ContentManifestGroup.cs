@@ -13,7 +13,7 @@ namespace TwistedLogik.Ultraviolet.Content
     public sealed class ContentManifestGroup : UltravioletNamedCollection<ContentManifestAsset>
     {
         /// <summary>
-        /// Initializes a new instance of the ContentManifestGroup class.
+        /// Initializes a new instance of the <see cref="ContentManifestGroup"/> class.
         /// </summary>
         /// <param name="manifest">The content manifest that owns the group.</param>
         /// <param name="element">The XML element that defines the content manifest group.</param>
@@ -50,12 +50,11 @@ namespace TwistedLogik.Ultraviolet.Content
         }
 
         /// <summary>
-        /// Populates the specified type with the content manifest's asset identifiers.
+        /// Populates the specified asset library type with the manifest group's asset identifiers.
         /// </summary>
         /// <param name="type">The type to populate with asset identifiers.</param>
         /// <remarks>This method will populate the values of any publicly-accessible static fields
-        /// and properties of type <see cref="TwistedLogik.Ultraviolet.Content.AssetID"/> which match
-        /// the names of assets within this manifest group.</remarks>
+        /// and properties of type <see cref="AssetID"/> which match the names of assets within this manifest group.</remarks>
         public void PopulateAssetLibrary(Type type)
         {
             Contract.Require(type, "type");
@@ -103,7 +102,7 @@ namespace TwistedLogik.Ultraviolet.Content
         }
 
         /// <summary>
-        /// Gets the content manifest that owns this group.
+        /// Gets the <see cref="ContentManifest"/> that owns this group.
         /// </summary>
         public ContentManifest Manifest
         {

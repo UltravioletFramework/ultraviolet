@@ -7,14 +7,14 @@ using TwistedLogik.Nucleus.Xml;
 namespace TwistedLogik.Ultraviolet.Content
 {
     /// <summary>
-    /// Represents an asset within a content manifest.
+    /// Represents an individual asset within a content manifest.
     /// </summary>
     public sealed class ContentManifestAsset
     {
         /// <summary>
-        /// Initializes a new instance of the ContentManifestAsset class.
+        /// Initializes a new instance of the <see cref="ContentManifestAsset"/> class.
         /// </summary>
-        /// <param name="group">The content manifest group that owns the asset.</param>
+        /// <param name="group">The <see cref="ContentManifestGroup"/> that owns the asset.</param>
         /// <param name="element">The XML element that defines the asset.</param>
         internal ContentManifestAsset(ContentManifestGroup group, XElement element)
         {
@@ -36,16 +36,16 @@ namespace TwistedLogik.Ultraviolet.Content
         }
 
         /// <summary>
-        /// Creates a new instance of the AssetID structure that represents this asset.
+        /// Creates a new instance of the <see cref="AssetID"/> structure that represents this asset.
         /// </summary>
-        /// <returns>The instance of AssetID that was created.</returns>
+        /// <returns>The instance of the <see cref="AssetID"/> structure that was created.</returns>
         public AssetID CreateAssetID()
         {
             return new AssetID(ManifestGroup.Manifest.Name, ManifestGroup.Name, Name, AbsolutePath, ManifestGroup.IndexOf(this));
         }
 
         /// <summary>
-        /// Gets the content manifest group that owns the asset.
+        /// Gets the <see cref="ContentManifestGroup"/> that owns the asset.
         /// </summary>
         public ContentManifestGroup ManifestGroup
         {
@@ -65,7 +65,7 @@ namespace TwistedLogik.Ultraviolet.Content
         /// <summary>
         /// Gets the asset's path relative to its group's root directory.
         /// </summary>
-        /// <remarks>This is the same path that is passed to <see cref="TwistedLogik.Ultraviolet.Content.ContentManager.Load{T}(System.String, System.Boolean)"/>.</remarks>
+        /// <remarks>This is the same path that is passed to <see cref="ContentManager.Load{T}(String, Boolean)"/>.</remarks>
         public String RelativePath
         {
             get;
@@ -75,7 +75,7 @@ namespace TwistedLogik.Ultraviolet.Content
         /// <summary>
         /// Gets the asset's path including its group's root directory.
         /// </summary>
-        /// <remarks>This is the same path that is passed to <see cref="TwistedLogik.Ultraviolet.Content.ContentManager.Load{T}(System.String, System.Boolean)"/>.</remarks>
+        /// <remarks>This is the same path that is passed to <see cref="ContentManager.Load{T}(String, Boolean)"/>.</remarks>
         public String AbsolutePath
         {
             get;

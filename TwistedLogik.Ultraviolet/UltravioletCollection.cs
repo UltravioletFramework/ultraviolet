@@ -92,7 +92,7 @@ namespace TwistedLogik.Ultraviolet
         /// Removes an item from the collection.
         /// </summary>
         /// <param name="item">The item to remove from the collection.</param>
-        /// <returns>true if the item was removed from the collection; otherwise, false.</returns>
+        /// <returns><c>true</c> if the item was removed from the collection; otherwise, <c>false</c>.</returns>
         protected virtual Boolean RemoveInternal(T item)
         {
             return storage.Remove(item);
@@ -102,7 +102,7 @@ namespace TwistedLogik.Ultraviolet
         /// Gets a value indicating whether the collection contains the specified item.
         /// </summary>
         /// <param name="item">The item to evaluate.</param>
-        /// <returns>true if the collection contains the specified item; otherwise, false.</returns>
+        /// <returns><c>true</c> if the collection contains the specified item; otherwise, <c>false</c>.</returns>
         protected virtual Boolean ContainsInternal(T item)
         {
             return storage.Contains(item);

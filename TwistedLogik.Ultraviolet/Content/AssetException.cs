@@ -9,12 +9,12 @@ namespace TwistedLogik.Ultraviolet.Content
     public sealed class AssetException : Exception
     {
         /// <summary>
-        /// Initializes a new instance of the AssetException class.
+        /// Initializes a new instance of the <see cref="AssetException"/> class.
         /// </summary>
         public AssetException() : base() { }
 
         /// <summary>
-        /// Initializes a new instance of the AssetException class.
+        /// Initializes a new instance of the <see cref="AssetException"/> class with the specified exception message.
         /// </summary>
         public AssetException(String message) : base(message) { }
     }

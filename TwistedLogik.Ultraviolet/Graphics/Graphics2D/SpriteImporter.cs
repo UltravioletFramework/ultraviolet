@@ -21,7 +21,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// Imports the data from the specified file.
         /// </summary>
         /// <param name="metadata">The asset metadata for the asset to import.</param>
-        /// <param name="stream">The stream that contains the data to import.</param>
+        /// <param name="stream">The <see cref="Stream"/> that contains the data to import.</param>
         /// <returns>The data structure that was imported from the file.</returns>
         public override SpriteDescription Import(IContentImporterMetadata metadata, Stream stream)
         {

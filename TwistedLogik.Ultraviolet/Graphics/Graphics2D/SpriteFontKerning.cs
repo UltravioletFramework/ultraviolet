@@ -66,7 +66,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// </summary>
         /// <param name="c1">The first character in the pair.</param>
         /// <param name="c2">The second character in the pair.</param>
-        /// <returns>true if the character pair was removed; otherwise, false.</returns>
+        /// <returns><c>true</c> if the character pair was removed; otherwise, <c>false</c>.</returns>
         public Boolean Remove(Char c1, Char c2)
         {
             return kerning.Remove(new SpriteFontKerningPair(c1, c2));
@@ -76,7 +76,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// Removes the specified character pair from the kerning data.
         /// </summary>
         /// <param name="pair">The character pair.</param>
-        /// <returns>true if the character pair was removed; otherwise, false.</returns>
+        /// <returns><c>true</c> if the character pair was removed; otherwise, <c>false</c>.</returns>
         public Boolean Remove(SpriteFontKerningPair pair)
         {
             return kerning.Remove(pair);
@@ -87,7 +87,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// </summary>
         /// <param name="c1">The first character in the pair.</param>
         /// <param name="c2">The second character in the pair.</param>
-        /// <returns>true if the kerning data contains the specified character pair; otherwise, false.</returns>
+        /// <returns><c>true</c> if the kerning data contains the specified character pair; otherwise, <c>false</c>.</returns>
         public Boolean Contains(Char c1, Char c2)
         {
             return kerning.ContainsKey(new SpriteFontKerningPair(c1, c2));
@@ -97,7 +97,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// Gets a value indicating whether the kerning data contains the specified character pair.
         /// </summary>
         /// <param name="pair">The character pair.</param>
-        /// <returns>true if the kerning data contains the specified character pair; otherwise, false.</returns>
+        /// <returns><c>true</c> if the kerning data contains the specified character pair; otherwise, <c>false</c>.</returns>
         public Boolean Contains(SpriteFontKerningPair pair)
         {
             return kerning.ContainsKey(pair);

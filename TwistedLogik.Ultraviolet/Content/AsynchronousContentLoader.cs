@@ -6,7 +6,7 @@ using TwistedLogik.Nucleus;
 namespace TwistedLogik.Ultraviolet.Content
 {
     /// <summary>
-    /// Contains methods which allow content to be loaded asynchronously.
+    /// Represents an object which can asynchronously load content assets on a background thread.
     /// </summary>
     public sealed class AsynchronousContentLoader
     {
@@ -24,7 +24,7 @@ namespace TwistedLogik.Ultraviolet.Content
         /// <summary>
         /// Adds a step to the content loader.
         /// </summary>
-        /// <param name="step">The content loading step.</param>
+        /// <param name="step">The content loading step to add to the loader.</param>
         public void AddStep(Action step)
         {
             Contract.Require(step, "step");
@@ -36,7 +36,7 @@ namespace TwistedLogik.Ultraviolet.Content
         /// <summary>
         /// Adds a step to the content loader.
         /// </summary>
-        /// <param name="step">The content loading step.</param>
+        /// <param name="step">The content loading step to add to the loader.</param>
         public void AddStep(Action<ContentManager> step)
         {
             Contract.Require(step, "step");
