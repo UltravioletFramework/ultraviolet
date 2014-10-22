@@ -12,7 +12,7 @@ namespace TwistedLogik.Ultraviolet.UI
     public sealed class UIScreenStackCollection : UltravioletCollection<UIScreenStack>, IDisposable
     {
         /// <summary>
-        /// Initializes a new instance of the UIScreenStackCollection class.
+        /// Initializes a new instance of the <see cref="UIScreenStackCollection"/> class.
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
         public UIScreenStackCollection(UltravioletContext uv)
@@ -45,7 +45,7 @@ namespace TwistedLogik.Ultraviolet.UI
         /// Gets the screen stack associated with the specified window.
         /// </summary>
         /// <param name="window">The window for which to retrieve a screen stack.</param>
-        /// <returns>The screen stack associated with the specified window.</returns>
+        /// <returns>The <see cref="UIScreenStack"/> associated with the specified window.</returns>
         public UIScreenStack this[IUltravioletWindow window]
         {
             get
@@ -64,7 +64,7 @@ namespace TwistedLogik.Ultraviolet.UI
         /// Handles a window's DrawingUI event.
         /// </summary>
         /// <param name="window">The window being drawn.</param>
-        /// <param name="time">Time elapsed since the last call to Draw.</param>
+        /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Draw()"/>.</param>
         private void Window_DrawingUI(IUltravioletWindow window, UltravioletTime time)
         {
             screenStacks[window].Draw(time, spriteBatch);

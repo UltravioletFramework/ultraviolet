@@ -13,7 +13,7 @@ namespace TwistedLogik.Ultraviolet.Platform
     /// Represents the method that is called when an Ultraviolet window is drawn.
     /// </summary>
     /// <param name="window">The window that raised the event.</param>
-    /// <param name="time">Time elapsed since the last call to Draw.</param>
+    /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Draw()"/>.</param>
     public delegate void UltravioletWindowDrawingEventHandler(IUltravioletWindow window, UltravioletTime time);
 
     /// <summary>
@@ -24,46 +24,48 @@ namespace TwistedLogik.Ultraviolet.Platform
         /// <summary>
         /// Sets the window's fullscreen display mode.
         /// </summary>
-        /// <param name="displayMode">The fullscreen display mode to set, or <c>null</c> to use the desktop display mode.</param>
+        /// <param name="displayMode">The <see cref="DisplayMode"/> to use when the window is in fullscreen mode,
+        /// or <c>null</c> to use the desktop display mode.</param>
         void SetFullscreenDisplayMode(DisplayMode displayMode);
 
         /// <summary>
         /// Sets the window's fullscreen display mode.
         /// </summary>
-        /// <param name="width">The display mode's width.</param>
-        /// <param name="height">The display mode's height.</param>
-        /// <param name="bpp">The display mode's bit depth.</param>
-        /// <param name="refresh">The display mode's refresh rate in hertz.</param>
+        /// <param name="width">The width of the display in pixels when it is in fullscreen mode.</param>
+        /// <param name="height">The height of the display in pixels when it is in fullscreen mode.</param>
+        /// <param name="bpp">The bit depth of the display when it is in fullscreen mode.</param>
+        /// <param name="refresh">The refresh rate of the display in hertz when it is in fullscreen mode.</param>
         void SetFullscreenDisplayMode(Int32 width, Int32 height, Int32 bpp, Int32 refresh);
 
         /// <summary>
         /// Gets the window's fullscreen display mode.
         /// </summary>
-        /// <returns>The window's fullscreen display mode, or <c>null</c> if the window is using the desktop display mode.</returns>
+        /// <returns>The <see cref="DisplayMode"/> used when the window is in fullscreen mode, 
+        /// or <c>null</c> if the window is using the desktop display mode.</returns>
         DisplayMode GetFullscreenDisplayMode();
 
         /// <summary>
-        /// Sets the window's fullscreen/windowed mode.
+        /// Sets the window's window mode.
         /// </summary>
-        /// <param name="mode">The window mode to set.</param>
+        /// <param name="mode">The <see cref="WindowMode"/> value that represents the window mode to set.</param>
         void SetWindowMode(WindowMode mode);
 
         /// <summary>
-        /// Gets the fullscreen/windowed mode for this window.
+        /// Gets the window's window mode.
         /// </summary>
-        /// <returns>The window's current fullscreen/windowed mode.</returns>
+        /// <returns>The <see cref="WindowMode"/> value that represents the window's current window mode.</returns>
         WindowMode GetWindowMode();
 
         /// <summary>
         /// Sets the window's maximization/minimization state.
         /// </summary>
-        /// <param name="state">The window state to set.</param>
+        /// <param name="state">The <see cref="WindowState"/> value that represents the maximization/minimization state to set.</param>
         void SetWindowState(WindowState state);
 
         /// <summary>
         /// Gets the window's maximization/minimization state.
         /// </summary>
-        /// <returns>The window's current maximization/minimization state.</returns>
+        /// <returns>The <see cref="WindowState"/> value that represents the window's maximization/minimization state.</returns>
         WindowState GetWindowState();
 
         /// <summary>

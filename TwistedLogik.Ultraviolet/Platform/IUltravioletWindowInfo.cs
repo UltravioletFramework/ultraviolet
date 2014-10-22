@@ -47,7 +47,7 @@ namespace TwistedLogik.Ultraviolet.Platform
         /// <param name="y">The y-coordinate at which to position the window's top-left corner.</param>
         /// <param name="width">The width of the window's client area in pixels.</param>
         /// <param name="height">The height of the window's client area in pixels.</param>
-        /// <param name="flags">A set of WindowFlags values indicating how to create the window.</param>
+        /// <param name="flags">A set of <see cref="WindowFlags"/> values indicating how to create the window.</param>
         /// <returns>The Ultraviolet window that was created.</returns>
         IUltravioletWindow Create(String caption, Int32 x, Int32 y, Int32 width, Int32 height, WindowFlags flags = WindowFlags.None);
 
@@ -62,7 +62,7 @@ namespace TwistedLogik.Ultraviolet.Platform
         /// Destroys the specified window.
         /// </summary>
         /// <remarks>Windows which were created from native pointers are disassociated from the current context,
-        /// but are not actually destroyed.  To destroy such windows, use the native framework which created them.</remarks>
+        /// but are not actually destroyed. To destroy such windows, use the native framework which created them.</remarks>
         /// <param name="window">The Ultraviolet window to destroy.</param>
         /// <returns><c>true</c> if the window was destroyed; <c>false</c> if the window was closed.</returns>
         Boolean Destroy(IUltravioletWindow window);

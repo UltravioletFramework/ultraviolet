@@ -4,9 +4,9 @@ using System.Xml.Linq;
 namespace TwistedLogik.Ultraviolet.Input
 {
     /// <summary>
-    /// Represents the method that is called when an input binding is pressed or released.
+    /// Represents the method that is called when an <see cref="InputBinding"/> is pressed or released.
     /// </summary>
-    /// <param name="binding">The input binding that raised the event.</param>
+    /// <param name="binding">The <see cref="InputBinding"/> that raised the event.</param>
     public delegate void InputBindingEventHandler(InputBinding binding);
 
     /// <summary>
@@ -15,7 +15,7 @@ namespace TwistedLogik.Ultraviolet.Input
     public abstract class InputBinding
     {
         /// <summary>
-        /// Initializes a new instance of the InputBinding class.
+        /// Initializes a new instance of the <see cref="InputBinding"/> class.
         /// </summary>
         internal InputBinding()
         {
@@ -42,7 +42,7 @@ namespace TwistedLogik.Ultraviolet.Input
         /// Gets a value indicating whether the input binding uses the same device 
         /// and the same button configuration as the specified input binding.
         /// </summary>
-        /// <param name="binding">The input binding to compare against this input binding.</param>
+        /// <param name="binding">The <see cref="InputBinding"/> to compare against this input binding.</param>
         /// <returns><c>true</c> if the specified input binding uses the same device and the same button 
         /// configuration as this input binding; otherwise, <c>false</c>.</returns>
         public abstract Boolean UsesSameButtons(InputBinding binding);
@@ -51,7 +51,7 @@ namespace TwistedLogik.Ultraviolet.Input
         /// Gets a value indicating whether the input binding uses the same device 
         /// and the same primary buttons as the specified input binding.
         /// </summary>
-        /// <param name="binding">The input binding to compare against this input binding.</param>
+        /// <param name="binding">The <see cref="InputBinding"/> to compare against this input binding.</param>
         /// <returns><c>true</c> if the specified input binding uses the same device and the same primary 
         /// buttons as this input binding; otherwise, <c>false</c>.</returns>
         public abstract Boolean UsesSamePrimaryButtons(InputBinding binding);
@@ -85,7 +85,7 @@ namespace TwistedLogik.Ultraviolet.Input
         /// Gets the binding's current state.
         /// </summary>
         /// <param name="ignoreRepeats">A value indicating whether to ignore repeated button press events on devices which support them.</param>
-        /// <returns>The binding's current state.</returns>
+        /// <returns>A <see cref="ButtonState"/> value indicating the binding's current state.</returns>
         public ButtonState GetState(Boolean ignoreRepeats = true)
         {
             var state = IsDown() ? ButtonState.Down : ButtonState.Up;
@@ -150,7 +150,7 @@ namespace TwistedLogik.Ultraviolet.Input
         protected abstract Int32 CalculatePriority();
 
         /// <summary>
-        /// Raises the Pressed event.
+        /// Raises the <see cref="Pressed"/> event.
         /// </summary>
         protected virtual void OnPressed()
         {
@@ -162,7 +162,7 @@ namespace TwistedLogik.Ultraviolet.Input
         }
 
         /// <summary>
-        /// Raises the Released event.
+        /// Raises the <see cref="Released"/> event.
         /// </summary>
         protected virtual void OnReleased()
         {

@@ -10,7 +10,7 @@ namespace TwistedLogik.Ultraviolet.Platform
         /// <summary>
         /// Gets the display device's supported display modes.
         /// </summary>
-        /// <returns>A collection containing the display device's supported display modes.</returns>
+        /// <returns>A collection containing the display device's supported <see cref="DisplayMode"/> values.</returns>
         IEnumerable<DisplayMode> GetSupportedDisplayModes();
 
         /// <summary>

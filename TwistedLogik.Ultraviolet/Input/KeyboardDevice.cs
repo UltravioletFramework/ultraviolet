@@ -9,16 +9,16 @@ namespace TwistedLogik.Ultraviolet.Input
     /// Represents the method that is called when a keyboard button is pressed or released.
     /// </summary>
     /// <param name="window">The window in which the input event took place.</param>
-    /// <param name="device">The device that raised the event.</param>
-    /// <param name="scancode">The scancode that represents the button that was pressed.</param>
+    /// <param name="device">The <see cref="KeyboardDevice"/> that raised the event.</param>
+    /// <param name="scancode">The <see cref="Scancode"/> value that represents the key that was pressed.</param>
     public delegate void KeyboardButtonEventHandler(IUltravioletWindow window, KeyboardDevice device, Scancode scancode);
 
     /// <summary>
     /// Represents the method that is called when a keyboard key is pressed.
     /// </summary>
     /// <param name="window">The window in which the input event took place.</param>
-    /// <param name="device">The device that raised the event.</param>
-    /// <param name="key">The key that was pressed.</param>
+    /// <param name="device">The <see cref="KeyboardDevice"/> that raised the event.</param>
+    /// <param name="key">The <see cref="Key"/> value that represents the key that was pressed.</param>
     /// <param name="ctrl">A value indicating whether the Control modifier is active.</param>
     /// <param name="alt">A value indicating whether the Alt modifier is active.</param>
     /// <param name="shift">A value indicating whether the Shift modifier is active.</param>
@@ -29,15 +29,15 @@ namespace TwistedLogik.Ultraviolet.Input
     /// Represents the method that is called when a keyboard key is released.
     /// </summary>
     /// <param name="window">The window in which the input event took place.</param>
-    /// <param name="device">The device that raised the event.</param>
-    /// <param name="key">The key that was released.</param>
+    /// <param name="device">The <see cref="KeyboardDevice"/> that raised the event.</param>
+    /// <param name="key">The <see cref="Key"/> value that represents the key that was released.</param>
     public delegate void KeyReleasedEventHandler(IUltravioletWindow window, KeyboardDevice device, Key key);
 
     /// <summary>
     /// Represents the method that is called when text input is available.
     /// </summary>
     /// <param name="window">The window in which the input event took place.</param>
-    /// <param name="device">The device that raised the event.</param>
+    /// <param name="device">The <see cref="KeyboardDevice"/> that raised the event.</param>
     public delegate void TextInputEventHandler(IUltravioletWindow window, KeyboardDevice device);
 
     /// <summary>
@@ -46,7 +46,7 @@ namespace TwistedLogik.Ultraviolet.Input
     public abstract class KeyboardDevice : InputDevice<Scancode>
     {
         /// <summary>
-        /// Initializes a new instance of the KeyboardDevice class.
+        /// Initializes a new instance of the <see cref="KeyboardDevice"/> class.
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
         public KeyboardDevice(UltravioletContext uv)
@@ -56,23 +56,23 @@ namespace TwistedLogik.Ultraviolet.Input
         }
 
         /// <summary>
-        /// Populates the specified string builder with the most recent text input.
+        /// Populates the specified <see cref="StringBuilder"/> with the most recent text input.
         /// </summary>
-        /// <param name="sb">The string builder to populate with text input data.</param>
-        /// <param name="append">A value indicating whether to append the text input data to the string builder's existing data.</param>
+        /// <param name="sb">The <see cref="StringBuilder"/> to populate with text input data.</param>
+        /// <param name="append">A value indicating whether to append the text input data to the existing data of <paramref name="sb"/>.</param>
         public abstract void GetTextInput(StringBuilder sb, Boolean append = false);
 
         /// <summary>
         /// Gets a value indicating whether the specified key is currently down.
         /// </summary>
-        /// <param name="key">The key to evaluate.</param>
+        /// <param name="key">The <see cref="Key"/> to evaluate.</param>
         /// <returns><c>true</c> if the key is down; otherwise, <c>false</c>.</returns>
         public abstract Boolean IsKeyDown(Key key);
 
         /// <summary>
         /// Gets a value indicating whether the specified key is currently up.
         /// </summary>
-        /// <param name="key">The key to evaluate.</param>
+        /// <param name="key">The <see cref="Key"/> to evaluate.</param>
         /// <returns><c>true</c> if the key is up; otherwise, <c>false</c>.</returns>
         public abstract Boolean IsKeyUp(Key key);
 
@@ -81,7 +81,7 @@ namespace TwistedLogik.Ultraviolet.Input
         /// </summary>
         /// <remarks>Platforms may send multiple key press events while a key is held down.  Any such 
         /// event after the first is marked as a "repeat" event and should be handled accordingly.</remarks>
-        /// <param name="key">The key to evaluate.</param>
+        /// <param name="key">The <see cref="Key"/> to evaluate.</param>
         /// <param name="ignoreRepeats">A value indicating whether to ignore repeated key press events on devices which support them.</param>
         /// <returns><c>true</c> if the key is pressed; otherwise, <c>false</c>.</returns>        
         public abstract Boolean IsKeyPressed(Key key, Boolean ignoreRepeats = true);
@@ -89,15 +89,15 @@ namespace TwistedLogik.Ultraviolet.Input
         /// <summary>
         /// Gets a value indicating whether the specified key is currently released.
         /// </summary>
-        /// <param name="key">The key to evaluate.</param>
+        /// <param name="key">The <see cref="Key"/> to evaluate.</param>
         /// <returns><c>true</c> if the key is released; otherwise, <c>false</c>.</returns>
         public abstract Boolean IsKeyReleased(Key key);
 
         /// <summary>
         /// Gets the current state of the specified key.
         /// </summary>
-        /// <param name="key">The key for which to retrieve a state.</param>
-        /// <returns>The current state of the specified key.</returns>
+        /// <param name="key">The <see cref="Key"/> for which to retrieve a state.</param>
+        /// <returns>A <see cref="ButtonState"/> value indicating the state of the specified key.</returns>
         public abstract ButtonState GetKeyState(Key key);
 
         /// <summary>
@@ -152,7 +152,7 @@ namespace TwistedLogik.Ultraviolet.Input
         /// <summary>
         /// Occurs when a key is pressed.
         /// </summary>
-        /// <remarks>Platforms may send multiple key press events while a key is held down.  Any such 
+        /// <remarks>Platforms may send multiple key press events while a key is held down. Any such 
         /// event after the first is marked as a "repeat" event and should be handled accordingly.</remarks>
         public event KeyPressedEventHandler KeyPressed;
 
@@ -167,10 +167,10 @@ namespace TwistedLogik.Ultraviolet.Input
         public event TextInputEventHandler TextInput;
 
         /// <summary>
-        /// Raises the ButtonPressed event.
+        /// Raises the <see cref="ButtonPressed"/> event.
         /// </summary>
         /// <param name="window">The window that raised the event.</param>
-        /// <param name="scancode">The scancode that represents the button that was pressed.</param>
+        /// <param name="scancode">The <see cref="Scancode"/> that represents the button that was pressed.</param>
         protected virtual void OnButtonPressed(IUltravioletWindow window, Scancode scancode)
         {
             var temp = ButtonPressed;
@@ -181,10 +181,10 @@ namespace TwistedLogik.Ultraviolet.Input
         }
 
         /// <summary>
-        /// Raises the ButtonReleased event.
+        /// Raises the <see cref="ButtonReleased"/> event.
         /// </summary>
         /// <param name="window">The window that raised the event.</param>
-        /// <param name="scancode">The scancode that represents the button that was released.</param>
+        /// <param name="scancode">The <see cref="Scancode"/> that represents the button that was released.</param>
         protected virtual void OnButtonReleased(IUltravioletWindow window, Scancode scancode)
         {
             var temp = ButtonReleased;
@@ -195,12 +195,12 @@ namespace TwistedLogik.Ultraviolet.Input
         }
 
         /// <summary>
-        /// Raises the KeyPressed event.
+        /// Raises the <see cref="KeyPressed"/> event.
         /// </summary>
         /// <remarks>Platforms may send multiple key press events while a key is held down.  Any such 
         /// event after the first is marked as a "repeat" event and should be handled accordingly.</remarks>
         /// <param name="window">The window that raised the event.</param>
-        /// <param name="key">The key that was pressed.</param>
+        /// <param name="key">The <see cref="Key"/> that was pressed.</param>
         /// <param name="ctrl">A value indicating whether the Control modifier is active.</param>
         /// <param name="alt">A value indicating whether the Alt modifier is active.</param>
         /// <param name="shift">A value indicating whether the Shift modifier is active.</param>
@@ -215,10 +215,10 @@ namespace TwistedLogik.Ultraviolet.Input
         }
 
         /// <summary>
-        /// Raises the KeyReleased event.
+        /// Raises the <see cref="KeyReleased"/> event.
         /// </summary>
         /// <param name="window">The window that raised the event.</param>
-        /// <param name="key">The key that was released.</param>
+        /// <param name="key">The <see cref="Key"/> that was released.</param>
         protected virtual void OnKeyReleased(IUltravioletWindow window, Key key)
         {
             var temp = KeyReleased;
@@ -229,7 +229,7 @@ namespace TwistedLogik.Ultraviolet.Input
         }
 
         /// <summary>
-        /// Raises the TextInput event.
+        /// Raises the <see cref="TextInput"/> event.
         /// </summary>
         /// <param name="window">The window that raised the event.</param>
         protected virtual void OnTextInput(IUltravioletWindow window)

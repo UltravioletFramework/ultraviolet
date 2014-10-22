@@ -3,14 +3,14 @@
 namespace TwistedLogik.Ultraviolet.UI
 {
     /// <summary>
-    /// Represents the service which provides layouts to UI containers.
+    /// Represents the service which provides layouts to user interfaces.
     /// </summary>
     public interface IUILayoutProvider : IDisposable
     {
         /// <summary>
         /// Updates the provider's state.
         /// </summary>
-        /// <param name="time">Time elapsed since the last call to Update.</param>
+        /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Update()"/>.</param>
         void Update(UltravioletTime time);
 
         /// <summary>
@@ -20,7 +20,7 @@ namespace TwistedLogik.Ultraviolet.UI
         /// <param name="y">The y-coordinate of the layout's initial position.</param>
         /// <param name="width">The layout's initial width in pixels.</param>
         /// <param name="height">The layout's initial height in pixels.</param>
-        /// <returns>The layout object that was created.</returns>
+        /// <returns>The <see cref="IUILayout"/> that was created.</returns>
         IUILayout CreateLayout(Int32 x, Int32 y, Int32 width, Int32 height);
     }
 }

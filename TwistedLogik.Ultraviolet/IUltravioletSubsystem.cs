@@ -6,7 +6,7 @@ namespace TwistedLogik.Ultraviolet
     /// Represents the method that is called when an Ultraviolet subsystem updates its state.
     /// </summary>
     /// <param name="subsystem">The Ultraviolet subsystem.</param>
-    /// <param name="time">Time elapsed since the last call to Update.</param>
+    /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Update()"/>.</param>
     public delegate void UltravioletSubsystemUpdateEventHandler(IUltravioletSubsystem subsystem, UltravioletTime time);
 
     /// <summary>
@@ -17,7 +17,7 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Updates the subsystem's state.
         /// </summary>
-        /// <param name="time">Time elapsed since the last call to Update.</param>
+        /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Update()"/>.</param>
         void Update(UltravioletTime time);
 
         /// <summary>

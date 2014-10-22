@@ -8,33 +8,33 @@ using TwistedLogik.Ultraviolet.Platform;
 namespace TwistedLogik.Ultraviolet.UI
 {
     /// <summary>
-    /// Represents the method that is called when a UI panel raises an event.
+    /// Represents the method that is called when a <see cref="UIPanel"/> raises an event.
     /// </summary>
-    /// <param name="panel">The UI panel that raised the event.</param>
+    /// <param name="panel">The <see cref="UIPanel"/> that raised the event.</param>
     public delegate void UIPanelEventHandler(UIPanel panel);
 
     /// <summary>
-    /// Represents the method that is called when a UI panel is updated.
+    /// Represents the method that is called when a <see cref="UIPanel"/> is updated.
     /// </summary>
-    /// <param name="panel">The UI panel that raised the event.</param>
-    /// <param name="time">Time elapsed since the last call to Update.</param>
+    /// <param name="panel">The <see cref="UIPanel"/> that raised the event.</param>
+    /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Update()"/>.</param>
     public delegate void UIPanelUpdateEventHandler(UIPanel panel, UltravioletTime time);
 
     /// <summary>
-    /// Represents the method that is called when a UI panel is being drawn.
+    /// Represents the method that is called when a <see cref="UIPanel"/> is being drawn.
     /// </summary>
-    /// <param name="panel">The UI panel that raised the event.</param>
-    /// <param name="time">Time elapsed since the last call to Draw.</param>
+    /// <param name="panel">The <see cref="UIPanel"/> that raised the event.</param>
+    /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Draw()"/>.</param>
     /// <param name="spriteBatch">The sprite batch with which the panel is being drawn.</param>
     public delegate void UIPanelDrawEventHandler(UIPanel panel, UltravioletTime time, SpriteBatch spriteBatch);
     
     /// <summary>
-    /// Represents a UI panel.
+    /// Represents a user interface panel.
     /// </summary>
     public abstract class UIPanel : UltravioletResource
     {
         /// <summary>
-        /// Initializes a new instance of the UIPanel class.
+        /// Initializes a new instance of the <see cref="UIPanel"/> class.
         /// </summary>
         /// <param name="size">The panel's default size, or <c>null</c> to fit the panel to the primary window.</param>
         internal UIPanel(Size2? size = null)
@@ -44,7 +44,7 @@ namespace TwistedLogik.Ultraviolet.UI
         }
 
         /// <summary>
-        /// Initializes a new instance of the UIPanel class.
+        /// Initializes a new instance of the <see cref="UIPanel"/> class.
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
         /// <param name="size">The panel's default size, or <c>null</c> to fit the panel to the primary window.</param>
@@ -67,14 +67,14 @@ namespace TwistedLogik.Ultraviolet.UI
         /// <summary>
         /// Updates the panel's state.
         /// </summary>
-        /// <param name="time">Time elapsed since the last call to Update.</param>
+        /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Update()"/>.</param>
         public abstract void Update(UltravioletTime time);
 
         /// <summary>
         /// Draws the panel using the specified sprite batch.
         /// </summary>
-        /// <param name="time">Time elapsed since the last call to Draw.</param>
-        /// <param name="spriteBatch">The sprite batch with which to draw the panel.</param>
+        /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Draw()"/>.</param>
+        /// <param name="spriteBatch">The <see cref="SpriteBatch"/> with which to draw the panel.</param>
         public abstract void Draw(UltravioletTime time, SpriteBatch spriteBatch);
 
         /// <summary>
@@ -150,7 +150,7 @@ namespace TwistedLogik.Ultraviolet.UI
 
         /// <summary>
         /// Gets a value indicating whether this panel is ready for input which does
-        /// not require the panel to be foremost on the screen.
+        /// not require the panel to be foremost on the window.
         /// </summary>
         public abstract Boolean IsReadyForBackgroundInput
         {
@@ -158,7 +158,7 @@ namespace TwistedLogik.Ultraviolet.UI
         }
 
         /// <summary>
-        /// Gets the panel's current transition state.
+        /// Gets the <see cref="UIPanelState"/> value that represents the panel's current transition state.
         /// </summary>
         public UIPanelState State
         {
@@ -349,7 +349,7 @@ namespace TwistedLogik.Ultraviolet.UI
         /// Opens the panel.
         /// </summary>
         /// <param name="duration">The amount of time over which to transition the panel's state, or
-        /// null to use the default transition time.</param>
+        /// <c>null</c> to use the default transition time.</param>
         internal void Open(TimeSpan? duration = null)
         {
             Contract.EnsureNotDisposed(this, Disposed);
@@ -361,8 +361,8 @@ namespace TwistedLogik.Ultraviolet.UI
         /// Asynchronously opens the panel.
         /// </summary>
         /// <param name="duration">The amount of time over which to transition the panel's state, or
-        /// null to use the default transition time.</param>
-        /// <returns>A task that represents the asynchronous operation.</returns>
+        /// <c>null</c> to use the default transition time.</param>
+        /// <returns>A <see cref="Task"/> that represents the asynchronous operation.</returns>
         internal Task OpenAsync(TimeSpan? duration = null)
         {
             Contract.EnsureNotDisposed(this, Disposed);
@@ -374,7 +374,7 @@ namespace TwistedLogik.Ultraviolet.UI
         /// Closes the panel.
         /// </summary>
         /// <param name="duration">The amount of time over which to transition the panel's state, or
-        /// null to use the default transition time.</param>
+        /// <c>null</c> to use the default transition time.</param>
         internal void Close(TimeSpan? duration = null)
         {
             Contract.EnsureNotDisposed(this, Disposed);
@@ -386,8 +386,8 @@ namespace TwistedLogik.Ultraviolet.UI
         /// Asynchronously closes the panel.
         /// </summary>
         /// <param name="duration">The amount of time over which to transition the panel's state, or
-        /// null to use the default transition time.</param>
-        /// <returns>A task that represents the asynchronous operation.</returns>
+        /// <c>null</c> to use the default transition time.</param>
+        /// <returns>A <see cref="Task"/> that represents the asynchronous operation.</returns>
         internal Task CloseAsync(TimeSpan? duration = null)
         {
             Contract.EnsureNotDisposed(this, Disposed);
@@ -409,7 +409,7 @@ namespace TwistedLogik.Ultraviolet.UI
         }
 
         /// <summary>
-        /// Raises the LayoutInitialized event.
+        /// Raises the <see cref="LayoutInitialized"/> event.
         /// </summary>
         protected virtual void OnLayoutInitialized()
         {
@@ -421,7 +421,7 @@ namespace TwistedLogik.Ultraviolet.UI
         }
 
         /// <summary>
-        /// Raises the LayoutLoading event.
+        /// Raises the <see cref="LayoutLoading"/> event.
         /// </summary>
         protected virtual void OnLayoutLoading()
         {
@@ -433,7 +433,7 @@ namespace TwistedLogik.Ultraviolet.UI
         }
 
         /// <summary>
-        /// Raises the LayoutReady event.
+        /// Raises the <see cref="LayoutReady"/> event.
         /// </summary>
         protected virtual void OnLayoutReady()
         {
@@ -445,7 +445,7 @@ namespace TwistedLogik.Ultraviolet.UI
         }
 
         /// <summary>
-        /// Raises the Updating event.
+        /// Raises the <see cref="Updating"/> event.
         /// </summary>
         /// <param name="time">The Ultraviolet time.</param>
         protected virtual void OnUpdating(UltravioletTime time)
@@ -458,10 +458,10 @@ namespace TwistedLogik.Ultraviolet.UI
         }
 
         /// <summary>
-        /// Raises the DrawingBackground event.
+        /// Raises the <see cref="DrawingBackground"/> event.
         /// </summary>
-        /// <param name="time">Time elapsed since the last call to Draw.</param>
-        /// <param name="spriteBatch">The sprite batch with which the panel is being drawn.</param>
+        /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Draw()"/>.</param>
+        /// <param name="spriteBatch">The <see cref="SpriteBatch"/> with which the panel is being drawn.</param>
         protected virtual void OnDrawingBackground(UltravioletTime time, SpriteBatch spriteBatch)
         {
             var temp = DrawingBackground;
@@ -472,10 +472,10 @@ namespace TwistedLogik.Ultraviolet.UI
         }
 
         /// <summary>
-        /// Raises the DrawingLayout event.
+        /// Raises the <see cref="DrawingLayout"/> event.
         /// </summary>
-        /// <param name="time">Time elapsed since the last call to Draw.</param>
-        /// <param name="spriteBatch">The sprite batch with which the panel is being drawn.</param>
+        /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Draw()"/>.</param>
+        /// <param name="spriteBatch">The <see cref="SpriteBatch"/> with which the panel is being drawn.</param>
         protected virtual void OnDrawingLayout(UltravioletTime time, SpriteBatch spriteBatch)
         {
             var temp = DrawingLayout;
@@ -486,10 +486,10 @@ namespace TwistedLogik.Ultraviolet.UI
         }
 
         /// <summary>
-        /// Raises the DrawingForeground event.
+        /// Raises the <see cref="DrawingForeground"/> event.
         /// </summary>
-        /// <param name="time">Time elapsed since the last call to Draw.</param>
-        /// <param name="spriteBatch">The sprite batch with which the panel is being drawn.</param>
+        /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Draw()"/>.</param>
+        /// <param name="spriteBatch">The <see cref="SpriteBatch"/> with which the panel is being drawn.</param>
         protected virtual void OnDrawingForeground(UltravioletTime time, SpriteBatch spriteBatch)
         {
             var temp = DrawingForeground;
@@ -500,7 +500,7 @@ namespace TwistedLogik.Ultraviolet.UI
         }
 
         /// <summary>
-        /// Raises the Opening event.
+        /// Raises the <see cref="Opening"/> event.
         /// </summary>
         protected virtual void OnOpening()
         {
@@ -512,7 +512,7 @@ namespace TwistedLogik.Ultraviolet.UI
         }
 
         /// <summary>
-        /// Raises the Opened event.
+        /// Raises the <see cref="Opened"/> event.
         /// </summary>
         protected virtual void OnOpened()
         {
@@ -524,7 +524,7 @@ namespace TwistedLogik.Ultraviolet.UI
         }
 
         /// <summary>
-        /// Raises the Closing event.
+        /// Raises the <see cref="Closing"/> event.
         /// </summary>
         protected virtual void OnClosing()
         {
@@ -536,7 +536,7 @@ namespace TwistedLogik.Ultraviolet.UI
         }
 
         /// <summary>
-        /// Raises the Closed event.
+        /// Raises the <see cref="Closed"/> event.
         /// </summary>
         protected virtual void OnClosed()
         {
@@ -550,8 +550,8 @@ namespace TwistedLogik.Ultraviolet.UI
         /// <summary>
         /// Draws the panel's layout.
         /// </summary>
-        /// <param name="time">Time elapsed since the last call to Draw.</param>
-        /// <param name="spriteBatch">The sprite batch with which the panel is being drawn.</param>
+        /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Draw()"/>.</param>
+        /// <param name="spriteBatch">The <see cref="SpriteBatch"/> with which the panel is being drawn.</param>
         protected virtual void DrawLayout(UltravioletTime time, SpriteBatch spriteBatch)
         {
             if (this.layout != null)
@@ -564,7 +564,7 @@ namespace TwistedLogik.Ultraviolet.UI
         /// <summary>
         /// Updates the panel's layout.
         /// </summary>
-        /// <param name="time">Time elapsed since the last call to Update.</param>
+        /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Update()"/>.</param>
         protected void UpdateLayout(UltravioletTime time)
         {
             if (layout == null)
@@ -582,7 +582,7 @@ namespace TwistedLogik.Ultraviolet.UI
         /// <summary>
         /// Updates the panel's transition state.
         /// </summary>
-        /// <param name="time">Time elapsed since the last call to Update.</param>
+        /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Update()"/>.</param>
         protected void UpdateTransition(UltravioletTime time)
         {
             if (State == UIPanelState.Open || State == UIPanelState.Closed)
@@ -614,8 +614,8 @@ namespace TwistedLogik.Ultraviolet.UI
         /// <summary>
         /// Loads the specified panel definition into the panel's layout, if the panel has a layout.
         /// </summary>
-        /// <param name="content">The content manager with which to load layout content.</param>
-        /// <param name="definition">The panel definition to load into the panel's layout.</param>
+        /// <param name="content">The <see cref="ContentManager"/> with which to load layout content.</param>
+        /// <param name="definition">The <see cref="UIPanelDefinition"/> to load into the panel's layout.</param>
         /// <returns><c>true</c> if the layout was loaded; otherwise, <c>false</c>.</returns>
         protected Boolean LoadLayout(ContentManager content, UIPanelDefinition definition)
         {
@@ -650,7 +650,7 @@ namespace TwistedLogik.Ultraviolet.UI
         }
 
         /// <summary>
-        /// Gets a value indicating whether the panel is in the Open state.
+        /// Gets a value indicating whether the panel is in the <see cref="UIPanelState.Open"/> state.
         /// </summary>
         protected Boolean IsOpen
         {
@@ -658,7 +658,7 @@ namespace TwistedLogik.Ultraviolet.UI
         }
 
         /// <summary>
-        /// Gets a value indicating whether the panel is in the Closed state.
+        /// Gets a value indicating whether the panel is in the <see cref="UIPanelState.Closed"/> state.
         /// </summary>
         protected Boolean IsClosed
         {
@@ -680,7 +680,7 @@ namespace TwistedLogik.Ultraviolet.UI
         }
 
         /// <summary>
-        /// Gets the width o f the panel's current window.
+        /// Gets the width of the panel's current window.
         /// </summary>
         protected Int32 WindowWidth
         {
@@ -722,7 +722,7 @@ namespace TwistedLogik.Ultraviolet.UI
         }
 
         /// <summary>
-        /// Raises the Opened event.
+        /// Raises the <see cref="Opened"/> event.
         /// </summary>
         internal virtual void HandleOpened()
         {
@@ -735,7 +735,7 @@ namespace TwistedLogik.Ultraviolet.UI
         }
 
         /// <summary>
-        /// Raises the Closed event.
+        /// Raises the <see cref="Closed"/> event.
         /// </summary>
         internal virtual void HandleClosed()
         {

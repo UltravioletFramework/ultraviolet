@@ -8,15 +8,15 @@ namespace TwistedLogik.Ultraviolet.Input
     /// Represents the method that is called when a mouse button is pressed or released.
     /// </summary>
     /// <param name="window">The window in which the input event took place.</param>
-    /// <param name="device">The mouse device that raised the event.</param>
-    /// <param name="button">The button that was pressed or released.</param>
+    /// <param name="device">The <see cref="MouseDevice"/> that raised the event.</param>
+    /// <param name="button">The <see cref="MouseButton"/> value that represents the button that was pressed or released.</param>
     public delegate void MouseButtonEventHandler(IUltravioletWindow window, MouseDevice device, MouseButton button);
 
     /// <summary>
     /// Represents the method that is called when the mouse is moved.
     /// </summary>
     /// <param name="window">The window in which the input event took place.</param>
-    /// <param name="device">The mouse device that raised the event.</param>
+    /// <param name="device">The <see cref="MouseDevice"/> that raised the event.</param>
     /// <param name="x">The x-coordinate of the mouse's current position.</param>
     /// <param name="y">The y-coordinate of the mouse's current position.</param>
     /// <param name="dx">The difference between the x-coordinate of the mouse's 
@@ -29,7 +29,7 @@ namespace TwistedLogik.Ultraviolet.Input
     /// Represents the method that is called when the mouse's wheel is scrolled.
     /// </summary>
     /// <param name="window">The window in which the input event took place.</param>
-    /// <param name="device">The mouse device that raised the event.</param>
+    /// <param name="device">The <see cref="MouseDevice"/> that raised the event.</param>
     /// <param name="x">The amount that the wheel was scrolled along the horizontal axis.</param>
     /// <param name="y">The amount that the wheel was scrolled along the vertical axis.</param>
     public delegate void MouseWheelEventHandler(IUltravioletWindow window, MouseDevice device, Int32 x, Int32 y);
@@ -40,7 +40,7 @@ namespace TwistedLogik.Ultraviolet.Input
     public abstract class MouseDevice : InputDevice<MouseButton>
     {
         /// <summary>
-        /// Initializes a new instance of the MouseDevice class.
+        /// Initializes a new instance of the <see cref="MouseDevice"/> class.
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
         public MouseDevice(UltravioletContext uv)
@@ -52,14 +52,14 @@ namespace TwistedLogik.Ultraviolet.Input
         /// <summary>
         /// Gets a value indicating whether the specified button was clicked this frame.
         /// </summary>
-        /// <param name="button">The button to evaluate.</param>
+        /// <param name="button">The <see cref="MouseButton"/> value that represents the button to evaluate.</param>
         /// <returns><c>true</c> if the button was clicked this frame; otherwise, <c>false</c>.</returns>
         public abstract Boolean IsButtonClicked(MouseButton button);
 
         /// <summary>
         /// Gets a value indicating whether the specified button was double clicked this frame.
         /// </summary>
-        /// <param name="button">The button to evaluate.</param>
+        /// <param name="button">The <see cref="MouseButton"/> value that represents the button to evaluate.</param>
         /// <returns><c>true</c> if the button was double clicked this frame; otherwise, <c>false</c>.</returns>
         public abstract Boolean IsButtonDoubleClicked(MouseButton button);
 
@@ -72,7 +72,7 @@ namespace TwistedLogik.Ultraviolet.Input
         }
 
         /// <summary>
-        /// Gets the mouse's current x-coordinate.
+        /// Gets the x-coordinate of the mouse's current position.
         /// </summary>
         public abstract Int32 X
         {
@@ -80,7 +80,7 @@ namespace TwistedLogik.Ultraviolet.Input
         }
 
         /// <summary>
-        /// Gets the mouse's current y-coordinate.
+        /// Gets the y-coordinate of the mouse's current position.
         /// </summary>
         public abstract Int32 Y
         {
@@ -185,7 +185,7 @@ namespace TwistedLogik.Ultraviolet.Input
         public event MouseWheelEventHandler WheelScrolled;
 
         /// <summary>
-        /// Raises the ButtonPressed event.
+        /// Raises the <see cref="ButtonPressed"/> event.
         /// </summary>
         /// <param name="window">The window in which the input event took place.</param>
         /// <param name="button">The mouse button that was pressed.</param>
@@ -199,7 +199,7 @@ namespace TwistedLogik.Ultraviolet.Input
         }
 
         /// <summary>
-        /// Raises the ButtonReleased event.
+        /// Raises the <see cref="ButtonReleased"/> event.
         /// </summary>
         /// <param name="window">The window in which the input event took place.</param>
         /// <param name="button">The mouse button that was released.</param>
@@ -213,7 +213,7 @@ namespace TwistedLogik.Ultraviolet.Input
         }
 
         /// <summary>
-        /// Raises the Click event.
+        /// Raises the <see cref="Click"/> event.
         /// </summary>
         /// <param name="window">The window in which the input event took place.</param>
         /// <param name="button">The mouse button that was clicked.</param>
@@ -227,7 +227,7 @@ namespace TwistedLogik.Ultraviolet.Input
         }
 
         /// <summary>
-        /// Raises the DoubleClick event.
+        /// Raises the <see cref="DoubleClick"/> event.
         /// </summary>
         /// <param name="window">The window in which the input event took place.</param>
         /// <param name="button">The mouse button that was clicked.</param>
@@ -241,7 +241,7 @@ namespace TwistedLogik.Ultraviolet.Input
         }
 
         /// <summary>
-        /// Raises the Moved event.
+        /// Raises the <see cref="Moved"/> event.
         /// </summary>
         /// <param name="window">The window in which the input event took place.</param>
         /// <param name="x">The x-coordinate of the mouse's current position.</param>
@@ -260,7 +260,7 @@ namespace TwistedLogik.Ultraviolet.Input
         }
 
         /// <summary>
-        /// Raises the WheelScrolled event.
+        /// Raises the <see cref="WheelScrolled"/> event.
         /// </summary>
         /// <param name="window">The window in which the input event took place.</param>
         /// <param name="x">The amount that the wheel was scrolled along the horizontal axis.</param>

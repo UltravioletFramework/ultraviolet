@@ -278,7 +278,7 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Called when the application state is being updated.
         /// </summary>
-        /// <param name="time">Time elapsed since the last call to Update.</param>
+        /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Update()"/>.</param>
         protected virtual void OnUpdating(UltravioletTime time)
         {
 
@@ -287,7 +287,7 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Called when the scene is being drawn.
         /// </summary>
-        /// <param name="time">Time elapsed since the last call to Draw.</param>
+        /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Draw()"/>.</param>
         protected virtual void OnDrawing(UltravioletTime time)
         {
 
@@ -472,7 +472,7 @@ namespace TwistedLogik.Ultraviolet
         /// Handles the Ultraviolet window's Drawing event.
         /// </summary>
         /// <param name="window">The window being drawn.</param>
-        /// <param name="time">Time elapsed since the last call to draw.</param>
+        /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Draw()"/>.</param>
         private void uv_Drawing(IUltravioletWindow window, UltravioletTime time)
         {
             OnDrawing(time);
@@ -482,7 +482,7 @@ namespace TwistedLogik.Ultraviolet
         /// Handles the Ultraviolet context's Updating event.
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
-        /// <param name="time">Time elapsed since the last call to Update.</param>
+        /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Update()"/>.</param>
         private void uv_Updating(UltravioletContext uv, UltravioletTime time)
         {
             OnUpdating(time);

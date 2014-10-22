@@ -8,7 +8,7 @@ namespace TwistedLogik.Ultraviolet.UI
 {
     /// <summary>
     /// Represents a content processor which processes XML panel
-    /// definitions into instances of the UIPanelDefinition class.
+    /// definitions into instances of the <see cref="UIPanelDefinition"/> class.
     /// </summary>
     [ContentProcessor]
     internal sealed class UIPanelDefinitionProcessor : ContentProcessor<XDocument, UIPanelDefinition>

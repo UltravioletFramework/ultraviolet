@@ -6,7 +6,7 @@ namespace TwistedLogik.Ultraviolet.Input
     /// <summary>
     /// Represents the method that is called when an input action is pressed or released.
     /// </summary>
-    /// <param name="action">The input action that raised the event.</param>
+    /// <param name="action">The <see cref="InputAction"/> that raised the event.</param>
     public delegate void InputActionEventHandler(InputAction action);
 
     /// <summary>
@@ -15,7 +15,7 @@ namespace TwistedLogik.Ultraviolet.Input
     public sealed class InputAction
     {
         /// <summary>
-        /// Initializes a new instance of the InputAction class.
+        /// Initializes a new instance of the <see cref="InputAction"/> class.
         /// </summary>
         internal InputAction(InputActionCollection collection)
         {
@@ -114,7 +114,7 @@ namespace TwistedLogik.Ultraviolet.Input
         /// Gets the binding's current state.
         /// </summary>
         /// <param name="ignoreRepeats">A value indicating whether to ignore repeated button press events on devices which support them.</param>
-        /// <returns>The binding's current state.</returns>
+        /// <returns>A <see cref="ButtonState"/> value representing the binding's current state.</returns>
         public ButtonState GetState(Boolean ignoreRepeats = true)
         {
             var state = ButtonState.Up;
@@ -132,7 +132,7 @@ namespace TwistedLogik.Ultraviolet.Input
         }
 
         /// <summary>
-        /// Gets or sets the priamry binding associated with this action.
+        /// Gets or sets the primary binding associated with this action.
         /// </summary>
         public InputBinding Primary
         {
@@ -169,12 +169,12 @@ namespace TwistedLogik.Ultraviolet.Input
         }
 
         /// <summary>
-        /// Occurs when the action is pressed.
+        /// Occurs when one of the action's associated bindings is pressed.
         /// </summary>
         public event InputActionEventHandler Pressed;
 
         /// <summary>
-        /// Occurs when the action is released.
+        /// Occurs when one of the action's associated bindings is released after being pressed.
         /// </summary>
         public event InputActionEventHandler Released;
 

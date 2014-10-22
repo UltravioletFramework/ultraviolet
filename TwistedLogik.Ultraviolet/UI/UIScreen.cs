@@ -6,15 +6,15 @@ using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
 namespace TwistedLogik.Ultraviolet.UI
 {
     /// <summary>
-    /// Represents a UI screen.
+    /// Represents a user interface screen.
     /// </summary>
     public abstract class UIScreen : UIPanel
     {
         /// <summary>
-        /// Initializes a new instance of the UIScreen class.
+        /// Initializes a new instance of the <see cref="UIScreen"/> class.
         /// </summary>
         /// <param name="definition">The asset path of the screen's definition file.</param>
-        /// <param name="rootDirectory">The root directory of the screen's content manager.</param>
+        /// <param name="rootDirectory">The root directory of the screen's <see cref="ContentManager"/>.</param>
         protected UIScreen(String definition, String rootDirectory = null)
             : this(null, definition, rootDirectory)
         {
@@ -22,11 +22,11 @@ namespace TwistedLogik.Ultraviolet.UI
         }
 
         /// <summary>
-        /// Initializes a new instance of the UIScreen class.
+        /// Initializes a new instance of the <see cref="UIScreen"/> class.
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
         /// <param name="definition">The asset path of the screen's definition file.</param>
-        /// <param name="rootDirectory">The root directory of the screen's content manager.</param>
+        /// <param name="rootDirectory">The root directory of the screen's <see cref="ContentManager"/>.</param>
         protected UIScreen(UltravioletContext uv, String definition, String rootDirectory = null)
             : base(uv)
         {
@@ -43,7 +43,7 @@ namespace TwistedLogik.Ultraviolet.UI
         /// <summary>
         /// Updates the screen's state.
         /// </summary>
-        /// <param name="time">Time elapsed since the last call to Update.</param>
+        /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Update()"/>.</param>
         public override void Update(UltravioletTime time)
         {
             Contract.EnsureNotDisposed(this, Disposed);
@@ -57,8 +57,8 @@ namespace TwistedLogik.Ultraviolet.UI
         /// <summary>
         /// Draws the screen using the specified sprite batch.
         /// </summary>
-        /// <param name="time">Time elapsed since the last call to Draw.</param>
-        /// <param name="spriteBatch">The sprite batch with which to draw the screen.</param>
+        /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Draw()"/>.</param>
+        /// <param name="spriteBatch">The <see cref="SpriteBatch"/> with which to draw the screen.</param>
         public override void Draw(UltravioletTime time, SpriteBatch spriteBatch)
         {
             Contract.Require(spriteBatch, "spriteBatch");
@@ -73,7 +73,7 @@ namespace TwistedLogik.Ultraviolet.UI
         }
 
         /// <summary>
-        /// Gets the window's size in pixels.
+        /// Gets the screen's size in pixels.
         /// </summary>
         public override Size2 Size
         {
@@ -86,7 +86,7 @@ namespace TwistedLogik.Ultraviolet.UI
         }
 
         /// <summary>
-        /// Gets the window's width in pixels.
+        /// Gets the screen's width in pixels.
         /// </summary>
         public override Int32 Width
         {
@@ -99,7 +99,7 @@ namespace TwistedLogik.Ultraviolet.UI
         }
 
         /// <summary>
-        /// Gets the window's height in pixels.
+        /// Gets the screen's height in pixels.
         /// </summary>
         public override Int32 Height
         {
@@ -133,7 +133,7 @@ namespace TwistedLogik.Ultraviolet.UI
 
         /// <summary>
         /// Gets a value indicating whether this panel is ready for input which does
-        /// not require the panel to be topmost on the screen.
+        /// not require the panel to be topmost on the window.
         /// </summary>
         public override Boolean IsReadyForBackgroundInput
         {
@@ -197,7 +197,7 @@ namespace TwistedLogik.Ultraviolet.UI
         }
 
         /// <summary>
-        /// Raises the Opened event.
+        /// Raises the <see cref="Opened"/> event.
         /// </summary>
         internal override void HandleOpened()
         {
@@ -206,7 +206,7 @@ namespace TwistedLogik.Ultraviolet.UI
         }
 
         /// <summary>
-        /// Raises the Closed event.
+        /// Raises the <see cref="Closed"/> event.
         /// </summary>
         internal override void HandleClosed()
         {
@@ -228,7 +228,7 @@ namespace TwistedLogik.Ultraviolet.UI
         }
 
         /// <summary>
-        /// Raises the LayoutInitialized event.
+        /// Raises the <see cref="LayoutInitialized"/> event.
         /// </summary>
         protected override void OnLayoutInitialized()
         {

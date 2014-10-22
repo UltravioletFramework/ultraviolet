@@ -16,7 +16,7 @@ namespace TwistedLogik.Ultraviolet.Input
     public abstract partial class InputActionCollection : UltravioletResource, IEnumerable<KeyValuePair<String, InputAction>>
     {
         /// <summary>
-        /// Initializes a new instance of the InputActionCollection class.
+        /// Initializes a new instance of the <see cref="InputActionCollection"/> class.
         /// </summary>
         protected InputActionCollection(UltravioletContext uv)
             : base(uv)
@@ -25,9 +25,10 @@ namespace TwistedLogik.Ultraviolet.Input
         }
 
         /// <summary>
-        /// Creates an Ultraviolet singleton object which encapsulates an instance of the specified input action collection type.
+        /// Creates an <see cref="UltravioletSingleton{T}"/> which encapsulates an instance of the specified input action collection type.
         /// </summary>
-        /// <returns>An Ultraviolet singleton object which encapsulates an instance of the specified input action collection type.</returns>
+        /// <typeparam name="T">The type of input action collection for which to create a singleton.</typeparam>
+        /// <returns>An <see cref="UltravioletSingleton{T}"/> which encapsulates an instance of the specified input action collection type.</returns>
         public static UltravioletSingleton<T> CreateSingleton<T>() where T : InputActionCollection
         {
             var ctor = typeof(T).GetConstructor(new[] { typeof(UltravioletContext) });
@@ -50,7 +51,8 @@ namespace TwistedLogik.Ultraviolet.Input
         /// Removes any bindings which conflict with the specified binding.
         /// </summary>
         /// <param name="binding">The input binding for which to unbind conflicts.</param>
-        /// <param name="predicate">A predicate specifying which input actions to unbind. If null, all potential conflicts are unbound.</param>
+        /// <param name="predicate">A predicate specifying which input actions to unbind.If <c>null</c>, 
+        /// all potential conflicts are unbound.</param>
         /// <returns>A collection of input actions which were affected by this operation.</returns>
         public IEnumerable<KeyValuePair<String, InputAction>> UnbindConflicts(InputBinding binding, Predicate<InputAction> predicate = null)
         {
@@ -91,7 +93,7 @@ namespace TwistedLogik.Ultraviolet.Input
         }
 
         /// <summary>
-        /// Saves the input actions to the specified path.
+        /// Saves the collection's input actions to the specified path.
         /// </summary>
         /// <param name="path">The path to the file to save.</param>
         public void Save(String path)
@@ -103,7 +105,7 @@ namespace TwistedLogik.Ultraviolet.Input
         }
 
         /// <summary>
-        /// Saves the input actions to the specified stream.
+        /// Saves the collection's input actions to the specified stream.
         /// </summary>
         /// <param name="stream">The <see cref="Stream"/> to which to save the input actions.</param>
         public void Save(Stream stream)
@@ -115,7 +117,7 @@ namespace TwistedLogik.Ultraviolet.Input
         }
 
         /// <summary>
-        /// Loads the input actions from the specified path.
+        /// Loads the collection's input actions from the specified path.
         /// </summary>
         /// <param name="path">The path to the file to load.</param>
         /// <param name="throwIfNotFound">A value indicating whether to throw an exception if the specified file is not found.</param>
@@ -143,7 +145,7 @@ namespace TwistedLogik.Ultraviolet.Input
         }
 
         /// <summary>
-        /// Loads the input actions from the specified stream.
+        /// Loads the collection's input actions from the specified stream.
         /// </summary>
         /// <param name="stream">The <see cref="Stream"/> from which to load the input actions.</param>
         public void Load(Stream stream)

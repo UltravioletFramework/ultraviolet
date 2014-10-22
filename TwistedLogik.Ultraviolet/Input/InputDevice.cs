@@ -5,10 +5,11 @@ namespace TwistedLogik.Ultraviolet.Input
     /// <summary>
     /// Represents any input device.
     /// </summary>
+    /// <typeparam name="T">The type of button exposed by the device.</typeparam>
     public abstract class InputDevice<T> : UltravioletResource
     {
         /// <summary>
-        /// Initializes a new instance of the InputDevice class.
+        /// Initializes a new instance of the <see cref="InputDevice"/> class.
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
         internal InputDevice(UltravioletContext uv)
@@ -20,7 +21,7 @@ namespace TwistedLogik.Ultraviolet.Input
         /// <summary>
         /// Updates the device's state.
         /// </summary>
-        /// <param name="time">Time elapsed since the last call to Update.</param>
+        /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Update()"/>.</param>
         public abstract void Update(UltravioletTime time);
 
         /// <summary>

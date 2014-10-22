@@ -4,7 +4,7 @@ using System.Xml.Linq;
 namespace TwistedLogik.Ultraviolet.UI
 {
     /// <summary>
-    /// Represents a UI panel's definition.
+    /// Represents a UI panel's definition file.
     /// </summary>
     public sealed class UIPanelDefinition
     {

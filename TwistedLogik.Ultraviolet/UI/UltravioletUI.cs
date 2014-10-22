@@ -12,7 +12,7 @@ namespace TwistedLogik.Ultraviolet.UI
     public sealed class UltravioletUI : UltravioletResource, IUltravioletUI
     {
         /// <summary>
-        /// Initializes a new instance of the UltravioletUI class.
+        /// Initializes a new instance of the <see cref="UltravioletUI"/> class.
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
         /// <param name="configuration">The Ultraviolet Framework configuration settings for the current context.</param>
@@ -29,7 +29,7 @@ namespace TwistedLogik.Ultraviolet.UI
         /// <summary>
         /// Updates the subsystem's state.
         /// </summary>
-        /// <param name="time">Time elapsed since the last call to Update.</param>
+        /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Update()"/>.</param>
         public void Update(UltravioletTime time)
         {
             Contract.EnsureNotDisposed(this, Disposed);
@@ -50,7 +50,7 @@ namespace TwistedLogik.Ultraviolet.UI
         /// <summary>
         /// Gets the screen stack associated with the primary window.
         /// </summary>
-        /// <returns>The screen stack associated with the primary window.</returns>
+        /// <returns>The <see cref="UIScreenStack"/> associated with the primary window.</returns>
         public UIScreenStack GetScreens()
         {
             Contract.EnsureNotDisposed(this, Disposed);
@@ -67,7 +67,7 @@ namespace TwistedLogik.Ultraviolet.UI
         /// </summary>
         /// <param name="window">The window for which to retrieve a screen stack, 
         /// or <c>null</c> to retrieve the screen stack for the primary window.</param>
-        /// <returns>The screen stack associated with the specified window.</returns>
+        /// <returns>The <see cref="UIScreenStack"/> associated with the specified window.</returns>
         public UIScreenStack GetScreens(IUltravioletWindow window)
         {
             Contract.EnsureNotDisposed(this, Disposed);
@@ -156,7 +156,7 @@ namespace TwistedLogik.Ultraviolet.UI
         /// <summary>
         /// Raises the Updating event.
         /// </summary>
-        /// <param name="time">Time elapsed since the last call to Update.</param>
+        /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Update()"/>.</param>
         private void OnUpdating(UltravioletTime time)
         {
             var temp = Updating;

@@ -4,12 +4,14 @@ using TwistedLogik.Nucleus;
 namespace TwistedLogik.Ultraviolet.Platform
 {
     /// <summary>
-    /// Represents a display mode.
+    /// <para>Represents a display mode.</para>
+    /// <para>A display mode encapsulates all of the parameters of a display device, 
+    /// include its resolution, bit depth, and refresh rate.</para>
     /// </summary>
     public sealed class DisplayMode
     {
         /// <summary>
-        /// Initializes a new instance of the DisplayMode class.
+        /// Initializes a new instance of the <see cref="DisplayMode"/> class.
         /// </summary>
         public DisplayMode(Int32 width, Int32 height, Int32 bpp, Int32 refresh)
         {
@@ -34,7 +36,7 @@ namespace TwistedLogik.Ultraviolet.Platform
         }
 
         /// <summary>
-        /// Gets the window's width in pixels.
+        /// Gets the display's width in pixels.
         /// </summary>
         public Int32 Width
         {
@@ -43,7 +45,7 @@ namespace TwistedLogik.Ultraviolet.Platform
         }
 
         /// <summary>
-        /// Gets the window's height in pixels.
+        /// Gets the display's height in pixels.
         /// </summary>
         public Int32 Height
         {
@@ -61,7 +63,7 @@ namespace TwistedLogik.Ultraviolet.Platform
         }
 
         /// <summary>
-        /// Gets the refresh rate in hertz.
+        /// Gets the display's refresh rate in hertz.
         /// </summary>
         public Int32 RefreshRate
         {

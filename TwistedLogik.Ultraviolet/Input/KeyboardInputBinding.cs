@@ -11,7 +11,7 @@ namespace TwistedLogik.Ultraviolet.Input
     public sealed class KeyboardInputBinding : InputBinding
     {
         /// <summary>
-        /// Initializes a new instance of the KeyboardInputBinding class.
+        /// Initializes a new instance of the <see cref="KeyboardInputBinding"/> class.
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
         /// <param name="element">The XML element that contains the binding data.</param>
@@ -28,10 +28,10 @@ namespace TwistedLogik.Ultraviolet.Input
         }
 
         /// <summary>
-        /// Initializes a new instance of the KeyboardInputBinding class.
+        /// Initializes a new instance of the <see cref="KeyboardInputBinding"/> class.
         /// </summary>
         /// <param name="keyboard">The keyboard device with which this binding is associated.</param>
-        /// <param name="key">The binding's primary key.</param>
+        /// <param name="key">A <see cref="Key"/> value representing the binding's primary key.</param>
         public KeyboardInputBinding(KeyboardDevice keyboard, Key key)
         {
             Contract.Require(keyboard, "keyboard");
@@ -41,10 +41,10 @@ namespace TwistedLogik.Ultraviolet.Input
         }
         
         /// <summary>
-        /// Initializes a new instance of the KeyboardInputBinding class.
+        /// Initializes a new instance of the <see cref="KeyboardInputBinding"/> class.
         /// </summary>
-        /// <param name="keyboard">The keyboard device with which this binding is associated.</param>
-        /// <param name="key">The binding's primary key.</param>
+        /// <param name="keyboard">The <see cref="KeyboardDevice"/> with which this binding is associated.</param>
+        /// <param name="key">A <see cref="Key"/> value representing the binding's primary key.</param>
         /// <param name="control">A value indicating whether the binding requires the Control modifier.</param>
         /// <param name="alt">A value indicating whether the binding requires the Alt modifier.</param>
         /// <param name="shift">A value indicating whether the binding requires the Shift modifier.</param>
@@ -88,7 +88,7 @@ namespace TwistedLogik.Ultraviolet.Input
         /// Gets a value indicating whether the input binding uses the same device 
         /// and the same button configuration as the specified input binding.
         /// </summary>
-        /// <param name="binding">The input binding to compare against this input binding.</param>
+        /// <param name="binding">The <see cref="InputBinding"/> to compare against this input binding.</param>
         /// <returns><c>true</c> if the specified input binding uses the same device and the same button 
         /// configuration as this input binding; otherwise, <c>false</c>.</returns>
         public override Boolean UsesSameButtons(InputBinding binding)
@@ -114,7 +114,7 @@ namespace TwistedLogik.Ultraviolet.Input
         /// Gets a value indicating whether the input binding uses the same device 
         /// and the same primary buttons as the specified input binding.
         /// </summary>
-        /// <param name="binding">The input binding to compare against this input binding.</param>
+        /// <param name="binding">The <see cref="InputBinding"/> to compare against this input binding.</param>
         /// <returns><c>true</c> if the specified input binding uses the same device and the same primary 
         /// buttons as this input binding; otherwise, <c>false</c>.</returns>
         public override Boolean UsesSamePrimaryButtons(InputBinding binding)
@@ -171,7 +171,7 @@ namespace TwistedLogik.Ultraviolet.Input
         }
 
         /// <summary>
-        /// Gets the keyboard device that created this input binding.
+        /// Gets the <see cref="KeyboardDevice"/> that created this input binding.
         /// </summary>
         public KeyboardDevice Keyboard
         {
@@ -179,7 +179,7 @@ namespace TwistedLogik.Ultraviolet.Input
         }
 
         /// <summary>
-        /// Gets the binding's primary key.
+        /// Gets the <see cref="Key"/> value that represents the binding's primary key.
         /// </summary>
         public Key Key
         {

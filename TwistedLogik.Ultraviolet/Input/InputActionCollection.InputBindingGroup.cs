@@ -31,7 +31,7 @@ namespace TwistedLogik.Ultraviolet.Input
             /// <summary>
             /// Adds a binding to the group.
             /// </summary>
-            /// <param name="binding">The binding to add to the group.</param>
+            /// <param name="binding">The <see cref="InputBinding"/> to add to the group.</param>
             /// <returns><c>true</c> if the binding was added to the group; otherwise, <c>false</c>.</returns>
             public Boolean Add(InputBinding binding)
             {
@@ -48,7 +48,7 @@ namespace TwistedLogik.Ultraviolet.Input
             /// <summary>
             /// Removes a binding from the group.
             /// </summary>
-            /// <param name="binding">The binding to remove from the group.</param>
+            /// <param name="binding">The <see cref="InputBinding"/> to remove from the group.</param>
             /// <returns><c>true</c> if the binding was removed from the group; otherwise, <c>false</c>.</returns>
             public Boolean Remove(InputBinding binding)
             {
