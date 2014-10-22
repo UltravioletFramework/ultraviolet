@@ -5,12 +5,12 @@ using TwistedLogik.Nucleus;
 namespace TwistedLogik.Ultraviolet
 {
     /// <summary>
-    /// Represents a collection of named cursors.
+    /// Represents a collection of named <see cref="Cursor"/> objects.
     /// </summary>
     public sealed class CursorCollection : UltravioletResource
     {
         /// <summary>
-        /// Initializes a new instance of the CursorCollection class.
+        /// Initializes a new instance of the <see cref="CursorCollection"/> class.
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
         internal CursorCollection(UltravioletContext uv)
@@ -20,10 +20,10 @@ namespace TwistedLogik.Ultraviolet
         }
 
         /// <summary>
-        /// Gets the cursor with the specified name.
+        /// Gets the <see cref="Cursor"/> with the specified name.
         /// </summary>
-        /// <param name="name">The name of the cursor to retrieve.</param>
-        /// <returns>The cursor with the specified name, or <c>null</c> if no such cursor exists.</returns>
+        /// <param name="name">The name of the <see cref="Cursor"/> to retrieve.</param>
+        /// <returns>The <see cref="Cursor"/> with the specified name, or <c>null</c> if no such <see cref="Cursor"/> exists.</returns>
         public Cursor this[String name]
         {
             get

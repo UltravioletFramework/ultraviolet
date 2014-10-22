@@ -14,6 +14,7 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Gets the default factory method of the specified delegate type.
         /// </summary>
+        /// <typeparam name="T">The delegate type of the factory method to retrieve.</typeparam>
         /// <returns>The default factory method of the specified type.</returns>
         public T GetFactoryMethod<T>() where T : class
         {
@@ -35,6 +36,7 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Gets a named factory method of the specified delegate type.
         /// </summary>
+        /// <typeparam name="T">The delegate type of the factory method to retrieve.</typeparam>
         /// <param name="name">The name of the factory method to retrieve.</param>
         /// <returns>The default factory method of the specified type.</returns>
         public T GetFactoryMethod<T>(String name) where T : class
@@ -62,6 +64,7 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Registers the default factory method of the specified delegate type.
         /// </summary>
+        /// <typeparam name="T">The delegate type of the factory method to register.</typeparam>
         /// <param name="factory">A delegate representing the factory method to register.</param>
         public void SetFactoryMethod<T>(T factory) where T : class
         {
@@ -81,6 +84,7 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Registers a named factory method of the specified delegate type.
         /// </summary>
+        /// <typeparam name="T">The delegate type of the factory method to register.</typeparam>
         /// <param name="name">The name of the factory method to register.</param>
         /// <param name="factory">A delegate representing the factory method to register.</param>
         public void SetFactoryMethod<T>(String name, T factory) where T : class

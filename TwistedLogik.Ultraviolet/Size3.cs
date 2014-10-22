@@ -12,7 +12,7 @@ namespace TwistedLogik.Ultraviolet
     public struct Size3 : IEquatable<Size3>, IInterpolatable<Size3>
     {
         /// <summary>
-        /// Initializes a new instance of the Size3 structure.
+        /// Initializes a new instance of the <see cref="Size3"/> structure.
         /// </summary>
         /// <param name="width">The area's width.</param>
         /// <param name="height">The area's height.</param>
@@ -27,8 +27,8 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Compares two sizes for equality.
         /// </summary>
-        /// <param name="v1">The first size to compare.</param>
-        /// <param name="v2">The second size to compare.</param>
+        /// <param name="v1">The first <see cref="Size3"/> to compare.</param>
+        /// <param name="v2">The second <see cref="Size3"/> to compare.</param>
         /// <returns><c>true</c> if the specified sizes are equal; otherwise, <c>false</c>.</returns>
         public static Boolean operator ==(Size3 v1, Size3 v2)
         {
@@ -38,8 +38,8 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Compares two sizes for inequality.
         /// </summary>
-        /// <param name="v1">The first size to compare.</param>
-        /// <param name="v2">The second size to compare.</param>
+        /// <param name="v1">The first <see cref="Size3"/> to compare.</param>
+        /// <param name="v2">The second <see cref="Size3"/> to compare.</param>
         /// <returns><c>true</c> if the specified sizes are unequal; otherwise, <c>false</c>.</returns>
         public static Boolean operator !=(Size3 v1, Size3 v2)
         {
@@ -47,7 +47,7 @@ namespace TwistedLogik.Ultraviolet
         }
 
         /// <summary>
-        /// Implicitly converts a Size3 structure to a Size3F structure.
+        /// Implicitly converts a <see cref="Size3"/> structure to a <see cref="Size3F"/> structure.
         /// </summary>
         /// <param name="size">The structure to convert.</param>
         /// <returns>The converted structure.</returns>
@@ -57,7 +57,7 @@ namespace TwistedLogik.Ultraviolet
         }
 
         /// <summary>
-        /// Converts the string representation of a size into an instance of the Size3 structure.
+        /// Converts the string representation of a size into an instance of the <see cref="Size3"/> structure.
         /// A return value indicates whether the conversion succeeded.
         /// </summary>
         /// <param name="s">A string containing a size to convert.</param>
@@ -69,21 +69,21 @@ namespace TwistedLogik.Ultraviolet
         }
 
         /// <summary>
-        /// Converts the string representation of a size into an instance of the Size3 structure.
+        /// Converts the string representation of a size into an instance of the <see cref="Size3"/> structure.
         /// </summary>
         /// <param name="s">A string containing a size to convert.</param>
-        /// <returns>A instance of the Size3 structure equivalent to the size contained in <paramref name="s"/>.</returns>
+        /// <returns>A instance of the <see cref="Size3"/> structure equivalent to the size contained in <paramref name="s"/>.</returns>
         public static Size3 Parse(String s)
         {
             return Parse(s, NumberStyles.Integer, NumberFormatInfo.CurrentInfo);
         }
 
         /// <summary>
-        /// Converts the string representation of a size into an instance of the Size3 structure.
+        /// Converts the string representation of a size into an instance of the <see cref="Size3"/> structure.
         /// A return value indicates whether the conversion succeeded.
         /// </summary>
         /// <param name="s">A string containing a size to convert.</param>
-        /// <param name="style">A set of <see cref="System.Globalization.NumberStyles"/> values indicating which elements are present in <paramref name="s"/>.</param>
+        /// <param name="style">A set of <see cref="NumberStyles"/> values indicating which elements are present in <paramref name="s"/>.</param>
         /// <param name="provider">A format provider that provides culture-specific formatting information.</param>
         /// <param name="size">A variable to populate with the converted value.</param>
         /// <returns><c>true</c> if <paramref name="s"/> was converted successfully; otherwise, <c>false</c>.</returns>
@@ -111,12 +111,12 @@ namespace TwistedLogik.Ultraviolet
         }
 
         /// <summary>
-        /// Converts the string representation of a size into an instance of the Size3 structure.
+        /// Converts the string representation of a size into an instance of the <see cref="Size3"/> structure.
         /// </summary>
         /// <param name="s">A string containing a size to convert.</param>
-        /// <param name="style">A set of <see cref="System.Globalization.NumberStyles"/> values indicating which elements are present in <paramref name="s"/>.</param>
+        /// <param name="style">A set of <see cref="NumberStyles"/> values indicating which elements are present in <paramref name="s"/>.</param>
         /// <param name="provider">A format provider that provides culture-specific formatting information.</param>
-        /// <returns>A instance of the Size3 structure equivalent to the size contained in <paramref name="s"/>.</returns>
+        /// <returns>A instance of the <see cref="Size3"/> structure equivalent to the size contained in <paramref name="s"/>.</returns>
         public static Size3 Parse(String s, NumberStyles style, IFormatProvider provider)
         {
             Size3 size;

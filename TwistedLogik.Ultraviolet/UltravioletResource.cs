@@ -4,12 +4,12 @@ using TwistedLogik.Nucleus;
 namespace TwistedLogik.Ultraviolet
 {
     /// <summary>
-    /// Represents a disposable Ultraviolet Resource.
+    /// Represents an object which encapsulates some native or implementation-specific resource.
     /// </summary>
     public abstract class UltravioletResource : IUltravioletComponent, IDisposable
     {
         /// <summary>
-        /// Initializes a new instance of the UltravioletComponent class.
+        /// Initializes a new instance of the <see cref="UltravioletResource"/> class.
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
         protected UltravioletResource(UltravioletContext uv)

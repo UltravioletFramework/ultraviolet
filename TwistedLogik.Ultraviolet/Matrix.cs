@@ -13,7 +13,7 @@ namespace TwistedLogik.Ultraviolet
     public struct Matrix : IEquatable<Matrix>, IInterpolatable<Matrix>
     {
         /// <summary>
-        /// Initializes a new instance of the Matrix class.
+        /// Initializes a new instance of the <see cref="Matrix"/> structure.
         /// </summary>
         /// <param name="m11">The value at row 1, column 1 of the matrix.</param>
         /// <param name="m12">The value at row 1, column 2 of the matrix.</param>
@@ -61,8 +61,8 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Compares two matrices for equality.
         /// </summary>
-        /// <param name="m1">The first matrix to compare.</param>
-        /// <param name="m2">The second matrix to compare.</param>
+        /// <param name="m1">The first <see cref="Matrix"/> to compare.</param>
+        /// <param name="m2">The second <see cref="Matrix"/> to compare.</param>
         /// <returns><c>true</c> if the specified matrices are equal; otherwise, <c>false</c>.</returns>
         public static Boolean operator ==(Matrix m1, Matrix m2)
         {
@@ -72,8 +72,8 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Compares two matrices for inequality.
         /// </summary>
-        /// <param name="m1">The first matrix to compare.</param>
-        /// <param name="m2">The second matrix to compare.</param>
+        /// <param name="m1">The first <see cref="Matrix"/> to compare.</param>
+        /// <param name="m2">The second <see cref="Matrix"/> to compare.</param>
         /// <returns><c>true</c> if the specified matrices are unequal; otherwise, <c>false</c>.</returns>
         public static Boolean operator !=(Matrix m1, Matrix m2)
         {
@@ -81,11 +81,11 @@ namespace TwistedLogik.Ultraviolet
         }
 
         /// <summary>
-        /// Multiplies a matrix by a scaling factor.
+        /// Multiplies a <see cref="Matrix"/> by a scaling factor.
         /// </summary>
         /// <param name="multiplier">The multiplier.</param>
         /// <param name="multiplicand">The multiplicand.</param>
-        /// <returns>The resulting matrix.</returns>
+        /// <returns>The resulting <see cref="Matrix"/>.</returns>
         public static Matrix operator *(Single multiplier, Matrix multiplicand)
         {
             Matrix result;
@@ -94,11 +94,11 @@ namespace TwistedLogik.Ultraviolet
         }
 
         /// <summary>
-        /// Multiplies a matrix by a scaling factor.
+        /// Multiplies a <see cref="Matrix"/> by a scaling factor.
         /// </summary>
         /// <param name="multiplicand">The multiplicand.</param>
         /// <param name="multiplier">The multiplier.</param>
-        /// <returns>The resulting matrix.</returns>
+        /// <returns>The resulting <see cref="Matrix"/>.</returns>
         public static Matrix operator *(Matrix multiplicand, Single multiplier)
         {
             Matrix result;
@@ -107,11 +107,11 @@ namespace TwistedLogik.Ultraviolet
         }
 
         /// <summary>
-        /// Multiplies a matrix by another matrix.
+        /// Multiplies a <see cref="Matrix"/> by another matrix.
         /// </summary>
         /// <param name="multiplicand">The multiplicand.</param>
         /// <param name="multiplier">The multiplier.</param>
-        /// <returns>The resulting matrix.</returns>
+        /// <returns>The resulting <see cref="Matrix"/>.</returns>
         public static Matrix operator *(Matrix multiplicand, Matrix multiplier)
         {
             Matrix result;
@@ -120,11 +120,11 @@ namespace TwistedLogik.Ultraviolet
         }
 
         /// <summary>
-        /// Divides a matrix by a scaling factor.
+        /// Divides a <see cref="Matrix"/> by a scaling factor.
         /// </summary>
         /// <param name="dividend">The dividend.</param>
         /// <param name="divisor">The divisor.</param>
-        /// <returns>The resulting matrix.</returns>
+        /// <returns>The resulting <see cref="Matrix"/>.</returns>
         public static Matrix operator /(Matrix dividend, Single divisor)
         {
             Matrix result;
@@ -133,11 +133,11 @@ namespace TwistedLogik.Ultraviolet
         }
 
         /// <summary>
-        /// Divides a matrix by a another matrix.
+        /// Divides a <see cref="Matrix"/> by a another matrix.
         /// </summary>
         /// <param name="dividend">The dividend.</param>
         /// <param name="divisor">The divisor.</param>
-        /// <returns>The resulting matrix.</returns>
+        /// <returns>The resulting <see cref="Matrix"/>.</returns>
         public static Matrix operator /(Matrix dividend, Matrix divisor)
         {
             Matrix result;
@@ -146,11 +146,11 @@ namespace TwistedLogik.Ultraviolet
         }
 
         /// <summary>
-        /// Adds a matrix to another matrix.
+        /// Adds a <see cref="Matrix"/> to another matrix.
         /// </summary>
-        /// <param name="m1">The matrix on the left side of the addition operator.</param>
-        /// <param name="m2">The matrix on the right side of the addition operator.</param>
-        /// <returns>The resulting matrix.</returns>
+        /// <param name="m1">The <see cref="Matrix"/> on the left side of the addition operator.</param>
+        /// <param name="m2">The <see cref="Matrix"/> on the right side of the addition operator.</param>
+        /// <returns>The resulting <see cref="Matrix"/>.</returns>
         public static Matrix operator +(Matrix m1, Matrix m2)
         {
             Matrix result;
@@ -159,11 +159,11 @@ namespace TwistedLogik.Ultraviolet
         }
 
         /// <summary>
-        /// Subtracts a matrix from another matrix.
+        /// Subtracts a <see cref="Matrix"/> from another matrix.
         /// </summary>
-        /// <param name="m1">The matrix on the left side of the subtraction operator.</param>
-        /// <param name="m2">The matrix on the right side of the subtraction operator.</param>
-        /// <returns>The resulting matrix.</returns>
+        /// <param name="m1">The <see cref="Matrix"/> on the left side of the subtraction operator.</param>
+        /// <param name="m2">The <see cref="Matrix"/> on the right side of the subtraction operator.</param>
+        /// <returns>The resulting <see cref="Matrix"/>.</returns>
         public static Matrix operator -(Matrix m1, Matrix m2)
         {
             Matrix result;
@@ -172,10 +172,10 @@ namespace TwistedLogik.Ultraviolet
         }
 
         /// <summary>
-        /// Negates the specified matrix's elements.
+        /// Negates the specified elements of the specified <see cref="Matrix"/>.
         /// </summary>
-        /// <param name="matrix">The matrix to negate.</param>
-        /// <returns>The negated matrix.</returns>
+        /// <param name="matrix">The <see cref="Matrix"/> to negate.</param>
+        /// <returns>The negated <see cref="Matrix"/>.</returns>
         public static Matrix operator -(Matrix matrix)
         {
             Matrix result;
@@ -184,10 +184,10 @@ namespace TwistedLogik.Ultraviolet
         }
 
         /// <summary>
-        /// Converts the string representation of a matrix into an instance of the Matrix structure.
+        /// Converts the string representation of a matrix into an instance of the <see cref="Matrix"/> structure.
         /// A return value indicates whether the conversion succeeded.
         /// </summary>
-        /// <param name="s">A string containing a matrix to convert.</param>
+        /// <param name="s">A string containing a <see cref="Matrix"/> to convert.</param>
         /// <param name="matrix">A variable to populate with the converted value.</param>
         /// <returns><c>true</c> if <paramref name="s"/> was converted successfully; otherwise, <c>false</c>.</returns>
         public static Boolean TryParse(String s, out Matrix matrix)
@@ -196,21 +196,21 @@ namespace TwistedLogik.Ultraviolet
         }
 
         /// <summary>
-        /// Converts the string representation of a matrix into an instance of the Matrix structure.
+        /// Converts the string representation of a matrix into an instance of the <see cref="Matrix"/> structure.
         /// </summary>
         /// <param name="s">A string containing a matrix to convert.</param>
-        /// <returns>A instance of the Matrix structure equivalent to the matrix contained in <paramref name="s"/>.</returns>
+        /// <returns>A instance of the <see cref="Matrix"/> structure equivalent to the matrix contained in <paramref name="s"/>.</returns>
         public static Matrix Parse(String s)
         {
             return Parse(s, NumberStyles.Number, NumberFormatInfo.CurrentInfo);
         }
 
         /// <summary>
-        /// Converts the string representation of a matrix into an instance of the Matrix structure.
+        /// Converts the string representation of a matrix into an instance of the <see cref="Matrix"/> structure.
         /// A return value indicates whether the conversion succeeded.
         /// </summary>
-        /// <param name="s">A string containing a matrix to convert.</param>
-        /// <param name="style">A set of <see cref="System.Globalization.NumberStyles"/> values indicating which elements are present in <paramref name="s"/>.</param>
+        /// <param name="s">A string containing a <see cref="Matrix"/> to convert.</param>
+        /// <param name="style">A set of <see cref="NumberStyles"/> values indicating which elements are present in <paramref name="s"/>.</param>
         /// <param name="provider">A format provider that provides culture-specific formatting information.</param>
         /// <param name="matrix">A variable to populate with the converted value.</param>
         /// <returns><c>true</c> if <paramref name="s"/> was converted successfully; otherwise, <c>false</c>.</returns>
@@ -242,10 +242,10 @@ namespace TwistedLogik.Ultraviolet
         }
 
         /// <summary>
-        /// Converts the string representation of a matrix into an instance of the Matrix structure.
+        /// Converts the string representation of a <see cref="Matrix"/> into an instance of the Matrix structure.
         /// </summary>
-        /// <param name="s">A string containing a matrix to convert.</param>
-        /// <param name="style">A set of <see cref="System.Globalization.NumberStyles"/> values indicating which elements are present in <paramref name="s"/>.</param>
+        /// <param name="s">A string containing a <see cref="Matrix"/> to convert.</param>
+        /// <param name="style">A set of <see cref="NumberStyles"/> values indicating which elements are present in <paramref name="s"/>.</param>
         /// <param name="provider">A format provider that provides culture-specific formatting information.</param>
         /// <returns>A instance of the Matrix structure equivalent to the matrix contained in <paramref name="s"/>.</returns>
         public static Matrix Parse(String s, NumberStyles style, IFormatProvider provider)
@@ -262,7 +262,7 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="position">The object's position.</param>
         /// <param name="forward">The object's forward vector.</param>
         /// <param name="up">The object's up vector.</param>
-        /// <returns>The matrix that was created.</returns>
+        /// <returns>The <see cref="Matrix"/> that was created.</returns>
         public static Matrix CreateWorld(Vector3 position, Vector3 forward, Vector3 up)
         {
             var normalizedBackward = Vector3.Normalize(-forward);
@@ -303,7 +303,7 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="position">The object's position.</param>
         /// <param name="forward">The object's forward vector.</param>
         /// <param name="up">The object's up vector.</param>
-        /// <param name="result">The matrix that was created.</param>
+        /// <param name="result">The <see cref="Matrix"/> that was created.</param>
         public static void CreateWorld(ref Vector3 position, ref Vector3 forward, ref Vector3 up, out Matrix result)
         {
             var normalizedBackward = Vector3.Normalize(-forward);
@@ -344,7 +344,7 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="cameraPosition">The camera's position.</param>
         /// <param name="cameraTarget">The camera's target.</param>
         /// <param name="cameraUp">The camera's up vector.</param>
-        /// <returns>The view matrix that was created.</returns>
+        /// <returns>The view <see cref="Matrix"/> that was created.</returns>
         public static Matrix CreateLookAt(Vector3 cameraPosition, Vector3 cameraTarget, Vector3 cameraUp)
         {
             var zAxis = Vector3.Normalize(cameraPosition - cameraTarget);
@@ -368,7 +368,7 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="cameraPosition">The camera's position.</param>
         /// <param name="cameraTarget">The camera's target.</param>
         /// <param name="cameraUp">The camera's up vector.</param>
-        /// <param name="result">The view matrix that was created.</param>
+        /// <param name="result">The view <see cref="Matrix"/> that was created.</param>
         public static void CreateLookAt(ref Vector3 cameraPosition, ref Vector3 cameraTarget, ref Vector3 cameraUp, out Matrix result)
         {
             var zAxis = Vector3.Normalize(cameraPosition - cameraTarget);
@@ -393,7 +393,7 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="height">The height of the view volume.</param>
         /// <param name="zNearPlane">The distance from the camera to the near z-plane.</param>
         /// <param name="zFarPlane">The distance from the camera to the far z-plane.</param>
-        /// <returns>The projection matrix that was created.</returns>
+        /// <returns>The projection <see cref="Matrix"/> that was created.</returns>
         public static Matrix CreateOrthographic(Single width, Single height, Single zNearPlane, Single zFarPlane)
         {
             var m11 = (float)(2.0 / width);
@@ -416,7 +416,7 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="height">The height of the view volume.</param>
         /// <param name="zNearPlane">The distance from the camera to the near z-plane.</param>
         /// <param name="zFarPlane">The distance from the camera to the far z-plane.</param>
-        /// <param name="result">The projection matrix that was created.</param>
+        /// <param name="result">The projection <see cref="Matrix"/> that was created.</param>
         public static void CreateOrthographic(Single width, Single height, Single zNearPlane, Single zFarPlane, out Matrix result)
         {
             var m11 = (float)(2.0 / width);
@@ -441,7 +441,7 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="top">The maximum y-value of the view volume.</param>
         /// <param name="zNearPlane">The distance from the camera to the near z-plane.</param>
         /// <param name="zFarPlane">The distance from the camera to the far z-plane.</param>
-        /// <returns>The projection matrix that was created.</returns>
+        /// <returns>The projection <see cref="Matrix"/> that was created.</returns>
         public static Matrix CreateOrthographicOffCenter(Single left, Single right, Single bottom, Single top, Single zNearPlane, Single zFarPlane)
         {
             var m11 = (float)(2.0 / (right - left));
@@ -468,7 +468,7 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="top">The maximum y-value of the view volume.</param>
         /// <param name="zNearPlane">The distance from the camera to the near z-plane.</param>
         /// <param name="zFarPlane">The distance from the camera to the far z-plane.</param>
-        /// <param name="result">The projection matrix that was created.</param>
+        /// <param name="result">The projection <see cref="Matrix"/> that was created.</param>
         public static void CreateOrthographicOffCenter(Single left, Single right, Single bottom, Single top, Single zNearPlane, Single zFarPlane, out Matrix result)
         {
             var m11 = (float)(2.0 / (right - left));
@@ -493,7 +493,7 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="height">The height of the view volume at the near plane.</param>
         /// <param name="nearPlaneDistance">The distance to the near view plane.</param>
         /// <param name="farPlaneDistance">The distance to the far view plane.</param>
-        /// <returns>The matrix that was created.</returns>
+        /// <returns>The <see cref="Matrix"/> that was created.</returns>
         public static Matrix CreatePerspective(Single width, Single height, Single nearPlaneDistance, Single farPlaneDistance)
         {
             Contract.EnsureRange(nearPlaneDistance > 0, "nearPlaneDistance");
@@ -523,7 +523,7 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="height">The height of the view volume at the near plane.</param>
         /// <param name="nearPlaneDistance">The distance to the near view plane.</param>
         /// <param name="farPlaneDistance">The distance to the far view plane.</param>
-        /// <param name="result">The matrix that was created.</param>
+        /// <param name="result">The <see cref="Matrix"/> that was created.</param>
         public static void CreatePerspective(Single width, Single height, Single nearPlaneDistance, Single farPlaneDistance, out Matrix result)
         {
             Contract.EnsureRange(nearPlaneDistance > 0, "nearPlaneDistance");
@@ -553,7 +553,7 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="aspectRatio">The aspect ratio of the view.</param>
         /// <param name="nearPlaneDistance">The distance to the near view plane.</param>
         /// <param name="farPlaneDistance">The distance to the far view plane.</param>
-        /// <returns>The matrix that was created.</returns>
+        /// <returns>The <see cref="Matrix"/> that was created.</returns>
         public static Matrix CreatePerspectiveFieldOfView(Single fieldOfView, Single aspectRatio, Single nearPlaneDistance, Single farPlaneDistance)
         {
             Contract.EnsureRange(fieldOfView > 0 && fieldOfView < Math.PI, "fieldOfView");
@@ -586,7 +586,7 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="aspectRatio">The aspect ratio of the view.</param>
         /// <param name="nearPlaneDistance">The distance to the near view plane.</param>
         /// <param name="farPlaneDistance">The distance to the far view plane.</param>
-        /// <param name="result">The matrix that was created.</param>
+        /// <param name="result">The <see cref="Matrix"/> that was created.</param>
         public static void CreatePerspectiveFieldOfView(Single fieldOfView, Single aspectRatio, Single nearPlaneDistance, Single farPlaneDistance, out Matrix result)
         {
             Contract.EnsureRange(fieldOfView > 0 && fieldOfView < Math.PI, "fieldOfView");
@@ -621,7 +621,7 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="top">The maximum y-value of the view volume at the near view plane.</param>
         /// <param name="nearPlaneDistance">The distance to the near view plane.</param>
         /// <param name="farPlaneDistance">The distance to the far view plane.</param>
-        /// <returns>The matrix that was created.</returns>
+        /// <returns>The <see cref="Matrix"/> that was created.</returns>
         public static Matrix CreatePerspectiveOffCenter(Single left, Single right, Single bottom, Single top, Single nearPlaneDistance, Single farPlaneDistance)
         {
             Contract.EnsureRange(nearPlaneDistance > 0, "nearPlaneDistance");
@@ -660,7 +660,7 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="top">The maximum y-value of the view volume at the near view plane.</param>
         /// <param name="nearPlaneDistance">The distance to the near view plane.</param>
         /// <param name="farPlaneDistance">The distance to the far view plane.</param>
-        /// <param name="result">The matrix that was created.</param>
+        /// <param name="result">The <see cref="Matrix"/> that was created.</param>
         public static void CreatePerspectiveOffCenter(Single left, Single right, Single bottom, Single top, Single nearPlaneDistance, Single farPlaneDistance, out Matrix result)
         {
             Contract.EnsureRange(nearPlaneDistance > 0, "nearPlaneDistance");
@@ -695,7 +695,7 @@ namespace TwistedLogik.Ultraviolet
         /// </summary>
         /// <param name="viewportWidth">The current viewport's width.</param>
         /// <param name="viewportHeight">The current viewport's height.</param>
-        /// <returns>The projection matrix used by a sprite batch.</returns>
+        /// <returns>The projection <see cref="Matrix"/> used by a sprite batch.</returns>
         public static Matrix CreateSpriteBatchProjection(Single viewportWidth, Single viewportHeight)
         {
             Contract.EnsureRange(viewportWidth > 0, "viewportWidth");
@@ -717,7 +717,7 @@ namespace TwistedLogik.Ultraviolet
         /// </summary>
         /// <param name="viewportWidth">The current viewport's width.</param>
         /// <param name="viewportHeight">The current viewport's height.</param>
-        /// <param name="result">The projection matrix used by a sprite batch.</param>
+        /// <param name="result">The projection <see cref="Matrix"/> used by a sprite batch.</param>
         public static void CreateSpriteBatchProjection(Single viewportWidth, Single viewportHeight, out Matrix result)
         {
             Contract.EnsureRange(viewportWidth > 0, "viewportWidth");
@@ -740,7 +740,7 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="x">The amount to translate along the x-axis.</param>
         /// <param name="y">The amount to translate along the y-axis.</param>
         /// <param name="z">The amount to translate along the z-axis.</param>
-        /// <returns>The translation matrix that was created.</returns>
+        /// <returns>The translation <see cref="Matrix"/> that was created.</returns>
         public static Matrix CreateTranslation(Single x, Single y, Single z)
         {
             return new Matrix(
@@ -757,7 +757,7 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="x">The amount to translate along the x-axis.</param>
         /// <param name="y">The amount to translate along the y-axis.</param>
         /// <param name="z">The amount to translate along the z-axis.</param>
-        /// <param name="result">The translation matrix that was created.</param>
+        /// <param name="result">The translation <see cref="Matrix"/> that was created.</param>
         public static void CreateTranslation(Single x, Single y, Single z, out Matrix result)
         {
             result = new Matrix(
@@ -772,7 +772,7 @@ namespace TwistedLogik.Ultraviolet
         /// Creates a translation matrix.
         /// </summary>
         /// <param name="position">A vector describing the amount to translate along each axis.</param>
-        /// <returns>The translation matrix that was created.</returns>
+        /// <returns>The translation <see cref="Matrix"/> that was created.</returns>
         public static Matrix CreateTranslation(Vector3 position)
         {
             return new Matrix(
@@ -787,7 +787,7 @@ namespace TwistedLogik.Ultraviolet
         /// Creates a translation matrix.
         /// </summary>
         /// <param name="position">A vector describing the amount to translate along each axis.</param>
-        /// <param name="result">The translation matrix that was created.</param>
+        /// <param name="result">The translation <see cref="Matrix"/> that was created.</param>
         public static void CreateTranslation(ref Vector3 position, out Matrix result)
         {
             result = new Matrix(
@@ -802,7 +802,7 @@ namespace TwistedLogik.Ultraviolet
         /// Creates a matrix that represents a rotation over the x-axis.
         /// </summary>
         /// <param name="radians">The number of radians to rotate.</param>
-        /// <returns>The rotation matrix that was created.</returns>
+        /// <returns>The rotation <see cref="Matrix"/> that was created.</returns>
         public static Matrix CreateRotationX(Single radians)
         {
             var cos = (float)Math.Cos(radians);
@@ -820,7 +820,7 @@ namespace TwistedLogik.Ultraviolet
         /// Creates a matrix that represents a rotation over the x-axis.
         /// </summary>
         /// <param name="radians">The number of radians to rotate.</param>
-        /// <param name="result">The rotation matrix that was created.</param>
+        /// <param name="result">The rotation <see cref="Matrix"/> that was created.</param>
         public static void CreateRotationX(Single radians, out Matrix result)
         {
             var cos = (float)Math.Cos(radians);
@@ -838,7 +838,7 @@ namespace TwistedLogik.Ultraviolet
         /// Creates a matrix that represents a rotation over the y-axis.
         /// </summary>
         /// <param name="radians">The number of radians to rotate.</param>
-        /// <returns>The rotation matrix that was created.</returns>
+        /// <returns>The rotation <see cref="Matrix"/> that was created.</returns>
         public static Matrix CreateRotationY(Single radians)
         {
             var cos = (float)Math.Cos(radians);
@@ -856,7 +856,7 @@ namespace TwistedLogik.Ultraviolet
         /// Creates a matrix that represents a rotation over the y-axis.
         /// </summary>
         /// <param name="radians">The number of radians to rotate.</param>
-        /// <param name="result">The rotation matrix that was created.</param>
+        /// <param name="result">The rotation <see cref="Matrix"/> that was created.</param>
         public static void CreateRotationY(Single radians, out Matrix result)
         {
             var cos = (float)Math.Cos(radians);
@@ -874,7 +874,7 @@ namespace TwistedLogik.Ultraviolet
         /// Creates a matrix that represents a rotation over the z-axis.
         /// </summary>
         /// <param name="radians">The number of radians to rotate.</param>
-        /// <returns>The rotation matrix that was created.</returns>
+        /// <returns>The rotation <see cref="Matrix"/> that was created.</returns>
         public static Matrix CreateRotationZ(Single radians)
         {
             var cos = (float)Math.Cos(radians);
@@ -891,7 +891,7 @@ namespace TwistedLogik.Ultraviolet
         /// Creates a matrix that represents a rotation over the z-axis.
         /// </summary>
         /// <param name="radians">The number of radians to rotate.</param>
-        /// <param name="result">The rotation matrix that was created.</param>
+        /// <param name="result">The rotation <see cref="Matrix"/> that was created.</param>
         public static void CreateRotationZ(Single radians, out Matrix result)
         {
             var cos = (float)Math.Cos(radians);
@@ -909,7 +909,7 @@ namespace TwistedLogik.Ultraviolet
         /// </summary>
         /// <param name="axis">The axis around which to rotate.</param>
         /// <param name="angle">The angle to rotate, specified in radians.</param>
-        /// <returns>The matrix that was created.</returns>
+        /// <returns>The <see cref="Matrix"/> that was created.</returns>
         public static Matrix CreateFromAxisAngle(Vector3 axis, Single angle)
         {
             var c = Math.Cos(angle);
@@ -946,7 +946,7 @@ namespace TwistedLogik.Ultraviolet
         /// </summary>
         /// <param name="axis">The axis around which to rotate.</param>
         /// <param name="angle">The angle to rotate, specified in radians.</param>
-        /// <param name="result">The matrix that was created.</param>
+        /// <param name="result">The <see cref="Matrix"/> that was created.</param>
         public static void CreateFromAxisAngle(ref Vector3 axis, Single angle, out Matrix result)
         {
             var c = Math.Cos(angle);
@@ -982,7 +982,7 @@ namespace TwistedLogik.Ultraviolet
         /// Creates a scaling matrix.
         /// </summary>
         /// <param name="scale">The scaling factor.</param>
-        /// <returns>The scaling matrix that was created.</returns>
+        /// <returns>The scaling <see cref="Matrix"/> that was created.</returns>
         public static Matrix CreateScale(Single scale)
         {
             return new Matrix(
@@ -997,7 +997,7 @@ namespace TwistedLogik.Ultraviolet
         /// Creates a scaling matrix.
         /// </summary>
         /// <param name="scale">The scaling factor.</param>
-        /// <param name="result">The scaling matrix that was created.</param>
+        /// <param name="result">The scaling <see cref="Matrix"/> that was created.</param>
         public static void CreateScale(Single scale, out Matrix result)
         {
             result = new Matrix(
@@ -1014,7 +1014,7 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="scaleX">The scaling factor along the x-axis.</param>
         /// <param name="scaleY">The scaling factor along the y-axis.</param>
         /// <param name="scaleZ">The scaling factor along the z-axis.</param>
-        /// <returns>The scaling matrix that was created.</returns>
+        /// <returns>The scaling <see cref="Matrix"/> that was created.</returns>
         public static Matrix CreateScale(Single scaleX, Single scaleY, Single scaleZ)
         {
             return new Matrix(
@@ -1031,7 +1031,7 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="scaleX">The scaling factor along the x-axis.</param>
         /// <param name="scaleY">The scaling factor along the y-axis.</param>
         /// <param name="scaleZ">The scaling factor along the z-axis.</param>
-        /// <param name="result">The scaling matrix that was created.</param>
+        /// <param name="result">The scaling <see cref="Matrix"/> that was created.</param>
         public static void CreateScale(Single scaleX, Single scaleY, Single scaleZ, out Matrix result)
         {
             result = new Matrix(
@@ -1046,7 +1046,7 @@ namespace TwistedLogik.Ultraviolet
         /// Creates a scaling matrix.
         /// </summary>
         /// <param name="scale">A vector describing the scaling factor along each axis.</param>
-        /// <returns>The scaling matrix that was created.</returns>
+        /// <returns>The scaling <see cref="Matrix"/> that was created.</returns>
         public static Matrix CreateScale(Vector3 scale)
         {
             return new Matrix(
@@ -1061,7 +1061,7 @@ namespace TwistedLogik.Ultraviolet
         /// Creates a scaling matrix.
         /// </summary>
         /// <param name="v">A vector describing the scaling factor along each axis.</param>
-        /// <param name="result">The scaling matrix that was created.</param>
+        /// <param name="result">The scaling <see cref="Matrix"/> that was created.</param>
         public static void CreateScale(ref Vector3 v, out Matrix result)
         {
             result = new Matrix(
@@ -1075,9 +1075,9 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Adds a matrix to another matrix.
         /// </summary>
-        /// <param name="m1">The matrix on the left side of the addition operator.</param>
-        /// <param name="m2">The matrix on the right side of the addition operator.</param>
-        /// <param name="result">The resulting matrix.</param>
+        /// <param name="m1">The <see cref="Matrix"/> on the left side of the addition operator.</param>
+        /// <param name="m2">The <see cref="Matrix"/> on the right side of the addition operator.</param>
+        /// <param name="result">The resulting <see cref="Matrix"/>.</param>
         public static void Add(ref Matrix m1, ref Matrix m2, out Matrix result)
         {
             result = new Matrix(
@@ -1103,9 +1103,9 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Adds a matrix to another matrix.
         /// </summary>
-        /// <param name="m1">The matrix on the left side of the addition operator.</param>
-        /// <param name="m2">The matrix on the right side of the addition operator.</param>
-        /// <returns>The resulting matrix.</returns>
+        /// <param name="m1">The <see cref="Matrix"/> on the left side of the addition operator.</param>
+        /// <param name="m2">The <see cref="Matrix"/> on the right side of the addition operator.</param>
+        /// <returns>The resulting <see cref="Matrix"/>.</returns>
         public static Matrix Add(Matrix m1, Matrix m2)
         {
             return new Matrix(
@@ -1131,9 +1131,9 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Subtracts a matrix from another matrix.
         /// </summary>
-        /// <param name="m1">The matrix on the left side of the subtraction operator.</param>
-        /// <param name="m2">The matrix on the right side of the subtraction operator.</param>
-        /// <param name="result">The resulting matrix.</param>
+        /// <param name="m1">The <see cref="Matrix"/> on the left side of the subtraction operator.</param>
+        /// <param name="m2">The <see cref="Matrix"/> on the right side of the subtraction operator.</param>
+        /// <param name="result">The resulting <see cref="Matrix"/>.</param>
         public static void Subtract(ref Matrix m1, ref Matrix m2, out Matrix result)
         {
             result = new Matrix(
@@ -1159,9 +1159,9 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Subtracts a matrix from another matrix.
         /// </summary>
-        /// <param name="m1">The matrix on the left side of the subtraction operator.</param>
-        /// <param name="m2">The matrix on the right side of the subtraction operator.</param>
-        /// <returns>The resulting matrix.</returns>
+        /// <param name="m1">The <see cref="Matrix"/> on the left side of the subtraction operator.</param>
+        /// <param name="m2">The <see cref="Matrix"/> on the right side of the subtraction operator.</param>
+        /// <returns>The resulting <see cref="Matrix"/>.</returns>
         public static Matrix Subtract(Matrix m1, Matrix m2)
         {
             return new Matrix(
@@ -1189,7 +1189,7 @@ namespace TwistedLogik.Ultraviolet
         /// </summary>
         /// <param name="multiplicand">The multiplicand.</param>
         /// <param name="multiplier">The multiplier.</param>
-        /// <param name="result">The resulting matrix.</param>
+        /// <param name="result">The resulting <see cref="Matrix"/>.</param>
         public static void Multiply(ref Matrix multiplicand, Single multiplier, out Matrix result)
         {
             result = new Matrix(
@@ -1217,7 +1217,7 @@ namespace TwistedLogik.Ultraviolet
         /// </summary>
         /// <param name="multiplicand">The multiplicand.</param>
         /// <param name="multiplier">The multiplier.</param>
-        /// <returns>The resulting matrix.</returns>
+        /// <returns>The resulting <see cref="Matrix"/>.</returns>
         public static Matrix Multiply(Matrix multiplicand, Single multiplier)
         {
             return new Matrix(
@@ -1245,7 +1245,7 @@ namespace TwistedLogik.Ultraviolet
         /// </summary>
         /// <param name="multiplicand">The multiplicand.</param>
         /// <param name="multiplier">The multiplier.</param>
-        /// <param name="result">The resulting matrix.</param>
+        /// <param name="result">The resulting <see cref="Matrix"/>.</param>
         public static void Multiply(ref Matrix multiplicand, ref Matrix multiplier, out Matrix result)
         {
             float m11 = (multiplicand.M11 * multiplier.M11 + multiplicand.M12 * multiplier.M21 + multiplicand.M13 * multiplier.M31 + multiplicand.M14 * multiplier.M41);
@@ -1278,7 +1278,7 @@ namespace TwistedLogik.Ultraviolet
         /// </summary>
         /// <param name="multiplicand">The multiplicand.</param>
         /// <param name="multiplier">The multiplier.</param>
-        /// <returns>The resulting matrix.</returns>
+        /// <returns>The resulting <see cref="Matrix"/>.</returns>
         public static Matrix Multiply(Matrix multiplicand, Matrix multiplier)
         {
             float m11 = (multiplicand.M11 * multiplier.M11 + multiplicand.M12 * multiplier.M21 + multiplicand.M13 * multiplier.M31 + multiplicand.M14 * multiplier.M41);
@@ -1311,7 +1311,7 @@ namespace TwistedLogik.Ultraviolet
         /// </summary>
         /// <param name="dividend">The dividend.</param>
         /// <param name="divisor">The divisor.</param>
-        /// <param name="result">The resulting matrix.</param>
+        /// <param name="result">The resulting <see cref="Matrix"/>.</param>
         public static void Divide(ref Matrix dividend, Single divisor, out Matrix result)
         {
             result = new Matrix(
@@ -1339,7 +1339,7 @@ namespace TwistedLogik.Ultraviolet
         /// </summary>
         /// <param name="dividend">The dividend.</param>
         /// <param name="divisor">The divisor.</param>
-        /// <returns>The resulting matrix.</returns>
+        /// <returns>The resulting <see cref="Matrix"/>.</returns>
         public static Matrix Divide(Matrix dividend, Single divisor)
         {
             return new Matrix(
@@ -1367,7 +1367,7 @@ namespace TwistedLogik.Ultraviolet
         /// </summary>
         /// <param name="dividend">The dividend.</param>
         /// <param name="divisor">The divisor.</param>
-        /// <param name="result">The resulting matrix.</param>
+        /// <param name="result">The resulting <see cref="Matrix"/>.</param>
         public static void Divide(ref Matrix dividend, ref Matrix divisor, out Matrix result)
         {
             result = new Matrix(
@@ -1395,7 +1395,7 @@ namespace TwistedLogik.Ultraviolet
         /// </summary>
         /// <param name="dividend">The dividend.</param>
         /// <param name="divisor">The divisor.</param>
-        /// <returns>The resulting matrix.</returns>
+        /// <returns>The resulting <see cref="Matrix"/>.</returns>
         public static Matrix Divide(Matrix dividend, Matrix divisor)
         {
             return new Matrix(
@@ -1421,8 +1421,8 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Transposes the specified matrix.
         /// </summary>
-        /// <param name="matrix">The matrix to transpose.</param>
-        /// <param name="result">The transposed matrix.</param>
+        /// <param name="matrix">The <see cref="Matrix"/> to transpose.</param>
+        /// <param name="result">The transposed <see cref="Matrix"/>.</param>
         public static void Transpose(ref Matrix matrix, out Matrix result)
         {
             result = new Matrix(
@@ -1436,8 +1436,8 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Transposes the specified matrix.
         /// </summary>
-        /// <param name="matrix">The matrix to transpose.</param>
-        /// <returns>The transposed matrix.</returns>
+        /// <param name="matrix">The <see cref="Matrix"/> to transpose.</param>
+        /// <returns>The transposed <see cref="Matrix"/>.</returns>
         public static Matrix Transpose(Matrix matrix)
         {
             return new Matrix(
@@ -1451,10 +1451,10 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Linearly interpolates between the specified matrices.
         /// </summary>
-        /// <param name="matrix1">The first matrix to interpolate.</param>
-        /// <param name="matrix2">The second matrix to interpolate.</param>
+        /// <param name="matrix1">The first <see cref="Matrix"/> to interpolate.</param>
+        /// <param name="matrix2">The second <see cref="Matrix"/> to interpolate.</param>
         /// <param name="amount">A value from 0.0 to 1.0 indicating the interpolation factor.</param>
-        /// <param name="result">The interpolated matrix.</param>
+        /// <param name="result">The interpolated <see cref="Matrix"/>.</param>
         public static void Lerp(ref Matrix matrix1, ref Matrix matrix2, Single amount, out Matrix result)
         {
             var m11 = matrix1.m11 + (matrix2.m11 - matrix1.m11) * amount;
@@ -1487,10 +1487,10 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Linearly interpolates between the specified matrices.
         /// </summary>
-        /// <param name="matrix1">The first matrix to interpolate.</param>
-        /// <param name="matrix2">The second matrix to interpolate.</param>
+        /// <param name="matrix1">The first <see cref="Matrix"/> to interpolate.</param>
+        /// <param name="matrix2">The second <see cref="Matrix"/> to interpolate.</param>
         /// <param name="amount">A value from 0.0 to 1.0 indicating the interpolation factor.</param>
-        /// <returns>The interpolated matrix.</returns>
+        /// <returns>The interpolated <see cref="Matrix"/>.</returns>
         public static Matrix Lerp(Matrix matrix1, Matrix matrix2, Single amount)
         {
             var m11 = matrix1.m11 + (matrix2.m11 - matrix1.m11) * amount;
@@ -1523,8 +1523,8 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Calculates the inverse of the specified matrix.
         /// </summary>
-        /// <param name="matrix">The matrix to invert.</param>
-        /// <param name="result">The invertex matrix.</param>
+        /// <param name="matrix">The <see cref="Matrix"/> to invert.</param>
+        /// <param name="result">The invertex <see cref="Matrix"/>.</param>
         public static void Invert(ref Matrix matrix, out Matrix result)
         {
             var s0 = matrix.m11 * matrix.m22 - matrix.m21 * matrix.m12;
@@ -1577,8 +1577,8 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Calculates the inverse of the specified matrix.
         /// </summary>
-        /// <param name="matrix">The matrix to invert.</param>
-        /// <returns>The inverted matrix.</returns>
+        /// <param name="matrix">The <see cref="Matrix"/> to invert.</param>
+        /// <returns>The inverted <see cref="Matrix"/>.</returns>
         public static Matrix Invert(Matrix matrix)
         {
             var s0 = matrix.m11 * matrix.m22 - matrix.m21 * matrix.m12;
@@ -1631,8 +1631,8 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Negates the specified matrix's elements.
         /// </summary>
-        /// <param name="matrix">The matrix to negate.</param>
-        /// <param name="result">The negated matrix.</param>
+        /// <param name="matrix">The <see cref="Matrix"/> to negate.</param>
+        /// <param name="result">The negated <see cref="Matrix"/>.</param>
         public static void Negate(ref Matrix matrix, out Matrix result)
         {
             result = new Matrix(
@@ -1646,8 +1646,8 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Negates the specified matrix's elements.
         /// </summary>
-        /// <param name="matrix">The matrix to negate.</param>
-        /// <returns>The negated matrix.</returns>
+        /// <param name="matrix">The <see cref="Matrix"/> to negate.</param>
+        /// <returns>The negated <see cref="Matrix"/>.</returns>
         public static Matrix Negate(Matrix matrix)
         {
             return new Matrix(

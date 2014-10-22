@@ -15,7 +15,7 @@ namespace TwistedLogik.Ultraviolet
     /// Represents a callback that is invoked when the Ultraviolet Framework logs a debug message.
     /// </summary>
     /// <param name="uv">The Ultraviolet Context that logged the message.</param>
-    /// <param name="level">The debug level of the message.</param>
+    /// <param name="level">A <see cref="DebugLevels"/> value representing the debug level of the message.</param>
     /// <param name="message">The debug message text.</param>
     public delegate void DebugCallback(UltravioletContext uv, DebugLevels level, String message);
 
@@ -40,7 +40,7 @@ namespace TwistedLogik.Ultraviolet
         IDisposable
     {
         /// <summary>
-        /// Initializes a new instance of the UltravioletContext class.
+        /// Initializes a new instance of the <see cref="UltravioletContext"/> class.
         /// </summary>
         /// <param name="host">The object that is hosting the Ultraviolet context.</param>
         /// <param name="configuration">The Ultraviolet Framework configuration settings for this context.</param>
@@ -173,6 +173,7 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Gets the factory method of the specified delegate type.
         /// </summary>
+        /// <typeparam name="T">The delegate type of the factory method to retrieve.</typeparam>
         /// <returns>The default factory method of the specified delegate type.</returns>
         public T GetFactoryMethod<T>() where T : class
         {
@@ -184,6 +185,7 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Gets a named factory method of the specified delegate type.
         /// </summary>
+        /// <typeparam name="T">The delegate type of the factory method to retrieve.</typeparam>
         /// <param name="name">The name of the factory method to retrieve.</param>
         /// <returns>The specified factory method of the specified type.</returns>
         public T GetFactoryMethod<T>(String name) where T : class
@@ -197,11 +199,11 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Spawns a new task.
         /// </summary>
-        /// <remarks>Tasks spawned using this method will not be started until the next call to Update(), and will prevent
-        /// the Ultraviolet context from shutting down until they complete or are canceled.  Do not attempt to Wait() on these
+        /// <remarks>Tasks spawned using this method will not be started until the next call to <see cref="Update(UltravioletTime)"/>, and will prevent
+        /// the Ultraviolet context from shutting down until they complete or are canceled.  Do not attempt to <see cref="Task.Wait()"/> on these
         /// tasks from the main Ultraviolet thread; doing so will introduce a deadlock.</remarks>
         /// <param name="action">The action to perform within the task.</param>
-        /// <returns>The task that was spawned.</returns>
+        /// <returns>The <see cref="Task"/> that was spawned.</returns>
         public Task SpawnTask(Action<CancellationToken> action)
         {
             Contract.Require(action, "action");
@@ -259,7 +261,7 @@ namespace TwistedLogik.Ultraviolet
         /// </summary>
         /// <param name="workItem">The work item to execute on Ultraviolet's main thread.</param>
         /// <param name="forceAsync">A value indicating whether to force the work item to be queued and executed asynchronously.
-        /// If this value is false, then calls to this method from the main Ultraviolet thread will execute synchronously.</param>
+        /// If this value is <c>false</c>, then calls to this method from the main Ultraviolet thread will execute synchronously.</param>
         public void QueueWorkItemAndWait(Action workItem, Boolean forceAsync = false)
         {
             QueueWorkItem(workItem, forceAsync).Wait();
@@ -271,7 +273,7 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="workItem">The work item to execute on Ultraviolet's main thread.</param>
         /// <param name="state">An object containing state to pass to the work item.</param>
         /// <param name="forceAsync">A value indicating whether to force the work item to be queued and executed asynchronously.
-        /// If this value is false, then calls to this method from the main Ultraviolet thread will execute synchronously.</param>
+        /// If this value is <c>false</c>, then calls to this method from the main Ultraviolet thread will execute synchronously.</param>
         public void QueueWorkItemAndWait(Action<Object> workItem, Object state, Boolean forceAsync = false)
         {
             QueueWorkItem(workItem, state, forceAsync).Wait();
@@ -280,9 +282,10 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Queues a work item for execution on Ultraviolet's main thread and waits for the work item to be executed.
         /// </summary>
+        /// <typeparam name="T">The type of value returned by the work item.</typeparam>
         /// <param name="workItem">The work item to execute on Ultraviolet's main thread.</param>
         /// <param name="forceAsync">A value indicating whether to force the work item to be queued and executed asynchronously.
-        /// If this value is false, then calls to this method from the main Ultraviolet thread will execute synchronously.</param>
+        /// If this value is <c>false</c>, then calls to this method from the main Ultraviolet thread will execute synchronously.</param>
         /// <returns>The result of executing the work item.</returns>
         public T QueueWorkItemAndWait<T>(Func<T> workItem, Boolean forceAsync = false)
         {
@@ -294,10 +297,11 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Queues a work item for execution on Ultraviolet's main thread and waits for the work item to be executed.
         /// </summary>
+        /// <typeparam name="T">The type of value returned by the work item.</typeparam>
         /// <param name="workItem">The work item to execute on Ultraviolet's main thread.</param>
         /// <param name="state">An object containing state to pass to the work item.</param>
         /// <param name="forceAsync">A value indicating whether to force the work item to be queued and executed asynchronously.
-        /// If this value is false, then calls to this method from the main Ultraviolet thread will execute synchronously.</param>
+        /// If this value is <c>false</c>, then calls to this method from the main Ultraviolet thread will execute synchronously.</param>
         /// <returns>The result of executing the work item.</returns>
         public T QueueWorkItemAndWait<T>(Func<Object, T> workItem, Object state, Boolean forceAsync = false)
         {
@@ -311,8 +315,8 @@ namespace TwistedLogik.Ultraviolet
         /// </summary>
         /// <param name="workItem">The work item to execute on Ultraviolet's main thread.</param>
         /// <param name="forceAsync">A value indicating whether to force the work item to be queued and executed asynchronously.
-        /// If this value is false, then calls to this method from the main Ultraviolet thread will execute synchronously.</param>
-        /// <returns>A Task that encapsulates the work item.</returns>
+        /// If this value is <c>false</c>, then calls to this method from the main Ultraviolet thread will execute synchronously.</param>
+        /// <returns>A <see cref="Task"/> that encapsulates the work item.</returns>
         public Task QueueWorkItem(Action workItem, Boolean forceAsync = false)
         {
             Contract.Require(workItem, "workItem");
@@ -338,8 +342,8 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="workItem">The work item to execute on Ultraviolet's main thread.</param>
         /// <param name="state">An object containing state to pass to the work item.</param>
         /// <param name="forceAsync">A value indicating whether to force the work item to be queued and executed asynchronously.
-        /// If this value is false, then calls to this method from the main Ultraviolet thread will execute synchronously.</param>
-        /// <returns>A Task that encapsulates the work item.</returns>
+        /// If this value is <c>false</c>, then calls to this method from the main Ultraviolet thread will execute synchronously.</param>
+        /// <returns>A <see cref="Task"/> that encapsulates the work item.</returns>
         public Task QueueWorkItem(Action<Object> workItem, Object state, Boolean forceAsync = false)
         {
             Contract.Require(workItem, "workItem");
@@ -364,8 +368,8 @@ namespace TwistedLogik.Ultraviolet
         /// </summary>
         /// <param name="workItem">The work item to execute on Ultraviolet's main thread.</param>
         /// <param name="forceAsync">A value indicating whether to force the work item to be queued and executed asynchronously.
-        /// If this value is false, then calls to this method from the main Ultraviolet thread will execute synchronously.</param>
-        /// <returns>A Task that encapsulates the work item.</returns>
+        /// If this value is <c>false</c>, then calls to this method from the main Ultraviolet thread will execute synchronously.</param>
+        /// <returns>A <see cref="Task"/> that encapsulates the work item.</returns>
         public Task<T> QueueWorkItem<T>(Func<T> workItem, Boolean forceAsync = false)
         {
             Contract.Require(workItem, "workItem");
@@ -391,8 +395,8 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="workItem">The work item to execute on Ultraviolet's main thread.</param>
         /// <param name="state">An object containing state to pass to the work item.</param>
         /// <param name="forceAsync">A value indicating whether to force the work item to be queued and executed asynchronously.
-        /// If this value is false, then calls to this method from the main Ultraviolet thread will execute synchronously.</param>
-        /// <returns>A Task that encapsulates the work item.</returns>
+        /// If this value is <c>false</c>, then calls to this method from the main Ultraviolet thread will execute synchronously.</param>
+        /// <returns>A <see cref="Task"/> that encapsulates the work item.</returns>
         public Task<T> QueueWorkItem<T>(Func<Object, T> workItem, Object state, Boolean forceAsync = false)
         {
             Contract.Require(workItem, "workItem");
@@ -414,9 +418,9 @@ namespace TwistedLogik.Ultraviolet
 
         /// <summary>
         /// Ensures that the specified resource was created by this context.
-        /// This method is compiled out if the DEBUG compilation symbol is not specified.
+        /// This method is compiled out if the <c>DEBUG</c> compilation symbol is not specified.
         /// </summary>
-        /// <param name="resource">The resource to validate.</param>
+        /// <param name="resource">The <see cref="UltravioletResource"/> to validate.</param>
         [Conditional("DEBUG")]
         public void ValidateResource(UltravioletResource resource)
         {
@@ -452,7 +456,7 @@ namespace TwistedLogik.Ultraviolet
         /// created the Ultraviolet context.
         /// </summary>
         /// <remarks>Many tasks, such as content loading, must take place on the Ultraviolet
-        /// context's main thread.  Such tasks can be queued using the QueueWorkItem() method,
+        /// context's main thread.  Such tasks can be queued using the <see cref="M:QueueWorkItem"/> method,
         /// which will run them at the start of the next update.</remarks>
         public Boolean IsExecutingOnCurrentThread
         {
@@ -580,7 +584,7 @@ namespace TwistedLogik.Ultraviolet
         }
 
         /// <summary>
-        /// Raises the Updating event.
+        /// Raises the <see cref="Updating"/> event.
         /// </summary>
         /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Update(UltravioletTime)"/>.</param>
         protected virtual void OnUpdating(UltravioletTime time)
@@ -603,7 +607,7 @@ namespace TwistedLogik.Ultraviolet
         }
 
         /// <summary>
-        /// Raises the Shutdown event.
+        /// Raises the <see cref="Shutdown"/> event.
         /// </summary>
         protected virtual void OnShutdown()
         {
@@ -631,7 +635,7 @@ namespace TwistedLogik.Ultraviolet
         }
 
         /// <summary>
-        /// Raises the contextInvalidated event.
+        /// Raises the <see cref="ContextInvalidated"/> event.
         /// </summary>
         private static void OnContextInvalidated()
         {

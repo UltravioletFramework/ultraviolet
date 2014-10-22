@@ -12,7 +12,7 @@ namespace TwistedLogik.Ultraviolet
     public struct CircleF : IEquatable<CircleF>, IInterpolatable<CircleF>
     {
         /// <summary>
-        /// Initializes a new instance of the CircleF structure.
+        /// Initializes a new instance of the <see cref="CircleF"/> structure.
         /// </summary>
         /// <param name="x">The x-coordinate of the circle's center.</param>
         /// <param name="y">The y-coordinate of the circle's center.</param>
@@ -25,7 +25,7 @@ namespace TwistedLogik.Ultraviolet
         }
 
         /// <summary>
-        /// Initializes a new instance of the CircleF structure.
+        /// Initializes a new instance of the <see cref="CircleF"/> structure.
         /// </summary>
         /// <param name="position">The position of the circle's center.</param>
         /// <param name="radius">The circle's radius.</param>
@@ -38,8 +38,8 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Compares two circles for equality.
         /// </summary>
-        /// <param name="c1">The first circle to compare.</param>
-        /// <param name="c2">The second circle to compare.</param>
+        /// <param name="c1">The first <see cref="CircleF"/> to compare.</param>
+        /// <param name="c2">The second <see cref="CircleF"/> to compare.</param>
         /// <returns><c>true</c> if the specified circles are equal; otherwise, <c>false</c>.</returns>
         public static Boolean operator ==(CircleF c1, CircleF c2)
         {
@@ -49,8 +49,8 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Compares two circles for inequality.
         /// </summary>
-        /// <param name="c1">The first circle to compare.</param>
-        /// <param name="c2">The second circle to compare.</param>
+        /// <param name="c1">The first <see cref="CircleF"/> to compare.</param>
+        /// <param name="c2">The second <see cref="CircleF"/> to compare.</param>
         /// <returns><c>true</c> if the specified circles are unequal; otherwise, <c>false</c>.</returns>
         public static Boolean operator !=(CircleF c1, CircleF c2)
         {
@@ -58,7 +58,7 @@ namespace TwistedLogik.Ultraviolet
         }
 
         /// <summary>
-        /// Explicitly converts a CircleF structure to a Circle structure.
+        /// Explicitly converts a <see cref="CircleF"/> structure to a <see cref="Circle"/> structure.
         /// </summary>
         /// <param name="circle">The structure to convert.</param>
         /// <returns>The converted structure.</returns>
@@ -68,7 +68,7 @@ namespace TwistedLogik.Ultraviolet
         }
 
         /// <summary>
-        /// Converts the string representation of a circle into an instance of the CircleF structure.
+        /// Converts the string representation of a circle into an instance of the <see cref="CircleF"/> structure.
         /// A return value indicates whether the conversion succeeded.
         /// </summary>
         /// <param name="s">A string containing a circle to convert.</param>
@@ -80,21 +80,21 @@ namespace TwistedLogik.Ultraviolet
         }
 
         /// <summary>
-        /// Converts the string representation of a circle into an instance of the CircleF structure.
+        /// Converts the string representation of a circle into an instance of the <see cref="CircleF"/> structure.
         /// </summary>
         /// <param name="s">A string containing a circle to convert.</param>
-        /// <returns>A instance of the CircleF structure equivalent to the circle contained in <paramref name="s"/>.</returns>
+        /// <returns>A instance of the <see cref="CircleF"/> structure equivalent to the circle contained in <paramref name="s"/>.</returns>
         public static CircleF Parse(String s)
         {
             return Parse(s, NumberStyles.Number, NumberFormatInfo.CurrentInfo);
         }
 
         /// <summary>
-        /// Converts the string representation of a circle into an instance of the CircleF structure.
+        /// Converts the string representation of a circle into an instance of the <see cref="CircleF"/> structure.
         /// A return value indicates whether the conversion succeeded.
         /// </summary>
         /// <param name="s">A string containing a circle to convert.</param>
-        /// <param name="style">A set of <see cref="System.Globalization.NumberStyles"/> values indicating which elements are present in <paramref name="s"/>.</param>
+        /// <param name="style">A set of <see cref="NumberStyles"/> values indicating which elements are present in <paramref name="s"/>.</param>
         /// <param name="provider">A format provider that provides culture-specific formatting information.</param>
         /// <param name="circle">A variable to populate with the converted value.</param>
         /// <returns><c>true</c> if <paramref name="s"/> was converted successfully; otherwise, <c>false</c>.</returns>
@@ -122,12 +122,12 @@ namespace TwistedLogik.Ultraviolet
         }
 
         /// <summary>
-        /// Converts the string representation of a circle into an instance of the CircleF structure.
+        /// Converts the string representation of a circle into an instance of the <see cref="CircleF"/> structure.
         /// </summary>
         /// <param name="s">A string containing a circle to convert.</param>
-        /// <param name="style">A set of <see cref="System.Globalization.NumberStyles"/> values indicating which elements are present in <paramref name="s"/>.</param>
+        /// <param name="style">A set of <see cref="NumberStyles"/> values indicating which elements are present in <paramref name="s"/>.</param>
         /// <param name="provider">A format provider that provides culture-specific formatting information.</param>
-        /// <returns>A instance of the CircleF structure equivalent to the circle contained in <paramref name="s"/>.</returns>
+        /// <returns>A instance of the <see cref="CircleF"/> structure equivalent to the circle contained in <paramref name="s"/>.</returns>
         public static CircleF Parse(String s, NumberStyles style, IFormatProvider provider)
         {
             CircleF circle;

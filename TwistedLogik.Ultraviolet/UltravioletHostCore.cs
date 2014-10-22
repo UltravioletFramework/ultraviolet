@@ -11,7 +11,7 @@ namespace TwistedLogik.Ultraviolet
     public sealed class UltravioletHostCore : IUltravioletComponent
     {
         /// <summary>
-        /// Initializes a new instance of the UltravioletHostCore class.
+        /// Initializes a new instance of the <see cref="UltravioletHostCore"/> class.
         /// </summary>
         /// <param name="host">The Ultraviolet host.</param>
         public UltravioletHostCore(IUltravioletHost host)

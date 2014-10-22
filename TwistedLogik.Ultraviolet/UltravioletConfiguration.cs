@@ -8,7 +8,7 @@ namespace TwistedLogik.Ultraviolet
     public abstract class UltravioletConfiguration
     {
         /// <summary>
-        /// Initializes a new instance of the UltravioletConfiguration class.
+        /// Initializes a new instance of the <see cref="UltravioletConfiguration"/> class.
         /// </summary>
         public UltravioletConfiguration()
         {

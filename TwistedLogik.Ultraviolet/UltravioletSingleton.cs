@@ -8,10 +8,11 @@ namespace TwistedLogik.Ultraviolet
     /// during the lifespan of a particular Ultraviolet context, but the resource will be destroyed
     /// and recreated if a new context is introduced.
     /// </summary>
+    /// <typeparam name="T">The type of object which is owned by the singleton.</typeparam>
     public sealed class UltravioletSingleton<T> where T : UltravioletResource
     {
         /// <summary>
-        /// Initializes a new instance of the UltravioletContextBoundResource class.
+        /// Initializes a new instance of the <see cref="UltravioletSingleton{T}"/> class.
         /// </summary>
         /// <param name="initializer">A function which initializes a new instance of the bound resource.</param>
         public UltravioletSingleton(Func<UltravioletContext, T> initializer)
@@ -49,7 +50,7 @@ namespace TwistedLogik.Ultraviolet
         }
 
         /// <summary>
-        /// Handles the contextInvalidated event.
+        /// Handles the Ultraviolet context's <see cref="UltravioletContext.ContextInvalidated"/> event.
         /// </summary>
         private void uv_contextInvalidated(object sender, EventArgs e)
         {

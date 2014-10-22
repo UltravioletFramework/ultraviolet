@@ -11,13 +11,13 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Clears the back buffer to the specified color.
         /// </summary>
-        /// <param name="color">The color to which to clear the buffer.</param>
+        /// <param name="color">The <see cref="Color"/> to which to clear the buffer.</param>
         void Clear(Color color);
         
         /// <summary>
         /// Clears the back buffer to the specified color, depth, and stencil values.
         /// </summary>
-        /// <param name="color">The color to which to clear the buffer.</param>
+        /// <param name="color">The <see cref="Color"/> to which to clear the buffer.</param>
         /// <param name="depth">The depth value to which to clear the buffer.</param>
         /// <param name="stencil">The stencil value to which to clear the buffer.</param>
         void Clear(Color color, Double depth, Int32 stencil);
@@ -29,9 +29,9 @@ namespace TwistedLogik.Ultraviolet
         void SetRenderTarget(RenderTarget2D rt);
 
         /// <summary>
-        /// Gets the device's render target.
+        /// Gets the device's current render target.
         /// </summary>
-        /// <returns>The device's render target.</returns>
+        /// <returns>The device's current render target.</returns>
         RenderTarget2D GetRenderTarget();
 
         /// <summary>
@@ -146,7 +146,7 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Draws a collection of non-indexed geometric primitives of the specified type from the currently bound buffers.
         /// </summary>
-        /// <param name="type">The type of primitive to render.</param>
+        /// <param name="type">A <see cref="PrimitiveType"/> value representing the type of primitive to render.</param>
         /// <param name="start">The index of the first vertex to render.</param>
         /// <param name="count">The number of primitives to render.</param>
         void DrawPrimitives(PrimitiveType type, Int32 start, Int32 count);
@@ -154,7 +154,7 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Draws a collection of indexed geometric primitives of the specified type from the currently bound buffers.
         /// </summary>
-        /// <param name="type">The type of primitive to render.</param>
+        /// <param name="type">A <see cref="PrimitiveType"/> value representing the type of primitive to render.</param>
         /// <param name="start">The index of the first vertex to render.</param>
         /// <param name="count">The number of primitives to render.</param>
         void DrawIndexedPrimitives(PrimitiveType type, Int32 start, Int32 count);

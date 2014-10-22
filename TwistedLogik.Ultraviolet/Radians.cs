@@ -11,7 +11,7 @@ namespace TwistedLogik.Ultraviolet
     public struct Radians : IEquatable<Radians>, IComparable<Radians>, IComparable<Single>, IInterpolatable<Radians>
     {
         /// <summary>
-        /// Initializes a new instance of the Radians structure.
+        /// Initializes a new instance of the <see cref="Radians"/> structure.
         /// </summary>
         /// <param name="value">The value in radians.</param>
         public Radians(Single value)
@@ -20,7 +20,7 @@ namespace TwistedLogik.Ultraviolet
         }
 
         /// <summary>
-        /// Implicitly converts a Radians structure to its underlying value.
+        /// Implicitly converts an instance of the <see cref="Radians"/> structure to its underlying value.
         /// </summary>
         /// <param name="value">The value to convert.</param>
         /// <returns>The converted value.</returns>
@@ -30,7 +30,7 @@ namespace TwistedLogik.Ultraviolet
         }
 
         /// <summary>
-        /// Explicitly converts a single-precision floating point value to a new instance of the Radians structure.
+        /// Explicitly converts a single-precision floating point value to a new instance of the <see cref="Radians"/> structure.
         /// </summary>
         /// <param name="value">The value to convert.</param>
         /// <returns>The converted value.</returns>
@@ -40,7 +40,7 @@ namespace TwistedLogik.Ultraviolet
         }
 
         /// <summary>
-        /// Compares two instances of the Radians structure for equality.
+        /// Compares two instances of the <see cref="Radians"/> structure for equality.
         /// </summary>
         /// <param name="r1">The first value to compare.</param>
         /// <param name="r2">The second value to compare.</param>
@@ -51,7 +51,7 @@ namespace TwistedLogik.Ultraviolet
         }
 
         /// <summary>
-        /// Compares two instances of the Radians structure for inequality.
+        /// Compares two instances of the <see cref="Radians"/> structure for inequality.
         /// </summary>
         /// <param name="r1">The first value to compare.</param>
         /// <param name="r2">The second value to compare.</param>
@@ -160,7 +160,7 @@ namespace TwistedLogik.Ultraviolet
         }
 
         /// <summary>
-        /// Converts the string representation of a circle into an instance of the Radians structure.
+        /// Converts the string representation of a circle into an instance of the <see cref="Radians"/> structure.
         /// A return value indicates whether the conversion succeeded.
         /// </summary>
         /// <param name="s">A string containing an angle to convert.</param>
@@ -172,21 +172,21 @@ namespace TwistedLogik.Ultraviolet
         }
 
         /// <summary>
-        /// Converts the string representation of angle in radians to an equivalent instance of the Radians structure.
+        /// Converts the string representation of angle in radians to an equivalent instance of the <see cref="Radians"/> structure.
         /// </summary>
         /// <param name="s">A string containing the angle to convert.</param>
-        /// <returns>An instance of the Radians structure that is equivalent to the specified string.</returns>
+        /// <returns>An instance of the <see cref="Radians"/> structure that is equivalent to the specified string.</returns>
         public static Radians Parse(String s)
         {
             return Parse(s, NumberStyles.Number, NumberFormatInfo.CurrentInfo);
         }
 
         /// <summary>
-        /// Converts the string representation of a circle into an instance of the Radians structure.
+        /// Converts the string representation of a circle into an instance of the <see cref="Radians"/> structure.
         /// A return value indicates whether the conversion succeeded.
         /// </summary>
         /// <param name="s">A string containing an angle to convert.</param>
-        /// <param name="style">A set of <see cref="System.Globalization.NumberStyles"/> values indicating which elements are present in <paramref name="s"/>.</param>
+        /// <param name="style">A set of <see cref="NumberStyles"/> values indicating which elements are present in <paramref name="s"/>.</param>
         /// <param name="provider">A format provider that provides culture-specific formatting information.</param>
         /// <param name="radians">A variable to populate with the converted value.</param>
         /// <returns><c>true</c> if <paramref name="s"/> was converted successfully; otherwise, <c>false</c>.</returns>
@@ -213,12 +213,12 @@ namespace TwistedLogik.Ultraviolet
         }
 
         /// <summary>
-        /// Converts the string representation of angle in radians to an equivalent instance of the Radians structure.
+        /// Converts the string representation of angle in radians to an equivalent instance of the <see cref="Radians"/> structure.
         /// </summary>
         /// <param name="s">A string containing the angle to convert.</param>
-        /// <param name="style">A set of <see cref="System.Globalization.NumberStyles"/> values indicating which elements are present in <paramref name="s"/>.</param>
+        /// <param name="style">A set of <see cref="NumberStyles"/> values indicating which elements are present in <paramref name="s"/>.</param>
         /// <param name="provider">A format provider that provides culture-specific formatting information.</param>
-        /// <returns>An instance of the Radians structure that is equivalent to the specified string.</returns>
+        /// <returns>An instance of the <see cref="Radians"/> structure that is equivalent to the specified string.</returns>
         public static Radians Parse(String s, NumberStyles style, IFormatProvider provider)
         {
             Radians value;
@@ -230,30 +230,30 @@ namespace TwistedLogik.Ultraviolet
         }
 
         /// <summary>
-        /// Creates a new instance of the Radians structure in terms of pi.
+        /// Creates a new instance of the <see cref="Radians"/> structure in terms of pi.
         /// </summary>
         /// <param name="n">The number to multiply by pi in order to calculate a value in radians.</param>
-        /// <returns>A new instance of the Radians structure with a value equal to pi times the specified factor.</returns>
+        /// <returns>A new instance of the <see cref="Radians"/> structure with a value equal to pi times the specified factor.</returns>
         public static Radians FromPi(Single n)
         {
             return new Radians((float)(Math.PI * n));
         }
 
         /// <summary>
-        /// Creates a new instance of the Radians structure in terms of tau.
+        /// Creates a new instance of the <see cref="Radians"/> structure in terms of tau.
         /// </summary>
         /// <param name="n">The number to multiply by tau in order to calculate a value in radians.</param>
-        /// <returns>A new instance of the Radians structure with a value equal to tau times the specified factor.</returns>
+        /// <returns>A new instance of the <see cref="Radians"/> structure with a value equal to tau times the specified factor.</returns>
         public static Radians FromTau(Single n)
         {
             return new Radians((float)(2.0 * Math.PI * n));
         }
 
         /// <summary>
-        /// Creates a new instance of the Radians structure equivalent to the specified number of degrees.
+        /// Creates a new instance of the <see cref="Radians"/> structure equivalent to the specified number of degrees.
         /// </summary>
         /// <param name="degrees">The angle in degrees to convert to radians.</param>
-        /// <returns>A new instance of the Radians structure equivalent to the specified number of degrees.</returns>
+        /// <returns>A new instance of the <see cref="Radians"/> structure equivalent to the specified number of degrees.</returns>
         public static Radians FromDegrees(Single degrees)
         {
             return new Radians(degrees * RadiansPerDegree);
@@ -466,7 +466,7 @@ namespace TwistedLogik.Ultraviolet
         /// Parses the fractional factor of a string representation of an angle.
         /// </summary>
         /// <param name="s">A string containing the fractional factor to parse.</param>
-        /// <param name="style">A set of <see cref="System.Globalization.NumberStyles"/> values indicating which elements are present in <paramref name="s"/>.</param>
+        /// <param name="style">A set of <see cref="NumberStyles"/> values indicating which elements are present in <paramref name="s"/>.</param>
         /// <param name="provider">A format provider that provides culture-specific formatting information.</param>
         /// <param name="fraction">A single-precision floating point value that is equivalent to the specified string.</param>
         /// <returns><c>true</c> if the string was able to be parsed; otherwise, <c>false</c>.</returns>

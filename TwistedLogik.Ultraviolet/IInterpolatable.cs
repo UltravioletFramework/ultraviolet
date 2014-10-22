@@ -5,6 +5,7 @@ namespace TwistedLogik.Ultraviolet
     /// <summary>
     /// Represents an object which can be interpolated.
     /// </summary>
+    /// <typeparam name="T">The type which is being interpolated.</typeparam>
     public interface IInterpolatable<T>
     {
         /// <summary>

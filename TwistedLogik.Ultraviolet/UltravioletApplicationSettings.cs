@@ -10,7 +10,7 @@ namespace TwistedLogik.Ultraviolet
     internal class UltravioletApplicationSettings
     {
         /// <summary>
-        /// Initializes a new instance of the UltravioletApplicationSettings class.
+        /// Initializes a new instance of the <see cref="UltravioletApplicationSettings"/> class.
         /// </summary>
         private UltravioletApplicationSettings()
         {
@@ -21,7 +21,7 @@ namespace TwistedLogik.Ultraviolet
         /// Saves the specified application settings to the specified file.
         /// </summary>
         /// <param name="path">The path to the file in which to save the application settings.</param>
-        /// <param name="settings">The application settings to save to the specified file.</param>
+        /// <param name="settings">The <see cref="UltravioletApplicationSettings"/> to serialize to the specified file.</param>
         public static void Save(String path, UltravioletApplicationSettings settings)
         {
             var xml = new XDocument(new XDeclaration("1.0", "utf-8", "yes"),
@@ -35,7 +35,7 @@ namespace TwistedLogik.Ultraviolet
         /// Loads a set of application settings from the specified file.
         /// </summary>
         /// <param name="path">The path to the file from which to load the application settings.</param>
-        /// <returns>The application settings which were loaded from the specified file.</returns>
+        /// <returns>The <see cref="UltravioletApplicationSettings"/> which were deserialized from the specified file.</returns>
         public static UltravioletApplicationSettings Load(String path)
         {
             var xml = XDocument.Load(path);
@@ -51,7 +51,7 @@ namespace TwistedLogik.Ultraviolet
         /// Creates a set of application settings from the current application state.
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
-        /// <returns>The application settings which were retrieved.</returns>
+        /// <returns>The <see cref="UltravioletApplicationSettings"/> which was retrieved.</returns>
         public static UltravioletApplicationSettings FromCurrentSettings(UltravioletContext uv)
         {
             Contract.Require(uv, "uv");

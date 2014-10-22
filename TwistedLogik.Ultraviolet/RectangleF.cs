@@ -12,7 +12,7 @@ namespace TwistedLogik.Ultraviolet
     public struct RectangleF : IEquatable<RectangleF>, IInterpolatable<RectangleF>
     {
         /// <summary>
-        /// Initializes a new instance of the RectangleF structure.
+        /// Initializes a new instance of the <see cref="RectangleF"/> structure.
         /// </summary>
         /// <param name="x">The x-coordinate of the rectangle's top-left corner.</param>
         /// <param name="y">The y-coordinate of the rectangle's top-right corner.</param>
@@ -27,7 +27,7 @@ namespace TwistedLogik.Ultraviolet
         }
 
         /// <summary>
-        /// Initializes a new instance of the RectangleF structure.
+        /// Initializes a new instance of the <see cref="RectangleF"/> structure.
         /// </summary>
         /// <param name="position">The position of the rectangle's top-left corner.</param>
         /// <param name="size">The area of the rectangle.</param>
@@ -40,8 +40,8 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Compares two rectangles for equality.
         /// </summary>
-        /// <param name="r1">The first rectangle to compare.</param>
-        /// <param name="r2">The second rectangle to compare.</param>
+        /// <param name="r1">The first <see cref="RectangleF"/> to compare.</param>
+        /// <param name="r2">The second <see cref="RectangleF"/> to compare.</param>
         /// <returns><c>true</c> if the specified rectangles are equal; otherwise, <c>false</c>.</returns>
         public static Boolean operator ==(RectangleF r1, RectangleF r2)
         {
@@ -51,8 +51,8 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Compares two rectangles for inequality.
         /// </summary>
-        /// <param name="r1">The first rectangle to compare.</param>
-        /// <param name="r2">The second rectangle to compare.</param>
+        /// <param name="r1">The first <see cref="RectangleF"/> to compare.</param>
+        /// <param name="r2">The second <see cref="RectangleF"/> to compare.</param>
         /// <returns><c>true</c> if the specified rectangles are unequal; otherwise, <c>false</c>.</returns>
         public static Boolean operator !=(RectangleF r1, RectangleF r2)
         {
@@ -60,7 +60,7 @@ namespace TwistedLogik.Ultraviolet
         }
 
         /// <summary>
-        /// Explicitly converts a RectangleF structure to a Rectangle structure.
+        /// Explicitly converts a <see cref="RectangleF"/> structure to a <see cref="Rectangle"/> structure.
         /// </summary>
         /// <param name="rect">The structure to convert.</param>
         /// <returns>The converted structure.</returns>
@@ -70,7 +70,7 @@ namespace TwistedLogik.Ultraviolet
         }
 
         /// <summary>
-        /// Converts the string representation of a rectangle into an instance of the RectangleF structure.
+        /// Converts the string representation of a rectangle into an instance of the <see cref="RectangleF"/> structure.
         /// A return value indicates whether the conversion succeeded.
         /// </summary>
         /// <param name="s">A string containing a rectangle to convert.</param>
@@ -82,21 +82,21 @@ namespace TwistedLogik.Ultraviolet
         }
 
         /// <summary>
-        /// Converts the string representation of a rectangle into an instance of the RectangleF structure.
+        /// Converts the string representation of a rectangle into an instance of the <see cref="RectangleF"/> structure.
         /// </summary>
         /// <param name="s">A string containing a rectangle to convert.</param>
-        /// <returns>A instance of the Rectangle structure equivalent to the rectangle contained in <paramref name="s"/>.</returns>
+        /// <returns>A instance of the <see cref="RectangleF"/> structure equivalent to the rectangle contained in <paramref name="s"/>.</returns>
         public static RectangleF Parse(String s)
         {
             return Parse(s, NumberStyles.Number, NumberFormatInfo.CurrentInfo);
         }
 
         /// <summary>
-        /// Converts the string representation of a rectangle into an instance of the RectangleF structure.
+        /// Converts the string representation of a rectangle into an instance of the <see cref="RectangleF"/> structure.
         /// A return value indicates whether the conversion succeeded.
         /// </summary>
         /// <param name="s">A string containing a rectangle to convert.</param>
-        /// <param name="style">A set of <see cref="System.Globalization.NumberStyles"/> values indicating which elements are present in <paramref name="s"/>.</param>
+        /// <param name="style">A set of <see cref="NumberStyles"/> values indicating which elements are present in <paramref name="s"/>.</param>
         /// <param name="provider">A format provider that provides culture-specific formatting information.</param>
         /// <param name="rect">A variable to populate with the converted value.</param>
         /// <returns><c>true</c> if <paramref name="s"/> was converted successfully; otherwise, <c>false</c>.</returns>
@@ -126,12 +126,12 @@ namespace TwistedLogik.Ultraviolet
         }
 
         /// <summary>
-        /// Converts the string representation of a rectangle into an instance of the RectangleF structure.
+        /// Converts the string representation of a rectangle into an instance of the <see cref="RectangleF"/> structure.
         /// </summary>
         /// <param name="s">A string containing a rectangle to convert.</param>
-        /// <param name="style">A set of <see cref="System.Globalization.NumberStyles"/> values indicating which elements are present in <paramref name="s"/>.</param>
+        /// <param name="style">A set of <see cref="NumberStyles"/> values indicating which elements are present in <paramref name="s"/>.</param>
         /// <param name="provider">A format provider that provides culture-specific formatting information.</param>
-        /// <returns>A instance of the Rectangle structure equivalent to the rectangle contained in <paramref name="s"/>.</returns>
+        /// <returns>A instance of the <see cref="RectangleF"/> structure equivalent to the rectangle contained in <paramref name="s"/>.</returns>
         public static RectangleF Parse(String s, NumberStyles style, IFormatProvider provider)
         {
             RectangleF rect;
@@ -143,10 +143,10 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Offsets the specified rectangle by the specified amount.
         /// </summary>
-        /// <param name="rectangle">The rectangle to offset.</param>
+        /// <param name="rectangle">The <see cref="RectangleF"/> to offset.</param>
         /// <param name="offsetX">The amount by which to offset the rectangle along the x-axis.</param>
         /// <param name="offsetY">The amount by which to offset the rectangle along the y-axis.</param>
-        /// <returns>The offset rectangle.</returns>
+        /// <returns>The offset <see cref="RectangleF"/>.</returns>
         public static RectangleF Offset(RectangleF rectangle, Int32 offsetX, Int32 offsetY)
         {
             return new RectangleF(rectangle.X + offsetX, rectangle.Y + offsetY, rectangle.Width, rectangle.Height);
@@ -155,10 +155,10 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Offsets the specified rectangle by the specified amount.
         /// </summary>
-        /// <param name="rectangle">The rectangle to offset.</param>
+        /// <param name="rectangle">The <see cref="RectangleF"/> to offset.</param>
         /// <param name="offsetX">The amount by which to offset the rectangle along the x-axis.</param>
         /// <param name="offsetY">The amount by which to offset the rectangle along the y-axis.</param>
-        /// <param name="result">The offset rectangle.</param>
+        /// <param name="result">The offset <see cref="RectangleF"/>.</param>
         public static void Offset(ref RectangleF rectangle, Int32 offsetX, Int32 offsetY, out RectangleF result)
         {
             result = new RectangleF(rectangle.X + offsetX, rectangle.Y + offsetY, rectangle.Width, rectangle.Height);
@@ -167,9 +167,9 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Offsets the specified rectangle by the specified amount.
         /// </summary>
-        /// <param name="rectangle">The rectangle to offset.</param>
+        /// <param name="rectangle">The <see cref="RectangleF"/> to offset.</param>
         /// <param name="offset">The amount by which to offset the rectangle.</param>
-        /// <returns>The offset rectangle.</returns>
+        /// <returns>The offset <see cref="RectangleF"/>.</returns>
         public static RectangleF Offset(RectangleF rectangle, Vector2 offset)
         {
             return new RectangleF(rectangle.X + offset.X, rectangle.Y + offset.Y, rectangle.Width, rectangle.Height);
@@ -178,9 +178,9 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Offsets the specified rectangle by the specified amount.
         /// </summary>
-        /// <param name="rectangle">The rectangle to offset.</param>
+        /// <param name="rectangle">The <see cref="RectangleF"/> to offset.</param>
         /// <param name="offset">The amount by which to offset the rectangle.</param>
-        /// <param name="result">The offset rectangle.</param>
+        /// <param name="result">The offset <see cref="RectangleF"/>.</param>
         public static void Offset(ref RectangleF rectangle, ref Vector2 offset, out RectangleF result)
         {
             result = new RectangleF(rectangle.X + offset.X, rectangle.Y + offset.Y, rectangle.Width, rectangle.Height);
@@ -189,10 +189,10 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Inflates the specified rectangle by the specified horizontal and vertical values.
         /// </summary>
-        /// <param name="rectangle">The rectangle to inflate.</param>
+        /// <param name="rectangle">The <see cref="RectangleF"/> to inflate.</param>
         /// <param name="horizontalAmount">The amount by which to inflate the rectangle horizontally.</param>
         /// <param name="verticalAmount">The amount by which to inflate the rectangle vertically.</param>
-        /// <returns>The inflated rectangle.</returns>
+        /// <returns>The inflated <see cref="RectangleF"/>.</returns>
         public static RectangleF Inflate(RectangleF rectangle, Single horizontalAmount, Single verticalAmount)
         {
             return new RectangleF(
@@ -206,10 +206,10 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Inflates the specified rectangle by the specified horizontal and vertical values.
         /// </summary>
-        /// <param name="rectangle">The rectangle to inflate.</param>
+        /// <param name="rectangle">The <see cref="RectangleF"/> to inflate.</param>
         /// <param name="horizontalAmount">The amount by which to inflate the rectangle horizontally.</param>
         /// <param name="verticalAmount">The amount by which to inflate the rectangle vertically.</param>
-        /// <param name="result">The inflated rectangle.</param>
+        /// <param name="result">The inflated <see cref="RectangleF"/>.</param>
         public static void Inflate(ref RectangleF rectangle, Single horizontalAmount, Single verticalAmount, out RectangleF result)
         {
             result = new RectangleF(
@@ -223,9 +223,9 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Creates a rectangle which is the union of the specified rectangles.
         /// </summary>
-        /// <param name="rectangle1">The first rectangle.</param>
-        /// <param name="rectangle2">The second rectangle.</param>
-        /// <returns>The rectangle that was created.</returns>
+        /// <param name="rectangle1">The first <see cref="RectangleF"/>.</param>
+        /// <param name="rectangle2">The second <see cref="RectangleF"/>.</param>
+        /// <returns>The <see cref="RectangleF"/> that was created.</returns>
         public static RectangleF Union(RectangleF rectangle1, RectangleF rectangle2)
         {
             var minLeft = rectangle1.Left < rectangle2.Left ? rectangle1.Left : rectangle2.Left;
@@ -239,9 +239,9 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Creates a rectangle which is the union of the specified rectangles.
         /// </summary>
-        /// <param name="rectangle1">The first rectangle.</param>
-        /// <param name="rectangle2">The second rectangle.</param>
-        /// <param name="result">The rectangle that was created.</param>
+        /// <param name="rectangle1">The first <see cref="RectangleF"/>.</param>
+        /// <param name="rectangle2">The second <see cref="RectangleF"/>.</param>
+        /// <param name="result">The <see cref="RectangleF"/> that was created.</param>
         public static void Union(ref RectangleF rectangle1, ref RectangleF rectangle2, out RectangleF result)
         {
             var minLeft = rectangle1.Left < rectangle2.Left ? rectangle1.Left : rectangle2.Left;
@@ -255,9 +255,9 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Creates a rectangle which represents the intersection between the specified rectangles.
         /// </summary>
-        /// <param name="rectangle1">The first rectangle to intersect.</param>
-        /// <param name="rectangle2">The second rectangle to intersect.</param>
-        /// <returns>The rectangle that was created.</returns>
+        /// <param name="rectangle1">The first <see cref="RectangleF"/> to intersect.</param>
+        /// <param name="rectangle2">The second <see cref="RectangleF"/> to intersect.</param>
+        /// <returns>The <see cref="RectangleF"/> that was created.</returns>
         public static RectangleF Intersect(RectangleF rectangle1, RectangleF rectangle2)
         {
             var maxLeft = rectangle1.Left > rectangle2.Left ? rectangle1.Left : rectangle2.Left;
@@ -273,9 +273,9 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Creates a rectangle which represents the intersection between the specified rectangles.
         /// </summary>
-        /// <param name="rectangle1">The first rectangle to intersect.</param>
-        /// <param name="rectangle2">The second rectangle to intersect.</param>
-        /// <param name="result">The rectangle that was created.</param>
+        /// <param name="rectangle1">The first <see cref="RectangleF"/> to intersect.</param>
+        /// <param name="rectangle2">The second <see cref="RectangleF"/> to intersect.</param>
+        /// <param name="result">The <see cref="RectangleF"/> that was created.</param>
         public static void Intersect(ref RectangleF rectangle1, ref RectangleF rectangle2, out RectangleF result)
         {
             var maxLeft = rectangle1.Left > rectangle2.Left ? rectangle1.Left : rectangle2.Left;
@@ -349,7 +349,7 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Gets a value indicating whether this rectangle intersects the specified rectangle.
         /// </summary>
-        /// <param name="rectangle">The rectangle to evaluate.</param>
+        /// <param name="rectangle">The <see cref="RectangleF"/> to evaluate.</param>
         /// <returns><c>true</c> if this rectangle intersects the specified rectangle; otherwise, <c>false</c>.</returns>
         public Boolean Intersects(RectangleF rectangle)
         {
@@ -363,7 +363,7 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Gets a value indicating whether this rectangle intersects the specified rectangle.
         /// </summary>
-        /// <param name="rectangle">The rectangle to evaluate.</param>
+        /// <param name="rectangle">The <see cref="RectangleF"/> to evaluate.</param>
         /// <param name="result"><c>true</c> if this rectangle intersects the specified rectangle; otherwise, <c>false</c>.</param>
         public void Intersects(ref RectangleF rectangle, out Boolean result)
         {
@@ -390,7 +390,7 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Gets a value indicating whether the rectangle contains the specified point.
         /// </summary>
-        /// <param name="point">The point to evaluate.</param>
+        /// <param name="point">A <see cref="Vector2"/> representing the point to evaluate.</param>
         /// <param name="result">A value indicating whether the rectangle contains the specified point.</param>
         public void Contains(ref Vector2 point, out Boolean result)
         {
@@ -402,7 +402,7 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Gets a value indicating whether the rectangle contains the specified point.
         /// </summary>
-        /// <param name="point">The point to evaluate.</param>
+        /// <param name="point">A <see cref="Vector2"/> representing the point to evaluate.</param>
         /// <returns><c>true</c> if the rectangle contains the specified point; otherwise, <c>false</c>.</returns>
         public Boolean Contains(Vector2 point)
         {
@@ -414,7 +414,7 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Gets a value indicating whether the rectangle completely contains the specified rectangle.
         /// </summary>
-        /// <param name="rectangle">The rectangle to evaluate.</param>
+        /// <param name="rectangle">The <see cref="RectangleF"/> to evaluate.</param>
         /// <param name="result"><c>true</c> if the rectangle completely contains the specified rectangle; otherwise, <c>false</c>.</param>
         public void Contains(ref RectangleF rectangle, out Boolean result)
         {
@@ -426,7 +426,7 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Gets a value indicating whether the rectangle completely contains the specified rectangle.
         /// </summary>
-        /// <param name="rectangle">The rectangle to evaluate.</param>
+        /// <param name="rectangle">The <see cref="RectangleF"/> to evaluate.</param>
         /// <returns><c>true</c> if the rectangle completely contains the specified rectangle; otherwise, <c>false</c>.</returns>
         public Boolean Contains(RectangleF rectangle)
         {

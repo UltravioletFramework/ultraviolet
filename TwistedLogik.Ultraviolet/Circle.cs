@@ -12,7 +12,7 @@ namespace TwistedLogik.Ultraviolet
     public struct Circle : IEquatable<Circle>, IInterpolatable<Circle>
     {
         /// <summary>
-        /// Initializes a new instance of the Circle structure.
+        /// Initializes a new instance of the <see cref="Circle"/> structure.
         /// </summary>
         /// <param name="x">The x-coordinate of the circle's center.</param>
         /// <param name="y">The y-coordinate of the circle's center.</param>
@@ -27,8 +27,8 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Compares two circles for equality.
         /// </summary>
-        /// <param name="c1">The first circle to compare.</param>
-        /// <param name="c2">The second circle to compare.</param>
+        /// <param name="c1">The first <see cref="Circle"/> to compare.</param>
+        /// <param name="c2">The second <see cref="Circle"/> to compare.</param>
         /// <returns><c>true</c> if the specified circles are equal; otherwise, <c>false</c>.</returns>
         public static Boolean operator ==(Circle c1, Circle c2)
         {
@@ -38,8 +38,8 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Compares two circles for inequality.
         /// </summary>
-        /// <param name="c1">The first circle to compare.</param>
-        /// <param name="c2">The second circle to compare.</param>
+        /// <param name="c1">The first <see cref="Circle"/> to compare.</param>
+        /// <param name="c2">The second <see cref="Circle"/> to compare.</param>
         /// <returns><c>true</c> if the specified circles are unequal; otherwise, <c>false</c>.</returns>
         public static Boolean operator !=(Circle c1, Circle c2)
         {
@@ -47,7 +47,7 @@ namespace TwistedLogik.Ultraviolet
         }
 
         /// <summary>
-        /// Implicitly converts a Circle structure to a CircleF structure.
+        /// Implicitly converts a <see cref="Circle"/> structure to a <see cref="CircleF"/> structure.
         /// </summary>
         /// <param name="circle">The structure to convert.</param>
         /// <returns>The converted structure.</returns>
@@ -57,7 +57,7 @@ namespace TwistedLogik.Ultraviolet
         }
 
         /// <summary>
-        /// Converts the string representation of a circle into an instance of the Circle structure.
+        /// Converts the string representation of a circle into an instance of the <see cref="Circle"/> structure.
         /// A return value indicates whether the conversion succeeded.
         /// </summary>
         /// <param name="s">A string containing a circle to convert.</param>
@@ -69,21 +69,21 @@ namespace TwistedLogik.Ultraviolet
         }
 
         /// <summary>
-        /// Converts the string representation of a circle into an instance of the Circle structure.
+        /// Converts the string representation of a circle into an instance of the <see cref="Circle"/> structure.
         /// </summary>
         /// <param name="s">A string containing a circle to convert.</param>
-        /// <returns>A instance of the Circle structure equivalent to the circle contained in <paramref name="s"/>.</returns>
+        /// <returns>A instance of the <see cref="Circle"/> structure equivalent to the circle contained in <paramref name="s"/>.</returns>
         public static Circle Parse(String s)
         {
             return Parse(s, NumberStyles.Integer, NumberFormatInfo.CurrentInfo);
         }
 
         /// <summary>
-        /// Converts the string representation of a circle into an instance of the Circle structure.
+        /// Converts the string representation of a circle into an instance of the <see cref="Circle"/> structure.
         /// A return value indicates whether the conversion succeeded.
         /// </summary>
         /// <param name="s">A string containing a circle to convert.</param>
-        /// <param name="style">A set of <see cref="System.Globalization.NumberStyles"/> values indicating which elements are present in <paramref name="s"/>.</param>
+        /// <param name="style">A set of <see cref="NumberStyles"/> values indicating which elements are present in <paramref name="s"/>.</param>
         /// <param name="provider">A format provider that provides culture-specific formatting information.</param>
         /// <param name="circle">A variable to populate with the converted value.</param>
         /// <returns><c>true</c> if <paramref name="s"/> was converted successfully; otherwise, <c>false</c>.</returns>
@@ -111,12 +111,12 @@ namespace TwistedLogik.Ultraviolet
         }
 
         /// <summary>
-        /// Converts the string representation of a circle into an instance of the Circle structure.
+        /// Converts the string representation of a circle into an instance of the <see cref="Circle"/> structure.
         /// </summary>
         /// <param name="s">A string containing a circle to convert.</param>
-        /// <param name="style">A set of <see cref="System.Globalization.NumberStyles"/> values indicating which elements are present in <paramref name="s"/>.</param>
+        /// <param name="style">A set of <see cref="NumberStyles"/> values indicating which elements are present in <paramref name="s"/>.</param>
         /// <param name="provider">A format provider that provides culture-specific formatting information.</param>
-        /// <returns>A instance of the Circle structure equivalent to the circle contained in <paramref name="s"/>.</returns>
+        /// <returns>A instance of the <see cref="Circle"/> structure equivalent to the circle contained in <paramref name="s"/>.</returns>
         public static Circle Parse(String s, NumberStyles style, IFormatProvider provider)
         {
             Circle circle;

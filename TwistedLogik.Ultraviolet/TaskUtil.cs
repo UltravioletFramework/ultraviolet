@@ -10,6 +10,7 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Creates a Task object which encapsulates the specified result value.
         /// </summary>
+        /// <typeparam name="T">The type of value returned from the task.</typeparam>
         /// <param name="value">The result value.</param>
         /// <returns>The Task that was created.</returns>
         public static Task<T> FromResult<T>(T value)

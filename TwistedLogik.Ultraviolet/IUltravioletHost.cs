@@ -3,7 +3,7 @@
 namespace TwistedLogik.Ultraviolet
 {
     /// <summary>
-    /// Represents the object which is hosting the Ultraviolet Framework.
+    /// Represents an object which hosts instances of the Ultraviolet Framework.
     /// </summary>
     public interface IUltravioletHost
     {

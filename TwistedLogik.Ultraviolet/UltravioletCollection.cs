@@ -7,10 +7,11 @@ namespace TwistedLogik.Ultraviolet
     /// <summary>
     /// Represents an enumerable collection.
     /// </summary>
+    /// <typeparam name="T">The type of item stored in the collection.</typeparam>
     public abstract partial class UltravioletCollection<T> : IEnumerable<T>
     {
         /// <summary>
-        /// Initializes a new instance of the UltravioletCollection class.
+        /// Initializes a new instance of the <see cref="UltravioletCollection{T}"/> class.
         /// </summary>
         protected UltravioletCollection()
         {
@@ -18,7 +19,7 @@ namespace TwistedLogik.Ultraviolet
         }
 
         /// <summary>
-        /// Initializes a new instance of the UltravioletCollection class.
+        /// Initializes a new instance of the <see cref="UltravioletCollection{T}"/> class.
         /// </summary>
         /// <param name="capacity">The collection's initial capacity.</param>
         protected UltravioletCollection(Int32 capacity)

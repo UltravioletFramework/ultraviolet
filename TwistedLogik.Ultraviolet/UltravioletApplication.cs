@@ -17,7 +17,7 @@ namespace TwistedLogik.Ultraviolet
         IDisposable
     {
         /// <summary>
-        /// Initializes a new instance of the UltraviolteApplication class.
+        /// Initializes a new instance of the <see cref="UltravioletApplication"/> class.
         /// </summary>
         /// <param name="company">The name of the company that produced the application.</param>
         /// <param name="application">The name of the application </param>
@@ -317,7 +317,7 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Populates the specified Ultraviolet configuration with the application's initial values.
         /// </summary>
-        /// <param name="configuration">The Ultraviolet configuration to populate.</param>
+        /// <param name="configuration">The <see cref="UltravioletConfiguration"/> to populate.</param>
         protected void PopulateConfiguration(UltravioletConfiguration configuration)
         {
             Contract.Require(configuration, "configuration");

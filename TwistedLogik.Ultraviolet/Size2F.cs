@@ -12,7 +12,7 @@ namespace TwistedLogik.Ultraviolet
     public struct Size2F : IEquatable<Size2F>, IInterpolatable<Size2F>
     {
         /// <summary>
-        /// Initializes a new instance of the Size2F structure.
+        /// Initializes a new instance of the <see cref="Size2F"/> structure.
         /// </summary>
         /// <param name="width">The area's width.</param>
         /// <param name="height">The area's height.</param>
@@ -23,29 +23,29 @@ namespace TwistedLogik.Ultraviolet
         }
 
         /// <summary>
-        /// Compares two areas for equality.
+        /// Compares two sizes for equality.
         /// </summary>
-        /// <param name="a1">The first area to compare.</param>
-        /// <param name="a2">The second area to compare.</param>
-        /// <returns><c>true</c> if the specified areas are equal; otherwise, <c>false</c>.</returns>
+        /// <param name="a1">The first <see cref="Size2F"/> to compare.</param>
+        /// <param name="a2">The second <see cref="Size2F"/> to compare.</param>
+        /// <returns><c>true</c> if the specified sizes are equal; otherwise, <c>false</c>.</returns>
         public static Boolean operator ==(Size2F a1, Size2F a2)
         {
             return a1.Equals(a2);
         }
 
         /// <summary>
-        /// Compares two areas for inequality.
+        /// Compares two sizes for inequality.
         /// </summary>
-        /// <param name="a1">The first area to compare.</param>
-        /// <param name="a2">The second area to compare.</param>
-        /// <returns><c>true</c> if the specified areas are unequal; otherwise, <c>false</c>.</returns>
+        /// <param name="a1">The first <see cref="Size2F"/> to compare.</param>
+        /// <param name="a2">The second <see cref="Size2F"/> to compare.</param>
+        /// <returns><c>true</c> if the specified sizes are unequal; otherwise, <c>false</c>.</returns>
         public static Boolean operator !=(Size2F a1, Size2F a2)
         {
             return !a1.Equals(a2);
         }
 
         /// <summary>
-        /// Explicitly converts a Size2F structure to a Size2 structure.
+        /// Explicitly converts a <see cref="Size2F"/> structure to a <see cref="Size2"/> structure.
         /// </summary>
         /// <param name="area">The structure to convert.</param>
         /// <returns>The converted structure.</returns>
@@ -55,7 +55,7 @@ namespace TwistedLogik.Ultraviolet
         }
 
         /// <summary>
-        /// Converts the string representation of an area into an instance of the Size2F structure.
+        /// Converts the string representation of an area into an instance of the <see cref="Size2F"/> structure.
         /// A return value indicates whether the conversion succeeded.
         /// </summary>
         /// <param name="s">A string containing a size to convert.</param>
@@ -67,21 +67,21 @@ namespace TwistedLogik.Ultraviolet
         }
 
         /// <summary>
-        /// Converts the string representation of an area into an instance of the Size2F structure.
+        /// Converts the string representation of an area into an instance of the <see cref="Size2F"/> structure.
         /// </summary>
         /// <param name="s">A string containing an area to convert.</param>
-        /// <returns>A instance of the Size2 structure equivalent to the area contained in <paramref name="s"/>.</returns>
+        /// <returns>A instance of the <see cref="Size2F"/> structure equivalent to the area contained in <paramref name="s"/>.</returns>
         public static Size2F Parse(String s)
         {
             return Parse(s, NumberStyles.Number, NumberFormatInfo.CurrentInfo);
         }
 
         /// <summary>
-        /// Converts the string representation of an area into an instance of the Size2F structure.
+        /// Converts the string representation of an area into an instance of the <see cref="Size2F"/> structure.
         /// A return value indicates whether the conversion succeeded.
         /// </summary>
         /// <param name="s">A string containing a size to convert.</param>
-        /// <param name="style">A set of <see cref="System.Globalization.NumberStyles"/> values indicating which elements are present in <paramref name="s"/>.</param>
+        /// <param name="style">A set of <see cref="NumberStyles"/> values indicating which elements are present in <paramref name="s"/>.</param>
         /// <param name="provider">A format provider that provides culture-specific formatting information.</param>
         /// <param name="size">A variable to populate with the converted value.</param>
         /// <returns><c>true</c> if <paramref name="s"/> was converted successfully; otherwise, <c>false</c>.</returns>
@@ -107,12 +107,12 @@ namespace TwistedLogik.Ultraviolet
         }
 
         /// <summary>
-        /// Converts the string representation of an area into an instance of the Size2F structure.
+        /// Converts the string representation of an area into an instance of the <see cref="Size2F"/> structure.
         /// </summary>
         /// <param name="s">A string containing an area to convert.</param>
-        /// <param name="style">A set of <see cref="System.Globalization.NumberStyles"/> values indicating which elements are present in <paramref name="s"/>.</param>
+        /// <param name="style">A set of <see cref="NumberStyles"/> values indicating which elements are present in <paramref name="s"/>.</param>
         /// <param name="provider">A format provider that provides culture-specific formatting information.</param>
-        /// <returns>A instance of the Size2 structure equivalent to the area contained in <paramref name="s"/>.</returns>
+        /// <returns>A instance of the <see cref="Size2F"/> structure equivalent to the area contained in <paramref name="s"/>.</returns>
         public static Size2F Parse(String s, NumberStyles style, IFormatProvider provider)
         {
             Size2F area;

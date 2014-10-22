@@ -12,7 +12,7 @@ namespace TwistedLogik.Ultraviolet
     public sealed class CurveKey : IEquatable<CurveKey>, IComparable<CurveKey>
     {
         /// <summary>
-        /// Initializes a new instance of the CurveKey class.
+        /// Initializes a new instance of the <see cref="Curve"/> class.
         /// </summary>
         /// <param name="position">The key's position on the curve.</param>
         /// <param name="value">The key's value.</param>
@@ -31,8 +31,8 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Compares two curve keys for equality.
         /// </summary>
-        /// <param name="key1">The first curve keys to compare.</param>
-        /// <param name="key2">The second curve keys to compare.</param>
+        /// <param name="key1">The first <see cref="CurveKey"/> to compare.</param>
+        /// <param name="key2">The second <see cref="CurveKey"/> to compare.</param>
         /// <returns><c>true</c> if the specified curve keys are equal; otherwise, <c>false</c>.</returns>
         public static Boolean operator ==(CurveKey key1, CurveKey key2)
         {
@@ -46,8 +46,8 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Compares two curve keys for inequality.
         /// </summary>
-        /// <param name="key1">The first curve keys to compare.</param>
-        /// <param name="key2">The second curve keys to compare.</param>
+        /// <param name="key1">The first <see cref="CurveKey"/> to compare.</param>
+        /// <param name="key2">The second <see cref="CurveKey"/> to compare.</param>
         /// <returns><c>true</c> if the specified curve keys are unequal; otherwise, <c>false</c>.</returns>
         public static Boolean operator !=(CurveKey key1, CurveKey key2)
         {
@@ -124,8 +124,8 @@ namespace TwistedLogik.Ultraviolet
         }
 
         /// <summary>
-        /// Compares this instance to the specified key and returns an integer that indicates whether the position
-        /// of this instance is less than, equal to, or greater than the value of the specified angle.
+        /// Compares this instance to the specified <see cref="CurveKey"/> and returns an integer that indicates whether the position
+        /// of this instance is less than, equal to, or greater than the value of the specified key.
         /// </summary>
         /// <param name="other">The key to compare to this instance.</param>
         /// <returns>A value that indicates the relative order of the objects being compared.</returns>

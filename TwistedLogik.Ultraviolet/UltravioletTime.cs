@@ -8,7 +8,7 @@ namespace TwistedLogik.Ultraviolet
     public sealed class UltravioletTime
     {
         /// <summary>
-        /// Initializes a new instance of the UltravioletTime class.
+        /// Initializes a new instance of the <see cref="UltravioletTime"/> class.
         /// </summary>
         public UltravioletTime()
         {
@@ -17,7 +17,7 @@ namespace TwistedLogik.Ultraviolet
         }
 
         /// <summary>
-        /// Initializes a new instance of the UltravioletTime class.
+        /// Initializes a new instance of the <see cref="UltravioletTime"/> class with the specified elapsed and total times.
         /// </summary>
         /// <param name="elapsedTime">The time that has elapsed since the last update.</param>
         /// <param name="totalTime">The total time that has elapsed since the Ultraviolet context was created.</param>

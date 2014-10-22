@@ -10,13 +10,13 @@ namespace TwistedLogik.Ultraviolet
     public sealed class Curve
     {
         /// <summary>
-        /// Initializes a new instance of the Curve class.
+        /// Initializes a new instance of the <see cref="Curve"/> class.
         /// </summary>
-        /// <param name="preLoop">A value indicating how the curve's values are determined 
+        /// <param name="preLoop">A <see cref="CurveLoopType"/> value indicating how the curve's values are determined 
         /// for points before the beginning of the curve.</param>
-        /// <param name="postLoop">! value indicating how the curve's values are determined
+        /// <param name="postLoop">A <see cref="CurveLoopType"/> value indicating how the curve's values are determined
         /// for points after the end of the curve.</param>
-        /// <param name="keys">A collection of curve keys from which to construct the curve.</param>
+        /// <param name="keys">A collection of <see cref="CurveKey"/> objects from which to construct the curve.</param>
         public Curve(CurveLoopType preLoop, CurveLoopType postLoop, IEnumerable<CurveKey> keys)
         {
             this.preLoop = preLoop;
@@ -31,20 +31,20 @@ namespace TwistedLogik.Ultraviolet
         }
 
         /// <summary>
-        /// Implicitly converts a curve to an easing function.
+        /// Implicitly converts a <see cref="Curve"/> to an <see cref="EasingFunction"/>.
         /// </summary>
-        /// <param name="curve">The curve to convert.</param>
-        /// <returns>The converted easing function.</returns>
+        /// <param name="curve">The <see cref="Curve"/> to convert.</param>
+        /// <returns>The converted <see cref="EasingFunction"/>.</returns>
         public static implicit operator EasingFunction(Curve curve)
         {
             return (curve == null) ? null : curve.easingFunction;
         }
 
         /// <summary>
-        /// Calculates the curve's value at the specified position.
+        /// Calculates the value of the curve at the specified position.
         /// </summary>
         /// <param name="position">The position at which to calculate a value.</param>
-        /// <returns>The curve's position at the specified value.</returns>
+        /// <returns>The value of the curve at the specified position.</returns>
         public Single Evaluate(Single position)
         {
             if (keys.Count == 0)

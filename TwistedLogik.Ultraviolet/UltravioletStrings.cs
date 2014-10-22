@@ -9,7 +9,7 @@ namespace TwistedLogik.Ultraviolet
     public static class UltravioletStrings
     {
         /// <summary>
-        /// Initializes the UltravioletStrings type.
+        /// Initializes the <see cref="UltravioletStrings"/> type.
         /// </summary>
         static UltravioletStrings()
         {

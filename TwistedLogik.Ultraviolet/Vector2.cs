@@ -12,7 +12,7 @@ namespace TwistedLogik.Ultraviolet
     public struct Vector2 : IEquatable<Vector2>, IInterpolatable<Vector2>
     {
         /// <summary>
-        /// Initializes a new instance of the Vector2 structure with all of its components set to the specified value.
+        /// Initializes a new instance of the <see cref="Vector2"/> structure with all of its components set to the specified value.
         /// </summary>
         /// <param name="value">The value to which to set the vector's components.</param>
         public Vector2(Single value)
@@ -22,7 +22,7 @@ namespace TwistedLogik.Ultraviolet
         }
 
         /// <summary>
-        /// Initializes a new instance of the Vector2 structure.
+        /// Initializes a new instance of the <see cref="Vector2"/> structure with the specified x and y components.
         /// </summary>
         /// <param name="x">The vector's x component.</param>
         /// <param name="y">The vector's y component.</param>
@@ -35,8 +35,8 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Compares two vectors for equality.
         /// </summary>
-        /// <param name="vector1">The first vector to compare.</param>
-        /// <param name="vector2">The second vector to compare.</param>
+        /// <param name="vector1">The first <see cref="Vector2"/> to compare.</param>
+        /// <param name="vector2">The second <see cref="Vector2"/> to compare.</param>
         /// <returns><c>true</c> if the specified vectors are equal; otherwise, <c>false</c>.</returns>
         public static Boolean operator ==(Vector2 vector1, Vector2 vector2)
         {
@@ -46,8 +46,8 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Compares two vectors for inequality.
         /// </summary>
-        /// <param name="vector1">The first vector to compare.</param>
-        /// <param name="vector2">The second vector to compare.</param>
+        /// <param name="vector1">The first <see cref="Vector2"/> to compare.</param>
+        /// <param name="vector2">The second <see cref="Vector2"/> to compare.</param>
         /// <returns><c>true</c> if the specified vectors are unequal; otherwise, <c>false</c>.</returns>
         public static Boolean operator !=(Vector2 vector1, Vector2 vector2)
         {
@@ -57,9 +57,9 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Adds two vectors.
         /// </summary>
-        /// <param name="vector1">The vector to the left of the addition operator.</param>
-        /// <param name="vector2">The vector to the right of the addition operator.</param>
-        /// <returns>The resulting vector.</returns>
+        /// <param name="vector1">The <see cref="Vector2"/> to the left of the addition operator.</param>
+        /// <param name="vector2">The <see cref="Vector2"/> to the right of the addition operator.</param>
+        /// <returns>The resulting <see cref="Vector2"/>.</returns>
         public static Vector2 operator +(Vector2 vector1, Vector2 vector2)
         {
             return new Vector2(vector1.x + vector2.x, vector1.y + vector2.y);
@@ -68,9 +68,9 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Subtracts one vector from another vector.
         /// </summary>
-        /// <param name="vector1">The vector to the left of the subtraction operator.</param>
-        /// <param name="vector2">The vector to the right of the subtraction operator.</param>
-        /// <returns>The resulting vector.</returns>
+        /// <param name="vector1">The <see cref="Vector2"/> to the left of the subtraction operator.</param>
+        /// <param name="vector2">The <see cref="Vector2"/> to the right of the subtraction operator.</param>
+        /// <returns>The resulting <see cref="Vector2"/>.</returns>
         public static Vector2 operator -(Vector2 vector1, Vector2 vector2)
         {
             return new Vector2(vector1.x - vector2.x, vector1.y - vector2.y);
@@ -79,9 +79,9 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Multiplies two vectors.
         /// </summary>
-        /// <param name="vector1">The vector to the left of the multiplication operator.</param>
-        /// <param name="vector2">The vector to the right of the multiplication operator.</param>
-        /// <returns>The resulting vector.</returns>
+        /// <param name="vector1">The <see cref="Vector2"/> to the left of the multiplication operator.</param>
+        /// <param name="vector2">The <see cref="Vector2"/> to the right of the multiplication operator.</param>
+        /// <returns>The resulting <see cref="Vector2"/>.</returns>
         public static Vector2 operator *(Vector2 vector1, Vector2 vector2)
         {
             return new Vector2(
@@ -93,9 +93,9 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Multiplies a vector by a scaling factor.
         /// </summary>
-        /// <param name="vector">The vector.</param>
+        /// <param name="vector">The <see cref="Vector2"/> to multiply.</param>
         /// <param name="factor">The scaling factor by which to multiply the vector.</param>
-        /// <returns>The resulting vector.</returns>
+        /// <returns>The resulting <see cref="Vector2"/>.</returns>
         public static Vector2 operator *(Single factor, Vector2 vector)
         {
             return new Vector2(
@@ -107,9 +107,9 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Multiplies a vector by a scaling factor.
         /// </summary>
-        /// <param name="vector">The vector.</param>
+        /// <param name="vector">The <see cref="Vector2"/> to multiply.</param>
         /// <param name="factor">The scaling factor by which to multiply the vector.</param>
-        /// <returns>The resulting vector.</returns>
+        /// <returns>The resulting <see cref="Vector2"/>.</returns>
         public static Vector2 operator *(Vector2 vector, Single factor)
         {
             return new Vector2(
@@ -121,9 +121,9 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Divides two vectors.
         /// </summary>
-        /// <param name="vector1">The vector to the left of the division operator.</param>
-        /// <param name="vector2">The vector to the right of the division operator.</param>
-        /// <returns>The resulting vector.</returns>
+        /// <param name="vector1">The <see cref="Vector2"/> to the left of the division operator.</param>
+        /// <param name="vector2">The <see cref="Vector2"/> to the right of the division operator.</param>
+        /// <returns>The resulting <see cref="Vector2"/>.</returns>
         public static Vector2 operator /(Vector2 vector1, Vector2 vector2)
         {
             return new Vector2(
@@ -135,9 +135,9 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Divides a vector by a scaling factor.
         /// </summary>
-        /// <param name="vector">The vector.</param>
+        /// <param name="vector">The <see cref="Vector2"/> to divide.</param>
         /// <param name="factor">The scaling factor by which to divide the vector.</param>
-        /// <returns>The resulting vector.</returns>
+        /// <returns>The resulting <see cref="Vector2"/>.</returns>
         public static Vector2 operator /(Vector2 vector, Single factor)
         {
             return new Vector2(
@@ -149,15 +149,15 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Reverses the signs of a vector's components.
         /// </summary>
-        /// <param name="vector">The vector to reverse.</param>
-        /// <returns>The reversed vector.</returns>
+        /// <param name="vector">The <see cref="Vector2"/> to reverse.</param>
+        /// <returns>The reversed <see cref="Vector2"/>.</returns>
         public static Vector2 operator -(Vector2 vector)
         {
             return new Vector2(-vector.x, -vector.y);
         }
 
         /// <summary>
-        /// Converts the string representation of a vector into an instance of the Vector2 structure.
+        /// Converts the string representation of a vector into an instance of the <see cref="Vector2"/> structure.
         /// A return value indicates whether the conversion succeeded.
         /// </summary>
         /// <param name="s">A string containing a vector to convert.</param>
@@ -169,21 +169,21 @@ namespace TwistedLogik.Ultraviolet
         }
 
         /// <summary>
-        /// Converts the string representation of a vector into an instance of the Vector2 structure.
+        /// Converts the string representation of a vector into an instance of the <see cref="Vector2"/> structure.
         /// </summary>
         /// <param name="s">A string containing a vector to convert.</param>
-        /// <returns>A instance of the Vector2 structure equivalent to the vector contained in <paramref name="s"/>.</returns>
+        /// <returns>A instance of the <see cref="Vector2"/> structure equivalent to the vector contained in <paramref name="s"/>.</returns>
         public static Vector2 Parse(String s)
         {
             return Parse(s, NumberStyles.Number, NumberFormatInfo.CurrentInfo);
         }
 
         /// <summary>
-        /// Converts the string representation of a vector into an instance of the Vector2 structure.
+        /// Converts the string representation of a vector into an instance of the <see cref="Vector2"/> structure.
         /// A return value indicates whether the conversion succeeded.
         /// </summary>
         /// <param name="s">A string containing a vector to convert.</param>
-        /// <param name="style">A set of <see cref="System.Globalization.NumberStyles"/> values indicating which elements are present in <paramref name="s"/>.</param>
+        /// <param name="style">A set of <see cref="NumberStyles"/> values indicating which elements are present in <paramref name="s"/>.</param>
         /// <param name="provider">A format provider that provides culture-specific formatting information.</param>
         /// <param name="vector">A variable to populate with the converted value.</param>
         /// <returns><c>true</c> if <paramref name="s"/> was converted successfully; otherwise, <c>false</c>.</returns>
@@ -209,12 +209,12 @@ namespace TwistedLogik.Ultraviolet
         }
 
         /// <summary>
-        /// Converts the string representation of a vector into an instance of the Vector2 structure.
+        /// Converts the string representation of a vector into an instance of the <see cref="Vector2"/> structure.
         /// </summary>
         /// <param name="s">A string containing a vector to convert.</param>
-        /// <param name="style">A set of <see cref="System.Globalization.NumberStyles"/> values indicating which elements are present in <paramref name="s"/>.</param>
+        /// <param name="style">A set of <see cref="NumberStyles"/> values indicating which elements are present in <paramref name="s"/>.</param>
         /// <param name="provider">A format provider that provides culture-specific formatting information.</param>
-        /// <returns>A instance of the Vector2 structure equivalent to the vector contained in <paramref name="s"/>.</returns>
+        /// <returns>A instance of the <see cref="Vector2"/> structure equivalent to the vector contained in <paramref name="s"/>.</returns>
         public static Vector2 Parse(String s, NumberStyles style, IFormatProvider provider)
         {
             Vector2 vector;
@@ -226,8 +226,8 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Calculates the dot product of two vectors.
         /// </summary>
-        /// <param name="vector1">The first vector.</param>
-        /// <param name="vector2">The second vector.</param>
+        /// <param name="vector1">The first <see cref="Vector2"/>.</param>
+        /// <param name="vector2">The second <see cref="Vector2"/>.</param>
         /// <returns>The dot product of the specified vectors.</returns>
         public static Single Dot(Vector2 vector1, Vector2 vector2)
         {
@@ -237,8 +237,8 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Calculates the dot product of two vectors.
         /// </summary>
-        /// <param name="vector1">The first vector.</param>
-        /// <param name="vector2">The second vector.</param>
+        /// <param name="vector1">The first <see cref="Vector2"/>.</param>
+        /// <param name="vector2">The second <see cref="Vector2"/>.</param>
         /// <param name="result">The dot product of the specified vectors.</param>
         public static void Dot(ref Vector2 vector1, ref Vector2 vector2, out Single result)
         {
@@ -248,9 +248,9 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Adds two vectors.
         /// </summary>
-        /// <param name="vector1">The vector to the left of the addition operator.</param>
-        /// <param name="vector2">The vector to the right of the addition operator.</param>
-        /// <returns>The resulting vector.</returns>
+        /// <param name="vector1">The <see cref="Vector2"/> to the left of the addition operator.</param>
+        /// <param name="vector2">The <see cref="Vector2"/> to the right of the addition operator.</param>
+        /// <returns>The resulting <see cref="Vector2"/>.</returns>
         public static Vector2 Add(Vector2 vector1, Vector2 vector2)
         {
             return new Vector2(vector1.x + vector2.x, vector1.y + vector2.y);
@@ -259,9 +259,9 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Adds two vectors.
         /// </summary>
-        /// <param name="vector1">The vector to the left of the addition operator.</param>
-        /// <param name="vector2">The vector to the right of the addition operator.</param>
-        /// <param name="result">The resulting vector.</param>
+        /// <param name="vector1">The <see cref="Vector2"/> to the left of the addition operator.</param>
+        /// <param name="vector2">The <see cref="Vector2"/> to the right of the addition operator.</param>
+        /// <param name="result">The resulting <see cref="Vector2"/>.</param>
         public static void Add(ref Vector2 vector1, ref Vector2 vector2, out Vector2 result)
         {
             result = new Vector2(vector1.x + vector2.x, vector1.y + vector2.y);
@@ -270,9 +270,9 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Subtracts one vector from another vector.
         /// </summary>
-        /// <param name="vector1">The vector to the left of the subtraction operator.</param>
-        /// <param name="vector2">The vector to the right of the subtraction operator.</param>
-        /// <returns>The resulting vector.</returns>
+        /// <param name="vector1">The <see cref="Vector2"/> to the left of the subtraction operator.</param>
+        /// <param name="vector2">The <see cref="Vector2"/> to the right of the subtraction operator.</param>
+        /// <returns>The resulting <see cref="Vector2"/>.</returns>
         public static Vector2 Subtract(Vector2 vector1, Vector2 vector2)
         {
             return new Vector2(vector1.x - vector2.x, vector1.y - vector2.y);
@@ -281,9 +281,9 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Subtracts one vector from another vector.
         /// </summary>
-        /// <param name="vector1">The vector to the left of the subtraction operator.</param>
-        /// <param name="vector2">The vector to the right of the subtraction operator.</param>
-        /// <param name="result">The resulting vector.</param>
+        /// <param name="vector1">The <see cref="Vector2"/> to the left of the subtraction operator.</param>
+        /// <param name="vector2">The <see cref="Vector2"/> to the right of the subtraction operator.</param>
+        /// <param name="result">The resulting <see cref="Vector2"/>.</param>
         public static void Subtract(ref Vector2 vector1, ref Vector2 vector2, out Vector2 result)
         {
             result = new Vector2(vector1.x - vector2.x, vector1.y - vector2.y);
@@ -292,9 +292,9 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Multiplies two vectors.
         /// </summary>
-        /// <param name="vector1">The vector to the left of the multiplication operator.</param>
-        /// <param name="vector2">The vector to the right of the multiplication operator.</param>
-        /// <returns>The resulting vector.</returns>
+        /// <param name="vector1">The <see cref="Vector2"/> to the left of the multiplication operator.</param>
+        /// <param name="vector2">The <see cref="Vector2"/> to the right of the multiplication operator.</param>
+        /// <returns>The resulting <see cref="Vector2"/>.</returns>
         public static Vector2 Multiply(Vector2 vector1, Vector2 vector2)
         {
             return new Vector2(
@@ -306,9 +306,9 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Multiplies two vectors.
         /// </summary>
-        /// <param name="vector1">The vector to the left of the multiplication operator.</param>
-        /// <param name="vector2">The vector to the right of the multiplication operator.</param>
-        /// <param name="result">The resulting vector.</param>
+        /// <param name="vector1">The <see cref="Vector2"/> to the left of the multiplication operator.</param>
+        /// <param name="vector2">The <see cref="Vector2"/> to the right of the multiplication operator.</param>
+        /// <param name="result">The resulting <see cref="Vector2"/>.</param>
         public static void Multiply(ref Vector2 vector1, ref Vector2 vector2, out Vector2 result)
         {
             result = new Vector2(
@@ -320,9 +320,9 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Multiplies a vector by a scaling factor.
         /// </summary>
-        /// <param name="vector">The vector to multiply.</param>
+        /// <param name="vector">The <see cref="Vector2"/> to multiply.</param>
         /// <param name="factor">The scaling factor by which to multiply the vector.</param>
-        /// <returns>The resulting vector.</returns>
+        /// <returns>The resulting <see cref="Vector2"/>.</returns>
         public static Vector2 Multiply(Vector2 vector, Single factor)
         {
             return new Vector2(
@@ -334,9 +334,9 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Multiplies a vector by a scaling factor.
         /// </summary>
-        /// <param name="vector">The vector to multiply.</param>
+        /// <param name="vector">The <see cref="Vector2"/> to multiply.</param>
         /// <param name="factor">The scaling factor by which to multiply the vector.</param>
-        /// <param name="result">The resulting vector.</param>
+        /// <param name="result">The resulting <see cref="Vector2"/>.</param>
         public static void Multiply(ref Vector2 vector, Single factor, out Vector2 result)
         {
             result = new Vector2(
@@ -348,9 +348,9 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Divides two vectors.
         /// </summary>
-        /// <param name="vector1">The vector to the left of the division operator.</param>
-        /// <param name="vector2">The vector to the right of the division operator.</param>
-        /// <returns>The resulting vector.</returns>
+        /// <param name="vector1">The <see cref="Vector2"/> to the left of the division operator.</param>
+        /// <param name="vector2">The <see cref="Vector2"/> to the right of the division operator.</param>
+        /// <returns>The resulting <see cref="Vector2"/>.</returns>
         public static Vector2 Divide(Vector2 vector1, Vector2 vector2)
         {
             return new Vector2(
@@ -362,9 +362,9 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Divides two vectors.
         /// </summary>
-        /// <param name="vector1">The vector to the left of the division operator.</param>
-        /// <param name="vector2">The vector to the right of the division operator.</param>
-        /// <param name="result">The resulting vector.</param>
+        /// <param name="vector1">The <see cref="Vector2"/> to the left of the division operator.</param>
+        /// <param name="vector2">The <see cref="Vector2"/> to the right of the division operator.</param>
+        /// <param name="result">The resulting <see cref="Vector2"/>.</param>
         public static void Divide(ref Vector2 vector1, ref Vector2 vector2, out Vector2 result)
         {
             result = new Vector2(
@@ -376,9 +376,9 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Divides a vector by a scaling factor.
         /// </summary>
-        /// <param name="vector">The vector to divide.</param>
+        /// <param name="vector">The <see cref="Vector2"/> to divide.</param>
         /// <param name="factor">The scaling factor by which to divide the vector.</param>
-        /// <returns>The resulting vector.</returns>
+        /// <returns>The resulting <see cref="Vector2"/>.</returns>
         public static Vector2 Divide(Vector2 vector, Single factor)
         {
             return new Vector2(
@@ -390,9 +390,9 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Divides a vector by a scaling factor.
         /// </summary>
-        /// <param name="vector">The vector to divide.</param>
+        /// <param name="vector">The <see cref="Vector2"/> to divide.</param>
         /// <param name="factor">The scaling factor by which to divide the vector.</param>
-        /// <param name="result">The resulting vector.</param>
+        /// <param name="result">The resulting <see cref="Vector2"/>.</param>
         public static void Divide(ref Vector2 vector, Single factor, out Vector2 result)
         {
             result = new Vector2(
@@ -404,9 +404,9 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Transforms a vector by a matrix.
         /// </summary>
-        /// <param name="vector">The vector to transform.</param>
+        /// <param name="vector">The <see cref="Vector2"/> to transform.</param>
         /// <param name="matrix">The matrix by which to transform the vector.</param>
-        /// <returns>The transformed vector.</returns>
+        /// <returns>The transformed <see cref="Vector2"/>.</returns>
         public static Vector2 Transform(Vector2 vector, Matrix matrix)
         {
             var x = (matrix.M11 * vector.X + matrix.M12 * vector.Y) + matrix.M14;
@@ -417,9 +417,9 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Transforms a vector by a matrix.
         /// </summary>
-        /// <param name="vector">The vector to transform.</param>
+        /// <param name="vector">The <see cref="Vector2"/> to transform.</param>
         /// <param name="matrix">The matrix by which to transform the vector.</param>
-        /// <param name="result">The transformed vector.</param>
+        /// <param name="result">The transformed <see cref="Vector2"/>.</param>
         public static void Transform(ref Vector2 vector, ref Matrix matrix, out Vector2 result)
         {
             var x = (matrix.M11 * vector.X + matrix.M12 * vector.Y) + matrix.M14;
@@ -430,9 +430,9 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Transforms a vector normal by a matrix.
         /// </summary>
-        /// <param name="vector">The vector to transform.</param>
+        /// <param name="vector">The <see cref="Vector2"/> to transform.</param>
         /// <param name="matrix">The matrix by which to transform the vector.</param>
-        /// <returns>The transformed vector.</returns>
+        /// <returns>The transformed <see cref="Vector2"/>.</returns>
         public static Vector2 TransformNormal(Vector2 vector, Matrix matrix)
         {
             var x = (matrix.M11 * vector.X + matrix.M12 * vector.Y);
@@ -443,9 +443,9 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Transforms a vector normal by a matrix.
         /// </summary>
-        /// <param name="vector">The vector to transform.</param>
+        /// <param name="vector">The <see cref="Vector2"/> to transform.</param>
         /// <param name="matrix">The matrix by which to transform the vector.</param>
-        /// <param name="result">The transformed vector.</param>
+        /// <param name="result">The transformed <see cref="Vector2"/>.</param>
         public static void TransformNormal(ref Vector2 vector, ref Matrix matrix, out Vector2 result)
         {
             var x = (matrix.M11 * vector.X + matrix.M12 * vector.Y);
@@ -456,8 +456,8 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Normalizes a vector.
         /// </summary>
-        /// <param name="vector">The vector to normalize.</param>
-        /// <returns>The normalized vector.</returns>
+        /// <param name="vector">The <see cref="Vector2"/> to normalize.</param>
+        /// <returns>The normalized <see cref="Vector2"/>.</returns>
         public static Vector2 Normalize(Vector2 vector)
         {
             var inverseMagnitude = 1f / vector.Length();
@@ -467,8 +467,8 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Normalizes a vector.
         /// </summary>
-        /// <param name="vector">The vector to normalize.</param>
-        /// <param name="result">The normalized vector.</param>
+        /// <param name="vector">The <see cref="Vector2"/> to normalize.</param>
+        /// <param name="result">The normalized <see cref="Vector2"/>.</param>
         public static void Normalize(ref Vector2 vector, out Vector2 result)
         {
             var inverseMagnitude = 1f / vector.Length();
@@ -478,8 +478,8 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Negates the specified vector.
         /// </summary>
-        /// <param name="vector">The vector to negate.</param>
-        /// <returns>The negated vector.</returns>
+        /// <param name="vector">The <see cref="Vector2"/> to negate.</param>
+        /// <returns>The negated <see cref="Vector2"/>.</returns>
         public static Vector2 Negate(Vector2 vector)
         {
             return new Vector2(-vector.x, -vector.y);
@@ -488,8 +488,8 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Negates the specified vector.
         /// </summary>
-        /// <param name="vector">The vector to negate.</param>
-        /// <param name="result">The negated vector.</param>
+        /// <param name="vector">The <see cref="Vector2"/> to negate.</param>
+        /// <param name="result">The negated <see cref="Vector2"/>.</param>
         public static void Negate(ref Vector2 vector, out Vector2 result)
         {
             result = new Vector2(-vector.x, -vector.y);
@@ -498,10 +498,10 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Clamps a vector to the specified range.
         /// </summary>
-        /// <param name="vector">The vector to clamp.</param>
+        /// <param name="vector">The <see cref="Vector2"/> to clamp.</param>
         /// <param name="min">The minimum value.</param>
         /// <param name="max">The maximum value.</param>
-        /// <returns>The clamped vector.</returns>
+        /// <returns>The clamped <see cref="Vector2"/>.</returns>
         public static Vector2 Clamp(Vector2 vector, Vector2 min, Vector2 max)
         {
             return new Vector2(
@@ -513,10 +513,10 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Clamps a vector to the specified range.
         /// </summary>
-        /// <param name="vector">The vector to clamp.</param>
+        /// <param name="vector">The <see cref="Vector2"/> to clamp.</param>
         /// <param name="min">The minimum value.</param>
         /// <param name="max">The maximum value.</param>
-        /// <param name="result">The clamped vector.</param>
+        /// <param name="result">The clamped <see cref="Vector2"/>.</param>
         public static void Clamp(ref Vector2 vector, ref Vector2 min, ref Vector2 max, out Vector2 result)
         {
             result = new Vector2(
@@ -528,9 +528,9 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Returns a vector which contains the lowest value of each component of the specified vectors.
         /// </summary>
-        /// <param name="vector1">The first vector.</param>
-        /// <param name="vector2">The second vector.</param>
-        /// <returns>A vector which contains the lowest value of each component of the specified vectors.</returns>
+        /// <param name="vector1">The first <see cref="Vector2"/>.</param>
+        /// <param name="vector2">The second <see cref="Vector2"/>.</param>
+        /// <returns>A <see cref="Vector2"/> which contains the lowest value of each component of the specified vectors.</returns>
         public static Vector2 Min(Vector2 vector1, Vector2 vector2)
         {
             return new Vector2(
@@ -542,9 +542,9 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Returns a vector which contains the lowest value of each component of the specified vectors.
         /// </summary>
-        /// <param name="vector1">The first vector.</param>
-        /// <param name="vector2">The second vector.</param>
-        /// <param name="result">A vector which contains the lowest value of each component of the specified vectors.</param>
+        /// <param name="vector1">The first <see cref="Vector2"/>.</param>
+        /// <param name="vector2">The second <see cref="Vector2"/>.</param>
+        /// <param name="result">A <see cref="Vector2"/> which contains the lowest value of each component of the specified vectors.</param>
         public static void Min(ref Vector2 vector1, ref Vector2 vector2, out Vector2 result)
         {
             result = new Vector2(
@@ -556,9 +556,9 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Returns a vector which contains the highest value of each component of the specified vectors.
         /// </summary>
-        /// <param name="vector1">The first vector.</param>
-        /// <param name="vector2">The second vector.</param>
-        /// <returns>A vector which contains the highest value of each component of the specified vectors.</returns>
+        /// <param name="vector1">The first <see cref="Vector2"/>.</param>
+        /// <param name="vector2">The second <see cref="Vector2"/>.</param>
+        /// <returns>A <see cref="Vector2"/> which contains the highest value of each component of the specified vectors.</returns>
         public static Vector2 Max(Vector2 vector1, Vector2 vector2)
         {
             return new Vector2(
@@ -570,9 +570,9 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Returns a vector which contains the highest value of each component of the specified vectors.
         /// </summary>
-        /// <param name="vector1">The first vector.</param>
-        /// <param name="vector2">The second vector.</param>
-        /// <param name="result">A vector which contains the highest value of each component of the specified vectors.</param>
+        /// <param name="vector1">The first <see cref="Vector2"/>.</param>
+        /// <param name="vector2">The second <see cref="Vector2"/>.</param>
+        /// <param name="result">A <see cref="Vector2"/> which contains the highest value of each component of the specified vectors.</param>
         public static void Max(ref Vector2 vector1, ref Vector2 vector2, out Vector2 result)
         {
             result = new Vector2(
@@ -584,9 +584,9 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Reflects the specified vector off of a surface with the specified normal.
         /// </summary>
-        /// <param name="vector">The vector to reflect.</param>
+        /// <param name="vector">The <see cref="Vector2"/> to reflect.</param>
         /// <param name="normal">The normal vector of the surface over which to reflect the vector.</param>
-        /// <returns>The reflected vector.</returns>
+        /// <returns>The reflected <see cref="Vector2"/>.</returns>
         public static Vector2 Reflect(Vector2 vector, Vector2 normal)
         {
             var dot = vector.x * normal.x + vector.y * normal.y;
@@ -600,9 +600,9 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Reflects the specified vector off of a surface with the specified normal.
         /// </summary>
-        /// <param name="vector">The vector to reflect.</param>
+        /// <param name="vector">The <see cref="Vector2"/> to reflect.</param>
         /// <param name="normal">The normal vector of the surface over which to reflect the vector.</param>
-        /// <param name="result">The reflected vector.</param>
+        /// <param name="result">The reflected <see cref="Vector2"/>.</param>
         public static void Reflect(ref Vector2 vector, ref Vector2 normal, out Vector2 result)
         {
             var dot = vector.x * normal.x + vector.y * normal.y;
@@ -616,10 +616,10 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Performs a linear interpolation between the specified vectors.
         /// </summary>
-        /// <param name="vector1">The first vector.</param>
-        /// <param name="vector2">The second vector.</param>
+        /// <param name="vector1">The first <see cref="Vector2"/>.</param>
+        /// <param name="vector2">The second <see cref="Vector2"/>.</param>
         /// <param name="amount">A value from 0.0 to 1.0 representing the interpolation factor.</param>
-        /// <returns>The interpolated vector.</returns>
+        /// <returns>The interpolated <see cref="Vector2"/>.</returns>
         public static Vector2 Lerp(Vector2 vector1, Vector2 vector2, Single amount)
         {
             return new Vector2(
@@ -631,10 +631,10 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Performs a linear interpolation between the specified vectors.
         /// </summary>
-        /// <param name="vector1">The first vector.</param>
-        /// <param name="vector2">The second vector.</param>
+        /// <param name="vector1">The first <see cref="Vector2"/>.</param>
+        /// <param name="vector2">The second <see cref="Vector2"/>.</param>
         /// <param name="amount">A value from 0.0 to 1.0 representing the interpolation factor.</param>
-        /// <param name="result">The interpolated vector.</param>
+        /// <param name="result">The interpolated <see cref="Vector2"/>.</param>
         public static void Lerp(ref Vector2 vector1, ref Vector2 vector2, Single amount, out Vector2 result)
         {
             result = new Vector2(
@@ -651,7 +651,7 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="vector2">The second position vector.</param>
         /// <param name="tangent2">The second tangent vector.</param>
         /// <param name="amount">A value from 0.0 to 1.0 representing the interpolation factor.</param>
-        /// <returns>The interpolated vector.</returns>
+        /// <returns>The interpolated <see cref="Vector2"/>.</returns>
         public static Vector2 Hermite(Vector2 vector1, Vector2 tangent1, Vector2 vector2, Vector2 tangent2, Single amount)
         {
             var t2 = amount * amount;
@@ -676,7 +676,7 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="vector2">The second position vector.</param>
         /// <param name="tangent2">The second tangent vector.</param>
         /// <param name="amount">A value from 0.0 to 1.0 representing the interpolation factor.</param>
-        /// <param name="result">The interpolated vector.</param>
+        /// <param name="result">The interpolated <see cref="Vector2"/>.</param>
         public static void Hermite(ref Vector2 vector1, ref Vector2 tangent1, ref Vector2 vector2, ref Vector2 tangent2, Single amount, out Vector2 result)
         {
             var t2 = amount * amount;
@@ -696,8 +696,8 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Performs a smooth step interpolation between the specified vectors.
         /// </summary>
-        /// <param name="vector1">The first vector.</param>
-        /// <param name="vector2">The second vector.</param>
+        /// <param name="vector1">The first <see cref="Vector2"/>.</param>
+        /// <param name="vector2">The second <see cref="Vector2"/>.</param>
         /// <param name="amount">A value from 0.0 to 1.0 representing the interpolation factor.</param>
         /// <returns>The interpolated vector.</returns>
         public static Vector2 SmoothStep(Vector2 vector1, Vector2 vector2, Single amount)
@@ -717,7 +717,7 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="vector1">The first vector.</param>
         /// <param name="vector2">The second vector.</param>
         /// <param name="amount">A value from 0.0 to 1.0 representing the interpolation factor.</param>
-        /// <param name="result">The interpolated vector.</param>
+        /// <param name="result">The interpolated <see cref="Vector2"/>.</param>
         public static void SmoothStep(ref Vector2 vector1, ref Vector2 vector2, Single amount, out Vector2 result)
         {
             amount = amount > 1 ? 1 : amount < 0 ? 0 : amount;
@@ -737,7 +737,7 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="vector3">The third vector.</param>
         /// <param name="vector4">The fourth vector.</param>
         /// <param name="amount">A value from 0.0 to 1.0 representing the interpolation factor.</param>
-        /// <returns>The interpolated vector.</returns>
+        /// <returns>The interpolated <see cref="Vector2"/>.</returns>
         public static Vector2 CatmullRom(Vector2 vector1, Vector2 vector2, Vector2 vector3, Vector2 vector4, Single amount)
         {
             var t2 = amount * amount;
@@ -757,7 +757,7 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="vector3">The third vector.</param>
         /// <param name="vector4">The fourth vector.</param>
         /// <param name="amount">A value from 0.0 to 1.0 representing the interpolation factor.</param>
-        /// <param name="result">The interpolated vector.</param>
+        /// <param name="result">The interpolated <see cref="Vector2"/>.</param>
         public static void CatmullRom(ref Vector2 vector1, ref Vector2 vector2, ref Vector2 vector3, ref Vector2 vector4, Single amount, out Vector2 result)
         {
             var t2 = amount * amount;
@@ -798,11 +798,11 @@ namespace TwistedLogik.Ultraviolet
         }
 
         /// <summary>
-        /// Calculates the distance between two coordinates.
+        /// Calculates the square of the distance between two coordinates.
         /// </summary>
         /// <param name="vector1">The first coordinate.</param>
         /// <param name="vector2">The second coordinate.</param>
-        /// <returns>The distance between the specified coordinates.</returns>
+        /// <returns>The square of the distance between the specified coordinates.</returns>
         public static Single DistanceSquared(Vector2 vector1, Vector2 vector2)
         {
             var dx = vector2.x - vector1.x;
@@ -812,11 +812,11 @@ namespace TwistedLogik.Ultraviolet
         }
 
         /// <summary>
-        /// Calculates the distance between two coordinates.
+        /// Calculates the square of the distance between two coordinates.
         /// </summary>
         /// <param name="vector1">The first coordinate.</param>
         /// <param name="vector2">The second coordinate.</param>
-        /// <param name="result">The distance between the specified coordinates.</param>
+        /// <param name="result">The square of the distance between the specified coordinates.</param>
         public static void DistanceSquared(ref Vector2 vector1, ref Vector2 vector2, out Single result)
         {
             var dx = vector2.x - vector1.x;
@@ -833,7 +833,7 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="v3">The third vertex of the triangle.</param>
         /// <param name="b2">Barycentric coordinate b2, which expresses the weighting factor towards the second triangle vertex.</param>
         /// <param name="b3">Barycentric coordinate b3, which expresses the weighting factor towards the third triangle vertex.</param>
-        /// <returns>A vector containing the Cartesian coordinates of the specified point.</returns>
+        /// <returns>A <see cref="Vector2"/> containing the Cartesian coordinates of the specified point.</returns>
         public static Vector2 Barycentric(Vector2 v1, Vector2 v2, Vector2 v3, Single b2, Single b3)
         {
             var b1 = (1 - b2 - b3);
@@ -850,7 +850,7 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="v3">The third vertex of the triangle.</param>
         /// <param name="b2">Barycentric coordinate b2, which expresses the weighting factor towards the second triangle vertex.</param>
         /// <param name="b3">Barycentric coordinate b3, which expresses the weighting factor towards the third triangle vertex.</param>
-        /// <param name="result">A vector containing the Cartesian coordinates of the specified point.</param>
+        /// <param name="result">A <see cref="Vector2"/> containing the Cartesian coordinates of the specified point.</param>
         public static void Barycentric(ref Vector2 v1, ref Vector2 v2, ref Vector2 v3, Single b2, Single b3, out Vector2 result)
         {
             var b1 = (1 - b2 - b3);

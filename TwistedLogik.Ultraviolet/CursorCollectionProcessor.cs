@@ -7,7 +7,7 @@ using TwistedLogik.Ultraviolet.Graphics;
 namespace TwistedLogik.Ultraviolet.SDL2
 {
     /// <summary>
-    /// Loads cursor collection assets.
+    /// Represents a content processor that loads cursor collections.
     /// </summary>
     [ContentProcessor]
     internal sealed class CursorCollectionProcessor : ContentProcessor<XDocument, CursorCollection>
@@ -15,7 +15,7 @@ namespace TwistedLogik.Ultraviolet.SDL2
         /// <summary>
         /// Processes the specified data structure into a game asset.
         /// </summary>
-        /// <param name="manager">The content manager with which the asset is being processed.</param>
+        /// <param name="manager">The <see cref="ContentManager"/> with which the asset is being processed.</param>
         /// <param name="metadata">The asset's metadata.</param>
         /// <param name="input">The input data structure to process.</param>
         /// <returns>The game asset that was created.</returns>

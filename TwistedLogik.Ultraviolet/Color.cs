@@ -12,7 +12,7 @@ namespace TwistedLogik.Ultraviolet
     public struct Color : IEquatable<Color>, IInterpolatable<Color>
     {
         /// <summary>
-        /// Initializes a new instance of the Color structure.
+        /// Initializes a new instance of the <see cref="Color"/> structure.
         /// </summary>
         /// <param name="packedValue">The color's packed value.</param>
         [CLSCompliant(false)]
@@ -22,7 +22,7 @@ namespace TwistedLogik.Ultraviolet
         }
 
         /// <summary>
-        /// Initializes a new instance of the Color structure with the specified component values.
+        /// Initializes a new instance of the <see cref="Color"/> structure with the specified component values.
         /// </summary>
         /// <param name="r">The red component.</param>
         /// <param name="g">The green component.</param>
@@ -44,7 +44,7 @@ namespace TwistedLogik.Ultraviolet
         }
 
         /// <summary>
-        /// Initializes a new instance of the Color structure with the specified component values.
+        /// Initializes a new instance of the <see cref="Color"/> structure with the specified component values.
         /// </summary>
         /// <param name="r">The red component.</param>
         /// <param name="g">The green component.</param>
@@ -70,7 +70,7 @@ namespace TwistedLogik.Ultraviolet
         }
 
         /// <summary>
-        /// Initializes a new instance of the Color structure with the specified component values.
+        /// Initializes a new instance of the <see cref="Color"/> structure with the specified component values.
         /// </summary>
         /// <param name="r">The red component.</param>
         /// <param name="g">The green component.</param>
@@ -88,7 +88,7 @@ namespace TwistedLogik.Ultraviolet
         }
 
         /// <summary>
-        /// Initializes a new instance of the Color structure with the specified component values.
+        /// Initializes a new instance of the <see cref="Color"/> structure with the specified component values.
         /// </summary>
         /// <param name="r">The red component.</param>
         /// <param name="g">The green component.</param>
@@ -111,8 +111,8 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Compares two colors for equality.
         /// </summary>
-        /// <param name="c1">The first color to compare.</param>
-        /// <param name="c2">The second color to compare.</param>
+        /// <param name="c1">The first <see cref="Color"/> to compare.</param>
+        /// <param name="c2">The second <see cref="Color"/> to compare.</param>
         /// <returns><c>true</c> if the specified colors are equal; otherwise, <c>false</c>.</returns>
         public static Boolean operator ==(Color c1, Color c2)
         {
@@ -122,8 +122,8 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Compares two colors for inequality.
         /// </summary>
-        /// <param name="c1">The first color to compare.</param>
-        /// <param name="c2">The second color to compare.</param>
+        /// <param name="c1">The first <see cref="Color"/> to compare.</param>
+        /// <param name="c2">The second <see cref="Color"/> to compare.</param>
         /// <returns><c>true</c> if the specified colors are unequal; otherwise, <c>false</c>.</returns>
         public static Boolean operator !=(Color c1, Color c2)
         {
@@ -133,9 +133,9 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Multiplies each of the color's components by the specified scaling factor.
         /// </summary>
-        /// <param name="color">The color to multiply.</param>
+        /// <param name="color">The <see cref="Color"/> to multiply.</param>
         /// <param name="alpha">The scaling factor by which to multiply the color.</param>
-        /// <returns>The scaled color.</returns>
+        /// <returns>The scaled <see cref="Color"/>.</returns>
         public static Color operator *(Color color, Single alpha)
         {
             if (alpha < 0)
@@ -153,7 +153,7 @@ namespace TwistedLogik.Ultraviolet
         }
 
         /// <summary>
-        /// Converts the string representation of a color into an instance of the Color structure.
+        /// Converts the string representation of a color into an instance of the <see cref="Color"/> structure.
         /// A return value indicates whether the conversion succeeded.
         /// </summary>
         /// <param name="s">A string containing a color to convert.</param>
@@ -165,21 +165,21 @@ namespace TwistedLogik.Ultraviolet
         }
 
         /// <summary>
-        /// Converts the string representation of a vector into an instance of the Color structure.
+        /// Converts the string representation of a vector into an instance of the <see cref="Color"/> structure.
         /// </summary>
         /// <param name="s">A string containing a vector to convert.</param>
-        /// <returns>A instance of the Color structure equivalent to the color contained in <paramref name="s"/>.</returns>
+        /// <returns>A instance of the <see cref="Color"/> structure equivalent to the color contained in <paramref name="s"/>.</returns>
         public static Color Parse(String s)
         {
             return Parse(s, NumberStyles.Integer, NumberFormatInfo.CurrentInfo);
         }
 
         /// <summary>
-        /// Converts the string representation of a color into an instance of the Color structure.
+        /// Converts the string representation of a color into an instance of the <see cref="Color"/> structure.
         /// A return value indicates whether the conversion succeeded.
         /// </summary>
         /// <param name="s">A string containing a color to convert.</param>
-        /// <param name="style">A set of <see cref="System.Globalization.NumberStyles"/> values indicating which elements are present in <paramref name="s"/>.</param>
+        /// <param name="style">A set of <see cref="NumberStyles"/> values indicating which elements are present in <paramref name="s"/>.</param>
         /// <param name="provider">A format provider that provides culture-specific formatting information.</param>
         /// <param name="color">A variable to populate with the converted value.</param>
         /// <returns><c>true</c> if <paramref name="s"/> was converted successfully; otherwise, <c>false</c>.</returns>
@@ -202,12 +202,12 @@ namespace TwistedLogik.Ultraviolet
         }
 
         /// <summary>
-        /// Converts the string representation of a vector into an instance of the Color structure.
+        /// Converts the string representation of a vector into an instance of the <see cref="Color"/> structure.
         /// </summary>
         /// <param name="s">A string containing a vector to convert.</param>
-        /// <param name="style">A set of <see cref="System.Globalization.NumberStyles"/> values indicating which elements are present in <paramref name="s"/>.</param>
+        /// <param name="style">A set of <see cref="NumberStyles"/> values indicating which elements are present in <paramref name="s"/>.</param>
         /// <param name="provider">A format provider that provides culture-specific formatting information.</param>
-        /// <returns>A instance of the Color structure equivalent to the color contained in <paramref name="s"/>.</returns>
+        /// <returns>A instance of the <see cref="Color"/> structure equivalent to the color contained in <paramref name="s"/>.</returns>
         public static Color Parse(String s, NumberStyles style, IFormatProvider provider)
         {
             Color color;
@@ -217,10 +217,10 @@ namespace TwistedLogik.Ultraviolet
         }
 
         /// <summary>
-        /// Creates a color from a 32-bit integer in ARGB format.
+        /// Creates a <see cref="Color"/> from a 32-bit integer in ARGB format.
         /// </summary>
         /// <param name="value">The integer from which to create a color.</param>
-        /// <returns>The color that corresponds to the specified integer value.</returns>
+        /// <returns>The <see cref="Color"/> that corresponds to the specified integer value.</returns>
         [CLSCompliant(false)]
         public static Color FromArgb(UInt32 value)
         {
@@ -233,10 +233,10 @@ namespace TwistedLogik.Ultraviolet
         }
 
         /// <summary>
-        /// Creates a color from a 32-bit integer in RGBA format.
+        /// Creates a <see cref="Color"/> from a 32-bit integer in RGBA format.
         /// </summary>
         /// <param name="value">The integer from which to create a color.</param>
-        /// <returns>The color that corresponds to the specified integer value.</returns>
+        /// <returns>The <see cref="Color"/> that corresponds to the specified integer value.</returns>
         [CLSCompliant(false)]
         public static Color FromRgba(UInt32 value)
         {
@@ -244,10 +244,10 @@ namespace TwistedLogik.Ultraviolet
         }
 
         /// <summary>
-        /// Creates a color from a 32-bit integer in BGRA format.
+        /// Creates a <see cref="Color"/> from a 32-bit integer in BGRA format.
         /// </summary>
         /// <param name="value">The integer from which to create a color.</param>
-        /// <returns>The color that corresponds to the specified integer value.</returns>
+        /// <returns>The <see cref="Color"/> that corresponds to the specified integer value.</returns>
         [CLSCompliant(false)]
         public static Color FromBgra(UInt32 value)
         {
@@ -310,9 +310,9 @@ namespace TwistedLogik.Ultraviolet
         }
 
         /// <summary>
-        /// Converts the color to a 32-bit integer in ARGB format.
+        /// Converts the <see cref="Color"/> to a 32-bit integer in ARGB format.
         /// </summary>
-        /// <returns>The ARGB value that corresponds to this color.</returns>
+        /// <returns>The ARGB value that corresponds to this <see cref="Color"/>.</returns>
         [CLSCompliant(false)]
         public UInt32 ToArgb()
         {
@@ -320,9 +320,9 @@ namespace TwistedLogik.Ultraviolet
         }
 
         /// <summary>
-        /// Converts the color to a 32-bit integer in RGBA format.
+        /// Converts the <see cref="Color"/> to a 32-bit integer in RGBA format.
         /// </summary>
-        /// <returns>The RGBA value that corresponds to this color.</returns>
+        /// <returns>The RGBA value that corresponds to this <see cref="Color"/>.</returns>
         [CLSCompliant(false)]
         public UInt32 ToRgba()
         {
@@ -330,9 +330,9 @@ namespace TwistedLogik.Ultraviolet
         }
 
         /// <summary>
-        /// Converts the color to a 32-bit integer in BGRA format.
+        /// Converts the <see cref="Color"/> to a 32-bit integer in BGRA format.
         /// </summary>
-        /// <returns>The BGRA value that corresponds to this color.</returns>
+        /// <returns>The BGRA value that corresponds to this <see cref="Color"/>.</returns>
         [CLSCompliant(false)]
         public UInt32 ToBgra()
         {
@@ -393,56 +393,56 @@ namespace TwistedLogik.Ultraviolet
         }
 
         /// <summary>
-        /// Gets the system-defined color with the value R:0 G:0 B:0 A:0.
+        /// Gets the system-defined <see cref="Color"/> with the value R:0 G:0 B:0 A:0.
         /// </summary>
         public static Color Transparent { get { return Color.FromArgb(0x00000000); } }
 
         /// <summary>
-        /// Gets the system-defined color with the value R:0 G:0 B:0 A:255.
+        /// Gets the system-defined <see cref="Color"/> with the value R:0 G:0 B:0 A:255.
         /// </summary>
         public static Color Black { get { return Color.FromArgb(0xFF000000); } }
 
         /// <summary>
-        /// Gets the system-defined color with the value R:255 G:255 B:255 A:255.
+        /// Gets the system-defined <see cref="Color"/> with the value R:255 G:255 B:255 A:255.
         /// </summary>
         public static Color White { get { return Color.FromArgb(0xFFFFFFFF); } }
 
         /// <summary>
-        /// Gets the system-defined color with the value R:255 G:0 B:0 A:255.
+        /// Gets the system-defined <see cref="Color"/> with the value R:255 G:0 B:0 A:255.
         /// </summary>
         public static Color Red { get { return Color.FromArgb(0xFFFF0000); } }
 
         /// <summary>
-        /// Gets the system-defined color with the value R:0 G:255 B:0 A:255.
+        /// Gets the system-defined <see cref="Color"/> with the value R:0 G:255 B:0 A:255.
         /// </summary>
         public static Color Lime { get { return Color.FromArgb(0xFF00FF00); } }
 
         /// <summary>
-        /// Gets the system-defined color with the value R:0 G:128 B:0 A:255.
+        /// Gets the system-defined <see cref="Color"/> with the value R:0 G:128 B:0 A:255.
         /// </summary>
         public static Color Green { get { return Color.FromArgb(0xFF008000); } }
 
         /// <summary>
-        /// Gets the system-defined color with the value R:0 G:0 B:255 A:255.
+        /// Gets the system-defined <see cref="Color"/> with the value R:0 G:0 B:255 A:255.
         /// </summary>
         public static Color Blue { get { return Color.FromArgb(0xFF0000FF); } }
 
         /// <summary>
-        /// Gets the system-defined color with the value R:255 G:0 B:255 A:255.
+        /// Gets the system-defined <see cref="Color"/> with the value R:255 G:0 B:255 A:255.
         /// </summary>
         public static Color Magenta { get { return Color.FromArgb(0xFFFF00FF); } }
 
         /// <summary>
-        /// Gets a system-defined color with the value R:100 G:149 B:237 A:255.
+        /// Gets a system-defined <see cref="Color"/> with the value R:100 G:149 B:237 A:255.
         /// </summary>
         public static Color CornflowerBlue { get { return Color.FromArgb(0xFF6495ED); } }
 
         /// <summary>
-        /// Converts the string representation of a color into an instance of the Color structure.
+        /// Converts the string representation of a color into an instance of the <see cref="Color"/> structure.
         /// A return value indicates whether the conversion succeeded.
         /// </summary>
         /// <param name="s">A string containing a color to convert.</param>
-        /// <param name="style">A set of <see cref="System.Globalization.NumberStyles"/> values indicating which elements are present in <paramref name="s"/>.</param>
+        /// <param name="style">A set of <see cref="NumberStyles"/> values indicating which elements are present in <paramref name="s"/>.</param>
         /// <param name="provider">A format provider that provides culture-specific formatting information.</param>
         /// <param name="color">A variable to populate with the converted value.</param>
         /// <returns><c>true</c> if <paramref name="s"/> was converted successfully; otherwise, <c>false</c>.</returns>
@@ -473,11 +473,11 @@ namespace TwistedLogik.Ultraviolet
         }
 
         /// <summary>
-        /// Converts the string representation of a color into an instance of the Color structure.
+        /// Converts the string representation of a color into an instance of the <see cref="Color"/> structure.
         /// A return value indicates whether the conversion succeeded.
         /// </summary>
         /// <param name="s">A string containing a color to convert.</param>
-        /// <param name="style">A set of <see cref="System.Globalization.NumberStyles"/> values indicating which elements are present in <paramref name="s"/>.</param>
+        /// <param name="style">A set of <see cref="NumberStyles"/> values indicating which elements are present in <paramref name="s"/>.</param>
         /// <param name="provider">A format provider that provides culture-specific formatting information.</param>
         /// <param name="color">A variable to populate with the converted value.</param>
         /// <returns><c>true</c> if <paramref name="s"/> was converted successfully; otherwise, <c>false</c>.</returns>

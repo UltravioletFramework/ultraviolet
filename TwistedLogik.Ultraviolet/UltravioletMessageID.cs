@@ -10,7 +10,7 @@ namespace TwistedLogik.Ultraviolet
     public struct UltravioletMessageID : IEquatable<UltravioletMessageID>
     {
         /// <summary>
-        /// Initializes a new instance of the UltravioletMessageID structure.
+        /// Initializes a new instance of the <see cref="UltravioletMessageID"/> structure.
         /// </summary>
         /// <param name="name">The message type's name.</param>
         /// <param name="value">The message's identifier value.</param>
@@ -23,8 +23,8 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Compares two Ultraviolet message identifiers for equality.
         /// </summary>
-        /// <param name="id1">The first identifier.</param>
-        /// <param name="id2">The second identifier.</param>
+        /// <param name="id1">The first <see cref="UltravioletMessageID"/>.</param>
+        /// <param name="id2">The second <see cref="UltravioletMessageID"/>.</param>
         /// <returns><c>true</c> if the specified identifiers are equal; otherwise, <c>false</c>.</returns>
         public static Boolean operator ==(UltravioletMessageID id1, UltravioletMessageID id2)
         {
@@ -34,8 +34,8 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Compares two Ultraviolet message identifiers for inequality.
         /// </summary>
-        /// <param name="id1">The first identifier.</param>
-        /// <param name="id2">The second identifier.</param>
+        /// <param name="id1">The first <see cref="UltravioletMessageID"/>.</param>
+        /// <param name="id2">The second <see cref="UltravioletMessageID"/>.</param>
         /// <returns><c>true</c> if the specified identifiers are unequal; otherwise, <c>false</c>.</returns>
         public static Boolean operator !=(UltravioletMessageID id1, UltravioletMessageID id2)
         {
@@ -46,7 +46,7 @@ namespace TwistedLogik.Ultraviolet
         /// Acquires an unused message identifier.
         /// </summary>
         /// <param name="name">The message type's name.</param>
-        /// <returns>The message identifier that was acquired.</returns>
+        /// <returns>The <see cref="UltravioletMessageID"/> that was acquired.</returns>
         public static UltravioletMessageID Acquire(String name)
         {
             Contract.RequireNotEmpty(name, "name");

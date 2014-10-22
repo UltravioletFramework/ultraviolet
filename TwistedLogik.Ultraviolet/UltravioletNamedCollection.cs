@@ -6,10 +6,11 @@ namespace TwistedLogik.Ultraviolet
     /// <summary>
     /// Represents an enumerable collection of named objects.
     /// </summary>
+    /// <typeparam name="T">The type of item stored in the collection.</typeparam>
     public abstract class UltravioletNamedCollection<T> : UltravioletCollection<T>
     {
         /// <summary>
-        /// Initializes a new instance of the UltravioletNamedCollection class.
+        /// Initializes a new instance of the <see cref="UltravioletNamedCollection{T}"/> class.
         /// </summary>
         protected UltravioletNamedCollection()
         {
@@ -17,7 +18,7 @@ namespace TwistedLogik.Ultraviolet
         }
 
         /// <summary>
-        /// Initializes a new instance of the UltravioletNamedCollection class.
+        /// Initializes a new instance of the <see cref="UltravioletNamedCollection{T}"/> class.
         /// </summary>
         /// <param name="capacity">The collection's initial capacity.</param>
         protected UltravioletNamedCollection(Int32 capacity)
