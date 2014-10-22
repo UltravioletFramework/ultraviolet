@@ -21,7 +21,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// <summary>
         /// Updates the sprite's default animation controllers.
         /// </summary>
-        /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Update()"/>.</param>
+        /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Update(UltravioletTime)"/>.</param>
         public void Update(UltravioletTime time)
         {
             foreach (var animation in animations)

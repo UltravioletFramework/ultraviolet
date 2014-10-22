@@ -58,7 +58,7 @@ namespace TwistedLogik.Ultraviolet.UI
         /// <summary>
         /// Draws the screens in the stack.
         /// </summary>
-        /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Draw()"/>.</param>
+        /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Draw(UltravioletTime)"/>.</param>
         /// <param name="spriteBatch">The <see cref="SpriteBatch"/> with which to draw the screen stack's screens.</param>
         public void Draw(UltravioletTime time, SpriteBatch spriteBatch)
         {
@@ -78,7 +78,7 @@ namespace TwistedLogik.Ultraviolet.UI
         /// <summary>
         /// Updates the screen stack's state.
         /// </summary>
-        /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Update()"/>.</param>
+        /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Update(UltravioletTime)"/>.</param>
         public void Update(UltravioletTime time)
         {
             LinkedListNode<UIScreen> current, next;

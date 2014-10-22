@@ -43,7 +43,7 @@ namespace TwistedLogik.Ultraviolet.UI
         /// <summary>
         /// Updates the screen's state.
         /// </summary>
-        /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Update()"/>.</param>
+        /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Update(UltravioletTime)"/>.</param>
         public override void Update(UltravioletTime time)
         {
             Contract.EnsureNotDisposed(this, Disposed);
@@ -57,7 +57,7 @@ namespace TwistedLogik.Ultraviolet.UI
         /// <summary>
         /// Draws the screen using the specified sprite batch.
         /// </summary>
-        /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Draw()"/>.</param>
+        /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Draw(UltravioletTime)"/>.</param>
         /// <param name="spriteBatch">The <see cref="SpriteBatch"/> with which to draw the screen.</param>
         public override void Draw(UltravioletTime time, SpriteBatch spriteBatch)
         {
@@ -197,7 +197,7 @@ namespace TwistedLogik.Ultraviolet.UI
         }
 
         /// <summary>
-        /// Raises the <see cref="Opened"/> event.
+        /// Raises the <see cref="UIPanel.Opened"/> event.
         /// </summary>
         internal override void HandleOpened()
         {
@@ -206,7 +206,7 @@ namespace TwistedLogik.Ultraviolet.UI
         }
 
         /// <summary>
-        /// Raises the <see cref="Closed"/> event.
+        /// Raises the <see cref="UIPanel.Closed"/> event.
         /// </summary>
         internal override void HandleClosed()
         {
@@ -228,7 +228,7 @@ namespace TwistedLogik.Ultraviolet.UI
         }
 
         /// <summary>
-        /// Raises the <see cref="LayoutInitialized"/> event.
+        /// Raises the <see cref="UIPanel.LayoutInitialized"/> event.
         /// </summary>
         protected override void OnLayoutInitialized()
         {

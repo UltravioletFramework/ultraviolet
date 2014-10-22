@@ -29,7 +29,7 @@ namespace TwistedLogik.Ultraviolet.UI
         /// <summary>
         /// Updates the subsystem's state.
         /// </summary>
-        /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Update()"/>.</param>
+        /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Update(UltravioletTime)"/>.</param>
         public void Update(UltravioletTime time)
         {
             Contract.EnsureNotDisposed(this, Disposed);
@@ -156,7 +156,7 @@ namespace TwistedLogik.Ultraviolet.UI
         /// <summary>
         /// Raises the Updating event.
         /// </summary>
-        /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Update()"/>.</param>
+        /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Update(UltravioletTime)"/>.</param>
         private void OnUpdating(UltravioletTime time)
         {
             var temp = Updating;

@@ -13,7 +13,7 @@ namespace TwistedLogik.Ultraviolet.Platform
     /// Represents the method that is called when an Ultraviolet window is drawn.
     /// </summary>
     /// <param name="window">The window that raised the event.</param>
-    /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Draw()"/>.</param>
+    /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Draw(UltravioletTime)"/>.</param>
     public delegate void UltravioletWindowDrawingEventHandler(IUltravioletWindow window, UltravioletTime time);
 
     /// <summary>

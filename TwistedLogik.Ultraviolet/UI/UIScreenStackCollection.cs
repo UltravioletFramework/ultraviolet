@@ -64,7 +64,7 @@ namespace TwistedLogik.Ultraviolet.UI
         /// Handles a window's DrawingUI event.
         /// </summary>
         /// <param name="window">The window being drawn.</param>
-        /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Draw()"/>.</param>
+        /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Draw(UltravioletTime)"/>.</param>
         private void Window_DrawingUI(IUltravioletWindow window, UltravioletTime time)
         {
             screenStacks[window].Draw(time, spriteBatch);

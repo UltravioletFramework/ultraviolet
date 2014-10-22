@@ -10,7 +10,7 @@ namespace TwistedLogik.Ultraviolet.UI
         /// <summary>
         /// Updates the provider's state.
         /// </summary>
-        /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Update()"/>.</param>
+        /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Update(UltravioletTime)"/>.</param>
         void Update(UltravioletTime time);
 
         /// <summary>

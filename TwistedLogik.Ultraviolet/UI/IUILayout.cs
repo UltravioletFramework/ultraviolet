@@ -42,13 +42,13 @@ namespace TwistedLogik.Ultraviolet.UI
         /// <summary>
         /// Updates the layout's state.
         /// </summary>
-        /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Update()"/>.</param>
+        /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Update(UltravioletTime)"/>.</param>
         void Update(UltravioletTime time);
 
         /// <summary>
         /// Draw the layout.
         /// </summary>
-        /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Draw()"/>.</param>
+        /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Draw(UltravioletTime)"/>.</param>
         /// <param name="spriteBatch">The <see cref="SpriteBatch"/> with which to draw the layout.</param>
         /// <param name="color">The <see cref="Color"/> with which to tint the layout.</param>
         void Draw(UltravioletTime time, SpriteBatch spriteBatch, Color color);

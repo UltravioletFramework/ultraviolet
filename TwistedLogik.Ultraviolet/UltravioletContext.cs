@@ -29,7 +29,7 @@ namespace TwistedLogik.Ultraviolet
     /// Represents the method that is called when an Ultraviolet context updates the application state.
     /// </summary>
     /// <param name="uv">The Ultraviolet context.</param>
-    /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Update()"/>.</param>
+    /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Update(UltravioletTime)"/>.</param>
     public delegate void UltravioletContextUpdateEventHandler(UltravioletContext uv, UltravioletTime time);
 
     /// <summary>
@@ -115,7 +115,7 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Updates the game state.
         /// </summary>
-        /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Update()"/>.</param>
+        /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Update(UltravioletTime)"/>.</param>
         public virtual void Update(UltravioletTime time)
         {
             Contract.Require(time, "time");
@@ -128,7 +128,7 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Draws the scene.
         /// </summary>
-        /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Draw()"/>.</param>
+        /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Draw(UltravioletTime)"/>.</param>
         public virtual void Draw(UltravioletTime time)
         {
             Contract.EnsureNotDisposed(this, disposed);
@@ -582,7 +582,7 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Raises the Updating event.
         /// </summary>
-        /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Update()"/>.</param>
+        /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Update(UltravioletTime)"/>.</param>
         protected virtual void OnUpdating(UltravioletTime time)
         {
             var temp = Updating;
