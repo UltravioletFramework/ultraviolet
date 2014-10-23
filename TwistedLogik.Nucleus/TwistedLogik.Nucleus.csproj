@@ -123,6 +123,7 @@
     <Compile Include="Collections\ExpandingPool.cs" />
     <Compile Include="Collections\GenericEnumerator.cs" />
     <Compile Include="Collections\IPool.cs" />
+    <Compile Include="Collections\NamespaceDoc.cs" />
     <Compile Include="Collections\ObservableDictionary.cs" />
     <Compile Include="Collections\ObservableList.cs" />
     <Compile Include="Collections\PooledLinkedList.cs" />
@@ -132,6 +133,7 @@
     <Compile Include="Data\IGloballyIdentified.cs" />
     <Compile Include="Data\INotifyPropertyChanged.cs" />
     <Compile Include="Data\INotifyChanged.cs" />
+    <Compile Include="Data\NamespaceDoc.cs" />
     <Compile Include="Data\ResolvedDataObjectReference.cs" />
     <Compile Include="Data\JsonDataAttribute.cs" />
     <Compile Include="Data\ObjectLoaderDataType.cs" />
@@ -145,6 +147,7 @@
     <Compile Include="Data\XmlDataElement.cs" />
     <Compile Include="FunctorComparer.cs" />
     <Compile Include="Collections\IPoolOfT.cs" />
+    <Compile Include="IO\NamespaceDoc.cs" />
     <Compile Include="LibraryLoader.cs" />
     <Compile Include="Messages\MessageData.cs" />
     <Compile Include="Messages\IMessageQueue.cs" />
@@ -152,6 +155,7 @@
     <Compile Include="Messages\LocalMessageQueue.cs" />
     <Compile Include="Messages\LocalMessageQueue.EnqueuedMessage.cs" />
     <Compile Include="Data\ObjectResolverTypeConverter.cs" />
+    <Compile Include="Messages\NamespaceDoc.cs" />
     <Compile Include="Messages\SubscriberCollection.cs" />
     <Compile Include="Data\DataObjectRegistries.cs" />
     <Compile Include="Data\IDataObjectRegistry.cs" />
@@ -159,13 +163,16 @@
     <Compile Include="Data\DataObjectRegistry.cs" />
     <Compile Include="Data\ObjectResolver.cs" />
     <Compile Include="Data\DataObjectTranslationTable.cs" />
+    <Compile Include="NamespaceDoc.cs" />
     <Compile Include="Performance\GCDebug.NativeMethods.cs" />
     <Compile Include="Performance\GCDebug.cs" />
+    <Compile Include="Performance\NamespaceDoc.cs" />
     <Compile Include="Text\ILocalizationPlugin.cs" />
     <Compile Include="Text\Localization.cs" />
     <Compile Include="Text\LocalizationDatabase.cs" />
     <Compile Include="Text\LocalizedStringMatchEvaluatorData.cs" />
     <Compile Include="Text\LocalizedStringVariantCollection.cs" />
+    <Compile Include="Text\NamespaceDoc.cs" />
     <Compile Include="Text\StringPtr16.cs" />
     <Compile Include="Text\StringPtr8.cs" />
     <Compile Include="Text\StringSegment.cs" />
@@ -188,6 +195,7 @@
     <Compile Include="Text\StringFormatter.cs" />
     <Compile Include="Text\Tokenizer.cs" />
     <Compile Include="NucleusStrings.cs" />
+    <Compile Include="Xml\NamespaceDoc.cs" />
     <Compile Include="Xml\XElementExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
