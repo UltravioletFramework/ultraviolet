@@ -15,7 +15,7 @@ namespace TwistedLogik.Ultraviolet.Graphics
     internal sealed class TextureAtlasDefinition
     {
         /// <summary>
-        /// Initializes a new instance of the TextureAtlasDefinition class.
+        /// Initializes a new instance of the <see cref="TextureAtlasDefinition"/> class.
         /// </summary>
         /// <param name="xml">The XML document that defines the texture atlas.</param>
         /// <param name="content">The content manager that is loading the texture atlas.</param>
@@ -115,7 +115,7 @@ namespace TwistedLogik.Ultraviolet.Graphics
         /// <summary>
         /// Expands a file expression potentially containing wildcard (*) characters.
         /// </summary>
-        /// <param name="manager">The content manager which is loading the texture atlas.</param>
+        /// <param name="manager">The <see cref="ContentManager"/> which is loading the texture atlas.</param>
         /// <param name="expression">The file expression to expand.</param>
         /// <returns>A collection containing the paths to the files that were resolved from the file expression.</returns>
         private static IEnumerable<String> ExpandFileExpression(ContentManager manager, String expression)
@@ -137,7 +137,7 @@ namespace TwistedLogik.Ultraviolet.Graphics
         /// <summary>
         /// Expands a directory expression potentially containing wildcard (*) characters.
         /// </summary>
-        /// <param name="manager">The content manager which is loading the texture atlas.</param>
+        /// <param name="manager">The <see cref="ContentManager"/> which is loading the texture atlas.</param>
         /// <param name="root">The root directory of the expression that is being expanded.</param>
         /// <param name="expression">The file expression to expand.</param>
         /// <param name="result">A collection to populate with the expanded directories.</param>
@@ -163,7 +163,7 @@ namespace TwistedLogik.Ultraviolet.Graphics
         /// <summary>
         /// Gets the size of the specified image.
         /// </summary>
-        /// <param name="content">The content manager with which to load images.</param>
+        /// <param name="content">The <see cref="ContentManager"/> with which to load images.</param>
         /// <param name="path">The path to the image for which to retrieve a size.</param>
         /// <returns>The size of the specified image.</returns>
         private static Size2 GetImageSize(ContentManager content, String path)
@@ -177,7 +177,7 @@ namespace TwistedLogik.Ultraviolet.Graphics
         /// <summary>
         /// Loads the texture atlas' images.
         /// </summary>
-        /// <param name="content">The content manager with which to load images.</param>
+        /// <param name="content">The <see cref="ContentManager"/> with which to load images.</param>
         /// <param name="images">The XML element that defines the set of images to load.</param>
         /// <returns>A value indicating whether any images were loaded.</returns>
         private Boolean LoadImages(ContentManager content, XElement images)

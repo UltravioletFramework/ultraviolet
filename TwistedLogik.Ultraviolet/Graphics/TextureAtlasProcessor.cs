@@ -9,16 +9,16 @@ using TwistedLogik.Ultraviolet.Content;
 namespace TwistedLogik.Ultraviolet.Graphics
 {
     /// <summary>
-    /// Processes XML definition files into texture atlases.
+    /// Represents a content processor which loads XML definition files as texture atlases.
     /// </summary>
-    /// <remarks>This class is based on code taken from the Sprite Sheet Packer library (see Licenses.txt).</remarks>
+    /// <remarks>This class is based on code taken from the Sprite Sheet Packer library (see TwistedLogik.Ultraviolet.Licenses.txt).</remarks>
     [ContentProcessor]
     public sealed partial class TextureAtlasProcessor : ContentProcessor<XDocument, TextureAtlas>
     {
         /// <summary>
         /// Exports an asset to a preprocessed binary stream.
         /// </summary>
-        /// <param name="manager">The content manager with which the asset is being processed.</param>
+        /// <param name="manager">The <see cref="ContentManager"/> with which the asset is being processed.</param>
         /// <param name="metadata">The asset's metadata.</param>
         /// <param name="writer">A writer on the stream to which to export the asset.</param>
         /// <param name="obj">The asset to export to the stream.</param>
@@ -64,7 +64,7 @@ namespace TwistedLogik.Ultraviolet.Graphics
         /// <summary>
         /// Imports an asset from the specified preprocessed binary stream.
         /// </summary>
-        /// <param name="manager">The content manager with which the asset is being processed.</param>
+        /// <param name="manager">The <see cref="ContentManager"/> with which the asset is being processed.</param>
         /// <param name="metadata">The asset's metadata.</param>
         /// <param name="reader">A reader on the stream that contains the asset to import.</param>
         /// <returns>The asset that was imported from the stream.</returns>
@@ -99,7 +99,7 @@ namespace TwistedLogik.Ultraviolet.Graphics
         /// <summary>
         /// Processes the specified data structure into a game asset.
         /// </summary>
-        /// <param name="manager">The content manager with which the asset is being processed.</param>
+        /// <param name="manager">The <see cref="ContentManager"/> with which the asset is being processed.</param>
         /// <param name="metadata">The asset's metadata.</param>
         /// <param name="input">The input data structure to process.</param>
         /// <returns>The game asset that was created.</returns>

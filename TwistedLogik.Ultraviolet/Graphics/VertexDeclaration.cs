@@ -12,7 +12,7 @@ namespace TwistedLogik.Ultraviolet.Graphics
     public partial class VertexDeclaration : IEnumerable<VertexElement>
     {
         /// <summary>
-        /// Initializes a new instance of the VertexDeclaration class.
+        /// Initializes a new instance of the <see cref="VertexDeclaration"/> class.
         /// </summary>
         /// <param name="elements">The vertex declaration's elements.</param>
         public VertexDeclaration(IEnumerable<VertexElement> elements)

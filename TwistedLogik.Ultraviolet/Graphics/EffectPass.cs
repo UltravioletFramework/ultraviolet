@@ -8,7 +8,7 @@ namespace TwistedLogik.Ultraviolet.Graphics
     public abstract class EffectPass : UltravioletResource
     {
         /// <summary>
-        /// Initializes a new instance of the EffectPass class.
+        /// Initializes a new instance of the <see cref="EffectPass"/> class.
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
         public EffectPass(UltravioletContext uv)

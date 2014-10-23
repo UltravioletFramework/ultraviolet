@@ -9,7 +9,7 @@ namespace TwistedLogik.Ultraviolet.Graphics
     public struct VertexElement
     {
         /// <summary>
-        /// Initializes a new instance of the VertexElement structure.
+        /// Initializes a new instance of the <see cref="VertexElement"/> structure.
         /// </summary>
         /// <param name="position">The element's position within the vertex data, in bytes.</param>
         /// <param name="format">The element's vertex format.</param>

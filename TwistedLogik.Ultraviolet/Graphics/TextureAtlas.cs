@@ -11,7 +11,7 @@ namespace TwistedLogik.Ultraviolet.Graphics
     public sealed partial class TextureAtlas : UltravioletResource, IEnumerable<KeyValuePair<String, Rectangle>>
     {
         /// <summary>
-        /// Initializes a new instance of the TextureAtlas class.
+        /// Initializes a new instance of the <see cref="TextureAtlas"/> class.
         /// </summary>
         /// <param name="texture">The atlas' texture.</param>
         /// <param name="cells">The atlas' cells.</param>
@@ -30,10 +30,10 @@ namespace TwistedLogik.Ultraviolet.Graphics
         }
 
         /// <summary>
-        /// Implicitly converts a texture atlas to its underlying texture.
+        /// Implicitly converts a <see cref="TextureAtlas"/> to its underlying <see cref="Texture2D"/>.
         /// </summary>
-        /// <param name="atlas">The texture atlas to convert.</param>
-        /// <returns>The converted texture.</returns>
+        /// <param name="atlas">The <see cref="TextureAtlas"/> to convert.</param>
+        /// <returns>The underlying <see cref="Texture2D"/> represented by <paramref name="atlas"/>.</returns>
         public static implicit operator Texture2D(TextureAtlas atlas)
         {
             return atlas.texture;

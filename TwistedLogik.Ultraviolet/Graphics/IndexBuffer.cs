@@ -4,12 +4,12 @@ using TwistedLogik.Nucleus;
 namespace TwistedLogik.Ultraviolet.Graphics
 {
     /// <summary>
-    /// Represents a factory method which constructs instances of the IndexBuffer class.
+    /// Represents a factory method which constructs instances of the <see cref="IndexBuffer"/> class.
     /// </summary>
     /// <param name="uv">The Ultraviolet context.</param>
     /// <param name="itype">The index element type.</param>
     /// <param name="icount">The index element count.</param>
-    /// <returns>The instance of IndexBuffer that was created.</returns>
+    /// <returns>The instance of <see cref="IndexBuffer"/> that was created.</returns>
     public delegate IndexBuffer IndexBufferFactory(UltravioletContext uv, IndexBufferElementType itype, Int32 icount);
 
     /// <summary>
@@ -18,7 +18,7 @@ namespace TwistedLogik.Ultraviolet.Graphics
     public abstract class IndexBuffer : UltravioletResource
     {
         /// <summary>
-        /// Initializes a new instance of the IndexBuffer class.
+        /// Initializes a new instance of the <see cref="IndexBuffer"/> class.
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
         /// <param name="itype">The index element type.</param>
@@ -33,11 +33,11 @@ namespace TwistedLogik.Ultraviolet.Graphics
         }
 
         /// <summary>
-        /// Creates a new instance of the IndexBuffer class.
+        /// Creates a new instance of the <see cref="IndexBuffer"/> class.
         /// </summary>
         /// <param name="itype">The index element type.</param>
         /// <param name="icount">The index element count.</param>
-        /// <returns>The instance of IndexBuffer that was created.</returns>
+        /// <returns>The instance of <see cref="IndexBuffer"/> that was created.</returns>
         public static IndexBuffer Create(IndexBufferElementType itype, Int32 icount)
         {
             Contract.EnsureRange(icount > 0, "icount");
@@ -49,12 +49,14 @@ namespace TwistedLogik.Ultraviolet.Graphics
         /// <summary>
         /// Sets the data contained by the index buffer.
         /// </summary>
+        /// <typeparam name="T">The type of the elements of the array to set as the buffer's data.</typeparam>
         /// <param name="data">An array containing the data to set in the index buffer.</param>
         public abstract void SetData<T>(T[] data);
 
         /// <summary>
         /// Sets the data contained by the index buffer.
         /// </summary>
+        /// <typeparam name="T">The type of the elements of the array to set as the buffer's data.</typeparam>
         /// <param name="data">An array containing the data to set in the index buffer.</param>
         /// <param name="offset">The offset into <paramref name="data"/> at which to begin setting elements into the buffer.</param>
         /// <param name="count">The number of elements from <paramref name="data"/> to set into the buffer.</param>

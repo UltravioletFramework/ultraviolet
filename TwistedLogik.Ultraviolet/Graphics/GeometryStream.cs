@@ -3,20 +3,20 @@
 namespace TwistedLogik.Ultraviolet.Graphics
 {
     /// <summary>
-    /// Represents a factory method which constructs instances of the GeometryStream class.
+    /// Represents a factory method which constructs instances of the <see cref="GeometryStream"/> class.
     /// </summary>
     /// <param name="uv">The Ultraviolet context.</param>
-    /// <returns>The instance of GeometryStream that was created.</returns>
+    /// <returns>The instance of <see cref="GeometryStream"/> that was created.</returns>
     public delegate GeometryStream GeometryStreamFactory(UltravioletContext uv);
 
     /// <summary>
     /// Represents a buffer containing references to vertex and index data and which
-    /// can stream geometry to the rendering engine.
+    /// can stream geometry to the graphics device.
     /// </summary>
     public abstract class GeometryStream : UltravioletResource
     {
         /// <summary>
-        /// Initializes a new instance of the GeometryStream class.
+        /// Initializes a new instance of the <see cref="GeometryStream"/> class.
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
         public GeometryStream(UltravioletContext uv)
@@ -26,9 +26,9 @@ namespace TwistedLogik.Ultraviolet.Graphics
         }
 
         /// <summary>
-        /// Creates a new instance of the GeometryStream class.
+        /// Creates a new instance of the <see cref="GeometryStream"/> class.
         /// </summary>
-        /// <returns>The instance of GeometryStream that was created.</returns>
+        /// <returns>The instance of <see cref="GeometryStream"/> that was created.</returns>
         public static GeometryStream Create()
         {
             var uv = UltravioletContext.DemandCurrent();
@@ -36,19 +36,19 @@ namespace TwistedLogik.Ultraviolet.Graphics
         }
 
         /// <summary>
-        /// Attaches a vertex buffer to the geometry buffer.
+        /// Attaches a vertex buffer to the geometry stream.
         /// </summary>
-        /// <param name="vbuffer">The vertex buffer to attach to the geometry buffer.</param>
+        /// <param name="vbuffer">The <see cref="VertexBuffer"/> to attach to the geometry stream.</param>
         public abstract void Attach(VertexBuffer vbuffer);
 
         /// <summary>
-        /// Attaches an index buffer to the geometry buffer.
+        /// Attaches an index buffer to the geometry stream.
         /// </summary>
-        /// <param name="ibuffer">The index buffer to attach to the geometry buffer.</param>
+        /// <param name="ibuffer">The <see cref="IndexBuffer"/> to attach to the geometry buffer.</param>
         public abstract void Attach(IndexBuffer ibuffer);
 
         /// <summary>
-        /// Gets a value indicating whether the geometry buffer is in a valid state for rendering.
+        /// Gets a value indicating whether the geometry stream is in a valid state for rendering.
         /// </summary>
         public virtual Boolean IsValid
         {
@@ -64,7 +64,7 @@ namespace TwistedLogik.Ultraviolet.Graphics
         }
 
         /// <summary>
-        /// Gets a value indicating whether the geometry buffer has any vertex buffers attached to it.
+        /// Gets a value indicating whether the geometry stream has any vertex buffers attached to it.
         /// </summary>
         public abstract Boolean HasVertices
         {
@@ -72,7 +72,7 @@ namespace TwistedLogik.Ultraviolet.Graphics
         }
 
         /// <summary>
-        /// Gets a value indicating whether the geometry buffer has any index buffers attached to it.
+        /// Gets a value indicating whether the geometry stream has any index buffers attached to it.
         /// </summary>
         public abstract Boolean HasIndices
         {

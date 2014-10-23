@@ -7,12 +7,12 @@ using TwistedLogik.Nucleus;
 namespace TwistedLogik.Ultraviolet.Graphics
 {
     /// <summary>
-    /// Represents a collection of effect parameters.
+    /// Represents a collection of <see cref="EffectParameter"/> instances.
     /// </summary>
     public abstract class EffectParameterCollection : UltravioletNamedCollection<EffectParameter>, IEnumerable<EffectParameter>
     {
         /// <summary>
-        /// Initializes a new instance of the EffectParameterCollection class.
+        /// Initializes a new instance of the <see cref="EffectParameterCollection"/> class.
         /// </summary>
         /// <param name="parameters">The set of parameters to add to the collection.</param>
         [SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]

@@ -4,10 +4,10 @@ using TwistedLogik.Nucleus;
 namespace TwistedLogik.Ultraviolet.Graphics
 {
     /// <summary>
-    /// Represents a factory method which constructs instances of the RasterizerState class.
+    /// Represents a factory method which constructs instances of the <see cref="RasterizerState"/> class.
     /// </summary>
     /// <param name="uv">The Ultraviolet context.</param>
-    /// <returns>The instance of RasterizerState that was created.</returns>
+    /// <returns>The instance of <see cref="RasterizerState"/> that was created.</returns>
     public delegate RasterizerState RasterizerStateFactory(UltravioletContext uv);
 
     /// <summary>
@@ -16,7 +16,7 @@ namespace TwistedLogik.Ultraviolet.Graphics
     public abstract class RasterizerState : UltravioletResource
     {
         /// <summary>
-        /// Initializes the RasterizerState type.
+        /// Initializes the <see cref="RasterizerState"/> type.
         /// </summary>
         static RasterizerState()
         {
@@ -24,7 +24,7 @@ namespace TwistedLogik.Ultraviolet.Graphics
         }
 
         /// <summary>
-        /// Initializes a new instance of the RasterizerState class.
+        /// Initializes a new instance of the <see cref="RasterizerState"/> class.
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
         protected RasterizerState(UltravioletContext uv)
@@ -34,9 +34,9 @@ namespace TwistedLogik.Ultraviolet.Graphics
         }
 
         /// <summary>
-        /// Creates a new instance of the RasterizerState class.
+        /// Creates a new instance of the <see cref="RasterizerState"/> class.
         /// </summary>
-        /// <returns>The instance of RasterizerState that was created.</returns>
+        /// <returns>The instance of <see cref="RasterizerState"/> that was created.</returns>
         public static RasterizerState Create()
         {
             var uv = UltravioletContext.DemandCurrent();
@@ -46,7 +46,7 @@ namespace TwistedLogik.Ultraviolet.Graphics
         /// <summary>
         /// Retrieves a built-in state object with settings for culling clockwise faces.
         /// </summary>
-        /// <returns>The built-in state object that was retrieved.</returns>
+        /// <returns>The built-in <see cref="RasterizerState"/> object that was retrieved.</returns>
         public static RasterizerState CullClockwise
         {
             get
@@ -62,7 +62,7 @@ namespace TwistedLogik.Ultraviolet.Graphics
         /// <summary>
         /// Retrieves a built-in state object with settings for culling counter-clockwise faces.
         /// </summary>
-        /// <returns>The built-in state object that was retrieved.</returns>
+        /// <returns>The built-in <see cref="RasterizerState"/> object that was retrieved.</returns>
         public static RasterizerState CullCounterClockwise
         {
             get
@@ -78,7 +78,7 @@ namespace TwistedLogik.Ultraviolet.Graphics
         /// <summary>
         /// Retrieves a built-in state object with settings for disabling back face culling.
         /// </summary>
-        /// <returns>The built-in state object that was retrieved.</returns>
+        /// <returns>The built-in <see cref="RasterizerState"/> object that was retrieved.</returns>
         public static RasterizerState CullNone
         {
             get

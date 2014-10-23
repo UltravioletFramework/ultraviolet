@@ -4,10 +4,10 @@ using TwistedLogik.Nucleus;
 namespace TwistedLogik.Ultraviolet.Graphics
 {
     /// <summary>
-    /// Represents a factory method which constructs instances of the SamplerState class.
+    /// Represents a factory method which constructs instances of the <see cref="SamplerState"/> class.
     /// </summary>
     /// <param name="uv">The Ultraviolet context.</param>
-    /// <returns>The instance of SamplerState that was created.</returns>
+    /// <returns>The instance of <see cref="SamplerState"/> that was created.</returns>
     public delegate SamplerState SamplerStateFactory(UltravioletContext uv);
 
     /// <summary>
@@ -16,7 +16,7 @@ namespace TwistedLogik.Ultraviolet.Graphics
     public abstract class SamplerState : UltravioletResource
     {
         /// <summary>
-        /// Initializes the SamplerState type.
+        /// Initializes the <see cref="SamplerState"/> type.
         /// </summary>
         static SamplerState()
         {
@@ -24,7 +24,7 @@ namespace TwistedLogik.Ultraviolet.Graphics
         }
 
         /// <summary>
-        /// Initializes a new instance of the SamplerState class.
+        /// Initializes a new instance of the <see cref="SamplerState"/> class.
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
         protected SamplerState(UltravioletContext uv)
@@ -34,9 +34,9 @@ namespace TwistedLogik.Ultraviolet.Graphics
         }
 
         /// <summary>
-        /// Creates a new instance of the SamplerState class.
+        /// Creates a new instance of the <see cref="SamplerState"/> class.
         /// </summary>
-        /// <returns>The instance of SamplerState that was created.</returns>
+        /// <returns>The instance of <see cref="SamplerState"/> that was created.</returns>
         public static SamplerState Create()
         {
             var uv = UltravioletContext.DemandCurrent();
@@ -46,7 +46,7 @@ namespace TwistedLogik.Ultraviolet.Graphics
         /// <summary>
         /// Retrieves a built-in state object using point filtering and texture coordinate clamping.
         /// </summary>
-        /// <returns>The built-in state object that was retrieved.</returns>
+        /// <returns>The built-in <see cref="SamplerState"/> object that was retrieved.</returns>
         public static SamplerState PointClamp
         {
             get
@@ -62,7 +62,7 @@ namespace TwistedLogik.Ultraviolet.Graphics
         /// <summary>
         /// Retrieves a built-in state object using point filtering and texture coordinate wrapping.
         /// </summary>
-        /// <returns>The built-in state object that was retrieved.</returns>
+        /// <returns>The built-in <see cref="SamplerState"/> object that was retrieved.</returns>
         public static SamplerState PointWrap
         {
             get
@@ -78,7 +78,7 @@ namespace TwistedLogik.Ultraviolet.Graphics
         /// <summary>
         /// Retrieves a built-in state object using linear filtering and texture coordinate clamping.
         /// </summary>
-        /// <returns>The built-in state object that was retrieved.</returns>
+        /// <returns>The built-in <see cref="SamplerState"/> object that was retrieved.</returns>
         public static SamplerState LinearClamp
         {
             get
@@ -94,7 +94,7 @@ namespace TwistedLogik.Ultraviolet.Graphics
         /// <summary>
         /// Retrieves a built-in state object using linear filtering and texture coordinate wrapping.
         /// </summary>
-        /// <returns>The built-in state object that was retrieved.</returns>
+        /// <returns>The built-in <see cref="SamplerState"/> object that was retrieved.</returns>
         public static SamplerState LinearWrap
         {
             get
@@ -110,7 +110,7 @@ namespace TwistedLogik.Ultraviolet.Graphics
         /// <summary>
         /// Retrieves a built-in state object using anisotropic filtering and texture coordinate clamping.
         /// </summary>
-        /// <returns>The built-in state object that was retrieved.</returns>
+        /// <returns>The built-in <see cref="SamplerState"/> object that was retrieved.</returns>
         public static SamplerState AnisotropicClamp
         {
             get
@@ -126,7 +126,7 @@ namespace TwistedLogik.Ultraviolet.Graphics
         /// <summary>
         /// Retrieves a built-in state object using anisotropic filtering and texture coordinate wrapping.
         /// </summary>
-        /// <returns>The built-in state object that was retrieved.</returns>
+        /// <returns>The built-in <see cref="SamplerState"/> object that was retrieved.</returns>
         public static SamplerState AnisotropicWrap
         {
             get

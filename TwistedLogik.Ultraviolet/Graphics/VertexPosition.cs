@@ -7,7 +7,7 @@ namespace TwistedLogik.Ultraviolet.Graphics
     public struct VertexPosition : IVertexType
     {
         /// <summary>
-        /// Initializes a new instance of the VertexPosition structure.
+        /// Initializes a new instance of the <see cref="VertexPosition"/> structure.
         /// </summary>
         /// <param name="position">The vertex position.</param>
         public VertexPosition(Vector3 position)

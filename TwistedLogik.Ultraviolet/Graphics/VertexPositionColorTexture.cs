@@ -8,7 +8,7 @@ namespace TwistedLogik.Ultraviolet.Graphics
     public struct VertexPositionColorTexture : IVertexType
     {
         /// <summary>
-        /// Initializes a new instance of the VertexPositionColorTexture structure.
+        /// Initializes a new instance of the <see cref="VertexPositionColorTexture"/> structure.
         /// </summary>
         /// <param name="position">The vertex position.</param>
         /// <param name="color">The vertex color.</param>

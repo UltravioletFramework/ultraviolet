@@ -2,7 +2,7 @@
 namespace TwistedLogik.Ultraviolet.Graphics
 {
     /// <summary>
-    /// Represents a hint to the underlying driver as to whether buffer data will be overwritten by a SetData() operation.
+    /// Represents a hint to the underlying driver as to whether buffer data will be overwritten by a <c>SetData()</c> operation.
     /// </summary>
     public enum SetDataOptions
     {

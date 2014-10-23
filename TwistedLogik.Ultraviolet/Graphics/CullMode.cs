@@ -2,7 +2,8 @@
 namespace TwistedLogik.Ultraviolet.Graphics
 {
     /// <summary>
-    /// Represents the cull mode, which instructs which winding orders may be used for back face culling.
+    /// Represents the cull mode, which instructs the graphics device as to which 
+    /// winding orders may be used for back face culling.
     /// </summary>
     public enum CullMode
     {

@@ -4,13 +4,13 @@ using TwistedLogik.Nucleus;
 namespace TwistedLogik.Ultraviolet.Graphics
 {
     /// <summary>
-    /// Represents a factory method which constructs instances of the RenderBuffer2D class.
+    /// Represents a factory method which constructs instances of the <see cref="RenderBuffer2D"/> class.
     /// </summary>
     /// <param name="uv">The Ultraviolet context.</param>
     /// <param name="format">The render buffer's format.</param>
     /// <param name="width">The render buffer's width in pixels.</param>
     /// <param name="height">The render buffer's height in pixels.</param>
-    /// <returns>The instance of RenderBuffer2D that was created.</returns>
+    /// <returns>The instance of <see cref="RenderBuffer2D"/> that was created.</returns>
     public delegate RenderBuffer2D RenderBuffer2DFactory(UltravioletContext uv, RenderBufferFormat format, Int32 width, Int32 height);
 
     /// <summary>
@@ -19,7 +19,7 @@ namespace TwistedLogik.Ultraviolet.Graphics
     public abstract class RenderBuffer2D : Texture2D
     {
         /// <summary>
-        /// Initializes a new instance of the RenderBuffer2D class.
+        /// Initializes a new instance of the <see cref="RenderBuffer2D"/> class.
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
         public RenderBuffer2D(UltravioletContext uv)
@@ -29,12 +29,12 @@ namespace TwistedLogik.Ultraviolet.Graphics
         }
 
         /// <summary>
-        /// Creates a new instance of the RenderBuffer2D class.
+        /// Creates a new instance of the <see cref="RenderBuffer2D"/> class.
         /// </summary>
-        /// <param name="format">The render buffer's format.</param>
+        /// <param name="format">A <see cref="RenderBufferFormat"/> value specifying the render buffer's data format.</param>
         /// <param name="width">The render buffer's width in pixels.</param>
         /// <param name="height">The render buffer's height in pixels.</param>
-        /// <returns>The instance of RenderBuffer2D that was created.</returns>
+        /// <returns>The instance of <see cref="RenderBuffer2D"/> that was created.</returns>
         public static RenderBuffer2D Create(RenderBufferFormat format, Int32 width, Int32 height)
         {
             Contract.EnsureRange(width > 0, "width");

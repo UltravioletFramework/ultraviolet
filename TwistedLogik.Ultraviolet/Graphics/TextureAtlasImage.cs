@@ -8,7 +8,7 @@ namespace TwistedLogik.Ultraviolet.Graphics
     internal struct TextureAtlasImage
     {
         /// <summary>
-        /// Initializes a new instance of the TextureAtlasImage structure.
+        /// Initializes a new instance of the <see cref="TextureAtlasImage"/> structure.
         /// </summary>
         /// <param name="name">The name of the image.</param>
         /// <param name="path">The path to the image asset.</param>

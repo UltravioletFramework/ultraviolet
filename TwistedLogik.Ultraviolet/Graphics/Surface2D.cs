@@ -6,31 +6,31 @@ using TwistedLogik.Nucleus;
 namespace TwistedLogik.Ultraviolet.Graphics
 {
     /// <summary>
-    /// Represents a factory method which constructs instances of the Surface2D class.
+    /// Represents a factory method which constructs instances of the <see cref="Surface2D"/> class.
     /// </summary>
     /// <param name="uv">The Ultraviolet context.</param>
     /// <param name="width">The surface's width in pixels.</param>
     /// <param name="height">The surface's height in pixels.</param>
-    /// <returns>The instance of Surface2D that was created.</returns>
+    /// <returns>The instance of <see cref="Surface2D"/> that was created.</returns>
     public delegate Surface2D Surface2DFactory(UltravioletContext uv, Int32 width, Int32 height);
 
     /// <summary>
-    /// Represents a factory method which constructs instances of the Surface2D class from an instance of <see cref="System.Drawing.Bitmap"/>.
+    /// Represents a factory method which constructs instances of the <see cref="Surface2D"/> class from an instance of <see cref="System.Drawing.Bitmap"/>.
     /// </summary>
     /// <param name="uv">The Ultraviolet context.</param>
     /// <param name="bitmap">The bitmap from which to create the surface.</param>
-    /// <returns>The instance of Surface2D that was created.</returns>
+    /// <returns>The instance of <see cref="Surface2D"/> that was created.</returns>
     public delegate Surface2D Surface2DFromBitmapFactory(UltravioletContext uv, Bitmap bitmap);
 
     /// <summary>
     /// Represents a two-dimensional image which is held in CPU memory.
     /// </summary>
-    /// <remarks>A Surface2D operates similarly to a Texture2D, except that it is held in CPU memory rather
-    /// than GPU memory.  This makes it useful for manipulating image data prior to turning it into a texture.</remarks>
+    /// <remarks>A <see cref="Surface2D"/> operates similarly to a <see cref="Texture2D"/>, except that it is held in CPU memory rather
+    /// than GPU memory. This makes it useful for manipulating image data prior to turning it into a texture.</remarks>
     public abstract class Surface2D : UltravioletResource
     {
         /// <summary>
-        /// Initializes a new instance of the Surface2D class.
+        /// Initializes a new instance of the <see cref="Surface2D"/> class.
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
         public Surface2D(UltravioletContext uv)
@@ -40,11 +40,11 @@ namespace TwistedLogik.Ultraviolet.Graphics
         }
 
         /// <summary>
-        /// Creates a new instance of the Surface2D class.
+        /// Creates a new instance of the <see cref="Surface2D"/> class.
         /// </summary>
         /// <param name="width">The surface's width in pixels.</param>
         /// <param name="height">The surface's height in pixels.</param>
-        /// <returns>The instance of Surface2D that was created.</returns>
+        /// <returns>The instance of <see cref="Surface2D"/> that was created.</returns>
         public static Surface2D Create(Int32 width, Int32 height)
         {
             Contract.EnsureRange(width > 0, "width");
@@ -55,10 +55,10 @@ namespace TwistedLogik.Ultraviolet.Graphics
         }
 
         /// <summary>
-        /// Creates a new instance of the Surface2D class.
+        /// Creates a new instance of the <see cref="Surface2D"/> class.
         /// </summary>
-        /// <param name="bitmap">The bitmap from which to create the surface.</param>
-        /// <returns>The instance of Surface2D that was created.</returns>
+        /// <param name="bitmap">The <see cref="Bitmap"/> from which to create the surface.</param>
+        /// <returns>The instance of <see cref="Surface2D"/> that was created.</returns>
         public static Surface2D Create(Bitmap bitmap)
         {
             Contract.Require(bitmap, "bitmap");
@@ -117,21 +117,21 @@ namespace TwistedLogik.Ultraviolet.Graphics
         /// <summary>
         /// Creates a copy of the surface.
         /// </summary>
-        /// <returns>A new surface which is a copy of this surface.</returns>
+        /// <returns>A new <see cref="Surface2D"/> which is a copy of this surface.</returns>
         public abstract Surface2D CreateSurface();
 
         /// <summary>
         /// Creates a copy of a region of this surface.
         /// </summary>
         /// <param name="region">The region of this surface to copy.</param>
-        /// <returns>A new surface which is a copy of the specified region of this surface.</returns>
+        /// <returns>A new <see cref="Surface2D"/> which is a copy of the specified region of this surface.</returns>
         public abstract Surface2D CreateSurface(Rectangle region);
 
         /// <summary>
         /// Creates a texture from the surface.
         /// </summary>
         /// <param name="premultiplyAlpha">A value indicating whether to premultiply the surface's alpha when creating the texture.</param>
-        /// <returns>The texture that was created from the surface.</returns>
+        /// <returns>The <see cref="Texture2D"/> that was created from the surface.</returns>
         public abstract Texture2D CreateTexture(Boolean premultiplyAlpha = true);
 
         /// <summary>

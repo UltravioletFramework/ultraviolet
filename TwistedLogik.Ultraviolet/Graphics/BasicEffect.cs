@@ -4,10 +4,10 @@ using TwistedLogik.Nucleus;
 namespace TwistedLogik.Ultraviolet.Graphics
 {
     /// <summary>
-    /// Represents a factory method which constructs instances of the BasicEffect class.
+    /// Represents a factory method which constructs instances of the <see cref="BasicEffect"/> class.
     /// </summary>
     /// <param name="uv">The Ultraviolet context.</param>
-    /// <returns>The instance of BasicEffect that was created.</returns>
+    /// <returns>The instance of <see cref="BasicEffect"/> that was created.</returns>
     public delegate BasicEffect BasicEffectFactory(UltravioletContext uv);
 
     /// <summary>
@@ -16,9 +16,9 @@ namespace TwistedLogik.Ultraviolet.Graphics
     public abstract class BasicEffect : Effect, IEffectMatrices
     {
         /// <summary>
-        /// Initializes a new instance of the BasicEffect class.
+        /// Initializes a new instance of the <see cref="BasicEffect"/> class.
         /// </summary>
-        /// <param name="impl">The effect implementation.</param>
+        /// <param name="impl">The <see cref="EffectImplementation"/> that implements this effect.</param>
         protected BasicEffect(EffectImplementation impl)
             : base(impl)
         {
@@ -31,9 +31,9 @@ namespace TwistedLogik.Ultraviolet.Graphics
         }
 
         /// <summary>
-        /// Creates a new instance of the BasicEffect class.
+        /// Creates a new instance of the <see cref="BasicEffect"/> class.
         /// </summary>
-        /// <returns>The instance of BasicEffect that was created.</returns>
+        /// <returns>The instance of <see cref="BasicEffect"/> that was created.</returns>
         public static BasicEffect Create()
         {
             var uv = UltravioletContext.DemandCurrent();
@@ -182,7 +182,7 @@ namespace TwistedLogik.Ultraviolet.Graphics
         }
 
         /// <summary>
-        /// Occurs when the value of the VertexColorEnabled property changes.
+        /// Occurs when the value of the <see cref="VertexColorEnabled"/> property changes.
         /// </summary>
         protected virtual void OnVertexColorEnabledChanged()
         {
@@ -190,7 +190,7 @@ namespace TwistedLogik.Ultraviolet.Graphics
         }
 
         /// <summary>
-        /// Occurs when the value of the TextureEnabled property changes.
+        /// Occurs when the value of the <see cref="TextureEnabled"/> property changes.
         /// </summary>
         protected virtual void OnTextureEnabledChanged()
         {

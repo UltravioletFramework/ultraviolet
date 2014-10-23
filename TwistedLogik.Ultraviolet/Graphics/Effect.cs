@@ -9,9 +9,9 @@ namespace TwistedLogik.Ultraviolet.Graphics
     public class Effect : UltravioletResource
     {
         /// <summary>
-        /// Initializes a new instance of the Effect class.
+        /// Initializes a new instance of the <see cref="Effect"/> class.
         /// </summary>
-        /// <param name="impl">The effect implementation.</param>
+        /// <param name="impl">The <see cref="EffectImplementation"/> that implements this effect.</param>
         protected Effect(EffectImplementation impl)
             : base(impl.Ultraviolet)
         {
@@ -21,10 +21,10 @@ namespace TwistedLogik.Ultraviolet.Graphics
         }
 
         /// <summary>
-        /// Creates a new instance of the Effect class.
+        /// Creates a new instance of the <see cref="Effect"/> class.
         /// </summary>
         /// <param name="impl">The effect implementation that the effect encapsulates.</param>
-        /// <returns>The instance of Effect that was created.</returns>
+        /// <returns>The instance of <see cref="Effect"/> that was created.</returns>
         public static Effect Create(EffectImplementation impl)
         {
             Contract.Require(impl, "impl");

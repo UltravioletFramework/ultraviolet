@@ -4,10 +4,10 @@ using TwistedLogik.Nucleus;
 namespace TwistedLogik.Ultraviolet.Graphics
 {
     /// <summary>
-    /// Represents a factory method which constructs instances of the DepthStencilState class.
+    /// Represents a factory method which constructs instances of the <see cref="DepthStencilState"/> class.
     /// </summary>
     /// <param name="uv">The Ultraviolet context.</param>
-    /// <returns>The instance of DepthStencilState that was created.</returns>
+    /// <returns>The instance of <see cref="DepthStencilState"/> that was created.</returns>
     public delegate DepthStencilState DepthStencilStateFactory(UltravioletContext uv);
 
     /// <summary>
@@ -16,7 +16,7 @@ namespace TwistedLogik.Ultraviolet.Graphics
     public abstract class DepthStencilState : UltravioletResource
     {
         /// <summary>
-        /// Initializes the DepthStencilState type.
+        /// Initializes the <see cref="DepthStencilState"/> type.
         /// </summary>
         static DepthStencilState()
         {
@@ -24,7 +24,7 @@ namespace TwistedLogik.Ultraviolet.Graphics
         }
 
         /// <summary>
-        /// Initializes a new instance of the DepthStencilState class.
+        /// Initializes a new instance of the <see cref="DepthStencilState"/> class.
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
         protected DepthStencilState(UltravioletContext uv)
@@ -34,9 +34,9 @@ namespace TwistedLogik.Ultraviolet.Graphics
         }
 
         /// <summary>
-        /// Creates a new instance of the DepthStencilState class.
+        /// Creates a new instance of the <see cref="DepthStencilState"/> class.
         /// </summary>
-        /// <returns>The instance of DepthStencilState that was created.</returns>
+        /// <returns>The instance of <see cref="DepthStencilState"/> that was created.</returns>
         public static DepthStencilState Create()
         {
             var uv = UltravioletContext.DemandCurrent();
@@ -46,7 +46,7 @@ namespace TwistedLogik.Ultraviolet.Graphics
         /// <summary>
         /// Retrieves a built-in state object with settings for using a default depth/stencil test.
         /// </summary>
-        /// <returns>The built-in state object that was retrieved.</returns>
+        /// <returns>The built-in <see cref="DepthStencilState"/> object that was retrieved.</returns>
         public static DepthStencilState Default
         {
             get
@@ -62,7 +62,7 @@ namespace TwistedLogik.Ultraviolet.Graphics
         /// <summary>
         /// Retrieves a built-in state object with settings for using a read-only depth/stencil test.
         /// </summary>
-        /// <returns>The built-in state object that was retrieved.</returns>
+        /// <returns>The built-in <see cref="DepthStencilState"/> object that was retrieved.</returns>
         public static DepthStencilState DepthRead
         {
             get
@@ -78,7 +78,7 @@ namespace TwistedLogik.Ultraviolet.Graphics
         /// <summary>
         /// Retrieves a built-in state object with settings for not using a depth/stencil test.
         /// </summary>
-        /// <returns>The built-in state object that was retrieved.</returns>
+        /// <returns>The built-in <see cref="DepthStencilState"/> object that was retrieved.</returns>
         public static DepthStencilState None
         {
             get

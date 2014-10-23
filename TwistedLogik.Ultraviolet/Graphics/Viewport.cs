@@ -4,14 +4,14 @@ using System.Diagnostics;
 namespace TwistedLogik.Ultraviolet.Graphics
 {
     /// <summary>
-    /// Represents the viewport.
+    /// Represents a region of the screen in which rendering takes place.
     /// </summary>
     [Serializable]
     [DebuggerDisplay(@"\{X:{X} Y:{Y} Width:{Width} Height:{Height}\}")]
     public struct Viewport : IEquatable<Viewport>
     {
         /// <summary>
-        /// Initializes a new instance of the Viewport structure.
+        /// Initializes a new instance of the <see cref="Viewport"/> structure.
         /// </summary>
         /// <param name="x">The x-coordinate of the upper-left corner of the viewport on the render target surface.</param>
         /// <param name="y">The y-coordinate of the upper-left corner of the viewport on the render target surface.</param>
@@ -28,8 +28,8 @@ namespace TwistedLogik.Ultraviolet.Graphics
         /// <summary>
         /// Compares two viewports for equality.
         /// </summary>
-        /// <param name="v1">The first viewport to compare.</param>
-        /// <param name="v2">The second viewport to compare.</param>
+        /// <param name="v1">The first <see cref="Viewport"/> to compare.</param>
+        /// <param name="v2">The second <see cref="Viewport"/> to compare.</param>
         /// <returns><c>true</c> if the specified viewports are equal; otherwise, <c>false</c>.</returns>
         public static Boolean operator ==(Viewport v1, Viewport v2)
         {
@@ -39,8 +39,8 @@ namespace TwistedLogik.Ultraviolet.Graphics
         /// <summary>
         /// Compares two viewports for inequality.
         /// </summary>
-        /// <param name="v1">The first viewport to compare.</param>
-        /// <param name="v2">The second viewport to compare.</param>
+        /// <param name="v1">The first <see cref="Viewport"/> to compare.</param>
+        /// <param name="v2">The second <see cref="Viewport"/> to compare.</param>
         /// <returns><c>true</c> if the specified viewports are unequal; otherwise, <c>false</c>.</returns>
         public static Boolean operator !=(Viewport v1, Viewport v2)
         {
@@ -98,7 +98,7 @@ namespace TwistedLogik.Ultraviolet.Graphics
         /// <summary>
         /// Determines whether this instance is equal to the specified viewport.
         /// </summary>
-        /// <param name="other">The viewport to compare to this instance.</param>
+        /// <param name="other">The <see cref="Viewport"/> to compare to this instance.</param>
         /// <returns><c>true</c> if this instance is equal to the specified viewport; otherwise, <c>false</c>.</returns>
         public Boolean Equals(Viewport other)
         {

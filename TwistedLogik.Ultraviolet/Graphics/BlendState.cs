@@ -4,10 +4,10 @@ using TwistedLogik.Nucleus;
 namespace TwistedLogik.Ultraviolet.Graphics
 {
     /// <summary>
-    /// Represents a factory method which constructs instances of the BlendState class.
+    /// Represents a factory method which constructs instances of the <see cref="BlendState"/> class.
     /// </summary>
     /// <param name="uv">The Ultraviolet context.</param>
-    /// <returns>The instance of BlendState that was created.</returns>
+    /// <returns>The instance of <see cref="BlendState"/> that was created.</returns>
     public delegate BlendState BlendStateFactory(UltravioletContext uv);
 
     /// <summary>
@@ -16,7 +16,7 @@ namespace TwistedLogik.Ultraviolet.Graphics
     public abstract class BlendState : UltravioletResource
     {
         /// <summary>
-        /// Initializes the BlendState type.
+        /// Initializes the <see cref="BlendState"/> type.
         /// </summary>
         static BlendState()
         {
@@ -24,7 +24,7 @@ namespace TwistedLogik.Ultraviolet.Graphics
         }
 
         /// <summary>
-        /// Initializes a new instance of the BlendState class.
+        /// Initializes a new instance of the <see cref="BlendState"/> class.
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
         protected BlendState(UltravioletContext uv)
@@ -34,9 +34,9 @@ namespace TwistedLogik.Ultraviolet.Graphics
         }
 
         /// <summary>
-        /// Creates a new instance of the BlendState class.
+        /// Creates a new instance of the <see cref="BlendState"/> class.
         /// </summary>
-        /// <returns>The instance of BlendState that was created.</returns>
+        /// <returns>The instance of <see cref="BlendState"/> that was created.</returns>
         public static BlendState Create()
         {
             var uv = UltravioletContext.DemandCurrent();
@@ -46,7 +46,7 @@ namespace TwistedLogik.Ultraviolet.Graphics
         /// <summary>
         /// Retrieves a built-in state object with settings for opaque blending.
         /// </summary>
-        /// <returns>The built-in state object that was retrieved.</returns>
+        /// <returns>The built-in <see cref="BlendState"/> object that was retrieved.</returns>
         public static BlendState Opaque
         {
             get
@@ -62,7 +62,7 @@ namespace TwistedLogik.Ultraviolet.Graphics
         /// <summary>
         /// Retrieves a built-in state object with settings for alpha blending.
         /// </summary>
-        /// <returns>The built-in state object that was retrieved.</returns>
+        /// <returns>The built-in <see cref="BlendState"/> object that was retrieved.</returns>
         public static BlendState AlphaBlend
         {
             get
@@ -78,7 +78,7 @@ namespace TwistedLogik.Ultraviolet.Graphics
         /// <summary>
         /// Retrieves a built-in state object with settings for additive blending.
         /// </summary>
-        /// <returns>The built-in state object that was retrieved.</returns>
+        /// <returns>The built-in <see cref="BlendState"/> object that was retrieved.</returns>
         public static BlendState Additive
         {
             get
@@ -94,7 +94,7 @@ namespace TwistedLogik.Ultraviolet.Graphics
         /// <summary>
         /// Retrieves a built-in state object with settings for non-premultiplied blending.
         /// </summary>
-        /// <returns>The built-in state object that was retrieved.</returns>
+        /// <returns>The built-in <see cref="BlendState"/> object that was retrieved.</returns>
         public static BlendState NonPremultiplied
         {
             get

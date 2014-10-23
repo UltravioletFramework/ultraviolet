@@ -8,7 +8,7 @@ namespace TwistedLogik.Ultraviolet.Graphics
     public abstract class EffectParameter : UltravioletResource
     {
         /// <summary>
-        /// Initializes a new instance of the EffectParameter class.
+        /// Initializes a new instance of the <see cref="EffectParameter"/> class.
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
         public EffectParameter(UltravioletContext uv)
@@ -18,7 +18,7 @@ namespace TwistedLogik.Ultraviolet.Graphics
         }
 
         /// <summary>
-        /// Gets the parameter's value as a Boolean.
+        /// Gets the parameter's value as a <see cref="Boolean"/>.
         /// </summary>
         /// <returns>The parameter's value.</returns>
         public abstract Boolean GetValueBoolean();
@@ -30,7 +30,7 @@ namespace TwistedLogik.Ultraviolet.Graphics
         public abstract void SetValue(Boolean value);
 
         /// <summary>
-        /// Gets the parameter's value as an Int32.
+        /// Gets the parameter's value as an <see cref="Int32"/>.
         /// </summary>
         /// <returns>The parameter's value.</returns>
         public abstract Int32 GetValueInt32();
@@ -42,7 +42,7 @@ namespace TwistedLogik.Ultraviolet.Graphics
         public abstract void SetValue(Int32 value);
 
         /// <summary>
-        /// Gets the parameter's value as an array of Int32.
+        /// Gets the parameter's value as an array of <see cref="Int32"/>.
         /// </summary>
         /// <returns>The parameter's value.</returns>
         public abstract Int32[] GetValueInt32Array();
@@ -54,7 +54,7 @@ namespace TwistedLogik.Ultraviolet.Graphics
         public abstract void SetValue(Int32[] value);
 
         /// <summary>
-        /// Gets the parameter's value as a UInt32.
+        /// Gets the parameter's value as a <see cref="UInt32"/>.
         /// </summary>
         /// <returns>The parameter's value.</returns>
         [CLSCompliant(false)]
@@ -74,7 +74,7 @@ namespace TwistedLogik.Ultraviolet.Graphics
         }
 
         /// <summary>
-        /// Gets the parameter's value as an array of UInt32.
+        /// Gets the parameter's value as an array of <see cref="UInt32"/>.
         /// </summary>
         /// <returns>The parameter's value.</returns>
         [CLSCompliant(false)]
@@ -94,7 +94,7 @@ namespace TwistedLogik.Ultraviolet.Graphics
         }
 
         /// <summary>
-        /// Gets the parameter's value as a Single.
+        /// Gets the parameter's value as a <see cref="Single"/>.
         /// </summary>
         /// <returns>The parameter's value.</returns>
         public abstract Single GetValueSingle();
@@ -106,7 +106,7 @@ namespace TwistedLogik.Ultraviolet.Graphics
         public abstract void SetValue(Single value);
 
         /// <summary>
-        /// Gets the parameter's value as an array of Single.
+        /// Gets the parameter's value as an array of <see cref="Single"/>.
         /// </summary>
         /// <returns>The parameter's value.</returns>
         public abstract Single[] GetValueSingleArray();
@@ -118,7 +118,7 @@ namespace TwistedLogik.Ultraviolet.Graphics
         public abstract void SetValue(Single[] value);
 
         /// <summary>
-        /// Gets the parameter's value as a Double.
+        /// Gets the parameter's value as a <see cref="Double"/>.
         /// </summary>
         /// <returns>The parameter's value.</returns>
         public abstract Double GetValueDouble();
@@ -130,7 +130,7 @@ namespace TwistedLogik.Ultraviolet.Graphics
         public abstract void SetValue(Double value);
 
         /// <summary>
-        /// Gets the parameter's value as an array of Double.
+        /// Gets the parameter's value as an array of <see cref="Double"/>.
         /// </summary>
         /// <returns>The parameter's value.</returns>
         public abstract Double[] GetValueDoubleArray();
@@ -142,7 +142,7 @@ namespace TwistedLogik.Ultraviolet.Graphics
         public abstract void SetValue(Double[] value);
 
         /// <summary>
-        /// Gets the parameter's value as a Vector2.
+        /// Gets the parameter's value as a <see cref="Vector2"/>.
         /// </summary>
         /// <returns>The parameter's value.</returns>
         public abstract Vector2 GetValueVector2();
@@ -154,7 +154,7 @@ namespace TwistedLogik.Ultraviolet.Graphics
         public abstract void SetValue(Vector2 value);
 
         /// <summary>
-        /// Gets the parameter's value as an array of Vector2.
+        /// Gets the parameter's value as an array of <see cref="Vector2"/>.
         /// </summary>
         /// <returns>The parameter's value.</returns>
         public abstract Vector2[] GetValueVector2Array();
@@ -166,7 +166,7 @@ namespace TwistedLogik.Ultraviolet.Graphics
         public abstract void SetValue(Vector2[] value);
 
         /// <summary>
-        /// Gets the parameter's value as a Vector3.
+        /// Gets the parameter's value as a <see cref="Vector3"/>.
         /// </summary>
         /// <returns>The parameter's value.</returns>
         public abstract Vector3 GetValueVector3();
@@ -178,7 +178,7 @@ namespace TwistedLogik.Ultraviolet.Graphics
         public abstract void SetValue(Vector3 value);
 
         /// <summary>
-        /// Gets the parameter's value as an array of Vector3.
+        /// Gets the parameter's value as an array of <see cref="Vector3"/>.
         /// </summary>
         /// <returns>The parameter's value.</returns>
         public abstract Vector3[] GetValueVector3Array();
@@ -190,7 +190,7 @@ namespace TwistedLogik.Ultraviolet.Graphics
         public abstract void SetValue(Vector3[] value);
 
         /// <summary>
-        /// Gets the parameter's value as a Vector4.
+        /// Gets the parameter's value as a <see cref="Vector4"/>.
         /// </summary>
         /// <returns>The parameter's value.</returns>
         public abstract Vector4 GetValueVector4();
@@ -202,7 +202,7 @@ namespace TwistedLogik.Ultraviolet.Graphics
         public abstract void SetValue(Vector4 value);
 
         /// <summary>
-        /// Gets the parameter's value as an array of Vector4.
+        /// Gets the parameter's value as an array of <see cref="Vector4"/>.
         /// </summary>
         /// <returns>The parameter's value.</returns>
         public abstract Vector4[] GetValueVector4Array();
@@ -214,7 +214,7 @@ namespace TwistedLogik.Ultraviolet.Graphics
         public abstract void SetValue(Vector4[] value);
 
         /// <summary>
-        /// Gets the parameter's value as a Color.
+        /// Gets the parameter's value as a <see cref="Color"/>.
         /// </summary>
         /// <returns>The parameter's value.</returns>
         public abstract Color GetValueColor();
@@ -226,7 +226,7 @@ namespace TwistedLogik.Ultraviolet.Graphics
         public abstract void SetValue(Color value);
 
         /// <summary>
-        /// Gets the parameter's value as a Matrix.
+        /// Gets the parameter's value as a <see cref="Matrix"/>.
         /// </summary>
         /// <returns>The parameter's value.</returns>
         public abstract Matrix GetValueMatrix();
@@ -238,7 +238,7 @@ namespace TwistedLogik.Ultraviolet.Graphics
         public abstract void SetValue(Matrix value);
 
         /// <summary>
-        /// Gets the parameter's value as a Texture2D.
+        /// Gets the parameter's value as a <see cref="Texture2D"/>.
         /// </summary>
         /// <returns>The parameter's value.</returns>
         public abstract Texture2D GetValueTexture2D();

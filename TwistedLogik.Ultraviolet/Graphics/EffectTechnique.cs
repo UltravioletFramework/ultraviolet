@@ -9,7 +9,7 @@ namespace TwistedLogik.Ultraviolet.Graphics
     public abstract class EffectTechnique : UltravioletResource
     {
         /// <summary>
-        /// Initializes a new instance of the EffectTechnique class.
+        /// Initializes a new instance of the <see cref="EffectTechnique"/> class.
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
         public EffectTechnique(UltravioletContext uv)

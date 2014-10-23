@@ -4,12 +4,12 @@ using TwistedLogik.Nucleus;
 namespace TwistedLogik.Ultraviolet.Graphics
 {
     /// <summary>
-    /// Represents a factory method which constructs instances of the DynamicVertexBuffer class.
+    /// Represents a factory method which constructs instances of the <see cref="DynamicVertexBuffer"/> class.
     /// </summary>
     /// <param name="uv">The Ultraviolet context.</param>
     /// <param name="vdecl">The vertex declaration for the buffer.</param>
     /// <param name="vcount">The number of vertices in the buffer.</param>
-    /// <returns>The instance of DynamicVertexBuffer that was created.</returns>
+    /// <returns>The instance of <see cref="DynamicVertexBuffer"/> that was created.</returns>
     public delegate DynamicVertexBuffer DynamicVertexBufferFactory(UltravioletContext uv, VertexDeclaration vdecl, Int32 vcount);
 
     /// <summary>
@@ -18,7 +18,7 @@ namespace TwistedLogik.Ultraviolet.Graphics
     public abstract class DynamicVertexBuffer : VertexBuffer
     {
         /// <summary>
-        /// Initializes a new instance of the DynamicVertexBuffer class.
+        /// Initializes a new instance of the <see cref="DynamicVertexBuffer"/> class.
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
         /// <param name="vdecl">The vertex declaration for the buffer.</param>
@@ -30,11 +30,11 @@ namespace TwistedLogik.Ultraviolet.Graphics
         }
 
         /// <summary>
-        /// Creates a new instance of the DynamicVertexBuffer class.
+        /// Creates a new instance of the <see cref="DynamicVertexBuffer"/> class.
         /// </summary>
         /// <param name="vdecl">The vertex declaration for the buffer.</param>
         /// <param name="vcount">The number of vertices in the buffer.</param>
-        /// <returns>The instance of DynamicVertexBuffer that was created.</returns>
+        /// <returns>The instance of <see cref="DynamicVertexBuffer"/> that was created.</returns>
         public static new DynamicVertexBuffer Create(VertexDeclaration vdecl, Int32 vcount)
         {
             Contract.Require(vdecl, "vdecl");
@@ -45,10 +45,10 @@ namespace TwistedLogik.Ultraviolet.Graphics
         }
 
         /// <summary>
-        /// Creates a new instance of the DynamicVertexBuffer class.
+        /// Creates a new instance of the <see cref="DynamicVertexBuffer"/> class.
         /// </summary>
         /// <param name="vcount">The number of vertices in the buffer.</param>
-        /// <returns>The instance of DynamicVertexBuffer that was created.</returns>
+        /// <returns>The instance of <see cref="DynamicVertexBuffer"/> that was created.</returns>
         public static new DynamicVertexBuffer Create<T>(Int32 vcount) where T : struct, IVertexType
         {
             Contract.EnsureRange(vcount > 0, "vcount");
@@ -73,9 +73,9 @@ namespace TwistedLogik.Ultraviolet.Graphics
         public event EventHandler ContentLost;
 
         /// <summary>
-        /// Raises the ContentLost event.
+        /// Raises the <see cref="ContentLost"/> event.
         /// </summary>
-        /// <param name="e">An EventArgs that contains the event data.</param>
+        /// <param name="e">An <see cref="EventArgs"/> that contains the event data.</param>
         protected virtual void OnContentLost(EventArgs e)
         {
             var temp = ContentLost;

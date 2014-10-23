@@ -4,12 +4,12 @@ using TwistedLogik.Nucleus;
 namespace TwistedLogik.Ultraviolet.Graphics
 {
     /// <summary>
-    /// Represents a factory method which constructs instances of the VertexBuffer class.
+    /// Represents a factory method which constructs instances of the <see cref="VertexBuffer"/> class.
     /// </summary>
     /// <param name="uv">The Ultraviolet context.</param>
     /// <param name="vdecl">The vertex declaration for the buffer.</param>
     /// <param name="vcount">The number of vertices in the buffer.</param>
-    /// <returns>The instance of VertexBuffer that was created.</returns>
+    /// <returns>The instance of <see cref="VertexBuffer"/> that was created.</returns>
     public delegate VertexBuffer VertexBufferFactory(UltravioletContext uv, VertexDeclaration vdecl, Int32 vcount);
 
     /// <summary>
@@ -18,7 +18,7 @@ namespace TwistedLogik.Ultraviolet.Graphics
     public abstract class VertexBuffer : UltravioletResource
     {
         /// <summary>
-        /// Initializes a new instance of the VertexBuffer class.
+        /// Initializes a new instance of the <see cref="VertexBuffer"/> class.
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
         /// <param name="vdecl">The vertex declaration for the buffer.</param>
@@ -34,11 +34,11 @@ namespace TwistedLogik.Ultraviolet.Graphics
         }
 
         /// <summary>
-        /// Creates a new instance of the VertexBuffer class.
+        /// Creates a new instance of the <see cref="VertexBuffer"/> class.
         /// </summary>
         /// <param name="vdecl">The vertex declaration for the buffer.</param>
         /// <param name="vcount">The number of vertices in the buffer.</param>
-        /// <returns>The instance of VertexBuffer that was created.</returns>
+        /// <returns>The instance of <see cref="VertexBuffer"/> that was created.</returns>
         public static VertexBuffer Create(VertexDeclaration vdecl, Int32 vcount)
         {
             Contract.Require(vdecl, "vdecl");
@@ -49,10 +49,11 @@ namespace TwistedLogik.Ultraviolet.Graphics
         }
 
         /// <summary>
-        /// Creates a new instance of the VertexBuffer class.
+        /// Creates a new instance of the <see cref="VertexBuffer"/> class.
         /// </summary>
+        /// <typeparam name="T">The vertex type that defines the layout of the buffer's vertices.</typeparam>
         /// <param name="vcount">The number of vertices in the buffer.</param>
-        /// <returns>The instance of VertexBuffer that was created.</returns>
+        /// <returns>The instance of <see cref="VertexBuffer"/> that was created.</returns>
         public static VertexBuffer Create<T>(Int32 vcount) where T : struct, IVertexType
         {
             Contract.EnsureRange(vcount > 0, "vcount");
@@ -66,12 +67,14 @@ namespace TwistedLogik.Ultraviolet.Graphics
         /// <summary>
         /// Sets the data contained by the vertex buffer.
         /// </summary>
+        /// <typeparam name="T">The type of the elements of the array to set as the buffer's data.</typeparam>
         /// <param name="data">An array containing the data to set in the vertex buffer.</param>
         public abstract void SetData<T>(T[] data) where T : struct;
 
         /// <summary>
         /// Sets the data contained by the vertex buffer.
         /// </summary>
+        /// <typeparam name="T">The type of the elements of the array to set as the buffer's data.</typeparam>
         /// <param name="data">An array containing the data to set in the vertex buffer.</param>
         /// <param name="offset">The offset into <paramref name="data"/> at which to begin setting elements into the buffer.</param>
         /// <param name="count">The number of elements from <paramref name="data"/> to set into the buffer.</param>

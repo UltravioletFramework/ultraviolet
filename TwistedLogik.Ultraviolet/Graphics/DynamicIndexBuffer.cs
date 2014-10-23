@@ -4,12 +4,12 @@ using TwistedLogik.Nucleus;
 namespace TwistedLogik.Ultraviolet.Graphics
 {
     /// <summary>
-    /// Represents a factory method which constructs instances of the DynamicIndexBuffer class.
+    /// Represents a factory method which constructs instances of the <see cref="DynamicIndexBuffer"/> class.
     /// </summary>
     /// <param name="uv">The Ultraviolet context.</param>
     /// <param name="itype">The index element type.</param>
     /// <param name="icount">The index element count.</param>
-    /// <returns>The instance of DynamicIndexBuffer that was created.</returns>
+    /// <returns>The instance of <see cref="DynamicIndexBuffer"/> that was created.</returns>
     public delegate DynamicIndexBuffer DynamicIndexBufferFactory(UltravioletContext uv, IndexBufferElementType itype, Int32 icount);
 
     /// <summary>
@@ -18,7 +18,7 @@ namespace TwistedLogik.Ultraviolet.Graphics
     public abstract class DynamicIndexBuffer : IndexBuffer
     {
         /// <summary>
-        /// Initializes a new instance of the IndexBuffer class.
+        /// Initializes a new instance of the <see cref="DynamicIndexBuffer"/> class.
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
         /// <param name="itype">The index element type.</param>
@@ -30,11 +30,11 @@ namespace TwistedLogik.Ultraviolet.Graphics
         }
 
         /// <summary>
-        /// Creates a new instance of the DynamicIndexBuffer class.
+        /// Creates a new instance of the <see cref="DynamicIndexBuffer"/> class.
         /// </summary>
         /// <param name="itype">The index element type.</param>
         /// <param name="icount">The index element count.</param>
-        /// <returns>The instance of DynamicIndexBuffer that was created.</returns>
+        /// <returns>The instance of <see cref="DynamicIndexBuffer"/> that was created.</returns>
         public static new DynamicIndexBuffer Create(IndexBufferElementType itype, Int32 icount)
         {
             Contract.EnsureRange(icount > 0, "icount");
@@ -57,9 +57,9 @@ namespace TwistedLogik.Ultraviolet.Graphics
         public event EventHandler ContentLost;
 
         /// <summary>
-        /// Raises the ContentLost event.
+        /// Raises the <see cref="ContentLost"/> event.
         /// </summary>
-        /// <param name="e">An EventArgs that contains the event data.</param>
+        /// <param name="e">An <see cref="EventArgs"/> that contains the event data.</param>
         protected virtual void OnContentLost(EventArgs e)
         {
             var temp = ContentLost;

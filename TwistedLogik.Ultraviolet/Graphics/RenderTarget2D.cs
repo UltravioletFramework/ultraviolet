@@ -4,12 +4,12 @@ using TwistedLogik.Nucleus;
 namespace TwistedLogik.Ultraviolet.Graphics
 {
     /// <summary>
-    /// Represents a factory method which constructs instances of the RenderTarget2D class.
+    /// Represents a factory method which constructs instances of the <see cref="RenderTarget2D"/> class.
     /// </summary>
     /// <param name="uv">The Ultraviolet context.</param>
     /// <param name="width">The render target's width in pixels.</param>
     /// <param name="height">The render target's height in pixels.</param>
-    /// <returns>The instance of RenderTarget2D that was created.</returns>
+    /// <returns>The instance of <see cref="RenderTarget2D"/> that was created.</returns>
     public delegate RenderTarget2D RenderTarget2DFactory(UltravioletContext uv, Int32 width, Int32 height);
 
     /// <summary>
@@ -18,7 +18,7 @@ namespace TwistedLogik.Ultraviolet.Graphics
     public abstract class RenderTarget2D : UltravioletResource
     {
         /// <summary>
-        /// Initializes a new instance of the RenderTarget2D class.
+        /// Initializes a new instance of the <see cref="RenderTarget2D"/> class.
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
         public RenderTarget2D(UltravioletContext uv)
@@ -28,11 +28,11 @@ namespace TwistedLogik.Ultraviolet.Graphics
         }
 
         /// <summary>
-        /// Creates a new instance of the RenderTarget2D class.
+        /// Creates a new instance of the <see cref="RenderTarget2D"/> class.
         /// </summary>
         /// <param name="width">The render target's width in pixels.</param>
         /// <param name="height">The render target's height in pixels.</param>
-        /// <returns>The instance of RenderTarget2D that was created.</returns>
+        /// <returns>The instance of <see cref="RenderTarget2D"/> that was created.</returns>
         public static RenderTarget2D Create(Int32 width, Int32 height)
         {
             Contract.EnsureRange(width > 0, "width");
@@ -45,7 +45,7 @@ namespace TwistedLogik.Ultraviolet.Graphics
         /// <summary>
         /// Attaches a render buffer to this render target.
         /// </summary>
-        /// <param name="buffer">The render buffer to attach to this render target.</param>
+        /// <param name="buffer">The <see cref="RenderBuffer2D"/> to attach to this render target.</param>
         public abstract void Attach(RenderBuffer2D buffer);
 
         /// <summary>
