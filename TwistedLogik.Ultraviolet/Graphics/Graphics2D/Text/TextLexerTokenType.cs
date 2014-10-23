@@ -1,9 +1,9 @@
 ﻿
 namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
 {
-        /// <summary>
-        /// Represents the types of formatted text lexer tokens.
-        /// </summary>
+    /// <summary>
+    /// Represents the types of formatted text lexer tokens.
+    /// </summary>
     public enum TextLexerTokenType
     {
         /// <summary>

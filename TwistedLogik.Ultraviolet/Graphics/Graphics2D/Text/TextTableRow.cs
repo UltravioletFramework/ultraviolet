@@ -3,14 +3,15 @@
 namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
 {
     /// <summary>
-    /// Represents a row in a table of formatted text.
+    /// Represents a row of cells in a <see cref="TextTable{ViewModelType}"/>.
     /// </summary>
+    /// <typeparam name="ViewModelType">The type of view model which is bound to this table.</typeparam>
     public sealed class TextTableRow<ViewModelType>
     {
         /// <summary>
-        /// Initializes a new instance of the TextTableRow class.
+        /// Initializes a new instance of the <see cref="TextTableRow{ViewModelType}"/> class.
         /// </summary>
-        /// <param name="table">The table that owns the row.</param>
+        /// <param name="table">The <see cref="TextTable{ViewModelType}"/> that owns the row.</param>
         internal TextTableRow(TextTable<ViewModelType> table)
         {
             Contract.Require(table, "table");

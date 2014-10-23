@@ -12,7 +12,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
     public sealed class TextTableLayout
     {
         /// <summary>
-        /// Initializes a new instance of the TextTableLayout class.
+        /// Initializes a new instance of the <see cref="TextTableLayout"/> class.
         /// </summary>
         /// <param name="xml">The XML document that contains the table layout.</param>
         internal TextTableLayout(XDocument xml)
@@ -25,17 +25,18 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <summary>
         /// Creates a table from the layout information.
         /// </summary>
-        /// <param name="renderer">The text renderer used to lay out and render the table's text.</param>
+        /// <typeparam name="ViewModelType">The type of view model which is bound to this table.</typeparam>
+        /// <param name="renderer">The <see cref="TextRenderer"/> used to lay out and render the table's text.</param>
         /// <param name="font">The table's default font.</param>
-        /// <returns>The table that was created.</returns>
-        public TextTable<T> Create<T>(TextRenderer renderer, SpriteFont font)
+        /// <returns>The <see cref="TextTable{ViewModelType}"/> that was created.</returns>
+        public TextTable<ViewModelType> Create<ViewModelType>(TextRenderer renderer, SpriteFont font)
         {
             Contract.Require(renderer, "renderer");
             Contract.Require(font, "font");
 
             var width = xml.Root.AttributeValueInt32("Width") ?? 0;
             var height = xml.Root.AttributeValueInt32("Height") ?? 0;
-            var table = new TextTable<T>(renderer, width, height, font);
+            var table = new TextTable<ViewModelType>(renderer, width, height, font);
 
             var rowElements = xml.Root.Elements("Row");
             foreach (var rowElement in rowElements)

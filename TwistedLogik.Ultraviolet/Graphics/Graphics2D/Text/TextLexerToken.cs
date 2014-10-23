@@ -9,7 +9,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
     public struct TextLexerToken
     {
         /// <summary>
-        /// Initializes a new instance of the TextLexerToken class.
+        /// Initializes a new instance of the <see cref="TextLexerToken"/> class.
         /// </summary>
         /// <param name="tokenType">The token's type.</param>
         /// <param name="tokenText">The token's text.</param>

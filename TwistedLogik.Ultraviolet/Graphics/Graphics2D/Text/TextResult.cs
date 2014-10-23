@@ -7,10 +7,11 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
     /// <summary>
     /// Represents the result of a text processing operation.
     /// </summary>
+    /// <typeparam name="T">The type of token contained by the result collection.</typeparam>
     public abstract partial class TextResult<T> : IEnumerable<T>
     {
         /// <summary>
-        /// Initializes a new instance of the TextResult class.
+        /// Initializes a new instance of the <see cref="TextResult{T}"/> class.
         /// </summary>
         internal TextResult() { }
 

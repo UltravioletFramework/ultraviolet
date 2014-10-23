@@ -4,12 +4,13 @@ using TwistedLogik.Nucleus;
 namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
 {
     /// <summary>
-    /// Represents a collection containing a table row's cells.
+    /// Represents a collection of <see cref="TextTableCell{ViewModelType}"/> objects.
     /// </summary>
+    /// <typeparam name="ViewModelType">The type of view model which is bound to this table.</typeparam>
     public sealed class TextTableCellCollection<ViewModelType> : UltravioletCollection<TextTableCell<ViewModelType>>
     {
         /// <summary>
-        /// Initializes a new instance of the TextTableCellCollection.
+        /// Initializes a new instance of the <see cref="TextTableCellCollection{ViewModelType}"/>.
         /// </summary>
         /// <param name="row">The row that owns the collection.</param>
         internal TextTableCellCollection(TextTableRow<ViewModelType> row)

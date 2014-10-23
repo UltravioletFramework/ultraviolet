@@ -3,12 +3,12 @@
 namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
 {
     /// <summary>
-    /// Represents the settings used to specify the behavior of the layout anager.
+    /// Represents the settings used to specify the behavior of a <see cref="TextLayoutEngine"/>.
     /// </summary>
     public struct TextLayoutSettings
     {
         /// <summary>
-        /// Initializes a new instance of the FormattedTextLayoutSettings structure.
+        /// Initializes a new instance of the <see cref="TextLayoutSettings"/> structure.
         /// </summary>
         /// <param name="font">The default font.</param>
         /// <param name="width">The width of the layout area.</param>

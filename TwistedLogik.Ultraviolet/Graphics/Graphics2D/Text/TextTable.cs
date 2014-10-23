@@ -7,12 +7,13 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
     /// <summary>
     /// Represents a table of formatted text.
     /// </summary>
+    /// <typeparam name="ViewModelType">The type of view model which is bound to this table.</typeparam>
     public sealed class TextTable<ViewModelType>
     {
         /// <summary>
-        /// Initializes a new instance of the TextTable class.
+        /// Initializes a new instance of the <see cref="TextTable{ViewModelType}"/> class.
         /// </summary>
-        /// <param name="renderer">The text renderer used to lay out and render the table's text.</param>
+        /// <param name="renderer">The <see cref="TextRenderer"/> used to lay out and render the table's text.</param>
         /// <param name="width">The table's width in pixels.</param>
         /// <param name="height">The table's height in pixels.</param>
         /// <param name="font">The table's default font.</param>
@@ -122,7 +123,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <summary>
         /// Draws the table.
         /// </summary>
-        /// <param name="spriteBatch">The sprite batch with which to draw the table.</param>
+        /// <param name="spriteBatch">The <see cref="SpriteBatch"/> with which to draw the table.</param>
         /// <param name="position">The position in screen coordinates at which to draw the table.</param>
         public void Draw(SpriteBatch spriteBatch, Vector2 position)
         {
@@ -132,7 +133,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <summary>
         /// Draws the table.
         /// </summary>
-        /// <param name="spriteBatch">The sprite batch with which to draw the table.</param>
+        /// <param name="spriteBatch">The <see cref="SpriteBatch"/> with which to draw the table.</param>
         /// <param name="position">The position in screen coordinates at which to draw the table.</param>
         /// <param name="color">The table's default text color.</param>
         public void Draw(SpriteBatch spriteBatch, Vector2 position, Color color)

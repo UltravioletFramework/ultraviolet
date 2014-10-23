@@ -3,14 +3,15 @@
 namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
 {
     /// <summary>
-    /// Represents a collection containing a table's rows.
+    /// Represents a collection of rows in a <see cref="TextTable{ViewModelType}"/>.
     /// </summary>
+    /// <typeparam name="ViewModelType">The type of view model which is bound to this table.</typeparam>
     public sealed class TextTableRowCollection<ViewModelType> : UltravioletCollection<TextTableRow<ViewModelType>>
     {
         /// <summary>
-        /// Initializes a new instance of the TextTableRowCollection class.
+        /// Initializes a new instance of the <see cref="TextTableRowCollection{ViewModelType}"/> class.
         /// </summary>
-        /// <param name="table">The table that owns the row collection.</param>
+        /// <param name="table">The <see cref="TextTable{ViewModelType}"/> that owns the row collection.</param>
         internal TextTableRowCollection(TextTable<ViewModelType> table)
         {
             Contract.Require(table, "table");

@@ -9,7 +9,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
     public struct TextParserToken
     {
         /// <summary>
-        /// Initializes a new instance of the TextParserToken structure.
+        /// Initializes a new instance of the <see cref="TextParserToken"/> structure.
         /// </summary>
         /// <param name="text">The token's text.</param>
         /// <param name="style">The token's style index.</param>

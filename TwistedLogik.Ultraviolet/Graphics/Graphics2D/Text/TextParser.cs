@@ -11,7 +11,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
     public sealed partial class TextParser
     {
         /// <summary>
-        /// Initializes the TextParser type.
+        /// Initializes the <see cref="TextParser"/> type.
         /// </summary>
         static TextParser()
         {

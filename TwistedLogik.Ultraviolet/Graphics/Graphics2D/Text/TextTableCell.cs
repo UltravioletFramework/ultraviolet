@@ -7,10 +7,11 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
     /// <summary>
     /// Represents a cell in a formatted text table.
     /// </summary>
+    /// <typeparam name="ViewModelType">The type of view model which is bound to this table.</typeparam>
     public sealed class TextTableCell<ViewModelType>
     {
         /// <summary>
-        /// Initializes a new instance of the TextTableCell class.
+        /// Initializes a new instance of the <see cref="TextTableCell{ViewModelType}"/> class.
         /// </summary>
         /// <param name="row">The row that owns the cell.</param>
         internal TextTableCell(TextTableRow<ViewModelType> row)
@@ -57,6 +58,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <summary>
         /// Binds the cell to the specified property on its view model.
         /// </summary>
+        /// <typeparam name="T">The return type of the property to bind.</typeparam>
         /// <param name="exp">An expression </param>
         public void Bind<T>(Expression<Func<ViewModelType, T>> exp)
         {
