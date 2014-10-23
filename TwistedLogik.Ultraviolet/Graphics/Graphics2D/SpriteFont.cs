@@ -3,28 +3,28 @@
 namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
 {
     /// <summary>
-    /// Represents a sprite font.
+    /// Represents a bitmap font used for rendering text.
     /// </summary>
     public class SpriteFont : UltravioletResource
     {
         /// <summary>
-        /// Initializes a new instance of the SpriteFont class.
+        /// Initializes a new instance of the <see cref="SpriteFont"/> class.
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
-        /// <param name="face">The font's face.</param>
+        /// <param name="face">The <see cref="SpriteFontFace"/> that constitutes the font.</param>
         public SpriteFont(UltravioletContext uv, SpriteFontFace face)
             : this(uv, face, face, face, face)
         {
         }
         
         /// <summary>
-        /// Initializes a new instance of the SpriteFont class.
+        /// Initializes a new instance of the <see cref="SpriteFont"/> class.
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
-        /// <param name="faceRegular">The font's regular face.</param>
-        /// <param name="faceBold">The font's bold face.</param>
-        /// <param name="faceItalic">The font's italic face.</param>
-        /// <param name="faceBoldItalic">The font's bold/italic face.</param>
+        /// <param name="faceRegular">The <see cref="SpriteFontFace"/> that represents the font's regular style.</param>
+        /// <param name="faceBold">The <see cref="SpriteFontFace"/> that represents the font's bold style.</param>
+        /// <param name="faceItalic">The <see cref="SpriteFontFace"/> that represents the font's italic style.</param>
+        /// <param name="faceBoldItalic">The <see cref="SpriteFontFace"/> that represents the font's bold/italic style.</param>
         public SpriteFont(UltravioletContext uv, SpriteFontFace faceRegular, SpriteFontFace faceBold, SpriteFontFace faceItalic, SpriteFontFace faceBoldItalic)
             : base(uv)
         {
@@ -43,10 +43,10 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         }
 
         /// <summary>
-        /// Implicitly converts a sprite font into a font face by returning the sprite font's regular face.
+        /// Implicitly converts a <see cref="SpriteFont"/> into a <see cref="SpriteFontFace"/> by returning the font's regular face.
         /// </summary>
-        /// <param name="font">The font to convert.</param>
-        /// <returns>The converted font face.</returns>
+        /// <param name="font">The <see cref="SpriteFont"/> to convert.</param>
+        /// <returns>The converted <see cref="SpriteFontFace"/>.</returns>
         public static implicit operator SpriteFontFace(SpriteFont font)
         {
             return (font == null) ? null : font.GetFace(SpriteFontStyle.Regular);
@@ -57,7 +57,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// </summary>
         /// <remarks>If the requested font face does not exist, the closest matching font face will be returned instead.</remarks>
         /// <param name="style">The style for which to retrieve a font face.</param>
-        /// <returns>The font face that corresponds to the specified style.</returns>
+        /// <returns>The <see cref="SpriteFontFace"/> that corresponds to the specified style.</returns>
         public SpriteFontFace GetFace(SpriteFontStyle style)
         {
             switch (style)
@@ -80,7 +80,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// <remarks>If the requested font face does not exist, the closest matching font face will be returned instead.</remarks>
         /// <param name="bold">A value indicating whether to retrieve a bold font face.</param>
         /// <param name="italic">A value indicating whether to retrieve an italic font face.</param>
-        /// <returns>The font face that corresponds to the specified style.</returns>
+        /// <returns>The <see cref="SpriteFontFace"/> that corresponds to the specified style.</returns>
         public SpriteFontFace GetFace(Boolean bold, Boolean italic)
         {
             if (bold && italic)

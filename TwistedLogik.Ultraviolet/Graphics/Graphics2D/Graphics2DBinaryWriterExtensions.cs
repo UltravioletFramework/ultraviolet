@@ -1,18 +1,19 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using TwistedLogik.Ultraviolet.Content;
 
 namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
 {
     /// <summary>
-    /// Contains extensoin methods for the BinaryWriter class.
+    /// Contains extensoin methods for the <see cref="BinaryWriter"/> class.
     /// </summary>
     public static class Graphics2DBinaryWriterExtensions
     {
         /// <summary>
         /// Writes a sprite animation identifier to the stream.
         /// </summary>
-        /// <param name="writer">The binary writer with which to write the sprite animation identifier.</param>
-        /// <param name="id">The sprite animation identifier to write to the stream.</param>
+        /// <param name="writer">The <see cref="BinaryWriter"/> with which to write the sprite animation identifier.</param>
+        /// <param name="id">The <see cref="SpriteAnimationID"/> to write to the stream.</param>
         public static void Write(this BinaryWriter writer, SpriteAnimationID id)
         {
             writer.Write(id.IsValid);
@@ -27,8 +28,8 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// <summary>
         /// Writes a sprite animation identifier to the stream.
         /// </summary>
-        /// <param name="writer">The binary writer with which to write the sprite animation identifier.</param>
-        /// <param name="id">The sprite animation identifier to write to the stream.</param>
+        /// <param name="writer">The <see cref="BinaryReader"/> with which to write the sprite animation identifier.</param>
+        /// <param name="id">The <see cref="Nullable{SpriteAnimationID}"/> to write to the stream.</param>
         public static void Write(this BinaryWriter writer, SpriteAnimationID? id)
         {
             writer.Write(id.HasValue);

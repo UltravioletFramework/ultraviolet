@@ -7,10 +7,11 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
     /// <summary>
     /// Represents the metadata for a batch of sprites.
     /// </summary>
+    /// <typeparam name="SpriteData">The type of data object associated with each of the batch's sprite instances.</typeparam>
     internal unsafe sealed partial class SpriteBatchInfo<SpriteData> where SpriteData : struct
     {
         /// <summary>
-        /// Initializes a new instance of the SpriteBatchInfo class.
+        /// Initializes a new instance of the <see cref="SpriteBatchInfo{SpriteData}"/> class.
         /// </summary>
         /// <param name="batchSize">The sprite batch size.</param>
         public SpriteBatchInfo(Int32 batchSize)

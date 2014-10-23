@@ -5,16 +5,16 @@ using TwistedLogik.Ultraviolet.Content;
 namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
 {
     /// <summary>
-    /// Contains extension methods for the ContentManager class.
+    /// Contains extension methods for the <see cref="ContentManager"/> class.
     /// </summary>
     public static class ContentManagerExtensions
     {
         /// <summary>
         /// Loads the specified sprite animation.
         /// </summary>
-        /// <remarks>Content managers maintain a cache of references to all loaded assets, so calling Load() multiple
+        /// <remarks>Content managers maintain a cache of references to all loaded assets, so calling <see cref="ContentManager.Load{T}(String, Boolean)"/> multiple
         /// times on a content manager with the same parameter will return the same object rather than reloading the source file.</remarks>
-        /// <param name="contentManager">The content manager with which to load the animation's associated sprite asset.</param>
+        /// <param name="contentManager">The <see cref="ContentManager"/> with which to load the animation's associated sprite asset.</param>
         /// <param name="id">The identifier that represents the sprite animation to load.</param>
         /// <param name="cache">A value indicating whether to add the sprite asset to the manager's cache.</param>
         /// <returns>The sprite animation that was loaded.</returns>

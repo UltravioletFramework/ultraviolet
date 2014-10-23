@@ -9,13 +9,15 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
     /// <summary>
     /// Contains methods for drawing batches of 2D sprites.
     /// </summary>
+    /// <typeparam name="VertexType">The type of vertex used to render the batch's sprites.</typeparam>
+    /// <typeparam name="SpriteData">The type of data object associated with each of the batch's sprite instances.</typeparam>
     [SecuritySafeCritical]
     public abstract unsafe partial class SpriteBatchBase<VertexType, SpriteData> : UltravioletResource
         where VertexType : struct, IVertexType
         where SpriteData : struct
     {
         /// <summary>
-        /// Initializes a new instance of the SpriteBatchBase class.
+        /// Initializes a new instance of the <see cref="SpriteBatchBase{VertexType, SpriteData}"/> class.
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
         /// <param name="batchSize">The maximum number of sprites that can be drawn in a single batch.</param>
@@ -349,9 +351,9 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         }
 
         /// <summary>
-        /// Draws the specified sprite animation.
+        /// Draws a sprite animation.
         /// </summary>
-        /// <param name="animation">The sprite animation to draw.</param>
+        /// <param name="animation">A <see cref="SpriteAnimationController"/> representing the sprite animation to draw.</param>
         /// <param name="position">The sprite's position in screen coordinates.</param>
         public void DrawSprite(SpriteAnimationController animation, Vector2 position)
         {
@@ -359,9 +361,9 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         }
 
         /// <summary>
-        /// Draws the specified sprite animation.
+        /// Draws a sprite animation.
         /// </summary>
-        /// <param name="animation">The sprite animation to draw.</param>
+        /// <param name="animation">A <see cref="SpriteAnimationController"/> representing the sprite animation to draw.</param>
         /// <param name="position">The sprite's position in screen coordinates.</param>
         /// <param name="width">The width in pixels of the destination rectangle, or <c>null</c> to use the width of the sprite.</param>
         /// <param name="height">The height in pixels of the destination rectangle, or <c>null</c> to use the height of the sprite.</param>
@@ -371,9 +373,9 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         }
 
         /// <summary>
-        /// Draws the specified sprite animation.
+        /// Draws a sprite animation.
         /// </summary>
-        /// <param name="animation">The sprite animation to draw.</param>
+        /// <param name="animation">A <see cref="SpriteAnimationController"/> representing the sprite animation to draw.</param>
         /// <param name="position">The sprite's position in screen coordinates.</param>
         /// <param name="width">The width in pixels of the destination rectangle, or <c>null</c> to use the width of the sprite.</param>
         /// <param name="height">The height in pixels of the destination rectangle, or <c>null</c> to use the height of the sprite.</param>
@@ -385,9 +387,9 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         }
 
         /// <summary>
-        /// Draws the specified sprite animation.
+        /// Draws a sprite animation.
         /// </summary>
-        /// <param name="animation">The sprite animation to draw.</param>
+        /// <param name="animation">A <see cref="SpriteAnimationController"/> representing the sprite animation to draw.</param>
         /// <param name="position">The sprite's position in screen coordinates.</param>
         /// <param name="width">The width in pixels of the destination rectangle, or <c>null</c> to use the width of the sprite.</param>
         /// <param name="height">The height in pixels of the destination rectangle, or <c>null</c> to use the height of the sprite.</param>
@@ -401,9 +403,9 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         }
 
         /// <summary>
-        /// Draws the specified sprite animation.
+        /// Draws a sprite animation.
         /// </summary>
-        /// <param name="animation">The sprite animation to draw.</param>
+        /// <param name="animation">A <see cref="SpriteAnimationController"/> representing the sprite animation to draw.</param>
         /// <param name="position">The sprite's position in screen coordinates.</param>
         /// <param name="data">The sprite's custom data.</param>
         public void DrawSprite(SpriteAnimationController animation, Vector2 position, SpriteData data)
@@ -412,9 +414,9 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         }
 
         /// <summary>
-        /// Draws the specified sprite animation.
+        /// Draws a sprite animation.
         /// </summary>
-        /// <param name="animation">The sprite animation to draw.</param>
+        /// <param name="animation">A <see cref="SpriteAnimationController"/> representing the sprite animation to draw.</param>
         /// <param name="position">The sprite's position in screen coordinates.</param>
         /// <param name="width">The width in pixels of the destination rectangle, or <c>null</c> to use the width of the sprite.</param>
         /// <param name="height">The height in pixels of the destination rectangle, or <c>null</c> to use the height of the sprite.</param>
@@ -425,9 +427,9 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         }
 
         /// <summary>
-        /// Draws the specified sprite animation.
+        /// Draws a sprite animation.
         /// </summary>
-        /// <param name="animation">The sprite animation to draw.</param>
+        /// <param name="animation">A <see cref="SpriteAnimationController"/> representing the sprite animation to draw.</param>
         /// <param name="position">The sprite's position in screen coordinates.</param>
         /// <param name="width">The width in pixels of the destination rectangle, or <c>null</c> to use the width of the sprite.</param>
         /// <param name="height">The height in pixels of the destination rectangle, or <c>null</c> to use the height of the sprite.</param>
@@ -440,9 +442,9 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         }
 
         /// <summary>
-        /// Draws the specified sprite animation.
+        /// Draws a sprite animation.
         /// </summary>
-        /// <param name="animation">The sprite animation to draw.</param>
+        /// <param name="animation">A <see cref="SpriteAnimationController"/> representing the sprite animation to draw.</param>
         /// <param name="position">The sprite's position in screen coordinates.</param>
         /// <param name="width">The width in pixels of the destination rectangle, or <c>null</c> to use the width of the sprite.</param>
         /// <param name="height">The height in pixels of the destination rectangle, or <c>null</c> to use the height of the sprite.</param>
@@ -472,9 +474,9 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         }
 
         /// <summary>
-        /// Draws the specified sprite animation.
+        /// Draws a sprite animation with the specified scaling factor.
         /// </summary>
-        /// <param name="animation">The sprite animation to draw.</param>
+        /// <param name="animation">A <see cref="SpriteAnimationController"/> representing the sprite animation to draw.</param>
         /// <param name="position">The sprite's position in screen coordinates.</param>
         /// <param name="scale">The sprite's scale factor.</param>
         public void DrawScaledSprite(SpriteAnimationController animation, Vector2 position, Vector2 scale)
@@ -483,9 +485,9 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         }
 
         /// <summary>
-        /// Draws the specified sprite animation.
+        /// Draws a sprite animation with the specified scaling factor.
         /// </summary>
-        /// <param name="animation">The sprite animation to draw.</param>
+        /// <param name="animation">A <see cref="SpriteAnimationController"/> representing the sprite animation to draw.</param>
         /// <param name="position">The sprite's position in screen coordinates.</param>
         /// <param name="scale">The sprite's scale factor.</param>
         /// <param name="color">The sprite's tint color.</param>
@@ -496,9 +498,9 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         }
 
         /// <summary>
-        /// Draws the specified sprite animation.
+        /// Draws a sprite animation with the specified scaling factor.
         /// </summary>
-        /// <param name="animation">The sprite animation to draw.</param>
+        /// <param name="animation">A <see cref="SpriteAnimationController"/> representing the sprite animation to draw.</param>
         /// <param name="position">The sprite's position in screen coordinates.</param>
         /// <param name="scale">The sprite's scale factor.</param>
         /// <param name="color">The sprite's color.</param>
@@ -511,9 +513,9 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         }
 
         /// <summary>
-        /// Draws the specified sprite animation.
+        /// Draws a sprite animation with the specified scaling factor.
         /// </summary>
-        /// <param name="animation">The sprite animation to draw.</param>
+        /// <param name="animation">A <see cref="SpriteAnimationController"/> representing the sprite animation to draw.</param>
         /// <param name="position">The sprite's position in screen coordinates.</param>
         /// <param name="scale">The sprite's scale factor.</param>
         /// <param name="data">The sprite's custom data.</param>
@@ -523,9 +525,9 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         }
 
         /// <summary>
-        /// Draws the specified sprite animation.
+        /// Draws a sprite animation with the specified scaling factor.
         /// </summary>
-        /// <param name="animation">The sprite animation to draw.</param>
+        /// <param name="animation">A <see cref="SpriteAnimationController"/> representing the sprite animation to draw.</param>
         /// <param name="position">The sprite's position in screen coordinates.</param>
         /// <param name="scale">The sprite's scale factor.</param>
         /// <param name="color">The sprite's tint color.</param>
@@ -537,9 +539,9 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         }
 
         /// <summary>
-        /// Draws the specified sprite animation.
+        /// Draws a sprite animation with the specified scaling factor.
         /// </summary>
-        /// <param name="animation">The sprite animation to draw.</param>
+        /// <param name="animation">A <see cref="SpriteAnimationController"/> representing the sprite animation to draw.</param>
         /// <param name="position">The sprite's position in screen coordinates.</param>
         /// <param name="scale">The sprite's scale factor.</param>
         /// <param name="color">The sprite's tint color.</param>
@@ -563,9 +565,9 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         }
 
         /// <summary>
-        /// Draws a single frame of animation.
+        /// Draws a single animation frame.
         /// </summary>
-        /// <param name="frame">The frame to draw.</param>
+        /// <param name="frame">The <see cref="SpriteFrame"/> to draw.</param>
         /// <param name="destinationRectangle">A rectangle which indicates where on the screen the sprite will be drawn.</param>
         /// <param name="color">The sprite's tint color.</param>
         /// <param name="rotation">The sprite's rotation in radians.</param>
@@ -575,9 +577,9 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         }
 
         /// <summary>
-        /// Draws a single frame of animation.
+        /// Draws a single animation frame.
         /// </summary>
-        /// <param name="frame">The frame to draw.</param>
+        /// <param name="frame">The <see cref="SpriteFrame"/> to draw.</param>
         /// <param name="destinationRectangle">A rectangle which indicates where on the screen the sprite will be drawn.</param>
         /// <param name="color">The sprite's tint color.</param>
         /// <param name="rotation">The sprite's rotation in radians.</param>
@@ -589,9 +591,9 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         }
 
         /// <summary>
-        /// Draws a single frame of animation.
+        /// Draws a single animation frame.
         /// </summary>
-        /// <param name="frame">The frame to draw.</param>
+        /// <param name="frame">The <see cref="SpriteFrame"/> to draw.</param>
         /// <param name="destinationRectangle">A rectangle which indicates where on the screen the sprite will be drawn.</param>
         /// <param name="color">The sprite's tint color.</param>
         /// <param name="rotation">The sprite's rotation in radians.</param>
@@ -602,9 +604,9 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         }
 
         /// <summary>
-        /// Draws a single frame of animation.
+        /// Draws a single animation frame.
         /// </summary>
-        /// <param name="frame">The frame to draw.</param>
+        /// <param name="frame">The <see cref="SpriteFrame"/> to draw.</param>
         /// <param name="destinationRectangle">A rectangle which indicates where on the screen the sprite will be drawn.</param>
         /// <param name="color">The sprite's tint color.</param>
         /// <param name="rotation">The sprite's rotation in radians.</param>
@@ -617,9 +619,9 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         }
 
         /// <summary>
-        /// Adds a string of text to the sprite batch.
+        /// Draws a string of text.
         /// </summary>
-        /// <param name="fontFace">The font face with which to draw the text.</param>
+        /// <param name="fontFace">The <see cref="SpriteFontFace"/> with which to draw the text.</param>
         /// <param name="text">The text to draw.</param>
         /// <param name="position">The text's position.</param>
         /// <param name="color">The text's color.</param>
@@ -633,9 +635,9 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         }
 
         /// <summary>
-        /// Adds a string of text to the sprite batch.
+        /// Draws a string of text.
         /// </summary>
-        /// <param name="fontFace">The font face with which to draw the text.</param>
+        /// <param name="fontFace">The <see cref="SpriteFontFace"/> with which to draw the text.</param>
         /// <param name="text">The text to draw.</param>
         /// <param name="position">The text's position.</param>
         /// <param name="color">The text's color.</param>
@@ -654,9 +656,9 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         }
 
         /// <summary>
-        /// Adds a string of text to the sprite batch.
+        /// Draws a string of text.
         /// </summary>
-        /// <param name="fontFace">The font face with which to draw the text.</param>
+        /// <param name="fontFace">The <see cref="SpriteFontFace"/> with which to draw the text.</param>
         /// <param name="text">The text to draw.</param>
         /// <param name="position">The text's position.</param>
         /// <param name="color">The text's color.</param>
@@ -675,9 +677,9 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         }
 
         /// <summary>
-        /// Adds a string of text to the sprite batch.
+        /// Draws a string of text.
         /// </summary>
-        /// <param name="fontFace">The font face with which to draw the text.</param>
+        /// <param name="fontFace">The <see cref="SpriteFontFace"/> with which to draw the text.</param>
         /// <param name="text">The text to draw.</param>
         /// <param name="position">The text's position.</param>
         /// <param name="color">The text's color.</param>
@@ -692,9 +694,9 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         }
 
         /// <summary>
-        /// Adds a string of text to the sprite batch.
+        /// Draws a string of text.
         /// </summary>
-        /// <param name="fontFace">The font face with which to draw the text.</param>
+        /// <param name="fontFace">The <see cref="SpriteFontFace"/> with which to draw the text.</param>
         /// <param name="text">The text to draw.</param>
         /// <param name="position">The text's position.</param>
         /// <param name="color">The text's color.</param>
@@ -714,9 +716,9 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         }
 
         /// <summary>
-        /// Adds a string of text to the sprite batch.
+        /// Draws a string of text.
         /// </summary>
-        /// <param name="fontFace">The font face with which to draw the text.</param>
+        /// <param name="fontFace">The <see cref="SpriteFontFace"/> with which to draw the text.</param>
         /// <param name="text">The text to draw.</param>
         /// <param name="position">The text's position.</param>
         /// <param name="color">The text's color.</param>
@@ -736,9 +738,9 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         }
 
         /// <summary>
-        /// Adds a string of text to the sprite batch.
+        /// Draws a string of text.
         /// </summary>
-        /// <param name="fontFace">The font face with which to draw the text.</param>
+        /// <param name="fontFace">The <see cref="SpriteFontFace"/> with which to draw the text.</param>
         /// <param name="text">The text to draw.</param>
         /// <param name="position">The text's position.</param>
         /// <param name="color">The text's color.</param>
@@ -752,9 +754,9 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         }
 
         /// <summary>
-        /// Adds a string of text to the sprite batch.
+        /// Draws a string of text.
         /// </summary>
-        /// <param name="fontFace">The font face with which to draw the text.</param>
+        /// <param name="fontFace">The <see cref="SpriteFontFace"/> with which to draw the text.</param>
         /// <param name="text">The text to draw.</param>
         /// <param name="position">The text's position.</param>
         /// <param name="color">The text's color.</param>
@@ -773,9 +775,9 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         }
 
         /// <summary>
-        /// Adds a string of text to the sprite batch.
+        /// Draws a string of text.
         /// </summary>
-        /// <param name="fontFace">The font face with which to draw the text.</param>
+        /// <param name="fontFace">The <see cref="SpriteFontFace"/> with which to draw the text.</param>
         /// <param name="text">The text to draw.</param>
         /// <param name="position">The text's position.</param>
         /// <param name="color">The text's color.</param>
@@ -794,9 +796,9 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         }
 
         /// <summary>
-        /// Adds a string of text to the sprite batch.
+        /// Draws a string of text.
         /// </summary>
-        /// <param name="fontFace">The font face with which to draw the text.</param>
+        /// <param name="fontFace">The <see cref="SpriteFontFace"/> with which to draw the text.</param>
         /// <param name="text">The text to draw.</param>
         /// <param name="position">The text's position.</param>
         /// <param name="color">The text's color.</param>
@@ -811,9 +813,9 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         }
 
         /// <summary>
-        /// Adds a string of text to the sprite batch.
+        /// Draws a string of text.
         /// </summary>
-        /// <param name="fontFace">The font face with which to draw the text.</param>
+        /// <param name="fontFace">The <see cref="SpriteFontFace"/> with which to draw the text.</param>
         /// <param name="text">The text to draw.</param>
         /// <param name="position">The text's position.</param>
         /// <param name="color">The text's color.</param>
@@ -833,9 +835,9 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         }
 
         /// <summary>
-        /// Adds a string of text to the sprite batch.
+        /// Draws a string of text.
         /// </summary>
-        /// <param name="fontFace">The font face with which to draw the text.</param>
+        /// <param name="fontFace">The <see cref="SpriteFontFace"/> with which to draw the text.</param>
         /// <param name="text">The text to draw.</param>
         /// <param name="position">The text's position.</param>
         /// <param name="color">The text's color.</param>
@@ -855,9 +857,9 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         }
 
         /// <summary>
-        /// Adds a string of text to the sprite batch.
+        /// Draws a string of text.
         /// </summary>
-        /// <param name="fontFace">The font face with which to draw the text.</param>
+        /// <param name="fontFace">The <see cref="SpriteFontFace"/> with which to draw the text.</param>
         /// <param name="text">The text to draw.</param>
         /// <param name="position">The text's position.</param>
         /// <param name="color">The text's color.</param>
@@ -871,9 +873,9 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         }
 
         /// <summary>
-        /// Adds a string of text to the sprite batch.
+        /// Draws a string of text.
         /// </summary>
-        /// <param name="fontFace">The font face with which to draw the text.</param>
+        /// <param name="fontFace">The <see cref="SpriteFontFace"/> with which to draw the text.</param>
         /// <param name="text">The text to draw.</param>
         /// <param name="position">The text's position.</param>
         /// <param name="color">The text's color.</param>
@@ -892,9 +894,9 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         }
 
         /// <summary>
-        /// Adds a string of text to the sprite batch.
+        /// Draws a string of text.
         /// </summary>
-        /// <param name="fontFace">The font face with which to draw the text.</param>
+        /// <param name="fontFace">The <see cref="SpriteFontFace"/> with which to draw the text.</param>
         /// <param name="text">The text to draw.</param>
         /// <param name="position">The text's position.</param>
         /// <param name="color">The text's color.</param>
@@ -913,9 +915,9 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         }
 
         /// <summary>
-        /// Adds a string of text to the sprite batch.
+        /// Draws a string of text.
         /// </summary>
-        /// <param name="fontFace">The font face with which to draw the text.</param>
+        /// <param name="fontFace">The <see cref="SpriteFontFace"/> with which to draw the text.</param>
         /// <param name="text">The text to draw.</param>
         /// <param name="position">The text's position.</param>
         /// <param name="color">The text's color.</param>
@@ -930,9 +932,9 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         }
 
         /// <summary>
-        /// Adds a string of text to the sprite batch.
+        /// Draws a string of text.
         /// </summary>
-        /// <param name="fontFace">The font face with which to draw the text.</param>
+        /// <param name="fontFace">The <see cref="SpriteFontFace"/> with which to draw the text.</param>
         /// <param name="text">The text to draw.</param>
         /// <param name="position">The text's position.</param>
         /// <param name="color">The text's color.</param>
@@ -952,9 +954,9 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         }
 
         /// <summary>
-        /// Adds a string of text to the sprite batch.
+        /// Draws a string of text.
         /// </summary>
-        /// <param name="fontFace">The font face with which to draw the text.</param>
+        /// <param name="fontFace">The <see cref="SpriteFontFace"/> with which to draw the text.</param>
         /// <param name="text">The text to draw.</param>
         /// <param name="position">The text's position.</param>
         /// <param name="color">The text's color.</param>
@@ -974,7 +976,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         }
 
         /// <summary>
-        /// Gets the maximum number of sprites that can drawn in a single batch by this sprite batcher.
+        /// Gets the maximum number of sprites that can drawn in a single batch by this <see cref="SpriteBatch"/>.
         /// </summary>
         public Int32 BatchSize
         {
@@ -1304,7 +1306,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         }
 
         /// <summary>
-        /// Adds a string of text to the sprite batch.
+        /// Draws a string of text.
         /// </summary>
         /// <param name="fontFace">The font face with which to draw the text.</param>
         /// <param name="text">The text to draw.</param>

@@ -11,7 +11,7 @@ using TwistedLogik.Ultraviolet.Content;
 namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
 {
     /// <summary>
-    /// Imports .sprite files.
+    /// Represents a content importer which loads sprite definition files.
     /// </summary>
     [ContentImporter(".sprite")]
     [ContentImporter(".jssprite")]

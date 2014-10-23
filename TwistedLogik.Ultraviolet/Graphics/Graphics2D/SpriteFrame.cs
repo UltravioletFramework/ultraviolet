@@ -3,12 +3,12 @@
 namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
 {
     /// <summary>
-    /// Represents a single image in a sprite animation.
+    /// Represents one of the images that constitutes a <see cref="SpriteAnimation"/>.
     /// </summary>
     public sealed class SpriteFrame
     {
         /// <summary>
-        /// Initializes a new instance of the SpriteFrame class.
+        /// Initializes a new instance of the <see cref="SpriteFrame"/> class.
         /// </summary>
         /// <param name="description">The frame description.</param>
         public SpriteFrame(SpriteFrameDescription description)

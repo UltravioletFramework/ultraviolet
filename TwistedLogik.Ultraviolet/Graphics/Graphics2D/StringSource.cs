@@ -11,9 +11,9 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
     internal struct StringSource
     {
         /// <summary>
-        /// Initializes a new instance of the StringSource structure.
+        /// Initializes a new instance of the <see cref="StringSource"/> structure.
         /// </summary>
-        /// <param name="s">The string that contains the string data.</param>
+        /// <param name="s">The <see cref="String"/> that contains the string data.</param>
         public StringSource(String s)
         {
             Contract.Require(s, "s");
@@ -26,9 +26,9 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         }
 
         /// <summary>
-        /// Initializes a new instance of the StringSource structure.
+        /// Initializes a new instance of the <see cref="StringSource"/> structure.
         /// </summary>
-        /// <param name="sb">The string builder that contains the string data.</param>
+        /// <param name="sb">The <see cref="StringBuilder"/> that contains the string data.</param>
         public StringSource(StringBuilder sb)
         {
             Contract.Require(sb, "sb");
@@ -41,9 +41,9 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         }
 
         /// <summary>
-        /// Initializes a new instance of the StringSource structure.
+        /// Initializes a new instance of the <see cref="StringSource"/> structure.
         /// </summary>
-        /// <param name="segment">The string segment that contains the string data.</param>
+        /// <param name="segment">The <see cref="StringSegment"/> that contains the string data.</param>
         public StringSource(StringSegment segment)
         {
             this.str = segment.String;

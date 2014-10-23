@@ -2,7 +2,7 @@
 namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
 {
     /// <summary>
-    /// Determines how a sprite animation repeats after completing a sequence.
+    /// Determines how a sprite animation acts when it reaches the end of its list of frames.
     /// </summary>
     public enum SpriteAnimationRepeat
     {

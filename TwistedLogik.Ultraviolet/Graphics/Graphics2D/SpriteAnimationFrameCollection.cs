@@ -5,12 +5,12 @@ using TwistedLogik.Nucleus.Collections;
 namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
 {
     /// <summary>
-    /// Represents a sprite animation's list of frames.
+    /// Represents the list of frames that constitutes a <see cref="SpriteAnimation"/>.
     /// </summary>
     public sealed class SpriteAnimationFrameCollection : ObservableList<SpriteFrame>
     {
         /// <summary>
-        /// Gets the total duration of the animation's frames.
+        /// Gets the total duration of the animation's frames in milliseconds.
         /// </summary>
         public Int32 Duration
         {

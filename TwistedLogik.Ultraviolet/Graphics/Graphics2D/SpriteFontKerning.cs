@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
 {
     /// <summary>
-    /// Represents the kerning information for a sprite font.
+    /// Represents the kerning information for a <see cref="SpriteFont"/>.
     /// </summary>
     public class SpriteFontKerning
     {

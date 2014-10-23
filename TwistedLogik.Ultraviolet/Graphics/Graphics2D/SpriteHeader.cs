@@ -3,7 +3,7 @@
 namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
 {
     /// <summary>
-    /// Represents the header data for a batched sprite.
+    /// Represents the header data for a batched <see cref="Sprite"/>.
     /// </summary>
     public struct SpriteHeader
     {

@@ -10,7 +10,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
     public sealed class Sprite
     {
         /// <summary>
-        /// Initializes a new instance of the Sprite class.
+        /// Initializes a new instance of the <see cref="Sprite"/> class.
         /// </summary>
         public Sprite(IEnumerable<SpriteAnimation> animations = null)
         {
@@ -34,7 +34,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// Retrieves the animation with the specified index.
         /// </summary>
         /// <param name="i">The index of the animation to retrieve.</param>
-        /// <returns>The animation with the specified index.</returns>
+        /// <returns>The <see cref="SpriteAnimation"/> with the specified index.</returns>
         public SpriteAnimation this[int i]
         {
             get
@@ -47,7 +47,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// Retrieves the animation with the specified name.
         /// </summary>
         /// <param name="name">The name of the animation to retrieve.</param>
-        /// <returns>The animation with the specified name, or <c>null</c> if no such animation exists.</returns>
+        /// <returns>The <see cref="SpriteAnimation"/> with the specified name, or <c>null</c> if no such animation exists.</returns>
         public SpriteAnimation this[string name]
         {
             get

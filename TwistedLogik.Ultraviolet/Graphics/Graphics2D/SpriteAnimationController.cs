@@ -3,7 +3,7 @@
 namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
 {
     /// <summary>
-    /// Contains methods for controlling a sprite animation.
+    /// Represents an object which encapsulates the playback state of a <see cref="SpriteAnimation"/>.
     /// </summary>
     public sealed class SpriteAnimationController
     {
@@ -74,7 +74,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// Plays a fire-and-forget animation.  The animation will play once (regardless of its repeat mode),
         /// then the controller will return to the currently playing animation.
         /// </summary>
-        /// <param name="animation">The animation to play.</param>
+        /// <param name="animation">The <see cref="SpriteAnimation"/> to play.</param>
         /// <param name="playbackTime">The desired playback time in milliseconds, or <c>null</c> to use the standard playback time.</param>
         public void FireAndForget(SpriteAnimation animation, Double? playbackTime = null)
         {
@@ -86,7 +86,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// then the controller will return to the specified default animation.
         /// </summary>
         /// <param name="animation">The animation to play.</param>
-        /// <param name="defaultAnimation">The animation to play once the fire-and-forget animation has completed.</param>
+        /// <param name="defaultAnimation">The <see cref="SpriteAnimation"/> to play once the fire-and-forget animation has completed.</param>
         /// <param name="playbackTime">The desired playback time in milliseconds, or <c>null</c> to use the standard playback time.</param>
         public void FireAndForget(SpriteAnimation animation, SpriteAnimation defaultAnimation, Double? playbackTime = null)
         {
@@ -99,7 +99,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// <summary>
         /// Plays the specified animation.
         /// </summary>
-        /// <param name="animation">The animation to play.</param>
+        /// <param name="animation">The <see cref="SpriteAnimation"/> to play.</param>
         public void PlayAnimation(SpriteAnimation animation)
         {
             this.animation = animation;
@@ -117,10 +117,11 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
             this.defaultAnimation = null;
             this.playbackTime = null;
             this.timer = 0.0;
+            this.frame = null;
         }
 
         /// <summary>
-        /// Resets the controller's current animation.
+        /// Resets the controller's current animation to its default state.
         /// </summary>
         public void ResetAnimation()
         {
@@ -130,9 +131,9 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         }
 
         /// <summary>
-        /// Gets the animation's current frame.
+        /// Gets the playing animation's current frame.
         /// </summary>
-        /// <returns>The animation's current frame.</returns>
+        /// <returns>The playing animation's current frame, or <c>null</c> if no animation is playing.</returns>
         public SpriteFrame GetFrame()
         {
             return frame;

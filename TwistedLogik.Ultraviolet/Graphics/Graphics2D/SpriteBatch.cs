@@ -4,20 +4,21 @@ using System.Security;
 namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
 {
     /// <summary>
-    /// Represents a factory method which constructs instances of the SpriteBatch class.
+    /// Represents a factory method which constructs instances of the <see cref="SpriteBatch"/> class.
     /// </summary>
     /// <param name="uv">The Ultraviolet context.</param>
-    /// <returns>The instance of SpriteBatch that was created.</returns>
+    /// <returns>The instance of <see cref="SpriteBatch"/> that was created.</returns>
     public delegate SpriteBatch SpriteBatchFactory(UltravioletContext uv);
 
     /// <summary>
-    /// Represents a standard sprite batch.
+    /// Represents a standard implementation of <see cref="SpriteBatchBase{VertexType, SpriteData}"/> using vertices which
+    /// specify position, color, and texture data.
     /// </summary>
     [SecuritySafeCritical]
     public sealed class SpriteBatch : SpriteBatchBase<VertexPositionColorTexture, SpriteBatchData>
     {
         /// <summary>
-        /// Initializes a new instance of the SpriteBatch class.
+        /// Initializes a new instance of the <see cref="SpriteBatch"/> class.
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
         /// <param name="batchSize">The maximum number of sprites that can be drawn in a single batch.</param>
@@ -28,9 +29,9 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         }
 
         /// <summary>
-        /// Creates a new instance of the SpriteBatch class.
+        /// Creates a new instance of the <see cref="SpriteBatch"/> class.
         /// </summary>
-        /// <returns>The instance of SpriteBatch that was created.</returns>
+        /// <returns>The instance of <see cref="SpriteBatch"/> that was created.</returns>
         public static SpriteBatch Create()
         {
             var uv = UltravioletContext.DemandCurrent();

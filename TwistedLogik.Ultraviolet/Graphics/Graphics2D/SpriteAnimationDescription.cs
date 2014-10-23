@@ -3,12 +3,12 @@
 namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
 {
     /// <summary>
-    /// Describes a SpriteAnimation object.
+    /// Describes a <see cref="SpriteAnimation"/> object during deserialization.
     /// </summary>
     public class SpriteAnimationDescription
     {
         /// <summary>
-        /// Initializes a new instance of the SpriteAnimationDescription class.
+        /// Initializes a new instance of the <see cref="SpriteAnimationDescription"/> class.
         /// </summary>
         public SpriteAnimationDescription()
         {
@@ -34,7 +34,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         }
 
         /// <summary>
-        /// Retrieves an array containing the animation's frames.
+        /// Gets an array containing the animation's frames.
         /// </summary>
         public SpriteFrameDescription[] Frames
         {

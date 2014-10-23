@@ -3,12 +3,12 @@
 namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
 {
     /// <summary>
-    /// Represents a kerning pair.
+    /// Represents a pair of glyphs and their associated kerning information.
     /// </summary>
     public struct SpriteFontKerningPair : IEquatable<SpriteFontKerningPair>
     {
         /// <summary>
-        /// Initializes a new instance of the SpriteFontKerningPair structure.
+        /// Initializes a new instance of the <see cref="SpriteFontKerningPair"/> structure.
         /// </summary>
         /// <param name="firstCharacter">The first character in the pair.</param>
         /// <param name="secondCharacter">The second character in the pair.</param>
@@ -21,8 +21,8 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// <summary>
         /// Tests two kerning pairs for equality.
         /// </summary>
-        /// <param name="p1">The first kerning pair.</param>
-        /// <param name="p2">The second kerning pair.</param>
+        /// <param name="p1">The first <see cref="SpriteFontKerningPair"/>.</param>
+        /// <param name="p2">The second <see cref="SpriteFontKerningPair"/>.</param>
         /// <returns><c>true</c> if the kerning pairs are equal; otherwise, <c>false</c>.</returns>
         public static Boolean operator ==(SpriteFontKerningPair p1, SpriteFontKerningPair p2)
         {
@@ -32,8 +32,8 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// <summary>
         /// Tests two kerning pairs for inequality.
         /// </summary>
-        /// <param name="p1">The first kerning pair.</param>
-        /// <param name="p2">The second kerning pair.</param>
+        /// <param name="p1">The first <see cref="SpriteFontKerningPair"/>.</param>
+        /// <param name="p2">The second <see cref="SpriteFontKerningPair"/>.</param>
         /// <returns><c>true</c> if the kerning pairs are unequal; otherwise, <c>false</c>.</returns>
         public static Boolean operator !=(SpriteFontKerningPair p1, SpriteFontKerningPair p2)
         {

@@ -2,7 +2,7 @@
 namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
 {
     /// <summary>
-    /// Represents the effect used to render sprites.
+    /// Represents an <see cref="Effect"/> used to render sprites.
     /// </summary>
     public interface ISpriteBatchEffect
     {

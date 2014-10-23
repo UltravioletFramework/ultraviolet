@@ -13,7 +13,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
     public class SpriteFontFace : UltravioletResource
     {
         /// <summary>
-        /// Initializes a new instance of the SpriteFontFace class.
+        /// Initializes a new instance of the <see cref="SpriteFontFace"/> class.
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
         /// <param name="texture">The texture that contains the glyph images.</param>
@@ -26,7 +26,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         }
 
         /// <summary>
-        /// Initializes a new instance of the SpriteFontFace class.
+        /// Initializes a new instance of the <see cref="SpriteFontFace"/> class.
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
         /// <param name="texture">The texture that contains the font face's glyphs.</param>

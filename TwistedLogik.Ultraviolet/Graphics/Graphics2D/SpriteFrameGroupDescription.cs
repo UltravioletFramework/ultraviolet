@@ -3,7 +3,7 @@
 namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
 {
     /// <summary>
-    /// Represents a group of frames that share common attributes.
+    /// Describes a collectively-defined group of <see cref="SpriteFrame"/> objects during deserialization.
     /// </summary>
     public class SpriteFrameGroupDescription
     {

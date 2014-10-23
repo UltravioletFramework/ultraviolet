@@ -8,10 +8,11 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
     public sealed class SpriteAnimation
     {
         /// <summary>
-        /// Initializes a new instance of the SpriteAnimation class.
+        /// Initializes a new instance of the <see cref="SpriteAnimation"/> class.
         /// </summary>
         /// <param name="name">The animation's name.</param>
-        /// <param name="repeat">The animation's repeat mode.</param>
+        /// <param name="repeat">A <see cref="SpriteAnimationRepeat"/> value indicating how the animation should act
+        /// when it reaches the end of its list of frames.</param>
         public SpriteAnimation(String name, SpriteAnimationRepeat repeat)
         {
             this.name = name;
@@ -27,7 +28,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         }
 
         /// <summary>
-        /// Gets or sets a value indicating how the animation repeats after completing a sequence.
+        /// Gets or sets a value indicating how the animation acts when it reaches the end of its list of frames.
         /// </summary>
         public SpriteAnimationRepeat Repeat
         {

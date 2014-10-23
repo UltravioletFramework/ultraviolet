@@ -10,9 +10,9 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
     public struct SpriteAnimationID : IEquatable<SpriteAnimationID>
     {
         /// <summary>
-        /// Initializes a new instance of the SpriteAnimationID structure from the specified animation name.
+        /// Initializes a new instance of the <see cref="SpriteAnimationID"/> structure from the specified animation name.
         /// </summary>
-        /// <param name="spriteAssetID">The asset identifier that represents the sprite that contains the animation.</param>
+        /// <param name="spriteAssetID">The <see cref="AssetID"/> that represents the sprite that contains the animation.</param>
         /// <param name="animationName">The name of the referenced animation.</param>
         internal SpriteAnimationID(AssetID spriteAssetID, String animationName)
         {
@@ -22,9 +22,9 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         }
 
         /// <summary>
-        /// Initializes a new instance of the SpriteAnimationID structure from the specified animation name.
+        /// Initializes a new instance of the <see cref="SpriteAnimationID"/> structure from the specified animation name.
         /// </summary>
-        /// <param name="spriteAssetID">The asset identifier that represents the sprite that contains the animation.</param>
+        /// <param name="spriteAssetID">The <see cref="AssetID"/> that represents the sprite that contains the animation.</param>
         /// <param name="animationIndex">The index of the referenced animation.</param>
         internal SpriteAnimationID(AssetID spriteAssetID, Int32 animationIndex)
         {

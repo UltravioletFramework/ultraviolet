@@ -3,7 +3,7 @@
 namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
 {
     /// <summary>
-    /// Represents a description of a sprite frame.
+    /// Describes a <see cref="SpriteFrame"/> object during deserialization.
     /// </summary>
     public struct SpriteFrameDescription
     {
