@@ -40,6 +40,25 @@
     <NamingMethod>MemberName</NamingMethod>
     <HelpTitle>Ultraviolet Framework</HelpTitle>
     <ContentPlacement>AboveNamespaces</ContentPlacement>
+    <ApiFilter>
+      <Filter entryType="Namespace" fullName="TwistedLogik.Nucleus" isExposed="True" xmlns="">
+        <Filter entryType="Class" fullName="TwistedLogik.Nucleus.NucleusStrings" filterName="NucleusStrings" isExposed="False" />
+      </Filter>
+      <Filter entryType="Namespace" fullName="TwistedLogik.Ultraviolet" isExposed="True" xmlns="">
+        <Filter entryType="Class" fullName="TwistedLogik.Ultraviolet.UltravioletStrings" filterName="UltravioletStrings" isExposed="False" />
+      </Filter>
+    </ApiFilter>
+    <VisibleItems>InheritedMembers, InheritedFrameworkMembers, Protected, ProtectedInternalAsProtected</VisibleItems>
+    <TransformComponentArguments>
+      <Argument Key="logoFile" Value="" />
+      <Argument Key="logoHeight" Value="" />
+      <Argument Key="logoWidth" Value="" />
+      <Argument Key="logoAltText" Value="" />
+      <Argument Key="logoPlacement" Value="left" />
+      <Argument Key="logoAlignment" Value="left" />
+      <Argument Key="maxVersionParts" Value="" />
+      <Argument Key="defaultLanguage" Value="cs" />
+    </TransformComponentArguments>
   </PropertyGroup>
   <!-- There are no properties for these groups.  AnyCPU needs to appear in order for Visual Studio to perform
 			 the build.  The others are optional common platform types that may appear. -->

@@ -18,6 +18,7 @@ namespace TwistedLogik.Ultraviolet.Input
         /// <summary>
         /// Initializes a new instance of the <see cref="InputActionCollection"/> class.
         /// </summary>
+        /// <param name="uv">The Ultraviolet context.</param>
         protected InputActionCollection(UltravioletContext uv)
             : base(uv)
         {

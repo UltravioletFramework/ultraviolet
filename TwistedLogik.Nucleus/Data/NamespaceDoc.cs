@@ -3,7 +3,7 @@
 namespace TwistedLogik.Nucleus.Data
 {
     /// <summary>
-    /// The TwistedLogik.Nucleus.Data namespace contains classes useful for loading, 
+    /// The <see cref="TwistedLogik.Nucleus.Data"/> namespace contains classes useful for loading, 
     /// generating, and manipulating application data and content files. 
     /// </summary>
     [CompilerGenerated]

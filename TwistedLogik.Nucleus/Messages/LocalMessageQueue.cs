@@ -8,6 +8,7 @@ namespace TwistedLogik.Nucleus.Messages
     /// <summary>
     /// Represents a message queue which exists entirely within the local process.
     /// </summary>
+    /// <typeparam name="TMessageType">The type of message which is published by the queue.</typeparam>
     [SuppressMessage("Microsoft.Design", "CA1001:TypesThatOwnDisposableFieldsShouldBeDisposable")]
     public partial class LocalMessageQueue<TMessageType> : IMessageQueue<TMessageType> where TMessageType : IEquatable<TMessageType>
     {

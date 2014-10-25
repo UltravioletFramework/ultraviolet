@@ -45,6 +45,7 @@ namespace TwistedLogik.Nucleus.Data
         /// <param name="path">The path of the file that contains the data definitions to load.</param>
         /// <param name="name">The name of the type of object to load.  Corresponds to the names of the elements in the XML file.</param>
         /// <param name="defaultClass">The default class if no default is specified in the file.</param>
+        /// <returns>A collection containing the objects that were loaded.</returns>
         public static IEnumerable<T> LoadDefinitions<T>(ObjectLoaderDataType datatype, String path, String name, Type defaultClass = null) where T : DataObject
         {
             Contract.Require(path, "path");
@@ -96,6 +97,7 @@ namespace TwistedLogik.Nucleus.Data
         /// <param name="xml">The XML document that contains the object definitions to load.</param>
         /// <param name="name">The name of the type of object to load.  Corresponds to the names of the elements in the data file.</param>
         /// <param name="defaultClass">The default class if no default is specified in the file.</param>
+        /// <returns>A collection containing the objects that were loaded.</returns>
         public static IEnumerable<T> LoadDefinitions<T>(XDocument xml, String name, Type defaultClass = null) where T : DataObject
         {
             Contract.Require(xml, "xml");
@@ -116,6 +118,7 @@ namespace TwistedLogik.Nucleus.Data
         /// <param name="json">The JSON document that contains the object definitions to load.</param>
         /// <param name="name">The name of the type of object to load.  Corresponds to the names of the elements in the data file.</param>
         /// <param name="defaultClass">The default class if no default is specified in the file.</param>
+        /// <returns>A collection containing the objects that were loaded.</returns>
         public static IEnumerable<T> LoadDefinitions<T>(JObject json, String name, Type defaultClass = null) where T : DataObject
         {
             Contract.Require(json, "json");

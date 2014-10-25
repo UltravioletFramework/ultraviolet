@@ -3,7 +3,7 @@
 namespace TwistedLogik.Nucleus.Performance
 {
     /// <summary>
-    /// The TwistedLogik.Nucleus.Performance namespace contains types useful for monitoring
+    /// The <see cref="TwistedLogik.Nucleus.Performance"/> namespace contains types useful for monitoring
     /// an application's performance metrics.
     /// </summary>
     [CompilerGenerated]

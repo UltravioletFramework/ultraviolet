@@ -53,13 +53,14 @@ namespace TwistedLogik.Ultraviolet.Graphics
         /// <summary>
         /// Sets the texture's data.
         /// </summary>
+        /// <typeparam name="T">The type of the elements in the array being set as the texture's data.</typeparam>
         /// <param name="data">An array containing the data to set.</param>
         public abstract void SetData<T>(T[] data) where T : struct;
 
         /// <summary>
         /// Sets the texture's data.
         /// </summary>
-        /// <typeparam name="T">The type of the elements of the array to set as the texture's data.</typeparam>
+        /// <typeparam name="T">The type of the elements in the array being set as the texture's data.</typeparam>
         /// <param name="data">An array containing the data to set.</param>
         /// <param name="offset">The index of the first element to set.</param>
         /// <param name="count">The number of elements to set.</param>

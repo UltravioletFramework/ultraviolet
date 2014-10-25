@@ -3,7 +3,7 @@
 namespace TwistedLogik.Nucleus.Messages
 {
     /// <summary>
-    /// The TwistedLogik.Nucleus.Messages namespace contains types that implement the
+    /// The <see cref="TwistedLogik.Nucleus.Messages"/> namespace contains types that implement the
     /// publish-subscribe messaging pattern.
     /// </summary>
     [CompilerGenerated]

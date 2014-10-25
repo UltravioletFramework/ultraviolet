@@ -8,6 +8,8 @@ namespace TwistedLogik.Ultraviolet.Content
     /// <para>Represents a content processor.</para>
     /// <para>Content processors take the data structures created by content importers and transform them into game assets.</para>
     /// </summary>
+    /// <typeparam name="Input">The type of the intermediate object which serves as the content processor's input.</typeparam>
+    /// <typeparam name="Output">The type of content asset which is produced by the content processor.</typeparam>
     public abstract class ContentProcessor<Input, Output> : IContentProcessor
     {
         /// <summary>

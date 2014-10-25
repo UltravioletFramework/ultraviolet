@@ -16,6 +16,7 @@ namespace TwistedLogik.Ultraviolet.Content
         /// <summary>
         /// Initializes a new instance of the <see cref="AssetException"/> class with the specified exception message.
         /// </summary>
+        /// <param name="message">The exception message.</param>
         public AssetException(String message) : base(message) { }
     }
 }

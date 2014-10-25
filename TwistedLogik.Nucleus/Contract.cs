@@ -152,6 +152,7 @@ namespace TwistedLogik.Nucleus
         /// <summary>
         /// Throws an <see cref="InvalidOperationException"/> if the specified condition is true.
         /// </summary>
+        /// <typeparam name="T">The type of exception to throw.</typeparam>
         /// <param name="condition">The condition to evaluate.</param>
         public static void EnsureNot<T>(Boolean condition) where T : Exception, new()
         {

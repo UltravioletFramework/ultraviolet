@@ -366,6 +366,7 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Queues a work item for execution on Ultraviolet's main thread.
         /// </summary>
+        /// <typeparam name="T">The type of value returned by the work item.</typeparam>
         /// <param name="workItem">The work item to execute on Ultraviolet's main thread.</param>
         /// <param name="forceAsync">A value indicating whether to force the work item to be queued and executed asynchronously.
         /// If this value is <c>false</c>, then calls to this method from the main Ultraviolet thread will execute synchronously.</param>
@@ -392,6 +393,7 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Queues a work item for execution on Ultraviolet's main thread.
         /// </summary>
+        /// <typeparam name="T">The type of value returned by the work item.</typeparam>
         /// <param name="workItem">The work item to execute on Ultraviolet's main thread.</param>
         /// <param name="state">An object containing state to pass to the work item.</param>
         /// <param name="forceAsync">A value indicating whether to force the work item to be queued and executed asynchronously.
@@ -456,8 +458,8 @@ namespace TwistedLogik.Ultraviolet
         /// created the Ultraviolet context.
         /// </summary>
         /// <remarks>Many tasks, such as content loading, must take place on the Ultraviolet
-        /// context's main thread.  Such tasks can be queued using the <see cref="M:QueueWorkItem"/> method,
-        /// which will run them at the start of the next update.</remarks>
+        /// context's main thread.  Such tasks can be queued using the <see cref="QueueWorkItem(Action, Boolean)"/> method
+        /// or one of its overloads, which will run the task at the start of the next update.</remarks>
         public Boolean IsExecutingOnCurrentThread
         {
             get 

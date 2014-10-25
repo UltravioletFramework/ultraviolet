@@ -55,6 +55,7 @@ namespace TwistedLogik.Nucleus
         /// </summary>
         /// <param name="byteIndex">The index of the byte to set.</param>
         /// <param name="byteValue">The value to set in the specified byte.</param>
+        /// <returns>A new <see cref="MaskedUInt64"/> with the specified byte set to the specified value.</returns>
         public MaskedUInt64 WithByte(Int32 byteIndex, Byte byteValue)
         {
             var value = Value;

@@ -3,7 +3,7 @@
 namespace TwistedLogik.Nucleus.Xml
 {
     /// <summary>
-    /// The TwistedLogik.Nucleus.Xml contains extension methods for manipulating XML documents.
+    /// The <see cref="TwistedLogik.Nucleus.Xml"/> contains extension methods for manipulating XML documents.
     /// </summary>
     [CompilerGenerated]
     class NamespaceDoc

@@ -47,6 +47,7 @@ namespace TwistedLogik.Ultraviolet.Graphics
         /// <summary>
         /// Creates a new instance of the <see cref="DynamicVertexBuffer"/> class.
         /// </summary>
+        /// <typeparam name="T">The buffer's vertex type.</typeparam>
         /// <param name="vcount">The number of vertices in the buffer.</param>
         /// <returns>The instance of <see cref="DynamicVertexBuffer"/> that was created.</returns>
         public static new DynamicVertexBuffer Create<T>(Int32 vcount) where T : struct, IVertexType

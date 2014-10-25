@@ -13,6 +13,10 @@ namespace TwistedLogik.Ultraviolet.Platform
         /// <summary>
         /// Initializes a new instance of the <see cref="DisplayMode"/> class.
         /// </summary>
+        /// <param name="width">The display mode's width in pixels.</param>
+        /// <param name="height">The display mode's height in pixels.</param>
+        /// <param name="bpp">The display mode's bit depth.</param>
+        /// <param name="refresh">The display mode's refresh rate in hertz.</param>
         public DisplayMode(Int32 width, Int32 height, Int32 bpp, Int32 refresh)
         {
             Contract.EnsureRange(width > 0, "width");

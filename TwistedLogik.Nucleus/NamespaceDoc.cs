@@ -3,7 +3,7 @@
 namespace TwistedLogik.Nucleus
 {
     /// <summary>
-    /// The TwistedLogik.Nucleus namespace contains generally-useful utility classes.
+    /// The <see cref="TwistedLogik.Nucleus"/> namespace contains generally-useful utility classes.
     /// </summary>
     [CompilerGenerated]
     class NamespaceDoc

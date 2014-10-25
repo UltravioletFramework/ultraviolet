@@ -28,6 +28,7 @@ namespace TwistedLogik.Nucleus.Data
         /// Gets a value indicating whether the specified local identifier in this translation
         /// table translates to an object that is valid within the current process.
         /// </summary>
+        /// <typeparam name="T">The type of data object being evaluated.</typeparam>
         /// <param name="localID">The local identifier of the entry within the translation table to validate.</param>
         /// <returns><c>true</c> if the entry is valid; otherwise, <c>false</c>.</returns>
         public Boolean IsValid<T>(UInt16 localID) where T : DataObject
@@ -45,6 +46,7 @@ namespace TwistedLogik.Nucleus.Data
         /// Translates the specified local identifier in this translation table
         /// into the corresponding local identifier within the current process.
         /// </summary>
+        /// <typeparam name="T">The type of data object being evaluated.</typeparam>
         /// <param name="localID">The local identifier to translate.</param>
         /// <returns>The translated local identifier.</returns>
         public UInt16 Translate<T>(UInt16 localID) where T : DataObject

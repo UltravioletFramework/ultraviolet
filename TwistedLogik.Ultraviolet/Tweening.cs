@@ -407,6 +407,7 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Tweens the specified values.
         /// </summary>
+        /// <typeparam name="T">The type of value to tween.</typeparam>
         /// <param name="tweenStart">The start value.</param>
         /// <param name="tweenEnd">The end value.</param>
         /// <param name="fn">The easing function to apply.</param>
@@ -420,6 +421,7 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Performs a linear interpolation between the specified values.
         /// </summary>
+        /// <typeparam name="T">The type of value to tween.</typeparam>
         /// <param name="lerpStart">The start value.</param>
         /// <param name="lerpEnd">The end value.</param>
         /// <param name="t">A value between 0.0 and 1.0 indicating the current position in the interpolation.</param>
@@ -432,6 +434,7 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Tweens the specified values.
         /// </summary>
+        /// <typeparam name="T">The type of value to tween.</typeparam>
         /// <param name="tweenStart">The start value.</param>
         /// <param name="tweenEnd">The end value.</param>
         /// <param name="fn">The easing function to apply.</param>
@@ -445,6 +448,7 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Performs a linear interpolation between the specified values.
         /// </summary>
+        /// <typeparam name="T">The type of value to tween.</typeparam>
         /// <param name="lerpStart">The start value.</param>
         /// <param name="lerpEnd">The end value.</param>
         /// <param name="t">A value between 0.0 and 1.0 indicating the current position in the interpolation.</param>

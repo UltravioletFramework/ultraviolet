@@ -6,6 +6,7 @@ namespace TwistedLogik.Nucleus
     /// <summary>
     /// Represents a comparer which uses a provided function to compare two objects.
     /// </summary>
+    /// <typeparam name="T">The type of object being compared.</typeparam>
     public sealed class FunctorComparer<T> : Comparer<T>
     {
         /// <summary>

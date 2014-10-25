@@ -119,7 +119,7 @@ namespace TwistedLogik.Ultraviolet
         /// Gets the sampler state that is bound to the specified sampler.
         /// </summary>
         /// <param name="sampler">The sampler index.</param>
-        /// <returns></returns>
+        /// <returns>The sampler state that is bound to the specified sampler.</returns>
         SamplerState GetSamplerState(Int32 sampler);
 
         /// <summary>

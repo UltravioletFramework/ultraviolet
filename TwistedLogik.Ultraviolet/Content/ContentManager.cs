@@ -314,6 +314,7 @@ namespace TwistedLogik.Ultraviolet.Content
         /// Preprocesses the specified asset by saving it in a binary format designed for fast deserialization.
         /// If the asset's content importer does not support a binary data format, this method has no effect.
         /// </summary>
+        /// <typeparam name="TOutput">The type of asset to preprocess.</typeparam>
         /// <param name="asset">The asset to preprocess.</param>
         /// <param name="delete">A value indicating whether to delete the original file after preprocessing it.</param>
         /// <returns><c>true</c> if the asset was preprocessed; otherwise, <c>false</c>.</returns>
@@ -330,6 +331,7 @@ namespace TwistedLogik.Ultraviolet.Content
         /// Preprocesses the specified asset by saving it in a binary format designed for fast deserialization.
         /// If the asset's content importer does not support a binary data format, this method has no effect.
         /// </summary>
+        /// <typeparam name="TOutput">The type of asset to preprocess.</typeparam>
         /// <param name="asset">The asset to preprocess.</param>
         /// <param name="delete">A value indicating whether to delete the original file after preprocessing it.</param>
         /// <returns><c>true</c> if the asset was preprocessed; otherwise, <c>false</c>.</returns>

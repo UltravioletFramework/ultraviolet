@@ -87,6 +87,7 @@ namespace TwistedLogik.Ultraviolet.Content
         /// <summary>
         /// Registers a content importer for the specified file extension.
         /// </summary>
+        /// <typeparam name="T">The type of content importer to register.</typeparam>
         /// <param name="extension">The file extension for which to register the importer.</param>
         public void RegisterImporter<T>(String extension) where T : IContentImporter
         {
@@ -107,6 +108,7 @@ namespace TwistedLogik.Ultraviolet.Content
         /// <summary>
         /// Unregisters a content importer from the specified file extension.
         /// </summary>
+        /// <typeparam name="T">The type of content importer to unregister.</typeparam>
         /// <param name="extension">The file extension from which to unregister the importer.</param>
         public void UnregisterImporter<T>(String extension) where T : IContentImporter
         {

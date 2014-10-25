@@ -12,6 +12,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// <summary>
         /// Initializes a new instance of the <see cref="Sprite"/> class.
         /// </summary>
+        /// <param name="animations">A collection containing the sprite's animations, or <c>null</c> if the sprite has no animations.</param>
         public Sprite(IEnumerable<SpriteAnimation> animations = null)
         {
             this.animations = new List<SpriteAnimation>(animations ?? Enumerable.Empty<SpriteAnimation>());
