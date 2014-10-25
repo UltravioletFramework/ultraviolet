@@ -2,7 +2,7 @@
 namespace TwistedLogik.Ultraviolet.Graphics
 {
     /// <summary>
-    /// Represents a factory method which constructs instances of the <see cref="EffectImplementation"/> interface.
+    /// Represents a factory method which constructs instances of the <see cref="EffectImplementation"/> class.
     /// </summary>
     /// <param name="uv">The Ultraviolet context.</param>
     /// <returns>The instance of <see cref="EffectImplementation"/> that was created.</returns>
