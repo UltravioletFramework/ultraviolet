@@ -8,6 +8,7 @@ namespace TwistedLogik.Nucleus.Collections
     /// Represents the method that is called when an observable list performs an operation
     /// that is not related to a specific item.
     /// </summary>
+    /// <typeparam name="T">The type of item contained by the list.</typeparam>
     /// <param name="list">The list that raised the event.</param>
     public delegate void ObservableListEvent<T>(ObservableList<T> list);
 
@@ -15,6 +16,7 @@ namespace TwistedLogik.Nucleus.Collections
     /// Represents a method that is called when an observable list performs an operation
     /// relating to a specific item.
     /// </summary>
+    /// <typeparam name="T">The type of item contained by the list.</typeparam>
     /// <param name="list">The list that raised the event.</param>
     /// <param name="item">The item that is the target of the operation.</param>
     public delegate void ObservableListItemEvent<T>(ObservableList<T> list, T item);
@@ -22,10 +24,11 @@ namespace TwistedLogik.Nucleus.Collections
     /// <summary>
     /// Represents a list which raises events when items are added or removed.
     /// </summary>
+    /// <typeparam name="T">The type of item contained by the list.</typeparam>
     public class ObservableList<T> : IList<T>
     {
         /// <summary>
-        /// Initializes a new instance of the ObservableList class.
+        /// Initializes a new instance of the <see cref="ObservableList{T}"/> class.
         /// </summary>
         public ObservableList()
         {
@@ -33,7 +36,7 @@ namespace TwistedLogik.Nucleus.Collections
         }
 
         /// <summary>
-        /// Initializes a new instance of the ObservableList class with the specified initial capacity.
+        /// Initializes a new instance of the <see cref="ObservableList{T}"/> class with the specified initial capacity.
         /// </summary>
         /// <param name="capacity">The initial capacity of the list.</param>
         public ObservableList(Int32 capacity)
@@ -42,7 +45,7 @@ namespace TwistedLogik.Nucleus.Collections
         }
 
         /// <summary>
-        /// Initializes a new instance of the ObservableList class that contains the elements 
+        /// Initializes a new instance of the <see cref="ObservableList{T}"/> class that contains the elements 
         /// contained by the specified collection.
         /// </summary>
         /// <param name="collection">The collection that contains the elements to copy to this collection.</param>
@@ -93,7 +96,7 @@ namespace TwistedLogik.Nucleus.Collections
         /// <summary>
         /// Sorts the list using the specified comparison.
         /// </summary>
-        /// <param name="comparison">The comparison to use to sort the list.</param>
+        /// <param name="comparison">The <see cref="Comparison{T}"/> to use to sort the list.</param>
         public void Sort(Comparison<T> comparison)
         {
             list.Sort(comparison);
@@ -103,7 +106,7 @@ namespace TwistedLogik.Nucleus.Collections
         /// <summary>
         /// Sorts the list using the specified comparer.
         /// </summary>
-        /// <param name="comparer">The comparer to use to sort the list.</param>
+        /// <param name="comparer">The <see cref="IComparer{T}"/> to use to sort the list.</param>
         public void Sort(IComparer<T> comparer)
         {
             list.Sort(comparer);
@@ -137,7 +140,7 @@ namespace TwistedLogik.Nucleus.Collections
         /// Removes the specified item from the list, if it exists in the list.
         /// </summary>
         /// <param name="item">The item to remove from the list.</param>
-        /// <returns>true if the specified item was removed from the list; otherwise, false.</returns>
+        /// <returns><c>true</c> if the specified item was removed from the list; otherwise, <c>false</c>.</returns>
         public Boolean Remove(T item)
         {
             if (list.Remove(item))
@@ -175,7 +178,7 @@ namespace TwistedLogik.Nucleus.Collections
         /// Gets a value indicating whether the list contains the specified item.
         /// </summary>
         /// <param name="item">The item to evaluate.</param>
-        /// <returns>true if the list contains the specified item; otherwise, false.</returns>
+        /// <returns><c>true</c> if the list contains the specified item; otherwise, <c>false</c>.</returns>
         public Boolean Contains(T item)
         {
             return list.Contains(item);
@@ -302,7 +305,7 @@ namespace TwistedLogik.Nucleus.Collections
         public ObservableListItemEvent<T> ItemRemoved;
 
         /// <summary>
-        /// Raises the Changed event.
+        /// Raises the <see cref="Changed"/> event.
         /// </summary>
         protected virtual void OnChanged()
         {
@@ -314,7 +317,7 @@ namespace TwistedLogik.Nucleus.Collections
         }
 
         /// <summary>
-        /// Raises the Cleared event.
+        /// Raises the <see cref="Cleared"/> event.
         /// </summary>
         protected virtual void OnCleared()
         {
@@ -326,7 +329,7 @@ namespace TwistedLogik.Nucleus.Collections
         }
 
         /// <summary>
-        /// Raises the ItemAdded event.
+        /// Raises the <see cref="ItemAdded"/> event.
         /// </summary>
         /// <param name="item">The item that was added to the list.</param>
         protected virtual void OnItemAdded(T item)
@@ -339,7 +342,7 @@ namespace TwistedLogik.Nucleus.Collections
         }
 
         /// <summary>
-        /// Raises the ItemRemoved event.
+        /// Raises the <see cref="ItemRemoved"/> event.
         /// </summary>
         /// <param name="item">The item that was added to the list.</param>
         protected virtual void OnItemRemoved(T item)

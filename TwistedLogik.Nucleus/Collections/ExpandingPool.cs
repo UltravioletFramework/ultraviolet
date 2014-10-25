@@ -7,10 +7,11 @@ namespace TwistedLogik.Nucleus.Collections
     /// <summary>
     /// Represents a pre-allocated pool of objects which can expand if all of its objects are consumed.
     /// </summary>
+    /// <typeparam name="T">The type of item contained by the pool.</typeparam>
     public class ExpandingPool<T> : IPool<T>
     {
         /// <summary>
-        /// Initializes a new instance of the ExpandingPool class.
+        /// Initializes a new instance of the <see cref="ExpandingPool{T}"/> class.
         /// </summary>
         /// <param name="capacity">The pool's initial capacity.</param>
         /// <param name="allocator">A function which allocates new instances of <typeparamref name="T"/>.</param>
@@ -25,7 +26,7 @@ namespace TwistedLogik.Nucleus.Collections
         }
 
         /// <summary>
-        /// Disposes of all of the objects in the pool, if <typeparamref name="T"/> implements <see cref="System.IDisposable"/>.
+        /// Disposes of all of the objects in the pool, if <typeparamref name="T"/> implements <see cref="IDisposable"/>.
         /// </summary>
         public void Dispose()
         {
@@ -48,7 +49,8 @@ namespace TwistedLogik.Nucleus.Collections
         /// <summary>
         /// Retrieves a scoped object from the pool.
         /// </summary>
-        /// <returns>The scoped object that was retrieved from the pool.</returns>
+        /// <returns>A <see cref="PooledObjectScope{T}"/> that represents the lifetime of 
+        /// the object that was retrieved from the pool.</returns>
         public PooledObjectScope<T> RetrieveScoped()
         {
             return new PooledObjectScope<T>(this, Retrieve());
@@ -91,7 +93,8 @@ namespace TwistedLogik.Nucleus.Collections
         /// <summary>
         /// Retrieves a scoped object from the pool.
         /// </summary>
-        /// <returns>The scoped object that was retrieved from the pool.</returns>
+        /// <returns>A <see cref="PooledObjectScope{T}"/> that represents the lifetime of 
+        /// the object that was retrieved from the pool.</returns>
         PooledObjectScope<Object> IPool.RetrieveScoped()
         {
             return new PooledObjectScope<Object>(this, Retrieve());
@@ -135,7 +138,7 @@ namespace TwistedLogik.Nucleus.Collections
         /// <summary>
         /// Disposes of all of the objects in the pool, if <typeparamref name="T"/> implements <see cref="System.IDisposable"/>.
         /// </summary>
-        /// <param name="disposing">true if the object is being disposed; false if the object is being finalized.</param>
+        /// <param name="disposing"><c>true</c> if the object is being disposed; false if the object is being finalized.</param>
         protected virtual void Dispose(Boolean disposing)
         {
             if (disposing && disposable)

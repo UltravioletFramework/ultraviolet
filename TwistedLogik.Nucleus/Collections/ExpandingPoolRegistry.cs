@@ -11,6 +11,7 @@ namespace TwistedLogik.Nucleus.Collections
         /// <summary>
         /// Creates a pool for the specified type with the specified initial capacity and allocator.
         /// </summary>
+        /// <typeparam name="T">The type of object for which to create an expanding pool.</typeparam>
         /// <param name="capacity">The pool's initial capacity.</param>
         /// <param name="allocator">The pool's instance allocator, if it must be created.</param>
         public void Create<T>(Int32 capacity, Func<T> allocator = null)
@@ -26,6 +27,7 @@ namespace TwistedLogik.Nucleus.Collections
         /// <summary>
         /// Destroys the pool for the specified type.
         /// </summary>
+        /// <typeparam name="T">The type of object for which to destroy an existing pool.</typeparam>
         public void Destroy<T>()
         {
             var pool = Get<T>();
@@ -51,8 +53,8 @@ namespace TwistedLogik.Nucleus.Collections
         /// <summary>
         /// Gets the pool for the specified type.
         /// </summary>
-        /// <param name="type">The type for which to retrieve a pool.</param>
-        /// <returns>The pool for the specified type, or null if no such pool exists.</returns>
+        /// <param name="type">The type of object for which to retrieve a pool.</param>
+        /// <returns>The pool for the specified type, or <c>null</c> if no such pool exists.</returns>
         public IPool Get(Type type)
         {
             Contract.Require(type, "type");
@@ -65,7 +67,8 @@ namespace TwistedLogik.Nucleus.Collections
         /// <summary>
         /// Gets the pool for the specified type.
         /// </summary>
-        /// <returns>The pool for the specified type, or null if no such pool exists.</returns>
+        /// <typeparam name="T">The type of object for which to retrieve a pool.</typeparam>
+        /// <returns>The pool for the specified type, or <c>null</c> if no such pool exists.</returns>
         public IPool<T> Get<T>()
         {
             IPool pool;
@@ -74,9 +77,10 @@ namespace TwistedLogik.Nucleus.Collections
         }
 
         /// <summary>
-        /// Gets the pool for the specified type.  If the pool does not exist, it will be created
+        /// Gets the pool for the specified type. If the pool does not exist, it will be created
         /// with the specified initial capacity and allocator.
         /// </summary>
+        /// <typeparam name="T">The type of object for which to retrieve a pool.</typeparam>
         /// <param name="capacity">The initial capacity of the pool, if it must be created.</param>
         /// <param name="allocator">The pool's instance allocator, if it must be created.</param>
         /// <returns>The pool for the specified type.</returns>

@@ -19,7 +19,7 @@ namespace TwistedLogik.Nucleus.Data
     public static class ObjectResolver
     {
         /// <summary>
-        /// Initializes the ObjectResolver type.
+        /// Initializes the <see cref="ObjectResolver"/> type.
         /// </summary>
         static ObjectResolver()
         {
@@ -29,6 +29,7 @@ namespace TwistedLogik.Nucleus.Data
         /// <summary>
         /// Registers a custom value resolver with the object resolution system.
         /// </summary>
+        /// <typeparam name="T">The type for which to register a value resolver.</typeparam>
         /// <param name="resolver">The custom value resolver to register.</param>
         public static void RegisterValueResolver<T>(CustomObjectResolver resolver)
         {

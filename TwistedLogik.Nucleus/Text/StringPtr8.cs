@@ -4,14 +4,14 @@ using System.Security;
 namespace TwistedLogik.Nucleus.Text
 {
     /// <summary>
-    /// Represent a pointer to an unmanaged string where each character is 8 bytes.
+    /// Represent a pointer to an unmanaged string where each character is 8 bits.
     /// </summary>
     public struct StringPtr8 : IEquatable<StringPtr8>
     {
         /// <summary>
-        /// Initializes a new instance of the StringPtr8 structure from the specified null-terminated string.
+        /// Initializes a new instance of the <see cref="StringPtr8"/> structure from the specified <c>null</c>-terminated string.
         /// </summary>
-        /// <param name="ptr">A pointer to the null-terminated string data.</param>
+        /// <param name="ptr">A pointer to the <c>null</c>-terminated string data.</param>
         [SecurityCritical]
         public StringPtr8(IntPtr ptr)
         {
@@ -29,7 +29,7 @@ namespace TwistedLogik.Nucleus.Text
         }
 
         /// <summary>
-        /// Initializes a new instance of the StringPtr8 structure.
+        /// Initializes a new instance of the <see cref="StringPtr8"/> structure.
         /// </summary>
         /// <param name="ptr">A pointer to the string data.</param>
         /// <param name="length">The number of characters in the string data.</param>
@@ -41,7 +41,7 @@ namespace TwistedLogik.Nucleus.Text
         }
 
         /// <summary>
-        /// Converts the string pointer to an instance of <see cref="System.IntPtr"/>.
+        /// Converts the string pointer to an instance of <see cref="IntPtr"/>.
         /// </summary>
         /// <param name="ptr">The string pointer to convert.</param>
         /// <returns>The converted pointer.</returns>
@@ -56,7 +56,7 @@ namespace TwistedLogik.Nucleus.Text
         /// </summary>
         /// <param name="ptr1">The first object to compare.</param>
         /// <param name="ptr2">The second object to compare.</param>
-        /// <returns>true if the specified objects are equal; otherwise, false.</returns>
+        /// <returns><c>true</c> if the specified objects are equal; otherwise, <c>false</c>.</returns>
         [SecuritySafeCritical]
         public static Boolean operator ==(StringPtr8 ptr1, StringPtr8 ptr2)
         {
@@ -68,7 +68,7 @@ namespace TwistedLogik.Nucleus.Text
         /// </summary>
         /// <param name="ptr1">The first object to compare.</param>
         /// <param name="ptr2">The second object to compare.</param>
-        /// <returns>true if the specified objects are unequal; otherwise, false.</returns>
+        /// <returns><c>true</c> if the specified objects are unequal; otherwise, <c>false</c>.</returns>
         [SecuritySafeCritical]
         public static Boolean operator !=(StringPtr8 ptr1, StringPtr8 ptr2)
         {
@@ -105,7 +105,7 @@ namespace TwistedLogik.Nucleus.Text
         /// Determines whether the specified object is equal to this object.
         /// </summary>
         /// <param name="obj">The object to compare to this object.</param>
-        /// <returns>true if this object is equal to the specified object; otherwise, false.</returns>
+        /// <returns><c>true</c> ifthis object is equal to the specified object; otherwise, <c>false</c>.</returns>
         [SecuritySafeCritical]
         public override Boolean Equals(Object obj)
         {
@@ -116,7 +116,7 @@ namespace TwistedLogik.Nucleus.Text
         /// Determines whether the specified object is equal to this object.
         /// </summary>
         /// <param name="obj">The object to compare to this object.</param>
-        /// <returns>true if this object is equal to the specified object; otherwise, false.</returns>
+        /// <returns><c>true</c> ifthis object is equal to the specified object; otherwise, <c>false</c>.</returns>
         [SecuritySafeCritical]
         public Boolean Equals(StringPtr8 obj)
         {
@@ -135,7 +135,7 @@ namespace TwistedLogik.Nucleus.Text
         }
 
         /// <summary>
-        /// Gets a null string pointer.
+        /// Gets a <c>null</c> string pointer.
         /// </summary>
         public static StringPtr8 Zero
         {

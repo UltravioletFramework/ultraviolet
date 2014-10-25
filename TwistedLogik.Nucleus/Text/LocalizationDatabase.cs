@@ -14,7 +14,7 @@ namespace TwistedLogik.Nucleus.Text
         /// Gets a value indicating whether the database contains entries for the specified culture.
         /// </summary>
         /// <param name="culture">The culture to evaluate.</param>
-        /// <returns>true if the database contains entries for the specified culture; otherwise, false.</returns>
+        /// <returns><c>true</c> if the database contains entries for the specified culture; otherwise, <c>false</c>.</returns>
         public Boolean IsCultureLoaded(String culture)
         {
             Contract.RequireNotEmpty(culture, "culture");
@@ -23,10 +23,10 @@ namespace TwistedLogik.Nucleus.Text
         }
 
         /// <summary>
-        /// Loads localization data from the specified stream.  Loaded strings
+        /// Loads localization data from the specified stream. Loaded strings
         /// will overwrite any previously loaded strings that share the same key.
         /// </summary>
-        /// <param name="stream">The stream from which to load localization data.</param>
+        /// <param name="stream">The <see cref="Stream"/> from which to load localization data.</param>
         public void LoadFromStream(Stream stream)
         {
             Contract.Require(stream, "stream");
@@ -50,7 +50,7 @@ namespace TwistedLogik.Nucleus.Text
         }
 
         /// <summary>
-        /// Loads localization data from the specified file.  Loaded strings
+        /// Loads localization data from the specified file. Loaded strings
         /// will overwrite any previously loaded strings that share the same key.
         /// </summary>
         /// <param name="paths">An array containing the parts of the path to the file from which to load localization data.</param>
@@ -63,7 +63,7 @@ namespace TwistedLogik.Nucleus.Text
         }
 
         /// <summary>
-        /// Loads localization data from the specified file.  Loaded strings
+        /// Loads localization data from the specified file. Loaded strings
         /// will overwrite any previously loaded strings that share the same key.
         /// </summary>
         /// <param name="path">The path to the file from which to load localization data.</param>
@@ -78,7 +78,7 @@ namespace TwistedLogik.Nucleus.Text
         }
 
         /// <summary>
-        /// Loads localization data from any XML files found in the specified directory.  Loaded strings
+        /// Loads localization data from any XML files found in the specified directory. Loaded strings
         /// will overwrite any previously loaded strings that share the same key.
         /// </summary>
         /// <param name="paths">An array containing the parts of the path to the directory from which to load localization data.</param>
@@ -91,7 +91,7 @@ namespace TwistedLogik.Nucleus.Text
         }
 
         /// <summary>
-        /// Loads localization data from any XML files found in the specified directory.  Loaded strings
+        /// Loads localization data from any XML files found in the specified directory. Loaded strings
         /// will overwrite any previously loaded strings that share the same key.
         /// </summary>
         /// <param name="path">The path to the directory from which to load localization data.</param>
@@ -148,7 +148,7 @@ namespace TwistedLogik.Nucleus.Text
         /// Gets a value indicating whether the database contains a string with the specified key for the current culture.
         /// </summary>
         /// <param name="key">The localization key for which to search.</param>
-        /// <returns>true if the database contains a string with the specified key for the current culture; otherwise, false.</returns>
+        /// <returns><c>true</c> if the database contains a string with the specified key for the current culture; otherwise, <c>false</c>.</returns>
         public Boolean Contains(String key)
         {
             Contract.RequireNotEmpty(key, "key");
@@ -162,7 +162,7 @@ namespace TwistedLogik.Nucleus.Text
         /// </summary>
         /// <param name="culture">The culture to evaluate.</param>
         /// <param name="key">The localization key for which to search.</param>
-        /// <returns>true if the database contains a string with the specified key for the specified culture; otherwise, false.</returns>
+        /// <returns><c>true</c> if the database contains a string with the specified key for the specified culture; otherwise, <c>false</c>.</returns>
         public Boolean Contains(String culture, String key)
         {
             Contract.RequireNotEmpty(key, "key");

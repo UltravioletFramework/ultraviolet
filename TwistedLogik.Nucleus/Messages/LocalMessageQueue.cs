@@ -12,7 +12,7 @@ namespace TwistedLogik.Nucleus.Messages
     public partial class LocalMessageQueue<TMessageType> : IMessageQueue<TMessageType> where TMessageType : IEquatable<TMessageType>
     {
         /// <summary>
-        /// Initializes a new instance of the LocalMessageQueue class with the default capacity.
+        /// Initializes a new instance of the <see cref="LocalMessageQueue{TMessageType}"/> class with the default capacity.
         /// </summary>
         public LocalMessageQueue()
             : this(4)
@@ -21,7 +21,7 @@ namespace TwistedLogik.Nucleus.Messages
         }
 
         /// <summary>
-        /// Initializes a new instance of the LocalMessageQueue class with the specified initial capacity.
+        /// Initializes a new instance of the <see cref="LocalMessageQueue{TMessageType}"/> class with the specified initial capacity.
         /// </summary>
         /// <param name="capacity">The initial capacity of the message queue's pools.</param>
         public LocalMessageQueue(Int32 capacity)
@@ -35,13 +35,14 @@ namespace TwistedLogik.Nucleus.Messages
         /// The instance may be retrieved from a pool; if so, it will be returned to the pool 
         /// once it has been published.
         /// </summary>
+        /// <typeparam name="TMessageData">The type of message data object to create.</typeparam>
         /// <returns>The instance that was created or retrieved.</returns>
-        public T CreateMessageData<T>() where T : MessageData, new()
+        public TMessageData CreateMessageData<TMessageData>() where TMessageData : MessageData, new()
         {
-            T data;
+            TMessageData data;
             lock (messageDataPools)
             {
-                data = messageDataPools.Get<T>(1).Retrieve();
+                data = messageDataPools.Get<TMessageData>(1).Retrieve();
             }
             data.Reset();
             return data;

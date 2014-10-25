@@ -1,16 +1,18 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace TwistedLogik.Nucleus.Collections
 {
     /// <summary>
-    /// Represents a binary heap collection.
+    /// Represents a binary heap.
     /// Based on code made available at http://content.gpwiki.org/index.php/C_sharp:BinaryHeapOfT
     /// </summary>
+    /// <typeparam name="T">The type of item contained by the heap.</typeparam>
     public sealed partial class BinaryHeap<T> : ICollection<T>
     {
         /// <summary>
-        /// Initializes a new instance of the BinaryHeap class.
+        /// Initializes a new instance of the <see cref="BinaryHeap{T}"/> class.
         /// </summary>
         public BinaryHeap()
             : this(null, 4)
@@ -19,7 +21,7 @@ namespace TwistedLogik.Nucleus.Collections
         }
         
         /// <summary>
-        /// Initializes a new instance of the BinaryHeap class with the specified initial capacity.
+        /// Initializes a new instance of the <see cref="BinaryHeap{T}"/> class with the specified initial capacity.
         /// </summary>
         /// <param name="capacity">The initial capacity of the binary heap.</param>
         public BinaryHeap(Int32 capacity)
@@ -29,9 +31,9 @@ namespace TwistedLogik.Nucleus.Collections
         }
 
         /// <summary>
-        /// Initializes a new instance of the BinaryHeap class.
+        /// Initializes a new instance of the <see cref="BinaryHeap{T}"/> class.
         /// </summary>
-        /// <param name="comparer">A comparer to use to compare items in the heap.</param>
+        /// <param name="comparer">An <see cref="IComparer{T}"/> to use to compare items in the heap.</param>
         public BinaryHeap(IComparer<T> comparer)
             : this(comparer, 4)
         {
@@ -39,9 +41,9 @@ namespace TwistedLogik.Nucleus.Collections
         }
 
         /// <summary>
-        /// Initializes a new instance of the BinaryHeap class with the specified initial capacity.
+        /// Initializes a new instance of the <see cref="BinaryHeap{T}"/> class with the specified initial capacity.
         /// </summary>
-        /// <param name="comparer">A comparer to use to compare items in the heap.</param>
+        /// <param name="comparer">An <see cref="IComparer{T}"/> to use to compare items in the heap.</param>
         /// <param name="capacity">The initial capacity of the binary heap.</param>
         public BinaryHeap(IComparer<T> comparer, Int32 capacity)
         {
@@ -148,7 +150,7 @@ namespace TwistedLogik.Nucleus.Collections
         /// Removes an item from the binary heap.
         /// </summary>
         /// <param name="item">The item to be removed.</param>
-        /// <returns>true if the item was removed; otherwise, false.</returns>
+        /// <returns><c>true</c> if the item was removed; otherwise, <c>false</c>.</returns>
         public bool Remove(T item)
         {
             EnsureSort();
@@ -167,7 +169,7 @@ namespace TwistedLogik.Nucleus.Collections
         /// Gets a value indicating whether the heap contains the specified value.
         /// </summary>
         /// <param name="item">The value for which to search the heap.</param>
-        /// <returns>true if the heap contains the specified value; otherwise, false.</returns>
+        /// <returns><c>true</c> if the heap contains the specified value; otherwise, <c>false</c>.</returns>
         public bool Contains(T item)
         {
             EnsureSort();
@@ -220,7 +222,7 @@ namespace TwistedLogik.Nucleus.Collections
         /// Gets an enumerator for the binary heap.
         /// </summary>
         /// <returns>An enumerator for the binary heap.</returns>
-        IEnumerator<T> System.Collections.Generic.IEnumerable<T>.GetEnumerator()
+        IEnumerator<T> IEnumerable<T>.GetEnumerator()
         {
             return GetEnumerator();
         }
@@ -229,7 +231,7 @@ namespace TwistedLogik.Nucleus.Collections
         /// Gets an enumerator for the binary heap.
         /// </summary>
         /// <returns>An enumerator for the binary heap.</returns>
-        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
         }

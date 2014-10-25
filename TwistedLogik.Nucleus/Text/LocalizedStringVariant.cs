@@ -9,7 +9,7 @@ namespace TwistedLogik.Nucleus.Text
     public class LocalizedStringVariant
     {
         /// <summary>
-        /// Initializes a new instance of the LocalizedStringVariant class.
+        /// Initializes a new instance of the <see cref="LocalizedStringVariant"/> class.
         /// </summary>
         /// <param name="parent">The string variant's parent string.</param>
         /// <param name="group">The name of the string variant's variant group.</param>
@@ -58,7 +58,7 @@ namespace TwistedLogik.Nucleus.Text
         /// Gets a value indicating whether the string variant has the specified property.
         /// </summary>
         /// <param name="prop">The name of the property to evaluate.</param>
-        /// <returns>true if the string variant has the specified property; otherwise, false.</returns>
+        /// <returns><c>true</c> if the string variant has the specified property; otherwise, <c>false</c>.</returns>
         public Boolean HasProperty(String prop)
         {
             return properties.Contains(prop) || parent.HasProperty(prop);
@@ -68,7 +68,7 @@ namespace TwistedLogik.Nucleus.Text
         /// Gets a value indicating whether the string variant has the specified property.
         /// </summary>
         /// <param name="prop">The name of the property to evaluate.</param>
-        /// <returns>true if the string variant has the specified property; otherwise, false.</returns>
+        /// <returns><c>true</c> if the string variant has the specified property; otherwise, <c>false</c>.</returns>
         public Boolean HasProperty(StringSegment prop)
         {
             foreach (var property in properties)
@@ -83,7 +83,7 @@ namespace TwistedLogik.Nucleus.Text
         /// Gets a value indicating whether the string variant has the specified property.
         /// </summary>
         /// <param name="prop">The name of the property to evaluate.</param>
-        /// <returns>true if the string variant has the specified property; otherwise, false.</returns>
+        /// <returns><c>true</c> if the string variant has the specified property; otherwise, <c>false</c>.</returns>
         public Boolean HasPropertyRef(ref StringSegment prop)
         {
             foreach (var property in properties)

@@ -8,7 +8,7 @@ namespace TwistedLogik.Nucleus.Text
     public struct LocalizationMatchEvaluatorData
     {
         /// <summary>
-        /// Initializes a new instance of the LocalizationMatchEvaluatorData structure.
+        /// Initializes a new instance of the <see cref="LocalizationMatchEvaluatorData"/> structure.
         /// </summary>
         /// <param name="name">The match evaluator name.</param>
         /// <param name="evaluator">The match evaluator.</param>

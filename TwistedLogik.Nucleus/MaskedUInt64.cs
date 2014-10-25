@@ -5,6 +5,10 @@ namespace TwistedLogik.Nucleus
     /// <summary>
     /// Represents a masked 64-bit integer.
     /// </summary>
+    /// <remarks>Masking allows an integer to be stored, on average, with fewer than 8 bytes of memory. To do this, the integer value
+    /// is treated as a sequence of bytes, and any bytes which have a value of zero are omitted from the output stream. Masking requires
+    /// the integer value to be prepended with an additional byte of data, the masking byte, which tracks which integer bytes have non-zero
+    /// values; this means that the size of a masked 64-bit integer is 2 bytes in the best case and 9 bytes in the worst case.</remarks>
     [CLSCompliant(false)]
     public struct MaskedUInt64
     {

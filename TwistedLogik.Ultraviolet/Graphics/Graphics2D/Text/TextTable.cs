@@ -224,9 +224,9 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             get { return viewModel; }
             set 
             {
-                UnsubscribeFromChangeEvents(viewModel as INotifyChanged);
+                UnsubscribeFromChangeEvents(viewModel as INotifyPropertyChanged);
                 viewModel = value;
-                SubscribeToChangeEvents(viewModel as INotifyChanged);
+                SubscribeToChangeEvents(viewModel as INotifyPropertyChanged);
                 Refresh();
             }
         }
@@ -258,7 +258,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// Unsubscribes from Change events on the specified object.
         /// </summary>
         /// <param name="inc">The object on which to unsubscribe from events.</param>
-        private void UnsubscribeFromChangeEvents(INotifyChanged inc)
+        private void UnsubscribeFromChangeEvents(INotifyPropertyChanged inc)
         {
             if (inc == null)
                 return;
@@ -270,7 +270,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// Subscribes to Change events on the specified object.
         /// </summary>
         /// <param name="inc">The object on which to subscribe to events.</param>
-        private void SubscribeToChangeEvents(INotifyChanged inc)
+        private void SubscribeToChangeEvents(INotifyPropertyChanged inc)
         {
             if (inc == null)
                 return;

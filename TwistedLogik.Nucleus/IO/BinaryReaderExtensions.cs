@@ -6,14 +6,15 @@ using TwistedLogik.Nucleus.Data;
 namespace TwistedLogik.Nucleus.IO
 {
     /// <summary>
-    /// Contains extension methods for the BinaryReader class.
+    /// Contains extension methods for the <see cref="BinaryReader"/> class.
     /// </summary>
     public static class BinaryReaderExtensions
     {
         /// <summary>
         /// Reads a list from the stream.
         /// </summary>
-        /// <param name="reader">The binary reader with which to read the list.</param>
+        /// <typeparam name="T">The type of items in the list being read.</typeparam>
+        /// <param name="reader">The <see cref="BinaryReader"/> with which to read the list.</param>
         /// <param name="list">The list to write.</param>
         /// <param name="method">A function which selects the method with which to read the list's items.</param>
         public static void ReadList<T>(this BinaryReader reader, IList<T> list, Func<BinaryReader, Func<T>> method)
@@ -36,9 +37,9 @@ namespace TwistedLogik.Nucleus.IO
         }
 
         /// <summary>
-        /// Reads a nullable 16-bit integer from the stream.
+        /// Reads a <c>null</c>able 16-bit integer from the stream.
         /// </summary>
-        /// <param name="reader">The binary reader from which to read the value.</param>
+        /// <param name="reader">The <see cref="BinaryReader"/> from which to read the value.</param>
         /// <returns>The value that was read.</returns>
         public static Int16? ReadNullableInt16(this BinaryReader reader)
         {
@@ -51,9 +52,9 @@ namespace TwistedLogik.Nucleus.IO
         }
 
         /// <summary>
-        /// Reads a nullable 32-bit integer from the stream.
+        /// Reads a <c>null</c>able 32-bit integer from the stream.
         /// </summary>
-        /// <param name="reader">The binary reader from which to read the value.</param>
+        /// <param name="reader">The <see cref="BinaryReader"/> from which to read the value.</param>
         /// <returns>The value that was read.</returns>
         public static Int32? ReadNullableInt32(this BinaryReader reader)
         {
@@ -66,9 +67,9 @@ namespace TwistedLogik.Nucleus.IO
         }
 
         /// <summary>
-        /// Reads a nullable 64-bit integer from the stream.
+        /// Reads a <c>null</c>able 64-bit integer from the stream.
         /// </summary>
-        /// <param name="reader">The binary reader from which to read the value.</param>
+        /// <param name="reader">The <see cref="BinaryReader"/> from which to read the value.</param>
         /// <returns>The value that was read.</returns>
         public static Int64? ReadNullableInt64(this BinaryReader reader)
         {
@@ -81,9 +82,9 @@ namespace TwistedLogik.Nucleus.IO
         }
 
         /// <summary>
-        /// Reads a nullable unsigned 16-bit integer from the stream.
+        /// Reads a <c>null</c>able unsigned 16-bit integer from the stream.
         /// </summary>
-        /// <param name="reader">The binary reader from which to read the value.</param>
+        /// <param name="reader">The <see cref="BinaryReader"/> from which to read the value.</param>
         /// <returns>The value that was read.</returns>
         [CLSCompliant(false)]
         public static UInt16? ReadNullableUInt16(this BinaryReader reader)
@@ -97,9 +98,9 @@ namespace TwistedLogik.Nucleus.IO
         }
 
         /// <summary>
-        /// Reads a nullable unsigned 32-bit integer from the stream.
+        /// Reads a <c>null</c>able unsigned 32-bit integer from the stream.
         /// </summary>
-        /// <param name="reader">The binary reader from which to read the value.</param>
+        /// <param name="reader">The <see cref="BinaryReader"/> from which to read the value.</param>
         /// <returns>The value that was read.</returns>
         [CLSCompliant(false)]
         public static UInt32? ReadNullableUInt32(this BinaryReader reader)
@@ -113,9 +114,9 @@ namespace TwistedLogik.Nucleus.IO
         }
 
         /// <summary>
-        /// Reads a nullable unsigned 64-bit integer from the stream.
+        /// Reads a <c>null</c>able unsigned 64-bit integer from the stream.
         /// </summary>
-        /// <param name="reader">The binary reader from which to read the value.</param>
+        /// <param name="reader">The <see cref="BinaryReader"/> from which to read the value.</param>
         /// <returns>The value that was read.</returns>
         [CLSCompliant(false)]
         public static UInt64? ReadNullableUInt64(this BinaryReader reader)
@@ -129,9 +130,9 @@ namespace TwistedLogik.Nucleus.IO
         }
 
         /// <summary>
-        /// Reads a nullable single-precision floating point value from the stream.
+        /// Reads a <c>null</c>able single-precision floating point value from the stream.
         /// </summary>
-        /// <param name="reader">The binary reader from which to read the value.</param>
+        /// <param name="reader">The <see cref="BinaryReader"/> from which to read the value.</param>
         /// <returns>The value that was read.</returns>
         public static Single? ReadNullableSingle(this BinaryReader reader)
         {
@@ -144,9 +145,9 @@ namespace TwistedLogik.Nucleus.IO
         }
 
         /// <summary>
-        /// Reads a nullable double-precision floating point value from the stream.
+        /// Reads a <c>null</c>able double-precision floating point value from the stream.
         /// </summary>
-        /// <param name="reader">The binary reader from which to read the value.</param>
+        /// <param name="reader">The <see cref="BinaryReader"/> from which to read the value.</param>
         /// <returns>The value that was read.</returns>
         public static Double? ReadNullableDouble(this BinaryReader reader)
         {
@@ -159,19 +160,19 @@ namespace TwistedLogik.Nucleus.IO
         }
 
         /// <summary>
-        /// Reads a GUID from the stream.
+        /// Reads a <see cref="Guid"/> from the stream.
         /// </summary>
-        /// <param name="reader">The binary reader from which to read the GUID.</param>
-        /// <returns>The GUID that was read from the stream.</returns>
+        /// <param name="reader">The <see cref="BinaryReader"/> from which to read the <see cref="Guid"/>.</param>
+        /// <returns>The <see cref="Guid"/> that was read from the stream.</returns>
         public static Guid ReadGuid(this BinaryReader reader)
         {
             return new Guid(reader.ReadBytes(16));
         }
 
         /// <summary>
-        /// Reads a nullable GUID from the stream.
+        /// Reads a <c>null</c>able GUID from the stream.
         /// </summary>
-        /// <param name="reader">The binary reader from which to read the GUID.</param>
+        /// <param name="reader">The <see cref="BinaryReader"/> from which to read the GUID.</param>
         /// <returns>The GUID that was read from the stream.</returns>
         public static Guid? ReadNullableGuid(this BinaryReader reader)
         {
@@ -184,10 +185,10 @@ namespace TwistedLogik.Nucleus.IO
         }
 
         /// <summary>
-        /// Reads a resolved Nucleus Data Object reference from the stream.
+        /// Reads a resolved reference to a Nucleus data object from the stream.
         /// </summary>
-        /// <param name="reader">The binary reader from which to read the data object reference.</param>
-        /// <returns>The data object reference that was read from the stream.</returns>
+        /// <param name="reader">The <see cref="BinaryReader"/> from which to read the data object reference.</param>
+        /// <returns>The <see cref="ResolvedDataObjectReference"/> that was read from the stream.</returns>
         public static ResolvedDataObjectReference ReadResolvedDataObjectReference(this BinaryReader reader)
         {
             var value = reader.ReadGuid();
@@ -201,10 +202,10 @@ namespace TwistedLogik.Nucleus.IO
         }
 
         /// <summary>
-        /// Reads a nullable resolved Nucleus Data Object reference from the stream.
+        /// Reads a <c>null</c>able resolved reference to a Nucleus data object from the stream.
         /// </summary>
-        /// <param name="reader">The binary reader from which to read the data object reference.</param>
-        /// <returns>The data object reference that was read from the stream.</returns>
+        /// <param name="reader">The <see cref="BinaryReader"/> from which to read the data object reference.</param>
+        /// <returns>The <see cref="Nullable{ResolvedDataObjectReference}"/> that was read from the stream.</returns>
         public static ResolvedDataObjectReference? ReadNullableResolvedDataObjectReference(this BinaryReader reader)
         {
             var hasValue = reader.ReadBoolean();

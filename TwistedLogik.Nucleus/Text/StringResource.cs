@@ -8,7 +8,7 @@ namespace TwistedLogik.Nucleus.Text
     public sealed class StringResource
     {
         /// <summary>
-        /// Initializes a new instance of the StringResource class.
+        /// Initializes a new instance of the <see cref="StringResource"/> class.
         /// </summary>
         /// <param name="key">The string's localization key.</param>
         public StringResource(String key)
@@ -18,7 +18,7 @@ namespace TwistedLogik.Nucleus.Text
         }
 
         /// <summary>
-        /// Initializes a new instance of the StringResource class.
+        /// Initializes a new instance of the <see cref="StringResource"/> class.
         /// </summary>
         /// <param name="database">The localization database that contains the string resource.</param>
         /// <param name="key">The string's localization key.</param>
@@ -29,26 +29,30 @@ namespace TwistedLogik.Nucleus.Text
         }
 
         /// <summary>
-        /// Implicitly converts a .NET string to an Ultraviolet string resource.
+        /// Implicitly converts a .NET string to a string resource.
         /// </summary>
+        /// <param name="key">The <see cref="String"/> to convert.</param>
+        /// <returns>The converted <see cref="StringResource"/>.</returns>
         public static implicit operator StringResource(String key)
         {
             return new StringResource(key);
         }
 
         /// <summary>
-        /// Implicitly converts an Ultraviolet string resource to a .NET string.
+        /// Implicitly converts a string resource resource to a .NET string.
         /// </summary>
-        public static implicit operator String(StringResource msg)
+        /// <param name="resource">The <see cref="StringResource"/> to convert.</param>
+        /// <returns>The converted <see cref="String"/>.</returns>
+        public static implicit operator String(StringResource resource)
         {
-            return (msg == null) ? null : msg.Value;
+            return (resource == null) ? null : resource.Value;
         }
 
         /// <summary>
-        /// Formats the exception message with the specified arguments.
+        /// Formats the string with the specified arguments.
         /// </summary>
-        /// <param name="args">The arguments with which to format the exception message.</param>
-        /// <returns>The formatted exception message.</returns>
+        /// <param name="args">The arguments with which to format the string.</param>
+        /// <returns>The formatted string.</returns>
         public String Format(params Object[] args)
         {
             return String.Format(Value, args);

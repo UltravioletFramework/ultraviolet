@@ -14,7 +14,7 @@ namespace TwistedLogik.Nucleus.Text
         /// </summary>
         /// <param name="key">The key for which to retrieve a value.</param>
         /// <param name="value">The value that was retrieved for the specified key.</param>
-        /// <returns>true if the value was retrieved; otherwise, false.</returns>
+        /// <returns><c>true</c> if the value was retrieved; otherwise, <c>false</c>.</returns>
         public Boolean TryGetValue(String key, out LocalizedStringVariant value)
         {
             return variants.TryGetValue(key, out value);

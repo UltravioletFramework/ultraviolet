@@ -11,7 +11,7 @@ namespace TwistedLogik.Nucleus.Performance
     public static partial class GCDebug
     {
         /// <summary>
-        /// Initializes the GCDebug type.
+        /// Initializes the <see cref="GCDebug"/> type.
         /// </summary>
         static GCDebug()
         {
@@ -79,7 +79,7 @@ namespace TwistedLogik.Nucleus.Performance
         /// <summary>
         /// Gets a value indicating whether allocation logging is currently active.
         /// </summary>
-        /// <returns>true if allocation logging is currently active; otherwise, false.</returns>
+        /// <returns><c>true</c> if allocation logging is currently active; otherwise, <c>false</c>.</returns>
         public static Boolean GetAllocationLoggingActive()
         {
             if (!isProfilerAttached)
@@ -104,7 +104,7 @@ namespace TwistedLogik.Nucleus.Performance
         /// <summary>
         /// Gets a value indicating whether call logging is currently active.
         /// </summary>
-        /// <returns>true if call logging is currently active; otherwise, false.</returns>
+        /// <returns><c>true</c> if call logging is currently active; otherwise, <c>false</c>.</returns>
         public static Boolean GetCallLoggingActive()
         {
             if (!isProfilerAttached)

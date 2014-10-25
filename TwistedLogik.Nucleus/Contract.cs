@@ -6,12 +6,12 @@ using TwistedLogik.Nucleus.Text;
 namespace TwistedLogik.Nucleus
 {
     /// <summary>
-    /// Contains methods for managing code contracts.
+    /// Contains methods for enforcing code contracts and establishing invariants.
     /// </summary>
     public static class Contract
     {
         /// <summary>
-        /// Throws an ArgumentOutOfRangeException if the specified condition is false.
+        /// Throws an <see cref="ArgumentOutOfRangeException"/> if the specified condition is false.
         /// </summary>
         /// <param name="condition">The condition to evaluate.</param>
         /// <param name="message">An optional message to pass to the thrown exception.</param>
@@ -22,7 +22,7 @@ namespace TwistedLogik.Nucleus
         }
 
         /// <summary>
-        /// Throws an ArgumentOutOfRangeException if the specified condition is false.
+        /// Throws an <see cref="ArgumentOutOfRangeException"/> if the specified condition is false.
         /// </summary>
         /// <param name="condition">The condition to evaluate.</param>
         /// <param name="message">An optional message to pass to the thrown exception.</param>
@@ -33,7 +33,7 @@ namespace TwistedLogik.Nucleus
         }
 
         /// <summary>
-        /// Throws an exception if the specified condition is false.
+        /// Throws an <see cref="InvalidOperationException"/> if the specified condition is false.
         /// </summary>
         /// <param name="condition">The condition to evaluate.</param>
         /// <param name="message">An optional message to pass to the thrown exception.</param>
@@ -50,7 +50,7 @@ namespace TwistedLogik.Nucleus
         }
 
         /// <summary>
-        /// Throws an exception if the specified condition is false.
+        /// Throws an <see cref="InvalidOperationException"/> if the specified condition is false.
         /// </summary>
         /// <param name="condition">The condition to evaluate.</param>
         /// <param name="message">An optional message to pass to the thrown exception.</param>
@@ -69,6 +69,7 @@ namespace TwistedLogik.Nucleus
         /// <summary>
         /// Throws an exception if the specified condition is false.
         /// </summary>
+        /// <typeparam name="T">The type of exception to throw.</typeparam>
         /// <param name="condition">The condition to evaluate.</param>
         public static void Ensure<T>(Boolean condition) where T : Exception, new()
         {
@@ -81,6 +82,7 @@ namespace TwistedLogik.Nucleus
         /// <summary>
         /// Throws an exception if the specified condition is false.
         /// </summary>
+        /// <typeparam name="T">The type of exception to throw.</typeparam>
         /// <param name="condition">The condition to evaluate.</param>
         /// <param name="message">An optional message to pass to the thrown exception.</param>
         public static void Ensure<T>(Boolean condition, String message) where T : Exception, new()
@@ -98,6 +100,7 @@ namespace TwistedLogik.Nucleus
         /// <summary>
         /// Throws an exception if the specified condition is false.
         /// </summary>
+        /// <typeparam name="T">The type of exception to throw.</typeparam>
         /// <param name="condition">The condition to evaluate.</param>
         /// <param name="message">An optional message to pass to the thrown exception.</param>
         public static void Ensure<T>(Boolean condition, StringResource message) where T : Exception, new()
@@ -113,7 +116,7 @@ namespace TwistedLogik.Nucleus
         }
 
         /// <summary>
-        /// Throws an exception if the specified condition is true.
+        /// Throws an <see cref="InvalidOperationException"/> if the specified condition is true.
         /// </summary>
         /// <param name="condition">The condition to evaluate.</param>
         /// <param name="message">An optional message to pass to the thrown exception.</param>
@@ -130,7 +133,7 @@ namespace TwistedLogik.Nucleus
         }
 
         /// <summary>
-        /// Throws an exception if the specified condition is true.
+        /// Throws an <see cref="InvalidOperationException"/> if the specified condition is true.
         /// </summary>
         /// <param name="condition">The condition to evaluate.</param>
         /// <param name="message">An optional message to pass to the thrown exception.</param>
@@ -147,7 +150,7 @@ namespace TwistedLogik.Nucleus
         }
 
         /// <summary>
-        /// Throws an exception if the specified condition is true.
+        /// Throws an <see cref="InvalidOperationException"/> if the specified condition is true.
         /// </summary>
         /// <param name="condition">The condition to evaluate.</param>
         public static void EnsureNot<T>(Boolean condition) where T : Exception, new()
@@ -161,6 +164,7 @@ namespace TwistedLogik.Nucleus
         /// <summary>
         /// Throws an exception if the specified condition is true.
         /// </summary>
+        /// <typeparam name="T">The type of exception to throw.</typeparam>
         /// <param name="condition">The condition to evaluate.</param>
         /// <param name="message">An optional message to pass to the thrown exception.</param>
         public static void EnsureNot<T>(Boolean condition, String message) where T : Exception, new()
@@ -178,6 +182,7 @@ namespace TwistedLogik.Nucleus
         /// <summary>
         /// Throws an exception if the specified condition is true.
         /// </summary>
+        /// <typeparam name="T">The type of exception to throw.</typeparam>
         /// <param name="condition">The condition to evaluate.</param>
         /// <param name="message">An optional message to pass to the thrown exception.</param>
         public static void EnsureNot<T>(Boolean condition, StringResource message) where T : Exception, new()
@@ -193,7 +198,7 @@ namespace TwistedLogik.Nucleus
         }
 
         /// <summary>
-        /// Throws an ObjectDisposedException if the specified object has been disposed.
+        /// Throws an <see cref="ObjectDisposedException"/> if the specified object has been disposed.
         /// </summary>
         /// <param name="obj">The object to evaluate.</param>
         /// <param name="disposed">A value indicating whether the object is disposed.</param>
@@ -206,8 +211,9 @@ namespace TwistedLogik.Nucleus
         }
 
         /// <summary>
-        /// Throws an ArgumentNullException if the specified object is null.
+        /// Throws an <see cref="ArgumentNullException"/> if the specified object is <c>null</c>.
         /// </summary>
+        /// <typeparam name="T">The type of object to evaluate for nullity.</typeparam>
         /// <param name="argument">The object to evaluate for nullity.</param>
         /// <param name="message">The exception message.</param>
         public static void Require<T>(T argument, String message) where T : class
@@ -217,8 +223,9 @@ namespace TwistedLogik.Nucleus
         }
 
         /// <summary>
-        /// Throws an ArgumentNullException if the specified object is null.
+        /// Throws an <see cref="ArgumentNullException"/> if the specified object is null.
         /// </summary>
+        /// <typeparam name="T">The type of object to evaluate for nullity.</typeparam>
         /// <param name="argument">The object to evaluate for nullity.</param>
         /// <param name="message">The exception message.</param>
         public static void Require<T>(T argument, StringResource message) where T : class
@@ -228,7 +235,8 @@ namespace TwistedLogik.Nucleus
         }
 
         /// <summary>
-        /// Throws an ArgumentNullException if the specified string is null, or an ArgumentException if the string is empty.
+        /// Throws an <see cref="ArgumentNullException"/> if the specified string is null, 
+        /// or an <see cref="ArgumentException"/> if the string is empty.
         /// </summary>
         /// <param name="argument">The string to evaluate for nullity or emptiness.</param>
         /// <param name="message">The exception message.</param>
@@ -241,7 +249,8 @@ namespace TwistedLogik.Nucleus
         }
 
         /// <summary>
-        /// Throws an ArgumentNullException if the specified string is null, or an ArgumentException if the string is empty.
+        /// Throws an <see cref="ArgumentNullException"/> if the specified string is null, 
+        /// or an <see cref="ArgumentException"/> if the string is empty.
         /// </summary>
         /// <param name="argument">The string to evaluate for nullity or emptiness.</param>
         /// <param name="message">The exception message.</param>
@@ -254,7 +263,8 @@ namespace TwistedLogik.Nucleus
         }
 
         /// <summary>
-        /// Throws an ArgumentNullException if the specified collection is null, or an ArgumentException if the collection is empty.
+        /// Throws an <see cref="ArgumentNullException"/> if the specified collection is null, 
+        /// or an <see cref="ArgumentException"/> if the collection is empty.
         /// </summary>
         /// <param name="collection">The collection to evaluate for nullity or emptiness.</param>
         /// <param name="message">The exception message.</param>
@@ -267,7 +277,8 @@ namespace TwistedLogik.Nucleus
         }
 
         /// <summary>
-        /// Throws an ArgumentNullException if the specified collection is null, or an ArgumentException if the collection is empty.
+        /// Throws an <see cref="ArgumentNullException"/> if the specified collection is null, 
+        /// or an <see cref="ArgumentException"/> if the collection is empty.
         /// </summary>
         /// <param name="collection">The collection to evaluate for nullity or emptiness.</param>
         /// <param name="message">The exception message.</param>
@@ -280,8 +291,10 @@ namespace TwistedLogik.Nucleus
         }
 
         /// <summary>
-        /// Throws an ArgumentNullException if the specified collection is null, or an ArgumentException if the collection is empty.
+        /// Throws an <see cref="ArgumentNullException"/> if the specified collection is null, 
+        /// or an <see cref="ArgumentException"/> if the collection is empty.
         /// </summary>
+        /// <typeparam name="T">The type of item contained by the collection.</typeparam>
         /// <param name="collection">The collection to evaluate for nullity or emptiness.</param>
         /// <param name="message">The exception message.</param>
         public static void RequireNotEmpty<T>(ICollection<T> collection, String message)
@@ -293,8 +306,10 @@ namespace TwistedLogik.Nucleus
         }
 
         /// <summary>
-        /// Throws an ArgumentNullException if the specified collection is null, or an ArgumentException if the collection is empty.
+        /// Throws an <see cref="ArgumentNullException"/> if the specified collection is null, 
+        /// or an <see cref="ArgumentException"/> if the collection is empty.
         /// </summary>
+        /// <typeparam name="T">The type of item contained by the collection.</typeparam>
         /// <param name="collection">The collection to evaluate for nullity or emptiness.</param>
         /// <param name="message">The exception message.</param>
         public static void RequireNotEmpty<T>(ICollection<T> collection, StringResource message)

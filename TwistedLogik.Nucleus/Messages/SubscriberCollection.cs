@@ -6,6 +6,7 @@ namespace TwistedLogik.Nucleus.Messages
     /// <summary>
     /// Represents a collection of message subscribers.
     /// </summary>
+    /// <typeparam name="TMessageType">The type of message received by the subscribers in this collection.</typeparam>
     public class SubscriberCollection<TMessageType> where TMessageType : IEquatable<TMessageType>
     {
         /// <summary>

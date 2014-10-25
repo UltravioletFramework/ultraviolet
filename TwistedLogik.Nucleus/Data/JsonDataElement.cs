@@ -11,7 +11,7 @@ namespace TwistedLogik.Nucleus.Data
     internal class JsonDataElement : DataElement
     {
         /// <summary>
-        /// Initializes a new instance of the JsonDataElement class.
+        /// Initializes a new instance of the <see cref="JsonDataElement"/> class.
         /// </summary>
         /// <param name="parent">The element's parent element.</param>
         /// <param name="name">The element's name.</param>
@@ -30,7 +30,7 @@ namespace TwistedLogik.Nucleus.Data
         /// Gets the value of the attribute with the specified name.
         /// </summary>
         /// <param name="name">The name of the attribute to retrieve.</param>
-        /// <returns>The value of the specified attribute, or null if the attribute does not exist.</returns>
+        /// <returns>The value of the specified attribute, or <c>null</c> if the attribute does not exist.</returns>
         public override DataAttribute Attribute(String name)
         {
             var token = jtoken[name];
@@ -70,7 +70,7 @@ namespace TwistedLogik.Nucleus.Data
         /// Gets the child element with the specified name.
         /// </summary>
         /// <param name="name">The name of the child element to retrieve.</param>
-        /// <returns>The child element with the specified name, or null if the element does not exist.</returns>
+        /// <returns>The child element with the specified name, or <c>null</c> if the element does not exist.</returns>
         public override DataElement Element(String name)
         {
             return Elements(name).SingleOrDefault();

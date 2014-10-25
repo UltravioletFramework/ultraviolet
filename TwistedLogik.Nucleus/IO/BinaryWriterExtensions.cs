@@ -8,14 +8,15 @@ using TwistedLogik.Nucleus.Data;
 namespace TwistedLogik.Nucleus.IO
 {
     /// <summary>
-    /// Contains extension methods for the BinaryWriter class.
+    /// Contains extension methods for the <see cref="BinaryWriter"/> class.
     /// </summary>
     public static class BinaryWriterExtensions
     {
         /// <summary>
         /// Writes a list to the stream.
         /// </summary>
-        /// <param name="writer">The binary writer with which to </param>
+        /// <typeparam name="T">The type of items in the list being written.</typeparam>
+        /// <param name="writer">The <see cref="BinaryWriter"/> with which to write the list.</param>
         /// <param name="list">The list to write.</param>
         /// <param name="method">A function which selects the method with which to write the list's items.</param>
         public static void Write<T>(this BinaryWriter writer, IList<T> list, Func<BinaryWriter, Action<T>> method)
@@ -35,9 +36,9 @@ namespace TwistedLogik.Nucleus.IO
         }
 
         /// <summary>
-        /// Writes a nullable 16-bit integer to the stream.
+        /// Writes a <c>null</c>able 16-bit integer to the stream.
         /// </summary>
-        /// <param name="writer">The binary writer with which to write the value.</param>
+        /// <param name="writer">The <see cref="BinaryWriter"/> with which to write the value.</param>
         /// <param name="value">The value to write.</param>
         public static void Write(this BinaryWriter writer, Int16? value)
         {
@@ -49,9 +50,9 @@ namespace TwistedLogik.Nucleus.IO
         }
 
         /// <summary>
-        /// Writes a nullable 32-bit integer to the stream.
+        /// Writes a <c>null</c>able 32-bit integer to the stream.
         /// </summary>
-        /// <param name="writer">The binary writer with which to write the value.</param>
+        /// <param name="writer">The <see cref="BinaryWriter"/> with which to write the value.</param>
         /// <param name="value">The value to write.</param>
         public static void Write(this BinaryWriter writer, Int32? value)
         {
@@ -63,9 +64,9 @@ namespace TwistedLogik.Nucleus.IO
         }
 
         /// <summary>
-        /// Writes a nullable 64-bit integer to the stream.
+        /// Writes a <c>null</c>able 64-bit integer to the stream.
         /// </summary>
-        /// <param name="writer">The binary writer with which to write the value.</param>
+        /// <param name="writer">The <see cref="BinaryWriter"/> with which to write the value.</param>
         /// <param name="value">The value to write.</param>
         public static void Write(this BinaryWriter writer, Int64? value)
         {
@@ -77,9 +78,9 @@ namespace TwistedLogik.Nucleus.IO
         }
 
         /// <summary>
-        /// Writes a nullable unsigned 16-bit integer to the stream.
+        /// Writes a <c>null</c>able unsigned 16-bit integer to the stream.
         /// </summary>
-        /// <param name="writer">The binary writer with which to write the value.</param>
+        /// <param name="writer">The <see cref="BinaryWriter"/> with which to write the value.</param>
         /// <param name="value">The value to write.</param>
         [CLSCompliant(false)]
         public static void Write(this BinaryWriter writer, UInt16? value)
@@ -92,9 +93,9 @@ namespace TwistedLogik.Nucleus.IO
         }
 
         /// <summary>
-        /// Writes a nullable unsigned 32-bit integer to the stream.
+        /// Writes a <c>null</c>able unsigned 32-bit integer to the stream.
         /// </summary>
-        /// <param name="writer">The binary writer with which to write the value.</param>
+        /// <param name="writer">The <see cref="BinaryWriter"/> with which to write the value.</param>
         /// <param name="value">The value to write.</param>
         [CLSCompliant(false)]
         public static void Write(this BinaryWriter writer, UInt32? value)
@@ -107,9 +108,9 @@ namespace TwistedLogik.Nucleus.IO
         }
 
         /// <summary>
-        /// Writes a nullable unsigned 64-bit integer to the stream.
+        /// Writes a <c>null</c>able unsigned 64-bit integer to the stream.
         /// </summary>
-        /// <param name="writer">The binary writer with which to write the value.</param>
+        /// <param name="writer">The <see cref="BinaryWriter"/> with which to write the value.</param>
         /// <param name="value">The value to write.</param>
         [CLSCompliant(false)]
         public static void Write(this BinaryWriter writer, UInt64? value)
@@ -122,9 +123,9 @@ namespace TwistedLogik.Nucleus.IO
         }
 
         /// <summary>
-        /// Writes a nullable single-precision floating point value to the stream.
+        /// Writes a <c>null</c>able single-precision floating point value to the stream.
         /// </summary>
-        /// <param name="writer">The binary writer with which to write the value.</param>
+        /// <param name="writer">The <see cref="BinaryWriter"/> with which to write the value.</param>
         /// <param name="value">The value to write.</param>
         public static void Write(this BinaryWriter writer, Single? value)
         {
@@ -136,9 +137,9 @@ namespace TwistedLogik.Nucleus.IO
         }
 
         /// <summary>
-        /// Writes a nullable double-precision floating point value to the stream.
+        /// Writes a <c>null</c>able double-precision floating point value to the stream.
         /// </summary>
-        /// <param name="writer">The binary writer with which to write the value.</param>
+        /// <param name="writer">The <see cref="BinaryWriter"/> with which to write the value.</param>
         /// <param name="value">The value to write.</param>
         public static void Write(this BinaryWriter writer, Double? value)
         {
@@ -150,10 +151,10 @@ namespace TwistedLogik.Nucleus.IO
         }
 
         /// <summary>
-        /// Writes a GUID to the stream.
+        /// Writes a <see cref="Guid"/> to the stream.
         /// </summary>
-        /// <param name="writer">The binary writer with which to write the GUID.</param>
-        /// <param name="guid">The GUID to write to the stream.</param>
+        /// <param name="writer">The <see cref="BinaryWriter"/> with which to write the <see cref="Guid"/>.</param>
+        /// <param name="guid">The <see cref="Guid"/> to write to the stream.</param>
         [SecuritySafeCritical]
         public static void Write(this BinaryWriter writer, Guid guid)
         {
@@ -166,10 +167,10 @@ namespace TwistedLogik.Nucleus.IO
         }
 
         /// <summary>
-        /// Writes a GUID to the stream.
+        /// Writes a <see cref="Guid"/> to the stream.
         /// </summary>
-        /// <param name="writer">The binary writer with which to write the GUID.</param>
-        /// <param name="guid">The GUID to write to the stream.</param>
+        /// <param name="writer">The <see cref="BinaryWriter"/> with which to write the <see cref="Guid"/>.</param>
+        /// <param name="guid">The <see cref="Guid"/> to write to the stream.</param>
         public static void Write(this BinaryWriter writer, Guid? guid)
         {
             writer.Write(guid.HasValue);
@@ -180,10 +181,10 @@ namespace TwistedLogik.Nucleus.IO
         }
 
         /// <summary>
-        /// Writes a resolved Nucleus Data Object reference to the stream.
+        /// Writes a resolved reference to a Nucleus data object to the stream.
         /// </summary>
-        /// <param name="writer">The binary writer with which to write the data object reference.</param>
-        /// <param name="reference">The data object reference to write to the stream.</param>
+        /// <param name="writer">The <see cref="BinaryWriter"/> with which to write the data object reference.</param>
+        /// <param name="reference">The <see cref="ResolvedDataObjectReference"/> to write to the stream.</param>
         public static void Write(this BinaryWriter writer, ResolvedDataObjectReference reference)
         {
             writer.Write(reference.Value);
@@ -195,10 +196,10 @@ namespace TwistedLogik.Nucleus.IO
         }
 
         /// <summary>
-        /// Writes a resolved Nucleus Data Object reference to the stream.
+        /// Writes a <c>null</c>able resolved reference to a Nucleus data object to the stream.
         /// </summary>
-        /// <param name="writer">The binary writer with which to write the data object reference.</param>
-        /// <param name="reference">The data object reference to write to the stream.</param>
+        /// <param name="writer">The <see cref="BinaryWriter"/> with which to write the data object reference.</param>
+        /// <param name="reference">The <see cref="Nullable{ResolvedDataObjectReference}"/> to write to the stream.</param>
         public static void Write(this BinaryWriter writer, ResolvedDataObjectReference? reference)
         {
             writer.Write(reference.HasValue);

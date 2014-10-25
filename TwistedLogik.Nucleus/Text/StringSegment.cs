@@ -9,7 +9,7 @@ namespace TwistedLogik.Nucleus.Text
     public struct StringSegment : IEquatable<StringSegment>, IEquatable<String>, IEquatable<StringBuilder>
     {
         /// <summary>
-        /// Initializes a new instance of the StringSegment structure.
+        /// Initializes a new instance of the <see cref="StringSegment"/> structure.
         /// </summary>
         /// <param name="str">The string that represents the segment.</param>
         public StringSegment(String str)
@@ -22,9 +22,9 @@ namespace TwistedLogik.Nucleus.Text
         }
 
         /// <summary>
-        /// Initializes a new instance of the StringSegment structure.
+        /// Initializes a new instance of the <see cref="StringSegment"/> structure.
         /// </summary>
-        /// <param name="str">The string that contains this segment.</param>
+        /// <param name="str">The <see cref="String"/> that contains this segment.</param>
         /// <param name="start">The index of the string segment's first character within its parent string.</param>
         /// <param name="length">The number of characters in the string segment.</param>
         public StringSegment(String str, Int32 start, Int32 length)
@@ -41,8 +41,8 @@ namespace TwistedLogik.Nucleus.Text
         /// <summary>
         /// Implicitly converts a string to a string segment.
         /// </summary>
-        /// <param name="s">The string to convert.</param>
-        /// <returns>The converted string segment.</returns>
+        /// <param name="s">The <see cref="String"/> to convert.</param>
+        /// <returns>The converted <see cref="StringSegment"/>.</returns>
         public static implicit operator StringSegment(String s)
         {
             return new StringSegment(s);
@@ -51,9 +51,9 @@ namespace TwistedLogik.Nucleus.Text
         /// <summary>
         /// Compares two string segments for equality.
         /// </summary>
-        /// <param name="s1">The first string segment.</param>
-        /// <param name="s2">The second string segment.</param>
-        /// <returns>true if the two string segments are equal; otherwise, false.</returns>
+        /// <param name="s1">The first <see cref="StringSegment"/>.</param>
+        /// <param name="s2">The second <see cref="StringSegment"/>.</param>
+        /// <returns><c>true</c> if the two string segments are equal; otherwise, <c>false</c>.</returns>
         public static Boolean operator ==(StringSegment s1, StringSegment s2)
         {
             return s1.Equals(s2);
@@ -62,9 +62,9 @@ namespace TwistedLogik.Nucleus.Text
         /// <summary>
         /// Compares two string segments for inequality.
         /// </summary>
-        /// <param name="s1">The first string segment.</param>
-        /// <param name="s2">The second string segment.</param>
-        /// <returns>true if the two string segments are unequal; otherwise, false.</returns>
+        /// <param name="s1">The first <see cref="StringSegment"/>.</param>
+        /// <param name="s2">The second <see cref="StringSegment"/>.</param>
+        /// <returns><c>true</c> if the two string segments are unequal; otherwise, <c>false</c>.</returns>
         public static Boolean operator !=(StringSegment s1, StringSegment s2)
         {
             return !s1.Equals(s2);
@@ -73,9 +73,9 @@ namespace TwistedLogik.Nucleus.Text
         /// <summary>
         /// Compares a string segment and a string for equality.
         /// </summary>
-        /// <param name="s1">The string segment.</param>
-        /// <param name="s2">The string.</param>
-        /// <returns>true if the string segment is equal to the string; otherwise, false.</returns>
+        /// <param name="s1">The <see cref="StringSegment"/> to compare.</param>
+        /// <param name="s2">The <see cref="String"/> to compare.</param>
+        /// <returns><c>true</c> if the string segment is equal to the string; otherwise, <c>false</c>.</returns>
         public static Boolean operator ==(StringSegment s1, String s2)
         {
             return s1.Equals(s2);
@@ -84,9 +84,9 @@ namespace TwistedLogik.Nucleus.Text
         /// <summary>
         /// Compares a string segment and a string for inequality.
         /// </summary>
-        /// <param name="s1">The string segment.</param>
-        /// <param name="s2">The string.</param>
-        /// <returns>true if the string segment is not equal to the string; otherwise, false.</returns>
+        /// <param name="s1">The <see cref="StringSegment"/> to compare.</param>
+        /// <param name="s2">The <see cref="String"/> to compare.</param>
+        /// <returns><c>true</c> if the string segment is not equal to the string; otherwise, <c>false</c>.</returns>
         public static Boolean operator !=(StringSegment s1, String s2)
         {
             return !s1.Equals(s2);
@@ -95,9 +95,9 @@ namespace TwistedLogik.Nucleus.Text
         /// <summary>
         /// Compares a string segment and a string builder for equality.
         /// </summary>
-        /// <param name="s1">The string segment.</param>
-        /// <param name="s2">The string builder.</param>
-        /// <returns>true if the string segment is equal to the string builder; otherwise, false.</returns>
+        /// <param name="s1">The <see cref="StringSegment"/> to compare.</param>
+        /// <param name="s2">The <see cref="StringBuilder"/> to compare.</param>
+        /// <returns><c>true</c> if the string segment is equal to the string builder; otherwise, <c>false</c>.</returns>
         public static Boolean operator ==(StringSegment s1, StringBuilder s2)
         {
             return s1.Equals(s2);
@@ -106,9 +106,9 @@ namespace TwistedLogik.Nucleus.Text
         /// <summary>
         /// Compares a string segment and a string builder for inequality.
         /// </summary>
-        /// <param name="s1">The string segment.</param>
-        /// <param name="s2">The string builder.</param>
-        /// <returns>true if the string segment is not equal to the string builder; otherwise, false.</returns>
+        /// <param name="s1">The <see cref="StringSegment"/> to compare.</param>
+        /// <param name="s2">The <see cref="StringBuilder"/> to compare.</param>
+        /// <returns><c>true</c> if the string segment is not equal to the string builder; otherwise, <c>false</c>.</returns>
         public static Boolean operator !=(StringSegment s1, StringBuilder s2)
         {
             return !s1.Equals(s2);
@@ -117,9 +117,9 @@ namespace TwistedLogik.Nucleus.Text
         /// <summary>
         /// Gets a value indicating whether the specified string segments are contiguous.
         /// </summary>
-        /// <param name="s1">The first string segment.</param>
-        /// <param name="s2">The second string segment.</param>
-        /// <returns>true if the string segments are contiguous; otherwise, false.</returns>
+        /// <param name="s1">The first <see cref="StringSegment"/>.</param>
+        /// <param name="s2">The second <see cref="StringSegment"/>.</param>
+        /// <returns><c>true</c> if the string segments are contiguous; otherwise, <c>false</c>.</returns>
         public static Boolean AreSegmentsContiguous(StringSegment s1, StringSegment s2)
         {
             return (s1.String == s2.String) &&
@@ -160,7 +160,7 @@ namespace TwistedLogik.Nucleus.Text
         /// Gets a value indicating whether this string segment is equal to the specified object.
         /// </summary>
         /// <param name="obj">The object to compare to this segment.</param>
-        /// <returns>true if this string segment is equal to the specified object; otherwise, false.</returns>
+        /// <returns><c>true</c> ifthis string segment is equal to the specified object; otherwise, <c>false</c>.</returns>
         public override Boolean Equals(Object obj)
         {
             if (obj is StringSegment) return Equals((StringSegment)obj);
@@ -173,9 +173,9 @@ namespace TwistedLogik.Nucleus.Text
         /// Gets a value indicating whether the content of this string segment equals
         /// the content of the specified string segment.
         /// </summary>
-        /// <param name="other">The string segment to compare to this segment.</param>
-        /// <returns>true if the content of this segment equals the content of the 
-        /// specified string segment; otherwise, false.</returns>
+        /// <param name="other">The <see cref="StringSegment"/> to compare to this segment.</param>
+        /// <returns><c>true</c> if the content of this segment equals the content of the 
+        /// specified string segment; otherwise, <c>false</c>.</returns>
         public Boolean Equals(StringSegment other)
         {
             if (IsEmpty)
@@ -200,9 +200,9 @@ namespace TwistedLogik.Nucleus.Text
         /// Gets a value indicating whether the content of this string segment equals
         /// the content of the specified string.
         /// </summary>
-        /// <param name="other">The string to compare to this segment.</param>
-        /// <returns>true if the content of this segment equals the content of the 
-        /// specified string; otherwise, false.</returns>
+        /// <param name="other">The <see cref="String"/> to compare to this segment.</param>
+        /// <returns><c>true</c> if the content of this segment equals the content of the 
+        /// specified string; otherwise, <c>false</c>.</returns>
         public Boolean Equals(String other)
         {
             if (IsEmpty && other == String.Empty)
@@ -225,9 +225,9 @@ namespace TwistedLogik.Nucleus.Text
         /// Gets a value indicating whether the content of this string segment equals
         /// the content of the specified string builder.
         /// </summary>
-        /// <param name="other">The string builder to compare to this segment.</param>
-        /// <returns>true if the content of this segment equals the content of the 
-        /// specified string builder; otherwise, false.</returns>
+        /// <param name="other">The <see cref="StringBuilder"/> to compare to this segment.</param>
+        /// <returns><c>true</c> if the content of this segment equals the content of the 
+        /// specified string builder; otherwise, <c>false</c>.</returns>
         public Boolean Equals(StringBuilder other)
         {
             if (IsEmpty && other.Length == 0)
@@ -250,7 +250,7 @@ namespace TwistedLogik.Nucleus.Text
         /// Creates a string segment which is a substring of this string segment.
         /// </summary>
         /// <param name="start">The starting character of the substring within this string segment.</param>
-        /// <returns>A string segment which is a substring of this string segment.</returns>
+        /// <returns>A <see cref="StringSegment"/> which is a substring of this string segment.</returns>
         public StringSegment Substring(Int32 start)
         {
             Contract.EnsureRange(start >= 0 && start < this.length, "start");
@@ -264,7 +264,7 @@ namespace TwistedLogik.Nucleus.Text
         /// </summary>
         /// <param name="start">The starting character of the substring within this string segment.</param>
         /// <param name="length">The number of characters in the substring.</param>
-        /// <returns>A string segment which is a substring of this string segment.</returns>
+        /// <returns>A <see cref="StringSegment"/> which is a substring of this string segment.</returns>
         public StringSegment Substring(Int32 start, Int32 length)
         {
             Contract.EnsureRange(start >= 0 && start < this.length, "start");

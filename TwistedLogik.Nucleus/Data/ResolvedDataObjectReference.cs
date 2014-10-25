@@ -6,11 +6,13 @@ namespace TwistedLogik.Nucleus.Data
     /// <summary>
     /// Represents a resolved reference to a Nucleus Data Object.
     /// </summary>
+    /// <remarks>A resolved reference is one in which the string value of the reference has been associated with
+    /// the globally-unique identifier of the referenced object.</remarks>
     [TypeConverter(typeof(ObjectResolverTypeConverter<ResolvedDataObjectReference>))]
     public struct ResolvedDataObjectReference : IComparable<ResolvedDataObjectReference>, IEquatable<ResolvedDataObjectReference>
     {
         /// <summary>
-        /// Initializes a new instance of the ResolvedDataObjectReference structure.
+        /// Initializes a new instance of the <see cref="ResolvedDataObjectReference"/> structure.
         /// </summary>
         /// <param name="value">The data object identifier's value.</param>
         public ResolvedDataObjectReference(Guid value)
@@ -20,7 +22,7 @@ namespace TwistedLogik.Nucleus.Data
         }
 
         /// <summary>
-        /// Initializes a new instance of the ResolvedDataObjectReference structure.
+        /// Initializes a new instance of the <see cref="ResolvedDataObjectReference"/> structure.
         /// </summary>
         /// <param name="value">The data object identifier's value.</param>
         /// <param name="source">A string identifying the source of the identifier, used for debugging.</param>
@@ -31,24 +33,30 @@ namespace TwistedLogik.Nucleus.Data
         }
 
         /// <summary>
-        /// Explicitly converts an ResolvedDataObjectReference structure to its underlying globally-unique value.
+        /// Explicitly converts an <see cref="ResolvedDataObjectReference"/> structure to its underlying globally-unique value.
         /// </summary>
-        public static explicit operator Guid(ResolvedDataObjectReference id)
+        /// <param name="reference">The <see cref="ResolvedDataObjectReference"/> to convert.</param>
+        /// <returns>The converted <see cref="Guid"/>.</returns>
+        public static explicit operator Guid(ResolvedDataObjectReference reference)
         {
-            return id.Value;
+            return reference.Value;
         }
 
         /// <summary>
-        /// Explicitly converts an ResolvedDataObjectReference structure to its underlying globally-unique value.
+        /// Explicitly converts an <see cref="ResolvedDataObjectReference"/> structure to its underlying globally-unique value.
         /// </summary>
-        public static explicit operator Guid?(ResolvedDataObjectReference id)
+        /// <param name="reference">The <see cref="ResolvedDataObjectReference"/> to convert.</param>
+        /// <returns>The converted <see cref="Nullable{Guid}"/>.</returns>
+        public static explicit operator Guid?(ResolvedDataObjectReference reference)
         {
-            return id.Value;
+            return reference.Value;
         }
 
         /// <summary>
-        /// Explicitly converts an integer to an ResolvedDataObjectReference structure.
+        /// Explicitly converts an integer to an <see cref="ResolvedDataObjectReference"/> structure.
         /// </summary>
+        /// <param name="id">The <see cref="Guid"/> to convert.</param>
+        /// <returns>The converted <see cref="ResolvedDataObjectReference"/>.</returns>
         public static explicit operator ResolvedDataObjectReference(Guid id)
         {
             return new ResolvedDataObjectReference(id);
@@ -57,17 +65,23 @@ namespace TwistedLogik.Nucleus.Data
         /// <summary>
         /// Evaluates two data object identifiers for equality.
         /// </summary>
-        public static bool operator ==(ResolvedDataObjectReference m1, ResolvedDataObjectReference m2)
+        /// <param name="ref1">The first <see cref="ResolvedDataObjectReference"/> to compare.</param>
+        /// <param name="ref2">The second <see cref="ResolvedDataObjectReference"/> to compare.</param>
+        /// <returns><c>true</c> if the specified references are equal; otherwise, <c>false</c>.</returns>
+        public static Boolean operator ==(ResolvedDataObjectReference ref1, ResolvedDataObjectReference ref2)
         {
-            return m1.Value == m2.Value;
+            return ref1.Value == ref2.Value;
         }
 
         /// <summary>
         /// Evaluates two data object identifiers for inequality.
         /// </summary>
-        public static bool operator !=(ResolvedDataObjectReference m1, ResolvedDataObjectReference m2)
+        /// <param name="ref1">The first <see cref="ResolvedDataObjectReference"/> to compare.</param>
+        /// <param name="ref2">The second <see cref="ResolvedDataObjectReference"/> to compare.</param>
+        /// <returns><c>true</c> if the specified references are unequal; otherwise, <c>false</c>.</returns>
+        public static Boolean operator !=(ResolvedDataObjectReference ref1, ResolvedDataObjectReference ref2)
         {
-            return m1.Value != m2.Value;
+            return ref1.Value != ref2.Value;
         }
 
         /// <summary>
@@ -108,7 +122,7 @@ namespace TwistedLogik.Nucleus.Data
         /// Converts the object to a human-readable string.
         /// </summary>
         /// <returns>A human-readable string that represents the object.</returns>
-        public override string ToString()
+        public override String ToString()
         {
             return Value.Equals(Guid.Empty) ? "(none)" : Source ?? String.Format("Object #{0}", Value.ToString());
         }
@@ -116,8 +130,8 @@ namespace TwistedLogik.Nucleus.Data
         /// <summary>
         /// Returns the hash code for this instance.
         /// </summary>
-        /// <returns>The hash code for the current ResolvedDataObjectReference structure.</returns>
-        public override int GetHashCode()
+        /// <returns>The hash code for the current <see cref="ResolvedDataObjectReference"/> structure.</returns>
+        public override Int32 GetHashCode()
         {
             return Value.GetHashCode();
         }
@@ -125,21 +139,21 @@ namespace TwistedLogik.Nucleus.Data
         /// <summary>
         /// Indicates whether the current object is equal to another object of the same type.
         /// </summary>
-        /// <param name="obj">An object to compare with this object.</param>
-        /// <returns>true if the current object is equal to the other parameter; otherwise, false.</returns>
-        public override bool Equals(object obj)
+        /// <param name="other">An object to compare with this object.</param>
+        /// <returns><c>true</c> if the current object is equal to the <paramref name="other"/> parameter; otherwise, <c>false</c>.</returns>
+        public override Boolean Equals(Object other)
         {
-            if (!(obj is ResolvedDataObjectReference))
+            if (!(other is ResolvedDataObjectReference))
                 return false;
-            return Equals((ResolvedDataObjectReference)obj);
+            return Equals((ResolvedDataObjectReference)other);
         }
 
         /// <summary>
         /// Indicates whether the current object is equal to another object of the same type.
         /// </summary>
         /// <param name="other">An object to compare with this object.</param>
-        /// <returns>true if the current object is equal to the other parameter; otherwise, false.</returns>
-        public bool Equals(ResolvedDataObjectReference other)
+        /// <returns><c>true</c> if the current object is equal to the <paramref name="other"/> parameter; otherwise, <c>false</c>.</returns>
+        public Boolean Equals(ResolvedDataObjectReference other)
         {
             return this.Value == other.Value;
         }
@@ -151,7 +165,7 @@ namespace TwistedLogik.Nucleus.Data
         /// </summary>
         /// <param name="other">An object to compare with this instance.</param>
         /// <returns>A value that indicates the relative order of the objects being compared.</returns>
-        public int CompareTo(ResolvedDataObjectReference other)
+        public Int32 CompareTo(ResolvedDataObjectReference other)
         {
             return this.Value.CompareTo(other.Value);
         }

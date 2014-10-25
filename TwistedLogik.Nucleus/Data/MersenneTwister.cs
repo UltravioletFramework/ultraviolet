@@ -8,7 +8,7 @@ namespace TwistedLogik.Nucleus.Data
     public sealed class MersenneTwister : Random
     {
         /// <summary>
-        /// Initializes a new instance of the MersenneTwister class with a random seed based on the current system time.
+        /// Initializes a new instance of the <see cref="MersenneTwister"/> class with a random seed based on the current system time.
         /// </summary>
         public MersenneTwister()
             : this(Environment.TickCount)
@@ -17,7 +17,7 @@ namespace TwistedLogik.Nucleus.Data
         }
 
         /// <summary>
-        /// Initializes a new instance of the MersenneTwister class with the specified random seed.
+        /// Initializes a new instance of the <see cref="MersenneTwister"/> class with the specified random seed.
         /// </summary>
         /// <param name="seed">The psuedorandom number generator's initial seed.</param>
         public MersenneTwister(Int32 seed)
@@ -101,7 +101,7 @@ namespace TwistedLogik.Nucleus.Data
         /// Returns a random number between 0.0 and 1.0.
         /// </summary>
         /// <returns>A double-precision floating point number greater than or equal to 0.0, and less than 1.0.</returns>
-        protected override double Sample()
+        protected override Double Sample()
         {
             return (double)ExtractNumber() / ((long)UInt32.MaxValue + 1);
         }

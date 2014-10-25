@@ -8,7 +8,7 @@ namespace TwistedLogik.Nucleus.Messages
     public class MessageData
     {
         /// <summary>
-        /// Initializes a new instance of the MessageData class.
+        /// Initializes a new instance of the <see cref="MessageData"/> class.
         /// </summary>
         protected MessageData()
         {
@@ -27,7 +27,7 @@ namespace TwistedLogik.Nucleus.Messages
         /// Evaluates another message data object to determine if it can be merged with this object.
         /// </summary>
         /// <param name="other">The message data object to evaluate against this message data object.</param>
-        /// <returns>A message data object that represents the merged result, or null if the objects cannot be merged.</returns>
+        /// <returns>A message data object that represents the merged result, or <c>null</c> if the objects cannot be merged.</returns>
         public virtual MessageData EvaluateMerge(MessageData other)
         {
             return null;

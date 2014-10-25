@@ -15,6 +15,7 @@ namespace TwistedLogik.Nucleus.Data
         /// <summary>
         /// Gets the data object registry for the specified object type.
         /// </summary>
+        /// <typeparam name="T">The type of object for which to retrieve a registry.</typeparam>
         public static DataObjectRegistry<T> Get<T>() where T : DataObject
         {
             IDataObjectRegistry registry;

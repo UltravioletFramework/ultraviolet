@@ -13,7 +13,7 @@ namespace TwistedLogik.Nucleus.Data
     public abstract class DataElement
     {
         /// <summary>
-        /// Initializes a new instance of the DataElement class.
+        /// Initializes a new instance of the <see cref="DataElement"/> class.
         /// </summary>
         /// <param name="parent">The parent element.</param>
         public DataElement(DataElement parent)
@@ -25,7 +25,7 @@ namespace TwistedLogik.Nucleus.Data
         /// Creates a data element from the specified file.
         /// </summary>
         /// <param name="file">The file from which to create a data element.</param>
-        /// <returns>The data element that was created.</returns>
+        /// <returns>The <see cref="DataElement"/> that was created.</returns>
         public static DataElement CreateFromFile(String file)
         {
             Contract.Require(file, "file");
@@ -52,7 +52,7 @@ namespace TwistedLogik.Nucleus.Data
         /// Creates a data element from the specified JSON object.
         /// </summary>
         /// <param name="jobj">The JSON object from which to create an element.</param>
-        /// <returns>The data element that was created.</returns>
+        /// <returns>The <see cref="DataElement"/> that was created.</returns>
         public static DataElement CreateFromJson(JObject jobj)
         {
             Contract.Require(jobj, "jobj");
@@ -64,7 +64,7 @@ namespace TwistedLogik.Nucleus.Data
         /// Creates a data element from the specified JSON token.
         /// </summary>
         /// <param name="jtoken">The JSON token from which to create an element.</param>
-        /// <returns>The data element that was created.</returns>
+        /// <returns>The <see cref="DataElement"/> that was created.</returns>
         public static DataElement CreateFromJson(JToken jtoken)
         {
             Contract.Require(jtoken, "jtoken");
@@ -76,7 +76,7 @@ namespace TwistedLogik.Nucleus.Data
         /// Creates a data element from the specified XML document.
         /// </summary>
         /// <param name="xml">The XML document from which to create an element.</param>
-        /// <returns>The data element that was created.</returns>
+        /// <returns>The <see cref="DataElement"/> that was created.</returns>
         public static DataElement CreateFromXml(XDocument xml)
         {
             Contract.Require(xml, "xml");
@@ -88,7 +88,7 @@ namespace TwistedLogik.Nucleus.Data
         /// Creates a data element from the specified XML element.
         /// </summary>
         /// <param name="xml">The XML element from which to create an element.</param>
-        /// <returns>The data element that was created.</returns>
+        /// <returns>The <see cref="DataElement"/> that was created.</returns>
         public static DataElement CreateFromXml(XElement xml)
         {
             Contract.Require(xml, "xml");
@@ -100,7 +100,7 @@ namespace TwistedLogik.Nucleus.Data
         /// Gets the value of the attribute with the specified name.
         /// </summary>
         /// <param name="name">The name of the attribute to retrieve.</param>
-        /// <returns>The specified attribute, or null if the attribute does not exist.</returns>
+        /// <returns>The specified attribute, or <c>null</c> if the attribute does not exist.</returns>
         public abstract DataAttribute Attribute(String name);
 
         /// <summary>
@@ -119,8 +119,9 @@ namespace TwistedLogik.Nucleus.Data
         /// <summary>
         /// Gets the value of the attribute with the specified name.
         /// </summary>
+        /// <typeparam name="T">The type to which to convert the attribute value.</typeparam>
         /// <param name="name">The name of the attribute to retrieve.</param>
-        /// <returns>The value of the specified attribute, or null if the attribute does not exist.</returns>
+        /// <returns>The value of the specified attribute, or <c>null</c> if the attribute does not exist.</returns>
         public T AttributeValue<T>(String name)
         {
             var attr = Attribute(name);
@@ -133,6 +134,7 @@ namespace TwistedLogik.Nucleus.Data
         /// <summary>
         /// Gets the values of the element's attributes.
         /// </summary>
+        /// <typeparam name="T">The type to which to convert the attribute values.</typeparam>
         /// <returns>The values of the element's attributes.</returns>
         public IEnumerable<T> AttributeValues<T>()
         {
@@ -142,6 +144,7 @@ namespace TwistedLogik.Nucleus.Data
         /// <summary>
         /// Gets the values of the element's attributes which match the specified name.
         /// </summary>
+        /// <typeparam name="T">The type to which to convert the attribute values.</typeparam>
         /// <param name="name">The name of the attributes to retrieve.</param>
         /// <returns>The values of the element's attributes.</returns>
         public IEnumerable<T> AttributeValues<T>(String name)
@@ -153,7 +156,7 @@ namespace TwistedLogik.Nucleus.Data
         /// Gets the child element with the specified name.
         /// </summary>
         /// <param name="name">The name of the child element to retrieve.</param>
-        /// <returns>The child element with the specified name, or null if the element does not exist.</returns>
+        /// <returns>The child element with the specified name, or <c>null</c> if the element does not exist.</returns>
         public abstract DataElement Element(String name);
 
         /// <summary>

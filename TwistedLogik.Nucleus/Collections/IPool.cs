@@ -16,7 +16,8 @@ namespace TwistedLogik.Nucleus.Collections
         /// <summary>
         /// Retrieves a scoped object from the pool.
         /// </summary>
-        /// <returns>The scoped object that was retrieved from the pool.</returns>
+        /// <returns>A <see cref="PooledObjectScope{T}"/> that represents the lifetime of 
+        /// the object that was retrieved from the pool.</returns>
         PooledObjectScope<Object> RetrieveScoped();
 
         /// <summary>

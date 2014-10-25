@@ -4,6 +4,7 @@ namespace TwistedLogik.Nucleus.Messages
     /// <summary>
     /// Represents an object which can subscribe to a message queue.
     /// </summary>
+    /// <typeparam name="TMessageType">The type of message which is received by this subscriber.</typeparam>
     public interface IMessageSubscriber<TMessageType>
     {
         /// <summary>

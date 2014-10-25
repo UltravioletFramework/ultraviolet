@@ -9,7 +9,7 @@ namespace TwistedLogik.Nucleus.Data
     public abstract class DataObject : IGloballyIdentified
     {
         /// <summary>
-        /// Initializes a new instance of the DataObject class.
+        /// Initializes a new instance of the <see cref="DataObject"/> class.
         /// </summary>
         /// <param name="globalID">The object's globally-unique identifier.</param>
         public DataObject(Guid globalID)

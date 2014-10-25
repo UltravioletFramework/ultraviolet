@@ -9,7 +9,7 @@ namespace TwistedLogik.Nucleus
     /// Contains methods for dynamically loading native libraries based on the current operating system and the process' bitness.
     /// </summary>
     /// <remarks>
-    /// <para>The LibraryLoader class is used to dynamically load native libraries prior to invoking their functions through
+    /// <para>The <see cref="LibraryLoader"/> class is used to dynamically load native libraries prior to invoking their functions through
     /// Platform Invocation Services (P/Invoke). This gives us greater control over where the libraries are loaded from, allowing
     /// us to ensure that the appropriate version of the library is loaded for the current operating system and process bitness.</para>
     /// <para>When running under Mono, this functionality can instead be provided by Mono's DllMaps functionality. See
@@ -19,7 +19,7 @@ namespace TwistedLogik.Nucleus
     public static class LibraryLoader
     {
         /// <summary>
-        /// Contains native methods used by <see cref="TwistedLogik.Nucleus.LibraryLoader"/>.
+        /// Contains native methods used by <see cref="LibraryLoader"/>.
         /// </summary>
         private static class NativeMethods
         {
@@ -34,7 +34,7 @@ namespace TwistedLogik.Nucleus
         private delegate void LibraryLoaderFunction(String name);
 
         /// <summary>
-        /// Initializes the LibraryLoader type.
+        /// Initializes the <see cref="LibraryLoader"/> type.
         /// </summary>
         static LibraryLoader()
         {

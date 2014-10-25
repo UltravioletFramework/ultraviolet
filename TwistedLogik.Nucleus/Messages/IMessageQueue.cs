@@ -4,6 +4,7 @@ namespace TwistedLogik.Nucleus.Messages
     /// <summary>
     /// Represents an asynchronous queue of messages.
     /// </summary>
+    /// <typeparam name="TMessageType">The type of message which is published by the queue.</typeparam>
     public interface IMessageQueue<TMessageType>
     {
         /// <summary>
@@ -11,6 +12,7 @@ namespace TwistedLogik.Nucleus.Messages
         /// The instance may be retrieved from a pool; if so, it will be returned to the pool 
         /// once it has been published.
         /// </summary>
+        /// <typeparam name="TMessageData">The type of message data object to create.</typeparam>
         /// <returns>The instance that was created or retrieved.</returns>
         TMessageData CreateMessageData<TMessageData>() where TMessageData : MessageData, new();
 

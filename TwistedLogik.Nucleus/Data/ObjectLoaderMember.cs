@@ -10,7 +10,7 @@ namespace TwistedLogik.Nucleus.Data
     internal class ObjectLoaderMember
     {
         /// <summary>
-        /// Initializes a new instance of the ObjectLoaderMember class.
+        /// Initializes a new instance of the <see cref="ObjectLoaderMember"/> class.
         /// </summary>
         /// <param name="obj">The object on which the member exists.</param>
         /// <param name="member">The member metadata.</param>

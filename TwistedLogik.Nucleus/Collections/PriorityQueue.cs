@@ -5,6 +5,7 @@ namespace TwistedLogik.Nucleus.Collections
     /// <summary>
     /// Represents a priority queue.
     /// </summary>
+    /// <typeparam name="T">The type of item contained by the queue.</typeparam>
     public sealed class PriorityQueue<T>
     {
         /// <summary>
@@ -45,7 +46,7 @@ namespace TwistedLogik.Nucleus.Collections
         }
 
         /// <summary>
-        /// Initializes a new instance of the PriorityQueue class.
+        /// Initializes a new instance of the <see cref="PriorityQueue{T}"/> class.
         /// </summary>
         public PriorityQueue()
             : this(4)
@@ -54,7 +55,7 @@ namespace TwistedLogik.Nucleus.Collections
         }
 
         /// <summary>
-        /// Initializes a new instance of the PriorityQueue class.
+        /// Initializes a new instance of the <see cref="PriorityQueue{T}"/> class.
         /// </summary>
         /// <param name="capacity">The priority queue's initial capacity.</param>
         public PriorityQueue(Int32 capacity)

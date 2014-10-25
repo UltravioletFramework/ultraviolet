@@ -6,7 +6,7 @@ using System.Text;
 namespace TwistedLogik.Nucleus.Text
 {
     /// <summary>
-    /// Contains methods for formatting the contents of a StringBuilder object without
+    /// Contains methods for formatting the contents of a <see cref="StringBuilder"/> object without
     /// generating any allocations to the managed heap.
     /// </summary>
     public unsafe class StringFormatter
@@ -44,7 +44,7 @@ namespace TwistedLogik.Nucleus.Text
         }
 
         /// <summary>
-        /// Initializes the StringFormatter type.
+        /// Initializes the <see cref="StringFormatter"/> type.
         /// </summary>
         public StringFormatter()
         {
@@ -188,8 +188,10 @@ namespace TwistedLogik.Nucleus.Text
         }
 
         /// <summary>
-        /// Formats the content of the specified StringBuilder using the formatter's current list of arguments.
+        /// Formats the content of the specified <see cref="StringBuilder"/> using the formatter's current list of arguments.
         /// </summary>
+        /// <param name="input">A string specifying how to format the formatter's arguments.</param>
+        /// <param name="output">The <see cref="StringBuilder"/> to which to write the formatted string.</param>
         public void Format(String input, StringBuilder output)
         {
             // Validate arguments.
@@ -234,7 +236,7 @@ namespace TwistedLogik.Nucleus.Text
         /// </summary>
         /// <param name="digit">The digit to convert.</param>
         /// <param name="value">The value that the digit represents.</param>
-        /// <returns>true if the digit was successfully converted; otherwise, false.</returns>
+        /// <returns><c>true</c> if the digit was successfully converted; otherwise, <c>false</c>.</returns>
         private static bool ConvertDecimalDigit(Char digit, out Int32 value)
         {
             switch (digit)
@@ -261,7 +263,7 @@ namespace TwistedLogik.Nucleus.Text
         /// <param name="ix">The index of the first character in the substring.</param>
         /// <param name="length">The total number of characters in the substring.</param>
         /// <param name="value">The value that was converted from the substring.</param>
-        /// <returns>true if the substring was successfully converted; otherwise, false.</returns>
+        /// <returns><c>true</c> if the substring was successfully converted; otherwise, <c>false</c>.</returns>
         private static bool ConvertInteger(String input, Int32 ix, Int32 length, out Int32 value)
         {
             value = 0;
@@ -297,7 +299,7 @@ namespace TwistedLogik.Nucleus.Text
         /// <param name="str">The string to evaluate.</param>
         /// <param name="ix">The index to evaluate.</param>
         /// <param name="length">The format specifier's length.</param>
-        /// <returns>true if the specified index is the beginning of a format specifier; otherwise, false.</returns>
+        /// <returns><c>true</c> if the specified index is the beginning of a format specifier; otherwise, <c>false</c>.</returns>
         private Boolean IsFormatSpecifier(String str, Int32 ix, out Int32 length)
         {
             // If this doesn't start with a format specifier delimiter, then obviously it isn't a format specifier!
@@ -335,7 +337,7 @@ namespace TwistedLogik.Nucleus.Text
         /// <param name="str">The string to evaluate.</param>
         /// <param name="ix">The index to evaluate.</param>
         /// <param name="length">The escape sequence's length.</param>
-        /// <returns>true if the specified index is an escaped format specifier; otherwise, false.</returns>
+        /// <returns><c>true</c> if the specified index is an escaped format specifier; otherwise, <c>false</c>.</returns>
         private Boolean IsEscapedFormatSpecifier(String str, Int32 ix, out Int32 length)
         {
             length = 0;
@@ -434,7 +436,7 @@ namespace TwistedLogik.Nucleus.Text
         /// <param name="input">The input string.</param>
         /// <param name="position">The current position in the input string.</param>
         /// <param name="value">The value that was read.</param>
-        /// <returns>true if a value was read; otherwise, false.</returns>
+        /// <returns><c>true</c> if a value was read; otherwise, <c>false</c>.</returns>
         private static bool ReadCommandInteger(String input, ref Int32 position, out Int32 value)
         {
             value = 0;
@@ -455,7 +457,7 @@ namespace TwistedLogik.Nucleus.Text
         /// <param name="input">The input string.</param>
         /// <param name="position">The current position in the input string.</param>
         /// <param name="value">The value that was read.</param>
-        /// <returns>true if a value was read; otherwise, false.</returns>
+        /// <returns><c>true</c> if a value was read; otherwise, <c>false</c>.</returns>
         private static bool ReadCommandString(String input, ref Int32 position, out StringSegment value)
         {
             if (input[position] != ':')

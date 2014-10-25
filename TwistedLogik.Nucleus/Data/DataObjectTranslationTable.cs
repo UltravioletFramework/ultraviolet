@@ -29,7 +29,7 @@ namespace TwistedLogik.Nucleus.Data
         /// table translates to an object that is valid within the current process.
         /// </summary>
         /// <param name="localID">The local identifier of the entry within the translation table to validate.</param>
-        /// <returns>true if the entry is valid; otherwise, false.</returns>
+        /// <returns><c>true</c> if the entry is valid; otherwise, <c>false</c>.</returns>
         public Boolean IsValid<T>(UInt16 localID) where T : DataObject
         {
             Guid globalID;

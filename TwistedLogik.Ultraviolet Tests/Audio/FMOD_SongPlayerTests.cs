@@ -1,8 +1,8 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using TwistedLogik.Ultraviolet.Testing;
 using TwistedLogik.Ultraviolet.Audio;
 using TwistedLogik.Ultraviolet.FMOD;
+using TwistedLogik.Ultraviolet.Testing;
 
 namespace TwistedLogik.Ultraviolet.Tests.Audio
 {

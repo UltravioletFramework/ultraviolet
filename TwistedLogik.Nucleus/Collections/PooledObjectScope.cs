@@ -6,10 +6,11 @@ namespace TwistedLogik.Nucleus.Collections
     /// Represents the scope of a pooled object.  When the scope is created, an object will be retrieved
     /// from the specified pool.  When the scope is disposed, the object will be returned to the pool.
     /// </summary>
+    /// <typeparam name="T">The type of pooled object that the scope is tracking.</typeparam>
     public struct PooledObjectScope<T> : IDisposable
     {
         /// <summary>
-        /// Initializes a new instance of the PooledObjectScope structure.
+        /// Initializes a new instance of the <see cref="PooledObjectScope{T}"/> structure.
         /// </summary>
         /// <param name="pool">The pool from which to retrieve an object.</param>
         /// <param name="instance">The object instance being managed by the scope.</param>

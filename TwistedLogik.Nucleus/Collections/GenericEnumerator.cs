@@ -6,17 +6,18 @@ namespace TwistedLogik.Nucleus.Collections
 {
     /// <summary>
     /// Represents a method which produces items for a generic enumerator.
-    /// Producing a value of default(T) indicates that the enumerator has reached the end of the collection.
+    /// Producing a value of <c>default(T)</c> indicates that the enumerator has reached the end of the collection.
     /// </summary>
+    /// <typeparam name="T">The type of item contained by the collection being enumerated.</typeparam>
     /// <param name="state">A state object to pass to the generation function.</param>
     /// <param name="index">A value indicating the index of the item that should be generated, respective to its collection.</param>
     /// <param name="result">The item that was generated.</param>
-    /// <returns>true if a valid item was generated; otherwise, false.</returns>
+    /// <returns><c>true</c> if a valid item was generated; otherwise, <c>false</c>.</returns>
     public delegate Boolean GenericEnumeratorGenerator<T>(Object state, Int32 index, out T result);
 
     /// <summary>
     /// Represents a method which produces a version number associated with
-    /// the enumerated collection.
+    /// a generically enumerated collection.
     /// </summary>
     /// <param name="state">A state object to pass to the versioning function.</param>
     /// <returns>The current version of the enumerated collection.</returns>
@@ -25,10 +26,11 @@ namespace TwistedLogik.Nucleus.Collections
     /// <summary>
     /// Represents a generic list enumerator implemented as a mutable struct.
     /// </summary>
+    /// <typeparam name="T">The type of item contained by the collection being enumerated.</typeparam>
     public struct GenericEnumerator<T> : IEnumerator<T>
     {
         /// <summary>
-        /// Initializes a new instance of the GenericEnumerator structure.
+        /// Initializes a new instance of the <see cref="GenericEnumerator{T}"/> structure.
         /// </summary>
         /// <param name="state">A state object to pass to the generation function.</param>
         /// <param name="generator">A function which produces objects from the enumerated collection.</param>
@@ -67,7 +69,7 @@ namespace TwistedLogik.Nucleus.Collections
         /// <summary>
         /// Advances the enumerator to the next item in the collection.
         /// </summary>
-        /// <returns>true if the enumerator advanced to the next item; otherwise, false.</returns>
+        /// <returns><c>true</c> if the enumerator advanced to the next item; otherwise, <c>false</c>.</returns>
         public Boolean MoveNext()
         {
             if (versioner(state) != version)

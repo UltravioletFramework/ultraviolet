@@ -29,7 +29,7 @@ namespace TwistedLogik.Nucleus.Text
     public static class Localization
     {
         /// <summary>
-        /// Initializes the Localization type.
+        /// Initializes the <see cref="Localization"/> type.
         /// </summary>
         static Localization()
         {
@@ -93,8 +93,8 @@ namespace TwistedLogik.Nucleus.Text
         }
 
         /// <summary>
-        /// Registers a plurality evaluator function for the specified culture.
-        /// Plurality evaluators are used to determine which string variant to use for a given quantity of items.
+        /// <para>Registers a plurality evaluator function for the specified culture.</para>
+        /// <para>Plurality evaluators are used to determine which string variant to use for a given quantity of items.</para>
         /// </summary>
         /// <param name="culture">The culture for which to register a plurality evaluator.</param>
         /// <param name="evaluator">The evaluator to register.</param>
@@ -107,8 +107,8 @@ namespace TwistedLogik.Nucleus.Text
         }
 
         /// <summary>
-        /// Registers a match evaluator function for the specified culture.
-        /// Match evaluators are used to determine how to make a localized string match another string variant.
+        /// <para>Registers a match evaluator function for the specified culture.</para>
+        /// <para>Match evaluators are used to determine how to make a localized string match another string variant.</para>
         /// </summary>
         /// <param name="culture">The culture for which to register a match evaluator.</param>
         /// <param name="name">The evaluator's unique name.</param>
@@ -239,7 +239,7 @@ namespace TwistedLogik.Nucleus.Text
         /// </summary>
         /// <param name="culture">The culture from which to retrieve the string.</param>
         /// <param name="key">The localization key of the string to retrieve.</param>
-        /// <returns>The string that was retrieved.</returns>
+        /// <returns>The <see cref="LocalizedString"/> that was retrieved.</returns>
         public static LocalizedString Get(String culture, String key)
         {
             return strings.Get(culture, key);
@@ -249,7 +249,7 @@ namespace TwistedLogik.Nucleus.Text
         /// Retrieves the string with the specified key from the current culture.
         /// </summary>
         /// <param name="key">The localization key of the string to retrieve.</param>
-        /// <returns>The string that was retrieved.</returns>
+        /// <returns>The <see cref="LocalizedString"/> that was retrieved.</returns>
         public static LocalizedString Get(String key)
         {
             return strings.Get(key);

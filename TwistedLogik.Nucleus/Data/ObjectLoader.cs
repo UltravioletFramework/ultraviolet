@@ -21,7 +21,7 @@ namespace TwistedLogik.Nucleus.Data
         /// Gets a value indicating whether the specified name is a reserved keyword used by the object loading system.
         /// </summary>
         /// <param name="name">The name to evaluate.</param>
-        /// <returns>true if the name is reserved; otherwise, false.</returns>
+        /// <returns><c>true</c> if the name is reserved; otherwise, <c>false</c>.</returns>
         public static Boolean IsReservedKeyword(String name)
         {
             switch (name)
@@ -40,6 +40,7 @@ namespace TwistedLogik.Nucleus.Data
         /// <summary>
         /// Loads the objects defined in the specified file.
         /// </summary>
+        /// <typeparam name="T">The type of object to load.</typeparam>
         /// <param name="datatype">The type of data contained in the specified file.</param>
         /// <param name="path">The path of the file that contains the data definitions to load.</param>
         /// <param name="name">The name of the type of object to load.  Corresponds to the names of the elements in the XML file.</param>
@@ -91,6 +92,7 @@ namespace TwistedLogik.Nucleus.Data
         /// <summary>
         /// Loads object definitions from the specified XML file and adds them to the specified object registry.
         /// </summary>
+        /// <typeparam name="T">The type of object to load.</typeparam>
         /// <param name="xml">The XML document that contains the object definitions to load.</param>
         /// <param name="name">The name of the type of object to load.  Corresponds to the names of the elements in the data file.</param>
         /// <param name="defaultClass">The default class if no default is specified in the file.</param>
@@ -110,6 +112,7 @@ namespace TwistedLogik.Nucleus.Data
         /// <summary>
         /// Loads object definitions from the specified JSON file and adds them to the specified object registry.
         /// </summary>
+        /// <typeparam name="T">The type of object to load.</typeparam>
         /// <param name="json">The JSON document that contains the object definitions to load.</param>
         /// <param name="name">The name of the type of object to load.  Corresponds to the names of the elements in the data file.</param>
         /// <param name="defaultClass">The default class if no default is specified in the file.</param>
@@ -127,6 +130,7 @@ namespace TwistedLogik.Nucleus.Data
         /// <summary>
         /// Loads an object from the specified XML element.
         /// </summary>
+        /// <typeparam name="T">The type of object to load.</typeparam>
         /// <param name="xml">The XML element that contains the object data.</param>
         /// <param name="ignoreMissingMembers">A value indicating whether the object loader 
         /// should ignore members which do not exist on the type.</param>
@@ -141,6 +145,7 @@ namespace TwistedLogik.Nucleus.Data
         /// <summary>
         /// Loads an object from the specified XML element.
         /// </summary>
+        /// <typeparam name="T">The type of object to load.</typeparam>
         /// <param name="xml">The XML element that contains the object data.</param>
         /// <param name="culture">The culture information to use when parsing values.</param>
         /// <param name="ignoreMissingMembers">A value indicating whether the object loader 
@@ -164,6 +169,7 @@ namespace TwistedLogik.Nucleus.Data
         /// <summary>
         /// Loads an object from the specified JSON object.
         /// </summary>
+        /// <typeparam name="T">The type of object to load.</typeparam>
         /// <param name="json">The JSON object that contains the object data.</param>
         /// <param name="ignoreMissingMembers">A value indicating whether the object loader 
         /// should ignore members which do not exist on the type.</param>
@@ -178,6 +184,7 @@ namespace TwistedLogik.Nucleus.Data
         /// <summary>
         /// Loads an object from the specified JSON object.
         /// </summary>
+        /// <typeparam name="T">The type of object to load.</typeparam>
         /// <param name="json">The JSON object that contains the object data.</param>
         /// <param name="culture">The culture information to use when parsing values.</param>
         /// <param name="ignoreMissingMembers">A value indicating whether the object loader 
@@ -237,7 +244,7 @@ namespace TwistedLogik.Nucleus.Data
         /// Unregisters a globally-available type alias.
         /// </summary>
         /// <param name="alias">The alias to unregister.</param>
-        /// <returns>true if the alias was unregistered; otherwise, false.</returns>
+        /// <returns><c>true</c> if the alias was unregistered; otherwise, <c>false</c>.</returns>
         public static bool UnregisterGlobalAlias(String alias)
         {
             try
@@ -257,6 +264,7 @@ namespace TwistedLogik.Nucleus.Data
         /// <summary>
         /// Loads object definitions from the specified data hierarchy and adds them to the specified object registry.
         /// </summary>
+        /// <typeparam name="T">The type of object to load.</typeparam>
         /// <param name="root">The root data element of the document that contains the object definitions to load.</param>
         /// <param name="aliases">The elements defining class aliases.</param>
         /// <param name="defaults">The elements defining class defaults.</param>
@@ -299,6 +307,7 @@ namespace TwistedLogik.Nucleus.Data
         /// <summary>
         /// Creates an object from the specified root element.
         /// </summary>
+        /// <typeparam name="T">The type of object to create.</typeparam>
         /// <param name="state">The current loader state.</param>
         /// <param name="element">The element from which to create an object.</param>
         /// <returns>The object that was created.</returns>
@@ -340,6 +349,7 @@ namespace TwistedLogik.Nucleus.Data
         /// <summary>
         /// Creates an object from the specified root element.
         /// </summary>
+        /// <typeparam name="T">The type of object to create.</typeparam>
         /// <param name="state">The loader state.</param>
         /// <param name="type">The type of object to create.</param>
         /// <param name="argsBase">The base set of arguments for this object's constructor.</param>

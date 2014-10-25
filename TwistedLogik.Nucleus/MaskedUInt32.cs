@@ -5,11 +5,15 @@ namespace TwistedLogik.Nucleus
     /// <summary>
     /// Represents a masked 32-bit integer.
     /// </summary>
+    /// <remarks>Masking allows an integer to be stored, on average, with fewer than 4 bytes of memory. To do this, the integer value
+    /// is treated as a sequence of bytes, and any bytes which have a value of zero are omitted from the output stream. Masking requires
+    /// the integer value to be prepended with an additional byte of data, the masking byte, which tracks which integer bytes have non-zero
+    /// values; this means that the size of a masked 32-bit integer is 2 bytes in the best case and 5 bytes in the worst case.</remarks>
     [CLSCompliant(false)]
     public struct MaskedUInt32
     {
         /// <summary>
-        /// Initializes a new instance of the MaskedUInt32 structure.
+        /// Initializes a new instance of the <see cref="MaskedUInt32"/> structure.
         /// </summary>
         /// <param name="value">The underlying value.</param>
         public MaskedUInt32(UInt32 value)
@@ -21,7 +25,7 @@ namespace TwistedLogik.Nucleus
         /// Retrieves a human-readable string that represents the object.
         /// </summary>
         /// <returns>A human-readable string that represents the object.</returns>
-        public override string ToString()
+        public override String ToString()
         {
             return Value.ToString();
         }
@@ -62,7 +66,7 @@ namespace TwistedLogik.Nucleus
         /// Gets the mask for this value.
         /// </summary>
         /// <returns>The mask for this value.</returns>
-        public byte GetMask()
+        public Byte GetMask()
         {
             byte mask = 0;
             for (int i = 0; i < sizeof(int); i++)
@@ -75,7 +79,7 @@ namespace TwistedLogik.Nucleus
         /// </summary>
         /// <param name="ix">The index of the byte to retrieve.</param>
         /// <returns>The value of the byte with the specified index.</returns>
-        public byte GetByte(Int32 ix)
+        public Byte GetByte(Int32 ix)
         {
             if (ix >= sizeof(int))
                 return 0;

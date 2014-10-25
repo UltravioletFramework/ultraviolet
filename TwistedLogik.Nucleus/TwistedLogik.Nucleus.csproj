@@ -132,7 +132,6 @@
     <Compile Include="Collections\PriorityQueue.cs" />
     <Compile Include="Data\IGloballyIdentified.cs" />
     <Compile Include="Data\INotifyPropertyChanged.cs" />
-    <Compile Include="Data\INotifyChanged.cs" />
     <Compile Include="Data\NamespaceDoc.cs" />
     <Compile Include="Data\ResolvedDataObjectReference.cs" />
     <Compile Include="Data\JsonDataAttribute.cs" />
@@ -191,7 +190,6 @@
     <Compile Include="Text\LocalizedStringVariant.cs" />
     <Compile Include="Text\StringBuilderExtensions.cs" />
     <Compile Include="Text\StringBuilderExtensions.Numeric.cs" />
-    <Compile Include="Text\StringExtensions.cs" />
     <Compile Include="Text\StringFormatter.cs" />
     <Compile Include="Text\Tokenizer.cs" />
     <Compile Include="NucleusStrings.cs" />

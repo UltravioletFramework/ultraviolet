@@ -9,7 +9,7 @@ namespace TwistedLogik.Nucleus.Data
     internal class XmlDataAttribute : DataAttribute
     {
         /// <summary>
-        /// Initializes a new instance of the XmlDataAttribute class.
+        /// Initializes a new instance of the <see cref="XmlDataAttribute"/> class.
         /// </summary>
         /// <param name="attribute">The underlying XML attribute.</param>
         public XmlDataAttribute(XAttribute attribute)

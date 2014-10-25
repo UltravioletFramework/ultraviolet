@@ -7,6 +7,11 @@ namespace TwistedLogik.Nucleus.Collections
     /// <summary>
     /// Represents a linked list that draws its nodes from a pre-allocated pool.
     /// </summary>
+    /// <remarks>The Base Class Library's built-in <see cref="LinkedList{T}"/> class will allocate a new instance of
+    /// <see cref="LinkedListNode{T}"/> whenever it needs one, making it difficult to use in performance scenarios
+    /// which are sensitive to garbage collection, like games. Nucleus' <see cref="PooledLinkedList{T}"/> maintains 
+    /// an internal pool of nodes which it uses instead of allocating.</remarks>
+    /// <typeparam name="T">The type of item contained by the list.</typeparam>
     public class PooledLinkedList<T> : IEnumerable<T>
     {
         /// <summary>
@@ -121,7 +126,7 @@ namespace TwistedLogik.Nucleus.Collections
         /// Removes the first occurrence of the specified item from the list.
         /// </summary>
         /// <param name="item">The item to remove from the list.</param>
-        /// <returns>true if the specified item was removed from the list; otherwise, false.</returns>
+        /// <returns><c>true</c> if the specified item was removed from the list; otherwise, <c>false</c>.</returns>
         public bool Remove(T item)
         {
             var node = List.Find(item);
@@ -138,7 +143,7 @@ namespace TwistedLogik.Nucleus.Collections
         /// Removes the specified node from the list.
         /// </summary>
         /// <param name="node">The node to remove from the list.</param>
-        /// <returns>true if the specified item was removed from the list; otherwise, false.</returns>
+        /// <returns><c>true</c> if the specified item was removed from the list; otherwise, <c>false</c>.</returns>
         public bool Remove(LinkedListNode<T> node)
         {
             Contract.Require(node, "node");
@@ -173,7 +178,7 @@ namespace TwistedLogik.Nucleus.Collections
         /// Gets a value indicating whether the linked list contains the specified value.
         /// </summary>
         /// <param name="value">The value to locate in the linked list.</param>
-        /// <returns>true if the linked list contains the specified value; otherwise, false.</returns>
+        /// <returns><c>true</c> if the linked list contains the specified value; otherwise, <c>false</c>.</returns>
         public bool Contains(T value)
         {
             return List.Contains(value);

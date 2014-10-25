@@ -4,14 +4,14 @@ using System.Text;
 namespace TwistedLogik.Nucleus.Text
 {
     /// <summary>
-    /// Contains extension methods for the StringBuilder class.
+    /// Contains extension methods for the <see cref="StringBuilder"/> class.
     /// </summary>
     public static partial class StringBuilderExtensions
     {
         /// <summary>
-        /// Appends the specified string pointer to the StringBuilder.
+        /// Appends the specified string pointer to the <see cref="StringBuilder"/>.
         /// </summary>
-        /// <param name="sb">The StringBuilder to which to append the value.</param>
+        /// <param name="sb">The <see cref="StringBuilder"/> to which to append the value.</param>
         /// <param name="ptr">A pointer to the unmanaged string to append.</param>
         public static void AppendStringPtr(this StringBuilder sb, StringPtr8 ptr)
         {
@@ -19,9 +19,9 @@ namespace TwistedLogik.Nucleus.Text
         }
 
         /// <summary>
-        /// Appends a substring of the specified string pointer to the StringBuilder.
+        /// Appends a substring of the specified string pointer to the <see cref="StringBuilder"/>.
         /// </summary>
-        /// <param name="sb">The StringBuilder to which to append the value.</param>
+        /// <param name="sb">The <see cref="StringBuilder"/> to which to append the value.</param>
         /// <param name="ptr">A pointer to the unmanaged string that contains the substring to append.</param>
         /// <param name="offset">The offset into the string at which the substring begins.</param>
         /// <param name="length">The length of the substring.</param>
@@ -39,9 +39,9 @@ namespace TwistedLogik.Nucleus.Text
         }
 
         /// <summary>
-        /// Appends the specified string pointer to the StringBuilder.
+        /// Appends the specified string pointer to the <see cref="StringBuilder"/>.
         /// </summary>
-        /// <param name="sb">The StringBuilder to which to append the value.</param>
+        /// <param name="sb">The <see cref="StringBuilder"/> to which to append the value.</param>
         /// <param name="ptr">A pointer to the unmanaged string to append.</param>
         public static void AppendStringPtr(this StringBuilder sb, StringPtr16 ptr)
         {
@@ -49,9 +49,9 @@ namespace TwistedLogik.Nucleus.Text
         }
 
         /// <summary>
-        /// Appends a substring of the specified string pointer to the StringBuilder.
+        /// Appends a substring of the specified string pointer to the <see cref="StringBuilder"/>.
         /// </summary>
-        /// <param name="sb">The StringBuilder to which to append the value.</param>
+        /// <param name="sb">The <see cref="StringBuilder"/> to which to append the value.</param>
         /// <param name="ptr">A pointer to the unmanaged string that contains the substring to append.</param>
         /// <param name="offset">The offset into the string at which the substring begins.</param>
         /// <param name="length">The length of the substring.</param>
@@ -69,9 +69,9 @@ namespace TwistedLogik.Nucleus.Text
         }
 
         /// <summary>
-        /// Appends a substring of the specified string to the StringBuilder.
+        /// Appends a substring of the specified string to the <see cref="StringBuilder"/>.
         /// </summary>
-        /// <param name="sb">The StringBuilder to which to append the value.</param>
+        /// <param name="sb">The <see cref="StringBuilder"/> to which to append the value.</param>
         /// <param name="str">The string that contains the substring to append.</param>
         /// <param name="offset">The offset into the string at which the substring begins.</param>
         /// <param name="length">The length of the substring.</param>
@@ -85,10 +85,10 @@ namespace TwistedLogik.Nucleus.Text
         }
 
         /// <summary>
-        /// Appends the value of a string segment to the StringBuilder.
+        /// Appends the value of a string segment to the <see cref="StringBuilder"/>.
         /// </summary>
-        /// <param name="sb">The StringBuilder to which to append the value.</param>
-        /// <param name="value">The string segment to append to the StringBuilder.</param>
+        /// <param name="sb">The <see cref="StringBuilder"/> to which to append the value.</param>
+        /// <param name="value">The <see cref="StringSegment"/> to append to the <see cref="StringBuilder"/>.</param>
         [CLSCompliant(false)]
         public static void AppendSegment(this StringBuilder sb, StringSegment value)
         {
@@ -102,10 +102,10 @@ namespace TwistedLogik.Nucleus.Text
         }
 
         /// <summary>
-        /// Appends the value of a string segment to the StringBuilder.
+        /// Appends the value of a string segment to the <see cref="StringBuilder"/>.
         /// </summary>
-        /// <param name="sb">The StringBuilder to which to append the value.</param>
-        /// <param name="value">The string segment to append to the StringBuilder.</param>
+        /// <param name="sb">The <see cref="StringBuilder"/> to which to append the value.</param>
+        /// <param name="value">The <see cref="StringSegment"/> to append to the <see cref="StringBuilder"/>.</param>
         public static void AppendSegment(this StringBuilder sb, ref StringSegment value)
         {
             Contract.Require(sb, "sb");
@@ -120,8 +120,8 @@ namespace TwistedLogik.Nucleus.Text
         /// <summary>
         /// Appends an integer to the specified StringBuilder, padding the string to contain at least 2 digits.
         /// </summary>
-        /// <param name="sb">The StringBuilder to which to append the value.</param>
-        /// <param name="value">The value to append to the StringBuilder.</param>
+        /// <param name="sb">The <see cref="StringBuilder"/> to which to append the value.</param>
+        /// <param name="value">The value to append to the <see cref="StringBuilder"/>.</param>
         public static void AppendPaddedInt2(this StringBuilder sb, Int32 value)
         {
             Contract.Require(sb, "sb");
@@ -132,8 +132,8 @@ namespace TwistedLogik.Nucleus.Text
         /// <summary>
         /// Appends an integer to the specified StringBuilder, separating each group of 3 digits with commas.
         /// </summary>
-        /// <param name="sb">The StringBuilder to which to append the value.</param>
-        /// <param name="value">The value to append to the StringBuilder.</param>
+        /// <param name="sb">The <see cref="StringBuilder"/> to which to append the value.</param>
+        /// <param name="value">The value to append to the <see cref="StringBuilder"/>.</param>
         public static void AppendIntWithCommas(this StringBuilder sb, int value)
         {
             Contract.Require(sb, "sb");
@@ -160,8 +160,8 @@ namespace TwistedLogik.Nucleus.Text
         /// Appends a single-precision floating point value to the specified StringBuilder, padding the string to contain
         /// at exactly two digits after the decimal point.
         /// </summary>
-        /// <param name="sb">The StringBuilder to which to append the value.</param>
-        /// <param name="value">The value to append to the StringBuilder.</param>
+        /// <param name="sb">The <see cref="StringBuilder"/> to which to append the value.</param>
+        /// <param name="value">The value to append to the <see cref="StringBuilder"/>.</param>
         public static void AppendPaddedSingle2(this StringBuilder sb, Single value)
         {
             Contract.Require(sb, "sb");
@@ -173,8 +173,8 @@ namespace TwistedLogik.Nucleus.Text
         /// Appends a double-precision floating point value to the specified StringBuilder, padding the string to contain
         /// at exactly two digits after the decimal point.
         /// </summary>
-        /// <param name="sb">The StringBuilder to which to append the value.</param>
-        /// <param name="value">The value to append to the StringBuilder.</param>
+        /// <param name="sb">The <see cref="StringBuilder"/> to which to append the value.</param>
+        /// <param name="value">The value to append to the <see cref="StringBuilder"/>.</param>
         public static void AppendPaddedDouble2(this StringBuilder sb, Double value)
         {
             Contract.Require(sb, "sb");
@@ -188,7 +188,7 @@ namespace TwistedLogik.Nucleus.Text
         /// <param name="source">The source StringBuilder.</param>
         /// <param name="start">The starting index of the substring.</param>
         /// <param name="length">The number of character in the substring.</param>
-        /// <param name="output">The StringBuilder to populate with the substring.</param>
+        /// <param name="output">The <see cref="StringBuilder"/> to populate with the substring.</param>
         public static void Substring(this StringBuilder source, Int32 start, Int32 length, StringBuilder output)
         {
             Contract.Require(source, "source");
@@ -202,7 +202,7 @@ namespace TwistedLogik.Nucleus.Text
         }
 
         /// <summary>
-        /// Splits the StringBuilder into subtrings separated by the specified delimiter.
+        /// Splits the <see cref="StringBuilder"/> into subtrings separated by the specified delimiter.
         /// </summary>
         /// <param name="source">The source StringBuilder.</param>
         /// <param name="delimiter">The delimiter with which to split the string.</param>

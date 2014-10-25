@@ -7,6 +7,7 @@ namespace TwistedLogik.Nucleus.Data
     /// <summary>
     /// Represents a type converter which makes use of the Nucleus Object Resolver.
     /// </summary>
+    /// <typeparam name="T">The type of object to convert.</typeparam>
     public class ObjectResolverTypeConverter<T> : TypeConverter
     {
         /// <summary>

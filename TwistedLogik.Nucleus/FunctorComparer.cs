@@ -9,7 +9,7 @@ namespace TwistedLogik.Nucleus
     public sealed class FunctorComparer<T> : Comparer<T>
     {
         /// <summary>
-        /// Initializes a new instance of the FunctorComparer class.
+        /// Initializes a new instance of the <see cref="FunctorComparer{T}"/> class.
         /// </summary>
         /// <param name="comparer">The function used to compare objects.</param>
         public FunctorComparer(Func<T, T, Int32> comparer)

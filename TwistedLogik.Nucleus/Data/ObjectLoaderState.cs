@@ -10,7 +10,7 @@ namespace TwistedLogik.Nucleus.Data
     internal class ObjectLoaderState
     {
         /// <summary>
-        /// Initializes a new instance of the ObjectLoaderState class.
+        /// Initializes a new instance of the <see cref="ObjectLoaderState"/> class.
         /// </summary>
         /// <param name="globalAliases">The registry of global aliases.</param>
         /// <param name="culture">The culture information to use when parsing objects.</param>
@@ -106,7 +106,7 @@ namespace TwistedLogik.Nucleus.Data
         /// Gets the default values for the specified type.
         /// </summary>
         /// <param name="type">The type for which to retrieve default values.</param>
-        /// <returns>The default values for the specified type, or null if there are no default values for that type.</returns>
+        /// <returns>The default values for the specified type, or <c>null</c> if there are no default values for that type.</returns>
         public IEnumerable<KeyValuePair<String, DataElement>> GetDefaultValues(Type type)
         {
             Dictionary<String, DataElement> values;

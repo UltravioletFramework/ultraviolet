@@ -15,7 +15,7 @@ namespace TwistedLogik.Nucleus.Text
     public partial class LocalizedString
     {
         /// <summary>
-        /// Initializes a new instance of the LocalizedString class.
+        /// Initializes a new instance of the <see cref="LocalizedString"/> class.
         /// </summary>
         /// <param name="culture">The string's associated culture.</param>
         /// <param name="key">The string's localization key.</param>
@@ -51,7 +51,7 @@ namespace TwistedLogik.Nucleus.Text
         /// Gets a value indicating whether the string has the specified property.
         /// </summary>
         /// <param name="prop">The name of the property to evaluate.</param>
-        /// <returns>true if the string has the specified property; otherwise, false.</returns>
+        /// <returns><c>true</c> if the string has the specified property; otherwise, <c>false</c>.</returns>
         public Boolean HasProperty(String prop)
         {
             return properties.ContainsKey(prop);
@@ -61,7 +61,7 @@ namespace TwistedLogik.Nucleus.Text
         /// Gets a value indicating whether the string has the specified property.
         /// </summary>
         /// <param name="prop">The name of the property to evaluate.</param>
-        /// <returns>true if the string has the specified property; otherwise, false.</returns>
+        /// <returns><c>true</c> if the string has the specified property; otherwise, <c>false</c>.</returns>
         public Boolean HasProperty(StringSegment prop)
         {
             return HasPropertyRef(ref prop);
@@ -71,7 +71,7 @@ namespace TwistedLogik.Nucleus.Text
         /// Gets a value indicating whether the string has the specified property.
         /// </summary>
         /// <param name="prop">The name of the property to evaluate.</param>
-        /// <returns>true if the string has the specified property; otherwise, false.</returns>
+        /// <returns><c>true</c> if the string has the specified property; otherwise, <c>false</c>.</returns>
         public Boolean HasPropertyRef(ref StringSegment prop)
         {
             foreach (var kvp in properties)
