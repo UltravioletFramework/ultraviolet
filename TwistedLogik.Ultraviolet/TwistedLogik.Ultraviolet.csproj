@@ -253,6 +253,8 @@
     <Compile Include="IUltravioletPlatform.cs" />
     <Compile Include="IUltravioletUI.cs" />
     <Compile Include="Matrix.cs" />
+    <Compile Include="MutableVector2.cs" />
+    <Compile Include="MutableVector3.cs" />
     <Compile Include="NamespaceDoc.cs" />
     <Compile Include="Platform\DisplayMode.cs" />
     <Compile Include="Platform\IUltravioletDisplay.cs" />

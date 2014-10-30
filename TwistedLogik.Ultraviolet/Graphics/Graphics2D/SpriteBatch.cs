@@ -69,8 +69,8 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
 
                     for (int v = 0; v < 4; v++)
                     {
-                        CalculatePosition(pSprites, v, ref pVertices->Position);
-                        CalculateTextureCoordinates(pSprites, v, ref pVertices->TextureCoordinate);
+                        CalculatePosition(pSprites, v, (MutableVector3*)&pVertices->Position);
+                        CalculateTextureCoordinates(pSprites, v, (MutableVector2*)&pVertices->TextureCoordinate);
 
                         pVertices->Color = pSprites->Color;
                         pVertices++;
