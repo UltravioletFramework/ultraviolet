@@ -6,7 +6,7 @@ using System.Text;
 namespace TwistedLogik.Ultraviolet
 {
     /// <summary>
-    /// The <see cref="MutableVector2"/> structure is a mutable version of the <see cref="Vector2"/> class used 
+    /// The <see cref="MutableVector2"/> structure is a mutable version of the <see cref="Vector2"/> structure used 
     /// primarily for performance micro-optimizations within the Ultraviolet Framework.
     /// </summary>
     public struct MutableVector2
