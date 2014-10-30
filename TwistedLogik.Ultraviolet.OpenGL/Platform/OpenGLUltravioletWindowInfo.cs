@@ -75,15 +75,17 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
 
                 current = window;
 
-                var win = (OpenGLUltravioletWindow)(window ?? master);
-                var winptr = (IntPtr)win;
-                if (SDL.GL_MakeCurrent(winptr, context) < 0)
-                    throw new SDL2Exception();
-
-                if (SDL.GL_SetSwapInterval(win.SynchronizeWithVerticalRetrace ? 1 : 0) < 0)
-                    throw new SDL2Exception();
+                if (window != null && window != glwin)
+                {
+                    DesignateCurrentOpenGLWindow(window, context);
+                }
 
                 OnCurrentWindowChanged();
+            }
+
+            if (windows.Count == 0)
+            {
+                DesignateCurrentOpenGLWindow(null, context);
             }
         }
 
@@ -464,6 +466,22 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
             }
         }
 
+        /// <summary>
+        /// Binds the OpenGL context to the specified window.
+        /// </summary>
+        private void DesignateCurrentOpenGLWindow(IUltravioletWindow window, IntPtr context)
+        {
+            var win = (OpenGLUltravioletWindow)(window ?? master);
+            var winptr = (IntPtr)win;
+            if (SDL.GL_MakeCurrent(winptr, context) < 0)
+                throw new SDL2Exception();
+
+            if (SDL.GL_SetSwapInterval(win.SynchronizeWithVerticalRetrace ? 1 : 0) < 0)
+                throw new SDL2Exception();
+
+            glwin = win;
+        }
+
         // The context's attached windows.
         private readonly List<IUltravioletWindow> windows = new List<IUltravioletWindow>();
 
@@ -471,6 +489,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
         private IUltravioletWindow master;
         private IUltravioletWindow primary;
         private IUltravioletWindow current;
+        private IUltravioletWindow glwin;
 
         // The Ultraviolet context.
         private readonly UltravioletContext uv;

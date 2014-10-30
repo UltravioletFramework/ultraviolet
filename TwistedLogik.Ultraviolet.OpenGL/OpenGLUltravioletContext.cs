@@ -105,10 +105,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL
         {
             Contract.EnsureNotDisposed(this, Disposed);
 
-            var glcontext = SDL.GL_GetCurrentContext();
-            if (glcontext == IntPtr.Zero)
-                throw new SDL2Exception();
-
+            var glcontext = graphics.OpenGLContext;
             var windowInfo = ((OpenGLUltravioletWindowInfo)platform.Windows);
             foreach (OpenGLUltravioletWindow window in windowInfo)
             {

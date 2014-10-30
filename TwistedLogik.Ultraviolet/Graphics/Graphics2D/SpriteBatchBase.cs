@@ -1149,6 +1149,36 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         }
 
         /// <summary>
+        /// Calculates the position and texture coordinates of a sprite vertex.
+        /// </summary>
+        /// <param name="metadata">A pointer to the sprite metadata.</param>
+        /// <param name="ix">The index of the current vertex.</param>
+        /// <param name="position">The position of the current vertex represented as a <see cref="MutableVector3"/>.</param>
+        /// <param name="textureCoordinates">The texture coordinates of the current vertex.</param>
+        [CLSCompliant(false)]
+        protected void CalculatePositionAndTextureCoordinates(SpriteHeader* metadata, Int32 ix, MutableVector3* position, MutableVector2* textureCoordinates)
+        {
+            var x = xCoords[ix];
+            var y = yCoords[ix];
+
+            var scaledX = (x - cachedOriginX) * metadata->DestinationWidth;
+            var scaledY = (y - cachedOriginY) * metadata->DestinationHeight;
+
+            position->X = metadata->DestinationX + scaledX * cachedCos - scaledY * cachedSin;
+            position->Y = metadata->DestinationY + scaledX * cachedSin + scaledY * cachedCos;
+            position->Z = 0;
+
+            if ((metadata->Effects & SpriteEffects.FlipHorizontally) == SpriteEffects.FlipHorizontally)
+                x = 1f - x;
+
+            if ((metadata->Effects & SpriteEffects.FlipVertically) == SpriteEffects.FlipVertically)
+                y = 1f - y;
+
+            textureCoordinates->X = (metadata->SourceX + x * metadata->SourceWidth) * cachedU;
+            textureCoordinates->Y = 1f - ((metadata->SourceY + y * metadata->SourceHeight) * cachedV);
+        }
+
+        /// <summary>
         /// Generates vertices for a group of sprites.
         /// </summary>
         /// <param name="texture">The batch's texture.</param>

@@ -548,6 +548,19 @@ namespace TwistedLogik.Ultraviolet.OpenGL
         }
 
         /// <summary>
+        /// Gets the OpenGL context.
+        /// </summary>
+        internal IntPtr OpenGLContext
+        {
+            get 
+            {
+                Contract.EnsureNotDisposed(this, Disposed);
+
+                return context;
+            }
+        }
+
+        /// <summary>
         /// Releases resources associated with the object.
         /// </summary>
         /// <param name="disposing">true if the object is being disposed; false if the object is being finalized.</param>
