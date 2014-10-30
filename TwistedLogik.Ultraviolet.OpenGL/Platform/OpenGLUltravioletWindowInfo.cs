@@ -75,7 +75,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
 
                 current = window;
 
-                if (window != null && window != glwin)
+                if (window != null && (window != glwin || window.SynchronizeWithVerticalRetrace != vsync))
                 {
                     DesignateCurrentOpenGLWindow(window, context);
                 }
@@ -480,6 +480,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
                 throw new SDL2Exception();
 
             glwin = win;
+            vsync = win.SynchronizeWithVerticalRetrace;
         }
 
         // The context's attached windows.
@@ -490,6 +491,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
         private IUltravioletWindow primary;
         private IUltravioletWindow current;
         private IUltravioletWindow glwin;
+        private Boolean vsync;
 
         // The Ultraviolet context.
         private readonly UltravioletContext uv;
