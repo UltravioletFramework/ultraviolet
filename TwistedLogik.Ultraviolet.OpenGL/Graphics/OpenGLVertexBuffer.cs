@@ -106,6 +106,13 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
                 {
                     gl.BufferData(gl.GL_ARRAY_BUFFER, this.size, null, usage);
                     gl.ThrowIfError();
+
+                    /* FIX: 
+                     * I have no idea why the following code is necessary, but
+                     * it seems to fix flickering sprites on Intel HD 4000 devices. */
+                    var vao = (uint)OpenGLCache.GL_VERTEX_ARRAY_BINDING;
+                    gl.BindVertexArray(vao);
+                    gl.ThrowIfError();
                 }
 
                 var start = new IntPtr(offset * vdecl.VertexStride);

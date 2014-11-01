@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Drawing;
+using System.Drawing.Imaging;
+using System.IO;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace TwistedLogik.Ultraviolet.Testing
@@ -49,6 +51,10 @@ namespace TwistedLogik.Ultraviolet.Testing
                     var pixelActual   = bitmap.GetPixel(x, y);
                     if (CalculateColorDistance(pixelExpected, pixelActual) > distance)
                     {
+                        var filenameNoExtension = Path.GetFileNameWithoutExtension(filename);
+                        var filenameActual = Path.ChangeExtension(filenameNoExtension + "_Failed", "png");
+                        bitmap.Save(filenameActual, ImageFormat.Png);
+
                         Assert.Fail("Images do not match");
                     }
                 }

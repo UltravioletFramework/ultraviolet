@@ -258,15 +258,23 @@ namespace TwistedLogik.Ultraviolet.OpenGL
         /// <param name="stream">The geometry stream to bind to the graphics device.</param>
         public void SetGeometryStream(GeometryStream stream)
         {
-            Contract.Require(stream, "stream");
             Contract.EnsureNotDisposed(this, Disposed);
 
             Ultraviolet.ValidateResource(stream);
 
-            if (this.geometryStream != stream)
+            if (stream == null)
             {
-                this.geometryStream = (OpenGLGeometryStream)stream;
-                this.geometryStream.Apply();
+                this.geometryStream = null;
+                gl.BindVertexArray(0);
+                OpenGLCache.GL_VERTEX_ARRAY_BINDING.Update(0);
+            }
+            else
+            {
+                if (this.geometryStream != stream)
+                {
+                    this.geometryStream = (OpenGLGeometryStream)stream;
+                    this.geometryStream.Apply();
+                }
             }
         }
 
@@ -568,6 +576,11 @@ namespace TwistedLogik.Ultraviolet.OpenGL
         {
             if (Disposed)
                 return;
+
+            /* FIX:
+             * Without this line, Intel HD 4000 throws an AccessViolationException
+             * when we call GL_DeleteContext(). Weird, huh? */
+            gl.BindVertexArray(0);
 
             SDL.GL_DeleteContext(context);
 
