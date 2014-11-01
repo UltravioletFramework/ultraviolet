@@ -44,7 +44,7 @@ Known Issues
   
   You may need to run this command in both a 32-bit and 64-bit prompt, and you should restart Visual Studio afterwards if it was already running.
   
-  This command registers TwistedLogik's public key token for verification skipping on your machine. This means that the CLR will load assemblies with this public key token even if they are not correctly signed, making it possible to build and debug Ultraviolet assemblies without requiring access to TwistedLogik private key file.
+  This command registers TwistedLogik's public key token for verification skipping on your machine. This means that the CLR will load assemblies with this public key token even if they are not correctly signed, making it possible to build and debug Ultraviolet assemblies without requiring access to the TwistedLogik private key file.
   
 * __Intel HD Graphics__
 
