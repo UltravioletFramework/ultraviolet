@@ -33,6 +33,27 @@ Some core features of the Ultraviolet Framework:
 
 The Ultraviolet Framework's source code is [available on GitHub](https://github.com/tlgkccampbell/ultraviolet). If you're developing on Windows, and you just want to get started making games, you can use the installer provided as part of the [latest release](https://github.com/tlgkccampbell/ultraviolet/releases). It will ensure that you have the necessary DLLs and install Visual Studio templates for developing Ultraviolet applications. 
 
+Known Issues
+============
+
+* __Strong Naming__
+
+  If you're going to build Ultraviolet from source, you're going to need to account for the fact that all of its assemblies are delay signed. The easiest way to do this is to open a Visual Studio command prompt and enter the following command:
+  
+  ``sn -Vr *,78da2f4877323311``
+  
+  You may need to run this command in both a 32-bit and 64-bit prompt, and you should restart Visual Studio afterwards if it was already running.
+  
+  This command registers TwistedLogik's public key token for verification skipping on your machine. This means that the CLR will load assemblies with this public key token even if they are not correctly signed, making it possible to build and debug Ultraviolet assemblies without requiring access to the TwistedLogik private key file.
+  
+* __Intel HD Graphics__
+
+  The rendering unit tests do not currently run correctly on Intel HD 4000 integrated graphics devices. The cause for this is still being investigated.
+  
+* __General Compatibility__
+
+  Ultraviolet is still in the early stages of its development, and as such it has not yet been fully tested on a wide range of hardware. If you encounter compatibility issues on your machine, please [register an issue on itHub](https://github.com/tlgkccampbell/ultraviolet/issues) so we can try to address it!
+  
 Documentation
 =============
 
