@@ -46,9 +46,9 @@ Known Issues
   
   This command registers TwistedLogik's public key token for verification skipping on your machine. This means that the CLR will load assemblies with this public key token even if they are not correctly signed, making it possible to build and debug Ultraviolet assemblies without requiring access to the TwistedLogik private key file.
   
-* __Intel HD Graphics__
+* __Building the Samples__
 
-  The rendering unit tests do not currently run correctly on Intel HD 4000 integrated graphics devices. The cause for this is still being investigated.
+  If you encounter errors when attempting to build ``Ultraviolet Framework Samples.sln``, make sure that you've built ``TwistedLogik.Ultraviolet.sln`` in ``Release`` mode first.
   
 * __General Compatibility__
 
