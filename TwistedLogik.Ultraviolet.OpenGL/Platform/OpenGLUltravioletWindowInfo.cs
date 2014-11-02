@@ -257,6 +257,9 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
             if (window == primary)
                 DesignatePrimary(null);
 
+            if (window == glwin && glcontext != IntPtr.Zero)
+                DesignateCurrentOpenGLWindow(null, glcontext);
+
             var sdlwin = (OpenGLUltravioletWindow)window;
             Ultraviolet.Messages.Unsubscribe(sdlwin, SDL2UltravioletMessages.SDLEvent);
 
@@ -480,6 +483,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
                 throw new SDL2Exception();
 
             glwin = win;
+            glcontext = context;
             vsync = win.SynchronizeWithVerticalRetrace;
         }
 
@@ -491,6 +495,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
         private IUltravioletWindow primary;
         private IUltravioletWindow current;
         private IUltravioletWindow glwin;
+        private IntPtr glcontext;
         private Boolean vsync;
 
         // The Ultraviolet context.
