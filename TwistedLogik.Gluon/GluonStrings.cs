@@ -24,6 +24,7 @@ namespace TwistedLogik.Gluon
 
         public static readonly StringResource CouldNotLoadFunction        = new StringResource(StringDatabase, "COULD_NOT_LOAD_FUNCTION");
         public static readonly StringResource LoadedOpenGLVersion         = new StringResource(StringDatabase, "LOADED_OPENGL_VERSION");
+        public static readonly StringResource UnloadedOpenGL              = new StringResource(StringDatabase, "UNLOADED_OPENGL");
         public static readonly StringResource OpenGLNotInitialized        = new StringResource(StringDatabase, "OPENGL_NOT_INITIALIZED");
         public static readonly StringResource OpenGLAlreadyInitialized    = new StringResource(StringDatabase, "OPENGL_ALREADY_INITIALIZED");
         public static readonly StringResource FunctionNotProvidedByDriver = new StringResource(StringDatabase, "FUNCTION_NOT_PROVIDED_BY_DRIVER");

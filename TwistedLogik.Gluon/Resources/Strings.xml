@@ -10,6 +10,11 @@
       <Variant>GLUON: Loaded OpenGL version {0} ({1})</Variant>
     </en-US>
   </String>
+  <String Key="UNLOADED_OPENGL">
+    <en-US>
+      <Variant>GLUON: Unloaded OpenGL</Variant>
+    </en-US>
+  </String>
   <String Key="OPENGL_NOT_INITIALIZED">
     <en-US>
       <Variant>OpenGL has not been initialized.</Variant>

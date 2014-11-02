@@ -36,10 +36,11 @@ namespace TwistedLogik.Ultraviolet.OpenGL
             if (SDL.GL_SetSwapInterval(0) < 0)
                 throw new SDL2Exception();
 
-            if (!gl.Initialized)
+            if (gl.Initialized)
             {
-                gl.Initialize(new OpenGLInitializer());
+                gl.Uninitialize();
             }
+            gl.Initialize(new OpenGLInitializer());
 
             OpenGLCache.Reset();
 
@@ -581,6 +582,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL
              * Without this line, Intel HD 4000 throws an AccessViolationException
              * when we call GL_DeleteContext(). Weird, huh? */
             gl.BindVertexArray(0);
+            gl.Uninitialize();
 
             SDL.GL_DeleteContext(context);
 

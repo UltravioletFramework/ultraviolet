@@ -28,9 +28,7 @@ namespace TwistedLogik.Gluon
         public static void Initialize(IOpenGLInitializer initializer)
         {
             Contract.Require(initializer, "initializer");
-
-            if (initialized)
-                throw new InvalidOperationException(GluonStrings.OpenGLAlreadyInitialized);
+            Contract.EnsureNot(initialized, GluonStrings.OpenGLAlreadyInitialized);
 
             initializing = true;
 
@@ -43,13 +41,8 @@ namespace TwistedLogik.Gluon
             LoadExtensions();
 
             gl.EXT_direct_state_access_available = IsExtensionSupported("GL_EXT_direct_state_access");
-
-            var functions = 
-                from field in typeof(gl).GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static)
-                where 
-                    typeof(Delegate).IsAssignableFrom(field.FieldType) && !field.FieldType.IsGenericType
-                select field;
-
+            
+            var functions = GetOpenGLFunctionFields();
             foreach (var function in functions)
             {
                 var name = function.Name;
@@ -64,6 +57,30 @@ namespace TwistedLogik.Gluon
 
             initializing = false;
             initialized = true;
+        }
+
+        /// <summary>
+        /// Clears out Gluon's bindings to the OpenGL context with which is currently associated. 
+        /// </summary>
+        public static void Uninitialize()
+        {
+            Contract.Ensure(initialized, GluonStrings.OpenGLNotInitialized);
+
+            gl.majorVersion = 0;
+            gl.minorVersion = 0;
+            gl.extensions.Clear();
+
+            gl.EXT_direct_state_access_available = false;
+
+            var functions = GetOpenGLFunctionFields();
+            foreach (var function in functions)
+            {
+                function.SetValue(null, null);
+            }
+
+            Debug.WriteLine(GluonStrings.UnloadedOpenGL);
+
+            initialized = false;
         }
 
         /// <summary>
@@ -179,6 +196,21 @@ namespace TwistedLogik.Gluon
         public static Boolean Initialized
         {
             get { return initialized; }
+        }
+
+        /// <summary>
+        /// Gets all of the fields of the <see cref="gl"/> type which represent bindings to OpenGL functions.
+        /// </summary>
+        /// <returns>A collection containing the function binding fields.</returns>
+        private static IEnumerable<FieldInfo> GetOpenGLFunctionFields()
+        {
+            var functions = 
+                from field in typeof(gl).GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static)
+                where
+                    typeof(Delegate).IsAssignableFrom(field.FieldType) && !field.FieldType.IsGenericType
+                select field;
+
+            return functions;
         }
 
         /// <summary>
