@@ -2,7 +2,7 @@
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi"
      xmlns:netfx="http://schemas.microsoft.com/wix/NetFxExtension"
      xmlns:util="http://schemas.microsoft.com/wix/UtilExtension">
-  <Product Id="*" Name="Ultraviolet Framework 1.0" Language="1033" Version="1.0.0.0" Manufacturer="TwistedLogik Software" UpgradeCode="d1732409-d2fa-46ae-a6e0-733ba2d4cdd6">
+  <Product Id="*" Name="Ultraviolet Framework 1.0" Language="1033" Version="1.0.1.0" Manufacturer="TwistedLogik Software" UpgradeCode="d1732409-d2fa-46ae-a6e0-733ba2d4cdd6">
     <Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" InstallPrivileges="elevated" />
 
     <MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
