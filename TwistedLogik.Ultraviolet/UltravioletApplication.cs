@@ -230,7 +230,7 @@ namespace TwistedLogik.Ultraviolet
         {
             if (!disposed)
             {
-                if (disposing)
+                if (disposing && uv != null)
                 {
                     uv.Messages.Unsubscribe(this);
 
