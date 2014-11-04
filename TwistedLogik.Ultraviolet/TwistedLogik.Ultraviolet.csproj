@@ -233,11 +233,14 @@
     <Compile Include="Graphics\TextureDataFormat.cs" />
     <Compile Include="IInterpolatable.cs" />
     <Compile Include="Input\ButtonState.cs" />
+    <Compile Include="Input\GamePadButton.cs" />
+    <Compile Include="Input\GamePadDevice.cs" />
     <Compile Include="Input\InputAction.cs" />
     <Compile Include="Input\InputActionCollection.cs" />
     <Compile Include="Input\InputActionCollection.InputBindingGroup.cs" />
     <Compile Include="Input\InputBinding.cs" />
     <Compile Include="Input\InputDevice.cs" />
+    <Compile Include="Input\GamePadInputBinding.cs" />
     <Compile Include="Input\MouseInputBinding.cs" />
     <Compile Include="Input\KeyboardInputBinding.cs" />
     <Compile Include="Input\NamespaceDoc.cs" />
