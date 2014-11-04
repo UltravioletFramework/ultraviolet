@@ -332,6 +332,21 @@ namespace TwistedLogik.Ultraviolet.Input
         }
 
         /// <summary>
+        /// Creates a new game pad binding.
+        /// </summary>
+        /// <param name="button">The binding's primary button.</param>
+        /// <returns>The binding that was created.</returns>
+        protected InputBinding CreateGamePadBinding(GamePadButton button)
+        {
+            var gamePad = Ultraviolet.GetInput().GetGamePad(0);
+            if (gamePad == null)
+            {
+                return null;
+            }
+            return new GamePadInputBinding(gamePad, button);
+        }
+
+        /// <summary>
         /// Serializes the input actions into an XML document.
         /// </summary>
         /// <returns>An XML document that represents the input actions.</returns>

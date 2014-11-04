@@ -109,6 +109,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Input\GamePadDeviceInfo.cs" />
+    <Compile Include="Input\SDL2GamePadDevice.cs" />
     <Compile Include="Input\SDL2KeyboardDevice.cs" />
     <Compile Include="Input\SDL2MouseDevice.cs" />
     <Compile Include="Messages\SDL2EventMessageData.cs" />
@@ -119,6 +121,7 @@
     <Compile Include="Native\SDL_BitmapOrder.cs" />
     <Compile Include="Native\SDL_BlendMode.cs" />
     <Compile Include="Native\SDL_Button.cs" />
+    <Compile Include="Native\SDL_GameControllerButton.cs" />
     <Compile Include="Native\SDL_GLprofile.cs" />
     <Compile Include="Native\SDL_GLcontextFlag.cs" />
     <Compile Include="Native\SDL_SysWMinfoUnion.cs" />

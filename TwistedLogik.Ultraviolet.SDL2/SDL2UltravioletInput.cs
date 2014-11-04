@@ -19,26 +19,22 @@ namespace TwistedLogik.Ultraviolet.SDL2
         {
             this.keyboard = new SDL2KeyboardDevice(uv);
             this.mouse = new SDL2MouseDevice(uv);
+            this.gamePadInfo = new GamePadDeviceInfo(uv);
         }
 
-        /// <summary>
-        /// Updates the subsystem's state.
-        /// </summary>
-        /// <param name="time">Time elapsed since the last call to Update.</param>
+        /// <inheritdoc/>
         public void Update(UltravioletTime time)
         {
             Contract.EnsureNotDisposed(this, Disposed);
 
             this.keyboard.Update(time);
             this.mouse.Update(time);
+            this.gamePadInfo.Update(time);
 
             OnUpdating(time);
         }
 
-        /// <summary>
-        /// Gets a value indicating whether the current platform supports keyboard input.
-        /// </summary>
-        /// <returns>true if the current platform supports keyboard input; otherwise, false.</returns>
+        /// <inheritdoc/>
         public Boolean IsKeyboardSupported()
         {
             Contract.EnsureNotDisposed(this, Disposed);
@@ -46,11 +42,7 @@ namespace TwistedLogik.Ultraviolet.SDL2
             return true;
         }
 
-        /// <summary>
-        /// Gets the keyboard device, if keyboard input is supported.
-        /// </summary>
-        /// <remarks>If keyboard input is not supported on the current platform, this method will throw NotSupportedException.</remarks>
-        /// <returns>The keyboard device.</returns>
+        /// <inheritdoc/>
         public KeyboardDevice GetKeyboard()
         {
             Contract.EnsureNotDisposed(this, Disposed);
@@ -58,10 +50,7 @@ namespace TwistedLogik.Ultraviolet.SDL2
             return keyboard;
         }
 
-        /// <summary>
-        /// Gets a value indicating whether the current platform supports mouse input.
-        /// </summary>
-        /// <returns>true if the current platform supports mouse input; otherwise, false.</returns>
+        /// <inheritdoc/>
         public Boolean IsMouseSupported()
         {
             Contract.EnsureNotDisposed(this, Disposed);
@@ -69,11 +58,7 @@ namespace TwistedLogik.Ultraviolet.SDL2
             return true;
         }
 
-        /// <summary>
-        /// Gets the mouse device, if mouse input is supported.
-        /// </summary>
-        /// <remarks>If mouse input is not supported on the current platform, this method will throw NotSupportedException.</remarks>
-        /// <returns>The mouse device.</returns>
+        /// <inheritdoc/>
         public MouseDevice GetMouse()
         {
             Contract.EnsureNotDisposed(this, Disposed);
@@ -81,15 +66,56 @@ namespace TwistedLogik.Ultraviolet.SDL2
             return mouse;
         }
 
-        /// <summary>
-        /// Occurs when the subsystem is updating its state.
-        /// </summary>
+        /// <inheritdoc/>
+        public Int32 GetGamePadCount()
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
+
+            return gamePadInfo.Count;
+        }
+
+        /// <inheritdoc/>
+        public Int32 GetGamePadMaxIndex()
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <inheritdoc/>
+        public Boolean IsGamePadSupported()
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
+
+            return true;
+        }
+
+        /// <inheritdoc/>
+        public Boolean IsGamePadConnected(Int32 index)
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
+
+            return gamePadInfo.GetDeviceByIndex(index) != null;
+        }
+
+        /// <inheritdoc/>
+        public GamePadDevice GetGamePad(Int32 index)
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
+
+            return gamePadInfo.GetDeviceByIndex(index);
+        }
+
+        /// <inheritdoc/>
+        public GamePadDevice GetFirstGamePad()
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
+
+            return gamePadInfo.GetFirstGamePad();
+        }
+
+        /// <inheritdoc/>
         public event UltravioletSubsystemUpdateEventHandler Updating;
 
-        /// <summary>
-        /// Releases resources associated with the object.
-        /// </summary>
-        /// <param name="disposing">true if the object is being disposed; false if the object is being finalized.</param>
+        /// <inheritdoc/>
         protected override void Dispose(Boolean disposing)
         {
             if (Disposed)
@@ -99,6 +125,7 @@ namespace TwistedLogik.Ultraviolet.SDL2
             {
                 SafeDispose.DisposeRef(ref keyboard);
                 SafeDispose.DisposeRef(ref mouse);
+                SafeDispose.DisposeRef(ref gamePadInfo);
             }
 
             base.Dispose(disposing);
@@ -120,5 +147,6 @@ namespace TwistedLogik.Ultraviolet.SDL2
         // Input devices.
         private KeyboardDevice keyboard;
         private MouseDevice mouse;
+        private GamePadDeviceInfo gamePadInfo;
     }
 }
