@@ -12,8 +12,10 @@ ECHO.
 ECHO Strong naming assemblies...
 
 sn.exe -R "TwistedLogik.Nucleus.dll" "%TLSN%" 
+sn.exe -R "TwistedLogik.Nucleus.Design.dll" "%TLSN%"
 sn.exe -R "TwistedLogik.Gluon.dll" "%TLSN%" 
 sn.exe -R "TwistedLogik.Ultraviolet.dll" "%TLSN%"
+sn.exe -R "TwistedLogik.Ultraviolet.Design.dll" "%TLSN%"
 sn.exe -R "TwistedLogik.Ultraviolet.OpenGL.dll" "%TLSN%"
 sn.exe -R "TwistedLogik.Ultraviolet.SDL2.dll" "%TLSN%"
 sn.exe -R "TwistedLogik.Ultraviolet.BASS.dll" "%TLSN%"
