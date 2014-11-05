@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<TypeDescription>
+  <Assembly Name="TwistedLogik.Ultraviolet, Version=1.0.0.0">
+    <Types>
+      <Type Name="TwistedLogik.Ultraviolet.Matrix">
+        <TypeConverter>TwistedLogik.Ultraviolet.Design.MatrixTypeConverter, TwistedLogik.Ultraviolet.Design</TypeConverter>
+        <Properties>
+          <Backward>
+            <Browsable>false</Browsable>
+          </Backward>
+          <Down>
+            <Browsable>false</Browsable>
+          </Down>
+          <Forward>
+            <Browsable>false</Browsable>
+          </Forward>
+          <Left>
+            <Browsable>false</Browsable>
+          </Left>
+          <Right>
+            <Browsable>false</Browsable>
+          </Right>
+          <Translation>
+            <Browsable>false</Browsable>
+          </Translation>
+          <Up>
+            <Browsable>false</Browsable>
+          </Up>
+        </Properties>
+      </Type>
+    </Types>
+  </Assembly>
+</TypeDescription>
