@@ -196,6 +196,8 @@ namespace TwistedLogik.Ultraviolet.OpenGL
         protected override void OnShutdown()
         {
             SDL.Quit();
+
+            base.OnShutdown();
         }
 
         /// <summary>
