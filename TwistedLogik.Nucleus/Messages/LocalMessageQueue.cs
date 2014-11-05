@@ -148,10 +148,7 @@ namespace TwistedLogik.Nucleus.Messages
                 {
                     lock (subscribers)
                     {
-                        foreach (var subscriber in subscribers[evt.Type])
-                        {
-                            subscriber.ReceiveMessage(evt.Type, evt.Data);
-                        }
+                        subscribers.ReceiveMessage(evt.Type, evt.Data);
                     }
                 }
                 finally

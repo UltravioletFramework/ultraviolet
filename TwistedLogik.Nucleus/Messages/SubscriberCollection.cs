@@ -10,6 +10,22 @@ namespace TwistedLogik.Nucleus.Messages
     public class SubscriberCollection<TMessageType> where TMessageType : IEquatable<TMessageType>
     {
         /// <summary>
+        /// Pushes the specified message to all subscribers to the specified message type.
+        /// </summary>
+        /// <param name="messageType">The type of message being pushed.</param>
+        /// <param name="data">The data for the message being pushed.</param>
+        public void ReceiveMessage(TMessageType messageType, MessageData data)
+        {
+            tempstorage.Clear();
+            tempstorage.AddRange(this[messageType]);
+            foreach (var subscriber in tempstorage)
+            {
+                subscriber.ReceiveMessage(messageType, data);
+            }
+            tempstorage.Clear();
+        }
+
+        /// <summary>
         /// Purges the subscriber list associated with the specified message type.
         /// </summary>
         /// <param name="messageType">The type of message for which to purge subscribers.</param>
@@ -62,5 +78,10 @@ namespace TwistedLogik.Nucleus.Messages
         // The underlying table of subscribers for each message type.
         private readonly Dictionary<TMessageType, HashSet<IMessageSubscriber<TMessageType>>> subscribers =
             new Dictionary<TMessageType, HashSet<IMessageSubscriber<TMessageType>>>();
+
+        // A list which temporarily stores the list of subscribers while
+        // publishing messages, so that the subscription table can be updated during enumeration.
+        private readonly List<IMessageSubscriber<TMessageType>> tempstorage = 
+            new List<IMessageSubscriber<TMessageType>>();
     }
 }
