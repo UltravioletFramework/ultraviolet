@@ -57,6 +57,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Data\DataObjectTypeConverter.cs" />
     <Compile Include="XmlDrivenCustomTypeDescriptionProvider.cs" />
     <Compile Include="XmlDrivenCustomTypeDescriptor.cs" />
     <Compile Include="TypeDescriptionMetadataLoader.cs" />
