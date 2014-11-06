@@ -48,6 +48,7 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Drawing.Design" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -57,6 +58,13 @@
   <ItemGroup>
     <Compile Include="ColorEditor.cs" />
     <Compile Include="Content\ContentManifestTypeConverter.cs" />
+    <Compile Include="MatrixEditor.cs" />
+    <Compile Include="MatrixEditorControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="MatrixEditorControl.Designer.cs">
+      <DependentUpon>MatrixEditorControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UltravioletExpandableObjectConverter.cs" />
     <Compile Include="ColorTypeConverter.cs" />
@@ -113,6 +121,11 @@
     <None Include="Matrix.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="MatrixEditorControl.resx">
+      <DependentUpon>MatrixEditorControl.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

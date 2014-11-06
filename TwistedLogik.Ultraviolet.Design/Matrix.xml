@@ -4,6 +4,7 @@
     <Types>
       <Type Name="TwistedLogik.Ultraviolet.Matrix">
         <TypeConverter>TwistedLogik.Ultraviolet.Design.MatrixTypeConverter, TwistedLogik.Ultraviolet.Design</TypeConverter>
+        <Editor>TwistedLogik.Ultraviolet.Design.MatrixEditor, TwistedLogik.Ultraviolet.Design</Editor>
         <Properties>
           <Backward>
             <Browsable>false</Browsable>
