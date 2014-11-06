@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<TypeDescription>
+  <Assembly Name="TwistedLogik.Ultraviolet, Version=1.0.0.0">
+    <Types>
+      <Type Name="TwistedLogik.Ultraviolet.RectangleF">
+        <TypeConverter>TwistedLogik.Ultraviolet.Design.RectangleFTypeConverter, TwistedLogik.Ultraviolet.Design</TypeConverter>
+        <DefaultValue>0 0 0 0</DefaultValue>
+      </Type>
+    </Types>
+  </Assembly>
+</TypeDescription>

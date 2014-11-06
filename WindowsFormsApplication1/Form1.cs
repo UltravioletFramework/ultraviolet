@@ -26,6 +26,11 @@ namespace WindowsFormsApplication1
         public Size2F SomeSize2F { get; set; }
         public Size3 SomeSize3 { get; set; }
         public Size3F SomeSize3F { get; set; }
+        public Circle SomeCircle { get; set; }
+        public CircleF SomeCircleF { get; set; }
+        public Rectangle SomeRectangle { get; set; }
+        public RectangleF SomeRectangleF { get; set; }
+        public System.Drawing.Rectangle SomeGDIRect { get; set; }
     }
 
     public partial class Form1 : Form
