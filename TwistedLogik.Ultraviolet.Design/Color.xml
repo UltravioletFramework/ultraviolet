@@ -5,6 +5,7 @@
       <Type Name="TwistedLogik.Ultraviolet.Color">
         <TypeConverter>TwistedLogik.Ultraviolet.Design.ColorTypeConverter, TwistedLogik.Ultraviolet.Design</TypeConverter>
         <Editor>TwistedLogik.Ultraviolet.Design.ColorEditor, TwistedLogik.Ultraviolet.Design</Editor>
+        <DefaultValue>#00000000</DefaultValue>
         <Properties>
           <PackedValue>
             <Browsable>false</Browsable>

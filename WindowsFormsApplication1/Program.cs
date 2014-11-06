@@ -19,6 +19,10 @@ namespace WindowsFormsApplication1
             TwistedLogik.Nucleus.Design.TypeDescriptionMetadataLoader.Load(@"..\..\..\TwistedLogik.Ultraviolet.Design\Vector4.xml");
             TwistedLogik.Nucleus.Design.TypeDescriptionMetadataLoader.Load(@"..\..\..\TwistedLogik.Ultraviolet.Design\Color.xml");
             TwistedLogik.Nucleus.Design.TypeDescriptionMetadataLoader.Load(@"..\..\..\TwistedLogik.Ultraviolet.Design\Matrix.xml");
+            TwistedLogik.Nucleus.Design.TypeDescriptionMetadataLoader.Load(@"..\..\..\TwistedLogik.Ultraviolet.Design\Size2.xml");
+            TwistedLogik.Nucleus.Design.TypeDescriptionMetadataLoader.Load(@"..\..\..\TwistedLogik.Ultraviolet.Design\Size2F.xml");
+            TwistedLogik.Nucleus.Design.TypeDescriptionMetadataLoader.Load(@"..\..\..\TwistedLogik.Ultraviolet.Design\Size3.xml");
+            TwistedLogik.Nucleus.Design.TypeDescriptionMetadataLoader.Load(@"..\..\..\TwistedLogik.Ultraviolet.Design\Size3F.xml");
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);

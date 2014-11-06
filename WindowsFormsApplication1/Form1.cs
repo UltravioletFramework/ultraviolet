@@ -22,6 +22,10 @@ namespace WindowsFormsApplication1
         public Vector3 SomeVector3 { get; set; }
         public Vector4 SomeVector4 { get; set; }
         public Matrix SomeMatrix { get; set; }
+        public Size2 SomeSize2 { get; set; }
+        public Size2F SomeSize2F { get; set; }
+        public Size3 SomeSize3 { get; set; }
+        public Size3F SomeSize3F { get; set; }
     }
 
     public partial class Form1 : Form

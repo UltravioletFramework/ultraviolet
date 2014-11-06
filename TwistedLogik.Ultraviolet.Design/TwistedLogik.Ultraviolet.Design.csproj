@@ -66,9 +66,13 @@
       <DependentUpon>MatrixEditorControl.cs</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Size3FTypeConverter.cs" />
+    <Compile Include="Size2FTypeConverter.cs" />
+    <Compile Include="Size3TypeConverter.cs" />
     <Compile Include="UltravioletExpandableObjectConverter.cs" />
     <Compile Include="ColorTypeConverter.cs" />
     <Compile Include="MatrixTypeConverter.cs" />
+    <Compile Include="Size2TypeConverter.cs" />
     <Compile Include="Vector4TypeConverter.cs" />
     <Compile Include="Vector3TypeConverter.cs" />
     <Compile Include="Vector2TypeConverter.cs" />
@@ -126,6 +130,26 @@
     <EmbeddedResource Include="MatrixEditorControl.resx">
       <DependentUpon>MatrixEditorControl.cs</DependentUpon>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Size2.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Size3.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Size2F.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Size3F.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
