@@ -30,7 +30,7 @@ namespace TwistedLogik.Ultraviolet.Design
         protected override String GetStringRepresentation(Object value)
         {
             var rect = (RectangleF)value;
-            return String.Format("({0}, {1}, {2}, {3})", rect.X, rect.Y, rect.Width, rect.Height);
+            return String.Format("{0}, {1}, {2}, {3}", rect.X, rect.Y, rect.Width, rect.Height);
         }
     }
 }

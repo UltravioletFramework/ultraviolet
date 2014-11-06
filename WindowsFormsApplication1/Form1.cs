@@ -15,6 +15,7 @@ namespace WindowsFormsApplication1
         public TestObject()
         {
             SomeMatrix = Matrix.Identity;
+            Array = new List<object> { 1, 2, 3, 4 };
         }
 
         public Color SomeColor { get; set; }
@@ -31,6 +32,7 @@ namespace WindowsFormsApplication1
         public Rectangle SomeRectangle { get; set; }
         public RectangleF SomeRectangleF { get; set; }
         public System.Drawing.Rectangle SomeGDIRect { get; set; }
+        public List<Object> Array { get; set; }
     }
 
     public partial class Form1 : Form

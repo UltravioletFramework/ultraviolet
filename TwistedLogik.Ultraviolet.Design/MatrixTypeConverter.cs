@@ -49,13 +49,7 @@ namespace TwistedLogik.Ultraviolet.Design
         /// <inheritdoc/>
         protected override String GetStringRepresentation(Object value)
         {
-            var matrix = (Matrix)value;
-            return String.Format("({0}, {1}, {2}, {3}), ({4}, {5}, {6}, {7}), ({8}, {9}, {10}, {11}), ({12}, {13}, {14}, {15})", 
-                matrix.M11, matrix.M12, matrix.M13, matrix.M14,
-                matrix.M21, matrix.M22, matrix.M23, matrix.M24,
-                matrix.M31, matrix.M32, matrix.M33, matrix.M34,
-                matrix.M41, matrix.M42, matrix.M43, matrix.M44                
-            );
+            return "(Matrix)";
         }
     }
 }

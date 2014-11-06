@@ -30,7 +30,7 @@ namespace TwistedLogik.Ultraviolet.Design
         protected override String GetStringRepresentation(Object value)
         {
             var vector = (Vector4)value;
-            return String.Format("({0}, {1}, {2}, {3})", vector.X, vector.Y, vector.Z, vector.W);
+            return String.Format("{0}, {1}, {2}, {3}", vector.X, vector.Y, vector.Z, vector.W);
         }
     }
 }

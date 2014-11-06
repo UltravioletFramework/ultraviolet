@@ -29,7 +29,7 @@ namespace TwistedLogik.Ultraviolet.Design
         protected override String GetStringRepresentation(Object value)
         {
             var size = (Size3F)value;
-            return String.Format("({0}, {1}, {2})", size.Width, size.Height, size.Depth);
+            return String.Format("{0}, {1}, {2}", size.Width, size.Height, size.Depth);
         }
     }
 }
