@@ -30,33 +30,43 @@ namespace TwistedLogik.Ultraviolet.Input
         /// <summary>
         /// Initializes a new instance of the <see cref="KeyboardInputBinding"/> class.
         /// </summary>
-        /// <param name="keyboard">The keyboard device with which this binding is associated.</param>
+        /// <param name="uv">The Ultraviolet context.</param>
         /// <param name="key">A <see cref="Key"/> value representing the binding's primary key.</param>
-        public KeyboardInputBinding(KeyboardDevice keyboard, Key key)
+        public KeyboardInputBinding(UltravioletContext uv, Key key)
         {
-            Contract.Require(keyboard, "keyboard");
+            Contract.Require(uv, "uv");
 
-            this.keyboard = keyboard;
-            this.key = key;
+            if (!uv.GetInput().IsKeyboardSupported())
+            {
+                throw new NotSupportedException();
+            }
+
+            this.keyboard = uv.GetInput().GetKeyboard();
+            this.key      = key;
         }
         
         /// <summary>
         /// Initializes a new instance of the <see cref="KeyboardInputBinding"/> class.
         /// </summary>
-        /// <param name="keyboard">The <see cref="KeyboardDevice"/> with which this binding is associated.</param>
+        /// <param name="uv">The Ultraviolet context.</param>
         /// <param name="key">A <see cref="Key"/> value representing the binding's primary key.</param>
         /// <param name="control">A value indicating whether the binding requires the Control modifier.</param>
         /// <param name="alt">A value indicating whether the binding requires the Alt modifier.</param>
         /// <param name="shift">A value indicating whether the binding requires the Shift modifier.</param>
-        public KeyboardInputBinding(KeyboardDevice keyboard, Key key, Boolean control, Boolean alt, Boolean shift)
+        public KeyboardInputBinding(UltravioletContext uv, Key key, Boolean control, Boolean alt, Boolean shift)
         {
             Contract.Require(keyboard, "keyboard");
 
-            this.keyboard = keyboard;
-            this.key = key;
-            this.control = control;
-            this.alt = alt;
-            this.shift = shift;
+            if (!uv.GetInput().IsKeyboardSupported())
+            {
+                throw new NotSupportedException();
+            }
+
+            this.keyboard = uv.GetInput().GetKeyboard();
+            this.key      = key;
+            this.control  = control;
+            this.alt      = alt;
+            this.shift    = shift;
         }
 
         /// <summary>

@@ -42,7 +42,7 @@ namespace SafeProjectName.Input
         /// </summary>
         protected override void OnResetting()
         {
-            ExitApplication.Primary = CreateGamePadBinding(GamePadButton.Back); // CreateKeyboardBinding(Key.Escape);
+            ExitApplication.Primary = CreateGamePadBinding(0, GamePadButton.Back); // CreateKeyboardBinding(Key.Escape);
 
             base.OnResetting();
         }
