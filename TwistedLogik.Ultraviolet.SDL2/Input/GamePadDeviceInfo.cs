@@ -117,8 +117,12 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
             if (disposing)
             {
                 foreach (var device in devicesByPlayer)
-                    device.Dispose();
-
+                {
+                    if (device != null)
+                    {
+                        device.Dispose();
+                    }
+                }
                 if (!Ultraviolet.Disposed)
                 {
                     Ultraviolet.Messages.Unsubscribe(this);
