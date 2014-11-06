@@ -1,4 +1,5 @@
-﻿using TwistedLogik.Ultraviolet.Platform;
+﻿using System;
+using TwistedLogik.Ultraviolet.Platform;
 
 namespace TwistedLogik.Ultraviolet.Input
 {
@@ -22,6 +23,22 @@ namespace TwistedLogik.Ultraviolet.Input
             : base(uv)
         {
 
+        }
+
+        /// <summary>
+        /// Gets the device's name.
+        /// </summary>
+        public abstract String Name
+        {
+            get;
+        }
+
+        /// <summary>
+        /// Gets the index of the player that corresponds to this device.
+        /// </summary>
+        public abstract Int32 PlayerIndex
+        {
+            get;
         }
 
         /// <summary>

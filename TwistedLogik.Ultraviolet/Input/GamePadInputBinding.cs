@@ -19,7 +19,7 @@ namespace TwistedLogik.Ultraviolet.Input
         {
             Contract.Require(element, "element");
 
-            this.gamePad = uv.GetInput().GetFirstGamePad();
+            this.gamePad = uv.GetInput().GetFirstConnectedGamePad();
             // TODO: What if there are no game pads?
             this.button = element.ElementValueEnum<GamePadButton>("Button") ?? GamePadButton.None;
         }

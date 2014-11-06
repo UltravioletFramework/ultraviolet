@@ -89,27 +89,27 @@ namespace TwistedLogik.Ultraviolet.SDL2
         }
 
         /// <inheritdoc/>
-        public Boolean IsGamePadConnected(Int32 index)
+        public Boolean IsGamePadConnected(Int32 playerIndex)
         {
             Contract.EnsureNotDisposed(this, Disposed);
 
-            return gamePadInfo.GetDeviceByIndex(index) != null;
+            return gamePadInfo.GetGamePadForPlayer(playerIndex) != null;
         }
 
         /// <inheritdoc/>
-        public GamePadDevice GetGamePad(Int32 index)
+        public GamePadDevice GetGamePadForPlayer(Int32 playerIndex)
         {
             Contract.EnsureNotDisposed(this, Disposed);
 
-            return gamePadInfo.GetDeviceByIndex(index);
+            return gamePadInfo.GetGamePadForPlayer(playerIndex);
         }
 
         /// <inheritdoc/>
-        public GamePadDevice GetFirstGamePad()
+        public GamePadDevice GetFirstConnectedGamePad()
         {
             Contract.EnsureNotDisposed(this, Disposed);
 
-            return gamePadInfo.GetFirstGamePad();
+            return gamePadInfo.GetFirstConnectedGamePad();
         }
 
         /// <inheritdoc/>
