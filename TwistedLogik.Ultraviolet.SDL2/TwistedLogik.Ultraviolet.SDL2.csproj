@@ -121,6 +121,7 @@
     <Compile Include="Native\SDL_BitmapOrder.cs" />
     <Compile Include="Native\SDL_BlendMode.cs" />
     <Compile Include="Native\SDL_Button.cs" />
+    <Compile Include="Native\SDL_GameControllerAxis.cs" />
     <Compile Include="Native\SDL_GameControllerButton.cs" />
     <Compile Include="Native\SDL_GLprofile.cs" />
     <Compile Include="Native\SDL_GLcontextFlag.cs" />

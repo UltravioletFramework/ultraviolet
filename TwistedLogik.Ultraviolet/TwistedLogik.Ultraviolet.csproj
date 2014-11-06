@@ -233,6 +233,7 @@
     <Compile Include="Graphics\TextureDataFormat.cs" />
     <Compile Include="IInterpolatable.cs" />
     <Compile Include="Input\ButtonState.cs" />
+    <Compile Include="Input\GamePadAxis.cs" />
     <Compile Include="Input\GamePadButton.cs" />
     <Compile Include="Input\GamePadDevice.cs" />
     <Compile Include="Input\InputAction.cs" />
