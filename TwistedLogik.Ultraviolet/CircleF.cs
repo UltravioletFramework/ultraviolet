@@ -216,6 +216,14 @@ namespace TwistedLogik.Ultraviolet
         }
 
         /// <summary>
+        /// Gets the circle's position.
+        /// </summary>
+        public Vector2 Position
+        {
+            get { return new Vector2(x, y); }
+        }
+
+        /// <summary>
         /// Gets the x-coordinate of the circle's center.
         /// </summary>
         public Single X

@@ -5,6 +5,29 @@
       <Type Name="TwistedLogik.Ultraviolet.RectangleF">
         <TypeConverter>TwistedLogik.Ultraviolet.Design.RectangleFTypeConverter, TwistedLogik.Ultraviolet.Design</TypeConverter>
         <DefaultValue>0 0 0 0</DefaultValue>
+        <Properties>
+          <Bottom>
+            <Browsable>false</Browsable>
+          </Bottom>
+          <Center>
+            <Browsable>false</Browsable>
+          </Center>
+          <IsEmpty>
+            <Browsable>false</Browsable>
+          </IsEmpty>
+          <Left>
+            <Browsable>false</Browsable>
+          </Left>
+          <Location>
+            <Browsable>false</Browsable>
+          </Location>
+          <Right>
+            <Browsable>false</Browsable>
+          </Right>
+          <Top>
+            <Browsable>false</Browsable>
+          </Top>
+        </Properties>
       </Type>
     </Types>
   </Assembly>

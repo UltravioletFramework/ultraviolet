@@ -5,6 +5,11 @@
       <Type Name="TwistedLogik.Ultraviolet.Circle">
         <TypeConverter>TwistedLogik.Ultraviolet.Design.CircleTypeConverter, TwistedLogik.Ultraviolet.Design</TypeConverter>
         <DefaultValue>0 0 0</DefaultValue>
+        <Properties>
+          <Position>
+            <Browsable>false</Browsable>
+          </Position>
+        </Properties>
       </Type>
     </Types>
   </Assembly>

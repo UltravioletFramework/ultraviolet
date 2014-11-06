@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<TypeDescription>
+  <Assembly Name="TwistedLogik.Ultraviolet, Version=1.0.0.0">
+    <Types>
+      <Type Name="TwistedLogik.Ultraviolet.Radians">
+        <TypeConverter>TwistedLogik.Ultraviolet.Design.RadiansTypeConverter, TwistedLogik.Ultraviolet.Design</TypeConverter>
+        <Editor>TwistedLogik.Ultraviolet.Design.RadiansEditor, TwistedLogik.Ultraviolet.Design</Editor>
+        <DefaultValue>0</DefaultValue>
+      </Type>
+    </Types>
+  </Assembly>
+</TypeDescription>

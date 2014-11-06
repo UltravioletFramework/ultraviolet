@@ -5,6 +5,11 @@
       <Type Name="TwistedLogik.Ultraviolet.Size2F">
         <TypeConverter>TwistedLogik.Ultraviolet.Design.Size2FTypeConverter, TwistedLogik.Ultraviolet.Design</TypeConverter>
         <DefaultValue>0 0</DefaultValue>
+        <Properties>
+          <Area>
+            <Browsable>false</Browsable>
+          </Area>
+        </Properties>
       </Type>
     </Types>
   </Assembly>

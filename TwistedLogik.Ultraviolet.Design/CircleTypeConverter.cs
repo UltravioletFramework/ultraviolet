@@ -29,7 +29,7 @@ namespace TwistedLogik.Ultraviolet.Design
         protected override String GetStringRepresentation(Object value)
         {
             var circle = (Circle)value;
-            return String.Format("{0}, {1} radius {2}", circle.X, circle.Y, circle.Radius);
+            return String.Format("{0}, {1}, {2}", circle.X, circle.Y, circle.Radius);
         }
     }
 }
