@@ -17,34 +17,40 @@ namespace TwistedLogik.Ultraviolet.Input
         /// <param name="element">The XML element that contains the binding data.</param>
         internal GamePadInputBinding(UltravioletContext uv, XElement element)
         {
+            Contract.Require(uv, "uv");
             Contract.Require(element, "element");
 
-            this.gamePad = uv.GetInput().GetFirstConnectedGamePad();
-            // TODO: What if there are no game pads?
-            this.button = element.ElementValueEnum<GamePadButton>("Button") ?? GamePadButton.None;
+            this.uv          = uv;
+            this.playerIndex = element.ElementValueInt32("Player") ?? 0;
+            this.button      = element.ElementValueEnum<GamePadButton>("Button") ?? GamePadButton.None;
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GamePadInputBinding"/> class.
         /// </summary>
-        /// <param name="gamePad">The game pad device with which the binding is associated.</param>
+        /// <param name="uv">The Ultraviolet context.</param>
+        /// <param name="playerIndex">The index of the player for which to create the binding.</param>
         /// <param name="button">A <see cref="GamePadButton"/> value representing the binding's primary button.</param>
-        public GamePadInputBinding(GamePadDevice gamePad, GamePadButton button)
+        public GamePadInputBinding(UltravioletContext uv, Int32 playerIndex, GamePadButton button)
             : base()
         {
-            Contract.Require(gamePad, "gamePad");
+            Contract.Require(uv, "uv");
+            Contract.EnsureRange(playerIndex >= 0, "playerIndex");
 
-            this.gamePad = gamePad;
+            this.uv = uv;
+            this.playerIndex = playerIndex;
             this.button  = button;
         }
 
         /// <inheritdoc/>
         public override void Update()
         {
+            var gamePad = uv.GetInput().GetGamePadForPlayer(playerIndex);
+
             released = false;
             if (pressed)
             {
-                if (!Enabled || gamePad.IsButtonReleased(button))
+                if (!Enabled || gamePad == null || gamePad.IsButtonReleased(button))
                 {
                     pressed = false;
                     released = true;
@@ -53,7 +59,7 @@ namespace TwistedLogik.Ultraviolet.Input
             }
             else
             {
-                if (Enabled && gamePad.IsButtonPressed(button))
+                if (Enabled && gamePad != null && gamePad.IsButtonPressed(button))
                 {
                     pressed = true;
                     OnPressed();
@@ -71,7 +77,7 @@ namespace TwistedLogik.Ultraviolet.Input
             if (gpib != null)
             {
                 return
-                    this.GamePad == gpib.GamePad &&
+                    this.PlayerIndex == gpib.PlayerIndex &&
                     this.Button == gpib.Button;
             }
 
@@ -88,7 +94,7 @@ namespace TwistedLogik.Ultraviolet.Input
             if (gpib != null)
             {
                 return
-                    this.GamePad == gpib.GamePad &&
+                    this.PlayerIndex == gpib.PlayerIndex &&
                     this.Button == gpib.Button;
             }
 
@@ -110,21 +116,23 @@ namespace TwistedLogik.Ultraviolet.Input
         /// <inheritdoc/>
         public override Boolean IsPressed(Boolean ignoreRepeats = true)
         {
-            return pressed && gamePad.IsButtonPressed(button, ignoreRepeats: ignoreRepeats);
+            var gamePad = uv.GetInput().GetGamePadForPlayer(playerIndex);
+            return pressed && (gamePad != null && gamePad.IsButtonPressed(button, ignoreRepeats: ignoreRepeats));
         }
 
         /// <inheritdoc/>
         public override Boolean IsReleased()
         {
-            return released && gamePad.IsButtonReleased(button);
+            var gamePad = uv.GetInput().GetGamePadForPlayer(playerIndex);
+            return released && (gamePad == null || gamePad.IsButtonReleased(button));
         }
 
         /// <summary>
-        /// Gets the <see cref="GamePadDevice"/> that created this input binding.
+        /// Gets the index of the 
         /// </summary>
-        public GamePadDevice GamePad
+        public Int32 PlayerIndex
         {
-            get { return gamePad; }
+            get { return playerIndex; }
         }
 
         /// <summary>
@@ -139,6 +147,7 @@ namespace TwistedLogik.Ultraviolet.Input
         internal override XElement ToXml(string name = null)
         {
             return new XElement(name ?? "Binding", new XAttribute("Type", GetType().FullName),
+                new XElement("Player", playerIndex),
                 new XElement("Button", button)
             );
         }
@@ -150,10 +159,11 @@ namespace TwistedLogik.Ultraviolet.Input
         }
 
         // Property values.
-        private readonly GamePadDevice gamePad;
+        private readonly Int32 playerIndex;
         private readonly GamePadButton button;
 
         // State values.
+        private readonly UltravioletContext uv;
         private Boolean pressed;
         private Boolean released;
     }
