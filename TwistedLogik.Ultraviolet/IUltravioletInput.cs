@@ -53,23 +53,23 @@ namespace TwistedLogik.Ultraviolet
         Boolean IsGamePadSupported();
 
         /// <summary>
-        /// Gets a value indicating whether the game pad with the specified index is connected.
+        /// Gets a value indicating whether the game pad for the specified player is connected.
         /// </summary>
-        /// <param name="index">The index of the game pad to evaluate.</param>
-        /// <returns><c>true</c> if the specified game pad is connected; otherwise, <c>false</c>.</returns>
-        Boolean IsGamePadConnected(Int32 index);
+        /// <param name="playerIndex">The index of the player to evaluate.</param>
+        /// <returns><c>true</c> if the specified player's game pad is connected; otherwise, <c>false</c>.</returns>
+        Boolean IsGamePadConnected(Int32 playerIndex);
 
         /// <summary>
-        /// Gets the game pad device with the specified index.
+        /// Gets the game pad that belongs to the specified player.
         /// </summary>
-        /// <param name="index">The index of the game pad to retrieve.</param>
-        /// <returns>The <see cref="GamePadDevice"/> with the specified index, or <c>null</c> if no such game pad exists.</returns>
-        GamePadDevice GetGamePad(Int32 index);
+        /// <param name="playerIndex">The index of the player for which to retrieve a game pad.</param>
+        /// <returns>The game pad that belongs to the specified player, or <c>null</c> if no such game pad exists.</returns>
+        GamePadDevice GetGamePadForPlayer(Int32 playerIndex);
 
         /// <summary>
-        /// Gets the first available game pad device.
+        /// Gets the first connected game pad device.
         /// </summary>
-        /// <returns>The first available game pad device, or null if no game pads are available.</returns>
-        GamePadDevice GetFirstGamePad();
+        /// <returns>The first connected game pad device, or <c>null</c> if no game pads are connected.</returns>
+        GamePadDevice GetFirstConnectedGamePad();
     }
 }

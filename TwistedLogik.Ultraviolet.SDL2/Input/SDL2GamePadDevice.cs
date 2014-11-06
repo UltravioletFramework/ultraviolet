@@ -25,36 +25,30 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
         /// Initializes a new instance of the <see cref="SDL2GamePadDevice"/> class.
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
-        /// <param name="index">The index of the SDL2 joystick device.</param>
-        public SDL2GamePadDevice(UltravioletContext uv, Int32 index)
+        /// <param name="joystickIndex">The index of the SDL2 joystick device.</param>
+        /// <param name="playerIndex">The index of the player that owns the device.</param>
+        public SDL2GamePadDevice(UltravioletContext uv, Int32 joystickIndex, Int32 playerIndex)
             : base(uv)
         {
-            this.index = index;
-            this.controller = SDL.GameControllerOpen(index);
-
-            if (this.controller == IntPtr.Zero)
+            if ((this.controller = SDL.GameControllerOpen(joystickIndex)) == IntPtr.Zero)
             {
                 throw new SDL2Exception();
             }
 
+            this.name            = SDL.GameControllerNameForIndex(joystickIndex);
             this.gamePadStateOld = new Boolean[sdlButtons.Length];
             this.gamePadStateNew = new Boolean[sdlButtons.Length];
+            this.playerIndex     = playerIndex;
 
-            this.name = SDL.GameControllerNameForIndex(index);
+            var joystick = SDL.GameControllerGetJoystick(controller);
+
+            if ((this.instanceID = SDL.JoystickInstanceID(joystick)) < 0)
+            {
+                throw new SDL2Exception();
+            }
 
             uv.Messages.Subscribe(this,
                 SDL2UltravioletMessages.SDLEvent);
-        }
-
-        /// <summary>
-        /// Gets the pointer to the native SDL2 object that this object represents.
-        /// </summary>
-        /// <returns>A pointer to the native SDL2 object that this object represents.</returns>
-        public IntPtr ToNative()
-        {
-            Contract.EnsureNotDisposed(this, Disposed);
-
-            return controller;
         }
 
         /// <summary>
@@ -84,6 +78,17 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
                     }
                     break;
             }
+        }
+
+        /// <summary>
+        /// Gets the pointer to the native SDL2 object that this object represents.
+        /// </summary>
+        /// <returns>A pointer to the native SDL2 object that this object represents.</returns>
+        public IntPtr ToNative()
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
+
+            return controller;
         }
 
         /// <inheritdoc/>
@@ -157,6 +162,41 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
         }
 
         /// <inheritdoc/>
+        public override String Name
+        {
+            get
+            {
+                Contract.EnsureNotDisposed(this, Disposed);
+
+                return name;
+            }
+        }
+
+        /// <inheritdoc/>
+        public override Int32 PlayerIndex
+        {
+            get
+            {
+                Contract.EnsureNotDisposed(this, Disposed);
+
+                return playerIndex;
+            }
+        }
+
+        /// <summary>
+        /// Gets the SDL2 instance identifier of the game pad device.
+        /// </summary>
+        internal Int32 InstanceID
+        {
+            get
+            {
+                Contract.EnsureNotDisposed(this, Disposed);
+
+                return instanceID;
+            }
+        }
+
+        /// <inheritdoc/>
         protected override void Dispose(Boolean disposing)
         {
             if (disposing)
@@ -179,9 +219,12 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
             return (GamePadButton)(1 + (int)button);
         }
 
-        // State values.
+        // The values of the SDL_GameControllerButton enumeration.
         private static readonly SDL_GameControllerButton[] sdlButtons;
-        private readonly Int32 index;
+        
+        // State values.
+        private readonly Int32 instanceID;
+        private readonly Int32 playerIndex;
         private readonly IntPtr controller;
         private readonly String name;
         private Boolean[] gamePadStateOld;

@@ -288,5 +288,11 @@ namespace TwistedLogik.Ultraviolet.SDL2.Native
 
         [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GameControllerGetButton")]
         public static extern Boolean GameControllerGetButton(IntPtr gamecontroller, SDL_GameControllerButton button);
+
+        [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GameControllerGetJoystick")]
+        public static extern IntPtr GameControllerGetJoystick(IntPtr gamecontroller);
+
+        [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_JoystickInstanceID")]
+        public static extern Int32 JoystickInstanceID(IntPtr joystick);
     }
 }

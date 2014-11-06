@@ -338,7 +338,7 @@ namespace TwistedLogik.Ultraviolet.Input
         /// <returns>The binding that was created.</returns>
         protected InputBinding CreateGamePadBinding(GamePadButton button)
         {
-            var gamePad = Ultraviolet.GetInput().GetGamePad(0);
+            var gamePad = Ultraviolet.GetInput().GetFirstConnectedGamePad();
             if (gamePad == null)
             {
                 return null;
