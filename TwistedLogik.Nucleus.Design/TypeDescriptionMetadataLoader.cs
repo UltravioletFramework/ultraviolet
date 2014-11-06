@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Xml.Linq;
+using TwistedLogik.Nucleus.Data;
 using TwistedLogik.Nucleus.Xml;
 
 namespace TwistedLogik.Nucleus.Design
@@ -268,8 +269,8 @@ namespace TwistedLogik.Nucleus.Design
         /// <returns>The attribute that was created.</returns>
         private static Attribute CreateDefaultValueAttribute(XElement element, Type type)
         {
-            var value = element.Value;
-            return new DefaultValueAttribute(type, value);
+            var value = ObjectResolver.FromString(element.Value, type);
+            return new DefaultValueAttribute(value);
         }
     }
 }

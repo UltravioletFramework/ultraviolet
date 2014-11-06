@@ -4,6 +4,7 @@
     <Types>
       <Type Name="TwistedLogik.Ultraviolet.Size2">
         <TypeConverter>TwistedLogik.Ultraviolet.Design.Size2TypeConverter, TwistedLogik.Ultraviolet.Design</TypeConverter>
+        <DefaultValue>0 0</DefaultValue>
       </Type>
     </Types>
   </Assembly>

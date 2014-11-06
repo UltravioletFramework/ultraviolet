@@ -4,6 +4,7 @@
     <Types>
       <Type Name="TwistedLogik.Ultraviolet.Vector3">
         <TypeConverter>TwistedLogik.Ultraviolet.Design.Vector3TypeConverter, TwistedLogik.Ultraviolet.Design</TypeConverter>
+        <DefaultValue>0 0 0</DefaultValue>
       </Type>
     </Types>
   </Assembly>
