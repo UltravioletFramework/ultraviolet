@@ -58,6 +58,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Data\DataObjectTypeConverter.cs" />
+    <Compile Include="MaskedUInt64TypeConverter.cs" />
+    <Compile Include="MaskedUInt32TypeConverter.cs" />
+    <Compile Include="Text\StringResourceTypeConverter.cs" />
     <Compile Include="XmlDrivenCustomTypeDescriptionProvider.cs" />
     <Compile Include="XmlDrivenCustomTypeDescriptor.cs" />
     <Compile Include="TypeDescriptionMetadataLoader.cs" />
@@ -76,6 +79,21 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="TwistedLogik.Nucleus.Design.Licenses.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="MaskedUInt32.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="MaskedUInt64.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Text\StringResource.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

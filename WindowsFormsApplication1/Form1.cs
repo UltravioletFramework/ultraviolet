@@ -7,6 +7,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using TwistedLogik.Ultraviolet;
+using TwistedLogik.Nucleus;
+using TwistedLogik.Nucleus.Text;
 
 namespace WindowsFormsApplication1
 {
@@ -18,6 +20,9 @@ namespace WindowsFormsApplication1
             Array = new List<object> { 1, 2, 3, 4 };
         }
 
+        public MaskedUInt32 MaskedUInt32 { get; set; }
+        public MaskedUInt64 MaskedUInt64 { get; set; }
+        public Radians Radians { get; set; }
         public Color SomeColor { get; set; }
         public Vector2 SomeVector2 { get; set; }
         public Vector3 SomeVector3 { get; set; }
@@ -33,6 +38,7 @@ namespace WindowsFormsApplication1
         public RectangleF SomeRectangleF { get; set; }
         public System.Drawing.Rectangle SomeGDIRect { get; set; }
         public List<Object> Array { get; set; }
+        public StringResource StringResource { get; set; }
     }
 
     public partial class Form1 : Form
