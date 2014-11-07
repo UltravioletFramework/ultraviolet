@@ -124,14 +124,22 @@ namespace TwistedLogik.Ultraviolet.Design
                 return;
             }
 
-            target = new Point(center.X + (Int32)targetVector.X, center.Y + (Int32)targetVector.Y);
-
             var angle = Math.Atan2(dirVector.Y, dirVector.X) - Math.Atan2(upVector.Y, upVector.X);
             if (angle < 0)
             {
                 angle += Math.PI * 2.0;
             }
 
+            if ((ModifierKeys & Keys.Control) == Keys.Control)
+            {
+                var octantSpan = Math.PI / 8.0;
+                var octant     = (int)(angle / octantSpan);
+                angle          = octant * octantSpan;
+
+                targetVector = Vector2.Transform(-Vector2.UnitY * radius, Matrix.CreateRotationZ((Single)angle));
+            }
+
+            this.target  = new Point(center.X + (Int32)targetVector.X, center.Y + (Int32)targetVector.Y);
             this.radians = (Single)angle;
             this.degrees = (Single)angle * 57.2957795f;
         }
