@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.30501.0
+VisualStudioVersion = 12.0.30723.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwistedLogik.Ultraviolet", "TwistedLogik.Ultraviolet\TwistedLogik.Ultraviolet.csproj", "{F071ABE3-05E5-4DF9-A929-CF71B01EC50A}"
 EndProject
@@ -32,6 +32,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwistedLogik.Ultraviolet.Testing", "TwistedLogik.Ultraviolet.Testing\TwistedLogik.Ultraviolet.Testing.csproj", "{BF3C3975-5E7C-40C0-B49B-9A0CBD22BFCB}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwistedLogik.Ultraviolet.FMOD", "TwistedLogik.Ultraviolet.FMOD\TwistedLogik.Ultraviolet.FMOD.csproj", "{C647C68E-6295-43BC-BCAD-DE8208EFD006}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UvFont", "UvFont\UvFont.csproj", "{F224C80E-2D2F-403D-AB1A-29FE13AF726B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -99,6 +101,10 @@ Global
 		{C647C68E-6295-43BC-BCAD-DE8208EFD006}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C647C68E-6295-43BC-BCAD-DE8208EFD006}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C647C68E-6295-43BC-BCAD-DE8208EFD006}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F224C80E-2D2F-403D-AB1A-29FE13AF726B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F224C80E-2D2F-403D-AB1A-29FE13AF726B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F224C80E-2D2F-403D-AB1A-29FE13AF726B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F224C80E-2D2F-403D-AB1A-29FE13AF726B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
