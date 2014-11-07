@@ -57,6 +57,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CircleFTypeConverter.cs" />
+    <Compile Include="RadiansEditor.cs" />
+    <Compile Include="RadiansEditorControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="RadiansEditorControl.Designer.cs">
+      <DependentUpon>RadiansEditorControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="RadiansTypeConverter.cs" />
     <Compile Include="RectangleFTypeConverter.cs" />
     <Compile Include="RectangleTypeConverter.cs" />
     <Compile Include="ColorEditor.cs" />
@@ -172,6 +180,11 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="CircleF.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Radians.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

@@ -18,6 +18,7 @@ namespace WindowsFormsApplication1
             Array = new List<object> { 1, 2, 3, 4 };
         }
 
+        public Radians Radians { get; set; }
         public Color SomeColor { get; set; }
         public Vector2 SomeVector2 { get; set; }
         public Vector3 SomeVector3 { get; set; }
