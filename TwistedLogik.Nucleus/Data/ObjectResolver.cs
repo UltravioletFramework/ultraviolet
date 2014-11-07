@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Reflection;
 using System.Threading;
+using TwistedLogik.Nucleus.Text;
 
 namespace TwistedLogik.Nucleus.Data
 {
@@ -23,7 +24,9 @@ namespace TwistedLogik.Nucleus.Data
         /// </summary>
         static ObjectResolver()
         {
-
+            RegisterValueResolver<MaskedUInt32>  ((value, provider) => new MaskedUInt32(UInt32.Parse(value, provider)));
+            RegisterValueResolver<MaskedUInt64>  ((value, provider) => new MaskedUInt64(UInt64.Parse(value, provider)));
+            RegisterValueResolver<StringResource>((value, provider) => new StringResource(value));
         }
 
         /// <summary>

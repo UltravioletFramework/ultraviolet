@@ -2,17 +2,17 @@
 using System.Globalization;
 using System.ComponentModel;
 
-namespace TwistedLogik.Ultraviolet.Design
+namespace TwistedLogik.Nucleus.Design
 {
     /// <summary>
-    /// Represents a type converter for the <see cref="Radians"/> structure.
+    /// Represents a type converter for the <see cref="MaskedUInt32"/> structure.
     /// </summary>
-    public class RadiansTypeConverter : TypeConverter
+    public class MaskedUInt32TypeConverter : TypeConverter
     {
         /// <inheritdoc/>
         public override Boolean CanConvertTo(ITypeDescriptorContext context, Type destinationType)
         {
-            if (destinationType == typeof(Radians))
+            if (destinationType == typeof(MaskedUInt32))
             {
                 return true;
             }
@@ -22,7 +22,7 @@ namespace TwistedLogik.Ultraviolet.Design
         /// <inheritdoc/>
         public override Object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, Object value, Type destinationType)
         {
-            if (destinationType == typeof(String) && value.GetType() == typeof(Radians))
+            if (destinationType == typeof(String) && value.GetType() == typeof(MaskedUInt32))
             {
                 return value.ToString();
             }
@@ -44,7 +44,7 @@ namespace TwistedLogik.Ultraviolet.Design
         {
             if (value is String)
             {
-                return Radians.Parse((String)value);
+                return new MaskedUInt32(UInt32.Parse((String)value));
             }
             return base.ConvertFrom(context, culture, value);
         }

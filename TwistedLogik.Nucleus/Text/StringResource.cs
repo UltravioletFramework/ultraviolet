@@ -59,7 +59,23 @@ namespace TwistedLogik.Nucleus.Text
         }
 
         /// <summary>
-        /// The exception message's localized value.
+        /// Gets the string resource's associated localization database.
+        /// </summary>
+        public LocalizationDatabase Database
+        {
+            get { return database; }
+        }
+
+        /// <summary>
+        /// Gets the string resource's localization key.
+        /// </summary>
+        public String Key
+        {
+            get { return key; }
+        }
+
+        /// <summary>
+        /// Gets the string resource's localized value.
         /// </summary>
         public String Value
         {

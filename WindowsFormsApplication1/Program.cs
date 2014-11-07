@@ -29,6 +29,10 @@ namespace WindowsFormsApplication1
             TwistedLogik.Nucleus.Design.TypeDescriptionMetadataLoader.Load(@"..\..\..\TwistedLogik.Ultraviolet.Design\RectangleF.xml");
             TwistedLogik.Nucleus.Design.TypeDescriptionMetadataLoader.Load(@"..\..\..\TwistedLogik.Ultraviolet.Design\Radians.xml");
 
+            TwistedLogik.Nucleus.Design.TypeDescriptionMetadataLoader.Load(@"..\..\..\TwistedLogik.Nucleus.Design\MaskedUInt32.xml");
+            TwistedLogik.Nucleus.Design.TypeDescriptionMetadataLoader.Load(@"..\..\..\TwistedLogik.Nucleus.Design\MaskedUInt64.xml");
+            TwistedLogik.Nucleus.Design.TypeDescriptionMetadataLoader.Load(@"..\..\..\TwistedLogik.Nucleus.Design\Text\StringResource.xml");
+
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new Form1());

@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<TypeDescription>
+  <Assembly Name="TwistedLogik.Nucleus, Version=4.0.0.0">
+    <Types>
+      <Type Name="TwistedLogik.Nucleus.MaskedUInt64">
+        <TypeConverter>TwistedLogik.Nucleus.Design.MaskedUInt64TypeConverter, TwistedLogik.Nucleus.Design</TypeConverter>
+        <DefaultValue>0</DefaultValue>
+      </Type>
+    </Types>
+  </Assembly>
+</TypeDescription>

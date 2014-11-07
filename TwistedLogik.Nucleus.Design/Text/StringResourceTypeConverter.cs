@@ -1,18 +1,19 @@
 ﻿using System;
-using System.Globalization;
 using System.ComponentModel;
+using System.Globalization;
+using TwistedLogik.Nucleus.Text;
 
-namespace TwistedLogik.Ultraviolet.Design
+namespace TwistedLogik.Nucleus.Design.Text
 {
     /// <summary>
-    /// Represents a type converter for the <see cref="Radians"/> structure.
+    /// Represents a type converter for the <see cref="StringResource"/> class.
     /// </summary>
-    public class RadiansTypeConverter : TypeConverter
+    public class StringResourceTypeConverter : TypeConverter
     {
         /// <inheritdoc/>
         public override Boolean CanConvertTo(ITypeDescriptorContext context, Type destinationType)
         {
-            if (destinationType == typeof(Radians))
+            if (destinationType == typeof(StringResource))
             {
                 return true;
             }
@@ -22,9 +23,16 @@ namespace TwistedLogik.Ultraviolet.Design
         /// <inheritdoc/>
         public override Object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, Object value, Type destinationType)
         {
-            if (destinationType == typeof(String) && value.GetType() == typeof(Radians))
+            if (destinationType == typeof(String))
             {
-                return value.ToString();
+                if (value == null)
+                {
+                    return null;
+                }
+                if (value.GetType() == typeof(StringResource))
+                {
+                    return ((StringResource)value).Key;
+                }
             }
             return base.ConvertTo(context, culture, value, destinationType);
         }
@@ -44,7 +52,7 @@ namespace TwistedLogik.Ultraviolet.Design
         {
             if (value is String)
             {
-                return Radians.Parse((String)value);
+                return new StringResource((String)value);
             }
             return base.ConvertFrom(context, culture, value);
         }

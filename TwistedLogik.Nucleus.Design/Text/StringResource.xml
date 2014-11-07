@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<TypeDescription>
+  <Assembly Name="TwistedLogik.Nucleus, Version=4.0.0.0">
+    <Types>
+      <Type Name="TwistedLogik.Nucleus.Text.StringResource">
+        <TypeConverter>TwistedLogik.Nucleus.Design.Text.StringResourceTypeConverter, TwistedLogik.Nucleus.Design</TypeConverter>
+      </Type>
+    </Types>
+  </Assembly>
+</TypeDescription>
