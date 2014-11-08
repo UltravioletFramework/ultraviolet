@@ -182,8 +182,8 @@ namespace TwistedLogik.Nucleus.Text
             }
 
             return (s1.sourceString != null) ?
-                new StringSegment(s1.sourceBuilder, s1.Start, s1.Length + s2.Length) :                
-                new StringSegment(s1.SourceString, s1.Start, s1.Length + s2.Length);
+                new StringSegment(s1.sourceString, s1.Start, s1.Length + s2.Length) :                
+                new StringSegment(s1.sourceBuilder, s1.Start, s1.Length + s2.Length);
         }
 
         /// <summary>
@@ -253,11 +253,9 @@ namespace TwistedLogik.Nucleus.Text
             if (other.length != length)
                 return false;
 
-            var i = start;
-            var j = other.start;
-            for (int n = 0; n < length; n++)
+            for (int i = 0; i < length; i++)
             {
-                if (this[i++] != other[j++])
+                if (this[i] != other[i])
                 {
                     return false;
                 }
@@ -282,7 +280,7 @@ namespace TwistedLogik.Nucleus.Text
 
             for (int i = 0; i < length; i++)
             {
-                if (this[i++] != other[i++])
+                if (this[i] != other[i])
                 {
                     return false;
                 }
@@ -307,7 +305,7 @@ namespace TwistedLogik.Nucleus.Text
 
             for (int i = 0; i < length; i++)
             {
-                if (this[i++] != other[i++])
+                if (this[i] != other[i])
                 {
                     return false;
                 }

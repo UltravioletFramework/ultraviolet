@@ -1,5 +1,6 @@
 ﻿using System;
 using TwistedLogik.Nucleus;
+using System.Text;
 
 namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
 {
@@ -162,6 +163,26 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <param name="color">The color with which to draw the text.</param>
         /// <param name="settings">The layout settings.</param>
         public void Draw(SpriteBatch spriteBatch, String input, Vector2 position, Color color, TextLayoutSettings settings)
+        {
+            Contract.Require(spriteBatch, "spriteBatch");
+            Contract.Require(input, "input");
+
+            lexer.Lex(input, lexerResult);
+            parser.Parse(lexerResult, parserResult);
+            layoutEngine.CalculateLayout(parserResult, layoutResult, settings);
+
+            Draw(spriteBatch, layoutResult, position, color);
+        }
+
+        /// <summary>
+        /// Draws a string of formatted text.
+        /// </summary>
+        /// <param name="spriteBatch">The sprite batch with which to draw the text.</param>
+        /// <param name="input">The string to draw.</param>
+        /// <param name="position">The position in screen coordinates at which to draw.</param>
+        /// <param name="color">The color with which to draw the text.</param>
+        /// <param name="settings">The layout settings.</param>
+        public void Draw(SpriteBatch spriteBatch, StringBuilder input, Vector2 position, Color color, TextLayoutSettings settings)
         {
             Contract.Require(spriteBatch, "spriteBatch");
             Contract.Require(input, "input");

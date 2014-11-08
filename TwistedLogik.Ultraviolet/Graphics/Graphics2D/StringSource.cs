@@ -45,7 +45,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         public StringSource(StringSegment segment)
         {
             this.str     = segment.SourceString;
-            this.builder = null;
+            this.builder = segment.SourceStringBuilder;
             this.Start   = segment.Start;
             this.Length  = segment.Length;
         }
@@ -58,6 +58,22 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         public Char this[Int32 ix]
         {
             get { return (str == null) ? builder[Start + ix] : str[Start + ix]; }
+        }
+
+        /// <summary>
+        /// Gets the <see cref="String"/> that this source represents.
+        /// </summary>
+        public String String
+        {
+            get { return str; }
+        }
+
+        /// <summary>
+        /// Gets the <see cref="StringBuilder"/> that this source represents.
+        /// </summary>
+        public StringBuilder StringBuilder
+        {
+            get { return builder; }
         }
 
         /// <summary>
