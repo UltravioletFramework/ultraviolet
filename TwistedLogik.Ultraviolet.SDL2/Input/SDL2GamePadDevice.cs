@@ -353,7 +353,7 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
         /// <returns>The normalized value.</returns>
         private static Single NormalizeAxisValue(Int16 value)
         {
-            return (value < 0) ? value / (Single)Int16.MinValue : value / (Single)Int16.MaxValue;
+            return (value < 0) ? -(value / (Single)Int16.MinValue) : value / (Single)Int16.MaxValue;
         }
 
         /// <summary>
