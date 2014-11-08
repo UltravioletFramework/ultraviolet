@@ -32,6 +32,19 @@ namespace TwistedLogik.Ultraviolet.Testing
         }
 
         /// <summary>
+        /// Specifies that subsequent comparisons should have the specified threshold value.
+        /// The threshold value is the number of pixels which must match the expected image
+        /// in order for the images to be considered a match.
+        /// </summary>
+        /// <param name="threshold">The threshold value to set.</param>
+        /// <returns>The result object.</returns>
+        public BitmapResult WithinThreshold(Single threshold)
+        {
+            this.threshold = threshold;
+            return this;
+        }
+
+        /// <summary>
         /// Asserts that the bitmap matches the image in the specified file.
         /// </summary>
         /// <param name="filename">The filename of the image to match against the bitmap.</param>
@@ -43,21 +56,29 @@ namespace TwistedLogik.Ultraviolet.Testing
                 Assert.Fail("Images do not match");
             }
 
+            var matches         = 0;
+            var requiredMatches = (Int32)((bitmap.Width * bitmap.Height) * (1f - threshold));
+
             for (int y = 0; y < expected.Height; y++)
             {
                 for (int x = 0; x < expected.Width; x++)
                 {
                     var pixelExpected = expected.GetPixel(x, y);
                     var pixelActual   = bitmap.GetPixel(x, y);
-                    if (CalculateColorDistance(pixelExpected, pixelActual) > distance)
+                    if (CalculateColorDistance(pixelExpected, pixelActual) <= distance)
                     {
-                        var filenameNoExtension = Path.GetFileNameWithoutExtension(filename);
-                        var filenameActual = Path.ChangeExtension(filenameNoExtension + "_Failed", "png");
-                        bitmap.Save(filenameActual, ImageFormat.Png);
-
-                        Assert.Fail("Images do not match");
+                        matches++;
                     }
                 }
+            }
+
+            if (matches < requiredMatches)
+            {
+                var filenameNoExtension = Path.GetFileNameWithoutExtension(filename);
+                var filenameActual = Path.ChangeExtension(filenameNoExtension + "_Failed", "png");
+                bitmap.Save(filenameActual, ImageFormat.Png);
+
+                Assert.Fail("Images do not match");
             }
         }
 
@@ -88,5 +109,6 @@ namespace TwistedLogik.Ultraviolet.Testing
         // State values.
         private readonly Bitmap bitmap;
         private Single distance = 5.0f;
+        private Single threshold = 0.01f;
     }
 }

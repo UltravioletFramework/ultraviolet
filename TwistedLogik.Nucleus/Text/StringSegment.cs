@@ -11,37 +11,71 @@ namespace TwistedLogik.Nucleus.Text
         /// <summary>
         /// Initializes a new instance of the <see cref="StringSegment"/> structure.
         /// </summary>
-        /// <param name="str">The string that represents the segment.</param>
-        public StringSegment(String str)
+        /// <param name="source">The <see cref="SourceString"/> that represents the segment.</param>
+        public StringSegment(String source)
         {
-            Contract.Require(str, "str");
+            Contract.Require(source, "source");
 
-            this.str = str;
-            this.start = 0;
-            this.length = str.Length;
+            this.sourceString  = source;
+            this.sourceBuilder = null;
+            this.start         = 0;
+            this.length        = source.Length;
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="StringSegment"/> structure.
         /// </summary>
-        /// <param name="str">The <see cref="String"/> that contains this segment.</param>
+        /// <param name="source">The <see cref="SourceStringBuilder"/> that represents the segment.</param>
+        public StringSegment(StringBuilder source)
+        {
+            Contract.Require(source, "source");
+
+            this.sourceString  = null;
+            this.sourceBuilder = source;
+            this.start         = 0;
+            this.length        = source.Length;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="StringSegment"/> structure.
+        /// </summary>
+        /// <param name="source">The <see cref="SourceString"/> that contains this segment.</param>
         /// <param name="start">The index of the string segment's first character within its parent string.</param>
         /// <param name="length">The number of characters in the string segment.</param>
-        public StringSegment(String str, Int32 start, Int32 length)
+        public StringSegment(String source, Int32 start, Int32 length)
         {
-            Contract.Require(str, "string");
-            Contract.EnsureRange(start >= 0 && start < str.Length, "start");
-            Contract.EnsureRange(length >= 0 && start + length <= str.Length, "length");
+            Contract.Require(source, "string");
+            Contract.EnsureRange(start >= 0 && start < source.Length, "start");
+            Contract.EnsureRange(length >= 0 && start + length <= source.Length, "length");
 
-            this.str = str;
-            this.start = start;
-            this.length = length;
+            this.sourceString  = source;
+            this.sourceBuilder = null;
+            this.start         = start;
+            this.length        = length;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="StringSegment"/> structure.
+        /// </summary>
+        /// <param name="source">The <see cref="SourceStringBuilder"/> that contains this segment.</param>
+        /// <param name="start">The index of the string segment's first character within its parent string.</param>
+        /// <param name="length">The number of characters in the string segment.</param>
+        public StringSegment(StringBuilder source, Int32 start, Int32 length)
+        {
+            Contract.Require(source, "source");
+            Contract.EnsureRange(start >= 0 && start < source.Length, "start");
+            Contract.EnsureRange(length >= 0 && start + length <= source.Length, "length");
+
+            this.sourceString  = null;
+            this.sourceBuilder = source;
+            this.start         = start;
+            this.length        = length;
         }
 
         /// <summary>
         /// Implicitly converts a string to a string segment.
         /// </summary>
-        /// <param name="s">The <see cref="String"/> to convert.</param>
+        /// <param name="s">The <see cref="SourceString"/> to convert.</param>
         /// <returns>The converted <see cref="StringSegment"/>.</returns>
         public static implicit operator StringSegment(String s)
         {
@@ -74,7 +108,7 @@ namespace TwistedLogik.Nucleus.Text
         /// Compares a string segment and a string for equality.
         /// </summary>
         /// <param name="s1">The <see cref="StringSegment"/> to compare.</param>
-        /// <param name="s2">The <see cref="String"/> to compare.</param>
+        /// <param name="s2">The <see cref="SourceString"/> to compare.</param>
         /// <returns><c>true</c> if the string segment is equal to the string; otherwise, <c>false</c>.</returns>
         public static Boolean operator ==(StringSegment s1, String s2)
         {
@@ -85,7 +119,7 @@ namespace TwistedLogik.Nucleus.Text
         /// Compares a string segment and a string for inequality.
         /// </summary>
         /// <param name="s1">The <see cref="StringSegment"/> to compare.</param>
-        /// <param name="s2">The <see cref="String"/> to compare.</param>
+        /// <param name="s2">The <see cref="SourceString"/> to compare.</param>
         /// <returns><c>true</c> if the string segment is not equal to the string; otherwise, <c>false</c>.</returns>
         public static Boolean operator !=(StringSegment s1, String s2)
         {
@@ -96,7 +130,7 @@ namespace TwistedLogik.Nucleus.Text
         /// Compares a string segment and a string builder for equality.
         /// </summary>
         /// <param name="s1">The <see cref="StringSegment"/> to compare.</param>
-        /// <param name="s2">The <see cref="StringBuilder"/> to compare.</param>
+        /// <param name="s2">The <see cref="SourceStringBuilder"/> to compare.</param>
         /// <returns><c>true</c> if the string segment is equal to the string builder; otherwise, <c>false</c>.</returns>
         public static Boolean operator ==(StringSegment s1, StringBuilder s2)
         {
@@ -107,7 +141,7 @@ namespace TwistedLogik.Nucleus.Text
         /// Compares a string segment and a string builder for inequality.
         /// </summary>
         /// <param name="s1">The <see cref="StringSegment"/> to compare.</param>
-        /// <param name="s2">The <see cref="StringBuilder"/> to compare.</param>
+        /// <param name="s2">The <see cref="SourceStringBuilder"/> to compare.</param>
         /// <returns><c>true</c> if the string segment is not equal to the string builder; otherwise, <c>false</c>.</returns>
         public static Boolean operator !=(StringSegment s1, StringBuilder s2)
         {
@@ -122,9 +156,34 @@ namespace TwistedLogik.Nucleus.Text
         /// <returns><c>true</c> if the string segments are contiguous; otherwise, <c>false</c>.</returns>
         public static Boolean AreSegmentsContiguous(StringSegment s1, StringSegment s2)
         {
-            return (s1.String == s2.String) &&
+            if (s1.sourceString != null)
+            {
+                return (s1.sourceString == s2.sourceString) &&
+                    s1.Start + s1.Length == s2.Start ||
+                    s2.Start + s2.Length == s1.Start;
+
+            }
+            return (s1.sourceBuilder == s2.sourceBuilder) &&
                 s1.Start + s1.Length == s2.Start ||
                 s2.Start + s2.Length == s1.Start;
+        }
+
+        /// <summary>
+        /// Combines two contiguous string segments.
+        /// </summary>
+        /// <param name="s1">The first <see cref="StringSegment"/> to combine.</param>
+        /// <param name="s2">The second <see cref="StringSegment"/> to combine.</param>
+        /// <returns>The combined string segment.</returns>
+        public static StringSegment CombineSegments(StringSegment s1, StringSegment s2)
+        {
+            if (!AreSegmentsContiguous(s1, s2))
+            {
+                throw new InvalidOperationException(NucleusStrings.SegmentsAreNotContiguous);
+            }
+
+            return (s1.sourceString != null) ?
+                new StringSegment(s1.sourceString, s1.Start, s1.Length + s2.Length) :                
+                new StringSegment(s1.sourceBuilder, s1.Start, s1.Length + s2.Length);
         }
 
         /// <summary>
@@ -133,7 +192,15 @@ namespace TwistedLogik.Nucleus.Text
         /// <returns>A human-readable string that represents the object.</returns>
         public override String ToString()
         {
-            return (String == null) ? "(null)" : String.Substring(Start, Length);
+            if (sourceBuilder != null)
+            {
+                return sourceBuilder.ToString();
+            }
+            if (sourceString != null)
+            {
+                return sourceString.Substring(Start, Length);
+            }
+            return null;
         }
 
         /// <summary>
@@ -142,15 +209,15 @@ namespace TwistedLogik.Nucleus.Text
         /// <returns>The object's hash code.</returns>
         public override Int32 GetHashCode()
         {
-            if (str == null || length == 0) 
+            if ((sourceString == null && sourceBuilder == null) || length == 0) 
                 return 0;
 
             unchecked
             {
                 var hash = 17;
-                for (int i = start; i < start + length; i++)
+                for (int i = 0; i < length; i++)
                 {
-                    hash = hash * 31 + str[i].GetHashCode();
+                    hash = hash * 31 + this[i].GetHashCode();
                 }
                 return hash;
             }
@@ -186,12 +253,12 @@ namespace TwistedLogik.Nucleus.Text
             if (other.length != length)
                 return false;
 
-            var i = start;
-            var j = other.start;
-            for (int n = 0; n < length; n++)
+            for (int i = 0; i < length; i++)
             {
-                if (str[i++] != other.str[j++])
+                if (this[i] != other[i])
+                {
                     return false;
+                }
             }
             return true;
         }
@@ -200,7 +267,7 @@ namespace TwistedLogik.Nucleus.Text
         /// Gets a value indicating whether the content of this string segment equals
         /// the content of the specified string.
         /// </summary>
-        /// <param name="other">The <see cref="String"/> to compare to this segment.</param>
+        /// <param name="other">The <see cref="SourceString"/> to compare to this segment.</param>
         /// <returns><c>true</c> if the content of this segment equals the content of the 
         /// specified string; otherwise, <c>false</c>.</returns>
         public Boolean Equals(String other)
@@ -211,12 +278,12 @@ namespace TwistedLogik.Nucleus.Text
             if (other == null || other.Length != length)
                 return false;
 
-            var i = start;
-            var j = 0;
-            for (int n = 0; n < length; n++)
+            for (int i = 0; i < length; i++)
             {
-                if (str[i++] != other[j++])
+                if (this[i] != other[i])
+                {
                     return false;
+                }
             }
             return true;
         }
@@ -225,7 +292,7 @@ namespace TwistedLogik.Nucleus.Text
         /// Gets a value indicating whether the content of this string segment equals
         /// the content of the specified string builder.
         /// </summary>
-        /// <param name="other">The <see cref="StringBuilder"/> to compare to this segment.</param>
+        /// <param name="other">The <see cref="SourceStringBuilder"/> to compare to this segment.</param>
         /// <returns><c>true</c> if the content of this segment equals the content of the 
         /// specified string builder; otherwise, <c>false</c>.</returns>
         public Boolean Equals(StringBuilder other)
@@ -236,12 +303,12 @@ namespace TwistedLogik.Nucleus.Text
             if (other == null || other.Length != length)
                 return false;
 
-            var i = start;
-            var j = 0;
-            for (int n = 0; n < length; n++)
+            for (int i = 0; i < length; i++)
             {
-                if (str[i++] != other[j++])
+                if (this[i] != other[i])
+                {
                     return false;
+                }
             }
             return true;
         }
@@ -256,7 +323,11 @@ namespace TwistedLogik.Nucleus.Text
             Contract.EnsureRange(start >= 0 && start < this.length, "start");
             Contract.EnsureNot(IsEmpty, NucleusStrings.SegmentIsEmpty);
 
-            return (length == 0) ? new StringSegment() : new StringSegment(str, this.start + start, length);
+            var substringLength = (length - start);
+
+            return (sourceString == null) ? 
+                new StringSegment(sourceBuilder, this.start + start, substringLength) :
+                new StringSegment(sourceString, this.start + start, substringLength);
         }
 
         /// <summary>
@@ -271,7 +342,9 @@ namespace TwistedLogik.Nucleus.Text
             Contract.EnsureRange(length > 0 && start + length <= this.length, "length");
             Contract.EnsureNot(IsEmpty, NucleusStrings.SegmentIsEmpty);
 
-            return (length == 0) ? new StringSegment() : new StringSegment(str, this.start + start, length);
+            return (sourceString == null) ? 
+                new StringSegment(sourceBuilder, this.start + start, length) :
+                new StringSegment(sourceString, this.start + start, length);
         }
 
         /// <summary>
@@ -283,18 +356,26 @@ namespace TwistedLogik.Nucleus.Text
         {
             get 
             {
-                if (ix < 0 || ix >= length)
-                    throw new ArgumentOutOfRangeException("ix");
-                return str[start + ix];
+                Contract.EnsureRange(ix >= 0 && ix < length, "ix");
+
+                return (sourceString == null) ? sourceBuilder[start + ix] : sourceString[start + ix];
             }
         }
 
         /// <summary>
-        /// Gets the string that contains this string segment.
+        /// Gets the <see cref="SourceString"/> that contains this string segment.
         /// </summary>
-        public String String
+        public String SourceString
         {
-            get { return str; }
+            get { return sourceString; }
+        }
+
+        /// <summary>
+        /// Gets the <see cref="SourceStringBuilder"/> that contains this string segment.
+        /// </summary>
+        public StringBuilder SourceStringBuilder
+        {
+            get { return sourceBuilder; }
         }
 
         /// <summary>
@@ -318,7 +399,7 @@ namespace TwistedLogik.Nucleus.Text
         /// </summary>
         public Boolean IsEmpty
         {
-            get { return str == null || length == 0; }
+            get { return length == 0; }
         }
 
         /// <summary>
@@ -327,7 +408,8 @@ namespace TwistedLogik.Nucleus.Text
         public static readonly StringSegment Empty = new StringSegment();
 
         // Property values.
-        private readonly String str;
+        private readonly String sourceString;
+        private readonly StringBuilder sourceBuilder;
         private readonly Int32 start;
         private readonly Int32 length;
     }

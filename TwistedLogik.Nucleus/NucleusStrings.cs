@@ -72,6 +72,7 @@ namespace TwistedLogik.Nucleus
         public static readonly StringResource FmtCmdInvalidForArgument               = new StringResource(StringDatabase, "FMT_CMD_INVALID_FOR_ARGUMENT");
         public static readonly StringResource FmtCmdInvalidForGeneratedStrings       = new StringResource(StringDatabase, "FMT_CMD_INVALID_FOR_GENERATED_STRINGS");
         public static readonly StringResource SegmentIsEmpty                         = new StringResource(StringDatabase, "SEGMENT_IS_EMPTY");
+        public static readonly StringResource SegmentsAreNotContiguous               = new StringResource(StringDatabase, "SEGMENTS_ARE_NOT_CONTIGUOUS");
         public static readonly StringResource LocalizedStringMissingKey              = new StringResource(StringDatabase, "LOCALIZED_STRING_MISSING_KEY");
 #pragma warning restore 1591
     }

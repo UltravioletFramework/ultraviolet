@@ -250,4 +250,14 @@
       <Variant>String segment is empty.</Variant>
     </en-US>
   </String>
+  <String Key="SEGMENTS_ARE_NOT_CONTIGUOUS">
+    <en-US>
+      <Variant>String segments are not contiguous.</Variant>
+    </en-US>
+  </String>
+  <String Key="LOCALIZED_STRING_MISSING_KEY">
+    <en-US>
+      <Variant>Localized string is missing a Key value.</Variant>
+    </en-US>
+  </String>
 </LocalizedStrings>
