@@ -1,10 +1,11 @@
 ﻿using System;
-using System.Linq;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.Drawing.Text;
+using System.Linq;
+using System.Runtime.InteropServices;
 using System.Xml.Linq;
 using TwistedLogik.Nucleus;
 
@@ -14,70 +15,83 @@ namespace TwistedLogik.UvFont
     {
         public static void Main(String[] args)
         {
-            FontGenerationParameters parameters;
-            try { parameters = new FontGenerationParameters(args); }
-            catch
+            try
             {
-                Console.WriteLine("The syntax of this command is:");
-                Console.WriteLine();
-                Console.WriteLine("UVFONT fontname [-fontsize:emsize]");
-                return;
-            }
-
-            var chars      = " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~";
-            var fontName   = parameters.FontName;
-            var fontSize   = parameters.FontSize;
-
-            var faces = new[] 
-            {
-                new FontFaceInfo("Regular",    new Font(fontName, fontSize, FontStyle.Regular)),
-                new FontFaceInfo("Bold",       new Font(fontName, fontSize, FontStyle.Bold)),
-                new FontFaceInfo("Italic",     new Font(fontName, fontSize, FontStyle.Italic)),
-                new FontFaceInfo("BoldItalic", new Font(fontName, fontSize, FontStyle.Bold | FontStyle.Italic)),
-            };
-
-            if (faces.Select(x => x.Font).Where(x => !String.Equals(x.Name, fontName, StringComparison.CurrentCultureIgnoreCase)).Any())
-            {
-                Console.WriteLine("No font named '{0}' was found on this system.", fontName);
-                return;
-            }
-            fontName = parameters.FontName = faces.First().Font.Name;
-
-            foreach (var face in faces)
-            {
-                using (var fontSupersampled = new Font(fontName, fontSize * SupersampleFactor, face.Font.Style))
+                FontGenerationParameters parameters;
+                try { parameters = new FontGenerationParameters(args); }
+                catch
                 {
-                    var glyphs      = CreateGlyphImages(fontSupersampled, chars);
-                    var textureSize = Size.Empty;
-                    var textureFits = CalculateTextureSize(glyphs, out textureSize);
-                    if (!textureFits)
-                    {
-                        Console.WriteLine("The specified font won't fit within a 4096x4096 texture.");
-                        return;
-                    }
-
-                    face.Texture = GenerateFaceTexture(face.Font, glyphs, textureSize);
+                    Console.WriteLine("The syntax of this command is:");
+                    Console.WriteLine();
+                    Console.WriteLine("UVFONT fontname [-fontsize:emsize]");
+                    return;
                 }
-            }
 
-            var outputTextureSize = Size.Empty;
-            if (!WillFaceTexturesFitOnOutput(faces, out outputTextureSize))
+                var chars      = " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~";
+                var fontName   = parameters.FontName;
+                var fontSize   = parameters.FontSize;
+
+                var faces = new[] 
+                {
+                    new FontFaceInfo("Regular",    new Font(fontName, fontSize, FontStyle.Regular)),
+                    new FontFaceInfo("Bold",       new Font(fontName, fontSize, FontStyle.Bold)),
+                    new FontFaceInfo("Italic",     new Font(fontName, fontSize, FontStyle.Italic)),
+                    new FontFaceInfo("BoldItalic", new Font(fontName, fontSize, FontStyle.Bold | FontStyle.Italic)),
+                };
+
+                if (faces.Select(x => x.Font).Where(x => !String.Equals(x.Name, fontName, StringComparison.CurrentCultureIgnoreCase)).Any())
+                {
+                    Console.WriteLine("No font named '{0}' was found on this system.", fontName);
+                    return;
+                }
+                fontName = parameters.FontName = faces.First().Font.Name;
+
+                foreach (var face in faces)
+                {
+                    using (var fontSupersampled = new Font(fontName, fontSize * SupersampleFactor, face.Font.Style))
+                    {
+                        var glyphs      = CreateGlyphImages(fontSupersampled, chars);
+                        var textureSize = Size.Empty;
+                        var textureFits = CalculateTextureSize(glyphs, out textureSize);
+                        if (!textureFits)
+                        {
+                            Console.WriteLine("The specified font won't fit within a 4096x4096 texture.");
+                            return;
+                        }
+
+                        face.Texture = GenerateFaceTexture(face.Font, glyphs, textureSize);
+                    }
+                }
+
+                var outputTextureSize = Size.Empty;
+                if (!WillFaceTexturesFitOnOutput(faces, out outputTextureSize))
+                {
+                    Console.WriteLine("The specified font won't fit within a 4096x4096 texture.");
+                    return;
+                }
+
+                using (var output = CombineFaceTextures(faces, outputTextureSize))
+                {
+                    output.Save(GetFontTextureSafeName(parameters), ImageFormat.Png);
+                }
+
+                Console.WriteLine("Generated {0}.", GetFontTextureSafeName(parameters));
+
+                var xml = GenerateXmlFontDefinition(parameters, faces, chars);
+                xml.Save(GetFontDefinitionSafeName(parameters));
+
+                Console.WriteLine("Generated {0}.", GetFontDefinitionSafeName(parameters));
+            }
+            catch (ExternalException ex)
             {
-                Console.WriteLine("The specified font won't fit within a 4096x4096 texture.");
-                return;
+                if (ex.ErrorCode == unchecked((Int32)0x80004005))
+                {
+                    Console.WriteLine("An error was raised by GDI+ during font generation.");
+                    Console.WriteLine("Do you have permission to write to this folder?");
+                    return;
+                }
+                throw;
             }
-
-            using (var output = CombineFaceTextures(faces, outputTextureSize))
-            {
-                output.Save(GetFontTextureSafeName(parameters), ImageFormat.Png);
-            }
-
-            Console.WriteLine("Generated {0}.", GetFontTextureSafeName(parameters));
-
-            var xml = GenerateXmlFontDefinition(parameters, faces, chars);
-            xml.Save(GetFontDefinitionSafeName(parameters));
-
-            Console.WriteLine("Generated {0}.", GetFontDefinitionSafeName(parameters));
         }
 
         private static Dictionary<String, String> ParseCommandLineArgs(IEnumerable<String> args)
