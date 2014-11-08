@@ -16,7 +16,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <param name="fontFace">The token's font face.</param>
         /// <param name="icon">The token's icon.</param>
         /// <param name="color">The token's color.</param>
-        internal TextLayoutToken(StringSegment text, Rectangle bounds, SpriteFontFace fontFace, SpriteAnimation icon, Color? color)
+        internal TextLayoutToken(StringSegment text, Rectangle bounds, SpriteFontFace fontFace, InlineIconInfo? icon, Color? color)
         {
             this.text = text;
             this.bounds = bounds;
@@ -55,7 +55,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             return
                 this.color == token.color &&
                 this.fontFace == token.fontFace &&
-                this.icon == token.icon;
+                this.icon.GetValueOrDefault().Equals(token.icon.GetValueOrDefault());
         }
 
         /// <summary>
@@ -97,7 +97,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <summary>
         /// Gets the token's icon.
         /// </summary>
-        public SpriteAnimation Icon
+        public InlineIconInfo? Icon
         {
             get { return icon; }
         }
@@ -114,7 +114,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         private readonly StringSegment text;
         private Rectangle bounds;
         private readonly SpriteFontFace fontFace;
-        private readonly SpriteAnimation icon;
+        private readonly InlineIconInfo? icon;
         private readonly Color? color;
     }
 }

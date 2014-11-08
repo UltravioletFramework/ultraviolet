@@ -53,9 +53,11 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// </summary>
         /// <param name="name">The name of the icon to register.</param>
         /// <param name="icon">The icon to register.</param>
-        public void RegisterIcon(String name, SpriteAnimation icon)
+        /// <param name="height">The width to which to scale the icon, or null to preserve the sprite's original width.</param>
+        /// <param name="width">The height to which to scale the icon, or null to preserve the sprite's original height.</param>
+        public void RegisterIcon(String name, SpriteAnimation icon, Int32? width = null, Int32? height = null)
         {
-            layoutEngine.RegisterIcon(name, icon);
+            layoutEngine.RegisterIcon(name, icon, width, height);
         }
 
         /// <summary>
@@ -229,11 +231,14 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                 var tokenBounds = token.Bounds;
                 if (token.Icon != null)
                 {
-                    var tokenOrigin = token.Icon.Controller.GetFrame().Origin;
+                    var iconInfo  = token.Icon.Value;
+                    var animation = iconInfo.Icon;
+
+                    var tokenOrigin = animation.Controller.GetFrame().Origin;
                     var tokenPosition = new Vector2(
                         position.X + tokenBounds.X + tokenOrigin.X, 
                         position.Y + tokenBounds.Y + tokenOrigin.Y);
-                    spriteBatch.DrawSprite(token.Icon.Controller, tokenPosition, null, null, Color.White * alpha, 0f);
+                    spriteBatch.DrawSprite(animation.Controller, tokenPosition, iconInfo.Width, iconInfo.Height, Color.White * alpha, 0f);
                 }
                 else
                 {

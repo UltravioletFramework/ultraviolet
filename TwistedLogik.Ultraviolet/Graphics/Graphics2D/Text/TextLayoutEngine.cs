@@ -64,12 +64,14 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// </summary>
         /// <param name="name">The name of the icon to register.</param>
         /// <param name="icon">The icon to register.</param>
-        public void RegisterIcon(String name, SpriteAnimation icon)
+        /// <param name="height">The width to which to scale the icon, or null to preserve the sprite's original width.</param>
+        /// <param name="width">The height to which to scale the icon, or null to preserve the sprite's original height.</param>
+        public void RegisterIcon(String name, SpriteAnimation icon, Int32? width = null, Int32? height = null)
         {
             Contract.RequireNotEmpty(name, "name");
             Contract.Require(icon, "icon");
 
-            registeredIcons.Add(name, icon);
+            registeredIcons.Add(name, new InlineIconInfo(icon, width, height));
         }
 
         /// <summary>
@@ -163,10 +165,14 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <param name="icon">The token's icon.</param>
         /// <param name="next">The next token in the input stream.</param>
         /// <returns>The token's size in pixels.</returns>
-        private static Size2 MeasureToken(StringSegment text, SpriteFontFace font, SpriteAnimation icon, TextParserToken? next)
+        private static Size2 MeasureToken(StringSegment text, SpriteFontFace font, InlineIconInfo? icon, TextParserToken? next)
         {
             if (icon != null)
-                return new Size2(icon.Controller.Width, icon.Controller.Height);
+            {
+                var iconInfo  = icon.Value;
+                var animation = iconInfo.Icon;
+                return new Size2(iconInfo.Width ?? animation.Controller.Width, iconInfo.Height ?? animation.Controller.Height);
+            }
             
             var size = font.MeasureString(text);
             if (next.HasValue)
@@ -462,9 +468,9 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// </summary>
         /// <param name="style">The style for which to retrieve an icon.</param>
         /// <returns>The icon that corresponds to the specified style.</returns>
-        private SpriteAnimation GetIcon(ref TextStyle style)
+        private InlineIconInfo? GetIcon(ref TextStyle style)
         {
-            SpriteAnimation icon;
+            InlineIconInfo icon;
             if (style.Icon.HasValue)
             {
                 if (registeredIcons.TryGetValue(style.Icon.Value, out icon))
@@ -492,8 +498,8 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             new Dictionary<StringSegment, TextStyle>();
         private readonly Dictionary<StringSegment, SpriteFont> registeredFonts = 
             new Dictionary<StringSegment, SpriteFont>();
-        private readonly Dictionary<StringSegment, SpriteAnimation> registeredIcons = 
-            new Dictionary<StringSegment, SpriteAnimation>();
+        private readonly Dictionary<StringSegment, InlineIconInfo> registeredIcons = 
+            new Dictionary<StringSegment, InlineIconInfo>();
 
         // Layout state.
         private TextParserResult input;
