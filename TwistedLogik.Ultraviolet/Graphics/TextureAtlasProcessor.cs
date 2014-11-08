@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Xml.Linq;
 using sspack;
+using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet.Content;
 
 namespace TwistedLogik.Ultraviolet.Graphics
@@ -126,21 +127,6 @@ namespace TwistedLogik.Ultraviolet.Graphics
         }
 
         /// <summary>
-        /// Finds the next power of two that is higher than the specified value.
-        /// </summary>
-        /// <param name="k">The value to evaluate.</param>
-        /// <returns>The next power of two that is higher than the specified value.</returns>
-        private static Int32 FindNextPowerOfTwo(Int32 k)
-        {
-            k--;
-            for (int i = 1; i < sizeof(int) * 8; i <<= 1)
-            {
-                k = k | k >> i;
-            }
-            return k + 1;
-        }
-
-        /// <summary>
         /// This method does some trickery type stuff where we perform the TestPackingImages method over and over,
         /// trying to reduce the image size until we have found the smallest possible image we can fit.
         /// </summary>
@@ -218,8 +204,8 @@ namespace TwistedLogik.Ultraviolet.Graphics
                 // if we require a power of two texture, find the next power of two that can fit this image
                 if (definition.RequirePowerOfTwo)
                 {
-                    testWidth = FindNextPowerOfTwo(testWidth);
-                    testHeight = FindNextPowerOfTwo(testHeight);
+                    testWidth  = MathUtil.FindNextPowerOfTwo(testWidth);
+                    testHeight = MathUtil.FindNextPowerOfTwo(testHeight);
                 }
 
                 // if we require a square texture, set the width and height to the larger of the two

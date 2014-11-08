@@ -8,6 +8,21 @@ namespace TwistedLogik.Nucleus
     public static class MathUtil
     {
         /// <summary>
+        /// Finds the next power of two that is higher than the specified value.
+        /// </summary>
+        /// <param name="k">The value to evaluate.</param>
+        /// <returns>The next power of two that is higher than the specified value.</returns>
+        public static Int32 FindNextPowerOfTwo(Int32 k)
+        {
+            k--;
+            for (int i = 1; i < sizeof(int) * 8; i <<= 1)
+            {
+                k = k | k >> i;
+            }
+            return k + 1;
+        }
+
+        /// <summary>
         /// Clamps a value to the specified range.
         /// </summary>
         /// <param name="value">The value to clamp.</param>
