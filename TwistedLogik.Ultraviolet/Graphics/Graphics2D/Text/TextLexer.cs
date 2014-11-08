@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 using TwistedLogik.Nucleus;
 using TwistedLogik.Nucleus.Text;
 
@@ -12,13 +13,36 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <summary>
         /// Lexes the specified string.
         /// </summary>
-        /// <param name="input">The string to lex.</param>
+        /// <param name="input">The <see cref="String"/> to lex.</param>
         /// <param name="output">The lexed token stream.</param>
         public void Lex(String input, TextLexerResult output)
         {
             Contract.Require(input, "input");
             Contract.Require(output, "output");
 
+            Lex(new StringSource(input), output);
+        }
+
+        /// <summary>
+        /// Lexes the specified string.
+        /// </summary>
+        /// <param name="input">The <see cref="StringBuilder"/> to lex.</param>
+        /// <param name="output">The lexed token stream.</param>
+        internal void Lex(StringBuilder input, TextLexerResult output)
+        {
+            Contract.Require(input, "input");
+            Contract.Require(output, "output");
+
+            Lex(new StringSource(input), output);
+        }
+
+        /// <summary>
+        /// Lexes the specified string.
+        /// </summary>
+        /// <param name="input">The <see cref="StringSource"/> to lex.</param>
+        /// <param name="output">The lexed token stream.</param>
+        private void Lex(StringSource input, TextLexerResult output)
+        {
             output.Clear();
 
             var ix = 0;
@@ -59,7 +83,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <param name="input">The input string.</param>
         /// <param name="ix">The index of the character to evaluate.</param>
         /// <returns><c>true</c> if the specified character is the start of a newline token; otherwise, <c>false</c>.</returns>
-        private static Boolean IsStartOfNewline(String input, Int32 ix)
+        private static Boolean IsStartOfNewline(StringSource input, Int32 ix)
         {
             return input[ix] == '\n';
         }
@@ -70,7 +94,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <param name="input">The input string.</param>
         /// <param name="ix">The index of the character to evaluate.</param>
         /// <returns><c>true</c> if the specified character is the start of a whitespace token; otherwise, <c>false</c>.</returns>
-        private static Boolean IsStartOfWhitespace(String input, Int32 ix)
+        private static Boolean IsStartOfWhitespace(StringSource input, Int32 ix)
         {
             return Char.IsWhiteSpace(input[ix]) && !IsStartOfNewline(input, ix);
         }
@@ -81,9 +105,9 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <param name="input">The input string.</param>
         /// <param name="ix">The index of the character to evaluate.</param>
         /// <returns><c>true</c> if the specified character is the end of a whitespace token; otherwise, <c>false</c>.</returns>
-        private static Boolean IsEndOfWhitespace(String input, Int32 ix)
+        private static Boolean IsEndOfWhitespace(StringSource input, Int32 ix)
         {
-            return !Char.IsWhiteSpace(input, ix) || IsStartOfNewline(input, ix);
+            return !Char.IsWhiteSpace(input[ix]) || IsStartOfNewline(input, ix);
         }
 
         /// <summary>
@@ -92,7 +116,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <param name="input">The input string.</param>
         /// <param name="ix">The index of the character to evaluate.</param>
         /// <returns><c>true</c> if the specified character is an escaped pipe; otherwise, <c>false</c>.</returns>
-        private static Boolean IsEscapedPipe(String input, Int32 ix)
+        private static Boolean IsEscapedPipe(StringSource input, Int32 ix)
         {
             return input[ix] == '|' && (ix + 1 >= input.Length || input[ix + 1] == '|' || IsStartOfWhitespace(input, ix + 1) || IsStartOfNewline(input, ix + 1));
         }
@@ -103,7 +127,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <param name="input">The input string.</param>
         /// <param name="ix">The index of the character to evaluate.</param>
         /// <returns><c>true</c> if the specified character is the start of a command token; otherwise, <c>false</c>.</returns>
-        private static Boolean IsStartOfCommand(String input, Int32 ix)
+        private static Boolean IsStartOfCommand(StringSource input, Int32 ix)
         {
             return input[ix] == '|';
         }
@@ -114,7 +138,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <param name="input">The input string.</param>
         /// <param name="ix">The index of the character to evaluate.</param>
         /// <returns><c>true</c> if the specified character is the end of a command token; otherwise, <c>false</c>.</returns>
-        private static Boolean IsEndOfCommand(String input, Int32 ix)
+        private static Boolean IsEndOfCommand(StringSource input, Int32 ix)
         {
             return input[ix] == '|';
         }
@@ -125,7 +149,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <param name="input">The input string.</param>
         /// <param name="ix">The index of the character to evaluate.</param>
         /// <returns><c>true</c> if the specified character is the start of a word token; otherwise, <c>false</c>.</returns>
-        private static Boolean IsStartOfWord(String input, Int32 ix)
+        private static Boolean IsStartOfWord(StringSource input, Int32 ix)
         {
             return !IsStartOfNewline(input, ix) && !IsStartOfWhitespace(input, ix) && !IsStartOfCommand(input, ix);
         }
@@ -136,7 +160,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <param name="input">The input string.</param>
         /// <param name="ix">The index of the character to evaluate.</param>
         /// <returns><c>true</c> if the specified character is the end of a word token; otherwise, <c>false</c>.</returns>
-        private static Boolean IsEndOfWord(String input, Int32 ix)
+        private static Boolean IsEndOfWord(StringSource input, Int32 ix)
         {
             return IsStartOfNewline(input, ix) || IsStartOfWhitespace(input, ix) || IsStartOfCommand(input, ix);
         }
@@ -147,9 +171,9 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <param name="input">The input string.</param>
         /// <param name="ix">The index at which to begin consuming token characters.</param>
         /// <returns>The token that was created.</returns>
-        private static TextLexerToken ConsumeNewlineToken(String input, ref Int32 ix)
+        private static TextLexerToken ConsumeNewlineToken(StringSource input, ref Int32 ix)
         {
-            var segment = new StringSegment(input, ix++, 1);
+            var segment = CreateStringSegmentFromStringSource(input, ix++, 1);
             return new TextLexerToken(TextLexerTokenType.NewLine, segment);
         }
 
@@ -159,14 +183,14 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <param name="input">The input string.</param>
         /// <param name="ix">The index at which to begin consuming token characters.</param>
         /// <returns>The token that was created.</returns>
-        private static TextLexerToken ConsumeWhitespaceToken(String input, ref Int32 ix)
+        private static TextLexerToken ConsumeWhitespaceToken(StringSource input, ref Int32 ix)
         {
             var start = ix++;
             while (ix < input.Length && !IsEndOfWhitespace(input, ix))
             {
                 ix++;
             }
-            var segment = new StringSegment(input, start, ix - start);
+            var segment = CreateStringSegmentFromStringSource(input, start, ix - start);
             return new TextLexerToken(TextLexerTokenType.WhiteSpace, segment);
         }
 
@@ -176,7 +200,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <param name="input">The input string.</param>
         /// <param name="ix">The index at which to begin consuming token characters.</param>
         /// <returns>The token that was created.</returns>
-        private static TextLexerToken ConsumeEscapedPipeToken(String input, ref Int32 ix)
+        private static TextLexerToken ConsumeEscapedPipeToken(StringSource input, ref Int32 ix)
         {
             ix++;
             if (ix < input.Length && input[ix] == '|')
@@ -192,7 +216,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <param name="input">The input string.</param>
         /// <param name="ix">The index at which to begin consuming token characters.</param>
         /// <returns>The token that was created.</returns>
-        private static TextLexerToken ConsumeCommandToken(String input, ref Int32 ix)
+        private static TextLexerToken ConsumeCommandToken(StringSource input, ref Int32 ix)
         {
             var start = ix++;
             while (ix < input.Length)
@@ -201,8 +225,8 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                 {
                     break; 
                 }
-            }            
-            var segment = new StringSegment(input, start, ix - start);
+            }
+            var segment = CreateStringSegmentFromStringSource(input, start, ix - start);
             return new TextLexerToken(TextLexerTokenType.Command, segment);
         }
 
@@ -212,15 +236,35 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <param name="input">The input string.</param>
         /// <param name="ix">The index at which to begin consuming token characters.</param>
         /// <returns>The token that was created.</returns>
-        private static TextLexerToken ConsumeWordToken(String input, ref Int32 ix)
+        private static TextLexerToken ConsumeWordToken(StringSource input, ref Int32 ix)
         {
             var start = ix++;
             while (ix < input.Length && !IsEndOfWord(input, ix))
             {
                 ix++;
             }
-            var segment = new StringSegment(input, start, ix - start);
+            var segment = CreateStringSegmentFromStringSource(input, start, ix - start);
             return new TextLexerToken(TextLexerTokenType.Word, segment);
+        }
+
+        /// <summary>
+        /// Creates a new <see cref="StringSegment"/> from the specified <see cref="StringSource"/>.
+        /// </summary>
+        /// <param name="source">The <see cref="StringSource"/> from which to create the string segment.</param>
+        /// <param name="start">The string segment's starting index.</param>
+        /// <param name="length">The string segment's length.</param>
+        /// <returns>The <see cref="StringSegment"/> that was created.</returns>
+        private static StringSegment CreateStringSegmentFromStringSource(StringSource source, Int32 start, Int32 length)
+        {
+            if (source.String != null)
+            {
+                return new StringSegment(source.String, start, length);
+            }
+            if (source.StringBuilder != null)
+            {
+                return new StringSegment(source.StringBuilder, start, length);
+            }
+            return StringSegment.Empty;
         }
     }
 }
