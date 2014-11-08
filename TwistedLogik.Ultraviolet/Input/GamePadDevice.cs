@@ -187,28 +187,26 @@ namespace TwistedLogik.Ultraviolet.Input
         /// <summary>
         /// Raises the LeftJoystickVectorChanged event.
         /// </summary>
-        /// <param name="device">The <see cref="GamePadDevice"/> that raised the event.</param>
         /// <param name="vector">The axis' vector.</param>
-        protected virtual void OnLeftJoystickVectorChanged(Vector2 value)
+        protected virtual void OnLeftJoystickVectorChanged(Vector2 vector)
         {
             var temp = LeftJoystickVectorChanged;
             if (temp != null)
             {
-                temp(this, value);
+                temp(this, vector);
             }
         }
 
         /// <summary>
         /// Raises the RightJoystickVectorChanged event.
         /// </summary>
-        /// <param name="device">The <see cref="GamePadDevice"/> that raised the event.</param>
         /// <param name="vector">The axis' vector.</param>
-        protected virtual void OnRightJoystickVectorChanged(Vector2 value)
+        protected virtual void OnRightJoystickVectorChanged(Vector2 vector)
         {
             var temp = RightJoystickVectorChanged;
             if (temp != null)
             {
-                temp(this, value);
+                temp(this, vector);
             }
         }
     }

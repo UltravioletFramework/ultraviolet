@@ -6,7 +6,7 @@ using System.Text;
 namespace TwistedLogik.Ultraviolet.Input
 {
     /// <summary>
-    /// Represents the buttons available on a <see cref="GamePad"/> input device.
+    /// Represents the buttons available on a <see cref="GamePadDevice"/>.
     /// </summary>
     public enum GamePadButton
     {

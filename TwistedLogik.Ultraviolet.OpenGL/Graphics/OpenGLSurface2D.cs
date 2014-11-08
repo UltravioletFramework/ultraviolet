@@ -206,6 +206,9 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
 
             using (var copysurf = new SDL_Surface(Width, Height))
             {
+                if (SDL.SetSurfaceBlendMode(nativesurf.Native, SDL_BlendMode.NONE) < 0)
+                    throw new SDL2Exception();
+
                 if (SDL.BlitSurface(nativesurf.Native, null, copysurf.Native, null) < 0)
                     throw new SDL2Exception();
 

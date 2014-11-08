@@ -55,8 +55,6 @@ namespace TwistedLogik.Ultraviolet.Input
         /// <param name="shift">A value indicating whether the binding requires the Shift modifier.</param>
         public MouseInputBinding(UltravioletContext uv, MouseButton button, Boolean control, Boolean alt, Boolean shift)
         {
-            Contract.Require(mouse, "keyboard");
-
             if (!uv.GetInput().IsMouseSupported())
             {
                 throw new NotSupportedException();

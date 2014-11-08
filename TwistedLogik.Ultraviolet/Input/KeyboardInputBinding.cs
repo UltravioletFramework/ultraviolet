@@ -55,8 +55,6 @@ namespace TwistedLogik.Ultraviolet.Input
         /// <param name="shift">A value indicating whether the binding requires the Shift modifier.</param>
         public KeyboardInputBinding(UltravioletContext uv, Key key, Boolean control, Boolean alt, Boolean shift)
         {
-            Contract.Require(keyboard, "keyboard");
-
             if (!uv.GetInput().IsKeyboardSupported())
             {
                 throw new NotSupportedException();

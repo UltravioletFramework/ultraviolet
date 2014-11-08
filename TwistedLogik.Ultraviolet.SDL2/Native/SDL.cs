@@ -187,7 +187,7 @@ namespace TwistedLogik.Ultraviolet.SDL2.Native
         public static extern Int32 SetSurfaceBlendMode(SDL_Surface_Native* surface, SDL_BlendMode blendMode);
 
         [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GetSurfaceBlendMode")]
-        public static extern Int32 SDL_GetSurfaceBlendMode(SDL_Surface_Native* surface, SDL_BlendMode* blendMode);
+        public static extern Int32 GetSurfaceBlendMode(SDL_Surface_Native* surface, SDL_BlendMode* blendMode);
 
         [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_CreateColorCursor")]
         public static extern SDL_Cursor* CreateColorCursor(SDL_Surface_Native* surface, Int32 hot_x, Int32 hot_y);
