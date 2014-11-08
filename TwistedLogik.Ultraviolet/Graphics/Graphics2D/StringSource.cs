@@ -18,11 +18,10 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         {
             Contract.Require(s, "s");
 
-            this.str = s;
+            this.str     = s;
             this.builder = null;
-
-            this.Start = 0;
-            this.Length = s.Length;
+            this.Start   = 0;
+            this.Length  = s.Length;
         }
 
         /// <summary>
@@ -33,11 +32,10 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         {
             Contract.Require(sb, "sb");
 
-            this.str = null;
+            this.str     = null;
             this.builder = sb;
-
-            this.Start = 0;
-            this.Length = sb.Length;
+            this.Start   = 0;
+            this.Length  = sb.Length;
         }
 
         /// <summary>
@@ -46,11 +44,10 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// <param name="segment">The <see cref="StringSegment"/> that contains the string data.</param>
         public StringSource(StringSegment segment)
         {
-            this.str = segment.String;
+            this.str     = segment.SourceString;
             this.builder = null;
-
-            this.Start = segment.Start;
-            this.Length = segment.Length;
+            this.Start   = segment.Start;
+            this.Length  = segment.Length;
         }
 
         /// <summary>

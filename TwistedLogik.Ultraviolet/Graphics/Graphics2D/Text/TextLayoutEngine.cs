@@ -290,7 +290,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                 }
                 else
                 {
-                    var text = new StringSegment(existing.Text.String, existing.Text.Start, existing.Text.Length + token.Text.Length);
+                    var text = StringSegment.CombineSegments(existing.Text, token.Text);
                     var size = MeasureToken(text, token.FontFace, token.Icon, next);
                     var bounds = new Rectangle(existing.Bounds.X, existing.Bounds.Y, size.Width, size.Height);
                     accumulator = new TextLayoutToken(text, bounds, token.FontFace, token.Icon, token.Color);

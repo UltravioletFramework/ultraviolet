@@ -97,8 +97,10 @@ namespace TwistedLogik.Nucleus.Text
             if (value.IsEmpty)
                 return;
 
-            for (int i = value.Start; i < value.Start + value.Length; i++)
-                sb.Append(value.String[i]);
+            for (int i = 0; i < value.Length ; i++)
+            {
+                sb.Append(value[i]);
+            }
         }
 
         /// <summary>
@@ -113,8 +115,10 @@ namespace TwistedLogik.Nucleus.Text
             if (value.IsEmpty)
                 return;
 
-            for (int i = value.Start; i < value.Start + value.Length; i++)
-                sb.Append(value.String[i]);
+            for (int i = 0; i < value.Length; i++)
+            {
+                sb.Append(value[i]);
+            }
         }
 
         /// <summary>
