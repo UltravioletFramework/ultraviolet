@@ -164,7 +164,8 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <param name="position">The position in screen coordinates at which to draw.</param>
         /// <param name="color">The color with which to draw the text.</param>
         /// <param name="settings">The layout settings.</param>
-        public void Draw(SpriteBatch spriteBatch, String input, Vector2 position, Color color, TextLayoutSettings settings)
+        /// <returns>A <see cref="RectangleF"/> representing area in which the text was drawn.</returns>
+        public RectangleF Draw(SpriteBatch spriteBatch, String input, Vector2 position, Color color, TextLayoutSettings settings)
         {
             Contract.Require(spriteBatch, "spriteBatch");
             Contract.Require(input, "input");
@@ -173,7 +174,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             parser.Parse(lexerResult, parserResult);
             layoutEngine.CalculateLayout(parserResult, layoutResult, settings);
 
-            Draw(spriteBatch, layoutResult, position, color);
+            return Draw(spriteBatch, layoutResult, position, color);
         }
 
         /// <summary>
@@ -184,7 +185,8 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <param name="position">The position in screen coordinates at which to draw.</param>
         /// <param name="color">The color with which to draw the text.</param>
         /// <param name="settings">The layout settings.</param>
-        public void Draw(SpriteBatch spriteBatch, StringBuilder input, Vector2 position, Color color, TextLayoutSettings settings)
+        /// <returns>A <see cref="RectangleF"/> representing area in which the text was drawn.</returns>
+        public RectangleF Draw(SpriteBatch spriteBatch, StringBuilder input, Vector2 position, Color color, TextLayoutSettings settings)
         {
             Contract.Require(spriteBatch, "spriteBatch");
             Contract.Require(input, "input");
@@ -193,7 +195,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             parser.Parse(lexerResult, parserResult);
             layoutEngine.CalculateLayout(parserResult, layoutResult, settings);
 
-            Draw(spriteBatch, layoutResult, position, color);
+            return Draw(spriteBatch, layoutResult, position, color);
         }
 
         /// <summary>
@@ -204,7 +206,8 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <param name="position">The position in screen coordinates at which to draw.</param>
         /// <param name="color">The color with which to draw the text.</param>
         /// <param name="settings">The layout settings.</param>
-        public void Draw(SpriteBatch spriteBatch, TextLexerResult input, Vector2 position, Color color, TextLayoutSettings settings)
+        /// <returns>A <see cref="RectangleF"/> representing area in which the text was drawn.</returns>
+        public RectangleF Draw(SpriteBatch spriteBatch, TextLexerResult input, Vector2 position, Color color, TextLayoutSettings settings)
         {
             Contract.Require(spriteBatch, "spriteBatch");
             Contract.Require(input, "input");
@@ -212,7 +215,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             parser.Parse(input, parserResult);
             layoutEngine.CalculateLayout(parserResult, layoutResult, settings);
 
-            Draw(spriteBatch, layoutResult, position, color);
+            return Draw(spriteBatch, layoutResult, position, color);
         }
 
         /// <summary>
@@ -223,14 +226,15 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <param name="position">The position in screen coordinates at which to draw.</param>
         /// <param name="color">The color with which to draw the text.</param>
         /// <param name="settings">The layout settings.</param>
-        public void Draw(SpriteBatch spriteBatch, TextParserResult input, Vector2 position, Color color, TextLayoutSettings settings)
+        /// <returns>A <see cref="RectangleF"/> representing area in which the text was drawn.</returns>
+        public RectangleF Draw(SpriteBatch spriteBatch, TextParserResult input, Vector2 position, Color color, TextLayoutSettings settings)
         {
             Contract.Require(spriteBatch, "spriteBatch");
             Contract.Require(input, "input");
 
             layoutEngine.CalculateLayout(input, layoutResult, settings);
 
-            Draw(spriteBatch, layoutResult, position, color);
+            return Draw(spriteBatch, layoutResult, position, color);
         }
 
         /// <summary>
@@ -240,7 +244,8 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <param name="input">The token stream to draw.</param>
         /// <param name="position">The position in screen coordinates at which to draw.</param>
         /// <param name="color">The color with which to draw the text.</param>
-        public void Draw(SpriteBatch spriteBatch, TextLayoutResult input, Vector2 position, Color color)
+        /// <returns>A <see cref="RectangleF"/> representing area in which the text was drawn.</returns>
+        public RectangleF Draw(SpriteBatch spriteBatch, TextLayoutResult input, Vector2 position, Color color)
         {
             Contract.Require(spriteBatch, "spriteBatch");
             Contract.Require(input, "input");
@@ -269,6 +274,8 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                     spriteBatch.DrawString(token.FontFace, token.Text, tokenPosition, (token.Color * alpha) ?? color);
                 }
             }
+
+            return new RectangleF(position.X + input.Bounds.X, position.Y + input.Bounds.Y, input.Bounds.Width, input.Bounds.Height);
         }
 
         // The lexer and parser used to process input text.

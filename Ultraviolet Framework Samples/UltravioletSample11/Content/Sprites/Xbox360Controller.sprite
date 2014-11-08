@@ -1,0 +1,178 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Sprite>
+  <Animations Texture="Textures/Xbox360Controller" Width="100" Height="100">
+    <!-- Enabled -->
+    <Animation Name="AButton">
+      <Frames>
+        <Frame X="0" Y="0" />
+      </Frames>
+    </Animation>
+    <Animation Name="BButton">
+      <Frames>
+        <Frame X="0" Y="100" />
+      </Frames>
+    </Animation>
+    <Animation Name="XButton">
+      <Frames>
+        <Frame X="0" Y="200" />
+      </Frames>
+    </Animation>
+    <Animation Name="YButton">
+      <Frames>
+        <Frame X="0" Y="300" />
+      </Frames>
+    </Animation>
+    <Animation Name="LeftTrigger">
+      <Frames>
+        <Frame X="100" Y="0" />
+      </Frames>
+    </Animation>
+    <Animation Name="RightTrigger">
+      <Frames>
+        <Frame X="100" Y="100" />
+      </Frames>
+    </Animation>
+    <Animation Name="LeftShoulder">
+      <Frames>
+        <Frame X="100" Y="200" />
+      </Frames>
+    </Animation>
+    <Animation Name="RightShoulder">
+      <Frames>
+        <Frame X="100" Y="300" />
+      </Frames>
+    </Animation>
+    <Animation Name="BackButton">
+      <Frames>
+        <Frame X="200" Y="0" />
+      </Frames>
+    </Animation>
+    <Animation Name="StartButton">
+      <Frames>
+        <Frame X="200" Y="100" />
+      </Frames>
+    </Animation>
+    <Animation Name="LeftJoystick">
+      <Frames>
+        <Frame X="200" Y="200" />
+      </Frames>
+    </Animation>
+    <Animation Name="RightJoystick">
+      <Frames>
+        <Frame X="200" Y="300" />
+      </Frames>
+    </Animation>
+    <Animation Name="DPadUp">
+      <Frames>
+        <Frame X="300" Y="0" />
+      </Frames>
+    </Animation>
+    <Animation Name="DPadDown">
+      <Frames>
+        <Frame X="300" Y="100" />
+      </Frames>
+    </Animation>
+    <Animation Name="DPadLeft">
+      <Frames>
+        <Frame X="300" Y="200" />
+      </Frames>
+    </Animation>
+    <Animation Name="DPadRight">
+      <Frames>
+        <Frame X="300" Y="300" />
+      </Frames>
+    </Animation>
+    <Animation Name="DPad">
+      <Frames>
+        <Frame X="300" Y="400" />
+      </Frames>
+    </Animation>
+    
+    <!-- Disabled -->
+    <Animation Name="AButtonDisabled">
+      <Frames>
+        <Frame X="400" Y="0" />
+      </Frames>
+    </Animation>
+    <Animation Name="BButtonDisabled">
+      <Frames>
+        <Frame X="400" Y="100" />
+      </Frames>
+    </Animation>
+    <Animation Name="XButtonDisabled">
+      <Frames>
+        <Frame X="400" Y="200" />
+      </Frames>
+    </Animation>
+    <Animation Name="YButtonDisabled">
+      <Frames>
+        <Frame X="400" Y="300" />
+      </Frames>
+    </Animation>
+    <Animation Name="LeftTriggerDisabled">
+      <Frames>
+        <Frame X="500" Y="0" />
+      </Frames>
+    </Animation>
+    <Animation Name="RightTriggerDisabled">
+      <Frames>
+        <Frame X="500" Y="100" />
+      </Frames>
+    </Animation>
+    <Animation Name="LeftShoulderDisabled">
+      <Frames>
+        <Frame X="500" Y="200" />
+      </Frames>
+    </Animation>
+    <Animation Name="RightShoulderDisabled">
+      <Frames>
+        <Frame X="500" Y="300" />
+      </Frames>
+    </Animation>
+    <Animation Name="BackButtonDisabled">
+      <Frames>
+        <Frame X="600" Y="0" />
+      </Frames>
+    </Animation>
+    <Animation Name="StartButtonDisabled">
+      <Frames>
+        <Frame X="600" Y="100" />
+      </Frames>
+    </Animation>
+    <Animation Name="LeftJoystickDisabled">
+      <Frames>
+        <Frame X="600" Y="200" />
+      </Frames>
+    </Animation>
+    <Animation Name="RightJoystickDisabled">
+      <Frames>
+        <Frame X="600" Y="300" />
+      </Frames>
+    </Animation>
+    <Animation Name="DPadUpDisabled">
+      <Frames>
+        <Frame X="700" Y="0" />
+      </Frames>
+    </Animation>
+    <Animation Name="DPadDownDisabled">
+      <Frames>
+        <Frame X="700" Y="100" />
+      </Frames>
+    </Animation>
+    <Animation Name="DPadLeftDisabled">
+      <Frames>
+        <Frame X="700" Y="200" />
+      </Frames>
+    </Animation>
+    <Animation Name="DPadRightDisabled">
+      <Frames>
+        <Frame X="700" Y="300" />
+      </Frames>
+    </Animation>
+    <Animation Name="DPadDisabled">
+      <Frames>
+        <Frame X="700" Y="400" />
+      </Frames>
+    </Animation>
+  </Animations>
+</Sprite>
