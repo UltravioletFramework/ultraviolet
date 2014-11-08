@@ -193,7 +193,7 @@
       <Name>TwistedLogik.Gluon</Name>
     </ProjectReference>
     <ProjectReference Include="..\TwistedLogik.Nucleus\TwistedLogik.Nucleus.csproj">
-      <Project>{A7268E84-D24D-4B5C-B7D8-E83289C5BF23}</Project>
+      <Project>{7DA6158B-A0B9-4100-904E-22FD86949608}</Project>
       <Name>TwistedLogik.Nucleus</Name>
     </ProjectReference>
     <ProjectReference Include="..\TwistedLogik.Ultraviolet.BASS\TwistedLogik.Ultraviolet.BASS.csproj">
@@ -207,10 +207,6 @@
     <ProjectReference Include="..\TwistedLogik.Ultraviolet.SDL2\TwistedLogik.Ultraviolet.SDL2.csproj">
       <Project>{50AEFA93-FE53-414A-89FC-C061C165C673}</Project>
       <Name>TwistedLogik.Ultraviolet.SDL2</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\TwistedLogik.Ultraviolet.WindowsForms\TwistedLogik.Ultraviolet.WindowsForms.csproj">
-      <Project>{6C5385CC-D39D-403A-BC91-08E775AA7AD3}</Project>
-      <Name>TwistedLogik.Ultraviolet.WindowsForms</Name>
     </ProjectReference>
     <ProjectReference Include="..\TwistedLogik.Ultraviolet\TwistedLogik.Ultraviolet.csproj">
       <Project>{F071ABE3-05E5-4DF9-A929-CF71B01EC50A}</Project>
