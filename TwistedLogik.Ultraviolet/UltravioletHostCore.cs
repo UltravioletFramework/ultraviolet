@@ -55,7 +55,10 @@ namespace TwistedLogik.Ultraviolet
                         {
                             timeTrackerUpdate.Increment(targetElapsedTime, isRunningSlowly);
                             timeTrackerDraw.Increment(targetElapsedTime, isRunningSlowly);
-                            uv.Update(timeTrackerUpdate.Time);
+                            if (!UpdateContext(uv, timeTrackerUpdate.Time))
+                            {
+                                return;
+                            }
                         }
                     }
                     else
@@ -73,7 +76,10 @@ namespace TwistedLogik.Ultraviolet
                     frameTimer.Restart();
 
                     var uvTimeUpdate = timeTrackerUpdate.Increment(targetElapsedTime, isRunningSlowly);
-                    uv.Update(uvTimeUpdate);
+                    if (!UpdateContext(uv, uvTimeUpdate))
+                    {
+                        return;
+                    }
 
                     var uvTimeDraw = timeTrackerDraw.Increment(targetElapsedTime, isRunningSlowly);
                     uv.Draw(uvTimeDraw);
@@ -88,7 +94,10 @@ namespace TwistedLogik.Ultraviolet
 
                 var uvTimeDelta  = TimeSpan.FromTicks((long)(time * TimeSpan.TicksPerMillisecond));
                 var uvTimeUpdate = timeTrackerUpdate.Increment(uvTimeDelta, false);
-                uv.Update(uvTimeUpdate);
+                if (!UpdateContext(uv, uvTimeUpdate))
+                {
+                    return;
+                }
 
                 var uvTimeDraw = uvTimeUpdate;
                 uv.Draw(uvTimeDraw);
@@ -153,6 +162,18 @@ namespace TwistedLogik.Ultraviolet
         {
             get { return isFixedTimeStep; }
             set { isFixedTimeStep = value; }
+        }
+
+        /// <summary>
+        /// Updates the specified context.
+        /// </summary>
+        /// <param name="uv">The Ultraviolet context to update.</param>
+        /// <param name="time">Time elapsed since the last update.</param>
+        /// <returns><c>true</c> if the host should continue processing; otherwise, <c>false</c>.</returns>
+        private Boolean UpdateContext(UltravioletContext uv, UltravioletTime time)
+        {
+            uv.Update(time);
+            return !uv.Disposed;
         }
 
         // The Ultraviolet host.

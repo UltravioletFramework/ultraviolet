@@ -81,7 +81,10 @@ namespace TwistedLogik.Ultraviolet.OpenGL
             Contract.Require(time, "time");
             Contract.EnsureNotDisposed(this, Disposed);
 
-            PumpEvents();
+            if (!PumpEvents())
+            {
+                return;
+            }
 
             platform.Update(time);
             content.Update(time);
@@ -256,11 +259,15 @@ namespace TwistedLogik.Ultraviolet.OpenGL
         /// <summary>
         /// Pumps the SDL2 event queue.
         /// </summary>
-        private void PumpEvents()
+        /// <returns><c>true</c> if the context should continue processing the frame; otherwise, <c>false</c>.</returns>
+        private Boolean PumpEvents()
         {
             SDL_Event @event;
             while (SDL.PollEvent(out @event) > 0)
             {
+                if (Disposed)
+                    return false;
+
                 switch (@event.type)
                 {
                     case SDL_EventType.WINDOWEVENT:
@@ -270,14 +277,14 @@ namespace TwistedLogik.Ultraviolet.OpenGL
                             if (glWindowInfo.DestroyByID((int)@event.window.windowID))
                             {
                                 Messages.Publish(UltravioletMessages.Quit, null);
-                                return;
+                                return true;
                             }
                         }
                         break;
 
                     case SDL_EventType.QUIT:
                         Messages.Publish(UltravioletMessages.Quit, null);
-                        return;
+                        return true;
                 }
 
                 // Publish any SDL events to the message queue.
@@ -285,6 +292,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL
                 data.Event = @event;
                 Messages.Publish(SDL2UltravioletMessages.SDLEvent, data);
             }
+            return !Disposed;
         }
 
         // Ultraviolet subsystems.
