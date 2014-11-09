@@ -354,7 +354,10 @@ namespace TwistedLogik.Ultraviolet.WindowsForms
             NativeMethods.Message message;
             while (!NativeMethods.PeekMessage(out message, IntPtr.Zero, 0, 0, 0))
             {
-                Tick();
+                if (!Ultraviolet.Disposed)
+                {
+                    Tick();
+                }
             }
         }
 
