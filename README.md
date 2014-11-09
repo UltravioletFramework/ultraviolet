@@ -42,9 +42,9 @@ Known Issues
   
   ``sn -Vr *,78da2f4877323311``
   
-  You may need to run this command in both a 32-bit and 64-bit prompt, and you should restart Visual Studio afterwards if it was already running.
-  
   This command registers TwistedLogik's public key token for verification skipping on your machine. This means that the CLR will load assemblies with this public key token even if they are not correctly signed, making it possible to build and debug Ultraviolet assemblies without requiring access to the TwistedLogik private key file.
+  
+  There are seperate verification skipping lists for 32-bit and 64-bit processes. Running the ``sn`` tool from a 32-bit command prompt will add entries to the 32-bit list, while running it from a 64-bit command prompt will add entries to the 64-bit list, so be mindful of which one you're using when you execute the above command. The 64-bit Visual Studio command prompt is usually called something like "Visual Studio x64 Win64 Command Prompt" in the Start menu. If you're using Visual Studio 2013, [you may need to go digging for it](http://stackoverflow.com/a/22702405/923592).
   
   Be sure to run the command prompt as an administrator. Failure to do so will result in the following error:
   
@@ -56,7 +56,7 @@ Known Issues
   
 * __General Compatibility__
 
-  Ultraviolet is still in the early stages of its development, and as such it has not yet been fully tested on a wide range of hardware. If you encounter compatibility issues on your machine, please [register an issue on itHub](https://github.com/tlgkccampbell/ultraviolet/issues) so we can try to address it!
+  Ultraviolet is still in the early stages of its development, and as such it has not yet been fully tested on a wide range of hardware. If you encounter compatibility issues on your machine, please [register an issue on GitHub](https://github.com/tlgkccampbell/ultraviolet/issues) so we can try to address it!
   
 Documentation
 =============
@@ -93,7 +93,7 @@ _Advanced Topics_
 Project Road Map
 ================
 
-What follows is a tentative road map for the next several major revisions of Ultraviolet. This list is subject to change at any time.
+What follows is a tentative road map for the next several major revisions of Ultraviolet. This list is subject to change at any time. Items which have been ~~struck through~~ are basically complete, though they may not yet be part of an official release.
 
 * __Ultraviolet 1.0__
   * _Miscellaneous_
@@ -102,14 +102,14 @@ What follows is a tentative road map for the next several major revisions of Ult
   * _Miscellaneous_
     * Android support
     * Performance improvements
-    * Design assembly (i.e. ``TypeConverter`` implementations) for Nucleus
-    * Design assembly (i.e. ``TypeConverter`` implementations) for Ultraviolet
+    * ~~Design assembly (i.e. ``TypeConverter`` implementations) for Nucleus~~
+    * ~~Design assembly (i.e. ``TypeConverter`` implementations) for Ultraviolet~~
   * _Input_
-    * New input device: GamePad
+    * ~~New input device: GamePad~~
     * New input device: TouchPad
   * _Graphics_
     * Support for Direct State Access (DSA)
-    * Better support for East Asian character sets in ``SpriteFont``
+    * ~~Better support for East Asian character sets in ``SpriteFont``~~
     * Signed distance field fonts?
 * __Ultraviolet 1.2__
   * _UI_
