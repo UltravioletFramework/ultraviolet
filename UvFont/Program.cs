@@ -31,6 +31,7 @@ namespace TwistedLogik.UvFont
                         Console.WriteLine("Generates Ultraviolet-compatible SpriteFont definition files.");
                         Console.WriteLine();
                         Console.WriteLine("UVFONT fontname [-nobold] [-noitalic] [-fontsize:emsize] [-sub:char]\n" +
+                                          "                [-overhang:value]\n" +
                                           "                [-sourcetext:text]\n" +
                                           "                [-sourcefile:file]\n" +
                                           "                [-sourceculture:culture]\n" +
@@ -41,6 +42,10 @@ namespace TwistedLogik.UvFont
                                           "  -noitalic    Disables generation of the italic and bol/italic font faces.\n" +
                                           "  -fontsize    Specifies the point size of the font.\n" +
                                           "  -sub         Specifies the font's substitution character.\n" +
+                                          "  -overhang    Specifies the overhang value for this font.\n" +
+                                          "               Overhang adds additional space to the right side of every\n" +
+                                          "               character, which is useful for flowing script fonts which\n" +
+                                          "               don't fit properly under UvFont's default settings.\n" +
                                           "  -sourcetext  Specifies the source text.  The source text is used to determine\n" +
                                           "               which glyphs must be included in the font.\n" +
                                           "  -sourcefile: A comma-delimited list of files from which to generate the\n" +
@@ -96,7 +101,7 @@ namespace TwistedLogik.UvFont
                 {
                     using (var fontSupersampled = new Font(fontName, fontSize * SupersampleFactor, face.Font.Style))
                     {
-                        var glyphs      = CreateGlyphImages(fontSupersampled, chars);
+                        var glyphs      = CreateGlyphImages(parameters, fontSupersampled, chars);
                         var textureSize = Size.Empty;
                         var textureFits = CalculateTextureSize(glyphs, out textureSize);
                         if (!textureFits)
@@ -212,7 +217,7 @@ namespace TwistedLogik.UvFont
             return chars;
         }
 
-        private static IEnumerable<Bitmap> CreateGlyphImages(Font font, IEnumerable<Char> chars)
+        private static IEnumerable<Bitmap> CreateGlyphImages(FontGenerationParameters parameters, Font font, IEnumerable<Char> chars)
         {
             var glyphs = new List<Bitmap>();
 
@@ -222,9 +227,9 @@ namespace TwistedLogik.UvFont
                 foreach (var c in chars)
                 {
                     var glyphSize               = gfx.MeasureString(c.ToString(), font);
-                    var glyphWidth              = (Int32)(Math.Ceiling(glyphSize.Width) / SupersampleFactor);
+                    var glyphWidth              = (Int32)(Math.Ceiling(glyphSize.Width) / SupersampleFactor) + parameters.Overhang;
                     var glyphHeight             = (Int32)(Math.Ceiling(glyphSize.Height) / SupersampleFactor);
-                    var glyphSupersampledWidth  = (Int32)Math.Ceiling(glyphSize.Width);
+                    var glyphSupersampledWidth  = (Int32)Math.Ceiling(glyphSize.Width) + (parameters.Overhang * SupersampleFactor);
                     var glyphSupersampledHeight = (Int32)Math.Ceiling(glyphSize.Height);
 
                     var glyphImg = new Bitmap(glyphWidth, glyphHeight);
@@ -454,7 +459,7 @@ namespace TwistedLogik.UvFont
                     var kernings = 
                         from c1 in chars
                         from c2 in chars
-                        let kerning = MeasureKerning(gfx, face.Font, c1, c2)
+                        let kerning = MeasureKerning(parameters, gfx, face.Font, c1, c2)
                         where
                          c1 != c2
                         select new
@@ -489,12 +494,12 @@ namespace TwistedLogik.UvFont
             }
         }
 
-        private static Int32 MeasureKerning(Graphics gfx, Font font, Char c1, Char c2)
+        private static Int32 MeasureKerning(FontGenerationParameters parameters, Graphics gfx, Font font, Char c1, Char c2)
         {
             var c1Size = gfx.MeasureString(c1.ToString(), font);
             var c2Size = gfx.MeasureString(c2.ToString(), font);
             var kernedSize = gfx.MeasureString(String.Format("{0}{1}", c1, c2), font);
-            return (Int32)(kernedSize.Width - (c1Size.Width + c2Size.Width));
+            return (Int32)(kernedSize.Width - (c1Size.Width + c2Size.Width)) - parameters.Overhang;
         }
 
         private const Int32 SupersampleFactor = 8;

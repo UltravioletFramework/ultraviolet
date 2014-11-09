@@ -16,6 +16,7 @@ namespace TwistedLogik.UvFont
 
             FontName = args[0];
             FontSize = ReadArgument<Single?>(args, "fontsize") ?? 16f;
+            Overhang = ReadArgument<Int32?>(args, "overhang") ?? 0;
 
             SourceText    = ReadArgument<String>(args, "sourcetext");
             SourceFile    = ReadArgument<String>(args, "sourcefile");
@@ -31,6 +32,7 @@ namespace TwistedLogik.UvFont
         public Boolean NoItalic { get; set; }
         public String FontName { get; set; }
         public Single FontSize { get; set; }
+        public Int32 Overhang { get; set; }
         public String SourceText { get; set; }
         public String SourceFile { get; set; }
         public String SourceCulture { get; set; }
