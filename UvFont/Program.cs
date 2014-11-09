@@ -216,6 +216,8 @@ namespace TwistedLogik.UvFont
 
         private static Boolean WillGlyphsFitOnTexture(IEnumerable<Bitmap> glyphs, ref Size size)
         {
+            var lineHeight = glyphs.Max(g => g.Height);
+
             var x = 1;
             var y = 1;
             var width = 0;
@@ -225,15 +227,15 @@ namespace TwistedLogik.UvFont
                 if (x + glyph.Width >= size.Width)
                 {
                     x = 1;
-                    y = y + glyph.Height + 1;
+                    y = y + lineHeight + 1;
                 }
-                if (y + glyph.Height > size.Height)
+                if (y + lineHeight > size.Height)
                 {
                     return false;
                 }
 
                 width  = Math.Max(width, x + glyph.Width + 1);
-                height = Math.Max(height, y + glyph.Height + 1);
+                height = Math.Max(height, y + lineHeight + 1);
 
                 x = x + glyph.Width + 1;
             }
@@ -243,6 +245,8 @@ namespace TwistedLogik.UvFont
 
         private static Bitmap GenerateFaceTexture(Font font, IEnumerable<Bitmap> glyphs, Size textureSize)
         {
+            var lineHeight = glyphs.Max(g => g.Height);
+
             var img = new Bitmap(textureSize.Width, textureSize.Height);
 
             using (var gfx = Graphics.FromImage(img))
@@ -256,10 +260,10 @@ namespace TwistedLogik.UvFont
                     if (x + glyph.Width >= textureSize.Width)
                     {
                         x = 1;
-                        y = y + glyph.Height + 1;
+                        y = y + lineHeight + 1;
                     }
 
-                    gfx.SetClip(new Rectangle(x, y, glyph.Width, glyph.Height));
+                    gfx.SetClip(new Rectangle(x, y, glyph.Width, lineHeight));
                     gfx.Clear(Color.Transparent);
                     gfx.DrawImageUnscaled(glyph, new Point(x, y));
 
