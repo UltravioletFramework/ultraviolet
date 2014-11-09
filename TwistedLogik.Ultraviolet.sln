@@ -37,8 +37,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwistedLogik.Nucleus.Design
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwistedLogik.Ultraviolet.Design", "TwistedLogik.Ultraviolet.Design\TwistedLogik.Ultraviolet.Design.csproj", "{C22A440C-8F08-4341-B7D5-F7DEC58CDE58}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WindowsFormsApplication1", "WindowsFormsApplication1\WindowsFormsApplication1.csproj", "{88D5C275-65B0-4661-92D4-93FD20C72022}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UvFont", "UvFont\UvFont.csproj", "{F224C80E-2D2F-403D-AB1A-29FE13AF726B}"
 EndProject
 Global
@@ -115,10 +113,6 @@ Global
 		{C22A440C-8F08-4341-B7D5-F7DEC58CDE58}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C22A440C-8F08-4341-B7D5-F7DEC58CDE58}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C22A440C-8F08-4341-B7D5-F7DEC58CDE58}.Release|Any CPU.Build.0 = Release|Any CPU
-		{88D5C275-65B0-4661-92D4-93FD20C72022}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{88D5C275-65B0-4661-92D4-93FD20C72022}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{88D5C275-65B0-4661-92D4-93FD20C72022}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{88D5C275-65B0-4661-92D4-93FD20C72022}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F224C80E-2D2F-403D-AB1A-29FE13AF726B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{F224C80E-2D2F-403D-AB1A-29FE13AF726B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F224C80E-2D2F-403D-AB1A-29FE13AF726B}.Release|Any CPU.ActiveCfg = Release|Any CPU
