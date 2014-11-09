@@ -2,7 +2,7 @@
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi"
      xmlns:netfx="http://schemas.microsoft.com/wix/NetFxExtension"
      xmlns:util="http://schemas.microsoft.com/wix/UtilExtension">
-  <Product Id="*" Name="Ultraviolet Framework 1.0" Language="1033" Version="1.0.1.0" Manufacturer="TwistedLogik Software" UpgradeCode="d1732409-d2fa-46ae-a6e0-733ba2d4cdd6">
+  <Product Id="*" Name="Ultraviolet Framework 1.0" Language="1033" Version="1.0.2.0" Manufacturer="TwistedLogik Software" UpgradeCode="d1732409-d2fa-46ae-a6e0-733ba2d4cdd6">
     <Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" InstallPrivileges="elevated" />
 
     <MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
@@ -102,6 +102,9 @@
       <ComponentRef Id="TwistedLogik.Ultraviolet.WindowsForms" />
       <ComponentRef Id="TwistedLogik.Ultraviolet.WindowsForms_XML" />
       <ComponentRef Id="Newtonsoft.Json" />
+      <ComponentRef Id="Tools_PATH"/>
+      <ComponentRef Id="Tools_UvFont"/>
+      <ComponentRef Id="Tools_TwistedLogik.Nucleus"/>
       <!-- Dependencies (x86) -->
       <ComponentRef Id="SDL2_x86_win32nt" />
       <ComponentRef Id="bass_x86_win32nt" />
@@ -232,6 +235,19 @@
               </Component>
               <Component Id="Newtonsoft.Json">
                 <File Id="Newtonsoft.Json" Source="..\Dependencies\Newtonsoft.Json.dll" />
+              </Component>
+            </Directory>
+            <!-- Tools -->
+            <Directory Id="Tools" Name="Tools">
+              <Component Id="Tools_PATH" Guid="4da05cc7-adf8-41ff-9ce1-2ab3a185d38f">
+                <CreateFolder Directory="Tools"/>
+                <Environment Id="Tools_PATH" Name="PATH" Value="[Tools]" Permanent="no" Part="last" Action="set" System="yes"/>
+              </Component>
+              <Component Id="Tools_TwistedLogik.Nucleus">
+                <File Id="Tools_TwistedLogik.Nucleus" Source="..\Binaries\AnyCPU\Release\TwistedLogik.Nucleus.dll" />
+              </Component>
+              <Component Id="Tools_UvFont">
+                <File Id="Tools_UvFont" Source="..\Binaries\AnyCPU\Release\uvfont.exe" />
               </Component>
             </Directory>
             <!-- Dependencies -->

@@ -12,7 +12,7 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
     /// <summary>
     /// Represents the SDL2 implementation of the KeyboardDevice class.
     /// </summary>
-    public sealed unsafe partial class SDL2KeyboardDevice : KeyboardDevice,
+    public sealed unsafe class SDL2KeyboardDevice : KeyboardDevice,
         IMessageSubscriber<UltravioletMessageID>
     {
         /// <summary>
@@ -179,6 +179,8 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
         /// <returns>The current state of the specified button.</returns>
         public override ButtonState GetButtonState(Scancode button)
         {
+            Contract.EnsureNotDisposed(this, Disposed);
+
             var state = IsButtonDown(button) ? ButtonState.Down : ButtonState.Up;
 
             if (IsButtonPressed(button))

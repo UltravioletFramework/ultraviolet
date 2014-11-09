@@ -30,33 +30,41 @@ namespace TwistedLogik.Ultraviolet.Input
         /// <summary>
         /// Initializes a new instance of the <see cref="MouseInputBinding"/> class.
         /// </summary>
-        /// <param name="mouse">The <see cref="MouseDevice"/> with which this binding is associated.</param>
+        /// <param name="uv">The Ultraviolet context.</param>
         /// <param name="button">The <see cref="MouseButton"/> value that represents the binding's primary button.</param>
-        public MouseInputBinding(MouseDevice mouse, MouseButton button)
+        public MouseInputBinding(UltravioletContext uv, MouseButton button)
         {
-            Contract.Require(mouse, "keyboard");
+            Contract.Require(uv, "uv");
 
-            this.mouse = mouse;
+            if (!uv.GetInput().IsMouseSupported())
+            {
+                throw new NotSupportedException();
+            }
+
+            this.mouse  = uv.GetInput().GetMouse();
             this.button = button;
         }
         
         /// <summary>
         /// Initializes a new instance of the <see cref="MouseInputBinding"/> class.
         /// </summary>
-        /// <param name="mouse">The <see cref="MouseDevice"/> with which this binding is associated.</param>
+        /// <param name="uv">The Ultraviolet context.</param>
         /// <param name="button">The <see cref="MouseButton"/> value that represents the binding's primary button.</param>
         /// <param name="control">A value indicating whether the binding requires the Control modifier.</param>
         /// <param name="alt">A value indicating whether the binding requires the Alt modifier.</param>
         /// <param name="shift">A value indicating whether the binding requires the Shift modifier.</param>
-        public MouseInputBinding(MouseDevice mouse, MouseButton button, Boolean control, Boolean alt, Boolean shift)
+        public MouseInputBinding(UltravioletContext uv, MouseButton button, Boolean control, Boolean alt, Boolean shift)
         {
-            Contract.Require(mouse, "keyboard");
+            if (!uv.GetInput().IsMouseSupported())
+            {
+                throw new NotSupportedException();
+            }
 
-            this.mouse = mouse;
-            this.button = button;
+            this.mouse   = uv.GetInput().GetMouse();
+            this.button  = button;
             this.control = control;
-            this.alt = alt;
-            this.shift = shift;
+            this.alt     = alt;
+            this.shift   = shift;
         }
 
         /// <summary>

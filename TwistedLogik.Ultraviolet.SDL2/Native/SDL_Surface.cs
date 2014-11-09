@@ -119,6 +119,15 @@ namespace TwistedLogik.Ultraviolet.SDL2.Native
                     var colorSrc = Color.FromRgba(*pSrc);
                     var colorDst = Color.FromRgba(*pDst);
 
+                    if (colorSrc.Equals(Color.Magenta))
+                    {
+                        colorSrc = Color.Transparent;
+                    }
+                    if (colorDst.Equals(Color.Magenta))
+                    {
+                        colorDst = Color.Transparent;
+                    }
+
                     if (premultiplyAlpha)
                     {
                         colorSrc = PremultiplyColor(colorSrc);

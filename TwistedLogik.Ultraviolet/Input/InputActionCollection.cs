@@ -315,7 +315,7 @@ namespace TwistedLogik.Ultraviolet.Input
         /// <returns>The binding that was created.</returns>
         protected InputBinding CreateKeyboardBinding(Key key, Boolean control = false, Boolean alt = false, Boolean shift = false)
         {
-            return new KeyboardInputBinding(Ultraviolet.GetInput().GetKeyboard(), key, control, alt, shift);
+            return new KeyboardInputBinding(Ultraviolet, key, control, alt, shift);
         }
 
         /// <summary>
@@ -328,7 +328,18 @@ namespace TwistedLogik.Ultraviolet.Input
         /// <returns>The binding that was created.</returns>
         protected InputBinding CreateMouseBinding(MouseButton button, Boolean control = false, Boolean alt = false, Boolean shift = false)
         {
-            return new MouseInputBinding(Ultraviolet.GetInput().GetMouse(), button, control, alt, shift);
+            return new MouseInputBinding(Ultraviolet, button, control, alt, shift);
+        }
+
+        /// <summary>
+        /// Creates a new game pad binding.
+        /// </summary>
+        /// <param name="playerIndex">The index of the player for which to create the binding.</param>
+        /// <param name="button">The binding's primary button.</param>
+        /// <returns>The binding that was created.</returns>
+        protected InputBinding CreateGamePadBinding(Int32 playerIndex, GamePadButton button)
+        {
+            return new GamePadInputBinding(Ultraviolet, playerIndex, button);
         }
 
         /// <summary>

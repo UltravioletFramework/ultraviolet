@@ -39,7 +39,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL
         {
             Contract.Require(configuration, "configuration");
 
-            if (SDL.Init(SDL_Init.TIMER | SDL_Init.VIDEO | SDL_Init.GAMECONTROLLER | SDL_Init.EVENTS) != 0)
+            if (SDL.Init(SDL_Init.TIMER | SDL_Init.VIDEO | SDL_Init.JOYSTICK | SDL_Init.GAMECONTROLLER | SDL_Init.EVENTS) != 0)
                 throw new SDL2Exception();
 
             var versionRequired  = new Version(3, 0);
@@ -196,6 +196,8 @@ namespace TwistedLogik.Ultraviolet.OpenGL
         protected override void OnShutdown()
         {
             SDL.Quit();
+
+            base.OnShutdown();
         }
 
         /// <summary>

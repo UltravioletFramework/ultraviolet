@@ -46,6 +46,10 @@ Known Issues
   
   This command registers TwistedLogik's public key token for verification skipping on your machine. This means that the CLR will load assemblies with this public key token even if they are not correctly signed, making it possible to build and debug Ultraviolet assemblies without requiring access to the TwistedLogik private key file.
   
+  Be sure to run the command prompt as an administrator. Failure to do so will result in the following error:
+  
+  ``Failed to open registry key -- Unable to format error message 00000005``
+
 * __Building the Samples__
 
   If you encounter errors when attempting to build ``Ultraviolet Framework Samples.sln``, make sure that you've built ``TwistedLogik.Ultraviolet.sln`` in ``Release`` mode first.

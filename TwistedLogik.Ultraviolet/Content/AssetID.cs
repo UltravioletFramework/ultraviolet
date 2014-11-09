@@ -300,6 +300,12 @@ namespace TwistedLogik.Ultraviolet.Content
             if (!s.StartsWith("#"))
                 return false;
 
+            if (s == "#INVALID")
+            {
+                value = AssetID.Invalid;
+                return true;
+            }
+
             var components = s.Substring(1).Split(':');
             if (components.Length != 3)
                 return false;

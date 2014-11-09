@@ -27,16 +27,16 @@ namespace TwistedLogik.Ultraviolet.SDL2.Native
         }
 
         [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_Init")]
-        public static extern int Init(SDL_Init flags);
+        public static extern Int32 Init(SDL_Init flags);
 
         [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_Quit")]
         public static extern void Quit();
 
         [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_PollEvent")]
-        public static extern int PollEvent(out SDL_Event @event);
+        public static extern Int32 PollEvent(out SDL_Event @event);
 
         [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_CreateWindow", BestFitMapping = false)]
-        public static extern IntPtr CreateWindow([MarshalAs(UnmanagedType.LPStr)] string title, int x, int y, int w, int h, SDL_WindowFlags flags);
+        public static extern IntPtr CreateWindow([MarshalAs(UnmanagedType.LPStr)] String title, Int32 x, Int32 y, Int32 w, Int32 h, SDL_WindowFlags flags);
 
         [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_CreateWindowFrom")]
         public static extern IntPtr CreateWindowFrom(IntPtr data);
@@ -45,7 +45,7 @@ namespace TwistedLogik.Ultraviolet.SDL2.Native
         public static extern void DestroyWindow(IntPtr window);
 
         [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GetWindowID")]
-        public static extern uint GetWindowID(IntPtr window);
+        public static extern UInt32 GetWindowID(IntPtr window);
 
         [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GetWindowTitle")]
         public static extern IntPtr GetWindowTitle_Impl(IntPtr window);
@@ -56,28 +56,28 @@ namespace TwistedLogik.Ultraviolet.SDL2.Native
         }
 
         [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_SetWindowTitle", BestFitMapping = false)]
-        public static extern void SetWindowTitle(IntPtr window, [MarshalAs(UnmanagedType.LPStr)] string title);
+        public static extern void SetWindowTitle(IntPtr window, [MarshalAs(UnmanagedType.LPStr)] String title);
 
         [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_SetWindowIcon")]
         public static extern void SetWindowIcon(IntPtr window, IntPtr icon);
 
         [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GetWindowPosition")]
-        public static extern void GetWindowPosition(IntPtr window, out int x, out int y);
+        public static extern void GetWindowPosition(IntPtr window, out Int32 x, out Int32 y);
 
         [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_SetWindowPosition")]
-        public static extern void SetWindowPosition(IntPtr window, int x, int y);
+        public static extern void SetWindowPosition(IntPtr window, Int32 x, Int32 y);
 
         [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GetWindowSize")]
-        public static extern void GetWindowSize(IntPtr window, out int w, out int h);
+        public static extern void GetWindowSize(IntPtr window, out Int32 w, out Int32 h);
 
         [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_SetWindowSize")]
-        public static extern void SetWindowSize(IntPtr window, int w, int h);
+        public static extern void SetWindowSize(IntPtr window, Int32 w, Int32 h);
 
         [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GetWindowMaximumSize")]
-        public static extern void GetWindowMaximumSize(IntPtr window, out int w, out int h);
+        public static extern void GetWindowMaximumSize(IntPtr window, out Int32 w, out Int32 h);
 
         [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_SetWindowMaximumSize")]
-        public static extern void SetWindowMaximumSize(IntPtr window, int w, int h);
+        public static extern void SetWindowMaximumSize(IntPtr window, Int32 w, Int32 h);
 
         [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GetWindowGrab")]
         public static extern bool GetWindowGrab(IntPtr window);
@@ -86,16 +86,16 @@ namespace TwistedLogik.Ultraviolet.SDL2.Native
         public static extern void SetWindowGrab(IntPtr window, bool grabbed);
 
         [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_SetWindowFullscreen")]
-        public static extern int SetWindowFullscreen(IntPtr window, uint flags);
+        public static extern Int32 SetWindowFullscreen(IntPtr window, UInt32 flags);
 
         [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_SetWindowDisplayMode")]
-        public static extern int SetWindowDisplayMode(IntPtr window, SDL_DisplayMode* mode);
+        public static extern Int32 SetWindowDisplayMode(IntPtr window, SDL_DisplayMode* mode);
 
         [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GetWindowDisplayMode")]
-        public static extern int GetWindowDisplayMode(IntPtr window, SDL_DisplayMode* mode);
+        public static extern Int32 GetWindowDisplayMode(IntPtr window, SDL_DisplayMode* mode);
 
         [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GetWindowDisplayIndex")]
-        public static extern int GetWindowDisplayIndex(IntPtr window);
+        public static extern Int32 GetWindowDisplayIndex(IntPtr window);
 
         [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GetWindowFlags")]
         public static extern SDL_WindowFlags GetWindowFlags(IntPtr window);
@@ -119,16 +119,16 @@ namespace TwistedLogik.Ultraviolet.SDL2.Native
         public static extern bool GetWindowWMInfo(IntPtr window, SDL_SysWMinfo* info);
 
         [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_RWFromFile", BestFitMapping = false)]
-        public static extern IntPtr RWFromFile([MarshalAs(UnmanagedType.LPStr)] string file, [MarshalAs(UnmanagedType.LPStr)] string mode);
+        public static extern IntPtr RWFromFile([MarshalAs(UnmanagedType.LPStr)] String file, [MarshalAs(UnmanagedType.LPStr)] String mode);
 
         [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_RWFromMem")]
-        public static extern IntPtr RWFromMem(IntPtr mem, int size);
+        public static extern IntPtr RWFromMem(IntPtr mem, Int32 size);
 
         [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_FreeRW")]
         public static extern void FreeRW(IntPtr area);
 
         [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_LoadBMP_RW")]
-        public static extern SDL_Surface_Native* LoadBMP_RW(IntPtr src, int freesrc);
+        public static extern SDL_Surface_Native* LoadBMP_RW(IntPtr src, Int32 freesrc);
 
         public static SDL_Surface_Native* LoadBMP(String file)
         {
@@ -136,7 +136,7 @@ namespace TwistedLogik.Ultraviolet.SDL2.Native
         }
 
         [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_SaveBMP_RW")]
-        public static extern Int32 SaveBMP_RW(SDL_Surface_Native* surface, IntPtr dst, int freedst);
+        public static extern Int32 SaveBMP_RW(SDL_Surface_Native* surface, IntPtr dst, Int32 freedst);
 
         public static Int32 SaveBMP(SDL_Surface_Native* surface, String file)
         {
@@ -144,19 +144,19 @@ namespace TwistedLogik.Ultraviolet.SDL2.Native
         }
 
         [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GetMouseState")]
-        public static extern uint GetMouseState(out int x, out int y);
+        public static extern UInt32 GetMouseState(out Int32 x, out Int32 y);
 
         [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GetKeyboardState")]
-        public static extern IntPtr GetKeyboardState(out int numkeys);
+        public static extern IntPtr GetKeyboardState(out Int32 numkeys);
 
         [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GetScancodeFromKey")]
         public static extern SDL_Scancode GetScancodeFromKey(SDL_Keycode keycode);
 
         [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_SetHint", BestFitMapping = false)]
-        public static extern Boolean SetHint([MarshalAs(UnmanagedType.LPStr)] string name, [MarshalAs(UnmanagedType.LPStr)] string value);
+        public static extern Boolean SetHint([MarshalAs(UnmanagedType.LPStr)] String name, [MarshalAs(UnmanagedType.LPStr)] String value);
 
         [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_CreateRGBSurface")]
-        public static extern SDL_Surface_Native* CreateRGBSurface(uint flags, int width, int height, int depth, uint Rmask, uint Gmask, uint Bmask, uint Amask);
+        public static extern SDL_Surface_Native* CreateRGBSurface(UInt32 flags, Int32 width, Int32 height, Int32 depth, UInt32 Rmask, UInt32 Gmask, UInt32 Bmask, UInt32 Amask);
 
         [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_FreeSurface")]
         public static extern void FreeSurface(SDL_Surface_Native* surface);
@@ -184,10 +184,10 @@ namespace TwistedLogik.Ultraviolet.SDL2.Native
         }
 
         [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_SetSurfaceBlendMode")]
-        public static extern int SetSurfaceBlendMode(SDL_Surface_Native* surface, SDL_BlendMode blendMode);
+        public static extern Int32 SetSurfaceBlendMode(SDL_Surface_Native* surface, SDL_BlendMode blendMode);
 
         [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GetSurfaceBlendMode")]
-        public static extern int SDL_GetSurfaceBlendMode(SDL_Surface_Native* surface, SDL_BlendMode* blendMode);
+        public static extern Int32 GetSurfaceBlendMode(SDL_Surface_Native* surface, SDL_BlendMode* blendMode);
 
         [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_CreateColorCursor")]
         public static extern SDL_Cursor* CreateColorCursor(SDL_Surface_Native* surface, Int32 hot_x, Int32 hot_y);
@@ -240,7 +240,7 @@ namespace TwistedLogik.Ultraviolet.SDL2.Native
         public static extern Boolean PixelFormatEnumToMasks(UInt32 format, Int32* bpp, UInt32* Rmask, UInt32* Gmask, UInt32* Bmask, UInt32* Amask);
 
         [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GL_GetProcAddress", CharSet = CharSet.Ansi, BestFitMapping = false)]
-        public static extern IntPtr GL_GetProcAddress([MarshalAs(UnmanagedType.LPStr)] string proc);
+        public static extern IntPtr GL_GetProcAddress([MarshalAs(UnmanagedType.LPStr)] String proc);
 
         [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GL_CreateContext")]
         public static extern IntPtr GL_CreateContext(IntPtr window);
@@ -252,18 +252,47 @@ namespace TwistedLogik.Ultraviolet.SDL2.Native
         public static extern IntPtr GL_GetCurrentContext();
 
         [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GL_MakeCurrent")]
-        public static extern int GL_MakeCurrent(IntPtr window, IntPtr context);
+        public static extern Int32 GL_MakeCurrent(IntPtr window, IntPtr context);
 
         [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GL_SetAttribute")]
-        public static extern int GL_SetAttribute(SDL_GLattr attr, int value);
+        public static extern Int32 GL_SetAttribute(SDL_GLattr attr, Int32 value);
 
         [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GL_GetAttribute")]
-        public static extern int GL_GetAttribute(SDL_GLattr attr, int* value);
+        public static extern Int32 GL_GetAttribute(SDL_GLattr attr, Int32* value);
 
         [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GL_SwapWindow")]
         public static extern void GL_SwapWindow(IntPtr window);
 
         [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GL_SetSwapInterval")]
-        public static extern int GL_SetSwapInterval(Int32 interval);
+        public static extern Int32 GL_SetSwapInterval(Int32 Int32erval);
+
+        [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_NumJoysticks")]
+        public static extern Int32 NumJoysticks();
+
+        [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_IsGameController")]
+        public static extern Boolean IsGameController(Int32 joystick_index);
+
+        [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GameControllerOpen")]
+        public static extern IntPtr GameControllerOpen(Int32 index);
+
+        [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GameControllerClose")]
+        public static extern IntPtr GameControllerClose(IntPtr gamecontroller);
+
+        [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GameControllerNameForIndex")]
+        private static extern IntPtr GameControllerNameForIndex_Impl(Int32 joystick_index);
+
+        public static String GameControllerNameForIndex(Int32 joystick_index)
+        {
+            return Marshal.PtrToStringAnsi(GameControllerNameForIndex_Impl(joystick_index));
+        }
+
+        [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GameControllerGetButton")]
+        public static extern Boolean GameControllerGetButton(IntPtr gamecontroller, SDL_GameControllerButton button);
+
+        [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GameControllerGetJoystick")]
+        public static extern IntPtr GameControllerGetJoystick(IntPtr gamecontroller);
+
+        [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_JoystickInstanceID")]
+        public static extern Int32 JoystickInstanceID(IntPtr joystick);
     }
 }
