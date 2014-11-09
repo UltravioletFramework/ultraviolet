@@ -56,7 +56,7 @@ Known Issues
   
 * __General Compatibility__
 
-  Ultraviolet is still in the early stages of its development, and as such it has not yet been fully tested on a wide range of hardware. If you encounter compatibility issues on your machine, please [register an issue on itHub](https://github.com/tlgkccampbell/ultraviolet/issues) so we can try to address it!
+  Ultraviolet is still in the early stages of its development, and as such it has not yet been fully tested on a wide range of hardware. If you encounter compatibility issues on your machine, please [register an issue on GitHub](https://github.com/tlgkccampbell/ultraviolet/issues) so we can try to address it!
   
 Documentation
 =============
