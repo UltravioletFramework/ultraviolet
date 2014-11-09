@@ -260,4 +260,9 @@
       <Variant>Localized string is missing a Key value.</Variant>
     </en-US>
   </String>
+  <String Key="DATA_OBJECT_FAILED_VALIDATION">
+    <en-US>
+      <Variant>Error in {0} ({1}): {2}</Variant>
+    </en-US>
+  </String>
 </LocalizedStrings>

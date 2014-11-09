@@ -8,8 +8,8 @@ namespace TwistedLogik.Nucleus.Tests.Data
     /// </summary>
     public class ObjectLoader_ArrayIndexerModel : DataObject
     {
-        public ObjectLoader_ArrayIndexerModel(Guid globalID)
-            : base(globalID)
+        public ObjectLoader_ArrayIndexerModel(String key, Guid globalID)
+            : base(key, globalID)
         {
 
         }

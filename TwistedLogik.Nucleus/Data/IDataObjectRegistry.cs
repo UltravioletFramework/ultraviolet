@@ -1,13 +1,29 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace TwistedLogik.Nucleus.Data
 {
     /// <summary>
     /// Represents a registry of data-driven objects of a particular type.
     /// </summary>
-    [CLSCompliant(false)]
-    public interface IDataObjectRegistry
+    internal interface IDataObjectRegistry
     {
+        /// <summary>
+        /// Indicates that the registry has been added to the global collection of registries.
+        /// </summary>
+        void Register();
+
+        /// <summary>
+        /// Indicates that the registry has been removed from the global collection of registries.
+        /// </summary>
+        void Unregister();
+
+        /// <summary>
+        /// Sets the collection of source files from which the registry reads object definitions.
+        /// </summary>
+        /// <param name="files">A collection of source files from which to read object definitions.</param>
+        void SetSourceFiles(IEnumerable<String> files);
+
         /// <summary>
         /// Removes all objects from the registry and returns it to its default state.
         /// </summary>
@@ -35,6 +51,14 @@ namespace TwistedLogik.Nucleus.Data
         /// references with the format @ReferenceResolutionName:KEY
         /// </summary>
         String ReferenceResolutionName
+        {
+            get;
+        }
+
+        /// <summary>
+        /// The name of the content elements in the definition files loaded by this registry.
+        /// </summary>
+        String DataElementName
         {
             get;
         }

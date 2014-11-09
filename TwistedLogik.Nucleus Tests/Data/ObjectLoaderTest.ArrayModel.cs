@@ -8,14 +8,14 @@ namespace TwistedLogik.Nucleus.Tests.Data
     /// </summary>
     public class ObjectLoader_ArrayModel : DataObject
     {
-        public ObjectLoader_ArrayModel(Guid globalID)
-            : base(globalID)
+        public ObjectLoader_ArrayModel(String key, Guid globalID)
+            : base(key, globalID)
         {
 
         }
 
-        public ObjectLoader_ArrayModel(Guid globalID, Boolean createArray)
-            : base(globalID)
+        public ObjectLoader_ArrayModel(String key, Guid globalID, Boolean createArray)
+            : base(key, globalID)
         {
             if (createArray)
                 ArrayValue = new Int32[50];

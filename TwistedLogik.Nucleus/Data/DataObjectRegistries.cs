@@ -59,9 +59,27 @@ namespace TwistedLogik.Nucleus.Data
                 {
                     registriesByName[rrname.ToLower()] = instance;
                 }
+
+                instance.Register();
             }
         }
-        
+
+        /// <summary>
+        /// Removes the data object registry for the specified type from the collection of registries.
+        /// </summary>
+        /// <typeparam name="T">The type of data object for which to unregister a registry.</typeparam>
+        public static void Unregister<T>() where T : DataObject
+        {
+            IDataObjectRegistry registry;
+            if (registries.TryGetValue(typeof(T), out registry))
+            {
+                registry.Unregister();
+
+                registries.Remove(typeof(T));
+                registriesByName.Remove(registry.ReferenceResolutionName.ToLower());
+            }
+        }
+
         /// <summary>
         /// Removes all objects from all of the application's data object registries 
         /// and returns them to their default states.
