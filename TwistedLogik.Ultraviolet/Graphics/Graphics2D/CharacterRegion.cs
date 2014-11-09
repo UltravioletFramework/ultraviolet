@@ -102,7 +102,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// </summary>
         public Int32 Count
         {
-            get { return (Int32)end - (Int32)start; }
+            get { return 1 + (Int32)end - (Int32)start; }
         }
 
         // Property values.
