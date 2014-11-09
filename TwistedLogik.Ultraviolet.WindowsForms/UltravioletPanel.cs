@@ -242,15 +242,6 @@ namespace TwistedLogik.Ultraviolet.WindowsForms
         }
 
         /// <summary>
-        /// Handles the Ultraviolet context's Shutdown event.
-        /// </summary>
-        /// <param name="uv">The Ultraviolet context.</param>
-        private void uv_Shutdown(UltravioletContext uv)
-        {
-            DestroyUltravioletWindow();
-        }
-
-        /// <summary>
         /// Enlists the panel in the specified Ultraviolet context.
         /// </summary>
         /// <param name="uv">The Ultraviolet context in which to enlist the panel.</param>
@@ -264,7 +255,6 @@ namespace TwistedLogik.Ultraviolet.WindowsForms
             OnCreatingUltravioletWindow(EventArgs.Empty);
 
             this.uv = uv;
-            this.uv.Shutdown += uv_Shutdown;
 
             this.uvWindow = uv.GetPlatform().Windows.CreateFromNativePointer(this.Handle);
             this.uvWindow.Drawing += uvWindow_Drawing;
@@ -286,7 +276,6 @@ namespace TwistedLogik.Ultraviolet.WindowsForms
             this.uv.GetPlatform().Windows.Destroy(uvWindow);
             this.uvWindow = null;
 
-            this.uv.Shutdown -= uv_Shutdown;
             this.uv = null;
 
             OnDestroyedUltravioletWindow(EventArgs.Empty);
