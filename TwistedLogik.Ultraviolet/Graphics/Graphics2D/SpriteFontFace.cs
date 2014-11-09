@@ -40,13 +40,12 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
             : base(uv)
         {
             Contract.Require(texture, "texture");
-            Contract.Require(regions, "regions");
             Contract.Require(glyphs, "glyphs");
 
             this.texture = texture;
             this.ownsTexture = ownsTexture;
 
-            this.regions = regions.ToArray();
+            this.regions = (regions == null) ? new[] { CharacterRegion.Default } : regions.ToArray();
             this.glyphs = glyphs.ToArray();
             this.lineHeight = glyphs.Max(x => x.Height);
             this.firstCharacter = firstCharacter;

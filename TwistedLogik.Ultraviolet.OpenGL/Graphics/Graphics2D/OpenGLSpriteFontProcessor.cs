@@ -26,6 +26,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics.Graphics2D
         /// <param name="input">The asset to export to the stream.</param>
         public override void ExportPreprocessed(ContentManager manager, IContentProcessorMetadata metadata, BinaryWriter writer, XDocument input)
         {
+            ExportCharacterRegions(writer, input);
             ExportPreprocessedFace(manager, metadata, writer, input, "Regular");
             ExportPreprocessedFace(manager, metadata, writer, input, "Bold");
             ExportPreprocessedFace(manager, metadata, writer, input, "Italic");
@@ -41,10 +42,11 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics.Graphics2D
         /// <returns>The asset that was imported from the stream.</returns>
         public override SpriteFont ImportPreprocessed(ContentManager manager, IContentProcessorMetadata metadata, BinaryReader reader)
         {
-            var faceRegular    = ImportPreprocessedFace(manager, metadata, reader);
-            var faceBold       = ImportPreprocessedFace(manager, metadata, reader);
-            var faceItalic     = ImportPreprocessedFace(manager, metadata, reader);
-            var faceBoldItalic = ImportPreprocessedFace(manager, metadata, reader);
+            var characterRegions = ImportPreprocessedCharacterRegions(reader);
+            var faceRegular      = ImportPreprocessedFace(manager, metadata, reader, characterRegions);
+            var faceBold         = ImportPreprocessedFace(manager, metadata, reader, characterRegions);
+            var faceItalic       = ImportPreprocessedFace(manager, metadata, reader, characterRegions);
+            var faceBoldItalic   = ImportPreprocessedFace(manager, metadata, reader, characterRegions);
             return new SpriteFont(manager.Ultraviolet, faceRegular, faceBold, faceItalic, faceBoldItalic);
         }
 
@@ -57,10 +59,11 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics.Graphics2D
         /// <returns>The game asset that was created.</returns>
         public override SpriteFont Process(ContentManager manager, IContentProcessorMetadata metadata, XDocument input)
         {
-            var faceRegular    = ProcessFace(manager, metadata, input, "Regular");
-            var faceBold       = ProcessFace(manager, metadata, input, "Bold");
-            var faceItalic     = ProcessFace(manager, metadata, input, "Italic");
-            var faceBoldItalic = ProcessFace(manager, metadata, input, "BoldItalic");
+            var characterRegions = ProcessCharacterRegions(input);
+            var faceRegular      = ProcessFace(manager, metadata, input, "Regular", characterRegions);
+            var faceBold         = ProcessFace(manager, metadata, input, "Bold", characterRegions);
+            var faceItalic       = ProcessFace(manager, metadata, input, "Italic", characterRegions);
+            var faceBoldItalic   = ProcessFace(manager, metadata, input, "BoldItalic", characterRegions);
             return new SpriteFont(manager.Ultraviolet, faceRegular, faceBold, faceItalic, faceBoldItalic);
         }
 
@@ -161,6 +164,23 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics.Graphics2D
         }
 
         /// <summary>
+        /// Exports a font's character region data to the specified preprocessed asset stream.
+        /// </summary>
+        /// <param name="writer">A writer on the stream to which to export the asset.</param>
+        /// <param name="input">The asset to export to the stream.</param>
+        private static void ExportCharacterRegions(BinaryWriter writer, XDocument input)
+        {
+            var characterRegions = ProcessCharacterRegions(input);
+
+            writer.Write(characterRegions == null ? 0 : characterRegions.Count());
+            foreach (var characterRegion in characterRegions)
+            {
+                writer.Write(characterRegion.Start);
+                writer.Write(characterRegion.End);
+            }
+        }
+
+        /// <summary>
         /// Exports a font face to the specified preprocessed asset stream.
         /// </summary>
         /// <param name="manager">The content manager with which the asset is being processed.</param>
@@ -215,13 +235,36 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics.Graphics2D
         }
 
         /// <summary>
+        /// Imports a font's character regions from the specified preprocessed asset stream.
+        /// </summary>
+        /// <param name="reader">A reader on the stream that contains the asset to import.</param>
+        /// <returns>The collection of character regions that were imported, or <c>null</c> if no regions were imported.</returns>
+        private static IEnumerable<CharacterRegion> ImportPreprocessedCharacterRegions(BinaryReader reader)
+        {
+            var count = reader.ReadInt32();
+            if (count > 0)
+            {
+                var list = new List<CharacterRegion>();
+                for (int i = 0; i < count; i++)
+                {
+                    var start = reader.ReadChar();
+                    var end   = reader.ReadChar();
+                    list.Add(new CharacterRegion(start, end));
+                }
+                return list;
+            }
+            return null;
+        }
+
+        /// <summary>
         /// Imports a font face from the specified preprocessed asset stream.
         /// </summary>
         /// <param name="manager">The content manager with which the asset is being processed.</param>
         /// <param name="metadata">The asset's metadata.</param>
         /// <param name="reader">A reader on the stream that contains the asset to import.</param>
-        /// <returns>The font face that was imported, or null if no font face was imported.</returns>
-        private static SpriteFontFace ImportPreprocessedFace(ContentManager manager, IContentProcessorMetadata metadata, BinaryReader reader)
+        /// <param name="characterRegions">The font's list of character regions.</param>
+        /// <returns>The font face that was imported, or <c>null</c> if no font face was imported.</returns>
+        private static SpriteFontFace ImportPreprocessedFace(ContentManager manager, IContentProcessorMetadata metadata, BinaryReader reader, IEnumerable<CharacterRegion> characterRegions)
         {
             var faceExists = reader.ReadBoolean();
             if (!faceExists)
@@ -245,7 +288,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics.Graphics2D
                 glyphPositions.Add(new Rectangle(glyphX, glyphY, glyphWidth, glyphHeight));
             }
 
-            var face = new SpriteFontFace(manager.Ultraviolet, texture, new[] { CharacterRegion.Default }, glyphPositions, firstCharacter, substitutionCharacter);
+            var face = new SpriteFontFace(manager.Ultraviolet, texture, characterRegions, glyphPositions, firstCharacter, substitutionCharacter);
             var kerning = new Dictionary<SpriteFontKerningPair, Int32>();
             var kerningDefaultAdjustment = reader.ReadInt32();
             var kerningCount = reader.ReadInt32();
@@ -266,6 +309,36 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics.Graphics2D
 
             return face;
         }
+        
+        /// <summary>
+        /// Processes the specified font's character regions.
+        /// </summary>
+        /// <param name="input">The input data structure to process.</param>
+        /// <returns>A collection of the font's character regions.</returns>
+        private static IEnumerable<CharacterRegion> ProcessCharacterRegions(XDocument input)
+        {
+            var rootElement = input.Root.Element("CharacterRegions");
+            if (rootElement != null)
+            {
+                var regionList = new List<CharacterRegion>();
+                var regionElements = rootElement.Elements("CharacterRegion");
+
+                foreach (var regionElement in regionElements)
+                {
+                    var start  = regionElement.ElementValue<Char>("Start");
+                    var end    = regionElement.ElementValue<Char>("End");
+                    var region = new CharacterRegion(start, end);
+
+                    regionList.Add(region);
+                }
+
+                if (regionList.Any())
+                {
+                    return regionList;
+                }
+            }
+            return null;
+        }
 
         /// <summary>
         /// Processes the definition for a single font face.
@@ -274,8 +347,9 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics.Graphics2D
         /// <param name="metadata">The asset's metadata.</param>
         /// <param name="input">The input data structure to process.</param>
         /// <param name="style">The style of the font face to process.</param>
+        /// <param name="characterRegions">The font's list of character regions.</param>
         /// <returns>The processed font face, or null if the specified style does not exist in the font.</returns>
-        private static SpriteFontFace ProcessFace(ContentManager manager, IContentProcessorMetadata metadata, XDocument input, String style)
+        private static SpriteFontFace ProcessFace(ContentManager manager, IContentProcessorMetadata metadata, XDocument input, String style, IEnumerable<CharacterRegion> characterRegions)
         {
             var element = input.Root.Elements("Face").Where(x => x.AttributeValueString("Style") == style).SingleOrDefault();
             if (element != null)
@@ -290,7 +364,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics.Graphics2D
                     glyphs = OpenGLSpriteFontHelper.IdentifyGlyphs(surface, textureRegion);
                 }
 
-                var face = new SpriteFontFace(manager.Ultraviolet, texture, new[] { CharacterRegion.Default }, glyphs);
+                var face = new SpriteFontFace(manager.Ultraviolet, texture, characterRegions, glyphs);
 
                 var kerningDefaultAdjustment = 0;
                 var kerning = GetKerningInfo(element, out kerningDefaultAdjustment);

@@ -17,7 +17,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// </summary>
         /// <param name="start">The first character in the region.</param>
         /// <param name="end">The last character in the region.</param>
-        internal CharacterRegion(Char start, Char end)
+        public CharacterRegion(Char start, Char end)
         {
             if (end < start)
             {
