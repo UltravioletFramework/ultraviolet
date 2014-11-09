@@ -34,6 +34,10 @@ namespace WindowsFormsApplication1
         {
             content = ContentManager.Create("Content");
 
+            TwistedLogik.Nucleus.Data.DataObjectRegistries.Register(typeof(Form1).Assembly);
+            TwistedLogik.Nucleus.Data.DataObjectRegistries.Get<Data>().SetSourceFiles(content.GetAssetFilePathsInDirectory("Data"));
+            TwistedLogik.Nucleus.Data.DataObjectRegistries.Load();
+
             var contentManifestFiles = this.content.GetAssetFilePathsInDirectory("Manifests");
             Ultraviolet.GetContent().Manifests.Load(contentManifestFiles);
 

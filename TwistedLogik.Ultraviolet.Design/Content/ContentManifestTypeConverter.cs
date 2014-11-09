@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using TwistedLogik.Nucleus;
@@ -28,25 +27,19 @@ namespace TwistedLogik.Ultraviolet.Design.Content
             values = GetStandardValuesForManifestGroup(manifestName, manifestGroupName, includeInvalid);
         }
 
-        /// <summary>
-        /// Gets a value indicating whether this type converter supports standard values.
-        /// </summary>
+        /// <inheritdoc/>
         public override Boolean GetStandardValuesSupported(ITypeDescriptorContext context)
         {
             return true;
         }
 
-        /// <summary>
-        /// Gets a value indicating whether only standard values are allowed.
-        /// </summary>
+        /// <inheritdoc/>
         public override Boolean GetStandardValuesExclusive(ITypeDescriptorContext context)
         {
             return true;
         }
 
-        /// <summary>
-        /// Gets the type converter's collection of standard values.
-        /// </summary>
+        /// <inheritdoc/>
         public override TypeConverter.StandardValuesCollection GetStandardValues(ITypeDescriptorContext context)
         {
             return values;
@@ -73,6 +66,7 @@ namespace TwistedLogik.Ultraviolet.Design.Content
             var values = new StandardValuesCollection(ids.ToList());
             return values;
         }
+
         // The standard values for this converter.
         private StandardValuesCollection values;
     }

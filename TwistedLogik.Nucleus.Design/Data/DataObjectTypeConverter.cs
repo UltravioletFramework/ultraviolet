@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using TwistedLogik.Nucleus.Data;
@@ -7,76 +6,58 @@ using TwistedLogik.Nucleus.Data;
 namespace TwistedLogik.Nucleus.Design.Data
 {
     /// <summary>
-    ///  
+    /// Represents a type converter which produces a list of standard values corresponding to
+    /// the contents of the specified data object registry.
     /// </summary>
     [CLSCompliant(false)]
     public abstract class DataObjectTypeConverter<T> : ObjectResolverTypeConverter<T> where T : DataObject
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="DataObjectTypeConverter{T, U}"/> class.
+        /// Initializes a new instance of the <see cref="DataObjectTypeConverter{T}"/> class.
         /// </summary>
-        /// <param name="allowNone">A value indicating whether (none) is a valid selection.</param>
-        protected DataObjectTypeConverter(Boolean allowNone)
+        /// <param name="includeInvalid">A value indicating whether to include an invalid object reference as a possible selection.</param>
+        protected DataObjectTypeConverter(Boolean allowInvalid)
         {
-            values = GetStandardValuesForRegistry(allowNone);
+            values = GetStandardValuesForRegistry(allowInvalid);
         }
 
-        /// <summary>
-        /// Gets a value indicating whether this type converter supports standard values.
-        /// </summary>
+        /// <inheritdoc/>
         public override Boolean GetStandardValuesSupported(ITypeDescriptorContext context)
         {
             return true;
         }
 
-        /// <summary>
-        /// Gets a value indicating whether only standard values are allowed.
-        /// </summary>
+        /// <inheritdoc/>
         public override Boolean GetStandardValuesExclusive(ITypeDescriptorContext context)
         {
             return true;
         }
 
-        /// <summary>
-        /// Gets the type converter's collection of standard values.
-        /// </summary>
+        /// <inheritdoc/>
         public override TypeConverter.StandardValuesCollection GetStandardValues(ITypeDescriptorContext context)
         {
             return values;
         }
 
         /// <summary>
-        /// 
+        /// Gets a <see cref="StandardValuesCollection"/> containing the object references defined by the specified data object registry.
         /// </summary>
-        /// <param name="allowNone"></param>
-        /// <returns></returns>
-        private static StandardValuesCollection GetStandardValuesForRegistry(Boolean allowNone)
+        /// <param name="includeInvalid">A value indicating whether to include an invalid object reference as a possible selection.</param>
+        /// <returns>The <see cref="StandardValuesCollection"/> which was created.</returns>
+        private static StandardValuesCollection GetStandardValuesForRegistry(Boolean allowInvalid)
         {
-            var cache = allowNone ? StandardValuesPlusNoneCache : StandardValuesCache;
+            var registry   = DataObjectRegistries.Get<T>();
+            var keys       = registry.Select(x => String.Format("@{0}:{1}", registry.ReferenceResolutionName, x.Key));
+            var references = (from k in keys 
+                              select (ResolvedDataObjectReference)ObjectResolver.FromString(k, typeof(ResolvedDataObjectReference))).ToList();
 
-            StandardValuesCollection values;
-            if (!cache.TryGetValue(typeof(T), out values))
+            if (allowInvalid)
             {
-                var registry = DataObjectRegistries.Get<T>();
-                var keys = registry.Select(x => String.Format("@{0}:{1}", registry.ReferenceResolutionName, x.Key));
-                var references = keys.Select(x => (ResolvedDataObjectReference)ObjectResolver.FromString(x, typeof(ResolvedDataObjectReference))).ToList();
-                var referencesPlusNone = references.ToList();
-                referencesPlusNone.Insert(0, default(ResolvedDataObjectReference));
-
-                StandardValuesCache[typeof(T)] = new StandardValuesCollection(references);
-                StandardValuesPlusNoneCache[typeof(T)] = new StandardValuesCollection(referencesPlusNone);
-
-                values = allowNone ? StandardValuesPlusNoneCache[typeof(T)] : StandardValuesCache[typeof(T)];
+                references.Insert(0, ResolvedDataObjectReference.Invalid);
             }
 
-            return values;
+            return new StandardValuesCollection(references);
         }
-
-        // The cache of standard values associated with each asset manifest.
-        private static readonly Dictionary<Type, StandardValuesCollection> StandardValuesPlusNoneCache =
-            new Dictionary<Type, StandardValuesCollection>();
-        private static readonly Dictionary<Type, StandardValuesCollection> StandardValuesCache =
-            new Dictionary<Type, StandardValuesCollection>();
 
         // The standard values for this converter.
         private StandardValuesCollection values;
