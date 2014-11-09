@@ -265,4 +265,9 @@
       <Variant>Error in {0} ({1}): {2}</Variant>
     </en-US>
   </String>
+  <String Key="TYPE_METADATA_ALREADY_LOADED">
+    <en-US>
+      <Variant>Type metadata has already been loaded for this assembly.</Variant>
+    </en-US>
+  </String>
 </LocalizedStrings>

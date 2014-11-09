@@ -81,6 +81,7 @@
     <Compile Include="Size3FTypeConverter.cs" />
     <Compile Include="Size2FTypeConverter.cs" />
     <Compile Include="Size3TypeConverter.cs" />
+    <Compile Include="UltravioletDesign.cs" />
     <Compile Include="UltravioletExpandableObjectConverter.cs" />
     <Compile Include="ColorTypeConverter.cs" />
     <Compile Include="MatrixTypeConverter.cs" />
@@ -114,29 +115,19 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Vector2.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    <EmbeddedResource Include="Vector2.xml" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Vector3.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    <EmbeddedResource Include="Vector3.xml" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Vector4.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    <EmbeddedResource Include="Vector4.xml" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Color.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    <EmbeddedResource Include="Color.xml" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Matrix.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    <EmbeddedResource Include="Matrix.xml" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="MatrixEditorControl.resx">
@@ -144,49 +135,31 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Size2.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    <EmbeddedResource Include="Size2.xml" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Size3.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    <EmbeddedResource Include="Size3.xml" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Size2F.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    <EmbeddedResource Include="Size2F.xml" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Size3F.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    <EmbeddedResource Include="Size3F.xml" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Rectangle.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    <EmbeddedResource Include="Rectangle.xml" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="RectangleF.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    <EmbeddedResource Include="RectangleF.xml" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Circle.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    <EmbeddedResource Include="Circle.xml" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="CircleF.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    <EmbeddedResource Include="CircleF.xml" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Radians.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    <EmbeddedResource Include="Radians.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

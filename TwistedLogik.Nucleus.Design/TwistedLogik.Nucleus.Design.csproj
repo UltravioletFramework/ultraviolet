@@ -60,6 +60,7 @@
     <Compile Include="Data\DataObjectTypeConverter.cs" />
     <Compile Include="MaskedUInt64TypeConverter.cs" />
     <Compile Include="MaskedUInt32TypeConverter.cs" />
+    <Compile Include="NucleusDesign.cs" />
     <Compile Include="Text\StringResourceTypeConverter.cs" />
     <Compile Include="XmlDrivenCustomTypeDescriptionProvider.cs" />
     <Compile Include="XmlDrivenCustomTypeDescriptor.cs" />
@@ -83,19 +84,13 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="MaskedUInt32.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    <EmbeddedResource Include="MaskedUInt32.xml" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="MaskedUInt64.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    <EmbeddedResource Include="MaskedUInt64.xml" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Text\StringResource.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    <EmbeddedResource Include="Text\StringResource.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
