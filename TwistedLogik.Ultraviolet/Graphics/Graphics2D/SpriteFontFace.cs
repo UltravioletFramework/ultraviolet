@@ -51,11 +51,25 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
             this.firstCharacter = firstCharacter;
             this.substitutionCharacter = substitutionCharacter;
 
-            var substitutionCharacterIndex = FindGlyphIndex(substitutionCharacter);
-            if (substitutionCharacterIndex == null)
+            var ix = 0;
+            var ixSubstitution = (Int32?)null;
+
+            foreach (var r in this.regions)
+            {
+                for (char c = r.Start; c <= r.End; c++)
+                {
+                    if (c == substitutionCharacter)
+                    {
+                        ixSubstitution = ix;
+                    }
+                    glyphIndices[c] = ix++;
+                }
+            }
+
+            if (ixSubstitution == null)
                 throw new ArgumentOutOfRangeException("substitutionCharacter");
 
-            this.substitutionCharacterIndex = substitutionCharacterIndex.Value;
+            this.substitutionCharacterIndex = ixSubstitution.Value;
         }
 
         /// <summary>
@@ -201,18 +215,12 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         {
             get
             {
-                // TODO: Is it faster to use a dictionary for this?
-                var ix = 0;
-                foreach (var region in regions)
+                Int32 ix;
+                if (!glyphIndices.TryGetValue(character, out ix))
                 {
-                    if (region.Contains(character))
-                    {
-                        var offset = (Int32)character - (Int32)region.Start;
-                        return glyphs[ix + offset];
-                    }
-                    ix += region.Count;
+                    return glyphs[substitutionCharacterIndex];
                 }
-                return glyphs[substitutionCharacterIndex];
+                return glyphs[ix];
             }
         }
 
@@ -279,27 +287,6 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
             base.Dispose(disposing);
         }
 
-        /// <summary>
-        /// Finds the index of the specified character within the font's glyph array.
-        /// </summary>
-        /// <param name="character">The character to evaluate.</param>
-        /// <returns>The index of the specified character within the font's glyph 
-        /// array, or <c>null</c> if the character does not exist within the font.</returns>
-        private Int32? FindGlyphIndex(Char character)
-        {
-            var ix = 0;
-            foreach (var region in regions)
-            {
-                if (region.Contains(character))
-                {
-                    var offset = (Int32)character - (Int32)region.Start;
-                    return ix + offset;
-                }
-                ix += region.Count;
-            }
-            return null;
-        }
-
         // Property values.
         private readonly Texture2D texture;
         private readonly Char firstCharacter;
@@ -311,6 +298,9 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         private readonly CharacterRegion[] regions;
         private readonly Rectangle[] glyphs;
         private readonly Boolean ownsTexture;
+
+        private readonly Dictionary<Char, Int32> glyphIndices = 
+            new Dictionary<Char, Int32>();
 
         // The font face's kerning information.
         private readonly SpriteFontKerning kerning = new SpriteFontKerning();
