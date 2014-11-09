@@ -10,7 +10,7 @@ namespace TwistedLogik.Nucleus.Design.Data
     ///  
     /// </summary>
     [CLSCompliant(false)]
-    public abstract class DataObjectTypeConverter<T, U> : ObjectResolverTypeConverter<T> where T : DataObject
+    public abstract class DataObjectTypeConverter<T> : ObjectResolverTypeConverter<T> where T : DataObject
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="DataObjectTypeConverter{T, U}"/> class.
@@ -59,9 +59,9 @@ namespace TwistedLogik.Nucleus.Design.Data
             {
                 var registry = DataObjectRegistries.Get<T>();
                 var keys = registry.Select(x => String.Format("@{0}:{1}", registry.ReferenceResolutionName, x.Key));
-                var references = keys.Select(x => (U)ObjectResolver.FromString(x, typeof(U))).ToList();
+                var references = keys.Select(x => (ResolvedDataObjectReference)ObjectResolver.FromString(x, typeof(ResolvedDataObjectReference))).ToList();
                 var referencesPlusNone = references.ToList();
-                referencesPlusNone.Insert(0, default(U));
+                referencesPlusNone.Insert(0, default(ResolvedDataObjectReference));
 
                 StandardValuesCache[typeof(T)] = new StandardValuesCollection(references);
                 StandardValuesPlusNoneCache[typeof(T)] = new StandardValuesCollection(referencesPlusNone);

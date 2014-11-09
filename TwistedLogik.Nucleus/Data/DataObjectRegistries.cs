@@ -135,6 +135,11 @@ namespace TwistedLogik.Nucleus.Data
 
             if (reference.StartsWith("@"))
             {
+                if (reference == "@INVALID")
+                {
+                    return ResolvedDataObjectReference.Invalid;
+                }
+
                 var ix = reference.IndexOf(":");
                 if (ix > 0)
                 {

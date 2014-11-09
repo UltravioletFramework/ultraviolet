@@ -17,8 +17,8 @@ namespace TwistedLogik.Nucleus.Data
         /// <param name="value">The data object identifier's value.</param>
         public ResolvedDataObjectReference(Guid value)
         {
-            this.Value = value;
-            this.Source = null;
+            this.value = value;
+            this.source = null;
         }
 
         /// <summary>
@@ -28,8 +28,8 @@ namespace TwistedLogik.Nucleus.Data
         /// <param name="source">A string identifying the source of the identifier, used for debugging.</param>
         public ResolvedDataObjectReference(Guid value, String source)
         {
-            this.Value = value;
-            this.Source = source;
+            this.value = value;
+            this.source = source;
         }
 
         /// <summary>
@@ -124,7 +124,7 @@ namespace TwistedLogik.Nucleus.Data
         /// <returns>A human-readable string that represents the object.</returns>
         public override String ToString()
         {
-            return Value.Equals(Guid.Empty) ? "(none)" : Source ?? String.Format("Object #{0}", Value.ToString());
+            return !IsValid ? "@INVALID" : Source ?? String.Format("Object #{0}", Value.ToString());
         }
 
         /// <summary>
@@ -171,13 +171,39 @@ namespace TwistedLogik.Nucleus.Data
         }
 
         /// <summary>
+        /// Gets an invalid data object reference.
+        /// </summary>
+        public static ResolvedDataObjectReference Invalid
+        {
+            get { return new ResolvedDataObjectReference(); }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether this is a valid object reference.
+        /// </summary>
+        public Boolean IsValid
+        {
+            get { return Value != Guid.Empty; }
+        }
+
+        /// <summary>
         /// The data object identifier's underlying value.
         /// </summary>
-        public readonly Guid Value;
+        public Guid Value
+        {
+            get { return value; } 
+        }
 
         /// <summary>
         /// A string identifying the source of the identifier, used for debugging.
         /// </summary>
-        public readonly String Source;
+        public String Source
+        {
+            get { return source; }
+        }
+
+        // Property values.
+        private Guid value;
+        private String source;
     }
 }
