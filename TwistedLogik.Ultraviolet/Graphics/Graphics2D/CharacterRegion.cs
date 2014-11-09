@@ -1,8 +1,8 @@
 ﻿using System;
-using System.Linq;
 using System.Collections.Generic;
-using TwistedLogik.Nucleus;
 using System.Diagnostics;
+using System.Linq;
+using TwistedLogik.Nucleus;
 
 namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
 {
@@ -38,7 +38,10 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
             Contract.Require(text, "text");
 
             var regions = new List<CharacterRegion>();
-            var characters = text.Where(x => !Char.IsSurrogate(x)).Distinct().OrderBy(x => x).ToArray();
+            var characters = (from c in text
+                              where
+                              !Char.IsSurrogate(c) && (!Char.IsWhiteSpace(c) || c == ' ')
+                              select c).Distinct().OrderBy(x => x).ToArray();
 
             if (text != null && text.Length > 0)
             {

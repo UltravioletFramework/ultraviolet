@@ -90,6 +90,8 @@ namespace TwistedLogik.UvFont
                 }
                 fontName = parameters.FontName = faces.First().Font.Name;
 
+                Console.WriteLine("Generating {0}...", GetFontTextureSafeName(parameters));
+
                 foreach (var face in faces)
                 {
                     using (var fontSupersampled = new Font(fontName, fontSize * SupersampleFactor, face.Font.Style))
@@ -120,6 +122,8 @@ namespace TwistedLogik.UvFont
                 }
 
                 Console.WriteLine("Generated {0}.", GetFontTextureSafeName(parameters));
+
+                Console.WriteLine("Generating {0}...", GetFontDefinitionSafeName(parameters));
 
                 var xml = GenerateXmlFontDefinition(parameters, faces, regions, chars);
                 using (var xmlWriter = new XmlTextWriter(GetFontDefinitionSafeName(parameters), Encoding.UTF8))
@@ -439,6 +443,8 @@ namespace TwistedLogik.UvFont
 
                 foreach (var face in faces)
                 {
+                    Console.WriteLine("Calculating kerning for {0} face...", face.Name);
+
                     if (y + face.Texture.Height > MaxOutputSize)
                     {
                         x = x + face.Texture.Width;
