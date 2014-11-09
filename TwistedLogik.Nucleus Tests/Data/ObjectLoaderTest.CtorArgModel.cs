@@ -8,15 +8,15 @@ namespace TwistedLogik.Nucleus.Tests.Data
     /// </summary>
     public class ObjectLoader_CtorArgModel : DataObject
     {
-        public ObjectLoader_CtorArgModel(Guid globalID, Int32 x, Int32 y)
-            : base(globalID)
+        public ObjectLoader_CtorArgModel(String key, Guid globalID, Int32 x, Int32 y)
+            : base(key, globalID)
         {
             this.x = x;
             this.y = y;
         }
 
-        public ObjectLoader_CtorArgModel(Guid globalID, ObjectLoader_ComplexValueObject arg)
-            : base(globalID)
+        public ObjectLoader_CtorArgModel(String key, Guid globalID, ObjectLoader_ComplexValueObject arg)
+            : base(key, globalID)
         {
             this.Arg = arg;
         }

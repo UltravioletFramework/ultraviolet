@@ -9,7 +9,7 @@ namespace TwistedLogik.Nucleus.Tests.Data
     public class ObjectLoader_CtorArgModelInvalidMatch : DataObject
     {
         public ObjectLoader_CtorArgModelInvalidMatch(Int32 x, Int32 y, Int32 z)
-            : base(Guid.Empty)
+            : base(String.Empty, Guid.Empty)
         {
 
         }

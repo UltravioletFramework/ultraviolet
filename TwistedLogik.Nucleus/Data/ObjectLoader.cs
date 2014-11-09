@@ -337,7 +337,7 @@ namespace TwistedLogik.Nucleus.Data
                 if (!Guid.TryParse(objID, out objIDValue))
                     throw new InvalidOperationException(NucleusStrings.DataObjectInvalidID.Format(objID));
                 
-                 argsBase = new Object[] { objIDValue };
+                 argsBase = new Object[] { objKey, objIDValue };
             }
 
             // Attempt to find the object class and make sure it's of the correct type.

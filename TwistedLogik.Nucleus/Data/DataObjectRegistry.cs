@@ -12,9 +12,30 @@ namespace TwistedLogik.Nucleus.Data
     [CLSCompliant(false)]
     public abstract class DataObjectRegistry<T> : IDataObjectRegistry, IEnumerable<KeyValuePair<String, T>> where T : DataObject
     {
-        /// <summary>
-        /// Resets the object registry to its default state.
-        /// </summary>
+        /// <inheritdoc/>
+        void IDataObjectRegistry.Register()
+        {
+            OnRegistered();
+        }
+
+        /// <inheritdoc/>
+        void IDataObjectRegistry.Unregister()
+        {
+            OnUnregistered();
+        }
+
+        /// <inheritdoc/>
+        public void SetSourceFiles(IEnumerable<String> files)
+        {
+            this.registrySourceFiles.Clear();
+
+            if (files != null)
+            {
+                this.registrySourceFiles.AddRange(files);
+            }
+        }
+
+        /// <inheritdoc/>
         public void Clear()
         {
             OnResetting();
@@ -31,9 +52,7 @@ namespace TwistedLogik.Nucleus.Data
             index = 1;
         }
 
-        /// <summary>
-        /// Loads the object keys.
-        /// </summary>
+        /// <inheritdoc/>
         public void LoadKeys()
         {
             Contract.EnsureNot(loadedKeys, NucleusStrings.DataObjectRegistryAlreadyLoadedKeys);
@@ -42,9 +61,7 @@ namespace TwistedLogik.Nucleus.Data
             loadedKeys = true;
         }
 
-        /// <summary>
-        /// Loads the registry's objects.
-        /// </summary>
+        /// <inheritdoc/>
         public void LoadObjects()
         {
             Contract.Ensure(loadedKeys, NucleusStrings.DataObjectRegistryMustLoadKeys);
@@ -54,11 +71,7 @@ namespace TwistedLogik.Nucleus.Data
             loadedObjects = true;
         }
 
-        /// <summary>
-        /// Resolves an object key to a global identifier.
-        /// </summary>
-        /// <param name="key">The object key to resolve.</param>
-        /// <returns>The global identifier associated with the specified object key, or <c>null</c> if no such key exists.</returns>
+        /// <inheritdoc/>
         public Guid? ResolveObjectKey(String key)
         {
             Guid id;
@@ -166,11 +179,14 @@ namespace TwistedLogik.Nucleus.Data
             return GetEnumerator();
         }
 
-        /// <summary>
-        /// Gets the data object's reference resolution name, which is used to resolve
-        /// references with the format @rrname:KEY
-        /// </summary>
+        /// <inheritdoc/>
         public abstract String ReferenceResolutionName
+        {
+            get;
+        }
+
+        /// <inheritdoc/>
+        public abstract String DataElementName
         {
             get;
         }
@@ -184,6 +200,22 @@ namespace TwistedLogik.Nucleus.Data
         }
 
         /// <summary>
+        /// Called when the registry is added to the global collection of registries.
+        /// </summary>
+        protected virtual void OnRegistered()
+        {
+
+        }
+
+        /// <summary>
+        /// Called when the registry is removed from the global collection of registries.
+        /// </summary>
+        protected virtual void OnUnregistered()
+        {
+
+        }
+
+        /// <summary>
         /// Called when the registry is being reset.
         /// </summary>
         protected virtual void OnResetting()
@@ -194,12 +226,50 @@ namespace TwistedLogik.Nucleus.Data
         /// <summary>
         /// Loads the registry's keys.
         /// </summary>
-        protected abstract void LoadKeysInternal();
+        protected virtual void LoadKeysInternal()
+        {
+            foreach (var file in registrySourceFiles)
+            {
+                LoadKeysFromData(DataElementName, DataElement.CreateFromFile(file));
+            }
+        }
 
         /// <summary>
         /// Loads the registry's objects.
         /// </summary>
-        protected abstract void LoadObjectsInternal();
+        protected virtual void LoadObjectsInternal()
+        {
+            foreach (var file in registrySourceFiles)
+            {
+                var error   = String.Empty;
+                var objects = ObjectLoader.LoadDefinitions<T>(ObjectLoaderDataType.Detect, file, DataElementName, DefaultObjectClass);
+                foreach (var obj in objects)
+                {
+                    if (!ValidateObject(obj, out error))
+                    {
+                        throw new InvalidOperationException(
+                            NucleusStrings.DataObjectFailedValidation.Format(typeof(T).Name, obj.GlobalID, error));
+                    }
+                }
+
+                foreach (var definition in objects)
+                {
+                    Register(definition);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Validates the specified data object.
+        /// </summary>
+        /// <param name="dataObject">The data object to validate.</param>
+        /// <param name="error">A string describing the validation error that occurred, if any.</param>
+        /// <returns><c>true</c> if a validation error occurred; otherwise, <c>false</c>.</returns>
+        protected virtual Boolean ValidateObject(T dataObject, out String error)
+        {
+            error = null;
+            return true;
+        }
 
         /// <summary>
         /// Loads a set of object keys from the specified data definition file into the specified key registry.
@@ -227,7 +297,7 @@ namespace TwistedLogik.Nucleus.Data
                              ID = new Guid(item.Attribute("ID").Value),
                              Key = item.Attribute("Key").Value,
                          });
-            
+
             foreach (var item in items)
             {
                 if (item.Key == null || keys.ContainsKey(item.Key))
@@ -241,11 +311,9 @@ namespace TwistedLogik.Nucleus.Data
         /// <summary>
         /// Adds an object to the registry.
         /// </summary>
-        /// <param name="key">The object's unique key.</param>
         /// <param name="obj">The object to register.</param>
-        protected void Register(String key, T obj)
+        protected void Register(T obj)
         {
-            Contract.RequireNotEmpty(key, "key");
             Contract.Require(obj, "obj");
 
             if (index > UInt16.MaxValue)
@@ -257,11 +325,22 @@ namespace TwistedLogik.Nucleus.Data
             obj.LocalID = (UInt16)index;
             index++;
 
-            keys[key]                       = obj.GlobalID;
-            objectsByKey[key]               = obj;
+            keys[obj.Key]                   = obj.GlobalID;
+            objectsByKey[obj.Key]           = obj;
             objectsByLocalID[obj.LocalID]   = obj;
             objectsByGlobalID[obj.GlobalID] = obj;
         }
+
+        /// <summary>
+        /// Gets the default class for objects loaded by this registry.
+        /// </summary>
+        protected virtual Type DefaultObjectClass
+        {
+            get { return typeof(T); }
+        }
+
+        // The object registry's source files.
+        private readonly List<String> registrySourceFiles = new List<String>();
 
         // The object registry.
         private readonly Dictionary<String, Guid> keys = new Dictionary<String, Guid>();

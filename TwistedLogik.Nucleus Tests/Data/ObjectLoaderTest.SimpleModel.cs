@@ -7,20 +7,20 @@ namespace TwistedLogik.Nucleus.Tests.Data
     /// </summary>
     public class ObjectLoader_SimpleModel : ObjectLoader_SimpleModelBase
     {
-        public ObjectLoader_SimpleModel(Guid globalID)
-            : base(globalID)
+        public ObjectLoader_SimpleModel(String key, Guid globalID)
+            : base(key, globalID)
         {
 
         }
 
-        public ObjectLoader_SimpleModel(Guid globalID, String stringValue)
-            : base(globalID)
+        public ObjectLoader_SimpleModel(String key, Guid globalID, String stringValue)
+            : base(key, globalID)
         {
             this.StringValue = stringValue;
         }
 
-        public ObjectLoader_SimpleModel(Guid globalID, String stringValue, ObjectLoader_ComplexRefObject refObject)
-            : base(globalID)
+        public ObjectLoader_SimpleModel(String key, Guid globalID, String stringValue, ObjectLoader_ComplexRefObject refObject)
+            : base(key, globalID)
         {
             this.StringValue = stringValue;
             this.ComplexReference = refObject;

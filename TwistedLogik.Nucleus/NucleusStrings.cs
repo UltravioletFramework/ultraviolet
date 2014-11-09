@@ -74,6 +74,7 @@ namespace TwistedLogik.Nucleus
         public static readonly StringResource SegmentIsEmpty                         = new StringResource(StringDatabase, "SEGMENT_IS_EMPTY");
         public static readonly StringResource SegmentsAreNotContiguous               = new StringResource(StringDatabase, "SEGMENTS_ARE_NOT_CONTIGUOUS");
         public static readonly StringResource LocalizedStringMissingKey              = new StringResource(StringDatabase, "LOCALIZED_STRING_MISSING_KEY");
+        public static readonly StringResource DataObjectFailedValidation             = new StringResource(StringDatabase, "DATA_OBJECT_FAILED_VALIDATION");
 #pragma warning restore 1591
     }
 }

@@ -8,8 +8,9 @@ namespace TwistedLogik.Nucleus.Tests.Data
     /// </summary>
     public abstract class ObjectLoader_SimpleModelBase : DataObject
     {
-        public ObjectLoader_SimpleModelBase(Guid globalID)
-            : base(globalID)
+        public ObjectLoader_SimpleModelBase(String key, Guid globalID)
+            : base(key, 
+            globalID)
         {
 
         }

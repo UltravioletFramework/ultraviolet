@@ -8,8 +8,8 @@ namespace TwistedLogik.Nucleus.Tests.Data
     /// </summary>
     public class ObjectLoader_CtorArgModelAmbiguousMatch : DataObject
     {
-        public ObjectLoader_CtorArgModelAmbiguousMatch(Guid globalID)
-            : base(globalID)
+        public ObjectLoader_CtorArgModelAmbiguousMatch(String key, Guid globalID)
+            : base(key, globalID)
         {
 
         }
