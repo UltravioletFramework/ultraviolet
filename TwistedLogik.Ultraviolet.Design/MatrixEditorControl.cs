@@ -78,7 +78,7 @@ namespace TwistedLogik.Ultraviolet.Design
         }
 
         /// <summary>
-        /// Handles the <see cref="Button.Click"/> event for the "Identity" button.
+        /// Handles the <see cref="Control.Click"/> event for the "Identity" button.
         /// </summary>
         private void btnIdentity_Click(object sender, EventArgs e)
         {

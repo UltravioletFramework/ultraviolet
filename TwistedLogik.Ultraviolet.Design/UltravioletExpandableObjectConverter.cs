@@ -4,6 +4,10 @@ using System.Globalization;
 
 namespace TwistedLogik.Ultraviolet.Design
 {
+    /// <summary>
+    /// Represents an expandable object converter for Ultraviolet value types.
+    /// </summary>
+    /// <typeparam name="T">The type of value which is converted by this type converter.</typeparam>
     public abstract class UltravioletExpandableObjectConverter<T> : ExpandableObjectConverter
     {
         /// <inheritdoc/>

@@ -45,11 +45,11 @@ namespace TwistedLogik.Ultraviolet.Design.Content
         }
 
         /// <summary>
-        /// Gets a <see cref="StandardValuesCollection"/> containing the asset identifiers defined by the specified content manifest group.
+        /// Gets a <see cref="System.ComponentModel.TypeConverter.StandardValuesCollection"/> containing the asset identifiers defined by the specified content manifest group.
         /// </summary>
         /// <param name="manifestName">The name of the manifest from which to retrieve values.</param>
         /// <param name="manifestGroupName">The name of the manifest group from which to retrieve values.</param>
-        /// <returns>The <see cref="StandardValuesCollection"/> which was created.</returns>
+        /// <returns>The <see cref="System.ComponentModel.TypeConverter.StandardValuesCollection"/> which was created.</returns>
         private static StandardValuesCollection GetStandardValuesForManifestGroup(String manifestName, String manifestGroupName)
         {
             var uv            = UltravioletContext.DemandCurrent();

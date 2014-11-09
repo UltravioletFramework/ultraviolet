@@ -39,9 +39,9 @@ namespace TwistedLogik.Nucleus.Design.Data
         }
 
         /// <summary>
-        /// Gets a <see cref="StandardValuesCollection"/> containing the object references defined by the specified data object registry.
+        /// Gets a <see cref="System.ComponentModel.TypeConverter.StandardValuesCollection"/> containing the object references defined by the specified data object registry.
         /// </summary>
-        /// <returns>The <see cref="StandardValuesCollection"/> which was created.</returns>
+        /// <returns>The <see cref="System.ComponentModel.TypeConverter.StandardValuesCollection"/> which was created.</returns>
         private static StandardValuesCollection GetStandardValuesForRegistry()
         {
             var registry   = DataObjectRegistries.Get<T>();
