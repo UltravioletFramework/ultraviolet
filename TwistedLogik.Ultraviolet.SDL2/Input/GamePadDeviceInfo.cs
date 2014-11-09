@@ -1,8 +1,9 @@
 ﻿using System;
+using TwistedLogik.Nucleus;
 using TwistedLogik.Nucleus.Messages;
+using TwistedLogik.Ultraviolet.Input;
 using TwistedLogik.Ultraviolet.SDL2.Messages;
 using TwistedLogik.Ultraviolet.SDL2.Native;
-using TwistedLogik.Nucleus;
 
 namespace TwistedLogik.Ultraviolet.SDL2.Input
 {
@@ -112,6 +113,12 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
         }
 
         /// <inheritdoc/>
+        public event GamePadConnectionEventHandler GamePadConnected;
+
+        /// <inheritdoc/>
+        public event GamePadConnectionEventHandler GamePadDisconnected;
+
+        /// <inheritdoc/>
         protected override void Dispose(Boolean disposing)
         {
             if (disposing)
@@ -150,9 +157,12 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
             }
 
             var playerIndex = GetFirstAvailablePlayerIndex();
+            var device = new SDL2GamePadDevice(Ultraviolet, joystickIndex, playerIndex);
 
-            devicesByPlayer[playerIndex] = new SDL2GamePadDevice(Ultraviolet, joystickIndex, playerIndex);
+            devicesByPlayer[playerIndex] = device;
             count++;
+
+            OnGamePadConnected(device, playerIndex);
         }
 
         /// <summary>
@@ -163,13 +173,44 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
         {
             for (int i = 0; i < devicesByPlayer.Length; i++)
             {
-                if (devicesByPlayer[i] != null && devicesByPlayer[i].InstanceID == instanceID)
+                var device = devicesByPlayer[i];
+                if (device != null && device.InstanceID == instanceID)
                 {
+                    OnGamePadDisconnected(device, i);
+
                     devicesByPlayer[i] = null;
                     count--;
 
                     return;
                 }
+            }
+        }
+
+        /// <summary>
+        /// Raises the <see cref="GamePadConnected"/> event.
+        /// </summary>
+        /// <param name="device">The device that was connected.</param>
+        /// <param name="playerIndex">The player index associated with the game pad.</param>
+        private void OnGamePadConnected(GamePadDevice device, Int32 playerIndex)
+        {
+            var temp = GamePadConnected;
+            if (temp != null)
+            {
+                temp(device, playerIndex);
+            }
+        }
+
+        /// <summary>
+        /// Raises the <see cref="GamePadDisconnected"/> event.
+        /// </summary>
+        /// <param name="device">The device that was disconnected.</param>
+        /// <param name="playerIndex">The player index associated with the game pad.</param>
+        private void OnGamePadDisconnected(GamePadDevice device, Int32 playerIndex)
+        {
+            var temp = GamePadDisconnected;
+            if (temp != null)
+            {
+                temp(device, playerIndex);
             }
         }
 

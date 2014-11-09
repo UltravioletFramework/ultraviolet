@@ -4,6 +4,13 @@ using TwistedLogik.Ultraviolet.Input;
 namespace TwistedLogik.Ultraviolet
 {
     /// <summary>
+    /// Represents the method that is called when a <see cref="GamePadDevice"/> is connected or disconnected.
+    /// </summary>
+    /// <param name="device">The device that was connected or disconnected.</param>
+    /// <param name="playerIndex">The player index associated with the game pad.</param>
+    public delegate void GamePadConnectionEventHandler(GamePadDevice device, Int32 playerIndex);
+
+    /// <summary>
     /// Represents the Ultraviolet Framework's input subsystem.
     /// </summary>
     public interface IUltravioletInput : IUltravioletSubsystem
@@ -71,5 +78,15 @@ namespace TwistedLogik.Ultraviolet
         /// </summary>
         /// <returns>The first connected game pad device, or <c>null</c> if no game pads are connected.</returns>
         GamePadDevice GetFirstConnectedGamePad();
+
+        /// <summary>
+        /// Occurs when a game pad is connected to the system.
+        /// </summary>
+        event GamePadConnectionEventHandler GamePadConnected;
+
+        /// <summary>
+        /// Occurs when a game pad is disconnected from the system.
+        /// </summary>
+        event GamePadConnectionEventHandler GamePadDisconnected;
     }
 }
