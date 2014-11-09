@@ -245,7 +245,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics.Graphics2D
                 glyphPositions.Add(new Rectangle(glyphX, glyphY, glyphWidth, glyphHeight));
             }
 
-            var face = new SpriteFontFace(manager.Ultraviolet, texture, glyphPositions, firstCharacter, substitutionCharacter);
+            var face = new SpriteFontFace(manager.Ultraviolet, texture, new[] { CharacterRegion.Default }, glyphPositions, firstCharacter, substitutionCharacter);
             var kerning = new Dictionary<SpriteFontKerningPair, Int32>();
             var kerningDefaultAdjustment = reader.ReadInt32();
             var kerningCount = reader.ReadInt32();
@@ -290,7 +290,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics.Graphics2D
                     glyphs = OpenGLSpriteFontHelper.IdentifyGlyphs(surface, textureRegion);
                 }
 
-                var face = new SpriteFontFace(manager.Ultraviolet, texture, glyphs);
+                var face = new SpriteFontFace(manager.Ultraviolet, texture, new[] { CharacterRegion.Default }, glyphs);
 
                 var kerningDefaultAdjustment = 0;
                 var kerning = GetKerningInfo(element, out kerningDefaultAdjustment);

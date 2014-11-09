@@ -195,6 +195,7 @@
     <Compile Include="Graphics\DynamicVertexBuffer.cs" />
     <Compile Include="Graphics\FillMode.cs" />
     <Compile Include="Graphics\GeometryStream.cs" />
+    <Compile Include="Graphics\Graphics2D\CharacterRegion.cs" />
     <Compile Include="Graphics\Graphics2D\Text\InlineIconInfo.cs" />
     <Compile Include="Graphics\Graphics2D\Text\NamespaceDoc.cs" />
     <Compile Include="Graphics\Graphics2D\Text\TextTableLayoutProcessor.cs" />

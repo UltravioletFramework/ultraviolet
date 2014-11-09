@@ -75,7 +75,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics.Graphics2D
                 glyphPositions[i] = new Rectangle(glyphX, glyphY, glyphWidth, glyphHeight);
             }
 
-            var fontFace = new SpriteFontFace(manager.Ultraviolet, texture, glyphPositions, glyphFirst, glyphSubst, true);
+            var fontFace = new SpriteFontFace(manager.Ultraviolet, texture, new[] { CharacterRegion.Default }, glyphPositions, glyphFirst, glyphSubst, true);
             var font = new SpriteFont(manager.Ultraviolet, fontFace);
 
             return font;
@@ -92,7 +92,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics.Graphics2D
         {
             var positions = OpenGLSpriteFontHelper.IdentifyGlyphs(input);
             var texture = manager.Process<SDL_Surface, Texture2D>(input);
-            var face = new SpriteFontFace(manager.Ultraviolet, texture, positions, true);
+            var face = new SpriteFontFace(manager.Ultraviolet, texture, new[] { CharacterRegion.Default }, positions, true);
             return new SpriteFont(manager.Ultraviolet, face);
         }
 

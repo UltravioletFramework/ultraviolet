@@ -17,10 +17,11 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
         /// <param name="texture">The texture that contains the glyph images.</param>
+        /// <param name="regions">A collection containing the font face's character regions.</param>
         /// <param name="glyphs">A collection containing the positions of the font's glyphs.</param>
         /// <param name="ownsTexture">A value indicating whether this font face is responsible for disposing of its texture.</param>
-        public SpriteFontFace(UltravioletContext uv, Texture2D texture, IEnumerable<Rectangle> glyphs, Boolean ownsTexture = false)
-            : this(uv, texture, glyphs, ' ', '?', ownsTexture)
+        public SpriteFontFace(UltravioletContext uv, Texture2D texture, IEnumerable<CharacterRegion> regions, IEnumerable<Rectangle> glyphs, Boolean ownsTexture = false)
+            : this(uv, texture, regions, glyphs, ' ', '?', ownsTexture)
         {
 
         }
@@ -30,27 +31,32 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
         /// <param name="texture">The texture that contains the font face's glyphs.</param>
+        /// <param name="regions">A collection containing the font face's character regions.</param>
         /// <param name="glyphs">A collection containing the positions of the font face's glyphs on its texture.</param>
         /// <param name="firstCharacter">The character that corresponds to font face's first glyph.</param>
         /// <param name="substitutionCharacter">The character that corresponds to the font face's substitution glyph.</param>
         /// <param name="ownsTexture">A value indicating whether this font face is responsible for disposing of its texture.</param>
-        public SpriteFontFace(UltravioletContext uv, Texture2D texture, IEnumerable<Rectangle> glyphs, Char firstCharacter, Char substitutionCharacter, Boolean ownsTexture = false)
+        public SpriteFontFace(UltravioletContext uv, Texture2D texture, IEnumerable<CharacterRegion> regions, IEnumerable<Rectangle> glyphs, Char firstCharacter, Char substitutionCharacter, Boolean ownsTexture = false)
             : base(uv)
         {
             Contract.Require(texture, "texture");
+            Contract.Require(regions, "regions");
             Contract.Require(glyphs, "glyphs");
 
             this.texture = texture;
             this.ownsTexture = ownsTexture;
 
-            this.glyphs = glyphs.ToList();
+            this.regions = regions.ToArray();
+            this.glyphs = glyphs.ToArray();
             this.lineHeight = glyphs.Max(x => x.Height);
             this.firstCharacter = firstCharacter;
             this.substitutionCharacter = substitutionCharacter;
 
-            var ixSubst = (int)substitutionCharacter - (int)firstCharacter;
-            if (ixSubst < 0 || ixSubst >= this.glyphs.Count)
+            var substitutionCharacterIndex = FindGlyphIndex(substitutionCharacter);
+            if (substitutionCharacterIndex == null)
                 throw new ArgumentOutOfRangeException("substitutionCharacter");
+
+            this.substitutionCharacterIndex = substitutionCharacterIndex.Value;
         }
 
         /// <summary>
@@ -160,7 +166,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// </summary>
         public Int32 Characters
         {
-            get { return glyphs.Count; }
+            get { return glyphs.Length; }
         }
 
         /// <summary>
@@ -196,12 +202,18 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         {
             get
             {
-                var ix = (int)character - (int)firstCharacter;
-                if (ix < 0 || ix >= glyphs.Count)
+                // TODO: Is it faster to use a dictionary for this?
+                var ix = 0;
+                foreach (var region in regions)
                 {
-                    ix = (int)substitutionCharacter - (int)firstCharacter;
+                    if (region.Contains(character))
+                    {
+                        var offset = (Int32)character - (Int32)region.Start;
+                        return glyphs[ix + offset];
+                    }
+                    ix += region.Count;
                 }
-                return glyphs[ix];
+                return glyphs[substitutionCharacterIndex];
             }
         }
 
@@ -255,7 +267,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// Releases resources associated with the object.
         /// </summary>
         /// <param name="disposing"><c>true</c> if the object is being disposed; <c>false</c> if the object is being finalized.</param>
-        protected override void Dispose(bool disposing)
+        protected override void Dispose(Boolean disposing)
         {
             if (Disposed)
                 return;
@@ -268,6 +280,27 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
             base.Dispose(disposing);
         }
 
+        /// <summary>
+        /// Finds the index of the specified character within the font's glyph array.
+        /// </summary>
+        /// <param name="character">The character to evaluate.</param>
+        /// <returns>The index of the specified character within the font's glyph 
+        /// array, or <c>null</c> if the character does not exist within the font.</returns>
+        private Int32? FindGlyphIndex(Char character)
+        {
+            var ix = 0;
+            foreach (var region in regions)
+            {
+                if (region.Contains(character))
+                {
+                    var offset = (Int32)character - (Int32)region.Start;
+                    return ix + offset;
+                }
+                ix += region.Count;
+            }
+            return null;
+        }
+
         // Property values.
         private readonly Texture2D texture;
         private readonly Char firstCharacter;
@@ -275,8 +308,10 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         private readonly Int32 lineHeight;
 
         // State values.
+        private readonly Int32 substitutionCharacterIndex;
+        private readonly CharacterRegion[] regions;
+        private readonly Rectangle[] glyphs;
         private readonly Boolean ownsTexture;
-        private readonly List<Rectangle> glyphs;
 
         // The font face's kerning information.
         private readonly SpriteFontKerning kerning = new SpriteFontKerning();
