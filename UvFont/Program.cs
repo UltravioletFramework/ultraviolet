@@ -97,7 +97,10 @@ namespace TwistedLogik.UvFont
                 Console.WriteLine("Generated {0}.", GetFontTextureSafeName(parameters));
 
                 var xml = GenerateXmlFontDefinition(parameters, faces, regions, chars);
-                xml.Save(GetFontDefinitionSafeName(parameters));
+                using (var xmlWriter = new System.Xml.XmlTextWriter(GetFontDefinitionSafeName(parameters), System.Text.Encoding.UTF32))
+                {
+                    xml.Save(xmlWriter);
+                }
 
                 Console.WriteLine("Generated {0}.", GetFontDefinitionSafeName(parameters));
             }
@@ -409,7 +412,7 @@ namespace TwistedLogik.UvFont
                     y = y + face.Texture.Height;
                 }
 
-                return new XDocument(new XDeclaration("1.0", "utf-8", "yes"),
+                return new XDocument(new XDeclaration("1.0", "utf-32", "yes"),
                     new XElement("SpriteFont", characterRegionsElement, faceDefinitions)
                 );
             }

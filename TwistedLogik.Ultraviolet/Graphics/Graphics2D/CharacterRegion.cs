@@ -38,7 +38,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
             Contract.Require(text, "text");
 
             var regions = new List<CharacterRegion>();
-            var characters = text.Distinct().OrderBy(x => x).ToArray();
+            var characters = text.Where(x => !Char.IsSurrogate(x)).Distinct().OrderBy(x => x).ToArray();
 
             if (text != null && text.Length > 0)
             {
