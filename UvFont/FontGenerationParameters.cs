@@ -17,8 +17,9 @@ namespace TwistedLogik.UvFont
             FontName = args[0];
             FontSize = ReadArgument<Single?>(args, "fontsize") ?? 16f;
 
-            SourceText = ReadArgument<String>(args, "sourcetext");
-            SourceFile = ReadArgument<String>(args, "sourcefile");
+            SourceText    = ReadArgument<String>(args, "sourcetext");
+            SourceFile    = ReadArgument<String>(args, "sourcefile");
+            SourceCulture = ReadArgument<String>(args, "sourceculture");
 
             if (SourceText != null && SourceFile != null)
                 throw new InvalidCommandLineException("Both a source text and a source file were specified. Pick one!");
@@ -32,6 +33,7 @@ namespace TwistedLogik.UvFont
         public Single FontSize { get; set; }
         public String SourceText { get; set; }
         public String SourceFile { get; set; }
+        public String SourceCulture { get; set; }
         public Char SubstitutionCharacter { get; set; }
 
         private Boolean ArgumentExists(String[] args, String name)

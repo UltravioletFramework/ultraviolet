@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
@@ -11,6 +12,7 @@ using System.Xml;
 using System.Xml.Linq;
 using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
+using TwistedLogik.Nucleus.Text;
 
 namespace TwistedLogik.UvFont
 {
@@ -24,15 +26,18 @@ namespace TwistedLogik.UvFont
                 try { parameters = new FontGenerationParameters(args); }
                 catch (InvalidCommandLineException e)
                 {
-                    if (String.IsNullOrEmpty(e.Message))
+                    if (String.IsNullOrEmpty(e.Error))
                     {
                         Console.WriteLine("The syntax of this command is:");
                         Console.WriteLine();
-                        Console.WriteLine("UVFONT fontname [-nobold] [-noitalic] [-fontsize:emsize] [-sourcetext:text] [-sourcefile:file] [-sub:char]");
+                        Console.WriteLine("UVFONT fontname [-nobold] [-noitalic] [-fontsize:emsize] [-sub:char]\n" +
+                                          "                [-sourcetext:text]\n" +
+                                          "                [-sourcefile:file]\n" +
+                                          "                [-sourceculture:culture]");
                     }
                     else
                     {
-                        Console.WriteLine(e.Message);
+                        Console.WriteLine(e.Error);
                     }
                     return;
                 }
@@ -123,11 +128,50 @@ namespace TwistedLogik.UvFont
         {
             if (parameters.SourceText != null)
             {
-                return CharacterRegion.CreateFromSourceText(parameters.SourceText);
+                return CharacterRegion.CreateFromSourceText(parameters.SourceText + parameters.SubstitutionCharacter.ToString());
             }
             if (parameters.SourceFile != null)
             {
-                throw new NotImplementedException();
+                var culture   = parameters.SourceCulture ?? "en-US";
+                var files     = parameters.SourceFile.Split(',');
+                var filesText = new StringBuilder();
+                
+                foreach (var file in files)
+                {
+                    try
+                    {
+                        var ext = Path.GetExtension(file);
+                        if (ext == ".xml")
+                        {
+                            var xml = XDocument.Load(file);
+                            if (xml.Root.Name.LocalName == "LocalizedStrings")
+                            {
+                                var variants = xml.Root.Descendants(culture).SelectMany(x => x.Elements("Variant"));
+                                Console.WriteLine("Reading source file '{0}'... (found {1} string variants)", Path.GetFileName(file), variants.Count());
+
+                                foreach (var variant in variants)
+                                {
+                                    filesText.Append(variant.Value);
+                                }
+                                continue;
+                            }
+                        }
+
+                        Console.WriteLine("Reading source file '{0}'...", Path.GetFileName(file));
+                        filesText.Append(File.ReadAllText(file));
+                    }
+                    catch (FileNotFoundException)
+                    {
+                        Console.WriteLine("Unable to read file '{0}'.", file);
+                    }
+                    catch (DirectoryNotFoundException)
+                    {
+                        Console.WriteLine("Unable to read file '{0}'.", file);
+                    }
+                }
+
+                filesText.Append(parameters.SubstitutionCharacter);
+                return CharacterRegion.CreateFromSourceText(filesText.ToString());
             }
             return null;
         }
@@ -347,7 +391,7 @@ namespace TwistedLogik.UvFont
             return output;
         }
 
-        private static Object SanitizeCharacter(Char c)
+        private static Object SanitizeCharacterForXml(Char c)
         {
             if (Char.IsWhiteSpace(c))
             {
@@ -366,8 +410,8 @@ namespace TwistedLogik.UvFont
             if (characterRegions != null)
             {
                 characterRegionsElement = new XElement("CharacterRegions", characterRegions.Select(region => new XElement("CharacterRegion",
-                    new XElement("Start", SanitizeCharacter(region.Start)),
-                    new XElement("End", SanitizeCharacter(region.End)))));
+                    new XElement("Start", SanitizeCharacterForXml(region.Start)),
+                    new XElement("End", SanitizeCharacterForXml(region.End)))));
             }
 
             using (var img = new Bitmap(1, 1))
