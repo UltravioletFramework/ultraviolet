@@ -8,6 +8,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Xml.Linq;
 using TwistedLogik.Nucleus;
+using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
 
 namespace TwistedLogik.UvFont
 {
@@ -19,17 +20,32 @@ namespace TwistedLogik.UvFont
             {
                 FontGenerationParameters parameters;
                 try { parameters = new FontGenerationParameters(args); }
-                catch
+                catch (InvalidCommandLineException e)
                 {
-                    Console.WriteLine("The syntax of this command is:");
-                    Console.WriteLine();
-                    Console.WriteLine("UVFONT fontname [-fontsize:emsize]");
+                    if (String.IsNullOrEmpty(e.Message))
+                    {
+                        Console.WriteLine("The syntax of this command is:");
+                        Console.WriteLine();
+                        Console.WriteLine("UVFONT fontname [-fontsize:emsize] [-sourcetext:text] [-sourcefile:file] [-sub:char]");
+                    }
+                    else
+                    {
+                        Console.WriteLine(e.Message);
+                    }
                     return;
                 }
 
-                var chars      = " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~";
+                var regions    = CreateCharacterRegions(parameters);
+                var chars      = CreateCharacterList(regions);
                 var fontName   = parameters.FontName;
                 var fontSize   = parameters.FontSize;
+
+                if (!regions.Where(x => x.Contains(parameters.SubstitutionCharacter)).Any())
+                {
+                    Console.WriteLine("None of this font's character regions contain the substitution character ('{0}')", parameters.SubstitutionCharacter);
+                    Console.WriteLine("Specify another substitution character with the -sub argument.");
+                    return;
+                }
 
                 var faces = new[] 
                 {
@@ -77,7 +93,7 @@ namespace TwistedLogik.UvFont
 
                 Console.WriteLine("Generated {0}.", GetFontTextureSafeName(parameters));
 
-                var xml = GenerateXmlFontDefinition(parameters, faces, chars);
+                var xml = GenerateXmlFontDefinition(parameters, faces, regions, chars);
                 xml.Save(GetFontDefinitionSafeName(parameters));
 
                 Console.WriteLine("Generated {0}.", GetFontDefinitionSafeName(parameters));
@@ -94,27 +110,34 @@ namespace TwistedLogik.UvFont
             }
         }
 
-        private static Dictionary<String, String> ParseCommandLineArgs(IEnumerable<String> args)
+        private static IEnumerable<CharacterRegion> CreateCharacterRegions(FontGenerationParameters parameters)
         {
-            var result = new Dictionary<String, String>();
-
-            foreach (var arg in args)
+            if (parameters.SourceText != null)
             {
-                if (!arg.StartsWith("-"))
-                    return null;
-
-                var ixSeparator = arg.IndexOf(":");
-                if (ixSeparator < 0)
-                    return null;
-
-                var components = arg.Substring(1).Split(':');
-                result[components[0]] = components[1];
+                return CharacterRegion.CreateFromSourceText(parameters.SourceText);
             }
-
-            return result;
+            if (parameters.SourceFile != null)
+            {
+                throw new NotImplementedException();
+            }
+            return null;
         }
 
-        private static IEnumerable<Bitmap> CreateGlyphImages(Font font, String chars)
+        private static IEnumerable<Char> CreateCharacterList(IEnumerable<CharacterRegion> regions)
+        {
+            var chars = new List<Char>();
+            var regionsToUse = (regions == null) ? new[] { CharacterRegion.Default } : regions;
+            foreach (var region in regionsToUse)
+            {
+                for (Char c = region.Start; c <= region.End; c++)
+                {
+                    chars.Add(c);
+                }
+            }
+            return chars;
+        }
+
+        private static IEnumerable<Bitmap> CreateGlyphImages(Font font, IEnumerable<Char> chars)
         {
             var glyphs = new List<Bitmap>();
 
@@ -211,7 +234,7 @@ namespace TwistedLogik.UvFont
 
                 x = x + glyph.Width + 1;
             }
-            size = new Size(width, height);
+            size = new Size(width, height - 1);
             return true;
         }
 
@@ -311,10 +334,28 @@ namespace TwistedLogik.UvFont
             return output;
         }
 
-        private static XDocument GenerateXmlFontDefinition(FontGenerationParameters parameters, IEnumerable<FontFaceInfo> faces, String chars)
+        private static Object SanitizeCharacter(Char c)
+        {
+            if (Char.IsWhiteSpace(c))
+            {
+                return new XCData(c.ToString());
+            }
+            return c;
+        }
+
+        private static XDocument GenerateXmlFontDefinition(FontGenerationParameters parameters, IEnumerable<FontFaceInfo> faces, 
+            IEnumerable<CharacterRegion> characterRegions, IEnumerable<Char> chars)
         {
             var x = 0;
             var y = 0;
+
+            var characterRegionsElement = default(XElement);
+            if (characterRegions != null)
+            {
+                characterRegionsElement = new XElement("CharacterRegions", characterRegions.Select(region => new XElement("CharacterRegion",
+                    new XElement("Start", SanitizeCharacter(region.Start)),
+                    new XElement("End", SanitizeCharacter(region.End)))));
+            }
 
             using (var img = new Bitmap(1, 1))
             using (var gfx = Graphics.FromImage(img))
@@ -362,7 +403,7 @@ namespace TwistedLogik.UvFont
                 }
 
                 return new XDocument(new XDeclaration("1.0", "utf-8", "yes"),
-                    new XElement("SpriteFont", faceDefinitions)
+                    new XElement("SpriteFont", characterRegionsElement, faceDefinitions)
                 );
             }
         }

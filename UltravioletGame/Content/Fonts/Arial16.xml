@@ -1,0 +1,117 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<SpriteFont>
+  <CharacterRegions>
+    <CharacterRegion>
+      <Start><![CDATA[ ]]></Start>
+      <End>!</End>
+    </CharacterRegion>
+    <CharacterRegion>
+      <Start>,</Start>
+      <End>,</End>
+    </CharacterRegion>
+    <CharacterRegion>
+      <Start>&lt;</Start>
+      <End>&lt;</End>
+    </CharacterRegion>
+    <CharacterRegion>
+      <Start>&gt;</Start>
+      <End>?</End>
+    </CharacterRegion>
+    <CharacterRegion>
+      <Start>H</Start>
+      <End>H</End>
+    </CharacterRegion>
+    <CharacterRegion>
+      <Start>d</Start>
+      <End>e</End>
+    </CharacterRegion>
+    <CharacterRegion>
+      <Start>l</Start>
+      <End>l</End>
+    </CharacterRegion>
+    <CharacterRegion>
+      <Start>o</Start>
+      <End>o</End>
+    </CharacterRegion>
+    <CharacterRegion>
+      <Start>r</Start>
+      <End>r</End>
+    </CharacterRegion>
+    <CharacterRegion>
+      <Start>w</Start>
+      <End>w</End>
+    </CharacterRegion>
+  </CharacterRegions>
+  <Face Style="Regular">
+    <Texture>Arial16Texture.png</Texture>
+    <TextureRegion>0 0 123 54</TextureRegion>
+    <Kernings DefaultAdjustment="-7">
+      <Kerning Pair=" !">-1</Kerning>
+      <Kerning Pair=" ,">-1</Kerning>
+      <Kerning Pair=" &lt;">-1</Kerning>
+      <Kerning Pair=" &gt;">-1</Kerning>
+      <Kerning Pair=" ?">-1</Kerning>
+      <Kerning Pair=" H">-1</Kerning>
+      <Kerning Pair=" d">-1</Kerning>
+      <Kerning Pair=" e">-1</Kerning>
+      <Kerning Pair=" l">-1</Kerning>
+      <Kerning Pair=" o">-1</Kerning>
+      <Kerning Pair=" r">-1</Kerning>
+      <Kerning Pair=" w">-1</Kerning>
+    </Kernings>
+  </Face>
+  <Face Style="Bold">
+    <Texture>Arial16Texture.png</Texture>
+    <TextureRegion>0 54 125 54</TextureRegion>
+    <Kernings DefaultAdjustment="-7">
+      <Kerning Pair=" !">-1</Kerning>
+      <Kerning Pair=" ,">-1</Kerning>
+      <Kerning Pair=" &lt;">-1</Kerning>
+      <Kerning Pair=" &gt;">-1</Kerning>
+      <Kerning Pair=" ?">-1</Kerning>
+      <Kerning Pair=" H">-1</Kerning>
+      <Kerning Pair=" d">-1</Kerning>
+      <Kerning Pair=" e">-1</Kerning>
+      <Kerning Pair=" l">-1</Kerning>
+      <Kerning Pair=" o">-1</Kerning>
+      <Kerning Pair=" r">-1</Kerning>
+      <Kerning Pair=" w">-1</Kerning>
+    </Kernings>
+  </Face>
+  <Face Style="Italic">
+    <Texture>Arial16Texture.png</Texture>
+    <TextureRegion>0 108 123 54</TextureRegion>
+    <Kernings DefaultAdjustment="-7">
+      <Kerning Pair=" !">-1</Kerning>
+      <Kerning Pair=" ,">-1</Kerning>
+      <Kerning Pair=" &lt;">-1</Kerning>
+      <Kerning Pair=" &gt;">-1</Kerning>
+      <Kerning Pair=" ?">-1</Kerning>
+      <Kerning Pair=" H">-1</Kerning>
+      <Kerning Pair=" d">-1</Kerning>
+      <Kerning Pair=" e">-1</Kerning>
+      <Kerning Pair=" l">-1</Kerning>
+      <Kerning Pair=" o">-1</Kerning>
+      <Kerning Pair=" r">-1</Kerning>
+      <Kerning Pair=" w">-1</Kerning>
+    </Kernings>
+  </Face>
+  <Face Style="BoldItalic">
+    <Texture>Arial16Texture.png</Texture>
+    <TextureRegion>0 162 125 54</TextureRegion>
+    <Kernings DefaultAdjustment="-7">
+      <Kerning Pair=" !">-1</Kerning>
+      <Kerning Pair=" ,">-1</Kerning>
+      <Kerning Pair=" &lt;">-1</Kerning>
+      <Kerning Pair=" &gt;">-1</Kerning>
+      <Kerning Pair=" ?">-1</Kerning>
+      <Kerning Pair=" H">-1</Kerning>
+      <Kerning Pair=" d">-1</Kerning>
+      <Kerning Pair=" e">-1</Kerning>
+      <Kerning Pair=" l">-1</Kerning>
+      <Kerning Pair=" o">-1</Kerning>
+      <Kerning Pair=" r">-1</Kerning>
+      <Kerning Pair=" w">-1</Kerning>
+    </Kernings>
+  </Face>
+</SpriteFont>

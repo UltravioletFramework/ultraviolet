@@ -73,6 +73,10 @@
       <Project>{7DA6158B-A0B9-4100-904E-22FD86949608}</Project>
       <Name>TwistedLogik.Nucleus</Name>
     </ProjectReference>
+    <ProjectReference Include="..\TwistedLogik.Ultraviolet\TwistedLogik.Ultraviolet.csproj">
+      <Project>{f071abe3-05e5-4df9-a929-cf71b01ec50a}</Project>
+      <Name>TwistedLogik.Ultraviolet</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
