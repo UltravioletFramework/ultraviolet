@@ -28,12 +28,30 @@ namespace TwistedLogik.UvFont
                 {
                     if (String.IsNullOrEmpty(e.Error))
                     {
-                        Console.WriteLine("The syntax of this command is:");
+                        Console.WriteLine("Generates Ultraviolet-compatible SpriteFont definition files.");
                         Console.WriteLine();
                         Console.WriteLine("UVFONT fontname [-nobold] [-noitalic] [-fontsize:emsize] [-sub:char]\n" +
                                           "                [-sourcetext:text]\n" +
                                           "                [-sourcefile:file]\n" +
-                                          "                [-sourceculture:culture]");
+                                          "                [-sourceculture:culture]\n" +
+                                          "\n" +
+                                          "  fontname     Specifies the name of the font for which to generate a\n" +
+                                          "               SpriteFont definition.\n" +
+                                          "  -nobold      Disables generation of the bold and bold/italic font faces.\n" +
+                                          "  -noitalic    Disables generation of the italic and bol/italic font faces.\n" +
+                                          "  -fontsize    Specifies the point size of the font.\n" +
+                                          "  -sub         Specifies the font's substitution character.\n" +
+                                          "  -sourcetext  Specifies the source text.  The source text is used to determine\n" +
+                                          "               which glyphs must be included in the font.\n" +
+                                          "  -sourcefile: A comma-delimited list of files from which to generate the\n" +
+                                          "               source text.  If the files are Nucleus localization databases,\n" +
+                                          "               only the string variants matching the culture specified by\n" +
+                                          "               the -sourceculture option will be read.\n" +
+                                          "  -sourceculture\n" +
+                                          "               When reading Nucleus localization databases for source text,\n" +
+                                          "               this option specifies which culture should be read.  If not\n" +
+                                          "               specified, UvFont will read the en-US culture.");
+                        Console.WriteLine();
                     }
                     else
                     {
@@ -47,7 +65,7 @@ namespace TwistedLogik.UvFont
                 var fontName   = parameters.FontName;
                 var fontSize   = parameters.FontSize;
 
-                if (!regions.Where(x => x.Contains(parameters.SubstitutionCharacter)).Any())
+                if (regions != null && !regions.Where(x => x.Contains(parameters.SubstitutionCharacter)).Any())
                 {
                     Console.WriteLine("None of this font's character regions contain the substitution character ('{0}')", parameters.SubstitutionCharacter);
                     Console.WriteLine("Specify another substitution character with the -sub argument.");

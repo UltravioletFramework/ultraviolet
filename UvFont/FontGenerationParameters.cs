@@ -47,8 +47,15 @@ namespace TwistedLogik.UvFont
             var param = args.Where(x => x.StartsWith(fullname)).FirstOrDefault();
             if (param != null)
             {
-                var value = param.Substring(fullname.Length);
-                return (T)ObjectResolver.FromString(value, typeof(T));
+                try
+                {
+                    var value = param.Substring(fullname.Length);
+                    return (T)ObjectResolver.FromString(value, typeof(T));
+                }
+                catch (FormatException)
+                {
+                    throw new InvalidCommandLineException();
+                }
             }
             return default(T);
         }
