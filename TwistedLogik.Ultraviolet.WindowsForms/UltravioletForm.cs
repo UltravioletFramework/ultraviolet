@@ -228,14 +228,6 @@ namespace TwistedLogik.Ultraviolet.WindowsForms
         }
 
         /// <summary>
-        /// Occurs when the Ultraviolet context is drawing a window.
-        /// </summary>
-        protected virtual void OnDrawing()
-        {
-
-        }
-
-        /// <summary>
         /// Called when the application is being shut down.
         /// </summary>
         protected virtual void OnShutdown()
@@ -367,14 +359,6 @@ namespace TwistedLogik.Ultraviolet.WindowsForms
         private void Tick()
         {
             hostcore.RunOneTick();
-        }
-
-        /// <summary>
-        /// Handles the Ultraviolet window's Drawing event.
-        /// </summary>
-        private void uv_Drawing(IUltravioletWindow window)
-        {
-            OnDrawing();
         }
 
         /// <summary>

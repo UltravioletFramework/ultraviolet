@@ -50,12 +50,6 @@ namespace WindowsFormsApplication1
             base.OnLoadingContent();
         }
 
-        protected override void OnDrawing()
-        {
-
-            base.OnDrawing();
-        }
-
         private ContentManager content;
 
         private TestObject testObject = new TestObject();

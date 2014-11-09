@@ -88,14 +88,6 @@ namespace SafeProjectName
         }
 
         /// <summary>
-        /// Occurs when the Ultraviolet context is drawing a window.
-        /// </summary>
-        protected override void OnDrawing()
-        {
-            base.OnDrawing();
-        }
-
-        /// <summary>
         /// Called when the application is being shut down.
         /// </summary>
         protected override void OnShutdown()
