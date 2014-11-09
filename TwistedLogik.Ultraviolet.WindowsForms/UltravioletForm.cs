@@ -74,21 +74,28 @@ namespace TwistedLogik.Ultraviolet.WindowsForms
             {
                 Contract.EnsureNotDisposed(this, IsDisposed);
 
-                var primary = Ultraviolet.GetPlatform().Windows.GetPrimary();
-                if (primary == null)
-                    throw new InvalidOperationException(UltravioletStrings.NoPrimaryWindow);
+                if (!DesignMode)
+                {
+                    var primary = Ultraviolet.GetPlatform().Windows.GetPrimary();
+                    if (primary == null)
+                        throw new InvalidOperationException(UltravioletStrings.NoPrimaryWindow);
 
-                return primary.SynchronizeWithVerticalRetrace;
+                    return primary.SynchronizeWithVerticalRetrace;
+                }
+                return false;
             }
             set
             {
                 Contract.EnsureNotDisposed(this, IsDisposed);
 
-                var primary = Ultraviolet.GetPlatform().Windows.GetPrimary();
-                if (primary == null)
-                    throw new InvalidOperationException(UltravioletStrings.NoPrimaryWindow);
+                if (!DesignMode)
+                {
+                    var primary = Ultraviolet.GetPlatform().Windows.GetPrimary();
+                    if (primary == null)
+                        throw new InvalidOperationException(UltravioletStrings.NoPrimaryWindow);
 
-                primary.SynchronizeWithVerticalRetrace = value;
+                    primary.SynchronizeWithVerticalRetrace = value;
+                }
             }
         }
 

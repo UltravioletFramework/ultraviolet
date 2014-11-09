@@ -17,12 +17,14 @@ namespace TwistedLogik.Ultraviolet.Design.Content
         /// <summary>
         /// Initializes a new instance of the <see cref="ContentManifestTypeConverter"/> class.
         /// </summary>
-        /// <param name="manifestGroup">The <see cref="ContentManifestGroup"/> from which to retrieve asset identifier values.</param>
-        public ContentManifestTypeConverter(ContentManifestGroup manifestGroup)
+        /// <param name="manifestName">The name of the manifest from which to retrieve values.</param>
+        /// <param name="manifestGroupName">The name of the manifest group from which to retrieve values.</param>
+        public ContentManifestTypeConverter(String manifestName, String manifestGroupName)
         {
-            Contract.Require(manifestGroup, "manifestGroup");
+            Contract.RequireNotEmpty(manifestName, "manifestName");
+            Contract.RequireNotEmpty(manifestGroupName, "manifestGroupName");
 
-            values = GetStandardValuesForManifestGroup(manifestGroup);
+            values = GetStandardValuesForManifestGroup(manifestName, manifestGroupName);
         }
 
         /// <summary>
@@ -52,10 +54,14 @@ namespace TwistedLogik.Ultraviolet.Design.Content
         /// <summary>
         /// Gets a <see cref="StandardValuesCollection"/> containing the asset identifiers defined by the specified content manifest group.
         /// </summary>
-        /// <param name="manifestGroup">The <see cref="ContentManifestGroup"/> from which to retrieve asset identifier values.</param>
+        /// <param name="manifestName">The name of the manifest from which to retrieve values.</param>
+        /// <param name="manifestGroupName">The name of the manifest group from which to retrieve values.</param>
         /// <returns>The <see cref="StandardValuesCollection"/> which was created.</returns>
-        private static StandardValuesCollection GetStandardValuesForManifestGroup(ContentManifestGroup manifestGroup)
+        private static StandardValuesCollection GetStandardValuesForManifestGroup(String manifestName, String manifestGroupName)
         {
+            var uv            = UltravioletContext.DemandCurrent();
+            var manifestGroup = uv.GetContent().Manifests[manifestName][manifestGroupName];
+
             StandardValuesCollection values;
             if (!StandardValuesCache.TryGetValue(manifestGroup, out values))
             {

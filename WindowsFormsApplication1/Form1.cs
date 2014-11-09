@@ -1,47 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 using TwistedLogik.Ultraviolet;
-using TwistedLogik.Nucleus;
-using TwistedLogik.Nucleus.Text;
+using TwistedLogik.Ultraviolet.Content;
+using TwistedLogik.Ultraviolet.OpenGL;
+using TwistedLogik.Ultraviolet.WindowsForms;
+using WindowsFormsApplication1.Assets;
+using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
+using TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text;
+using TwistedLogik.Ultraviolet.Graphics;
 
 namespace WindowsFormsApplication1
 {
-    public class TestObject
-    {
-        public TestObject()
-        {
-            SomeMatrix = Matrix.Identity;
-            Array = new List<object> { 1, 2, 3, 4 };
-        }
-
-        public MaskedUInt32 MaskedUInt32 { get; set; }
-        public MaskedUInt64 MaskedUInt64 { get; set; }
-        public Radians Radians { get; set; }
-        public Color SomeColor { get; set; }
-        public Vector2 SomeVector2 { get; set; }
-        public Vector3 SomeVector3 { get; set; }
-        public Vector4 SomeVector4 { get; set; }
-        public Matrix SomeMatrix { get; set; }
-        public Size2 SomeSize2 { get; set; }
-        public Size2F SomeSize2F { get; set; }
-        public Size3 SomeSize3 { get; set; }
-        public Size3F SomeSize3F { get; set; }
-        public Circle SomeCircle { get; set; }
-        public CircleF SomeCircleF { get; set; }
-        public Rectangle SomeRectangle { get; set; }
-        public RectangleF SomeRectangleF { get; set; }
-        public System.Drawing.Rectangle SomeGDIRect { get; set; }
-        public List<Object> Array { get; set; }
-        public StringResource StringResource { get; set; }
-    }
-
-    public partial class Form1 : Form
+    public partial class Form1 : UltravioletForm
     {
         public Form1()
         {
@@ -50,7 +19,59 @@ namespace WindowsFormsApplication1
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            propertyGrid1.SelectedObject = new TestObject();
+            propertyGrid1.SelectedObject = testObject;
+        }
+
+        protected override UltravioletContext OnCreatingUltravioletContext(out UltravioletTickMode tickmode)
+        {
+            tickmode = UltravioletTickMode.Idle;
+
+            var configuration = new OpenGLUltravioletConfiguration() { Headless = true };
+            return new OpenGLUltravioletContext(this, configuration);
+        }
+
+        protected override void OnLoadingContent()
+        {
+            content = ContentManager.Create("Content");
+
+            var contentManifestFiles = this.content.GetAssetFilePathsInDirectory("Manifests");
+            Ultraviolet.GetContent().Manifests.Load(contentManifestFiles);
+
+            Ultraviolet.GetContent().Manifests["Global"]["Fonts"].PopulateAssetLibrary(typeof(GlobalFontID));
+
+            spriteBatch = SpriteBatch.Create();
+
+            textRenderer = new TextRenderer();
+
+            base.OnLoadingContent();
+        }
+
+        protected override void OnDrawing()
+        {
+
+            base.OnDrawing();
+        }
+
+        private ContentManager content;
+
+        private TestObject testObject = new TestObject();
+
+        private SpriteBatch spriteBatch;
+        private TextRenderer textRenderer;
+
+        private void ultravioletPanel1_Drawing(object sender, EventArgs e)
+        {
+            spriteBatch.Begin();
+
+            if (testObject.Font.IsValid)
+            {
+                var font = content.Load<SpriteFont>(testObject.Font);
+                var window = Ultraviolet.GetPlatform().Windows.GetCurrent();
+                var settings = new TextLayoutSettings(font, window.ClientSize.Width, window.ClientSize.Height, TextFlags.AlignCenter | TextFlags.AlignMiddle);
+                textRenderer.Draw(spriteBatch, "Hello, world!", Vector2.Zero, Color.White, settings);
+            }
+
+            spriteBatch.End();
         }
     }
 }

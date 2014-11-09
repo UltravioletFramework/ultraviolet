@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentManifest Name="Global">
+  <ContentGroup Name="Fonts" Directory="Fonts" Type="TwistedLogik.Ultraviolet.Graphics.Graphics2D.SpriteFont">
+    <Asset Name="Arial16">Arial16</Asset>
+    <Asset Name="Impact12">Impact12</Asset>
+    <Asset Name="MyriadPro12">MyriadPro12</Asset>
+    <Asset Name="MyriadPro16">MyriadPro16</Asset>
+    <Asset Name="PalaceScriptMT24">PalaceScriptMT24</Asset>
+    <Asset Name="PalaceScriptMT48">PalaceScriptMT48</Asset>
+    <Asset Name="SegoeScript16">SegoeScript16</Asset>
+    <Asset Name="SegoeUI10">SegoeUI10</Asset>
+    <Asset Name="SegoeUI12">SegoeUI12</Asset>
+    <Asset Name="TimesNewRoman12">TimesNewRoman12</Asset>
+  </ContentGroup>
+</ContentManifest>
