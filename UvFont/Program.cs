@@ -26,7 +26,7 @@ namespace TwistedLogik.UvFont
                     {
                         Console.WriteLine("The syntax of this command is:");
                         Console.WriteLine();
-                        Console.WriteLine("UVFONT fontname [-fontsize:emsize] [-sourcetext:text] [-sourcefile:file] [-sub:char]");
+                        Console.WriteLine("UVFONT fontname [-nobold] [-noitalic] [-fontsize:emsize] [-sourcetext:text] [-sourcefile:file] [-sub:char]");
                     }
                     else
                     {
@@ -47,13 +47,16 @@ namespace TwistedLogik.UvFont
                     return;
                 }
 
-                var faces = new[] 
+                var faces = (new[] 
                 {
-                    new FontFaceInfo("Regular",    new Font(fontName, fontSize, FontStyle.Regular)),
-                    new FontFaceInfo("Bold",       new Font(fontName, fontSize, FontStyle.Bold)),
-                    new FontFaceInfo("Italic",     new Font(fontName, fontSize, FontStyle.Italic)),
-                    new FontFaceInfo("BoldItalic", new Font(fontName, fontSize, FontStyle.Bold | FontStyle.Italic)),
-                };
+                    new FontFaceInfo("Regular", new Font(fontName, fontSize, FontStyle.Regular)),
+                    parameters.NoBold ? null : 
+                        new FontFaceInfo("Bold", new Font(fontName, fontSize, FontStyle.Bold)),
+                    parameters.NoItalic ? null : 
+                        new FontFaceInfo("Italic", new Font(fontName, fontSize, FontStyle.Italic)),
+                    parameters.NoBold || parameters.NoItalic ? null :
+                        new FontFaceInfo("BoldItalic", new Font(fontName, fontSize, FontStyle.Bold | FontStyle.Italic)),
+                }).Where(face => face != null).ToArray();
 
                 if (faces.Select(x => x.Font).Where(x => !String.Equals(x.Name, fontName, StringComparison.CurrentCultureIgnoreCase)).Any())
                 {

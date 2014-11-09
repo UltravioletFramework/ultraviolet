@@ -11,6 +11,9 @@ namespace TwistedLogik.UvFont
             if (args == null || !args.Any())
                 throw new InvalidCommandLineException();
 
+            NoBold   = ArgumentExists(args, "nobold");
+            NoItalic = ArgumentExists(args, "noitalic");
+
             FontName = args[0];
             FontSize = ReadArgument<Single?>(args, "fontsize") ?? 16f;
 
@@ -23,11 +26,18 @@ namespace TwistedLogik.UvFont
             SubstitutionCharacter = ReadArgument<Char?>(args, "sub") ?? '?';
         }
 
+        public Boolean NoBold { get; set; }
+        public Boolean NoItalic { get; set; }
         public String FontName { get; set; }
         public Single FontSize { get; set; }
         public String SourceText { get; set; }
         public String SourceFile { get; set; }
         public Char SubstitutionCharacter { get; set; }
+
+        private Boolean ArgumentExists(String[] args, String name)
+        {
+            return args.Where(x => x.StartsWith("-" + name)).Any();
+        }
 
         private T ReadArgument<T>(String[] args, String name)
         {
