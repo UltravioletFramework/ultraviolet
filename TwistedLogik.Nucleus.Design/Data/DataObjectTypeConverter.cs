@@ -10,15 +10,14 @@ namespace TwistedLogik.Nucleus.Design.Data
     /// the contents of the specified data object registry.
     /// </summary>
     [CLSCompliant(false)]
-    public abstract class DataObjectTypeConverter<T> : ObjectResolverTypeConverter<T> where T : DataObject
+    public sealed class DataObjectTypeConverter<T> : ObjectResolverTypeConverter<T> where T : DataObject
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="DataObjectTypeConverter{T}"/> class.
         /// </summary>
-        /// <param name="includeInvalid">A value indicating whether to include an invalid object reference as a possible selection.</param>
-        protected DataObjectTypeConverter(Boolean allowInvalid)
+        public DataObjectTypeConverter()
         {
-            values = GetStandardValuesForRegistry(allowInvalid);
+            values = GetStandardValuesForRegistry();
         }
 
         /// <inheritdoc/>
@@ -42,19 +41,15 @@ namespace TwistedLogik.Nucleus.Design.Data
         /// <summary>
         /// Gets a <see cref="StandardValuesCollection"/> containing the object references defined by the specified data object registry.
         /// </summary>
-        /// <param name="includeInvalid">A value indicating whether to include an invalid object reference as a possible selection.</param>
         /// <returns>The <see cref="StandardValuesCollection"/> which was created.</returns>
-        private static StandardValuesCollection GetStandardValuesForRegistry(Boolean allowInvalid)
+        private static StandardValuesCollection GetStandardValuesForRegistry()
         {
             var registry   = DataObjectRegistries.Get<T>();
             var keys       = registry.Select(x => String.Format("@{0}:{1}", registry.ReferenceResolutionName, x.Key));
             var references = (from k in keys 
                               select (ResolvedDataObjectReference)ObjectResolver.FromString(k, typeof(ResolvedDataObjectReference))).ToList();
 
-            if (allowInvalid)
-            {
-                references.Insert(0, ResolvedDataObjectReference.Invalid);
-            }
+            references.Insert(0, ResolvedDataObjectReference.Invalid);
 
             return new StandardValuesCollection(references);
         }

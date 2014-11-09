@@ -7,17 +7,10 @@ using TwistedLogik.Ultraviolet.Content;
 using TwistedLogik.Ultraviolet.Design.Content;
 using System.ComponentModel;
 using TwistedLogik.Nucleus.Data;
+using TwistedLogik.Nucleus.Design.Data;
 
 namespace WindowsFormsApplication1
 {
-    public class Bar : TwistedLogik.Nucleus.Design.Data.DataObjectTypeConverter<Data>
-    {
-        public Bar()
-            : base(false)
-        {
-        }
-    }
-
     public class Foo : ContentManifestTypeConverter
     {
         public Foo() : base("Global", "Fonts") { }
@@ -31,7 +24,7 @@ namespace WindowsFormsApplication1
             Array = new List<object> { 1, 2, 3, 4 };
         }
 
-        [TypeConverter(typeof(Bar))]
+        [TypeConverter(typeof(DataObjectTypeConverter<Data>))]
         public ResolvedDataObjectReference Data { get; set; }
         [TypeConverter(typeof(Foo))]
         public AssetID Font { get; set; }

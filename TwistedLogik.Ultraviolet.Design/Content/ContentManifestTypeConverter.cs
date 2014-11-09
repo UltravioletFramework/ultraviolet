@@ -18,13 +18,12 @@ namespace TwistedLogik.Ultraviolet.Design.Content
         /// </summary>
         /// <param name="manifestName">The name of the manifest from which to retrieve values.</param>
         /// <param name="manifestGroupName">The name of the manifest group from which to retrieve values.</param>
-        /// <param name="includeInvalid">A value indicating whether to include an invalid asset identifier as a possible selection.</param>
-        public ContentManifestTypeConverter(String manifestName, String manifestGroupName, Boolean includeInvalid = true)
+        public ContentManifestTypeConverter(String manifestName, String manifestGroupName)
         {
             Contract.RequireNotEmpty(manifestName, "manifestName");
             Contract.RequireNotEmpty(manifestGroupName, "manifestGroupName");
 
-            values = GetStandardValuesForManifestGroup(manifestName, manifestGroupName, includeInvalid);
+            values = GetStandardValuesForManifestGroup(manifestName, manifestGroupName);
         }
 
         /// <inheritdoc/>
@@ -50,18 +49,15 @@ namespace TwistedLogik.Ultraviolet.Design.Content
         /// </summary>
         /// <param name="manifestName">The name of the manifest from which to retrieve values.</param>
         /// <param name="manifestGroupName">The name of the manifest group from which to retrieve values.</param>
-        /// <param name="includeInvalid">A value indicating whether to include an invalid asset identifier as a possible selection.</param>
         /// <returns>The <see cref="StandardValuesCollection"/> which was created.</returns>
-        private static StandardValuesCollection GetStandardValuesForManifestGroup(String manifestName, String manifestGroupName, Boolean includeInvalid)
+        private static StandardValuesCollection GetStandardValuesForManifestGroup(String manifestName, String manifestGroupName)
         {
             var uv            = UltravioletContext.DemandCurrent();
             var manifestGroup = uv.GetContent().Manifests[manifestName][manifestGroupName];
 
             var ids = (from asset in manifestGroup select asset.CreateAssetID()).ToList();
-            if (includeInvalid)
-            {
-                ids.Insert(0, AssetID.Invalid);
-            }
+
+            ids.Insert(0, AssetID.Invalid);
 
             var values = new StandardValuesCollection(ids.ToList());
             return values;
