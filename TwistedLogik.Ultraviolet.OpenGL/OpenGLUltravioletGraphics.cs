@@ -220,9 +220,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL
                 gl.ActiveTexture((uint)(gl.GL_TEXTURE0 + sampler));
                 gl.ThrowIfError();
 
-                OpenGLCache.GL_TEXTURE_BINDING_2D.Update(textureName);
-                gl.BindTexture(gl.GL_TEXTURE_2D, textureName);
-                gl.ThrowIfError();
+                OpenGLState.BindTexture2DImmediate(textureName);
 
                 if (this.textures[sampler] != null)
                     ((IBindableResource)this.textures[sampler]).UnbindRead();

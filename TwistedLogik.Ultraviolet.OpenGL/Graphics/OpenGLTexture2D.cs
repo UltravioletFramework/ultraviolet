@@ -311,31 +311,26 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
                 var texture = gl.GenTexture();
                 gl.ThrowIfError();
 
-                var texturePrev = OpenGLCache.GL_TEXTURE_BINDING_2D.Update(texture);
-                gl.BindTexture(gl.GL_TEXTURE_2D, texture);
-                gl.ThrowIfError();
+                using (OpenGLState.BindTexture2D(texture))
+                {
+                    gl.TextureParameteri(texture, gl.GL_TEXTURE_2D, gl.GL_TEXTURE_MAX_LEVEL, 0);
+                    gl.ThrowIfError();
 
-                gl.TexParameteri(gl.GL_TEXTURE_2D, gl.GL_TEXTURE_MAX_LEVEL, 0);
-                gl.ThrowIfError();
+                    gl.TextureParameteri(texture, gl.GL_TEXTURE_2D, gl.GL_TEXTURE_MIN_FILTER, (int)gl.GL_LINEAR);
+                    gl.ThrowIfError();
 
-                gl.TexParameteri(gl.GL_TEXTURE_2D, gl.GL_TEXTURE_MIN_FILTER, (int)gl.GL_LINEAR);
-                gl.ThrowIfError();
+                    gl.TextureParameteri(texture, gl.GL_TEXTURE_2D, gl.GL_TEXTURE_MAG_FILTER, (int)gl.GL_LINEAR);
+                    gl.ThrowIfError();
 
-                gl.TexParameteri(gl.GL_TEXTURE_2D, gl.GL_TEXTURE_MAG_FILTER, (int)gl.GL_LINEAR);
-                gl.ThrowIfError();
+                    gl.TextureParameteri(texture, gl.GL_TEXTURE_2D, gl.GL_TEXTURE_WRAP_S, (int)gl.GL_CLAMP_TO_EDGE);
+                    gl.ThrowIfError();
 
-                gl.TexParameteri(gl.GL_TEXTURE_2D, gl.GL_TEXTURE_WRAP_S, (int)gl.GL_CLAMP_TO_EDGE);
-                gl.ThrowIfError();
+                    gl.TextureParameteri(texture, gl.GL_TEXTURE_2D, gl.GL_TEXTURE_WRAP_T, (int)gl.GL_CLAMP_TO_EDGE);
+                    gl.ThrowIfError();
 
-                gl.TexParameteri(gl.GL_TEXTURE_2D, gl.GL_TEXTURE_WRAP_T, (int)gl.GL_CLAMP_TO_EDGE);
-                gl.ThrowIfError();
-
-                gl.TexImage2D(gl.GL_TEXTURE_2D, 0, (int)internalformat, width, height, 0, format, type, pixels);
-                gl.ThrowIfError();
-
-                OpenGLCache.GL_TEXTURE_BINDING_2D.Update(texturePrev);
-                gl.BindTexture(gl.GL_TEXTURE_2D, texturePrev);
-                gl.ThrowIfError();
+                    gl.TextureImage2D(texture, gl.GL_TEXTURE_2D, 0, (int)internalformat, width, height, 0, format, type, pixels);
+                    gl.ThrowIfError();
+                }
 
                 return texture;
             });
@@ -366,25 +361,20 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
                 height = rectval.Height;
             }
 
-            var texturePrev = OpenGLCache.GL_TEXTURE_BINDING_2D.Update(texture);
-            gl.BindTexture(gl.GL_TEXTURE_2D, texture);
-            gl.ThrowIfError();
+            using (OpenGLState.BindTexture2D(texture))
+            {
+                gl.PixelStorei(gl.GL_UNPACK_ROW_LENGTH, stride);
+                gl.ThrowIfError();
 
-            gl.PixelStorei(gl.GL_UNPACK_ROW_LENGTH, stride);
-            gl.ThrowIfError();
+                gl.PixelStorei(gl.GL_UNPACK_ALIGNMENT, 1);
+                gl.ThrowIfError();
 
-            gl.PixelStorei(gl.GL_UNPACK_ALIGNMENT, 1);
-            gl.ThrowIfError();
+                gl.TextureSubImage2D(texture, gl.GL_TEXTURE_2D, level, xoffset, yoffset, width, height, GetOpenGLTextureFormat(format), gl.GL_UNSIGNED_BYTE, data.ToPointer());
+                gl.ThrowIfError();
 
-            gl.TexSubImage2D(gl.GL_TEXTURE_2D, level, xoffset, yoffset, width, height, GetOpenGLTextureFormat(format), gl.GL_UNSIGNED_BYTE, data.ToPointer());
-            gl.ThrowIfError();
-
-            gl.PixelStorei(gl.GL_UNPACK_ROW_LENGTH, 0);
-            gl.ThrowIfError();
-
-            OpenGLCache.GL_TEXTURE_BINDING_2D.Update(texturePrev);
-            gl.BindTexture(gl.GL_TEXTURE_2D, texturePrev);
-            gl.ThrowIfError();
+                gl.PixelStorei(gl.GL_UNPACK_ROW_LENGTH, 0);
+                gl.ThrowIfError();
+            }
         }
 
         // Property values.

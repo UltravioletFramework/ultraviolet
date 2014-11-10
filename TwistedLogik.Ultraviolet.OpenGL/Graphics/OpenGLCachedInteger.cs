@@ -88,32 +88,6 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         }
 
         /// <summary>
-        /// Updates the cached value if GL_EXT_direct_state_access is not available; otherwise, does nothing.
-        /// </summary>
-        /// <param name="value">The new value.</param>
-        /// <returns>The old value.</returns>
-        public Int32 UpdateIfNoDSA(Int32 value)
-        {
-            if (OpenGLCache.EXT_direct_state_access)
-                return this.value;
-
-            return Update(value);
-        }
-
-        /// <summary>
-        /// Updates the cached value if GL_EXT_direct_state_access is not available; otherwise, does nothing.
-        /// </summary>
-        /// <param name="value">The new value.</param>
-        /// <returns>The old value.</returns>
-        public UInt32 UpdateIfNoDSA(UInt32 value)
-        {
-            if (OpenGLCache.EXT_direct_state_access)
-                return (uint)this.value;
-
-            return Update(value);
-        }
-
-        /// <summary>
         /// Converts the object to a human-readable string.
         /// </summary>
         /// <returns>A human-readable string that represents the object.</returns>

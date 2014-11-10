@@ -128,6 +128,7 @@
     <Compile Include="Graphics\OpenGLRenderTarget2D.cs" />
     <Compile Include="Graphics\OpenGLShaderUniformCollection.cs" />
     <Compile Include="Graphics\OpenGLBasicEffect.cs" />
+    <Compile Include="Graphics\OpenGLState.cs" />
     <Compile Include="Graphics\OpenGLSurface2D.cs" />
     <Compile Include="Graphics\OpenGLSurface2DProcessor.cs" />
     <Compile Include="Graphics\IBindableResource.cs" />
