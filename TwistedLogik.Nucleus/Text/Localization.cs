@@ -268,7 +268,7 @@ namespace TwistedLogik.Nucleus.Text
         /// </summary>
         public static String CurrentCulture
         {
-            get { return Thread.CurrentThread.CurrentCulture.IetfLanguageTag; }
+            get { return Thread.CurrentThread.CurrentCulture.Name; }
             set { Thread.CurrentThread.CurrentCulture = new CultureInfo(value ?? "en-US"); }
         }
 
