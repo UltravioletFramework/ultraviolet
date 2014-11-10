@@ -17,6 +17,8 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
             None,
             BindTexture2D,
             BindVertexArrayObject,
+            BindArrayBuffer,
+            BindElementArrayBuffer,
             BindFramebuffer,
         }
 
@@ -89,6 +91,64 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         }
 
         /// <summary>
+        /// Creates an instance of <see cref="OpenGLState"/> which binds an array buffer to the context.
+        /// </summary>
+        public static OpenGLState BindArrayBuffer(UInt32 GL_ARRAY_BUFFER_BINDING, Boolean force = false)
+        {
+            var state = pool.Retrieve();
+
+            state.StateType               = OpenGLStateType.BindArrayBuffer;
+            state.Disposed                = false;
+            state.Forced                  = force;
+            state.GL_ARRAY_BUFFER_BINDING = GL_ARRAY_BUFFER_BINDING;
+
+            state.Apply();
+
+            return state;
+        }
+
+        /// <summary>
+        /// Immediately binds an array buffer to the OpenGL context and updates the cache.
+        /// </summary>
+        public static void BindArrayBufferImmediate(UInt32 GL_ARRAY_BUFFER_BINDING)
+        {
+            gl.BindBuffer(gl.GL_ARRAY_BUFFER, GL_ARRAY_BUFFER_BINDING);
+            gl.ThrowIfError();
+
+            OpenGLCache.GL_ARRAY_BUFFER_BINDING.Update(GL_ARRAY_BUFFER_BINDING);
+            OpenGLCache.Verify();
+        }
+
+        /// <summary>
+        /// Creates an instance of <see cref="OpenGLState"/> which binds an element array buffer to the context.
+        /// </summary>
+        public static OpenGLState BindElementArrayBuffer(UInt32 GL_ELEMENT_ARRAY_BUFFER_BINDING, Boolean force = false)
+        {
+            var state = pool.Retrieve();
+
+            state.StateType                       = OpenGLStateType.BindElementArrayBuffer;
+            state.Disposed                        = false;
+            state.Forced                          = force;
+            state.GL_ELEMENT_ARRAY_BUFFER_BINDING = GL_ELEMENT_ARRAY_BUFFER_BINDING;
+
+            state.Apply();
+
+            return state;
+        }
+
+        /// <summary>
+        /// Immediately binds an element array buffer to the OpenGL context and updates the cache.
+        /// </summary>
+        public static void BindElementArrayBufferImmediate(UInt32 GL_ELEMENT_ARRAY_BUFFER_BINDING)
+        {
+            gl.BindBuffer(gl.GL_ELEMENT_ARRAY_BUFFER, GL_ELEMENT_ARRAY_BUFFER_BINDING);
+            gl.ThrowIfError();
+
+            OpenGLCache.GL_ELEMENT_ARRAY_BUFFER_BINDING.Update(GL_ELEMENT_ARRAY_BUFFER_BINDING);
+            OpenGLCache.Verify();
+        }
+
+        /// <summary>
         /// Creates an instance of <see cref="OpenGLState"/> which binds a framebuffer to the context.
         /// </summary>
         public static OpenGLState BindFramebuffer(UInt32 GL_FRAMEBUFFER_BINDING, Boolean force = false)
@@ -120,7 +180,6 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         /// <summary>
         /// Applies the state object's values to the OpenGL context.
         /// </summary>
-        /// <param name="force">A value indicating whether to force the state to be bound, even if DSA is available.</param>
         public void Apply()
         {
             switch (StateType)
@@ -134,6 +193,14 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
 
                 case OpenGLStateType.BindVertexArrayObject:
                     Apply_BindVertexArrayObject();
+                    break;
+
+                case OpenGLStateType.BindArrayBuffer:
+                    Apply_BindArrayBuffer();
+                    break;
+
+                case OpenGLStateType.BindElementArrayBuffer:
+                    Apply_BindElementArrayBuffer();
                     break;
 
                 case OpenGLStateType.BindFramebuffer:
@@ -171,6 +238,28 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
             }
         }
 
+        private void Apply_BindArrayBuffer()
+        {
+            if (Forced || !gl.IsDirectStateAccessAvailable)
+            {
+                gl.BindBuffer(gl.GL_ARRAY_BUFFER, GL_ARRAY_BUFFER_BINDING);
+                gl.ThrowIfError();
+
+                Previous_GL_ARRAY_BUFFER_BINDING = OpenGLCache.GL_ARRAY_BUFFER_BINDING.Update(GL_ARRAY_BUFFER_BINDING);
+            }
+        }
+
+        private void Apply_BindElementArrayBuffer()
+        {
+            if (Forced || !gl.IsDirectStateAccessAvailable)
+            {
+                gl.BindBuffer(gl.GL_ELEMENT_ARRAY_BUFFER, GL_ELEMENT_ARRAY_BUFFER_BINDING);
+                gl.ThrowIfError();
+
+                Previous_GL_ELEMENT_ARRAY_BUFFER_BINDING = OpenGLCache.GL_ELEMENT_ARRAY_BUFFER_BINDING.Update(GL_ELEMENT_ARRAY_BUFFER_BINDING);
+            }
+        }
+
         private void Apply_BindFramebuffer()
         {
             if (Forced || !gl.IsDirectStateAccessAvailable)
@@ -201,6 +290,14 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
 
                 case OpenGLStateType.BindVertexArrayObject:
                     Dispose_BindVertexArrayObject();
+                    break;
+
+                case OpenGLStateType.BindArrayBuffer:
+                    Dispose_BindArrayBuffer();
+                    break;
+
+                case OpenGLStateType.BindElementArrayBuffer:
+                    Dispose_BindElementArrayBuffer();
                     break;
 
                 case OpenGLStateType.BindFramebuffer:
@@ -237,6 +334,28 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
 
                 OpenGLCache.GL_VERTEX_ARRAY_BINDING.Update(Previous_GL_VERTEX_ARRAY_BINDING);
                 OpenGLCache.GL_ARRAY_BUFFER_BINDING.Update(Previous_GL_ARRAY_BUFFER_BINDING);
+                OpenGLCache.GL_ELEMENT_ARRAY_BUFFER_BINDING.Update(Previous_GL_ELEMENT_ARRAY_BUFFER_BINDING);
+            }
+        }
+
+        private void Dispose_BindArrayBuffer()
+        {
+            if (Forced || !gl.IsDirectStateAccessAvailable)
+            {
+                gl.BindBuffer(gl.GL_ARRAY_BUFFER, Previous_GL_ARRAY_BUFFER_BINDING);
+                gl.ThrowIfError();
+
+                OpenGLCache.GL_ARRAY_BUFFER_BINDING.Update(Previous_GL_ARRAY_BUFFER_BINDING);
+            }
+        }
+
+        private void Dispose_BindElementArrayBuffer()
+        {
+            if (Forced || !gl.IsDirectStateAccessAvailable)
+            {
+                gl.BindBuffer(gl.GL_ELEMENT_ARRAY_BUFFER, Previous_GL_ELEMENT_ARRAY_BUFFER_BINDING);
+                gl.ThrowIfError();
+
                 OpenGLCache.GL_ELEMENT_ARRAY_BUFFER_BINDING.Update(Previous_GL_ELEMENT_ARRAY_BUFFER_BINDING);
             }
         }

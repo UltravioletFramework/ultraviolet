@@ -34,16 +34,11 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
                 buffer = gl.GenBuffer();
                 gl.ThrowIfError();
 
-                var bufferPrev = OpenGLCache.GL_ARRAY_BUFFER_BINDING.Update(buffer);
-                gl.BindBuffer(gl.GL_ARRAY_BUFFER, buffer);
-                gl.ThrowIfError();
-
-                gl.BufferData(gl.GL_ARRAY_BUFFER, size, null, usage);
-                gl.ThrowIfError();
-
-                OpenGLCache.GL_ARRAY_BUFFER_BINDING.Update(bufferPrev);
-                gl.BindBuffer(gl.GL_ARRAY_BUFFER, bufferPrev);
-                gl.ThrowIfError();
+                using (OpenGLState.BindArrayBuffer(buffer))
+                {
+                    gl.NamedBufferData(buffer, gl.GL_ARRAY_BUFFER, size, null, usage);
+                    gl.ThrowIfError();
+                }
             });
 
             this.buffer = buffer;
@@ -61,19 +56,12 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
             var handle = GCHandle.Alloc(data, GCHandleType.Pinned);
             try
             {
-                var bufferPrev = OpenGLCache.GL_ARRAY_BUFFER_BINDING.Update(buffer);
-                gl.BindBuffer(gl.GL_ARRAY_BUFFER, buffer);
-                gl.ThrowIfError();
-                OpenGLCache.Verify();
-
-                var size = new IntPtr(vdecl.VertexStride * data.Length);
-                gl.BufferSubData(gl.GL_ARRAY_BUFFER, IntPtr.Zero, size, handle.AddrOfPinnedObject().ToPointer());
-                gl.ThrowIfError();
-
-                OpenGLCache.GL_ARRAY_BUFFER_BINDING.Update(bufferPrev);
-                gl.BindBuffer(gl.GL_ARRAY_BUFFER, bufferPrev);
-                gl.ThrowIfError();
-                OpenGLCache.Verify();
+                using (OpenGLState.BindArrayBuffer(buffer))
+                {
+                    var size = new IntPtr(vdecl.VertexStride * data.Length);
+                    gl.NamedBufferSubData(buffer, gl.GL_ARRAY_BUFFER, IntPtr.Zero, size, handle.AddrOfPinnedObject().ToPointer());
+                    gl.ThrowIfError();
+                }
             }
             finally
             {
@@ -98,32 +86,27 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
             var handle = GCHandle.Alloc(data, GCHandleType.Pinned);
             try
             {
-                var bufferPrev = OpenGLCache.GL_ARRAY_BUFFER_BINDING.Update(buffer);
-                gl.BindBuffer(gl.GL_ARRAY_BUFFER, buffer);
-                gl.ThrowIfError();
-
-                if (options == SetDataOptions.Discard)
+                using (OpenGLState.BindArrayBuffer(buffer))
                 {
-                    gl.BufferData(gl.GL_ARRAY_BUFFER, this.size, null, usage);
-                    gl.ThrowIfError();
+                    if (options == SetDataOptions.Discard)
+                    {
+                        gl.NamedBufferData(buffer, gl.GL_ARRAY_BUFFER, this.size, null, usage);
+                        gl.ThrowIfError();
 
-                    /* FIX: 
-                     * I have no idea why the following code is necessary, but
-                     * it seems to fix flickering sprites on Intel HD 4000 devices. */
-                    var vao = (uint)OpenGLCache.GL_VERTEX_ARRAY_BINDING;
-                    gl.BindVertexArray(vao);
+                        /* FIX: 
+                         * I have no idea why the following code is necessary, but
+                         * it seems to fix flickering sprites on Intel HD 4000 devices. */
+                        var vao = (uint)OpenGLCache.GL_VERTEX_ARRAY_BINDING;
+                        gl.BindVertexArray(vao);
+                        gl.ThrowIfError();
+                    }
+
+                    var start = new IntPtr(offset * vdecl.VertexStride);
+                    var size = new IntPtr(vdecl.VertexStride * count);
+
+                    gl.NamedBufferSubData(buffer, gl.GL_ARRAY_BUFFER, start, size, handle.AddrOfPinnedObject().ToPointer());
                     gl.ThrowIfError();
                 }
-
-                var start = new IntPtr(offset * vdecl.VertexStride);
-                var size = new IntPtr(vdecl.VertexStride * count);
-                
-                gl.BufferSubData(gl.GL_ARRAY_BUFFER, start, size, handle.AddrOfPinnedObject().ToPointer());
-                gl.ThrowIfError();
-
-                OpenGLCache.GL_ARRAY_BUFFER_BINDING.Update(bufferPrev);
-                gl.BindBuffer(gl.GL_ARRAY_BUFFER, bufferPrev);
-                gl.ThrowIfError();
             }
             finally
             {

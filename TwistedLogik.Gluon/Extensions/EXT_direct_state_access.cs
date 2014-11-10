@@ -4,6 +4,38 @@ namespace TwistedLogik.Gluon
 {
     public static unsafe partial class gl
     {
+        private delegate void glNamedBufferDataDelegate(uint buffer, IntPtr size, void* data, uint usage);
+        [Require(MinVersion = "4.5", Extension = "GL_EXT_direct_state_access", ExtensionFunction = "glNamedBufferDataEXT")]
+        private static readonly glNamedBufferDataDelegate glNamedBufferData = null;
+
+        public static void NamedBufferData(uint buffer, uint target, IntPtr size, void* data, uint usage)
+        {
+            if (IsDirectStateAccessAvailable)
+            {
+                glNamedBufferData(buffer, size, data, usage);
+            }
+            else
+            {
+                glBufferData(target, size, data, usage);
+            }
+        }
+
+        private delegate void glNamedBufferSubDataDelegate(uint buffer, IntPtr offset, IntPtr size, void* data);
+        [Require(MinVersion = "4.5", Extension = "GL_EXT_direct_state_access", ExtensionFunction = "glNamedBufferSubDataEXT")]
+        private static readonly glNamedBufferSubDataDelegate glNamedBufferSubData = null;
+
+        public static void NamedBufferSubData(uint buffer, uint target, IntPtr offset, IntPtr size, void* data)
+        {
+            if (IsDirectStateAccessAvailable)
+            {
+                glNamedBufferSubData(buffer, offset, size, data);
+            }
+            else
+            {
+                glBufferSubData(target, offset, size, data);
+            }
+        }
+
         private delegate uint glCheckNamedFramebufferStatusDelegate(uint framebuffer, uint target);
         [Require(MinVersion = "4.5", Extension = "GL_EXT_direct_state_access", ExtensionFunction = "glCheckNamedFramebufferStatusEXT")]
         private static readonly glCheckNamedFramebufferStatusDelegate glCheckNamedFramebufferStatus = null;

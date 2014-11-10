@@ -33,18 +33,11 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
                 buffer = gl.GenBuffer();
                 gl.ThrowIfError();
 
-                var bufferPrev = OpenGLCache.GL_ELEMENT_ARRAY_BUFFER_BINDING.Update(buffer);
-                gl.BindBuffer(gl.GL_ELEMENT_ARRAY_BUFFER, buffer);
-                gl.ThrowIfError();
-                OpenGLCache.Verify();
-
-                gl.BufferData(gl.GL_ELEMENT_ARRAY_BUFFER, size, null, usage);
-                gl.ThrowIfError();
-
-                OpenGLCache.GL_ELEMENT_ARRAY_BUFFER_BINDING.Update(bufferPrev);
-                gl.BindBuffer(gl.GL_ELEMENT_ARRAY_BUFFER, bufferPrev);
-                gl.ThrowIfError();
-                OpenGLCache.Verify();
+                using (OpenGLState.BindElementArrayBuffer(buffer))
+                {
+                    gl.NamedBufferData(buffer, gl.GL_ELEMENT_ARRAY_BUFFER, size, null, usage);
+                    gl.ThrowIfError();
+                }
             });
 
             this.buffer = buffer;
@@ -62,19 +55,12 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
             var handle = GCHandle.Alloc(data, GCHandleType.Pinned);
             try
             {
-                var bufferPrev = OpenGLCache.GL_ELEMENT_ARRAY_BUFFER_BINDING.Update(buffer);
-                gl.BindBuffer(gl.GL_ELEMENT_ARRAY_BUFFER, buffer);
-                gl.ThrowIfError();
-                OpenGLCache.Verify();
-
-                var size = new IntPtr(GetElementSize() * data.Length);
-                gl.BufferSubData(gl.GL_ELEMENT_ARRAY_BUFFER, IntPtr.Zero, size, handle.AddrOfPinnedObject().ToPointer());
-                gl.ThrowIfError();
-
-                OpenGLCache.GL_ELEMENT_ARRAY_BUFFER_BINDING.Update(bufferPrev);
-                gl.BindBuffer(gl.GL_ELEMENT_ARRAY_BUFFER, bufferPrev);
-                gl.ThrowIfError();
-                OpenGLCache.Verify();
+                using (OpenGLState.BindElementArrayBuffer(buffer))
+                {
+                    var size = new IntPtr(GetElementSize() * data.Length);
+                    gl.NamedBufferSubData(buffer, gl.GL_ELEMENT_ARRAY_BUFFER, IntPtr.Zero, size, handle.AddrOfPinnedObject().ToPointer());
+                    gl.ThrowIfError();
+                }
             }
             finally
             {
@@ -99,28 +85,21 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
             var handle = GCHandle.Alloc(data, GCHandleType.Pinned);
             try
             {
-                var bufferPrev = OpenGLCache.GL_ELEMENT_ARRAY_BUFFER_BINDING.Update(buffer);
-                gl.BindBuffer(gl.GL_ELEMENT_ARRAY_BUFFER, buffer);
-                gl.ThrowIfError();
-                OpenGLCache.Verify();
-
-                if (options == SetDataOptions.Discard)
+                using (OpenGLState.BindElementArrayBuffer(buffer))
                 {
-                    gl.BufferData(gl.GL_ELEMENT_ARRAY_BUFFER, this.size, null, usage);
+                    if (options == SetDataOptions.Discard)
+                    {
+                        gl.NamedBufferData(buffer, gl.GL_ELEMENT_ARRAY_BUFFER, this.size, null, usage);
+                        gl.ThrowIfError();
+                    }
+
+                    var elementsize = GetElementSize();
+                    var start = new IntPtr(offset * elementsize);
+                    var size = new IntPtr(elementsize * count);
+
+                    gl.NamedBufferSubData(buffer, gl.GL_ELEMENT_ARRAY_BUFFER, start, size, handle.AddrOfPinnedObject().ToPointer());
                     gl.ThrowIfError();
                 }
-
-                var elementsize = GetElementSize();
-                var start = new IntPtr(offset * elementsize);
-                var size = new IntPtr(elementsize * count);
-
-                gl.BufferSubData(gl.GL_ELEMENT_ARRAY_BUFFER, start, size, handle.AddrOfPinnedObject().ToPointer());
-                gl.ThrowIfError();
-
-                OpenGLCache.GL_ELEMENT_ARRAY_BUFFER_BINDING.Update(bufferPrev);
-                gl.BindBuffer(gl.GL_ELEMENT_ARRAY_BUFFER, bufferPrev);
-                gl.ThrowIfError();
-                OpenGLCache.Verify();
             }
             finally
             {
