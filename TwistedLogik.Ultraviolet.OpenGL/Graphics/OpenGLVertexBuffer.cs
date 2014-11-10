@@ -34,7 +34,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
                 buffer = gl.GenBuffer();
                 gl.ThrowIfError();
 
-                using (OpenGLState.BindArrayBuffer(buffer))
+                using (OpenGLState.ScopedBindArrayBuffer(buffer))
                 {
                     gl.NamedBufferData(buffer, gl.GL_ARRAY_BUFFER, size, null, usage);
                     gl.ThrowIfError();
@@ -56,7 +56,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
             var handle = GCHandle.Alloc(data, GCHandleType.Pinned);
             try
             {
-                using (OpenGLState.BindArrayBuffer(buffer))
+                using (OpenGLState.ScopedBindArrayBuffer(buffer))
                 {
                     var size = new IntPtr(vdecl.VertexStride * data.Length);
                     gl.NamedBufferSubData(buffer, gl.GL_ARRAY_BUFFER, IntPtr.Zero, size, handle.AddrOfPinnedObject().ToPointer());
@@ -86,7 +86,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
             var handle = GCHandle.Alloc(data, GCHandleType.Pinned);
             try
             {
-                using (OpenGLState.BindArrayBuffer(buffer))
+                using (OpenGLState.ScopedBindArrayBuffer(buffer))
                 {
                     if (options == SetDataOptions.Discard)
                     {
@@ -96,7 +96,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
                         /* FIX: 
                          * I have no idea why the following code is necessary, but
                          * it seems to fix flickering sprites on Intel HD 4000 devices. */
-                        var vao = (uint)OpenGLCache.GL_VERTEX_ARRAY_BINDING;
+                        var vao = (uint)OpenGLState.GL_VERTEX_ARRAY_BINDING;
                         gl.BindVertexArray(vao);
                         gl.ThrowIfError();
                     }

@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Diagnostics;
+using System.Linq;
+using System.Reflection;
 using TwistedLogik.Gluon;
 using TwistedLogik.Nucleus.Collections;
 
@@ -20,6 +23,17 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
             BindArrayBuffer,
             BindElementArrayBuffer,
             BindFramebuffer,
+            UseProgram,
+        }
+
+        /// <summary>
+        /// Initializes the <see cref="OpenGLState"/> type.
+        /// </summary>
+        static OpenGLState()
+        {
+            glCachedIntegers = typeof(OpenGLState).GetFields(BindingFlags.NonPublic | BindingFlags.Static)
+                .Where(x => x.FieldType == typeof(OpenGLStateInteger))
+                .Select(x => (OpenGLStateInteger)x.GetValue(null)).ToArray();
         }
 
         /// <summary>
@@ -29,16 +43,42 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         { }
 
         /// <summary>
+        /// Resets the values that are stored in the OpenGL state cache to their defaults.
+        /// </summary>
+        public static void ResetCache()
+        {
+            foreach (var glCachedInteger in glCachedIntegers)
+            {
+                glCachedInteger.Reset();
+            }
+        }
+
+        /// <summary>
+        /// Verifies that the values that are stored in the OpenGL state cache accurately
+        /// reflect the current state of the OpenGL context.
+        /// </summary>
+        [Conditional("VERIFY_OPENGL_CACHE")]
+        public static void VerifyCache()
+        {
+            foreach (var value in glCachedIntegers)
+            {
+                value.Verify();
+            }
+        }
+
+        /// <summary>
         /// Creates an instance of <see cref="OpenGLState"/> which binds a 2D texture to the context.
         /// </summary>
-        public static OpenGLState BindTexture2D(UInt32 GL_TEXTURE_BINDING_2D, Boolean force = false)
+        /// <param name="texture">The texture to bind to the context.</param>
+        /// <param name="force">A value indicating whether to force-bind the texture, even if DSA is available.</param>
+        public static OpenGLState ScopedBindTexture2D(UInt32 texture, Boolean force = false)
         {
             var state = pool.Retrieve();
 
-            state.StateType             = OpenGLStateType.BindTexture2D;
-            state.Disposed              = false;
-            state.Forced                = force;
-            state.GL_TEXTURE_BINDING_2D = GL_TEXTURE_BINDING_2D;
+            state.stateType                = OpenGLStateType.BindTexture2D;
+            state.disposed                 = false;
+            state.forced                   = force;
+            state.newGL_TEXTURE_BINDING_2D = texture;
 
             state.Apply();
 
@@ -46,30 +86,35 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         }
 
         /// <summary>
-        /// Immediately binds a 2D texture to the OpenGL context and updates the cache.
+        /// Immediately binds a 2D texture to the OpenGL context and updates the state cache.
         /// </summary>
-        public static void BindTexture2DImmediate(UInt32 GL_TEXTURE_BINDING_2D)
+        /// <param name="texture">The texture to bind to the context.</param>
+        public static void Texture2DImmediate(UInt32 texture)
         {
-            gl.BindTexture(gl.GL_TEXTURE_2D, GL_TEXTURE_BINDING_2D);
+            gl.BindTexture(gl.GL_TEXTURE_2D, texture);
             gl.ThrowIfError();
 
-            OpenGLCache.GL_TEXTURE_BINDING_2D.Update(GL_TEXTURE_BINDING_2D);
-            OpenGLCache.Verify();
+            OpenGLState.GL_TEXTURE_BINDING_2D.Update(texture);
+            OpenGLState.VerifyCache();
         }
 
         /// <summary>
         /// Creates an instance of <see cref="OpenGLState"/> which binds a vertex array object to the context.
         /// </summary>
-        public static OpenGLState BindVertexArrayObject(UInt32 GL_VERTEX_ARRAY_BINDING, UInt32 GL_ARRAY_BUFFER_BINDING, UInt32 GL_ELEMENT_ARRAY_BUFFER_BINDING, Boolean force = false)
+        /// <param name="vertexArrayObject">The vertex array object to bind to the context.</param>
+        /// <param name="arrayBuffer">The vertex array's associated array buffer.</param>
+        /// <param name="elementArrayBuffer">The vertex array's associated element array buffer.</param>
+        /// <param name="force">A value indicating whether to force-bind the vertex array object, even if DSA is available.</param>
+        public static OpenGLState ScopedBindVertexArrayObject(UInt32 vertexArrayObject, UInt32 arrayBuffer, UInt32 elementArrayBuffer, Boolean force = false)
         {
             var state = pool.Retrieve();
 
-            state.StateType                       = OpenGLStateType.BindVertexArrayObject;
-            state.Disposed                        = false;
-            state.Forced                          = force;
-            state.GL_VERTEX_ARRAY_BINDING         = GL_VERTEX_ARRAY_BINDING;
-            state.GL_ARRAY_BUFFER_BINDING         = GL_ARRAY_BUFFER_BINDING;
-            state.GL_ELEMENT_ARRAY_BUFFER_BINDING = GL_ELEMENT_ARRAY_BUFFER_BINDING;
+            state.stateType                          = OpenGLStateType.BindVertexArrayObject;
+            state.disposed                           = false;
+            state.forced                             = force;
+            state.newGL_VERTEX_ARRAY_BINDING         = vertexArrayObject;
+            state.newGL_ARRAY_BUFFER_BINDING         = arrayBuffer;
+            state.newGL_ELEMENT_ARRAY_BUFFER_BINDING = elementArrayBuffer;
 
             state.Apply();
 
@@ -77,30 +122,35 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         }
 
         /// <summary>
-        /// Immediately binds a vertex array object to the OpenGL context and updates the cache.
+        /// Immediately binds a vertex array object to the OpenGL context and updates the state cache.
         /// </summary>
-        public static void BindVertexArrayObjectImmediate(UInt32 GL_VERTEX_ARRAY_BINDING, UInt32 GL_ARRAY_BUFFER_BINDING, UInt32 GL_ELEMENT_ARRAY_BUFFER_BINDING)
+        /// <param name="vertexArrayObject">The vertex array object to bind to the context.</param>
+        /// <param name="arrayBuffer">The vertex array's associated array buffer.</param>
+        /// <param name="elementArrayBuffer">The vertex array's associated element array buffer.</param>
+        public static void BindVertexArrayObject(UInt32 vertexArrayObject, UInt32 arrayBuffer, UInt32 elementArrayBuffer)
         {
-            gl.BindVertexArray(GL_VERTEX_ARRAY_BINDING);
+            gl.BindVertexArray(vertexArrayObject);
             gl.ThrowIfError();
 
-            OpenGLCache.GL_VERTEX_ARRAY_BINDING.Update(GL_VERTEX_ARRAY_BINDING);
-            OpenGLCache.GL_ARRAY_BUFFER_BINDING.Update(GL_ARRAY_BUFFER_BINDING);
-            OpenGLCache.GL_ELEMENT_ARRAY_BUFFER_BINDING.Update(GL_ELEMENT_ARRAY_BUFFER_BINDING);
-            OpenGLCache.Verify();
+            OpenGLState.GL_VERTEX_ARRAY_BINDING.Update(vertexArrayObject);
+            OpenGLState.GL_ARRAY_BUFFER_BINDING.Update(arrayBuffer);
+            OpenGLState.GL_ELEMENT_ARRAY_BUFFER_BINDING.Update(elementArrayBuffer);
+            OpenGLState.VerifyCache();
         }
 
         /// <summary>
         /// Creates an instance of <see cref="OpenGLState"/> which binds an array buffer to the context.
         /// </summary>
-        public static OpenGLState BindArrayBuffer(UInt32 GL_ARRAY_BUFFER_BINDING, Boolean force = false)
+        /// <param name="arrayBuffer">The array buffer to bind to the OpenGL context.</param>
+        /// <param name="force">A value indicating whether to force-bind the array buffer, even if DSA is available.</param>
+        public static OpenGLState ScopedBindArrayBuffer(UInt32 arrayBuffer, Boolean force = false)
         {
             var state = pool.Retrieve();
 
-            state.StateType               = OpenGLStateType.BindArrayBuffer;
-            state.Disposed                = false;
-            state.Forced                  = force;
-            state.GL_ARRAY_BUFFER_BINDING = GL_ARRAY_BUFFER_BINDING;
+            state.stateType                  = OpenGLStateType.BindArrayBuffer;
+            state.disposed                   = false;
+            state.forced                     = force;
+            state.newGL_ARRAY_BUFFER_BINDING = arrayBuffer;
 
             state.Apply();
 
@@ -108,28 +158,31 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         }
 
         /// <summary>
-        /// Immediately binds an array buffer to the OpenGL context and updates the cache.
+        /// Immediately binds an array buffer to the OpenGL context and updates the state cache.
         /// </summary>
-        public static void BindArrayBufferImmediate(UInt32 GL_ARRAY_BUFFER_BINDING)
+        /// <param name="arrayBuffer">The array buffer to bind to the OpenGL context.</param>
+        public static void BindArrayBuffer(UInt32 arrayBuffer)
         {
-            gl.BindBuffer(gl.GL_ARRAY_BUFFER, GL_ARRAY_BUFFER_BINDING);
+            gl.BindBuffer(gl.GL_ARRAY_BUFFER, arrayBuffer);
             gl.ThrowIfError();
 
-            OpenGLCache.GL_ARRAY_BUFFER_BINDING.Update(GL_ARRAY_BUFFER_BINDING);
-            OpenGLCache.Verify();
+            OpenGLState.GL_ARRAY_BUFFER_BINDING.Update(arrayBuffer);
+            OpenGLState.VerifyCache();
         }
 
         /// <summary>
         /// Creates an instance of <see cref="OpenGLState"/> which binds an element array buffer to the context.
         /// </summary>
-        public static OpenGLState BindElementArrayBuffer(UInt32 GL_ELEMENT_ARRAY_BUFFER_BINDING, Boolean force = false)
+        /// <param name="elementArrayBuffer">The element array buffer to bind to the OpenGL context.</param>
+        /// <param name="force">A value indicating whether to force-bind the array buffer, even if DSA is available.</param>
+        public static OpenGLState ScopedBindElementArrayBuffer(UInt32 elementArrayBuffer, Boolean force = false)
         {
             var state = pool.Retrieve();
 
-            state.StateType                       = OpenGLStateType.BindElementArrayBuffer;
-            state.Disposed                        = false;
-            state.Forced                          = force;
-            state.GL_ELEMENT_ARRAY_BUFFER_BINDING = GL_ELEMENT_ARRAY_BUFFER_BINDING;
+            state.stateType                          = OpenGLStateType.BindElementArrayBuffer;
+            state.disposed                           = false;
+            state.forced                             = force;
+            state.newGL_ELEMENT_ARRAY_BUFFER_BINDING = elementArrayBuffer;
 
             state.Apply();
 
@@ -137,28 +190,31 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         }
 
         /// <summary>
-        /// Immediately binds an element array buffer to the OpenGL context and updates the cache.
+        /// Immediately binds an element array buffer to the OpenGL context and updates the state cache.
         /// </summary>
-        public static void BindElementArrayBufferImmediate(UInt32 GL_ELEMENT_ARRAY_BUFFER_BINDING)
+        /// <param name="elementArrayBuffer">The element array buffer to bind to the OpenGL context.</param>
+        public static void BindElementArrayBuffer(UInt32 elementArrayBuffer)
         {
-            gl.BindBuffer(gl.GL_ELEMENT_ARRAY_BUFFER, GL_ELEMENT_ARRAY_BUFFER_BINDING);
+            gl.BindBuffer(gl.GL_ELEMENT_ARRAY_BUFFER, elementArrayBuffer);
             gl.ThrowIfError();
 
-            OpenGLCache.GL_ELEMENT_ARRAY_BUFFER_BINDING.Update(GL_ELEMENT_ARRAY_BUFFER_BINDING);
-            OpenGLCache.Verify();
+            OpenGLState.GL_ELEMENT_ARRAY_BUFFER_BINDING.Update(elementArrayBuffer);
+            OpenGLState.VerifyCache();
         }
 
         /// <summary>
         /// Creates an instance of <see cref="OpenGLState"/> which binds a framebuffer to the context.
         /// </summary>
-        public static OpenGLState BindFramebuffer(UInt32 GL_FRAMEBUFFER_BINDING, Boolean force = false)
+        /// <param name="framebuffer">The framebuffer to bind to the OpenGL context.</param>
+        /// <param name="force">A value indicating whether to force-bind the array buffer, even if DSA is available.</param>
+        public static OpenGLState ScopedBindFramebuffer(UInt32 framebuffer, Boolean force = false)
         {
             var state = pool.Retrieve();
 
-            state.StateType              = OpenGLStateType.BindFramebuffer;
-            state.Disposed               = false;
-            state.Forced                 = force;
-            state.GL_FRAMEBUFFER_BINDING = GL_FRAMEBUFFER_BINDING;
+            state.stateType                 = OpenGLStateType.BindFramebuffer;
+            state.disposed                  = false;
+            state.forced                    = force;
+            state.newGL_FRAMEBUFFER_BINDING = framebuffer;
 
             state.Apply();
 
@@ -166,15 +222,46 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         }
 
         /// <summary>
-        /// Immediately binds a framebuffer to the OpenGL context and updates the cache.
+        /// Immediately binds a framebuffer to the OpenGL context and updates the state cache.
         /// </summary>
-        public static void BindFramebufferImmediate(UInt32 GL_FRAMEBUFFER_BINDING)
+        /// <param name="framebuffer">The framebuffer to bind to the OpenGL context.</param>
+        public static void BindFramebuffer(UInt32 framebuffer)
         {
-            gl.BindFramebuffer(gl.GL_FRAMEBUFFER, GL_FRAMEBUFFER_BINDING);
+            gl.BindFramebuffer(gl.GL_FRAMEBUFFER, framebuffer);
             gl.ThrowIfError();
 
-            OpenGLCache.GL_FRAMEBUFFER_BINDING.Update(GL_FRAMEBUFFER_BINDING);
-            OpenGLCache.Verify();
+            OpenGLState.GL_FRAMEBUFFER_BINDING.Update(framebuffer);
+            OpenGLState.VerifyCache();
+        }
+
+        /// <summary>
+        /// Creates an instance of <see cref="OpenGLState"/> which activates a shader program.
+        /// </summary>
+        /// <param name="program">The program to bind to the OpenGL context.</param>
+        public static OpenGLState ScopedUseProgram(UInt32 program)
+        {
+            var state = pool.Retrieve();
+
+            state.stateType             = OpenGLStateType.UseProgram;
+            state.disposed              = false;
+            state.newGL_CURRENT_PROGRAM = program;
+
+            state.Apply();
+
+            return state;
+        }
+
+        /// <summary>
+        /// Immediately activates a shader program and updates the state cache.
+        /// </summary>
+        /// <param name="program">The program to bind to the OpenGL context.</param>
+        public static void UseProgram(UInt32 program)
+        {
+            gl.UseProgram(program);
+            gl.ThrowIfError();
+
+            OpenGLState.GL_CURRENT_PROGRAM.Update(program);
+            OpenGLState.VerifyCache();
         }
 
         /// <summary>
@@ -182,7 +269,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         /// </summary>
         public void Apply()
         {
-            switch (StateType)
+            switch (stateType)
             {
                 case OpenGLStateType.None:
                     break;
@@ -207,68 +294,80 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
                     Apply_BindFramebuffer();
                     break;
 
+                case OpenGLStateType.UseProgram:
+                    Apply_UseProgram();
+                    break;
+
                 default:
                     throw new InvalidOperationException();
             }
 
-            OpenGLCache.Verify();
+            OpenGLState.VerifyCache();
         }
 
         private void Apply_BindTexture2D()
         {
-            if (Forced || !gl.IsDirectStateAccessAvailable)
+            if (forced || !gl.IsDirectStateAccessAvailable)
             {
-                gl.BindTexture(gl.GL_TEXTURE_2D, GL_TEXTURE_BINDING_2D);
+                gl.BindTexture(gl.GL_TEXTURE_2D, newGL_TEXTURE_BINDING_2D);
                 gl.ThrowIfError();
 
-                Previous_GL_TEXTURE_BINDING_2D = OpenGLCache.GL_TEXTURE_BINDING_2D.Update(GL_TEXTURE_BINDING_2D);
+                oldGL_TEXTURE_BINDING_2D = OpenGLState.GL_TEXTURE_BINDING_2D.Update(newGL_TEXTURE_BINDING_2D);
             }
         }
 
         private void Apply_BindVertexArrayObject()
         {
-            if (Forced || !gl.IsDirectStateAccessAvailable)
+            if (forced || !gl.IsDirectStateAccessAvailable)
             {
-                gl.BindVertexArray(GL_VERTEX_ARRAY_BINDING);
+                gl.BindVertexArray(newGL_VERTEX_ARRAY_BINDING);
                 gl.ThrowIfError();
 
-                Previous_GL_VERTEX_ARRAY_BINDING         = OpenGLCache.GL_VERTEX_ARRAY_BINDING.Update(GL_VERTEX_ARRAY_BINDING);
-                Previous_GL_ARRAY_BUFFER_BINDING         = OpenGLCache.GL_ARRAY_BUFFER_BINDING.Update(GL_ARRAY_BUFFER_BINDING);
-                Previous_GL_ELEMENT_ARRAY_BUFFER_BINDING = OpenGLCache.GL_ELEMENT_ARRAY_BUFFER_BINDING.Update(GL_ELEMENT_ARRAY_BUFFER_BINDING);
+                oldGL_VERTEX_ARRAY_BINDING         = OpenGLState.GL_VERTEX_ARRAY_BINDING.Update(newGL_VERTEX_ARRAY_BINDING);
+                oldGL_ARRAY_BUFFER_BINDING         = OpenGLState.GL_ARRAY_BUFFER_BINDING.Update(newGL_ARRAY_BUFFER_BINDING);
+                oldGL_ELEMENT_ARRAY_BUFFER_BINDING = OpenGLState.GL_ELEMENT_ARRAY_BUFFER_BINDING.Update(newGL_ELEMENT_ARRAY_BUFFER_BINDING);
             }
         }
 
         private void Apply_BindArrayBuffer()
         {
-            if (Forced || !gl.IsDirectStateAccessAvailable)
+            if (forced || !gl.IsDirectStateAccessAvailable)
             {
-                gl.BindBuffer(gl.GL_ARRAY_BUFFER, GL_ARRAY_BUFFER_BINDING);
+                gl.BindBuffer(gl.GL_ARRAY_BUFFER, newGL_ARRAY_BUFFER_BINDING);
                 gl.ThrowIfError();
 
-                Previous_GL_ARRAY_BUFFER_BINDING = OpenGLCache.GL_ARRAY_BUFFER_BINDING.Update(GL_ARRAY_BUFFER_BINDING);
+                oldGL_ARRAY_BUFFER_BINDING = OpenGLState.GL_ARRAY_BUFFER_BINDING.Update(newGL_ARRAY_BUFFER_BINDING);
             }
         }
 
         private void Apply_BindElementArrayBuffer()
         {
-            if (Forced || !gl.IsDirectStateAccessAvailable)
+            if (forced || !gl.IsDirectStateAccessAvailable)
             {
-                gl.BindBuffer(gl.GL_ELEMENT_ARRAY_BUFFER, GL_ELEMENT_ARRAY_BUFFER_BINDING);
+                gl.BindBuffer(gl.GL_ELEMENT_ARRAY_BUFFER, newGL_ELEMENT_ARRAY_BUFFER_BINDING);
                 gl.ThrowIfError();
 
-                Previous_GL_ELEMENT_ARRAY_BUFFER_BINDING = OpenGLCache.GL_ELEMENT_ARRAY_BUFFER_BINDING.Update(GL_ELEMENT_ARRAY_BUFFER_BINDING);
+                oldGL_ELEMENT_ARRAY_BUFFER_BINDING = OpenGLState.GL_ELEMENT_ARRAY_BUFFER_BINDING.Update(newGL_ELEMENT_ARRAY_BUFFER_BINDING);
             }
         }
 
         private void Apply_BindFramebuffer()
         {
-            if (Forced || !gl.IsDirectStateAccessAvailable)
+            if (forced || !gl.IsDirectStateAccessAvailable)
             {
-                gl.BindFramebuffer(gl.GL_FRAMEBUFFER, GL_FRAMEBUFFER_BINDING);
+                gl.BindFramebuffer(gl.GL_FRAMEBUFFER, newGL_FRAMEBUFFER_BINDING);
                 gl.ThrowIfError();
 
-                Previous_GL_FRAMEBUFFER_BINDING = OpenGLCache.GL_FRAMEBUFFER_BINDING.Update(GL_FRAMEBUFFER_BINDING);
+                oldGL_FRAMEBUFFER_BINDING = OpenGLState.GL_FRAMEBUFFER_BINDING.Update(newGL_FRAMEBUFFER_BINDING);
             }
+        }
+
+        private void Apply_UseProgram()
+        {
+            gl.UseProgram(newGL_CURRENT_PROGRAM);
+            gl.ThrowIfError();
+
+            oldGL_CURRENT_PROGRAM = OpenGLState.GL_CURRENT_PROGRAM.Update(newGL_CURRENT_PROGRAM);
         }
 
         /// <summary>
@@ -276,10 +375,10 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         /// </summary>
         public void Dispose()
         {
-            if (Disposed)
+            if (disposed)
                 return;
 
-            switch (StateType)
+            switch (stateType)
             {
                 case OpenGLStateType.None:
                     break;
@@ -304,88 +403,142 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
                     Dispose_BindFramebuffer();
                     break;
 
+                case OpenGLStateType.UseProgram:
+                    Dispose_UseProgram();
+                    break;
+
                 default:
                     throw new InvalidOperationException();
             }
 
-            OpenGLCache.Verify();
+            OpenGLState.VerifyCache();
 
-            Disposed = true;
+            disposed = true;
             pool.Release(this);
         }
 
         private void Dispose_BindTexture2D()
         {
-            if (Forced || !gl.IsDirectStateAccessAvailable)
+            if (forced || !gl.IsDirectStateAccessAvailable)
             {
-                gl.BindTexture(gl.GL_TEXTURE_2D, Previous_GL_TEXTURE_BINDING_2D);
+                gl.BindTexture(gl.GL_TEXTURE_2D, oldGL_TEXTURE_BINDING_2D);
                 gl.ThrowIfError();
 
-                OpenGLCache.GL_TEXTURE_BINDING_2D.Update(Previous_GL_TEXTURE_BINDING_2D);
+                OpenGLState.GL_TEXTURE_BINDING_2D.Update(oldGL_TEXTURE_BINDING_2D);
             }
         }
 
         private void Dispose_BindVertexArrayObject()
         {
-            if (Forced || !gl.IsDirectStateAccessAvailable)
+            if (forced || !gl.IsDirectStateAccessAvailable)
             {
-                gl.BindVertexArray(Previous_GL_VERTEX_ARRAY_BINDING);
+                gl.BindVertexArray(oldGL_VERTEX_ARRAY_BINDING);
                 gl.ThrowIfError();
 
-                OpenGLCache.GL_VERTEX_ARRAY_BINDING.Update(Previous_GL_VERTEX_ARRAY_BINDING);
-                OpenGLCache.GL_ARRAY_BUFFER_BINDING.Update(Previous_GL_ARRAY_BUFFER_BINDING);
-                OpenGLCache.GL_ELEMENT_ARRAY_BUFFER_BINDING.Update(Previous_GL_ELEMENT_ARRAY_BUFFER_BINDING);
+                OpenGLState.GL_VERTEX_ARRAY_BINDING.Update(oldGL_VERTEX_ARRAY_BINDING);
+                OpenGLState.GL_ARRAY_BUFFER_BINDING.Update(oldGL_ARRAY_BUFFER_BINDING);
+                OpenGLState.GL_ELEMENT_ARRAY_BUFFER_BINDING.Update(oldGL_ELEMENT_ARRAY_BUFFER_BINDING);
             }
         }
 
         private void Dispose_BindArrayBuffer()
         {
-            if (Forced || !gl.IsDirectStateAccessAvailable)
+            if (forced || !gl.IsDirectStateAccessAvailable)
             {
-                gl.BindBuffer(gl.GL_ARRAY_BUFFER, Previous_GL_ARRAY_BUFFER_BINDING);
+                gl.BindBuffer(gl.GL_ARRAY_BUFFER, oldGL_ARRAY_BUFFER_BINDING);
                 gl.ThrowIfError();
 
-                OpenGLCache.GL_ARRAY_BUFFER_BINDING.Update(Previous_GL_ARRAY_BUFFER_BINDING);
+                OpenGLState.GL_ARRAY_BUFFER_BINDING.Update(oldGL_ARRAY_BUFFER_BINDING);
             }
         }
 
         private void Dispose_BindElementArrayBuffer()
         {
-            if (Forced || !gl.IsDirectStateAccessAvailable)
+            if (forced || !gl.IsDirectStateAccessAvailable)
             {
-                gl.BindBuffer(gl.GL_ELEMENT_ARRAY_BUFFER, Previous_GL_ELEMENT_ARRAY_BUFFER_BINDING);
+                gl.BindBuffer(gl.GL_ELEMENT_ARRAY_BUFFER, oldGL_ELEMENT_ARRAY_BUFFER_BINDING);
                 gl.ThrowIfError();
 
-                OpenGLCache.GL_ELEMENT_ARRAY_BUFFER_BINDING.Update(Previous_GL_ELEMENT_ARRAY_BUFFER_BINDING);
+                OpenGLState.GL_ELEMENT_ARRAY_BUFFER_BINDING.Update(oldGL_ELEMENT_ARRAY_BUFFER_BINDING);
             }
         }
 
         private void Dispose_BindFramebuffer()
         {
-            if (Forced || !gl.IsDirectStateAccessAvailable)
+            if (forced || !gl.IsDirectStateAccessAvailable)
             {
-                gl.BindFramebuffer(gl.GL_FRAMEBUFFER, Previous_GL_FRAMEBUFFER_BINDING);
+                gl.BindFramebuffer(gl.GL_FRAMEBUFFER, oldGL_FRAMEBUFFER_BINDING);
                 gl.ThrowIfError();
 
-                OpenGLCache.GL_FRAMEBUFFER_BINDING.Update(Previous_GL_FRAMEBUFFER_BINDING);
+                OpenGLState.GL_FRAMEBUFFER_BINDING.Update(oldGL_FRAMEBUFFER_BINDING);
             }
         }
 
-        public UInt32 GL_TEXTURE_BINDING_2D { get; private set; }
-        public UInt32 GL_VERTEX_ARRAY_BINDING { get; private set; }
-        public UInt32 GL_ARRAY_BUFFER_BINDING { get; private set; }
-        public UInt32 GL_ELEMENT_ARRAY_BUFFER_BINDING { get; private set; }
-        public UInt32 GL_FRAMEBUFFER_BINDING { get; private set; }
+        private void Dispose_UseProgram()
+        {
+            gl.UseProgram(oldGL_CURRENT_PROGRAM);
+            gl.ThrowIfError();
 
-        private UInt32 Previous_GL_TEXTURE_BINDING_2D { get; set; }
-        private UInt32 Previous_GL_VERTEX_ARRAY_BINDING { get; set; }
-        private UInt32 Previous_GL_ARRAY_BUFFER_BINDING { get; set; }
-        private UInt32 Previous_GL_ELEMENT_ARRAY_BUFFER_BINDING { get; set; }
-        private UInt32 Previous_GL_FRAMEBUFFER_BINDING { get; set; }
+            OpenGLState.GL_CURRENT_PROGRAM.Update(oldGL_CURRENT_PROGRAM);
+        }
 
-        private OpenGLStateType StateType { get; set; }
-        private Boolean Disposed { get; set; }
-        private Boolean Forced { get; set; }
+        /// <summary>
+        /// Gets the cached value of GL_TEXTURE_BINDING_2D.
+        /// </summary>
+        public static OpenGLStateInteger GL_TEXTURE_BINDING_2D { get { return glTextureBinding2D; } }
+
+        /// <summary>
+        /// Gets the cached value of GL_VERTEX_ARRAY_BINDING.
+        /// </summary>
+        public static OpenGLStateInteger GL_VERTEX_ARRAY_BINDING { get { return glVertexArrayBinding; } }
+
+        /// <summary>
+        /// Gets the cached value of GL_ARRAY_BUFFER_BINDING.
+        /// </summary>
+        public static OpenGLStateInteger GL_ARRAY_BUFFER_BINDING { get { return glArrayBufferBinding; } }
+
+        /// <summary>
+        /// Gets the cached value of GL_ELEMENT_ARRAY_BUFFER_BINDING.
+        /// </summary>
+        public static OpenGLStateInteger GL_ELEMENT_ARRAY_BUFFER_BINDING { get { return glElementArrayBufferBinding; } }
+
+        /// <summary>
+        /// Gets the cached value of GL_FRAMEBUFFER_BINDING.
+        /// </summary>
+        public static OpenGLStateInteger GL_FRAMEBUFFER_BINDING { get { return glFramebufferBinding; } }
+
+        /// <summary>
+        /// Gets the cached value of GL_CURRENT_PROGRAM.
+        /// </summary>
+        public static OpenGLStateInteger GL_CURRENT_PROGRAM { get { return glCurrentProgram; } }
+
+        // State values.
+        private OpenGLStateType stateType;
+        private Boolean disposed;
+        private Boolean forced;
+
+        private UInt32 newGL_TEXTURE_BINDING_2D;
+        private UInt32 newGL_VERTEX_ARRAY_BINDING;
+        private UInt32 newGL_ARRAY_BUFFER_BINDING;
+        private UInt32 newGL_ELEMENT_ARRAY_BUFFER_BINDING;
+        private UInt32 newGL_FRAMEBUFFER_BINDING;
+        private UInt32 newGL_CURRENT_PROGRAM;
+
+        private UInt32 oldGL_TEXTURE_BINDING_2D;
+        private UInt32 oldGL_VERTEX_ARRAY_BINDING;
+        private UInt32 oldGL_ARRAY_BUFFER_BINDING;
+        private UInt32 oldGL_ELEMENT_ARRAY_BUFFER_BINDING;
+        private UInt32 oldGL_FRAMEBUFFER_BINDING;
+        private UInt32 oldGL_CURRENT_PROGRAM;
+
+        // Cached OpenGL state values.
+        private static readonly OpenGLStateInteger[] glCachedIntegers;
+        private static readonly OpenGLStateInteger glTextureBinding2D          = new OpenGLStateInteger("GL_TEXTURE_BINDING_2D", gl.GL_TEXTURE_BINDING_2D);
+        private static readonly OpenGLStateInteger glVertexArrayBinding        = new OpenGLStateInteger("GL_VERTEX_ARRAY_BINDING", gl.GL_VERTEX_ARRAY_BINDING);
+        private static readonly OpenGLStateInteger glArrayBufferBinding        = new OpenGLStateInteger("GL_ARRAY_BUFFER_BINDING", gl.GL_ARRAY_BUFFER_BINDING);
+        private static readonly OpenGLStateInteger glElementArrayBufferBinding = new OpenGLStateInteger("GL_ELEMENT_ARRAY_BUFFER_BINDING", gl.GL_ELEMENT_ARRAY_BUFFER_BINDING);
+        private static readonly OpenGLStateInteger glFramebufferBinding        = new OpenGLStateInteger("GL_FRAMEBUFFER_BINDING", gl.GL_FRAMEBUFFER_BINDING);
+        private static readonly OpenGLStateInteger glCurrentProgram            = new OpenGLStateInteger("GL_CURRENT_PROGRAM", gl.GL_CURRENT_PROGRAM);
 
         // The pool of state objects.
         private static readonly IPool<OpenGLState> pool = new ExpandingPool<OpenGLState>(1, () => new OpenGLState());

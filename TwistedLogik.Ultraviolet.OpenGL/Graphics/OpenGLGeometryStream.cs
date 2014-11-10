@@ -80,7 +80,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
 
             this.ibuffers.Add(sdlIndexBuffer);
 
-            using (OpenGLState.BindVertexArrayObject(vao, 0, 0, true))
+            using (OpenGLState.ScopedBindVertexArrayObject(vao, 0, 0, true))
             {
                 gl.BindBuffer(gl.GL_ELEMENT_ARRAY_BUFFER, sdlIndexBufferName);
                 gl.ThrowIfError();
@@ -97,7 +97,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         {
             Contract.EnsureNotDisposed(this, Disposed);
 
-            OpenGLState.BindVertexArrayObjectImmediate(vao, 0, glElementArrayBufferBinding ?? 0);
+            OpenGLState.BindVertexArrayObject(vao, 0, glElementArrayBufferBinding ?? 0);
         }
 
         /// <summary>

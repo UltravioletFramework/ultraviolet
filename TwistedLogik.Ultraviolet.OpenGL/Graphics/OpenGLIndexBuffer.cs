@@ -33,7 +33,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
                 buffer = gl.GenBuffer();
                 gl.ThrowIfError();
 
-                using (OpenGLState.BindElementArrayBuffer(buffer))
+                using (OpenGLState.ScopedBindElementArrayBuffer(buffer))
                 {
                     gl.NamedBufferData(buffer, gl.GL_ELEMENT_ARRAY_BUFFER, size, null, usage);
                     gl.ThrowIfError();
@@ -55,7 +55,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
             var handle = GCHandle.Alloc(data, GCHandleType.Pinned);
             try
             {
-                using (OpenGLState.BindElementArrayBuffer(buffer))
+                using (OpenGLState.ScopedBindElementArrayBuffer(buffer))
                 {
                     var size = new IntPtr(GetElementSize() * data.Length);
                     gl.NamedBufferSubData(buffer, gl.GL_ELEMENT_ARRAY_BUFFER, IntPtr.Zero, size, handle.AddrOfPinnedObject().ToPointer());
@@ -85,7 +85,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
             var handle = GCHandle.Alloc(data, GCHandleType.Pinned);
             try
             {
-                using (OpenGLState.BindElementArrayBuffer(buffer))
+                using (OpenGLState.ScopedBindElementArrayBuffer(buffer))
                 {
                     if (options == SetDataOptions.Discard)
                     {

@@ -311,7 +311,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
                 var texture = gl.GenTexture();
                 gl.ThrowIfError();
 
-                using (OpenGLState.BindTexture2D(texture))
+                using (OpenGLState.ScopedBindTexture2D(texture))
                 {
                     gl.TextureParameteri(texture, gl.GL_TEXTURE_2D, gl.GL_TEXTURE_MAX_LEVEL, 0);
                     gl.ThrowIfError();
@@ -361,7 +361,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
                 height = rectval.Height;
             }
 
-            using (OpenGLState.BindTexture2D(texture))
+            using (OpenGLState.ScopedBindTexture2D(texture))
             {
                 gl.PixelStorei(gl.GL_UNPACK_ROW_LENGTH, stride);
                 gl.ThrowIfError();

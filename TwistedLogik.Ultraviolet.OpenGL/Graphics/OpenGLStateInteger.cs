@@ -8,14 +8,14 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
     /// Represents a value associated with an OpenGL context that is cached by the OpenGL/SDL2 implementation
     /// of Ultraviolet in order to avoid costly calls to glGet() functions.
     /// </summary>
-    internal class OpenGLCachedInteger
+    internal class OpenGLStateInteger
     {
         /// <summary>
-        /// Initializes a new instance of the OpenGLCachedValue class.
+        /// Initializes a new instance of the <see cref="OpenGLStateInteger"/> class.
         /// </summary>
         /// <param name="name">The human-readable name of this value.</param>
         /// <param name="pname">The property name of this value when retrieved via glGet().</param>
-        public OpenGLCachedInteger(String name, UInt32 pname)
+        public OpenGLStateInteger(String name, UInt32 pname)
         {
             this.name  = name;
             this.pname = pname;
@@ -26,7 +26,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         /// </summary>
         /// <param name="value">The cached value to convert.</param>
         /// <returns>The converted integer.</returns>
-        public static implicit operator Int32(OpenGLCachedInteger value)
+        public static implicit operator Int32(OpenGLStateInteger value)
         {
             return value.value;
         }
@@ -36,7 +36,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         /// </summary>
         /// <param name="value">The cached value to convert.</param>
         /// <returns>The converted integer.</returns>
-        public static implicit operator UInt32(OpenGLCachedInteger value)
+        public static implicit operator UInt32(OpenGLStateInteger value)
         {
             return (UInt32)value.value;
         }

@@ -34,7 +34,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
 
                 if (buffers != null && buffers.Any())
                 {
-                    using (OpenGLState.BindFramebuffer(framebuffer))
+                    using (OpenGLState.ScopedBindFramebuffer(framebuffer))
                     {
                         foreach (OpenGLRenderBuffer2D buffer in buffers)
                         {
@@ -67,7 +67,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
 
             Ultraviolet.QueueWorkItemAndWait(() =>
             {
-                using (OpenGLState.BindFramebuffer(framebuffer))
+                using (OpenGLState.ScopedBindFramebuffer(framebuffer))
                 {
                     AttachRenderBuffer(sdlBuffer);
 
@@ -393,7 +393,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         /// <param name="region">The region of the render target from which to retrieve data.</param>
         private unsafe void GetDataInternal(Color[] data, Rectangle region)
         {
-            using (OpenGLState.BindFramebuffer(framebuffer, true))
+            using (OpenGLState.ScopedBindFramebuffer(framebuffer, true))
             {
                 fixed (Color* pData = data)
                 {
