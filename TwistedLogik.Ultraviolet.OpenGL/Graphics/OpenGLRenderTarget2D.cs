@@ -34,18 +34,13 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
 
                 if (buffers != null && buffers.Any())
                 {
-                    var framebufferPrev = OpenGLCache.GL_FRAMEBUFFER_BINDING.Update(framebuffer);
-                    gl.BindFramebuffer(gl.GL_FRAMEBUFFER, framebuffer);
-                    gl.ThrowIfError();
-
-                    foreach (OpenGLRenderBuffer2D buffer in buffers)
+                    using (OpenGLState.BindFramebuffer(framebuffer))
                     {
-                        AttachRenderBuffer(buffer);
+                        foreach (OpenGLRenderBuffer2D buffer in buffers)
+                        {
+                            AttachRenderBuffer(buffer);
+                        }
                     }
-
-                    OpenGLCache.GL_FRAMEBUFFER_BINDING.Update(framebufferPrev);
-                    gl.BindFramebuffer(gl.GL_FRAMEBUFFER, framebufferPrev);
-                    gl.ThrowIfError();
                 }
             });
 
@@ -72,18 +67,13 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
 
             Ultraviolet.QueueWorkItemAndWait(() =>
             {
-                var framebufferPrev = OpenGLCache.GL_FRAMEBUFFER_BINDING.Update(framebuffer);
-                gl.BindFramebuffer(gl.GL_FRAMEBUFFER, framebuffer);
-                gl.ThrowIfError();
+                using (OpenGLState.BindFramebuffer(framebuffer))
+                {
+                    AttachRenderBuffer(sdlBuffer);
 
-                AttachRenderBuffer(sdlBuffer);
-
-                framebufferStatus = gl.CheckFramebufferStatus(gl.GL_FRAMEBUFFER);
-                gl.ThrowIfError();
-
-                OpenGLCache.GL_FRAMEBUFFER_BINDING.Update(framebufferPrev);
-                gl.BindFramebuffer(gl.GL_FRAMEBUFFER, framebufferPrev);
-                gl.ThrowIfError();
+                    framebufferStatus = gl.CheckNamedFramebufferStatus(framebuffer, gl.GL_FRAMEBUFFER);
+                    gl.ThrowIfError();
+                }
             });
 
             buffers.Add(sdlBuffer);
@@ -361,7 +351,8 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         {
             Contract.Ensure(colorAttachments < 16, OpenGLStrings.RenderBufferExceedsTargetCapacity);
 
-            gl.FramebufferTexture(gl.GL_FRAMEBUFFER, (uint)(gl.GL_COLOR_ATTACHMENT0 + colorAttachments), buffer.OpenGLName, 0);
+            gl.NamedFramebufferTexture(framebuffer, gl.GL_FRAMEBUFFER, 
+                (uint)(gl.GL_COLOR_ATTACHMENT0 + colorAttachments), buffer.OpenGLName, 0);
             gl.ThrowIfError();
 
             colorAttachments++;
@@ -375,7 +366,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         {
             Contract.Ensure(depthStencilAttachments == 0, OpenGLStrings.RenderBufferExceedsTargetCapacity);
 
-            gl.FramebufferTexture(gl.GL_FRAMEBUFFER,  gl.GL_DEPTH_ATTACHMENT, buffer.OpenGLName, 0);
+            gl.NamedFramebufferTexture(framebuffer, gl.GL_FRAMEBUFFER, gl.GL_DEPTH_ATTACHMENT, buffer.OpenGLName, 0);
             gl.ThrowIfError();
 
             depthStencilAttachments++;
@@ -389,7 +380,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         {
             Contract.Ensure(depthStencilAttachments == 0, OpenGLStrings.RenderBufferExceedsTargetCapacity);
 
-            gl.FramebufferTexture(gl.GL_FRAMEBUFFER,  gl.GL_DEPTH_STENCIL_ATTACHMENT, buffer.OpenGLName, 0);
+            gl.NamedFramebufferTexture(framebuffer, gl.GL_FRAMEBUFFER, gl.GL_DEPTH_STENCIL_ATTACHMENT, buffer.OpenGLName, 0);
             gl.ThrowIfError();
 
             depthStencilAttachments++;
@@ -402,19 +393,14 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         /// <param name="region">The region of the render target from which to retrieve data.</param>
         private unsafe void GetDataInternal(Color[] data, Rectangle region)
         {
-            var framebufferPrev = OpenGLCache.GL_FRAMEBUFFER_BINDING.Update(framebuffer);
-            gl.BindFramebuffer(gl.GL_FRAMEBUFFER, framebuffer);
-            gl.ThrowIfError();
-
-            fixed (Color* pData = data)
+            using (OpenGLState.BindFramebuffer(framebuffer, true))
             {
-                gl.ReadPixels(region.X, region.Y, region.Width, region.Height, gl.GL_RGBA, gl.GL_UNSIGNED_BYTE, pData);
-                gl.ThrowIfError();
+                fixed (Color* pData = data)
+                {
+                    gl.ReadPixels(region.X, region.Y, region.Width, region.Height, gl.GL_RGBA, gl.GL_UNSIGNED_BYTE, pData);
+                    gl.ThrowIfError();
+                }
             }
-
-            OpenGLCache.GL_FRAMEBUFFER_BINDING.Update(framebufferPrev);
-            gl.BindFramebuffer(gl.GL_FRAMEBUFFER, framebufferPrev);
-            gl.ThrowIfError();
 
             // OpenGL texture data is stored upside down and in the wrong color format,
             // so we need to convert that to what our caller expects.

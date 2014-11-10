@@ -4,6 +4,38 @@ namespace TwistedLogik.Gluon
 {
     public static unsafe partial class gl
     {
+        private delegate uint glCheckNamedFramebufferStatusDelegate(uint framebuffer, uint target);
+        [Require(MinVersion = "4.5", Extension = "GL_EXT_direct_state_access", ExtensionFunction = "glCheckNamedFramebufferStatusEXT")]
+        private static readonly glCheckNamedFramebufferStatusDelegate glCheckNamedFramebufferStatus = null;
+
+        public static uint CheckNamedFramebufferStatus(uint framebuffer, uint target)
+        {
+            if (IsDirectStateAccessAvailable)
+            {
+                return glCheckNamedFramebufferStatus(framebuffer, target);
+            }
+            else
+            {
+                return glCheckFramebufferStatus(target);
+            }
+        }
+
+        private delegate void glNamedFramebufferTextureDelegate(uint framebuffer, uint attachment, uint texture, int level);
+        [Require(MinVersion = "4.5", Extension = "GL_EXT_direct_state_access", ExtensionFunction = "glNamedFramebufferTextureEXT")]
+        private static readonly glNamedFramebufferTextureDelegate glNamedFramebufferTexture = null;
+
+        public static void NamedFramebufferTexture(uint framebuffer, uint target, uint attachment, uint texture, int level)
+        {
+            if (IsDirectStateAccessAvailable)
+            {
+                glNamedFramebufferTexture(framebuffer, attachment, texture, level);
+            }
+            else
+            {
+                glFramebufferTexture(target, attachment, texture, level);
+            }
+        }
+
         private delegate void glTextureParameteriDelegate(uint texture, uint target, uint pname, int param);
         [Require(MinVersion = "4.5", Extension = "GL_EXT_direct_state_access", ExtensionFunction = "glTextureParameteriEXT")]
         private static readonly glTextureParameteriDelegate glTextureParameteri = null;

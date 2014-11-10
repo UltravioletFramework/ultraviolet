@@ -127,9 +127,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL
                     targetSize = currentWindow.ClientSize;
                 }
 
-                OpenGLCache.GL_FRAMEBUFFER_BINDING.Update(targetName);
-                gl.BindFramebuffer(gl.GL_FRAMEBUFFER, targetName);
-                gl.ThrowIfError();
+                OpenGLState.BindFramebufferImmediate(targetName);
 
                 if (this.renderTarget != null)
                     this.renderTarget.UnbindWrite();

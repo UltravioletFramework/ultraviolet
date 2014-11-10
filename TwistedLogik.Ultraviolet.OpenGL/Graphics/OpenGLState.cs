@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using TwistedLogik.Gluon;
 using TwistedLogik.Nucleus.Collections;
 
@@ -18,6 +17,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
             None,
             BindTexture2D,
             BindVertexArrayObject,
+            BindFramebuffer,
         }
 
         /// <summary>
@@ -51,7 +51,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
             gl.BindTexture(gl.GL_TEXTURE_2D, GL_TEXTURE_BINDING_2D);
             gl.ThrowIfError();
 
-            OpenGLCache.GL_TEXTURE_BINDING_2D2.Update(GL_TEXTURE_BINDING_2D);
+            OpenGLCache.GL_TEXTURE_BINDING_2D.Update(GL_TEXTURE_BINDING_2D);
             OpenGLCache.Verify();
         }
 
@@ -89,6 +89,35 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         }
 
         /// <summary>
+        /// Creates an instance of <see cref="OpenGLState"/> which binds a framebuffer to the context.
+        /// </summary>
+        public static OpenGLState BindFramebuffer(UInt32 GL_FRAMEBUFFER_BINDING, Boolean force = false)
+        {
+            var state = pool.Retrieve();
+
+            state.StateType              = OpenGLStateType.BindFramebuffer;
+            state.Disposed               = false;
+            state.Forced                 = force;
+            state.GL_FRAMEBUFFER_BINDING = GL_FRAMEBUFFER_BINDING;
+
+            state.Apply();
+
+            return state;
+        }
+
+        /// <summary>
+        /// Immediately binds a framebuffer to the OpenGL context and updates the cache.
+        /// </summary>
+        public static void BindFramebufferImmediate(UInt32 GL_FRAMEBUFFER_BINDING)
+        {
+            gl.BindFramebuffer(gl.GL_FRAMEBUFFER, GL_FRAMEBUFFER_BINDING);
+            gl.ThrowIfError();
+
+            OpenGLCache.GL_FRAMEBUFFER_BINDING.Update(GL_FRAMEBUFFER_BINDING);
+            OpenGLCache.Verify();
+        }
+
+        /// <summary>
         /// Applies the state object's values to the OpenGL context.
         /// </summary>
         /// <param name="force">A value indicating whether to force the state to be bound, even if DSA is available.</param>
@@ -107,6 +136,10 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
                     Apply_BindVertexArrayObject();
                     break;
 
+                case OpenGLStateType.BindFramebuffer:
+                    Apply_BindFramebuffer();
+                    break;
+
                 default:
                     throw new InvalidOperationException();
             }
@@ -121,7 +154,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
                 gl.BindTexture(gl.GL_TEXTURE_2D, GL_TEXTURE_BINDING_2D);
                 gl.ThrowIfError();
 
-                Previous_GL_TEXTURE_BINDING_2D = OpenGLCache.GL_TEXTURE_BINDING_2D2.Update(GL_TEXTURE_BINDING_2D);
+                Previous_GL_TEXTURE_BINDING_2D = OpenGLCache.GL_TEXTURE_BINDING_2D.Update(GL_TEXTURE_BINDING_2D);
             }
         }
 
@@ -135,6 +168,17 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
                 Previous_GL_VERTEX_ARRAY_BINDING         = OpenGLCache.GL_VERTEX_ARRAY_BINDING.Update(GL_VERTEX_ARRAY_BINDING);
                 Previous_GL_ARRAY_BUFFER_BINDING         = OpenGLCache.GL_ARRAY_BUFFER_BINDING.Update(GL_ARRAY_BUFFER_BINDING);
                 Previous_GL_ELEMENT_ARRAY_BUFFER_BINDING = OpenGLCache.GL_ELEMENT_ARRAY_BUFFER_BINDING.Update(GL_ELEMENT_ARRAY_BUFFER_BINDING);
+            }
+        }
+
+        private void Apply_BindFramebuffer()
+        {
+            if (Forced || !gl.IsDirectStateAccessAvailable)
+            {
+                gl.BindFramebuffer(gl.GL_FRAMEBUFFER, GL_FRAMEBUFFER_BINDING);
+                gl.ThrowIfError();
+
+                Previous_GL_FRAMEBUFFER_BINDING = OpenGLCache.GL_FRAMEBUFFER_BINDING.Update(GL_FRAMEBUFFER_BINDING);
             }
         }
 
@@ -159,6 +203,10 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
                     Dispose_BindVertexArrayObject();
                     break;
 
+                case OpenGLStateType.BindFramebuffer:
+                    Dispose_BindFramebuffer();
+                    break;
+
                 default:
                     throw new InvalidOperationException();
             }
@@ -176,7 +224,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
                 gl.BindTexture(gl.GL_TEXTURE_2D, Previous_GL_TEXTURE_BINDING_2D);
                 gl.ThrowIfError();
 
-                OpenGLCache.GL_TEXTURE_BINDING_2D2.Update(Previous_GL_TEXTURE_BINDING_2D);
+                OpenGLCache.GL_TEXTURE_BINDING_2D.Update(Previous_GL_TEXTURE_BINDING_2D);
             }
         }
 
@@ -193,15 +241,28 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
             }
         }
 
+        private void Dispose_BindFramebuffer()
+        {
+            if (Forced || !gl.IsDirectStateAccessAvailable)
+            {
+                gl.BindFramebuffer(gl.GL_FRAMEBUFFER, Previous_GL_FRAMEBUFFER_BINDING);
+                gl.ThrowIfError();
+
+                OpenGLCache.GL_FRAMEBUFFER_BINDING.Update(Previous_GL_FRAMEBUFFER_BINDING);
+            }
+        }
+
         public UInt32 GL_TEXTURE_BINDING_2D { get; private set; }
         public UInt32 GL_VERTEX_ARRAY_BINDING { get; private set; }
         public UInt32 GL_ARRAY_BUFFER_BINDING { get; private set; }
         public UInt32 GL_ELEMENT_ARRAY_BUFFER_BINDING { get; private set; }
+        public UInt32 GL_FRAMEBUFFER_BINDING { get; private set; }
 
         private UInt32 Previous_GL_TEXTURE_BINDING_2D { get; set; }
         private UInt32 Previous_GL_VERTEX_ARRAY_BINDING { get; set; }
         private UInt32 Previous_GL_ARRAY_BUFFER_BINDING { get; set; }
         private UInt32 Previous_GL_ELEMENT_ARRAY_BUFFER_BINDING { get; set; }
+        private UInt32 Previous_GL_FRAMEBUFFER_BINDING { get; set; }
 
         private OpenGLStateType StateType { get; set; }
         private Boolean Disposed { get; set; }

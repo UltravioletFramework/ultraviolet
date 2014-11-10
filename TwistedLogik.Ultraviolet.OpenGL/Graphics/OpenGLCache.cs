@@ -50,7 +50,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
 
         public static OpenGLCachedInteger GL_CURRENT_PROGRAM              { get { return glCurrentProgram; } }
         public static OpenGLCachedInteger GL_TEXTURE_BINDING_1D           { get { return glTextureBinding1D; } }
-        public static OpenGLCachedInteger GL_TEXTURE_BINDING_2D2           { get { return glTextureBinding2D; } }
+        public static OpenGLCachedInteger GL_TEXTURE_BINDING_2D           { get { return glTextureBinding2D; } }
         public static OpenGLCachedInteger GL_TEXTURE_BINDING_3D           { get { return glTextureBinding3D; } }
         public static OpenGLCachedInteger GL_VERTEX_ARRAY_BINDING         { get { return glVertexArrayBinding; } }
         public static OpenGLCachedInteger GL_ARRAY_BUFFER_BINDING         { get { return glArrayBufferBinding; } }
