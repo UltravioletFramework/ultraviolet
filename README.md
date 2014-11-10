@@ -110,7 +110,6 @@ What follows is a tentative road map for the next several major revisions of Ult
   * _Graphics_
     * Support for Direct State Access (DSA)
     * ~~Better support for East Asian character sets in ``SpriteFont``~~
-    * Signed distance field fonts?
 * __Ultraviolet 1.2__
   * _UI_
     * Ultraviolet Core Layout Provider
@@ -120,3 +119,4 @@ What follows is a tentative road map for the next several major revisions of Ult
     * Model class or equivalent
     * Support for model instancing
     * Support for skeletal animation
+  * Signed distance field fonts
