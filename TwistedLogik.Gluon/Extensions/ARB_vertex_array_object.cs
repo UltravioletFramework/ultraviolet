@@ -50,14 +50,6 @@ namespace TwistedLogik.Gluon
 
         public static void BindVertexArray(uint array) { glBindVertexArray(array); }
 
-        public static bool BindVertexArrayIfNoDSA(uint array)
-        {
-            if (EXT_direct_state_access_available)
-                return false;
-            glBindVertexArray(array);
-            return true;
-        }
-
         private delegate bool glIsVertexArrayDelegate(uint array);
         [Require(MinVersion = "3.0", Extension = "GL_ARB_vertex_array_object")]
         private static readonly glIsVertexArrayDelegate glIsVertexArray = null;
