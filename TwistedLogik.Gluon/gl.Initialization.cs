@@ -40,7 +40,7 @@ namespace TwistedLogik.Gluon
             LoadVersion();
             LoadExtensions();
 
-            gl.EXT_direct_state_access_available = IsExtensionSupported("GL_EXT_direct_state_access");
+            gl.IsDirectStateAccessAvailable = IsVersionAtLeast(4, 5) || IsExtensionSupported("GL_EXT_direct_state_access");
             
             var functions = GetOpenGLFunctionFields();
             foreach (var function in functions)
@@ -70,7 +70,7 @@ namespace TwistedLogik.Gluon
             gl.minorVersion = 0;
             gl.extensions.Clear();
 
-            gl.EXT_direct_state_access_available = false;
+            gl.IsDirectStateAccessAvailable = false;
 
             var functions = GetOpenGLFunctionFields();
             foreach (var function in functions)

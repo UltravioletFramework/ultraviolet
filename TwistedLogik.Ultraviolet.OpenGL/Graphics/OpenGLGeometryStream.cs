@@ -75,35 +75,19 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
             if (ibuffers == null)
                 ibuffers = new List<OpenGLIndexBuffer>(1);
 
-            var sdlIndexBuffer = (OpenGLIndexBuffer)ibuffer;
+            var sdlIndexBuffer     = (OpenGLIndexBuffer)ibuffer;
             var sdlIndexBufferName = sdlIndexBuffer.OpenGLName;
+
             this.ibuffers.Add(sdlIndexBuffer);
 
-            OpenGLCache.Verify();
-            var vaoPrev     = OpenGLCache.GL_VERTEX_ARRAY_BINDING.Update(vao);
-            var vBufferPrev = OpenGLCache.GL_ARRAY_BUFFER_BINDING.Update(0);
+            using (OpenGLState.ScopedBindVertexArrayObject(vao, 0, 0, true))
+            {
+                gl.BindBuffer(gl.GL_ELEMENT_ARRAY_BUFFER, sdlIndexBufferName);
+                gl.ThrowIfError();
+            }
 
-            gl.BindVertexArray(vao);
-            gl.ThrowIfError();
-            OpenGLCache.Verify();
-
-            var iBufferPrev = OpenGLCache.GL_ELEMENT_ARRAY_BUFFER_BINDING.Update(sdlIndexBufferName);
-
-            gl.BindBuffer(gl.GL_ELEMENT_ARRAY_BUFFER, sdlIndexBufferName);
-            gl.ThrowIfError();
-            OpenGLCache.Verify();
-
-            glElementArrayBufferBinding = sdlIndexBufferName;
-
-            OpenGLCache.GL_VERTEX_ARRAY_BINDING.Update(vaoPrev);
-            OpenGLCache.GL_ARRAY_BUFFER_BINDING.Update(vBufferPrev);
-            OpenGLCache.GL_ELEMENT_ARRAY_BUFFER_BINDING.Update(iBufferPrev);
-
-            gl.BindVertexArray(vaoPrev);
-            gl.ThrowIfError();
-            OpenGLCache.Verify();
-
-            this.indexBufferElementType = ibuffer.IndexElementType;
+            this.glElementArrayBufferBinding = sdlIndexBufferName;
+            this.indexBufferElementType      = ibuffer.IndexElementType;
         }
 
         /// <summary>
@@ -113,13 +97,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         {
             Contract.EnsureNotDisposed(this, Disposed);
 
-            OpenGLCache.GL_VERTEX_ARRAY_BINDING.Update(vao);
-            OpenGLCache.GL_ARRAY_BUFFER_BINDING.Update(0);
-            OpenGLCache.GL_ELEMENT_ARRAY_BUFFER_BINDING.Update(glElementArrayBufferBinding ?? 0);
-
-            gl.BindVertexArray(vao);
-            gl.ThrowIfError();
-            OpenGLCache.Verify();
+            OpenGLState.BindVertexArrayObject(vao, 0, glElementArrayBufferBinding ?? 0);
         }
 
         /// <summary>

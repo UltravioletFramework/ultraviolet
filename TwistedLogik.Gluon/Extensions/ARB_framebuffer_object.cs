@@ -10,27 +10,11 @@ namespace TwistedLogik.Gluon
 
 		public static void BindFramebuffer(uint target, uint framebuffer) { glBindFramebuffer(target, framebuffer); }
 
-        public static bool BindFramebufferIfNoDSA(uint target, uint framebuffer)
-        {
-            if (EXT_direct_state_access_available)
-                return false;
-            glBindFramebuffer(target, framebuffer);
-            return true;
-        }
-
 		private delegate void glBindRenderbufferDelegate(uint target, uint renderbuffer);
 		[Require(MinVersion = "3.0", Extension = "GL_ARB_framebuffer_object")]
 		private static readonly glBindRenderbufferDelegate glBindRenderbuffer = null;
 
 		public static void BindRenderbuffer(uint target, uint renderbuffer) { glBindRenderbuffer(target, renderbuffer); }
-
-        public static bool BindRenderbufferIfNoDSA(uint target, uint renderbuffer)
-        {
-            if (EXT_direct_state_access_available)
-                return false;
-            glBindRenderbuffer(target, renderbuffer);
-            return true;
-        }
 
 		private delegate void glBlitFramebufferDelegate(int srcX0, int srcY0, int srcX1, int srcY1, int dstX0, int dstY0, int dstX1, int dstY1, uint mask, uint filter);
 		[Require(MinVersion = "3.0", Extension = "GL_ARB_framebuffer_object")]

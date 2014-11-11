@@ -41,14 +41,6 @@ namespace TwistedLogik.Gluon
 
         public static void BindTexture(uint target, uint texture) { glBindTexture(target, texture); }
 
-        public static bool BindTextureIfNoDSA(uint target, uint texture)
-        {
-            if (EXT_direct_state_access_available) 
-                return false;
-            glBindTexture(target, texture);
-            return true;
-        }
-
         private delegate void glBitmapDelegate(int width, int height, float xorig, float yorig, float xmove, float ymove, byte* bitmap);
         [Require(MinVersion = "1.1")]
         private static readonly glBitmapDelegate glBitmap = null;

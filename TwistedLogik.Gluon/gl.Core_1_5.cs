@@ -86,14 +86,6 @@ namespace TwistedLogik.Gluon
 
         public static void BindBuffer(uint target, uint buffer) { glBindBuffer(target, buffer); }
 
-        public static bool BindBufferIfNoDSA(uint target, uint buffer)
-        {
-            if (EXT_direct_state_access_available)
-                return false;
-            glBindBuffer(target, buffer);
-            return true;
-        }
-
         private delegate void glDeleteBuffersDelegate(int n, uint* buffers);
         [Require(MinVersion = "1.5")]
         private static readonly glDeleteBuffersDelegate glDeleteBuffers = null;

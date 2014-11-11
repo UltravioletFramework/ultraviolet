@@ -36,10 +36,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
             var program = programs[programIndex];
             var programID = program.OpenGLName;
 
-            OpenGLCache.GL_CURRENT_PROGRAM.Update(programID);
-            gl.UseProgram(programID);
-            gl.ThrowIfError();
-            OpenGLCache.Verify();
+            OpenGLState.UseProgram(programID);
 
             foreach (var uniform in program.Uniforms)
             {

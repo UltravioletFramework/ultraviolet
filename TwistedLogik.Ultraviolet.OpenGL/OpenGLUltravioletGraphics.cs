@@ -42,7 +42,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL
             }
             gl.Initialize(new OpenGLInitializer());
 
-            OpenGLCache.Reset();
+            OpenGLState.ResetCache();
 
             if (!VerifyCapabilities())
                 throw new NotSupportedException(OpenGLStrings.UnsupportedGraphicsDevice);
@@ -127,9 +127,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL
                     targetSize = currentWindow.ClientSize;
                 }
 
-                OpenGLCache.GL_FRAMEBUFFER_BINDING.Update(targetName);
-                gl.BindFramebuffer(gl.GL_FRAMEBUFFER, targetName);
-                gl.ThrowIfError();
+                OpenGLState.BindFramebuffer(targetName);
 
                 if (this.renderTarget != null)
                     this.renderTarget.UnbindWrite();
@@ -220,9 +218,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL
                 gl.ActiveTexture((uint)(gl.GL_TEXTURE0 + sampler));
                 gl.ThrowIfError();
 
-                OpenGLCache.GL_TEXTURE_BINDING_2D.Update(textureName);
-                gl.BindTexture(gl.GL_TEXTURE_2D, textureName);
-                gl.ThrowIfError();
+                OpenGLState.Texture2DImmediate(textureName);
 
                 if (this.textures[sampler] != null)
                     ((IBindableResource)this.textures[sampler]).UnbindRead();
@@ -266,8 +262,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL
             if (stream == null)
             {
                 this.geometryStream = null;
-                gl.BindVertexArray(0);
-                OpenGLCache.GL_VERTEX_ARRAY_BINDING.Update(0);
+                OpenGLState.BindVertexArrayObject(0, 0, 0);
             }
             else
             {
@@ -471,9 +466,9 @@ namespace TwistedLogik.Ultraviolet.OpenGL
             Contract.Ensure(geometryStream != null, OpenGLStrings.NoGeometryStream);
             Contract.Ensure(geometryStream.IsValid, OpenGLStrings.InvalidGeometryStream);
             
-            Contract.EnsureNot(OpenGLCache.GL_CURRENT_PROGRAM == 0, OpenGLStrings.NoEffect);
+            Contract.EnsureNot(OpenGLState.GL_CURRENT_PROGRAM == 0, OpenGLStrings.NoEffect);
 
-            geometryStream.ApplyAttributes(OpenGLCache.GL_CURRENT_PROGRAM);
+            geometryStream.ApplyAttributes(OpenGLState.GL_CURRENT_PROGRAM);
 
             var glVerts = 0;
             var glPrimitiveType = GetPrimitiveTypeGL(type, count, out glVerts);
@@ -497,9 +492,9 @@ namespace TwistedLogik.Ultraviolet.OpenGL
             Contract.Ensure(geometryStream.IsValid, OpenGLStrings.InvalidGeometryStream);
             Contract.Ensure(geometryStream.HasIndices, OpenGLStrings.InvalidGeometryStream);
 
-            Contract.EnsureNot(OpenGLCache.GL_CURRENT_PROGRAM == 0, OpenGLStrings.NoEffect);
+            Contract.EnsureNot(OpenGLState.GL_CURRENT_PROGRAM == 0, OpenGLStrings.NoEffect);
 
-            geometryStream.ApplyAttributes(OpenGLCache.GL_CURRENT_PROGRAM);
+            geometryStream.ApplyAttributes(OpenGLState.GL_CURRENT_PROGRAM);
 
             var glVerts = 0;
             var glPrimitiveType = GetPrimitiveTypeGL(type, count, out glVerts);

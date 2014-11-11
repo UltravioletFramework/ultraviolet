@@ -114,8 +114,7 @@
     <Compile Include="Graphics\Graphics2D\OpenGLSpriteFontHelper.cs" />
     <Compile Include="Graphics\Graphics2D\OpenGLSpriteFontProcessor.cs" />
     <Compile Include="Graphics\Graphics2D\OpenGLSpriteFontTextureProcessor.cs" />
-    <Compile Include="Graphics\OpenGLCache.cs" />
-    <Compile Include="Graphics\OpenGLCachedInteger.cs" />
+    <Compile Include="Graphics\OpenGLStateInteger.cs" />
     <Compile Include="Graphics\OpenGLEffectProcessor.cs" />
     <Compile Include="Graphics\OpenGLShaderProgram.cs" />
     <Compile Include="Graphics\OpenGLShaderProgramCollection.cs" />
@@ -128,6 +127,7 @@
     <Compile Include="Graphics\OpenGLRenderTarget2D.cs" />
     <Compile Include="Graphics\OpenGLShaderUniformCollection.cs" />
     <Compile Include="Graphics\OpenGLBasicEffect.cs" />
+    <Compile Include="Graphics\OpenGLState.cs" />
     <Compile Include="Graphics\OpenGLSurface2D.cs" />
     <Compile Include="Graphics\OpenGLSurface2DProcessor.cs" />
     <Compile Include="Graphics\IBindableResource.cs" />

@@ -8,14 +8,14 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
     /// Represents a value associated with an OpenGL context that is cached by the OpenGL/SDL2 implementation
     /// of Ultraviolet in order to avoid costly calls to glGet() functions.
     /// </summary>
-    internal class OpenGLCachedInteger
+    internal class OpenGLStateInteger
     {
         /// <summary>
-        /// Initializes a new instance of the OpenGLCachedValue class.
+        /// Initializes a new instance of the <see cref="OpenGLStateInteger"/> class.
         /// </summary>
         /// <param name="name">The human-readable name of this value.</param>
         /// <param name="pname">The property name of this value when retrieved via glGet().</param>
-        public OpenGLCachedInteger(String name, UInt32 pname)
+        public OpenGLStateInteger(String name, UInt32 pname)
         {
             this.name  = name;
             this.pname = pname;
@@ -26,7 +26,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         /// </summary>
         /// <param name="value">The cached value to convert.</param>
         /// <returns>The converted integer.</returns>
-        public static implicit operator Int32(OpenGLCachedInteger value)
+        public static implicit operator Int32(OpenGLStateInteger value)
         {
             return value.value;
         }
@@ -36,7 +36,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         /// </summary>
         /// <param name="value">The cached value to convert.</param>
         /// <returns>The converted integer.</returns>
-        public static implicit operator UInt32(OpenGLCachedInteger value)
+        public static implicit operator UInt32(OpenGLStateInteger value)
         {
             return (UInt32)value.value;
         }
@@ -85,32 +85,6 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
             var old = (uint)this.value;
             this.value = (int)value;
             return old;
-        }
-
-        /// <summary>
-        /// Updates the cached value if GL_EXT_direct_state_access is not available; otherwise, does nothing.
-        /// </summary>
-        /// <param name="value">The new value.</param>
-        /// <returns>The old value.</returns>
-        public Int32 UpdateIfNoDSA(Int32 value)
-        {
-            if (OpenGLCache.EXT_direct_state_access)
-                return this.value;
-
-            return Update(value);
-        }
-
-        /// <summary>
-        /// Updates the cached value if GL_EXT_direct_state_access is not available; otherwise, does nothing.
-        /// </summary>
-        /// <param name="value">The new value.</param>
-        /// <returns>The old value.</returns>
-        public UInt32 UpdateIfNoDSA(UInt32 value)
-        {
-            if (OpenGLCache.EXT_direct_state_access)
-                return (uint)this.value;
-
-            return Update(value);
         }
 
         /// <summary>
