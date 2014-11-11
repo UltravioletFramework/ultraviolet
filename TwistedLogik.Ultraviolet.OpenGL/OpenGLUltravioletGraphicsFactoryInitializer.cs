@@ -26,7 +26,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL
             factory.SetFactoryMethod<DynamicVertexBufferFactory>((uv, vdecl, vcount) => new OpenGLVertexBuffer(uv, vdecl, vcount, gl.GL_DYNAMIC_DRAW));
             factory.SetFactoryMethod<DynamicIndexBufferFactory>((uv, itype, icount) => new OpenGLIndexBuffer(uv, itype, icount, gl.GL_DYNAMIC_DRAW));
             factory.SetFactoryMethod<Surface2DFactory>((uv, width, height) => new OpenGLSurface2D(uv, width, height));
-            factory.SetFactoryMethod<Surface2DFromBitmapFactory>((uv, bitmap) => new OpenGLSurface2D(uv, bitmap));
+            factory.SetFactoryMethod<Surface2DFromSourceFactory>((uv, source) => new OpenGLSurface2D(uv, source));
             factory.SetFactoryMethod<Texture2DFactory>((uv, width, height) => new OpenGLTexture2D(uv, width, height));
             factory.SetFactoryMethod<RenderTarget2DFactory>((uv, width, height) => new OpenGLRenderTarget2D(uv, width, height));
             factory.SetFactoryMethod<RenderBuffer2DFactory>((uv, format, width, height) => new OpenGLRenderBuffer2D(uv, format, width, height));

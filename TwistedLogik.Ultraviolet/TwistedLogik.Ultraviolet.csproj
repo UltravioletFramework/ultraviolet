@@ -105,7 +105,6 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -229,6 +228,7 @@
     <Compile Include="Graphics\BasicEffect.cs" />
     <Compile Include="Graphics\Surface2D.cs" />
     <Compile Include="CursorCollectionProcessor.cs" />
+    <Compile Include="Graphics\SurfaceSource.cs" />
     <Compile Include="Graphics\TextureAtlas.cs" />
     <Compile Include="Graphics\TextureAtlasDefinition.cs" />
     <Compile Include="Graphics\TextureAtlasImage.cs" />

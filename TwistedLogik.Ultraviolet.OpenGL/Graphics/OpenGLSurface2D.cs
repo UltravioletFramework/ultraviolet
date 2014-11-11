@@ -18,9 +18,9 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         /// Initializes a new instance of the OpenGLSurface2D class.
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
-        /// <param name="bitmap">The bitmap from which to create the surface.</param>
-        public OpenGLSurface2D(UltravioletContext uv, Bitmap bitmap)
-            : this(uv, SDL_Surface.CreateFromBitmap(bitmap))
+        /// <param name="source">The surface source from which to create the surface.</param>
+        public OpenGLSurface2D(UltravioletContext uv, SurfaceSource source)
+            : this(uv, SDL_Surface.CreateFromSurfaceSource(source))
         {
 
         }

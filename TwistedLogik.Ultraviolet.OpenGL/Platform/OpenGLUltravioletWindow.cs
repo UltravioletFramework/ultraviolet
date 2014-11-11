@@ -7,6 +7,7 @@ using TwistedLogik.Ultraviolet.Graphics;
 using TwistedLogik.Ultraviolet.OpenGL.Graphics;
 using TwistedLogik.Ultraviolet.Platform;
 using TwistedLogik.Ultraviolet.SDL2;
+using TwistedLogik.Ultraviolet.SDL2.Graphics;
 using TwistedLogik.Ultraviolet.SDL2.Native;
 
 namespace TwistedLogik.Ultraviolet.OpenGL.Platform
@@ -565,7 +566,10 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
             {
                 using (var iconbmp = icon.ToBitmap())
                 {
-                    return new OpenGLSurface2D(uv, SDL_Surface.CreateFromBitmap(iconbmp));
+                    using (var source = new BitmapSurfaceSource(iconbmp))
+                    {
+                        return new OpenGLSurface2D(uv, SDL_Surface.CreateFromSurfaceSource(source));
+                    }
                 }
             }
             finally

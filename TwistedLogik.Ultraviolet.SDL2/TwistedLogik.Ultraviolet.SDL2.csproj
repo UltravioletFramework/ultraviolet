@@ -125,6 +125,7 @@
     <Compile Include="Native\SDL_GameControllerButton.cs" />
     <Compile Include="Native\SDL_GLprofile.cs" />
     <Compile Include="Native\SDL_GLcontextFlag.cs" />
+    <Compile Include="Graphics\BitmapSurfaceSource.cs" />
     <Compile Include="Native\SDL_SysWMinfoUnion.cs" />
     <Compile Include="Native\SDL_SysWMinfo.cs" />
     <Compile Include="Native\SDL_SysWMinfo_mir.cs" />

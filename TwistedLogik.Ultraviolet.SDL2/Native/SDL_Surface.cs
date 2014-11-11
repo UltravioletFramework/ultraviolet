@@ -1,15 +1,16 @@
 ﻿using System;
 using System.Drawing;
-using System.Drawing.Imaging;
 using System.IO;
 using TwistedLogik.Nucleus;
+using TwistedLogik.Ultraviolet.Graphics;
+using TwistedLogik.Ultraviolet.SDL2.Graphics;
 
 namespace TwistedLogik.Ultraviolet.SDL2.Native
 {
     /// <summary>
     /// Represents an SDL surface.
     /// </summary>
-    public unsafe sealed class SDL_Surface : IDisposable
+    public unsafe sealed partial class SDL_Surface : IDisposable
     {
         /// <summary>
         /// Initializes a new instance of the SDL_Surface class.
@@ -57,7 +58,10 @@ namespace TwistedLogik.Ultraviolet.SDL2.Native
             {
                 using (var bmp = new Bitmap(mstream))
                 {
-                    return CreateFromBitmap(bmp);
+                    using (var src = new BitmapSurfaceSource(bmp))
+                    {
+                        return CreateFromSurfaceSource(src);
+                    }
                 }
             }
         }
@@ -65,24 +69,21 @@ namespace TwistedLogik.Ultraviolet.SDL2.Native
         /// <summary>
         /// Creates a new instance of SDL_Surface from the image data contained in the specified bitmap.
         /// </summary>
-        /// <param name="bmp">The bitmap that contains the image data from which to create the surface.</param>
+        /// <param name="source">The surface source that contains the image data from which to create the surface.</param>
         /// <returns>The instance of SDL_Surface that was created.</returns>
-        public static SDL_Surface CreateFromBitmap(Bitmap bmp)
+        public static SDL_Surface CreateFromSurfaceSource(SurfaceSource source)
         {
-            Contract.Require(bmp, "bmp");
+            Contract.Require(source, "source");
 
-            var bmpData = bmp.LockBits(new System.Drawing.Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
-            var bmpSurface = new SDL_Surface(bmp.Width, bmp.Height);
-            for (int y = 0; y < bmp.Height; y++)
+            var bmpSurface = new SDL_Surface(source.Width, source.Height);
+            for (int y = 0; y < source.Height; y++)
             {
-                var pSrc = (uint*)((byte*)bmpData.Scan0 + (bmpData.Stride * y));
                 var pDst = (uint*)((byte*)bmpSurface.Native->pixels + (bmpSurface.Native->pitch * y));
-                for (int x = 0; x < bmp.Width; x++)
+                for (int x = 0; x < source.Width; x++)
                 {
-                    *pDst++ = Color.FromRgba(*pSrc++).ToArgb();
+                    *pDst++ = source[x, y].ToArgb();
                 }
             }
-            bmp.UnlockBits(bmpData);
             return bmpSurface;
         }
 

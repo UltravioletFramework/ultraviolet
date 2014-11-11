@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Drawing;
 using System.IO;
 using TwistedLogik.Nucleus;
 
@@ -15,12 +14,12 @@ namespace TwistedLogik.Ultraviolet.Graphics
     public delegate Surface2D Surface2DFactory(UltravioletContext uv, Int32 width, Int32 height);
 
     /// <summary>
-    /// Represents a factory method which constructs instances of the <see cref="Surface2D"/> class from an instance of <see cref="System.Drawing.Bitmap"/>.
+    /// Represents a factory method which constructs instances of the <see cref="Surface2D"/> class from an instance of <see cref="SurfaceSource"/>.
     /// </summary>
     /// <param name="uv">The Ultraviolet context.</param>
-    /// <param name="bitmap">The bitmap from which to create the surface.</param>
+    /// <param name="source">The surface source from which to create the surface.</param>
     /// <returns>The instance of <see cref="Surface2D"/> that was created.</returns>
-    public delegate Surface2D Surface2DFromBitmapFactory(UltravioletContext uv, Bitmap bitmap);
+    public delegate Surface2D Surface2DFromSourceFactory(UltravioletContext uv, SurfaceSource source);
 
     /// <summary>
     /// Represents a two-dimensional image which is held in CPU memory.
@@ -57,14 +56,14 @@ namespace TwistedLogik.Ultraviolet.Graphics
         /// <summary>
         /// Creates a new instance of the <see cref="Surface2D"/> class.
         /// </summary>
-        /// <param name="bitmap">The <see cref="Bitmap"/> from which to create the surface.</param>
+        /// <param name="source">The <see cref="SurfaceSource"/> from which to create the surface.</param>
         /// <returns>The instance of <see cref="Surface2D"/> that was created.</returns>
-        public static Surface2D Create(Bitmap bitmap)
+        public static Surface2D Create(SurfaceSource source)
         {
-            Contract.Require(bitmap, "bitmap");
+            Contract.Require(source, "source");
 
             var uv = UltravioletContext.DemandCurrent();
-            return uv.GetFactoryMethod<Surface2DFromBitmapFactory>()(uv, bitmap);
+            return uv.GetFactoryMethod<Surface2DFromSourceFactory>()(uv, source);
         }
 
         /// <summary>
