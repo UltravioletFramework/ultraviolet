@@ -45,9 +45,7 @@ namespace TwistedLogik.Gluon
             var functions = GetOpenGLFunctionFields();
             foreach (var function in functions)
             {
-                var name = function.Name;
-                var requirements = function.GetCustomAttributes(typeof(RequireAttribute), false).Cast<RequireAttribute>().FirstOrDefault();
-                if (!LoadFunction(initializer, function, requirements))
+                if (!LoadFunction(initializer, function))
                 {
                     Debug.WriteLine(GluonStrings.CouldNotLoadFunction.Format(function));
                 }
@@ -66,6 +64,8 @@ namespace TwistedLogik.Gluon
         {
             Contract.Ensure(initialized, GluonStrings.OpenGLNotInitialized);
 
+            gl.isGLES = false;
+            gl.isEmulated = false;
             gl.majorVersion = 0;
             gl.minorVersion = 0;
             gl.extensions.Clear();
@@ -199,6 +199,22 @@ namespace TwistedLogik.Gluon
         }
 
         /// <summary>
+        /// Gets a value indicating whether the OpenGL context is an OpenGL ES context.
+        /// </summary>
+        public static Boolean IsGLES
+        {
+            get { return isGLES; }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether Gluon thinks it's running inside of an emulator.
+        /// </summary>
+        public static Boolean IsEmulated
+        {
+            get { return isEmulated; }
+        }
+
+        /// <summary>
         /// Gets all of the fields of the <see cref="gl"/> type which represent bindings to OpenGL functions.
         /// </summary>
         /// <returns>A collection containing the function binding fields.</returns>
@@ -218,15 +234,14 @@ namespace TwistedLogik.Gluon
         /// </summary>
         /// <param name="initializer">The OpenGL initializer.</param>
         /// <param name="name">The name of the field that represents the function to load.</param>
-        /// <param name="reqs">The function's requirements.</param>
         /// <returns>true if the function was loaded; otherwise, false.</returns>
-        private static bool LoadFunction(IOpenGLInitializer initializer, String name, RequireAttribute reqs = null)
+        private static bool LoadFunction(IOpenGLInitializer initializer, String name)
         {
             var field = typeof(gl).GetField(name, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static);
             if (field == null)
                 throw new MissingMethodException(name);
 
-            return LoadFunction(initializer, field, reqs);
+            return LoadFunction(initializer, field);
         }
 
         /// <summary>
@@ -234,11 +249,11 @@ namespace TwistedLogik.Gluon
         /// </summary>
         /// <param name="initializer">The OpenGL initializer.</param>
         /// <param name="field">The field that represents the function to load.</param>
-        /// <param name="reqs">The function's requirements.</param>
         /// <returns>true if the function was loaded successfully, or wasn't loaded because its extension is not supported; otherwise, false.</returns>
-        private static bool LoadFunction(IOpenGLInitializer initializer, FieldInfo field, RequireAttribute reqs = null)
+        private static bool LoadFunction(IOpenGLInitializer initializer, FieldInfo field)
         {
             var name = field.Name.StartsWith("gl") ? field.Name : "gl" + field.Name;
+            var reqs = field.GetCustomAttributes(typeof(RequireAttribute), false).Cast<RequireAttribute>().FirstOrDefault();
 
             // If this isn't a core function, attempt to load it as an extension.
             if (reqs != null && !reqs.IsCore(majorVersion, minorVersion))
@@ -268,14 +283,29 @@ namespace TwistedLogik.Gluon
         /// </summary>
         private static void LoadVersion()
         {
-            int majorVersion;
-            int minorVersion;
+            Int32 majorVersion = 0, glesMajorVersion = 0;
+            Int32 minorVersion = 0, glesMinorVersion = 0;
+
+            var version = gl.GetString(gl.GL_VERSION);
+            isGLES = version.StartsWith("OpenGL ES");
+            isEmulated = false;
+
+            if (isGLES)
+            {
+                // Attempt to parse the OpenGL ES version.
+                // This number may be different than what's being reported by GL_MAJOR_VERSION
+                // if we're running inside of an emulator with native GPU enabled.
+                var versionString = version.Substring("OpenGL ES".Length);
+                var components    = versionString.Split(new[] { ' ', '.' }, StringSplitOptions.RemoveEmptyEntries);
+                if (components.Length < 2 || !Int32.TryParse(components[0], out glesMajorVersion) || !Int32.TryParse(components[1], out glesMinorVersion))
+                {
+                    throw new InvalidOperationException(); // TODO better exception
+                }
+            }
 
             gl.GetIntegerv(gl.GL_MAJOR_VERSION, &majorVersion);
-            if (gl.GetError() == gl.GL_INVALID_ENUM)
+            if (gl.GetError() == gl.GL_INVALID_ENUM) 
             {
-                var version = gl.GetString(gl.GL_VERSION);
-
                 var ixSpace = version.IndexOf(' ');
                 if (ixSpace >= 0)
                 {
@@ -292,6 +322,16 @@ namespace TwistedLogik.Gluon
                 gl.majorVersion = majorVersion;
                 gl.minorVersion = minorVersion;
             }
+
+            if (isGLES)
+            {
+                if (glesMajorVersion != majorVersion || glesMinorVersion != minorVersion)
+                {
+                    gl.isEmulated = true;
+                    gl.majorVersion = glesMajorVersion;
+                    gl.minorVersion = glesMinorVersion;
+                }
+            }
         }
 
         /// <summary>
@@ -299,14 +339,26 @@ namespace TwistedLogik.Gluon
         /// </summary>
         private static void LoadExtensions()
         {
-            int numExtensions;
-            gl.glGetIntegerv(gl.GL_NUM_EXTENSIONS, &numExtensions);
-
             extensions.Clear();
-            for (uint i = 0; i < numExtensions; i++)
+
+            if (isGLES && majorVersion < 3)
             {
-                var extension = gl.GetStringi(gl.GL_EXTENSIONS, i);
-                extensions.Add(extension);
+                var reportedExtensions = gl.GetString(gl.GL_EXTENSIONS).Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                foreach (var extension in reportedExtensions)
+                {
+                    extensions.Add(extension);
+                }
+            }
+            else
+            {
+                Int32 numExtensions;
+                gl.glGetIntegerv(gl.GL_NUM_EXTENSIONS, &numExtensions);
+
+                for (var i = 0; i < numExtensions; i++)
+                {
+                    var extension = gl.GetStringi(gl.GL_EXTENSIONS, (UInt32)i);
+                    extensions.Add(extension);
+                }
             }
         }
         
@@ -333,8 +385,8 @@ namespace TwistedLogik.Gluon
             var valFunction = Expression.Constant(function);
             var valHasReqs = Expression.Constant(requirements != null);
             var valIsCore = Expression.Constant(requirements != null && requirements.IsCore(majorVersion, minorVersion));
-            var valExt = Expression.Constant(requirements.Extension);
-            var valExtFn = Expression.Constant(requirements.ExtensionFunction);
+            var valExt = Expression.Constant(requirements == null ? null : requirements.Extension);
+            var valExtFn = Expression.Constant(requirements == null ? null : requirements.ExtensionFunction);
 
             var delegateInvoke = type.GetMethod("Invoke");
             var delegateParameters = delegateInvoke.GetParameters().Select(x => Expression.Parameter(x.ParameterType, x.Name));
@@ -386,6 +438,8 @@ namespace TwistedLogik.Gluon
         private static Boolean initialized;
 
         // OpenGL API information.
+        private static Boolean isGLES;
+        private static Boolean isEmulated;
         private static Int32 majorVersion;
         private static Int32 minorVersion;
         private static readonly HashSet<String> extensions = 
