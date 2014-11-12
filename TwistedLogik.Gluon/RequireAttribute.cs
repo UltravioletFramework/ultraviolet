@@ -22,29 +22,33 @@ namespace TwistedLogik.Gluon
         /// </summary>
         /// <param name="major">The major version.</param>
         /// <param name="minor">The minor version.</param>
+        /// <param name="gles">A value indicating whether the OpenGL profile being evaluated is an OpenGL ES profile.</param>
         /// <returns>true if this is a core function; otherwise, false.</returns>
-        public Boolean IsCore(Int32 major, Int32 minor)
+        public Boolean IsCore(Int32 major, Int32 minor, Boolean gles)
         {
+            var minVersion = (gles ? MinVersionESValue : MinVersionValue) ?? MinVersionValue;
+            var maxVersion = (gles ? MaxVersionESValue : MaxVersionValue) ?? MaxVersionValue;
+
             if (String.IsNullOrEmpty(Extension))
                 return true;
             else
             {
-                if (MinVersionValue == null && MaxVersionValue == null)
+                if (minVersion == null && maxVersion == null)
                     return false;
             }
 
             var version = new Version(major, minor, 0, 0);
 
             var satisfiesMin = true;
-            if (MinVersionValue != null)
+            if (minVersion != null)
             {
-                satisfiesMin = version >= MinVersionValue;
+                satisfiesMin = version >= minVersion;
             }
 
             var satisfiesMax = true;
-            if (MaxVersionValue != null)
+            if (maxVersion != null)
             {
-                satisfiesMax = version <= MaxVersionValue;
+                satisfiesMax = version <= maxVersion;
             }
 
             return satisfiesMin && satisfiesMax;
@@ -54,12 +58,13 @@ namespace TwistedLogik.Gluon
         /// Gets a value indicating whether this function is part of the core profile in the specified version of OpenGL.
         /// </summary>
         /// <param name="version">The version to evaluate.</param>
+        /// <param name="gles">A value indicating whether the OpenGL profile being evaluated is an OpenGL ES profile.</param>
         /// <returns>true if this is a core function; otherwise, false.</returns>
-        public Boolean IsCore(Version version)
+        public Boolean IsCore(Version version, Boolean gles)
         {
             Contract.Require(version, "version");
 
-            return IsCore(version.Major, version.Minor);
+            return IsCore(version.Major, version.Minor, gles);
         }
 
         /// <summary>
@@ -76,11 +81,32 @@ namespace TwistedLogik.Gluon
         }
 
         /// <summary>
+        /// Gets or sets the minimum OpenGL ES version in which the function appears as part of the core API.
+        /// </summary>
+        public String MinVersionES
+        {
+            get { return minVersionES; }
+            set
+            {
+                minVersionES = value;
+                minVersionESValue = String.IsNullOrEmpty(value) ? null : Version.Parse(value);
+            }
+        }
+
+        /// <summary>
         /// Gets the minimum OpenGL version in which the function appears as part of the core API.
         /// </summary>
         public Version MinVersionValue
         {
             get { return minVersionValue; }
+        }
+
+        /// <summary>
+        /// Gets the minimum OpenGL ES version in which the function appears as part of the core API.
+        /// </summary>
+        public Version MinVersionESValue
+        {
+            get { return minVersionESValue; }
         }
 
         /// <summary>
@@ -97,11 +123,32 @@ namespace TwistedLogik.Gluon
         }
 
         /// <summary>
+        /// Gets or sets the maximum OpenGL ES version in which the function appears as part of the core API.
+        /// </summary>
+        public String MaxVersionES
+        {
+            get { return maxVersionES; }
+            set
+            {
+                maxVersionES = value;
+                maxVersionESValue = String.IsNullOrEmpty(value) ? null : Version.Parse(value);
+            }
+        }
+
+        /// <summary>
         /// Gets the maximum OpenGL version in which the function appears as part of the core API.
         /// </summary>
         public Version MaxVersionValue
         {
             get { return maxVersionValue; }
+        }
+
+        /// <summary>
+        /// Gets the maximum OpenGL ES version in which the function appears as part of the core API.
+        /// </summary>
+        public Version MaxVersionESValue
+        {
+            get { return maxVersionESValue; }
         }
 
         /// <summary>
@@ -124,9 +171,13 @@ namespace TwistedLogik.Gluon
 
         // Property values.
         private String minVersion;
+        private String minVersionES;
         private Version minVersionValue;
+        private Version minVersionESValue;
         private String maxVersion;
+        private String maxVersionES;
         private Version maxVersionValue;
+        private Version maxVersionESValue;
         private String extension;
         private String extensionFunction;
     }

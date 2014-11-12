@@ -32,10 +32,10 @@ namespace TwistedLogik.Gluon
 
             initializing = true;
 
-            LoadFunction(initializer, "glGetError");
-            LoadFunction(initializer, "glGetIntegerv");
-            LoadFunction(initializer, "glGetString");
-            LoadFunction(initializer, "glGetStringi");
+            LoadFunction(initializer, "glGetError", false);
+            LoadFunction(initializer, "glGetIntegerv", false);
+            LoadFunction(initializer, "glGetString", false);
+            LoadFunction(initializer, "glGetStringi", false);
 
             LoadVersion();
             LoadExtensions();
@@ -234,14 +234,15 @@ namespace TwistedLogik.Gluon
         /// </summary>
         /// <param name="initializer">The OpenGL initializer.</param>
         /// <param name="name">The name of the field that represents the function to load.</param>
+        /// <param name="checkRequirements">A value indicating whether to check the function's requirements.</param>
         /// <returns>true if the function was loaded; otherwise, false.</returns>
-        private static bool LoadFunction(IOpenGLInitializer initializer, String name)
+        private static bool LoadFunction(IOpenGLInitializer initializer, String name, Boolean checkRequirements = true)
         {
             var field = typeof(gl).GetField(name, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static);
             if (field == null)
                 throw new MissingMethodException(name);
 
-            return LoadFunction(initializer, field);
+            return LoadFunction(initializer, field, checkRequirements);
         }
 
         /// <summary>
@@ -249,14 +250,15 @@ namespace TwistedLogik.Gluon
         /// </summary>
         /// <param name="initializer">The OpenGL initializer.</param>
         /// <param name="field">The field that represents the function to load.</param>
+        /// <param name="checkRequirements">A value indicating whether to check the function's requirements.</param>
         /// <returns>true if the function was loaded successfully, or wasn't loaded because its extension is not supported; otherwise, false.</returns>
-        private static bool LoadFunction(IOpenGLInitializer initializer, FieldInfo field)
+        private static bool LoadFunction(IOpenGLInitializer initializer, FieldInfo field, Boolean checkRequirements = true)
         {
             var name = field.Name.StartsWith("gl") ? field.Name : "gl" + field.Name;
-            var reqs = field.GetCustomAttributes(typeof(RequireAttribute), false).Cast<RequireAttribute>().FirstOrDefault();
+            var reqs = checkRequirements ? field.GetCustomAttributes(typeof(RequireAttribute), false).Cast<RequireAttribute>().FirstOrDefault() : null;
 
             // If this isn't a core function, attempt to load it as an extension.
-            if (reqs != null && !reqs.IsCore(majorVersion, minorVersion))
+            if (reqs != null && !reqs.IsCore(majorVersion, minorVersion, isGLES))
             {
                 if (!IsExtensionSupported(reqs.Extension))
                 {
@@ -384,7 +386,7 @@ namespace TwistedLogik.Gluon
         {
             var valFunction = Expression.Constant(function);
             var valHasReqs = Expression.Constant(requirements != null);
-            var valIsCore = Expression.Constant(requirements != null && requirements.IsCore(majorVersion, minorVersion));
+            var valIsCore = Expression.Constant(requirements != null && requirements.IsCore(majorVersion, minorVersion, isGLES));
             var valExt = Expression.Constant(requirements == null ? null : requirements.Extension);
             var valExtFn = Expression.Constant(requirements == null ? null : requirements.ExtensionFunction);
 
