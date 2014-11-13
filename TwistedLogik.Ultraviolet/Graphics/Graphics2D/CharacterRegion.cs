@@ -21,7 +21,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         {
             if (end < start)
             {
-                throw new ArgumentException("TODO");
+                throw new ArgumentOutOfRangeException("end");
             }
             this.start = start;
             this.end   = end;
