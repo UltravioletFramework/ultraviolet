@@ -442,6 +442,9 @@ namespace TwistedLogik.Ultraviolet
             {
                 Contract.EnsureNotDisposed(this, Disposed);
 
+#if ANDROID
+                return UltravioletPlatform.Android;
+#else
                 switch (Environment.OSVersion.Platform)
                 {
                     case PlatformID.Win32NT:
@@ -453,6 +456,7 @@ namespace TwistedLogik.Ultraviolet
                     default:
                         throw new NotSupportedException();
                 }
+#endif
             }
         }
 
@@ -692,7 +696,7 @@ namespace TwistedLogik.Ultraviolet
         {
             try
             {
-                Assembly shim;
+                Assembly shim = null;
 
                 switch (Platform)
                 {
@@ -702,7 +706,7 @@ namespace TwistedLogik.Ultraviolet
                         break;
 
                     case UltravioletPlatform.Android:
-                        shim = Assembly.LoadFrom("TwistedLogik.Ultraviolet.Android.dll");
+                        shim = Assembly.Load("TwistedLogik.Ultraviolet.Android.dll");
                         break;
 
                     default:

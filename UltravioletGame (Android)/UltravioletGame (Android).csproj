@@ -122,7 +122,6 @@
     <Content Include="..\UltravioletGame\uv.ico">
       <Link>uv.ico</Link>
     </Content>
-    <AndroidAsset Include="Assets\Test.xml" />
     <Content Include="Properties\AndroidManifest.xml" />
   </ItemGroup>
   <ItemGroup>
@@ -137,6 +136,10 @@
     <ProjectReference Include="..\TwistedLogik.Ultraviolet %28Android%29\TwistedLogik.Ultraviolet %28Android%29.csproj">
       <Project>{0b17931c-1595-4ada-9086-f26e5f5a387d}</Project>
       <Name>TwistedLogik.Ultraviolet %28Android%29</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TwistedLogik.Ultraviolet.Android\TwistedLogik.Ultraviolet.Android.csproj">
+      <Project>{1ebcae25-9fc2-420a-8e62-c5b6733bac9d}</Project>
+      <Name>TwistedLogik.Ultraviolet.Android</Name>
     </ProjectReference>
     <ProjectReference Include="..\TwistedLogik.Ultraviolet.BASS %28Android%29\TwistedLogik.Ultraviolet.BASS %28Android%29.csproj">
       <Project>{381b05eb-e12e-451c-a272-2f5c2fd9c106}</Project>
@@ -154,7 +157,7 @@
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" ProjectLinkReference="f6c64886-59bf-4dfd-af10-53c1700ee20d" />
+      <UserProperties ProjectLinkReference="f6c64886-59bf-4dfd-af10-53c1700ee20d" ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" />
     </VisualStudio>
   </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
