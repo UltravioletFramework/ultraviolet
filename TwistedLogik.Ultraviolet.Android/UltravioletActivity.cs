@@ -8,12 +8,11 @@ using TwistedLogik.Nucleus;
 using TwistedLogik.Nucleus.Messages;
 using TwistedLogik.Ultraviolet.Platform;
 
-namespace TwistedLogik.Ultraviolet
+namespace TwistedLogik.Ultraviolet.Android
 {
     /// <summary>
     /// Represents an <see cref="Activity"/> which hosts and runs an Ultraviolet application.
     /// </summary>
-    [CLSCompliant(false)]
     public abstract class UltravioletActivity : SDLActivity,
         IMessageSubscriber<UltravioletMessageID>,
         IUltravioletComponent,
@@ -327,12 +326,6 @@ namespace TwistedLogik.Ultraviolet
         protected void PopulateConfiguration(UltravioletConfiguration configuration)
         {
             Contract.Require(configuration, "configuration");
-
-            if (this.settings != null && this.settings.Window != null)
-            {
-                configuration.InitialWindowPosition   = this.settings.Window.WindowedPosition;
-                configuration.InitialWindowClientSize = this.settings.Window.WindowedClientSize;
-            }
         }
 
         /// <summary>
@@ -439,7 +432,7 @@ namespace TwistedLogik.Ultraviolet
             if (!File.Exists(path))
                 return;
 
-            this.settings = UltravioletApplicationSettings.Load(path);
+            this.settings = UltravioletActivitySettings.Load(path);
         }
 
         /// <summary>
@@ -452,8 +445,8 @@ namespace TwistedLogik.Ultraviolet
 
             var path = Path.Combine(GetLocalApplicationSettingsDirectory(), "UltravioletSettings.xml");
 
-            this.settings = UltravioletApplicationSettings.FromCurrentSettings(Ultraviolet);
-            UltravioletApplicationSettings.Save(path, settings);
+            this.settings = UltravioletActivitySettings.FromCurrentSettings(Ultraviolet);
+            UltravioletActivitySettings.Save(path, settings);
         }
 
         /// <summary>
@@ -535,6 +528,6 @@ namespace TwistedLogik.Ultraviolet
         private String application;
 
         // The application's settings.
-        private UltravioletApplicationSettings settings;
+        private UltravioletActivitySettings settings;
     }
 }

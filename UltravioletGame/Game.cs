@@ -18,7 +18,7 @@ namespace SafeProjectName
     /// </summary>
 #if ANDROID
     [Android.App.Activity(Label = "GameActivity", MainLauncher = true)]
-    public class Game : UltravioletActivity
+    public class Game : TwistedLogik.Ultraviolet.Android.UltravioletActivity
 #else
     public class Game : UltravioletApplication
 #endif
