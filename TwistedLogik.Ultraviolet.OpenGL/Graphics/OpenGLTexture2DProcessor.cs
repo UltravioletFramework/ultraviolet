@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Drawing;
-using System.Drawing.Imaging;
 using System.IO;
 using TwistedLogik.Gluon;
 using TwistedLogik.Ultraviolet.Content;
@@ -53,13 +51,12 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
 
             using (var stream = new MemoryStream(bytes))
             {
-                using (var img = new Bitmap(stream))
+                using (var source = SurfaceSource.Create(stream))
                 {
-                    using (var imgSurface = new SDL_Surface(img.Width, img.Height))
+                    using (var imgSurface = new SDL_Surface(source.Width, source.Height))
                     {
-                        var imgData = img.LockBits(new System.Drawing.Rectangle(0, 0, img.Width, img.Height), ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
-                        var imgTexture = new OpenGLTexture2D(manager.Ultraviolet, gl.GL_RGBA8, imgData.Width, imgData.Height, gl.GL_RGBA, gl.GL_UNSIGNED_BYTE, imgData.Scan0);
-                        img.UnlockBits(imgData);
+                        var imgTexture = new OpenGLTexture2D(manager.Ultraviolet, gl.GL_RGBA8, 
+                            source.Width, source.Height, gl.GL_RGBA, gl.GL_UNSIGNED_BYTE, source.Data);
 
                         return imgTexture;
                     }

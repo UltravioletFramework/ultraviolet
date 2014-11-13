@@ -2,6 +2,7 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
@@ -433,6 +434,29 @@ namespace TwistedLogik.Ultraviolet
         }
 
         /// <summary>
+        /// Gets the platform on which this context is running.
+        /// </summary>
+        public UltravioletPlatform Platform
+        {
+            get
+            {
+                Contract.EnsureNotDisposed(this, Disposed);
+
+                switch (Environment.OSVersion.Platform)
+                {
+                    case PlatformID.Win32NT:
+                        return UltravioletPlatform.Windows;
+
+                    case PlatformID.Unix:
+                        return UltravioletPlatform.Linux;
+
+                    default:
+                        throw new NotSupportedException();
+                }
+            }
+        }
+
+        /// <summary>
         /// Gets the object that is hosting the Ultraviolet context.
         /// </summary>
         public IUltravioletHost Host
@@ -658,6 +682,42 @@ namespace TwistedLogik.Ultraviolet
 
             InitializeFactoryMethodsInAssembly(asmCore);
             InitializeFactoryMethodsInAssembly(asmImpl);
+            InitializeFactoryMethodsInCompatibilityShim();
+        }
+
+        /// <summary>
+        /// Initializes any factory methods exposed by the current platform compatibility shim.
+        /// </summary>
+        private void InitializeFactoryMethodsInCompatibilityShim()
+        {
+            try
+            {
+                Assembly shim;
+
+                switch (Platform)
+                {
+                    case UltravioletPlatform.Windows:
+                    case UltravioletPlatform.Linux:
+                        shim = Assembly.LoadFrom("TwistedLogik.Ultraviolet.Desktop.dll");
+                        break;
+
+                    case UltravioletPlatform.Android:
+                        shim = Assembly.LoadFrom("TwistedLogik.Ultraviolet.Android.dll");
+                        break;
+
+                    default:
+                        throw new NotSupportedException();
+                }
+
+                if (shim != null)
+                {
+                    InitializeFactoryMethodsInAssembly(shim);
+                }
+            }
+            catch (FileNotFoundException e)
+            {
+                throw new InvalidCompatibilityShimException(UltravioletStrings.MissingCompatibilityShim.Format(e.FileName));
+            }
         }
 
         /// <summary>

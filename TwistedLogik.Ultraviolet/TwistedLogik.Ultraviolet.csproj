@@ -228,6 +228,7 @@
     <Compile Include="Graphics\BasicEffect.cs" />
     <Compile Include="Graphics\Surface2D.cs" />
     <Compile Include="CursorCollectionProcessor.cs" />
+    <Compile Include="Graphics\SurfaceSaver.cs" />
     <Compile Include="Graphics\SurfaceSource.cs" />
     <Compile Include="Graphics\TextureAtlas.cs" />
     <Compile Include="Graphics\TextureAtlasDefinition.cs" />
@@ -260,9 +261,11 @@
     <Compile Include="IUltravioletPlatform.cs" />
     <Compile Include="IUltravioletUI.cs" />
     <Compile Include="Matrix.cs" />
+    <Compile Include="InvalidCompatibilityShimException.cs" />
     <Compile Include="MutableVector2.cs" />
     <Compile Include="MutableVector3.cs" />
     <Compile Include="NamespaceDoc.cs" />
+    <Compile Include="Platform\IconLoader.cs" />
     <Compile Include="Platform\DisplayMode.cs" />
     <Compile Include="Platform\IUltravioletDisplay.cs" />
     <Compile Include="Platform\IUltravioletDisplayInfo.cs" />
@@ -349,6 +352,7 @@
     <Compile Include="DebugLevels.cs" />
     <Compile Include="UltravioletHostCore.cs" />
     <Compile Include="UltravioletMessageID.cs" />
+    <Compile Include="UltravioletPlatform.cs" />
     <Compile Include="UltravioletSingleton.cs" />
     <Compile Include="UltravioletFactoryInitializer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

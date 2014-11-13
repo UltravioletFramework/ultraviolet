@@ -1,21 +1,40 @@
 ﻿using System;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.IO;
 using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet.Graphics;
 
-namespace TwistedLogik.Ultraviolet.SDL2.Graphics
+namespace TwistedLogik.Ultraviolet.Desktop.Graphics
 {
     /// <summary>
-    /// Represents a <see cref="SurfaceSource"/> which retrieves pixel data from a <see cref="Bitmap"/> object.
+    /// Represents an implementation of the <see cref="SurfaceSource"/> class for desktop platforms.
     /// </summary>
-    public unsafe class BitmapSurfaceSource : SurfaceSource, IDisposable
+    public sealed unsafe class DesktopSurfaceSource : SurfaceSource
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="BitmapSurfaceSource"/> class.
+        /// Initializes a new instance of the <see cref="DesktopSurfaceSource"/> class.
         /// </summary>
-        /// <param name="bmp">The <see cref="Bitmap"/> from which to read surface data.</param>
-        public BitmapSurfaceSource(Bitmap bmp)
+        /// <param name="stream">The <see cref="Stream"/> that contains the surface data.</param>
+        public DesktopSurfaceSource(Stream stream)
+        {
+            Contract.Require(stream, "stream");
+
+            var data = new Byte[stream.Length];
+            stream.Read(data, 0, data.Length);
+
+            using (var mstream = new MemoryStream(data))
+            {
+                this.bmp = new Bitmap(mstream);
+                this.bmpData = bmp.LockBits(new System.Drawing.Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
+            }
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DesktopSurfaceSource"/> class.
+        /// </summary>
+        /// <param name="bmp">The bitmap from which to read surface data.</param>
+        public DesktopSurfaceSource(Bitmap bmp)
         {
             Contract.Require(bmp, "bmp");
 
@@ -24,7 +43,7 @@ namespace TwistedLogik.Ultraviolet.SDL2.Graphics
         }
 
         /// <inheritdoc/>
-        public void Dispose()
+        public override void Dispose()
         {
             Dispose(true);
             GC.SuppressFinalize(this);
@@ -39,6 +58,28 @@ namespace TwistedLogik.Ultraviolet.SDL2.Graphics
 
                 var pixel = ((byte*)bmpData.Scan0) + (bmpData.Stride * y) + (x * sizeof(UInt32));
                 return Color.FromRgba(*(uint*)pixel);
+            }
+        }
+
+        /// <inheritdoc/>
+        public override IntPtr Data
+        {
+            get
+            {
+                Contract.EnsureNotDisposed(this, disposed);
+
+                return bmpData.Scan0;
+            }
+        }
+
+        /// <inheritdoc/>
+        public override Int32 Stride
+        {
+            get
+            {
+                Contract.EnsureNotDisposed(this, disposed);
+
+                return bmpData.Stride;
             }
         }
 
@@ -68,7 +109,7 @@ namespace TwistedLogik.Ultraviolet.SDL2.Graphics
         /// Releases resources associated with the object.
         /// </summary>
         /// <param name="disposing"><c>true</c> if the object is being disposed; <c>false</c> if the object is being finalized.</param>
-        protected virtual void Dispose(Boolean disposing)
+        private void Dispose(Boolean disposing)
         {
             if (disposed)
                 return;

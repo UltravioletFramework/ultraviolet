@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Drawing;
-using System.Drawing.Imaging;
 using System.IO;
 using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet.Graphics;
@@ -225,10 +223,8 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         {
             Contract.Require(stream, "stream");
 
-            using (var img = CreateBitmap())
-            {
-                img.Save(stream, ImageFormat.Jpeg);
-            }
+            var saver = SurfaceSaver.Create();
+            saver.SaveAsJpeg(this, stream);
         }
 
         /// <summary>
@@ -239,10 +235,8 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         {
             Contract.Require(stream, "stream");
 
-            using (var img = CreateBitmap())
-            {
-                img.Save(stream, ImageFormat.Png);
-            }
+            var saver = SurfaceSaver.Create();
+            saver.SaveAsPng(this, stream);
         }
 
         /// <summary>
@@ -349,32 +343,6 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
                 if (SDL.BlitSurface(src.nativesurf.Native, &sdlSrcRect, dst.nativesurf.Native, &sdlDstRect) < 0)
                     throw new SDL2Exception();
             }
-        }
-
-        /// <summary>
-        /// Creates a GDI bitmap that contains the surface data.
-        /// </summary>
-        /// <returns>The bitmap that was created.</returns>
-        private Bitmap CreateBitmap()
-        {
-            var img = new Bitmap(Width, Height);
-
-            var imgRegion = new System.Drawing.Rectangle(0, 0, Width, Height);
-            var imgData = img.LockBits(imgRegion, ImageLockMode.WriteOnly, PixelFormat.Format32bppArgb);
-
-            for (int y = 0; y < img.Height; y++)
-            {
-                var pDst = (UInt32*)((Byte*)imgData.Scan0 + (imgData.Stride * y));
-                var pSrc = (UInt32*)((Byte*)nativesurf.Native->pixels + (nativesurf.Pitch * y));
-                for (int x = 0; x < img.Width; x++)
-                {
-                    *pDst++ = *pSrc++;
-                }
-            }
-
-            img.UnlockBits(imgData);
-
-            return img;
         }
 
         // State values.

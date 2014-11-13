@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Reflection;
 using System.Runtime.InteropServices;
 using TwistedLogik.Nucleus;
 using TwistedLogik.Nucleus.Messages;
@@ -7,7 +6,6 @@ using TwistedLogik.Ultraviolet.Graphics;
 using TwistedLogik.Ultraviolet.OpenGL.Graphics;
 using TwistedLogik.Ultraviolet.Platform;
 using TwistedLogik.Ultraviolet.SDL2;
-using TwistedLogik.Ultraviolet.SDL2.Graphics;
 using TwistedLogik.Ultraviolet.SDL2.Native;
 
 namespace TwistedLogik.Ultraviolet.OpenGL.Platform
@@ -553,29 +551,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
         {
             Contract.Require(uv, "uv");
 
-            var assembly = Assembly.GetEntryAssembly();
-            var assemblyLocation = (assembly == null) ? typeof(UltravioletContext).Assembly.Location : assembly.Location;
-
-            var icon = System.Drawing.Icon.ExtractAssociatedIcon(assemblyLocation);
-            if (icon == null)
-            {
-                throw new InvalidOperationException();
-            }
-
-            try
-            {
-                using (var iconbmp = icon.ToBitmap())
-                {
-                    using (var source = new BitmapSurfaceSource(iconbmp))
-                    {
-                        return new OpenGLSurface2D(uv, SDL_Surface.CreateFromSurfaceSource(source));
-                    }
-                }
-            }
-            finally
-            {
-                icon.Dispose();
-            }
+            return IconLoader.Create().LoadIcon();
         }
 
         /// <summary>

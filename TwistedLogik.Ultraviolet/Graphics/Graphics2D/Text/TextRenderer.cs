@@ -1,6 +1,6 @@
 ﻿using System;
-using TwistedLogik.Nucleus;
 using System.Text;
+using TwistedLogik.Nucleus;
 
 namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
 {

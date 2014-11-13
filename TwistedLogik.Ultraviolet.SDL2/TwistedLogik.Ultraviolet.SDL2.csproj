@@ -101,7 +101,6 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -125,7 +124,6 @@
     <Compile Include="Native\SDL_GameControllerButton.cs" />
     <Compile Include="Native\SDL_GLprofile.cs" />
     <Compile Include="Native\SDL_GLcontextFlag.cs" />
-    <Compile Include="Graphics\BitmapSurfaceSource.cs" />
     <Compile Include="Native\SDL_SysWMinfoUnion.cs" />
     <Compile Include="Native\SDL_SysWMinfo.cs" />
     <Compile Include="Native\SDL_SysWMinfo_mir.cs" />

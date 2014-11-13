@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using TwistedLogik.Nucleus;
 using TwistedLogik.Nucleus.Data;
 
 namespace TwistedLogik.Ultraviolet.Content

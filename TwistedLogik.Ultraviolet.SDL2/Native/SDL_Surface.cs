@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Drawing;
 using System.IO;
 using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet.Graphics;
-using TwistedLogik.Ultraviolet.SDL2.Graphics;
 
 namespace TwistedLogik.Ultraviolet.SDL2.Native
 {
@@ -56,12 +54,9 @@ namespace TwistedLogik.Ultraviolet.SDL2.Native
 
             using (var mstream = new MemoryStream(data))
             {
-                using (var bmp = new Bitmap(mstream))
+                using (var src = SurfaceSource.Create(mstream))
                 {
-                    using (var src = new BitmapSurfaceSource(bmp))
-                    {
-                        return CreateFromSurfaceSource(src);
-                    }
+                    return CreateFromSurfaceSource(src);
                 }
             }
         }

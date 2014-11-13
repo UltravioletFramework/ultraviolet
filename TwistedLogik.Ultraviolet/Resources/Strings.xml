@@ -5,6 +5,11 @@
       <Variant>Ultraviolet Framework Application</Variant>
     </en-US>
   </String>
+  <String Key="MISSING_COMPATIBILITY_SHIM">
+    <en-US>
+      <Variant>Cannot find the compatibility shim for the current platform ({0})</Variant>
+    </en-US>
+  </String>
   <String Key="INVALID_DEPENDENCY">
     <en-US>
       <Variant>Dependency type '{0}' has not been registered or does not have a matching constructor.</Variant>

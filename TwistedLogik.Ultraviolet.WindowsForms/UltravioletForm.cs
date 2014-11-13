@@ -3,7 +3,6 @@ using System.ComponentModel;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using TwistedLogik.Nucleus;
-using TwistedLogik.Ultraviolet.Platform;
 using Timer = System.Windows.Forms.Timer;
 
 namespace TwistedLogik.Ultraviolet.WindowsForms
