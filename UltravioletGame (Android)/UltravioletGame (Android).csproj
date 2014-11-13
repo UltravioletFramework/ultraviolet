@@ -1,0 +1,167 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{DBEFD71F-C99B-4128-8CF1-A998104A2B8D}</ProjectGuid>
+    <ProjectTypeGuids>{EFBA0AD7-5A72-4C68-AF49-83D382785DCF};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>UltravioletGame</RootNamespace>
+    <AssemblyName>UltravioletGame</AssemblyName>
+    <FileAlignment>512</FileAlignment>
+    <AndroidApplication>true</AndroidApplication>
+    <AndroidResgenFile>Resources\Resource.Designer.cs</AndroidResgenFile>
+    <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
+    <AndroidUseLatestPlatformSdk>
+    </AndroidUseLatestPlatformSdk>
+    <AndroidManifest>Properties\AndroidManifest.xml</AndroidManifest>
+    <TargetFrameworkVersion>v4.3</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;ANDROID</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AndroidUseSharedRuntime>True</AndroidUseSharedRuntime>
+    <AndroidLinkMode>None</AndroidLinkMode>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AndroidUseSharedRuntime>False</AndroidUseSharedRuntime>
+    <AndroidLinkMode>SdkOnly</AndroidLinkMode>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Mono.Android" />
+    <Reference Include="mscorlib" />
+    <Reference Include="org.libsdl.app">
+      <HintPath>..\Dependencies\SDL2\Android\org.libsdl.app.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\UltravioletGame\Assets\GlobalFontID.cs">
+      <Link>Assets\GlobalFontID.cs</Link>
+    </Compile>
+    <Compile Include="..\UltravioletGame\Game.cs">
+      <Link>Game.cs</Link>
+    </Compile>
+    <Compile Include="..\UltravioletGame\Input\GameInputActions.cs">
+      <Link>Input\GameInputActions.cs</Link>
+    </Compile>
+    <Compile Include="..\UltravioletGame\Input\IUltravioletInputExtensions.cs">
+      <Link>Input\IUltravioletInputExtensions.cs</Link>
+    </Compile>
+    <Compile Include="Resources\Resource.Designer.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\UltravioletGame\App.config">
+      <Link>App.config</Link>
+    </None>
+    <None Include="..\UltravioletGame\Content\Manifests\Global.manifest">
+      <Link>Content\Manifests\Global.manifest</Link>
+    </None>
+    <AndroidNativeLibrary Include="lib\armeabi-v7a\libSDL2.so" />
+    <AndroidNativeLibrary Include="lib\armeabi-v7a\libmain.so" />
+    <AndroidNativeLibrary Include="lib\armeabi\libSDL2.so" />
+    <AndroidNativeLibrary Include="lib\armeabi\libmain.so" />
+    <AndroidNativeLibrary Include="lib\x86\libSDL2.so" />
+    <AndroidNativeLibrary Include="lib\x86\libmain.so" />
+    <None Include="Resources\AboutResources.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\Main.axml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\values\Strings.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\Icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\UltravioletGame\Content\Cursors\Cursors.xml">
+      <Link>Content\Cursors\Cursors.xml</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\UltravioletGame\Content\Cursors\CursorsImage.png">
+      <Link>Content\Cursors\CursorsImage.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\UltravioletGame\Content\Fonts\SegoeUI.xml">
+      <Link>Content\Fonts\SegoeUI.xml</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\UltravioletGame\Content\Fonts\SegoeUITexture.png">
+      <Link>Content\Fonts\SegoeUITexture.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\UltravioletGame\Content\Localization\GameStrings.xml">
+      <Link>Content\Localization\GameStrings.xml</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <Content Include="..\UltravioletGame\README-SDL.txt">
+      <Link>README-SDL.txt</Link>
+    </Content>
+    <Content Include="..\UltravioletGame\uv.ico">
+      <Link>uv.ico</Link>
+    </Content>
+    <AndroidAsset Include="Assets\Test.xml" />
+    <Content Include="Properties\AndroidManifest.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\TwistedLogik.Gluon %28Android%29\TwistedLogik.Gluon %28Android%29.csproj">
+      <Project>{49a66667-2355-4755-a3ad-4ef9ca638534}</Project>
+      <Name>TwistedLogik.Gluon %28Android%29</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TwistedLogik.Nucleus %28Android%29\TwistedLogik.Nucleus %28Android%29.csproj">
+      <Project>{7eb671f1-6b46-426d-8a27-730d2b682043}</Project>
+      <Name>TwistedLogik.Nucleus %28Android%29</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TwistedLogik.Ultraviolet %28Android%29\TwistedLogik.Ultraviolet %28Android%29.csproj">
+      <Project>{0b17931c-1595-4ada-9086-f26e5f5a387d}</Project>
+      <Name>TwistedLogik.Ultraviolet %28Android%29</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TwistedLogik.Ultraviolet.BASS %28Android%29\TwistedLogik.Ultraviolet.BASS %28Android%29.csproj">
+      <Project>{381b05eb-e12e-451c-a272-2f5c2fd9c106}</Project>
+      <Name>TwistedLogik.Ultraviolet.BASS %28Android%29</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TwistedLogik.Ultraviolet.OpenGL %28Android%29\TwistedLogik.Ultraviolet.OpenGL %28Android%29.csproj">
+      <Project>{3416af37-8a39-479d-b78f-88d72cadd458}</Project>
+      <Name>TwistedLogik.Ultraviolet.OpenGL %28Android%29</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TwistedLogik.Ultraviolet.SDL2 %28Android%29\TwistedLogik.Ultraviolet.SDL2 %28Android%29.csproj">
+      <Project>{b5502009-935a-40ba-b415-abbf55427cad}</Project>
+      <Name>TwistedLogik.Ultraviolet.SDL2 %28Android%29</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <UserProperties ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" ProjectLinkReference="f6c64886-59bf-4dfd-af10-53c1700ee20d" />
+    </VisualStudio>
+  </ProjectExtensions>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+     Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

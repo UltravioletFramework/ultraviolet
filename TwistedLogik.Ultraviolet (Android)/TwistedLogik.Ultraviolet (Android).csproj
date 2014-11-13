@@ -43,6 +43,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Dependencies\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="org.libsdl.app">
+      <HintPath>..\Dependencies\SDL2\Android\org.libsdl.app.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -814,6 +817,7 @@
     <Compile Include="..\TwistedLogik.Ultraviolet\Vector4.cs">
       <Link>Vector4.cs</Link>
     </Compile>
+    <Compile Include="UltravioletActivity.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\TwistedLogik.Public.snk">

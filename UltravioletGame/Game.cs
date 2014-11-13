@@ -16,7 +16,12 @@ namespace SafeProjectName
     /// <summary>
     /// Represents the main application object.
     /// </summary>
+#if ANDROID
+    [Android.App.Activity(Label = "GameActivity", MainLauncher = true)]
+    public class Game : UltravioletActivity
+#else
     public class Game : UltravioletApplication
+#endif
     {
         /// <summary>
         /// Initializes a new instance of the Game 
