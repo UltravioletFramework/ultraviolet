@@ -57,6 +57,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UltravioletGame (Android)",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwistedLogik.Ultraviolet.Android", "TwistedLogik.Ultraviolet.Android\TwistedLogik.Ultraviolet.Android.csproj", "{1EBCAE25-9FC2-420A-8E62-C5B6733BAC9D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UvArchive", "UvArchive\UvArchive.csproj", "{40ED4BE1-0B7C-40D5-B702-C08500CDB2A7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -173,6 +175,10 @@ Global
 		{1EBCAE25-9FC2-420A-8E62-C5B6733BAC9D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1EBCAE25-9FC2-420A-8E62-C5B6733BAC9D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1EBCAE25-9FC2-420A-8E62-C5B6733BAC9D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{40ED4BE1-0B7C-40D5-B702-C08500CDB2A7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{40ED4BE1-0B7C-40D5-B702-C08500CDB2A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{40ED4BE1-0B7C-40D5-B702-C08500CDB2A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{40ED4BE1-0B7C-40D5-B702-C08500CDB2A7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
