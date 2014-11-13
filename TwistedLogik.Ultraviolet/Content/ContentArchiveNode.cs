@@ -193,6 +193,14 @@ namespace TwistedLogik.Ultraviolet.Content
         }
 
         /// <summary>
+        /// Gets the position of the node's data within the archive's data block.
+        /// </summary>
+        public Int64 Position
+        {
+            get { return position; }
+        }
+
+        /// <summary>
         /// Gets the node's size in bytes.
         /// </summary>
         public Int64 SizeInBytes
@@ -249,8 +257,10 @@ namespace TwistedLogik.Ultraviolet.Content
 
             if (this.IsFile)
             {
-                writer.Write(0L);
+                writer.Write(position);
                 writer.Write(this.SizeInBytes);
+
+                position += this.SizeInBytes;
             }
             else
             {

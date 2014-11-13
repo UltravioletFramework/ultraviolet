@@ -10,7 +10,7 @@ namespace TwistedLogik.Ultraviolet.Content
     /// <summary>
     /// Represents an archive containing multiple content files.
     /// </summary>
-    public sealed class ContentArchive : IDisposable, IEnumerable<ContentArchiveNode>
+    public sealed class ContentArchive : IEnumerable<ContentArchiveNode>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ContentArchive"/> class.
@@ -18,31 +18,38 @@ namespace TwistedLogik.Ultraviolet.Content
         /// <param name="roots">A collection containing the archive's root nodes.</param>
         private ContentArchive(IEnumerable<ContentArchiveNode> roots)
         {
-            this.isReadOnly = false;
-            this.stream     = null;
-            this.reader     = null;
+            this.canSave    = true;
+            this.canExtract = false;
             this.roots      = new List<ContentArchiveNode>(roots);
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ContentArchive"/> class.
         /// </summary>
-        /// <param name="stream">The stream from which to load the content archive.</param>
-        private ContentArchive(Stream stream)
+        /// <param name="loader">A function which opens a stream into the archive data.</param>
+        private ContentArchive(Func<Stream> loader)
         {
-            this.isReadOnly = true;
-            this.stream     = stream;
-            this.reader     = new BinaryReader(stream);
+            this.canSave    = false;
+            this.canExtract = true;
+            this.loader     = loader;
 
-            var fileHeader = reader.ReadString();
-            if (fileHeader != "UVARC0")
-                throw new InvalidDataException("TODO");
-
-            var rootCount = reader.ReadInt32();
-            for (int i = 0; i < rootCount; i++)
+            using (var stream = loader())
             {
-                var root = ContentArchiveNode.FromArchive(reader);
-                roots.Add(root);
+                using (var reader = new BinaryReader(stream))
+                {
+                    var fileHeader = reader.ReadString();
+                    if (fileHeader != "UVARC0")
+                        throw new InvalidDataException("TODO");
+
+                    var rootCount = reader.ReadInt32();
+                    for (int i = 0; i < rootCount; i++)
+                    {
+                        var root = ContentArchiveNode.FromArchive(reader);
+                        roots.Add(root);
+                    }
+
+                    dataBlockPosition = reader.BaseStream.Position;
+                }
             }
         }
 
@@ -61,20 +68,13 @@ namespace TwistedLogik.Ultraviolet.Content
         /// <summary>
         /// Creates a new instance of <see cref="ContentArchive"/> from the specified stream.
         /// </summary>
-        /// <param name="stream">The <see cref="Stream"/> that contains the archive data.</param>
+        /// <param name="loader">A function which opens a stream into the archive data.</param>
         /// <returns>The <see cref="ContentArchive"/> that was created.</returns>
-        public static ContentArchive FromArchiveFile(Stream stream)
+        public static ContentArchive FromArchiveFile(Func<Stream> loader)
         {
-            Contract.Require(stream, "stream");
+            Contract.Require(loader, "loader");
 
-            return new ContentArchive(stream);
-        }
-
-        /// <inheritdoc/>
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
+            return new ContentArchive(loader);
         }
 
         /// <summary>
@@ -84,7 +84,7 @@ namespace TwistedLogik.Ultraviolet.Content
         public void Save(BinaryWriter writer)
         {
             Contract.Require(writer, "writer");
-            Contract.EnsureNot(isReadOnly, "TODO");
+            Contract.Ensure(canSave, "TODO");
 
             writer.Write("UVARC0");
             writer.Write(roots.Count());
@@ -105,9 +105,9 @@ namespace TwistedLogik.Ultraviolet.Content
         /// <summary>
         /// Finds the archive node with the specified path.
         /// </summary>
-        /// <param name="path">The relative path of the asset to load.</param>
+        /// <param name="path">The relative path of the node to find.</param>
         /// <param name="throwIfNotFound">A value indicating whether to throw a <see cref="FileNotFoundException"/> if the path does not exist.</param>
-        /// <returns>The archive node with the specified path, or null if no such node exists and <paramref name="throwIfNotFound"/> is <c>false</c>.</returns>
+        /// <returns>The archive node with the specified path, or <c>null</c> if no such node exists and <paramref name="throwIfNotFound"/> is <c>false</c>.</returns>
         public ContentArchiveNode Find(String path, Boolean throwIfNotFound = true)
         {
             Contract.Require(path, "path");
@@ -169,6 +169,24 @@ namespace TwistedLogik.Ultraviolet.Content
         }
 
         /// <summary>
+        /// Extracts the specified file.
+        /// </summary>
+        /// <param name="path">The relative path of the file to load.</param>
+        /// <returns>A <see cref="ContentArchiveStream"/> that represents the extracted data.</returns>
+        public ContentArchiveStream Extract(String path)
+        {
+            Contract.Require(path, "path");
+            Contract.Ensure(canExtract, "TODO");
+
+            var node = Find(path);
+
+            var stream = loader();
+            stream.Seek(node.Position, SeekOrigin.Begin);
+
+            return new ContentArchiveStream(stream, dataBlockPosition + node.Position, node.SizeInBytes);
+        }
+
+        /// <summary>
         /// Returns an enumerator that iterates through the <see cref="ContentArchive"/>.
         /// </summary>
         /// <returns>An enumerator that iterates through the <see cref="ContentArchive"/>.</returns>
@@ -189,25 +207,11 @@ namespace TwistedLogik.Ultraviolet.Content
             return GetEnumerator();
         }
 
-        /// <summary>
-        /// Releases resources associated with the object.
-        /// </summary>
-        /// <param name="disposing"><c>true</c> if the object is being disposed; <c>false</c> if the object is being finalized.</param>
-        private void Dispose(Boolean disposing)
-        {
-            if (disposing)
-            {
-                SafeDispose.Dispose(reader);
-                SafeDispose.Dispose(stream);
-            }
-        }
-
-        // Property values.
-        private Boolean isReadOnly;
-
-        // The archive's data stream.
-        private readonly Stream stream;
-        private readonly BinaryReader reader;
+        // State values.
+        private Func<Stream> loader;
+        private Boolean canSave;
+        private Boolean canExtract;
+        private Int64 dataBlockPosition;
 
         // The archive's root nodes.
         private readonly List<ContentArchiveNode> roots = 

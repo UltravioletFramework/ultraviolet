@@ -36,14 +36,13 @@ namespace UvArchive
 
             Console.Write("Generating {0}... ", output);
 
-            using (var archive = ContentArchive.FromFileSystem(dirs))
+            var archive = ContentArchive.FromFileSystem(dirs);
+
+            using (var stream = File.Open(output, FileMode.Create))
             {
-                using (var stream = File.Open(output, FileMode.Create))
+                using (var writer = new BinaryWriter(stream))
                 {
-                    using (var writer = new BinaryWriter(stream))
-                    {
-                        archive.Save(writer);
-                    }
+                    archive.Save(writer);
                 }
             }
 

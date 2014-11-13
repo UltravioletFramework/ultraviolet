@@ -131,6 +131,7 @@
     <Compile Include="Content\AssetID.cs" />
     <Compile Include="Content\AssetMetadata.cs" />
     <Compile Include="Content\AsynchronousContentLoader.cs" />
+    <Compile Include="Content\ContentArchiveStream.cs" />
     <Compile Include="Content\ContentBinaryReaderExtensions.cs" />
     <Compile Include="Content\ContentBinaryWriterExtensions.cs" />
     <Compile Include="Content\ContentImporterRegistry.RegistryEntry.cs" />
