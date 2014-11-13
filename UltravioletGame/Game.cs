@@ -77,7 +77,7 @@ namespace SafeProjectName
         {
 #if ANDROID
             var fss = TwistedLogik.Ultraviolet.Platform.FileSystemService.Create();
-            var files = fss.ListFiles(Path.Combine("Content", "Localization"));
+            var files = fss.ListFiles(Path.Combine("Content", "Cursors"), "*asdf*");
             foreach (var file in files)
             {
                 using (var stream = Assets.Open(file))

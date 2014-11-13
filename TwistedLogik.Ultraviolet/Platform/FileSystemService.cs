@@ -26,18 +26,34 @@ namespace TwistedLogik.Ultraviolet.Platform
         }
 
         /// <summary>
+        /// Gets a value indicating whether the specified path exists and is a file.
+        /// </summary>
+        /// <param name="path">The path to evaluate.</param>
+        /// <returns><c>true</c> if the specified path exists and is a file; otherwise, <c>false</c>.</returns>
+        public abstract Boolean FileExists(String path);
+
+        /// <summary>
+        /// Gets a value indicating whether the specified path exists and is a directory.
+        /// </summary>
+        /// <param name="path">The path to evaluate.</param>
+        /// <returns><c>true</c> if the specified path exists and is a directory; otherwise, <c>false</c>.</returns>
+        public abstract Boolean DirectoryExists(String path);
+
+        /// <summary>
         /// Lists the files at the specified path.
         /// </summary>
         /// <param name="path">The path to evaluate.</param>
+        /// <param name="searchPattern">The search string to match against the names of files in <paramref name="path"/>.</param>
         /// <returns>A list of directories at the specified path.</returns>
-        public abstract IEnumerable<String> ListFiles(String path);
+        public abstract IEnumerable<String> ListFiles(String path, String searchPattern = "*");
 
         /// <summary>
         /// Lists the directories at the specified path.
         /// </summary>
         /// <param name="path">The path to evaluate.</param>
+        /// <param name="searchPattern">The search string to match against the names of directories in <paramref name="path"/>.</param>
         /// <returns>A list of directories at the specified path.</returns>
-        public abstract IEnumerable<String> ListDirectories(String path);
+        public abstract IEnumerable<String> ListDirectories(String path, String searchPattern = "*");
 
         /// <summary>
         /// Opens the specified file for reading.

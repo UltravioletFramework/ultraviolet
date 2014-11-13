@@ -75,9 +75,9 @@
     <None Include="..\UltravioletGame\App.config">
       <Link>App.config</Link>
     </None>
-    <None Include="..\UltravioletGame\Content\Manifests\Global.manifest">
+    <AndroidAsset Include="..\UltravioletGame\Content\Manifests\Global.manifest">
       <Link>Content\Manifests\Global.manifest</Link>
-    </None>
+    </AndroidAsset>
     <AndroidNativeLibrary Include="lib\armeabi-v7a\libSDL2.so" />
     <AndroidNativeLibrary Include="lib\armeabi-v7a\libmain.so" />
     <AndroidNativeLibrary Include="lib\armeabi\libSDL2.so" />
@@ -102,25 +102,20 @@
     <AndroidResource Include="Resources\drawable\Icon.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\UltravioletGame\Content\Cursors\Cursors.xml">
+    <AndroidAsset Include="..\UltravioletGame\Content\Cursors\Cursors.xml">
       <Link>Content\Cursors\Cursors.xml</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="..\UltravioletGame\Content\Cursors\CursorsImage.png">
+    </AndroidAsset>
+    <AndroidAsset Include="..\UltravioletGame\Content\Cursors\CursorsImage.png">
       <Link>Content\Cursors\CursorsImage.png</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="..\UltravioletGame\Content\Fonts\SegoeUI.xml">
+    </AndroidAsset>
+    <AndroidAsset Include="..\UltravioletGame\Content\Fonts\SegoeUI.xml">
       <Link>Content\Fonts\SegoeUI.xml</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="..\UltravioletGame\Content\Fonts\SegoeUITexture.png">
+    </AndroidAsset>
+    <AndroidAsset Include="..\UltravioletGame\Content\Fonts\SegoeUITexture.png">
       <Link>Content\Fonts\SegoeUITexture.png</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    </AndroidAsset>
     <AndroidAsset Include="..\UltravioletGame\Content\Localization\GameStrings.xml">
       <Link>Content\Localization\GameStrings.xml</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </AndroidAsset>
     <Content Include="..\UltravioletGame\README-SDL.txt">
       <Link>README-SDL.txt</Link>
@@ -163,7 +158,7 @@
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" ProjectLinkReference="f6c64886-59bf-4dfd-af10-53c1700ee20d" />
+      <UserProperties ProjectLinkReference="f6c64886-59bf-4dfd-af10-53c1700ee20d" ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" />
     </VisualStudio>
   </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
