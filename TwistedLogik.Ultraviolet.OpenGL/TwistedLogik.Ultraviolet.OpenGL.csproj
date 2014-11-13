@@ -209,6 +209,8 @@
     <EmbeddedResource Include="Resources\BasicEffectColored.vert" />
     <EmbeddedResource Include="Resources\BasicEffectColoredTextured.frag" />
     <EmbeddedResource Include="Resources\BasicEffectColoredTextured.vert" />
+    <EmbeddedResource Include="Resources\SpriteBatchEffectES.vert" />
+    <EmbeddedResource Include="Resources\SpriteBatchEffectES.frag" />
     <None Include="TwistedLogik.Ultraviolet.OpenGL.Licenses.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

@@ -75,8 +75,11 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
             gl.CullFace(gl.GL_BACK);
             gl.ThrowIfError();
 
-            gl.PolygonMode(gl.GL_FRONT_AND_BACK, GetFillModeGL(FillMode));
-            gl.ThrowIfError();
+            if (!gl.IsGLES)
+            {
+                gl.PolygonMode(gl.GL_FRONT_AND_BACK, GetFillModeGL(FillMode));
+                gl.ThrowIfError();
+            }
 
             gl.Enable(gl.GL_SCISSOR_TEST, ScissorTestEnable);
             gl.ThrowIfError();

@@ -65,7 +65,7 @@ namespace SafeProjectName
         /// </summary>
         protected override void OnInitializing()
         {
-            Localization.Strings.LoadFromDirectory("Content", "Localization");
+//            Localization.Strings.LoadFromDirectory("Content", "Localization");
 
             base.OnInitializing();
         }
@@ -75,6 +75,18 @@ namespace SafeProjectName
         /// </summary>
         protected override void OnLoadingContent()
         {
+#if ANDROID
+            var fss = TwistedLogik.Ultraviolet.Platform.FileSystemService.Create();
+            var files = fss.ListFiles(Path.Combine("Content", "Localization"));
+            foreach (var file in files)
+            {
+                using (var stream = Assets.Open(file))
+                {
+                    Localization.Strings.LoadFromStream(stream);
+                }
+            }
+#endif
+
             this.content = ContentManager.Create("Content");
 
             LoadInputBindings();

@@ -22,7 +22,6 @@ namespace TwistedLogik.Ultraviolet.Platform
             Contract.EnsureRange(width > 0, "width");
             Contract.EnsureRange(height > 0, "height");
             Contract.EnsureRange(bpp > 0, "bpp");
-            Contract.EnsureRange(refresh > 0, "refresh");
 
             this.Width = width;
             this.Height = height;

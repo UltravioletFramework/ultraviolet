@@ -84,6 +84,12 @@
     <AndroidNativeLibrary Include="lib\armeabi\libmain.so" />
     <AndroidNativeLibrary Include="lib\x86\libSDL2.so" />
     <AndroidNativeLibrary Include="lib\x86\libmain.so" />
+    <AndroidNativeLibrary Include="lib\armeabi-v7a\libbass.so" />
+    <AndroidNativeLibrary Include="lib\armeabi-v7a\libbass_fx.so" />
+    <AndroidNativeLibrary Include="lib\armeabi\libbass.so" />
+    <AndroidNativeLibrary Include="lib\armeabi\libbass_fx.so" />
+    <AndroidNativeLibrary Include="lib\x86\libbass.so" />
+    <AndroidNativeLibrary Include="lib\x86\libbass_fx.so" />
     <None Include="Resources\AboutResources.txt" />
   </ItemGroup>
   <ItemGroup>
@@ -112,10 +118,10 @@
       <Link>Content\Fonts\SegoeUITexture.png</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="..\UltravioletGame\Content\Localization\GameStrings.xml">
+    <AndroidAsset Include="..\UltravioletGame\Content\Localization\GameStrings.xml">
       <Link>Content\Localization\GameStrings.xml</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    </AndroidAsset>
     <Content Include="..\UltravioletGame\README-SDL.txt">
       <Link>README-SDL.txt</Link>
     </Content>

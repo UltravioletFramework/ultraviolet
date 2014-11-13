@@ -18,7 +18,11 @@ namespace TwistedLogik.Ultraviolet.Android.Platform
         {
             Contract.RequireNotEmpty(path, "path");
 
-            return Assets.List(path).Where(x => IsFile(Path.Combine(path, x)));
+            return
+                (from a in Assets.List(path)
+                 let fullpath = Path.Combine(path, a)
+                 where IsFile(fullpath)
+                 select fullpath).ToList();
         }
 
         /// <inheritdoc/>
@@ -26,7 +30,11 @@ namespace TwistedLogik.Ultraviolet.Android.Platform
         {
             Contract.RequireNotEmpty(path, "path");
 
-            return Assets.List(path).Where(x => IsDirectory(Path.Combine(path, x)));
+            return
+                (from a in Assets.List(path)
+                 let fullpath = Path.Combine(path, a)
+                 where IsDirectory(fullpath)
+                 select fullpath).ToList();
         }
 
         /// <inheritdoc/>

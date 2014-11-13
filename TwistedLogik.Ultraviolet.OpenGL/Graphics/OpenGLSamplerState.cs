@@ -127,8 +127,11 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
             gl.TexParameteri(gl.GL_TEXTURE_2D, gl.GL_TEXTURE_WRAP_T, GetTextureAddressModeGL(AddressV));
             gl.ThrowIfError();
 
-            gl.TexParameterf(gl.GL_TEXTURE_2D, gl.GL_TEXTURE_LOD_BIAS, MipMapLevelOfDetailBias);
-            gl.ThrowIfError();
+            if (!gl.IsGLES)
+            {
+                gl.TexParameterf(gl.GL_TEXTURE_2D, gl.GL_TEXTURE_LOD_BIAS, MipMapLevelOfDetailBias);
+                gl.ThrowIfError();
+            }
 
             switch (Filter)
             {

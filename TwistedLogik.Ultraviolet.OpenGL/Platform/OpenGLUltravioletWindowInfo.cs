@@ -246,6 +246,9 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
         {
             Contract.Require(window, "window");
 
+            if (window == master)
+                throw new InvalidOperationException("TODO");
+
             if (!windows.Remove(window))
                 throw new InvalidOperationException(UltravioletStrings.InvalidResource);
 
@@ -362,8 +365,37 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
             if (SDL.GL_SetAttribute(SDL_GLattr.MULTISAMPLESAMPLES, 4) < 0)
                 throw new SDL2Exception();
 
+            /*
+             * If we're running on Android, we need to do a few things differently.
+             *  - Android uses OpenGL ES, so we need to ask for an ES context.
+             *  - Android only supports a single window, so our master and primary are the same window.
+             */
+            var isRunningOnAndroid = (Ultraviolet.Platform == UltravioletPlatform.Android);
+            if (isRunningOnAndroid)
+            {
+                if (configuration.Headless)
+                {
+                    throw new InvalidOperationException("TODO");
+                }
+                const Int32 SDL_GL_CONTEXT_PROFILE_ES = (int)0x0004; 
+                SDL.GL_SetAttribute(SDL_GLattr.CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_ES);
+            }
+
             // Initialize the hidden master window used to create the OpenGL context.
-            var masterptr = SDL.CreateWindow(String.Empty, 0, 0, 0, 0, SDL_WindowFlags.OPENGL | SDL_WindowFlags.HIDDEN);
+            var masterWidth = 0;
+            var masterHeight = 0;
+            var masterFlags = SDL_WindowFlags.OPENGL;
+
+            if (isRunningOnAndroid)
+            {
+                masterFlags |= SDL_WindowFlags.FULLSCREEN | SDL_WindowFlags.RESIZABLE;
+            }
+            else
+            {
+                masterFlags |= SDL_WindowFlags.HIDDEN;
+            }
+
+            var masterptr = SDL.CreateWindow(String.Empty, 0, 0, masterWidth, masterHeight, masterFlags);
             if (masterptr == IntPtr.Zero)
                 throw new SDL2Exception();
 
@@ -377,21 +409,29 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
             // If this is not a headless context, create the primary application window.
             if (!configuration.Headless)
             {
-                var flags = configuration.WindowIsVisible ? WindowFlags.None : WindowFlags.Hidden;
+                if (isRunningOnAndroid)
+                {
+                    this.windows.Add(this.master);
+                    DesignatePrimary(this.master);
+                }
+                else
+                {
+                    var flags = configuration.WindowIsVisible ? WindowFlags.None : WindowFlags.Hidden;
 
-                if (configuration.WindowIsResizable)
-                    flags |= WindowFlags.Resizable;
+                    if (configuration.WindowIsResizable)
+                        flags |= WindowFlags.Resizable;
 
-                if (configuration.WindowIsBorderless)
-                    flags |= WindowFlags.Borderless;
+                    if (configuration.WindowIsBorderless)
+                        flags |= WindowFlags.Borderless;
 
-                var caption = Localization.Strings.Contains("WINDOW_CAPTION") ? Localization.Get("WINDOW_CAPTION") : UltravioletStrings.DefaultWindowCaption.Value;
-                var primary = Create(caption, 
-                    (Int32)configuration.InitialWindowPosition.X, 
-                    (Int32)configuration.InitialWindowPosition.Y, 
-                           configuration.InitialWindowClientSize.Width, 
-                           configuration.InitialWindowClientSize.Height, flags);
-                DesignatePrimary(primary);
+                    var caption = Localization.Strings.Contains("WINDOW_CAPTION") ? Localization.Get("WINDOW_CAPTION") : UltravioletStrings.DefaultWindowCaption.Value;
+                    var primary = Create(caption,
+                        (Int32)configuration.InitialWindowPosition.X,
+                        (Int32)configuration.InitialWindowPosition.Y,
+                               configuration.InitialWindowClientSize.Width,
+                               configuration.InitialWindowClientSize.Height, flags);
+                    DesignatePrimary(primary);
+                }
             }
         }
 
