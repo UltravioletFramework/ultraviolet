@@ -135,8 +135,10 @@ namespace TwistedLogik.Ultraviolet.Android.Platform
                 if (fileSystemRoot == null)
                 {
                     if (Assets == null)
-                        throw new InvalidOperationException("TODO");
-
+                    {
+                        // NOTE: No need to localize this because we can't access our localization files!
+                        throw new InvalidOperationException("No valid AssetManager instance.");
+                    }
                     fileSystemRoot = new FileSystemNode(Assets, null, String.Empty);
                 }
                 return fileSystemRoot;
