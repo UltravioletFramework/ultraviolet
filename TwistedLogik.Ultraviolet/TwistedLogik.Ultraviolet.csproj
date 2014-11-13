@@ -125,6 +125,8 @@
     <Compile Include="Circle.cs" />
     <Compile Include="CircleF.cs" />
     <Compile Include="Color.cs" />
+    <Compile Include="Content\ContentArchive.cs" />
+    <Compile Include="Content\ContentArchiveNode.cs" />
     <Compile Include="Content\AssetException.cs" />
     <Compile Include="Content\AssetID.cs" />
     <Compile Include="Content\AssetMetadata.cs" />
