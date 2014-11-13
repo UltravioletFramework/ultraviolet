@@ -5,6 +5,20 @@
       <Type Name="TwistedLogik.Ultraviolet.Vector4">
         <TypeConverter>TwistedLogik.Ultraviolet.Design.Vector4TypeConverter, TwistedLogik.Ultraviolet.Design</TypeConverter>
         <DefaultValue>0 0 0 0</DefaultValue>
+        <Properties>
+          <X>
+            <Description>The vector's x-coordinate.</Description>
+          </X>
+          <Y>
+            <Description>The vector's y-coordinate.</Description>
+          </Y>
+          <Z>
+            <Description>The vector's z-coordinate.</Description>
+          </Z>
+          <W>
+            <Description>The vector's w-coordinate.</Description>
+          </W>
+        </Properties>
       </Type>
     </Types>
   </Assembly>

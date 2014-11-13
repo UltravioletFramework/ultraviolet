@@ -7,6 +7,18 @@
         <Editor>TwistedLogik.Ultraviolet.Design.ColorEditor, TwistedLogik.Ultraviolet.Design</Editor>
         <DefaultValue>#00000000</DefaultValue>
         <Properties>
+          <A>
+            <Description>The color's alpha component.</Description>
+          </A>
+          <R>
+            <Description>The color's red component.</Description>
+          </R>
+          <G>
+            <Description>The color's green component.</Description>
+          </G>
+          <B>
+            <Description>The color's blue component.</Description>
+          </B>
           <PackedValue>
             <Browsable>false</Browsable>
           </PackedValue>

@@ -5,6 +5,14 @@
       <Type Name="TwistedLogik.Ultraviolet.Vector2">
         <TypeConverter>TwistedLogik.Ultraviolet.Design.Vector2TypeConverter, TwistedLogik.Ultraviolet.Design</TypeConverter>
         <DefaultValue>0 0</DefaultValue>
+        <Properties>
+          <X>
+            <Description>The vector's x-coordinate.</Description>
+          </X>
+          <Y>
+            <Description>The vector's y-coordinate.</Description>
+          </Y>
+        </Properties>
       </Type>
     </Types>
   </Assembly>
