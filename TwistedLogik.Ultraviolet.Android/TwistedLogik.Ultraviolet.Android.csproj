@@ -24,6 +24,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -32,6 +33,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Mono.Android" />
@@ -45,6 +47,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AndroidFactoryInitializer.cs" />
+    <Compile Include="Graphics\AndroidSurfaceSource.cs" />
+    <Compile Include="Graphics\AndroidSurfaceSaver.cs" />
+    <Compile Include="Platform\AndroidIconLoader.cs" />
+    <Compile Include="Platform\AndroidFileSystemService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UltravioletActivity.cs" />
     <Compile Include="UltravioletActivitySettings.cs" />
@@ -63,6 +70,7 @@
       <Name>TwistedLogik.Ultraviolet %28Android%29</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

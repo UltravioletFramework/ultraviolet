@@ -658,6 +658,9 @@
     <Compile Include="..\TwistedLogik.Ultraviolet\Platform\DisplayMode.cs">
       <Link>Platform\DisplayMode.cs</Link>
     </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Platform\FileSystemService.cs">
+      <Link>Platform\FileSystemService.cs</Link>
+    </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet\Platform\IconLoader.cs">
       <Link>Platform\IconLoader.cs</Link>
     </Compile>

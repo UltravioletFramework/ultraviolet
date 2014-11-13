@@ -265,6 +265,7 @@
     <Compile Include="MutableVector2.cs" />
     <Compile Include="MutableVector3.cs" />
     <Compile Include="NamespaceDoc.cs" />
+    <Compile Include="Platform\FileSystemService.cs" />
     <Compile Include="Platform\IconLoader.cs" />
     <Compile Include="Platform\DisplayMode.cs" />
     <Compile Include="Platform\IUltravioletDisplay.cs" />
