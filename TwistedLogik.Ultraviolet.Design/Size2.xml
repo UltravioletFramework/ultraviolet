@@ -6,6 +6,12 @@
         <TypeConverter>TwistedLogik.Ultraviolet.Design.Size2TypeConverter, TwistedLogik.Ultraviolet.Design</TypeConverter>
         <DefaultValue>0 0</DefaultValue>
         <Properties>
+          <Width>
+            <Description>The area's width.</Description>
+          </Width>
+          <Height>
+            <Description>The area's height.</Description>
+          </Height>
           <Area>
             <Browsable>false</Browsable>
           </Area>

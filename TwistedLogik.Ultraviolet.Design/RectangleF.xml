@@ -6,6 +6,18 @@
         <TypeConverter>TwistedLogik.Ultraviolet.Design.RectangleFTypeConverter, TwistedLogik.Ultraviolet.Design</TypeConverter>
         <DefaultValue>0 0 0 0</DefaultValue>
         <Properties>
+          <X>
+            <Description>The x-coordinate of the rectangle's top-left corner.</Description>
+          </X>
+          <Y>
+            <Description>The y-coordinate of the rectangle's top-left corner.</Description>
+          </Y>
+          <Width>
+            <Description>The rectangle's width.</Description>
+          </Width>
+          <Height>
+            <Description>The rectangle's height.</Description>
+          </Height>
           <Bottom>
             <Browsable>false</Browsable>
           </Bottom>

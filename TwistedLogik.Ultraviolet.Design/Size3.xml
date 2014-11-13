@@ -6,6 +6,15 @@
         <TypeConverter>TwistedLogik.Ultraviolet.Design.Size3TypeConverter, TwistedLogik.Ultraviolet.Design</TypeConverter>
         <DefaultValue>0 0 0</DefaultValue>
         <Properties>
+          <Width>
+            <Description>The volume's width.</Description>
+          </Width>
+          <Height>
+            <Description>The volume's height.</Description>
+          </Height>
+          <Depth>
+            <Description>The volume's depth.</Description>
+          </Depth>
           <Volume>
             <Browsable>false</Browsable>
           </Volume>
