@@ -358,6 +358,10 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
         /// <param name="configuration">The Ultraviolet Framg</param>
         private void InitializePrimaryWindow(UltravioletConfiguration configuration)
         {
+            // Retrieve the caption for our window.
+            var caption = Localization.Strings.Contains("WINDOW_CAPTION") ? 
+                Localization.Get("WINDOW_CAPTION") : UltravioletStrings.DefaultWindowCaption.Value;
+            
             // Set the OpenGL attributes for the window we're about to create.
             if (SDL.GL_SetAttribute(SDL_GLattr.MULTISAMPLEBUFFERS, 1) < 0)
                 throw new SDL2Exception();
@@ -395,7 +399,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
                 masterFlags |= SDL_WindowFlags.HIDDEN;
             }
 
-            var masterptr = SDL.CreateWindow(String.Empty, 0, 0, masterWidth, masterHeight, masterFlags);
+            var masterptr = SDL.CreateWindow(isRunningOnAndroid ? caption : String.Empty, 0, 0, masterWidth, masterHeight, masterFlags);
             if (masterptr == IntPtr.Zero)
                 throw new SDL2Exception();
 
@@ -424,7 +428,6 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
                     if (configuration.WindowIsBorderless)
                         flags |= WindowFlags.Borderless;
 
-                    var caption = Localization.Strings.Contains("WINDOW_CAPTION") ? Localization.Get("WINDOW_CAPTION") : UltravioletStrings.DefaultWindowCaption.Value;
                     var primary = Create(caption,
                         (Int32)configuration.InitialWindowPosition.X,
                         (Int32)configuration.InitialWindowPosition.Y,

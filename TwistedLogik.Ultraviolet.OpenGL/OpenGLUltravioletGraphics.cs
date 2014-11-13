@@ -93,7 +93,14 @@ namespace TwistedLogik.Ultraviolet.OpenGL
             Contract.EnsureNotDisposed(this, Disposed);
 
             gl.ClearColor(color.R / 255f, color.G / 255f, color.B / 255f, color.A / 255f);
-            gl.ClearDepth(depth);
+            if (gl.IsGLES)
+            {
+                // TODO: glClearDepthf();
+            }
+            else
+            {
+                gl.ClearDepth(depth);
+            }
             gl.ClearStencil(stencil);
             gl.Clear(gl.GL_COLOR_BUFFER_BIT | gl.GL_DEPTH_BUFFER_BIT | gl.GL_STENCIL_BUFFER_BIT);
         }
