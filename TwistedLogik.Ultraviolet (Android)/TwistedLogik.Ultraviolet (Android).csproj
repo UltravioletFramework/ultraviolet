@@ -1,0 +1,860 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{0B17931C-1595-4ADA-9086-F26E5F5A387D}</ProjectGuid>
+    <ProjectTypeGuids>{EFBA0AD7-5A72-4C68-AF49-83D382785DCF};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>TwistedLogik.Ultraviolet</RootNamespace>
+    <AssemblyName>TwistedLogik.Ultraviolet</AssemblyName>
+    <FileAlignment>512</FileAlignment>
+    <AndroidResgenFile>Resources\Resource.Designer.cs</AndroidResgenFile>
+    <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
+    <AndroidUseLatestPlatformSdk>True</AndroidUseLatestPlatformSdk>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\Binaries\Android\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;ANDROID</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\Binaries\Android\Release\</OutputPath>
+    <DefineConstants>TRACE;ANDROID</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Mono.Android" />
+    <Reference Include="mscorlib" />
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Dependencies\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Audio\NamespaceDoc.cs">
+      <Link>Audio\NamespaceDoc.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Audio\PlaybackState.cs">
+      <Link>Audio\PlaybackState.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Audio\Song.cs">
+      <Link>Audio\Song.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Audio\SongPlayer.cs">
+      <Link>Audio\SongPlayer.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Audio\SoundEffect.cs">
+      <Link>Audio\SoundEffect.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Audio\SoundEffectPlayer.cs">
+      <Link>Audio\SoundEffectPlayer.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Circle.cs">
+      <Link>Circle.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\CircleF.cs">
+      <Link>CircleF.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Color.cs">
+      <Link>Color.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Content\AssetException.cs">
+      <Link>Content\AssetException.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Content\AssetID.cs">
+      <Link>Content\AssetID.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Content\AssetMetadata.cs">
+      <Link>Content\AssetMetadata.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Content\AsynchronousContentLoader.cs">
+      <Link>Content\AsynchronousContentLoader.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Content\ContentBinaryReaderExtensions.cs">
+      <Link>Content\ContentBinaryReaderExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Content\ContentBinaryWriterExtensions.cs">
+      <Link>Content\ContentBinaryWriterExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Content\ContentImporter.cs">
+      <Link>Content\ContentImporter.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Content\ContentImporterAttribute.cs">
+      <Link>Content\ContentImporterAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Content\ContentImporterRegistry.cs">
+      <Link>Content\ContentImporterRegistry.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Content\ContentImporterRegistry.RegistryEntry.cs">
+      <Link>Content\ContentImporterRegistry.RegistryEntry.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Content\ContentLoadException.cs">
+      <Link>Content\ContentLoadException.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Content\ContentManager.cs">
+      <Link>Content\ContentManager.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Content\ContentManifest.cs">
+      <Link>Content\ContentManifest.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Content\ContentManifestAsset.cs">
+      <Link>Content\ContentManifestAsset.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Content\ContentManifestGroup.cs">
+      <Link>Content\ContentManifestGroup.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Content\ContentManifestRegistry.cs">
+      <Link>Content\ContentManifestRegistry.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Content\ContentOverrideDirectoryCollection.cs">
+      <Link>Content\ContentOverrideDirectoryCollection.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Content\ContentProcessor.cs">
+      <Link>Content\ContentProcessor.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Content\ContentProcessorAttribute.cs">
+      <Link>Content\ContentProcessorAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Content\ContentProcessorRegistry.cs">
+      <Link>Content\ContentProcessorRegistry.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Content\ContentProcessorRegistry.RegistryKey.cs">
+      <Link>Content\ContentProcessorRegistry.RegistryKey.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Content\IContentImporter.cs">
+      <Link>Content\IContentImporter.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Content\IContentImporterMetadata.cs">
+      <Link>Content\IContentImporterMetadata.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Content\IContentProcessor.cs">
+      <Link>Content\IContentProcessor.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Content\IContentProcessorMetadata.cs">
+      <Link>Content\IContentProcessorMetadata.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Content\NamespaceDoc.cs">
+      <Link>Content\NamespaceDoc.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Content\TextContentImporter.cs">
+      <Link>Content\TextContentImporter.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Content\TextContentProcessor.cs">
+      <Link>Content\TextContentProcessor.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Content\UltravioletContent.cs">
+      <Link>Content\UltravioletContent.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Content\UltravioletDataObjectRegistry.cs">
+      <Link>Content\UltravioletDataObjectRegistry.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Content\XmlContentImporter.cs">
+      <Link>Content\XmlContentImporter.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Content\XmlContentProcessor.cs">
+      <Link>Content\XmlContentProcessor.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Cursor.cs">
+      <Link>Cursor.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\CursorCollection.cs">
+      <Link>CursorCollection.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\CursorCollectionProcessor.cs">
+      <Link>CursorCollectionProcessor.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Curve.cs">
+      <Link>Curve.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\CurveContinuity.cs">
+      <Link>CurveContinuity.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\CurveKey.cs">
+      <Link>CurveKey.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\CurveKeyCollection.cs">
+      <Link>CurveKeyCollection.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\CurveLoopType.cs">
+      <Link>CurveLoopType.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\CurveProcessor.cs">
+      <Link>CurveProcessor.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\DebugLevels.cs">
+      <Link>DebugLevels.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Easings.cs">
+      <Link>Easings.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Graphics\BasicEffect.cs">
+      <Link>Graphics\BasicEffect.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Graphics\Blend.cs">
+      <Link>Graphics\Blend.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Graphics\BlendFunction.cs">
+      <Link>Graphics\BlendFunction.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Graphics\BlendState.cs">
+      <Link>Graphics\BlendState.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Graphics\CompareFunction.cs">
+      <Link>Graphics\CompareFunction.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Graphics\CullMode.cs">
+      <Link>Graphics\CullMode.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Graphics\DepthStencilState.cs">
+      <Link>Graphics\DepthStencilState.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Graphics\DynamicIndexBuffer.cs">
+      <Link>Graphics\DynamicIndexBuffer.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Graphics\DynamicVertexBuffer.cs">
+      <Link>Graphics\DynamicVertexBuffer.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Graphics\Effect.cs">
+      <Link>Graphics\Effect.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Graphics\EffectImplementation.cs">
+      <Link>Graphics\EffectImplementation.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Graphics\EffectParameter.cs">
+      <Link>Graphics\EffectParameter.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Graphics\EffectParameterCollection.cs">
+      <Link>Graphics\EffectParameterCollection.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Graphics\EffectPass.cs">
+      <Link>Graphics\EffectPass.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Graphics\EffectPassCollection.cs">
+      <Link>Graphics\EffectPassCollection.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Graphics\EffectTechnique.cs">
+      <Link>Graphics\EffectTechnique.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Graphics\EffectTechniqueCollection.cs">
+      <Link>Graphics\EffectTechniqueCollection.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Graphics\FillMode.cs">
+      <Link>Graphics\FillMode.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Graphics\GeometryStream.cs">
+      <Link>Graphics\GeometryStream.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Graphics\Graphics2D\CharacterRegion.cs">
+      <Link>Graphics\Graphics2D\CharacterRegion.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Graphics\Graphics2D\ContentManagerExtensions.cs">
+      <Link>Graphics\Graphics2D\ContentManagerExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Graphics\Graphics2D\Graphics2DBinaryReaderExtensions.cs">
+      <Link>Graphics\Graphics2D\Graphics2DBinaryReaderExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Graphics\Graphics2D\Graphics2DBinaryWriterExtensions.cs">
+      <Link>Graphics\Graphics2D\Graphics2DBinaryWriterExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Graphics\Graphics2D\ISpriteBatchEffect.cs">
+      <Link>Graphics\Graphics2D\ISpriteBatchEffect.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Graphics\Graphics2D\NamespaceDoc.cs">
+      <Link>Graphics\Graphics2D\NamespaceDoc.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Graphics\Graphics2D\Sprite.cs">
+      <Link>Graphics\Graphics2D\Sprite.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Graphics\Graphics2D\SpriteAnimation.cs">
+      <Link>Graphics\Graphics2D\SpriteAnimation.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Graphics\Graphics2D\SpriteAnimationController.cs">
+      <Link>Graphics\Graphics2D\SpriteAnimationController.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Graphics\Graphics2D\SpriteAnimationDescription.cs">
+      <Link>Graphics\Graphics2D\SpriteAnimationDescription.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Graphics\Graphics2D\SpriteAnimationFrameCollection.cs">
+      <Link>Graphics\Graphics2D\SpriteAnimationFrameCollection.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Graphics\Graphics2D\SpriteAnimationID.cs">
+      <Link>Graphics\Graphics2D\SpriteAnimationID.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Graphics\Graphics2D\SpriteAnimationRepeat.cs">
+      <Link>Graphics\Graphics2D\SpriteAnimationRepeat.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Graphics\Graphics2D\SpriteBatch.cs">
+      <Link>Graphics\Graphics2D\SpriteBatch.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Graphics\Graphics2D\SpriteBatchBase.cs">
+      <Link>Graphics\Graphics2D\SpriteBatchBase.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Graphics\Graphics2D\SpriteBatchCoordinator.cs">
+      <Link>Graphics\Graphics2D\SpriteBatchCoordinator.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Graphics\Graphics2D\SpriteBatchData.cs">
+      <Link>Graphics\Graphics2D\SpriteBatchData.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Graphics\Graphics2D\SpriteBatchEffect.cs">
+      <Link>Graphics\Graphics2D\SpriteBatchEffect.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Graphics\Graphics2D\SpriteBatchInfo.cs">
+      <Link>Graphics\Graphics2D\SpriteBatchInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Graphics\Graphics2D\SpriteDescription.cs">
+      <Link>Graphics\Graphics2D\SpriteDescription.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Graphics\Graphics2D\SpriteEffects.cs">
+      <Link>Graphics\Graphics2D\SpriteEffects.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Graphics\Graphics2D\SpriteFont.cs">
+      <Link>Graphics\Graphics2D\SpriteFont.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Graphics\Graphics2D\SpriteFontFace.cs">
+      <Link>Graphics\Graphics2D\SpriteFontFace.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Graphics\Graphics2D\SpriteFontKerning.cs">
+      <Link>Graphics\Graphics2D\SpriteFontKerning.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Graphics\Graphics2D\SpriteFontKerningPair.cs">
+      <Link>Graphics\Graphics2D\SpriteFontKerningPair.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Graphics\Graphics2D\SpriteFontStyle.cs">
+      <Link>Graphics\Graphics2D\SpriteFontStyle.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Graphics\Graphics2D\SpriteFrame.cs">
+      <Link>Graphics\Graphics2D\SpriteFrame.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Graphics\Graphics2D\SpriteFrameDescription.cs">
+      <Link>Graphics\Graphics2D\SpriteFrameDescription.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Graphics\Graphics2D\SpriteFrameGroupDescription.cs">
+      <Link>Graphics\Graphics2D\SpriteFrameGroupDescription.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Graphics\Graphics2D\SpriteHeader.cs">
+      <Link>Graphics\Graphics2D\SpriteHeader.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Graphics\Graphics2D\SpriteImporter.cs">
+      <Link>Graphics\Graphics2D\SpriteImporter.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Graphics\Graphics2D\SpriteProcessor.cs">
+      <Link>Graphics\Graphics2D\SpriteProcessor.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Graphics\Graphics2D\SpriteSortMode.cs">
+      <Link>Graphics\Graphics2D\SpriteSortMode.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Graphics\Graphics2D\sspack\OutOfSpaceException.cs">
+      <Link>Graphics\Graphics2D\sspack\OutOfSpaceException.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Graphics\Graphics2D\sspack\Packing\ArevaloRectanglePacker.cs">
+      <Link>Graphics\Graphics2D\sspack\Packing\ArevaloRectanglePacker.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Graphics\Graphics2D\sspack\Packing\RectanglePacker.cs">
+      <Link>Graphics\Graphics2D\sspack\Packing\RectanglePacker.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Graphics\Graphics2D\StringSource.cs">
+      <Link>Graphics\Graphics2D\StringSource.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Graphics\Graphics2D\Text\InlineIconInfo.cs">
+      <Link>Graphics\Graphics2D\Text\InlineIconInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Graphics\Graphics2D\Text\NamespaceDoc.cs">
+      <Link>Graphics\Graphics2D\Text\NamespaceDoc.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Graphics\Graphics2D\Text\TextFlags.cs">
+      <Link>Graphics\Graphics2D\Text\TextFlags.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Graphics\Graphics2D\Text\TextLayoutEngine.cs">
+      <Link>Graphics\Graphics2D\Text\TextLayoutEngine.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Graphics\Graphics2D\Text\TextLayoutResult.cs">
+      <Link>Graphics\Graphics2D\Text\TextLayoutResult.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Graphics\Graphics2D\Text\TextLayoutSettings.cs">
+      <Link>Graphics\Graphics2D\Text\TextLayoutSettings.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Graphics\Graphics2D\Text\TextLayoutToken.cs">
+      <Link>Graphics\Graphics2D\Text\TextLayoutToken.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Graphics\Graphics2D\Text\TextLexer.cs">
+      <Link>Graphics\Graphics2D\Text\TextLexer.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Graphics\Graphics2D\Text\TextLexerResult.cs">
+      <Link>Graphics\Graphics2D\Text\TextLexerResult.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Graphics\Graphics2D\Text\TextLexerToken.cs">
+      <Link>Graphics\Graphics2D\Text\TextLexerToken.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Graphics\Graphics2D\Text\TextLexerTokenType.cs">
+      <Link>Graphics\Graphics2D\Text\TextLexerTokenType.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Graphics\Graphics2D\Text\TextParser.cs">
+      <Link>Graphics\Graphics2D\Text\TextParser.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Graphics\Graphics2D\Text\TextParserResult.cs">
+      <Link>Graphics\Graphics2D\Text\TextParserResult.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Graphics\Graphics2D\Text\TextParserResultStyles.cs">
+      <Link>Graphics\Graphics2D\Text\TextParserResultStyles.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Graphics\Graphics2D\Text\TextParserToken.cs">
+      <Link>Graphics\Graphics2D\Text\TextParserToken.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Graphics\Graphics2D\Text\TextRenderer.cs">
+      <Link>Graphics\Graphics2D\Text\TextRenderer.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Graphics\Graphics2D\Text\TextResult.cs">
+      <Link>Graphics\Graphics2D\Text\TextResult.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Graphics\Graphics2D\Text\TextStyle.cs">
+      <Link>Graphics\Graphics2D\Text\TextStyle.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Graphics\Graphics2D\Text\TextTable.cs">
+      <Link>Graphics\Graphics2D\Text\TextTable.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Graphics\Graphics2D\Text\TextTableCell.cs">
+      <Link>Graphics\Graphics2D\Text\TextTableCell.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Graphics\Graphics2D\Text\TextTableCellCollection.cs">
+      <Link>Graphics\Graphics2D\Text\TextTableCellCollection.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Graphics\Graphics2D\Text\TextTableLayout.cs">
+      <Link>Graphics\Graphics2D\Text\TextTableLayout.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Graphics\Graphics2D\Text\TextTableLayoutProcessor.cs">
+      <Link>Graphics\Graphics2D\Text\TextTableLayoutProcessor.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Graphics\Graphics2D\Text\TextTableRow.cs">
+      <Link>Graphics\Graphics2D\Text\TextTableRow.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Graphics\Graphics2D\Text\TextTableRowCollection.cs">
+      <Link>Graphics\Graphics2D\Text\TextTableRowCollection.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Graphics\IEffectMatrices.cs">
+      <Link>Graphics\IEffectMatrices.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Graphics\IndexBuffer.cs">
+      <Link>Graphics\IndexBuffer.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Graphics\IndexBufferElementType.cs">
+      <Link>Graphics\IndexBufferElementType.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Graphics\IVertexType.cs">
+      <Link>Graphics\IVertexType.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Graphics\NamespaceDoc.cs">
+      <Link>Graphics\NamespaceDoc.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Graphics\PrimitiveType.cs">
+      <Link>Graphics\PrimitiveType.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Graphics\RasterizerState.cs">
+      <Link>Graphics\RasterizerState.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Graphics\RenderBuffer2D.cs">
+      <Link>Graphics\RenderBuffer2D.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Graphics\RenderBufferFormat.cs">
+      <Link>Graphics\RenderBufferFormat.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Graphics\RenderTarget2D.cs">
+      <Link>Graphics\RenderTarget2D.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Graphics\SamplerState.cs">
+      <Link>Graphics\SamplerState.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Graphics\SetDataOptions.cs">
+      <Link>Graphics\SetDataOptions.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Graphics\StencilOperation.cs">
+      <Link>Graphics\StencilOperation.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Graphics\Surface2D.cs">
+      <Link>Graphics\Surface2D.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Graphics\SurfaceSaver.cs">
+      <Link>Graphics\SurfaceSaver.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Graphics\SurfaceSource.cs">
+      <Link>Graphics\SurfaceSource.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Graphics\Texture2D.cs">
+      <Link>Graphics\Texture2D.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Graphics\TextureAddressMode.cs">
+      <Link>Graphics\TextureAddressMode.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Graphics\TextureAtlas.cs">
+      <Link>Graphics\TextureAtlas.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Graphics\TextureAtlasDefinition.cs">
+      <Link>Graphics\TextureAtlasDefinition.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Graphics\TextureAtlasImage.cs">
+      <Link>Graphics\TextureAtlasImage.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Graphics\TextureAtlasProcessor.cs">
+      <Link>Graphics\TextureAtlasProcessor.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Graphics\TextureDataFormat.cs">
+      <Link>Graphics\TextureDataFormat.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Graphics\TextureFilter.cs">
+      <Link>Graphics\TextureFilter.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Graphics\VertexBuffer.cs">
+      <Link>Graphics\VertexBuffer.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Graphics\VertexDeclaration.cs">
+      <Link>Graphics\VertexDeclaration.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Graphics\VertexElement.cs">
+      <Link>Graphics\VertexElement.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Graphics\VertexFormat.cs">
+      <Link>Graphics\VertexFormat.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Graphics\VertexPosition.cs">
+      <Link>Graphics\VertexPosition.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Graphics\VertexPositionColor.cs">
+      <Link>Graphics\VertexPositionColor.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Graphics\VertexPositionColorTexture.cs">
+      <Link>Graphics\VertexPositionColorTexture.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Graphics\VertexPositionTexture.cs.cs">
+      <Link>Graphics\VertexPositionTexture.cs.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Graphics\VertexUsage.cs">
+      <Link>Graphics\VertexUsage.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Graphics\Viewport.cs">
+      <Link>Graphics\Viewport.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\IInterpolatable.cs">
+      <Link>IInterpolatable.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Input\ButtonState.cs">
+      <Link>Input\ButtonState.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Input\GamePadAxis.cs">
+      <Link>Input\GamePadAxis.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Input\GamePadButton.cs">
+      <Link>Input\GamePadButton.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Input\GamePadDevice.cs">
+      <Link>Input\GamePadDevice.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Input\GamePadInputBinding.cs">
+      <Link>Input\GamePadInputBinding.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Input\InputAction.cs">
+      <Link>Input\InputAction.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Input\InputActionCollection.cs">
+      <Link>Input\InputActionCollection.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Input\InputActionCollection.InputBindingGroup.cs">
+      <Link>Input\InputActionCollection.InputBindingGroup.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Input\InputBinding.cs">
+      <Link>Input\InputBinding.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Input\InputDevice.cs">
+      <Link>Input\InputDevice.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Input\Key.cs">
+      <Link>Input\Key.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Input\KeyboardDevice.cs">
+      <Link>Input\KeyboardDevice.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Input\KeyboardInputBinding.cs">
+      <Link>Input\KeyboardInputBinding.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Input\MouseButton.cs">
+      <Link>Input\MouseButton.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Input\MouseDevice.cs">
+      <Link>Input\MouseDevice.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Input\MouseInputBinding.cs">
+      <Link>Input\MouseInputBinding.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Input\NamespaceDoc.cs">
+      <Link>Input\NamespaceDoc.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Input\Scancode.cs">
+      <Link>Input\Scancode.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\InvalidCompatibilityShimException.cs">
+      <Link>InvalidCompatibilityShimException.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\IUltravioletAudio.cs">
+      <Link>IUltravioletAudio.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\IUltravioletComponent.cs">
+      <Link>IUltravioletComponent.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\IUltravioletContent.cs">
+      <Link>IUltravioletContent.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\IUltravioletFactoryInitializer.cs">
+      <Link>IUltravioletFactoryInitializer.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\IUltravioletGraphics.cs">
+      <Link>IUltravioletGraphics.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\IUltravioletHost.cs">
+      <Link>IUltravioletHost.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\IUltravioletInput.cs">
+      <Link>IUltravioletInput.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\IUltravioletPlatform.cs">
+      <Link>IUltravioletPlatform.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\IUltravioletSubsystem.cs">
+      <Link>IUltravioletSubsystem.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\IUltravioletUI.cs">
+      <Link>IUltravioletUI.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Matrix.cs">
+      <Link>Matrix.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\MutableVector2.cs">
+      <Link>MutableVector2.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\MutableVector3.cs">
+      <Link>MutableVector3.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\NamespaceDoc.cs">
+      <Link>NamespaceDoc.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Platform\DisplayMode.cs">
+      <Link>Platform\DisplayMode.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Platform\IconLoader.cs">
+      <Link>Platform\IconLoader.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Platform\IUltravioletDisplay.cs">
+      <Link>Platform\IUltravioletDisplay.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Platform\IUltravioletDisplayInfo.cs">
+      <Link>Platform\IUltravioletDisplayInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Platform\IUltravioletWindow.cs">
+      <Link>Platform\IUltravioletWindow.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Platform\IUltravioletWindowInfo.cs">
+      <Link>Platform\IUltravioletWindowInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Platform\NamespaceDoc.cs">
+      <Link>Platform\NamespaceDoc.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Platform\WindowFlags.cs">
+      <Link>Platform\WindowFlags.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Platform\WindowMode.cs">
+      <Link>Platform\WindowMode.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Platform\WindowState.cs">
+      <Link>Platform\WindowState.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Properties\AssemblyInfo.cs">
+      <Link>Properties\AssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Radians.cs">
+      <Link>Radians.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Rectangle.cs">
+      <Link>Rectangle.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\RectangleF.cs">
+      <Link>RectangleF.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Size2.cs">
+      <Link>Size2.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Size2F.cs">
+      <Link>Size2F.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Size3.cs">
+      <Link>Size3.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Size3F.cs">
+      <Link>Size3F.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\TaskUtil.cs">
+      <Link>TaskUtil.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Tweening.cs">
+      <Link>Tweening.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\IUILayout.cs">
+      <Link>UI\IUILayout.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\IUILayoutProvider.cs">
+      <Link>UI\IUILayoutProvider.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\LayoutEngineException.cs">
+      <Link>UI\LayoutEngineException.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\NamespaceDoc.cs">
+      <Link>UI\NamespaceDoc.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\UILayoutState.cs">
+      <Link>UI\UILayoutState.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\UIPanel.cs">
+      <Link>UI\UIPanel.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\UIPanelDefinition.cs">
+      <Link>UI\UIPanelDefinition.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\UIPanelDefinitionProcessor.cs">
+      <Link>UI\UIPanelDefinitionProcessor.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\UIPanelState.cs">
+      <Link>UI\UIPanelState.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\UIScreen.cs">
+      <Link>UI\UIScreen.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\UIScreenStack.cs">
+      <Link>UI\UIScreenStack.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\UIScreenStackCollection.cs">
+      <Link>UI\UIScreenStackCollection.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\UltravioletUI.cs">
+      <Link>UI\UltravioletUI.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UltravioletApplication.cs">
+      <Link>UltravioletApplication.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UltravioletApplicationSettings.cs">
+      <Link>UltravioletApplicationSettings.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UltravioletApplicationWindowSettings.cs">
+      <Link>UltravioletApplicationWindowSettings.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UltravioletCollection.cs">
+      <Link>UltravioletCollection.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UltravioletConfiguration.cs">
+      <Link>UltravioletConfiguration.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UltravioletContext.cs">
+      <Link>UltravioletContext.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UltravioletFactory.cs">
+      <Link>UltravioletFactory.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UltravioletFactoryInitializer.cs">
+      <Link>UltravioletFactoryInitializer.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UltravioletHostCore.cs">
+      <Link>UltravioletHostCore.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UltravioletMessageID.cs">
+      <Link>UltravioletMessageID.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UltravioletMessages.cs">
+      <Link>UltravioletMessages.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UltravioletNamedCollection.cs">
+      <Link>UltravioletNamedCollection.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UltravioletPlatform.cs">
+      <Link>UltravioletPlatform.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UltravioletResource.cs">
+      <Link>UltravioletResource.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UltravioletSingleton.cs">
+      <Link>UltravioletSingleton.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UltravioletStrings.cs">
+      <Link>UltravioletStrings.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UltravioletTime.cs">
+      <Link>UltravioletTime.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UltravioletTimeTracker.cs">
+      <Link>UltravioletTimeTracker.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Vector2.cs">
+      <Link>Vector2.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Vector3.cs">
+      <Link>Vector3.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Vector4.cs">
+      <Link>Vector4.cs</Link>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\TwistedLogik.Public.snk">
+      <Link>TwistedLogik.Public.snk</Link>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="..\TwistedLogik.Ultraviolet\Resources\Strings.xml">
+      <Link>Resources\Strings.xml</Link>
+    </EmbeddedResource>
+    <Content Include="..\TwistedLogik.Ultraviolet\TwistedLogik.Ultraviolet.Licenses.txt">
+      <Link>TwistedLogik.Ultraviolet.Licenses.txt</Link>
+    </Content>
+    <Content Include="..\TwistedLogik.Ultraviolet\uv.ico">
+      <Link>uv.ico</Link>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Graphics\Graphics3D\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\TwistedLogik.Gluon %28Android%29\TwistedLogik.Gluon %28Android%29.csproj">
+      <Project>{49a66667-2355-4755-a3ad-4ef9ca638534}</Project>
+      <Name>TwistedLogik.Gluon %28Android%29</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TwistedLogik.Nucleus %28Android%29\TwistedLogik.Nucleus %28Android%29.csproj">
+      <Project>{7eb671f1-6b46-426d-8a27-730d2b682043}</Project>
+      <Name>TwistedLogik.Nucleus %28Android%29</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <UserProperties ProjectLinkReference="f071abe3-05e5-4df9-a929-cf71b01ec50a" ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" />
+    </VisualStudio>
+  </ProjectExtensions>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

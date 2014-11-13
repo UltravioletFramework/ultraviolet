@@ -1,0 +1,322 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{B5502009-935A-40BA-B415-ABBF55427CAD}</ProjectGuid>
+    <ProjectTypeGuids>{EFBA0AD7-5A72-4C68-AF49-83D382785DCF};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>TwistedLogik.Ultraviolet.SDL2</RootNamespace>
+    <AssemblyName>TwistedLogik.Ultraviolet.SDL2</AssemblyName>
+    <FileAlignment>512</FileAlignment>
+    <AndroidResgenFile>Resources\Resource.Designer.cs</AndroidResgenFile>
+    <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
+    <AndroidUseLatestPlatformSdk>True</AndroidUseLatestPlatformSdk>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\Binaries\Android\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;ANDROID</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\Binaries\Android\Release\</OutputPath>
+    <DefineConstants>TRACE;ANDROID</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Mono.Android" />
+    <Reference Include="mscorlib" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\TwistedLogik.Ultraviolet.SDL2\Input\GamePadDeviceInfo.cs">
+      <Link>Input\GamePadDeviceInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.SDL2\Input\SDL2GamePadDevice.cs">
+      <Link>Input\SDL2GamePadDevice.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.SDL2\Input\SDL2KeyboardDevice.cs">
+      <Link>Input\SDL2KeyboardDevice.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.SDL2\Input\SDL2MouseDevice.cs">
+      <Link>Input\SDL2MouseDevice.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.SDL2\Messages\SDL2EventMessageData.cs">
+      <Link>Messages\SDL2EventMessageData.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.SDL2\Native\IntPtrExtensions.cs">
+      <Link>Native\IntPtrExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.SDL2\Native\SDL.cs">
+      <Link>Native\SDL.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.SDL2\Native\SDLMacro.cs">
+      <Link>Native\SDLMacro.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.SDL2\Native\SDL_ArrayOrder.cs">
+      <Link>Native\SDL_ArrayOrder.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.SDL2\Native\SDL_BitmapOrder.cs">
+      <Link>Native\SDL_BitmapOrder.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.SDL2\Native\SDL_BlendMode.cs">
+      <Link>Native\SDL_BlendMode.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.SDL2\Native\SDL_Button.cs">
+      <Link>Native\SDL_Button.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.SDL2\Native\SDL_CommonEvent.cs">
+      <Link>Native\SDL_CommonEvent.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.SDL2\Native\SDL_ControllerAxisEvent.cs">
+      <Link>Native\SDL_ControllerAxisEvent.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.SDL2\Native\SDL_ControllerButtonEvent.cs">
+      <Link>Native\SDL_ControllerButtonEvent.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.SDL2\Native\SDL_ControllerDeviceEvent.cs">
+      <Link>Native\SDL_ControllerDeviceEvent.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.SDL2\Native\SDL_Cursor.cs">
+      <Link>Native\SDL_Cursor.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.SDL2\Native\SDL_DisplayMode.cs">
+      <Link>Native\SDL_DisplayMode.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.SDL2\Native\SDL_DollarGestureEvent.cs">
+      <Link>Native\SDL_DollarGestureEvent.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.SDL2\Native\SDL_DropEvent.cs">
+      <Link>Native\SDL_DropEvent.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.SDL2\Native\SDL_Event.cs">
+      <Link>Native\SDL_Event.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.SDL2\Native\SDL_EventType.cs">
+      <Link>Native\SDL_EventType.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.SDL2\Native\SDL_GameControllerAxis.cs">
+      <Link>Native\SDL_GameControllerAxis.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.SDL2\Native\SDL_GameControllerButton.cs">
+      <Link>Native\SDL_GameControllerButton.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.SDL2\Native\SDL_GLattr.cs">
+      <Link>Native\SDL_GLattr.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.SDL2\Native\SDL_GLcontextFlag.cs">
+      <Link>Native\SDL_GLcontextFlag.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.SDL2\Native\SDL_GLprofile.cs">
+      <Link>Native\SDL_GLprofile.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.SDL2\Native\SDL_Hint.cs">
+      <Link>Native\SDL_Hint.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.SDL2\Native\SDL_Init.cs">
+      <Link>Native\SDL_Init.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.SDL2\Native\SDL_JoyAxisEvent.cs">
+      <Link>Native\SDL_JoyAxisEvent.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.SDL2\Native\SDL_JoyBallEvent.cs">
+      <Link>Native\SDL_JoyBallEvent.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.SDL2\Native\SDL_JoyButtonEvent.cs">
+      <Link>Native\SDL_JoyButtonEvent.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.SDL2\Native\SDL_JoyDeviceEvent.cs">
+      <Link>Native\SDL_JoyDeviceEvent.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.SDL2\Native\SDL_JoyHatEvent.cs">
+      <Link>Native\SDL_JoyHatEvent.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.SDL2\Native\SDL_KeyboardEvent.cs">
+      <Link>Native\SDL_KeyboardEvent.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.SDL2\Native\SDL_Keycode.cs">
+      <Link>Native\SDL_Keycode.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.SDL2\Native\SDL_Keymod.cs">
+      <Link>Native\SDL_Keymod.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.SDL2\Native\SDL_Keysym.cs">
+      <Link>Native\SDL_Keysym.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.SDL2\Native\SDL_MouseButtonEvent.cs">
+      <Link>Native\SDL_MouseButtonEvent.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.SDL2\Native\SDL_MouseMotionEvent.cs">
+      <Link>Native\SDL_MouseMotionEvent.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.SDL2\Native\SDL_MouseWheelEvent.cs">
+      <Link>Native\SDL_MouseWheelEvent.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.SDL2\Native\SDL_MultiGestureEvent.cs">
+      <Link>Native\SDL_MultiGestureEvent.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.SDL2\Native\SDL_OSEvent.cs">
+      <Link>Native\SDL_OSEvent.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.SDL2\Native\SDL_PackedLayout.cs">
+      <Link>Native\SDL_PackedLayout.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.SDL2\Native\SDL_PackedOrder.cs">
+      <Link>Native\SDL_PackedOrder.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.SDL2\Native\SDL_PixelFormat.cs">
+      <Link>Native\SDL_PixelFormat.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.SDL2\Native\SDL_PixelFormatEnum.cs">
+      <Link>Native\SDL_PixelFormatEnum.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.SDL2\Native\SDL_PixelType.cs">
+      <Link>Native\SDL_PixelType.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.SDL2\Native\SDL_QuitEvent.cs">
+      <Link>Native\SDL_QuitEvent.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.SDL2\Native\SDL_Rect.cs">
+      <Link>Native\SDL_Rect.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.SDL2\Native\SDL_Scancode.cs">
+      <Link>Native\SDL_Scancode.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.SDL2\Native\SDL_Surface.cs">
+      <Link>Native\SDL_Surface.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.SDL2\Native\SDL_SurfaceImporter.cs">
+      <Link>Native\SDL_SurfaceImporter.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.SDL2\Native\SDL_Surface_Native.cs">
+      <Link>Native\SDL_Surface_Native.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.SDL2\Native\SDL_SysWMinfo.cs">
+      <Link>Native\SDL_SysWMinfo.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.SDL2\Native\SDL_SysWMinfoUnion.cs">
+      <Link>Native\SDL_SysWMinfoUnion.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.SDL2\Native\SDL_SysWMinfo_cocoa.cs">
+      <Link>Native\SDL_SysWMinfo_cocoa.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.SDL2\Native\SDL_SysWMinfo_dfb.cs">
+      <Link>Native\SDL_SysWMinfo_dfb.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.SDL2\Native\SDL_SysWMinfo_mir.cs">
+      <Link>Native\SDL_SysWMinfo_mir.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.SDL2\Native\SDL_SysWMinfo_uikit.cs">
+      <Link>Native\SDL_SysWMinfo_uikit.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.SDL2\Native\SDL_SysWMinfo_win.cs">
+      <Link>Native\SDL_SysWMinfo_win.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.SDL2\Native\SDL_SysWMinfo_winrt.cs">
+      <Link>Native\SDL_SysWMinfo_winrt.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.SDL2\Native\SDL_SysWMinfo_wl.cs">
+      <Link>Native\SDL_SysWMinfo_wl.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.SDL2\Native\SDL_SysWMinfo_x11.cs">
+      <Link>Native\SDL_SysWMinfo_x11.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.SDL2\Native\SDL_SysWMType.cs">
+      <Link>Native\SDL_SysWMType.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.SDL2\Native\SDL_TextEditingEvent.cs">
+      <Link>Native\SDL_TextEditingEvent.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.SDL2\Native\SDL_TextInputEvent.cs">
+      <Link>Native\SDL_TextInputEvent.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.SDL2\Native\SDL_TouchFingerEvent.cs">
+      <Link>Native\SDL_TouchFingerEvent.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.SDL2\Native\SDL_UserEvent.cs">
+      <Link>Native\SDL_UserEvent.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.SDL2\Native\SDL_version.cs">
+      <Link>Native\SDL_version.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.SDL2\Native\SDL_WindowEvent.cs">
+      <Link>Native\SDL_WindowEvent.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.SDL2\Native\SDL_WindowEventID.cs">
+      <Link>Native\SDL_WindowEventID.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.SDL2\Native\SDL_WindowFlags.cs">
+      <Link>Native\SDL_WindowFlags.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.SDL2\Properties\AssemblyInfo.cs">
+      <Link>Properties\AssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.SDL2\SDL2Exception.cs">
+      <Link>SDL2Exception.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.SDL2\SDL2Strings.cs">
+      <Link>SDL2Strings.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.SDL2\SDL2UltravioletInput.cs">
+      <Link>SDL2UltravioletInput.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.SDL2\SDL2UltravioletMessages.cs">
+      <Link>SDL2UltravioletMessages.cs</Link>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\TwistedLogik.Ultraviolet.SDL2\TwistedLogik.Public.snk">
+      <Link>TwistedLogik.Public.snk</Link>
+    </None>
+    <None Include="..\TwistedLogik.Ultraviolet.SDL2\TwistedLogik.Ultraviolet.SDL2.dll.config">
+      <Link>TwistedLogik.Ultraviolet.SDL2.dll.config</Link>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.SDL2\Resources\Strings.xml">
+      <Link>Resources\Strings.xml</Link>
+    </EmbeddedResource>
+    <Content Include="..\TwistedLogik.Ultraviolet.SDL2\TwistedLogik.Ultraviolet.SDL2.Licenses.txt">
+      <Link>TwistedLogik.Ultraviolet.SDL2.Licenses.txt</Link>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\TwistedLogik.Nucleus %28Android%29\TwistedLogik.Nucleus %28Android%29.csproj">
+      <Project>{7eb671f1-6b46-426d-8a27-730d2b682043}</Project>
+      <Name>TwistedLogik.Nucleus %28Android%29</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TwistedLogik.Ultraviolet %28Android%29\TwistedLogik.Ultraviolet %28Android%29.csproj">
+      <Project>{0b17931c-1595-4ada-9086-f26e5f5a387d}</Project>
+      <Name>TwistedLogik.Ultraviolet %28Android%29</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <UserProperties ProjectLinkReference="50aefa93-fe53-414a-89fc-c061c165c673" ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" />
+    </VisualStudio>
+  </ProjectExtensions>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

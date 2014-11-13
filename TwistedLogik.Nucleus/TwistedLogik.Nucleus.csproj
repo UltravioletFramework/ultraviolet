@@ -117,9 +117,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Collections\BinaryHeap.cs" />
-    <Compile Include="Collections\BinaryHeap.Enumerator.cs">
-      <DependentUpon>BinaryHeap.cs</DependentUpon>
-    </Compile>
+    <Compile Include="Collections\BinaryHeap.Enumerator.cs" />
     <Compile Include="Collections\ExpandingPool.cs" />
     <Compile Include="Collections\GenericEnumerator.cs" />
     <Compile Include="Collections\IPool.cs" />
