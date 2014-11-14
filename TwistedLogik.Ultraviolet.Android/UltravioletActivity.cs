@@ -6,6 +6,7 @@ using Android.App;
 using Org.Libsdl.App;
 using TwistedLogik.Nucleus;
 using TwistedLogik.Nucleus.Messages;
+using TwistedLogik.Ultraviolet.Content;
 using TwistedLogik.Ultraviolet.Platform;
 
 namespace TwistedLogik.Ultraviolet.Android
@@ -317,6 +318,20 @@ namespace TwistedLogik.Ultraviolet.Android
             {
                 running = false;
             }
+        }
+
+        /// <summary>
+        /// Sets the file system source to an archive file loaded from a manifest resource stream.
+        /// </summary>
+        /// <param name="name">The name of the manifest resource being loaded as the file system source.</param>
+        protected void SetFileSourceFromManifest(String name)
+        {
+            Contract.RequireNotEmpty(name, "name");
+
+            FileSystemService.Source = ContentArchive.FromArchiveFile(() =>
+            {
+                return GetType().Assembly.GetManifestResourceStream(name);
+            });
         }
 
         /// <summary>

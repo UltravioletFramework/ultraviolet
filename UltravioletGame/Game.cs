@@ -10,6 +10,7 @@ using TwistedLogik.Ultraviolet.Content;
 using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
 using TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text;
 using TwistedLogik.Ultraviolet.OpenGL;
+using TwistedLogik.Ultraviolet.Platform;
 
 namespace SafeProjectName
 {
@@ -61,25 +62,23 @@ namespace SafeProjectName
         }
 
         /// <summary>
-        /// Called when the application is initializing.
+        /// Called after the application has been initialized.
         /// </summary>
-        protected override void OnInitializing()
-        {
-//            Localization.Strings.LoadFromDirectory("Content", "Localization");
-
-            base.OnInitializing();
-        }
-
         protected override void OnInitialized()
         {
-#if ANDROID
-            TwistedLogik.Ultraviolet.Platform.FileSystemService.Source = 
-                TwistedLogik.Ultraviolet.Content.ContentArchive.FromArchiveFile(() =>
+            const String Archive = "UltravioletGame.Content.uvarc";
+
+            if (GetType().Assembly.GetManifestResourceStream(Archive) != null)
+            {
+                SetFileSourceFromManifest(Archive);
+            }
+            else
+            {
+                if (Ultraviolet.Platform == UltravioletPlatform.Android)
                 {
-                    var s = typeof(Game).Assembly.GetManifestResourceStream("UltravioletGame.Content.uvarc");
-                    return s;
-                });
-#endif
+                    throw new InvalidOperationException("Unable to set the file system source archive.");
+                }
+            }
 
             base.OnInitialized();
         }
@@ -89,21 +88,10 @@ namespace SafeProjectName
         /// </summary>
         protected override void OnLoadingContent()
         {
-#if ANDROID
-            var fss = TwistedLogik.Ultraviolet.Platform.FileSystemService.Create();
-            var files = fss.ListFiles(Path.Combine("Content", "Cursors"), "*asdf*");
-            foreach (var file in files)
-            {
-                using (var stream = Assets.Open(file))
-                {
-                    Localization.Strings.LoadFromStream(stream);
-                }
-            }
-#endif
-
             this.content = ContentManager.Create("Content");
 
-            //LoadInputBindings();
+            LoadLocalizationDatabases();
+            LoadInputBindings();
             LoadContentManifests();
             LoadCursors();
 
@@ -117,6 +105,22 @@ namespace SafeProjectName
             GC.Collect(2);
 
             base.OnLoadingContent();
+        }
+
+        /// <summary>
+        /// Loads the application's localization databases.
+        /// </summary>
+        protected void LoadLocalizationDatabases()
+        {
+            var fss = FileSystemService.Create();
+            var databases = content.GetAssetFilePathsInDirectory("Localization", "*.xml");
+            foreach (var database in databases)
+            {
+                using (var stream = fss.OpenRead(database))
+                {
+                    Localization.Strings.LoadFromStream(stream);
+                }
+            }
         }
 
         /// <summary>
