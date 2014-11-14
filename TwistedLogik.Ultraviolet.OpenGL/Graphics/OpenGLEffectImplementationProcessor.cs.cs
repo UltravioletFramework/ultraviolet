@@ -6,6 +6,7 @@ using System.Xml.Linq;
 using TwistedLogik.Nucleus.Xml;
 using TwistedLogik.Ultraviolet.Content;
 using TwistedLogik.Ultraviolet.Graphics;
+using TwistedLogik.Gluon;
 
 namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
 {
@@ -136,13 +137,15 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
                 {
                     var passName = passElement.AttributeValueString("Name");
 
-                    var vertexShaderAsset = passElement.ElementValueString("VertexShader");
+                    var vertexShaderElementName = gl.IsGLES ? "VertexShaderES" : "VertexShader";
+                    var vertexShaderAsset = passElement.ElementValueString(vertexShaderElementName) ?? passElement.ElementValueString("VertexShader");
                     if (String.IsNullOrEmpty(vertexShaderAsset))
                         throw new ContentLoadException(OpenGLStrings.EffectMustHaveVertexAndFragmentShader);
 
                     var vertexShader = manager.Load<OpenGLVertexShader>(vertexShaderAsset, false);
 
-                    var fragmentShaderAsset = passElement.ElementValueString("FragmentShader");
+                    var fragmentShaderElementName = gl.IsGLES ? "FragmentShaderES" : "FragmentShader";
+                    var fragmentShaderAsset = passElement.ElementValueString(fragmentShaderElementName) ?? passElement.ElementValueString("FragmentShader");
                     if (String.IsNullOrEmpty(fragmentShaderAsset))
                         throw new ContentLoadException(OpenGLStrings.EffectMustHaveVertexAndFragmentShader);
 
