@@ -256,14 +256,6 @@ namespace TwistedLogik.Ultraviolet.Android
             base.Dispose(disposing);
         }
 
-        /// <inheritdoc/>
-        protected override void OnCreate(global::Android.OS.Bundle savedInstanceState)
-        {
-            Platform.AndroidFileSystemService.Assets = Assets;
-
-            base.OnCreate(savedInstanceState);
-        }
-
         /// <summary>
         /// Called when the application is initializing.
         /// </summary>

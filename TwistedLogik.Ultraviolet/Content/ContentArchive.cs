@@ -4,13 +4,14 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using TwistedLogik.Nucleus;
+using TwistedLogik.Ultraviolet.Platform;
 
 namespace TwistedLogik.Ultraviolet.Content
 {
     /// <summary>
     /// Represents an archive containing multiple content files.
     /// </summary>
-    public sealed class ContentArchive : IEnumerable<ContentArchiveNode>
+    public sealed class ContentArchive : FileSource, IEnumerable<ContentArchiveNode>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ContentArchive"/> class.
@@ -102,13 +103,8 @@ namespace TwistedLogik.Ultraviolet.Content
             }
         }
 
-        /// <summary>
-        /// Finds the archive node with the specified path.
-        /// </summary>
-        /// <param name="path">The relative path of the node to find.</param>
-        /// <param name="throwIfNotFound">A value indicating whether to throw a <see cref="FileNotFoundException"/> if the path does not exist.</param>
-        /// <returns>The archive node with the specified path, or <c>null</c> if no such node exists and <paramref name="throwIfNotFound"/> is <c>false</c>.</returns>
-        public ContentArchiveNode Find(String path, Boolean throwIfNotFound = true)
+        /// <inheritdoc/>
+        public override FileSourceNode Find(String path, Boolean throwIfNotFound = true)
         {
             Contract.Require(path, "path");
 
@@ -141,7 +137,7 @@ namespace TwistedLogik.Ultraviolet.Content
 
                 if (component == "..")
                 {
-                    current = current.Parent;
+                    current = (ContentArchiveNode)current.Parent;
                     if (current == null)
                     {
                         if (throwIfNotFound)
@@ -152,7 +148,9 @@ namespace TwistedLogik.Ultraviolet.Content
                     continue;
                 }
 
-                var match = current.Children.SingleOrDefault(x => String.Equals(x.Name, component, StringComparison.InvariantCultureIgnoreCase));
+                var match = (ContentArchiveNode)current.Children.SingleOrDefault(x => 
+                    String.Equals(x.Name, component, StringComparison.InvariantCultureIgnoreCase));
+
                 if (match == null)
                 {
                     if (throwIfNotFound)
@@ -168,12 +166,8 @@ namespace TwistedLogik.Ultraviolet.Content
             return current;
         }
 
-        /// <summary>
-        /// Extracts the specified file.
-        /// </summary>
-        /// <param name="path">The relative path of the file to load.</param>
-        /// <returns>A <see cref="ContentArchiveStream"/> that represents the extracted data.</returns>
-        public ContentArchiveStream Extract(String path)
+        /// <inheritdoc/>
+        public override Stream Extract(String path)
         {
             Contract.Require(path, "path");
             Contract.Ensure(canExtract, "TODO");

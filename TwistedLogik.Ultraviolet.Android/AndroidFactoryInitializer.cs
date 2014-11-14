@@ -20,7 +20,7 @@ namespace TwistedLogik.Ultraviolet.Android
             factory.SetFactoryMethod<SurfaceSourceFactory>((stream) => new AndroidSurfaceSource(stream));
             factory.SetFactoryMethod<SurfaceSaverFactory>(() => new AndroidSurfaceSaver());
             factory.SetFactoryMethod<IconLoaderFactory>(() => new AndroidIconLoader());
-            factory.SetFactoryMethod<FileSystemServiceFactory>(() => new AndroidFileSystemService());
+            factory.SetFactoryMethod<FileSystemServiceFactory>(() => new FileSystemService());
         }
     }
 }

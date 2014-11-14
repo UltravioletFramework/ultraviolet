@@ -51,8 +51,6 @@
     <Compile Include="Graphics\AndroidSurfaceSource.cs" />
     <Compile Include="Graphics\AndroidSurfaceSaver.cs" />
     <Compile Include="Platform\AndroidIconLoader.cs" />
-    <Compile Include="Platform\AndroidFileSystemService.cs" />
-    <Compile Include="Platform\FileSystemNode.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UltravioletActivity.cs" />
     <Compile Include="UltravioletActivitySettings.cs" />

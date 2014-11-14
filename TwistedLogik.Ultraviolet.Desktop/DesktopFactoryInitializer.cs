@@ -20,7 +20,7 @@ namespace TwistedLogik.Ultraviolet.Desktop
             factory.SetFactoryMethod<SurfaceSourceFactory>((stream) => new DesktopSurfaceSource(stream));
             factory.SetFactoryMethod<SurfaceSaverFactory>(() => new DesktopSurfaceSaver());
             factory.SetFactoryMethod<IconLoaderFactory>(() => new DesktopIconLoader());
-            factory.SetFactoryMethod<FileSystemServiceFactory>(() => new DesktopFileSystemService());
+            factory.SetFactoryMethod<FileSystemServiceFactory>(() => new FileSystemService());
         }
     }
 }

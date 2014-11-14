@@ -2,14 +2,16 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using TwistedLogik.Nucleus;
+using TwistedLogik.Ultraviolet.Platform;
 
 namespace TwistedLogik.Ultraviolet.Content
 {
     /// <summary>
     /// Represents a file or directory in an Ultraviolet content archive.
     /// </summary>
-    public sealed class ContentArchiveNode
+    public sealed class ContentArchiveNode : FileSourceNode
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ContentArchiveNode"/> class from a file or directory in the file system.
@@ -51,6 +53,7 @@ namespace TwistedLogik.Ultraviolet.Content
         {
             this.parent      = parent;
             this.name        = reader.ReadString();
+            this.path        = BuildPath(parent, name);
             this.isFile      = reader.ReadBoolean();
             this.isDirectory = !this.isFile;
 
@@ -145,24 +148,31 @@ namespace TwistedLogik.Ultraviolet.Content
                 }
             }
 
-            foreach (var child in Children)
+            foreach (ContentArchiveNode child in Children)
             {
                 child.WriteData(writer);
             }
         }
 
-        /// <summary>
-        /// Gets the node's parent node.
-        /// </summary>
-        public ContentArchiveNode Parent
+        /// <inheritdoc/>
+        public override FileSourceNode Parent
         {
             get { return parent; }
         }
 
         /// <summary>
-        /// Gets the node's name.
+        /// Gets the file's path within its source.
         /// </summary>
-        public String Name
+        public override String Path
+        {
+            get
+            {
+                return path;
+            }
+        }
+
+        /// <inheritdoc/>
+        public override String Name
         {
             get
             {
@@ -170,10 +180,8 @@ namespace TwistedLogik.Ultraviolet.Content
             }
         }
 
-        /// <summary>
-        /// Gets a value indicating whether the node represents a file.
-        /// </summary>
-        public Boolean IsFile
+        /// <inheritdoc/>
+        public override Boolean IsFile
         {
             get
             {
@@ -181,10 +189,8 @@ namespace TwistedLogik.Ultraviolet.Content
             }
         }
 
-        /// <summary>
-        /// Gets a value indicating whether the node represents a directory.
-        /// </summary>
-        public Boolean IsDirectory
+        /// <inheritdoc/>
+        public override Boolean IsDirectory
         {
             get
             {
@@ -192,18 +198,14 @@ namespace TwistedLogik.Ultraviolet.Content
             }
         }
 
-        /// <summary>
-        /// Gets the position of the node's data within the archive's data block.
-        /// </summary>
-        public Int64 Position
+        /// <inheritdoc/>
+        public override Int64 Position
         {
             get { return position; }
         }
 
-        /// <summary>
-        /// Gets the node's size in bytes.
-        /// </summary>
-        public Int64 SizeInBytes
+        /// <inheritdoc/>
+        public override Int64 SizeInBytes
         {
             get
             {
@@ -211,15 +213,31 @@ namespace TwistedLogik.Ultraviolet.Content
             }
         }
 
-        /// <summary>
-        /// Gets the archive node's child nodes.
-        /// </summary>
-        public IEnumerable<ContentArchiveNode> Children
+        /// <inheritdoc/>
+        public override IEnumerable<FileSourceNode> Children
         {
             get
             {
                 return children ?? Enumerable.Empty<ContentArchiveNode>();
             }
+        }
+
+        /// <summary>
+        /// Builds an asset path for a node.
+        /// </summary>
+        /// <param name="parent">The node's parent node.</param>
+        /// <param name="name">The node's name.</param>
+        /// <returns>The asset path for a node with the specified parameters.</returns>
+        private static String BuildPath(ContentArchiveNode parent, String name)
+        {
+            var builder = new StringBuilder(name);
+            var current = parent;
+            while (current != null)
+            {
+                builder.Insert(0, '/');
+                builder.Insert(0, current.Name);
+            }
+            return builder.ToString();
         }
 
         /// <summary>
@@ -265,7 +283,7 @@ namespace TwistedLogik.Ultraviolet.Content
             else
             {
                 writer.Write(this.Children.Count());
-                foreach (var child in children)
+                foreach (ContentArchiveNode child in children)
                 {
                     child.WriteIndexInternal(writer, ref position);
                 }
@@ -273,13 +291,13 @@ namespace TwistedLogik.Ultraviolet.Content
         }
 
         // Property values.
-        private readonly ContentArchiveNode parent;
+        private readonly FileSourceNode parent;
         private readonly String path;
         private readonly String name;
         private readonly Boolean isFile;
         private readonly Boolean isDirectory;
         private readonly Int64 position;
         private readonly Int64 sizeInBytes;
-        private IEnumerable<ContentArchiveNode> children;
+        private IEnumerable<FileSourceNode> children;
     }
 }
