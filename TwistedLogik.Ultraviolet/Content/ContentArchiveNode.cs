@@ -126,9 +126,7 @@ namespace TwistedLogik.Ultraviolet.Content
         public void WriteData(BinaryWriter writer)
         {
             Contract.Require(writer, "writer");
-
-            if (path == null)
-                throw new InvalidOperationException("TODO");
+            Contract.Ensure<NotSupportedException>(path != null);
 
             if (IsFile)
             {

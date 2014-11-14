@@ -87,7 +87,21 @@ namespace TwistedLogik.Gluon
         [Require(MinVersion = "1.1")]
         private static readonly glClearDepthDelegate glClearDepth = null;
 
-        public static void ClearDepth(double depth) { glClearDepth(depth); }
+        private delegate void glClearDepthfDelegate(float depth);
+        [Require(MinVersion = "4.1", MinVersionES = "2.0")]
+        private static readonly glClearDepthfDelegate glClearDepthf = null;
+
+        public static void ClearDepth(double depth) 
+        {
+            if (isGLES)
+            {
+                glClearDepthf((float)depth);
+            }
+            else
+            {
+                glClearDepth(depth);
+            }
+        }
 
         private delegate void glClearIndexDelegate(float c);
         [Require(MinVersion = "1.1")]

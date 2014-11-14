@@ -75,8 +75,10 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
             gl.CullFace(gl.GL_BACK);
             gl.ThrowIfError();
 
-            if (!gl.IsGLES)
+            if (FillMode != FillMode.Solid)
             {
+                gl.ThrowIfGLES(OpenGLStrings.UnsupportedFillModeGLES);
+
                 gl.PolygonMode(gl.GL_FRONT_AND_BACK, GetFillModeGL(FillMode));
                 gl.ThrowIfError();
             }

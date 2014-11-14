@@ -93,14 +93,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL
             Contract.EnsureNotDisposed(this, Disposed);
 
             gl.ClearColor(color.R / 255f, color.G / 255f, color.B / 255f, color.A / 255f);
-            if (gl.IsGLES)
-            {
-                // TODO: glClearDepthf();
-            }
-            else
-            {
-                gl.ClearDepth(depth);
-            }
+            gl.ClearDepth(depth);
             gl.ClearStencil(stencil);
             gl.Clear(gl.GL_COLOR_BUFFER_BIT | gl.GL_DEPTH_BUFFER_BIT | gl.GL_STENCIL_BUFFER_BIT);
         }
@@ -597,6 +590,11 @@ namespace TwistedLogik.Ultraviolet.OpenGL
         /// <returns>true if the graphics device is supported; otherwise, false.</returns>
         private static Boolean VerifyCapabilities()
         {
+            if (gl.IsGLES)
+            {
+                return gl.IsVersionAtLeast(2, 0);
+            }
+
             if (gl.IsVersionAtLeast(3, 0) || (
                 gl.IsExtensionSupported("GL_ARB_vertex_array_object") &&
                 gl.IsExtensionSupported("GL_ARB_framebuffer_object")))

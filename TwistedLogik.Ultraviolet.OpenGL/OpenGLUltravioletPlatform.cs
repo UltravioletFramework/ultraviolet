@@ -51,14 +51,17 @@ namespace TwistedLogik.Ultraviolet.OpenGL
             {
                 cursor = value;
 
-                var oglcursor = (OpenGLCursor)value;
-                if (oglcursor != null)
+                if (OpenGLCursor.AreCursorsSupported(Ultraviolet))
                 {
-                    SDL.SetCursor(oglcursor.Native);
-                }
-                else
-                {
-                    SDL.SetCursor(SDL.GetDefaultCursor());
+                    var oglcursor = (OpenGLCursor)value;
+                    if (oglcursor != null)
+                    {
+                        SDL.SetCursor(oglcursor.Native);
+                    }
+                    else
+                    {
+                        SDL.SetCursor(SDL.GetDefaultCursor());
+                    }
                 }
             }
         }

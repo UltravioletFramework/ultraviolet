@@ -105,7 +105,7 @@ namespace SafeProjectName
 
             //LoadInputBindings();
             LoadContentManifests();
-            //LoadCursors();
+            LoadCursors();
 
             this.spriteBatch = SpriteBatch.Create();
             this.spriteFont = this.content.Load<SpriteFont>(GlobalFontID.SegoeUI);

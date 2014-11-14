@@ -7,6 +7,7 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
 using TwistedLogik.Nucleus;
+using TwistedLogik.Nucleus.Text;
 
 namespace TwistedLogik.Gluon
 {
@@ -191,6 +192,30 @@ namespace TwistedLogik.Gluon
         }
 
         /// <summary>
+        /// Throws a <see cref="NotSupportedException"/> if the current OpenGL context uses the OpenGL ES profile.
+        /// </summary>
+        /// <param name="message">The exception message.</param>
+        public static void ThrowIfGLES(String message)
+        {
+            if (IsGLES)
+            {
+                throw new NotSupportedException(message);
+            }
+        }
+
+        /// <summary>
+        /// Throws a <see cref="NotSupportedException"/> if the current OpenGL context uses the OpenGL ES profile.
+        /// </summary>
+        /// <param name="message">The exception message.</param>
+        public static void ThrowIfGLES(StringResource message)
+        {
+            if (IsGLES)
+            {
+                throw new NotSupportedException(message);
+            }
+        }
+
+        /// <summary>
         /// Gets a value indicating whether OpenGL has been initialized.
         /// </summary>
         public static Boolean Initialized
@@ -301,7 +326,9 @@ namespace TwistedLogik.Gluon
                 var components    = versionString.Split(new[] { ' ', '.' }, StringSplitOptions.RemoveEmptyEntries);
                 if (components.Length < 2 || !Int32.TryParse(components[0], out glesMajorVersion) || !Int32.TryParse(components[1], out glesMinorVersion))
                 {
-                    throw new InvalidOperationException(); // TODO better exception
+                    // Something went really wrong here... assume GLES 2.0 and barrel on forward.
+                    glesMajorVersion = 2;
+                    glesMinorVersion = 0;
                 }
             }
 

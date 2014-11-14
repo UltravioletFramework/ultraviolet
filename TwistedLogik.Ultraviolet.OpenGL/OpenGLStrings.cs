@@ -56,6 +56,9 @@ namespace TwistedLogik.Ultraviolet.OpenGL
         public static readonly StringResource TechniqueBelongsToDifferentEffect     = new StringResource(StringDatabase, "TECHNIQUE_BELONGS_TO_DIFFERENT_EFFECT");
         public static readonly StringResource DebugOutputNotSupported               = new StringResource(StringDatabase, "DEBUG_OUTPUT_NOT_SUPPORTED");
         public static readonly StringResource ShaderUniformHasNoSource              = new StringResource(StringDatabase, "SHADER_UNIFORM_HAS_NO_SOURCE");
+        public static readonly StringResource UnsupportedFillModeGLES               = new StringResource(StringDatabase, "UNSUPPORTED_FILLMODE_GLES");
+        public static readonly StringResource UnsupportedLODBiasGLES                = new StringResource(StringDatabase, "UNSUPPORTED_LOD_BIAS_GLES");
+        public static readonly StringResource CannotCreateHeadlessContextOnAndroid  = new StringResource(StringDatabase, "CANNOT_CREATE_HEADLESS_CONTEXT_ON_ANDROID");
 #pragma warning restore 1591
     }
 }

@@ -38,7 +38,7 @@ namespace TwistedLogik.Ultraviolet.Content
                         var pos = start + offset;
                         if (pos < 0 || pos < start)
                         {
-                            throw new IOException("TODO");
+                            throw new IOException(UltravioletStrings.CannotSeekPastBeginningOfStream);
                         }
                         source.Seek(pos, SeekOrigin.Begin);
                     }
@@ -49,7 +49,7 @@ namespace TwistedLogik.Ultraviolet.Content
                         var pos = source.Position + offset;
                         if (pos < start)
                         {
-                            throw new IOException("TODO");
+                            throw new IOException(UltravioletStrings.CannotSeekPastBeginningOfStream);
                         }
                         source.Seek(offset, SeekOrigin.Current);
                     }
@@ -60,7 +60,7 @@ namespace TwistedLogik.Ultraviolet.Content
                         var pos = start + length + offset;
                         if (pos < start)
                         {
-                            throw new IOException("TODO");
+                            throw new IOException(UltravioletStrings.CannotSeekPastBeginningOfStream);
                         }
                         source.Seek(pos, SeekOrigin.Begin);
                     }

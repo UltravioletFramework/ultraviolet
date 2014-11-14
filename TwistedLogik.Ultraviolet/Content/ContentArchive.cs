@@ -40,7 +40,7 @@ namespace TwistedLogik.Ultraviolet.Content
                 {
                     var fileHeader = reader.ReadString();
                     if (fileHeader != "UVARC0")
-                        throw new InvalidDataException("TODO");
+                        throw new InvalidDataException(UltravioletStrings.InvalidContentArchive);
 
                     var rootCount = reader.ReadInt32();
                     for (int i = 0; i < rootCount; i++)
@@ -85,7 +85,7 @@ namespace TwistedLogik.Ultraviolet.Content
         public void Save(BinaryWriter writer)
         {
             Contract.Require(writer, "writer");
-            Contract.Ensure(canSave, "TODO");
+            Contract.Ensure<NotSupportedException>(canSave);
 
             writer.Write("UVARC0");
             writer.Write(roots.Count());
@@ -175,7 +175,7 @@ namespace TwistedLogik.Ultraviolet.Content
         public override Stream Extract(String path)
         {
             Contract.Require(path, "path");
-            Contract.Ensure(canExtract, "TODO");
+            Contract.Ensure<NotSupportedException>(canExtract);
 
             var node = Find(path);
 

@@ -445,4 +445,14 @@
       <Variant>Content importers and processors have already been registered.</Variant>
     </en-US>
   </String>
+  <String Key="CANNOT_SEEK_PAST_BEGINNING_OF_STREAM">
+    <en-US>
+      <Variant>Attempted to seek past the beginning of the stream.</Variant>
+    </en-US>
+  </String>
+  <String Key="CANNOT_DESTROY_MASTER_WINDOW">
+    <en-US>
+      <Variant>Cannot destroy the master window.</Variant>
+    </en-US>
+  </String>
 </LocalizedStrings>

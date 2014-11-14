@@ -26,11 +26,30 @@ namespace TwistedLogik.Ultraviolet.OpenGL
 
             uv.ValidateResource(surface);
 
-            this.cursor = SDL.CreateColorCursor(((OpenGLSurface2D)surface).Native, hx, hy);
-            if (this.cursor == null)
+            if (AreCursorsSupported(uv))
             {
-                throw new SDL2Exception();
+                this.cursor = SDL.CreateColorCursor(((OpenGLSurface2D)surface).Native, hx, hy);
+                if (this.cursor == null)
+                {
+                    throw new SDL2Exception();
+                }
             }
+            else
+            {
+                this.cursor = null;
+            }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether cursors are supported on the current platform.
+        /// </summary>
+        /// <param name="uv">The Ultraviolet context.</param>
+        /// <returns><c>true</c> if cursors are supported; otherwise, <c>false</c>.</returns>
+        public static Boolean AreCursorsSupported(UltravioletContext uv)
+        {
+            Contract.Require(uv, "uv");
+
+            return uv.Platform != UltravioletPlatform.Android;
         }
 
         /// <summary>

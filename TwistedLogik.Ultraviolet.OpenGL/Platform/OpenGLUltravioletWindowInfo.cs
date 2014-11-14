@@ -247,7 +247,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
             Contract.Require(window, "window");
 
             if (window == master)
-                throw new InvalidOperationException("TODO");
+                throw new InvalidOperationException(UltravioletStrings.CannotDestroyMasterWindow);
 
             if (!windows.Remove(window))
                 throw new InvalidOperationException(UltravioletStrings.InvalidResource);
@@ -379,7 +379,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
             {
                 if (configuration.Headless)
                 {
-                    throw new InvalidOperationException("TODO");
+                    throw new InvalidOperationException(OpenGLStrings.CannotCreateHeadlessContextOnAndroid);
                 }
                 const Int32 SDL_GL_CONTEXT_PROFILE_ES = (int)0x0004; 
                 SDL.GL_SetAttribute(SDL_GLattr.CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_ES);
