@@ -236,6 +236,8 @@ namespace TwistedLogik.Ultraviolet.Content
             {
                 builder.Insert(0, '/');
                 builder.Insert(0, current.Name);
+
+                current = (ContentArchiveNode)current.Parent;
             }
             return builder.ToString();
         }

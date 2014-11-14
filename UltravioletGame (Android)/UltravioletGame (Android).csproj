@@ -75,9 +75,6 @@
     <None Include="..\UltravioletGame\App.config">
       <Link>App.config</Link>
     </None>
-    <AndroidAsset Include="..\UltravioletGame\Content\Manifests\Global.manifest">
-      <Link>Content\Manifests\Global.manifest</Link>
-    </AndroidAsset>
     <AndroidNativeLibrary Include="lib\armeabi-v7a\libSDL2.so" />
     <AndroidNativeLibrary Include="lib\armeabi-v7a\libmain.so" />
     <AndroidNativeLibrary Include="lib\armeabi\libSDL2.so" />
@@ -90,6 +87,7 @@
     <AndroidNativeLibrary Include="lib\armeabi\libbass_fx.so" />
     <AndroidNativeLibrary Include="lib\x86\libbass.so" />
     <AndroidNativeLibrary Include="lib\x86\libbass_fx.so" />
+    <EmbeddedResource Include="Content.uvarc" />
     <None Include="Resources\AboutResources.txt" />
   </ItemGroup>
   <ItemGroup>
@@ -102,21 +100,6 @@
     <AndroidResource Include="Resources\drawable\Icon.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidAsset Include="..\UltravioletGame\Content\Cursors\Cursors.xml">
-      <Link>Content\Cursors\Cursors.xml</Link>
-    </AndroidAsset>
-    <AndroidAsset Include="..\UltravioletGame\Content\Cursors\CursorsImage.png">
-      <Link>Content\Cursors\CursorsImage.png</Link>
-    </AndroidAsset>
-    <AndroidAsset Include="..\UltravioletGame\Content\Fonts\SegoeUI.xml">
-      <Link>Content\Fonts\SegoeUI.xml</Link>
-    </AndroidAsset>
-    <AndroidAsset Include="..\UltravioletGame\Content\Fonts\SegoeUITexture.png">
-      <Link>Content\Fonts\SegoeUITexture.png</Link>
-    </AndroidAsset>
-    <AndroidAsset Include="..\UltravioletGame\Content\Localization\GameStrings.xml">
-      <Link>Content\Localization\GameStrings.xml</Link>
-    </AndroidAsset>
     <Content Include="..\UltravioletGame\README-SDL.txt">
       <Link>README-SDL.txt</Link>
     </Content>
@@ -158,7 +141,7 @@
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties ProjectLinkReference="f6c64886-59bf-4dfd-af10-53c1700ee20d" ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" />
+      <UserProperties ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" ProjectLinkReference="f6c64886-59bf-4dfd-af10-53c1700ee20d" />
     </VisualStudio>
   </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

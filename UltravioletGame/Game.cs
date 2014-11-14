@@ -70,6 +70,20 @@ namespace SafeProjectName
             base.OnInitializing();
         }
 
+        protected override void OnInitialized()
+        {
+#if ANDROID
+            TwistedLogik.Ultraviolet.Platform.FileSystemService.Source = 
+                TwistedLogik.Ultraviolet.Content.ContentArchive.FromArchiveFile(() =>
+                {
+                    var s = typeof(Game).Assembly.GetManifestResourceStream("UltravioletGame.Content.uvarc");
+                    return s;
+                });
+#endif
+
+            base.OnInitialized();
+        }
+
         /// <summary>
         /// Called when the application is loading content.
         /// </summary>
@@ -90,15 +104,15 @@ namespace SafeProjectName
             this.content = ContentManager.Create("Content");
 
             //LoadInputBindings();
-            //LoadContentManifests();
+            LoadContentManifests();
             //LoadCursors();
 
-            //this.spriteBatch = SpriteBatch.Create();
-            //this.spriteFont = this.content.Load<SpriteFont>(GlobalFontID.SegoeUI);
+            this.spriteBatch = SpriteBatch.Create();
+            this.spriteFont = this.content.Load<SpriteFont>(GlobalFontID.SegoeUI);
 
-            //this.textRenderer = new TextRenderer();
-            //this.textFormatter = new StringFormatter();
-            //this.textBuffer = new StringBuilder();
+            this.textRenderer = new TextRenderer();
+            this.textFormatter = new StringFormatter();
+            this.textBuffer = new StringBuilder();
 
             GC.Collect(2);
 
@@ -165,7 +179,6 @@ namespace SafeProjectName
         /// <param name="time">Time elapsed since the last call to Draw.</param>
         protected override void OnDrawing(UltravioletTime time)
         {
-            /*
             spriteBatch.Begin();
 
             textFormatter.Reset();
@@ -181,7 +194,7 @@ namespace SafeProjectName
             textRenderer.Draw(spriteBatch, "Welcome to the |c:FFFF00C0|Ultraviolet Framework|c|!", Vector2.Zero, Color.White, settings);
 
             spriteBatch.End();
-            */
+
             base.OnDrawing(time);
         }
 

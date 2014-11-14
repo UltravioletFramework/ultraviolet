@@ -108,6 +108,11 @@ namespace TwistedLogik.Ultraviolet.Content
         {
             Contract.Require(path, "path");
 
+            if (path.StartsWith("/"))
+            {
+                path = path.Substring(1);
+            }
+
             ContentArchiveNode cachedNode;
             if (pathCache.TryGetValue(path, out cachedNode))
             {

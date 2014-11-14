@@ -6,6 +6,7 @@ using System.Text;
 using System.Xml.Linq;
 using TwistedLogik.Nucleus;
 using TwistedLogik.Nucleus.Xml;
+using TwistedLogik.Ultraviolet.Platform;
 
 namespace TwistedLogik.Ultraviolet.Content
 {
@@ -22,7 +23,8 @@ namespace TwistedLogik.Ultraviolet.Content
         private ContentManager(UltravioletContext uv, String rootDirectory)
             : base(uv)
         {
-            this.rootDirectory = rootDirectory;
+            this.rootDirectory     = rootDirectory;
+            this.fileSystemService = FileSystemService.Create();
         }
 
         /// <summary>
@@ -200,7 +202,7 @@ namespace TwistedLogik.Ultraviolet.Content
             var metadata = GetAssetMetadata(asset, false);
             var importer = FindContentImporter(metadata.AssetFilePath, out outputType);
 
-            using (var stream = File.OpenRead(metadata.AssetFilePath))
+            using (var stream = fileSystemService.OpenRead(metadata.AssetFilePath))
             {
                 return (TOutput)importer.Import(metadata, stream);
             }
@@ -632,7 +634,7 @@ namespace TwistedLogik.Ultraviolet.Content
             var intermediate = default(Object);
             try
             {
-                using (var stream = File.OpenRead(metadata.AssetFilePath))
+                using (var stream = fileSystemService.OpenRead(metadata.AssetFilePath))
                 {
                     intermediate = importer.Import(metadata, stream);
                     if (intermediate == null)
@@ -664,7 +666,7 @@ namespace TwistedLogik.Ultraviolet.Content
         private Object LoadInternalPreprocessed(String asset, String path, out IContentImporter importer, out IContentProcessor processor)
         {
             importer = null;
-            using (var stream = File.OpenRead(path))
+            using (var stream = fileSystemService.OpenRead(path))
             {
                 using (var reader = new BinaryReader(stream))
                 {
@@ -742,13 +744,13 @@ namespace TwistedLogik.Ultraviolet.Content
         private String GetAssetPathFromDirectory(String root, String asset, ref String extension)
         {
             var assetPath = Path.GetDirectoryName(Path.Combine(root, asset));
-            if (!Directory.Exists(assetPath))
+            if (!fileSystemService.DirectoryExists(assetPath))
             {
                 return null;
             }
 
             var assetNoExtension = Path.GetFileNameWithoutExtension(asset);
-            var assetMatches = Directory.GetFiles(assetPath, assetNoExtension + ".*");
+            var assetMatches = fileSystemService.ListFiles(assetPath, assetNoExtension + ".*");
 
             var filteredExtension = extension;
             var filteredMatches = 
@@ -863,7 +865,7 @@ namespace TwistedLogik.Ultraviolet.Content
                 var wrappedAssetDirectory = String.Empty;
                 var wrappedAssetPath = GetAssetPath(relative, Path.GetExtension(relative), out wrappedAssetDirectory);
 
-                if (!File.Exists(wrappedAssetPath))
+                if (!fileSystemService.FileExists(wrappedAssetPath))
                 {
                     throw new InvalidDataException(UltravioletStrings.AssetMetadataFileNotFound);
                 }
@@ -908,14 +910,14 @@ namespace TwistedLogik.Ultraviolet.Content
         /// <param name="results">The result set to update.</param>
         private void GetAssetsInDirectory(String directory, String path, String searchPattern, Dictionary<String, String> results)
         {
-            var root = String.IsNullOrEmpty(directory) ? Directory.GetCurrentDirectory() : Path.GetFullPath(directory);
+            var root = String.IsNullOrEmpty(directory) ? fileSystemService.GetCurrentDirectory() : Path.GetFullPath(directory);
 
             var assetDirectory = Path.GetFullPath(Path.Combine(directory, path ?? ""));
-            if (!Directory.Exists(assetDirectory))
+            if (!fileSystemService.DirectoryExists(assetDirectory))
                 return;
 
             var assets =
-                from f in Directory.GetFiles(assetDirectory, searchPattern)
+                from f in fileSystemService.ListFiles(assetDirectory, searchPattern)
                 let relative = GetRelativePath(root, f)
                 let absolute = Path.GetFullPath(Path.Combine(root, relative))
                 select new { RelativePath = relative, AbsolutePath = absolute };
@@ -938,11 +940,11 @@ namespace TwistedLogik.Ultraviolet.Content
             var root = String.IsNullOrEmpty(directory) ? Directory.GetCurrentDirectory() : Path.GetFullPath(directory);
 
             var assetDirectory = Path.GetFullPath(Path.Combine(directory, path ?? ""));
-            if (!Directory.Exists(assetDirectory))
+            if (!fileSystemService.DirectoryExists(assetDirectory))
                 return;
 
             var assets =
-                from d in Directory.GetDirectories(assetDirectory, searchPattern)
+                from d in fileSystemService.ListDirectories(assetDirectory, searchPattern)
                 let relative = GetRelativePath(root, d)
                 let absolute = Path.GetFullPath(Path.Combine(root, relative))
                 select new { RelativePath = relative, AbsolutePath = absolute };
@@ -959,6 +961,7 @@ namespace TwistedLogik.Ultraviolet.Content
         // State values.
         private readonly ContentOverrideDirectoryCollection overrideDirectories = new ContentOverrideDirectoryCollection();
         private readonly Dictionary<String, Object> assetCache = new Dictionary<String, Object>();
+        private readonly FileSystemService fileSystemService;
 
         // The file extensions associated with preprocessed binary data and asset metadata files.
         private const String PreprocessedFileExtension = ".uvc";

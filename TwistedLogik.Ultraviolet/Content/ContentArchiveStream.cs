@@ -13,16 +13,16 @@ namespace TwistedLogik.Ultraviolet.Content
         /// Initializes a new instance of the <see cref="ContentArchiveStream"/> class.
         /// </summary>
         /// <param name="source">The source <see cref="Stream"/>.</param>
-        /// <param name="position">The position at which the file data begins within the source stream.</param>
+        /// <param name="start">The position at which the file data begins within the source stream.</param>
         /// <param name="length">The file data's length in bytes.</param>
-        internal ContentArchiveStream(Stream source, Int64 position, Int64 length)
+        internal ContentArchiveStream(Stream source, Int64 start, Int64 length)
         {
             Contract.Require(source, "source");
 
             this.source = source;
-            this.source.Seek(position, SeekOrigin.Begin);
+            this.source.Seek(start, SeekOrigin.Begin);
 
-            this.position = position;
+            this.start    = start;
             this.length   = length;
         }
 
@@ -35,8 +35,8 @@ namespace TwistedLogik.Ultraviolet.Content
             {
                 case SeekOrigin.Begin:
                     {
-                        var pos = position + offset;
-                        if (pos < 0 || pos < position)
+                        var pos = start + offset;
+                        if (pos < 0 || pos < start)
                         {
                             throw new IOException("TODO");
                         }
@@ -47,22 +47,22 @@ namespace TwistedLogik.Ultraviolet.Content
                 case SeekOrigin.Current:
                     {
                         var pos = source.Position + offset;
-                        if (pos < position)
+                        if (pos < start)
                         {
                             throw new IOException("TODO");
                         }
-                        source.Seek(offset, SeekOrigin.Begin);
+                        source.Seek(offset, SeekOrigin.Current);
                     }
                     break;
 
                 case SeekOrigin.End:
                     {
-                        var pos = position + length + offset;
-                        if (pos < position)
+                        var pos = start + length + offset;
+                        if (pos < start)
                         {
                             throw new IOException("TODO");
                         }
-                        source.Seek(position + length + offset, SeekOrigin.End);
+                        source.Seek(pos, SeekOrigin.Begin);
                     }
                     break;
             }
@@ -73,10 +73,19 @@ namespace TwistedLogik.Ultraviolet.Content
         /// <inheritdoc/>
         public override Int32 Read(Byte[] buffer, Int32 offset, Int32 count)
         {
-            Contract.EnsureNotDisposed(this, disposed);
             Contract.Require(buffer, "buffer");
             Contract.EnsureRange(offset >= 0 && offset < buffer.Length, "offset");
-            Contract.EnsureRange(count > 0 && count <= Length, "offset");
+            Contract.EnsureRange(count > 0, "count");
+            Contract.EnsureNotDisposed(this, disposed);
+
+            if (Position + count >= Length)
+            {
+                count = (Int32)(Length - Position);
+                if (count <= 0)
+                {
+                    return 0;
+                }
+            }
 
             return source.Read(buffer, offset, count);
         }
@@ -154,14 +163,14 @@ namespace TwistedLogik.Ultraviolet.Content
             {
                 Contract.EnsureNotDisposed(this, disposed);
 
-                return source.Position - position;
+                return source.Position - start;
             }
             set
             {
                 Contract.EnsureNotDisposed(this, disposed);
                 Contract.EnsureRange(value >= 0 && value < Length, "value");
 
-                source.Position = position + value;
+                source.Position = start + value;
             }
         }
 
@@ -180,7 +189,7 @@ namespace TwistedLogik.Ultraviolet.Content
 
         // State values.
         private readonly Stream source;
-        private Int64 position;
+        private Int64 start;
         private Int64 length;
         private Boolean disposed;
     }

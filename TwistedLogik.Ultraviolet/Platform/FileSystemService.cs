@@ -29,6 +29,19 @@ namespace TwistedLogik.Ultraviolet.Platform
         }
 
         /// <summary>
+        /// Gets the current working directory.
+        /// </summary>
+        /// <returns>The current working directory.</returns>
+        public virtual String GetCurrentDirectory()
+        {
+            if (Source != null)
+            {
+                return String.Empty;
+            }
+            return Directory.GetCurrentDirectory();
+        }
+
+        /// <summary>
         /// Gets a value indicating whether the specified path exists and is a file.
         /// </summary>
         /// <param name="path">The path to evaluate.</param>
@@ -122,7 +135,7 @@ namespace TwistedLogik.Ultraviolet.Platform
         /// Gets or sets the file source. If no source is set, Ultraviolet will attempt to read
         /// files directly from the underlying file system where possible.
         /// </summary>
-        public FileSource Source
+        public static FileSource Source
         {
             get { return source; }
             set { source = value; }
@@ -145,7 +158,9 @@ namespace TwistedLogik.Ultraviolet.Platform
                 var extension = searchPattern.Substring(1);
                 return nodes.Where(x => System.IO.Path.GetExtension(x.Name) == extension);
             }
-            var regex = new Regex(searchPattern.Replace("*", ".*"));
+            var regex = new Regex(searchPattern
+                .Replace(".", "\\.")
+                .Replace("*", ".*"));
             return nodes.Where(x => regex.IsMatch(x.Name));
         }
 

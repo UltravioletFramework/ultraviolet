@@ -5,6 +5,7 @@ using System.Linq;
 using System.Xml.Linq;
 using TwistedLogik.Nucleus;
 using TwistedLogik.Nucleus.Xml;
+using TwistedLogik.Ultraviolet.Platform;
 
 namespace TwistedLogik.Ultraviolet.Content
 {
@@ -40,8 +41,11 @@ namespace TwistedLogik.Ultraviolet.Content
         {
             Contract.RequireNotEmpty(path, "path");
 
-            using (var stream = File.OpenRead(path))
+            var fss = FileSystemService.Create();
+            using (var stream = fss.OpenRead(path))
+            {
                 return Load(stream);
+            }
         }
 
         /// <summary>
