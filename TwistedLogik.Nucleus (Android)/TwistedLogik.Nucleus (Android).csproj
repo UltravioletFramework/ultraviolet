@@ -1,0 +1,310 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{7EB671F1-6B46-426D-8A27-730D2B682043}</ProjectGuid>
+    <ProjectTypeGuids>{EFBA0AD7-5A72-4C68-AF49-83D382785DCF};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>TwistedLogik.Nucleus</RootNamespace>
+    <AssemblyName>TwistedLogik.Nucleus</AssemblyName>
+    <FileAlignment>512</FileAlignment>
+    <AndroidResgenFile>Resources\Resource.Designer.cs</AndroidResgenFile>
+    <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
+    <AndroidUseLatestPlatformSdk>True</AndroidUseLatestPlatformSdk>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\Binaries\Android\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;ANDROID</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\Binaries\Android\Release\</OutputPath>
+    <DefineConstants>TRACE;ANDROID</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Mono.Android" />
+    <Reference Include="mscorlib" />
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\Dependencies\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\TwistedLogik.Nucleus\Collections\BinaryHeap.cs">
+      <Link>Collections\BinaryHeap.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Nucleus\Collections\BinaryHeap.Enumerator.cs">
+      <Link>Collections\BinaryHeap.Enumerator.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Nucleus\Collections\ExpandingPool.cs">
+      <Link>Collections\ExpandingPool.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Nucleus\Collections\ExpandingPoolRegistry.cs">
+      <Link>Collections\ExpandingPoolRegistry.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Nucleus\Collections\GenericEnumerator.cs">
+      <Link>Collections\GenericEnumerator.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Nucleus\Collections\IPool.cs">
+      <Link>Collections\IPool.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Nucleus\Collections\IPoolOfT.cs">
+      <Link>Collections\IPoolOfT.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Nucleus\Collections\NamespaceDoc.cs">
+      <Link>Collections\NamespaceDoc.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Nucleus\Collections\ObservableDictionary.cs">
+      <Link>Collections\ObservableDictionary.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Nucleus\Collections\ObservableList.cs">
+      <Link>Collections\ObservableList.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Nucleus\Collections\PooledLinkedList.cs">
+      <Link>Collections\PooledLinkedList.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Nucleus\Collections\PooledObjectScope.cs">
+      <Link>Collections\PooledObjectScope.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Nucleus\Collections\PriorityQueue.cs">
+      <Link>Collections\PriorityQueue.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Nucleus\Contract.cs">
+      <Link>Contract.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Nucleus\Data\DataAttribute.cs">
+      <Link>Data\DataAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Nucleus\Data\DataElement.cs">
+      <Link>Data\DataElement.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Nucleus\Data\DataObject.cs">
+      <Link>Data\DataObject.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Nucleus\Data\DataObjectRegistries.cs">
+      <Link>Data\DataObjectRegistries.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Nucleus\Data\DataObjectRegistry.cs">
+      <Link>Data\DataObjectRegistry.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Nucleus\Data\DataObjectTranslationTable.cs">
+      <Link>Data\DataObjectTranslationTable.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Nucleus\Data\IDataObjectRegistry.cs">
+      <Link>Data\IDataObjectRegistry.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Nucleus\Data\IGloballyIdentified.cs">
+      <Link>Data\IGloballyIdentified.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Nucleus\Data\INotifyPropertyChanged.cs">
+      <Link>Data\INotifyPropertyChanged.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Nucleus\Data\JsonDataAttribute.cs">
+      <Link>Data\JsonDataAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Nucleus\Data\JsonDataElement.cs">
+      <Link>Data\JsonDataElement.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Nucleus\Data\MersenneTwister.cs">
+      <Link>Data\MersenneTwister.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Nucleus\Data\NamespaceDoc.cs">
+      <Link>Data\NamespaceDoc.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Nucleus\Data\ObjectLoader.cs">
+      <Link>Data\ObjectLoader.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Nucleus\Data\ObjectLoaderDataType.cs">
+      <Link>Data\ObjectLoaderDataType.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Nucleus\Data\ObjectLoaderMember.cs">
+      <Link>Data\ObjectLoaderMember.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Nucleus\Data\ObjectLoaderState.cs">
+      <Link>Data\ObjectLoaderState.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Nucleus\Data\ObjectResolver.cs">
+      <Link>Data\ObjectResolver.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Nucleus\Data\ObjectResolverTypeConverter.cs">
+      <Link>Data\ObjectResolverTypeConverter.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Nucleus\Data\ResolvedDataObjectReference.cs">
+      <Link>Data\ResolvedDataObjectReference.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Nucleus\Data\XmlDataAttribute.cs">
+      <Link>Data\XmlDataAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Nucleus\Data\XmlDataElement.cs">
+      <Link>Data\XmlDataElement.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Nucleus\FunctorComparer.cs">
+      <Link>FunctorComparer.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Nucleus\IO\BinaryReaderExtensions.cs">
+      <Link>IO\BinaryReaderExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Nucleus\IO\BinaryWriterExtensions.cs">
+      <Link>IO\BinaryWriterExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Nucleus\IO\NamespaceDoc.cs">
+      <Link>IO\NamespaceDoc.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Nucleus\LibraryLoader.cs">
+      <Link>LibraryLoader.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Nucleus\MaskedUInt32.cs">
+      <Link>MaskedUInt32.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Nucleus\MaskedUInt64.cs">
+      <Link>MaskedUInt64.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Nucleus\MathUtil.cs">
+      <Link>MathUtil.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Nucleus\Messages\IMessageQueue.cs">
+      <Link>Messages\IMessageQueue.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Nucleus\Messages\IMessageSubscriber.cs">
+      <Link>Messages\IMessageSubscriber.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Nucleus\Messages\LocalMessageQueue.cs">
+      <Link>Messages\LocalMessageQueue.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Nucleus\Messages\LocalMessageQueue.EnqueuedMessage.cs">
+      <Link>Messages\LocalMessageQueue.EnqueuedMessage.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Nucleus\Messages\MessageData.cs">
+      <Link>Messages\MessageData.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Nucleus\Messages\NamespaceDoc.cs">
+      <Link>Messages\NamespaceDoc.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Nucleus\Messages\SubscriberCollection.cs">
+      <Link>Messages\SubscriberCollection.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Nucleus\NamespaceDoc.cs">
+      <Link>NamespaceDoc.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Nucleus\NucleusStrings.cs">
+      <Link>NucleusStrings.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Nucleus\Performance\GCDebug.cs">
+      <Link>Performance\GCDebug.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Nucleus\Performance\GCDebug.NativeMethods.cs">
+      <Link>Performance\GCDebug.NativeMethods.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Nucleus\Performance\NamespaceDoc.cs">
+      <Link>Performance\NamespaceDoc.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Nucleus\Properties\AssemblyInfo.cs">
+      <Link>Properties\AssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Nucleus\SafeDispose.cs">
+      <Link>SafeDispose.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Nucleus\Text\ILocalizationPlugin.cs">
+      <Link>Text\ILocalizationPlugin.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Nucleus\Text\Localization.cs">
+      <Link>Text\Localization.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Nucleus\Text\LocalizationDatabase.cs">
+      <Link>Text\LocalizationDatabase.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Nucleus\Text\LocalizedString.cs">
+      <Link>Text\LocalizedString.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Nucleus\Text\LocalizedStringMatchEvaluatorData.cs">
+      <Link>Text\LocalizedStringMatchEvaluatorData.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Nucleus\Text\LocalizedStringVariant.cs">
+      <Link>Text\LocalizedStringVariant.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Nucleus\Text\LocalizedStringVariantCollection.cs">
+      <Link>Text\LocalizedStringVariantCollection.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Nucleus\Text\NamespaceDoc.cs">
+      <Link>Text\NamespaceDoc.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Nucleus\Text\StringBuilderExtensions.cs">
+      <Link>Text\StringBuilderExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Nucleus\Text\StringBuilderExtensions.Numeric.cs">
+      <Link>Text\StringBuilderExtensions.Numeric.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Nucleus\Text\StringFormatter.cs">
+      <Link>Text\StringFormatter.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Nucleus\Text\StringPtr16.cs">
+      <Link>Text\StringPtr16.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Nucleus\Text\StringPtr8.cs">
+      <Link>Text\StringPtr8.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Nucleus\Text\StringResource.cs">
+      <Link>Text\StringResource.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Nucleus\Text\StringSegment.cs">
+      <Link>Text\StringSegment.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Nucleus\Text\StringSegmentExtensions.cs">
+      <Link>Text\StringSegmentExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Nucleus\Text\Tokenizer.cs">
+      <Link>Text\Tokenizer.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Nucleus\Xml\NamespaceDoc.cs">
+      <Link>Xml\NamespaceDoc.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Nucleus\Xml\XElementExtensions.cs">
+      <Link>Xml\XElementExtensions.cs</Link>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\TwistedLogik.Public.snk">
+      <Link>TwistedLogik.Public.snk</Link>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="..\TwistedLogik.Nucleus\Resources\Strings.xml">
+      <Link>Resources\Strings.xml</Link>
+    </EmbeddedResource>
+    <Content Include="..\TwistedLogik.Nucleus\TwistedLogik.Nucleus.Licenses.txt">
+      <Link>TwistedLogik.Nucleus.Licenses.txt</Link>
+    </Content>
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <UserProperties ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" ProjectLinkReference="7da6158b-a0b9-4100-904e-22fd86949608" />
+    </VisualStudio>
+  </ProjectExtensions>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
