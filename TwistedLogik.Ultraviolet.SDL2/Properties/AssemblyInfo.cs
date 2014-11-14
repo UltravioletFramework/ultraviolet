@@ -7,8 +7,8 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("TwistedLogik.Ultraviolet.SDL2")]
-[assembly: AssemblyProduct("TwistedLogik.Ultraviolet.SDL2")]
+[assembly: AssemblyTitle("Ultraviolet Implementation - SDL2")]
+[assembly: AssemblyProduct("Ultraviolet Framework")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyCompany("TwistedLogik Software")]
 [assembly: AssemblyCopyright("Copyright © Cole Campbell 2014")]

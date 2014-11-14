@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("Ultraviolet Font Generation Utilty")]
-[assembly: AssemblyProduct("TwistedLogik.Ultraviolet")]
+[assembly: AssemblyProduct("Ultraviolet Framework")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyCompany("TwistedLogik Software")]
 [assembly: AssemblyCopyright("Copyright © Cole Campbell 2010-2014")]

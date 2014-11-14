@@ -7,8 +7,8 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("TwistedLogik.Ultraviolet.WindowsForms")]
-[assembly: AssemblyProduct("TwistedLogik.Ultraviolet.WindowsForms")]
+[assembly: AssemblyTitle("Ultraviolet Windows Forms Host")]
+[assembly: AssemblyProduct("Ultraviolet Framework")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyCompany("TwistedLogik Software")]
 [assembly: AssemblyCopyright("Copyright © Cole Campbell 2014")]
