@@ -38,7 +38,7 @@ namespace TwistedLogik.Ultraviolet.Android.Graphics
                 Contract.EnsureNotDisposed(this, disposed);
 
                 var pixel = ((byte*)bmpData) + (bmp.RowBytes * y) + (x * sizeof(UInt32));
-                return Color.FromRgba(*(uint*)pixel);
+                return Color.FromArgb(*(uint*)pixel);
             }
         }
 

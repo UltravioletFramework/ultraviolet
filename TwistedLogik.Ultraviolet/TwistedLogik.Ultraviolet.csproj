@@ -158,6 +158,7 @@
     <Compile Include="Content\XmlContentProcessor.cs" />
     <Compile Include="Content\TextContentProcessor.cs" />
     <Compile Include="Content\TextContentImporter.cs" />
+    <Compile Include="Content\XmlUtil.cs" />
     <Compile Include="CursorCollection.cs" />
     <Compile Include="Curve.cs" />
     <Compile Include="CurveContinuity.cs" />

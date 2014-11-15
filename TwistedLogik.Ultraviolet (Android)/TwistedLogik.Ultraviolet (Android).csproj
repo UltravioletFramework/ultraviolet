@@ -186,6 +186,9 @@
     <Compile Include="..\TwistedLogik.Ultraviolet\Content\XmlContentProcessor.cs">
       <Link>Content\XmlContentProcessor.cs</Link>
     </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Content\XmlUtil.cs">
+      <Link>Content\XmlUtil.cs</Link>
+    </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet\Cursor.cs">
       <Link>Cursor.cs</Link>
     </Compile>

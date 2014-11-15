@@ -93,8 +93,6 @@ namespace SafeProjectName
         {
             this.content = ContentManager.Create("Content");
 
-            var x = TwistedLogik.Ultraviolet.Graphics.BasicEffect.Create();
-
             LoadLocalizationDatabases();
             LoadInputBindings();
             LoadContentManifests();

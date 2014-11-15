@@ -35,7 +35,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
                     return Import(metadata, DataElement.CreateFromJson(json));
                 }
             }
-            return Import(metadata, DataElement.CreateFromXml(XDocument.Load(metadata.AssetFilePath)));
+            return Import(metadata, DataElement.CreateFromXml(XmlUtil.Load(stream)));
         }
 
         /// <summary>
