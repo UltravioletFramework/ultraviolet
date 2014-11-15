@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading;
 using Android.App;
@@ -69,6 +70,8 @@ namespace TwistedLogik.Ultraviolet
             CreateUltravioletContext();
 
             OnInitialized();
+
+            EnsureFileSystemSourceExists();
 
             LoadSettings();
 
@@ -395,6 +398,25 @@ namespace TwistedLogik.Ultraviolet
         }
 
         /// <summary>
+        /// Sets the file system source to an archive file loaded from a manifest resource stream,
+        /// if the specified manifest resource exists.
+        /// </summary>
+        /// <param name="name">The name of the manifest resource being loaded as the file system source.</param>
+        protected void SetFileSourceFromManifestIfExists(String name)
+        {
+            Contract.RequireNotEmpty(name, "name");
+
+            var asm = GetType().Assembly;
+            if (asm.GetManifestResourceNames().Contains(name))
+            {
+                FileSystemService.Source = ContentArchive.FromArchiveFile(() =>
+                {
+                    return asm.GetManifestResourceStream(name);
+                });
+            }
+        }
+
+        /// <summary>
         /// Sets the file system source to an archive file loaded from a manifest resource stream.
         /// </summary>
         /// <param name="name">The name of the manifest resource being loaded as the file system source.</param>
@@ -402,9 +424,13 @@ namespace TwistedLogik.Ultraviolet
         {
             Contract.RequireNotEmpty(name, "name");
 
+            var asm = GetType().Assembly;
+            if (!asm.GetManifestResourceNames().Contains(name))
+                throw new FileNotFoundException(name);
+
             FileSystemService.Source = ContentArchive.FromArchiveFile(() =>
             {
-                return GetType().Assembly.GetManifestResourceStream(name);
+                return asm.GetManifestResourceStream(name);
             });
         }
 
@@ -619,6 +645,17 @@ namespace TwistedLogik.Ultraviolet
             if (hostcore != null)
             {
                 hostcore.ResetElapsed();
+            }
+        }
+
+        /// <summary>
+        /// Throws an exception if no file system source has been set.
+        /// </summary>
+        private void EnsureFileSystemSourceExists()
+        {
+            if (FileSystemService.Source == null)
+            {
+                throw new MissingFileSystemSourceException();
             }
         }
 

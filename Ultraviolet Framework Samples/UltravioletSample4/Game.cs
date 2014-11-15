@@ -41,19 +41,7 @@ namespace UltravioletSample
 
         protected override void OnInitialized()
         {
-            const String Archive = "UltravioletSample.Content.uvarc";
-
-            if (GetType().Assembly.GetManifestResourceStream(Archive) != null)
-            {
-                SetFileSourceFromManifest(Archive);
-            }
-            else
-            {
-                if (Ultraviolet.Platform == UltravioletPlatform.Android)
-                {
-                    throw new InvalidOperationException("Unable to set the file system source archive.");
-                }
-            }
+            SetFileSourceFromManifestIfExists("UltravioletSample.Content.uvarc");
 
             base.OnInitialized();
         }

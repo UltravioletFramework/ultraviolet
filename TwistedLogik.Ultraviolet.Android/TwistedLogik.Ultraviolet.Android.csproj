@@ -50,6 +50,7 @@
     <Compile Include="AndroidFactoryInitializer.cs" />
     <Compile Include="Graphics\AndroidSurfaceSource.cs" />
     <Compile Include="Graphics\AndroidSurfaceSaver.cs" />
+    <Compile Include="MissingFileSystemSourceException.cs" />
     <Compile Include="Platform\AndroidIconLoader.cs" />
     <Compile Include="Platform\AndroidScreenRotationService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

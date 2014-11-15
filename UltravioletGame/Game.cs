@@ -69,19 +69,7 @@ namespace SafeProjectName
         /// </summary>
         protected override void OnInitialized()
         {
-            const String Archive = "UltravioletGame.Content.uvarc";
-
-            if (GetType().Assembly.GetManifestResourceStream(Archive) != null)
-            {
-                SetFileSourceFromManifest(Archive);
-            }
-            else
-            {
-                if (Ultraviolet.Platform == UltravioletPlatform.Android)
-                {
-                    throw new InvalidOperationException("Unable to set the file system source archive.");
-                }
-            }
+            SetFileSourceFromManifestIfExists("UltravioletGame.Content.uvarc");
 
             base.OnInitialized();
         }
