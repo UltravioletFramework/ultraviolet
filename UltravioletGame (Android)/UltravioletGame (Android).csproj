@@ -73,9 +73,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\UltravioletGame\App.config">
-      <Link>App.config</Link>
-    </None>
     <AndroidNativeLibrary Include="lib\armeabi-v7a\libSDL2.so" />
     <AndroidNativeLibrary Include="lib\armeabi-v7a\libmain.so" />
     <AndroidNativeLibrary Include="lib\armeabi\libSDL2.so" />
@@ -103,9 +100,6 @@
   <ItemGroup>
     <Content Include="..\UltravioletGame\README-SDL.txt">
       <Link>README-SDL.txt</Link>
-    </Content>
-    <Content Include="..\UltravioletGame\uv.ico">
-      <Link>uv.ico</Link>
     </Content>
     <Content Include="Properties\AndroidManifest.xml" />
   </ItemGroup>
