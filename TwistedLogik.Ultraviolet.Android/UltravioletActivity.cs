@@ -3,10 +3,10 @@ using System.IO;
 using System.Runtime.InteropServices;
 using System.Threading;
 using Android.App;
-using Android.Content.PM;
 using Org.Libsdl.App;
 using TwistedLogik.Nucleus;
 using TwistedLogik.Nucleus.Messages;
+using TwistedLogik.Ultraviolet.Android.Platform;
 using TwistedLogik.Ultraviolet.Content;
 using TwistedLogik.Ultraviolet.Platform;
 
@@ -100,6 +100,22 @@ namespace TwistedLogik.Ultraviolet.Android
 
             running  = false;
             finished = true;
+        }
+
+        /// <inheritdoc/>
+        public override void OnConfigurationChanged(global::Android.Content.Res.Configuration newConfig)
+        {
+            if (Ultraviolet != null && !Ultraviolet.Disposed)
+            {
+                var rotation = (ScreenRotation)WindowManager.DefaultDisplay.Rotation;
+                if (rotation != Ultraviolet.GetPlatform().ScreenRotation)
+                {
+                    AndroidScreenRotationService.UpdateScreenRotation(rotation);
+                    Ultraviolet.Messages.Publish(UltravioletMessages.OrientationChanged, null);
+                }
+            }
+
+            base.OnConfigurationChanged(newConfig);
         }
 
         /// <summary>

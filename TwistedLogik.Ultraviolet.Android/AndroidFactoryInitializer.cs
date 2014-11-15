@@ -1,7 +1,7 @@
-﻿using TwistedLogik.Ultraviolet.Android.Platform;
+﻿using TwistedLogik.Ultraviolet.Android.Graphics;
+using TwistedLogik.Ultraviolet.Android.Platform;
 using TwistedLogik.Ultraviolet.Graphics;
 using TwistedLogik.Ultraviolet.Platform;
-using TwistedLogik.Ultraviolet.Android.Graphics;
 
 namespace TwistedLogik.Ultraviolet.Android
 {
@@ -21,6 +21,7 @@ namespace TwistedLogik.Ultraviolet.Android
             factory.SetFactoryMethod<SurfaceSaverFactory>(() => new AndroidSurfaceSaver());
             factory.SetFactoryMethod<IconLoaderFactory>(() => new AndroidIconLoader());
             factory.SetFactoryMethod<FileSystemServiceFactory>(() => new FileSystemService());
+            factory.SetFactoryMethod<ScreenRotationServiceFactory>(() => new AndroidScreenRotationService());
         }
     }
 }

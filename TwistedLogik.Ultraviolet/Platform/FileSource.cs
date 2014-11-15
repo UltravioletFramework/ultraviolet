@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.IO;
 
 namespace TwistedLogik.Ultraviolet.Platform
@@ -22,7 +20,7 @@ namespace TwistedLogik.Ultraviolet.Platform
         /// Extracts the specified file.
         /// </summary>
         /// <param name="path">The relative path of the file to load.</param>
-        /// <returns>A <see cref="ContentArchiveStream"/> that represents the extracted data.</returns>
+        /// <returns>A <see cref="Stream"/> that represents the extracted data.</returns>
         public abstract Stream Extract(String path);
     }
 }

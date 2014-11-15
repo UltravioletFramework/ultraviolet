@@ -1,7 +1,6 @@
 ﻿using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet.Graphics;
 using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
-using TwistedLogik.Gluon;
 
 namespace TwistedLogik.Ultraviolet.OpenGL.Graphics.Graphics2D
 {

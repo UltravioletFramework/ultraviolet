@@ -1,8 +1,8 @@
 using System;
 using System.IO;
+using Android.Graphics;
 using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet.Graphics;
-using Android.Graphics;
 
 namespace TwistedLogik.Ultraviolet.Android.Graphics
 {

@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Xml.Linq;
+using TwistedLogik.Gluon;
 using TwistedLogik.Nucleus.Xml;
 using TwistedLogik.Ultraviolet.Content;
 using TwistedLogik.Ultraviolet.Graphics;
-using TwistedLogik.Gluon;
 
 namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
 {

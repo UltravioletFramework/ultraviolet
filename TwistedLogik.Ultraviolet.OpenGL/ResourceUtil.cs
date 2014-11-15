@@ -1,8 +1,8 @@
 ﻿using System;
 using System.IO;
 using System.Reflection;
-using TwistedLogik.Nucleus;
 using TwistedLogik.Gluon;
+using TwistedLogik.Nucleus;
 
 namespace TwistedLogik.Ultraviolet.OpenGL
 {

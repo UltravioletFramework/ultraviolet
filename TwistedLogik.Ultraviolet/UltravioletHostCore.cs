@@ -24,7 +24,7 @@ namespace TwistedLogik.Ultraviolet
 
         /// <summary>
         /// Resets the timers used to determine how much time has passed since the last calls
-        /// to <see cref="UltravioletContext.Draw()"/> and <see cref="UltravioletContext.Update()"/>.
+        /// to <see cref="UltravioletContext.Draw"/> and <see cref="UltravioletContext.Update"/>.
         /// </summary>
         public void ResetElapsed()
         {

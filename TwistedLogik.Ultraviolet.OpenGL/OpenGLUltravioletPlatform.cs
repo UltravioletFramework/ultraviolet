@@ -20,8 +20,9 @@ namespace TwistedLogik.Ultraviolet.OpenGL
         public OpenGLUltravioletPlatform(UltravioletContext uv, UltravioletConfiguration configuration)
             : base(uv)
         {
-            this.windows = new OpenGLUltravioletWindowInfo(uv, configuration);
-            this.displays = new OpenGLUltravioletDisplayInfo();
+            this.windows                  = new OpenGLUltravioletWindowInfo(uv, configuration);
+            this.displays                 = new OpenGLUltravioletDisplayInfo();
+            this.screenOrientationService = ScreenRotationService.Create();
         }
 
         /// <summary>
@@ -93,6 +94,19 @@ namespace TwistedLogik.Ultraviolet.OpenGL
         }
 
         /// <summary>
+        /// Gets the screen's rotation on devices which can be rotated.
+        /// </summary>
+        public ScreenRotation ScreenRotation
+        {
+            get
+            {
+                Contract.EnsureNotDisposed(this, Disposed);
+
+                return screenOrientationService.ScreenRotation;
+            }
+        }
+
+        /// <summary>
         /// Occurs when the subsystem is updating its state.
         /// </summary>
         public event UltravioletSubsystemUpdateEventHandler Updating;
@@ -130,5 +144,8 @@ namespace TwistedLogik.Ultraviolet.OpenGL
         private Cursor cursor;
         private readonly OpenGLUltravioletWindowInfo windows;
         private readonly OpenGLUltravioletDisplayInfo displays;
+
+        // State values.
+        private readonly ScreenRotationService screenOrientationService;
     }
 }

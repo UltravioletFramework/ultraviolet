@@ -1,13 +1,6 @@
 ﻿using System;
-using System.IO;
-using System.Runtime.InteropServices;
-using System.Threading;
-using Android.App;
-using Org.Libsdl.App;
-using TwistedLogik.Nucleus;
-using TwistedLogik.Nucleus.Messages;
-using TwistedLogik.Ultraviolet.Platform;
 using System.Xml.Linq;
+using TwistedLogik.Nucleus;
 
 namespace TwistedLogik.Ultraviolet.Android
 {
