@@ -15,6 +15,7 @@ namespace TwistedLogik.Ultraviolet.Android
     /// <summary>
     /// Represents an <see cref="Activity"/> which hosts and runs an Ultraviolet application.
     /// </summary>
+    [CLSCompliant(false)]
     public abstract class UltravioletActivity : SDLActivity,
         IMessageSubscriber<UltravioletMessageID>,
         IUltravioletComponent,
@@ -76,8 +77,14 @@ namespace TwistedLogik.Ultraviolet.Android
             running = true;
             while (running)
             {
-                hostcore.RunOneTick();
-
+                if (suspended)
+                {
+                    Thread.Sleep(hostcore.InactiveSleepTime);
+                }
+                else
+                {
+                    hostcore.RunOneTick();
+                }
                 Thread.Yield();
             }
 
@@ -322,6 +329,55 @@ namespace TwistedLogik.Ultraviolet.Android
             }
         }
 
+        /// <inheritdoc/>
+        protected override void OnCreate(global::Android.OS.Bundle savedInstanceState)
+        {
+            ResumeActivity();
+
+            base.OnCreate(savedInstanceState);
+        }
+
+        /// <inheritdoc/>
+        protected override void OnDestroy()
+        {
+            suspended = false;
+            running   = false;
+
+            base.OnDestroy();
+        }
+
+        /// <inheritdoc/>
+        protected override void OnPause()
+        {
+            SuspendActivity();
+
+            base.OnPause();
+        }
+
+        /// <inheritdoc/>
+        protected override void OnResume()
+        {
+            ResumeActivity();
+
+            base.OnResume();
+        }
+
+        /// <inheritdoc/>
+        protected override void OnStop()
+        {
+            SuspendActivity();
+
+            base.OnStop();
+        }
+
+        /// <inheritdoc/>
+        protected override void OnRestart()
+        {
+            ResumeActivity();
+
+            base.OnRestart();
+        }
+
         /// <summary>
         /// Sets the file system source to an archive file loaded from a manifest resource stream.
         /// </summary>
@@ -530,6 +586,26 @@ namespace TwistedLogik.Ultraviolet.Android
             return 0;
         }
 
+        /// <summary>
+        /// Suspends updates while the activity is inactive.
+        /// </summary>
+        private void SuspendActivity()
+        {
+            suspended = true;
+        }
+
+        /// <summary>
+        /// Resumes updates after a call to <see cref="SuspendActivity()"/>.
+        /// </summary>
+        private void ResumeActivity()
+        {
+            suspended = false;
+            if (hostcore != null)
+            {
+                hostcore.ResetElapsed();
+            }
+        }
+
         // Property values.
         private UltravioletContext uv;
 
@@ -539,6 +615,7 @@ namespace TwistedLogik.Ultraviolet.Android
         private Boolean created;
         private Boolean running;
         private Boolean finished;
+        private Boolean suspended;
         private Boolean disposed;
         private IUltravioletWindow primary;
 

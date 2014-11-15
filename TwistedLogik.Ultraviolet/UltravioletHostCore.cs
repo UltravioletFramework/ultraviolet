@@ -23,6 +23,16 @@ namespace TwistedLogik.Ultraviolet
         }
 
         /// <summary>
+        /// Resets the timers used to determine how much time has passed since the last calls
+        /// to <see cref="UltravioletContext.Draw()"/> and <see cref="UltravioletContext.Update()"/>.
+        /// </summary>
+        public void ResetElapsed()
+        {
+            tickTimer.Reset();
+            frameTimer.Reset();
+        }
+
+        /// <summary>
         /// Advances the application state by one tick.
         /// </summary>
         public void RunOneTick()
