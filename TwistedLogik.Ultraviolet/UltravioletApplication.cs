@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if !ANDROID
+using System;
 using System.IO;
 using System.Threading;
 using TwistedLogik.Nucleus;
@@ -535,3 +536,4 @@ namespace TwistedLogik.Ultraviolet
         private UltravioletApplicationSettings settings;
     }
 }
+#endif
