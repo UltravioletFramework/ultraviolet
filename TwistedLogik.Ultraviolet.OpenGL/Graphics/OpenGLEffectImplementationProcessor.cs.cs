@@ -47,13 +47,13 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
                     var passName = passElement.AttributeValueString("Name");
                     writer.Write(passName);
 
-                    var vertexShaderAsset = passElement.ElementValueString("VertexShader");
+                    var vertexShaderAsset = GetShader(passElement, "VertexShader");
                     if (String.IsNullOrEmpty(vertexShaderAsset))
                         throw new ContentLoadException(OpenGLStrings.EffectMustHaveVertexAndFragmentShader);
 
                     writer.Write(vertexShaderAsset);
 
-                    var fragmentShaderAsset = passElement.ElementValueString("FragmentShader");
+                    var fragmentShaderAsset = GetShader(passElement, "FragmentShader");
                     if (String.IsNullOrEmpty(fragmentShaderAsset))
                         throw new ContentLoadException(OpenGLStrings.EffectMustHaveVertexAndFragmentShader);
 
@@ -137,15 +137,13 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
                 {
                     var passName = passElement.AttributeValueString("Name");
 
-                    var vertexShaderElementName = gl.IsGLES ? "VertexShaderES" : "VertexShader";
-                    var vertexShaderAsset = passElement.ElementValueString(vertexShaderElementName) ?? passElement.ElementValueString("VertexShader");
+                    var vertexShaderAsset = GetShader(passElement, "VertexShader");
                     if (String.IsNullOrEmpty(vertexShaderAsset))
                         throw new ContentLoadException(OpenGLStrings.EffectMustHaveVertexAndFragmentShader);
 
                     var vertexShader = manager.Load<OpenGLVertexShader>(vertexShaderAsset, false);
 
-                    var fragmentShaderElementName = gl.IsGLES ? "FragmentShaderES" : "FragmentShader";
-                    var fragmentShaderAsset = passElement.ElementValueString(fragmentShaderElementName) ?? passElement.ElementValueString("FragmentShader");
+                    var fragmentShaderAsset = GetShader(passElement, "FragmentShader");
                     if (String.IsNullOrEmpty(fragmentShaderAsset))
                         throw new ContentLoadException(OpenGLStrings.EffectMustHaveVertexAndFragmentShader);
 
@@ -166,6 +164,32 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         public override Boolean SupportsPreprocessing
         {
             get { return true; }
+        }
+
+        /// <summary>
+        /// Gets the asset path of the specified shader.
+        /// </summary>
+        /// <param name="element">The XML element that defines the shaders for an effect pass.</param>
+        /// <param name="shader">The name of the shader to retrieve.</param>
+        /// <returns>The asset path of the specified shader.</returns>
+        private String GetShader(XElement element, String shader)
+        {
+            if (gl.IsGLES)
+            {
+                var vert = element.ElementValueString(shader + "ES");
+                if (vert == null)
+                {
+                    vert = element.ElementValueString(shader);
+                    if (vert == null)
+                    {
+                        return null;
+                    }
+                    var extension = Path.GetExtension(vert);
+                    return Path.ChangeExtension(Path.GetFileNameWithoutExtension(vert) + "ES", extension);
+                }
+                return vert;
+            }
+            return element.ElementValueString(shader);
         }
     }
 }
