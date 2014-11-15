@@ -104,6 +104,7 @@
       <ComponentRef Id="Newtonsoft.Json" />
       <ComponentRef Id="Tools_PATH"/>
       <ComponentRef Id="Tools_UvFont"/>
+      <ComponentRef Id="Tools_UvArchive"/>
       <ComponentRef Id="Tools_TwistedLogik.Nucleus"/>
       <!-- Dependencies (x86) -->
       <ComponentRef Id="SDL2_x86_win32nt" />
@@ -248,6 +249,9 @@
               </Component>
               <Component Id="Tools_UvFont">
                 <File Id="Tools_UvFont" Source="..\Binaries\AnyCPU\Release\uvfont.exe" />
+              </Component>
+              <Component Id="Tools_UvArchive">
+                <File Id="Tools_UvArchive" Source="..\Binaries\AnyCPU\Release\uvarchive.exe" />
               </Component>
             </Directory>
             <!-- Dependencies -->
