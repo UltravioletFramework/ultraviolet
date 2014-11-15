@@ -6,7 +6,15 @@ using UltravioletSample.Input;
 
 namespace UltravioletSample
 {
+#if ANDROID
+    [Android.App.Activity(Label = "Ultraviolet Sample 2", MainLauncher = true, ConfigurationChanges = 
+        Android.Content.PM.ConfigChanges.Orientation | 
+        Android.Content.PM.ConfigChanges.ScreenSize | 
+        Android.Content.PM.ConfigChanges.KeyboardHidden)]
+    public class Game : UltravioletActivity
+#else
     public class Game : UltravioletApplication
+#endif
     {
         public Game()
             : base("TwistedLogik", "Ultraviolet Sample 2")
