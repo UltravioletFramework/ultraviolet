@@ -36,6 +36,7 @@
     <WarningLevel>4</WarningLevel>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <DocumentationFile>..\Binaries\Android\Release\TwistedLogik.Ultraviolet.OpenGL.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Mono.Android" />
@@ -291,6 +292,30 @@
     <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.OpenGL\Resources\SpriteBatchEffectES.frag">
       <Link>Resources\SpriteBatchEffectES.frag</Link>
     </EmbeddedResource>
+    <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.OpenGL\Resources\BasicEffectColoredES.frag">
+      <Link>Resources\BasicEffectColoredES.frag</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.OpenGL\Resources\BasicEffectColoredES.vert">
+      <Link>Resources\BasicEffectColoredES.vert</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.OpenGL\Resources\BasicEffectColoredTexturedES.frag">
+      <Link>Resources\BasicEffectColoredTexturedES.frag</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.OpenGL\Resources\BasicEffectColoredTexturedES.vert">
+      <Link>Resources\BasicEffectColoredTexturedES.vert</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.OpenGL\Resources\BasicEffectES.frag">
+      <Link>Resources\BasicEffectES.frag</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.OpenGL\Resources\BasicEffectES.vert">
+      <Link>Resources\BasicEffectES.vert</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.OpenGL\Resources\BasicEffectTexturedES.frag">
+      <Link>Resources\BasicEffectTexturedES.frag</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.OpenGL\Resources\BasicEffectTexturedES.vert">
+      <Link>Resources\BasicEffectTexturedES.vert</Link>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.OpenGL\Resources\Strings.xml">
@@ -306,7 +331,7 @@
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" ProjectLinkReference="40d272db-90e1-4332-a32f-6effeb44fe87" />
+      <UserProperties ProjectLinkReference="40d272db-90e1-4332-a32f-6effeb44fe87" ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" />
     </VisualStudio>
   </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

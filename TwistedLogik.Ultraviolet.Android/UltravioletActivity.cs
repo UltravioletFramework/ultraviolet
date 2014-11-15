@@ -10,7 +10,7 @@ using TwistedLogik.Ultraviolet.Android.Platform;
 using TwistedLogik.Ultraviolet.Content;
 using TwistedLogik.Ultraviolet.Platform;
 
-namespace TwistedLogik.Ultraviolet.Android
+namespace TwistedLogik.Ultraviolet
 {
     /// <summary>
     /// Represents an <see cref="Activity"/> which hosts and runs an Ultraviolet application.

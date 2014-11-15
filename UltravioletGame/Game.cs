@@ -22,7 +22,7 @@ namespace SafeProjectName
         Android.Content.PM.ConfigChanges.Orientation | 
         Android.Content.PM.ConfigChanges.ScreenSize | 
         Android.Content.PM.ConfigChanges.KeyboardHidden)]
-    public class Game : TwistedLogik.Ultraviolet.Android.UltravioletActivity
+    public class Game : UltravioletActivity
 #else
     public class Game : UltravioletApplication
 #endif
@@ -92,6 +92,8 @@ namespace SafeProjectName
         protected override void OnLoadingContent()
         {
             this.content = ContentManager.Create("Content");
+
+            var x = TwistedLogik.Ultraviolet.Graphics.BasicEffect.Create();
 
             LoadLocalizationDatabases();
             LoadInputBindings();

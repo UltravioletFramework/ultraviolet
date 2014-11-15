@@ -303,8 +303,6 @@
     <Compile Include="UI\UIScreenStackCollection.cs" />
     <Compile Include="UI\UltravioletUI.cs" />
     <Compile Include="UI\IUILayoutProvider.cs" />
-    <Compile Include="UltravioletApplicationSettings.cs" />
-    <Compile Include="UltravioletApplicationWindowSettings.cs" />
     <Compile Include="UltravioletCollection.cs" />
     <Compile Include="Graphics\SamplerState.cs" />
     <Compile Include="Graphics\RasterizerState.cs" />
@@ -364,7 +362,6 @@
     <Compile Include="UltravioletSingleton.cs" />
     <Compile Include="UltravioletFactoryInitializer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="UltravioletApplication.cs" />
     <Compile Include="UltravioletContext.cs" />
     <Compile Include="UltravioletFactory.cs" />
     <Compile Include="UltravioletMessages.cs" />

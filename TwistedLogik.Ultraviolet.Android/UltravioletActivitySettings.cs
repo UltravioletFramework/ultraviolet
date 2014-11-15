@@ -2,7 +2,7 @@
 using System.Xml.Linq;
 using TwistedLogik.Nucleus;
 
-namespace TwistedLogik.Ultraviolet.Android
+namespace TwistedLogik.Ultraviolet
 {
     /// <summary>
     /// Represents an Ultraviolet activity's internal settings.

@@ -211,6 +211,14 @@
     <EmbeddedResource Include="Resources\BasicEffectColoredTextured.vert" />
     <EmbeddedResource Include="Resources\SpriteBatchEffectES.vert" />
     <EmbeddedResource Include="Resources\SpriteBatchEffectES.frag" />
+    <EmbeddedResource Include="Resources\BasicEffectES.frag" />
+    <EmbeddedResource Include="Resources\BasicEffectES.vert" />
+    <EmbeddedResource Include="Resources\BasicEffectColoredES.frag" />
+    <EmbeddedResource Include="Resources\BasicEffectColoredES.vert" />
+    <EmbeddedResource Include="Resources\BasicEffectTexturedES.vert" />
+    <EmbeddedResource Include="Resources\BasicEffectTexturedES.frag" />
+    <EmbeddedResource Include="Resources\BasicEffectColoredTexturedES.frag" />
+    <EmbeddedResource Include="Resources\BasicEffectColoredTexturedES.vert" />
     <None Include="TwistedLogik.Ultraviolet.OpenGL.Licenses.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

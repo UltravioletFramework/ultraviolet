@@ -82,6 +82,10 @@
       <Project>{ea948cf3-ad34-480a-b8ce-e7ec5caa4d77}</Project>
       <Name>TwistedLogik.Ultraviolet.BASS</Name>
     </ProjectReference>
+    <ProjectReference Include="..\TwistedLogik.Ultraviolet.Desktop\TwistedLogik.Ultraviolet.Desktop.csproj">
+      <Project>{073cafc1-86cb-414d-a71e-46440e25a3f4}</Project>
+      <Name>TwistedLogik.Ultraviolet.Desktop</Name>
+    </ProjectReference>
     <ProjectReference Include="..\TwistedLogik.Ultraviolet.OpenGL\TwistedLogik.Ultraviolet.OpenGL.csproj">
       <Project>{40d272db-90e1-4332-a32f-6effeb44fe87}</Project>
       <Name>TwistedLogik.Ultraviolet.OpenGL</Name>

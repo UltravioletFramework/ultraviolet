@@ -77,26 +77,26 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics.Graphics2D
 
         // Shaders - basic
         private static readonly UltravioletSingleton<OpenGLVertexShader> vertShader = 
-            new UltravioletSingleton<OpenGLVertexShader>((uv) => { return new OpenGLVertexShader(uv, ResourceUtil.ReadResourceString("BasicEffect.vert")); });
+            new UltravioletSingleton<OpenGLVertexShader>((uv) => { return new OpenGLVertexShader(uv, ResourceUtil.ReadShaderResourceString("BasicEffect.vert")); });
         private static readonly UltravioletSingleton<OpenGLFragmentShader> fragShader = 
-            new UltravioletSingleton<OpenGLFragmentShader>((uv) => { return new OpenGLFragmentShader(uv, ResourceUtil.ReadResourceString("BasicEffect.frag")); });
+            new UltravioletSingleton<OpenGLFragmentShader>((uv) => { return new OpenGLFragmentShader(uv, ResourceUtil.ReadShaderResourceString("BasicEffect.frag")); });
 
         // Shaders - colored
         private static readonly UltravioletSingleton<OpenGLVertexShader> vertShaderColored = 
-            new UltravioletSingleton<OpenGLVertexShader>((uv) => { return new OpenGLVertexShader(uv, ResourceUtil.ReadResourceString("BasicEffectColored.vert")); });
+            new UltravioletSingleton<OpenGLVertexShader>((uv) => { return new OpenGLVertexShader(uv, ResourceUtil.ReadShaderResourceString("BasicEffectColored.vert")); });
         private static readonly UltravioletSingleton<OpenGLFragmentShader> fragShaderColored = 
-            new UltravioletSingleton<OpenGLFragmentShader>((uv) => { return new OpenGLFragmentShader(uv, ResourceUtil.ReadResourceString("BasicEffectColored.frag")); });
+            new UltravioletSingleton<OpenGLFragmentShader>((uv) => { return new OpenGLFragmentShader(uv, ResourceUtil.ReadShaderResourceString("BasicEffectColored.frag")); });
 
         // Shaders - textured
         private static readonly UltravioletSingleton<OpenGLVertexShader> vertShaderTextured = 
-            new UltravioletSingleton<OpenGLVertexShader>((uv) => { return new OpenGLVertexShader(uv, ResourceUtil.ReadResourceString("BasicEffectTextured.vert")); });
+            new UltravioletSingleton<OpenGLVertexShader>((uv) => { return new OpenGLVertexShader(uv, ResourceUtil.ReadShaderResourceString("BasicEffectTextured.vert")); });
         private static readonly UltravioletSingleton<OpenGLFragmentShader> fragShaderTextured = 
-            new UltravioletSingleton<OpenGLFragmentShader>((uv) => { return new OpenGLFragmentShader(uv, ResourceUtil.ReadResourceString("BasicEffectTextured.frag")); });
+            new UltravioletSingleton<OpenGLFragmentShader>((uv) => { return new OpenGLFragmentShader(uv, ResourceUtil.ReadShaderResourceString("BasicEffectTextured.frag")); });
 
         // Shaders - colored & textured
         private static readonly UltravioletSingleton<OpenGLVertexShader> vertShaderColoredTextured = 
-            new UltravioletSingleton<OpenGLVertexShader>((uv) => { return new OpenGLVertexShader(uv, ResourceUtil.ReadResourceString("BasicEffectColoredTextured.vert")); });
+            new UltravioletSingleton<OpenGLVertexShader>((uv) => { return new OpenGLVertexShader(uv, ResourceUtil.ReadShaderResourceString("BasicEffectColoredTextured.vert")); });
         private static readonly UltravioletSingleton<OpenGLFragmentShader> fragShaderColoredTextured = 
-            new UltravioletSingleton<OpenGLFragmentShader>((uv) => { return new OpenGLFragmentShader(uv, ResourceUtil.ReadResourceString("BasicEffectColoredTextured.frag")); });
+            new UltravioletSingleton<OpenGLFragmentShader>((uv) => { return new OpenGLFragmentShader(uv, ResourceUtil.ReadShaderResourceString("BasicEffectColoredTextured.frag")); });
     }
 }

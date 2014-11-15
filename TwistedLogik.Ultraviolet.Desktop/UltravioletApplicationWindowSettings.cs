@@ -1,5 +1,4 @@
-﻿#if !ANDROID
-using System;
+﻿using System;
 using System.Xml.Linq;
 using TwistedLogik.Nucleus;
 using TwistedLogik.Nucleus.Xml;
@@ -169,4 +168,3 @@ namespace TwistedLogik.Ultraviolet
         }
     }
 }
-#endif
