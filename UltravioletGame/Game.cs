@@ -18,10 +18,7 @@ namespace SafeProjectName
     /// Represents the main application object.
     /// </summary>
 #if ANDROID
-    [Android.App.Activity(Label = "GameActivity", MainLauncher = true, ConfigurationChanges = 
-        Android.Content.PM.ConfigChanges.Orientation | 
-        Android.Content.PM.ConfigChanges.ScreenSize | 
-        Android.Content.PM.ConfigChanges.KeyboardHidden)]
+    [Android.App.Activity(Label = "GameActivity", MainLauncher = true)]
     public class Game : TwistedLogik.Ultraviolet.Android.UltravioletActivity
 #else
     public class Game : UltravioletApplication

@@ -91,7 +91,8 @@ namespace TwistedLogik.Ultraviolet.Android
         {
             Contract.EnsureNotDisposed(this, disposed);
 
-            running = false;
+            running  = false;
+            finished = true;
         }
 
         /// <summary>
@@ -520,6 +521,12 @@ namespace TwistedLogik.Ultraviolet.Android
         {
             Run();
 
+            SafeDispose.DisposeRef(ref uv);
+            if (finished)
+            {
+                Finish();
+            }
+
             return 0;
         }
 
@@ -531,6 +538,7 @@ namespace TwistedLogik.Ultraviolet.Android
         private UltravioletHostCore hostcore;
         private Boolean created;
         private Boolean running;
+        private Boolean finished;
         private Boolean disposed;
         private IUltravioletWindow primary;
 

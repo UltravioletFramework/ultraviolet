@@ -246,9 +246,6 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
         {
             Contract.Require(window, "window");
 
-            if (window == master)
-                throw new InvalidOperationException(UltravioletStrings.CannotDestroyMasterWindow);
-
             if (!windows.Remove(window))
                 throw new InvalidOperationException(UltravioletStrings.InvalidResource);
 

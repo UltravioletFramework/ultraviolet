@@ -450,9 +450,4 @@
       <Variant>Attempted to seek past the beginning of the stream.</Variant>
     </en-US>
   </String>
-  <String Key="CANNOT_DESTROY_MASTER_WINDOW">
-    <en-US>
-      <Variant>Cannot destroy the master window.</Variant>
-    </en-US>
-  </String>
 </LocalizedStrings>

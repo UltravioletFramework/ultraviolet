@@ -112,7 +112,6 @@ namespace TwistedLogik.Ultraviolet
         public static readonly StringResource NoContentManagerSpecified            = new StringResource(StringDatabase, "NO_CONTENT_MANAGER_SPECIFIED");
         public static readonly StringResource ContentHandlersAlreadyRegistered     = new StringResource(StringDatabase, "CONTENT_HANDLERS_ALREADY_REGISTERED");
         public static readonly StringResource CannotSeekPastBeginningOfStream      = new StringResource(StringDatabase, "CANNOT_SEEK_PAST_BEGINNING_OF_STREAM");
-        public static readonly StringResource CannotDestroyMasterWindow            = new StringResource(StringDatabase, "CANNOT_DESTROY_MASTER_WINDOW");
         public static readonly StringResource InvalidContentArchive                = new StringResource(StringDatabase, "INVALID_CONTENT_ARCHIVE");
 #pragma warning restore 1591
     }
