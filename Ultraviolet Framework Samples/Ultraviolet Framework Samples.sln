@@ -63,6 +63,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UltravioletSample1 (Android
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UltravioletSample3 (Android)", "UltravioletSample3 (Android)\UltravioletSample3 (Android).csproj", "{3E90954A-0BD4-4855-AE3D-698761D95E5E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UltravioletSample4 (Android)", "UltravioletSample4 (Android)\UltravioletSample4 (Android).csproj", "{BAC2B005-82B1-40A9-A2C3-1D2A21AB1185}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UltravioletSample5 (Android)", "UltravioletSample5 (Android)\UltravioletSample5 (Android).csproj", "{32E5ED1F-0378-430F-98EC-173A80C10213}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -125,6 +129,18 @@ Global
 		{3E90954A-0BD4-4855-AE3D-698761D95E5E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3E90954A-0BD4-4855-AE3D-698761D95E5E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{3E90954A-0BD4-4855-AE3D-698761D95E5E}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{BAC2B005-82B1-40A9-A2C3-1D2A21AB1185}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BAC2B005-82B1-40A9-A2C3-1D2A21AB1185}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BAC2B005-82B1-40A9-A2C3-1D2A21AB1185}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{BAC2B005-82B1-40A9-A2C3-1D2A21AB1185}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BAC2B005-82B1-40A9-A2C3-1D2A21AB1185}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BAC2B005-82B1-40A9-A2C3-1D2A21AB1185}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{32E5ED1F-0378-430F-98EC-173A80C10213}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{32E5ED1F-0378-430F-98EC-173A80C10213}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{32E5ED1F-0378-430F-98EC-173A80C10213}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{32E5ED1F-0378-430F-98EC-173A80C10213}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{32E5ED1F-0378-430F-98EC-173A80C10213}.Release|Any CPU.Build.0 = Release|Any CPU
+		{32E5ED1F-0378-430F-98EC-173A80C10213}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

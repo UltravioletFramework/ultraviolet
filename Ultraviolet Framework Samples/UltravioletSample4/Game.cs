@@ -10,7 +10,15 @@ using UltravioletSample.Input;
 
 namespace UltravioletSample
 {
+#if ANDROID
+    [Android.App.Activity(Label = "Ultraviolet Sample 4", MainLauncher = true, ConfigurationChanges = 
+        Android.Content.PM.ConfigChanges.Orientation | 
+        Android.Content.PM.ConfigChanges.ScreenSize | 
+        Android.Content.PM.ConfigChanges.KeyboardHidden)]
+    public class Game : UltravioletActivity
+#else
     public class Game : UltravioletApplication
+#endif
     {
         public Game()
             : base("TwistedLogik", "Ultraviolet Sample 4")
@@ -29,6 +37,25 @@ namespace UltravioletSample
         protected override UltravioletContext OnCreatingUltravioletContext()
         {
             return new OpenGLUltravioletContext(this);
+        }
+
+        protected override void OnInitialized()
+        {
+            const String Archive = "UltravioletSample.Content.uvarc";
+
+            if (GetType().Assembly.GetManifestResourceStream(Archive) != null)
+            {
+                SetFileSourceFromManifest(Archive);
+            }
+            else
+            {
+                if (Ultraviolet.Platform == UltravioletPlatform.Android)
+                {
+                    throw new InvalidOperationException("Unable to set the file system source archive.");
+                }
+            }
+
+            base.OnInitialized();
         }
 
         protected override void OnUpdating(UltravioletTime time)
