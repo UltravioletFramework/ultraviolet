@@ -2,13 +2,14 @@
 using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet.Audio;
 using TwistedLogik.Ultraviolet.BASS.Native;
+using TwistedLogik.Ultraviolet.Platform;
 
 namespace TwistedLogik.Ultraviolet.BASS.Audio
 {
     /// <summary>
     /// Represents the BASS implementation of the Song class.
     /// </summary>
-    public sealed class BASSSong : Song
+    public sealed partial class BASSSong : Song
     {
         /// <summary>
         /// Initializes a new instance of the BASSSong class.
@@ -20,22 +21,18 @@ namespace TwistedLogik.Ultraviolet.BASS.Audio
         {
             Contract.RequireNotEmpty(file, "file");
 
-            var stream = BASSNative.StreamCreateFile(file, BASSNative.BASS_STREAM_DECODE);
-            if (!BASSUtil.IsValidHandle(stream))
-                throw new BASSException();
+            this.file = file;
 
-            var duration = BASSUtil.GetDurationInSeconds(stream);
+            var stream    = CreateStream(BASSNative.BASS_STREAM_DECODE);
+            var duration  = BASSUtil.GetDurationInSeconds(stream);
 
             if (!BASSNative.StreamFree(stream))
                 throw new BASSException();
 
-            this.file = file;
             this.duration = TimeSpan.FromSeconds(duration);
         }
 
-        /// <summary>
-        /// Gets the song's total playback length.
-        /// </summary>
+        /// <inheritdoc/>
         public override TimeSpan Duration
         {
             get
@@ -53,15 +50,39 @@ namespace TwistedLogik.Ultraviolet.BASS.Audio
         /// <returns>The handle to the BASS stream that was created.</returns>
         internal UInt32 CreateStream(UInt32 flags)
         {
-            var stream = BASSNative.StreamCreateFile(file, flags);
-            if (!BASSUtil.IsValidHandle(stream))
-                throw new BASSException();
+            if (FileSystemService.Source == null)
+            {
+                var stream = BASSNative.StreamCreateFile(file, flags);
+                if (!BASSUtil.IsValidHandle(stream))
+                    throw new BASSException();
 
-            return stream;
+                return stream;
+            }
+            else
+            {
+                if (instanceManager == null)
+                {
+                    instanceManager = new BASSSongInstanceManager(file);
+                }
+                return instanceManager.CreateInstance(flags);
+            }
+        }
+
+        /// <inheritdoc/>
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                SafeDispose.DisposeRef(ref instanceManager);
+            }
+            base.Dispose(disposing);
         }
 
         // The file from which to stream the song.
         private readonly String file;
         private readonly TimeSpan duration;
+
+        // The instance manager used when we can't read files directly from the file system using BASS.
+        private BASSSongInstanceManager instanceManager;
     }
 }

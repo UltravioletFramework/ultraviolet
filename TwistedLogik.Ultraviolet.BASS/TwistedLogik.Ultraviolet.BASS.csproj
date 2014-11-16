@@ -108,6 +108,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Audio\BASSSongInstanceManager.cs" />
     <Compile Include="Audio\BASSSongPlayer.cs" />
     <Compile Include="Audio\BASSSoundEffectPlayer.cs" />
     <Compile Include="Audio\BASSSoundEffectProcessor.cs" />
@@ -125,6 +126,7 @@
     <Compile Include="Native\BASSNative.cs" />
     <Compile Include="Native\BASS_CHANNELINFO.cs" />
     <Compile Include="BASSUltravioletFactoryInitializer.cs" />
+    <Compile Include="Native\BASS_FILEPROCS.cs" />
     <Compile Include="Native\BASS_SAMPLE.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="BASSStrings.cs" />

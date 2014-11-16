@@ -131,6 +131,9 @@ namespace TwistedLogik.Ultraviolet.BASS.Native
             return StreamCreateFile(true, file, offset, length, flags);
         }
 
+        [DllImport("bass", EntryPoint = "BASS_StreamCreateFileUser", CallingConvention = CallingConvention.StdCall)]
+        public static extern UInt32 StreamCreateFileUser(UInt32 system, UInt32 flags, BASS_FILEPROCS* procs, IntPtr user);
+
         [DllImport("bass", EntryPoint = "BASS_StreamPutData", CallingConvention = CallingConvention.StdCall)]
         public static extern UInt32 StreamPutData(UInt32 handle, IntPtr buffer, UInt32 length);
 

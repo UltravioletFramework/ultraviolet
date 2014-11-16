@@ -52,6 +52,9 @@
     <Compile Include="..\TwistedLogik.Ultraviolet.BASS\Audio\BASSSong.cs">
       <Link>Audio\BASSSong.cs</Link>
     </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.BASS\Audio\BASSSongInstanceManager.cs">
+      <Link>Audio\BASSSongInstanceManager.cs</Link>
+    </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.BASS\Audio\BASSSongPlayer.cs">
       <Link>Audio\BASSSongPlayer.cs</Link>
     </Compile>
@@ -100,6 +103,9 @@
     <Compile Include="..\TwistedLogik.Ultraviolet.BASS\Native\BASS_CHANNELINFO.cs">
       <Link>Native\BASS_CHANNELINFO.cs</Link>
     </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.BASS\Native\BASS_FILEPROCS.cs">
+      <Link>Native\BASS_FILEPROCS.cs</Link>
+    </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.BASS\Native\BASS_SAMPLE.cs">
       <Link>Native\BASS_SAMPLE.cs</Link>
     </Compile>
@@ -136,7 +142,7 @@
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" ProjectLinkReference="ea948cf3-ad34-480a-b8ce-e7ec5caa4d77" />
+      <UserProperties ProjectLinkReference="ea948cf3-ad34-480a-b8ce-e7ec5caa4d77" ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" />
     </VisualStudio>
   </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
