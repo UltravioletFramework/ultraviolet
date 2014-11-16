@@ -16,7 +16,15 @@ using TwistedLogik.Ultraviolet.Input;
 
 namespace UltravioletSample
 {
+#if ANDROID
+    [Android.App.Activity(Label = "Ultraviolet Sample 8", MainLauncher = true, ConfigurationChanges = 
+        Android.Content.PM.ConfigChanges.Orientation | 
+        Android.Content.PM.ConfigChanges.ScreenSize | 
+        Android.Content.PM.ConfigChanges.KeyboardHidden)]
+    public class Game : UltravioletActivity
+#else
     public class Game : UltravioletApplication
+#endif
     {
         public Game()
             : base("TwistedLogik", "Ultraviolet Sample 8")
@@ -35,6 +43,13 @@ namespace UltravioletSample
         protected override UltravioletContext OnCreatingUltravioletContext()
         {
             return new OpenGLUltravioletContext(this);
+        }
+
+        protected override void OnInitialized()
+        {
+            SetFileSourceFromManifestIfExists("UltravioletSample.Content.uvarc");
+
+            base.OnInitialized();
         }
 
         protected override void OnUpdating(UltravioletTime time)
