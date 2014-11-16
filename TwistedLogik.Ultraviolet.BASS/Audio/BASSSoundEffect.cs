@@ -3,6 +3,7 @@ using System.Runtime.InteropServices;
 using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet.Audio;
 using TwistedLogik.Ultraviolet.BASS.Native;
+using TwistedLogik.Ultraviolet.Platform;
 
 namespace TwistedLogik.Ultraviolet.BASS.Audio
 {
@@ -19,7 +20,16 @@ namespace TwistedLogik.Ultraviolet.BASS.Audio
         public BASSSoundEffect(UltravioletContext uv, String filename)
             : base(uv)
         {
-            sample = BASSNative.SampleLoad(filename, UInt16.MaxValue, 0);
+            var fileSystemService = FileSystemService.Create();
+            var fileData          = default(Byte[]);
+
+            using (var stream = fileSystemService.OpenRead(filename))
+            {
+                fileData = new Byte[stream.Length];
+                stream.Read(fileData, 0, fileData.Length);
+            }
+
+            sample = BASSNative.SampleLoad(fileData, 0, (UInt32)fileData.Length, UInt16.MaxValue, 0);
             if (!BASSUtil.IsValidHandle(sample))
                 throw new BASSException();
 
