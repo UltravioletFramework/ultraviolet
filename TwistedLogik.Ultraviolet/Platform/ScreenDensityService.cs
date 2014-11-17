@@ -34,6 +34,33 @@ namespace TwistedLogik.Ultraviolet.Platform
         }
 
         /// <summary>
+        /// Gets the short name of the specified density bucket.
+        /// </summary>
+        /// <param name="bucket">The <see cref="ScreenDensityBucket"/> value for which to retrieve a short name.</param>
+        /// <returns>The short name of the specified density bucket.</returns>
+        public static String GetDensityBucketName(ScreenDensityBucket bucket)
+        {
+            switch (bucket)
+            {
+                case ScreenDensityBucket.Desktop:
+                    return "pcdpi";
+                case ScreenDensityBucket.Low:
+                    return "ldpi";                
+                case ScreenDensityBucket.Medium:
+                    return "mdpi";
+                case ScreenDensityBucket.High:
+                    return "hdpi";
+                case ScreenDensityBucket.ExtraHigh:
+                    return "xhdpi";
+                case ScreenDensityBucket.ExtraExtraHigh:
+                    return "xxhdpi";
+                case ScreenDensityBucket.ExtraExtraExtraHigh:
+                    return "xxxhdpi";
+            }
+            throw new ArgumentException("bucket");
+        }
+
+        /// <summary>
         /// Gets the screen's density in dots per inch along the horizontal axis.
         /// </summary>
         public abstract Single DensityX

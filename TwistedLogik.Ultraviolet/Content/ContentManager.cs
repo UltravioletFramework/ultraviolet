@@ -795,6 +795,20 @@ namespace TwistedLogik.Ultraviolet.Content
                 }
             }
 
+            if (path != null && !Path.HasExtension(asset))
+            {
+                var primaryDisplay   = Ultraviolet.GetPlatform().Displays.First();
+                var fileDirectory    = Path.GetDirectoryName(path);
+                var fileName         = Path.GetFileNameWithoutExtension(path);
+                var fileExtension    = Path.GetExtension(path);
+                var dpiName          = ScreenDensityService.GetDensityBucketName(primaryDisplay.DensityBucket);
+                var dpiSpecificAsset = Path.Combine(fileDirectory, String.Format("{0}-{1}{2}", fileName, dpiName, fileExtension));
+                if (fileSystemService.FileExists(dpiSpecificAsset))
+                {
+                    return dpiSpecificAsset;
+                }
+            }
+
             return path;
         }
 
