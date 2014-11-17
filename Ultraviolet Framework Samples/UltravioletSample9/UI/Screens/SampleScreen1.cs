@@ -25,14 +25,23 @@ namespace UltravioletSample.UI.Screens
             this.font         = Content.Load<SpriteFont>("SegoeUI");
             this.blankTexture = globalContent.Load<Texture2D>(GlobalTextureID.Blank);
             this.textRenderer = new TextRenderer();
+
+            Ultraviolet.GetInput().GetTouchDevice().MaximumTapDelay = 20000;
         }
 
         protected override void OnUpdating(UltravioletTime time)
         {
-            if (IsReadyForInput && Ultraviolet.GetInput().GetKeyboard().IsKeyPressed(Key.Right))
+            if (IsReadyForInput)
             {
-                var screen = uiScreenService.Get<SampleScreen2>();
-                Screens.Open(screen);
+                var input    = Ultraviolet.GetInput();
+                var keyboard = input.GetKeyboard();
+                var touch    = input.GetTouchDevice();
+
+                if (keyboard.IsKeyPressed(Key.Right) || (touch != null && touch.WasTapped()))
+                {
+                    var screen = uiScreenService.Get<SampleScreen2>();
+                    Screens.Open(screen);
+                }
             }
             base.OnUpdating(time);
         }
@@ -41,9 +50,14 @@ namespace UltravioletSample.UI.Screens
         {
             spriteBatch.Draw(blankTexture, new RectangleF(0, 0, Width, Height), new Color(180, 0, 0));
 
+#if ANDROID
+            var text = "This is SampleScreen1\nTap to open SampleScreen2";
+#else
+            var text = "This is SampleScreen1\nPress right arrow key to open SampleScreen2";
+#endif
+
             var settings = new TextLayoutSettings(font, Width, Height, TextFlags.AlignCenter | TextFlags.AlignMiddle);
-            textRenderer.Draw(spriteBatch, "This is SampleScreen1\nPress right arrow key to open SampleScreen2", 
-                Vector2.Zero, Color.White * TransitionPosition, settings);
+            textRenderer.Draw(spriteBatch, text, Vector2.Zero, Color.White * TransitionPosition, settings);
 
             base.OnDrawingForeground(time, spriteBatch);
         }

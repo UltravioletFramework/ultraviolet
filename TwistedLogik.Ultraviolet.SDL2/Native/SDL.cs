@@ -26,6 +26,9 @@ namespace TwistedLogik.Ultraviolet.SDL2.Native
             return Marshal.PtrToStringAnsi(GetError_Impl());
         }
 
+        [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_ClearError")]
+        public static extern void ClearError();
+
         [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_Init")]
         public static extern Int32 Init(SDL_Init flags);
 
@@ -294,5 +297,17 @@ namespace TwistedLogik.Ultraviolet.SDL2.Native
 
         [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_JoystickInstanceID")]
         public static extern Int32 JoystickInstanceID(IntPtr joystick);
+
+        [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GetNumTouchDevices")]
+        public static extern Int32 GetNumTouchDevices();
+
+        [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GetTouchDevice")]
+        public static extern Int64 GetTouchDevice(Int32 index);
+
+        [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GetNumTouchFingers")]
+        public static extern Int32 GetNumTouchFingers(Int64 touchID);
+
+        [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GetTouchFinger")]
+        public static extern SDL_Finger* GetTouchFinger(Int64 touchID, Int32 index);
     }
 }

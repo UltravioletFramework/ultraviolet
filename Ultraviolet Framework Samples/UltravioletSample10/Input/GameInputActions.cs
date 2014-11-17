@@ -22,7 +22,11 @@ namespace UltravioletSample.Input
 
         protected override void OnResetting()
         {
+#if ANDROID
+            ExitApplication.Primary = CreateKeyboardBinding(Key.AppControlBack);
+#else
             ExitApplication.Primary = CreateKeyboardBinding(Key.Escape);
+#endif
 
             base.OnResetting();
         }

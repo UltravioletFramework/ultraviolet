@@ -77,8 +77,7 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
         /// <returns>The game pad that belongs to the specified player, or <c>null</c> if no such game pad exists.</returns>
         public SDL2GamePadDevice GetGamePadForPlayer(Int32 playerIndex)
         {
-            if (playerIndex < 0)
-                throw new ArgumentOutOfRangeException("index");
+            Contract.EnsureRange(playerIndex >= 0, "index");
 
             return (playerIndex >= devicesByPlayer.Length) ? null : devicesByPlayer[playerIndex];
         }

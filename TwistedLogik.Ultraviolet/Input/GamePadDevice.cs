@@ -30,7 +30,7 @@ namespace TwistedLogik.Ultraviolet.Input
     public abstract class GamePadDevice : InputDevice<GamePadButton>
     {
         /// <summary>
-        /// Initializes a new instance of the GamePadDevice class.
+        /// Initializes a new instance of the <see cref="GamePadDevice"/> class.
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
         public GamePadDevice(UltravioletContext uv)

@@ -30,9 +30,16 @@ namespace UltravioletSample.UI.Screens
 
         protected override void OnUpdating(UltravioletTime time)
         {
-            if (IsReadyForInput && Ultraviolet.GetInput().GetKeyboard().IsKeyPressed(Key.Left))
+            if (IsReadyForInput)
             {
-                Screens.Close(this);
+                var input    = Ultraviolet.GetInput();
+                var keyboard = input.GetKeyboard();
+                var touch    = input.GetTouchDevice();
+
+                if (keyboard.IsKeyPressed(Key.Left) || (touch != null && touch.WasTapped()))
+                {
+                    Screens.Close(this);
+                }
             }
             base.OnUpdating(time);
         }
@@ -42,9 +49,14 @@ namespace UltravioletSample.UI.Screens
             var offset = GetScreenOffset();
             spriteBatch.Draw(blankTexture, new RectangleF(offset, 0, Width, Height), new Color(0, 0, 180));
 
+#if ANDROID
+            var text = "This is SampleScreen2\nTap to open SampleScreen1";
+#else
+            var text = "This is SampleScreen2\nPress left arrow key to open SampleScreen1";
+#endif
+
             var settings = new TextLayoutSettings(font, Width, Height, TextFlags.AlignCenter | TextFlags.AlignMiddle);
-            textRenderer.Draw(spriteBatch, "This is SampleScreen2\nPress left arrow key to open SampleScreen1", 
-                new Vector2(offset, 0), Color.White, settings);
+            textRenderer.Draw(spriteBatch, text, new Vector2(offset, 0), Color.White, settings);
 
             base.OnDrawingForeground(time, spriteBatch);
         }

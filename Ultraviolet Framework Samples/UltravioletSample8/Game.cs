@@ -57,6 +57,13 @@ namespace UltravioletSample
             foreach (var soundEffectPlayer in soundEffectPlayers)
                 soundEffectPlayer.Update(time);
 
+            var touch = Ultraviolet.GetInput().GetTouchDevice();
+            if (touch != null && touch.WasTapped())
+            {
+                soundEffectPlayers[nextPlayerInSequence].Play(soundEffect);
+                nextPlayerInSequence = (nextPlayerInSequence + 1) % soundEffectPlayers.Length;
+            }
+
             var keyboard = Ultraviolet.GetInput().GetKeyboard();
 
             if (keyboard.IsKeyPressed(Key.D1))
@@ -92,10 +99,15 @@ namespace UltravioletSample
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend);
             
             var attribution = 
+#if ANDROID
+                "|c:FFFFFF00|Tap the screen|c| to activate one of the sound effect players.\n\n" +
+#else
                 "Press the |c:FFFFFF00|1-8 number keys|c| to activate one of the sound effect players.\n\n" +
+#endif
                 "\"|c:FFFFFF00|grenade.wav|c|\" by ljudman (http://freesound.org/people/ljudman)\n" +
                 "Licensed under Creative Commons: Sampling+\n" +
                 "|c:FF808080|http://creativecommons.org/licenses/sampling+/1.0/|c|";
+
             var settings = new TextLayoutSettings(spriteFont, width, height, TextFlags.AlignMiddle | TextFlags.AlignCenter);
             textRenderer.CalculateLayout(attribution, textLayoutResult, settings);
             textRenderer.Draw(spriteBatch, textLayoutResult, Vector2.Zero, Color.White);
@@ -175,5 +187,6 @@ namespace UltravioletSample
         private TextLayoutResult textLayoutResult;
         private SoundEffect soundEffect;
         private readonly SoundEffectPlayer[] soundEffectPlayers = new SoundEffectPlayer[8];
+        private Int32 nextPlayerInSequence;
     }
 }

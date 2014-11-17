@@ -80,6 +80,32 @@ namespace TwistedLogik.Ultraviolet
         GamePadDevice GetFirstConnectedGamePad();
 
         /// <summary>
+        /// Gets a value indicating whether touch input is supported.
+        /// </summary>
+        /// <returns><c>true</c> if touch input is supported; otherwise, <c>false</c>.</returns>
+        Boolean IsTouchSupported();
+
+        /// <summary>
+        /// Gets a value indicating whether a touch device with the specified index exists.
+        /// </summary>
+        /// <param name="index">The touch device index to evaluate.</param>
+        /// <returns><c>true</c> if there is a touch device at the specified index; otherwise, false.</returns>
+        Boolean IsTouchDeviceConnected(Int32 index);
+
+        /// <summary>
+        /// Gets the first available touch device.
+        /// </summary>
+        /// <returns>The first available touch device.</returns>
+        TouchDevice GetTouchDevice();
+
+        /// <summary>
+        /// Gets the touch device with the specified device index.
+        /// </summary>
+        /// <param name="index">The index of the device to retrieve.</param>
+        /// <returns>The touch device with the specified device index, or <c>null</c> if no such device exists.</returns>
+        TouchDevice GetTouchDeviceByIndex(Int32 index);
+
+        /// <summary>
         /// Occurs when a game pad is connected to the system.
         /// </summary>
         event GamePadConnectionEventHandler GamePadConnected;

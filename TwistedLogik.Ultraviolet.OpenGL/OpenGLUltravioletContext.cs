@@ -81,10 +81,14 @@ namespace TwistedLogik.Ultraviolet.OpenGL
             Contract.Require(time, "time");
             Contract.EnsureNotDisposed(this, Disposed);
 
+            input.OnPreUpdate();
+
             if (!PumpEvents())
             {
                 return;
             }
+
+            ProcessMessages();
 
             platform.Update(time);
             content.Update(time);

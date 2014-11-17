@@ -22,6 +22,27 @@ namespace TwistedLogik.Ultraviolet.SDL2
             this.gamePadInfo = new GamePadDeviceInfo(uv);
             this.gamePadInfo.GamePadConnected += OnGamePadConnected;
             this.gamePadInfo.GamePadDisconnected += OnGamePadDisconnected;
+            this.touchInfo = new TouchDeviceInfo(uv);
+        }
+
+        /// <summary>
+        /// Called immediately before an update.
+        /// </summary>
+        public void OnPreUpdate()
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
+
+            touchInfo.OnPreUpdate();
+        }
+
+        /// <summary>
+        /// Called immediately after an update.
+        /// </summary>
+        public void OnPostUpdate()
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
+
+            touchInfo.OnPostUpdate();
         }
 
         /// <inheritdoc/>
@@ -32,6 +53,7 @@ namespace TwistedLogik.Ultraviolet.SDL2
             this.keyboard.Update(time);
             this.mouse.Update(time);
             this.gamePadInfo.Update(time);
+            this.touchInfo.Update(time);
 
             OnUpdating(time);
         }
@@ -115,6 +137,40 @@ namespace TwistedLogik.Ultraviolet.SDL2
         }
 
         /// <inheritdoc/>
+        public Boolean IsTouchSupported()
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
+
+            return touchInfo.Count > 0;
+        }
+
+        /// <inheritdoc/>
+        public Boolean IsTouchDeviceConnected(Int32 index)
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
+            Contract.EnsureRange(index >= 0, "index");
+
+            return GetTouchDeviceByIndex(index) != null;
+        }
+
+        /// <inheritdoc/>
+        public TouchDevice GetTouchDevice()
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
+
+            return touchInfo.Count > 0 ? touchInfo.GetTouchDeviceByIndex(0) : null;
+        }
+
+        /// <inheritdoc/>
+        public TouchDevice GetTouchDeviceByIndex(Int32 index)
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
+            Contract.EnsureRange(index >= 0, "index");
+
+            return index >= touchInfo.Count ? null : touchInfo.GetTouchDeviceByIndex(index);
+        }
+
+        /// <inheritdoc/>
         public event UltravioletSubsystemUpdateEventHandler Updating;
 
         /// <inheritdoc/>
@@ -134,6 +190,7 @@ namespace TwistedLogik.Ultraviolet.SDL2
                 SafeDispose.DisposeRef(ref keyboard);
                 SafeDispose.DisposeRef(ref mouse);
                 SafeDispose.DisposeRef(ref gamePadInfo);
+                SafeDispose.DisposeRef(ref touchInfo);
             }
 
             base.Dispose(disposing);
@@ -184,5 +241,6 @@ namespace TwistedLogik.Ultraviolet.SDL2
         private KeyboardDevice keyboard;
         private MouseDevice mouse;
         private GamePadDeviceInfo gamePadInfo;
+        private TouchDeviceInfo touchInfo;
     }
 }

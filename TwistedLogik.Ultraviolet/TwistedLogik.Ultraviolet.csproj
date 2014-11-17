@@ -258,6 +258,7 @@
     <Compile Include="Input\MouseDevice.cs" />
     <Compile Include="Input\KeyboardDevice.cs" />
     <Compile Include="Input\Key.cs" />
+    <Compile Include="Input\TouchDevice.cs" />
     <Compile Include="IUltravioletAudio.cs" />
     <Compile Include="IUltravioletFactoryInitializer.cs" />
     <Compile Include="IUltravioletHost.cs" />

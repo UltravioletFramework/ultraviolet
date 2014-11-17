@@ -42,7 +42,11 @@ namespace SafeProjectName.Input
         /// </summary>
         protected override void OnResetting()
         {
+#if ANDROID
+            ExitApplication.Primary = CreateKeyboardBinding(Key.AppControlBack);
+#else
             ExitApplication.Primary = CreateGamePadBinding(0, GamePadButton.Back); // CreateKeyboardBinding(Key.Escape);
+#endif
 
             base.OnResetting();
         }
