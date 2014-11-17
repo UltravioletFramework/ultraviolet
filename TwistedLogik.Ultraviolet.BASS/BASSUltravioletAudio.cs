@@ -34,6 +34,28 @@ namespace TwistedLogik.Ultraviolet.BASS
         }
 
         /// <summary>
+        /// Suspends all audio output.
+        /// </summary>
+        public void Suspend()
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
+
+            if (!BASSNative.Pause())
+                throw new BASSException();
+        }
+
+        /// <summary>
+        /// Resumes audio output after a call to <see cref="Suspend"/>.
+        /// </summary>
+        public void Resume()
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
+
+            if (!BASSNative.Start())
+                throw new BASSException();
+        }
+
+        /// <summary>
         /// Gets or sets the master volume for all audio output.
         /// </summary>
         public Single AudioMasterVolume 

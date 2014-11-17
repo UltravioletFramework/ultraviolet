@@ -642,6 +642,10 @@ namespace TwistedLogik.Ultraviolet
         private void SuspendActivity()
         {
             suspended = true;
+            if (uv != null && !uv.Disposed)
+            {
+                uv.GetAudio().Suspend();
+            }
         }
 
         /// <summary>
@@ -653,6 +657,10 @@ namespace TwistedLogik.Ultraviolet
             if (hostcore != null)
             {
                 hostcore.ResetElapsed();
+            }
+            if (uv != null && !uv.Disposed)
+            {
+                uv.GetAudio().Resume();
             }
         }
 

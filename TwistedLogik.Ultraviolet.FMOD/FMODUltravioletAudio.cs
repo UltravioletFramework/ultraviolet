@@ -53,6 +53,26 @@ namespace TwistedLogik.Ultraviolet.FMOD
         }
 
         /// <summary>
+        /// Suspends all audio output.
+        /// </summary>
+        public void Suspend()
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
+
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Resumes audio output after a call to <see cref="Suspend"/>.
+        /// </summary>
+        public void Resume()
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
+
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
         /// Gets the FMOD System object.
         /// </summary>
         public FMODNative.System System

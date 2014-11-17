@@ -8,6 +8,16 @@ namespace TwistedLogik.Ultraviolet
     public interface IUltravioletAudio : IUltravioletSubsystem
     {
         /// <summary>
+        /// Suspends all audio output.
+        /// </summary>
+        void Suspend();
+
+        /// <summary>
+        /// Resumes audio output after a call to <see cref="Suspend"/>.
+        /// </summary>
+        void Resume();
+
+        /// <summary>
         /// Gets or sets the master volume for all audio output.
         /// </summary>
         Single AudioMasterVolume { get; set; }

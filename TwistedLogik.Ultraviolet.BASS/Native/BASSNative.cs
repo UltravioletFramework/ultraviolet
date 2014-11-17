@@ -240,5 +240,11 @@ namespace TwistedLogik.Ultraviolet.BASS.Native
                 return SampleGetData(handle, (IntPtr)pBuffer);
             }
         }
+
+        [DllImport("bass", EntryPoint = "BASS_Pause", CallingConvention = CallingConvention.StdCall)]
+        public static extern Boolean Pause();
+
+        [DllImport("bass", EntryPoint = "BASS_Start", CallingConvention = CallingConvention.StdCall)]
+        public static extern Boolean Start();
     }
 }
