@@ -280,6 +280,8 @@
     <Compile Include="Platform\IUltravioletWindow.cs" />
     <Compile Include="Platform\IUltravioletWindowInfo.cs" />
     <Compile Include="Platform\NamespaceDoc.cs" />
+    <Compile Include="Platform\ScreenDensityBucket.cs" />
+    <Compile Include="Platform\ScreenDensityService.cs" />
     <Compile Include="Platform\WindowFlags.cs" />
     <Compile Include="Radians.cs" />
     <Compile Include="Rectangle.cs" />
