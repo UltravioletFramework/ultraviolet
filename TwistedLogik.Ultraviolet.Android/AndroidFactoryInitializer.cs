@@ -21,7 +21,8 @@ namespace TwistedLogik.Ultraviolet.Android
             factory.SetFactoryMethod<SurfaceSaverFactory>(() => new AndroidSurfaceSaver());
             factory.SetFactoryMethod<IconLoaderFactory>(() => new AndroidIconLoader());
             factory.SetFactoryMethod<FileSystemServiceFactory>(() => new FileSystemService());
-            factory.SetFactoryMethod<ScreenRotationServiceFactory>(() => new AndroidScreenRotationService());
+            factory.SetFactoryMethod<ScreenRotationServiceFactory>((display) => new AndroidScreenRotationService(display));
+            factory.SetFactoryMethod<ScreenDensityServiceFactory>((display) => new AndroidScreenDensityService(display));
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace TwistedLogik.Ultraviolet.Platform
 {
@@ -17,6 +18,38 @@ namespace TwistedLogik.Ultraviolet.Platform
         /// Gets the display's bounds.
         /// </summary>
         Rectangle Bounds
+        {
+            get;
+        }
+
+        /// <summary>
+        /// Gets the display's rotation on devices which can be rotated.
+        /// </summary>
+        ScreenRotation Rotation
+        {
+            get;
+        }
+
+        /// <summary>
+        /// Gets the display's density in dots per inch along the horizontal axis.
+        /// </summary>
+        Single DpiX
+        {
+            get;
+        }
+
+        /// <summary>
+        /// Gets the display's density in dots per inch along the vertical axis.
+        /// </summary>
+        Single DpiY
+        {
+            get;
+        }
+
+        /// <summary>
+        /// Gets the display's density bucket.
+        /// </summary>
+        ScreenDensityBucket DensityBucket
         {
             get;
         }

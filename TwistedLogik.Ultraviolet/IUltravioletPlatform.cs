@@ -32,13 +32,5 @@ namespace TwistedLogik.Ultraviolet
         {
             get;
         }
-
-        /// <summary>
-        /// Gets the screen's rotation on devices which can be rotated.
-        /// </summary>
-        ScreenRotation ScreenRotation
-        {
-            get;
-        }
     }
 }

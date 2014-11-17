@@ -10,6 +10,7 @@ using TwistedLogik.Nucleus.Messages;
 using TwistedLogik.Ultraviolet.Android.Platform;
 using TwistedLogik.Ultraviolet.Content;
 using TwistedLogik.Ultraviolet.Platform;
+using TwistedLogik.Ultraviolet.Messages;
 
 namespace TwistedLogik.Ultraviolet
 {
@@ -110,11 +111,16 @@ namespace TwistedLogik.Ultraviolet
         {
             if (Ultraviolet != null && !Ultraviolet.Disposed)
             {
+                var display  = Ultraviolet.GetPlatform().Displays.First();
                 var rotation = (ScreenRotation)WindowManager.DefaultDisplay.Rotation;
-                if (rotation != Ultraviolet.GetPlatform().ScreenRotation)
+
+                if (rotation != display.Rotation)
                 {
                     AndroidScreenRotationService.UpdateScreenRotation(rotation);
-                    Ultraviolet.Messages.Publish(UltravioletMessages.OrientationChanged, null);
+
+                    var messageData = Ultraviolet.Messages.CreateMessageData<OrientationChangedMessageData>();
+                    messageData.Display = display;
+                    Ultraviolet.Messages.Publish(UltravioletMessages.OrientationChanged, messageData);
                 }
             }
 
@@ -354,6 +360,8 @@ namespace TwistedLogik.Ultraviolet
             ResumeActivity();
 
             base.OnCreate(savedInstanceState);
+
+            AndroidScreenDensityService.Activity = this;
         }
 
         /// <inheritdoc/>

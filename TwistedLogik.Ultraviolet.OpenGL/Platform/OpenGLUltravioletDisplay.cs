@@ -21,6 +21,9 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
             this.displayModes = Enumerable.Range(0, SDL.GetNumDisplayModes(displayIndex))
                 .Select(modeIndex => CreateDisplayModeFromSDL(displayIndex, modeIndex))
                 .ToList();
+
+            this.screenRotationService = ScreenRotationService.Create(this);
+            this.screenDensityService  = ScreenDensityService.Create(this);
         }
 
         /// <summary>
@@ -47,6 +50,50 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
         }
 
         /// <summary>
+        /// Gets the display's rotation on devices which can be rotated.
+        /// </summary>
+        public ScreenRotation Rotation
+        {
+            get
+            {
+                return screenRotationService.ScreenRotation;
+            }
+        }
+
+        /// <summary>
+        /// Gets the display's density in dots per inch along the horizontal axis.
+        /// </summary>
+        public Single DpiX
+        {
+            get
+            {
+                return screenDensityService.DensityX;
+            }
+        }
+
+        /// <summary>
+        /// Gets the display's density in dots per inch along the vertical axis.
+        /// </summary>
+        public Single DpiY
+        {
+            get
+            {
+                return screenDensityService.DensityY;
+            }
+        }
+
+        /// <summary>
+        /// Gets the display's density bucket.
+        /// </summary>
+        public ScreenDensityBucket DensityBucket
+        {
+            get
+            {
+                return screenDensityService.DensityBucket;
+            }
+        }
+
+        /// <summary>
         /// Creates an Ultraviolet DisplayMode object from the specified SDL2 display mode.
         /// </summary>
         /// <param name="displayIndex">The display index.</param>
@@ -67,5 +114,9 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
         // SDL2 display info.
         private readonly Int32 displayIndex;
         private readonly List<DisplayMode> displayModes;
+
+        // Services.
+        private readonly ScreenRotationService screenRotationService;
+        private readonly ScreenDensityService screenDensityService;
     }
 }

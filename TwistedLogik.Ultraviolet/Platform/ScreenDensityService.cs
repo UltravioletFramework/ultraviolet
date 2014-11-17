@@ -1,4 +1,5 @@
 ﻿using System;
+using TwistedLogik.Nucleus;
 
 namespace TwistedLogik.Ultraviolet.Platform
 {
@@ -19,7 +20,7 @@ namespace TwistedLogik.Ultraviolet.Platform
         /// <param name="display">The <see cref="IUltravioletDisplay"/> for which to retrieve density information.</param>
         protected ScreenDensityService(IUltravioletDisplay display)
         {
-
+            Contract.Require(display, "display");
         }
 
         /// <summary>

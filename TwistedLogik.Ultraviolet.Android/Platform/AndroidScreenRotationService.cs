@@ -8,6 +8,16 @@ namespace TwistedLogik.Ultraviolet.Android.Platform
     public sealed class AndroidScreenRotationService : ScreenRotationService
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="AndroidScreenRotationService"/> class.
+        /// </summary>
+        /// <param name="display">The <see cref="IUltravioletDisplay"/> for which to retrieve rotation information.</param>
+        public AndroidScreenRotationService(IUltravioletDisplay display)
+            : base(display)
+        {
+
+        }
+
+        /// <summary>
         /// Updates the cached screen rotation value.
         /// </summary>
         /// <param name="rotation">The screen's current rotation.</param>

@@ -7,6 +7,16 @@ namespace TwistedLogik.Ultraviolet.Desktop.Platform
     /// </summary>
     public sealed class DesktopScreenOrientationService : ScreenRotationService
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DesktopScreenOrientationService"/> class.
+        /// </summary>
+        /// <param name="display">The <see cref="IUltravioletDisplay"/> for which to retrieve rotation information.</param>
+        public DesktopScreenOrientationService(IUltravioletDisplay display)
+            : base(display)
+        {
+
+        }
+
         /// <inheritdoc/>
         public override ScreenRotation ScreenRotation
         {
