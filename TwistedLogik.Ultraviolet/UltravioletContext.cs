@@ -114,16 +114,25 @@ namespace TwistedLogik.Ultraviolet
         }
 
         /// <summary>
+        /// Updates the game state while the application is suspended.
+        /// </summary>
+        /// <remarks>Certain platforms, such as phones and tablets, may suspend the application while it is in the background
+        /// in order to save power. Ultraviolet will automatically cease calling <see cref="Update"/> and <see cref="Draw"/> when
+        /// this happens; however, some implementations may require that certain processing continues to take place even while 
+        /// the application is suspended. The <see cref="UpdateSuspended"/> method is provided for such a scenario.
+        /// </remarks>
+        public virtual void UpdateSuspended()
+        {
+
+        }
+
+        /// <summary>
         /// Updates the game state.
         /// </summary>
         /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Update(UltravioletTime)"/>.</param>
         public virtual void Update(UltravioletTime time)
         {
-            Contract.Require(time, "time");
-            Contract.EnsureNotDisposed(this, disposed);
 
-            ProcessWorkItems();
-            UpdateTasks();
         }
 
         /// <summary>
@@ -132,7 +141,7 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Draw(UltravioletTime)"/>.</param>
         public virtual void Draw(UltravioletTime time)
         {
-            Contract.EnsureNotDisposed(this, disposed);
+
         }
 
         /// <summary>
@@ -579,6 +588,16 @@ namespace TwistedLogik.Ultraviolet
                 var initializerInstance = (IUltravioletFactoryInitializer)Activator.CreateInstance(initializerType);
                 initializerInstance.Initialize(this, Factory);
             }
+        }
+
+        /// <summary>
+        /// Updates the context's state.
+        /// </summary>
+        /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Update(UltravioletTime)"/>.</param>
+        protected void UpdateContext(UltravioletTime time)
+        {
+            ProcessWorkItems();
+            UpdateTasks();
         }
 
         /// <summary>

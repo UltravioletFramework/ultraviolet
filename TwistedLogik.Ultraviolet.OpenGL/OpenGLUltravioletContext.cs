@@ -72,10 +72,20 @@ namespace TwistedLogik.Ultraviolet.OpenGL
             PumpEvents();
         }
 
-        /// <summary>
-        /// Updates the game state.
-        /// </summary>
-        /// <param name="time">Time elapsed since the last call to Update.</param>
+        /// <inheritdoc/>
+        public override void UpdateSuspended()
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
+
+            if (!PumpEvents())
+            {
+                return;
+            }
+
+            base.UpdateSuspended();
+        }
+
+        /// <inheritdoc/>
         public override void Update(UltravioletTime time)
         {
             Contract.Require(time, "time");
@@ -101,13 +111,10 @@ namespace TwistedLogik.Ultraviolet.OpenGL
 
             OnUpdating(time);
 
-            base.Update(time);
+            UpdateContext(time);
         }
 
-        /// <summary>
-        /// Draws the scene.
-        /// </summary>
-        /// <param name="time">Time elapsed since the last call to Draw.</param>
+        /// <inheritdoc/>
         public override void Draw(UltravioletTime time)
         {
             Contract.EnsureNotDisposed(this, Disposed);
@@ -131,10 +138,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL
             base.Draw(time);
         }
 
-        /// <summary>
-        /// Gets the platform interop subsystem.
-        /// </summary>
-        /// <returns>The platform interop subsystem.</returns>
+        /// <inheritdoc/>
         public override IUltravioletPlatform GetPlatform()
         {
             Contract.EnsureNotDisposed(this, Disposed);
@@ -142,10 +146,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL
             return platform;
         }
 
-        /// <summary>
-        /// Gets the content management subsystem.
-        /// </summary>
-        /// <returns>The content management subsystem.</returns>
+        /// <inheritdoc/>
         public override IUltravioletContent GetContent()
         {
             Contract.EnsureNotDisposed(this, Disposed);
@@ -153,10 +154,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL
             return content;
         }
 
-        /// <summary>
-        /// Gets the graphics subsystem.
-        /// </summary>
-        /// <returns>The graphics subsystem.</returns>
+        /// <inheritdoc/>
         public override IUltravioletGraphics GetGraphics()
         {
             Contract.EnsureNotDisposed(this, Disposed);
@@ -164,10 +162,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL
             return graphics;
         }
 
-        /// <summary>
-        /// Gets the audio subsystem.
-        /// </summary>
-        /// <returns>The audio subsystem.</returns>
+        /// <inheritdoc/>
         public override IUltravioletAudio GetAudio()
         {
             Contract.EnsureNotDisposed(this, Disposed);
@@ -175,10 +170,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL
             return audio;
         }
 
-        /// <summary>
-        /// Gets the input subsystem.
-        /// </summary>
-        /// <returns>The input subsystem.</returns>
+        /// <inheritdoc/>
         public override IUltravioletInput GetInput()
         {
             Contract.EnsureNotDisposed(this, Disposed);
@@ -186,10 +178,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL
             return input;
         }
 
-        /// <summary>
-        /// Gets the user interface subsystem.
-        /// </summary>
-        /// <returns>The user interface subsystem.</returns>
+        /// <inheritdoc/>
         public override IUltravioletUI GetUI()
         {
             Contract.EnsureNotDisposed(this, Disposed);
@@ -197,9 +186,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL
             return ui;
         }
 
-        /// <summary>
-        /// Raises the Shutdown event.
-        /// </summary>
+        /// <inheritdoc/>
         protected override void OnShutdown()
         {
             SDL.Quit();

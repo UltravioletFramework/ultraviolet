@@ -28,8 +28,20 @@ namespace TwistedLogik.Ultraviolet
         /// </summary>
         public void ResetElapsed()
         {
-            tickTimer.Reset();
-            frameTimer.Reset();
+            tickTimer.Restart();
+            frameTimer.Restart();
+        }
+
+        /// <summary>
+        /// Advances the application state by one tick when the application is in a suspended state.
+        /// </summary>
+        public void RunOneTickSuspended()
+        {
+            host.Ultraviolet.UpdateSuspended();
+            if (InactiveSleepTime.TotalMilliseconds > 0)
+            {
+                Thread.Sleep(InactiveSleepTime);
+            }
         }
 
         /// <summary>

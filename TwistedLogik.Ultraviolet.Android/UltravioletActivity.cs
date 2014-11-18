@@ -83,7 +83,7 @@ namespace TwistedLogik.Ultraviolet
             {
                 if (suspended)
                 {
-                    Thread.Sleep(hostcore.InactiveSleepTime);
+                    hostcore.RunOneTickSuspended();
                 }
                 else
                 {
