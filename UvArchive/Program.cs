@@ -27,8 +27,7 @@ namespace UvArchive
                               "               generated archive file.\n" +
                               "\n" +
                               "UVARCHIVE -list input\n" +
-                              "  Indicates that the contents of the specified archive file\n" +
-                              "  should be written to the console.\n" +
+                              "  Writes the contents of the specified archive file to the console.\n" +
                               "\n" +
                               "  input        The name of the archive file to examine.");
                     Console.WriteLine();

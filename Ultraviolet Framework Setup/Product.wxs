@@ -5,6 +5,10 @@
   <Product Id="*" Name="Ultraviolet Framework 1.0" Language="1033" Version="1.0.2.0" Manufacturer="TwistedLogik Software" UpgradeCode="d1732409-d2fa-46ae-a6e0-733ba2d4cdd6">
     <Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" InstallPrivileges="elevated" />
 
+    <InstallExecuteSequence>
+      <ScheduleReboot After="InstallFinalize"/>
+    </InstallExecuteSequence>
+    
     <MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
     <MediaTemplate EmbedCab="yes" />
 
@@ -106,6 +110,7 @@
       <ComponentRef Id="Tools_UvFont"/>
       <ComponentRef Id="Tools_UvArchive"/>
       <ComponentRef Id="Tools_TwistedLogik.Nucleus"/>
+      <ComponentRef Id="Tools_TwistedLogik.Ultraviolet.Tooling"/>
       <!-- Dependencies (x86) -->
       <ComponentRef Id="SDL2_x86_win32nt" />
       <ComponentRef Id="bass_x86_win32nt" />
@@ -246,6 +251,9 @@
               </Component>
               <Component Id="Tools_TwistedLogik.Nucleus">
                 <File Id="Tools_TwistedLogik.Nucleus" Source="..\Binaries\AnyCPU\Release\TwistedLogik.Nucleus.dll" />
+              </Component>
+              <Component Id="Tools_TwistedLogik.Ultraviolet.Tooling">
+                <File Id="Tools_TwistedLogik.Ultraviolet.Tooling" Source="..\Binaries\AnyCPU\Release\TwistedLogik.Ultraviolet.Tooling.dll" />
               </Component>
               <Component Id="Tools_UvFont">
                 <File Id="Tools_UvFont" Source="..\Binaries\AnyCPU\Release\uvfont.exe" />
