@@ -54,6 +54,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwistedLogik.Ultraviolet.SDL2 (Android)", "TwistedLogik.Ultraviolet.SDL2 (Android)\TwistedLogik.Ultraviolet.SDL2 (Android).csproj", "{B5502009-935A-40BA-B415-ABBF55427CAD}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UltravioletGame (Android)", "UltravioletGame (Android)\UltravioletGame (Android).csproj", "{DBEFD71F-C99B-4128-8CF1-A998104A2B8D}"
+	ProjectSection(ProjectDependencies) = postProject
+		{40ED4BE1-0B7C-40D5-B702-C08500CDB2A7} = {40ED4BE1-0B7C-40D5-B702-C08500CDB2A7}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwistedLogik.Ultraviolet.Android", "TwistedLogik.Ultraviolet.Android\TwistedLogik.Ultraviolet.Android.csproj", "{1EBCAE25-9FC2-420A-8E62-C5B6733BAC9D}"
 EndProject
