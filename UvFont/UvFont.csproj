@@ -58,7 +58,6 @@
   <ItemGroup>
     <Compile Include="FontFaceInfo.cs" />
     <Compile Include="FontGenerationParameters.cs" />
-    <Compile Include="InvalidCommandLineException.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -72,6 +71,10 @@
     <ProjectReference Include="..\TwistedLogik.Nucleus\TwistedLogik.Nucleus.csproj">
       <Project>{7DA6158B-A0B9-4100-904E-22FD86949608}</Project>
       <Name>TwistedLogik.Nucleus</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TwistedLogik.Ultraviolet.Tooling\TwistedLogik.Ultraviolet.Tooling.csproj">
+      <Project>{6aab1edc-67e5-4f64-9633-50cecb8d9254}</Project>
+      <Name>TwistedLogik.Ultraviolet.Tooling</Name>
     </ProjectReference>
     <ProjectReference Include="..\TwistedLogik.Ultraviolet\TwistedLogik.Ultraviolet.csproj">
       <Project>{f071abe3-05e5-4df9-a929-cf71b01ec50a}</Project>

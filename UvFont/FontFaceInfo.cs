@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Drawing;
 
-namespace TwistedLogik.UvFont
+namespace UvFont
 {
     public class FontFaceInfo
     {

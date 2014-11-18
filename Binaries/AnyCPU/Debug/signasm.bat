@@ -23,5 +23,6 @@ sn.exe -R "TwistedLogik.Ultraviolet.FMOD.dll" "%TLSN%"
 sn.exe -R "TwistedLogik.Ultraviolet.WindowsForms.dll" "%TLSN%"
 sn.exe -R "TwistedLogik.Ultraviolet.Layout.XiliumCef.exe" "%TLSN
 sn.exe -R "TwistedLogik.Ultraviolet.Desktop.dll" "%TLSN%"
+sn.exe -R "TwistedLogik.Ultraviolet.Tooling.dll" "%TLSN%"
 sn.exe -R "uvfont.exe" "%TLSN%"
 sn.exe -R "uvarchive.exe" "%TLSN%"

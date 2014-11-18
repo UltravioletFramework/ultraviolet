@@ -12,8 +12,9 @@ using System.Xml;
 using System.Xml.Linq;
 using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
+using TwistedLogik.Ultraviolet.Tooling;
 
-namespace TwistedLogik.UvFont
+namespace UvFont
 {
     public class Program
     {

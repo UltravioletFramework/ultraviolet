@@ -2,6 +2,7 @@
 using System.IO;
 using System.Linq;
 using TwistedLogik.Ultraviolet.Content;
+using TwistedLogik.Ultraviolet.Tooling;
 
 namespace UvArchive
 {
@@ -9,26 +10,53 @@ namespace UvArchive
     {
         public static void Main(string[] args)
         {
-            if (args.Length < 2)
+            ArchiveGenerationParameters parameters;
+            try { parameters = new ArchiveGenerationParameters(args); }
+            catch (InvalidCommandLineException e)
             {
-                WriteHelp();
-                return;
-            }
-
-            var output = args.First();
-            var dirs   = args.Skip(1).ToList();
-
-            if (dirs.Contains("-list"))
-            {
-                if (args.Length > 2)
+                if (String.IsNullOrEmpty(e.Error))
                 {
-                    WriteHelp();
-                    return;
+                    Console.WriteLine("Generates Ultraviolet-compatible content archive files.");
+                    Console.WriteLine();
+                    Console.WriteLine("UVARCHIVE -pack output dir1 [[dir2] [dir3]...]\n" +
+                              "  Packs the specified list of directories into an archive file.\n" +
+                              "\n" +
+                              "  output       The name of the generated archive file.\n" +
+                              "  dir1 [[dir2] [dir3]...]\n" +
+                              "               The directories to include as the root nodes of the\n" +
+                              "               generated archive file.\n" +
+                              "\n" +
+                              "UVARCHIVE -list input\n" +
+                              "  Indicates that the contents of the specified archive file\n" +
+                              "  should be written to the console.\n" +
+                              "\n" +
+                              "  input        The name of the archive file to examine.");
+                    Console.WriteLine();
                 }
-                ListContents(output);
+                else
+                {
+                    Console.WriteLine(e.Error);
+                }
                 return;
             }
 
+            switch (parameters.Command)
+            {
+                case ArchiveGenerationCommand.Pack:
+                    PackArchive(parameters);
+                    break;
+
+                case ArchiveGenerationCommand.List:
+                    ListArchive(parameters);
+                    break;
+            }
+        }
+
+        private static void PackArchive(ArchiveGenerationParameters parameters)
+        {
+            var dirs   = parameters.PackDirectories;
+            var output = parameters.PackOutput; 
+            
             var invalidInputs = dirs.Where(x => !Directory.Exists(x));
             if (invalidInputs.Any())
             {
@@ -60,8 +88,10 @@ namespace UvArchive
             Console.WriteLine("done.");
         }
 
-        private static void ListContents(String filename)
+        private static void ListArchive(ArchiveGenerationParameters parameters)
         {
+            var filename = parameters.ListInput;
+
             if (!Path.HasExtension(filename))
             {
                 filename = Path.ChangeExtension(filename, "uvarc");
@@ -72,7 +102,7 @@ namespace UvArchive
                 var archive = ContentArchive.FromArchiveFile(() => File.OpenRead(filename));
                 foreach (var node in archive)
                 {
-                    ListContents(node, 0);
+                    ListArchive(node, 0);
                 }
             }
             catch (FileNotFoundException)
@@ -85,34 +115,15 @@ namespace UvArchive
             }
         }
 
-        private static void ListContents(ContentArchiveNode node, Int32 indentation)
+        private static void ListArchive(ContentArchiveNode node, Int32 indentation)
         {
             var indent = new String(' ', indentation);
             Console.WriteLine(indent + node.Name);
 
             foreach (ContentArchiveNode child in node.Children)
             {
-                ListContents(child, indentation + 1);
+                ListArchive(child, indentation + 1);
             }
-        }
-
-        private static void WriteHelp()
-        {
-            Console.WriteLine("Generates Ultraviolet-compatible content archive files.");
-            Console.WriteLine();
-            Console.WriteLine("UVARCHIVE output dir1 [[dir2] [dir3]...]\n" +
-                              "\n" +
-                              "  output       The name of the generated archive file.\n" +
-                              "  dir1 [[dir2] [dir3]...]\n" +
-                              "               The directories to include as the root nodes of the\n" +
-                              "               generated archive file.\n" +
-                              "\n" +
-                              "UVARCHIVE input -list\n" +
-                              "\n" +
-                              "  input        The name of the archive file to examine.\n" +
-                              "  -list        Indicates that the contents of the specified\n" +
-                              "               archive file should be written to the console.");
-            Console.WriteLine();
         }
     }
 }
