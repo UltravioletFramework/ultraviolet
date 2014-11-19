@@ -644,7 +644,7 @@ namespace TwistedLogik.Ultraviolet
             suspended = true;
             if (uv != null && !uv.Disposed)
             {
-                uv.GetAudio().Suspend();
+                uv.Messages.Publish(UltravioletMessages.ApplicationSuspended, null);
             }
         }
 
@@ -660,7 +660,7 @@ namespace TwistedLogik.Ultraviolet
             }
             if (uv != null && !uv.Disposed)
             {
-                uv.GetAudio().Resume();
+                uv.Messages.Publish(UltravioletMessages.ApplicationResumed, null);
             }
         }
 

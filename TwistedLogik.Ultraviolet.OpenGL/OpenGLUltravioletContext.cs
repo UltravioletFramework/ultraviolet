@@ -82,6 +82,8 @@ namespace TwistedLogik.Ultraviolet.OpenGL
                 return;
             }
 
+            ProcessMessages();
+
             base.UpdateSuspended();
         }
 

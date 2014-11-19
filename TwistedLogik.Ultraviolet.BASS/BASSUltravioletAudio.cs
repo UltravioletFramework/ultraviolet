@@ -1,5 +1,6 @@
 ﻿using System;
 using TwistedLogik.Nucleus;
+using TwistedLogik.Nucleus.Messages;
 using TwistedLogik.Ultraviolet.BASS.Native;
 
 namespace TwistedLogik.Ultraviolet.BASS
@@ -7,7 +8,9 @@ namespace TwistedLogik.Ultraviolet.BASS
     /// <summary>
     /// Represents the BASS implementation of the Ultraviolet audio subsystem.
     /// </summary>
-    public sealed class BASSUltravioletAudio : UltravioletResource, IUltravioletAudio
+    public sealed class BASSUltravioletAudio : UltravioletResource,
+        IUltravioletAudio,
+        IMessageSubscriber<UltravioletMessageID>
     {
         /// <summary>
         /// Initializes a new instance of the BASSUltravioletAudio class.
@@ -20,6 +23,33 @@ namespace TwistedLogik.Ultraviolet.BASS
             var freq = 44100u;
             if (!BASSNative.Init(device, freq, 0, IntPtr.Zero, IntPtr.Zero))
                 throw new BASSException();
+
+            uv.Messages.Subscribe(this, UltravioletMessages.ApplicationSuspended);
+            uv.Messages.Subscribe(this, UltravioletMessages.ApplicationResumed);
+        }
+
+        /// <inheritdoc/>
+        void IMessageSubscriber<UltravioletMessageID>.ReceiveMessage(UltravioletMessageID type, MessageData data)
+        {
+            if (type == UltravioletMessages.ApplicationSuspended)
+            {
+                if (!suspended)
+                {
+                    awaitingResume = true;
+                    Suspend();
+                }
+                return;
+            }
+
+            if (type == UltravioletMessages.ApplicationResumed)
+            {
+                if (awaitingResume)
+                {
+                    awaitingResume = false;
+                    Resume();
+                }
+                return;
+            }
         }
 
         /// <summary>
@@ -42,6 +72,8 @@ namespace TwistedLogik.Ultraviolet.BASS
 
             if (!BASSNative.Pause())
                 throw new BASSException();
+
+            suspended = true;
         }
 
         /// <summary>
@@ -53,6 +85,8 @@ namespace TwistedLogik.Ultraviolet.BASS
 
             if (!BASSNative.Start())
                 throw new BASSException();
+
+            suspended = false;
         }
 
         /// <summary>
@@ -218,6 +252,11 @@ namespace TwistedLogik.Ultraviolet.BASS
             if (!BASSNative.Free())
                 throw new BASSException();
 
+            if (disposing && !Ultraviolet.Disposed)
+            {
+                Ultraviolet.Messages.Unsubscribe(this);
+            }
+
             base.Dispose(disposing);
         }
 
@@ -261,5 +300,9 @@ namespace TwistedLogik.Ultraviolet.BASS
         private Boolean audioMuted;
         private Boolean songsMuted;
         private Boolean soundEffectsMuted;
+
+        // State values.
+        private Boolean suspended;
+        private Boolean awaitingResume;
     }
 }
