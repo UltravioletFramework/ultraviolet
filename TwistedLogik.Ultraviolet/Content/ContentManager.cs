@@ -310,14 +310,20 @@ namespace TwistedLogik.Ultraviolet.Content
             Contract.Require(manifest, "manifest");
             Contract.EnsureNotDisposed(this, Disposed);
 
-            Object result;
-            foreach (var group in manifest)
-            {
-                foreach (var asset in group)
-                {
-                    LoadInternal(asset.AbsolutePath, asset.Type, false, true, delete, out result);
-                }
-            }
+            PreprocessInternal(new[] { manifest }, delete);
+        }
+
+        /// <summary>
+        /// Preprocesses the assets in the specified content manifests.
+        /// </summary>
+        /// <param name="manifests">A collection containing the content manifests to preprocess.</param>
+        /// <param name="delete">A value indicating whether to delete the original files after preprocessing them.</param>
+        public void Preprocess(IEnumerable<ContentManifest> manifests, Boolean delete = false)
+        {
+            Contract.Require(manifests, "manifests");
+            Contract.EnsureNotDisposed(this, Disposed);
+
+            PreprocessInternal(manifests, delete);
         }
 
         /// <summary>
@@ -350,6 +356,20 @@ namespace TwistedLogik.Ultraviolet.Content
             Contract.Ensure<ArgumentException>(asset.IsValid, "asset");
 
             return Preprocess<TOutput>(AssetID.GetAssetPath(asset), delete);
+        }
+
+        /// <summary>
+        /// Flushes the file deletion buffer.
+        /// </summary>
+        public void FlushDeletedFiles()
+        {
+            Contract.Ensure(batchDeletedFiles, UltravioletStrings.ContentManagerNotBatchingDeletes);
+
+            foreach (var file in filesPendingDeletion)
+            {
+                File.Delete(file);
+            }
+            filesPendingDeletion.Clear();
         }
 
         /// <summary>
@@ -462,6 +482,34 @@ namespace TwistedLogik.Ultraviolet.Content
         }
 
         /// <summary>
+        /// Gets or sets a value indicating whether the content manager should batch file deletions.
+        /// </summary>
+        /// <remarks>When this property is set to <c>true</c>, <see cref="ContentManager"/> will not delete files
+        /// immediately. Instead, it will buffer deletions until the batch is ended. This is useful when, for example,
+        /// preprocessing a large number of files which depend on the same raw resources; batching deletes ensures that
+        /// those raw resources remain on disk until all of the assets are preprocessed.</remarks>
+        public Boolean BatchDeletedFiles
+        {
+            get
+            {
+                Contract.EnsureNotDisposed(this, Disposed);
+
+                return batchDeletedFiles;
+            }
+            set
+            {
+                Contract.EnsureNotDisposed(this, Disposed);
+                Contract.EnsureNot(batchDeletedFilesGuarantee, UltravioletStrings.ContentManagerRequiresBatch);
+
+                if (batchDeletedFiles)
+                {
+                    FlushDeletedFiles();
+                }
+                batchDeletedFiles = value;
+            }
+        }
+
+        /// <summary>
         /// Releases resources associated with this object.
         /// </summary>
         /// <param name="disposing"><c>true</c> if the object is being disposed; <c>false</c> if the object is being finalized.</param>
@@ -570,7 +618,14 @@ namespace TwistedLogik.Ultraviolet.Content
                 var preprocessSucceeded = PreprocessInternal(asset, metadata, processor, intermediate, delete);
                 if (preprocessSucceeded && delete)
                 {
-                    File.Delete(metadata.AssetFilePath);
+                    if (batchDeletedFiles)
+                    {
+                        filesPendingDeletion.Add(metadata.AssetFilePath);
+                    }
+                    else
+                    {
+                        File.Delete(metadata.AssetFilePath);
+                    }
                 }
                 return preprocessSucceeded;
             }
@@ -992,6 +1047,40 @@ namespace TwistedLogik.Ultraviolet.Content
             }
         }
 
+        /// <summary>
+        /// Preprocesses the assets in the specified content manifests.
+        /// </summary>
+        /// <param name="manifests">A collection containing the content manifests to preprocess.</param>
+        /// <param name="delete">A value indicating whether to delete the original files after preprocessing them.</param>
+        private void PreprocessInternal(IEnumerable<ContentManifest> manifests, Boolean delete)
+        {
+            var batch = false;
+            if (!BatchDeletedFiles)
+            {
+                BatchDeletedFiles = true;
+                batch = true;
+            }
+            batchDeletedFilesGuarantee = true;
+
+            Object result;
+            foreach (var manifest in manifests)
+            {
+                foreach (var group in manifest)
+                {
+                    foreach (var asset in group)
+                    {
+                        LoadInternal(asset.AbsolutePath, asset.Type, false, true, delete, out result);
+                    }
+                }
+            }
+
+            if (batch)
+            {
+                batchDeletedFilesGuarantee = false;
+                BatchDeletedFiles = false;
+            }
+        }
+
         // Property values.
         private readonly String rootDirectory;
 
@@ -1003,6 +1092,11 @@ namespace TwistedLogik.Ultraviolet.Content
         // The file extensions associated with preprocessed binary data and asset metadata files.
         private const String PreprocessedFileExtension = ".uvc";
         private const String MetadataFileExtension = ".uvmeta";
+
+        // Files waiting to be deleted as part of a batch.
+        private readonly List<String> filesPendingDeletion = new List<String>();
+        private Boolean batchDeletedFiles;
+        private Boolean batchDeletedFilesGuarantee;
 
         // The supported screen density buckets.
         private static readonly IEnumerable<ScreenDensityBucket> ScreenDensityBuckets;

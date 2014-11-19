@@ -450,4 +450,14 @@
       <Variant>Attempted to seek past the beginning of the stream.</Variant>
     </en-US>
   </String>
+  <String Key="CONTENT_MANAGER_NOT_BATCHING_DELETES">
+    <en-US>
+      <Variant>The operation is not valid because the content manager is not currently batching deletes.</Variant>
+    </en-US>
+  </String>
+  <String Key="CONTENT_MANAGER_REQUIRES_BATCH">
+    <en-US>
+      <Variant>The operation is not valid because the content manager requires a deletion batch for an operation in progress.</Variant>
+    </en-US>
+  </String>
 </LocalizedStrings>
