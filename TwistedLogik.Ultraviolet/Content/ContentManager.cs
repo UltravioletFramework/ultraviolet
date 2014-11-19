@@ -748,8 +748,9 @@ namespace TwistedLogik.Ultraviolet.Content
         /// <param name="root">The root directory.</param>
         /// <param name="asset">The asset name.</param>
         /// <param name="extension">The required file extension, if any; otherwise, <c>null</c>.</param>
+        /// <param name="includePreprocessed">A value indicating whether to include preprocessed files when resolving asset paths.</param>
         /// <returns>The path of the specified asset relative to the specified root directory.</returns>
-        private String GetAssetPathFromDirectory(String root, String asset, ref String extension)
+        private String GetAssetPathFromDirectory(String root, String asset, ref String extension, Boolean includePreprocessed = true)
         {
             var assetPath = Path.GetDirectoryName(Path.Combine(root, asset));
             if (!fileSystemService.DirectoryExists(assetPath))
@@ -758,13 +759,19 @@ namespace TwistedLogik.Ultraviolet.Content
             }
 
             var assetNoExtension = Path.GetFileNameWithoutExtension(asset);
-            var assetMatches = fileSystemService.ListFiles(assetPath, assetNoExtension + ".*");
+            var assetMatches = 
+                from file in fileSystemService.ListFiles(assetPath, assetNoExtension + ".*")
+                let fileExtension = Path.GetExtension(file)
+                where 
+                    includePreprocessed || !fileExtension.Equals(PreprocessedFileExtension, StringComparison.InvariantCultureIgnoreCase)
+                select file;
 
             var filteredExtension = extension;
             var filteredMatches = 
                 from assetMatch in assetMatches
+                let assetExtension = Path.GetExtension(assetPath)
                 where
-                    filteredExtension == null || Path.GetExtension(assetMatch).Equals(filteredExtension, StringComparison.InvariantCultureIgnoreCase)
+                    filteredExtension == null || assetExtension.Equals(filteredExtension, StringComparison.InvariantCultureIgnoreCase)
                 select assetMatch;
 
             if (filteredMatches.Count() > 1)
@@ -787,15 +794,16 @@ namespace TwistedLogik.Ultraviolet.Content
         /// <param name="asset">The asset name.</param>
         /// <param name="extension">The extension for which to search, or <c>null</c> to search for any extension.</param>
         /// <param name="directory">The directory in which the asset was found.</param>
+        /// <param name="includePreprocessed">A value indicating whether to include preprocessed files when resolving asset paths.</param>
         /// <returns>The path of the specified asset.</returns>
-        private String GetAssetPath(String asset, String extension, out String directory)
+        private String GetAssetPath(String asset, String extension, out String directory, Boolean includePreprocessed = true)
         {
-            var path = GetAssetPathFromDirectory(RootDirectory, asset, ref extension);
+            var path = GetAssetPathFromDirectory(RootDirectory, asset, ref extension, includePreprocessed);
             directory = RootDirectory;
 
             foreach (var dir in OverrideDirectories)
             {
-                var dirPath = GetAssetPathFromDirectory(dir, asset, ref extension);
+                var dirPath = GetAssetPathFromDirectory(dir, asset, ref extension, includePreprocessed);
                 if (dirPath != null)
                 {
                     directory = dir;
@@ -848,17 +856,20 @@ namespace TwistedLogik.Ultraviolet.Content
             }
 
             // Find the highest-ranking preprocessed file, if one exists.
-            var assetPathPreprocessed = GetAssetPath(asset, PreprocessedFileExtension, out assetDirectory);
-            if (assetPathPreprocessed != null)
-                return CreateMetadataFromFile(asset, assetPathPreprocessed, assetDirectory);
+            if (includePreprocessedFiles)
+            {
+                var assetPathPreprocessed = GetAssetPath(asset, PreprocessedFileExtension, out assetDirectory);
+                if (assetPathPreprocessed != null)
+                    return CreateMetadataFromFile(asset, assetPathPreprocessed, assetDirectory);
+            }
 
             // Find the highest-ranking metadata file, if one exists.
-            var assetPathMetadata = GetAssetPath(asset, MetadataFileExtension, out assetDirectory);
+            var assetPathMetadata = GetAssetPath(asset, MetadataFileExtension, out assetDirectory, false);
             if (assetPathMetadata != null)
                 return CreateMetadataFromFile(asset, assetPathMetadata, assetDirectory);
 
             // Find the highest-ranking raw file.
-            var assetPathRaw = GetAssetPath(asset, null, out assetDirectory);
+            var assetPathRaw = GetAssetPath(asset, null, out assetDirectory, false);
             if (assetPathRaw != null)
                 return CreateMetadataFromFile(asset, assetPathRaw, assetDirectory);
 
