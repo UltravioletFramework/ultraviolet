@@ -18,14 +18,12 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Displays the software keyboard, if one is available.
         /// </summary>
-        /// <returns><c>true</c> if the software keyboard was displayed; otherwise, <c>false</c>.</returns>
-        Boolean ShowSoftwareKeyboard();
+        void ShowSoftwareKeyboard();
 
         /// <summary>
         /// Hides the software keyboard.
         /// </summary>
-        /// <returns><c>true</c> if the software keyboard was hidden; otherwise, <c>false</c>.</returns>
-        Boolean HideSoftwareKeyboard();
+        void HideSoftwareKeyboard();
 
         /// <summary>
         /// Gets a value indicating whether the current platform supports keyboard input.

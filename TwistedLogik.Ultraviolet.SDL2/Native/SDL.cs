@@ -309,5 +309,11 @@ namespace TwistedLogik.Ultraviolet.SDL2.Native
 
         [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GetTouchFinger")]
         public static extern SDL_Finger* GetTouchFinger(Int64 touchID, Int32 index);
+
+        [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_StartTextInput")]
+        public static extern void StartTextInput();
+
+        [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_StopTextInput")]
+        public static extern void StopTextInput();
     }
 }

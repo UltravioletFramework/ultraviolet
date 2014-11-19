@@ -56,7 +56,6 @@
   <ItemGroup>
     <Compile Include="Graphics\DesktopSurfaceSaver.cs" />
     <Compile Include="Graphics\DesktopSurfaceSource.cs" />
-    <Compile Include="Platform\DesktopSoftwareInputService.cs" />
     <Compile Include="Platform\DesktopIconLoader.cs" />
     <Compile Include="Platform\DesktopScreenDensityService.cs" />
     <Compile Include="Platform\DesktopScreenOrientationService.cs" />

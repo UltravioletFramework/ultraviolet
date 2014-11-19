@@ -23,7 +23,6 @@ namespace TwistedLogik.Ultraviolet.Android
             factory.SetFactoryMethod<FileSystemServiceFactory>(() => new FileSystemService());
             factory.SetFactoryMethod<ScreenRotationServiceFactory>((display) => new AndroidScreenRotationService(display));
             factory.SetFactoryMethod<ScreenDensityServiceFactory>((display) => new AndroidScreenDensityService(display));
-            factory.SetFactoryMethod<SoftwareInputServiceFactory>(() => new AndroidSoftwareInputService());
         }
     }
 }

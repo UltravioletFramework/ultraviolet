@@ -365,8 +365,6 @@ namespace TwistedLogik.Ultraviolet
             base.OnCreate(savedInstanceState);
 
             AndroidScreenDensityService.Activity = this;
-            AndroidSoftwareInputService.Activity = this;
-            AndroidSoftwareInputService.View = FindViewById(global::Android.Resource.Id.Content);
         }
 
         /// <inheritdoc/>

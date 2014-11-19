@@ -23,7 +23,6 @@ namespace TwistedLogik.Ultraviolet.Desktop
             factory.SetFactoryMethod<FileSystemServiceFactory>(() => new FileSystemService());
             factory.SetFactoryMethod<ScreenRotationServiceFactory>((display) => new DesktopScreenOrientationService(display));
             factory.SetFactoryMethod<ScreenDensityServiceFactory>((display) => new DesktopScreenDensityService(display));
-            factory.SetFactoryMethod<SoftwareInputServiceFactory>(() => new DesktopSoftwareInputService());
         }
     }
 }
