@@ -73,12 +73,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidNativeLibrary Include="lib\armeabi-v7a\libSDL2.so" />
-    <AndroidNativeLibrary Include="lib\armeabi-v7a\libmain.so" />
-    <AndroidNativeLibrary Include="lib\armeabi\libSDL2.so" />
-    <AndroidNativeLibrary Include="lib\armeabi\libmain.so" />
-    <AndroidNativeLibrary Include="lib\x86\libSDL2.so" />
-    <AndroidNativeLibrary Include="lib\x86\libmain.so" />
     <AndroidNativeLibrary Include="lib\armeabi-v7a\libbass.so" />
     <AndroidNativeLibrary Include="lib\armeabi-v7a\libbass_fx.so" />
     <AndroidNativeLibrary Include="lib\armeabi\libbass.so" />
@@ -86,6 +80,24 @@
     <AndroidNativeLibrary Include="lib\x86\libbass.so" />
     <AndroidNativeLibrary Include="lib\x86\libbass_fx.so" />
     <EmbeddedResource Include="Content.uvarc" />
+    <AndroidNativeLibrary Include="..\Dependencies\SDL2\Android\armeabi-v7a\libSDL2.so">
+      <Link>lib\armeabi-v7a\libSDL2.so</Link>
+    </AndroidNativeLibrary>
+    <AndroidNativeLibrary Include="..\Dependencies\SDL2\Android\armeabi\libSDL2.so">
+      <Link>lib\armeabi\libSDL2.so</Link>
+    </AndroidNativeLibrary>
+    <AndroidNativeLibrary Include="..\Dependencies\SDL2\Android\x86\libSDL2.so">
+      <Link>lib\x86\libSDL2.so</Link>
+    </AndroidNativeLibrary>
+    <AndroidNativeLibrary Include="..\Dependencies\SDL2\Android\armeabi-v7a\libSDL2main.so">
+      <Link>lib\armeabi-v7a\libSDL2main.so</Link>
+    </AndroidNativeLibrary>
+    <AndroidNativeLibrary Include="..\Dependencies\SDL2\Android\armeabi\libSDL2main.so">
+      <Link>lib\armeabi\libSDL2main.so</Link>
+    </AndroidNativeLibrary>
+    <AndroidNativeLibrary Include="..\Dependencies\SDL2\Android\x86\libSDL2main.so">
+      <Link>lib\x86\libSDL2main.so</Link>
+    </AndroidNativeLibrary>
     <None Include="Resources\AboutResources.txt" />
   </ItemGroup>
   <ItemGroup>
@@ -98,6 +110,12 @@
     <AndroidResource Include="Resources\drawable\Icon.png" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="..\UltravioletGame\Content\Fonts\SegoeUI-xhdpi.xml">
+      <Link>Content\Fonts\SegoeUI-xhdpi.xml</Link>
+    </Content>
+    <Content Include="..\UltravioletGame\Content\Fonts\SegoeUITexture-xhdpi.png">
+      <Link>Content\Fonts\SegoeUITexture-xhdpi.png</Link>
+    </Content>
     <Content Include="..\UltravioletGame\README-SDL.txt">
       <Link>README-SDL.txt</Link>
     </Content>
@@ -136,12 +154,12 @@
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" ProjectLinkReference="f6c64886-59bf-4dfd-af10-53c1700ee20d" />
+      <UserProperties ProjectLinkReference="f6c64886-59bf-4dfd-af10-53c1700ee20d" ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" />
     </VisualStudio>
   </ProjectExtensions>
   <PropertyGroup>
-    <PostBuildEvent>cd $(ProjectDir)
-..\Binaries\AnyCPU\$(ConfigurationName)\uvarchive.exe -pack Content ..\UltravioletGame\Content</PostBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
      Other similar extension points exist, see Microsoft.Common.targets.
