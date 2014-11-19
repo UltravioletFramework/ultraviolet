@@ -24,9 +24,12 @@ namespace TwistedLogik.Ultraviolet
         IUltravioletHost,
         IDisposable
     {
+        /// <summary>
+        /// Contains native methods used by the <see cref="UltravioletActivity"/> class.
+        /// </summary>
         private static class Native
         {
-            [DllImport("main", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_UV_SetMainProc")]
+            [DllImport("SDL2main", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_UV_SetMainProc")]
             public static extern void UVSetMainProc(IntPtr proc);
         }
         
