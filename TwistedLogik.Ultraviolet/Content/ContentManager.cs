@@ -706,7 +706,7 @@ namespace TwistedLogik.Ultraviolet.Content
             if (!processor.SupportsPreprocessing)
                 return false;
 
-            using (var stream = File.OpenWrite(Path.ChangeExtension(metadata.AssetFilePath, PreprocessedFileExtension)))
+            using (var stream = File.Open(Path.ChangeExtension(metadata.AssetFilePath, PreprocessedFileExtension), FileMode.Create))
             {
                 using (var writer = new BinaryWriter(stream))
                 {
