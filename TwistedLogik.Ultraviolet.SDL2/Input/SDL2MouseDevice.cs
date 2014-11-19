@@ -30,8 +30,6 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
         /// <param name="data">The data for the message that was received.</param>
         void IMessageSubscriber<UltravioletMessageID>.ReceiveMessage(UltravioletMessageID type, MessageData data)
         {
-            const UInt32 SDL_TOUCH_MOUSEID = unchecked((UInt32)(-1));
-
             if (type == SDL2UltravioletMessages.SDLEvent)
             {
                 var evt = ((SDL2EventMessageData)data).Event;
@@ -39,9 +37,6 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
                 {
                     case SDL_EventType.MOUSEMOTION:
                         {
-                            if (evt.motion.which == SDL_TOUCH_MOUSEID)
-                                return;
-
                             var window = Ultraviolet.GetPlatform().Windows.GetByID((int)evt.motion.windowID);
                             OnMoved(window, evt.motion.x, evt.motion.y, evt.motion.xrel, evt.motion.yrel);
                         }
@@ -49,9 +44,6 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
 
                     case SDL_EventType.MOUSEBUTTONDOWN:
                         {
-                            if (evt.button.which == SDL_TOUCH_MOUSEID)
-                                return;
-
                             var window = Ultraviolet.GetPlatform().Windows.GetByID((int)evt.button.windowID);
                             var button = GetUltravioletButton(evt.button.button);
                             OnButtonPressed(window, button);
@@ -60,9 +52,6 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
 
                     case SDL_EventType.MOUSEBUTTONUP:
                         {
-                            if (evt.button.which == SDL_TOUCH_MOUSEID)
-                                return;
-
                             var window = Ultraviolet.GetPlatform().Windows.GetByID((int)evt.button.windowID);
                             var button = GetUltravioletButton(evt.button.button);
                             OnButtonReleased(window, button);
@@ -83,9 +72,6 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
 
                     case SDL_EventType.MOUSEWHEEL:
                         {
-                            if (evt.wheel.which == SDL_TOUCH_MOUSEID)
-                                return;
-
                             var window = Ultraviolet.GetPlatform().Windows.GetByID((int)evt.wheel.windowID);
                             pendingWheelDeltaX = evt.wheel.x;
                             pendingWheelDeltaY = evt.wheel.y;
