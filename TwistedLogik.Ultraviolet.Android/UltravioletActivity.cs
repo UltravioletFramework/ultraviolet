@@ -9,8 +9,8 @@ using TwistedLogik.Nucleus;
 using TwistedLogik.Nucleus.Messages;
 using TwistedLogik.Ultraviolet.Android.Platform;
 using TwistedLogik.Ultraviolet.Content;
-using TwistedLogik.Ultraviolet.Platform;
 using TwistedLogik.Ultraviolet.Messages;
+using TwistedLogik.Ultraviolet.Platform;
 
 namespace TwistedLogik.Ultraviolet
 {
@@ -72,7 +72,7 @@ namespace TwistedLogik.Ultraviolet
 
             OnInitialized();
 
-            EnsureFileSystemSourceExists();
+            WarnIfFileSystemSourceIsMissing();
 
             LoadSettings();
 
@@ -665,13 +665,13 @@ namespace TwistedLogik.Ultraviolet
         }
 
         /// <summary>
-        /// Throws an exception if no file system source has been set.
+        /// Writes a warning to the debug output if no file system source has been specified.
         /// </summary>
-        private void EnsureFileSystemSourceExists()
+        private void WarnIfFileSystemSourceIsMissing()
         {
             if (FileSystemService.Source == null)
             {
-                throw new MissingFileSystemSourceException();
+                System.Diagnostics.Debug.WriteLine("WARNING: No file system source has been specified.");
             }
         }
 
