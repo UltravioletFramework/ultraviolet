@@ -14,14 +14,8 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics.Graphics2D
     [ContentProcessor]
     public sealed class OpenGLSpriteFontTextureProcessor : ContentProcessor<SDL_Surface, SpriteFont>
     {
-        /// <summary>
-        /// Exports an asset to a preprocessed binary stream.
-        /// </summary>
-        /// <param name="manager">The content manager with which the asset is being processed.</param>
-        /// <param name="metadata">The asset's metadata.</param>
-        /// <param name="writer">A writer on the stream to which to export the asset.</param>
-        /// <param name="input">The asset to export to the stream.</param>
-        public override void ExportPreprocessed(ContentManager manager, IContentProcessorMetadata metadata, BinaryWriter writer, SDL_Surface input)
+        /// <inheritdoc/>
+        public override void ExportPreprocessed(ContentManager manager, IContentProcessorMetadata metadata, BinaryWriter writer, SDL_Surface input, Boolean delete)
         {
             var imgData = File.ReadAllBytes(metadata.AssetFilePath);
 
@@ -44,13 +38,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics.Graphics2D
             }
         }
 
-        /// <summary>
-        /// Imports an asset from the specified preprocessed binary stream.
-        /// </summary>
-        /// <param name="manager">The content manager with which the asset is being processed.</param>
-        /// <param name="metadata">The asset's metadata.</param>
-        /// <param name="reader">A reader on the stream that contains the asset to import.</param>
-        /// <returns>The asset that was imported from the stream.</returns>
+        /// <inheritdoc/>
         public override SpriteFont ImportPreprocessed(ContentManager manager, IContentProcessorMetadata metadata, BinaryReader reader)
         {
             var imgDataExtension = reader.ReadString();
@@ -81,13 +69,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics.Graphics2D
             return font;
         }
 
-        /// <summary>
-        /// Processes the specified data structure into a game asset.
-        /// </summary>
-        /// <param name="manager">The content manager with which the asset is being processed.</param>
-        /// <param name="metadata">The asset's metadata.</param>
-        /// <param name="input">The input data structure to process.</param>
-        /// <returns>The game asset that was created.</returns>
+        /// <inheritdoc/>
         public override SpriteFont Process(ContentManager manager, IContentProcessorMetadata metadata, SDL_Surface input)
         {
             var positions = OpenGLSpriteFontHelper.IdentifyGlyphs(input);
@@ -96,9 +78,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics.Graphics2D
             return new SpriteFont(manager.Ultraviolet, face);
         }
 
-        /// <summary>
-        /// Gets a value indicating whether the processor supports preprocessing assets.
-        /// </summary>
+        /// <inheritdoc/>
         public override Boolean SupportsPreprocessing
         {
             get { return true; }

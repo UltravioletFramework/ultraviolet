@@ -14,14 +14,8 @@ namespace TwistedLogik.Ultraviolet
     [ContentProcessor]
     internal sealed class CurveProcessor : ContentProcessor<XDocument, Curve>
     {
-        /// <summary>
-        /// Exports an asset to a preprocessed binary stream.
-        /// </summary>
-        /// <param name="manager">The <see cref="ContentManager"/> with which the asset is being processed.</param>
-        /// <param name="metadata">The asset's metadata.</param>
-        /// <param name="writer">A writer on the stream to which to export the asset.</param>
-        /// <param name="input">The asset to export to the stream.</param>
-        public override void ExportPreprocessed(ContentManager manager, IContentProcessorMetadata metadata, BinaryWriter writer, XDocument input)
+        /// <inheritdoc/>
+        public override void ExportPreprocessed(ContentManager manager, IContentProcessorMetadata metadata, BinaryWriter writer, XDocument input, Boolean delete)
         {
             var curve = Process(manager, metadata, input);
 
@@ -39,13 +33,7 @@ namespace TwistedLogik.Ultraviolet
             }
         }
 
-        /// <summary>
-        /// Imports an asset from the specified preprocessed binary stream.
-        /// </summary>
-        /// <param name="manager">The <see cref="ContentManager"/> with which the asset is being processed.</param>
-        /// <param name="metadata">The asset's metadata.</param>
-        /// <param name="reader">A reader on the stream that contains the asset to import.</param>
-        /// <returns>The asset that was imported from the stream.</returns>
+        /// <inheritdoc/>
         public override Curve ImportPreprocessed(ContentManager manager, IContentProcessorMetadata metadata, BinaryReader reader)
         {
             var preLoop  = (CurveLoopType)reader.ReadInt32();
@@ -66,13 +54,7 @@ namespace TwistedLogik.Ultraviolet
             return new Curve(preLoop, postLoop, keyCollection);
         }
 
-        /// <summary>
-        /// Processes the specified data structure into a game asset.
-        /// </summary>
-        /// <param name="manager">The <see cref="ContentManager"/> with which the asset is being processed.</param>
-        /// <param name="metadata">The asset's metadata.</param>
-        /// <param name="input">The input data structure to process.</param>
-        /// <returns>The game asset that was created.</returns>
+        /// <inheritdoc/>
         public override Curve Process(ContentManager manager, IContentProcessorMetadata metadata, XDocument input)
         {
             var asset = input.Root.Element("Asset");
@@ -103,9 +85,7 @@ namespace TwistedLogik.Ultraviolet
             return new Curve(preLoop, postLoop, curveKeyCollection);
         }
 
-        /// <summary>
-        /// Gets a value indicating whether the processor supports preprocessing assets.
-        /// </summary>
+        /// <inheritdoc/>
         public override Boolean SupportsPreprocessing
         {
             get { return true; }

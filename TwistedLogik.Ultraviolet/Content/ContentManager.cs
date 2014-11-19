@@ -567,7 +567,7 @@ namespace TwistedLogik.Ultraviolet.Content
                 var intermediateObjectType = default(Type);
                 var intermediate = Import<Object>(asset, out intermediateObjectType);
                 var processor = FindContentProcessor(asset, intermediateObjectType, type);
-                var preprocessSucceeded = PreprocessInternal(asset, metadata, processor, intermediate);
+                var preprocessSucceeded = PreprocessInternal(asset, metadata, processor, intermediate, delete);
                 if (preprocessSucceeded && delete)
                 {
                     File.Delete(metadata.AssetFilePath);
@@ -700,8 +700,9 @@ namespace TwistedLogik.Ultraviolet.Content
         /// <param name="metadata">The asset metadata.</param>
         /// <param name="processor">The content processor for the asset.</param>
         /// <param name="intermediate">The intermediate form of the asset to preprocess.</param>
+        /// <param name="delete">A value indicating whether the original file will be deleted after preprocessing is complete.</param>
         /// <returns><c>true</c> if the asset was preprocessed; otherwise, <c>false</c>.</returns>
-        private Boolean PreprocessInternal(String asset, AssetMetadata metadata, IContentProcessor processor, Object intermediate)
+        private Boolean PreprocessInternal(String asset, AssetMetadata metadata, IContentProcessor processor, Object intermediate, Boolean delete)
         {
             if (!processor.SupportsPreprocessing)
                 return false;
@@ -716,7 +717,7 @@ namespace TwistedLogik.Ultraviolet.Content
                     writer.Write("UVC0");
                     writer.Write(processorTypeName);
 
-                    processor.ExportPreprocessed(this, metadata, writer, intermediate);
+                    processor.ExportPreprocessed(this, metadata, writer, intermediate, delete);
                     return true;
                 }
             }
@@ -769,7 +770,7 @@ namespace TwistedLogik.Ultraviolet.Content
             var filteredExtension = extension;
             var filteredMatches = 
                 from assetMatch in assetMatches
-                let assetExtension = Path.GetExtension(assetPath)
+                let assetExtension = Path.GetExtension(assetMatch)
                 where
                     filteredExtension == null || assetExtension.Equals(filteredExtension, StringComparison.InvariantCultureIgnoreCase)
                 select assetMatch;

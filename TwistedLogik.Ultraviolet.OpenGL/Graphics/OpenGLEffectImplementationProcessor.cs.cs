@@ -16,14 +16,8 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
     [ContentProcessor]
     public sealed class OpenGLEffectImplementationProcessor : ContentProcessor<XDocument, EffectImplementation>
     {
-        /// <summary>
-        /// Exports an asset to a preprocessed binary stream.
-        /// </summary>
-        /// <param name="manager">The content manager with which the asset is being processed.</param>
-        /// <param name="metadata">The asset's metadata.</param>
-        /// <param name="writer">A writer on the stream to which to export the asset.</param>
-        /// <param name="input">The asset to export to the stream.</param>
-        public override void ExportPreprocessed(ContentManager manager, IContentProcessorMetadata metadata, BinaryWriter writer, XDocument input)
+        /// <inheritdoc/>
+        public override void ExportPreprocessed(ContentManager manager, IContentProcessorMetadata metadata, BinaryWriter writer, XDocument input, Boolean delete)
         {
             var techniqueElements = input.Root.Elements("Technique");
             if (!techniqueElements.Any())
@@ -62,13 +56,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
             }
         }
 
-        /// <summary>
-        /// Imports an asset from the specified preprocessed binary stream.
-        /// </summary>
-        /// <param name="manager">The content manager with which the asset is being processed.</param>
-        /// <param name="metadata">The asset's metadata.</param>
-        /// <param name="reader">A reader on the stream that contains the asset to import.</param>
-        /// <returns>The asset that was imported from the stream.</returns>
+        /// <inheritdoc/>
         public override EffectImplementation ImportPreprocessed(ContentManager manager, IContentProcessorMetadata metadata, BinaryReader reader)
         {
             var techniques = new List<OpenGLEffectTechnique>();
@@ -110,13 +98,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
             return new OpenGLEffectImplementation(manager.Ultraviolet, techniques);
         }
 
-        /// <summary>
-        /// Processes the specified data structure into a game asset.
-        /// </summary>
-        /// <param name="manager">The content manager with which the asset is being processed.</param>
-        /// <param name="metadata">The asset's metadata.</param>
-        /// <param name="input">The input data structure to process.</param>
-        /// <returns>The game asset that was created.</returns>
+        /// <inheritdoc/>
         public override EffectImplementation Process(ContentManager manager, IContentProcessorMetadata metadata, XDocument input)
         {
             var techniques = new List<OpenGLEffectTechnique>();
@@ -158,9 +140,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
             return new OpenGLEffectImplementation(manager.Ultraviolet, techniques);
         }
 
-        /// <summary>
-        /// Gets a value indicating whether the processor supports preprocessing assets.
-        /// </summary>
+        /// <inheritdoc/>
         public override Boolean SupportsPreprocessing
         {
             get { return true; }

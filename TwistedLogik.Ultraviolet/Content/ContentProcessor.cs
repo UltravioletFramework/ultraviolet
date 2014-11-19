@@ -12,78 +12,40 @@ namespace TwistedLogik.Ultraviolet.Content
     /// <typeparam name="Output">The type of content asset which is produced by the content processor.</typeparam>
     public abstract class ContentProcessor<Input, Output> : IContentProcessor
     {
-        /// <summary>
-        /// Exports an asset to a preprocessed binary stream.
-        /// </summary>
-        /// <param name="manager">The <see cref="ContentManager"/> with which the asset is being processed.</param>
-        /// <param name="metadata">The asset's metadata.</param>
-        /// <param name="writer">A writer on the stream to which to export the asset.</param>
-        /// <param name="input">The asset to export to the stream.</param>
-        void IContentProcessor.ExportPreprocessed(ContentManager manager, IContentProcessorMetadata metadata, BinaryWriter writer, Object input)
+        /// <inheritdoc/>
+        void IContentProcessor.ExportPreprocessed(ContentManager manager, IContentProcessorMetadata metadata, BinaryWriter writer, Object input, Boolean delete)
         {
-            ExportPreprocessed(manager, metadata, writer, (Input)input);
+            ExportPreprocessed(manager, metadata, writer, (Input)input, delete);
         }
 
-        /// <summary>
-        /// Imports an asset from the specified preprocessed binary stream.
-        /// </summary>
-        /// <param name="manager">The <see cref="ContentManager"/> with which the asset is being processed.</param>
-        /// <param name="metadata">The asset's metadata.</param>
-        /// <param name="reader">A reader on the stream that contains the asset to import.</param>
-        /// <returns>The asset that was imported from the stream.</returns>
+        /// <inheritdoc/>
         Object IContentProcessor.ImportPreprocessed(ContentManager manager, IContentProcessorMetadata metadata, BinaryReader reader)
         {
             return ImportPreprocessed(manager, metadata, reader);
         }
 
-        /// <summary>
-        /// Processes the specified data structure into a game asset.
-        /// </summary>
-        /// <param name="manager">The <see cref="ContentManager"/> with which the asset is being processed.</param>
-        /// <param name="metadata">The asset's metadata.</param>
-        /// <param name="input">The input data structure to process.</param>
-        /// <returns>The game asset that was created.</returns>
+        /// <inheritdoc/>
         Object IContentProcessor.Process(ContentManager manager, IContentProcessorMetadata metadata, Object input)
         {
             return Process(manager, metadata, (Input)input);
         }
 
-        /// <summary>
-        /// Exports an asset to a preprocessed binary stream.
-        /// </summary>
-        /// <param name="manager">The <see cref="ContentManager"/> with which the asset is being processed.</param>
-        /// <param name="metadata">The asset's metadata.</param>
-        /// <param name="writer">A writer on the stream to which to export the asset.</param>
-        /// <param name="obj">The asset to export to the stream.</param>
-        public virtual void ExportPreprocessed(ContentManager manager, IContentProcessorMetadata metadata, BinaryWriter writer, Input obj)
+        /// <inheritdoc/>
+        public virtual void ExportPreprocessed(ContentManager manager, IContentProcessorMetadata metadata, BinaryWriter writer, Input obj, Boolean delete)
         {
             throw new NotSupportedException();
         }
 
-        /// <summary>
-        /// Imports an asset from the specified preprocessed binary stream.
-        /// </summary>
-        /// <param name="manager">The <see cref="ContentManager"/> with which the asset is being processed.</param>
-        /// <param name="metadata">The asset's metadata.</param>
-        /// <param name="reader">A reader on the stream that contains the asset to import.</param>
-        /// <returns>The asset that was imported from the stream.</returns>
+        /// <inheritdoc/>
         public virtual Output ImportPreprocessed(ContentManager manager, IContentProcessorMetadata metadata, BinaryReader reader)
         {
             throw new NotSupportedException();
         }
 
-        /// <summary>
-        /// Processes the specified data structure into a game asset.
-        /// </summary>
-        /// <param name="manager">The <see cref="ContentManager"/> with which the asset is being processed.</param>
-        /// <param name="metadata">The asset's metadata.</param>
-        /// <param name="input">The input data structure to process.</param>
-        /// <returns>The game asset that was created.</returns>
+        /// <inheritdoc/>
         public abstract Output Process(ContentManager manager, IContentProcessorMetadata metadata, Input input);
 
-        /// <summary>
-        /// Gets a value indicating whether the processor supports preprocessing assets.
-        /// </summary>
+        /// <inheritdoc/>
         public virtual Boolean SupportsPreprocessing
         {
             get { return false; } 

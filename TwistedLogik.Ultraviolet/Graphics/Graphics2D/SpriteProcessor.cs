@@ -12,14 +12,8 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
     [ContentProcessor]
     public sealed class SpriteProcessor : ContentProcessor<SpriteDescription, Sprite>
     {
-        /// <summary>
-        /// Exports an asset to a preprocessed binary stream.
-        /// </summary>
-        /// <param name="manager">The <see cref="ContentManager"/> with which the asset is being processed.</param>
-        /// <param name="metadata">The asset's metadata.</param>
-        /// <param name="writer">A writer on the stream to which to export the asset.</param>
-        /// <param name="input">The asset to export to the stream.</param>
-        public override void ExportPreprocessed(ContentManager manager, IContentProcessorMetadata metadata, BinaryWriter writer, SpriteDescription input)
+        /// <inheritdoc/>
+        public override void ExportPreprocessed(ContentManager manager, IContentProcessorMetadata metadata, BinaryWriter writer, SpriteDescription input, Boolean delete)
         {
             Contract.Require(writer, "writer");
             Contract.Require(input, "obj");
@@ -72,13 +66,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
             }
         }
 
-        /// <summary>
-        /// Imports an asset from the specified preprocessed binary stream.
-        /// </summary>
-        /// <param name="manager">The <see cref="ContentManager"/> with which the asset is being processed.</param>
-        /// <param name="metadata">The asset's metadata.</param>
-        /// <param name="reader">A reader on the stream that contains the asset to import.</param>
-        /// <returns>The asset that was imported from the stream.</returns>
+        /// <inheritdoc/>
         public override Sprite ImportPreprocessed(ContentManager manager, IContentProcessorMetadata metadata, BinaryReader reader)
         {
             var desc = new SpriteDescription();
@@ -135,13 +123,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
             return Process(manager, metadata, desc);
         }
 
-        /// <summary>
-        /// Processes the specified data structure into a game asset.
-        /// </summary>
-        /// <param name="manager">The <see cref="ContentManager"/> with which the asset is being processed.</param>
-        /// <param name="metadata">The asset's metadata.</param>
-        /// <param name="input">The input data structure to process.</param>
-        /// <returns>The game asset that was created.</returns>
+        /// <inheritdoc/>
         public override Sprite Process(ContentManager manager, IContentProcessorMetadata metadata, SpriteDescription input)
         {
             // Process sprite's animation data.
@@ -225,9 +207,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
             return new Sprite(animations);
         }
 
-        /// <summary>
-        /// Gets a value indicating whether the processor supports preprocessing assets.
-        /// </summary>
+        /// <inheritdoc/>
         public override Boolean SupportsPreprocessing
         {
             get { return true; }

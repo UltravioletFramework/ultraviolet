@@ -17,29 +17,17 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics.Graphics2D
     [ContentProcessor]
     public sealed class OpenGLSpriteFontProcessor : ContentProcessor<XDocument, SpriteFont>
     {
-        /// <summary>
-        /// Exports an asset to a preprocessed binary stream.
-        /// </summary>
-        /// <param name="manager">The content manager with which the asset is being processed.</param>
-        /// <param name="metadata">The asset's metadata.</param>
-        /// <param name="writer">A writer on the stream to which to export the asset.</param>
-        /// <param name="input">The asset to export to the stream.</param>
-        public override void ExportPreprocessed(ContentManager manager, IContentProcessorMetadata metadata, BinaryWriter writer, XDocument input)
+        /// <inheritdoc/>
+        public override void ExportPreprocessed(ContentManager manager, IContentProcessorMetadata metadata, BinaryWriter writer, XDocument input, Boolean delete)
         {
             ExportCharacterRegions(writer, input);
-            ExportPreprocessedFace(manager, metadata, writer, input, "Regular");
-            ExportPreprocessedFace(manager, metadata, writer, input, "Bold");
-            ExportPreprocessedFace(manager, metadata, writer, input, "Italic");
-            ExportPreprocessedFace(manager, metadata, writer, input, "BoldItalic");        
+            ExportPreprocessedFace(manager, metadata, writer, input, "Regular", delete);
+            ExportPreprocessedFace(manager, metadata, writer, input, "Bold", delete);
+            ExportPreprocessedFace(manager, metadata, writer, input, "Italic", delete);
+            ExportPreprocessedFace(manager, metadata, writer, input, "BoldItalic", delete);        
         }
 
-        /// <summary>
-        /// Imports an asset from the specified preprocessed binary stream.
-        /// </summary>
-        /// <param name="manager">The content manager with which the asset is being processed.</param>
-        /// <param name="metadata">The asset's metadata.</param>
-        /// <param name="reader">A reader on the stream that contains the asset to import.</param>
-        /// <returns>The asset that was imported from the stream.</returns>
+        /// <inheritdoc/>
         public override SpriteFont ImportPreprocessed(ContentManager manager, IContentProcessorMetadata metadata, BinaryReader reader)
         {
             var characterRegions = ImportPreprocessedCharacterRegions(reader);
@@ -50,13 +38,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics.Graphics2D
             return new SpriteFont(manager.Ultraviolet, faceRegular, faceBold, faceItalic, faceBoldItalic);
         }
 
-        /// <summary>
-        /// Processes the specified data structure into a game asset.
-        /// </summary>
-        /// <param name="manager">The content manager with which the asset is being processed.</param>
-        /// <param name="metadata">The asset's metadata.</param>
-        /// <param name="input">The input data structure to process.</param>
-        /// <returns>The game asset that was created.</returns>
+        /// <inheritdoc/>
         public override SpriteFont Process(ContentManager manager, IContentProcessorMetadata metadata, XDocument input)
         {
             var characterRegions = ProcessCharacterRegions(input);
@@ -67,9 +49,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics.Graphics2D
             return new SpriteFont(manager.Ultraviolet, faceRegular, faceBold, faceItalic, faceBoldItalic);
         }
 
-        /// <summary>
-        /// Gets a value indicating whether the processor supports preprocessing assets.
-        /// </summary>
+        /// <inheritdoc/>
         public override Boolean SupportsPreprocessing
         {
             get { return true; }
@@ -191,7 +171,8 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics.Graphics2D
         /// <param name="writer">A writer on the stream to which to export the asset.</param>
         /// <param name="input">The asset to export to the stream.</param>
         /// <param name="style">The style of the font face to export.</param>
-        private static void ExportPreprocessedFace(ContentManager manager, IContentProcessorMetadata metadata, BinaryWriter writer, XDocument input, String style)
+        /// <param name="delete">A value indicating whether the original file will be deleted after preprocessing is complete.</param>
+        private static void ExportPreprocessedFace(ContentManager manager, IContentProcessorMetadata metadata, BinaryWriter writer, XDocument input, String style, Boolean delete)
         {
             var element = input.Root.Elements("Face").Where(x => x.AttributeValueString("Style") == style).SingleOrDefault();
             if (element == null)
@@ -235,6 +216,8 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics.Graphics2D
                 writer.Write(kvp.Key.SecondCharacter);
                 writer.Write(kvp.Value);
             }
+
+            manager.Preprocess<Texture2D>(textureName, delete);
         }
 
         /// <summary>

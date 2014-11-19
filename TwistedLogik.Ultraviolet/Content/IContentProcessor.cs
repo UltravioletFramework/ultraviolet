@@ -15,7 +15,8 @@ namespace TwistedLogik.Ultraviolet.Content
         /// <param name="metadata">The asset's metadata.</param>
         /// <param name="writer">A writer on the stream to which to export the asset.</param>
         /// <param name="input">The asset to export to the stream.</param>
-        void ExportPreprocessed(ContentManager manager, IContentProcessorMetadata metadata, BinaryWriter writer, Object input);
+        /// <param name="delete">A value indicating whether the original file will be deleted after preprocessing is complete.</param>
+        void ExportPreprocessed(ContentManager manager, IContentProcessorMetadata metadata, BinaryWriter writer, Object input, Boolean delete);
 
         /// <summary>
         /// Imports an asset from the specified preprocessed binary stream.
