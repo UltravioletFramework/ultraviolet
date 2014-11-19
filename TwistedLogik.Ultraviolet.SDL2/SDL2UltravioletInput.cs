@@ -1,6 +1,7 @@
 ﻿using System;
 using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet.Input;
+using TwistedLogik.Ultraviolet.Platform;
 using TwistedLogik.Ultraviolet.SDL2.Input;
 
 namespace TwistedLogik.Ultraviolet.SDL2
@@ -17,6 +18,8 @@ namespace TwistedLogik.Ultraviolet.SDL2
         public SDL2UltravioletInput(UltravioletContext uv)
             : base(uv)
         {
+            this.softwareInputService = SoftwareInputService.Create();
+
             this.keyboard = new SDL2KeyboardDevice(uv);
             this.mouse = new SDL2MouseDevice(uv);
             this.gamePadInfo = new GamePadDeviceInfo(uv);
@@ -56,6 +59,22 @@ namespace TwistedLogik.Ultraviolet.SDL2
             this.touchInfo.Update(time);
 
             OnUpdating(time);
+        }
+
+        /// <inheritdoc/>
+        public Boolean ShowSoftwareKeyboard()
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
+
+            return softwareInputService.ShowSoftwareKeyboard();
+        }
+
+        /// <inheritdoc/>
+        public Boolean HideSoftwareKeyboard()
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
+
+            return softwareInputService.HideSoftwareKeyboard();
         }
 
         /// <inheritdoc/>
@@ -236,6 +255,9 @@ namespace TwistedLogik.Ultraviolet.SDL2
                 temp(device, playerIndex);
             }
         }
+
+        // Services.
+        private readonly SoftwareInputService softwareInputService;
 
         // Input devices.
         private KeyboardDevice keyboard;

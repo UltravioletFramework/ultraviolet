@@ -16,6 +16,18 @@ namespace TwistedLogik.Ultraviolet
     public interface IUltravioletInput : IUltravioletSubsystem
     {
         /// <summary>
+        /// Displays the software keyboard, if one is available.
+        /// </summary>
+        /// <returns><c>true</c> if the software keyboard was displayed; otherwise, <c>false</c>.</returns>
+        Boolean ShowSoftwareKeyboard();
+
+        /// <summary>
+        /// Hides the software keyboard.
+        /// </summary>
+        /// <returns><c>true</c> if the software keyboard was hidden; otherwise, <c>false</c>.</returns>
+        Boolean HideSoftwareKeyboard();
+
+        /// <summary>
         /// Gets a value indicating whether the current platform supports keyboard input.
         /// </summary>
         /// <returns><c>true</c> if the current platform supports keyboard input; otherwise, <c>false</c>.</returns>
