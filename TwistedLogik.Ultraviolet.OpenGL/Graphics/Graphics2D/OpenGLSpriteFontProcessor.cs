@@ -173,10 +173,13 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics.Graphics2D
             var characterRegions = ProcessCharacterRegions(input);
 
             writer.Write(characterRegions == null ? 0 : characterRegions.Count());
-            foreach (var characterRegion in characterRegions)
+            if (characterRegions != null)
             {
-                writer.Write(characterRegion.Start);
-                writer.Write(characterRegion.End);
+                foreach (var characterRegion in characterRegions)
+                {
+                    writer.Write(characterRegion.Start);
+                    writer.Write(characterRegion.End);
+                }
             }
         }
 
