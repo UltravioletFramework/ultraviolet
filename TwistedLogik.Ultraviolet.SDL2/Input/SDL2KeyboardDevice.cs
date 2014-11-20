@@ -69,8 +69,10 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
                     case SDL_EventType.TEXTINPUT:
                         {
                             var window = Ultraviolet.GetPlatform().Windows.GetByID((int)evt.text.windowID);
-                            ConvertTextInputToUtf16(evt.text.text);
-                            OnTextInput(window);
+                            if (ConvertTextInputToUtf16(evt.text.text))
+                            {
+                                OnTextInput(window);
+                            }
                         }
                         break;
                 }
@@ -287,10 +289,11 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
         /// Converts inputted text (which is in UTF-8 format) to UTF-16.
         /// </summary>
         /// <param name="input">A pointer to the inputted text.</param>
-        private unsafe void ConvertTextInputToUtf16(char* input)
+        /// <returns><c>true</c> if the input data was successfully converted; otherwise, <c>false</c>.</returns>
+        private unsafe Boolean ConvertTextInputToUtf16(byte* input)
         {
             // Count the number of bytes in the UTF-8 text.
-            var p = (byte*)input;
+            var p = input;
             var byteCount = 0;
             while (*p++ != 0)
             {
@@ -307,10 +310,11 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
                     out bytesUsed, out charsUsed, out completed);
                 if (!completed)
                 {
-                    throw new Exception("UTF-16 buffer is too small!");
+                    return false;
                 }
             }
             textInputLength = charsUsed;
+            return true;
         }
 
         // State values.
