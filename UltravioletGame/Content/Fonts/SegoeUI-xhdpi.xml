@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <SpriteFont>
   <Face Style="Regular">
-    <Texture>SegoeUITexture-xhdpi.png</Texture>
+    <Texture>SegoeUITexture-xhdpi</Texture>
     <TextureRegion>0 0 505 504</TextureRegion>
     <Kernings DefaultAdjustment="-14">
       <Kerning Pair=" !">-2</Kerning>
@@ -101,7 +101,7 @@
     </Kernings>
   </Face>
   <Face Style="Bold">
-    <Texture>SegoeUITexture-xhdpi.png</Texture>
+    <Texture>SegoeUITexture-xhdpi</Texture>
     <TextureRegion>0 504 511 504</TextureRegion>
     <Kernings DefaultAdjustment="-14">
       <Kerning Pair=" !">-2</Kerning>
@@ -201,7 +201,7 @@
     </Kernings>
   </Face>
   <Face Style="Italic">
-    <Texture>SegoeUITexture-xhdpi.png</Texture>
+    <Texture>SegoeUITexture-xhdpi</Texture>
     <TextureRegion>0 1008 505 504</TextureRegion>
     <Kernings DefaultAdjustment="-14">
       <Kerning Pair=" !">-2</Kerning>
@@ -301,7 +301,7 @@
     </Kernings>
   </Face>
   <Face Style="BoldItalic">
-    <Texture>SegoeUITexture-xhdpi.png</Texture>
+    <Texture>SegoeUITexture-xhdpi</Texture>
     <TextureRegion>0 1512 497 504</TextureRegion>
     <Kernings DefaultAdjustment="-14">
       <Kerning Pair=" !">-2</Kerning>

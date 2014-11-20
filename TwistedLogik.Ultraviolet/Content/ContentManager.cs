@@ -13,7 +13,7 @@ namespace TwistedLogik.Ultraviolet.Content
     /// <summary>
     /// Represents a collection of related content assets.
     /// </summary>
-    public sealed class ContentManager : UltravioletResource
+    public sealed partial class ContentManager : UltravioletResource
     {
         /// <summary>
         /// Initializes the <see cref="ContentManager"/> type.
@@ -339,8 +339,7 @@ namespace TwistedLogik.Ultraviolet.Content
             Contract.RequireNotEmpty(asset, "asset");
             Contract.EnsureNotDisposed(this, Disposed);
 
-            Object result;
-            return LoadInternal(asset, typeof(TOutput), false, true, delete, out result);
+            return PreprocessInternal(typeof(TOutput), asset, delete);
         }
 
         /// <summary>
@@ -355,7 +354,7 @@ namespace TwistedLogik.Ultraviolet.Content
         {
             Contract.Ensure<ArgumentException>(asset.IsValid, "asset");
 
-            return Preprocess<TOutput>(AssetID.GetAssetPath(asset), delete);
+            return PreprocessInternal(typeof(TOutput), AssetID.GetAssetPath(asset), delete);
         }
 
         /// <summary>
@@ -548,6 +547,30 @@ namespace TwistedLogik.Ultraviolet.Content
             var pathUri = new Uri(Path.GetFullPath(path), UriKind.Absolute);
 
             return rootUri.MakeRelativeUri(pathUri).ToString();
+        }
+
+        /// <summary>
+        /// Lists the assets which can serve as substitutions for the specified asset.
+        /// </summary>
+        /// <param name="path">The file path of the asset for which to list substitutions.</param>
+        /// <param name="maxDensityBucket">The maximum density bucket to consider.</param>
+        /// <returns>A collection containing the specified asset's possible substitution assets.</returns>
+        private IEnumerable<String> ListPossibleSubstitutions(String path, ScreenDensityBucket maxDensityBucket)
+        {
+            var directory = Path.GetDirectoryName(path);
+            var filename  = Path.GetFileNameWithoutExtension(path);
+            var extension = Path.GetExtension(path);
+
+            var substitutions =
+                from bucket in ScreenDensityBuckets.OrderByDescending(x => x)
+                where bucket <= maxDensityBucket
+                let bucketname = ScreenDensityService.GetDensityBucketName(bucket)
+                let bucketfile = String.Format("{0}-{1}{2}", filename, bucketname, extension)
+                let bucketpath = Path.Combine(directory, bucketfile)
+                where fileSystemService.FileExists(bucketpath)
+                select GetRelativePath(rootDirectory, bucketpath);
+
+            return substitutions;
         }
 
         /// <summary>
@@ -804,10 +827,12 @@ namespace TwistedLogik.Ultraviolet.Content
         /// <param name="root">The root directory.</param>
         /// <param name="asset">The asset name.</param>
         /// <param name="extension">The required file extension, if any; otherwise, <c>null</c>.</param>
-        /// <param name="includePreprocessed">A value indicating whether to include preprocessed files when resolving asset paths.</param>
+        /// <param name="flags">A collection of <see cref="AssetResolutionFlags"/> values indicating how to resolve the asset path.</param>
         /// <returns>The path of the specified asset relative to the specified root directory.</returns>
-        private String GetAssetPathFromDirectory(String root, String asset, ref String extension, Boolean includePreprocessed = true)
+        private String GetAssetPathFromDirectory(String root, String asset, ref String extension, AssetResolutionFlags flags = AssetResolutionFlags.Default)
         {
+            var includePreprocessed = (flags & AssetResolutionFlags.IncludePreprocessed) == AssetResolutionFlags.IncludePreprocessed;
+
             var assetPath = Path.GetDirectoryName(Path.Combine(root, asset));
             if (!fileSystemService.DirectoryExists(assetPath))
             {
@@ -850,16 +875,16 @@ namespace TwistedLogik.Ultraviolet.Content
         /// <param name="asset">The asset name.</param>
         /// <param name="extension">The extension for which to search, or <c>null</c> to search for any extension.</param>
         /// <param name="directory">The directory in which the asset was found.</param>
-        /// <param name="includePreprocessed">A value indicating whether to include preprocessed files when resolving asset paths.</param>
+        /// <param name="flags">A collection of <see cref="AssetResolutionFlags"/> values indicating how to resolve the asset path.</param>
         /// <returns>The path of the specified asset.</returns>
-        private String GetAssetPath(String asset, String extension, out String directory, Boolean includePreprocessed = true)
+        private String GetAssetPath(String asset, String extension, out String directory, AssetResolutionFlags flags = AssetResolutionFlags.Default)
         {
-            var path = GetAssetPathFromDirectory(RootDirectory, asset, ref extension, includePreprocessed);
+            var path = GetAssetPathFromDirectory(RootDirectory, asset, ref extension, flags);
             directory = RootDirectory;
 
             foreach (var dir in OverrideDirectories)
             {
-                var dirPath = GetAssetPathFromDirectory(dir, asset, ref extension, includePreprocessed);
+                var dirPath = GetAssetPathFromDirectory(dir, asset, ref extension, flags);
                 if (dirPath != null)
                 {
                     directory = dir;
@@ -867,20 +892,17 @@ namespace TwistedLogik.Ultraviolet.Content
                 }
             }
 
-            if (path != null && !Path.HasExtension(asset))
+            var performSubstitution = (flags & AssetResolutionFlags.PerformSubstitution) == AssetResolutionFlags.PerformSubstitution;
+            if (performSubstitution && path != null && !Path.HasExtension(asset))
             {
                 var primaryDisplay = Ultraviolet.GetPlatform().Displays.First();
-                var fileDirectory  = Path.GetDirectoryName(path);
-                var fileName       = Path.GetFileNameWithoutExtension(path);
-                var fileExtension  = Path.GetExtension(path);
-                foreach (var screenDensityBucket in ScreenDensityBuckets.Where(x => (Int32)x <= (Int32)primaryDisplay.DensityBucket))
+                var substitution   = ListPossibleSubstitutions(path, primaryDisplay.DensityBucket)
+                    .Take(1).SingleOrDefault();
+
+                if (substitution != null)
                 {
-                    var dpiName          = ScreenDensityService.GetDensityBucketName(screenDensityBucket);
-                    var dpiSpecificAsset = Path.Combine(fileDirectory, String.Format("{0}-{1}{2}", fileName, dpiName, fileExtension));
-                    if (fileSystemService.FileExists(dpiSpecificAsset))
-                    {
-                        return dpiSpecificAsset;
-                    }
+                    flags &= ~AssetResolutionFlags.PerformSubstitution;
+                    return GetAssetPath(substitution, extension, out directory, flags);
                 }
             }
 
@@ -920,12 +942,12 @@ namespace TwistedLogik.Ultraviolet.Content
             }
 
             // Find the highest-ranking metadata file, if one exists.
-            var assetPathMetadata = GetAssetPath(asset, MetadataFileExtension, out assetDirectory, false);
+            var assetPathMetadata = GetAssetPath(asset, MetadataFileExtension, out assetDirectory, AssetResolutionFlags.PerformSubstitution);
             if (assetPathMetadata != null)
                 return CreateMetadataFromFile(asset, assetPathMetadata, assetDirectory);
 
             // Find the highest-ranking raw file.
-            var assetPathRaw = GetAssetPath(asset, null, out assetDirectory, false);
+            var assetPathRaw = GetAssetPath(asset, null, out assetDirectory, AssetResolutionFlags.PerformSubstitution);
             if (assetPathRaw != null)
                 return CreateMetadataFromFile(asset, assetPathRaw, assetDirectory);
 
@@ -1062,14 +1084,13 @@ namespace TwistedLogik.Ultraviolet.Content
             }
             batchDeletedFilesGuarantee = true;
 
-            Object result;
             foreach (var manifest in manifests)
             {
                 foreach (var group in manifest)
                 {
                     foreach (var asset in group)
                     {
-                        LoadInternal(asset.AbsolutePath, asset.Type, false, true, delete, out result);
+                        PreprocessInternal(asset.Type, asset.AbsolutePath, delete);
                     }
                 }
             }
@@ -1079,6 +1100,36 @@ namespace TwistedLogik.Ultraviolet.Content
                 batchDeletedFilesGuarantee = false;
                 BatchDeletedFiles = false;
             }
+        }
+
+        /// <summary>
+        /// Preprocesses the specified asset by saving it in a binary format designed for fast deserialization.
+        /// If the asset's content importer does not support a binary data format, this method has no effect.
+        /// </summary>
+        /// <param name="type">The type of asset to preprocess.</param>
+        /// <param name="asset">The asset to preprocess.</param>
+        /// <param name="delete">A value indicating whether to delete the original file after preprocessing it.</param>
+        /// <returns><c>true</c> if the asset was preprocessed; otherwise, <c>false</c>.</returns>
+        private Boolean PreprocessInternal(Type type, String asset, Boolean delete)
+        {
+            Object result;
+
+            var assetDirectory = String.Empty;
+            var assetPath      = GetAssetPath(asset, null, out assetDirectory, AssetResolutionFlags.None);
+
+            if (IsPreprocessedFile(assetPath))
+                return true;
+
+            var substitutions = ListPossibleSubstitutions(assetPath, ScreenDensityBucket.ExtraExtraExtraHigh);
+            foreach (var substitution in substitutions)
+            {
+                if (!LoadInternal(substitution, type, false, true, delete, out result))
+                {
+                    return false;
+                }
+            }
+
+            return LoadInternal(asset, type, false, true, delete, out result);
         }
 
         // Property values.

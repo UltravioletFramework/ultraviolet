@@ -123,6 +123,9 @@
     <Compile Include="..\TwistedLogik.Ultraviolet\Content\ContentLoadException.cs">
       <Link>Content\ContentLoadException.cs</Link>
     </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Content\ContentManager.AssetResolutionFlags.cs">
+      <Link>Content\ContentManager.AssetResolutionFlags.cs</Link>
+    </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet\Content\ContentManager.cs">
       <Link>Content\ContentManager.cs</Link>
     </Compile>

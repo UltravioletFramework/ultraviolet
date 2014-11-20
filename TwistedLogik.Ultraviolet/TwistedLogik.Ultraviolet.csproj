@@ -135,6 +135,7 @@
     <Compile Include="Content\ContentBinaryWriterExtensions.cs" />
     <Compile Include="Content\ContentImporterRegistry.RegistryEntry.cs" />
     <Compile Include="Content\ContentLoadException.cs" />
+    <Compile Include="Content\ContentManager.AssetResolutionFlags.cs" />
     <Compile Include="Content\ContentManifestAsset.cs" />
     <Compile Include="Content\ContentManifestGroup.cs" />
     <Compile Include="Content\ContentImporter.cs" />
