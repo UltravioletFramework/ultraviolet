@@ -27,23 +27,16 @@ namespace TwistedLogik.Ultraviolet.SDL2
         }
 
         /// <summary>
-        /// Called immediately before an update.
+        /// Resets the device's state in preparation for the next frame.
         /// </summary>
-        public void OnPreUpdate()
+        public void ResetDeviceStates()
         {
             Contract.EnsureNotDisposed(this, Disposed);
 
-            touchInfo.OnPreUpdate();
-        }
-
-        /// <summary>
-        /// Called immediately after an update.
-        /// </summary>
-        public void OnPostUpdate()
-        {
-            Contract.EnsureNotDisposed(this, Disposed);
-
-            touchInfo.OnPostUpdate();
+            this.keyboard.ResetDeviceState();
+            this.mouse.ResetDeviceState();
+            this.gamePadInfo.ResetDeviceStates();
+            this.touchInfo.ResetDeviceStates();
         }
 
         /// <inheritdoc/>
@@ -255,8 +248,8 @@ namespace TwistedLogik.Ultraviolet.SDL2
         }
 
         // Input devices.
-        private KeyboardDevice keyboard;
-        private MouseDevice mouse;
+        private SDL2KeyboardDevice keyboard;
+        private SDL2MouseDevice mouse;
         private GamePadDeviceInfo gamePadInfo;
         private TouchDeviceInfo touchInfo;
     }

@@ -73,21 +73,13 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
         }
 
         /// <summary>
-        /// Called immediately before an update.
+        /// Resets the device's state in preparation for the next frame.
         /// </summary>
-        public void OnPreUpdate()
+        public void ResetDeviceState()
         {
             Contract.EnsureNotDisposed(this, Disposed);
 
             this.tapsLastFrame.Clear();
-        }
-
-        /// <summary>
-        /// Called immediately after an update.
-        /// </summary>
-        public void OnPostUpdate()
-        {
-            Contract.EnsureNotDisposed(this, Disposed);
         }
 
         /// <inheritdoc/>

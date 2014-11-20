@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Runtime.InteropServices;
 using System.Text;
 using TwistedLogik.Nucleus;
 using TwistedLogik.Nucleus.Messages;
@@ -22,15 +21,16 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
         public SDL2KeyboardDevice(UltravioletContext uv)
             : base(uv)
         {
+            Int32 numkeys;
+            SDL.GetKeyboardState(out numkeys);
+
+            this.states = new InternalButtonState[numkeys];
+
             uv.Messages.Subscribe(this,
                 SDL2UltravioletMessages.SDLEvent);
         }
 
-        /// <summary>
-        /// Receives a message that has been published to a queue.
-        /// </summary>
-        /// <param name="type">The type of message that was received.</param>
-        /// <param name="data">The data for the message that was received.</param>
+        /// <inheritdoc/>
         unsafe void IMessageSubscriber<UltravioletMessageID>.ReceiveMessage(UltravioletMessageID type, MessageData data)
         {
             if (type == SDL2UltravioletMessages.SDLEvent)
@@ -39,75 +39,38 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
                 switch (evt.type)
                 {
                     case SDL_EventType.KEYDOWN:
-                        {
-                            var window = Ultraviolet.GetPlatform().Windows.GetByID((int)evt.key.windowID);
-                            var mods = evt.key.keysym.mod;
-                            var ctrl = (mods & SDL_Keymod.CTRL) != 0;
-                            var alt = (mods & SDL_Keymod.ALT) != 0;
-                            var shift = (mods & SDL_Keymod.SHIFT) != 0;
-                            var repeat = evt.key.repeat > 0;
-                            if (repeat)
-                            {
-                                repeats[(int)evt.key.keysym.scancode] = true;
-                            }
-                            else
-                            {
-                                OnButtonPressed(window, (Scancode)evt.key.keysym.scancode);
-                            }
-                            OnKeyPressed(window, (Key)evt.key.keysym.keycode, ctrl, alt, shift, repeat);
-                        }
+                        OnKeyDown(ref evt.key);
                         break;
 
                     case SDL_EventType.KEYUP:
-                        {
-                            var window = Ultraviolet.GetPlatform().Windows.GetByID((int)evt.key.windowID);
-                            OnButtonReleased(window, (Scancode)evt.key.keysym.scancode);
-                            OnKeyReleased(window, (Key)evt.key.keysym.keycode);
-                        }
+                        OnKeyUp(ref evt.key);
                         break;
 
                     case SDL_EventType.TEXTINPUT:
-                        {
-                            var window = Ultraviolet.GetPlatform().Windows.GetByID((int)evt.text.windowID);
-                            if (ConvertTextInputToUtf16(evt.text.text))
-                            {
-                                OnTextInput(window);
-                            }
-                        }
+                        OnTextInput(ref evt.text);
                         break;
                 }
             }
         }
 
         /// <summary>
-        /// Updates the device's state.
+        /// Resets the device's state in preparation for the next frame.
         /// </summary>
-        /// <param name="time">Time elapsed since the last call to Update.</param>
-        public override void Update(UltravioletTime time)
+        public void ResetDeviceState()
         {
-            var numkeys = 0;
-            var state = SDL.GetKeyboardState(out numkeys);
-
-            if (keyboardStateOld == null || keyboardStateNew == null || repeats == null)
+            for (int i = 0; i < states.Length; i++)
             {
-                keyboardStateOld = new byte[numkeys];
-                keyboardStateNew = new byte[numkeys];
-                repeats = new bool[numkeys];
+                states[i].Reset();
             }
-
-            var temp = keyboardStateNew;
-            keyboardStateNew = keyboardStateOld;
-            keyboardStateOld = temp;
-
-            Marshal.Copy(state, keyboardStateNew, 0, numkeys);
-            Array.Clear(repeats, 0, repeats.Length);
         }
 
-        /// <summary>
-        /// Populates the specified string builder with the most recent text input.
-        /// </summary>
-        /// <param name="sb">The string builder to populate with text input data.</param>
-        /// <param name="append">A value indicating whether to append the text input data to the string builder's existing data.</param>
+        /// <inheritdoc/>
+        public override void Update(UltravioletTime time)
+        {
+
+        }
+
+        /// <inheritdoc/>
         public override void GetTextInput(StringBuilder sb, Boolean append = false)
         {
             Contract.EnsureNotDisposed(this, Disposed);
@@ -121,137 +84,79 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
             }
         }
 
-        /// <summary>
-        /// Gets a value indicating whether the specified button is currently down.
-        /// </summary>
-        /// <param name="button">The button to evaluate.</param>
-        /// <returns>true if the button is down; otherwise, false.</returns>
+        /// <inheritdoc/>
         public override Boolean IsButtonDown(Scancode button)
         {
             Contract.EnsureNotDisposed(this, Disposed);
 
             var scancode = (int)button;
-            return keyboardStateNew[scancode] != 0;
+            return states[scancode].Down;
         }
 
-        /// <summary>
-        /// Gets a value indicating whether the specified button is currently up.
-        /// </summary>
-        /// <param name="button">The button to evaluate.</param>
-        /// <returns>true if the button is up; otherwise, false.</returns>
+        /// <inheritdoc/>
         public override Boolean IsButtonUp(Scancode button)
         {
             Contract.EnsureNotDisposed(this, Disposed);
 
             var scancode = (int)button;
-            return keyboardStateNew[scancode] == 0;
+            return states[scancode].Up;
         }
 
-        /// <summary>
-        /// Gets a value indicating whether the specified button is currently pressed.
-        /// </summary>
-        /// <param name="button">The button to evaluate.</param>
-        /// <param name="ignoreRepeats">A value indicating whether to ignore repeated button press events on devices which support them.</param>
-        /// <returns>true if the button is pressed; otherwise, false.</returns>        
+        /// <inheritdoc/>
         public override Boolean IsButtonPressed(Scancode button, Boolean ignoreRepeats = true)
         {
             Contract.EnsureNotDisposed(this, Disposed);
 
             var scancode = (int)button;
-            return keyboardStateNew[scancode] != 0 && keyboardStateOld[scancode] == 0;
+            return states[scancode].Pressed || (!ignoreRepeats && states[scancode].Repeated);
         }
 
-        /// <summary>
-        /// Gets a value indicating whether the specified button is currently released.
-        /// </summary>
-        /// <param name="button">The button to evaluate.</param>
-        /// <returns>true if the button is released; otherwise, false.</returns>
+        /// <inheritdoc/>
         public override Boolean IsButtonReleased(Scancode button)
         {
             Contract.EnsureNotDisposed(this, Disposed);
 
             var scancode = (int)button;
-            return keyboardStateNew[scancode] == 0 && keyboardStateOld[scancode] != 0;
+            return states[scancode].Released;
         }
 
-        /// <summary>
-        /// Gets the current state of the specified button.
-        /// </summary>
-        /// <param name="button">The button for which to retrieve a state.</param>
-        /// <returns>The current state of the specified button.</returns>
-        public override ButtonState GetButtonState(Scancode button)
-        {
-            Contract.EnsureNotDisposed(this, Disposed);
-
-            var state = IsButtonDown(button) ? ButtonState.Down : ButtonState.Up;
-
-            if (IsButtonPressed(button))
-                state |= ButtonState.Pressed;
-
-            if (IsButtonReleased(button))
-                state |= ButtonState.Released;
-
-            return state;
-        }
-
-        /// <summary>
-        /// Gets a value indicating whether the specified key is currently down.
-        /// </summary>
-        /// <param name="key">The key to evaluate.</param>
-        /// <returns>true if the key is down; otherwise, false.</returns>
+        /// <inheritdoc/>
         public override Boolean IsKeyDown(Key key)
         {
             Contract.EnsureNotDisposed(this, Disposed);
 
             var scancode = (int)SDL.GetScancodeFromKey((SDL_Keycode)key);
-            return keyboardStateNew[scancode] != 0;
+            return states[scancode].Down;
         }
 
-        /// <summary>
-        /// Gets a value indicating whether the specified key is currently up.
-        /// </summary>
-        /// <param name="key">The key to evaluate.</param>
-        /// <returns>true if the key is up; otherwise, false.</returns>
+        /// <inheritdoc/>
         public override Boolean IsKeyUp(Key key)
         {
             Contract.EnsureNotDisposed(this, Disposed);
 
             var scancode = (int)SDL.GetScancodeFromKey((SDL_Keycode)key);
-            return keyboardStateNew[scancode] == 0;
+            return states[scancode].Up;
         }
 
-        /// <summary>
-        /// Gets a value indicating whether the specified key is currently pressed.
-        /// </summary>
-        /// <param name="key">The key to evaluate.</param>
-        /// <param name="ignoreRepeats">A value indicating whether to ignore repeated button press events on devices which support them.</param>
-        /// <returns>true if the key is pressed; otherwise, false.</returns>        
+        /// <inheritdoc/>
         public override Boolean IsKeyPressed(Key key, Boolean ignoreRepeats = true)
         {
             Contract.EnsureNotDisposed(this, Disposed);
 
             var scancode = (int)SDL.GetScancodeFromKey((SDL_Keycode)key);
-            return (!ignoreRepeats && repeats[scancode]) || (keyboardStateNew[scancode] != 0 && keyboardStateOld[scancode] == 0);
+            return states[scancode].Pressed || (!ignoreRepeats && states[scancode].Repeated);
         }
 
-        /// <summary>
-        /// Gets a value indicating whether the specified key is currently released.
-        /// </summary>
-        /// <param name="key">The key to evaluate.</param>
-        /// <returns>true if the key is released; otherwise, false.</returns>
+        /// <inheritdoc/>
         public override Boolean IsKeyReleased(Key key)
         {
             Contract.EnsureNotDisposed(this, Disposed);
 
             var scancode = (int)SDL.GetScancodeFromKey((SDL_Keycode)key);
-            return keyboardStateNew[scancode] == 0 && keyboardStateOld[scancode] != 0;
+            return states[scancode].Released;
         }
 
-        /// <summary>
-        /// Gets the current state of the specified key.
-        /// </summary>
-        /// <param name="key">The key for which to retrieve a state.</param>
-        /// <returns>The current state of the specified key.</returns>
+        /// <inheritdoc/>
         public override ButtonState GetKeyState(Key key)
         {
             var state = IsKeyDown(key) ? ButtonState.Down : ButtonState.Up;
@@ -265,10 +170,7 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
             return state;
         }
 
-        /// <summary>
-        /// Releases resources associated with the object.
-        /// </summary>
-        /// <param name="disposing">true if the object is being disposed; false if the object is being finalized.</param>
+        /// <inheritdoc/>
         protected override void Dispose(Boolean disposing)
         {
             if (Disposed)
@@ -283,6 +185,55 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
             }
 
             base.Dispose(disposing);
+        }
+
+        /// <summary>
+        /// Handles SDL2's KEYDOWN event.
+        /// </summary>
+        private void OnKeyDown(ref SDL_KeyboardEvent evt)
+        {
+            var window = Ultraviolet.GetPlatform().Windows.GetByID((int)evt.windowID);
+            var mods   = evt.keysym.mod;
+            var ctrl   = (mods & SDL_Keymod.CTRL) != 0;
+            var alt    = (mods & SDL_Keymod.ALT) != 0;
+            var shift  = (mods & SDL_Keymod.SHIFT) != 0;
+            var repeat = evt.repeat > 0;
+
+            states[(int)evt.keysym.scancode].OnDown(repeat);
+
+            if (!repeat)
+            {
+                OnButtonPressed(window, (Scancode)evt.keysym.scancode);
+            }
+            OnKeyPressed(window, (Key)evt.keysym.keycode, ctrl, alt, shift, repeat);
+        }
+
+        /// <summary>
+        /// Handles SDL2's KEYUP event.
+        /// </summary>
+        private void OnKeyUp(ref SDL_KeyboardEvent evt)
+        {
+            var window = Ultraviolet.GetPlatform().Windows.GetByID((int)evt.windowID);
+
+            states[(int)evt.keysym.scancode].OnUp();
+
+            OnButtonReleased(window, (Scancode)evt.keysym.scancode);
+            OnKeyReleased(window, (Key)evt.keysym.keycode);
+        }
+
+        /// <summary>
+        /// Handles SDL2's TEXTINPUT event.
+        /// </summary>
+        private void OnTextInput(ref SDL_TextInputEvent evt)
+        {
+            var window = Ultraviolet.GetPlatform().Windows.GetByID((int)evt.windowID);
+            fixed (byte* input = evt.text)
+            {
+                if (ConvertTextInputToUtf16(input))
+                {
+                    OnTextInput(window);
+                }
+            }
         }
 
         /// <summary>
@@ -318,10 +269,8 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
         }
 
         // State values.
-        private byte[] keyboardStateOld;
-        private byte[] keyboardStateNew;
-        private bool[] repeats;
-        private char[] textUtf16 = new char[32];
+        private readonly InternalButtonState[] states;
+        private readonly Char[] textUtf16 = new Char[32];
         private Int32 textInputLength;
     }
 }

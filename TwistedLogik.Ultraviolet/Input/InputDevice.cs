@@ -1,4 +1,5 @@
 ﻿using System;
+using TwistedLogik.Nucleus;
 
 namespace TwistedLogik.Ultraviolet.Input
 {
@@ -58,6 +59,19 @@ namespace TwistedLogik.Ultraviolet.Input
         /// </summary>
         /// <param name="button">The button for which to retrieve a state.</param>
         /// <returns>The current state of the specified button.</returns>
-        public abstract ButtonState GetButtonState(T button);
+        public virtual ButtonState GetButtonState(T button)
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
+
+            var state = IsButtonDown(button) ? ButtonState.Down : ButtonState.Up;
+
+            if (IsButtonPressed(button))
+                state |= ButtonState.Pressed;
+
+            if (IsButtonReleased(button))
+                state |= ButtonState.Released;
+
+            return state;
+        }
     }
 }

@@ -48,6 +48,9 @@
     <Compile Include="..\TwistedLogik.Ultraviolet.SDL2\Input\GamePadDeviceInfo.cs">
       <Link>Input\GamePadDeviceInfo.cs</Link>
     </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.SDL2\Input\InternalButtonState.cs">
+      <Link>Input\InternalButtonState.cs</Link>
+    </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.SDL2\Input\SDL2GamePadDevice.cs">
       <Link>Input\SDL2GamePadDevice.cs</Link>
     </Compile>
@@ -321,7 +324,7 @@
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties ProjectLinkReference="50aefa93-fe53-414a-89fc-c061c165c673" ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" />
+      <UserProperties ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" ProjectLinkReference="50aefa93-fe53-414a-89fc-c061c165c673" />
     </VisualStudio>
   </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -109,6 +109,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Input\GamePadDeviceInfo.cs" />
+    <Compile Include="Input\InternalButtonState.cs" />
     <Compile Include="Input\SDL2GamePadDevice.cs" />
     <Compile Include="Input\SDL2KeyboardDevice.cs" />
     <Compile Include="Input\SDL2MouseDevice.cs" />

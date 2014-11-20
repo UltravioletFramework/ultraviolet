@@ -27,28 +27,15 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
         }
 
         /// <summary>
-        /// Called immediately before an update.
+        /// Resets the states of the connected devices in preparation for the next frame.
         /// </summary>
-        public void OnPreUpdate()
+        public void ResetDeviceStates()
         {
             Contract.EnsureNotDisposed(this, Disposed);
 
             foreach (var device in devices)
             {
-                device.OnPreUpdate();
-            }
-        }
-
-        /// <summary>
-        /// Called immediately after an update.
-        /// </summary>
-        public void OnPostUpdate()
-        {
-            Contract.EnsureNotDisposed(this, Disposed);
-
-            foreach (var device in devices)
-            {
-                device.OnPostUpdate();
+                device.ResetDeviceState();
             }
         }
 

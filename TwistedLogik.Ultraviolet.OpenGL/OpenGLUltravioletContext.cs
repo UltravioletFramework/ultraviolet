@@ -93,7 +93,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL
             Contract.Require(time, "time");
             Contract.EnsureNotDisposed(this, Disposed);
 
-            input.OnPreUpdate();
+            input.ResetDeviceStates();
 
             if (!PumpEvents())
             {

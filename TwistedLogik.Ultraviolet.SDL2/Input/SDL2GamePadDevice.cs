@@ -35,10 +35,9 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
                 throw new SDL2Exception();
             }
 
-            this.name            = SDL.GameControllerNameForIndex(joystickIndex);
-            this.gamePadStateOld = new Boolean[sdlButtons.Length];
-            this.gamePadStateNew = new Boolean[sdlButtons.Length];
-            this.playerIndex     = playerIndex;
+            this.name        = SDL.GameControllerNameForIndex(joystickIndex);
+            this.states      = new InternalButtonState[sdlButtons.Length];
+            this.playerIndex = playerIndex;
 
             var joystick = SDL.GameControllerGetJoystick(controller);
 
@@ -69,6 +68,7 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
                         if (evt.cbutton.which == instanceID)
                         {
                             var button = SDLToUltravioletButton((SDL_GameControllerButton)evt.cbutton.button);
+                            states[(int)button].OnDown(false);
                             OnButtonPressed(button);
                         }
                     }
@@ -79,6 +79,7 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
                         if (evt.cbutton.which == instanceID)
                         {
                             var button = SDLToUltravioletButton((SDL_GameControllerButton)evt.cbutton.button);
+                            states[(int)button].OnUp();
                             OnButtonReleased(button);
                         }
                     }
@@ -106,22 +107,23 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
             return controller;
         }
 
+        /// <summary>
+        /// Resets the device's state in preparation for the next frame.
+        /// </summary>
+        public void ResetDeviceState()
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
+
+            for (int i = 0; i < states.Length; i++)
+            {
+                states[i].Reset();
+            }
+        }
+
         /// <inheritdoc/>
         public override void Update(UltravioletTime time)
         {
             Contract.EnsureNotDisposed(this, Disposed);
-
-            var temp = this.gamePadStateOld;
-            this.gamePadStateOld = this.gamePadStateNew;
-            this.gamePadStateNew = temp;
-
-            foreach (var sdlButton in sdlButtons)
-            {
-                var state = SDL.GameControllerGetButton(controller, sdlButton);
-                var btnval = (Int32)SDLToUltravioletButton(sdlButton);
-
-                this.gamePadStateNew[btnval] = state;
-            }
 
             var leftJoystickVector = LeftJoystickVector;
             if (leftJoystickVector != leftJoystickVectorPrev)
@@ -144,7 +146,7 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
             Contract.EnsureNotDisposed(this, Disposed);
 
             var btnval = (Int32)button;
-            return gamePadStateNew[btnval];
+            return states[btnval].Down;
         }
 
         /// <inheritdoc/>
@@ -153,7 +155,7 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
             Contract.EnsureNotDisposed(this, Disposed);
 
             var btnval = (Int32)button;
-            return !gamePadStateNew[btnval];
+            return states[btnval].Up;
         }
 
         /// <inheritdoc/>
@@ -162,7 +164,7 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
             Contract.EnsureNotDisposed(this, Disposed);
 
             var btnval = (Int32)button;
-            return gamePadStateNew[btnval] && !gamePadStateOld[btnval];
+            return states[btnval].Pressed || (!ignoreRepeats && states[btnval].Repeated);
         }
 
         /// <inheritdoc/>
@@ -171,23 +173,7 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
             Contract.EnsureNotDisposed(this, Disposed);
 
             var btnval = (Int32)button;
-            return !gamePadStateNew[btnval] && gamePadStateOld[btnval];
-        }
-
-        /// <inheritdoc/>
-        public override ButtonState GetButtonState(GamePadButton button)
-        {
-            Contract.EnsureNotDisposed(this, Disposed);
-
-            var state = IsButtonDown(button) ? ButtonState.Down : ButtonState.Up;
-
-            if (IsButtonPressed(button))
-                state |= ButtonState.Pressed;
-
-            if (IsButtonReleased(button))
-                state |= ButtonState.Released;
-
-            return state;
+            return states[btnval].Released;
         }
 
         /// <inheritdoc/>
@@ -405,8 +391,7 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
         private readonly Int32 instanceID;
         private readonly Int32 playerIndex;
         private readonly IntPtr controller;
-        private Boolean[] gamePadStateOld;
-        private Boolean[] gamePadStateNew;
+        private readonly InternalButtonState[] states;
 
         // Property values.
         private readonly String name;

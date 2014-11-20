@@ -54,6 +54,19 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
         }
 
         /// <summary>
+        /// Resets the states of the connected devices in preparation for the next frame.
+        /// </summary>
+        public void ResetDeviceStates()
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
+
+            foreach (var device in devicesByPlayer)
+            {
+                device.ResetDeviceState();
+            }
+        }
+
+        /// <summary>
         /// Updates the state of the attached game pad devices.
         /// </summary>
         /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Update(UltravioletTime)"/>.</param>

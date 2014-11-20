@@ -19,15 +19,14 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
         public SDL2MouseDevice(UltravioletContext uv)
             : base(uv)
         {
+            var buttonCount = Enum.GetValues(typeof(MouseButton)).Length;
+            this.states = new InternalButtonState[buttonCount];
+
             uv.Messages.Subscribe(this,
                 SDL2UltravioletMessages.SDLEvent);
         }
 
-        /// <summary>
-        /// Receives a message that has been published to a queue.
-        /// </summary>
-        /// <param name="type">The type of message that was received.</param>
-        /// <param name="data">The data for the message that was received.</param>
+        /// <inheritdoc/>
         void IMessageSubscriber<UltravioletMessageID>.ReceiveMessage(UltravioletMessageID type, MessageData data)
         {
             if (type == SDL2UltravioletMessages.SDLEvent)
@@ -36,130 +35,77 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
                 switch (evt.type)
                 {
                     case SDL_EventType.MOUSEMOTION:
-                        {
-                            var window = Ultraviolet.GetPlatform().Windows.GetByID((int)evt.motion.windowID);
-                            OnMoved(window, evt.motion.x, evt.motion.y, evt.motion.xrel, evt.motion.yrel);
-                        }
+                        OnMouseMotion(ref evt.motion);
                         break;
 
                     case SDL_EventType.MOUSEBUTTONDOWN:
-                        {
-                            var window = Ultraviolet.GetPlatform().Windows.GetByID((int)evt.button.windowID);
-                            var button = GetUltravioletButton(evt.button.button);
-                            OnButtonPressed(window, button);
-                        }
+                        OnMouseButtonDown(ref evt.button);
                         break;
 
                     case SDL_EventType.MOUSEBUTTONUP:
-                        {
-                            var window = Ultraviolet.GetPlatform().Windows.GetByID((int)evt.button.windowID);
-                            var button = GetUltravioletButton(evt.button.button);
-                            OnButtonReleased(window, button);
-
-                            if (evt.button.clicks == 1)
-                            {
-                                buttonStateClicks |= (uint)SDL_BUTTON(evt.button.button);
-                                OnClick(window, button);
-                            }
-
-                            if (evt.button.clicks == 2)
-                            {
-                                buttonStateDoubleClicks |= (uint)SDL_BUTTON(evt.button.button);
-                                OnDoubleClick(window, button);
-                            }
-                        }
+                        OnMouseButtonUp(ref evt.button);
                         break;
 
                     case SDL_EventType.MOUSEWHEEL:
-                        {
-                            var window = Ultraviolet.GetPlatform().Windows.GetByID((int)evt.wheel.windowID);
-                            pendingWheelDeltaX = evt.wheel.x;
-                            pendingWheelDeltaY = evt.wheel.y;
-                            OnWheelScrolled(window, evt.wheel.x, evt.wheel.y);
-                        }
+                        OnMouseWheel(ref evt.wheel);
                         break;
                 }
             }
         }
-
+        
         /// <summary>
-        /// Updates the device's state.
+        /// Resets the device's state in preparation for the next frame.
         /// </summary>
-        /// <param name="time">Time elapsed since the last call to Update.</param>
-        public override void Update(UltravioletTime time)
+        public void ResetDeviceState()
         {
-            Contract.EnsureNotDisposed(this, Disposed);
-
-            buttonStateOld = buttonStateNew;
-            buttonStateNew = SDL.GetMouseState(out x, out y);
-
-            buttonStateClicks = 0;
+            buttonStateClicks       = 0;
             buttonStateDoubleClicks = 0;
 
-            wheelDeltaX = pendingWheelDeltaX.HasValue ? pendingWheelDeltaX.Value : 0;
-            wheelDeltaY = pendingWheelDeltaY.HasValue ? pendingWheelDeltaY.Value : 0;
-            pendingWheelDeltaX = null;
-            pendingWheelDeltaY = null;
+            for (int i = 0; i < states.Length; i++)
+            {
+                states[i].Reset();
+            }
         }
 
-        /// <summary>
-        /// Gets a value indicating whether the specified button is currently down.
-        /// </summary>
-        /// <param name="button">The button to evaluate.</param>
-        /// <returns>true if the button is down; otherwise, false.</returns>
+        /// <inheritdoc/>
+        public override void Update(UltravioletTime time)
+        {
+
+        }
+
+        /// <inheritdoc/>
         public override Boolean IsButtonDown(MouseButton button)
         {
             Contract.EnsureNotDisposed(this, Disposed);
 
-            return (buttonStateNew & SDL_BUTTON(button)) != 0;
+            return states[(int)button].Down;
         }
 
-        /// <summary>
-        /// Gets a value indicating whether the specified button is currently up.
-        /// </summary>
-        /// <param name="button">The button to evaluate.</param>
-        /// <returns>true if the button is up; otherwise, false.</returns>
+        /// <inheritdoc/>
         public override Boolean IsButtonUp(MouseButton button)
         {
             Contract.EnsureNotDisposed(this, Disposed);
 
-            return (buttonStateNew & SDL_BUTTON(button)) == 0;
+            return states[(int)button].Up;
         }
 
-        /// <summary>
-        /// Gets a value indicating whether the specified button is currently pressed.
-        /// </summary>
-        /// <param name="button">The button to evaluate.</param>
-        /// <param name="ignoreRepeats">A value indicating whether to ignore repeated button press events on devices which support them.</param>
-        /// <returns>true if the button is pressed; otherwise, false.</returns>        
+        /// <inheritdoc/>
         public override Boolean IsButtonPressed(MouseButton button, Boolean ignoreRepeats = true)
         {
             Contract.EnsureNotDisposed(this, Disposed);
 
-            return 
-                ((buttonStateNew & SDL_BUTTON(button)) != 0) &&
-                ((buttonStateOld & SDL_BUTTON(button)) == 0);
+            return states[(int)button].Pressed || (!ignoreRepeats && states[(int)button].Repeated);
         }
 
-        /// <summary>
-        /// Gets a value indicating whether the specified button is currently released.
-        /// </summary>
-        /// <param name="button">The button to evaluate.</param>
-        /// <returns>true if the button is released; otherwise, false.</returns>
+        /// <inheritdoc/>
         public override Boolean IsButtonReleased(MouseButton button)
         {
             Contract.EnsureNotDisposed(this, Disposed);
 
-            return
-                ((buttonStateNew & SDL_BUTTON(button)) == 0) &&
-                ((buttonStateOld & SDL_BUTTON(button)) != 0);
+            return states[(int)button].Released;
         }
 
-        /// <summary>
-        /// Gets a value indicating whether the specified button was clicked this frame.
-        /// </summary>
-        /// <param name="button">The button to evaluate.</param>
-        /// <returns>true if the button was clicked this frame; otherwise, false.</returns>
+        /// <inheritdoc/>
         public override Boolean IsButtonClicked(MouseButton button)
         {
             Contract.EnsureNotDisposed(this, Disposed);
@@ -167,11 +113,7 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
             return (buttonStateClicks & SDL_BUTTON(button)) != 0;
         }
 
-        /// <summary>
-        /// Gets a value indicating whether the specified button was double clicked this frame.
-        /// </summary>
-        /// <param name="button">The button to evaluate.</param>
-        /// <returns>true if the button was double clicked this frame; otherwise, false.</returns>
+        /// <inheritdoc/>
         public override Boolean IsButtonDoubleClicked(MouseButton button)
         {
             Contract.EnsureNotDisposed(this, Disposed);
@@ -179,29 +121,7 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
             return (buttonStateDoubleClicks & SDL_BUTTON(button)) != 0;
         }
 
-        /// <summary>
-        /// Gets the current state of the specified button.
-        /// </summary>
-        /// <param name="button">The button for which to retrieve a state.</param>
-        /// <returns>The current state of the specified button.</returns>
-        public override ButtonState GetButtonState(MouseButton button)
-        {
-            Contract.EnsureNotDisposed(this, Disposed);
-
-            var state = IsButtonDown(button) ? ButtonState.Down : ButtonState.Up;
-
-            if (IsButtonPressed(button)) 
-                state |= ButtonState.Pressed;
-
-            if (IsButtonReleased(button)) 
-                state |= ButtonState.Released;
-
-            return state;
-        }
-
-        /// <summary>
-        /// Gets the mouse's current position.
-        /// </summary>
+        /// <inheritdoc/>
         public override Vector2 Position
         {
             get
@@ -212,9 +132,7 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
             }
         }
 
-        /// <summary>
-        /// Gets the mouse's current x-coordinate.
-        /// </summary>
+        /// <inheritdoc/>
         public override Int32 X
         {
             get
@@ -225,9 +143,7 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
             }
         }
 
-        /// <summary>
-        /// Gets the mouse's current y-coordinate.
-        /// </summary>
+        /// <inheritdoc/>
         public override Int32 Y
         {
             get
@@ -238,9 +154,7 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
             }
         }
 
-        /// <summary>
-        /// Gets the mouse's horizontal scroll wheel delta in the last frame.
-        /// </summary>
+        /// <inheritdoc/>
         public override Int32 WheelDeltaX
         {
             get
@@ -251,9 +165,7 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
             }
         }
 
-        /// <summary>
-        /// Gets the mouse's vertical scroll wheel delta in the last frame.
-        /// </summary>
+        /// <inheritdoc/>
         public override Int32 WheelDeltaY
         {
             get
@@ -264,10 +176,7 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
             }
         }
 
-        /// <summary>
-        /// Releases resources associated with the object.
-        /// </summary>
-        /// <param name="disposing">true if the object is being disposed; false if the object is being finalized.</param>
+        /// <inheritdoc/>
         protected override void Dispose(Boolean disposing)
         {
             if (Disposed)
@@ -345,6 +254,68 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
             throw new ArgumentException("value");
         }
 
+        /// <summary>
+        /// Handles SDL2's MOUSEMOTION event.
+        /// </summary>
+        private void OnMouseMotion(ref SDL_MouseMotionEvent evt)
+        {
+            var window = Ultraviolet.GetPlatform().Windows.GetByID((int)evt.windowID);
+
+            this.x = evt.x;
+            this.y = evt.y;
+
+            OnMoved(window, evt.x, evt.y, evt.xrel, evt.yrel);
+        }
+
+        /// <summary>
+        /// Handles SDL2's MOUSEBUTTONDOWN event.
+        /// </summary>
+        private void OnMouseButtonDown(ref SDL_MouseButtonEvent evt)
+        {
+            var window = Ultraviolet.GetPlatform().Windows.GetByID((int)evt.windowID);
+            var button = GetUltravioletButton(evt.button);
+
+            this.states[(int)button].OnDown(false);
+
+            OnButtonPressed(window, button);
+        }
+
+        /// <summary>
+        /// Handles SDL2's MOUSEBUTTONUP event.
+        /// </summary>
+        private void OnMouseButtonUp(ref SDL_MouseButtonEvent evt)
+        {
+            var window = Ultraviolet.GetPlatform().Windows.GetByID((int)evt.windowID);
+            var button = GetUltravioletButton(evt.button);
+
+            this.states[(int)button].OnUp();
+            
+            OnButtonReleased(window, button);
+
+            if (evt.clicks == 1)
+            {
+                buttonStateClicks |= (uint)SDL_BUTTON(evt.button);
+                OnClick(window, button);
+            }
+
+            if (evt.clicks == 2)
+            {
+                buttonStateDoubleClicks |= (uint)SDL_BUTTON(evt.button);
+                OnDoubleClick(window, button);
+            }
+        }
+
+        /// <summary>
+        /// Handles SDL2's MOUSEWHEEL event.
+        /// </summary>
+        private void OnMouseWheel(ref SDL_MouseWheelEvent evt)
+        {
+            var window = Ultraviolet.GetPlatform().Windows.GetByID((int)evt.windowID);
+            wheelDeltaX = evt.x;
+            wheelDeltaY = evt.y;
+            OnWheelScrolled(window, evt.x, evt.y);
+        }
+
         // Property values.
         private Int32 x;
         private Int32 y;
@@ -352,11 +323,8 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
         private Int32 wheelDeltaY;
 
         // State values.
-        private UInt32 buttonStateOld;
-        private UInt32 buttonStateNew;
+        private InternalButtonState[] states;
         private UInt32 buttonStateClicks;
         private UInt32 buttonStateDoubleClicks;
-        private Int32? pendingWheelDeltaX;
-        private Int32? pendingWheelDeltaY;
     }
 }
