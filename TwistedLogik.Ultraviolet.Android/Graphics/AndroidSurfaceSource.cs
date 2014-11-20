@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Runtime.InteropServices;
 using Android.Graphics;
 using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet.Graphics;
@@ -19,8 +20,21 @@ namespace TwistedLogik.Ultraviolet.Android.Graphics
         {
             Contract.Require(stream, "stream");
 
-            this.bmp = BitmapFactory.DecodeStream(stream);
-            this.bmpData = this.bmp.LockPixels();
+            using (var bmp = BitmapFactory.DecodeStream(stream))
+            {
+                this.width  = bmp.Width;
+                this.height = bmp.Height;
+                this.stride = bmp.RowBytes;
+
+                this.bmpData       = new Byte[stride * height];
+                this.bmpDataHandle = GCHandle.Alloc(bmpData);
+
+                var pixels = bmp.LockPixels();
+
+                Marshal.Copy(pixels, bmpData, 0, bmpData.Length);
+
+                bmp.UnlockPixels();
+            }
         }
 
         /// <inheritdoc/>
@@ -37,8 +51,10 @@ namespace TwistedLogik.Ultraviolet.Android.Graphics
             {
                 Contract.EnsureNotDisposed(this, disposed);
 
-                var pixel = ((byte*)bmpData) + (bmp.RowBytes * y) + (x * sizeof(UInt32));
-                return Color.FromArgb(*(uint*)pixel);
+                fixed (Byte* pixel = &bmpData[y * stride + (x * sizeof(UInt32))])
+                {
+                    return Color.FromArgb(*(UInt32*)pixel);
+                }
             }
         }
 
@@ -49,7 +65,7 @@ namespace TwistedLogik.Ultraviolet.Android.Graphics
             {
                 Contract.EnsureNotDisposed(this, disposed);
 
-                return bmpData;
+                return bmpDataHandle.AddrOfPinnedObject();
             }
         }
 
@@ -60,7 +76,7 @@ namespace TwistedLogik.Ultraviolet.Android.Graphics
             {
                 Contract.EnsureNotDisposed(this, disposed);
 
-                return bmp.RowBytes;
+                return stride;
             }
         }
 
@@ -71,7 +87,7 @@ namespace TwistedLogik.Ultraviolet.Android.Graphics
             {
                 Contract.EnsureNotDisposed(this, disposed);
 
-                return bmp.Width;
+                return width;
             }
         }
 
@@ -82,7 +98,7 @@ namespace TwistedLogik.Ultraviolet.Android.Graphics
             {
                 Contract.EnsureNotDisposed(this, disposed);
 
-                return bmp.Height;
+                return height;
             }
         }
 
@@ -95,18 +111,17 @@ namespace TwistedLogik.Ultraviolet.Android.Graphics
             if (disposed)
                 return;
 
-            if (disposing)
-            {
-                bmp.UnlockPixels();
-                bmp.Dispose();
-            }
+            bmpDataHandle.Free();
 
             disposed = true;
         }
 
         // State values.
-        private readonly Bitmap bmp;
-        private readonly IntPtr bmpData;
+        private readonly Byte[] bmpData;
+        private readonly GCHandle bmpDataHandle;
+        private readonly Int32 width;
+        private readonly Int32 height;
+        private readonly Int32 stride;
         private Boolean disposed;
     }
 }

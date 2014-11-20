@@ -70,15 +70,19 @@ namespace TwistedLogik.Ultraviolet.SDL2.Native
         {
             Contract.Require(source, "source");
 
-            var bmpSurface = new SDL_Surface(source.Width, source.Height);
-            for (int y = 0; y < source.Height; y++)
+            var width  = source.Width;
+            var height = source.Height;
+
+            var bmpSurface = new SDL_Surface(width, height);
+            for (int y = 0; y < height; y++)
             {
                 var pDst = (uint*)((byte*)bmpSurface.Native->pixels + (bmpSurface.Native->pitch * y));
-                for (int x = 0; x < source.Width; x++)
+                for (int x = 0; x < width; x++)
                 {
                     *pDst++ = source[x, y].ToArgb();
                 }
             }
+
             return bmpSurface;
         }
 
