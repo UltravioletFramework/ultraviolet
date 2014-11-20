@@ -41,12 +41,24 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics.Graphics2D
         /// <inheritdoc/>
         public override SpriteFont Process(ContentManager manager, IContentProcessorMetadata metadata, XDocument input)
         {
-            var characterRegions = ProcessCharacterRegions(input);
-            var faceRegular      = ProcessFace(manager, metadata, input, "Regular", characterRegions);
-            var faceBold         = ProcessFace(manager, metadata, input, "Bold", characterRegions);
-            var faceItalic       = ProcessFace(manager, metadata, input, "Italic", characterRegions);
-            var faceBoldItalic   = ProcessFace(manager, metadata, input, "BoldItalic", characterRegions);
-            return new SpriteFont(manager.Ultraviolet, faceRegular, faceBold, faceItalic, faceBoldItalic);
+            var textures = (from element in input.Root.Elements("Face") select GetTextureName(metadata, element)).Distinct()
+                .ToDictionary(x => x, x => manager.Import<SDL_Surface>(x));
+            try
+            {
+                var characterRegions = ProcessCharacterRegions(input);
+                var faceRegular      = ProcessFace(textures, manager, metadata, input, "Regular", characterRegions);
+                var faceBold         = ProcessFace(textures, manager, metadata, input, "Bold", characterRegions);
+                var faceItalic       = ProcessFace(textures, manager, metadata, input, "Italic", characterRegions);
+                var faceBoldItalic   = ProcessFace(textures, manager, metadata, input, "BoldItalic", characterRegions);
+                return new SpriteFont(manager.Ultraviolet, faceRegular, faceBold, faceItalic, faceBoldItalic);
+            }
+            finally
+            {
+                foreach (var texture in textures)
+                {
+                    texture.Value.Dispose();
+                }
+            }
         }
 
         /// <inheritdoc/>
@@ -329,13 +341,14 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics.Graphics2D
         /// <summary>
         /// Processes the definition for a single font face.
         /// </summary>
+        /// <param name="textures">A dictionary containing the textures used by this font.</param>
         /// <param name="manager">The content manager with which the asset is being processed.</param>
         /// <param name="metadata">The asset's metadata.</param>
         /// <param name="input">The input data structure to process.</param>
         /// <param name="style">The style of the font face to process.</param>
         /// <param name="characterRegions">The font's list of character regions.</param>
         /// <returns>The processed font face, or null if the specified style does not exist in the font.</returns>
-        private static SpriteFontFace ProcessFace(ContentManager manager, IContentProcessorMetadata metadata, XDocument input, String style, IEnumerable<CharacterRegion> characterRegions)
+        private static SpriteFontFace ProcessFace(Dictionary<String, SDL_Surface> textures, ContentManager manager, IContentProcessorMetadata metadata, XDocument input, String style, IEnumerable<CharacterRegion> characterRegions)
         {
             var element = input.Root.Elements("Face").Where(x => x.AttributeValueString("Style") == style).SingleOrDefault();
             if (element != null)
@@ -344,11 +357,8 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics.Graphics2D
                 var texture       = manager.Load<Texture2D>(textureName);
                 var textureRegion = GetTextureRegion(element);
 
-                var glyphs = default(IEnumerable<Rectangle>);
-                using (var surface = manager.Import<SDL_Surface>(textureName))
-                {
-                    glyphs = OpenGLSpriteFontHelper.IdentifyGlyphs(surface, textureRegion);
-                }
+                var surface = textures[textureName];
+                var glyphs = OpenGLSpriteFontHelper.IdentifyGlyphs(surface, textureRegion);
 
                 var face = new SpriteFontFace(manager.Ultraviolet, texture, characterRegions, glyphs);
 
