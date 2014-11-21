@@ -62,7 +62,10 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
 
             foreach (var device in devicesByPlayer)
             {
-                device.ResetDeviceState();
+                if (device != null)
+                {
+                    device.ResetDeviceState();
+                }
             }
         }
 

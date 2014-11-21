@@ -39,7 +39,8 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
         /// </summary>
         public void OnUp()
         {
-            this.down = false;
+            this.down     = false;
+            this.released = true;
         }
 
         /// <summary>
