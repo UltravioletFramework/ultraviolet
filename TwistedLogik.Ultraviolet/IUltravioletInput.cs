@@ -116,6 +116,16 @@ namespace TwistedLogik.Ultraviolet
         TouchDevice GetTouchDeviceByIndex(Int32 index);
 
         /// <summary>
+        /// Gets or sets a value indicating whether the input subsystem should emulate
+        /// mouse inputs using touch inputs.
+        /// </summary>
+        Boolean EmulateMouseWithTouchInput
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
         /// Occurs when a game pad is connected to the system.
         /// </summary>
         event GamePadConnectionEventHandler GamePadConnected;

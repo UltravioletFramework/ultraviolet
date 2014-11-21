@@ -259,6 +259,9 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
         /// </summary>
         private void OnMouseMotion(ref SDL_MouseMotionEvent evt)
         {
+            if (!Ultraviolet.GetInput().EmulateMouseWithTouchInput && evt.which == SDL_TOUCH_MOUSEID)
+                return;
+
             var window = Ultraviolet.GetPlatform().Windows.GetByID((int)evt.windowID);
 
             this.x = evt.x;
@@ -272,6 +275,9 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
         /// </summary>
         private void OnMouseButtonDown(ref SDL_MouseButtonEvent evt)
         {
+            if (!Ultraviolet.GetInput().EmulateMouseWithTouchInput && evt.which == SDL_TOUCH_MOUSEID)
+                return;
+
             var window = Ultraviolet.GetPlatform().Windows.GetByID((int)evt.windowID);
             var button = GetUltravioletButton(evt.button);
 
@@ -285,6 +291,9 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
         /// </summary>
         private void OnMouseButtonUp(ref SDL_MouseButtonEvent evt)
         {
+            if (!Ultraviolet.GetInput().EmulateMouseWithTouchInput && evt.which == SDL_TOUCH_MOUSEID)
+                return;
+
             var window = Ultraviolet.GetPlatform().Windows.GetByID((int)evt.windowID);
             var button = GetUltravioletButton(evt.button);
 
@@ -310,11 +319,17 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
         /// </summary>
         private void OnMouseWheel(ref SDL_MouseWheelEvent evt)
         {
+            if (!Ultraviolet.GetInput().EmulateMouseWithTouchInput && evt.which == SDL_TOUCH_MOUSEID)
+                return;
+
             var window = Ultraviolet.GetPlatform().Windows.GetByID((int)evt.windowID);
             wheelDeltaX = evt.x;
             wheelDeltaY = evt.y;
             OnWheelScrolled(window, evt.x, evt.y);
         }
+
+        // The device identifier of the touch-based mouse emulator.
+        private const UInt32 SDL_TOUCH_MOUSEID = unchecked((UInt32)(-1));
 
         // Property values.
         private Int32 x;

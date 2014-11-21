@@ -181,6 +181,23 @@ namespace TwistedLogik.Ultraviolet.SDL2
         }
 
         /// <inheritdoc/>
+        public Boolean EmulateMouseWithTouchInput
+        {
+            get
+            {
+                Contract.EnsureNotDisposed(this, Disposed);
+
+                return this.emulateMouseWithTouchInput;
+            }
+            set
+            {
+                Contract.EnsureNotDisposed(this, Disposed);
+
+                this.emulateMouseWithTouchInput = value;
+            }
+        }
+
+        /// <inheritdoc/>
         public event UltravioletSubsystemUpdateEventHandler Updating;
 
         /// <inheritdoc/>
@@ -252,5 +269,8 @@ namespace TwistedLogik.Ultraviolet.SDL2
         private SDL2MouseDevice mouse;
         private GamePadDeviceInfo gamePadInfo;
         private TouchDeviceInfo touchInfo;
+
+        // Property values.
+        private Boolean emulateMouseWithTouchInput = true;
     }
 }
