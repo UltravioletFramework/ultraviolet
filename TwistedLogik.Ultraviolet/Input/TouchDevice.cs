@@ -34,6 +34,17 @@ namespace TwistedLogik.Ultraviolet.Input
     public delegate void TouchFingerMotionEventHandler(TouchDevice device, Int64 fingerID, Single x, Single y, Single dx, Single dy, Single pressure);
 
     /// <summary>
+    /// Represents the method that is called when a multitouch gesture is performed.
+    /// </summary>
+    /// <param name="device">The <see cref="TouchDevice"/> that raised the event.</param>
+    /// <param name="x">The x-coordinate of the normalized center of the gesture.</param>
+    /// <param name="y">The y-coordinate of the normalized center of the gesture.</param>
+    /// <param name="theta">The amount that the fingers rotated during the gesture.</param>
+    /// <param name="distance">The amount that the fingers pinched during the gesture.</param>
+    /// <param name="numfingers">The number of fingers that were used in the gesture.</param>
+    public delegate void MultiTouchEventHandler(TouchDevice device, Single x, Single y, Single theta, Single distance, Int32 numfingers);
+
+    /// <summary>
     /// Represents touch input.
     /// </summary>
     public abstract class TouchDevice : UltravioletResource
@@ -113,6 +124,11 @@ namespace TwistedLogik.Ultraviolet.Input
         public event TouchFingerMotionEventHandler FingerMotion;
 
         /// <summary>
+        /// Occurs when a multi-touch gesture is performed.
+        /// </summary>
+        public event MultiTouchEventHandler MultiTouchGesture;
+
+        /// <summary>
         /// Raises the <see cref="Tap"/> event.
         /// </summary>
         /// <param name="fingerID">A value which identifies the finger which was tapped.</param>
@@ -174,6 +190,23 @@ namespace TwistedLogik.Ultraviolet.Input
             if (temp != null)
             {
                 temp(this, fingerID, x, y, dx, dy, pressure);
+            }
+        }
+
+        /// <summary>
+        /// Raises the <see cref="MultiTouchGesture"/> event.
+        /// </summary>
+        /// <param name="x">The x-coordinate of the normalized center of the gesture.</param>
+        /// <param name="y">The y-coordinate of the normalized center of the gesture.</param>
+        /// <param name="theta">The amount that the fingers rotated during the gesture.</param>
+        /// <param name="distance">The amount that the fingers pinched during the gesture.</param>
+        /// <param name="numfingers">The number of fingers that were used in the gesture.</param>
+        protected virtual void OnMultiTouchGesture(Single x, Single y, Single theta, Single distance, Int32 numfingers)
+        {
+            var temp = MultiTouchGesture;
+            if (temp != null)
+            {
+                temp(this, x, y, theta, distance, numfingers);
             }
         }
     }

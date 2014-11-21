@@ -69,6 +69,15 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
                         OnFingerMotion(evt.tfinger.fingerId, evt.tfinger.x, evt.tfinger.y, evt.tfinger.dx, evt.tfinger.dy, evt.tfinger.pressure);
                     }
                     break;
+
+                case SDL_EventType.MULTIGESTURE:
+                    {
+                        if (evt.mgesture.touchId != sdlTouchID)
+                            return;
+
+                        OnMultiTouchGesture(evt.mgesture.x, evt.mgesture.y, evt.mgesture.dTheta, evt.mgesture.dDist, evt.mgesture.numFingers);
+                    }
+                    break;
             }
         }
 
