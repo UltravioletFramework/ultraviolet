@@ -1,9 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
-<Effect>
-  <Technique Name="Default">
-    <Pass Name="Pass1">
-      <VertexShader>Effects/Shader.vert</VertexShader>
-      <FragmentShader>Effects/Shader.frag</FragmentShader>
-    </Pass>
-  </Technique>
-</Effect>
