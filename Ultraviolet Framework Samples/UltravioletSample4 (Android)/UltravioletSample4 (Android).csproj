@@ -1,0 +1,160 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{BAC2B005-82B1-40A9-A2C3-1D2A21AB1185}</ProjectGuid>
+    <ProjectTypeGuids>{EFBA0AD7-5A72-4C68-AF49-83D382785DCF};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>UltravioletSample</RootNamespace>
+    <AssemblyName>UltravioletSample4</AssemblyName>
+    <FileAlignment>512</FileAlignment>
+    <AndroidApplication>true</AndroidApplication>
+    <AndroidResgenFile>Resources\Resource.Designer.cs</AndroidResgenFile>
+    <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
+    <AndroidUseLatestPlatformSdk>
+    </AndroidUseLatestPlatformSdk>
+    <AndroidManifest>Properties\AndroidManifest.xml</AndroidManifest>
+    <TargetFrameworkVersion>v4.3</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;ANDROID</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AndroidUseSharedRuntime>True</AndroidUseSharedRuntime>
+    <AndroidLinkMode>None</AndroidLinkMode>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE;ANDROID</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AndroidUseSharedRuntime>False</AndroidUseSharedRuntime>
+    <AndroidLinkMode>SdkOnly</AndroidLinkMode>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Mono.Android" />
+    <Reference Include="mscorlib" />
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\Dependencies\Android\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="org.libsdl.app">
+      <HintPath>..\Dependencies\Android\org.libsdl.app.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Xml" />
+    <Reference Include="TwistedLogik.Gluon">
+      <HintPath>..\Dependencies\Android\TwistedLogik.Gluon.dll</HintPath>
+    </Reference>
+    <Reference Include="TwistedLogik.Nucleus">
+      <HintPath>..\Dependencies\Android\TwistedLogik.Nucleus.dll</HintPath>
+    </Reference>
+    <Reference Include="TwistedLogik.Ultraviolet">
+      <HintPath>..\Dependencies\Android\TwistedLogik.Ultraviolet.dll</HintPath>
+    </Reference>
+    <Reference Include="TwistedLogik.Ultraviolet.Android">
+      <HintPath>..\Dependencies\Android\TwistedLogik.Ultraviolet.Android.dll</HintPath>
+    </Reference>
+    <Reference Include="TwistedLogik.Ultraviolet.BASS">
+      <HintPath>..\Dependencies\Android\TwistedLogik.Ultraviolet.BASS.dll</HintPath>
+    </Reference>
+    <Reference Include="TwistedLogik.Ultraviolet.OpenGL">
+      <HintPath>..\Dependencies\Android\TwistedLogik.Ultraviolet.OpenGL.dll</HintPath>
+    </Reference>
+    <Reference Include="TwistedLogik.Ultraviolet.SDL2">
+      <HintPath>..\Dependencies\Android\TwistedLogik.Ultraviolet.SDL2.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\UltravioletSample4\Assets\GlobalTextureID.cs">
+      <Link>Assets\GlobalTextureID.cs</Link>
+    </Compile>
+    <Compile Include="..\UltravioletSample4\Game.cs">
+      <Link>Game.cs</Link>
+    </Compile>
+    <Compile Include="..\UltravioletSample4\Input\GameInputActions.cs">
+      <Link>Input\GameInputActions.cs</Link>
+    </Compile>
+    <Compile Include="..\UltravioletSample4\Input\IUltravioletInputExtensions.cs">
+      <Link>Input\IUltravioletInputExtensions.cs</Link>
+    </Compile>
+    <Compile Include="Resources\Resource.Designer.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidNativeLibrary Include="..\Dependencies\Android\armeabi-v7a\libbass.so">
+      <Link>lib\armeabi-v7a\libbass.so</Link>
+    </AndroidNativeLibrary>
+    <AndroidNativeLibrary Include="..\Dependencies\Android\armeabi-v7a\libbass_fx.so">
+      <Link>lib\armeabi-v7a\libbass_fx.so</Link>
+    </AndroidNativeLibrary>
+    <AndroidNativeLibrary Include="..\Dependencies\Android\armeabi-v7a\libSDL2.so">
+      <Link>lib\armeabi-v7a\libSDL2.so</Link>
+    </AndroidNativeLibrary>
+    <AndroidNativeLibrary Include="..\Dependencies\Android\armeabi-v7a\libSDL2main.so">
+      <Link>lib\armeabi-v7a\libSDL2main.so</Link>
+    </AndroidNativeLibrary>
+    <AndroidNativeLibrary Include="..\Dependencies\Android\armeabi\libbass.so">
+      <Link>lib\armeabi\libbass.so</Link>
+    </AndroidNativeLibrary>
+    <AndroidNativeLibrary Include="..\Dependencies\Android\armeabi\libbass_fx.so">
+      <Link>lib\armeabi\libbass_fx.so</Link>
+    </AndroidNativeLibrary>
+    <AndroidNativeLibrary Include="..\Dependencies\Android\armeabi\libSDL2.so">
+      <Link>lib\armeabi\libSDL2.so</Link>
+    </AndroidNativeLibrary>
+    <AndroidNativeLibrary Include="..\Dependencies\Android\armeabi\libSDL2main.so">
+      <Link>lib\armeabi\libSDL2main.so</Link>
+    </AndroidNativeLibrary>
+    <AndroidNativeLibrary Include="..\Dependencies\Android\x86\libbass.so">
+      <Link>lib\x86\libbass.so</Link>
+    </AndroidNativeLibrary>
+    <AndroidNativeLibrary Include="..\Dependencies\Android\x86\libbass_fx.so">
+      <Link>lib\x86\libbass_fx.so</Link>
+    </AndroidNativeLibrary>
+    <AndroidNativeLibrary Include="..\Dependencies\Android\x86\libSDL2.so">
+      <Link>lib\x86\libSDL2.so</Link>
+    </AndroidNativeLibrary>
+    <AndroidNativeLibrary Include="..\Dependencies\Android\x86\libSDL2main.so">
+      <Link>lib\x86\libSDL2main.so</Link>
+    </AndroidNativeLibrary>
+    <EmbeddedResource Include="Content.uvarc" />
+    <None Include="Resources\AboutResources.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\Main.axml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\values\Strings.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\Icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Properties\AndroidManifest.xml" />
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <UserProperties ProjectLinkReference="2c6b942e-3d19-4211-af85-82402fd31a73" ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" />
+    </VisualStudio>
+  </ProjectExtensions>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+     Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

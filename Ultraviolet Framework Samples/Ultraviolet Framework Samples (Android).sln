@@ -3,16 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.30723.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UltravioletSample1", "UltravioletSample1\UltravioletSample1.csproj", "{254C229D-BA03-4CED-A139-F4213F8AF6D9}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UltravioletSample2", "UltravioletSample2\UltravioletSample2.csproj", "{B13372AD-66EA-4829-A5DE-6032BB60AF7C}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UltravioletSample3", "UltravioletSample3\UltravioletSample3.csproj", "{7CCFA0D4-F43D-4C66-8DE1-B23FA1AFE41E}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UltravioletSample4", "UltravioletSample4\UltravioletSample4.csproj", "{2C6B942E-3D19-4211-AF85-82402FD31A73}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UltravioletSample5", "UltravioletSample5\UltravioletSample5.csproj", "{AB3ABBD1-B987-4346-91FC-69D0694008A9}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Dependencies", "Dependencies", "{5A2E7DCA-0406-4807-8BC7-96D51857C9CB}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "x64", "x64", "{5FDDC7C1-5260-4304-A2A1-F050ACFF37C7}"
@@ -47,18 +37,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "unix", "unix", "{C86FC06A-1
 		Dependencies\x86\unix\libSDL2.so = Dependencies\x86\unix\libSDL2.so
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UltravioletSample6", "UltravioletSample6\UltravioletSample6.csproj", "{B689C7BE-E5E6-49AF-A594-F7771A74C7D4}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UltravioletSample7", "UltravioletSample7\UltravioletSample7.csproj", "{990B2616-F387-4D0B-90A3-765CE28F3595}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UltravioletSample8", "UltravioletSample8\UltravioletSample8.csproj", "{BEED8045-00D0-45E7-BCA4-D13F1D93FDA8}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UltravioletSample9", "UltravioletSample9\UltravioletSample9.csproj", "{DBD61736-8EB2-4D5C-BBB2-110FC9A10C7D}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UltravioletSample10", "UltravioletSample10\UltravioletSample10.csproj", "{573824F0-2ACC-46F4-95EE-79B78B0E36D6}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UltravioletSample11", "UltravioletSample11\UltravioletSample11.csproj", "{844F907A-E757-4D55-8B66-13A2CA51467D}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UltravioletSample1 (Android)", "UltravioletSample1 (Android)\UltravioletSample1 (Android).csproj", "{677767F0-C665-4A84-A1D2-3FFBA90D25B7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UltravioletSample3 (Android)", "UltravioletSample3 (Android)\UltravioletSample3 (Android).csproj", "{3E90954A-0BD4-4855-AE3D-698761D95E5E}"
@@ -87,50 +65,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{254C229D-BA03-4CED-A139-F4213F8AF6D9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{254C229D-BA03-4CED-A139-F4213F8AF6D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{254C229D-BA03-4CED-A139-F4213F8AF6D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{254C229D-BA03-4CED-A139-F4213F8AF6D9}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B13372AD-66EA-4829-A5DE-6032BB60AF7C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B13372AD-66EA-4829-A5DE-6032BB60AF7C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B13372AD-66EA-4829-A5DE-6032BB60AF7C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B13372AD-66EA-4829-A5DE-6032BB60AF7C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7CCFA0D4-F43D-4C66-8DE1-B23FA1AFE41E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7CCFA0D4-F43D-4C66-8DE1-B23FA1AFE41E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7CCFA0D4-F43D-4C66-8DE1-B23FA1AFE41E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7CCFA0D4-F43D-4C66-8DE1-B23FA1AFE41E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2C6B942E-3D19-4211-AF85-82402FD31A73}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2C6B942E-3D19-4211-AF85-82402FD31A73}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2C6B942E-3D19-4211-AF85-82402FD31A73}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2C6B942E-3D19-4211-AF85-82402FD31A73}.Release|Any CPU.Build.0 = Release|Any CPU
-		{AB3ABBD1-B987-4346-91FC-69D0694008A9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{AB3ABBD1-B987-4346-91FC-69D0694008A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{AB3ABBD1-B987-4346-91FC-69D0694008A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{AB3ABBD1-B987-4346-91FC-69D0694008A9}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B689C7BE-E5E6-49AF-A594-F7771A74C7D4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B689C7BE-E5E6-49AF-A594-F7771A74C7D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B689C7BE-E5E6-49AF-A594-F7771A74C7D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B689C7BE-E5E6-49AF-A594-F7771A74C7D4}.Release|Any CPU.Build.0 = Release|Any CPU
-		{990B2616-F387-4D0B-90A3-765CE28F3595}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{990B2616-F387-4D0B-90A3-765CE28F3595}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{990B2616-F387-4D0B-90A3-765CE28F3595}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{990B2616-F387-4D0B-90A3-765CE28F3595}.Release|Any CPU.Build.0 = Release|Any CPU
-		{BEED8045-00D0-45E7-BCA4-D13F1D93FDA8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{BEED8045-00D0-45E7-BCA4-D13F1D93FDA8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{BEED8045-00D0-45E7-BCA4-D13F1D93FDA8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{BEED8045-00D0-45E7-BCA4-D13F1D93FDA8}.Release|Any CPU.Build.0 = Release|Any CPU
-		{DBD61736-8EB2-4D5C-BBB2-110FC9A10C7D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{DBD61736-8EB2-4D5C-BBB2-110FC9A10C7D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{DBD61736-8EB2-4D5C-BBB2-110FC9A10C7D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{DBD61736-8EB2-4D5C-BBB2-110FC9A10C7D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{573824F0-2ACC-46F4-95EE-79B78B0E36D6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{573824F0-2ACC-46F4-95EE-79B78B0E36D6}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{573824F0-2ACC-46F4-95EE-79B78B0E36D6}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{573824F0-2ACC-46F4-95EE-79B78B0E36D6}.Release|Any CPU.Build.0 = Release|Any CPU
-		{844F907A-E757-4D55-8B66-13A2CA51467D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{844F907A-E757-4D55-8B66-13A2CA51467D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{844F907A-E757-4D55-8B66-13A2CA51467D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{844F907A-E757-4D55-8B66-13A2CA51467D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{677767F0-C665-4A84-A1D2-3FFBA90D25B7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{677767F0-C665-4A84-A1D2-3FFBA90D25B7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{677767F0-C665-4A84-A1D2-3FFBA90D25B7}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
