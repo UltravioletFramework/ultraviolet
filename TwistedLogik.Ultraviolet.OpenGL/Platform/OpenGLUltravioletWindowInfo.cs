@@ -83,7 +83,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
                 OnCurrentWindowChanged();
             }
 
-            if (windows.Count == 0)
+            if (windows.Count == 0 || (window == null && context == IntPtr.Zero))
             {
                 DesignateCurrentOpenGLWindow(null, context);
             }
@@ -519,8 +519,11 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
             if (SDL.GL_MakeCurrent(winptr, context) < 0)
                 throw new SDL2Exception();
 
-            if (SDL.GL_SetSwapInterval(win.SynchronizeWithVerticalRetrace ? 1 : 0) < 0)
-                throw new SDL2Exception();
+            if (context != IntPtr.Zero)
+            {
+                if (SDL.GL_SetSwapInterval(win.SynchronizeWithVerticalRetrace ? 1 : 0) < 0)
+                    throw new SDL2Exception();
+            }
 
             glwin = win;
             glcontext = context;

@@ -105,6 +105,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL
         {
             if (disposing && !Disposed)
             {
+                windows.DesignateCurrent(null, IntPtr.Zero);
                 foreach (OpenGLUltravioletWindow window in windows.ToList())
                 {
                     windows.Destroy(window);
