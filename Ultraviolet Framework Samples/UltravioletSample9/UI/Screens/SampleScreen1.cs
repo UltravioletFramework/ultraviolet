@@ -25,8 +25,6 @@ namespace UltravioletSample.UI.Screens
             this.font         = Content.Load<SpriteFont>("SegoeUI");
             this.blankTexture = globalContent.Load<Texture2D>(GlobalTextureID.Blank);
             this.textRenderer = new TextRenderer();
-
-            Ultraviolet.GetInput().GetTouchDevice().MaximumTapDelay = 20000;
         }
 
         protected override void OnUpdating(UltravioletTime time)
