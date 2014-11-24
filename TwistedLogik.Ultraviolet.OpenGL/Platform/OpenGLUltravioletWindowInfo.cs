@@ -515,7 +515,13 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
         private void DesignateCurrentOpenGLWindow(IUltravioletWindow window, IntPtr context)
         {
             if (context == IntPtr.Zero)
+            {
+                if (glcontext == IntPtr.Zero)
+                {
+                    return;
+                }
                 context = glcontext;
+            }
 
             var win = (OpenGLUltravioletWindow)(window ?? master);
             var winptr = (IntPtr)win;
