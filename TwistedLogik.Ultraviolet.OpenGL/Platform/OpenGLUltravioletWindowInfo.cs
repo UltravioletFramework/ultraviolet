@@ -514,16 +514,16 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
         /// </summary>
         private void DesignateCurrentOpenGLWindow(IUltravioletWindow window, IntPtr context)
         {
+            if (context == IntPtr.Zero)
+                context = glcontext;
+
             var win = (OpenGLUltravioletWindow)(window ?? master);
             var winptr = (IntPtr)win;
             if (SDL.GL_MakeCurrent(winptr, context) < 0)
                 throw new SDL2Exception();
 
-            if (context != IntPtr.Zero)
-            {
-                if (SDL.GL_SetSwapInterval(win.SynchronizeWithVerticalRetrace ? 1 : 0) < 0)
-                    throw new SDL2Exception();
-            }
+            if (SDL.GL_SetSwapInterval(win.SynchronizeWithVerticalRetrace ? 1 : 0) < 0)
+                throw new SDL2Exception();
 
             glwin = win;
             glcontext = context;
