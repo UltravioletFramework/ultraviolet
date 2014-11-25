@@ -97,18 +97,18 @@ What follows is a tentative road map for the next several major revisions of Ult
 
 * __Ultraviolet 1.0__
   * _Miscellaneous_
-    * First release
+    * ~~First release~~
 * __Ultraviolet 1.1__
   * _Miscellaneous_
-    * Android support
-    * Performance improvements
+    * ~~Android support~~
+    * ~~Performance improvements~~
     * ~~Design assembly (i.e. ``TypeConverter`` implementations) for Nucleus~~
     * ~~Design assembly (i.e. ``TypeConverter`` implementations) for Ultraviolet~~
   * _Input_
     * ~~New input device: GamePad~~
-    * New input device: TouchPad
+    * ~~New input device: TouchPad~~
   * _Graphics_
-    * Support for Direct State Access (DSA)
+    * ~~Support for Direct State Access (DSA)~~
     * ~~Better support for East Asian character sets in ``SpriteFont``~~
 * __Ultraviolet 1.2__
   * _UI_
