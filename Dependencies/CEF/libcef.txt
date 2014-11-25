@@ -1,1 +1,0 @@
-Due to its size, the libcef dependency used by the deprecated XiliumCef layout provider has been removed from this repository.  The required version is 3.1916.1721.0.
