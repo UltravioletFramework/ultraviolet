@@ -975,6 +975,130 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
             DrawStringInternal(fontFace, new StringSource(text), position, color, rotation, origin, scale, effects, layerDepth, data);
         }
 
+        public void DrawImage(StretchableImage9 image, RectangleF destinationRectangle, Color color, Single layerDepth, SpriteData data)
+        {
+            throw new NotImplementedException();
+        }
+                
+        private void TileImageSegment(Texture2D texture, Vector2 position, RectangleF destinationRectangle, Rectangle sourceRectangle, Color color, Single rotation, Vector2 origin, SpriteEffects effects, Single layerDepth, SpriteData data)
+        {
+            var tileCountX = (Int32)Math.Ceiling(destinationRectangle.Width / (Single)sourceRectangle.Width);
+            var tileCountY = (Int32)Math.Ceiling(destinationRectangle.Height / (Single)sourceRectangle.Height);
+
+            var cx = 0f;
+            var cy = 0f;
+
+            for (int y = 0; y < tileCountY; y++)
+            {
+                for (int x = 0; x < tileCountX; x++)
+                {
+                    var tileWidth  = Math.Min(sourceRectangle.Width, destinationRectangle.Width - cx);
+                    var tileHeight = Math.Min(sourceRectangle.Height, destinationRectangle.Height - cy);
+
+                    var tileRegion   = new RectangleF(destinationRectangle.X, destinationRectangle.Y, tileWidth, tileHeight);
+                    var tileSource   = new Rectangle(sourceRectangle.X, sourceRectangle.Y, (Int32)tileWidth, (Int32)tileHeight);
+                    var tilePosition = new Vector2(position.X + cx, position.Y + cy);
+                    var tileOrigin   = origin - tilePosition;
+                    Draw(texture, tileRegion, tileSource, color, rotation, tileOrigin, effects, layerDepth, data);
+
+                    cx = cx + sourceRectangle.Width;
+                }
+                cx = 0;
+                cy = cy + sourceRectangle.Height;
+            }
+        }
+
+        public void DrawImage(StretchableImage9 image, Vector2 position, Int32 width, Int32 height, Color color, Single rotation, Vector2 origin, SpriteEffects effects, Single layerDepth, SpriteData data)
+        {
+            Contract.Require(image, "image");
+            Contract.EnsureNotDisposed(this, Disposed);
+            Contract.Ensure(begun, UltravioletStrings.BeginMustBeCalledBeforeDraw);
+            Contract.Ensure(image.Texture != null, "TODO");
+
+            effects |= SpriteEffects.OriginRelativeToDestination;
+
+            var srcStretchableWidth  = image.TextureRegion.Width - (image.Left + image.Right);
+            var srcStretchableHeight = image.TextureRegion.Height - (image.Top + image.Bottom);
+
+            var dstStretchableWidth  = width - (image.Left + image.Right);
+            var dstStretchableHeight = height - (image.Top + image.Bottom);
+
+            // Center
+            var centerSource   = new Rectangle(image.TextureRegion.Left + image.Left, image.TextureRegion.Top + image.Top, srcStretchableWidth, srcStretchableHeight);
+            var centerRegion   = new RectangleF(position.X, position.Y, dstStretchableWidth, dstStretchableHeight);
+            var centerPosition = new Vector2(image.Left, image.Top);
+            if (image.TileCenter)
+            {
+                TileImageSegment(image.Texture, centerPosition, centerRegion, centerSource, color, rotation, origin, effects, layerDepth, data);
+            }
+            else
+            {
+                var centerOrigin   = origin - centerPosition;
+                Draw(image.Texture, centerRegion, centerSource, color, rotation, centerOrigin, effects, layerDepth, data);
+            }
+
+            // Edges
+            var leftSource = new Rectangle(image.TextureRegion.Left, image.TextureRegion.Top + image.Top, image.Left, srcStretchableHeight);
+            var leftRegion = new RectangleF(position.X, position.Y, image.Left, dstStretchableHeight);
+            var leftPosition = new Vector2(0, image.Top);
+
+            var rightSource = new Rectangle(image.TextureRegion.Right - image.Right, image.TextureRegion.Top + image.Top, image.Right, srcStretchableHeight);
+            var rightRegion = new RectangleF(position.X, position.Y, image.Right, dstStretchableHeight);
+            var rightPosition = new Vector2(width - image.Right, image.Top);
+
+            var topSource = new Rectangle(image.TextureRegion.Left + image.Left, image.TextureRegion.Top, srcStretchableWidth, image.Top);
+            var topRegion = new RectangleF(position.X, position.Y, dstStretchableWidth, image.Top);
+            var topPosition = new Vector2(image.Left, 0);
+
+            var bottomSource = new Rectangle(image.TextureRegion.Left + image.Left, image.TextureRegion.Bottom - image.Bottom, srcStretchableWidth, image.Bottom);
+            var bottomRegion = new RectangleF(position.X, position.Y, dstStretchableWidth, image.Bottom);
+            var bottomPosition = new Vector2(image.Left, height - image.Bottom);
+
+            if (image.TileEdges)
+            {
+                TileImageSegment(image.Texture, leftPosition, leftRegion, leftSource, color, rotation, origin, effects, layerDepth, data);
+                TileImageSegment(image.Texture, rightPosition, rightRegion, rightSource, color, rotation, origin, effects, layerDepth, data);
+                TileImageSegment(image.Texture, topPosition, topRegion, topSource, color, rotation, origin, effects, layerDepth, data);
+                TileImageSegment(image.Texture, bottomPosition, bottomRegion, bottomSource, color, rotation, origin, effects, layerDepth, data);
+            }
+            else
+            {
+                var leftOrigin = origin - leftPosition;
+                Draw(image.Texture, leftRegion, leftSource, color, rotation, leftOrigin, effects, layerDepth, data);
+                var rightOrigin = origin - rightPosition;
+                Draw(image.Texture, rightRegion, rightSource, color, rotation, rightOrigin, effects, layerDepth, data);
+                var topOrigin = origin - topPosition;
+                Draw(image.Texture, topRegion, topSource, color, rotation, topOrigin, effects, layerDepth, data);
+                var bottomOrigin = origin - bottomPosition;
+                Draw(image.Texture, bottomRegion, bottomSource, color, rotation, bottomOrigin, effects, layerDepth, data);
+            }
+
+            // Corners
+            var cornerTLRegion   = new RectangleF(position.X, position.Y, image.Left, image.Top);
+            var cornerTLPosition = new Vector2(0, 0);
+            var cornerTLOrigin   = origin - cornerTLPosition;
+            var cornerTLSource   = new Rectangle(image.TextureRegion.Left, image.TextureRegion.Top, image.Left, image.Top);
+            Draw(image.Texture, cornerTLRegion, cornerTLSource, color, rotation, cornerTLOrigin, effects, layerDepth, data);
+
+            var cornerTRRegion   = new RectangleF(position.X, position.Y, image.Right, image.Top);
+            var cornerTRPosition = new Vector2(width - image.Right, 0);
+            var cornerTROrigin   = origin - cornerTRPosition;
+            var cornerTRSource   = new Rectangle(image.TextureRegion.Right - image.Right, image.TextureRegion.Top, image.Right, image.Top);
+            Draw(image.Texture, cornerTRRegion, cornerTRSource, color, rotation, cornerTROrigin, effects, layerDepth, data);
+
+            var cornerBLRegion   = new RectangleF(position.X, position.Y, image.Left, image.Bottom);
+            var cornerBLPosition = new Vector2(0, height - image.Bottom);
+            var cornerBLOrigin   = origin - cornerBLPosition;
+            var cornerBLSource   = new Rectangle(image.TextureRegion.Left, image.TextureRegion.Bottom - image.Bottom, image.Left, image.Bottom);
+            Draw(image.Texture, cornerBLRegion, cornerBLSource, color, rotation, cornerBLOrigin, effects, layerDepth, data);
+
+            var cornerBRRegion   = new RectangleF(position.X, position.Y, image.Right, image.Bottom);
+            var cornerBRPosition = new Vector2(width - image.Right, height - image.Bottom);
+            var cornerBROrigin   = origin - cornerBRPosition;
+            var cornerBRSource   = new Rectangle(image.TextureRegion.Right - image.Right, image.TextureRegion.Bottom - image.Bottom, image.Left, image.Bottom);
+            Draw(image.Texture, cornerBRRegion, cornerBRSource, color, rotation, cornerBROrigin, effects, layerDepth, data);
+        }
+
         /// <summary>
         /// Gets the maximum number of sprites that can drawn in a single batch by this <see cref="SpriteBatch"/>.
         /// </summary>
@@ -1035,8 +1159,16 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         [CLSCompliant(false)]
         protected void CalculateRelativeOrigin(SpriteHeader* metadata)
         {
-            cachedOriginX = (metadata->SourceWidth == 0) ? 0 : metadata->OriginX / (float)metadata->SourceWidth;
-            cachedOriginY = (metadata->SourceHeight == 0) ? 0 : metadata->OriginY / (float)metadata->SourceHeight;
+            if ((metadata->Effects & SpriteEffects.OriginRelativeToDestination) == SpriteEffects.OriginRelativeToDestination)
+            {
+                cachedOriginX = (metadata->DestinationWidth == 0) ? 0 : metadata->OriginX / (float)metadata->DestinationWidth;
+                cachedOriginY = (metadata->DestinationHeight == 0) ? 0 : metadata->OriginY / (float)metadata->DestinationHeight;
+            }
+            else
+            {
+                cachedOriginX = (metadata->SourceWidth == 0) ? 0 : metadata->OriginX / (float)metadata->SourceWidth;
+                cachedOriginY = (metadata->SourceHeight == 0) ? 0 : metadata->OriginY / (float)metadata->SourceHeight;
+            }
         }
 
         /// <summary>

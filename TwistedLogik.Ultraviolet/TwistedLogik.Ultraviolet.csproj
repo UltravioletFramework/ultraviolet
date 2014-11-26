@@ -182,6 +182,7 @@
     <Compile Include="Graphics\Graphics2D\sspack\OutOfSpaceException.cs" />
     <Compile Include="Graphics\Graphics2D\sspack\Packing\ArevaloRectanglePacker.cs" />
     <Compile Include="Graphics\Graphics2D\sspack\Packing\RectanglePacker.cs" />
+    <Compile Include="Graphics\Graphics2D\StretchableImage9.cs" />
     <Compile Include="Graphics\Graphics2D\StringSource.cs" />
     <Compile Include="Graphics\Graphics2D\SpriteFont.cs" />
     <Compile Include="Graphics\Graphics2D\SpriteFontKerning.cs" />
