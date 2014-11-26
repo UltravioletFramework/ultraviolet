@@ -974,40 +974,64 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
 
             DrawStringInternal(fontFace, new StringSource(text), position, color, rotation, origin, scale, effects, layerDepth, data);
         }
-
-        public void DrawImage(StretchableImage9 image, RectangleF destinationRectangle, Color color, Single layerDepth, SpriteData data)
+        
+        /// <summary>
+        /// Draws a stretchable image.
+        /// </summary>
+        /// <param name="image">A <see cref="StretchableImage9"/> that represents the image to draw.</param>
+        /// <param name="position">The position at which to draw the image.</param>
+        /// <param name="width">The width of the image in pixels.</param>
+        /// <param name="height">The height of the image in pixels.</param>
+        /// <param name="color">The image's color.</param>
+        public void DrawImage(StretchableImage9 image, Vector2 position, Int32 width, Int32 height, Color color)
         {
-            throw new NotImplementedException();
-        }
-                
-        private void TileImageSegment(Texture2D texture, Vector2 position, RectangleF destinationRectangle, Rectangle sourceRectangle, Color color, Single rotation, Vector2 origin, SpriteEffects effects, Single layerDepth, SpriteData data)
+            DrawImage(image, position, width, height, color, 0f, Vector2.Zero, SpriteEffects.None, 0f, default(SpriteData));
+        }        
+
+        /// <summary>
+        /// Draws a stretchable image.
+        /// </summary>
+        /// <param name="image">A <see cref="StretchableImage9"/> that represents the image to draw.</param>
+        /// <param name="position">The position at which to draw the image.</param>
+        /// <param name="width">The width of the image in pixels.</param>
+        /// <param name="height">The height of the image in pixels.</param>
+        /// <param name="color">The image's color.</param>
+        /// <param name="rotation">The image's rotation in radians.</param>
+        /// <param name="origin">The image's point of origin.</param>
+        /// <param name="effects">The image's rendering effects.</param>
+        /// <param name="layerDepth">The image's layer depth.</param>
+        public void DrawImage(StretchableImage9 image, Vector2 position, Int32 width, Int32 height, Color color, Single rotation, Vector2 origin, SpriteEffects effects, Single layerDepth)
         {
-            var tileCountX = (Int32)Math.Ceiling(destinationRectangle.Width / (Single)sourceRectangle.Width);
-            var tileCountY = (Int32)Math.Ceiling(destinationRectangle.Height / (Single)sourceRectangle.Height);
-
-            var cx = 0f;
-            var cy = 0f;
-
-            for (int y = 0; y < tileCountY; y++)
-            {
-                for (int x = 0; x < tileCountX; x++)
-                {
-                    var tileWidth  = Math.Min(sourceRectangle.Width, destinationRectangle.Width - cx);
-                    var tileHeight = Math.Min(sourceRectangle.Height, destinationRectangle.Height - cy);
-
-                    var tileRegion   = new RectangleF(destinationRectangle.X, destinationRectangle.Y, tileWidth, tileHeight);
-                    var tileSource   = new Rectangle(sourceRectangle.X, sourceRectangle.Y, (Int32)tileWidth, (Int32)tileHeight);
-                    var tilePosition = new Vector2(position.X + cx, position.Y + cy);
-                    var tileOrigin   = origin - tilePosition;
-                    Draw(texture, tileRegion, tileSource, color, rotation, tileOrigin, effects, layerDepth, data);
-
-                    cx = cx + sourceRectangle.Width;
-                }
-                cx = 0;
-                cy = cy + sourceRectangle.Height;
-            }
+            DrawImage(image, position, width, height, color, rotation, origin, effects, layerDepth, default(SpriteData));
         }
 
+        /// <summary>
+        /// Draws a stretchable image.
+        /// </summary>
+        /// <param name="image">A <see cref="StretchableImage9"/> that represents the image to draw.</param>
+        /// <param name="position">The position at which to draw the image.</param>
+        /// <param name="width">The width of the image in pixels.</param>
+        /// <param name="height">The height of the image in pixels.</param>
+        /// <param name="color">The image's color.</param>
+        /// <param name="data">The image's custom data.</param>
+        public void DrawImage(StretchableImage9 image, Vector2 position, Int32 width, Int32 height, Color color, SpriteData data)
+        {
+            DrawImage(image, position, width, height, color, 0f, Vector2.Zero, SpriteEffects.None, 0f, data);
+        }        
+
+        /// <summary>
+        /// Draws a stretchable image.
+        /// </summary>
+        /// <param name="image">A <see cref="StretchableImage9"/> that represents the image to draw.</param>
+        /// <param name="position">The position at which to draw the image.</param>
+        /// <param name="width">The width of the image in pixels.</param>
+        /// <param name="height">The height of the image in pixels.</param>
+        /// <param name="color">The image's color.</param>
+        /// <param name="rotation">The image's rotation in radians.</param>
+        /// <param name="origin">The image's point of origin.</param>
+        /// <param name="effects">The image's rendering effects.</param>
+        /// <param name="layerDepth">The image's layer depth.</param>
+        /// <param name="data">The image's custom data.</param>
         public void DrawImage(StretchableImage9 image, Vector2 position, Int32 width, Int32 height, Color color, Single rotation, Vector2 origin, SpriteEffects effects, Single layerDepth, SpriteData data)
         {
             Contract.Require(image, "image");
@@ -1384,6 +1408,37 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
                 SpriteBatchCoordinator.RelinquishDeferred();
             }
             begun = false;
+        }
+
+        /// <summary>
+        /// Draws a tiled image segment.
+        /// </summary>
+        private void TileImageSegment(Texture2D texture, Vector2 position, RectangleF destinationRectangle, Rectangle sourceRectangle, Color color, Single rotation, Vector2 origin, SpriteEffects effects, Single layerDepth, SpriteData data)
+        {
+            var tileCountX = (Int32)Math.Ceiling(destinationRectangle.Width / (Single)sourceRectangle.Width);
+            var tileCountY = (Int32)Math.Ceiling(destinationRectangle.Height / (Single)sourceRectangle.Height);
+
+            var cx = 0f;
+            var cy = 0f;
+
+            for (int y = 0; y < tileCountY; y++)
+            {
+                for (int x = 0; x < tileCountX; x++)
+                {
+                    var tileWidth  = Math.Min(sourceRectangle.Width, destinationRectangle.Width - cx);
+                    var tileHeight = Math.Min(sourceRectangle.Height, destinationRectangle.Height - cy);
+
+                    var tileRegion   = new RectangleF(destinationRectangle.X, destinationRectangle.Y, tileWidth, tileHeight);
+                    var tileSource   = new Rectangle(sourceRectangle.X, sourceRectangle.Y, (Int32)tileWidth, (Int32)tileHeight);
+                    var tilePosition = new Vector2(position.X + cx, position.Y + cy);
+                    var tileOrigin   = origin - tilePosition;
+                    Draw(texture, tileRegion, tileSource, color, rotation, tileOrigin, effects, layerDepth, data);
+
+                    cx = cx + sourceRectangle.Width;
+                }
+                cx = 0;
+                cy = cy + sourceRectangle.Height;
+            }
         }
 
         /// <summary>
