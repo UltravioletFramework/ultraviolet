@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<LocalizedStrings>
+  <String Key="STYLESHEET_SYNTAX_ERROR">
+    <en-US>
+      <Variant>Syntax error in stylesheet near '{0}'</Variant>
+    </en-US>
+  </String>
+  <String Key="STYLESHEET_SYNTAX_UNTERMINATED_STRING">
+    <en-US>
+      <Variant>Unterminated string in stylesheet near '{0}'</Variant>
+    </en-US>
+  </String>
+  <String Key="STYLESHEET_SYNTAX_UNTERMINATED_SEQUENCE">
+    <en-US>
+      <Variant>Unterminated sequence in stylesheet near '{0}'</Variant>
+    </en-US>
+  </String>
+</LocalizedStrings>

@@ -15,7 +15,7 @@ namespace TwistedLogik.Ultraviolet.Content
         /// <param name="metadata">The asset's metadata.</param>
         /// <param name="input">The input data structure to process.</param>
         /// <returns>The game asset that was created.</returns>
-        public unsafe override XDocument Process(ContentManager manager, IContentProcessorMetadata metadata, XDocument input)
+        public override XDocument Process(ContentManager manager, IContentProcessorMetadata metadata, XDocument input)
         {
             return input;
         }

@@ -333,6 +333,14 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         }
 
         /// <summary>
+        /// Gets a value indicating whether the image's texture resource has been loaded.
+        /// </summary>
+        public Boolean IsLoaded
+        {
+            get { return texture != null; }
+        }
+
+        /// <summary>
         /// Parses a tiling parameter included in a string which represents a stretchable image.
         /// </summary>
         /// <param name="parameter">The parameter string to parse.</param>

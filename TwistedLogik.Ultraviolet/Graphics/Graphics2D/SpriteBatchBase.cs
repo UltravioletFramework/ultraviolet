@@ -1037,7 +1037,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
             Contract.Require(image, "image");
             Contract.EnsureNotDisposed(this, Disposed);
             Contract.Ensure(begun, UltravioletStrings.BeginMustBeCalledBeforeDraw);
-            Contract.Ensure(image.Texture != null, "TODO");
+            Contract.Ensure(image.IsLoaded, UltravioletStrings.StretchableImageNotLoaded.Format("image"));
 
             effects |= SpriteEffects.OriginRelativeToDestination;
 

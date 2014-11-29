@@ -460,4 +460,9 @@
       <Variant>The operation is not valid because the content manager requires a deletion batch for an operation in progress.</Variant>
     </en-US>
   </String>
+  <String Key="STRETCHABLE_IMAGE_NOT_LOADED">
+    <en-US>
+      <Variant>The image '{0}' cannot be rendered until its texture resource has been loaded using the Load() method.</Variant>
+    </en-US>
+  </String>
 </LocalizedStrings>
