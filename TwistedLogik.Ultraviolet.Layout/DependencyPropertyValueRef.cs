@@ -25,7 +25,10 @@ namespace TwistedLogik.Ultraviolet.Layout
             var currentValue = GetValue();
             if (currentValue != previousValue)
             {
-                // TODO: Invoke callback
+                if (Property.Metadata.ChangedCallback != null)
+                {
+                    Property.Metadata.ChangedCallback(Owner);
+                }
                 previousValue = currentValue;
             }
         }

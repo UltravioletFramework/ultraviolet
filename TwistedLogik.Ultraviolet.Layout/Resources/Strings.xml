@@ -25,4 +25,14 @@
       <Variant>Dependency property has already been registered.</Variant>
     </en-US>
   </String>
+  <String Key="INVALID_BINDING_EXPRESSION">
+    <en-US>
+      <Variant>The specified expression '{0}' is not a valid binding expression.</Variant>
+    </en-US>
+  </String>
+  <String Key="BINDING_ASSIGNMENT_TO_VALUE_TYPE">
+    <en-US>
+      <Variant>The specified expression '{0}' is invalid because it would cause an assignment to a property on a value type.</Variant>
+    </en-US>
+  </String>
 </LocalizedStrings>
