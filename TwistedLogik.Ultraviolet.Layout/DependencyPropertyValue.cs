@@ -6,7 +6,7 @@ namespace TwistedLogik.Ultraviolet.Layout
     /// <summary>
     /// Represents a wrapper around value types which are stored in dependency properties.
     /// </summary>
-    internal class DependencyPropertyValue<T> : IDependencyPropertyValue where T : struct, IEquatable<T> 
+    internal class DependencyPropertyValue<T> : DependencyPropertyValueBase<T> where T : struct, IEquatable<T> 
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="DependencyPropertyValue{T}"/> class.
@@ -14,16 +14,13 @@ namespace TwistedLogik.Ultraviolet.Layout
         /// <param name="owner">The dependency object that owns the property value.</param>
         /// <param name="property">The dependency property which has its value represented by this object.</param>
         public DependencyPropertyValue(DependencyObject owner, DependencyProperty property)
+            : base(owner, property)
         {
-            Contract.Require(owner, "owner");
-            Contract.Require(property, "property");
 
-            this.owner    = owner;
-            this.property = property;
         }
 
         /// <inheritdoc/>
-        public void Digest()
+        public override void Digest()
         {
             var currentValue = GetValue();
             if (!currentValue.Equals(previousValue))
@@ -34,21 +31,9 @@ namespace TwistedLogik.Ultraviolet.Layout
         }
 
         /// <inheritdoc/>
-        public void ClearLocalValue()
+        public override void ClearLocalValue()
         {
             hasLocalValue = false;
-        }
-
-        /// <inheritdoc/>
-        public DependencyObject Owner
-        {
-            get { return owner; }
-        }
-
-        /// <inheritdoc/>
-        public DependencyProperty Property
-        {
-            get { return property; }
         }
 
         /// <summary>
@@ -61,9 +46,9 @@ namespace TwistedLogik.Ultraviolet.Layout
             {
                 return localValue;
             }
-            if (property.Metadata.IsInherited && owner.DependencyContainer != null)
+            if (Property.Metadata.IsInherited && Owner.DependencyContainer != null)
             {
-                return owner.DependencyContainer.GetValue<T>(property);
+                return Owner.DependencyContainer.GetValue<T>(Property);
             }
             return defaultValue;
         }
@@ -99,8 +84,6 @@ namespace TwistedLogik.Ultraviolet.Layout
         }
 
         // Property values.
-        private readonly DependencyObject owner;
-        private readonly DependencyProperty property;
         private Boolean hasLocalValue;
         private T localValue;
         private T defaultValue;
