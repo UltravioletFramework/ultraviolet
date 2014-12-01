@@ -93,6 +93,57 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         }
 
         /// <summary>
+        /// Gets the element's absolute area after layout has been performed.
+        /// </summary>
+        protected internal Rectangle AbsoluteLayoutArea
+        {
+            get { return new Rectangle(absoluteX, absoluteY, absoluteWidth, absoluteHeight); }
+            set
+            {
+                absoluteX = value.X;
+                absoluteY = value.Y;
+                absoluteWidth = value.Width;
+                absoluteHeight = value.Height;
+            }
+        }
+
+        /// <summary>
+        /// Gets the absolute x-coordinate of the element after layout has been performed.
+        /// </summary>
+        protected internal Int32 AbsoluteX
+        {
+            get { return absoluteX; }
+            internal set { absoluteX = value; }
+        }
+
+        /// <summary>
+        /// Gets the absolute y-coordinate of the element after layout has been performed.
+        /// </summary>
+        protected internal Int32 AbsoluteY
+        {
+            get { return absoluteY; }
+            internal set { absoluteY = value; }
+        }
+
+        /// <summary>
+        /// Gets the absolute width of the element after layout has been performed.
+        /// </summary>
+        protected internal Int32 AbsoluteWidth
+        {
+            get { return absoluteWidth; }
+            internal set { absoluteWidth = value; }
+        }
+
+        /// <summary>
+        /// Gets the absolute height of the element after layout has been performed.
+        /// </summary>
+        protected internal Int32 AbsoluteHeight
+        {
+            get { return absoluteHeight; }
+            internal set { absoluteHeight = value; }
+        }
+
+        /// <summary>
         /// Releases resources associated with the object.
         /// </summary>
         /// <param name="disposing"><c>true</c> if the object is being disposed; <c>false</c> if the object is being finalized.</param>
@@ -109,5 +160,9 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         private readonly UltravioletContext uv;
         private readonly String id;
         private UIContainer container;
+        private Int32 absoluteX;
+        private Int32 absoluteY;
+        private Int32 absoluteWidth;
+        private Int32 absoluteHeight;
     }
 }

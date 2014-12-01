@@ -26,16 +26,21 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         /// </summary>
         public void PerformLayout()
         {
-            // TODO
+            OnPerformingLayout();
 
             foreach (var child in children)
             {
+                var layout = CalculateChildLayoutArea(child);
+                child.AbsoluteLayoutArea = layout;
+
                 var container = child as UIContainer;
                 if (container != null)
                 {
                     container.PerformLayout();
                 }
             }
+
+            OnPerformedLayout();
         }
 
         /// <summary>
@@ -45,6 +50,29 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         {
             get { return children; }
         }
+
+        /// <summary>
+        /// Called before the container performs a layout.
+        /// </summary>
+        protected virtual void OnPerformingLayout()
+        {
+
+        }
+
+        /// <summary>
+        /// Called after the container has performed a layout.
+        /// </summary>
+        protected virtual void OnPerformedLayout()
+        {
+
+        }
+
+        /// <summary>
+        /// Calculates the absolute layout area of the specified child element.
+        /// </summary>
+        /// <param name="child">The child element for which to calculate a layout area.</param>
+        /// <returns>The absolute layout area of the specified child element.</returns>
+        protected abstract Rectangle CalculateChildLayoutArea(UIElement child);
 
         // Property values.
         private readonly UIElementCollection children;
