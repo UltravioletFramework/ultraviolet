@@ -16,12 +16,26 @@ namespace TwistedLogik.Nucleus.Collections
         /// <param name="allocator">The pool's instance allocator, if it must be created.</param>
         public void Create<T>(Int32 capacity, Func<T> allocator = null)
         {
+            Create<T>(capacity, Int32.MaxValue, allocator);
+        }
+
+        /// <summary>
+        /// Creates a pool for the specified type with the specified initial capacity and allocator.
+        /// </summary>
+        /// <typeparam name="T">The type of object for which to create an expanding pool.</typeparam>
+        /// <param name="capacity">The pool's initial capacity.</param>
+        /// <param name="watermark">The pool's watermark value, if it must be created.</param>
+        /// <param name="allocator">The pool's instance allocator, if it must be created.</param>
+        public void Create<T>(Int32 capacity, Int32 watermark, Func<T> allocator = null)
+        {
             Contract.EnsureRange(capacity >= 0, "capacity");
+            Contract.EnsureRange(watermark >= 1, "watermark");
+            Contract.EnsureRange(watermark >= capacity, "watermark");
 
             if (pools.ContainsKey(typeof(T)))
                 throw new InvalidOperationException(NucleusStrings.PoolRegistryAlreadyContainsType.Format(typeof(T)));
 
-            pools[typeof(T)] = new ExpandingPool<T>(capacity, allocator);
+            pools[typeof(T)] = new ExpandingPool<T>(capacity, watermark, allocator);
         }
 
         /// <summary>
@@ -86,12 +100,28 @@ namespace TwistedLogik.Nucleus.Collections
         /// <returns>The pool for the specified type.</returns>
         public IPool<T> Get<T>(Int32 capacity, Func<T> allocator = null)
         {
+            return Get<T>(capacity, Int32.MaxValue, allocator);
+        }
+
+        /// <summary>
+        /// Gets the pool for the specified type. If the pool does not exist, it will be created
+        /// with the specified initial capacity and allocator.
+        /// </summary>
+        /// <typeparam name="T">The type of object for which to retrieve a pool.</typeparam>
+        /// <param name="capacity">The initial capacity of the pool, if it must be created.</param>
+        /// <param name="watermark">The pool's watermark value, if it must be created.</param>
+        /// <param name="allocator">The pool's instance allocator, if it must be created.</param>
+        /// <returns>The pool for the specified type.</returns>
+        public IPool<T> Get<T>(Int32 capacity, Int32 watermark, Func<T> allocator = null)
+        {
             Contract.EnsureRange(capacity >= 0, "capacity");
+            Contract.EnsureRange(watermark >= 1, "watermark");
+            Contract.EnsureRange(watermark >= capacity, "watermark");
 
             IPool pool;
             if (!pools.TryGetValue(typeof(T), out pool))
             {
-                pool = new ExpandingPool<T>(capacity, allocator);
+                pool = new ExpandingPool<T>(capacity, watermark, allocator);
                 pools[typeof(T)] = pool;
             }
             return (IPool<T>)pool;

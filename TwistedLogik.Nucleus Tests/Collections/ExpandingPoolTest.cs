@@ -55,9 +55,51 @@ namespace TwistedLogik.Nucleus.Tests.IO
             TheResultingValue(pool.Count).ShouldBe(0);
         }
 
+        [TestMethod]
+        public void ExpandingPool_AllocatesNewObjectsWhenWatermarkIsExceeded()
+        {
+            var pool = CreateExpandingPoolWithCapacity(5, 10);
+
+            var retrieved = 0;
+            var allocated = new List<List<Int32>>();
+            for (int i = 0; i < 15; i++)
+            {
+                allocated.Add(pool.Retrieve());
+                retrieved++;
+            }
+
+            TheResultingValue(retrieved).ShouldBe(15);
+            TheResultingValue(pool.Count).ShouldBe(10);
+            TheResultingValue(pool.WatermarkAllocations).ShouldBe(5);
+        }
+
+        [TestMethod]
+        public void ExpandingPool_ShouldBeCleanedUpAfterWatermarkAllocatedObjectsAreReleased()
+        {
+            var pool = CreateExpandingPoolWithCapacity(5, 10);
+
+            var allocated = new List<List<Int32>>();
+            for (int i = 0; i < 15; i++)
+            {
+                allocated.Add(pool.Retrieve());
+            }
+
+            foreach (var item in allocated)
+            {
+                pool.Release(item);
+            }
+
+            TheResultingValue(pool.Count).ShouldBe(0);
+        }
+
         private ExpandingPool<List<Int32>> CreateExpandingPoolWithCapacity(Int32 capacity, Func<List<Int32>> allocator = null)
         {
             return new ExpandingPool<List<Int32>>(capacity, allocator);
+        }
+
+        private ExpandingPool<List<Int32>> CreateExpandingPoolWithCapacity(Int32 capacity, Int32 watermark, Func<List<Int32>> allocator = null)
+        {
+            return new ExpandingPool<List<Int32>>(capacity, watermark, allocator);
         }
     }
 }
