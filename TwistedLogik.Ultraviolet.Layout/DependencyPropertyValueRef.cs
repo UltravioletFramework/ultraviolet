@@ -9,7 +9,7 @@ namespace TwistedLogik.Ultraviolet.Layout
     internal class DependencyPropertyValueRef<T> : IDependencyPropertyValue where T : class 
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="DependencyPropertyValueRef"/> class.
+        /// Initializes a new instance of the <see cref="DependencyPropertyValueRef{T}"/> class.
         /// </summary>
         /// <param name="owner">The dependency object that owns the property value.</param>
         public DependencyPropertyValueRef(DependencyObject owner)
