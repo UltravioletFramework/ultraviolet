@@ -16,123 +16,144 @@ namespace TwistedLogik.Nucleus.Collections
         /// <param name="capacity">The pool's initial capacity.</param>
         /// <param name="allocator">A function which allocates new instances of <typeparamref name="T"/>.</param>
         public ExpandingPool(Int32 capacity, Func<T> allocator = null)
+            : this(capacity, Int32.MaxValue, allocator)
+        {
+
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ExpandingPool{T}"/> class.
+        /// </summary>
+        /// <param name="capacity">The pool's initial capacity.</param>
+        /// <param name="watermark">The pool's watermark value, which indicates the maximum size of the pool.</param>
+        /// <param name="allocator">A function which allocates new instances of <typeparamref name="T"/>.</param>
+        public ExpandingPool(Int32 capacity, Int32 watermark, Func<T> allocator = null)
         {
             Contract.EnsureRange(capacity >= 0, "capacity");
+            Contract.EnsureRange(watermark >= 1, "watermark");
+            Contract.EnsureRange(watermark >= capacity, "watermark");
 
-            this.allocator = allocator ?? CreateDefaultAllocator();
+            this.watermark  = watermark;
+            this.allocator  = allocator ?? CreateDefaultAllocator();
             this.disposable = typeof(T).GetInterfaces().Contains(typeof(IDisposable));
 
             ExpandStorage(capacity);
         }
 
-        /// <summary>
-        /// Disposes of all of the objects in the pool, if <typeparamref name="T"/> implements <see cref="IDisposable"/>.
-        /// </summary>
+        /// <inheritdoc/>
         public void Dispose()
         {
             Dispose(true);
             GC.SuppressFinalize(this);
         }
 
-        /// <summary>
-        /// Retrieves an object from the pool.
-        /// </summary>
-        /// <returns>The object that was retrieved from the pool.</returns>
+        /// <inheritdoc/>
         public T Retrieve()
         {
             if (storage.Length == count)
+            {
+                if (storage.Length == watermark)
+                {
+                    watermarkAllocations++;
+                    return allocator();
+                }
                 ExpandStorage();
-
+            }
             return storage[count++];
         }
 
-        /// <summary>
-        /// Retrieves a scoped object from the pool.
-        /// </summary>
-        /// <returns>A <see cref="PooledObjectScope{T}"/> that represents the lifetime of 
-        /// the object that was retrieved from the pool.</returns>
+        /// <inheritdoc/>
         public PooledObjectScope<T> RetrieveScoped()
         {
             return new PooledObjectScope<T>(this, Retrieve());
         }
 
-        /// <summary>
-        /// Releases an object back into the pool.
-        /// </summary>
-        /// <param name="instance">The object to release.</param>
+        /// <inheritdoc/>
         public void Release(T instance)
         {
-            if (count == 0)
+            if (watermarkAllocations + count == 0)
                 throw new InvalidOperationException(NucleusStrings.PoolImbalance);
 
-            storage[--count] = instance;
+            if (count == 0)
+            {
+                watermarkAllocations--;
+            }
+            else
+            {
+                storage[--count] = instance;
+            }
         }
-        
-        /// <summary>
-        /// Releases an object back into the pool.
-        /// </summary>
-        /// <param name="instance">The object to release.</param>
+
+        /// <inheritdoc/>
         public void ReleaseRef(ref T instance)
         {
-            if (count == 0)
+            if (watermarkAllocations + count == 0)
                 throw new InvalidOperationException(NucleusStrings.PoolImbalance);
 
-            storage[--count] = instance;
-            instance = default(T);
+            if (count == 0)
+            {
+                watermarkAllocations--;
+            }
+            else
+            {
+                storage[--count] = instance;
+                instance = default(T);
+            }
         }
 
-        /// <summary>
-        /// Retrieves an object from the pool.
-        /// </summary>
-        /// <returns>The object that was retrieved from the pool.</returns>
+        /// <inheritdoc/>
         Object IPool.Retrieve()
         {
             return Retrieve();
         }
 
-        /// <summary>
-        /// Retrieves a scoped object from the pool.
-        /// </summary>
-        /// <returns>A <see cref="PooledObjectScope{T}"/> that represents the lifetime of 
-        /// the object that was retrieved from the pool.</returns>
+        /// <inheritdoc/>
         PooledObjectScope<Object> IPool.RetrieveScoped()
         {
             return new PooledObjectScope<Object>(this, Retrieve());
         }
 
-        /// <summary>
-        /// Releases an object back into the pool.
-        /// </summary>
-        /// <param name="instance">The object to release.</param>
+        /// <inheritdoc/>
         void IPool.Release(Object instance)
         {
             Release((T)instance);
         }
 
-        /// <summary>
-        /// Releases an object back into the pool.
-        /// </summary>
-        /// <param name="instance">The object to release.</param>
+        /// <inheritdoc/>
         void IPool.ReleaseRef(ref Object instance)
         {
             Release((T)instance);
             instance = null;
         }
 
-        /// <summary>
-        /// Gets the number of objects in the pool that are currently in use.
-        /// </summary>
+        /// <inheritdoc/>
         public Int32 Count
         {
             get { return count; }
         }
 
-        /// <summary>
-        /// Gets the total number of objects in the pool.
-        /// </summary>
+        /// <inheritdoc/>
         public Int32 Capacity
         {
             get { return storage.Length; }
+        }
+
+        /// <summary>
+        /// Gets the number of objects that were allocated as a result of reaching the pool's watermark.
+        /// </summary>
+        public Int32 WatermarkAllocations
+        {
+            get { return watermarkAllocations; }
+        }
+
+        /// <summary>
+        /// Gets the pool's watermark value, which indicates its maximum size.
+        /// </summary>
+        /// <remarks>Beyond this point, the pool will simply return newly-allocated objects instead of pooled objects. 
+        /// Such objects should still be released back into the pool for bookkeeping purposes.</remarks>
+        public Int32 Watermark
+        {
+            get { return watermark; }
         }
 
         /// <summary>
@@ -168,7 +189,7 @@ namespace TwistedLogik.Nucleus.Collections
         /// </summary>
         private void ExpandStorage()
         {
-            var capacity = ((3 * storage.Length) / 2) + 1;
+            var capacity = Math.Min(watermark, ((3 * storage.Length) / 2) + 1);
             ExpandStorage(capacity);
         }
 
@@ -195,8 +216,10 @@ namespace TwistedLogik.Nucleus.Collections
 
         // The underlying storage for the object pool.
         private readonly Func<T> allocator;
+        private readonly Boolean disposable;
         private T[] storage;
         private Int32 count;
-        private Boolean disposable;
+        private Int32 watermark;
+        private Int32 watermarkAllocations;
     }
 }
