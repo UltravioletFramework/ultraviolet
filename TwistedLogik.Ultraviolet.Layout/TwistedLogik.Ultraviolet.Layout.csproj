@@ -54,7 +54,9 @@
     <Compile Include="DependencyObject.cs" />
     <Compile Include="DependencyProperty.cs" />
     <Compile Include="DependencyPropertyMetadata.cs" />
-    <Compile Include="DependencyPropertyValueWrapper.cs" />
+    <Compile Include="DependencyPropertyValueRef.cs" />
+    <Compile Include="DependencyPropertyValue.cs" />
+    <Compile Include="IDependencyPropertyValue.cs" />
     <Compile Include="LayoutStrings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Stylesheets\UvssDocument.cs" />

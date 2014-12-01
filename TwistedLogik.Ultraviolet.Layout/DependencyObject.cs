@@ -41,18 +41,8 @@ namespace TwistedLogik.Ultraviolet.Layout
             if (!typeof(T).TypeHandle.Equals(dp.PropertyType))
                 throw new InvalidCastException();
 
-            Object value;
-            if (!DependencyPropertyValuesRef.TryGetValue(dp.ID, out value))
-            {
-                if (dp.Metadata.DefaultCallback != null)
-                {
-                    T @default = (T)dp.Metadata.DefaultCallback();
-                    SetValueRef<T>(dp, @default);
-                    value = @default;
-                }
-            }
-
-            return (T)value;
+            var wrapper = GetDependencyPropertyValueRef<T>(dp);
+            return wrapper.GetValue();
         }
 
         /// <summary>
@@ -68,11 +58,8 @@ namespace TwistedLogik.Ultraviolet.Layout
             if (!typeof(T).TypeHandle.Equals(dp.PropertyType))
                 throw new InvalidCastException();
 
-            DependencyPropertyValuesRef[dp.ID] = value;
-            if (dp.Metadata.ChangedCallback != null)
-            {
-                dp.Metadata.ChangedCallback(this);
-            }
+            var wrapper = GetDependencyPropertyValueRef<T>(dp);
+            wrapper.LocalValue = value;
         }
 
         /// <summary>
@@ -84,12 +71,10 @@ namespace TwistedLogik.Ultraviolet.Layout
         {
             Contract.Require(dp, "dp");
 
-            if (DependencyPropertyValuesRef.Remove(dp.ID))
+            IDependencyPropertyValue valueWrapper;
+            if (dependencyPropertyValues.TryGetValue(dp.ID, out valueWrapper))
             {
-                if (dp.Metadata.ChangedCallback != null)
-                {
-                    dp.Metadata.ChangedCallback(this);
-                }
+                valueWrapper.ClearLocalValue();
             }
         }
 
@@ -99,7 +84,7 @@ namespace TwistedLogik.Ultraviolet.Layout
         /// <typeparam name="T">The type of value contained by the dependency property.</typeparam>
         /// <param name="property">The name of the dependency property for which to retrieve a value.</param>
         /// <returns>The value of the specified dependency property.</returns>
-        public T GetValue<T>(String property) where T : struct
+        public T GetValue<T>(String property) where T : struct, IEquatable<T>
         {
             Contract.Require(property, "property");
 
@@ -118,15 +103,15 @@ namespace TwistedLogik.Ultraviolet.Layout
         /// <typeparam name="T">The type of value contained by the dependency property.</typeparam>
         /// <param name="dp">The name of the dependency property for which to retrieve a value.</param>
         /// <returns>The value of the specified dependency property.</returns>
-        public T GetValue<T>(DependencyProperty dp) where T : struct
+        public T GetValue<T>(DependencyProperty dp) where T : struct, IEquatable<T>
         {
             Contract.Require(dp, "dp");
 
             if (!typeof(T).TypeHandle.Equals(dp.PropertyType))
                 throw new InvalidCastException();
 
-            var wrapper = GetValueTypeWrapper<T>(dp);
-            return wrapper.Value;
+            var wrapper = GetDependencyPropertyValue<T>(dp);
+            return wrapper.GetValue();
         }
 
         /// <summary>
@@ -135,19 +120,15 @@ namespace TwistedLogik.Ultraviolet.Layout
         /// <typeparam name="T">The type of value contained by the dependency property.</typeparam>
         /// <param name="dp">A <see cref="DependencyProperty"/> instance which identifies the dependency property for which to set a value.</param>
         /// <param name="value">The value to set on the specified dependency property.</param>
-        public void SetValue<T>(DependencyProperty dp, T value) where T : struct
+        public void SetValue<T>(DependencyProperty dp, T value) where T : struct, IEquatable<T>
         {
             Contract.Require(dp, "dp");
 
             if (!typeof(T).TypeHandle.Equals(dp.PropertyType))
                 throw new InvalidCastException();
 
-            var wrapper = GetValueTypeWrapper<T>(dp);
-            wrapper.Value = value;
-            if (dp.Metadata.ChangedCallback != null)
-            {
-                dp.Metadata.ChangedCallback(this);
-            }
+            var wrapper = GetDependencyPropertyValue<T>(dp);
+            wrapper.LocalValue = value;
         }
 
         /// <summary>
@@ -155,11 +136,11 @@ namespace TwistedLogik.Ultraviolet.Layout
         /// </summary>
         /// <typeparam name="T">The type of value contained by the dependency property.</typeparam>
         /// <param name="dp">A <see cref="DependencyProperty"/> instance which identifies the dependency property to clear.</param>
-        public void ClearValue<T>(DependencyProperty dp) where T : struct
+        public void ClearValue<T>(DependencyProperty dp) where T : struct, IEquatable<T>
         {
             Contract.Require(dp, "dp");
 
-            if (DependencyPropertyValues.Remove(dp.ID))
+            if (dependencyPropertyValues.Remove(dp.ID))
             {
                 if (dp.Metadata.ChangedCallback != null)
                 {
@@ -169,35 +150,55 @@ namespace TwistedLogik.Ultraviolet.Layout
         }
 
         /// <summary>
-        /// Gets an instance of <see cref="DependencyPropertyValueWrapper{T}"/> for the specified dependency property.
+        /// Gets an instance of <see cref="DependencyPropertyValue{T}"/> for the specified reference typed dependency property.
         /// </summary>
         /// <typeparam name="T">The type of value contained by the dependency property.</typeparam>
         /// <param name="dp">The dependency property for which to create a value wrapper.</param>
-        /// <returns>The <see cref="DependencyPropertyValueWrapper{T}"/> instance which was retrieved.</returns>
-        private DependencyPropertyValueWrapper<T> GetValueTypeWrapper<T>(DependencyProperty dp) where T : struct
+        /// <returns>The <see cref="DependencyPropertyValue{T}"/> instance which was retrieved.</returns>
+        private DependencyPropertyValueRef<T> GetDependencyPropertyValueRef<T>(DependencyProperty dp) where T : class
         {
-            Object wrapperObject;
-            DependencyPropertyValuesRef.TryGetValue(dp.ID, out wrapperObject);
+            IDependencyPropertyValue valueWrapper;
+            dependencyPropertyValues.TryGetValue(dp.ID, out valueWrapper);
 
-            var wrapper = (DependencyPropertyValueWrapper<T>)wrapperObject;
+            var wrapper = (DependencyPropertyValueRef<T>)valueWrapper;
             if (wrapper == null)
             {
-                wrapper = new DependencyPropertyValueWrapper<T>();
+                wrapper = new DependencyPropertyValueRef<T>(this);
                 if (dp.Metadata.DefaultCallback != null)
                 {
-                    wrapper.Value = (T)dp.Metadata.DefaultCallback();
+                    wrapper.DefaultValue = (T)dp.Metadata.DefaultCallback();
                 }
-                DependencyPropertyValuesRef[dp.ID] = wrapper;
+                dependencyPropertyValues[dp.ID] = wrapper;
             }
             return wrapper;
         }
 
-        // The object's reference type dependency property values.
-        private Dictionary<Int64, Object> DependencyPropertyValuesRef =
-            new Dictionary<Int64, Object>();
+        /// <summary>
+        /// Gets an instance of <see cref="DependencyPropertyValue{T}"/> for the specified value typed dependency property.
+        /// </summary>
+        /// <typeparam name="T">The type of value contained by the dependency property.</typeparam>
+        /// <param name="dp">The dependency property for which to create a value wrapper.</param>
+        /// <returns>The <see cref="DependencyPropertyValue{T}"/> instance which was retrieved.</returns>
+        private DependencyPropertyValue<T> GetDependencyPropertyValue<T>(DependencyProperty dp) where T : struct, IEquatable<T>
+        {
+            IDependencyPropertyValue valueWrapper;
+            dependencyPropertyValues.TryGetValue(dp.ID, out valueWrapper);
 
-        // The object's value type dependency property values.
-        private Dictionary<Int64, Object> DependencyPropertyValues =
-            new Dictionary<Int64, Object>();
+            var wrapper = (DependencyPropertyValue<T>)valueWrapper;
+            if (wrapper == null)
+            {
+                wrapper = new DependencyPropertyValue<T>(this);
+                if (dp.Metadata.DefaultCallback != null)
+                {
+                    wrapper.DefaultValue = (T)dp.Metadata.DefaultCallback();
+                }
+                dependencyPropertyValues[dp.ID] = wrapper;
+            }
+            return wrapper;
+        }
+
+        // State values.
+        private readonly Dictionary<Int64, IDependencyPropertyValue> dependencyPropertyValues =
+            new Dictionary<Int64, IDependencyPropertyValue>();
     }
 }
