@@ -26,6 +26,9 @@ namespace TwistedLogik.Ultraviolet.Layout
         public static readonly StringResource StylesheetSyntaxError                = new StringResource(StringDatabase, "STYLESHEET_SYNTAX_ERROR");
         public static readonly StringResource StylesheetSyntaxUnterminatedString   = new StringResource(StringDatabase, "STYLESHEET_SYNTAX_UNTERMINATED_STRING");
         public static readonly StringResource StylesheetSyntaxUnterminatedSequence = new StringResource(StringDatabase, "STYLESHEET_SYNTAX_UNTERMINATED_SEQUENCE");
+        public static readonly StringResource IsNotDependencyObject                = new StringResource(StringDatabase, "IS_NOT_DEPENDENCY_OBJECT");
+        public static readonly StringResource DependencyPropertyDoesNotExist       = new StringResource(StringDatabase, "DEPENDENCY_PROPERTY_DOES_NOT_EXIST");
+        public static readonly StringResource DependencyPropertyAlreadyRegistered  = new StringResource(StringDatabase, "DEPENDENCY_PROPERTY_ALREADY_REGISTERED");
 #pragma warning restore 1591
     }
 }

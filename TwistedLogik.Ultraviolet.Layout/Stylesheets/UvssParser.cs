@@ -138,8 +138,6 @@ namespace TwistedLogik.Ultraviolet.Layout.Stylesheets
         /// Retrieves all of the tokens between a matching pair of curly braces.
         /// </summary>
         /// <param name="state">The parser state.</param>
-        /// <param name="start">The type of the first token in the matching pair.</param>
-        /// <param name="end">The type of the second token in the matching pair.</param>
         /// <returns>A collection containing the tokens between the specified matching pair of tokens.</returns>
         private static IList<UvssLexerToken> GetTokensBetweenCurlyBraces(UvssParserState state)
         {
@@ -150,8 +148,6 @@ namespace TwistedLogik.Ultraviolet.Layout.Stylesheets
         /// Retrieves all of the tokens between a matching pair of parentheses.
         /// </summary>
         /// <param name="state">The parser state.</param>
-        /// <param name="start">The type of the first token in the matching pair.</param>
-        /// <param name="end">The type of the second token in the matching pair.</param>
         /// <returns>A collection containing the tokens between the specified matching pair of tokens.</returns>
         private static IList<UvssLexerToken> GetTokensBetweenParentheses(UvssParserState state)
         {

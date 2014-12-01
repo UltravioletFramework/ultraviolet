@@ -15,4 +15,14 @@
       <Variant>Unterminated sequence in stylesheet near '{0}'</Variant>
     </en-US>
   </String>
+  <String Key="DEPENDENCY_PROPERTY_DOES_NOT_EXIST">
+    <en-US>
+      <Variant>No such dependency property exists on this object.</Variant>
+    </en-US>
+  </String>
+  <String Key="DEPENDENCY_PROPERTY_ALREADY_REGISTERED">
+    <en-US>
+      <Variant>Dependency property has already been registered.</Variant>
+    </en-US>
+  </String>
 </LocalizedStrings>
