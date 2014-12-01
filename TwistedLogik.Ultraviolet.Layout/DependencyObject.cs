@@ -150,6 +150,15 @@ namespace TwistedLogik.Ultraviolet.Layout
         }
 
         /// <summary>
+        /// Gets the object's containing object.
+        /// </summary>
+        public DependencyObject DependencyContainer
+        {
+            get { return dependencyContainer; }
+            protected set { dependencyContainer = value; }
+        }
+
+        /// <summary>
         /// Gets an instance of <see cref="DependencyPropertyValue{T}"/> for the specified reference typed dependency property.
         /// </summary>
         /// <typeparam name="T">The type of value contained by the dependency property.</typeparam>
@@ -163,7 +172,7 @@ namespace TwistedLogik.Ultraviolet.Layout
             var wrapper = (DependencyPropertyValueRef<T>)valueWrapper;
             if (wrapper == null)
             {
-                wrapper = new DependencyPropertyValueRef<T>(this);
+                wrapper = new DependencyPropertyValueRef<T>(this, dp);
                 if (dp.Metadata.DefaultCallback != null)
                 {
                     wrapper.DefaultValue = (T)dp.Metadata.DefaultCallback();
@@ -187,7 +196,7 @@ namespace TwistedLogik.Ultraviolet.Layout
             var wrapper = (DependencyPropertyValue<T>)valueWrapper;
             if (wrapper == null)
             {
-                wrapper = new DependencyPropertyValue<T>(this);
+                wrapper = new DependencyPropertyValue<T>(this, dp);
                 if (dp.Metadata.DefaultCallback != null)
                 {
                     wrapper.DefaultValue = (T)dp.Metadata.DefaultCallback();
@@ -196,6 +205,9 @@ namespace TwistedLogik.Ultraviolet.Layout
             }
             return wrapper;
         }
+
+        // Property values.
+        private DependencyObject dependencyContainer;
 
         // State values.
         private readonly Dictionary<Int64, IDependencyPropertyValue> dependencyPropertyValues =

@@ -27,5 +27,13 @@ namespace TwistedLogik.Ultraviolet.Layout
         {
             get;
         }
+
+        /// <summary>
+        /// Gets the dependency property which has its value represented by this object.
+        /// </summary>
+        DependencyProperty Property
+        {
+            get;
+        }
     }
 }

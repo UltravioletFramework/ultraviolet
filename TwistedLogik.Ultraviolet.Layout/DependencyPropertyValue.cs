@@ -4,16 +4,16 @@ using TwistedLogik.Nucleus;
 namespace TwistedLogik.Ultraviolet.Layout
 {
     /// <summary>
-    /// Represents a wrapper around reference types which are stored in dependency properties.
+    /// Represents a wrapper around value types which are stored in dependency properties.
     /// </summary>
-    internal class DependencyPropertyValueRef<T> : IDependencyPropertyValue where T : class 
+    internal class DependencyPropertyValue<T> : IDependencyPropertyValue where T : struct, IEquatable<T> 
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="DependencyPropertyValueRef{T}"/> class.
+        /// Initializes a new instance of the <see cref="DependencyPropertyValue{T}"/> class.
         /// </summary>
         /// <param name="owner">The dependency object that owns the property value.</param>
         /// <param name="property">The dependency property which has its value represented by this object.</param>
-        public DependencyPropertyValueRef(DependencyObject owner, DependencyProperty property)
+        public DependencyPropertyValue(DependencyObject owner, DependencyProperty property)
         {
             Contract.Require(owner, "owner");
             Contract.Require(property, "property");
@@ -26,7 +26,7 @@ namespace TwistedLogik.Ultraviolet.Layout
         public void Digest()
         {
             var currentValue = GetValue();
-            if (currentValue != previousValue)
+            if (!currentValue.Equals(previousValue))
             {
                 // TODO: Invoke callback
                 previousValue = currentValue;
@@ -63,7 +63,7 @@ namespace TwistedLogik.Ultraviolet.Layout
             }
             if (property.Metadata.IsInherited && owner.DependencyContainer != null)
             {
-                return owner.DependencyContainer.GetValueRef<T>(property);
+                return owner.DependencyContainer.GetValue<T>(property);
             }
             return defaultValue;
         }
