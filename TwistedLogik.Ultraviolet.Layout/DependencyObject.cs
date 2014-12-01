@@ -10,6 +10,17 @@ namespace TwistedLogik.Ultraviolet.Layout
     public class DependencyObject
     {
         /// <summary>
+        /// Evaluates whether any of the object's dependency property values have changed and, if so, invokes the appropriate callbacks.
+        /// </summary>
+        public void Digest()
+        {
+            foreach (var kvp in dependencyPropertyValues)
+            {
+                kvp.Value.Digest();
+            }
+        }
+
+        /// <summary>
         /// Gets the reference typed value of the specified dependency property.
         /// </summary>
         /// <typeparam name="T">The type of value contained by the dependency property.</typeparam>
