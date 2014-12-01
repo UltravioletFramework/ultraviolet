@@ -42,6 +42,10 @@ namespace TwistedLogik.Ultraviolet.Layout
         /// <returns>The dependency property's calculated value.</returns>
         public T GetValue()
         {
+            if (IsDataBound)
+            {
+                return GetBoundValue();
+            }
             if (hasLocalValue)
             {
                 return LocalValue;
@@ -63,6 +67,10 @@ namespace TwistedLogik.Ultraviolet.Layout
             { 
                 localValue = value;
                 hasLocalValue = true;
+                if (IsDataBound)
+                {
+                    SetBoundValue(value);
+                }
             }
         }
 
