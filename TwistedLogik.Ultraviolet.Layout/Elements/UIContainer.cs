@@ -30,8 +30,8 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
 
             foreach (var child in children)
             {
-                var layout = CalculateChildLayoutArea(child);
-                child.AbsoluteLayoutArea = layout;
+                var layout = CalculateLayoutArea(child);
+                child.ContainerRelativeLayout = layout;
 
                 var container = child as UIContainer;
                 if (container != null)
@@ -68,11 +68,11 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         }
 
         /// <summary>
-        /// Calculates the absolute layout area of the specified child element.
+        /// Calculates the container-relative layout area of the specified child element.
         /// </summary>
         /// <param name="child">The child element for which to calculate a layout area.</param>
-        /// <returns>The absolute layout area of the specified child element.</returns>
-        protected abstract Rectangle CalculateChildLayoutArea(UIElement child);
+        /// <returns>The container-relative layout area of the specified child element.</returns>
+        protected abstract Rectangle CalculateLayoutArea(UIElement child);
 
         // Property values.
         private readonly UIElementCollection children;

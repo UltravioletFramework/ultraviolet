@@ -93,54 +93,54 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         }
 
         /// <summary>
-        /// Gets the element's absolute area after layout has been performed.
+        /// Gets the element's area relative to its container after layout has been performed.
         /// </summary>
-        protected internal Rectangle AbsoluteLayoutArea
+        protected internal Rectangle ContainerRelativeLayout
         {
-            get { return new Rectangle(absoluteX, absoluteY, absoluteWidth, absoluteHeight); }
+            get { return new Rectangle(containerRelativeX, containerRelativeY, calculatedWidth, calculatedHeight); }
             set
             {
-                absoluteX = value.X;
-                absoluteY = value.Y;
-                absoluteWidth = value.Width;
-                absoluteHeight = value.Height;
+                containerRelativeX = value.X;
+                containerRelativeY = value.Y;
+                calculatedWidth = value.Width;
+                calculatedHeight = value.Height;
             }
         }
 
         /// <summary>
-        /// Gets the absolute x-coordinate of the element after layout has been performed.
+        /// Gets the x-coordinate of the element relative to its container after layout has been performed.
         /// </summary>
-        protected internal Int32 AbsoluteX
+        protected internal Int32 ContainerRelativeX
         {
-            get { return absoluteX; }
-            internal set { absoluteX = value; }
+            get { return containerRelativeX; }
+            internal set { containerRelativeX = value; }
         }
 
         /// <summary>
-        /// Gets the absolute y-coordinate of the element after layout has been performed.
+        /// Gets the y-coordinate of the element relative to its container after layout has been performed.
         /// </summary>
-        protected internal Int32 AbsoluteY
+        protected internal Int32 ContainerRelativeY
         {
-            get { return absoluteY; }
-            internal set { absoluteY = value; }
+            get { return containerRelativeY; }
+            internal set { containerRelativeY = value; }
         }
 
         /// <summary>
-        /// Gets the absolute width of the element after layout has been performed.
+        /// Gets the element's width as calculated during layout.
         /// </summary>
-        protected internal Int32 AbsoluteWidth
+        protected internal Int32 CalculatedWidth
         {
-            get { return absoluteWidth; }
-            internal set { absoluteWidth = value; }
+            get { return calculatedWidth; }
+            internal set { calculatedWidth = value; }
         }
 
         /// <summary>
-        /// Gets the absolute height of the element after layout has been performed.
+        /// Gets the element's height as calculated during layout.
         /// </summary>
-        protected internal Int32 AbsoluteHeight
+        protected internal Int32 CalculatedHeight
         {
-            get { return absoluteHeight; }
-            internal set { absoluteHeight = value; }
+            get { return calculatedHeight; }
+            internal set { calculatedHeight = value; }
         }
 
         /// <summary>
@@ -160,9 +160,9 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         private readonly UltravioletContext uv;
         private readonly String id;
         private UIContainer container;
-        private Int32 absoluteX;
-        private Int32 absoluteY;
-        private Int32 absoluteWidth;
-        private Int32 absoluteHeight;
+        private Int32 containerRelativeX;
+        private Int32 containerRelativeY;
+        private Int32 calculatedWidth;
+        private Int32 calculatedHeight;
     }
 }

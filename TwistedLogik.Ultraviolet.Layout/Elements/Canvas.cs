@@ -20,7 +20,7 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         }
 
         /// <inheritdoc/>
-        protected override Rectangle CalculateChildLayoutArea(UIElement child)
+        protected override Rectangle CalculateLayoutArea(UIElement child)
         {
             throw new NotImplementedException();
         }
