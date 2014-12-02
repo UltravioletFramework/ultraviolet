@@ -59,12 +59,6 @@
     <Compile Include="..\TwistedLogik.Ultraviolet.Layout\DependencyPropertyValue.cs">
       <Link>DependencyPropertyValue.cs</Link>
     </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet.Layout\DependencyPropertyValueBase.cs">
-      <Link>DependencyPropertyValueBase.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet.Layout\DependencyPropertyValueRef.cs">
-      <Link>DependencyPropertyValueRef.cs</Link>
-    </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.Layout\Elements\Button.cs">
       <Link>Elements\Button.cs</Link>
     </Compile>

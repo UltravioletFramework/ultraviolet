@@ -55,8 +55,6 @@
     <Compile Include="DependencyProperty.cs" />
     <Compile Include="DependencyPropertyMetadata.cs" />
     <Compile Include="DependencyPropertyOptions.cs" />
-    <Compile Include="DependencyPropertyValueBase.cs" />
-    <Compile Include="DependencyPropertyValueRef.cs" />
     <Compile Include="DependencyPropertyValue.cs" />
     <Compile Include="Elements\Canvas.cs" />
     <Compile Include="Elements\Label.cs" />

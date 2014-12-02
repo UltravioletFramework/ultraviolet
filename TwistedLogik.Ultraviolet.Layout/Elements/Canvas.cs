@@ -25,11 +25,11 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         /// </summary>
         /// <param name="element">The element to evaluate.</param>
         /// <returns>The distance between the left edge of the canvas and the left edge of the specified element.</returns>
-        public static Int32 GetLeft(UIElement element)
+        public static Int32? GetLeft(UIElement element)
         {
             Contract.Require(element, "element");
 
-            return element.GetValue<Int32>(LeftProperty);
+            return element.GetValue<Int32?>(LeftProperty);
         }
 
         /// <summary>
@@ -37,11 +37,11 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         /// </summary>
         /// <param name="element">The element to evaluate.</param>
         /// <returns>The distance between the top edge of the canvas and the top edge of the specified element.</returns>
-        public static Int32 GetTop(UIElement element)
+        public static Int32? GetTop(UIElement element)
         {
             Contract.Require(element, "element");
 
-            return element.GetValue<Int32>(TopProperty);
+            return element.GetValue<Int32?>(TopProperty);
         }
 
         /// <summary>
@@ -49,11 +49,11 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         /// </summary>
         /// <param name="element">The element to evaluate.</param>
         /// <returns>The distance between the right edge of the canvas and the right edge of the specified element.</returns>
-        public static Int32 GetRight(UIElement element)
+        public static Int32? GetRight(UIElement element)
         {
             Contract.Require(element, "element");
 
-            return element.GetValue<Int32>(RightProperty);
+            return element.GetValue<Int32?>(RightProperty);
         }
 
         /// <summary>
@@ -61,11 +61,11 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         /// </summary>
         /// <param name="element">The element to evaluate.</param>
         /// <returns>The distance between the bottom edge of the canvas and the bottom edge of the specified element.</returns>
-        public static Int32 GetBottom(UIElement element)
+        public static Int32? GetBottom(UIElement element)
         {
             Contract.Require(element, "element");
 
-            return element.GetValue<Int32>(BottomProperty);
+            return element.GetValue<Int32?>(BottomProperty);
         }
 
         /// <summary>
@@ -73,11 +73,11 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         /// </summary>
         /// <param name="element">The element to modify.</param>
         /// <param name="value">The distance between the left edge of the canvas and the left edge of the specified element.</param>
-        public static void SetLeft(UIElement element, Int32 value)
+        public static void SetLeft(UIElement element, Int32? value)
         {
             Contract.Require(element, "element");
 
-            element.SetValue<Int32>(LeftProperty, value);
+            element.SetValue<Int32?>(LeftProperty, value);
         }
 
         /// <summary>
@@ -85,11 +85,11 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         /// </summary>
         /// <param name="element">The element to modify.</param>
         /// <param name="value">The distance between the top edge of the canvas and the top edge of the specified element.</param>
-        public static void SetTop(UIElement element, Int32 value)
+        public static void SetTop(UIElement element, Int32? value)
         {
             Contract.Require(element, "element");
 
-            element.SetValue<Int32>(TopProperty, value);
+            element.SetValue<Int32?>(TopProperty, value);
         }
 
         /// <summary>
@@ -97,11 +97,11 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         /// </summary>
         /// <param name="element">The element to modify.</param>
         /// <param name="value">The distance between the right edge of the canvas and the right edge of the specified element.</param>
-        public static void SetRight(UIElement element, Int32 value)
+        public static void SetRight(UIElement element, Int32? value)
         {
             Contract.Require(element, "element");
 
-            element.SetValue<Int32>(RightProperty, value);
+            element.SetValue<Int32?>(RightProperty, value);
         }
 
         /// <summary>
@@ -109,32 +109,32 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         /// </summary>
         /// <param name="element">The element to modify.</param>
         /// <param name="value">The distance between the bottom edge of the canvas and the bottom edge of the specified element.</param>
-        public static void SetBottom(UIElement element, Int32 value)
+        public static void SetBottom(UIElement element, Int32? value)
         {
             Contract.Require(element, "element");
 
-            element.SetValue<Int32>(BottomProperty, value);
+            element.SetValue<Int32?>(BottomProperty, value);
         }
 
         /// <summary>
         /// Gets or sets a value indicating the distance between the left edge of the canvas and the left edge of the element.
         /// </summary>
-        public static readonly DependencyProperty LeftProperty = DependencyProperty.Register("Left", typeof(Int32), typeof(Canvas));
+        public static readonly DependencyProperty LeftProperty = DependencyProperty.Register("Left", typeof(Int32?), typeof(Canvas));
 
         /// <summary>
         /// Gets or sets a value indicating the distance between the top edge of the canvas and the top edge of the element.
         /// </summary>
-        public static readonly DependencyProperty TopProperty = DependencyProperty.Register("Top", typeof(Int32), typeof(Canvas));
+        public static readonly DependencyProperty TopProperty = DependencyProperty.Register("Top", typeof(Int32?), typeof(Canvas));
 
         /// <summary>
         /// Gets or sets a value indicating the distance between the right edge of the canvas and the right edge of the element.
         /// </summary>
-        public static readonly DependencyProperty RightProperty = DependencyProperty.Register("Right", typeof(Int32), typeof(Canvas));
+        public static readonly DependencyProperty RightProperty = DependencyProperty.Register("Right", typeof(Int32?), typeof(Canvas));
 
         /// <summary>
         /// Gets or sets a value indicating the distance between the bottom edge of the canvas and the bottom edge of the element.
         /// </summary>
-        public static readonly DependencyProperty BottomProperty = DependencyProperty.Register("Bottom", typeof(Int32), typeof(Canvas));
+        public static readonly DependencyProperty BottomProperty = DependencyProperty.Register("Bottom", typeof(Int32?), typeof(Canvas));
 
         /// <inheritdoc/>
         protected override Rectangle CalculateLayoutArea(UIElement child)
