@@ -35,5 +35,13 @@ namespace TwistedLogik.Ultraviolet.Layout
         {
             get;
         }
+
+        /// <summary>
+        /// Gets a value indicating whether the dependency property is bound to a property on a model object.
+        /// </summary>
+        Boolean IsDataBound
+        {
+            get;
+        }
     }
 }

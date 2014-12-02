@@ -82,6 +82,12 @@ namespace TwistedLogik.Ultraviolet.Layout
             get { return property; }
         }
 
+        /// <inheritdoc/>
+        public Boolean IsDataBound
+        {
+            get { return dataBindingModel != null; }
+        }
+
         /// <summary>
         /// Gets the value of the property which is bound to this dependency property.
         /// </summary>
@@ -98,14 +104,6 @@ namespace TwistedLogik.Ultraviolet.Layout
         protected void SetBoundValue(T value)
         {
             dataBindingSetter(dataBindingModel, value);
-        }
-
-        /// <summary>
-        /// Gets a value indicating whether the dependency property is bound to a property on a model object.
-        /// </summary>
-        protected Boolean IsDataBound
-        {
-            get { return dataBindingModel != null; }
         }
 
         /// <summary>

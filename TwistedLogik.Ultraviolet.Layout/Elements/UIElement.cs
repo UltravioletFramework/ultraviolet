@@ -18,8 +18,9 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         {
             Contract.Require(uv, "uv");
 
-            this.uv = uv;
-            this.id = id;
+            this.uv   = uv;
+            this.id   = id;
+            this.name = GetType().Name;
         }
 
         /// <summary>
@@ -54,6 +55,14 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         public String ID
         {
             get { return id; }
+        }
+
+        /// <summary>
+        /// Gets the element's name based on its type.
+        /// </summary>
+        public String Name
+        {
+            get { return name; }
         }
 
         /// <summary>
@@ -159,6 +168,7 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         // Property values.
         private readonly UltravioletContext uv;
         private readonly String id;
+        private readonly String name;
         private UIContainer container;
         private Int32 containerRelativeX;
         private Int32 containerRelativeY;

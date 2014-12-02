@@ -21,6 +21,17 @@ namespace TwistedLogik.Ultraviolet.Layout
         }
 
         /// <summary>
+        /// Clears the local values on all of the object's dependency properties.
+        /// </summary>
+        public void ClearLocalValues()
+        {
+            foreach (var kvp in dependencyPropertyValues)
+            {
+                kvp.Value.ClearLocalValue();
+            }
+        }
+
+        /// <summary>
         /// Gets the reference typed value of the specified dependency property.
         /// </summary>
         /// <typeparam name="T">The type of value contained by the dependency property.</typeparam>
@@ -70,7 +81,7 @@ namespace TwistedLogik.Ultraviolet.Layout
                 throw new InvalidCastException();
 
             var wrapper = GetDependencyPropertyValueRef<T>(dp);
-            wrapper.LocalValue = value;
+            wrapper.SetValue(value);
         }
 
         /// <summary>
@@ -139,7 +150,7 @@ namespace TwistedLogik.Ultraviolet.Layout
                 throw new InvalidCastException();
 
             var wrapper = GetDependencyPropertyValue<T>(dp);
-            wrapper.LocalValue = value;
+            wrapper.SetValue(value);
         }
 
         /// <summary>

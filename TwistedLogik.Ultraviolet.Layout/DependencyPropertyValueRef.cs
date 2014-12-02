@@ -61,6 +61,22 @@ namespace TwistedLogik.Ultraviolet.Layout
         }
 
         /// <summary>
+        /// Sets the dependency property's value.
+        /// </summary>
+        /// <param name="value">The value to set.</param>
+        public void SetValue(T value)
+        {
+            if (IsDataBound)
+            {
+                SetBoundValue(value);
+            }
+            else
+            {
+                LocalValue = value;
+            }
+        }
+
+        /// <summary>
         /// Gets or sets the dependency property's local value.
         /// </summary>
         public T LocalValue
@@ -70,10 +86,6 @@ namespace TwistedLogik.Ultraviolet.Layout
             { 
                 localValue = value;
                 hasLocalValue = true;
-                if (IsDataBound)
-                {
-                    SetBoundValue(value);
-                }
             }
         }
 
