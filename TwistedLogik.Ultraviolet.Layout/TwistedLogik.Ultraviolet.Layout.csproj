@@ -68,6 +68,7 @@
     <Compile Include="LayoutStrings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Stylesheets\UvssDocument.cs" />
+    <Compile Include="Stylesheets\UvssDocument.PrioritizedStyleData.cs" />
     <Compile Include="Stylesheets\UvssException.cs" />
     <Compile Include="Stylesheets\UvssLexer.cs" />
     <Compile Include="Stylesheets\UvssLexerToken.cs" />

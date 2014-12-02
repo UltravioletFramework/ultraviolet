@@ -44,11 +44,56 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\TwistedLogik.Ultraviolet.Layout\DependencyObject.cs">
+      <Link>DependencyObject.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.Layout\DependencyProperty.cs">
+      <Link>DependencyProperty.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.Layout\DependencyPropertyMetadata.cs">
+      <Link>DependencyPropertyMetadata.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.Layout\DependencyPropertyOptions.cs">
+      <Link>DependencyPropertyOptions.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.Layout\DependencyPropertyValue.cs">
+      <Link>DependencyPropertyValue.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.Layout\DependencyPropertyValueBase.cs">
+      <Link>DependencyPropertyValueBase.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.Layout\DependencyPropertyValueRef.cs">
+      <Link>DependencyPropertyValueRef.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.Layout\Elements\Button.cs">
+      <Link>Elements\Button.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.Layout\Elements\Canvas.cs">
+      <Link>Elements\Canvas.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.Layout\Elements\Label.cs">
+      <Link>Elements\Label.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.Layout\Elements\UIContainer.cs">
+      <Link>Elements\UIContainer.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.Layout\Elements\UIElement.cs">
+      <Link>Elements\UIElement.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.Layout\Elements\UIElementCollection.cs">
+      <Link>Elements\UIElementCollection.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.Layout\IDependencyPropertyValue.cs">
+      <Link>IDependencyPropertyValue.cs</Link>
+    </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.Layout\LayoutStrings.cs">
       <Link>LayoutStrings.cs</Link>
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.Layout\Stylesheets\UvssDocument.cs">
       <Link>Stylesheets\UvssDocument.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.Layout\Stylesheets\UvssDocument.PrioritizedStyleData.cs">
+      <Link>Stylesheets\UvssDocument.PrioritizedStyleData.cs</Link>
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.Layout\Stylesheets\UvssException.cs">
       <Link>Stylesheets\UvssException.cs</Link>
@@ -111,7 +156,7 @@
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties ProjectLinkReference="71aaed78-c276-4018-a4b5-a97c4fbc1afb" ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" />
+      <UserProperties ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" ProjectLinkReference="71aaed78-c276-4018-a4b5-a97c4fbc1afb" />
     </VisualStudio>
   </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using TwistedLogik.Nucleus;
+using TwistedLogik.Ultraviolet.Layout.Elements;
 
 namespace TwistedLogik.Ultraviolet.Layout.Stylesheets
 {
     /// <summary>
     /// Represents an Ultraviolet Stylesheet (UVSS) document.
     /// </summary>
-    public sealed class UvssDocument
+    public sealed partial class UvssDocument
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="UvssDocument"/> class.
@@ -57,6 +58,37 @@ namespace TwistedLogik.Ultraviolet.Layout.Stylesheets
         }
 
         /// <summary>
+        /// Applies styles to the specified element.
+        /// </summary>
+        /// <param name="element">The element to which to apply styles.</param>
+        public void ApplyStyles(UIElement element)
+        {
+            Contract.Require(element, "element");
+
+            ApplyStylesInternal(element);
+        }
+
+        /// <summary>
+        /// Recursively applies styles to the specified element and all of its descendants.
+        /// </summary>
+        /// <param name="element">The element to which to apply styles.</param>
+        public void ApplyStylesRecursively(UIElement element)
+        {
+            Contract.Require(element, "element");
+
+            ApplyStylesInternal(element);
+
+            var container = element as UIContainer;
+            if (container != null)
+            {
+                foreach (var child in container.Children)
+                {
+                    ApplyStylesRecursively(child);
+                }
+            }
+        }
+
+        /// <summary>
         /// Gets the document's rules.
         /// </summary>
         public IEnumerable<UvssRule> Rules
@@ -64,7 +96,52 @@ namespace TwistedLogik.Ultraviolet.Layout.Stylesheets
             get { return rules; }
         }
 
+        /// <summary>
+        /// Applies styles to the specified element.
+        /// </summary>
+        /// <param name="element">The element to which to apply styles.</param>
+        private void ApplyStylesInternal(UIElement element)
+        {
+            // Gather styles from document
+            var rulePriority = 0;
+            foreach (var rule in rules)
+            {
+                if (!rule.MatchesElement(element, out rulePriority))
+                    continue;
+
+                foreach (var style in rule.Styles)
+                {
+                    PrioritizedStyleData existingStyleData;
+                    if (styleAggregator.TryGetValue(style.Name, out existingStyleData))
+                    {
+                        if (existingStyleData.Priority > rulePriority)
+                            continue;
+                    }
+                    styleAggregator[style.Name] = new PrioritizedStyleData(style.Value, rulePriority);
+                }
+            }
+
+            // Apply styles to element
+            foreach (var kvp in styleAggregator)
+            {
+                ApplyStyleToElement(element, kvp.Key, kvp.Value.Value);
+            }
+            styleAggregator.Clear();
+        }
+
+        /// <summary>
+        /// Applies a style to the specified element.
+        /// </summary>
+        /// <param name="element">The element to which to apply the style.</param>
+        /// <param name="style">The name of the style to apply.</param>
+        /// <param name="value">The styled value to apply.</param>
+        private void ApplyStyleToElement(UIElement element, String style, String value)
+        {
+            // TODO
+        }
+
         // State values.
+        private static readonly Dictionary<String, PrioritizedStyleData> styleAggregator = new Dictionary<String, PrioritizedStyleData>();
         private static readonly UvssLexer lexer   = new UvssLexer();
         private static readonly UvssParser parser = new UvssParser();
         private readonly List<UvssRule> rules;

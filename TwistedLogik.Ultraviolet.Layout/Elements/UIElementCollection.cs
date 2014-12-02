@@ -100,7 +100,7 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         /// </summary>
         public UIContainer Container
         {
-            get { return Container; }
+            get { return container; }
         }
 
         /// <summary>
