@@ -41,8 +41,9 @@ namespace TwistedLogik.Gluon
             LoadVersion();
             LoadExtensions();
 
-            gl.IsDirectStateAccessAvailable = IsVersionAtLeast(4, 5) || IsExtensionSupported("GL_EXT_direct_state_access");
-            
+            gl.IsDirectStateAccessAvailable    = IsVersionAtLeast(4, 5) || IsExtensionSupported("GL_EXT_direct_state_access");
+            gl.IsAnisotropicFilteringAvailable = IsExtensionSupported("GL_EXT_texture_filter_anisotropic");
+
             var functions = GetOpenGLFunctionFields();
             foreach (var function in functions)
             {
