@@ -6,7 +6,7 @@ namespace TwistedLogik.Ultraviolet.Layout.Stylesheets
     /// <summary>
     /// Represents an attribute which indicates that a property value can be set by a stylesheet.
     /// </summary>
-    [AttributeUsage(AttributeTargets.Property | AttributeTargets.Method, AllowMultiple = false)]
+    [AttributeUsage(AttributeTargets.Field, AllowMultiple = false)]
     public sealed class StyledAttribute : Attribute
     {
         /// <summary>

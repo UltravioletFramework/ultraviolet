@@ -98,7 +98,6 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         /// </summary>
         /// <param name="element">The element to modify.</param>
         /// <param name="value">The distance between the left edge of the canvas and the left edge of the specified element.</param>
-        [Styled("left")]
         public static void SetLeft(UIElement element, Int32? value)
         {
             Contract.Require(element, "element");
@@ -111,7 +110,6 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         /// </summary>
         /// <param name="element">The element to modify.</param>
         /// <param name="value">The distance between the top edge of the canvas and the top edge of the specified element.</param>
-        [Styled("top")]
         public static void SetTop(UIElement element, Int32? value)
         {
             Contract.Require(element, "element");
@@ -124,7 +122,6 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         /// </summary>
         /// <param name="element">The element to modify.</param>
         /// <param name="value">The distance between the right edge of the canvas and the right edge of the specified element.</param>
-        [Styled("right")]
         public static void SetRight(UIElement element, Int32? value)
         {
             Contract.Require(element, "element");
@@ -137,7 +134,6 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         /// </summary>
         /// <param name="element">The element to modify.</param>
         /// <param name="value">The distance between the bottom edge of the canvas and the bottom edge of the specified element.</param>
-        [Styled("bottom")]
         public static void SetBottom(UIElement element, Int32? value)
         {
             Contract.Require(element, "element");
@@ -150,7 +146,6 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         /// </summary>
         /// <param name="element">The element to modify.</param>
         /// <param name="value">The width of the specified element.</param>
-        [Styled("width")]
         public static void SetWidth(UIElement element, Int32? value)
         {
             Contract.Require(element, "element");
@@ -163,7 +158,6 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         /// </summary>
         /// <param name="element">The element to modify.</param>
         /// <param name="value">The height of the specified element.</param>
-        [Styled("height")]
         public static void SetHeight(UIElement element, Int32? value)
         {
             Contract.Require(element, "element");
@@ -174,31 +168,37 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         /// <summary>
         /// Gets or sets a value indicating the distance between the left edge of the canvas and the left edge of the element.
         /// </summary>
+        [Styled("left")]
         public static readonly DependencyProperty LeftProperty = DependencyProperty.Register("Left", typeof(Int32?), typeof(Canvas));
 
         /// <summary>
         /// Gets or sets a value indicating the distance between the top edge of the canvas and the top edge of the element.
         /// </summary>
+        [Styled("top")]
         public static readonly DependencyProperty TopProperty = DependencyProperty.Register("Top", typeof(Int32?), typeof(Canvas));
 
         /// <summary>
         /// Gets or sets a value indicating the distance between the right edge of the canvas and the right edge of the element.
         /// </summary>
+        [Styled("right")]
         public static readonly DependencyProperty RightProperty = DependencyProperty.Register("Right", typeof(Int32?), typeof(Canvas));
 
         /// <summary>
         /// Gets or sets a value indicating the distance between the bottom edge of the canvas and the bottom edge of the element.
         /// </summary>
+        [Styled("bottom")]
         public static readonly DependencyProperty BottomProperty = DependencyProperty.Register("Bottom", typeof(Int32?), typeof(Canvas));
 
         /// <summary>
         /// Gets or sets a value indicating the width of the specified element.
         /// </summary>
+        [Styled("width")]
         public static readonly DependencyProperty WidthProperty = DependencyProperty.Register("Width", typeof(Int32?), typeof(Canvas));
 
         /// <summary>
         /// Gets or sets a value indicating the height of the specified element.
         /// </summary>
+        [Styled("height")]
         public static readonly DependencyProperty HeightProperty = DependencyProperty.Register("Height", typeof(Int32?), typeof(Canvas));
 
         /// <inheritdoc/>
