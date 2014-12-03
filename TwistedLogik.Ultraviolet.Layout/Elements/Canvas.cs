@@ -238,6 +238,10 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
             if (height == null)
                 height = 0;
 
+            // Make sure we don't have negative dimensions.
+            width  = Math.Max(0, width.GetValueOrDefault());
+            height = Math.Max(0, height.GetValueOrDefault());
+
             // Calculate the element's layout area.
             var x = 0;
             var y = 0;
