@@ -87,6 +87,12 @@ namespace TwistedLogik.Ultraviolet.Layout
             hasLocalValue = false;
         }
 
+        /// <inheritdoc/>
+        public void ClearStyledValue()
+        {
+            hasStyledValue = false;
+        }
+
         /// <summary>
         /// Sets the dependency property's value.
         /// </summary>
@@ -117,6 +123,10 @@ namespace TwistedLogik.Ultraviolet.Layout
             {
                 return localValue;
             }
+            if (hasStyledValue)
+            {
+                return styledValue;
+            }
             if (Property.Metadata.IsInherited && Owner.DependencyContainer != null)
             {
                 return Owner.DependencyContainer.GetValue<T>(Property);
@@ -125,15 +135,28 @@ namespace TwistedLogik.Ultraviolet.Layout
         }
 
         /// <summary>
-        /// Gets or sets the dependency property's local value.
+        /// Gets the dependency property's local value.
         /// </summary>
         public T LocalValue
         {
             get { return localValue; }
-            private set
+            internal set
             {
                 localValue = value;
                 hasLocalValue = true;
+            }
+        }
+
+        /// <summary>
+        /// Gets the dependency property's styled value.
+        /// </summary>
+        public T StyledValue
+        {
+            get { return styledValue; }
+            internal set
+            {
+                styledValue = value;
+                hasStyledValue = true;
             }
         }
 
@@ -333,7 +356,9 @@ namespace TwistedLogik.Ultraviolet.Layout
         private readonly DependencyObject owner;
         private readonly DependencyProperty property;
         private Boolean hasLocalValue;
+        private Boolean hasStyledValue;
         private T localValue;
+        private T styledValue;
         private T defaultValue;
         private T previousValue;
 

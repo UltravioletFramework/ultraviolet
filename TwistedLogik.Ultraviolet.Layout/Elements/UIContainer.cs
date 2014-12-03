@@ -19,6 +19,34 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         }
 
         /// <summary>
+        /// Recursively clears the local values of all of the container's dependency properties
+        /// and all of the dependency properties of the container's descendents.
+        /// </summary>
+        public void ClearLocalValuesRecursive()
+        {
+            ClearLocalValues();
+
+            foreach (var child in children)
+            {
+                child.ClearLocalValues();
+            }
+        }
+
+        /// <summary>
+        /// Recursively clears the styled values of all of the container's dependency properties
+        /// and all of the dependency properties of the container's descendents.
+        /// </summary>
+        public void ClearStyledValuesRecursive()
+        {
+            ClearStyledValues();
+
+            foreach (var child in children)
+            {
+                child.ClearStyledValues();
+            }
+        }
+
+        /// <summary>
         /// Calculates the layout of the container and all of its children.
         /// </summary>
         public void PerformLayout()

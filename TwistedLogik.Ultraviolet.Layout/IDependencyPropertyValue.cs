@@ -18,6 +18,11 @@ namespace TwistedLogik.Ultraviolet.Layout
         void ClearLocalValue();
 
         /// <summary>
+        /// Clears the dependency property's styled value, if it has one.
+        /// </summary>
+        void ClearStyledValue();
+
+        /// <summary>
         /// Gets or sets the dependency object which owns this property value.
         /// </summary>
         DependencyObject Owner

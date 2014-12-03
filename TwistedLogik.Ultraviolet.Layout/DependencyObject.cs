@@ -32,6 +32,17 @@ namespace TwistedLogik.Ultraviolet.Layout
         }
 
         /// <summary>
+        /// Clears the styled values of all of the object's dependency properties.
+        /// </summary>
+        public void ClearStyledValues()
+        {
+            foreach (var kvp in dependencyPropertyValues)
+            {
+                kvp.Value.ClearStyledValue();
+            }
+        }
+
+        /// <summary>
         /// Gets the value typed value of the specified dependency property.
         /// </summary>
         /// <typeparam name="T">The type of value contained by the dependency property.</typeparam>
@@ -68,7 +79,7 @@ namespace TwistedLogik.Ultraviolet.Layout
         }
 
         /// <summary>
-        /// Sets the local value of the specified value typed dependency property.
+        /// Sets the value of the specified dependency property.
         /// </summary>
         /// <typeparam name="T">The type of value contained by the dependency property.</typeparam>
         /// <param name="dp">A <see cref="DependencyProperty"/> instance which identifies the dependency property for which to set a value.</param>
@@ -85,21 +96,46 @@ namespace TwistedLogik.Ultraviolet.Layout
         }
 
         /// <summary>
-        /// Clears the value associated with the specified value typed dependency property.
+        /// Sets the local value of the specified dependency property.
         /// </summary>
         /// <typeparam name="T">The type of value contained by the dependency property.</typeparam>
-        /// <param name="dp">A <see cref="DependencyProperty"/> instance which identifies the dependency property to clear.</param>
-        public void ClearValue<T>(DependencyProperty dp)
+        /// <param name="dp">A <see cref="DependencyProperty"/> instance which identifies the dependency property for which to set a value.</param>
+        /// <param name="value">The value to set on the specified dependency property.</param>
+        public void SetLocalValue<T>(DependencyProperty dp, T value)
         {
             Contract.Require(dp, "dp");
 
-            if (dependencyPropertyValues.Remove(dp.ID))
-            {
-                if (dp.Metadata.ChangedCallback != null)
-                {
-                    dp.Metadata.ChangedCallback(this);
-                }
-            }
+            if (!typeof(T).TypeHandle.Equals(dp.PropertyType))
+                throw new InvalidCastException();
+
+            var wrapper = GetDependencyPropertyValue<T>(dp);
+            wrapper.LocalValue = value;
+        }
+
+        /// <summary>
+        /// Clears the local value associated with the specified dependency property.
+        /// </summary>
+        /// <typeparam name="T">The type of value contained by the dependency property.</typeparam>
+        /// <param name="dp">A <see cref="DependencyProperty"/> instance which identifies the dependency property to clear.</param>
+        public void ClearLocalValue<T>(DependencyProperty dp)
+        {
+            Contract.Require(dp, "dp");
+
+            var wrapper = GetDependencyPropertyValue<T>(dp);
+            wrapper.ClearLocalValue();
+        }
+
+        /// <summary>
+        /// Clears the styled value associated with the specified 
+        /// </summary>
+        /// <typeparam name="T">The type of value contained by the dependency property.</typeparam>
+        /// <param name="dp">A <see cref="DependencyProperty"/> instance which identifies the dependency property to clear.</param>
+        public void ClearStyledValue<T>(DependencyProperty dp)
+        {
+            Contract.Require(dp, "dp");
+
+            var wrapper = GetDependencyPropertyValue<T>(dp);
+            wrapper.ClearStyledValue();
         }
 
         /// <summary>
