@@ -334,8 +334,11 @@ namespace TwistedLogik.Ultraviolet.Layout.Stylesheets
             if (state.IsPastEndOfStream)
                 return null;
 
+            var qualifierImportant = false;
+            var qualifierGlobal    = false;
+
             var nameToken = state.TryConsumeNonWhiteSpace();
-            if (nameToken == null || nameToken.Value.TokenType != UvssLexerTokenType.Identifier)
+            if (nameToken == null || nameToken.Value.TokenType != UvssLexerTokenType.StyleName)
                 ThrowSyntaxException(LayoutStrings.StylesheetSyntaxError, state);
 
             var colonToken = state.TryConsumeNonWhiteSpace();
@@ -350,13 +353,33 @@ namespace TwistedLogik.Ultraviolet.Layout.Stylesheets
                 {
                     break;
                 }
+                if (token.TokenType == UvssLexerTokenType.StyleQualifier)
+                {
+                    if (String.Equals("!important", token.Value, StringComparison.OrdinalIgnoreCase))
+                    {
+                        qualifierImportant = true;
+                    }
+                    if (String.Equals("!global", token.Value, StringComparison.OrdinalIgnoreCase))
+                    {
+                        qualifierGlobal = true;
+                    }
+                    continue;
+                }
                 valueTokens.Add(token);
             }
 
-            var name  = nameToken.Value.Value;
-            var value = String.Join(String.Empty, valueTokens.Select(x => x.Value));
+            var container = default(String);
+            var name      = nameToken.Value.Value;
+            var value     = String.Join(String.Empty, valueTokens.Select(x => x.Value));
 
-            return new UvssStyle(name, value);
+            if (name.Contains('.'))
+            {
+                var nameParts = name.Split('.');
+                container     = nameParts[0];
+                name          = nameParts[1];
+            }
+
+            return new UvssStyle(container, name, value, qualifierImportant, qualifierGlobal);
         }
     }
 }

@@ -60,5 +60,15 @@ namespace TwistedLogik.Ultraviolet.Layout.Stylesheets
         /// A comma.
         /// </summary>
         Comma,
+
+        /// <summary>
+        /// The name of a style, optionally with a container qualifier.
+        /// </summary>
+        StyleName,
+
+        /// <summary>
+        /// A style qualifier, like !important or !global.
+        /// </summary>
+        StyleQualifier,
     }
 }

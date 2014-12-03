@@ -1,5 +1,6 @@
 ﻿using System;
 using TwistedLogik.Nucleus;
+using TwistedLogik.Ultraviolet.Layout.Stylesheets;
 
 namespace TwistedLogik.Ultraviolet.Layout.Elements
 {
@@ -97,6 +98,7 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         /// </summary>
         /// <param name="element">The element to modify.</param>
         /// <param name="value">The distance between the left edge of the canvas and the left edge of the specified element.</param>
+        [Styled("left")]
         public static void SetLeft(UIElement element, Int32? value)
         {
             Contract.Require(element, "element");
@@ -109,6 +111,7 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         /// </summary>
         /// <param name="element">The element to modify.</param>
         /// <param name="value">The distance between the top edge of the canvas and the top edge of the specified element.</param>
+        [Styled("top")]
         public static void SetTop(UIElement element, Int32? value)
         {
             Contract.Require(element, "element");
@@ -121,6 +124,7 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         /// </summary>
         /// <param name="element">The element to modify.</param>
         /// <param name="value">The distance between the right edge of the canvas and the right edge of the specified element.</param>
+        [Styled("right")]
         public static void SetRight(UIElement element, Int32? value)
         {
             Contract.Require(element, "element");
@@ -133,6 +137,7 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         /// </summary>
         /// <param name="element">The element to modify.</param>
         /// <param name="value">The distance between the bottom edge of the canvas and the bottom edge of the specified element.</param>
+        [Styled("bottom")]
         public static void SetBottom(UIElement element, Int32? value)
         {
             Contract.Require(element, "element");
@@ -145,6 +150,7 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         /// </summary>
         /// <param name="element">The element to modify.</param>
         /// <param name="value">The width of the specified element.</param>
+        [Styled("width")]
         public static void SetWidth(UIElement element, Int32? value)
         {
             Contract.Require(element, "element");
@@ -157,6 +163,7 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         /// </summary>
         /// <param name="element">The element to modify.</param>
         /// <param name="value">The height of the specified element.</param>
+        [Styled("height")]
         public static void SetHeight(UIElement element, Int32? value)
         {
             Contract.Require(element, "element");

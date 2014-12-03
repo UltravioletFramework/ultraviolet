@@ -65,6 +65,7 @@
     <Compile Include="IDependencyPropertyValue.cs" />
     <Compile Include="LayoutStrings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Stylesheets\StyledAttribute.cs" />
     <Compile Include="Stylesheets\UvssDocument.cs" />
     <Compile Include="Stylesheets\UvssDocument.PrioritizedStyleData.cs" />
     <Compile Include="Stylesheets\UvssException.cs" />

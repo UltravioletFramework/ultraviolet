@@ -111,20 +111,23 @@ namespace TwistedLogik.Ultraviolet.Layout.Stylesheets
 
                 foreach (var style in rule.Styles)
                 {
+                    const Int32 ImportantStylePriority = 1000000000;
+                    var stylePriority = rulePriority + (style.IsImportant ? ImportantStylePriority : 0);
+
                     PrioritizedStyleData existingStyleData;
-                    if (styleAggregator.TryGetValue(style.Name, out existingStyleData))
+                    if (styleAggregator.TryGetValue(style.QualifiedName, out existingStyleData))
                     {
                         if (existingStyleData.Priority > rulePriority)
                             continue;
                     }
-                    styleAggregator[style.Name] = new PrioritizedStyleData(style.Value, rulePriority);
+                    styleAggregator[style.QualifiedName] = new PrioritizedStyleData(style.Container, style.Name, style.Value, rulePriority);
                 }
             }
 
             // Apply styles to element
             foreach (var kvp in styleAggregator)
             {
-                ApplyStyleToElement(element, kvp.Key, kvp.Value.Value);
+                ApplyStyleToElement(element, kvp.Value.Container, kvp.Value.Name, kvp.Value.Value);
             }
             styleAggregator.Clear();
         }
@@ -133,9 +136,10 @@ namespace TwistedLogik.Ultraviolet.Layout.Stylesheets
         /// Applies a style to the specified element.
         /// </summary>
         /// <param name="element">The element to which to apply the style.</param>
+        /// <param name="container">The style's container, if it represents an attached property.</param>
         /// <param name="style">The name of the style to apply.</param>
         /// <param name="value">The styled value to apply.</param>
-        private void ApplyStyleToElement(UIElement element, String style, String value)
+        private void ApplyStyleToElement(UIElement element, String container, String style, String value)
         {
             // TODO
         }

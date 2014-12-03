@@ -16,12 +16,20 @@ namespace TwistedLogik.Ultraviolet.Layout.Stylesheets
         public IList<UvssLexerToken> Lex(String input)
         {
             var output = new List<UvssLexerToken>();
-            var ix = 0;            
+            var ix     = 0;
+            var braces = 0;
 
             while (ix < input.Length)
             {
                 if (ConsumeWhiteSpace(input, output, ref ix))
                     continue;
+                if (braces > 0)
+                {
+                    if (ConsumeStyleName(input, output, ref ix))
+                        continue;
+                    if (ConsumeStyleQualifier(input, output, ref ix))
+                        continue;
+                }
                 if (ConsumeIdentifier(input, output, ref ix))
                     continue;
                 if (ConsumeNumber(input, output, ref ix))
@@ -33,9 +41,15 @@ namespace TwistedLogik.Ultraviolet.Layout.Stylesheets
                 if (ConsumeCloseParenthesis(input, output, ref ix))
                     continue;
                 if (ConsumeOpenCurlyBrace(input, output, ref ix))
+                {
+                    braces++;
                     continue;
+                }
                 if (ConsumeCloseCurlyBrace(input, output, ref ix))
+                {
+                    braces--;
                     continue;
+                }
                 if (ConsumeColon(input, output, ref ix))
                     continue;
                 if (ConsumeSemicolon(input, output, ref ix))
@@ -93,6 +107,88 @@ namespace TwistedLogik.Ultraviolet.Layout.Stylesheets
         private static Boolean IsValidInWhiteSpace(Char c)
         {
             return Char.IsWhiteSpace(c);
+        }
+
+        /// <summary>
+        /// Attempts to consume a StyleName token.
+        /// </summary>
+        private static Boolean ConsumeStyleName(String input, IList<UvssLexerToken> output, ref Int32 ix)
+        {
+            if (!IsValidStartStyleName(input[ix]))
+                return false;
+
+            var start     = ix++;
+            var length    = 1;
+            var qualified = false;
+
+            while (ix < input.Length && IsValidInStyleName(input[ix], ref qualified)) { ix++; length++; }
+
+            var value = input.Substring(start, length);
+            var token = new UvssLexerToken(UvssLexerTokenType.StyleName, start, length, value);
+            output.Add(token);
+
+            return true;
+        }
+
+        /// <summary>
+        /// Evaluates whether the specified character is valid at the start of a StyleName token.
+        /// </summary>
+        private static Boolean IsValidStartStyleName(Char c)
+        {
+            return Char.IsLetter(c) || c == '-';
+        }
+
+        /// <summary>
+        /// Evaluates whether the specified character is valid in a StyleName token.
+        /// </summary>
+        private static Boolean IsValidInStyleName(Char c, ref Boolean qualified)
+        {
+            if (c == '.')
+            {
+                if (qualified)
+                {
+                    return false;
+                }
+                qualified = true;
+                return true;
+            }
+            return Char.IsLetterOrDigit(c) || c == '_' || c == '-';
+        }
+
+        /// <summary>
+        /// Attempts to consume a StyleQualifier token.
+        /// </summary>
+        private static Boolean ConsumeStyleQualifier(String input, IList<UvssLexerToken> output, ref Int32 ix)
+        {
+            if (!IsValidStartStyleQualifier(input[ix]))
+                return false;
+
+            var start     = ix++;
+            var length    = 1;
+
+            while (ix < input.Length && IsValidInStyleQualifier(input[ix])) { ix++; length++; }
+
+            var value = input.Substring(start, length);
+            var token = new UvssLexerToken(UvssLexerTokenType.StyleQualifier, start, length, value);
+            output.Add(token);
+
+            return true;
+        }
+
+        /// <summary>
+        /// Evaluates whether the specified character is valid at the start of a StyleQualifier token.
+        /// </summary>
+        private static Boolean IsValidStartStyleQualifier(Char c)
+        {
+            return c == '!';
+        }
+
+        /// <summary>
+        /// Evaluates whether the specified character is valid in a StyleQualifier token.
+        /// </summary>
+        private static Boolean IsValidInStyleQualifier(Char c)
+        {
+            return Char.IsLetterOrDigit(c) || c == '_' || c == '-';
         }
 
         /// <summary>
