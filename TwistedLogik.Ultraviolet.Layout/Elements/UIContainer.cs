@@ -47,10 +47,46 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         }
 
         /// <summary>
-        /// Calculates the layout of the container and all of its children.
+        /// Suspends layout operations until <see cref="ResumeLayout()"/> is called.
+        /// </summary>
+        public void SuspendLayout()
+        {
+            layoutSuspended = true;
+        }
+
+        /// <summary>
+        /// Resumes layout operations after a call to <see cref="SuspendLayout()"/>.
+        /// </summary>
+        public void ResumeLayout()
+        {
+            layoutSuspended = false;
+
+            if (layoutRequested)
+            {
+                PerformLayout();
+            }
+        }
+
+        /// <summary>
+        /// Requests that a layout be performed.
+        /// </summary>
+        public void RequestLayout()
+        {
+            layoutRequested = true;
+        }
+
+        /// <summary>
+        /// Immediately recalculates the layout of the container and all of its children.
+        /// If layout is currently suspended, this operation is deferred until layout is resumed.
         /// </summary>
         public void PerformLayout()
         {
+            if (layoutSuspended)
+            {
+                RequestLayout();
+                return;
+            }
+
             OnPerformingLayout();
 
             foreach (var child in children)
@@ -120,10 +156,19 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         /// <returns>The container-relative layout area of the specified child element.</returns>
         protected abstract Rectangle CalculateLayoutArea(UIElement child);
 
-        /// <summary>
-        /// Updates the viewport associated with this element.
-        /// </summary>
-        /// <param name="viewport">The viewport to associate with this element.</param>
+        /// <inheritdoc/>
+        internal override void UpdateInternal(UltravioletTime time)
+        {
+            base.UpdateInternal(time);
+
+            if (layoutRequested)
+            {
+                layoutRequested = false;
+                PerformLayout();
+            }
+        }
+
+        /// <inheritdoc/>
         internal override void UpdateViewport(UIViewport viewport)
         {
             base.UpdateViewport(viewport);
@@ -136,5 +181,9 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
 
         // Property values.
         private readonly UIElementCollection children;
+
+        // State values.
+        private Boolean layoutSuspended;
+        private Boolean layoutRequested;
     }
 }

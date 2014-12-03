@@ -63,7 +63,7 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Draw(UltravioletTime)"/>.</param>
         public void Update(UltravioletTime time)
         {
-            Digest();
+            UpdateInternal(time);
         }
 
         /// <summary>
@@ -242,12 +242,29 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         }
 
         /// <summary>
+        /// Updates the element's state.
+        /// </summary>
+        /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Draw(UltravioletTime)"/>.</param>
+        internal virtual void UpdateInternal(UltravioletTime time)
+        {
+            Digest();
+        }
+
+        /// <summary>
         /// Updates the viewport associated with this element.
         /// </summary>
         /// <param name="viewport">The viewport to associate with this element.</param>
         internal virtual void UpdateViewport(UIViewport viewport)
         {
             this.viewport = viewport;
+            if (viewport == null || viewport.Stylesheet == null)
+            {
+                ClearStyledValues();
+            }
+            else
+            {
+                viewport.Stylesheet.ApplyStylesRecursively(this);
+            }
             ReloadContent();
         }
 

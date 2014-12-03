@@ -1,5 +1,6 @@
 ﻿using System;
 using TwistedLogik.Ultraviolet.Content;
+using TwistedLogik.Ultraviolet.Layout.Stylesheets;
 
 namespace TwistedLogik.Ultraviolet.Layout.Elements
 {
@@ -12,10 +13,13 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         /// Initializes a new instance of the <see cref="UIViewport"/> class.
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
-        public UIViewport(UltravioletContext uv)
+        /// <param name="screenArea">The viewport's initial area on the screen.</param>
+        public UIViewport(UltravioletContext uv, Rectangle screenArea)
         {
             this.canvas = new Canvas(uv, null);
             this.canvas.UpdateViewport(this);
+
+            this.ScreenArea = screenArea;
         }
 
         /// <summary>
@@ -38,6 +42,24 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
             this.localContent  = local;
 
             Canvas.ReloadContent();
+        }
+
+        /// <summary>
+        /// Sets the viewport's stylesheet.
+        /// </summary>
+        /// <param name="stylesheet">The viewport's stylesheet.</param>
+        public void SetStylesheet(UvssDocument stylesheet)
+        {
+            this.stylesheet = stylesheet;
+
+            if (stylesheet != null)
+            {
+                stylesheet.ApplyStylesRecursively(Canvas);
+            }
+            else
+            {
+                Canvas.ClearStyledValuesRecursive();
+            }
         }
 
         /// <summary>
@@ -75,6 +97,14 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         public ContentManager LocalContent
         {
             get { return localContent; }
+        }
+
+        /// <summary>
+        /// Gets the stylesheet that is currently applied to this viewport.
+        /// </summary>
+        public UvssDocument Stylesheet
+        {
+            get { return stylesheet; }
         }
 
         /// <summary>
@@ -137,6 +167,7 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         // Property values.
         private ContentManager globalContent;
         private ContentManager localContent;
+        private UvssDocument stylesheet;
         private Rectangle screenArea;
         private Canvas canvas;
     }

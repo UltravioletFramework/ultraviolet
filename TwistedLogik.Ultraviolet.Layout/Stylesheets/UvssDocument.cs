@@ -58,10 +58,18 @@ namespace TwistedLogik.Ultraviolet.Layout.Stylesheets
         }
 
         /// <summary>
+        /// Gets the document's rules.
+        /// </summary>
+        public IEnumerable<UvssRule> Rules
+        {
+            get { return rules; }
+        }
+
+        /// <summary>
         /// Applies styles to the specified element.
         /// </summary>
         /// <param name="element">The element to which to apply styles.</param>
-        public void ApplyStyles(UIElement element)
+        internal void ApplyStyles(UIElement element)
         {
             Contract.Require(element, "element");
 
@@ -72,7 +80,7 @@ namespace TwistedLogik.Ultraviolet.Layout.Stylesheets
         /// Recursively applies styles to the specified element and all of its descendants.
         /// </summary>
         /// <param name="element">The element to which to apply styles.</param>
-        public void ApplyStylesRecursively(UIElement element)
+        internal void ApplyStylesRecursively(UIElement element)
         {
             Contract.Require(element, "element");
 
@@ -86,14 +94,6 @@ namespace TwistedLogik.Ultraviolet.Layout.Stylesheets
                     ApplyStylesRecursively(child);
                 }
             }
-        }
-
-        /// <summary>
-        /// Gets the document's rules.
-        /// </summary>
-        public IEnumerable<UvssRule> Rules
-        {
-            get { return rules; }
         }
 
         /// <summary>
