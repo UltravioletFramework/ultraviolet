@@ -161,6 +161,11 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         {
             base.UpdateInternal(time);
 
+            foreach (var child in children)
+            {
+                child.Update(time);
+            }
+
             if (layoutRequested)
             {
                 layoutRequested = false;
