@@ -40,6 +40,27 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         }
 
         /// <summary>
+        /// Loads the specified source 
+        /// </summary>
+        /// <typeparam name="TOutput">The type of object being loaded.</typeparam>
+        /// <param name="asset">The identifier of the asset to load.</param>
+        /// <returns>The asset that was loaded.</returns>
+        public TOutput LoadContent<TOutput>(SourcedAssetID asset)
+        {
+            switch (asset.AssetSource)
+            {
+                case AssetSource.Global:
+                    return (globalContent == null) ? default(TOutput) : globalContent.Load<TOutput>(asset.AssetID);
+                
+                case AssetSource.Local:
+                    return (localContent == null) ? default(TOutput) : localContent.Load<TOutput>(asset.AssetID);
+
+                default:
+                    throw new NotSupportedException();
+            }
+        }
+
+        /// <summary>
         /// Gets the content manager used to load globally-sourced assets.
         /// </summary>
         public ContentManager GlobalContent

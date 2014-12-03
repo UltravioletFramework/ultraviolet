@@ -59,6 +59,9 @@
     <Compile Include="..\TwistedLogik.Ultraviolet.Layout\DependencyPropertyValue.cs">
       <Link>DependencyPropertyValue.cs</Link>
     </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.Layout\Elements\AssetSource.cs">
+      <Link>Elements\AssetSource.cs</Link>
+    </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.Layout\Elements\Button.cs">
       <Link>Elements\Button.cs</Link>
     </Compile>
@@ -67,6 +70,9 @@
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.Layout\Elements\Label.cs">
       <Link>Elements\Label.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.Layout\Elements\SourcedAssetID.cs">
+      <Link>Elements\SourcedAssetID.cs</Link>
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.Layout\Elements\UIContainer.cs">
       <Link>Elements\UIContainer.cs</Link>

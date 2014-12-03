@@ -56,9 +56,11 @@
     <Compile Include="DependencyPropertyMetadata.cs" />
     <Compile Include="DependencyPropertyOptions.cs" />
     <Compile Include="DependencyPropertyValue.cs" />
+    <Compile Include="Elements\AssetSource.cs" />
     <Compile Include="Elements\Canvas.cs" />
     <Compile Include="Elements\Label.cs" />
     <Compile Include="Elements\Button.cs" />
+    <Compile Include="Elements\SourcedAssetID.cs" />
     <Compile Include="Elements\UIContainer.cs" />
     <Compile Include="Elements\UIElement.cs" />
     <Compile Include="Elements\UIElementCollection.cs" />

@@ -35,7 +35,7 @@ namespace TwistedLogik.Ultraviolet.Content
         /// </summary>
         /// <param name="id1">The first <see cref="AssetID"/> to compare.</param>
         /// <param name="id2">The second <see cref="AssetID"/> to compare.</param>
-        /// <returns><c>true</c> if the specified identnfiers are equal; otherwise, <c>false</c>.</returns>
+        /// <returns><c>true</c> if the specified identifiers are equal; otherwise, <c>false</c>.</returns>
         public static Boolean operator ==(AssetID id1, AssetID id2)
         {
             return id1.Equals(id2);
@@ -46,7 +46,7 @@ namespace TwistedLogik.Ultraviolet.Content
         /// </summary>
         /// <param name="id1">The first <see cref="AssetID"/> to compare.</param>
         /// <param name="id2">The second <see cref="AssetID"/> to compare.</param>
-        /// <returns><c>true</c> if the specified identnfiers are unequal; otherwise, <c>false</c>.</returns>
+        /// <returns><c>true</c> if the specified identifiers are unequal; otherwise, <c>false</c>.</returns>
         public static Boolean operator !=(AssetID id1, AssetID id2)
         {
             return !id1.Equals(id2);
