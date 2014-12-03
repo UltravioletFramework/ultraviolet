@@ -74,15 +74,6 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
             OnReloadingContent();
         }
 
-        private static readonly DependencyProperty dpBackgroundColor = DependencyProperty.Register("BackgroundColor", typeof(Color), typeof(UIElement),
-            new DependencyPropertyMetadata(DependencyPropertyOptions.Inherited));
-
-        public Color BackgroundColor
-        {
-            get { return GetValue<Color>(dpBackgroundColor); }
-            set { SetValue<Color>(dpBackgroundColor, value); }
-        }
-
         /// <summary>
         /// Gets the Ultraviolet context that created the element.
         /// </summary>
@@ -216,6 +207,20 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         protected virtual void OnReloadingContent()
         {
 
+        }
+
+        /// <summary>
+        /// Loads the specified sourced asset.
+        /// </summary>
+        /// <typeparam name="TOutput">The type of object being loaded.</typeparam>
+        /// <param name="asset">The identifier of the asset to load.</param>
+        /// <returns>The asset that was loaded.</returns>
+        protected TOutput LoadContent<TOutput>(SourcedAssetID asset)
+        {
+            if (Viewport == null)
+                return default(TOutput);
+
+            return Viewport.LoadContent<TOutput>(asset);
         }
 
         /// <summary>

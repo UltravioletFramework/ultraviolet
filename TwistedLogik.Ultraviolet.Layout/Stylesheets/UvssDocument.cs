@@ -102,6 +102,8 @@ namespace TwistedLogik.Ultraviolet.Layout.Stylesheets
         /// <param name="element">The element to which to apply styles.</param>
         private void ApplyStylesInternal(UIElement element)
         {
+            element.ClearStyledValues();
+
             // Gather styles from document
             var rulePriority = 0;
             foreach (var rule in rules)
