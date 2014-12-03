@@ -28,7 +28,7 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         {
             foreach (var element in elements)
             {
-                element.Container = null;
+                element.UpdateContainer(null);
             }
             elements.Clear();
         }
@@ -44,7 +44,7 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
             if (element.Container != null)
                 element.Container.Children.Remove(element);
 
-            element.Container = Container;
+            element.UpdateContainer(Container);
             elements.Add(element);
         }
 
@@ -59,7 +59,7 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
 
             if (elements.Remove(element))
             {
-                element.Container = null;
+                element.UpdateContainer(null);
                 return true;
             }
             return false;

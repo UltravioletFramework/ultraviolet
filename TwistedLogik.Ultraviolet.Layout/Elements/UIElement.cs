@@ -66,6 +66,14 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         }
 
         /// <summary>
+        /// Called when the element should reload its content.
+        /// </summary>
+        public void ReloadContent()
+        {
+            OnReloadingContent();
+        }
+
+        /// <summary>
         /// Gets the Ultraviolet context that created the element.
         /// </summary>
         public UltravioletContext Ultraviolet
@@ -90,12 +98,19 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         }
 
         /// <summary>
+        /// Gets the <see cref="UIViewport"/> that is the top-level container for this element.
+        /// </summary>
+        public UIViewport Viewport
+        {
+            get { return viewport; }
+        }
+
+        /// <summary>
         /// Gets the <see cref="UIContainer"/> that contains this element.
         /// </summary>
         public UIContainer Container
         {
             get { return container; }
-            internal set { container = value; }
         }
 
         /// <summary>
@@ -186,6 +201,14 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         }
 
         /// <summary>
+        /// Called when the element should reload its content.
+        /// </summary>
+        protected virtual void OnReloadingContent()
+        {
+
+        }
+
+        /// <summary>
         /// Applies a style to the element.
         /// </summary>
         /// <param name="name">The name of the style.</param>
@@ -201,6 +224,25 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
                 return;
 
             setter(this, value, CultureInfo.InvariantCulture);
+        }
+
+        /// <summary>
+        /// Updates the viewport associated with this element.
+        /// </summary>
+        /// <param name="viewport">The viewport to associate with this element.</param>
+        internal virtual void UpdateViewport(UIViewport viewport)
+        {
+            this.viewport = viewport;
+            ReloadContent();
+        }
+
+        /// <summary>
+        /// Updates the container which holds this element.
+        /// </summary>
+        /// <param name="container">The container to associate with this element.</param>
+        internal virtual void UpdateContainer(UIContainer container)
+        {
+            this.container = container;
         }
 
         /// <summary>
@@ -296,6 +338,7 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         private readonly UltravioletContext uv;
         private readonly String id;
         private readonly String name;
+        private UIViewport viewport;
         private UIContainer container;
         private Int32 containerRelativeX;
         private Int32 containerRelativeY;

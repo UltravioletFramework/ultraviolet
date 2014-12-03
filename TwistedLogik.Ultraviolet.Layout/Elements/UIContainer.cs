@@ -41,6 +41,27 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         }
 
         /// <summary>
+        /// Called when the element and its children should reload their content.
+        /// </summary>
+        public void ReloadContentRecursively()
+        {
+            ReloadContent();
+
+            foreach (var child in children)
+            {
+                var container = child as UIContainer;
+                if (container != null)
+                {
+                    container.ReloadContentRecursively();
+                }
+                else
+                {
+                    container.ReloadContent();
+                }
+            }
+        }
+
+        /// <summary>
         /// Gets the container's collection of child elements.
         /// </summary>
         public UIElementCollection Children
@@ -70,6 +91,20 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         /// <param name="child">The child element for which to calculate a layout area.</param>
         /// <returns>The container-relative layout area of the specified child element.</returns>
         protected abstract Rectangle CalculateLayoutArea(UIElement child);
+
+        /// <summary>
+        /// Updates the viewport associated with this element.
+        /// </summary>
+        /// <param name="viewport">The viewport to associate with this element.</param>
+        internal override void UpdateViewport(UIViewport viewport)
+        {
+            base.UpdateViewport(viewport);
+
+            foreach (var child in children)
+            {
+                child.UpdateViewport(viewport);
+            }
+        }
 
         // Property values.
         private readonly UIElementCollection children;
