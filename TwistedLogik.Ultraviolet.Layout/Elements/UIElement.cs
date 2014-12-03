@@ -1,14 +1,34 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Reflection;
 using TwistedLogik.Nucleus;
-using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
+using TwistedLogik.Nucleus.Data;
+using TwistedLogik.Ultraviolet.Layout.Stylesheets;
 
 namespace TwistedLogik.Ultraviolet.Layout.Elements
 {
+    /// <summary>
+    /// Represents a method which sets the value of a styled property on a UI element.
+    /// </summary>
+    /// <param name="element">The UI element on which to set the style.</param>
+    /// <param name="value">The string representation of the value to set for the style.</param>
+    internal delegate void StyleSetter(UIElement element, String value);
+
     /// <summary>
     /// The base class for all UI elements.
     /// </summary>
     public abstract class UIElement : DependencyObject
     {
+        /// <summary>
+        /// Initialies the <see cref="UIElement"/> type.
+        /// </summary>
+        static UIElement()
+        {
+            miFromString = typeof(ObjectResolver).GetMethod("FromString", new Type[] { typeof(String), typeof(Type) });
+        }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="UIElement"/> class.
         /// </summary>
@@ -21,6 +41,8 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
             this.uv   = uv;
             this.id   = id;
             this.name = GetType().Name;
+
+            CreateStyleSetters();
         }
 
         /// <summary>
@@ -161,6 +183,107 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
 
         }
 
+        /// <summary>
+        /// Applies a style to the element.
+        /// </summary>
+        /// <param name="name">The name of the style.</param>
+        /// <param name="value">The value to apply to the style.</param>
+        /// <param name="attached">A value indicating whether thie style represents an attached property.</param>
+        internal void ApplyStyle(String name, String value, Boolean attached)
+        {
+            Contract.RequireNotEmpty(name, "name");
+            Contract.RequireNotEmpty(value, "value");
+
+            var setter = attached ? Container.GetStyleSetter(name) : GetStyleSetter(name);
+            if (setter == null)
+                return;
+
+            setter(this, value);
+        }
+
+        /// <summary>
+        /// Creates the element's style setters.
+        /// </summary>
+        private void CreateStyleSetters()
+        {
+            var typeID = GetType().TypeHandle.Value.ToInt64();
+
+            lock (styleSetters)
+            {
+                Dictionary<String, StyleSetter> styleSettersForCurrentType;
+                if (!styleSetters.TryGetValue(typeID, out styleSettersForCurrentType))
+                {
+                    styleSettersForCurrentType = new Dictionary<String, StyleSetter>(StringComparer.OrdinalIgnoreCase);
+                    
+                    // Attached properties - these are always static methods named SetFoo()
+                    var styledAttachedProperties = 
+                        from method in GetType().GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static)
+                        let attr = method.GetCustomAttributes(typeof(StyledAttribute), false).SingleOrDefault()
+                        let args = method.GetParameters()
+                        let name = method.Name
+                        where
+                            name.StartsWith("Set") && attr != null && args.Length == 2 && args.First().ParameterType == typeof(UIElement)
+                        select new { Attribute = (StyledAttribute)attr, MethodInfo = method };
+
+                    foreach (var prop in styledAttachedProperties)
+                    {
+                        var valueType           = prop.MethodInfo.GetParameters()[1].ParameterType;
+                        var expParameterElement = Expression.Parameter(typeof(UIElement), "element");
+                        var expParameterValue   = Expression.Parameter(typeof(String), "value");
+                        var expResolveValue     = Expression.Call(miFromString, expParameterValue, Expression.Constant(valueType));
+                        var expCallMethod       = Expression.Call(prop.MethodInfo, expParameterElement, Expression.Convert(expResolveValue, valueType));
+
+                        var lambda = Expression.Lambda<StyleSetter>(expCallMethod, expParameterElement, expParameterValue).Compile();
+                        styleSettersForCurrentType[prop.Attribute.Name] = lambda;
+                    }
+
+                    // Standard properties
+                    var styledStandardProperties = 
+                        from prop in GetType().GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)
+                        let attr = prop.GetCustomAttributes(typeof(StyledAttribute), true).SingleOrDefault()
+                        where
+                            attr != null && prop.CanWrite
+                        select new { Attribute = (StyledAttribute)attr, PropertyInfo = prop };
+
+                    foreach (var prop in styledStandardProperties)
+                    {
+                        var valueType           = prop.PropertyInfo.PropertyType;
+                        var expParameterElement = Expression.Parameter(typeof(UIElement), "element");
+                        var expParameterValue   = Expression.Parameter(typeof(String), "value");
+                        var expResolveValue     = Expression.Call(miFromString, expParameterValue, Expression.Constant(valueType));
+                        var expCastValue        = Expression.Convert(expResolveValue, valueType);
+
+                        var lambdaBody = Expression.Assign(Expression.Property(Expression.Convert(expParameterElement, GetType()), prop.PropertyInfo), expCastValue);
+                        var lambda     = Expression.Lambda<StyleSetter>(lambdaBody, expParameterElement, expParameterValue).Compile();
+                        styleSettersForCurrentType[prop.Attribute.Name] = lambda;
+                    }
+
+                    styleSetters[typeID] = styleSettersForCurrentType;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets the style setter for the style with the specified name.
+        /// </summary>
+        /// <param name="name">The name of the style for which to retrieve a setter.</param>
+        /// <returns>A function to set the value of the specified style.</returns>
+        private StyleSetter GetStyleSetter(String name)
+        {
+            var typeID = GetType().TypeHandle.Value.ToInt64();
+
+            lock (styleSetters)
+            {
+                Dictionary<String, StyleSetter> styleSettersForCurrentType;
+                if (!styleSetters.TryGetValue(typeID, out styleSettersForCurrentType))
+                    return null;
+
+                StyleSetter setter;
+                styleSettersForCurrentType.TryGetValue(name, out setter);
+                return setter;
+            }
+        }
+
         // Dependency properties.
         private static readonly DependencyProperty dpIsEnabled = DependencyProperty.Register("IsEnabled", typeof(Boolean), typeof(UIElement));
         private static readonly DependencyProperty dpIsVisible = DependencyProperty.Register("IsVisible", typeof(Boolean), typeof(UIElement));
@@ -174,5 +297,10 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         private Int32 containerRelativeY;
         private Int32 calculatedWidth;
         private Int32 calculatedHeight;
+
+        // Functions for setting styles on known element types.
+        private static readonly MethodInfo miFromString;
+        private static readonly Dictionary<Int64, Dictionary<String, StyleSetter>> styleSetters = 
+            new Dictionary<Int64, Dictionary<String, StyleSetter>>();
     }
 }

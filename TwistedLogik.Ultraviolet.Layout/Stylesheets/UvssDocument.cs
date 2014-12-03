@@ -141,7 +141,18 @@ namespace TwistedLogik.Ultraviolet.Layout.Stylesheets
         /// <param name="value">The styled value to apply.</param>
         private void ApplyStyleToElement(UIElement element, String container, String style, String value)
         {
-            // TODO
+            var styleIsForContainer = !String.IsNullOrEmpty(container);
+            if (styleIsForContainer)
+            {
+                var styleMatchesContainer = element.Container != null && String.Equals(element.Container.Name, container, StringComparison.OrdinalIgnoreCase);
+                if (styleMatchesContainer)
+                {
+                    element.ApplyStyle(style, value, true);
+                    return;
+                }
+            }
+
+            element.ApplyStyle(style, value, false);
         }
 
         // State values.
