@@ -74,6 +74,15 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
             OnReloadingContent();
         }
 
+        private static readonly DependencyProperty dpBackgroundColor = DependencyProperty.Register("BackgroundColor", typeof(Color), typeof(UIElement),
+            new DependencyPropertyMetadata(DependencyPropertyOptions.Inherited));
+
+        public Color BackgroundColor
+        {
+            get { return GetValue<Color>(dpBackgroundColor); }
+            set { SetValue<Color>(dpBackgroundColor, value); }
+        }
+
         /// <summary>
         /// Gets the Ultraviolet context that created the element.
         /// </summary>
@@ -243,7 +252,8 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         /// <param name="container">The container to associate with this element.</param>
         internal virtual void UpdateContainer(UIContainer container)
         {
-            this.container = container;
+            this.container           = container;
+            this.DependencyContainer = container;
 
             var viewport = (container == null) ? null : container.Viewport;
             if (viewport != this.viewport)
