@@ -15,6 +15,7 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         public UIViewport(UltravioletContext uv)
         {
             this.canvas = new Canvas(uv, null);
+            this.canvas.UpdateViewport(this);
         }
 
         /// <summary>

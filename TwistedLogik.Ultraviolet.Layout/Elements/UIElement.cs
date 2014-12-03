@@ -243,6 +243,12 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         internal virtual void UpdateContainer(UIContainer container)
         {
             this.container = container;
+
+            var viewport = (container == null) ? null : container.Viewport;
+            if (viewport != this.viewport)
+            {
+                UpdateViewport(viewport);
+            }
         }
 
         /// <summary>

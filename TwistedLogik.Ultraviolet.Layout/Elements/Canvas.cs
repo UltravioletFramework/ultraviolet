@@ -204,7 +204,60 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         /// <inheritdoc/>
         protected override Rectangle CalculateLayoutArea(UIElement child)
         {
-            throw new NotImplementedException();
+            if (Viewport == null)
+                return Rectangle.Empty;
+
+            var left   = GetLeft(child);
+            var top    = GetTop(child);
+            var right  = GetRight(child);
+            var bottom = GetBottom(child);
+            var width  = GetWidth(child);
+            var height = GetHeight(child);
+
+            // If we have neither left nor right, assume left: 0
+            if (left == null && right == null)
+                left = 0;
+
+            // If we have neither top nor bottom, assume top: 0
+            if (top == null && bottom == null)
+                top = 0;
+
+            // If we have both left and right, calculate width
+            if (left != null && right != null)
+                width = Viewport.Width - (left.GetValueOrDefault() + right.GetValueOrDefault());
+
+            // If we have both top and bottom, calculate height
+            if (top != null && bottom != null)
+                height = Viewport.Height - (top.GetValueOrDefault() + bottom.GetValueOrDefault());
+
+            // If we have no width, assume 0
+            if (width == null)
+                width = 0;
+
+            // If we have no height, assume 0
+            if (height == null)
+                height = 0;
+
+            // Calculate the element's layout area.
+            var x = 0;
+            var y = 0;
+            if (left != null)
+            {
+                x = left.GetValueOrDefault();
+            }
+            else
+            {
+                x = Viewport.Width - (right.GetValueOrDefault() + width.GetValueOrDefault());
+            }
+            if (top != null)
+            {
+                y = top.GetValueOrDefault();
+            }
+            else
+            {
+                y = Viewport.Height - (bottom.GetValueOrDefault() + height.GetValueOrDefault());
+            }
+            return new Rectangle(x, y, width.GetValueOrDefault(), height.GetValueOrDefault());
         }
     }
 }
