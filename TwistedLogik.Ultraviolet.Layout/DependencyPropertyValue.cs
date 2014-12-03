@@ -102,6 +102,10 @@ namespace TwistedLogik.Ultraviolet.Layout
         {
             if (IsDataBound)
             {
+                if (dataBindingSetter == null)
+                {
+                    throw new InvalidOperationException(LayoutStrings.BindingIsReadOnly);
+                }
                 dataBindingSetter(dataBindingModel, value);
             }
             else
@@ -253,12 +257,15 @@ namespace TwistedLogik.Ultraviolet.Layout
                     var propertyOrFieldType = (propertyOrField.Member.MemberType == MemberTypes.Property) ?
                         ((PropertyInfo)propertyOrField.Member).PropertyType : ((FieldInfo)propertyOrField.Member).FieldType;
 
+                    if (propertyOrField.Member.MemberType == MemberTypes.Property && !((PropertyInfo)propertyOrField.Member).CanWrite)
+                    {
+                        return null;
+                    }
                     currentExpression = Expression.Assign(propertyOrField, Expression.Convert(valueParameter, propertyOrFieldType));
                 }
             }
 
             var lambda = Expression.Lambda<DataBindingSetter<T>>(currentExpression, contextParameter, valueParameter).Compile();
-
             return lambda;
         }
 

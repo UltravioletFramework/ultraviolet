@@ -31,6 +31,7 @@ namespace TwistedLogik.Ultraviolet.Layout
         public static readonly StringResource DependencyPropertyAlreadyRegistered  = new StringResource(StringDatabase, "DEPENDENCY_PROPERTY_ALREADY_REGISTERED");
         public static readonly StringResource InvalidBindingExpression             = new StringResource(StringDatabase, "INVALID_BINDING_EXPRESSION");
         public static readonly StringResource BindingAssignmentToValueType         = new StringResource(StringDatabase, "BINDING_ASSIGNMENT_TO_VALUE_TYPE");
+        public static readonly StringResource BindingIsReadOnly                    = new StringResource(StringDatabase, "BINDING_IS_READ_ONLY");
 #pragma warning restore 1591
     }
 }

@@ -35,4 +35,9 @@
       <Variant>The specified expression '{0}' is invalid because it would cause an assignment to a property on a value type.</Variant>
     </en-US>
   </String>
+  <String Key="BINDING_IS_READ_ONLY">
+    <en-US>
+      <Variant>Attempted to write to a read-only data binding.</Variant>
+    </en-US>
+  </String>
 </LocalizedStrings>
