@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -14,7 +15,8 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
     /// </summary>
     /// <param name="element">The UI element on which to set the style.</param>
     /// <param name="value">The string representation of the value to set for the style.</param>
-    internal delegate void StyleSetter(UIElement element, String value);
+    /// <param name="provider">An object that supplies culture-specific formatting information.</param>
+    internal delegate void StyleSetter(UIElement element, String value, IFormatProvider provider);
 
     /// <summary>
     /// The base class for all UI elements.
@@ -26,7 +28,7 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         /// </summary>
         static UIElement()
         {
-            miFromString = typeof(ObjectResolver).GetMethod("FromString", new Type[] { typeof(String), typeof(Type) });
+            miFromString = typeof(ObjectResolver).GetMethod("FromString", new Type[] { typeof(String), typeof(Type), typeof(IFormatProvider) });
         }
 
         /// <summary>
@@ -198,7 +200,7 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
             if (setter == null)
                 return;
 
-            setter(this, value);
+            setter(this, value, CultureInfo.InvariantCulture);
         }
 
         /// <summary>
@@ -230,10 +232,11 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
                         var valueType           = prop.MethodInfo.GetParameters()[1].ParameterType;
                         var expParameterElement = Expression.Parameter(typeof(UIElement), "element");
                         var expParameterValue   = Expression.Parameter(typeof(String), "value");
-                        var expResolveValue     = Expression.Call(miFromString, expParameterValue, Expression.Constant(valueType));
+                        var expParameterFmtProv = Expression.Parameter(typeof(IFormatProvider), "provider");
+                        var expResolveValue     = Expression.Call(miFromString, expParameterValue, Expression.Constant(valueType), expParameterFmtProv);
                         var expCallMethod       = Expression.Call(prop.MethodInfo, expParameterElement, Expression.Convert(expResolveValue, valueType));
 
-                        var lambda = Expression.Lambda<StyleSetter>(expCallMethod, expParameterElement, expParameterValue).Compile();
+                        var lambda = Expression.Lambda<StyleSetter>(expCallMethod, expParameterElement, expParameterValue, expParameterFmtProv).Compile();
                         styleSettersForCurrentType[prop.Attribute.Name] = lambda;
                     }
 
@@ -250,11 +253,12 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
                         var valueType           = prop.PropertyInfo.PropertyType;
                         var expParameterElement = Expression.Parameter(typeof(UIElement), "element");
                         var expParameterValue   = Expression.Parameter(typeof(String), "value");
-                        var expResolveValue     = Expression.Call(miFromString, expParameterValue, Expression.Constant(valueType));
+                        var expParameterFmtProv = Expression.Parameter(typeof(IFormatProvider), "provider");
+                        var expResolveValue     = Expression.Call(miFromString, expParameterValue, Expression.Constant(valueType), expParameterFmtProv);
                         var expCastValue        = Expression.Convert(expResolveValue, valueType);
 
                         var lambdaBody = Expression.Assign(Expression.Property(Expression.Convert(expParameterElement, GetType()), prop.PropertyInfo), expCastValue);
-                        var lambda     = Expression.Lambda<StyleSetter>(lambdaBody, expParameterElement, expParameterValue).Compile();
+                        var lambda     = Expression.Lambda<StyleSetter>(lambdaBody, expParameterElement, expParameterValue, expParameterFmtProv).Compile();
                         styleSettersForCurrentType[prop.Attribute.Name] = lambda;
                     }
 
