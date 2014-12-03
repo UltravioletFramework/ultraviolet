@@ -335,7 +335,6 @@ namespace TwistedLogik.Ultraviolet.Layout.Stylesheets
                 return null;
 
             var qualifierImportant = false;
-            var qualifierGlobal    = false;
 
             var nameToken = state.TryConsumeNonWhiteSpace();
             if (nameToken == null || nameToken.Value.TokenType != UvssLexerTokenType.StyleName)
@@ -359,10 +358,6 @@ namespace TwistedLogik.Ultraviolet.Layout.Stylesheets
                     {
                         qualifierImportant = true;
                     }
-                    if (String.Equals("!global", token.Value, StringComparison.OrdinalIgnoreCase))
-                    {
-                        qualifierGlobal = true;
-                    }
                     continue;
                 }
                 valueTokens.Add(token);
@@ -379,7 +374,7 @@ namespace TwistedLogik.Ultraviolet.Layout.Stylesheets
                 name          = nameParts[1];
             }
 
-            return new UvssStyle(container, name, value, qualifierImportant, qualifierGlobal);
+            return new UvssStyle(container, name, value, qualifierImportant);
         }
     }
 }

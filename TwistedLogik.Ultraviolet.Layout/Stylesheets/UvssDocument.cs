@@ -117,10 +117,10 @@ namespace TwistedLogik.Ultraviolet.Layout.Stylesheets
                     PrioritizedStyleData existingStyleData;
                     if (styleAggregator.TryGetValue(style.QualifiedName, out existingStyleData))
                     {
-                        if (existingStyleData.Priority > rulePriority)
+                        if (existingStyleData.Priority > stylePriority)
                             continue;
                     }
-                    styleAggregator[style.QualifiedName] = new PrioritizedStyleData(style.Container, style.Name, style.Value, rulePriority);
+                    styleAggregator[style.QualifiedName] = new PrioritizedStyleData(style.Container, style.Name, style.Value, stylePriority);
                 }
             }
 

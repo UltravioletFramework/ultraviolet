@@ -67,7 +67,7 @@ namespace TwistedLogik.Ultraviolet.Layout.Stylesheets
         StyleName,
 
         /// <summary>
-        /// A style qualifier, like !important or !global.
+        /// A style qualifier, like !important.
         /// </summary>
         StyleQualifier,
     }

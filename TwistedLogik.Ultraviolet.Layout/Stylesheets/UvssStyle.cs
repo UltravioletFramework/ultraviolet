@@ -14,21 +14,19 @@ namespace TwistedLogik.Ultraviolet.Layout.Stylesheets
         /// <param name="name">The style's name.</param>
         /// <param name="value">The style's value.</param>
         /// <param name="isImportant">A value indicating whether the style has the !important qualifier.</param>
-        /// <param name="isGlobal">A value indicating whether the style has the !global qualifier.</param>
-        internal UvssStyle(String container, String name, String value, Boolean isImportant, Boolean isGlobal)
+        internal UvssStyle(String container, String name, String value, Boolean isImportant)
         {
             this.qualifiedName = (container == null) ? name : String.Format("{0}.{1}", container, name);
             this.container     = container;
             this.name          = name;
             this.value         = value;
             this.isImportant   = isImportant;
-            this.isGlobal      = isGlobal;
         }
 
         /// <inheritdoc/>
         public override String ToString()
         {
-            return String.Format("{0}: {1}", qualifiedName, value);
+            return String.Format("{0}: {1}{2}", qualifiedName, value, isImportant ? " !important" : "");
         }
 
         /// <summary>
@@ -71,20 +69,11 @@ namespace TwistedLogik.Ultraviolet.Layout.Stylesheets
             get { return isImportant; }
         }
 
-        /// <summary>
-        /// Gets a value indicating whether the style has the !global qualifier.
-        /// </summary>
-        public Boolean IsGlobal
-        {
-            get { return isGlobal; }
-        }
-
         // Property values.
         private readonly String qualifiedName;
         private readonly String container;
         private readonly String name;
         private readonly String value;
         private readonly Boolean isImportant;
-        private readonly Boolean isGlobal;
     }
 }
