@@ -43,29 +43,44 @@ namespace TwistedLogik.Ultraviolet.Layout
         }
 
         /// <summary>
-        /// Gets the value typed value of the specified dependency property.
+        /// Binds a dependency property to a property on a model.
         /// </summary>
         /// <typeparam name="T">The type of value contained by the dependency property.</typeparam>
-        /// <param name="property">The name of the dependency property for which to retrieve a value.</param>
-        /// <returns>The value of the specified dependency property.</returns>
-        public T GetValue<T>(String property)
+        /// <param name="model">The model to which to bind.</param>
+        /// <param name="expression">The binding expression.</param>
+        /// <param name="dp">A <see cref="DependencyProperty"/> instance which identifies the dependency property to bind.</param>
+        public void BindValue<T>(DependencyProperty dp, Object model, String expression)
         {
-            Contract.Require(property, "property");
+            Contract.Require(dp, "dp");
 
-            var dp = DependencyProperty.FindByName(property, GetType());
-            if (dp == null)
-            {
-                throw new ArgumentException(LayoutStrings.DependencyPropertyDoesNotExist);
-            }
-            
-            return GetValue<T>(dp);
+            if (!typeof(T).TypeHandle.Equals(dp.PropertyType))
+                throw new InvalidCastException();
+
+            var wrapper = GetDependencyPropertyValue<T>(dp);
+            wrapper.Bind(model, expression);
+        }
+
+        /// <summary>
+        /// Unbinds a dependency property.
+        /// </summary>
+        /// <typeparam name="T">The type of value contained by the dependency property.</typeparam>
+        /// <param name="dp">A <see cref="DependencyProperty"/> instance which identifies the dependency property to unbind.</param>
+        public void UnbindValue<T>(DependencyProperty dp)
+        {
+            Contract.Require(dp, "dp");
+
+            if (!typeof(T).TypeHandle.Equals(dp.PropertyType))
+                throw new InvalidCastException();
+
+            var wrapper = GetDependencyPropertyValue<T>(dp);
+            wrapper.Unbind();
         }
 
         /// <summary>
         /// Gets the value typed value of the specified dependency property.
         /// </summary>
         /// <typeparam name="T">The type of value contained by the dependency property.</typeparam>
-        /// <param name="dp">The name of the dependency property for which to retrieve a value.</param>
+        /// <param name="dp">A <see cref="DependencyProperty"/> instance which identifies the dependency property for which to set a value.</param>
         /// <returns>The value of the specified dependency property.</returns>
         public T GetValue<T>(DependencyProperty dp)
         {

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using TwistedLogik.Nucleus;
+using System.Reflection;
 
 namespace TwistedLogik.Ultraviolet.Layout
 {
@@ -214,7 +215,8 @@ namespace TwistedLogik.Ultraviolet.Layout
                 currentExpression = Expression.PropertyOrField(currentExpression, component);
             }
 
-            var lambda = Expression.Lambda<DataBindingGetter<T>>(currentExpression, contextParameter).Compile();
+            var lambdaBody = Expression.Convert(currentExpression, typeof(T));
+            var lambda     = Expression.Lambda<DataBindingGetter<T>>(lambdaBody, contextParameter).Compile();
 
             return lambda;
         }
@@ -246,7 +248,12 @@ namespace TwistedLogik.Ultraviolet.Layout
                     {
                         throw new InvalidOperationException(LayoutStrings.BindingAssignmentToValueType.Format(expression));
                     }
-                    currentExpression = Expression.Assign(Expression.PropertyOrField(currentExpression, expressionComponents[i]), valueParameter);
+                    
+                    var propertyOrField = Expression.PropertyOrField(currentExpression, expressionComponents[i]);
+                    var propertyOrFieldType = (propertyOrField.Member.MemberType == MemberTypes.Property) ?
+                        ((PropertyInfo)propertyOrField.Member).PropertyType : ((FieldInfo)propertyOrField.Member).FieldType;
+
+                    currentExpression = Expression.Assign(propertyOrField, Expression.Convert(valueParameter, propertyOrFieldType));
                 }
             }
 
