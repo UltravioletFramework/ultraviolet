@@ -40,7 +40,7 @@ namespace TwistedLogik.Ultraviolet.Layout.Stylesheets
             {
                 if (potentialMatch.MatchesElement(element))
                 {
-                    if (selector.Priority >= priority)
+                    if (potentialMatch.Priority >= priority)
                     {
                         selector = potentialMatch;
                         priority = selector.Priority;

@@ -114,22 +114,24 @@ namespace TwistedLogik.Ultraviolet.Layout.Stylesheets
                 foreach (var style in rule.Styles)
                 {
                     const Int32 ImportantStylePriority = 1000000000;
+
+                    var styleKey      = new UvssStyleKey(style.QualifiedName, selector.PseudoClass);
                     var stylePriority = selector.Priority + (style.IsImportant ? ImportantStylePriority : 0);
 
                     PrioritizedStyleData existingStyleData;
-                    if (styleAggregator.TryGetValue(style.QualifiedName, out existingStyleData))
+                    if (styleAggregator.TryGetValue(styleKey, out existingStyleData))
                     {
                         if (existingStyleData.Priority > stylePriority)
                             continue;
                     }
-                    styleAggregator[style.QualifiedName] = new PrioritizedStyleData(style.Container, style.Name, style.Value, stylePriority);
+                    styleAggregator[styleKey] = new PrioritizedStyleData(style.Container, style.Name, style.Value, stylePriority);
                 }
             }
 
             // Apply styles to element
             foreach (var kvp in styleAggregator)
             {
-                ApplyStyleToElement(element, kvp.Value.Container, kvp.Value.Name, kvp.Value.Value);
+                ApplyStyleToElement(element, kvp.Value.Container, kvp.Value.Name, kvp.Key.PseudoClass, kvp.Value.Value);
             }
             styleAggregator.Clear();
         }
@@ -140,8 +142,9 @@ namespace TwistedLogik.Ultraviolet.Layout.Stylesheets
         /// <param name="element">The element to which to apply the style.</param>
         /// <param name="container">The style's container, if it represents an attached property.</param>
         /// <param name="style">The name of the style to apply.</param>
+        /// <param name="pseudoClass">The pseudo-class of the style to apply.</param>
         /// <param name="value">The styled value to apply.</param>
-        private void ApplyStyleToElement(UIElement element, String container, String style, String value)
+        private void ApplyStyleToElement(UIElement element, String container, String style, String pseudoClass, String value)
         {
             var styleIsForContainer = !String.IsNullOrEmpty(container);
             if (styleIsForContainer)
@@ -149,18 +152,21 @@ namespace TwistedLogik.Ultraviolet.Layout.Stylesheets
                 var styleMatchesContainer = element.Container != null && String.Equals(element.Container.Name, container, StringComparison.OrdinalIgnoreCase);
                 if (styleMatchesContainer)
                 {
-                    element.ApplyStyle(style, value, true);
+                    element.ApplyStyle(style, pseudoClass, value, true);
                     return;
                 }
             }
 
-            element.ApplyStyle(style, value, false);
+            element.ApplyStyle(style, pseudoClass, value, false);
         }
 
         // State values.
-        private static readonly Dictionary<String, PrioritizedStyleData> styleAggregator = new Dictionary<String, PrioritizedStyleData>();
+        private static readonly Dictionary<UvssStyleKey, PrioritizedStyleData> styleAggregator = 
+            new Dictionary<UvssStyleKey, PrioritizedStyleData>();
         private static readonly UvssLexer lexer   = new UvssLexer();
         private static readonly UvssParser parser = new UvssParser();
+
+        // Property values.
         private readonly List<UvssRule> rules;
     }
 }

@@ -227,14 +227,15 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         /// Applies a style to the element.
         /// </summary>
         /// <param name="name">The name of the style.</param>
+        /// <param name="pseudoClass">The pseudo-class of the style.</param>
         /// <param name="value">The value to apply to the style.</param>
         /// <param name="attached">A value indicating whether thie style represents an attached property.</param>
-        internal void ApplyStyle(String name, String value, Boolean attached)
+        internal void ApplyStyle(String name, String pseudoClass, String value, Boolean attached)
         {
             Contract.RequireNotEmpty(name, "name");
             Contract.RequireNotEmpty(value, "value");
 
-            var setter = attached ? Container.GetStyleSetter(name) : GetStyleSetter(name);
+            var setter = attached ? Container.GetStyleSetter(name, pseudoClass) : GetStyleSetter(name, pseudoClass);
             if (setter == null)
                 return;
 
@@ -293,10 +294,10 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
 
             lock (styleSetters)
             {
-                Dictionary<String, StyleSetter> styleSettersForCurrentType;
+                Dictionary<UvssStyleKey, StyleSetter> styleSettersForCurrentType;
                 if (!styleSetters.TryGetValue(typeID, out styleSettersForCurrentType))
                 {
-                    styleSettersForCurrentType = new Dictionary<String, StyleSetter>(StringComparer.OrdinalIgnoreCase);
+                    styleSettersForCurrentType = new Dictionary<UvssStyleKey, StyleSetter>();
                     
                     var styledDependencyProperties = 
                         from field in GetType().GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static)
@@ -321,7 +322,9 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
                         var expCallMethod       = Expression.Call(expParameterElement, setStyledValue, Expression.Constant(dp), expResolveValue);
 
                         var lambda = Expression.Lambda<StyleSetter>(expCallMethod, expParameterElement, expParameterValue, expParameterFmtProv).Compile();
-                        styleSettersForCurrentType[prop.Attribute.Name] = lambda;
+
+                        var styleKey = new UvssStyleKey(prop.Attribute.Name, prop.Attribute.PseudoClass);
+                        styleSettersForCurrentType[styleKey] = lambda;
                     }
 
                     styleSetters[typeID] = styleSettersForCurrentType;
@@ -333,19 +336,20 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         /// Gets the style setter for the style with the specified name.
         /// </summary>
         /// <param name="name">The name of the style for which to retrieve a setter.</param>
+        /// <param name="pseudoClass">The pseudo-class of the style for which to retrieve a setter.</param>
         /// <returns>A function to set the value of the specified style.</returns>
-        private StyleSetter GetStyleSetter(String name)
+        private StyleSetter GetStyleSetter(String name, String pseudoClass)
         {
             var typeID = GetType().TypeHandle.Value.ToInt64();
 
             lock (styleSetters)
             {
-                Dictionary<String, StyleSetter> styleSettersForCurrentType;
+                Dictionary<UvssStyleKey, StyleSetter> styleSettersForCurrentType;
                 if (!styleSetters.TryGetValue(typeID, out styleSettersForCurrentType))
                     return null;
 
                 StyleSetter setter;
-                styleSettersForCurrentType.TryGetValue(name, out setter);
+                styleSettersForCurrentType.TryGetValue(new UvssStyleKey(name, pseudoClass), out setter);
                 return setter;
             }
         }
@@ -368,7 +372,7 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         // Functions for setting styles on known element types.
         private static readonly MethodInfo miFromString;
         private static readonly MethodInfo miSetStyledValue;
-        private static readonly Dictionary<Int64, Dictionary<String, StyleSetter>> styleSetters = 
-            new Dictionary<Int64, Dictionary<String, StyleSetter>>();
+        private static readonly Dictionary<Int64, Dictionary<UvssStyleKey, StyleSetter>> styleSetters = 
+            new Dictionary<Int64, Dictionary<UvssStyleKey, StyleSetter>>();
     }
 }

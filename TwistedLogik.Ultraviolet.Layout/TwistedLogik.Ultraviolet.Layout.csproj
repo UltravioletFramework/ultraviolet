@@ -82,6 +82,7 @@
     <Compile Include="Stylesheets\UvssSelectorList.cs" />
     <Compile Include="Stylesheets\UvssSelectorPart.cs" />
     <Compile Include="Stylesheets\UvssStyle.cs" />
+    <Compile Include="Stylesheets\UvssStyleKey.cs" />
     <Compile Include="Stylesheets\UvssStyleList.cs" />
   </ItemGroup>
   <ItemGroup>
