@@ -143,25 +143,17 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
 
                     gl.TexParameteri(gl.GL_TEXTURE_2D, gl.GL_TEXTURE_MIN_FILTER, (int)gl.GL_NEAREST);
                     gl.ThrowIfError();
-                    
+
                     gl.TexParameteri(gl.GL_TEXTURE_2D, gl.GL_TEXTURE_MAG_FILTER, (int)gl.GL_NEAREST);
                     gl.ThrowIfError();
                     break;
 
                 case TextureFilter.Linear:
-                    gl.TexParameterf(gl.GL_TEXTURE_2D, gl.GL_TEXTURE_MAX_ANISOTROPY_EXT, 1f);
-                    gl.ThrowIfError();
-
-                    gl.TexParameteri(gl.GL_TEXTURE_2D, gl.GL_TEXTURE_MIN_FILTER, (int)gl.GL_NEAREST);
-                    gl.ThrowIfError();
-
-                    gl.TexParameteri(gl.GL_TEXTURE_2D, gl.GL_TEXTURE_MAG_FILTER, (int)gl.GL_NEAREST);
-                    gl.ThrowIfError();
-                    break;
-
-                case TextureFilter.Anisotropic:
-                    gl.TexParameterf(gl.GL_TEXTURE_2D, gl.GL_TEXTURE_MAX_ANISOTROPY_EXT, Math.Min(1f, MaxAnisotropy));
-                    gl.ThrowIfError();
+                    if (gl.IsAnisotropicFilteringAvailable)
+                    {
+                        gl.TexParameterf(gl.GL_TEXTURE_2D, gl.GL_TEXTURE_MAX_ANISOTROPY_EXT, 1f);
+                        gl.ThrowIfError();
+                    }
 
                     gl.TexParameteri(gl.GL_TEXTURE_2D, gl.GL_TEXTURE_MIN_FILTER, (int)gl.GL_LINEAR);
                     gl.ThrowIfError();
@@ -169,7 +161,21 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
                     gl.TexParameteri(gl.GL_TEXTURE_2D, gl.GL_TEXTURE_MAG_FILTER, (int)gl.GL_LINEAR);
                     gl.ThrowIfError();
                     break;
-                
+
+                case TextureFilter.Anisotropic:
+                    if (gl.IsAnisotropicFilteringAvailable)
+                    {
+                        gl.TexParameterf(gl.GL_TEXTURE_2D, gl.GL_TEXTURE_MAX_ANISOTROPY_EXT, Math.Min(1f, MaxAnisotropy));
+                        gl.ThrowIfError();
+                    }
+
+                    gl.TexParameteri(gl.GL_TEXTURE_2D, gl.GL_TEXTURE_MIN_FILTER, (int)gl.GL_LINEAR);
+                    gl.ThrowIfError();
+
+                    gl.TexParameteri(gl.GL_TEXTURE_2D, gl.GL_TEXTURE_MAG_FILTER, (int)gl.GL_LINEAR);
+                    gl.ThrowIfError();
+                    break;
+
                 default:
                     throw new NotSupportedException();
             }

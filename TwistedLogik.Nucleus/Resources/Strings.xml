@@ -4,9 +4,6 @@
     <en-US>
       <Variant>Could not find a parameterless constructor for type '{0}'</Variant>
     </en-US>
-    <fr-FR>
-      <Variant>This is a fucking test!</Variant>
-    </fr-FR>
   </String>
   <String Key="CTOR_MATCH_NOT_FOUND">
     <en-US>
