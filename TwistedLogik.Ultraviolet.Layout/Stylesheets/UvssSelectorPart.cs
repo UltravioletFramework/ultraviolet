@@ -14,17 +14,19 @@ namespace TwistedLogik.Ultraviolet.Layout.Stylesheets
         /// </summary>
         /// <param name="element">The name of the element type that matches this selector part.</param>
         /// <param name="id">The identifier of the element that matches this selector part.</param>
+        /// <param name="pseudoClass">The selector part's pseudo-class, if any.</param>
         /// <param name="classes">The list of classes which match this selector part.</param>
-        internal UvssSelectorPart(String element, String id, IEnumerable<String> classes)
+        internal UvssSelectorPart(String element, String id, String pseudoClass, IEnumerable<String> classes)
         {
-            var rawID         = (id != null && id.StartsWith("#")) ? id.Substring(1) : id;
-            var rawClassNames = from c in classes
-                                select c.StartsWith(".") ? c.Substring(1) : c;
+            var rawID          = (id != null && id.StartsWith("#")) ? id.Substring(1) : id;
+            var rawPseudoClass = (pseudoClass != null && pseudoClass.StartsWith(":")) ? pseudoClass.Substring(1) : pseudoClass;
+            var rawClassNames  = from c in classes select c.StartsWith(".") ? c.Substring(1) : c;
 
-            this.element  = element;
-            this.id       = rawID;
-            this.classes  = rawClassNames.ToList();
-            this.priority = CalculatePriority();
+            this.element     = element;
+            this.id          = rawID;
+            this.classes     = rawClassNames.ToList();
+            this.pseudoClass = rawPseudoClass;
+            this.priority    = CalculatePriority();
         }
 
         /// <inheritdoc/>
@@ -55,6 +57,14 @@ namespace TwistedLogik.Ultraviolet.Layout.Stylesheets
         public String ID
         {
             get { return id; }
+        }
+        
+        /// <summary>
+        /// Gets the selector part's pseudo-class.
+        /// </summary>
+        public String PseudoClass
+        {
+            get { return pseudoClass; }
         }
 
         /// <summary>
@@ -95,6 +105,7 @@ namespace TwistedLogik.Ultraviolet.Layout.Stylesheets
         private readonly Int32 priority;
         private readonly String element;
         private readonly String id;
+        private readonly String pseudoClass;
         private readonly IEnumerable<String> classes;
     }
 }

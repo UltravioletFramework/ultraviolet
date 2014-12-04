@@ -70,5 +70,10 @@ namespace TwistedLogik.Ultraviolet.Layout.Stylesheets
         /// A style qualifier, like !important.
         /// </summary>
         StyleQualifier,
+
+        /// <summary>
+        /// Represents a pseudo-class like :hover.
+        /// </summary>
+        PseudoClass,
     }
 }

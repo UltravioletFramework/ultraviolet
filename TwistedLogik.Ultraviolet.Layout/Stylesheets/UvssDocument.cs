@@ -105,16 +105,16 @@ namespace TwistedLogik.Ultraviolet.Layout.Stylesheets
             element.ClearStyledValues();
 
             // Gather styles from document
-            var rulePriority = 0;
+            var selector = default(UvssSelector);
             foreach (var rule in rules)
             {
-                if (!rule.MatchesElement(element, out rulePriority))
+                if (!rule.MatchesElement(element, out selector))
                     continue;
 
                 foreach (var style in rule.Styles)
                 {
                     const Int32 ImportantStylePriority = 1000000000;
-                    var stylePriority = rulePriority + (style.IsImportant ? ImportantStylePriority : 0);
+                    var stylePriority = selector.Priority + (style.IsImportant ? ImportantStylePriority : 0);
 
                     PrioritizedStyleData existingStyleData;
                     if (styleAggregator.TryGetValue(style.QualifiedName, out existingStyleData))

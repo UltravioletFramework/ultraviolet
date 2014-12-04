@@ -17,7 +17,9 @@ namespace TwistedLogik.Ultraviolet.Layout.Stylesheets
         /// <param name="parts">A collection containing the selector's parts.</param>
         internal UvssSelector(IEnumerable<UvssSelectorPart> parts)
         {
-            this.parts = parts.ToList();
+            this.parts       = parts.ToList();
+            this.priority    = parts.Sum(x => x.Priority);
+            this.pseudoClass = parts.Where(x => !String.IsNullOrEmpty(x.PseudoClass)).Select(x => x.PseudoClass).SingleOrDefault();
         }
         
         /// <inheritdoc/>
@@ -27,15 +29,28 @@ namespace TwistedLogik.Ultraviolet.Layout.Stylesheets
         }
 
         /// <summary>
+        /// Gets the selector's relative priority.
+        /// </summary>
+        public Int32 Priority
+        {
+            get { return priority; }
+        }
+
+        /// <summary>
+        /// Gets the pseudo-class associated with this selector.
+        /// </summary>
+        public String PseudoClass
+        {
+            get { return pseudoClass; }
+        }
+
+        /// <summary>
         /// Gets a value indicating whether the selector matches the specified UI element.
         /// </summary>
         /// <param name="element">The UI element to evaluate.</param>
-        /// <param name="priority">The selector's priority, if it matches the element.</param>
         /// <returns><c>true</c> if the selector matches the specified UI element; otherwise, <c>false</c>.</returns>
-        public Boolean MatchesElement(UIElement element, out Int32 priority)
+        public Boolean MatchesElement(UIElement element)
         {
-            priority = 0;
-
             if (parts.Count == 0)
                 return false;
 
@@ -44,19 +59,14 @@ namespace TwistedLogik.Ultraviolet.Layout.Stylesheets
             if (!ElementMatchesSelectorPart(element, firstSelectorPart))
                 return false;
 
-            priority = firstSelectorPart.Priority;
-
             var current = element;
             for (var i = parts.Count - 2; i >= 0; i--)
             {
                 if (!AncestorMatchesSelectorPart(ref current, parts[i]))
                 {
-                    priority = 0;
                     return false;
                 }
-                priority += parts[i].Priority;
             }
-
             return true;
         }
 
@@ -129,5 +139,7 @@ namespace TwistedLogik.Ultraviolet.Layout.Stylesheets
 
         // State values.
         private readonly List<UvssSelectorPart> parts;
+        private readonly Int32 priority;
+        private readonly String pseudoClass;
     }
 }

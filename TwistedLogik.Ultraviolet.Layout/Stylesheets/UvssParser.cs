@@ -211,13 +211,20 @@ namespace TwistedLogik.Ultraviolet.Layout.Stylesheets
         {
             state.AdvanceBeyondWhiteSpace();
 
-            var parts = new List<UvssSelectorPart>();
+            var parts       = new List<UvssSelectorPart>();
+            var pseudoClass = false;
 
             while (true)
             {
                 var part = ConsumeSelectorPart(state);
                 if (part != null)
                 {
+                    if (pseudoClass)
+                        ThrowSyntaxException(LayoutStrings.StylesheetSyntaxError, state);
+
+                    if (!String.IsNullOrEmpty(part.PseudoClass))
+                        pseudoClass = true;
+
                     parts.Add(part);
                 }
 
@@ -243,10 +250,11 @@ namespace TwistedLogik.Ultraviolet.Layout.Stylesheets
         /// <returns>A new <see cref="UvssSelectorPart"/> object representing the rule that was consumed.</returns>
         private static UvssSelectorPart ConsumeSelectorPart(UvssParserState state)
         {
-            var element = default(String);
-            var id      = default(String);
-            var classes = new List<String>();
-            var valid   = false;
+            var element     = default(String);
+            var id          = default(String);
+            var pseudoClass = default(String);
+            var classes     = new List<String>();
+            var valid       = false;
 
             while (true)
             {
@@ -264,8 +272,22 @@ namespace TwistedLogik.Ultraviolet.Layout.Stylesheets
                 if (token.TokenType == UvssLexerTokenType.OpenCurlyBrace)
                     break;
 
+                if (token.TokenType == UvssLexerTokenType.PseudoClass)
+                {
+                    if (!String.IsNullOrEmpty(pseudoClass))
+                        ThrowSyntaxException(LayoutStrings.StylesheetSyntaxError, state);
+
+                    state.Advance();
+
+                    pseudoClass = token.Value;
+                    continue;
+                }
+
                 if (token.TokenType == UvssLexerTokenType.Identifier)
                 {
+                    if (!String.IsNullOrEmpty(pseudoClass))
+                        ThrowSyntaxException(LayoutStrings.StylesheetSyntaxError, state);
+
                     state.Advance();
 
                     if (IsSelectorForElement(token.Value))
@@ -296,7 +318,7 @@ namespace TwistedLogik.Ultraviolet.Layout.Stylesheets
                 ThrowSyntaxException(LayoutStrings.StylesheetSyntaxError, state);
             }
 
-            return valid ? new UvssSelectorPart(element, id, classes) : null;
+            return valid ? new UvssSelectorPart(element, id, pseudoClass, classes) : null;
         }
 
         /// <summary>

@@ -29,23 +29,25 @@ namespace TwistedLogik.Ultraviolet.Layout.Stylesheets
         /// Gets a value indicating whether the rule matches the specified UI element.
         /// </summary>
         /// <param name="element">The UI element to evaluate.</param>
-        /// <param name="priority">The rule's priority, if it matches the element.</param>
+        /// <param name="selector">The selector that matches the element, if any.</param>
         /// <returns><c>true</c> if the rule matches the specified UI element; otherwise, <c>false</c>.</returns>
-        public Boolean MatchesElement(UIElement element, out Int32 priority)
+        public Boolean MatchesElement(UIElement element, out UvssSelector selector)
         {
-            priority = 0;
-            foreach (var selector in selectors)
+            var priority = 0;
+
+            selector = null;
+            foreach (var potentialMatch in selectors)
             {
-                var selectorPriority = 0;
-                if (selector.MatchesElement(element, out selectorPriority))
+                if (potentialMatch.MatchesElement(element))
                 {
-                    if (selectorPriority > 0)
+                    if (selector.Priority >= priority)
                     {
-                        priority = selectorPriority;
+                        selector = potentialMatch;
+                        priority = selector.Priority;
                     }
                 }
             }
-            return priority > 0;
+            return selector != null;
         }
 
         /// <summary>
