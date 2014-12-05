@@ -201,6 +201,24 @@ namespace TwistedLogik.Ultraviolet.Layout
         }
 
         /// <summary>
+        /// Gets the type of a <see cref="MemberExpression"/>.
+        /// </summary>
+        /// <param name="expression">The expression to evaluate.</param>
+        /// <returns>The type of the specified expression.</returns>
+        private static Type GetMemberExpressionType(MemberExpression expression)
+        {
+            switch (expression.Member.MemberType)
+            {
+                case MemberTypes.Field:
+                    return ((FieldInfo)expression.Member).FieldType;
+                case MemberTypes.Property:
+                    return ((PropertyInfo)expression.Member).PropertyType;
+                default:
+                    throw new NotSupportedException();
+            }
+        }
+
+        /// <summary>
         /// Creates a getter for the specified binding expression.
         /// </summary>
         /// <param name="model">The model object to which to bind the dependency property.</param>
@@ -210,16 +228,43 @@ namespace TwistedLogik.Ultraviolet.Layout
         {
             var expressionComponents = ParseBindingExpression(expression);
 
+            var expressions       = new List<Expression>();
+            var variables         = new List<ParameterExpression>();
             var contextParameter  = Expression.Parameter(typeof(Object), "context");
             var contextExpression = Expression.Convert(contextParameter, model.GetType());
             var currentExpression = (Expression)contextExpression;
+            var currentPartVar    = (ParameterExpression)Expression.Variable(model.GetType(), "part0");
+            var currentPartNum    = 0;
+            var returnTarget      = Expression.Label(typeof(T), "exit");
 
-            foreach (var component in expressionComponents)
+            variables.Add(currentPartVar);
+            expressions.Add(Expression.Assign(currentPartVar, currentExpression));
+            expressions.Add(Expression.IfThen(
+                Expression.Equal(currentPartVar, Expression.Constant(null)), 
+                Expression.Return(returnTarget, Expression.Default(typeof(T)), typeof(T))));
+
+            for (int i = 0; i < expressionComponents.Length; i++)
             {
-                currentExpression = Expression.PropertyOrField(currentExpression, component);
+                var component = expressionComponents[i];
+
+                currentExpression = Expression.PropertyOrField(currentPartVar, component);
+                currentPartVar    = Expression.Variable(GetMemberExpressionType((MemberExpression)currentExpression), "part" + (++currentPartNum));
+
+                variables.Add(currentPartVar);
+                expressions.Add(Expression.Assign(currentPartVar, currentExpression));
+
+                if (GetMemberExpressionType((MemberExpression)currentExpression).IsClass)
+                {
+                    expressions.Add(Expression.IfThen(
+                        Expression.Equal(currentPartVar, Expression.Constant(null)), 
+                        Expression.Return(returnTarget, Expression.Default(typeof(T)), typeof(T))));
+                }
             }
 
-            var lambdaBody = Expression.Convert(currentExpression, typeof(T));
+            expressions.Add(Expression.Return(returnTarget, currentPartVar, typeof(T)));
+            expressions.Add(Expression.Label(returnTarget, Expression.Default(typeof(T))));
+
+            var lambdaBody = Expression.Block(variables, expressions);
             var lambda     = Expression.Lambda<DataBindingGetter<T>>(lambdaBody, contextParameter).Compile();
 
             return lambda;
@@ -235,16 +280,36 @@ namespace TwistedLogik.Ultraviolet.Layout
         {
             var expressionComponents = ParseBindingExpression(expression);
 
+            var expressions       = new List<Expression>();
             var contextParameter  = Expression.Parameter(typeof(Object), "context");
             var contextExpression = Expression.Convert(contextParameter, model.GetType());
             var currentExpression = (Expression)contextExpression;
+            var currentPartVar    = (ParameterExpression)Expression.Variable(model.GetType(), "part0");
+            var currentPartNum    = 0;
             var valueParameter    = Expression.Parameter(typeof(T), "value");
+            var returnLabel       = Expression.Label(typeof(T));
+            var returnDefaultT    = Expression.Return(returnLabel, Expression.Constant(default(T)), typeof(T));
+
+            expressions.Add(currentPartVar);
+            expressions.Add(Expression.Assign(currentPartVar, currentExpression));
+            expressions.Add(Expression.IfThen(Expression.Equal(currentPartVar, Expression.Constant(null)), returnDefaultT));
 
             for (int i = 0; i < expressionComponents.Length; i++)
             {
                 if (i + 1 < expressionComponents.Length)
                 {
-                    currentExpression = Expression.PropertyOrField(currentExpression, expressionComponents[i]);
+                    var component = expressionComponents[i];
+
+                    currentExpression = Expression.PropertyOrField(currentPartVar, component);
+                    currentPartVar    = Expression.Variable(GetMemberExpressionType((MemberExpression)currentExpression), "part" + (++currentPartNum));
+
+                    expressions.Add(currentPartVar);
+                    expressions.Add(Expression.Assign(currentPartVar, currentExpression));
+
+                    if (GetMemberExpressionType((MemberExpression)currentExpression).IsClass)
+                    {
+                        expressions.Add(Expression.IfThen(Expression.Equal(currentPartVar, Expression.Constant(null)), returnDefaultT));
+                    }
                 }
                 else
                 {

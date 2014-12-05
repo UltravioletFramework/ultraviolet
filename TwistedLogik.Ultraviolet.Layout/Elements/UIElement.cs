@@ -306,6 +306,7 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
                         let type = field.FieldType
                         let name = field.Name
                         where
+                            attr != null &&
                             type == typeof(DependencyProperty)
                         select new { Attribute = (StyledAttribute)attr, FieldInfo = field };
 
