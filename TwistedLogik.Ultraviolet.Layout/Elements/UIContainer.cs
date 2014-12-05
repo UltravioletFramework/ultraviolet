@@ -1,4 +1,5 @@
 ﻿using System;
+using TwistedLogik.Nucleus;
 
 namespace TwistedLogik.Ultraviolet.Layout.Elements
 {
@@ -47,28 +48,7 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         }
 
         /// <summary>
-        /// Suspends layout operations until <see cref="ResumeLayout()"/> is called.
-        /// </summary>
-        public void SuspendLayout()
-        {
-            layoutSuspended = true;
-        }
-
-        /// <summary>
-        /// Resumes layout operations after a call to <see cref="SuspendLayout()"/>.
-        /// </summary>
-        public void ResumeLayout()
-        {
-            layoutSuspended = false;
-
-            if (layoutRequested)
-            {
-                PerformLayout();
-            }
-        }
-
-        /// <summary>
-        /// Requests that a layout be performed.
+        /// Requests that a layout be performed during the next call to <see cref="UIElement.Update(UltravioletTime)"/>.
         /// </summary>
         public void RequestLayout()
         {
@@ -81,27 +61,26 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         /// </summary>
         public void PerformLayout()
         {
-            if (layoutSuspended)
-            {
-                RequestLayout();
-                return;
-            }
-
             OnPerformingLayout();
 
             foreach (var child in children)
             {
-                var layout = CalculateLayoutArea(child);
-                child.ContainerRelativeLayout = layout;
-
-                var container = child as UIContainer;
-                if (container != null)
-                {
-                    container.PerformLayout();
-                }
+                PerformLayoutInternal(child);
             }
 
             OnPerformedLayout();
+        }
+
+        /// <summary>
+        /// Immediately recalculates the layout of the specified child element.
+        /// </summary>
+        /// <param name="child">The child element for which to calculate a layout.</param>
+        public void PerformLayout(UIElement child)
+        {
+            Contract.Require(child, "child");
+            Contract.Ensure<ArgumentException>(Children.Contains(child), "child");
+
+            PerformLayoutInternal(child);
         }
 
         /// <summary>
@@ -184,11 +163,26 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
             }
         }
 
+        /// <summary>
+        /// Immediately recalculates the layout of the specified child element.
+        /// </summary>
+        /// <param name="child">The child element for which to calculate a layout.</param>
+        private void PerformLayoutInternal(UIElement child)
+        {
+            var layout = CalculateLayoutArea(child);
+            child.ContainerRelativeLayout = layout;
+
+            var container = child as UIContainer;
+            if (container != null)
+            {
+                container.PerformLayout();
+            }
+        }
+
         // Property values.
         private readonly UIElementCollection children;
 
         // State values.
-        private Boolean layoutSuspended;
         private Boolean layoutRequested;
     }
 }
