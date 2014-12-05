@@ -286,7 +286,8 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         }
 
         /// <summary>
-        /// Creates the element's style setters.
+        /// Dynamically compiles a collection of lambda methods which can be used to apply styles
+        /// to the element's properties.
         /// </summary>
         private void CreateStyleSetters()
         {
