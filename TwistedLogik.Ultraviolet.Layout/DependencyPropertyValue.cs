@@ -201,24 +201,6 @@ namespace TwistedLogik.Ultraviolet.Layout
         }
 
         /// <summary>
-        /// Gets the type of a <see cref="MemberExpression"/>.
-        /// </summary>
-        /// <param name="expression">The expression to evaluate.</param>
-        /// <returns>The type of the specified expression.</returns>
-        private static Type GetMemberExpressionType(MemberExpression expression)
-        {
-            switch (expression.Member.MemberType)
-            {
-                case MemberTypes.Field:
-                    return ((FieldInfo)expression.Member).FieldType;
-                case MemberTypes.Property:
-                    return ((PropertyInfo)expression.Member).PropertyType;
-                default:
-                    throw new NotSupportedException();
-            }
-        }
-
-        /// <summary>
         /// Creates a getter for the specified binding expression.
         /// </summary>
         /// <param name="model">The model object to which to bind the dependency property.</param>
@@ -248,12 +230,12 @@ namespace TwistedLogik.Ultraviolet.Layout
                 var component = expressionComponents[i];
 
                 currentExpression = Expression.PropertyOrField(currentPartVar, component);
-                currentPartVar    = Expression.Variable(GetMemberExpressionType((MemberExpression)currentExpression), "part" + (++currentPartNum));
+                currentPartVar    = Expression.Variable(currentExpression.Type, "part" + (++currentPartNum));
 
                 variables.Add(currentPartVar);
                 expressions.Add(Expression.Assign(currentPartVar, currentExpression));
 
-                if (GetMemberExpressionType((MemberExpression)currentExpression).IsClass)
+                if (currentExpression.Type.IsClass)
                 {
                     expressions.Add(Expression.IfThen(
                         Expression.Equal(currentPartVar, Expression.Constant(null)), 
@@ -280,35 +262,40 @@ namespace TwistedLogik.Ultraviolet.Layout
         {
             var expressionComponents = ParseBindingExpression(expression);
 
-            var expressions       = new List<Expression>();
-            var contextParameter  = Expression.Parameter(typeof(Object), "context");
-            var contextExpression = Expression.Convert(contextParameter, model.GetType());
-            var currentExpression = (Expression)contextExpression;
-            var currentPartVar    = (ParameterExpression)Expression.Variable(model.GetType(), "part0");
-            var currentPartNum    = 0;
-            var valueParameter    = Expression.Parameter(typeof(T), "value");
-            var returnLabel       = Expression.Label(typeof(T));
-            var returnDefaultT    = Expression.Return(returnLabel, Expression.Constant(default(T)), typeof(T));
+            var expressions           = new List<Expression>();
+            var variables             = new List<ParameterExpression>();
+            var contextParameter      = Expression.Parameter(typeof(Object), "context");
+            var contextExpression     = Expression.Convert(contextParameter, model.GetType());
+            var currentExpression     = (Expression)contextExpression;
+            var currentPartVar        = (ParameterExpression)Expression.Variable(model.GetType(), "part0");
+            var currentPartNum        = 0;
+            var returnTarget          = Expression.Label("exit");
+            var valueParameter        = Expression.Parameter(typeof(T), "value");
 
-            expressions.Add(currentPartVar);
+            variables.Add(currentPartVar);
             expressions.Add(Expression.Assign(currentPartVar, currentExpression));
-            expressions.Add(Expression.IfThen(Expression.Equal(currentPartVar, Expression.Constant(null)), returnDefaultT));
+            expressions.Add(Expression.IfThen(
+                Expression.Equal(currentPartVar, Expression.Constant(null)), 
+                Expression.Return(returnTarget)));
 
             for (int i = 0; i < expressionComponents.Length; i++)
             {
+                var component       = expressionComponents[i];
+                var componentMember = Expression.PropertyOrField(currentExpression, component);
+
                 if (i + 1 < expressionComponents.Length)
                 {
-                    var component = expressionComponents[i];
+                    currentExpression     = Expression.PropertyOrField(currentPartVar, component);
+                    currentPartVar        = Expression.Variable(currentExpression.Type, "part" + (++currentPartNum));
 
-                    currentExpression = Expression.PropertyOrField(currentPartVar, component);
-                    currentPartVar    = Expression.Variable(GetMemberExpressionType((MemberExpression)currentExpression), "part" + (++currentPartNum));
-
-                    expressions.Add(currentPartVar);
+                    variables.Add(currentPartVar);
                     expressions.Add(Expression.Assign(currentPartVar, currentExpression));
 
-                    if (GetMemberExpressionType((MemberExpression)currentExpression).IsClass)
+                    if (currentExpression.Type.IsClass)
                     {
-                        expressions.Add(Expression.IfThen(Expression.Equal(currentPartVar, Expression.Constant(null)), returnDefaultT));
+                        expressions.Add(Expression.IfThen(
+                            Expression.Equal(currentPartVar, Expression.Constant(null)),
+                            Expression.Return(returnTarget)));
                     }
                 }
                 else
@@ -317,20 +304,22 @@ namespace TwistedLogik.Ultraviolet.Layout
                     {
                         throw new InvalidOperationException(LayoutStrings.BindingAssignmentToValueType.Format(expression));
                     }
-                    
-                    var propertyOrField = Expression.PropertyOrField(currentExpression, expressionComponents[i]);
-                    var propertyOrFieldType = (propertyOrField.Member.MemberType == MemberTypes.Property) ?
-                        ((PropertyInfo)propertyOrField.Member).PropertyType : ((FieldInfo)propertyOrField.Member).FieldType;
 
-                    if (propertyOrField.Member.MemberType == MemberTypes.Property && !((PropertyInfo)propertyOrField.Member).CanWrite)
+                    var memberExpression = Expression.PropertyOrField(currentPartVar, expressionComponents[i]);
+                    if (memberExpression.Member.MemberType == MemberTypes.Property && !((PropertyInfo)memberExpression.Member).CanWrite)
                     {
                         return null;
                     }
-                    currentExpression = Expression.Assign(propertyOrField, Expression.Convert(valueParameter, propertyOrFieldType));
+
+                    expressions.Add(Expression.Assign(memberExpression, Expression.Convert(valueParameter, memberExpression.Type)));
                 }
             }
 
-            var lambda = Expression.Lambda<DataBindingSetter<T>>(currentExpression, contextParameter, valueParameter).Compile();
+            expressions.Add(Expression.Label(returnTarget));
+
+            var lambdaBody = Expression.Block(variables, expressions);
+            var lambda     = Expression.Lambda<DataBindingSetter<T>>(lambdaBody, contextParameter, valueParameter).Compile();
+
             return lambda;
         }
 
