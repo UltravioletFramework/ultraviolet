@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Xml.Linq;
+using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet.Content;
 using TwistedLogik.Ultraviolet.Layout.Stylesheets;
 
@@ -20,6 +22,36 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
             this.canvas.UpdateViewport(this);
 
             this.ScreenArea = screenArea;
+        }
+
+        /// <summary>
+        /// Loads an instance of <see cref="UIViewport"/> from an XML document.
+        /// </summary>
+        /// <param name="uv">The Ultraviolet context.</param>
+        /// <param name="xml">The <see cref="XDocument"/> from which to load the viewport.</param>
+        /// <param name="screenArea">The viewport's initial area on the screen.</param>
+        /// <returns>The <see cref="UIViewport"/> that was loaded from the specified XML document.</returns>
+        public static UIViewport Load(UltravioletContext uv, XDocument xml, Rectangle screenArea)
+        {
+            Contract.Require(uv, "uv");
+            Contract.Require(xml, "xml");
+
+            return UIViewportLoader.Load(uv, xml.Root, screenArea);
+        }
+
+        /// <summary>
+        /// Loads an instance of the <see cref="UIViewport"/> from an XML node.
+        /// </summary>
+        /// <param name="uv">The Ultraviolet context.</param>
+        /// <param name="xml">The <see cref="XElement"/> from which to load the viewport.</param>
+        /// <param name="screenArea">The viewport's initial area on the screen.</param>
+        /// <returns>The <see cref="UIViewport"/> that was loaded from the specified XML element.</returns>
+        public static UIViewport Load(UltravioletContext uv, XElement xml, Rectangle screenArea)
+        {
+            Contract.Require(uv, "uv");
+            Contract.Require(xml, "xml");
+
+            return UIViewportLoader.Load(uv, xml, screenArea);
         }
 
         /// <summary>

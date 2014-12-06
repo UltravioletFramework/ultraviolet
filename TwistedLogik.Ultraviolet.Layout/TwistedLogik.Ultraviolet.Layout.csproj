@@ -63,8 +63,11 @@
     <Compile Include="Elements\SourcedAssetID.cs" />
     <Compile Include="Elements\UIContainer.cs" />
     <Compile Include="Elements\UIElement.cs" />
+    <Compile Include="Elements\UIElementAttribute.cs" />
     <Compile Include="Elements\UIElementCollection.cs" />
     <Compile Include="Elements\UIViewport.cs" />
+    <Compile Include="Elements\UIViewportLoader.cs" />
+    <Compile Include="Elements\UIViewportLoader.UIElementMetadata.cs" />
     <Compile Include="IDependencyPropertyValue.cs" />
     <Compile Include="LayoutStrings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

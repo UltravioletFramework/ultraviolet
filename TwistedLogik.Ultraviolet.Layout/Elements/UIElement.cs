@@ -41,9 +41,14 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         {
             Contract.Require(uv, "uv");
 
-            this.uv   = uv;
-            this.id   = id;
-            this.name = GetType().Name;
+            this.uv = uv;
+            this.id = id;
+            
+            var attr = (UIElementAttribute)GetType().GetCustomAttributes(typeof(UIElementAttribute), false).SingleOrDefault();
+            if (attr != null)
+            {
+                this.name = attr.Name;
+            }
 
             CreateStyleSetters();
         }

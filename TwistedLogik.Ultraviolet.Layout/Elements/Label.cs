@@ -5,6 +5,7 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
     /// <summary>
     /// Represents a label on a user interface.
     /// </summary>
+    [UIElement("Label")]
     public class Label : UIElement
     {
         /// <summary>

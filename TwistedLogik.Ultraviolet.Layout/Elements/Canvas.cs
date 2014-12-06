@@ -8,6 +8,7 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
     /// Represents an element container which positions its children according to their distance from the container's
     /// left, top, right, and bottom edges.
     /// </summary>
+    [UIElement("Canvas")]
     public class Canvas : UIContainer
     {
         /// <summary>
