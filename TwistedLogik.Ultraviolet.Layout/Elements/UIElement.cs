@@ -296,45 +296,52 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         /// </summary>
         private void CreateStyleSetters()
         {
-            var typeID = GetType().TypeHandle.Value.ToInt64();
+            var currentType = GetType();
 
             lock (styleSetters)
             {
-                Dictionary<UvssStyleKey, StyleSetter> styleSettersForCurrentType;
-                if (!styleSetters.TryGetValue(typeID, out styleSettersForCurrentType))
+                while (currentType != null && typeof(UIElement).IsAssignableFrom(currentType))
                 {
-                    styleSettersForCurrentType = new Dictionary<UvssStyleKey, StyleSetter>();
-                    
-                    var styledDependencyProperties = 
-                        from field in GetType().GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static)
-                        let attr = field.GetCustomAttributes(typeof(StyledAttribute), false).SingleOrDefault()
-                        let type = field.FieldType
-                        let name = field.Name
-                        where
-                            attr != null &&
-                            type == typeof(DependencyProperty)
-                        select new { Attribute = (StyledAttribute)attr, FieldInfo = field };
+                    var typeID = currentType.TypeHandle.Value.ToInt64();
 
-                    foreach (var prop in styledDependencyProperties)
+                    Dictionary<UvssStyleKey, StyleSetter> styleSettersForCurrentType;
+                    if (!styleSetters.TryGetValue(typeID, out styleSettersForCurrentType))
                     {
-                        var dp                  = (DependencyProperty)prop.FieldInfo.GetValue(null);
-                        var dpType              = Type.GetTypeFromHandle(dp.PropertyType);
+                        styleSettersForCurrentType = new Dictionary<UvssStyleKey, StyleSetter>();
 
-                        var setStyledValue      = miSetStyledValue.MakeGenericMethod(dpType);
-                        
-                        var expParameterElement = Expression.Parameter(typeof(UIElement), "element");
-                        var expParameterValue   = Expression.Parameter(typeof(String), "value");
-                        var expParameterFmtProv = Expression.Parameter(typeof(IFormatProvider), "provider");
-                        var expResolveValue     = Expression.Convert(Expression.Call(miFromString, expParameterValue, Expression.Constant(dpType), expParameterFmtProv), dpType);
-                        var expCallMethod       = Expression.Call(expParameterElement, setStyledValue, Expression.Constant(dp), expResolveValue);
+                        var styledDependencyProperties = 
+                            from field in currentType.GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static)
+                            let attr = field.GetCustomAttributes(typeof(StyledAttribute), false).SingleOrDefault()
+                            let type = field.FieldType
+                            let name = field.Name
+                            where
+                                attr != null &&
+                                type == typeof(DependencyProperty)
+                            select new { Attribute = (StyledAttribute)attr, FieldInfo = field };
 
-                        var lambda = Expression.Lambda<StyleSetter>(expCallMethod, expParameterElement, expParameterValue, expParameterFmtProv).Compile();
+                        foreach (var prop in styledDependencyProperties)
+                        {
+                            var dp                  = (DependencyProperty)prop.FieldInfo.GetValue(null);
+                            var dpType              = Type.GetTypeFromHandle(dp.PropertyType);
 
-                        var styleKey = new UvssStyleKey(prop.Attribute.Name, prop.Attribute.PseudoClass);
-                        styleSettersForCurrentType[styleKey] = lambda;
+                            var setStyledValue      = miSetStyledValue.MakeGenericMethod(dpType);
+
+                            var expParameterElement = Expression.Parameter(typeof(UIElement), "element");
+                            var expParameterValue   = Expression.Parameter(typeof(String), "value");
+                            var expParameterFmtProv = Expression.Parameter(typeof(IFormatProvider), "provider");
+                            var expResolveValue     = Expression.Convert(Expression.Call(miFromString, expParameterValue, Expression.Constant(dpType), expParameterFmtProv), dpType);
+                            var expCallMethod       = Expression.Call(expParameterElement, setStyledValue, Expression.Constant(dp), expResolveValue);
+
+                            var lambda = Expression.Lambda<StyleSetter>(expCallMethod, expParameterElement, expParameterValue, expParameterFmtProv).Compile();
+
+                            var styleKey = new UvssStyleKey(prop.Attribute.Name, prop.Attribute.PseudoClass);
+                            styleSettersForCurrentType[styleKey] = lambda;
+                        }
+
+                        styleSetters[typeID] = styleSettersForCurrentType;
                     }
 
-                    styleSetters[typeID] = styleSettersForCurrentType;
+                    currentType = currentType.BaseType;
                 }
             }
         }
@@ -347,23 +354,36 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         /// <returns>A function to set the value of the specified style.</returns>
         private StyleSetter GetStyleSetter(String name, String pseudoClass)
         {
-            var typeID = GetType().TypeHandle.Value.ToInt64();
+            var currentType = GetType();
 
             lock (styleSetters)
             {
-                Dictionary<UvssStyleKey, StyleSetter> styleSettersForCurrentType;
-                if (!styleSetters.TryGetValue(typeID, out styleSettersForCurrentType))
-                    return null;
+                while (currentType != null && typeof(UIElement).IsAssignableFrom(currentType))
+                {
+                    var typeID = currentType.TypeHandle.Value.ToInt64();
 
-                StyleSetter setter;
-                styleSettersForCurrentType.TryGetValue(new UvssStyleKey(name, pseudoClass), out setter);
-                return setter;
+                    Dictionary<UvssStyleKey, StyleSetter> styleSettersForCurrentType;
+                    if (styleSetters.TryGetValue(typeID, out styleSettersForCurrentType))
+                    {
+                        StyleSetter setter;
+                        if (styleSettersForCurrentType.TryGetValue(new UvssStyleKey(name, pseudoClass), out setter))
+                        {
+                            return setter;
+                        }
+                    }
+
+                    currentType = currentType.BaseType;
+                }
             }
+
+            return null;
         }
 
         // Dependency properties.
         private static readonly DependencyProperty dpIsEnabled = DependencyProperty.Register("IsEnabled", typeof(Boolean), typeof(UIElement));
-        private static readonly DependencyProperty dpIsVisible = DependencyProperty.Register("IsVisible", typeof(Boolean), typeof(UIElement));
+        [Styled("visible")]
+        private static readonly DependencyProperty dpIsVisible = DependencyProperty.Register("IsVisible", typeof(Boolean), typeof(UIElement),
+            new DependencyPropertyMetadata(null, () => true, DependencyPropertyOptions.None));
 
         // Property values.
         private readonly UltravioletContext uv;
