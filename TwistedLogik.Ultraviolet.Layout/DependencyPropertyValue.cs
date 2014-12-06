@@ -46,16 +46,16 @@ namespace TwistedLogik.Ultraviolet.Layout
         /// <summary>
         /// Binds the dependency property to the specified model.
         /// </summary>
-        /// <param name="model">The model object to which to bind the dependency property.</param>
+        /// <param name="modelType">The type of model to which to bind the dependency property.</param>
         /// <param name="expression">The binding expression with which to bind the dependency property.</param>
-        public void Bind(Object model, String expression)
+        public void Bind(Type modelType, String expression)
         {
-            Contract.Require(model, "model");
+            Contract.Require(modelType, "modelType");
             Contract.RequireNotEmpty(expression, "expression");
 
-            dataBindingModel  = model;
-            dataBindingGetter = CreateBindingGetter(model, expression);
-            dataBindingSetter = CreateBindingSetter(model, expression);
+            bound             = true;
+            dataBindingGetter = CreateBindingGetter(modelType, expression);
+            dataBindingSetter = CreateBindingSetter(modelType, expression);
         }
 
         /// <summary>
@@ -63,7 +63,7 @@ namespace TwistedLogik.Ultraviolet.Layout
         /// </summary>
         public void Unbind()
         {
-            dataBindingModel  = null;
+            bound             = false;
             dataBindingGetter = null;
             dataBindingSetter = null;
         }
@@ -106,7 +106,7 @@ namespace TwistedLogik.Ultraviolet.Layout
                 {
                     throw new InvalidOperationException(LayoutStrings.BindingIsReadOnly);
                 }
-                dataBindingSetter(dataBindingModel, value);
+                dataBindingSetter(Owner.DataSource, value);
             }
             else
             {
@@ -122,7 +122,7 @@ namespace TwistedLogik.Ultraviolet.Layout
         {
             if (IsDataBound)
             {
-                return dataBindingGetter(dataBindingModel);
+                return dataBindingGetter(Owner.DataSource);
             }
             if (hasLocalValue)
             {
@@ -132,9 +132,9 @@ namespace TwistedLogik.Ultraviolet.Layout
             {
                 return styledValue;
             }
-            if (Property.Metadata.IsInherited && Owner.DependencyContainer != null)
+            if (Property.Metadata.IsInherited && Owner.Container != null)
             {
-                return Owner.DependencyContainer.GetValue<T>(Property);
+                return Owner.Container.GetValue<T>(Property);
             }
             return defaultValue;
         }
@@ -197,25 +197,25 @@ namespace TwistedLogik.Ultraviolet.Layout
         /// <inheritdoc/>
         public Boolean IsDataBound
         {
-            get { return dataBindingModel != null; }
+            get { return bound; }
         }
 
         /// <summary>
         /// Creates a getter for the specified binding expression.
         /// </summary>
-        /// <param name="model">The model object to which to bind the dependency property.</param>
+        /// <param name="modelType">The type of model to which the value is being bound.</param>
         /// <param name="expression">The binding expression with which to bind the dependency property.</param>
         /// <returns>A <see cref="DataBindingGetter{T}"/> that represents the specified model and expression.</returns>
-        private static DataBindingGetter<T> CreateBindingGetter(Object model, String expression)
+        private static DataBindingGetter<T> CreateBindingGetter(Type modelType, String expression)
         {
             var expressionComponents = ParseBindingExpression(expression);
 
             var expressions       = new List<Expression>();
             var variables         = new List<ParameterExpression>();
             var contextParameter  = Expression.Parameter(typeof(Object), "context");
-            var contextExpression = Expression.Convert(contextParameter, model.GetType());
+            var contextExpression = Expression.Convert(contextParameter, modelType);
             var currentExpression = (Expression)contextExpression;
-            var currentPartVar    = (ParameterExpression)Expression.Variable(model.GetType(), "part0");
+            var currentPartVar    = (ParameterExpression)Expression.Variable(modelType, "part0");
             var currentPartNum    = 0;
             var returnTarget      = Expression.Label(typeof(T), "exit");
 
@@ -255,19 +255,19 @@ namespace TwistedLogik.Ultraviolet.Layout
         /// <summary>
         /// Creates a setter for the specified binding expression.
         /// </summary>
-        /// <param name="model">The model object to which to bind the dependency property.</param>
+        /// <param name="modelType">The type of model to which the value is being bound.</param>
         /// <param name="expression">The binding expression with which to bind the dependency property.</param>
         /// <returns>A <see cref="DataBindingSetter{T}"/> that represents the specified model and expression.</returns>
-        private static DataBindingSetter<T> CreateBindingSetter(Object model, String expression)
+        private static DataBindingSetter<T> CreateBindingSetter(Type modelType, String expression)
         {
             var expressionComponents = ParseBindingExpression(expression);
 
             var expressions           = new List<Expression>();
             var variables             = new List<ParameterExpression>();
             var contextParameter      = Expression.Parameter(typeof(Object), "context");
-            var contextExpression     = Expression.Convert(contextParameter, model.GetType());
+            var contextExpression     = Expression.Convert(contextParameter, modelType);
             var currentExpression     = (Expression)contextExpression;
-            var currentPartVar        = (ParameterExpression)Expression.Variable(model.GetType(), "part0");
+            var currentPartVar        = (ParameterExpression)Expression.Variable(modelType, "part0");
             var currentPartNum        = 0;
             var returnTarget          = Expression.Label("exit");
             var valueParameter        = Expression.Parameter(typeof(T), "value");
@@ -431,7 +431,7 @@ namespace TwistedLogik.Ultraviolet.Layout
         private T previousValue;
 
         // State values.
-        private Object dataBindingModel;
+        private Boolean bound;
         private DataBindingGetter<T> dataBindingGetter;
         private DataBindingSetter<T> dataBindingSetter;
 

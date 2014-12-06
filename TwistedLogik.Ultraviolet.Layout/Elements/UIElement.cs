@@ -104,6 +104,14 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         }
 
         /// <summary>
+        /// Gets the element's view model.
+        /// </summary>
+        public Object ViewModel
+        {
+            get { return viewModel; }
+        }
+
+        /// <summary>
         /// Gets the <see cref="UIViewport"/> that is the top-level container for this element.
         /// </summary>
         public UIViewport Viewport
@@ -114,7 +122,7 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         /// <summary>
         /// Gets the <see cref="UIContainer"/> that contains this element.
         /// </summary>
-        public UIContainer Container
+        public new UIContainer Container
         {
             get { return container; }
         }
@@ -257,6 +265,16 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         }
 
         /// <summary>
+        /// Updates the view model associated with this element.
+        /// </summary>
+        /// <param name="viewModel">The view model to associate with this element.</param>
+        internal virtual void UpdateViewModel(Object viewModel)
+        {
+            this.viewModel  = viewModel;
+            this.DataSource = viewModel;
+        }
+
+        /// <summary>
         /// Updates the viewport associated with this element.
         /// </summary>
         /// <param name="viewport">The viewport to associate with this element.</param>
@@ -271,6 +289,9 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
             {
                 viewport.Stylesheet.ApplyStylesRecursively(this);
             }
+
+            UpdateViewModel(viewport == null ? null : viewport.ViewModel);
+
             ReloadContent();
         }
 
@@ -280,8 +301,8 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         /// <param name="container">The container to associate with this element.</param>
         internal virtual void UpdateContainer(UIContainer container)
         {
-            this.container           = container;
-            this.DependencyContainer = container;
+            this.container = container;
+            base.Container = container; // DependencyObject
 
             var viewport = (container == null) ? null : container.Viewport;
             if (viewport != this.viewport)
@@ -380,7 +401,8 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         }
 
         // Dependency properties.
-        private static readonly DependencyProperty dpIsEnabled = DependencyProperty.Register("IsEnabled", typeof(Boolean), typeof(UIElement));
+        private static readonly DependencyProperty dpIsEnabled = DependencyProperty.Register("IsEnabled", typeof(Boolean), typeof(UIElement),
+            new DependencyPropertyMetadata(null, () => true, DependencyPropertyOptions.None));
         [Styled("visible")]
         private static readonly DependencyProperty dpIsVisible = DependencyProperty.Register("IsVisible", typeof(Boolean), typeof(UIElement),
             new DependencyPropertyMetadata(null, () => true, DependencyPropertyOptions.None));
@@ -389,6 +411,7 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         private readonly UltravioletContext uv;
         private readonly String id;
         private readonly String name;
+        private Object viewModel;
         private UIViewport viewport;
         private UIContainer container;
         private Int32 containerRelativeX;

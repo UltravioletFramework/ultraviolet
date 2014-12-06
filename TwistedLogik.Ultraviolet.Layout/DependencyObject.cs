@@ -46,10 +46,10 @@ namespace TwistedLogik.Ultraviolet.Layout
         /// Binds a dependency property to a property on a model.
         /// </summary>
         /// <typeparam name="T">The type of value contained by the dependency property.</typeparam>
-        /// <param name="model">The model to which to bind.</param>
-        /// <param name="expression">The binding expression.</param>
+        /// <param name="modelType">The type of model to which to bind the property.</param>
+        /// <param name="expression">The binding expression with which to bind the property.</param>
         /// <param name="dp">A <see cref="DependencyProperty"/> instance which identifies the dependency property to bind.</param>
-        public void BindValue<T>(DependencyProperty dp, Object model, String expression)
+        public void BindValue<T>(DependencyProperty dp, Type modelType, String expression)
         {
             Contract.Require(dp, "dp");
 
@@ -57,7 +57,7 @@ namespace TwistedLogik.Ultraviolet.Layout
                 throw new InvalidCastException();
 
             var wrapper = GetDependencyPropertyValue<T>(dp);
-            wrapper.Bind(model, expression);
+            wrapper.Bind(modelType, expression);
         }
 
         /// <summary>
@@ -171,12 +171,21 @@ namespace TwistedLogik.Ultraviolet.Layout
         }
 
         /// <summary>
-        /// Gets the object's containing object.
+        /// Gets the dependency object's containing object.
         /// </summary>
-        public DependencyObject DependencyContainer
+        public DependencyObject Container
         {
-            get { return dependencyContainer; }
-            protected set { dependencyContainer = value; }
+            get { return container; }
+            protected set { container = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the data source from which the object's dependency properties will retrieve values if they are data bound.
+        /// </summary>
+        public Object DataSource
+        {
+            get { return dataSource; }
+            internal set { dataSource = value; }
         }
 
         /// <summary>
@@ -204,7 +213,8 @@ namespace TwistedLogik.Ultraviolet.Layout
         }
 
         // Property values.
-        private DependencyObject dependencyContainer;
+        private DependencyObject container;
+        private Object dataSource;
 
         // State values.
         private readonly Dictionary<Int64, IDependencyPropertyValue> dependencyPropertyValues =

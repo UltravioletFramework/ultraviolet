@@ -14,10 +14,13 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         /// <summary>
         /// Initializes a new instance of the <see cref="UIViewport"/> class.
         /// </summary>
+        /// <param name="modelType">The viewport's associated model type.</param>
         /// <param name="uv">The Ultraviolet context.</param>
         /// <param name="screenArea">The viewport's initial area on the screen.</param>
-        public UIViewport(UltravioletContext uv, Rectangle screenArea)
+        public UIViewport(Type modelType, UltravioletContext uv, Rectangle screenArea)
         {
+            this.viewModelType = modelType;
+
             this.canvas = new Canvas(uv, null);
             this.canvas.UpdateViewport(this);
 
@@ -95,6 +98,21 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         }
 
         /// <summary>
+        /// Sets the viewport's associated view model.
+        /// </summary>
+        /// <param name="viewModel">The viewport's associated view model.</param>
+        public void SetViewModel(Object viewModel)
+        {
+            if (viewModel != null && viewModel.GetType() != viewModelType)
+            {
+                throw new InvalidOperationException("TODO");
+            }
+
+            this.viewModel = viewModel;
+            Canvas.UpdateViewModel(viewModel);
+        }
+
+        /// <summary>
         /// Loads the specified sourced asset.
         /// </summary>
         /// <typeparam name="TOutput">The type of object being loaded.</typeparam>
@@ -137,6 +155,14 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         public UvssDocument Stylesheet
         {
             get { return stylesheet; }
+        }
+
+        /// <summary>
+        /// Gets the viewport's view model.
+        /// </summary>
+        public Object ViewModel
+        {
+            get { return viewModel; }
         }
 
         /// <summary>
@@ -200,7 +226,10 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         private ContentManager globalContent;
         private ContentManager localContent;
         private UvssDocument stylesheet;
+        private Object viewModel;
         private Rectangle screenArea;
         private Canvas canvas;
+
+        private readonly Type viewModelType;
     }
 }

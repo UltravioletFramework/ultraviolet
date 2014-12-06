@@ -12,13 +12,14 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
     /// <summary>
     /// Contains methods for loading UI viewports.
     /// </summary>
-    internal partial class UIViewportLoader
+    internal static partial class UIViewportLoader
     {
         /// <summary>
         /// Initializes the <see cref="UIViewportLoader"/> type.
         /// </summary>
         static UIViewportLoader()
         {
+            miBindValue     = typeof(DependencyObject).GetMethod("BindValue");
             miSetLocalValue = typeof(DependencyObject).GetMethod("SetLocalValue");
 
             var uiElementTypes = from a in AppDomain.CurrentDomain.GetAssemblies()
@@ -61,10 +62,21 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         /// <returns>The <see cref="UIViewport"/> that was loaded from the specified XML element.</returns>
         public static UIViewport Load(UltravioletContext uv, XElement xml, Rectangle screenArea)
         {
-            var viewport = new UIViewport(uv, screenArea);
+            var modelType = default(Type);
+            var modelTypeAttr = xml.Attribute("ModelType");
+            if (modelTypeAttr != null)
+            {
+                modelType = Type.GetType(modelTypeAttr.Value, false);
+                if (modelType == null)
+                {
+                    throw new InvalidOperationException("TODO");
+                }
+            }
 
-            PopulateElementProperties(uv, viewport.Canvas, xml);
-            PopulateElementChildren(uv, viewport.Canvas, xml);
+            var viewport = new UIViewport(modelType, uv, screenArea);
+
+            PopulateElementProperties(uv, viewport.Canvas, xml, modelType);
+            PopulateElementChildren(uv, viewport.Canvas, xml, modelType);
 
             return viewport;
         }
@@ -93,7 +105,8 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         /// <param name="uv">The Ultraviolet context.</param>
         /// <param name="uiElement">The element whose dependency property values will be populated.</param>
         /// <param name="xmlElement">The XML element that represents the UI element.</param>
-        private static void PopulateElementProperties(UltravioletContext uv, UIElement uiElement, XElement xmlElement)
+        /// <param name="modelType">The viewport's associated model type.</param>
+        private static void PopulateElementProperties(UltravioletContext uv, UIElement uiElement, XElement xmlElement, Type modelType)
         {
             var dprop = default(DependencyProperty);
 
@@ -116,13 +129,25 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
 
                 if (dprop != null)
                 {
-                    var type  = Type.GetTypeFromHandle(dprop.PropertyType);
-                    var value = ObjectResolver.FromString(attr.Value, type);
-                    miSetLocalValue.MakeGenericMethod(type).Invoke(uiElement, new Object[] { dprop, value });
+                    var type = Type.GetTypeFromHandle(dprop.PropertyType);
+
+                    if (IsBindingExpression(xmlElement.Value))
+                    {
+                        if (modelType == null)
+                            throw new InvalidOperationException("TODO");
+
+                        var expression = xmlElement.Value;
+                        miBindValue.MakeGenericMethod(type).Invoke(uiElement, new Object[] { dprop, modelType, expression });
+                    }
+                    else
+                    {
+                        var value = ObjectResolver.FromString(attr.Value, type);
+                        miSetLocalValue.MakeGenericMethod(type).Invoke(uiElement, new Object[] { dprop, value });
+                    }
                 }
             }
 
-            PopulateElementDefaultProperty(uv, uiElement, xmlElement);
+            PopulateElementDefaultProperty(uv, uiElement, xmlElement, modelType);
         }
 
         /// <summary>
@@ -131,7 +156,8 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         /// <param name="uv">The Ultraviolet context.</param>
         /// <param name="uiElement">The element whose default property value will be populated.</param>
         /// <param name="xmlElement">The XML element that represents the UI element.</param>
-        private static void PopulateElementDefaultProperty(UltravioletContext uv, UIElement uiElement, XElement xmlElement)
+        /// <param name="modelType">The viewport's associated model type.</param>
+        private static void PopulateElementDefaultProperty(UltravioletContext uv, UIElement uiElement, XElement xmlElement, Type modelType)
         {
             UIElementMetadata metadata;
             if (!uiElementMetadata.TryGetValue(uiElement.Name, out metadata))
@@ -139,11 +165,22 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
 
             if (metadata.DefaultProperty != null && !String.IsNullOrEmpty(xmlElement.Value))
             {
-                var dobj  = uiElement;
                 var dprop = DependencyProperty.FindByName(metadata.DefaultProperty, uiElement.GetType());
                 var type  = Type.GetTypeFromHandle(dprop.PropertyType);
-                var value = ObjectResolver.FromString(xmlElement.Value, type);
-                miSetLocalValue.MakeGenericMethod(type).Invoke(dobj, new Object[] { dprop, value });
+
+                if (IsBindingExpression(xmlElement.Value))
+                {
+                    if (modelType == null)
+                        throw new InvalidOperationException("TODO");
+
+                    var expression = xmlElement.Value;
+                    miBindValue.MakeGenericMethod(type).Invoke(uiElement, new Object[] { dprop, modelType, expression });
+                }
+                else
+                {
+                    var value = ObjectResolver.FromString(xmlElement.Value, type);
+                    miSetLocalValue.MakeGenericMethod(type).Invoke(uiElement, new Object[] { dprop, value });
+                }
             }
         }
 
@@ -153,19 +190,20 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         /// <param name="uv">The Ultraviolet container.</param>
         /// <param name="uiContainer">The container to populate with children.</param>
         /// <param name="xmlElement">The XML element that represents the UI container.</param>
-        private static void PopulateElementChildren(UltravioletContext uv, UIContainer uiContainer, XElement xmlElement)
+        /// <param name="modelType">The viewport's associated model type.</param>
+        private static void PopulateElementChildren(UltravioletContext uv, UIContainer uiContainer, XElement xmlElement, Type modelType)
         {
             foreach (var child in xmlElement.Elements())
             {
                 var uiElement = InstantiateElement(uv, child);
                 uiContainer.Children.Add(uiElement);
 
-                PopulateElementProperties(uv, uiElement, child);
+                PopulateElementProperties(uv, uiElement, child, modelType);
 
                 var uiChildContainer = uiElement as UIContainer;
                 if (uiChildContainer != null)
                 {
-                    PopulateElementChildren(uv, uiChildContainer, child);
+                    PopulateElementChildren(uv, uiChildContainer, child, modelType);
                 }
             }
         }
@@ -194,7 +232,18 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
             return false;
         }
 
+        /// <summary>
+        /// Gets a value indicating whether the specified string is a binding expression.
+        /// </summary>
+        /// <param name="value">The string to evaluate.</param>
+        /// <returns><c>true</c> if the specified string is a binding expression; otherwise, <c>false</c>.</returns>
+        private static Boolean IsBindingExpression(String value)
+        {
+            return value.StartsWith("{{") && value.EndsWith("}}");
+        }
+
         // Reflection information.
+        private static readonly MethodInfo miBindValue;
         private static readonly MethodInfo miSetLocalValue;
 
         // UI element metadata for registered types.

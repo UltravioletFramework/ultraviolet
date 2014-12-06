@@ -152,6 +152,20 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
             }
         }
 
+        /// <summary>
+        /// Updates the view model associated with this element.
+        /// </summary>
+        /// <param name="viewModel">The view model to associate with this element.</param>
+        internal override void UpdateViewModel(Object viewModel)
+        {
+            base.UpdateViewModel(viewModel);
+
+            foreach (var child in children)
+            {
+                child.UpdateViewModel(viewModel);
+            }
+        }
+
         /// <inheritdoc/>
         internal override void UpdateViewport(UIViewport viewport)
         {
