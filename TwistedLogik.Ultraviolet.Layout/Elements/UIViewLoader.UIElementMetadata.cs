@@ -3,10 +3,10 @@ using System.Reflection;
 
 namespace TwistedLogik.Ultraviolet.Layout.Elements
 {
-    partial class UIViewportLoader
+    partial class UIViewLoader
     {
         /// <summary>
-        /// Represents the metadata for a UI element which can be instantiated by the viewport loader.
+        /// Represents the metadata for a UI element which can be instantiated by the view loader.
         /// </summary>
         private struct UIElementMetadata
         {

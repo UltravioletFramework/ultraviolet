@@ -7,7 +7,7 @@ namespace TwistedLogik.Ultraviolet.Layout
     /// <summary>
     /// Represents an object that participates in the dependency property system.
     /// </summary>
-    public class DependencyObject
+    public abstract partial class DependencyObject
     {
         /// <summary>
         /// Evaluates whether any of the object's dependency property values have changed and, if so, invokes the appropriate callbacks.
@@ -173,19 +173,17 @@ namespace TwistedLogik.Ultraviolet.Layout
         /// <summary>
         /// Gets the dependency object's containing object.
         /// </summary>
-        public DependencyObject Container
+        protected abstract DependencyObject DependencyContainer
         {
-            get { return container; }
-            protected set { container = value; }
+            get;
         }
 
         /// <summary>
         /// Gets or sets the data source from which the object's dependency properties will retrieve values if they are data bound.
         /// </summary>
-        public Object DataSource
+        protected abstract Object DependencyDataSource
         {
-            get { return dataSource; }
-            internal set { dataSource = value; }
+            get;
         }
 
         /// <summary>
@@ -211,10 +209,6 @@ namespace TwistedLogik.Ultraviolet.Layout
             }
             return wrapper;
         }
-
-        // Property values.
-        private DependencyObject container;
-        private Object dataSource;
 
         // State values.
         private readonly Dictionary<Int64, IDependencyPropertyValue> dependencyPropertyValues =

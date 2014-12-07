@@ -23,270 +23,216 @@ namespace TwistedLogik.Ultraviolet.Layout
     /// <param name="value">The value to set on the bound property.</param>
     internal delegate void DataBindingSetter<T>(Object model, T value);
 
-    /// <summary>
-    /// Represents the value contained by a dependency property.
-    /// </summary>
-    internal class DependencyPropertyValue<T> : IDependencyPropertyValue
+    partial class DependencyObject
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="DependencyPropertyValue{T}"/> class.
+        /// Represents the value contained by a dependency property.
         /// </summary>
-        /// <param name="owner">The dependency object that owns the property value.</param>
-        /// <param name="property">The dependency property which has its value represented by this object.</param>
-        public DependencyPropertyValue(DependencyObject owner, DependencyProperty property)
+        internal class DependencyPropertyValue<T> : IDependencyPropertyValue
         {
-            Contract.Require(owner, "owner");
-            Contract.Require(property, "property");
-
-            this.owner    = owner;
-            this.property = property;
-            this.comparer = GetComparisonFunction();
-        }
-
-        /// <summary>
-        /// Binds the dependency property to the specified model.
-        /// </summary>
-        /// <param name="modelType">The type of model to which to bind the dependency property.</param>
-        /// <param name="expression">The binding expression with which to bind the dependency property.</param>
-        public void Bind(Type modelType, String expression)
-        {
-            Contract.Require(modelType, "modelType");
-            Contract.RequireNotEmpty(expression, "expression");
-
-            bound             = true;
-            dataBindingGetter = CreateBindingGetter(modelType, expression);
-            dataBindingSetter = CreateBindingSetter(modelType, expression);
-        }
-
-        /// <summary>
-        /// Removes the dependency property's two-way binding.
-        /// </summary>
-        public void Unbind()
-        {
-            bound             = false;
-            dataBindingGetter = null;
-            dataBindingSetter = null;
-        }
-
-        /// <inheritdoc/>
-        public void Digest()
-        {
-            var currentValue = GetValue();
-            if (!comparer(currentValue, previousValue))
+            /// <summary>
+            /// Initializes a new instance of the <see cref="DependencyPropertyValue{T}"/> class.
+            /// </summary>
+            /// <param name="owner">The dependency object that owns the property value.</param>
+            /// <param name="property">The dependency property which has its value represented by this object.</param>
+            public DependencyPropertyValue(DependencyObject owner, DependencyProperty property)
             {
-                if (Property.Metadata.ChangedCallback != null)
+                Contract.Require(owner, "owner");
+                Contract.Require(property, "property");
+
+                this.owner    = owner;
+                this.property = property;
+                this.comparer = GetComparisonFunction();
+            }
+
+            /// <summary>
+            /// Binds the dependency property.
+            /// </summary>
+            /// <param name="viewModelType">The type of view model to which to bind the dependency property.</param>
+            /// <param name="expression">The binding expression with which to bind the dependency property.</param>
+            public void Bind(Type viewModelType, String expression)
+            {
+                Contract.Require(viewModelType, "viewModelType");
+                Contract.RequireNotEmpty(expression, "expression");
+
+                bound             = true;
+                dataBindingGetter = CreateBindingGetter(viewModelType, expression);
+                dataBindingSetter = CreateBindingSetter(viewModelType, expression);
+            }
+
+            /// <summary>
+            /// Removes the dependency property's two-way binding.
+            /// </summary>
+            public void Unbind()
+            {
+                bound             = false;
+                dataBindingGetter = null;
+                dataBindingSetter = null;
+            }
+
+            /// <inheritdoc/>
+            public void Digest()
+            {
+                var currentValue = GetValue();
+                if (!comparer(currentValue, previousValue))
                 {
-                    Property.Metadata.ChangedCallback(Owner);
+                    if (Property.Metadata.ChangedCallback != null)
+                    {
+                        Property.Metadata.ChangedCallback(Owner);
+                    }
+                    previousValue = currentValue;
                 }
-                previousValue = currentValue;
             }
-        }
 
-        /// <inheritdoc/>
-        public void ClearLocalValue()
-        {
-            hasLocalValue = false;
-        }
-
-        /// <inheritdoc/>
-        public void ClearStyledValue()
-        {
-            hasStyledValue = false;
-        }
-
-        /// <summary>
-        /// Sets the dependency property's value.
-        /// </summary>
-        /// <param name="value">The value to set.</param>
-        public void SetValue(T value)
-        {
-            if (IsDataBound)
+            /// <inheritdoc/>
+            public void ClearLocalValue()
             {
-                if (dataBindingSetter == null)
+                hasLocalValue = false;
+            }
+
+            /// <inheritdoc/>
+            public void ClearStyledValue()
+            {
+                hasStyledValue = false;
+            }
+
+            /// <summary>
+            /// Sets the dependency property's value.
+            /// </summary>
+            /// <param name="value">The value to set.</param>
+            public void SetValue(T value)
+            {
+                if (IsDataBound)
                 {
-                    throw new InvalidOperationException(LayoutStrings.BindingIsReadOnly);
+                    if (dataBindingSetter == null)
+                    {
+                        throw new InvalidOperationException(LayoutStrings.BindingIsReadOnly);
+                    }
+                    dataBindingSetter(Owner.DependencyDataSource, value);
                 }
-                dataBindingSetter(Owner.DataSource, value);
+                else
+                {
+                    LocalValue = value;
+                }
             }
-            else
+
+            /// <summary>
+            /// Gets the dependency property's calculated value.
+            /// </summary>
+            /// <returns>The dependency property's calculated value.</returns>
+            public T GetValue()
             {
-                LocalValue = value;
+                if (IsDataBound)
+                {
+                    return dataBindingGetter(Owner.DependencyDataSource);
+                }
+                if (hasLocalValue)
+                {
+                    return localValue;
+                }
+                if (hasStyledValue)
+                {
+                    return styledValue;
+                }
+                if (Property.Metadata.IsInherited && Owner.DependencyContainer != null)
+                {
+                    return Owner.DependencyContainer.GetValue<T>(Property);
+                }
+                return defaultValue;
             }
-        }
 
-        /// <summary>
-        /// Gets the dependency property's calculated value.
-        /// </summary>
-        /// <returns>The dependency property's calculated value.</returns>
-        public T GetValue()
-        {
-            if (IsDataBound)
+            /// <summary>
+            /// Gets the dependency property's local value.
+            /// </summary>
+            public T LocalValue
             {
-                return dataBindingGetter(Owner.DataSource);
+                get { return localValue; }
+                internal set
+                {
+                    localValue = value;
+                    hasLocalValue = true;
+                }
             }
-            if (hasLocalValue)
+
+            /// <summary>
+            /// Gets the dependency property's styled value.
+            /// </summary>
+            public T StyledValue
             {
-                return localValue;
+                get { return styledValue; }
+                internal set
+                {
+                    styledValue = value;
+                    hasStyledValue = true;
+                }
             }
-            if (hasStyledValue)
+
+            /// <summary>
+            /// Gets or sets the dependency property's default value.
+            /// </summary>
+            public T DefaultValue
             {
-                return styledValue;
+                get { return defaultValue; }
+                set { defaultValue = value; }
             }
-            if (Property.Metadata.IsInherited && Owner.Container != null)
+
+            /// <summary>
+            /// Gets the dependency property's previous value as of the last call to <see cref="Digest()"/>.
+            /// </summary>
+            public T PreviousValue
             {
-                return Owner.Container.GetValue<T>(Property);
+                get { return previousValue; }
             }
-            return defaultValue;
-        }
 
-        /// <summary>
-        /// Gets the dependency property's local value.
-        /// </summary>
-        public T LocalValue
-        {
-            get { return localValue; }
-            internal set
+            /// <inheritdoc/>
+            public DependencyObject Owner
             {
-                localValue = value;
-                hasLocalValue = true;
+                get { return owner; }
             }
-        }
 
-        /// <summary>
-        /// Gets the dependency property's styled value.
-        /// </summary>
-        public T StyledValue
-        {
-            get { return styledValue; }
-            internal set
+            /// <inheritdoc/>
+            public DependencyProperty Property
             {
-                styledValue = value;
-                hasStyledValue = true;
+                get { return property; }
             }
-        }
 
-        /// <summary>
-        /// Gets or sets the dependency property's default value.
-        /// </summary>
-        public T DefaultValue
-        {
-            get { return defaultValue; }
-            set { defaultValue = value; }
-        }
-
-        /// <summary>
-        /// Gets the dependency property's previous value as of the last call to <see cref="Digest()"/>.
-        /// </summary>
-        public T PreviousValue
-        {
-            get { return previousValue; }
-        }
-
-        /// <inheritdoc/>
-        public DependencyObject Owner
-        {
-            get { return owner; }
-        }
-
-        /// <inheritdoc/>
-        public DependencyProperty Property
-        {
-            get { return property; }
-        }
-
-        /// <inheritdoc/>
-        public Boolean IsDataBound
-        {
-            get { return bound; }
-        }
-
-        /// <summary>
-        /// Creates a getter for the specified binding expression.
-        /// </summary>
-        /// <param name="modelType">The type of model to which the value is being bound.</param>
-        /// <param name="expression">The binding expression with which to bind the dependency property.</param>
-        /// <returns>A <see cref="DataBindingGetter{T}"/> that represents the specified model and expression.</returns>
-        private static DataBindingGetter<T> CreateBindingGetter(Type modelType, String expression)
-        {
-            var expressionComponents = ParseBindingExpression(expression);
-
-            var expressions       = new List<Expression>();
-            var variables         = new List<ParameterExpression>();
-            var contextParameter  = Expression.Parameter(typeof(Object), "context");
-            var contextExpression = Expression.Convert(contextParameter, modelType);
-            var currentExpression = (Expression)contextExpression;
-            var currentPartVar    = (ParameterExpression)Expression.Variable(modelType, "part0");
-            var currentPartNum    = 0;
-            var returnTarget      = Expression.Label(typeof(T), "exit");
-
-            variables.Add(currentPartVar);
-            expressions.Add(Expression.Assign(currentPartVar, currentExpression));
-            expressions.Add(Expression.IfThen(
-                Expression.Equal(currentPartVar, Expression.Constant(null)), 
-                Expression.Return(returnTarget, Expression.Default(typeof(T)), typeof(T))));
-
-            for (int i = 0; i < expressionComponents.Length; i++)
+            /// <inheritdoc/>
+            public Boolean IsDataBound
             {
-                var component = expressionComponents[i];
+                get { return bound; }
+            }
 
-                currentExpression = Expression.PropertyOrField(currentPartVar, component);
-                currentPartVar    = Expression.Variable(currentExpression.Type, "part" + (++currentPartNum));
+            /// <summary>
+            /// Creates a getter for the specified binding expression.
+            /// </summary>
+            /// <param name="viewModelType">The type of view model to which the value is being bound.</param>
+            /// <param name="expression">The binding expression with which to bind the dependency property.</param>
+            /// <returns>A <see cref="DataBindingGetter{T}"/> that represents the specified model and expression.</returns>
+            private static DataBindingGetter<T> CreateBindingGetter(Type viewModelType, String expression)
+            {
+                var expressionComponents = ParseBindingExpression(expression);
+
+                var expressions       = new List<Expression>();
+                var variables         = new List<ParameterExpression>();
+                var contextParameter  = Expression.Parameter(typeof(Object), "context");
+                var contextExpression = Expression.Convert(contextParameter, viewModelType);
+                var currentExpression = (Expression)contextExpression;
+                var currentPartVar    = (ParameterExpression)Expression.Variable(viewModelType, "part0");
+                var currentPartNum    = 0;
+                var returnTarget      = Expression.Label(typeof(T), "exit");
 
                 variables.Add(currentPartVar);
                 expressions.Add(Expression.Assign(currentPartVar, currentExpression));
+                expressions.Add(Expression.IfThen(
+                    Expression.Equal(currentPartVar, Expression.Constant(null)),
+                    Expression.Return(returnTarget, Expression.Default(typeof(T)), typeof(T))));
 
-                if (currentExpression.Type.IsClass)
+                for (int i = 0; i < expressionComponents.Length; i++)
                 {
-                    expressions.Add(Expression.IfThen(
-                        Expression.Equal(currentPartVar, Expression.Constant(null)), 
-                        Expression.Return(returnTarget, Expression.Default(typeof(T)), typeof(T))));
-                }
-            }
+                    var component = expressionComponents[i];
 
-            expressions.Add(Expression.Return(returnTarget, currentPartVar, typeof(T)));
-            expressions.Add(Expression.Label(returnTarget, Expression.Default(typeof(T))));
-
-            var lambdaBody = Expression.Block(variables, expressions);
-            var lambda     = Expression.Lambda<DataBindingGetter<T>>(lambdaBody, contextParameter).Compile();
-
-            return lambda;
-        }
-
-        /// <summary>
-        /// Creates a setter for the specified binding expression.
-        /// </summary>
-        /// <param name="modelType">The type of model to which the value is being bound.</param>
-        /// <param name="expression">The binding expression with which to bind the dependency property.</param>
-        /// <returns>A <see cref="DataBindingSetter{T}"/> that represents the specified model and expression.</returns>
-        private static DataBindingSetter<T> CreateBindingSetter(Type modelType, String expression)
-        {
-            var expressionComponents = ParseBindingExpression(expression);
-
-            var expressions           = new List<Expression>();
-            var variables             = new List<ParameterExpression>();
-            var contextParameter      = Expression.Parameter(typeof(Object), "context");
-            var contextExpression     = Expression.Convert(contextParameter, modelType);
-            var currentExpression     = (Expression)contextExpression;
-            var currentPartVar        = (ParameterExpression)Expression.Variable(modelType, "part0");
-            var currentPartNum        = 0;
-            var returnTarget          = Expression.Label("exit");
-            var valueParameter        = Expression.Parameter(typeof(T), "value");
-
-            variables.Add(currentPartVar);
-            expressions.Add(Expression.Assign(currentPartVar, currentExpression));
-            expressions.Add(Expression.IfThen(
-                Expression.Equal(currentPartVar, Expression.Constant(null)), 
-                Expression.Return(returnTarget)));
-
-            for (int i = 0; i < expressionComponents.Length; i++)
-            {
-                var component       = expressionComponents[i];
-                var componentMember = Expression.PropertyOrField(currentExpression, component);
-
-                if (i + 1 < expressionComponents.Length)
-                {
-                    currentExpression     = Expression.PropertyOrField(currentPartVar, component);
-                    currentPartVar        = Expression.Variable(currentExpression.Type, "part" + (++currentPartNum));
+                    currentExpression = Expression.PropertyOrField(currentPartVar, component);
+                    currentPartVar    = Expression.Variable(currentExpression.Type, "part" + (++currentPartNum));
 
                     variables.Add(currentPartVar);
                     expressions.Add(Expression.Assign(currentPartVar, currentExpression));
@@ -295,149 +241,206 @@ namespace TwistedLogik.Ultraviolet.Layout
                     {
                         expressions.Add(Expression.IfThen(
                             Expression.Equal(currentPartVar, Expression.Constant(null)),
-                            Expression.Return(returnTarget)));
+                            Expression.Return(returnTarget, Expression.Default(typeof(T)), typeof(T))));
                     }
+                }
+
+                expressions.Add(Expression.Return(returnTarget, currentPartVar, typeof(T)));
+                expressions.Add(Expression.Label(returnTarget, Expression.Default(typeof(T))));
+
+                var lambdaBody = Expression.Block(variables, expressions);
+                var lambda     = Expression.Lambda<DataBindingGetter<T>>(lambdaBody, contextParameter).Compile();
+
+                return lambda;
+            }
+
+            /// <summary>
+            /// Creates a setter for the specified binding expression.
+            /// </summary>
+            /// <param name="viewModelType">The type of view model to which the value is being bound.</param>
+            /// <param name="expression">The binding expression with which to bind the dependency property.</param>
+            /// <returns>A <see cref="DataBindingSetter{T}"/> that represents the specified model and expression.</returns>
+            private static DataBindingSetter<T> CreateBindingSetter(Type viewModelType, String expression)
+            {
+                var expressionComponents = ParseBindingExpression(expression);
+
+                var expressions           = new List<Expression>();
+                var variables             = new List<ParameterExpression>();
+                var contextParameter      = Expression.Parameter(typeof(Object), "context");
+                var contextExpression     = Expression.Convert(contextParameter, viewModelType);
+                var currentExpression     = (Expression)contextExpression;
+                var currentPartVar        = (ParameterExpression)Expression.Variable(viewModelType, "part0");
+                var currentPartNum        = 0;
+                var returnTarget          = Expression.Label("exit");
+                var valueParameter        = Expression.Parameter(typeof(T), "value");
+
+                variables.Add(currentPartVar);
+                expressions.Add(Expression.Assign(currentPartVar, currentExpression));
+                expressions.Add(Expression.IfThen(
+                    Expression.Equal(currentPartVar, Expression.Constant(null)),
+                    Expression.Return(returnTarget)));
+
+                for (int i = 0; i < expressionComponents.Length; i++)
+                {
+                    var component       = expressionComponents[i];
+                    var componentMember = Expression.PropertyOrField(currentExpression, component);
+
+                    if (i + 1 < expressionComponents.Length)
+                    {
+                        currentExpression     = Expression.PropertyOrField(currentPartVar, component);
+                        currentPartVar        = Expression.Variable(currentExpression.Type, "part" + (++currentPartNum));
+
+                        variables.Add(currentPartVar);
+                        expressions.Add(Expression.Assign(currentPartVar, currentExpression));
+
+                        if (currentExpression.Type.IsClass)
+                        {
+                            expressions.Add(Expression.IfThen(
+                                Expression.Equal(currentPartVar, Expression.Constant(null)),
+                                Expression.Return(returnTarget)));
+                        }
+                    }
+                    else
+                    {
+                        if (currentExpression.Type.IsValueType)
+                        {
+                            throw new InvalidOperationException(LayoutStrings.BindingAssignmentToValueType.Format(expression));
+                        }
+
+                        var memberExpression = Expression.PropertyOrField(currentPartVar, expressionComponents[i]);
+                        if (memberExpression.Member.MemberType == MemberTypes.Property && !((PropertyInfo)memberExpression.Member).CanWrite)
+                        {
+                            return null;
+                        }
+
+                        expressions.Add(Expression.Assign(memberExpression, Expression.Convert(valueParameter, memberExpression.Type)));
+                    }
+                }
+
+                expressions.Add(Expression.Label(returnTarget));
+
+                var lambdaBody = Expression.Block(variables, expressions);
+                var lambda     = Expression.Lambda<DataBindingSetter<T>>(lambdaBody, contextParameter, valueParameter).Compile();
+
+                return lambda;
+            }
+
+            /// <summary>
+            /// Parses the specified binding expression into its constituent components.
+            /// </summary>
+            /// <param name="expression">The binding expression to parse.</param>
+            /// <returns>The specified binding expression's constituent components.</returns>
+            private static String[] ParseBindingExpression(String expression)
+            {
+                if (!expression.StartsWith("{{") || !expression.EndsWith("}}"))
+                    throw new ArgumentException(LayoutStrings.InvalidBindingExpression.Format(expression));
+
+                var code       = expression.Substring("{{".Length, expression.Length - "{{}}".Length);
+                var components = code.Split('.');
+
+                return components;
+            }
+
+            /// <summary>
+            /// Gets the comparison function for the current type.
+            /// </summary>
+            /// <returns>The comparison function for the current type.</returns>
+            private static Func<T, T, Boolean> GetComparisonFunction()
+            {
+                if (typeof(T).IsClass)
+                {
+                    return referenceComparer;
                 }
                 else
                 {
-                    if (currentExpression.Type.IsValueType)
+                    lock (comparerRegistry)
                     {
-                        throw new InvalidOperationException(LayoutStrings.BindingAssignmentToValueType.Format(expression));
-                    }
+                        var typeHandle   = typeof(T).TypeHandle.Value.ToInt64();
+                        var typeComparer = default(Func<T, T, Boolean>);
 
-                    var memberExpression = Expression.PropertyOrField(currentPartVar, expressionComponents[i]);
-                    if (memberExpression.Member.MemberType == MemberTypes.Property && !((PropertyInfo)memberExpression.Member).CanWrite)
-                    {
-                        return null;
-                    }
+                        if (!comparerRegistry.TryGetValue(typeHandle, out typeComparer))
+                        {
+                            if (typeof(T).GetInterfaces().Where(x => x == typeof(IEquatable<T>)).Any())
+                            {
+                                typeComparer = GetIEquatableComparisonFunction();
+                            }
+                            else if (typeof(T).IsGenericType && typeof(T).GetGenericTypeDefinition() == typeof(Nullable<>))
+                            {
+                                typeComparer = GetNullableComparisonFunction();
+                            }
+                            else
+                            {
+                                typeComparer = GetFallbackComparisonFunction();
+                            }
+                            comparerRegistry[typeHandle] = typeComparer;
+                        }
 
-                    expressions.Add(Expression.Assign(memberExpression, Expression.Convert(valueParameter, memberExpression.Type)));
+                        return typeComparer;
+                    }
                 }
             }
 
-            expressions.Add(Expression.Label(returnTarget));
-
-            var lambdaBody = Expression.Block(variables, expressions);
-            var lambda     = Expression.Lambda<DataBindingSetter<T>>(lambdaBody, contextParameter, valueParameter).Compile();
-
-            return lambda;
-        }
-
-        /// <summary>
-        /// Parses the specified binding expression into its constituent components.
-        /// </summary>
-        /// <param name="expression">The binding expression to parse.</param>
-        /// <returns>The specified binding expression's constituent components.</returns>
-        private static String[] ParseBindingExpression(String expression)
-        {
-            if (!expression.StartsWith("{{") || !expression.EndsWith("}}"))
-                throw new ArgumentException(LayoutStrings.InvalidBindingExpression.Format(expression));
-
-            var code       = expression.Substring("{{".Length, expression.Length - "{{}}".Length);
-            var components = code.Split('.');
-
-            return components;
-        }
-
-        /// <summary>
-        /// Gets the comparison function for the current type.
-        /// </summary>
-        /// <returns>The comparison function for the current type.</returns>
-        private static Func<T, T, Boolean> GetComparisonFunction()
-        {
-            if (typeof(T).IsClass)
+            /// <summary>
+            /// Gets a fallback comparison function for value types which implement <see cref="IEquatable{T}"/>.
+            /// </summary>
+            /// <returns>The comparison function for the dependency property value's type.</returns>
+            private static Func<T, T, Boolean> GetIEquatableComparisonFunction()
             {
-                return referenceComparer;
-            }
-            else
-            {
-                lock (comparerRegistry)
+                return (o1, o2) =>
                 {
-                    var typeHandle   = typeof(T).TypeHandle.Value.ToInt64();
-                    var typeComparer = default(Func<T, T, Boolean>);
-
-                    if (!comparerRegistry.TryGetValue(typeHandle, out typeComparer))
-                    {
-                        if (typeof(T).GetInterfaces().Where(x => x == typeof(IEquatable<T>)).Any())
-                        {
-                            typeComparer = GetIEquatableComparisonFunction();
-                        }
-                        else if (typeof(T).IsGenericType && typeof(T).GetGenericTypeDefinition() == typeof(Nullable<>))
-                        {
-                            typeComparer = GetNullableComparisonFunction();
-                        }
-                        else
-                        {
-                            typeComparer = GetFallbackComparisonFunction();
-                        }
-                        comparerRegistry[typeHandle] = typeComparer;
-                    }
-
-                    return typeComparer;
-                }
+                    return ((IEquatable<T>)o1).Equals(o2);
+                };
             }
-        }
 
-        /// <summary>
-        /// Gets a fallback comparison function for value types which implement <see cref="IEquatable{T}"/>.
-        /// </summary>
-        /// <returns>The comparison function for the dependency property value's type.</returns>
-        private static Func<T, T, Boolean> GetIEquatableComparisonFunction()
-        {
-            return (o1, o2) =>
+            /// <summary>
+            /// Gets a comparison function for nullable value types.
+            /// </summary>
+            /// <returns>The comparison function for the dependency property value's type.</returns>
+            private static Func<T, T, Boolean> GetNullableComparisonFunction()
             {
-                return ((IEquatable<T>)o1).Equals(o2);
-            };
-        }
+                var nullableType = typeof(T).GetGenericArguments()[0];
+                var nullableEqualsMethod = typeof(Nullable).GetMethods()
+                    .Where(x => x.Name == "Equals" && x.IsGenericMethod)
+                    .Single().MakeGenericMethod(nullableType);
 
-        /// <summary>
-        /// Gets a comparison function for nullable value types.
-        /// </summary>
-        /// <returns>The comparison function for the dependency property value's type.</returns>
-        private static Func<T, T, Boolean> GetNullableComparisonFunction()
-        {
-            var nullableType = typeof(T).GetGenericArguments()[0];
-            var nullableEqualsMethod = typeof(Nullable).GetMethods()
-                .Where(x => x.Name == "Equals" && x.IsGenericMethod)
-                .Single().MakeGenericMethod(nullableType);
+                var arg1 = Expression.Parameter(typeof(T), "o1");
+                var arg2 = Expression.Parameter(typeof(T), "o2");
 
-            var arg1 = Expression.Parameter(typeof(T), "o1");
-            var arg2 = Expression.Parameter(typeof(T), "o2");
+                return Expression.Lambda<Func<T, T, Boolean>>(
+                    Expression.Call(nullableEqualsMethod, arg1, arg2), arg1, arg2).Compile();
+            }
 
-            return Expression.Lambda<Func<T, T, Boolean>>(
-                Expression.Call(nullableEqualsMethod, arg1, arg2), arg1, arg2).Compile();
-        }
-
-        /// <summary>
-        /// Gets a fallback comparison function for types which don't fit any optimizable category.
-        /// </summary>
-        /// <returns>The comparison function for the dependency property value's type.</returns>
-        private static Func<T, T, Boolean> GetFallbackComparisonFunction()
-        {
-            return (o1, o2) =>
+            /// <summary>
+            /// Gets a fallback comparison function for types which don't fit any optimizable category.
+            /// </summary>
+            /// <returns>The comparison function for the dependency property value's type.</returns>
+            private static Func<T, T, Boolean> GetFallbackComparisonFunction()
             {
-                return o1.Equals(o2);
-            };
+                return (o1, o2) =>
+                {
+                    return o1.Equals(o2);
+                };
+            }
+
+            // Property values.
+            private readonly DependencyObject owner;
+            private readonly DependencyProperty property;
+            private Boolean hasLocalValue;
+            private Boolean hasStyledValue;
+            private T localValue;
+            private T styledValue;
+            private T defaultValue;
+            private T previousValue;
+
+            // State values.
+            private Boolean bound;
+            private DataBindingGetter<T> dataBindingGetter;
+            private DataBindingSetter<T> dataBindingSetter;
+
+            // Comparison functions for various types.
+            private static readonly Dictionary<Int64, Func<T, T, Boolean>> comparerRegistry = new Dictionary<Int64, Func<T, T, Boolean>>();
+            private static readonly Func<T, T, Boolean> referenceComparer = (o1, o2) => { return (Object)o1 == (Object)o2; };
+            private Func<T, T, Boolean> comparer;
         }
-
-        // Property values.
-        private readonly DependencyObject owner;
-        private readonly DependencyProperty property;
-        private Boolean hasLocalValue;
-        private Boolean hasStyledValue;
-        private T localValue;
-        private T styledValue;
-        private T defaultValue;
-        private T previousValue;
-
-        // State values.
-        private Boolean bound;
-        private DataBindingGetter<T> dataBindingGetter;
-        private DataBindingSetter<T> dataBindingSetter;
-
-        // Comparison functions for various types.
-        private static readonly Dictionary<Int64, Func<T, T, Boolean>> comparerRegistry = new Dictionary<Int64, Func<T, T, Boolean>>();
-        private static readonly Func<T, T, Boolean> referenceComparer = (o1, o2) => { return (Object)o1 == (Object)o2; };
-        private Func<T, T, Boolean> comparer;
     }
 }

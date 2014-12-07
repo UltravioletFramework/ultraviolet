@@ -211,7 +211,7 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         /// <inheritdoc/>
         protected override Rectangle CalculateLayoutArea(UIElement child)
         {
-            if (Viewport == null)
+            if (View == null)
                 return Rectangle.Empty;
 
             var left   = GetLeft(child);
@@ -231,11 +231,11 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
 
             // If we have both left and right, calculate width
             if (left != null && right != null)
-                width = Viewport.Width - (left.GetValueOrDefault() + right.GetValueOrDefault());
+                width = View.Width - (left.GetValueOrDefault() + right.GetValueOrDefault());
 
             // If we have both top and bottom, calculate height
             if (top != null && bottom != null)
-                height = Viewport.Height - (top.GetValueOrDefault() + bottom.GetValueOrDefault());
+                height = View.Height - (top.GetValueOrDefault() + bottom.GetValueOrDefault());
 
             // If we have no width, assume 0
             if (width == null)
@@ -258,7 +258,7 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
             }
             else
             {
-                x = Viewport.Width - (right.GetValueOrDefault() + width.GetValueOrDefault());
+                x = View.Width - (right.GetValueOrDefault() + width.GetValueOrDefault());
             }
             if (top != null)
             {
@@ -266,7 +266,7 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
             }
             else
             {
-                y = Viewport.Height - (bottom.GetValueOrDefault() + height.GetValueOrDefault());
+                y = View.Height - (bottom.GetValueOrDefault() + height.GetValueOrDefault());
             }
             return new Rectangle(x, y, width.GetValueOrDefault(), height.GetValueOrDefault());
         }

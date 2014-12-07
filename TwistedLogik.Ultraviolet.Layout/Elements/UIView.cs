@@ -9,56 +9,52 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
     /// <summary>
     /// Represents the top-level container for UI elements.
     /// </summary>
-    public sealed class UIViewport
+    public sealed class UIView
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="UIViewport"/> class.
+        /// Initializes a new instance of the <see cref="UIView"/> class.
         /// </summary>
-        /// <param name="modelType">The viewport's associated model type.</param>
+        /// <param name="viewModelType">The view's associated model type.</param>
         /// <param name="uv">The Ultraviolet context.</param>
-        /// <param name="screenArea">The viewport's initial area on the screen.</param>
-        public UIViewport(Type modelType, UltravioletContext uv, Rectangle screenArea)
+        /// <param name="screenArea">The view's initial area on the screen.</param>
+        public UIView(Type viewModelType, UltravioletContext uv)
         {
-            this.viewModelType = modelType;
+            this.viewModelType = viewModelType;
 
             this.canvas = new Canvas(uv, null);
-            this.canvas.UpdateViewport(this);
-
-            this.ScreenArea = screenArea;
+            this.canvas.UpdateView(this);
         }
 
         /// <summary>
-        /// Loads an instance of <see cref="UIViewport"/> from an XML document.
+        /// Loads an instance of <see cref="UIView"/> from an XML document.
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
-        /// <param name="xml">The <see cref="XDocument"/> from which to load the viewport.</param>
-        /// <param name="screenArea">The viewport's initial area on the screen.</param>
-        /// <returns>The <see cref="UIViewport"/> that was loaded from the specified XML document.</returns>
-        public static UIViewport Load(UltravioletContext uv, XDocument xml, Rectangle screenArea)
+        /// <param name="xml">The <see cref="XDocument"/> from which to load the view.</param>
+        /// <returns>The <see cref="UIView"/> that was loaded from the specified XML document.</returns>
+        public static UIView Load(UltravioletContext uv, XDocument xml)
         {
             Contract.Require(uv, "uv");
             Contract.Require(xml, "xml");
 
-            return UIViewportLoader.Load(uv, xml.Root, screenArea);
+            return UIViewLoader.Load(uv, xml.Root);
         }
 
         /// <summary>
-        /// Loads an instance of the <see cref="UIViewport"/> from an XML node.
+        /// Loads an instance of the <see cref="UIView"/> from an XML node.
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
-        /// <param name="xml">The <see cref="XElement"/> from which to load the viewport.</param>
-        /// <param name="screenArea">The viewport's initial area on the screen.</param>
-        /// <returns>The <see cref="UIViewport"/> that was loaded from the specified XML element.</returns>
-        public static UIViewport Load(UltravioletContext uv, XElement xml, Rectangle screenArea)
+        /// <param name="xml">The <see cref="XElement"/> from which to load the view.</param>
+        /// <returns>The <see cref="UIView"/> that was loaded from the specified XML element.</returns>
+        public static UIView Load(UltravioletContext uv, XElement xml)
         {
             Contract.Require(uv, "uv");
             Contract.Require(xml, "xml");
 
-            return UIViewportLoader.Load(uv, xml, screenArea);
+            return UIViewLoader.Load(uv, xml);
         }
 
         /// <summary>
-        /// Updates the viewport's state and the state of its contained elements.
+        /// Updates the view's state and the state of its contained elements.
         /// </summary>
         /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Draw(UltravioletTime)"/>.</param>
         public void Update(UltravioletTime time)
@@ -80,9 +76,9 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         }
 
         /// <summary>
-        /// Sets the viewport's stylesheet.
+        /// Sets the view's stylesheet.
         /// </summary>
-        /// <param name="stylesheet">The viewport's stylesheet.</param>
+        /// <param name="stylesheet">The view's stylesheet.</param>
         public void SetStylesheet(UvssDocument stylesheet)
         {
             this.stylesheet = stylesheet;
@@ -98,9 +94,9 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         }
 
         /// <summary>
-        /// Sets the viewport's associated view model.
+        /// Sets the view's associated view model.
         /// </summary>
-        /// <param name="viewModel">The viewport's associated view model.</param>
+        /// <param name="viewModel">The view's associated view model.</param>
         public void SetViewModel(Object viewModel)
         {
             if (viewModel != null && viewModel.GetType() != viewModelType)
@@ -110,6 +106,35 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
 
             this.viewModel = viewModel;
             Canvas.UpdateViewModel(viewModel);
+        }
+
+        /// <summary>
+        /// Sets the view's area on the screen.
+        /// </summary>
+        /// <param name="area">The area on the screen that is occupied by the view.</param>
+        public void SetViewArea(Rectangle area)
+        {
+            if (!this.viewArea.Equals(area))
+            {
+                this.viewArea = area;
+                Canvas.PerformLayout();
+            }
+        }
+
+        /// <summary>
+        /// Requests that a layout be performed during the next call to <see cref="UIElement.Update(UltravioletTime)"/>.
+        /// </summary>
+        public void RequestLayout()
+        {
+            Canvas.RequestLayout();
+        }
+
+        /// <summary>
+        /// Immediately recalculates the layout of the container and all of its children.
+        /// </summary>
+        public void PerformLayout()
+        {
+            Canvas.PerformLayout();
         }
 
         /// <summary>
@@ -150,7 +175,7 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         }
 
         /// <summary>
-        /// Gets the stylesheet that is currently applied to this viewport.
+        /// Gets the stylesheet that is currently applied to this view.
         /// </summary>
         public UvssDocument Stylesheet
         {
@@ -158,7 +183,7 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         }
 
         /// <summary>
-        /// Gets the viewport's view model.
+        /// Gets the view's view model.
         /// </summary>
         public Object ViewModel
         {
@@ -166,16 +191,16 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         }
 
         /// <summary>
-        /// Gets or sets the area on the screen that the UI viewport occupies.
+        /// Gets or sets the area on the screen that the UI view occupies.
         /// </summary>
-        public Rectangle ScreenArea
+        public Rectangle Area
         {
-            get { return screenArea; }
+            get { return viewArea; }
             set
             {
-                if (!screenArea.Equals(value))
+                if (!viewArea.Equals(value))
                 {
-                    screenArea = value;
+                    viewArea = value;
                     Canvas.ContainerRelativeLayout = new Rectangle(0, 0, value.Width, value.Height);
                     Canvas.PerformLayout();
                 }
@@ -183,35 +208,35 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         }
 
         /// <summary>
-        /// Gets the x-coordinate of the viewport's top left corner.
+        /// Gets the x-coordinate of the view's top left corner.
         /// </summary>
         public Int32 X
         {
-            get { return screenArea.X; }
+            get { return viewArea.X; }
         }
 
         /// <summary>
-        /// Gets the y-coordinate of the viewport's top left corner.
+        /// Gets the y-coordinate of the view's top left corner.
         /// </summary>
         public Int32 Y
         {
-            get { return screenArea.Y; }
+            get { return viewArea.Y; }
         }
 
         /// <summary>
-        /// Gets the viewport's width on the screen.
+        /// Gets the view's width on the screen.
         /// </summary>
         public Int32 Width
         {
-            get { return screenArea.Width; }
+            get { return viewArea.Width; }
         }
 
         /// <summary>
-        /// Gets the viewport's height on the screen.
+        /// Gets the view's height on the screen.
         /// </summary>
         public Int32 Height
         {
-            get { return screenArea.Height; }
+            get { return viewArea.Height; }
         }
 
         /// <summary>
@@ -227,7 +252,7 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         private ContentManager localContent;
         private UvssDocument stylesheet;
         private Object viewModel;
-        private Rectangle screenArea;
+        private Rectangle viewArea;
         private Canvas canvas;
 
         private readonly Type viewModelType;

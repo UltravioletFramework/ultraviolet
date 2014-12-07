@@ -57,7 +57,6 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
 
         /// <summary>
         /// Immediately recalculates the layout of the container and all of its children.
-        /// If layout is currently suspended, this operation is deferred until layout is resumed.
         /// </summary>
         public void PerformLayout()
         {
@@ -167,13 +166,13 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         }
 
         /// <inheritdoc/>
-        internal override void UpdateViewport(UIViewport viewport)
+        internal override void UpdateView(UIView view)
         {
-            base.UpdateViewport(viewport);
+            base.UpdateView(view);
 
             foreach (var child in children)
             {
-                child.UpdateViewport(viewport);
+                child.UpdateView(view);
             }
         }
 

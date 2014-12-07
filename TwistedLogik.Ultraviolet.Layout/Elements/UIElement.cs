@@ -112,17 +112,17 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         }
 
         /// <summary>
-        /// Gets the <see cref="UIViewport"/> that is the top-level container for this element.
+        /// Gets the <see cref="UIView"/> that is the top-level container for this element.
         /// </summary>
-        public UIViewport Viewport
+        public UIView View
         {
-            get { return viewport; }
+            get { return view; }
         }
 
         /// <summary>
         /// Gets the <see cref="UIContainer"/> that contains this element.
         /// </summary>
-        public new UIContainer Container
+        public UIContainer Container
         {
             get { return container; }
         }
@@ -230,10 +230,26 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         /// <returns>The asset that was loaded.</returns>
         protected TOutput LoadContent<TOutput>(SourcedAssetID asset)
         {
-            if (Viewport == null)
+            if (View == null)
                 return default(TOutput);
 
-            return Viewport.LoadContent<TOutput>(asset);
+            return View.LoadContent<TOutput>(asset);
+        }
+
+        /// <summary>
+        /// Gets the dependency object's containing object.
+        /// </summary>
+        protected sealed override DependencyObject DependencyContainer
+        {
+            get { return Container; }
+        }
+
+        /// <summary>
+        /// Gets or sets the data source from which the object's dependency properties will retrieve values if they are data bound.
+        /// </summary>
+        protected sealed override Object DependencyDataSource
+        {
+            get { return ViewModel; }
         }
 
         /// <summary>
@@ -270,27 +286,26 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         /// <param name="viewModel">The view model to associate with this element.</param>
         internal virtual void UpdateViewModel(Object viewModel)
         {
-            this.viewModel  = viewModel;
-            this.DataSource = viewModel;
+            this.viewModel = viewModel;
         }
 
         /// <summary>
-        /// Updates the viewport associated with this element.
+        /// Updates the view associated with this element.
         /// </summary>
-        /// <param name="viewport">The viewport to associate with this element.</param>
-        internal virtual void UpdateViewport(UIViewport viewport)
+        /// <param name="view">The view to associate with this element.</param>
+        internal virtual void UpdateView(UIView view)
         {
-            this.viewport = viewport;
-            if (viewport == null || viewport.Stylesheet == null)
+            this.view = view;
+            if (view == null || view.Stylesheet == null)
             {
                 ClearStyledValues();
             }
             else
             {
-                viewport.Stylesheet.ApplyStylesRecursively(this);
+                view.Stylesheet.ApplyStylesRecursively(this);
             }
 
-            UpdateViewModel(viewport == null ? null : viewport.ViewModel);
+            UpdateViewModel(view == null ? null : view.ViewModel);
 
             ReloadContent();
         }
@@ -302,12 +317,11 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         internal virtual void UpdateContainer(UIContainer container)
         {
             this.container = container;
-            base.Container = container; // DependencyObject
 
-            var viewport = (container == null) ? null : container.Viewport;
-            if (viewport != this.viewport)
+            var view = (container == null) ? null : container.View;
+            if (view != this.view)
             {
-                UpdateViewport(viewport);
+                UpdateView(view);
             }
         }
 
@@ -412,7 +426,7 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         private readonly String id;
         private readonly String name;
         private Object viewModel;
-        private UIViewport viewport;
+        private UIView view;
         private UIContainer container;
         private Int32 containerRelativeX;
         private Int32 containerRelativeY;
