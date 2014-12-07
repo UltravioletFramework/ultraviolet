@@ -60,11 +60,13 @@
     <Compile Include="Elements\Canvas.cs" />
     <Compile Include="Elements\Label.cs" />
     <Compile Include="Elements\Button.cs" />
-    <Compile Include="Elements\SourcedAssetID.cs" />
+    <Compile Include="Elements\SourcedRef.cs" />
+    <Compile Include="Elements\Sourced.cs" />
     <Compile Include="Elements\UIContainer.cs" />
     <Compile Include="Elements\UIElement.cs" />
     <Compile Include="Elements\UIElementAttribute.cs" />
     <Compile Include="Elements\UIElementCollection.cs" />
+    <Compile Include="Elements\UIElementResources.cs" />
     <Compile Include="Elements\UIView.cs" />
     <Compile Include="Elements\UIViewLoader.cs" />
     <Compile Include="Elements\UIViewLoader.UIElementMetadata.cs" />

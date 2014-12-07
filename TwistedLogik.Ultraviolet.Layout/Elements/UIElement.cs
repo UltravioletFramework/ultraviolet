@@ -6,11 +6,18 @@ using System.Linq.Expressions;
 using System.Reflection;
 using TwistedLogik.Nucleus;
 using TwistedLogik.Nucleus.Data;
+using TwistedLogik.Ultraviolet.Content;
 using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
 using TwistedLogik.Ultraviolet.Layout.Stylesheets;
 
 namespace TwistedLogik.Ultraviolet.Layout.Elements
 {
+    /// <summary>
+    /// Represments the method that is called when a UI element raises an event.
+    /// </summary>
+    /// <param name="element">The element that raised the event.</param>
+    public delegate void UIElementEventHandler(UIElement element);
+
     /// <summary>
     /// Represents the method that is called when a UI element is drawn.
     /// </summary>
@@ -83,6 +90,9 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         /// </summary>
         public void ReloadContent()
         {
+            ReloadFont();
+            ReloadBackgroundImage();
+
             OnReloadingContent();
         }
 
@@ -162,6 +172,50 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         }
 
         /// <summary>
+        /// Gets or sets the element's font color.
+        /// </summary>
+        public Color FontColor
+        {
+            get { return GetValue<Color>(dpFontColor); }
+            set { SetValue<Color>(dpFontColor, value); }
+        }
+
+        /// <summary>
+        /// Gets the asset identifier of the element's font.
+        /// </summary>
+        public Sourced<AssetID> FontAssetID
+        {
+            get { return GetValue<Sourced<AssetID>>(dpFontAssetID); }
+            set { SetValue<Sourced<AssetID>>(dpFontAssetID, value); }
+        }
+
+        /// <summary>
+        /// Gets the element's font.
+        /// </summary>
+        public SpriteFont Font
+        {
+            get { return font; }
+        }
+
+        /// <summary>
+        /// Gets or sets the element's background color.
+        /// </summary>
+        public Color BackgroundColor
+        {
+            get { return GetValue<Color>(dpBackgroundColor); }
+            set { SetValue<Color>(dpBackgroundColor, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets the element's background image.
+        /// </summary>
+        public SourcedRef<StretchableImage9> BackgroundImage
+        {
+            get { return GetValue<SourcedRef<StretchableImage9>>(dpBackgroundImage); }
+            set { SetValue<SourcedRef<StretchableImage9>>(dpBackgroundImage, value); }
+        }
+
+        /// <summary>
         /// Occurs when the element is being drawn.
         /// </summary>
         public event UIElementDrawingEventHandler Drawing;
@@ -170,6 +224,26 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         /// Occurs when the element is being updated.
         /// </summary>
         public event UIElementUpdatingEventHandler Updating;
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="FontColor"/> property changes.
+        /// </summary>
+        public event UIElementEventHandler FontColorChanged;
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="FontAssetID"/> property changes.
+        /// </summary>
+        public event UIElementEventHandler FontAssetIDChanged;
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="BackgroundColor"/> property changes.
+        /// </summary>
+        public event UIElementEventHandler BackgroundColorChanged;
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="BackgroundImage"/> property changes.
+        /// </summary>
+        public event UIElementEventHandler BackgroundImageChanged;
 
         /// <summary>
         /// Gets the element's area relative to its container after layout has been performed.
@@ -183,6 +257,7 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
                 containerRelativeY = value.Y;
                 calculatedWidth = value.Width;
                 calculatedHeight = value.Height;
+                OnContainerRelativeLayoutChanged();
             }
         }
 
@@ -283,17 +358,128 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         }
 
         /// <summary>
+        /// Called when the element's container-relative layout changes.
+        /// </summary>
+        protected virtual void OnContainerRelativeLayoutChanged()
+        {
+
+        }
+
+        /// <summary>
+        /// Raises the <see cref="FontColorChanged"/> event.
+        /// </summary>
+        protected virtual void OnFontColorChanged()
+        {
+            var temp = FontColorChanged;
+            if (temp != null)
+            {
+                temp(this);
+            }
+        }
+
+        /// <summary>
+        /// Raises the <see cref="FontAssetIDChanged"/> event.
+        /// </summary>
+        protected virtual void OnFontAssetIDChanged()
+        {
+            var temp = FontAssetIDChanged;
+            if (temp != null)
+            {
+                temp(this);
+            }
+        }
+
+        /// <summary>
+        /// Raises the <see cref="BackgroundColorChanged"/> event.
+        /// </summary>
+        protected virtual void OnBackgroundColorChanged()
+        {
+            var temp = BackgroundColorChanged;
+            if (temp != null)
+            {
+                temp(this);
+            }
+        }
+
+        /// <summary>
+        /// Raises the <see cref="BackgroundImageChanged"/> event.
+        /// </summary>
+        protected virtual void OnBackgroundImageChanged()
+        {
+            var temp = BackgroundImageChanged;
+            if (temp != null)
+            {
+                temp(this);
+            }
+        }
+
+        /// <summary>
         /// Loads the specified sourced asset.
         /// </summary>
         /// <typeparam name="TOutput">The type of object being loaded.</typeparam>
         /// <param name="asset">The identifier of the asset to load.</param>
         /// <returns>The asset that was loaded.</returns>
-        protected TOutput LoadContent<TOutput>(SourcedAssetID asset)
+        protected TOutput LoadContent<TOutput>(Sourced<AssetID> asset)
         {
             if (View == null)
                 return default(TOutput);
 
             return View.LoadContent<TOutput>(asset);
+        }
+
+        /// <summary>
+        /// Loads the specified sourced image.
+        /// </summary>
+        /// <param name="image">The identifier of the image to load.</param>
+        protected void LoadContent(SourcedRef<StretchableImage9> image)
+        {
+            if (View == null)
+                return;
+
+            View.LoadContent(image);
+        }
+
+        /// <summary>
+        /// Reloads the element's font.
+        /// </summary>
+        protected void ReloadFont()
+        {
+            this.font = LoadContent<SpriteFont>(FontAssetID);
+        }
+
+        /// <summary>
+        /// Reloads the element's background image.
+        /// </summary>
+        protected void ReloadBackgroundImage()
+        {
+            LoadContent(BackgroundImage);
+        }
+
+        /// <summary>
+        /// Draws the element's background image.
+        /// </summary>
+        /// <param name="spriteBatch">The sprite batch with which to draw.</param>
+        protected void DrawBackgroundImage(SpriteBatch spriteBatch)
+        {
+            var img = BackgroundImage.Value;
+            if (img == null || !img.IsLoaded)
+            {
+                if (!BackgroundColor.Equals(Color.Transparent))
+                {
+                    var area = new RectangleF(AbsoluteScreenX, AbsoluteScreenY, CalculatedWidth, CalculatedHeight);
+                    spriteBatch.Draw(UIElementResources.BlankTexture, area, BackgroundColor);
+                }
+            }
+            else
+            {
+                var effects  = SpriteEffects.None;
+                var origin   = new Vector2(CalculatedWidth / 2f, CalculatedHeight / 2f);
+                var position = new Vector2(
+                    AbsoluteScreenX + (CalculatedWidth / 2f),
+                    AbsoluteScreenY + (CalculatedHeight / 2f));
+
+                spriteBatch.DrawImage(img, position, CalculatedWidth, CalculatedHeight, BackgroundColor, 0f, origin, effects, 0f);
+            }
         }
 
         /// <summary>
@@ -414,6 +600,39 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         }
 
         /// <summary>
+        /// Gets the style setter for the style with the specified name.
+        /// </summary>
+        /// <param name="name">The name of the style for which to retrieve a setter.</param>
+        /// <param name="pseudoClass">The pseudo-class of the style for which to retrieve a setter.</param>
+        /// <returns>A function to set the value of the specified style.</returns>
+        private StyleSetter GetStyleSetter(String name, String pseudoClass)
+        {
+            var currentType = GetType();
+
+            lock (styleSetters)
+            {
+                while (currentType != null && typeof(UIElement).IsAssignableFrom(currentType))
+                {
+                    var typeID = currentType.TypeHandle.Value.ToInt64();
+
+                    Dictionary<UvssStyleKey, StyleSetter> styleSettersForCurrentType;
+                    if (styleSetters.TryGetValue(typeID, out styleSettersForCurrentType))
+                    {
+                        StyleSetter setter;
+                        if (styleSettersForCurrentType.TryGetValue(new UvssStyleKey(name, pseudoClass), out setter))
+                        {
+                            return setter;
+                        }
+                    }
+
+                    currentType = currentType.BaseType;
+                }
+            }
+
+            return null;
+        }
+
+        /// <summary>
         /// Dynamically compiles a collection of lambda methods which can be used to apply styles
         /// to the element's properties.
         /// </summary>
@@ -470,44 +689,68 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         }
 
         /// <summary>
-        /// Gets the style setter for the style with the specified name.
+        /// Occurs when the value of the <see cref="FontColor"/> dependency property changes.
         /// </summary>
-        /// <param name="name">The name of the style for which to retrieve a setter.</param>
-        /// <param name="pseudoClass">The pseudo-class of the style for which to retrieve a setter.</param>
-        /// <returns>A function to set the value of the specified style.</returns>
-        private StyleSetter GetStyleSetter(String name, String pseudoClass)
+        /// <param name="dobj">The object that raised the event.</param>
+        private static void HandleFontColorChanged(DependencyObject dobj)
         {
-            var currentType = GetType();
+            var element = (UIElement)dobj;
+            element.OnFontColorChanged();
+        }
 
-            lock (styleSetters)
-            {
-                while (currentType != null && typeof(UIElement).IsAssignableFrom(currentType))
-                {
-                    var typeID = currentType.TypeHandle.Value.ToInt64();
+        /// <summary>
+        /// Occurs when the value of the <see cref="FontAssetID"/> dependency property changes.
+        /// </summary>
+        /// <param name="dobj">The object that raised the event.</param>
+        private static void HandleFontAssetIDChanged(DependencyObject dobj)
+        {
+            var element = (UIElement)dobj;
+            element.ReloadFont();
+            element.OnFontAssetIDChanged();
+        }
 
-                    Dictionary<UvssStyleKey, StyleSetter> styleSettersForCurrentType;
-                    if (styleSetters.TryGetValue(typeID, out styleSettersForCurrentType))
-                    {
-                        StyleSetter setter;
-                        if (styleSettersForCurrentType.TryGetValue(new UvssStyleKey(name, pseudoClass), out setter))
-                        {
-                            return setter;
-                        }
-                    }
+        /// <summary>
+        /// Occurs when the value of the <see cref="BackgroundColor"/> dependency property changes.
+        /// </summary>
+        /// <param name="dobj">The object that raised the event.</param>
+        private static void HandleBackgroundColorChanged(DependencyObject dobj)
+        {
+            var element = (UIElement)dobj;
+            element.OnBackgroundColorChanged();
+        }
 
-                    currentType = currentType.BaseType;
-                }
-            }
-
-            return null;
+        /// <summary>
+        /// Occurs when the value of the <see cref="BackgroundImage"/> dependency property changes.
+        /// </summary>
+        /// <param name="dobj">The object that raised the event.</param>
+        private static void HandleBackgroundImageChanged(DependencyObject dobj)
+        {
+            var element = (UIElement)dobj;
+            element.ReloadBackgroundImage();
+            element.OnBackgroundImageChanged();
         }
 
         // Dependency properties.
         private static readonly DependencyProperty dpIsEnabled = DependencyProperty.Register("IsEnabled", typeof(Boolean), typeof(UIElement),
             new DependencyPropertyMetadata(null, () => true, DependencyPropertyOptions.None));
+
         [Styled("visible")]
         private static readonly DependencyProperty dpIsVisible = DependencyProperty.Register("IsVisible", typeof(Boolean), typeof(UIElement),
             new DependencyPropertyMetadata(null, () => true, DependencyPropertyOptions.None));
+
+        [Styled("font-color")]
+        private static readonly DependencyProperty dpFontColor = DependencyProperty.Register("FontColor", typeof(Color), typeof(UIElement),
+            new DependencyPropertyMetadata(HandleFontColorChanged, () => Color.White, DependencyPropertyOptions.Inherited));
+        [Styled("font-asset")]
+        private static readonly DependencyProperty dpFontAssetID = DependencyProperty.Register("FontAssetID", typeof(Sourced<AssetID>), typeof(UIElement),
+            new DependencyPropertyMetadata(HandleFontAssetIDChanged, null, DependencyPropertyOptions.Inherited));
+
+        [Styled("background-color")]
+        private static readonly DependencyProperty dpBackgroundColor = DependencyProperty.Register("BackgroundColor", typeof(Color), typeof(UIElement),
+            new DependencyPropertyMetadata(HandleBackgroundColorChanged, () => Color.White, DependencyPropertyOptions.None));
+        [Styled("background-image")]
+        private static readonly DependencyProperty dpBackgroundImage = DependencyProperty.Register("BackgroundImage", typeof(SourcedRef<StretchableImage9>), typeof(UIElement),
+            new DependencyPropertyMetadata(HandleBackgroundImageChanged, null, DependencyPropertyOptions.None));
 
         // Property values.
         private readonly UltravioletContext uv;
@@ -520,6 +763,7 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         private Int32 containerRelativeY;
         private Int32 calculatedWidth;
         private Int32 calculatedHeight;
+        private SpriteFont font;
 
         // Functions for setting styles on known element types.
         private static readonly MethodInfo miFromString;

@@ -81,7 +81,7 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         }
 
         /// <inheritdoc/>
-        List<UIElement>.Enumerator GetEnumerator()
+        public List<UIElement>.Enumerator GetEnumerator()
         {
             return elements.GetEnumerator();
         }

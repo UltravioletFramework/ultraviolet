@@ -2,9 +2,9 @@
 using System.Xml.Linq;
 using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet.Content;
+using TwistedLogik.Ultraviolet.Graphics;
 using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
 using TwistedLogik.Ultraviolet.Layout.Stylesheets;
-using TwistedLogik.Ultraviolet.Graphics;
 
 namespace TwistedLogik.Ultraviolet.Layout.Elements
 {
@@ -143,6 +143,9 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
 
             this.viewArea = area;
 
+            Canvas.CalculatedWidth  = area.Width;
+            Canvas.CalculatedHeight = area.Height;
+
             if (newSize)
             {
                 Canvas.PerformLayout();
@@ -150,7 +153,7 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
 
             if (newSize || newPosition)
             {
-
+                Canvas.UpdateAbsoluteScreenPosition(area.X, area.Y);
             }
         }
 
@@ -176,15 +179,48 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         /// <typeparam name="TOutput">The type of object being loaded.</typeparam>
         /// <param name="asset">The identifier of the asset to load.</param>
         /// <returns>The asset that was loaded.</returns>
-        public TOutput LoadContent<TOutput>(SourcedAssetID asset)
+        public TOutput LoadContent<TOutput>(Sourced<AssetID> asset)
         {
-            switch (asset.AssetSource)
+            if (!asset.Value.IsValid)
+                return default(TOutput);
+
+            switch (asset.Source)
             {
                 case AssetSource.Global:
-                    return (globalContent == null) ? default(TOutput) : globalContent.Load<TOutput>(asset.AssetID);
+                    return (globalContent == null) ? default(TOutput) : globalContent.Load<TOutput>(asset.Value);
                 
                 case AssetSource.Local:
-                    return (localContent == null) ? default(TOutput) : localContent.Load<TOutput>(asset.AssetID);
+                    return (localContent == null) ? default(TOutput) : localContent.Load<TOutput>(asset.Value);
+
+                default:
+                    throw new NotSupportedException();
+            }
+        }
+
+        /// <summary>
+        /// Loads the specified sourced image.
+        /// </summary>
+        /// <param name="image">The identifier of the image to load.</param>
+        public void LoadContent(SourcedRef<StretchableImage9> image)
+        {
+            if (image.Value == null)
+                return;
+
+            switch (image.Source)
+            {
+                case AssetSource.Global:
+                    if (globalContent != null)
+                    {
+                        image.Value.Load(globalContent);
+                    }
+                    break;
+
+                case AssetSource.Local:
+                    if (localContent != null)
+                    {
+                        image.Value.Load(localContent);
+                    }
+                    break;
 
                 default:
                     throw new NotSupportedException();

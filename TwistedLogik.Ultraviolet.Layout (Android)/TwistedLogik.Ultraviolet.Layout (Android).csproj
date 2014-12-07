@@ -71,8 +71,11 @@
     <Compile Include="..\TwistedLogik.Ultraviolet.Layout\Elements\Label.cs">
       <Link>Elements\Label.cs</Link>
     </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet.Layout\Elements\SourcedAssetID.cs">
-      <Link>Elements\SourcedAssetID.cs</Link>
+    <Compile Include="..\TwistedLogik.Ultraviolet.Layout\Elements\Sourced.cs">
+      <Link>Elements\Sourced.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.Layout\Elements\SourcedRef.cs">
+      <Link>Elements\SourcedRef.cs</Link>
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.Layout\Elements\UIContainer.cs">
       <Link>Elements\UIContainer.cs</Link>
@@ -85,6 +88,9 @@
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.Layout\Elements\UIElementCollection.cs">
       <Link>Elements\UIElementCollection.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.Layout\Elements\UIElementResources.cs">
+      <Link>Elements\UIElementResources.cs</Link>
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.Layout\Elements\UIView.cs">
       <Link>Elements\UIView.cs</Link>
@@ -174,7 +180,7 @@
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties ProjectLinkReference="71aaed78-c276-4018-a4b5-a97c4fbc1afb" ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" />
+      <UserProperties ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" ProjectLinkReference="71aaed78-c276-4018-a4b5-a97c4fbc1afb" />
     </VisualStudio>
   </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

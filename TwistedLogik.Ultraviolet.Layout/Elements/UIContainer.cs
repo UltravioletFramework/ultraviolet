@@ -138,11 +138,17 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         /// <inheritdoc/>
         internal override void Draw(UltravioletTime time, SpriteBatch spriteBatch)
         {
+            if (!IsVisible)
+                return;
+
             base.Draw(time, spriteBatch);
 
             foreach (var child in children)
             {
-                child.Draw(time, spriteBatch);
+                if (child.IsVisible)
+                {
+                    child.Draw(time, spriteBatch);
+                }
             }
         }
 

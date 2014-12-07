@@ -14,9 +14,9 @@ namespace TwistedLogik.Ultraviolet.Layout
         /// </summary>
         public void Digest()
         {
-            foreach (var kvp in dependencyPropertyValues)
+            for (int i = 0; i < dependencyPropertyValuesList.Count; i++)
             {
-                kvp.Value.Digest();
+                dependencyPropertyValuesList[i].Digest();
             }
         }
 
@@ -108,6 +108,23 @@ namespace TwistedLogik.Ultraviolet.Layout
 
             var wrapper = GetDependencyPropertyValue<T>(dp);
             wrapper.SetValue(value);
+        }
+
+        /// <summary>
+        /// Sets the default value of the specified dependency property.
+        /// </summary>
+        /// <typeparam name="T">The type of value contained by the dependency property.</typeparam>
+        /// <param name="dp">A <see cref="DependencyProperty"/> instance which identifies the dependency property for which to set a value.</param>
+        /// <param name="value">The value to set on the specified dependency property.</param>
+        public void SetDefaultValue<T>(DependencyProperty dp, T value)
+        {
+            Contract.Require(dp, "dp");
+
+            if (!typeof(T).TypeHandle.Equals(dp.PropertyType))
+                throw new InvalidCastException();
+
+            var wrapper = GetDependencyPropertyValue<T>(dp);
+            wrapper.DefaultValue = value;
         }
 
         /// <summary>
@@ -206,11 +223,14 @@ namespace TwistedLogik.Ultraviolet.Layout
                     wrapper.DefaultValue = (T)dp.Metadata.DefaultCallback();
                 }
                 dependencyPropertyValues[dp.ID] = wrapper;
+                dependencyPropertyValuesList.Add(wrapper);
             }
             return wrapper;
         }
 
         // State values.
+        private readonly List<IDependencyPropertyValue> dependencyPropertyValuesList =
+            new List<IDependencyPropertyValue>();
         private readonly Dictionary<Int64, IDependencyPropertyValue> dependencyPropertyValues =
             new Dictionary<Int64, IDependencyPropertyValue>();
     }

@@ -124,7 +124,7 @@ namespace TwistedLogik.Ultraviolet.Layout.Stylesheets
                         if (existingStyleData.Priority > stylePriority)
                             continue;
                     }
-                    styleAggregator[styleKey] = new PrioritizedStyleData(style.Container, style.Name, style.Value, stylePriority);
+                    styleAggregator[styleKey] = new PrioritizedStyleData(style.Container, style.Name, style.Value.Trim(), stylePriority);
                 }
             }
 

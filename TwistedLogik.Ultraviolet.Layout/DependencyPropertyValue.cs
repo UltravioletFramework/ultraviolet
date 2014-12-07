@@ -368,6 +368,10 @@ namespace TwistedLogik.Ultraviolet.Layout
                             {
                                 typeComparer = GetNullableComparisonFunction();
                             }
+                            else if (typeof(T).IsEnum)
+                            {
+                                typeComparer = GetEnumComparisonFunction();
+                            }
                             else
                             {
                                 typeComparer = GetFallbackComparisonFunction();
@@ -386,10 +390,13 @@ namespace TwistedLogik.Ultraviolet.Layout
             /// <returns>The comparison function for the dependency property value's type.</returns>
             private static Func<T, T, Boolean> GetIEquatableComparisonFunction()
             {
-                return (o1, o2) =>
-                {
-                    return ((IEquatable<T>)o1).Equals(o2);
-                };
+                var equalsMethod = typeof(T).GetMethod("Equals", new[] { typeof(T) });
+
+                var arg1 = Expression.Parameter(typeof(T), "o1");
+                var arg2 = Expression.Parameter(typeof(T), "o2");
+
+                return Expression.Lambda<Func<T, T, Boolean>>(
+                    Expression.Call(arg1, equalsMethod, arg2), arg1, arg2).Compile();
             }
 
             /// <summary>
@@ -408,6 +415,19 @@ namespace TwistedLogik.Ultraviolet.Layout
 
                 return Expression.Lambda<Func<T, T, Boolean>>(
                     Expression.Call(nullableEqualsMethod, arg1, arg2), arg1, arg2).Compile();
+            }
+
+            /// <summary>
+            /// Gets a comparison function for enumeration types.
+            /// </summary>
+            /// <returns>The comparison function for the dependency property value's type.</returns>
+            private static Func<T, T, Boolean> GetEnumComparisonFunction()
+            {
+                var arg1 = Expression.Parameter(typeof(T), "o1");
+                var arg2 = Expression.Parameter(typeof(T), "o2");
+                var body = Expression.Equal(arg1, arg2);
+
+                return Expression.Lambda<Func<T, T, Boolean>>(body, arg1, arg2).Compile();
             }
 
             /// <summary>

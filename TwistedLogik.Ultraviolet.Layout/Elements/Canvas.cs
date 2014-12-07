@@ -1,5 +1,6 @@
 ﻿using System;
 using TwistedLogik.Nucleus;
+using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
 using TwistedLogik.Ultraviolet.Layout.Stylesheets;
 
 namespace TwistedLogik.Ultraviolet.Layout.Elements
@@ -19,7 +20,8 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         public Canvas(UltravioletContext uv, String id)
             : base(uv, id)
         {
-
+            var dpBackgroundColor = DependencyProperty.FindByName("BackgroundColor", typeof(UIElement));
+            SetDefaultValue<Color>(dpBackgroundColor, Color.Transparent);
         }
 
         /// <summary>
@@ -231,11 +233,11 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
 
             // If we have both left and right, calculate width
             if (left != null && right != null)
-                width = View.Width - (left.GetValueOrDefault() + right.GetValueOrDefault());
+                width = CalculatedWidth - (left.GetValueOrDefault() + right.GetValueOrDefault());
 
             // If we have both top and bottom, calculate height
             if (top != null && bottom != null)
-                height = View.Height - (top.GetValueOrDefault() + bottom.GetValueOrDefault());
+                height = CalculatedHeight - (top.GetValueOrDefault() + bottom.GetValueOrDefault());
 
             // If we have no width, assume 0
             if (width == null)
@@ -258,7 +260,7 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
             }
             else
             {
-                x = View.Width - (right.GetValueOrDefault() + width.GetValueOrDefault());
+                x = CalculatedWidth - (right.GetValueOrDefault() + width.GetValueOrDefault());
             }
             if (top != null)
             {
@@ -266,9 +268,16 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
             }
             else
             {
-                y = View.Height - (bottom.GetValueOrDefault() + height.GetValueOrDefault());
+                y = CalculatedHeight - (bottom.GetValueOrDefault() + height.GetValueOrDefault());
             }
             return new Rectangle(x, y, width.GetValueOrDefault(), height.GetValueOrDefault());
+        }
+
+        /// <inheritdoc/>
+        protected override void OnDrawing(UltravioletTime time, SpriteBatch spriteBatch)
+        {
+            DrawBackgroundImage(spriteBatch);
+            base.OnDrawing(time, spriteBatch);
         }
 
         /// <summary>
@@ -277,10 +286,10 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         /// <param name="dependencyObject">The dependency object that was changed.</param>
         private static void OnLayoutPropertyChanged(DependencyObject dependencyObject)
         {
-            var container = ((UIElement)dependencyObject).Container;
-            if (container != null)
+            var element = (UIElement)dependencyObject;
+            if (element.Container != null)
             {
-                container.RequestLayout();
+                element.Container.PerformLayout(element);
             }
         }
     }
