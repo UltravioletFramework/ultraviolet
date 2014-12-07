@@ -2,7 +2,9 @@
 using System.Xml.Linq;
 using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet.Content;
+using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
 using TwistedLogik.Ultraviolet.Layout.Stylesheets;
+using TwistedLogik.Ultraviolet.Graphics;
 
 namespace TwistedLogik.Ultraviolet.Layout.Elements
 {
@@ -51,6 +53,22 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
             Contract.Require(xml, "xml");
 
             return UIViewLoader.Load(uv, xml);
+        }
+
+        /// <summary>
+        /// Draws the view and all of its contained elements.
+        /// </summary>
+        /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Draw(UltravioletTime)"/>.</param>
+        /// <param name="spriteBatch">The sprite batch with which to draw the view.</param>
+        public void Draw(UltravioletTime time, SpriteBatch spriteBatch)
+        {
+            Contract.Require(spriteBatch, "spriteBatch");
+
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, RasterizerState.CullCounterClockwise);
+
+            Canvas.Draw(time, spriteBatch);
+
+            spriteBatch.End();
         }
 
         /// <summary>
@@ -114,10 +132,25 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         /// <param name="area">The area on the screen that is occupied by the view.</param>
         public void SetViewArea(Rectangle area)
         {
-            if (!this.viewArea.Equals(area))
+            var newPosition = false;
+            var newSize = false;
+
+            if (this.viewArea.X != area.X || this.viewArea.Y != area.Y)
+                newPosition = true;
+
+            if (this.viewArea.Width != area.Width || this.viewArea.Height != area.Height)
+                newSize = true;
+
+            this.viewArea = area;
+
+            if (newSize)
             {
-                this.viewArea = area;
                 Canvas.PerformLayout();
+            }
+
+            if (newSize || newPosition)
+            {
+
             }
         }
 

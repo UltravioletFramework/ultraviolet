@@ -128,21 +128,7 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
 
                 if (dprop != null)
                 {
-                    var type = Type.GetTypeFromHandle(dprop.PropertyType);
-
-                    if (IsBindingExpression(xmlElement.Value))
-                    {
-                        if (viewModelType == null)
-                            throw new InvalidOperationException("TODO");
-
-                        var expression = xmlElement.Value;
-                        miBindValue.MakeGenericMethod(type).Invoke(uiElement, new Object[] { dprop, viewModelType, expression });
-                    }
-                    else
-                    {
-                        var value = ObjectResolver.FromString(attr.Value, type);
-                        miSetLocalValue.MakeGenericMethod(type).Invoke(uiElement, new Object[] { dprop, value });
-                    }
+                    BindOrSetProperty(uiElement, dprop, attr.Value, viewModelType);
                 }
             }
 
@@ -165,21 +151,10 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
             if (metadata.DefaultProperty != null && !String.IsNullOrEmpty(xmlElement.Value))
             {
                 var dprop = DependencyProperty.FindByName(metadata.DefaultProperty, uiElement.GetType());
-                var type  = Type.GetTypeFromHandle(dprop.PropertyType);
+                if (dprop == null)
+                    throw new InvalidOperationException("TODO");
 
-                if (IsBindingExpression(xmlElement.Value))
-                {
-                    if (viewModelType == null)
-                        throw new InvalidOperationException("TODO");
-
-                    var expression = xmlElement.Value;
-                    miBindValue.MakeGenericMethod(type).Invoke(uiElement, new Object[] { dprop, viewModelType, expression });
-                }
-                else
-                {
-                    var value = ObjectResolver.FromString(xmlElement.Value, type);
-                    miSetLocalValue.MakeGenericMethod(type).Invoke(uiElement, new Object[] { dprop, value });
-                }
+                BindOrSetProperty(uiElement, dprop, xmlElement.Value, viewModelType);
             }
         }
 
@@ -205,6 +180,56 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
                     PopulateElementChildren(uv, uiChildContainer, child, viewModelType);
                 }
             }
+        }
+
+        /// <summary>
+        /// Binds or sets the specified dependency property, depending on whether the given value is a binding expression.
+        /// </summary>
+        /// <param name="uiElement">The UI element to modify.</param>
+        /// <param name="dprop">The dependency property to bind or set.</param>
+        /// <param name="value">The binding expression or value to set on the property.</param>
+        /// <param name="viewModelType">The view's associated view model type.</param>
+        private static void BindOrSetProperty(UIElement uiElement, DependencyProperty dprop, String value, Type viewModelType)
+        {
+            if (IsBindingExpression(value))
+            {
+                BindProperty(uiElement, dprop, value, viewModelType);
+            }
+            else
+            {
+                SetProperty(uiElement, dprop, value);
+            }
+        }
+
+        /// <summary>
+        /// Sets the local value of the specified dependency property.
+        /// </summary>
+        /// <param name="uiElement">The UI element to modify.</param>
+        /// <param name="dprop">The dependency property to bind or set.</param>
+        /// <param name="value">The value to set on the property.</param>
+        private static void SetProperty(UIElement uiElement, DependencyProperty dprop, String value)
+        {
+            var type          = Type.GetTypeFromHandle(dprop.PropertyType);
+            var resolvedValue = ObjectResolver.FromString(value, type);
+
+            miSetLocalValue.MakeGenericMethod(type).Invoke(uiElement, new Object[] { dprop, resolvedValue });
+        }
+
+        /// <summary>
+        /// Binds the specified dependency property.
+        /// </summary>
+        /// <param name="uiElement">The UI element to modify.</param>
+        /// <param name="dprop">The dependency property to bind or set.</param>
+        /// <param name="value">The binding expression to set on the property.</param>
+        /// <param name="viewModelType">The view's associated view model type.</param>
+        private static void BindProperty(UIElement uiElement, DependencyProperty dprop, String expression, Type viewModelType)
+        {
+            if (viewModelType == null)
+                throw new InvalidOperationException("TODO");
+
+            var type = Type.GetTypeFromHandle(dprop.PropertyType);
+
+            miBindValue.MakeGenericMethod(type).Invoke(uiElement, new Object[] { dprop, viewModelType, expression });
         }
 
         /// <summary>

@@ -1,5 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
+using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
+using TwistedLogik.Ultraviolet.Graphics;
 
 namespace TwistedLogik.Ultraviolet.Layout.Elements
 {

@@ -46,10 +46,10 @@ namespace TwistedLogik.Ultraviolet.Layout
         /// Binds a dependency property to a property on a model.
         /// </summary>
         /// <typeparam name="T">The type of value contained by the dependency property.</typeparam>
-        /// <param name="modelType">The type of model to which to bind the property.</param>
+        /// <param name="viewModelType">The type of view model to which to bind the property.</param>
         /// <param name="expression">The binding expression with which to bind the property.</param>
         /// <param name="dp">A <see cref="DependencyProperty"/> instance which identifies the dependency property to bind.</param>
-        public void BindValue<T>(DependencyProperty dp, Type modelType, String expression)
+        public void BindValue<T>(DependencyProperty dp, Type viewModelType, String expression)
         {
             Contract.Require(dp, "dp");
 
@@ -57,7 +57,7 @@ namespace TwistedLogik.Ultraviolet.Layout
                 throw new InvalidCastException();
 
             var wrapper = GetDependencyPropertyValue<T>(dp);
-            wrapper.Bind(modelType, expression);
+            wrapper.Bind(viewModelType, expression);
         }
 
         /// <summary>

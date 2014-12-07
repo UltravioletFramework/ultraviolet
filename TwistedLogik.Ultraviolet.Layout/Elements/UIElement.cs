@@ -6,23 +6,39 @@ using System.Linq.Expressions;
 using System.Reflection;
 using TwistedLogik.Nucleus;
 using TwistedLogik.Nucleus.Data;
+using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
 using TwistedLogik.Ultraviolet.Layout.Stylesheets;
 
 namespace TwistedLogik.Ultraviolet.Layout.Elements
 {
     /// <summary>
-    /// Represents a method which sets the value of a styled property on a UI element.
+    /// Represents the method that is called when a UI element is drawn.
     /// </summary>
-    /// <param name="element">The UI element on which to set the style.</param>
-    /// <param name="value">The string representation of the value to set for the style.</param>
-    /// <param name="provider">An object that supplies culture-specific formatting information.</param>
-    internal delegate void StyleSetter(UIElement element, String value, IFormatProvider provider);
+    /// <param name="element">The element being drawn.</param>
+    /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Draw(UltravioletTime)"/>.</param>
+    /// <param name="spriteBatch">The sprite batch with which to draw the view.</param>
+    public delegate void UIElementDrawingEventHandler(UIElement element, UltravioletTime time, SpriteBatch spriteBatch);
+
+    /// <summary>
+    /// Represents the method that is called when a UI element is updated.
+    /// </summary>
+    /// <param name="element">The element being updated.</param>
+    /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Draw(UltravioletTime)"/>.</param>
+    public delegate void UIElementUpdatingEventHandler(UIElement element, UltravioletTime time);
 
     /// <summary>
     /// The base class for all UI elements.
     /// </summary>
     public abstract class UIElement : DependencyObject
     {
+        /// <summary>
+        /// Represents a method which sets the value of a styled property on a UI element.
+        /// </summary>
+        /// <param name="element">The UI element on which to set the style.</param>
+        /// <param name="value">The string representation of the value to set for the style.</param>
+        /// <param name="provider">An object that supplies culture-specific formatting information.</param>
+        internal delegate void StyleSetter(UIElement element, String value, IFormatProvider provider);
+
         /// <summary>
         /// Initialies the <see cref="UIElement"/> type.
         /// </summary>
@@ -60,15 +76,6 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         {
             Dispose(true);
             GC.SuppressFinalize(this);
-        }
-
-        /// <summary>
-        /// Updates the element's state.
-        /// </summary>
-        /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Draw(UltravioletTime)"/>.</param>
-        public void Update(UltravioletTime time)
-        {
-            UpdateInternal(time);
         }
 
         /// <summary>
@@ -155,6 +162,16 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         }
 
         /// <summary>
+        /// Occurs when the element is being drawn.
+        /// </summary>
+        public event UIElementDrawingEventHandler Drawing;
+
+        /// <summary>
+        /// Occurs when the element is being updated.
+        /// </summary>
+        public event UIElementUpdatingEventHandler Updating;
+
+        /// <summary>
         /// Gets the element's area relative to its container after layout has been performed.
         /// </summary>
         protected internal Rectangle ContainerRelativeLayout
@@ -167,6 +184,22 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
                 calculatedWidth = value.Width;
                 calculatedHeight = value.Height;
             }
+        }
+
+        /// <summary>
+        /// Gets the x-coordinate of the element's absolute screen position.
+        /// </summary>
+        protected internal Int32 AbsoluteScreenX
+        {
+            get { return AbsoluteScreenXInternal; }
+        }
+
+        /// <summary>
+        /// Gets the y-coordinate of the element's absolute screen position.
+        /// </summary>
+        protected internal Int32 AbsoluteScreenY
+        {
+            get { return AbsoluteScreenYInternal; }
         }
 
         /// <summary>
@@ -223,6 +256,33 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         }
 
         /// <summary>
+        /// Raises the <see cref="Drawing"/> event.
+        /// </summary>
+        /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Draw(UltravioletTime)"/>.</param>
+        /// <param name="spriteBatch">The sprite batch with which to draw the view.</param>
+        protected virtual void OnDrawing(UltravioletTime time, SpriteBatch spriteBatch)
+        {
+            var temp = Drawing;
+            if (temp != null)
+            {
+                temp(this, time, spriteBatch);
+            }
+        }
+
+        /// <summary>
+        /// Raises the <see cref="Updating"/> event.
+        /// </summary>
+        /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Draw(UltravioletTime)"/>.</param>
+        protected virtual void OnUpdating(UltravioletTime time)
+        {
+            var temp = Updating;
+            if (temp != null)
+            {
+                temp(this, time);
+            }
+        }
+
+        /// <summary>
         /// Loads the specified sourced asset.
         /// </summary>
         /// <typeparam name="TOutput">The type of object being loaded.</typeparam>
@@ -272,12 +332,24 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         }
 
         /// <summary>
+        /// Draws the element.
+        /// </summary>
+        /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Draw(UltravioletTime)"/>.</param>
+        /// <param name="spriteBatch">The sprite batch with which to draw the view.</param>
+        internal virtual void Draw(UltravioletTime time, SpriteBatch spriteBatch)
+        {
+            OnDrawing(time, spriteBatch);
+        }
+
+        /// <summary>
         /// Updates the element's state.
         /// </summary>
         /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Draw(UltravioletTime)"/>.</param>
-        internal virtual void UpdateInternal(UltravioletTime time)
+        /// <param name="spriteBatch">The sprite batch with which to draw the element.</param>
+        internal virtual void Update(UltravioletTime time)
         {
             Digest();
+            OnUpdating(time);
         }
 
         /// <summary>
@@ -323,6 +395,22 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
             {
                 UpdateView(view);
             }
+        }
+
+        /// <summary>
+        /// Gets the x-coordinate of the element's absolute screen position.
+        /// </summary>
+        internal virtual Int32 AbsoluteScreenXInternal
+        {
+            get { return (Container == null ? 0 : Container.AbsoluteScreenX) + containerRelativeX; }
+        }
+
+        /// <summary>
+        /// Gets the y-coordinate of the element's absolute screen position.
+        /// </summary>
+        internal virtual Int32 AbsoluteScreenYInternal
+        {
+            get { return (Container == null ? 0 : Container.AbsoluteScreenY) + containerRelativeY; }
         }
 
         /// <summary>

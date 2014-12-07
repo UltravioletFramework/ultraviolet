@@ -1,5 +1,6 @@
 ﻿using System;
 using TwistedLogik.Nucleus;
+using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
 
 namespace TwistedLogik.Ultraviolet.Layout.Elements
 {
@@ -135,9 +136,20 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         protected abstract Rectangle CalculateLayoutArea(UIElement child);
 
         /// <inheritdoc/>
-        internal override void UpdateInternal(UltravioletTime time)
+        internal override void Draw(UltravioletTime time, SpriteBatch spriteBatch)
         {
-            base.UpdateInternal(time);
+            base.Draw(time, spriteBatch);
+
+            foreach (var child in children)
+            {
+                child.Draw(time, spriteBatch);
+            }
+        }
+
+        /// <inheritdoc/>
+        internal override void Update(UltravioletTime time)
+        {
+            base.Update(time);
 
             foreach (var child in children)
             {
@@ -151,10 +163,7 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
             }
         }
 
-        /// <summary>
-        /// Updates the view model associated with this element.
-        /// </summary>
-        /// <param name="viewModel">The view model to associate with this element.</param>
+        /// <inheritdoc/>
         internal override void UpdateViewModel(Object viewModel)
         {
             base.UpdateViewModel(viewModel);
@@ -177,6 +186,42 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         }
 
         /// <summary>
+        /// Updates the container's absolute screen position.
+        /// </summary>
+        /// <param name="x">The x-coordinate of the container's absolute screen position.</param>
+        /// <param name="y">The y-coordinate of the container's absolute screen position.</param>
+        internal void UpdateAbsoluteScreenPosition(Int32 x, Int32 y)
+        {
+            this.absoluteScreenX = x;
+            this.absoluteScreenY = y;
+
+            foreach (var child in children)
+            {
+                var container = child as UIContainer;
+                if (container != null)
+                {
+                    container.UpdateAbsoluteScreenPosition(x + container.ContainerRelativeX, y + container.ContainerRelativeY);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets the x-coordinate of the element's absolute screen position.
+        /// </summary>
+        internal override Int32 AbsoluteScreenXInternal
+        {
+            get { return absoluteScreenX; }
+        }
+
+        /// <summary>
+        /// Gets the y-coordinate of the element's absolute screen position.
+        /// </summary>
+        internal override Int32 AbsoluteScreenYInternal
+        {
+            get { return absoluteScreenY; }
+        }
+
+        /// <summary>
         /// Immediately recalculates the layout of the specified child element.
         /// </summary>
         /// <param name="child">The child element for which to calculate a layout.</param>
@@ -189,11 +234,16 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
             if (container != null)
             {
                 container.PerformLayout();
+                container.UpdateAbsoluteScreenPosition(
+                    absoluteScreenX + container.ContainerRelativeX, 
+                    absoluteScreenY + container.ContainerRelativeY);
             }
         }
 
         // Property values.
         private readonly UIElementCollection children;
+        private Int32 absoluteScreenX;
+        private Int32 absoluteScreenY;
 
         // State values.
         private Boolean layoutRequested;
