@@ -155,6 +155,7 @@
     <Compile Include="Content\IContentProcessorMetadata.cs" />
     <Compile Include="Content\NamespaceDoc.cs" />
     <Compile Include="Content\UltravioletContent.cs" />
+    <Compile Include="Content\UltravioletDataObject.cs" />
     <Compile Include="Content\UltravioletDataObjectRegistry.cs" />
     <Compile Include="Content\XmlContentProcessor.cs" />
     <Compile Include="Content\TextContentProcessor.cs" />
