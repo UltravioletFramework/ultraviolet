@@ -2,7 +2,6 @@
 using System.Xml.Linq;
 using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet.Content;
-using TwistedLogik.Ultraviolet.Graphics;
 using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
 using TwistedLogik.Ultraviolet.Layout.Stylesheets;
 
@@ -53,31 +52,6 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
             Contract.Require(xml, "xml");
 
             return UIViewLoader.Load(uv, xml);
-        }
-
-        /// <summary>
-        /// Draws the view and all of its contained elements.
-        /// </summary>
-        /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Draw(UltravioletTime)"/>.</param>
-        /// <param name="spriteBatch">The sprite batch with which to draw the view.</param>
-        public void Draw(UltravioletTime time, SpriteBatch spriteBatch)
-        {
-            Contract.Require(spriteBatch, "spriteBatch");
-
-            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, RasterizerState.CullCounterClockwise);
-
-            Canvas.Draw(time, spriteBatch);
-
-            spriteBatch.End();
-        }
-
-        /// <summary>
-        /// Updates the view's state and the state of its contained elements.
-        /// </summary>
-        /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Draw(UltravioletTime)"/>.</param>
-        public void Update(UltravioletTime time)
-        {
-            Canvas.Update(time);
         }
 
         /// <summary>
@@ -226,6 +200,15 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         }
 
         /// <summary>
+        /// Gets the <see cref="UIViewCollection"/> that contains the view, if any.
+        /// </summary>
+        public UIViewCollection Container
+        {
+            get { return container; }
+            internal set { container = value; }
+        }
+
+        /// <summary>
         /// Gets the content manager used to load globally-sourced assets.
         /// </summary>
         public ContentManager GlobalContent
@@ -314,7 +297,27 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
             get { return canvas; }
         }
 
+        /// <summary>
+        /// Draws the view and all of its contained elements.
+        /// </summary>
+        /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Draw(UltravioletTime)"/>.</param>
+        /// <param name="spriteBatch">The sprite batch with which to draw the view.</param>
+        internal void Draw(UltravioletTime time, SpriteBatch spriteBatch)
+        {
+            Canvas.Draw(time, spriteBatch);
+        }
+
+        /// <summary>
+        /// Updates the view's state and the state of its contained elements.
+        /// </summary>
+        /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Draw(UltravioletTime)"/>.</param>
+        internal void Update(UltravioletTime time)
+        {
+            Canvas.Update(time);
+        }
+
         // Property values.
+        private UIViewCollection container;
         private ContentManager globalContent;
         private ContentManager localContent;
         private UvssDocument stylesheet;

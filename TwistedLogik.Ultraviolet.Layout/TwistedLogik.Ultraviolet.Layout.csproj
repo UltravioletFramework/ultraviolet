@@ -70,6 +70,7 @@
     <Compile Include="Elements\UIElementCollection.cs" />
     <Compile Include="Elements\UIElementResources.cs" />
     <Compile Include="Elements\UIView.cs" />
+    <Compile Include="Elements\UIViewCollection.cs" />
     <Compile Include="Elements\UIViewLoader.cs" />
     <Compile Include="Elements\UIViewLoader.UIElementMetadata.cs" />
     <Compile Include="Elements\UvmlException.cs" />
