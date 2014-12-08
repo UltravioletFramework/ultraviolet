@@ -107,6 +107,9 @@
     <Compile Include="..\TwistedLogik.Ultraviolet.Layout\Elements\UIViewLoader.UIElementMetadata.cs">
       <Link>Elements\UIViewLoader.UIElementMetadata.cs</Link>
     </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.Layout\Elements\UvmlException.cs">
+      <Link>Elements\UvmlException.cs</Link>
+    </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.Layout\IDependencyPropertyValue.cs">
       <Link>IDependencyPropertyValue.cs</Link>
     </Compile>

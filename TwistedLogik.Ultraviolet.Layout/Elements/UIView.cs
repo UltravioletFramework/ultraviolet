@@ -118,9 +118,7 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         public void SetViewModel(Object viewModel)
         {
             if (viewModel != null && viewModel.GetType() != viewModelType)
-            {
-                throw new InvalidOperationException("TODO");
-            }
+                throw new ArgumentException(LayoutStrings.IncompatibleViewModel.Format(viewModelType));
 
             this.viewModel = viewModel;
             Canvas.UpdateViewModel(viewModel);

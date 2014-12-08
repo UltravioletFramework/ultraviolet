@@ -40,4 +40,34 @@
       <Variant>Attempted to write to a read-only data binding.</Variant>
     </en-US>
   </String>
+  <String Key="INCOMPATIBLE_VIEW_MODEL">
+    <en-US>
+      <Variant>The specified view model cannot be bound to this view because the view requires a view model of type '{0}'.</Variant>
+    </en-US>
+  </String>
+  <String Key="UIELEMENT_INVALID_CTOR">
+    <en-US>
+      <Variant>The UI element of type '{0}' cannot be instantiated because it does not have a compatible constructor.</Variant>
+    </en-US>
+  </String>
+  <String Key="VIEW_MODEL_TYPE_NOT_FOUND">
+    <en-US>
+      <Variant>The specified view model type '{0}' could not be found.</Variant>
+    </en-US>
+  </String>
+  <String Key="UNRECOGNIZED_UIELEMENT">
+    <en-US>
+      <Variant>No UI element named '{0}' has been registered with the UI system.</Variant>
+    </en-US>
+  </String>
+  <String Key="INVALID_DEFAULT_PROPERTY">
+    <en-US>
+      <Variant>The default property '{0}' on element type '{1}' could not be found within the dependency property system.</Variant>
+    </en-US>
+  </String>
+  <String Key="NO_VIEW_MODEL">
+    <en-US>
+      <Variant>An element tried to bind a dependency property, but no view model is defined for the element's view.</Variant>
+    </en-US>
+  </String>
 </LocalizedStrings>

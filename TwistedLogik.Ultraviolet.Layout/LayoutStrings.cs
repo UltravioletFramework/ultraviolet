@@ -32,6 +32,12 @@ namespace TwistedLogik.Ultraviolet.Layout
         public static readonly StringResource InvalidBindingExpression             = new StringResource(StringDatabase, "INVALID_BINDING_EXPRESSION");
         public static readonly StringResource BindingAssignmentToValueType         = new StringResource(StringDatabase, "BINDING_ASSIGNMENT_TO_VALUE_TYPE");
         public static readonly StringResource BindingIsReadOnly                    = new StringResource(StringDatabase, "BINDING_IS_READ_ONLY");
+        public static readonly StringResource IncompatibleViewModel                = new StringResource(StringDatabase, "INCOMPATIBLE_VIEW_MODEL");
+        public static readonly StringResource UIElementInvalidCtor                 = new StringResource(StringDatabase, "UIELEMENT_INVALID_CTOR");
+        public static readonly StringResource ViewModelTypeNotFound                = new StringResource(StringDatabase, "VIEW_MODEL_TYPE_NOT_FOUND");
+        public static readonly StringResource UnrecognizedUIElement                = new StringResource(StringDatabase, "UNRECOGNIZED_UIELEMENT");
+        public static readonly StringResource InvalidDefaultProperty               = new StringResource(StringDatabase, "INVALID_DEFAULT_PROPERTY");
+        public static readonly StringResource NoViewModel                          = new StringResource(StringDatabase, "NO_VIEW_MODEL");
 #pragma warning restore 1591
     }
 }

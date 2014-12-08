@@ -41,7 +41,7 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
                 var constructor = uiElementType.ElementType.GetConstructor(new[] { typeof(UltravioletContext), typeof(String) });
                 if (constructor == null)
                 {
-                    throw new InvalidOperationException("TODO");
+                    throw new InvalidOperationException(LayoutStrings.UIElementInvalidCtor.Format(uiElementType));
                 }
 
                 var metadata = new UIElementMetadata(
@@ -68,7 +68,7 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
                 viewModelType = Type.GetType(viewModelTypeAttr.Value, false);
                 if (viewModelType == null)
                 {
-                    throw new InvalidOperationException("TODO");
+                    throw new InvalidOperationException(LayoutStrings.ViewModelTypeNotFound.Format(viewModelTypeAttr.Value));
                 }
             }
 
@@ -90,7 +90,7 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         {
             UIElementMetadata metadata;
             if (!uiElementMetadata.TryGetValue(xmlElement.Name.LocalName, out metadata))
-                throw new InvalidOperationException("TODO"); // TODO: UvmlException
+                throw new UvmlException(LayoutStrings.UnrecognizedUIElement.Format(xmlElement.Name.LocalName));
 
             var id        = xmlElement.AttributeValueString("ID");
             var classes   = xmlElement.AttributeValueString("Class");
@@ -160,7 +160,7 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
             {
                 var dprop = DependencyProperty.FindByName(metadata.DefaultProperty, uiElement.GetType());
                 if (dprop == null)
-                    throw new InvalidOperationException("TODO");
+                    throw new InvalidOperationException(LayoutStrings.InvalidDefaultProperty.Format(metadata.DefaultProperty, uiElement.GetType()));
 
                 BindOrSetProperty(uiElement, dprop, xmlElement.Value, viewModelType);
             }
@@ -233,7 +233,7 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         private static void BindProperty(UIElement uiElement, DependencyProperty dprop, String expression, Type viewModelType)
         {
             if (viewModelType == null)
-                throw new InvalidOperationException("TODO");
+                throw new InvalidOperationException(LayoutStrings.NoViewModel);
 
             var type = Type.GetTypeFromHandle(dprop.PropertyType);
 

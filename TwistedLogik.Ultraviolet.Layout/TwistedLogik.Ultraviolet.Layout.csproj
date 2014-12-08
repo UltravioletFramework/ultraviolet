@@ -72,6 +72,7 @@
     <Compile Include="Elements\UIView.cs" />
     <Compile Include="Elements\UIViewLoader.cs" />
     <Compile Include="Elements\UIViewLoader.UIElementMetadata.cs" />
+    <Compile Include="Elements\UvmlException.cs" />
     <Compile Include="IDependencyPropertyValue.cs" />
     <Compile Include="LayoutStrings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
