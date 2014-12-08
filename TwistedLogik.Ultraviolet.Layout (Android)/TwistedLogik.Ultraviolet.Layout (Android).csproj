@@ -56,6 +56,9 @@
     <Compile Include="..\TwistedLogik.Ultraviolet.Layout\DependencyPropertyOptions.cs">
       <Link>DependencyPropertyOptions.cs</Link>
     </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.Layout\DependencyPropertySystem.cs">
+      <Link>DependencyPropertySystem.cs</Link>
+    </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.Layout\DependencyPropertyValue.cs">
       <Link>DependencyPropertyValue.cs</Link>
     </Compile>
