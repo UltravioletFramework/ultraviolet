@@ -64,8 +64,9 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         {
             Contract.Require(uv, "uv");
 
-            this.uv = uv;
-            this.id = id;
+            this.uv      = uv;
+            this.id      = id;
+            this.classes = new UIElementClassCollection(this);
             
             var attr = (UIElementAttribute)GetType().GetCustomAttributes(typeof(UIElementAttribute), false).SingleOrDefault();
             if (attr != null)
@@ -132,11 +133,11 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         }
 
         /// <summary>
-        /// Gets the element's view model.
+        /// Gets the element's collection of styling classes.
         /// </summary>
-        public Object ViewModel
+        public UIElementClassCollection Classes
         {
-            get { return viewModel; }
+            get { return classes; }
         }
 
         /// <summary>
@@ -145,6 +146,14 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         public UIView View
         {
             get { return view; }
+        }
+
+        /// <summary>
+        /// Gets the element's view model.
+        /// </summary>
+        public Object ViewModel
+        {
+            get { return viewModel; }
         }
 
         /// <summary>
@@ -865,6 +874,7 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         private readonly UltravioletContext uv;
         private readonly String id;
         private readonly String name;
+        private readonly UIElementClassCollection classes;
         private Object viewModel;
         private UIView view;
         private UIContainer container;

@@ -92,8 +92,16 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
             if (!uiElementMetadata.TryGetValue(xmlElement.Name.LocalName, out metadata))
                 throw new InvalidOperationException("TODO"); // TODO: UvmlException
 
-            var id       = xmlElement.AttributeValueString("ID");
+            var id        = xmlElement.AttributeValueString("ID");
+            var classes   = xmlElement.AttributeValueString("Class");
+            var classList = (classes == null) ? Enumerable.Empty<String>() : classes.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+
             var instance = (UIElement)metadata.Constructor.Invoke(new Object[] { uv, id });
+
+            foreach (var className in classList)
+            {
+                instance.Classes.Add(className);
+            }
 
             return instance;
         }

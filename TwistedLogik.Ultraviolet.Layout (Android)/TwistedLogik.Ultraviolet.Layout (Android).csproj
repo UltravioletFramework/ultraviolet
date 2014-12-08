@@ -89,6 +89,9 @@
     <Compile Include="..\TwistedLogik.Ultraviolet.Layout\Elements\UIElementAttribute.cs">
       <Link>Elements\UIElementAttribute.cs</Link>
     </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.Layout\Elements\UIElementClassCollection.cs">
+      <Link>Elements\UIElementClassCollection.cs</Link>
+    </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.Layout\Elements\UIElementCollection.cs">
       <Link>Elements\UIElementCollection.cs</Link>
     </Compile>

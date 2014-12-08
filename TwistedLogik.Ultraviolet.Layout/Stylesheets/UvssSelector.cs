@@ -108,7 +108,11 @@ namespace TwistedLogik.Ultraviolet.Layout.Stylesheets
                     return false;
             }
 
-            // TODO: Check classes
+            foreach (var className in part.Classes)
+            {
+                if (!element.Classes.Contains(className))
+                    return false;
+            }
 
             return true;
         }
