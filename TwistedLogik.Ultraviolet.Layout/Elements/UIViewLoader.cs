@@ -72,7 +72,7 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
                 }
             }
 
-            var view = new UIView(viewModelType, uv);
+            var view = new UIView(uv, viewModelType);
 
             PopulateElementProperties(uv, view.Canvas, xml, viewModelType);
             PopulateElementChildren(uv, view.Canvas, xml, viewModelType);

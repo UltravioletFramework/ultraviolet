@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using TwistedLogik.Nucleus;
 
@@ -8,7 +7,7 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
     /// <summary>
     /// Represents a collection of interface elements belonging to a parent element.
     /// </summary>
-    public sealed class UIElementCollection : IEnumerable<UIElement>
+    public sealed partial class UIElementCollection : IEnumerable<UIElement>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="UIElementCollection"/> class.
@@ -78,24 +77,6 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
             Contract.Require(element, "element");
 
             return elements.Contains(element);
-        }
-
-        /// <inheritdoc/>
-        public List<UIElement>.Enumerator GetEnumerator()
-        {
-            return elements.GetEnumerator();
-        }
-
-        /// <inheritdoc/>
-        IEnumerator<UIElement> IEnumerable<UIElement>.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
-
-        /// <inheritdoc/>
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
         }
 
         /// <summary>

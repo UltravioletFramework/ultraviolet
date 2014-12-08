@@ -92,8 +92,14 @@
     <Compile Include="..\TwistedLogik.Ultraviolet.Layout\Elements\UIElementClassCollection.cs">
       <Link>Elements\UIElementClassCollection.cs</Link>
     </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.Layout\Elements\UIElementClassCollection.IEnumerable.cs">
+      <Link>Elements\UIElementClassCollection.IEnumerable.cs</Link>
+    </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.Layout\Elements\UIElementCollection.cs">
       <Link>Elements\UIElementCollection.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.Layout\Elements\UIElementCollection.IEnumerable.cs">
+      <Link>Elements\UIElementCollection.IEnumerable.cs</Link>
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.Layout\Elements\UIElementResources.cs">
       <Link>Elements\UIElementResources.cs</Link>
@@ -103,6 +109,9 @@
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.Layout\Elements\UIViewCollection.cs">
       <Link>Elements\UIViewCollection.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.Layout\Elements\UIViewCollection.IEnumerable.cs">
+      <Link>Elements\UIViewCollection.IEnumerable.cs</Link>
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.Layout\Elements\UIViewLoader.cs">
       <Link>Elements\UIViewLoader.cs</Link>
@@ -155,6 +164,9 @@
     <Compile Include="..\TwistedLogik.Ultraviolet.Layout\Stylesheets\UvssSelectorList.cs">
       <Link>Stylesheets\UvssSelectorList.cs</Link>
     </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.Layout\Stylesheets\UvssSelectorList.IEnumerable.cs">
+      <Link>Stylesheets\UvssSelectorList.IEnumerable.cs</Link>
+    </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.Layout\Stylesheets\UvssSelectorPart.cs">
       <Link>Stylesheets\UvssSelectorPart.cs</Link>
     </Compile>
@@ -166,6 +178,9 @@
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.Layout\Stylesheets\UvssStyleList.cs">
       <Link>Stylesheets\UvssStyleList.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.Layout\Stylesheets\UvssStyleList.IEnumerable.cs">
+      <Link>Stylesheets\UvssStyleList.IEnumerable.cs</Link>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -192,7 +207,7 @@
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" ProjectLinkReference="71aaed78-c276-4018-a4b5-a97c4fbc1afb" />
+      <UserProperties ProjectLinkReference="71aaed78-c276-4018-a4b5-a97c4fbc1afb" ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" />
     </VisualStudio>
   </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

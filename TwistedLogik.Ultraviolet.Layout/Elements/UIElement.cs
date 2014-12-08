@@ -2,22 +2,16 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Reflection;
 using TwistedLogik.Nucleus;
 using TwistedLogik.Nucleus.Data;
 using TwistedLogik.Ultraviolet.Content;
 using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
+using TwistedLogik.Ultraviolet.Input;
 using TwistedLogik.Ultraviolet.Layout.Stylesheets;
 
 namespace TwistedLogik.Ultraviolet.Layout.Elements
 {
-    /// <summary>
-    /// Represments the method that is called when a UI element raises an event.
-    /// </summary>
-    /// <param name="element">The element that raised the event.</param>
-    public delegate void UIElementEventHandler(UIElement element);
-
     /// <summary>
     /// Represents the method that is called when a UI element is drawn.
     /// </summary>
@@ -32,6 +26,27 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
     /// <param name="element">The element being updated.</param>
     /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Draw(UltravioletTime)"/>.</param>
     public delegate void UIElementUpdatingEventHandler(UIElement element, UltravioletTime time);
+
+    /// <summary>
+    /// Represents the method that is called when the mouse cursor enters or leaves a UI element.
+    /// </summary>
+    /// <param name="element">The element that raised the event.</param>
+    /// <param name="mouse">The mouse device.</param>
+    public delegate void UIElementMouseEventHandler(UIElement element, MouseDevice device);
+
+    /// <summary>
+    /// Represents the method that is called when a button is pressed or released while an element is under the mouse.
+    /// </summary>
+    /// <param name="element">The element that raised the event.</param>
+    /// <param name="device">The mouse device.</param>
+    /// <param name="button">The mouse button that was pressed or released.</param>
+    public delegate void UIElementMouseButtonEventHandler(UIElement element, MouseDevice device, MouseButton button);
+
+    /// <summary>
+    /// Represents the method that is called when a UI element raises an event.
+    /// </summary>
+    /// <param name="element">The element that raised the event.</param>
+    public delegate void UIElementEventHandler(UIElement element);
 
     /// <summary>
     /// The base class for all UI elements.
@@ -95,6 +110,69 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
             ReloadBackgroundImage();
 
             OnReloadingContent();
+        }
+
+        /// <summary>
+        /// Converts a position in screen space to a position in element space.
+        /// </summary>
+        /// <param name="x">The x-coordinate of the screen space position to convert.</param>
+        /// <param name="y">The y-coordinate of the screen space position to convert.</param>
+        /// <returns>The converted element space position.</returns>
+        public Vector2 ScreenPositionToElementPosition(Int32 x, Int32 y)
+        {
+            return new Vector2(x - AbsoluteScreenX, y - AbsoluteScreenY);
+        }
+
+        /// <summary>
+        /// Converts a position in screen space to a position in element space.
+        /// </summary>
+        /// <param name="position">The screen space position to convert.</param>
+        /// <returns>The converted element space position.</returns>
+        public Vector2 ScreenPositionToElementPosition(Vector2 position)
+        {
+            return ScreenPositionToElementPosition((Int32)position.X, (Int32)position.Y);
+        }
+
+        /// <summary>
+        /// Converts a position in element space to a position in screen space.
+        /// </summary>
+        /// <param name="x">The x-coordinate of the element space position to convert.</param>
+        /// <param name="y">The y-coordinate of the element space position to convert.</param>
+        /// <returns>The converted screen space position.</returns>
+        public Vector2 ElementPositionToScreenPosition(Int32 x, Int32 y)
+        {
+            return new Vector2(x + AbsoluteScreenX, y + AbsoluteScreenY);
+        }
+
+        /// <summary>
+        /// Converts a position in element space to a position in screen space.
+        /// </summary>
+        /// <param name="position">The element space position to convert.</param>
+        /// <returns>The converted screen space position.</returns>
+        public Vector2 ElementPositionToScreenPosition(Vector2 position)
+        {
+            return ElementPositionToScreenPosition((Int32)position.X, (Int32)position.Y);
+        }
+
+        /// <summary>
+        /// Gets the element at the specified point in element space.
+        /// </summary>
+        /// <param name="x">The x-coordinate of the point to evaluate.</param>
+        /// <param name="y">The y-coordinate of the point to evaluate.</param>
+        /// <returns>The element at the specified point in element space, or null if no such element exists.</returns>
+        public UIElement GetElementAtPoint(Int32 x, Int32 y)
+        {
+            return GetElementAtPointInternal(x, y);
+        }
+
+        /// <summary>
+        /// Gets the element at the specified point in element space.
+        /// </summary>
+        /// <param name="position">The point to evaluate.</param>
+        /// <returns>The element at the specified point in element space, or null if no such element exists.</returns>
+        public UIElement GetElementAtPoint(Vector2 position)
+        {
+            return GetElementAtPointInternal((Int32)position.X, (Int32)position.Y);
         }
 
         /// <summary>
@@ -253,6 +331,26 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         /// Occurs when the element is being updated.
         /// </summary>
         public event UIElementUpdatingEventHandler Updating;
+
+        /// <summary>
+        /// Occurs when the mouse cursor enters the element.
+        /// </summary>
+        public event UIElementMouseEventHandler MouseEnter;
+
+        /// <summary>
+        /// Occurs when the mouse cursor leaves the element.
+        /// </summary>
+        public event UIElementMouseEventHandler MouseLeave;
+
+        /// <summary>
+        /// Occurs when a mouse button is pressed while the cursor is over the element.
+        /// </summary>
+        public event UIElementMouseButtonEventHandler MouseButtonPressed;
+
+        /// <summary>
+        /// Occurs when a mouse button is released while the cursor is over the element.
+        /// </summary>
+        public event UIElementMouseButtonEventHandler MouseButtonReleased;
 
         /// <summary>
         /// Occurs when the value of the <see cref="Enabled"/> property changes.
@@ -494,6 +592,34 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         }
 
         /// <summary>
+        /// Loads the specified asset from the global content manager.
+        /// </summary>
+        /// <typeparam name="TOutput">The type of object being loaded.</typeparam>
+        /// <param name="asset">The identifier of the asset to load.</param>
+        /// <returns>The asset that was loaded.</returns>
+        protected TOutput LoadGlobalContent<TOutput>(AssetID asset)
+        {
+            if (View == null)
+                return default(TOutput);
+
+            return View.LoadLocalContent<TOutput>(asset);
+        }
+
+        /// <summary>
+        /// Loads the specified asset from the local content manager.
+        /// </summary>
+        /// <typeparam name="TOutput">The type of object being loaded.</typeparam>
+        /// <param name="asset">The identifier of the asset to load.</param>
+        /// <returns>The asset that was loaded.</returns>
+        protected TOutput LoadLocalContent<TOutput>(AssetID asset)
+        {
+            if (View == null)
+                return default(TOutput);
+
+            return View.LoadLocalContent<TOutput>(asset);
+        }
+
+        /// <summary>
         /// Loads the specified sourced asset.
         /// </summary>
         /// <typeparam name="TOutput">The type of object being loaded.</typeparam>
@@ -505,6 +631,30 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
                 return default(TOutput);
 
             return View.LoadContent<TOutput>(asset);
+        }
+
+        /// <summary>
+        /// Loads the specified image from the global content manager.
+        /// </summary>
+        /// <param name="image">The identifier of the image to load.</param>
+        protected void LoadGlobalContent(StretchableImage9 image)
+        {
+            if (View == null)
+                return;
+
+            View.LoadGlobalContent(image);
+        }
+
+        /// <summary>
+        /// Loads the specified image from the local content manager.
+        /// </summary>
+        /// <param name="image">The identifier of the image to load.</param>
+        protected void LoadLocalContent(StretchableImage9 image)
+        {
+            if (View == null)
+                return;
+
+            View.LoadLocalContent(image);
         }
 
         /// <summary>
@@ -576,6 +726,60 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         protected sealed override Object DependencyDataSource
         {
             get { return ViewModel; }
+        }
+
+        /// <summary>
+        /// Raises the <see cref="MouseEnter"/> event.
+        /// </summary>
+        /// <param name="device">The mouse device.</param>
+        protected internal virtual void OnMouseEnter(MouseDevice device)
+        {
+            var temp = MouseEnter;
+            if (temp != null)
+            {
+                temp(this, device);
+            }
+        }
+
+        /// <summary>
+        /// Raises the <see cref="MouseLeave"/> event.
+        /// </summary>
+        /// <param name="device">The mouse device.</param>
+        protected internal virtual void OnMouseLeave(MouseDevice device)
+        {
+            var temp = MouseLeave;
+            if (temp != null)
+            {
+                temp(this, device);
+            }
+        }
+
+        /// <summary>
+        /// Raises the <see cref="MouseButtonPressed event."/>
+        /// </summary>
+        /// <param name="device">The mouse device.</param>
+        /// <param name="button">The mouse button that was pressed or released.</param>
+        protected internal virtual void OnMouseButtonPressed(MouseDevice device, MouseButton button)
+        {
+            var temp = MouseButtonPressed;
+            if (temp != null)
+            {
+                temp(this, device, button);
+            }
+        }
+
+        /// <summary>
+        /// Raises the <see cref="MouseButtonReleased"/> event.
+        /// </summary>
+        /// <param name="device">The mouse device.</param>
+        /// <param name="button">The mouse button that was pressed or released.</param>
+        protected internal virtual void OnMouseButtonReleased(MouseDevice device, MouseButton button)
+        {
+            var temp = MouseButtonReleased;
+            if (temp != null)
+            {
+                temp(this, device, button);
+            }
         }
 
         /// <summary>
@@ -664,6 +868,18 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         }
 
         /// <summary>
+        /// Gets the element at the specified point in element space.
+        /// </summary>
+        /// <param name="x">The x-coordinate of the point to evaluate.</param>
+        /// <param name="y">The y-coordinate of the point to evaluate.</param>
+        /// <returns>The element at the specified point in element space, or null if no such element exists.</returns>
+        internal virtual UIElement GetElementAtPointInternal(Int32 x, Int32 y)
+        {
+            var bounds = new Rectangle(0, 0, CalculatedWidth, CalculatedHeight);
+            return bounds.Contains(x, y) ? this : null;
+        }
+
+        /// <summary>
         /// Gets the x-coordinate of the element's absolute screen position.
         /// </summary>
         internal virtual Int32 AbsoluteScreenXInternal
@@ -677,6 +893,16 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         internal virtual Int32 AbsoluteScreenYInternal
         {
             get { return (Container == null ? 0 : Container.AbsoluteScreenY) + containerRelativeY; }
+        }
+
+        /// <summary>
+        /// Gets the style setter for the style with the specified name.
+        /// </summary>
+        /// <param name="name">The name of the style for which to retrieve a setter.</param>
+        /// <returns>A function to set the value of the specified style.</returns>
+        private StyleSetter GetStyleSetter(String name)
+        {
+            return GetStyleSetter(name, null);
         }
 
         /// <summary>
@@ -743,21 +969,6 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
 
                         foreach (var prop in styledDependencyProperties)
                         {
-                            var dp                  = (DependencyProperty)prop.FieldInfo.GetValue(null);
-                            var dpType              = Type.GetTypeFromHandle(dp.PropertyType);
-
-                            var setStyledValue      = miSetStyledValue.MakeGenericMethod(dpType);
-
-                            var expParameterElement = Expression.Parameter(typeof(UIElement), "element");
-                            var expParameterValue   = Expression.Parameter(typeof(String), "value");
-                            var expParameterFmtProv = Expression.Parameter(typeof(IFormatProvider), "provider");
-                            var expResolveValue     = Expression.Convert(Expression.Call(miFromString, expParameterValue, Expression.Constant(dpType), expParameterFmtProv), dpType);
-                            var expCallMethod       = Expression.Call(expParameterElement, setStyledValue, Expression.Constant(dp), expResolveValue);
-
-                            var lambda = Expression.Lambda<StyleSetter>(expCallMethod, expParameterElement, expParameterValue, expParameterFmtProv).Compile();
-
-                            var styleKey = new UvssStyleKey(prop.Attribute.Name, prop.Attribute.PseudoClass);
-                            styleSettersForCurrentType[styleKey] = lambda;
                         }
 
                         styleSetters[typeID] = styleSettersForCurrentType;

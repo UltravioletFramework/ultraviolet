@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -8,7 +7,7 @@ namespace TwistedLogik.Ultraviolet.Layout.Stylesheets
     /// <summary>
     /// Represents a list of styles in an Ultraviolet Stylesheet (UVSS) document.
     /// </summary>
-    public sealed class UvssStyleList : IEnumerable<UvssStyle>
+    public sealed partial class UvssStyleList : IEnumerable<UvssStyle>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="UvssStyleList"/> class.
@@ -23,24 +22,6 @@ namespace TwistedLogik.Ultraviolet.Layout.Stylesheets
         public override String ToString()
         {
             return String.Join("; ", styles.Select(x => x.ToString()));
-        }
-
-        /// <inheritdoc/>
-        List<UvssStyle>.Enumerator GetEnumerator()
-        {
-            return styles.GetEnumerator();
-        }
-
-        /// <inheritdoc/>
-        IEnumerator<UvssStyle> IEnumerable<UvssStyle>.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
-
-        /// <inheritdoc/>
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
         }
 
         // State values.

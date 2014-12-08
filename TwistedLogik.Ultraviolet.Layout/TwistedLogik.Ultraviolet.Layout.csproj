@@ -67,10 +67,13 @@
     <Compile Include="Elements\UIElement.cs" />
     <Compile Include="Elements\UIElementAttribute.cs" />
     <Compile Include="Elements\UIElementClassCollection.cs" />
+    <Compile Include="Elements\UIElementClassCollection.IEnumerable.cs" />
     <Compile Include="Elements\UIElementCollection.cs" />
+    <Compile Include="Elements\UIElementCollection.IEnumerable.cs" />
     <Compile Include="Elements\UIElementResources.cs" />
     <Compile Include="Elements\UIView.cs" />
     <Compile Include="Elements\UIViewCollection.cs" />
+    <Compile Include="Elements\UIViewCollection.IEnumerable.cs" />
     <Compile Include="Elements\UIViewLoader.cs" />
     <Compile Include="Elements\UIViewLoader.UIElementMetadata.cs" />
     <Compile Include="Elements\UvmlException.cs" />
@@ -89,10 +92,12 @@
     <Compile Include="Stylesheets\UvssRule.cs" />
     <Compile Include="Stylesheets\UvssSelector.cs" />
     <Compile Include="Stylesheets\UvssSelectorList.cs" />
+    <Compile Include="Stylesheets\UvssSelectorList.IEnumerable.cs" />
     <Compile Include="Stylesheets\UvssSelectorPart.cs" />
     <Compile Include="Stylesheets\UvssStyle.cs" />
     <Compile Include="Stylesheets\UvssStyleKey.cs" />
     <Compile Include="Stylesheets\UvssStyleList.cs" />
+    <Compile Include="Stylesheets\UvssStyleList.IEnumerable.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TwistedLogik.Nucleus\TwistedLogik.Nucleus.csproj">

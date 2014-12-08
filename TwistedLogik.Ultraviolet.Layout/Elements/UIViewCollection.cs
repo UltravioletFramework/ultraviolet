@@ -1,18 +1,30 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using TwistedLogik.Nucleus;
 using TwistedLogik.Nucleus.Collections;
 using TwistedLogik.Ultraviolet.Graphics;
 using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
+using TwistedLogik.Ultraviolet.Input;
+using TwistedLogik.Ultraviolet.Platform;
 
 namespace TwistedLogik.Ultraviolet.Layout.Elements
 {
     /// <summary>
     /// Represents a collection of <see cref="UIView"/> objects.
     /// </summary>
-    public sealed class UIViewCollection : IEnumerable<UIView>
+    public sealed partial class UIViewCollection : UltravioletResource, IEnumerable<UIView>
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="UIViewCollection"/> class.
+        /// </summary>
+        /// <param name="uv">The Ultraviolet context.</param>
+        public UIViewCollection(UltravioletContext uv)
+            : base(uv)
+        {
+            HookKeyboardEvents();
+            HookMouseEvents();
+        }
+
         /// <summary>
         /// Draws the views in the collection.
         /// </summary>
@@ -38,6 +50,8 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Draw(UltravioletTime)"/>.</param>
         public void Update(UltravioletTime time)
         {
+            HandleUserInput();
+
             foreach (var view in views)
             {
                 view.Update(time);
@@ -156,24 +170,6 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
             return GetViewAtPoint((Int32)position.X, (Int32)position.Y);
         }
 
-        /// <inheritdoc/>
-        public LinkedList<UIView>.Enumerator GetEnumerator()
-        {
-            return views.GetEnumerator();
-        }
-
-        /// <inheritdoc/>
-        IEnumerator<UIView> IEnumerable<UIView>.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
-
-        /// <inheritdoc/>
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
-
         /// <summary>
         /// Gets the number of views in the collection.
         /// </summary>
@@ -182,8 +178,136 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
             get { return views.Count; }
         }
 
+        /// <inheritdoc/>
+        protected override void Dispose(Boolean disposing)
+        {
+            if (disposing && !Ultraviolet.Disposed)
+            {
+                UnhookKeyboardEvents();
+                UnhookMouseEvents();
+            }
+            base.Dispose(disposing);
+        }
+
+        /// <summary>
+        /// Hooks into Ultraviolet's keyboard input events.
+        /// </summary>
+        private void HookKeyboardEvents()
+        {
+            // TODO
+        }
+
+        /// <summary>
+        /// Hooks into Ultraviolet's mouse input events.
+        /// </summary>
+        private void HookMouseEvents()
+        {
+            var input = Ultraviolet.GetInput();
+            if (input.IsMouseSupported())
+            {
+                var mouse             = input.GetMouse();
+                mouse.ButtonPressed  += mouse_ButtonPressed;
+                mouse.ButtonReleased += mouse_ButtonReleased;
+            }
+        }
+
+        /// <summary>
+        /// Unhooks from Ultraviolet's keyboard input events.
+        /// </summary>
+        private void UnhookKeyboardEvents()
+        {
+            // TODO
+        }
+
+        /// <summary>
+        /// Unhooks from Ultraviolet's mouse input events.
+        /// </summary>
+        private void UnhookMouseEvents()
+        {
+            var input = Ultraviolet.GetInput();
+            if (input.IsMouseSupported())
+            {
+                var mouse             = input.GetMouse();
+                mouse.ButtonPressed  -= mouse_ButtonPressed;
+                mouse.ButtonReleased -= mouse_ButtonReleased;
+            }
+        }
+
+        /// <summary>
+        /// Handles user input by raising input messages on the elements in the view.
+        /// </summary>
+        private void HandleUserInput()
+        {
+            if (Ultraviolet.GetInput().IsKeyboardSupported())
+            {
+                HandleKeyboardInput();
+            }
+            if (Ultraviolet.GetInput().IsMouseSupported())
+            {
+                HandleMouseInput();
+            }
+        }
+
+        /// <summary>
+        /// Handles keyboard input.
+        /// </summary>
+        private void HandleKeyboardInput()
+        {
+            // TODO
+        }
+
+        /// <summary>
+        /// Handles mouse input.
+        /// </summary>
+        private void HandleMouseInput()
+        {
+            // Determine which element is currently under the mouse cursor.
+            var mouse     = Ultraviolet.GetInput().GetMouse();
+            var mousePos  = mouse.Position;
+            var mouseView = GetViewAtPoint(mousePos); 
+            
+            elementUnderMousePrev = elementUnderMouse;
+            elementUnderMouse     = (mouseView == null) ? null : mouseView.GetElementAtScreenPoint(mousePos);
+
+            // Handle mouse motion events
+            if (elementUnderMouse != elementUnderMousePrev)
+            {
+                if (elementUnderMousePrev != null)
+                    elementUnderMousePrev.OnMouseLeave(mouse);
+
+                if (elementUnderMouse != null)
+                    elementUnderMouse.OnMouseEnter(mouse);
+            }
+        }
+
+        /// <summary>
+        /// Handles the <see cref="MouseDevice.ButtonPressed"/> event.
+        /// </summary>
+        private void mouse_ButtonPressed(IUltravioletWindow window, MouseDevice device, MouseButton button)
+        {
+            if (elementUnderMouse != null)
+            {
+                elementUnderMouse.OnMouseButtonPressed(device, button);
+            }
+        }
+
+        /// <summary>
+        /// Handles the <see cref="MouseDevice.ButtonReleased"/> event.
+        /// </summary>
+        private void mouse_ButtonReleased(IUltravioletWindow window, MouseDevice device, MouseButton button)
+        {
+            if (elementUnderMouse != null)
+            {
+                elementUnderMouse.OnMouseButtonReleased(device, button);
+            }
+        }
+
         // State values.
         private readonly PooledLinkedList<UIView> views = 
             new PooledLinkedList<UIView>(8);
+
+        // Input tracking values.
+        private UIElement elementUnderMousePrev;
+        private UIElement elementUnderMouse;
     }
 }

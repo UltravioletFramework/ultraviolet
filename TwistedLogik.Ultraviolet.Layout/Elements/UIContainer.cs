@@ -217,6 +217,25 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         }
 
         /// <summary>
+        /// Gets the element at the specified point in element space.
+        /// </summary>
+        /// <param name="x">The x-coordinate of the point to evaluate.</param>
+        /// <param name="y">The y-coordinate of the point to evaluate.</param>
+        /// <returns>The element at the specified point in element space, or null if no such element exists.</returns>
+        internal override UIElement GetElementAtPointInternal(Int32 x, Int32 y)
+        {
+            foreach (var child in children)
+            {
+                var element = child.GetElementAtPointInternal(x - child.ContainerRelativeX, y - child.ContainerRelativeY);
+                if (element != null)
+                {
+                    return element;
+                }
+            }
+            return base.GetElementAtPointInternal(x, y);
+        }
+
+        /// <summary>
         /// Updates the container's absolute screen position.
         /// </summary>
         /// <param name="x">The x-coordinate of the container's absolute screen position.</param>

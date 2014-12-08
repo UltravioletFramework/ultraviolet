@@ -15,10 +15,9 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         /// <summary>
         /// Initializes a new instance of the <see cref="UIView"/> class.
         /// </summary>
-        /// <param name="viewModelType">The view's associated model type.</param>
         /// <param name="uv">The Ultraviolet context.</param>
-        /// <param name="screenArea">The view's initial area on the screen.</param>
-        public UIView(Type viewModelType, UltravioletContext uv)
+        /// <param name="viewModelType">The view's associated model type.</param>
+        public UIView(UltravioletContext uv, Type viewModelType)
         {
             this.viewModelType = viewModelType;
 
@@ -52,6 +51,92 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
             Contract.Require(xml, "xml");
 
             return UIViewLoader.Load(uv, xml);
+        }
+
+        /// <summary>
+        /// Converts a position in screen space to a position in view space.
+        /// </summary>
+        /// <param name="x">The x-coordinate of the screen space position to convert.</param>
+        /// <param name="y">The y-coordinate of the screen space position to convert.</param>
+        /// <returns>The converted view space position.</returns>
+        public Vector2 ScreenPositionToViewPosition(Int32 x, Int32 y)
+        {
+            return new Vector2(x - Area.X, y - Area.Y);
+        }
+
+        /// <summary>
+        /// Converts a position in screen space to a position in view space.
+        /// </summary>
+        /// <param name="position">The screen space position to convert.</param>
+        /// <returns>The converted view space position.</returns>
+        public Vector2 ScreenPositionToViewPosition(Vector2 position)
+        {
+            return ScreenPositionToViewPosition((Int32)position.X, (Int32)position.Y);
+        }
+
+        /// <summary>
+        /// Converts a position in view space to a position in screen space.
+        /// </summary>
+        /// <param name="x">The x-coordinate of the view space position to convert.</param>
+        /// <param name="y">The y-coordinate of the view space position to convert.</param>
+        /// <returns>The converted screen space position.</returns>
+        public Vector2 ViewPositionToScreenPosition(Int32 x, Int32 y)
+        {
+            return new Vector2(x + Area.X, y + Area.Y);
+        }
+
+        /// <summary>
+        /// Converts a position in view space to a position in screen space.
+        /// </summary>
+        /// <param name="position">The view space position to convert.</param>
+        /// <returns>The converted screen space position.</returns>
+        public Vector2 ViewPositionToScreenPosition(Vector2 position)
+        {
+            return ViewPositionToScreenPosition((Int32)position.X, (Int32)position.Y);
+        }
+
+        /// <summary>
+        /// Gets the element within this view at the specified point in view space.
+        /// </summary>
+        /// <param name="x">The x-coordinate of the position in view space to evaluate.</param>
+        /// <param name="y">The y-coordinate of the position in view space to evaluate.</param>
+        /// <returns>The element within this view at the specified point in view space, or <c>null</c> if no element exists at that point.</returns>
+        public UIElement GetElementAtPoint(Int32 x, Int32 y)
+        {
+            return Canvas.GetElementAtPoint(x, y);
+        }
+
+        /// <summary>
+        /// Gets the element within this view at the specified point in view space.
+        /// </summary>
+        /// <param name="position">The position in view space to evaluate.</param>
+        /// <returns>The element within this view at the specified point in view space, or <c>null</c> if no element exists at that point.</returns>
+        public UIElement GetElementAtPoint(Vector2 position)
+        {
+            return GetElementAtPoint((Int32)position.X, (Int32)position.Y);
+        }
+
+        /// <summary>
+        /// Gets the element within this view at the specified point in screen space.
+        /// </summary>
+        /// <param name="x">The x-coordinate of the position in screen space to evaluate.</param>
+        /// <param name="y">The y-coordinate of the position in screen space to evaluate.</param>
+        /// <returns>The element within this view at the specified point in screen space, or <c>null</c> if no element exists at that point.</returns>
+        public UIElement GetElementAtScreenPoint(Int32 x, Int32 y)
+        {
+            var xprime = x - Area.X;
+            var yprime = y - Area.Y;
+            return GetElementAtPoint(xprime, yprime);
+        }
+
+        /// <summary>
+        /// Gets the element within this view at the specified point in screen space.
+        /// </summary>
+        /// <param name="position">The position in screen space to evaluate.</param>
+        /// <returns>The element within this view at the specified point in screen space, or <c>null</c> if no element exists at that point.</returns>
+        public UIElement GetElementAtScreenPoint(Vector2 position)
+        {
+            return GetElementAtScreenPoint((Int32)position.X, (Int32)position.Y);
         }
 
         /// <summary>
@@ -107,13 +192,13 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
             var newPosition = false;
             var newSize = false;
 
-            if (this.viewArea.X != area.X || this.viewArea.Y != area.Y)
+            if (this.area.X != area.X || this.area.Y != area.Y)
                 newPosition = true;
 
-            if (this.viewArea.Width != area.Width || this.viewArea.Height != area.Height)
+            if (this.area.Width != area.Width || this.area.Height != area.Height)
                 newSize = true;
 
-            this.viewArea = area;
+            this.area = area;
 
             Canvas.CalculatedWidth  = area.Width;
             Canvas.CalculatedHeight = area.Height;
@@ -146,6 +231,34 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         }
 
         /// <summary>
+        /// Loads the specified asset from the global content manager.
+        /// </summary>
+        /// <typeparam name="TOutput">The type of object being loaded.</typeparam>
+        /// <param name="asset">The identifier of the asset to load.</param>
+        /// <returns>The asset that was loaded.</returns>
+        public TOutput LoadGlobalContent<TOutput>(AssetID asset)
+        {
+            if (!asset.IsValid)
+                return default(TOutput);
+
+            return (globalContent == null) ? default(TOutput) : globalContent.Load<TOutput>(asset);
+        }
+
+        /// <summary>
+        /// Loads the specified asset from the local content manager.
+        /// </summary>
+        /// <typeparam name="TOutput">The type of object being loaded.</typeparam>
+        /// <param name="asset">The identifier of the asset to load.</param>
+        /// <returns>The asset that was loaded.</returns>
+        public TOutput LoadLocalContent<TOutput>(AssetID asset)
+        {
+            if (!asset.IsValid)
+                return default(TOutput);
+
+            return (localContent == null) ? default(TOutput) : localContent.Load<TOutput>(asset);
+        }
+
+        /// <summary>
         /// Loads the specified sourced asset.
         /// </summary>
         /// <typeparam name="TOutput">The type of object being loaded.</typeparam>
@@ -167,6 +280,30 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
                 default:
                     throw new NotSupportedException();
             }
+        }
+
+        /// <summary>
+        /// Loads the specified image from the global content manager.
+        /// </summary>
+        /// <param name="image">The identifier of the image to load.</param>
+        public void LoadGlobalContent(StretchableImage9 image)
+        {
+            if (image == null || globalContent == null)
+                return;
+
+            image.Load(globalContent);
+        }
+
+        /// <summary>
+        /// Loads the specified image from the local content manager.
+        /// </summary>
+        /// <param name="image">The identifier of the image to load.</param>
+        public void LoadLocalContent(StretchableImage9 image)
+        {
+            if (image == null || localContent == null)
+                return;
+
+            image.Load(localContent);
         }
 
         /// <summary>
@@ -241,16 +378,24 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         }
 
         /// <summary>
+        /// Gets the type of view model expected by this view.
+        /// </summary>
+        public Type ViewModelType
+        {
+            get { return viewModelType; }
+        }
+
+        /// <summary>
         /// Gets or sets the area on the screen that the UI view occupies.
         /// </summary>
         public Rectangle Area
         {
-            get { return viewArea; }
+            get { return area; }
             set
             {
-                if (!viewArea.Equals(value))
+                if (!area.Equals(value))
                 {
-                    viewArea = value;
+                    area = value;
                     Canvas.ContainerRelativeLayout = new Rectangle(0, 0, value.Width, value.Height);
                     Canvas.PerformLayout();
                 }
@@ -262,7 +407,7 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         /// </summary>
         public Int32 X
         {
-            get { return viewArea.X; }
+            get { return area.X; }
         }
 
         /// <summary>
@@ -270,7 +415,7 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         /// </summary>
         public Int32 Y
         {
-            get { return viewArea.Y; }
+            get { return area.Y; }
         }
 
         /// <summary>
@@ -278,7 +423,7 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         /// </summary>
         public Int32 Width
         {
-            get { return viewArea.Width; }
+            get { return area.Width; }
         }
 
         /// <summary>
@@ -286,7 +431,7 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         /// </summary>
         public Int32 Height
         {
-            get { return viewArea.Height; }
+            get { return area.Height; }
         }
 
         /// <summary>
@@ -322,9 +467,8 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         private ContentManager localContent;
         private UvssDocument stylesheet;
         private Object viewModel;
-        private Rectangle viewArea;
-        private Canvas canvas;
-
         private readonly Type viewModelType;
+        private Rectangle area;
+        private Canvas canvas;
     }
 }

@@ -7,7 +7,7 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
     /// <summary>
     /// Represents a collection of classes associated with a UI element.
     /// </summary>
-    public sealed class UIElementClassCollection 
+    public sealed partial class UIElementClassCollection  : IEnumerable<String>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="UIElementClassCollection"/> class.
