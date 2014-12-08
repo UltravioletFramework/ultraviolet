@@ -256,7 +256,7 @@ namespace TwistedLogik.Ultraviolet
             var minRight = rectangle1.Right < rectangle2.Right ? rectangle1.Right : rectangle2.Right;
             var minBottom = rectangle1.Bottom < rectangle2.Bottom ? rectangle1.Bottom : rectangle2.Bottom;
 
-            var isEmpty = (minRight > maxLeft && minBottom > maxTop);
+            var isEmpty = (minRight <= maxLeft || minBottom <= maxTop);
 
             return isEmpty ? Rectangle.Empty : new Rectangle(maxLeft, maxTop, minRight - maxLeft, minBottom - maxTop);
         }
@@ -274,7 +274,7 @@ namespace TwistedLogik.Ultraviolet
             var minRight = rectangle1.Right < rectangle2.Right ? rectangle1.Right : rectangle2.Right;
             var minBottom = rectangle1.Bottom < rectangle2.Bottom ? rectangle1.Bottom : rectangle2.Bottom;
 
-            var isEmpty = (minRight > maxLeft && minBottom > maxTop);
+            var isEmpty = (minRight <= maxLeft || minBottom <= maxTop);
 
             result = isEmpty ? Rectangle.Empty : new Rectangle(maxLeft, maxTop, minRight - maxLeft, minBottom - maxTop);
         }

@@ -134,14 +134,14 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Sets the device's scissor rectangle.
         /// </summary>
-        /// <param name="rect">The scissor rectangle.</param>
-        void SetScissorRectangle(Rectangle rect);
+        /// <param name="rect">The scissor rectangle, or <c>null</c> to disable the scissor test.</param>
+        void SetScissorRectangle(Rectangle? rect);
 
         /// <summary>
         /// Gets the device's scissor rectangle.
         /// </summary>
-        /// <returns>The device's scissor rectangle.</returns>
-        Rectangle GetScissorRectangle();
+        /// <returns>The device's scissor rectangle, or <c>null</c> if the scissor test is disabled.</returns>
+        Rectangle? GetScissorRectangle();
 
         /// <summary>
         /// Draws a collection of non-indexed geometric primitives of the specified type from the currently bound buffers.
