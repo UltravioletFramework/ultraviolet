@@ -119,6 +119,7 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         {
             ReloadFont();
             ReloadBackgroundImage();
+            ReloadBackgroundImageHover();
 
             OnReloadingContent();
         }
@@ -270,6 +271,14 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         }
 
         /// <summary>
+        /// Gets a value indicating whether the mouse cursor is hovering over this element.
+        /// </summary>
+        public Boolean Hovering
+        {
+            get { return hovering; }
+        }
+
+        /// <summary>
         /// Gets or sets the amount of padding around the element's content.
         /// </summary>
         public Int32 Padding
@@ -285,6 +294,15 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         {
             get { return GetValue<Color>(dpFontColor); }
             set { SetValue<Color>(dpFontColor, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets the element's font color while in the "hover" state.
+        /// </summary>
+        public Color? FontColorHover
+        {
+            get { return GetValue<Color?>(dpFontColorHover); }
+            set { SetValue<Color?>(dpFontColorHover, value); }
         }
 
         /// <summary>
@@ -314,12 +332,30 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         }
 
         /// <summary>
+        /// Gets or sets the element's background color while in the "hover" state.
+        /// </summary>
+        public Color? BackgroundColorHover
+        {
+            get { return GetValue<Color?>(dpBackgroundColorHover); }
+            set { SetValue<Color?>(dpBackgroundColorHover, value); }
+        }
+
+        /// <summary>
         /// Gets or sets the element's background image.
         /// </summary>
         public SourcedRef<StretchableImage9> BackgroundImage
         {
             get { return GetValue<SourcedRef<StretchableImage9>>(dpBackgroundImage); }
             set { SetValue<SourcedRef<StretchableImage9>>(dpBackgroundImage, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets the element's background image while in the "hover" state.
+        /// </summary>
+        public SourcedRef<StretchableImage9>? BackgroundImageHover
+        {
+            get { return GetValue<SourcedRef<StretchableImage9>?>(dpBackgroundImageHover); }
+            set { SetValue<SourcedRef<StretchableImage9>?>(dpBackgroundImageHover, value); }
         }
 
         /// <summary>
@@ -373,6 +409,11 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         public event UIElementEventHandler FontColorChanged;
 
         /// <summary>
+        /// Occurs when the value of the <see cref="FontColorHover"/> property changes.
+        /// </summary>
+        public event UIElementEventHandler FontColorHoverChanged;
+
+        /// <summary>
         /// Occurs when the value of the <see cref="FontAssetID"/> property changes.
         /// </summary>
         public event UIElementEventHandler FontAssetIDChanged;
@@ -383,9 +424,19 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         public event UIElementEventHandler BackgroundColorChanged;
 
         /// <summary>
+        /// Occurs when the value of the <see cref="BackgroundColorHover"/> property changes.
+        /// </summary>
+        public event UIElementEventHandler BackgroundColorHoverChanged;
+
+        /// <summary>
         /// Occurs when the value of the <see cref="BackgroundImage"/> property changes.
         /// </summary>
         public event UIElementEventHandler BackgroundImageChanged;
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="BackgroundImageHover"/> property changes.
+        /// </summary>
+        public event UIElementEventHandler BackgroundImageHoverChanged;
 
         /// <summary>
         /// Gets the element's area relative to its container after layout has been performed.
@@ -556,6 +607,18 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         }
 
         /// <summary>
+        /// Raises the <see cref="FontColorHoverChanged"/> event.
+        /// </summary>
+        protected virtual void OnFontColorHoverChanged()
+        {
+            var temp = FontColorHoverChanged;
+            if (temp != null)
+            {
+                temp(this);
+            }
+        }
+
+        /// <summary>
         /// Raises the <see cref="FontAssetIDChanged"/> event.
         /// </summary>
         protected virtual void OnFontAssetIDChanged()
@@ -580,11 +643,35 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         }
 
         /// <summary>
+        /// Raises the <see cref="BackgroundColorHoverChanged"/> event.
+        /// </summary>
+        protected virtual void OnBackgroundColorHoverChanged()
+        {
+            var temp = BackgroundColorHoverChanged;
+            if (temp != null)
+            {
+                temp(this);
+            }
+        }
+
+        /// <summary>
         /// Raises the <see cref="BackgroundImageChanged"/> event.
         /// </summary>
         protected virtual void OnBackgroundImageChanged()
         {
             var temp = BackgroundImageChanged;
+            if (temp != null)
+            {
+                temp(this);
+            }
+        }
+
+        /// <summary>
+        /// Raises the <see cref="BackgroundImageHoverChanged"/> event.
+        /// </summary>
+        protected virtual void OnBackgroundImageHoverChanged()
+        {
+            var temp = BackgroundImageHoverChanged;
             if (temp != null)
             {
                 temp(this);
@@ -686,6 +773,17 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         }
 
         /// <summary>
+        /// Reloads the element's background image for the "hover" state.
+        /// </summary>
+        protected void ReloadBackgroundImageHover()
+        {
+            if (BackgroundImageHover != null)
+            {
+                LoadContent(BackgroundImageHover.Value);
+            }
+        }
+
+        /// <summary>
         /// Draws the element's background image.
         /// </summary>
         /// <param name="spriteBatch">The sprite batch with which to draw.</param>
@@ -734,6 +832,8 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         /// <param name="device">The mouse device.</param>
         protected internal virtual void OnMouseEnter(MouseDevice device)
         {
+            hovering = true;
+
             var temp = MouseEnter;
             if (temp != null)
             {
@@ -747,6 +847,8 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         /// <param name="device">The mouse device.</param>
         protected internal virtual void OnMouseLeave(MouseDevice device)
         {
+            hovering = false;
+
             var temp = MouseLeave;
             if (temp != null)
             {
@@ -1022,13 +1124,19 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         private static void HandleFontColorChanged(DependencyObject dobj)
         {
             var element = (UIElement)dobj;
-            if (element.Container != null)
-            {
-                element.Container.PerformLayout(element);
-            }
             element.OnFontColorChanged();
         }
-        
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="FontColorHover"/> dependency property changes.
+        /// </summary>
+        /// <param name="dobj">The object that raised the event.</param>
+        private static void HandleFontColorHoverChanged(DependencyObject dobj)
+        {
+            var element = (UIElement)dobj;
+            element.OnFontColorHoverChanged();
+        }
+
         /// <summary>
         /// Occurs when the value of the <see cref="FontAssetID"/> dependency property changes.
         /// </summary>
@@ -1036,6 +1144,10 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         private static void HandleFontAssetIDChanged(DependencyObject dobj)
         {
             var element = (UIElement)dobj;
+            if (element.Container != null)
+            {
+                element.Container.PerformLayout(element);
+            }
             element.ReloadFont();
             element.OnFontAssetIDChanged();
         }
@@ -1051,6 +1163,16 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         }
 
         /// <summary>
+        /// Occurs when the value of the <see cref="BackgroundColorHover"/> dependency property changes.
+        /// </summary>
+        /// <param name="dobj">The object that raised the event.</param>
+        private static void HandleBackgroundColorHoverChanged(DependencyObject dobj)
+        {
+            var element = (UIElement)dobj;
+            element.OnBackgroundColorHoverChanged();
+        }
+
+        /// <summary>
         /// Occurs when the value of the <see cref="BackgroundImage"/> dependency property changes.
         /// </summary>
         /// <param name="dobj">The object that raised the event.</param>
@@ -1059,6 +1181,17 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
             var element = (UIElement)dobj;
             element.ReloadBackgroundImage();
             element.OnBackgroundImageChanged();
+        }
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="BackgroundImageHover"/> dependency property changes.
+        /// </summary>
+        /// <param name="dobj">The object that raised the event.</param>
+        private static void HandleBackgroundImageHoverChanged(DependencyObject dobj)
+        {
+            var element = (UIElement)dobj;
+            element.ReloadBackgroundImageHover();
+            element.OnBackgroundImageHoverChanged();
         }
 
         // Dependency properties.
@@ -1076,6 +1209,9 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         [Styled("font-color")]
         private static readonly DependencyProperty dpFontColor = DependencyProperty.Register("FontColor", typeof(Color), typeof(UIElement),
             new DependencyPropertyMetadata(HandleFontColorChanged, () => Color.White, DependencyPropertyOptions.Inherited));
+        [Styled("font-color", "hover")]
+        private static readonly DependencyProperty dpFontColorHover = DependencyProperty.Register("FontColorHover", typeof(Color?), typeof(UIElement),
+            new DependencyPropertyMetadata(HandleFontColorHoverChanged, null, DependencyPropertyOptions.Inherited));
         [Styled("font-asset")]
         private static readonly DependencyProperty dpFontAssetID = DependencyProperty.Register("FontAssetID", typeof(SourcedVal<AssetID>), typeof(UIElement),
             new DependencyPropertyMetadata(HandleFontAssetIDChanged, null, DependencyPropertyOptions.Inherited));
@@ -1083,8 +1219,14 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         [Styled("background-color")]
         private static readonly DependencyProperty dpBackgroundColor = DependencyProperty.Register("BackgroundColor", typeof(Color), typeof(UIElement),
             new DependencyPropertyMetadata(HandleBackgroundColorChanged, () => Color.White, DependencyPropertyOptions.None));
+        [Styled("background-color", "hover")]
+        private static readonly DependencyProperty dpBackgroundColorHover = DependencyProperty.Register("BackgroundColorHover", typeof(Color?), typeof(UIElement),
+            new DependencyPropertyMetadata(HandleBackgroundColorHoverChanged, null, DependencyPropertyOptions.None));
         [Styled("background-image")]
         private static readonly DependencyProperty dpBackgroundImage = DependencyProperty.Register("BackgroundImage", typeof(SourcedRef<StretchableImage9>), typeof(UIElement),
+            new DependencyPropertyMetadata(HandleBackgroundImageChanged, null, DependencyPropertyOptions.None));
+        [Styled("background-image", "hover")]
+        private static readonly DependencyProperty dpBackgroundImageHover = DependencyProperty.Register("BackgroundImageHover", typeof(SourcedRef<StretchableImage9>?), typeof(UIElement),
             new DependencyPropertyMetadata(HandleBackgroundImageChanged, null, DependencyPropertyOptions.None));
 
         // Property values.
@@ -1095,6 +1237,7 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         private Object viewModel;
         private UIView view;
         private UIContainer container;
+        private Boolean hovering;
         private Int32 containerRelativeX;
         private Int32 containerRelativeY;
         private Int32 calculatedWidth;
