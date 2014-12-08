@@ -34,6 +34,9 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         {
             Contract.Require(spriteBatch, "spriteBatch");
 
+            if (Ultraviolet.GetPlatform().Windows.GetCurrent() != Window)
+                return;
+
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, RasterizerState.CullCounterClockwise);
 
             foreach (var view in views)
@@ -171,6 +174,15 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         }
 
         /// <summary>
+        /// Gets or sets the window that owns the collection. If <c>null</c>, the primary window is used.
+        /// </summary>
+        public IUltravioletWindow Window
+        {
+            get { return this.window ?? Ultraviolet.GetPlatform().Windows.GetPrimary(); }
+            set { this.window = value; }
+        }
+
+        /// <summary>
         /// Gets the number of views in the collection.
         /// </summary>
         public Int32 Count
@@ -264,7 +276,7 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
             // Determine which element is currently under the mouse cursor.
             var mouse     = Ultraviolet.GetInput().GetMouse();
             var mousePos  = mouse.Position;
-            var mouseView = GetViewAtPoint(mousePos); 
+            var mouseView = mouse.Window == Window ? GetViewAtPoint(mousePos) : null; 
             
             elementUnderMousePrev = elementUnderMouse;
             elementUnderMouse     = (mouseView == null) ? null : mouseView.GetElementAtScreenPoint(mousePos);
@@ -285,6 +297,9 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         /// </summary>
         private void mouse_ButtonPressed(IUltravioletWindow window, MouseDevice device, MouseButton button)
         {
+            if (window != Window)
+                return;
+
             if (elementUnderMouse != null)
             {
                 elementUnderMouse.OnMouseButtonPressed(device, button);
@@ -296,11 +311,17 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         /// </summary>
         private void mouse_ButtonReleased(IUltravioletWindow window, MouseDevice device, MouseButton button)
         {
+            if (window != Window)
+                return;
+
             if (elementUnderMouse != null)
             {
                 elementUnderMouse.OnMouseButtonReleased(device, button);
             }
         }
+
+        // Property values.
+        private IUltravioletWindow window;
 
         // State values.
         private readonly PooledLinkedList<UIView> views = 

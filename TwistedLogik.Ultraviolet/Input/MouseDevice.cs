@@ -64,6 +64,14 @@ namespace TwistedLogik.Ultraviolet.Input
         public abstract Boolean IsButtonDoubleClicked(MouseButton button);
 
         /// <summary>
+        /// Gets the window that currently contains the mouse cursor.
+        /// </summary>
+        public abstract IUltravioletWindow Window
+        {
+            get;
+        }
+
+        /// <summary>
         /// Gets the mouse's current position.
         /// </summary>
         public abstract Vector2 Position
