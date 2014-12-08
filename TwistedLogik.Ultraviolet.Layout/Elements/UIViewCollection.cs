@@ -126,6 +126,36 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
             return false;
         }
 
+        /// <summary>
+        /// Gets the view at the specified point on the screen.
+        /// </summary>
+        /// <param name="x">The x-coordinate to evaluate.</param>
+        /// <param name="y">The y-coordinate to evaluate.</param>
+        /// <returns>The view at the specified point on the screen, or <c>null</c> if no view exists at that position.</returns>
+        public UIView GetViewAtPoint(Int32 x, Int32 y)
+        {
+            var current = views.Last;
+            while (current != null)
+            {
+                if (current.Value.Area.Contains(x, y))
+                {
+                    return current.Value;
+                }
+                current = current.Previous;
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// Gets the view at the specified point on the screen.
+        /// </summary>
+        /// <param name="position">The position to evaluate.</param>
+        /// <returns>The view at the specified point on the screen, or <c>null</c> if no view exists at that position.</returns>
+        public UIView GetViewAtPoint(Vector2 position)
+        {
+            return GetViewAtPoint((Int32)position.X, (Int32)position.Y);
+        }
+
         /// <inheritdoc/>
         public LinkedList<UIView>.Enumerator GetEnumerator()
         {
