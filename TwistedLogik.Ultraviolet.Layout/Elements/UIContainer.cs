@@ -13,7 +13,7 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         /// Initializes a new instance of the <see cref="UIContainer"/> class.
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
-        /// <param name="id">The element's unique identifier within its layout.</param>
+        /// <param name="id">The element's unique identifier within its view.</param>
         public UIContainer(UltravioletContext uv, String id)
             : base(uv, id)
         {
@@ -138,14 +138,14 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         /// <inheritdoc/>
         internal override void Draw(UltravioletTime time, SpriteBatch spriteBatch)
         {
-            if (!IsVisible)
+            if (!Visible)
                 return;
 
             base.Draw(time, spriteBatch);
 
             foreach (var child in children)
             {
-                if (child.IsVisible)
+                if (child.Visible)
                 {
                     child.Draw(time, spriteBatch);
                 }

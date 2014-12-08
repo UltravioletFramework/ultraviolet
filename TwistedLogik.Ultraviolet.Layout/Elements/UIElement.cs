@@ -59,7 +59,7 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         /// Initializes a new instance of the <see cref="UIElement"/> class.
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
-        /// <param name="id">The element's unique identifier within its layout.</param>
+        /// <param name="id">The element's unique identifier within its view.</param>
         public UIElement(UltravioletContext uv, String id)
         {
             Contract.Require(uv, "uv");
@@ -97,6 +97,17 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         }
 
         /// <summary>
+        /// Calculates the element's recommended size based on its content
+        /// and the specified constraints.
+        /// </summary>
+        /// <param name="width">The element's recommended width.</param>
+        /// <param name="height">The element's recommended height.</param>
+        public virtual void CalculateRecommendedSize(ref Int32? width, ref Int32? height)
+        {
+
+        }
+
+        /// <summary>
         /// Gets the Ultraviolet context that created the element.
         /// </summary>
         public UltravioletContext Ultraviolet
@@ -105,7 +116,7 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         }
 
         /// <summary>
-        /// Gets the element's unique identifier within its layout.
+        /// Gets the element's unique identifier within its view.
         /// </summary>
         public String ID
         {
@@ -148,7 +159,7 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         /// Gets a value indicating whether this is an anonymous element.
         /// </summary>
         /// <remarks>An anonymous element is one which has no explicit identifier.</remarks>
-        public Boolean IsAnonymous
+        public Boolean Anonymous
         {
             get { return String.IsNullOrEmpty(id); }
         }
@@ -156,19 +167,28 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         /// <summary>
         /// Gets or sets a value indicating whether the element is enabled.
         /// </summary>
-        public Boolean IsEnabled
+        public Boolean Enabled
         {
-            get { return GetValue<Boolean>(dpIsEnabled); }
-            set { SetValue<Boolean>(dpIsEnabled, value); }
+            get { return GetValue<Boolean>(dpEnabled); }
+            set { SetValue<Boolean>(dpEnabled, value); }
         }
 
         /// <summary>
         /// Gets or sets a value indicating whether the element is visible.
         /// </summary>
-        public Boolean IsVisible
+        public Boolean Visible
         {
-            get { return GetValue<Boolean>(dpIsVisible); }
-            set { SetValue<Boolean>(dpIsVisible, value); }
+            get { return GetValue<Boolean>(dpVisible); }
+            set { SetValue<Boolean>(dpVisible, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets the amount of padding around the element's content.
+        /// </summary>
+        public Int32 Padding
+        {
+            get { return GetValue<Int32>(dpPadding); }
+            set { SetValue<Int32>(dpPadding, value); }
         }
 
         /// <summary>
@@ -183,10 +203,10 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         /// <summary>
         /// Gets the asset identifier of the element's font.
         /// </summary>
-        public Sourced<AssetID> FontAssetID
+        public SourcedVal<AssetID> FontAssetID
         {
-            get { return GetValue<Sourced<AssetID>>(dpFontAssetID); }
-            set { SetValue<Sourced<AssetID>>(dpFontAssetID, value); }
+            get { return GetValue<SourcedVal<AssetID>>(dpFontAssetID); }
+            set { SetValue<SourcedVal<AssetID>>(dpFontAssetID, value); }
         }
 
         /// <summary>
@@ -224,6 +244,21 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         /// Occurs when the element is being updated.
         /// </summary>
         public event UIElementUpdatingEventHandler Updating;
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="Enabled"/> property changes.
+        /// </summary>
+        public event UIElementEventHandler EnabledChanged;
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="Visible"/> property changes.
+        /// </summary>
+        public event UIElementEventHandler VisibleChanged;
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="Padding"/> property changes.
+        /// </summary>
+        public event UIElementEventHandler PaddingChanged;
 
         /// <summary>
         /// Occurs when the value of the <see cref="FontColor"/> property changes.
@@ -366,6 +401,42 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         }
 
         /// <summary>
+        /// Raises the <see cref="EnabledChanged"/> event.
+        /// </summary>
+        protected virtual void OnEnabledChanged()
+        {
+            var temp = EnabledChanged;
+            if (temp != null)
+            {
+                temp(this);
+            }
+        }
+
+        /// <summary>
+        /// Raises the <see cref="VisibleChanged"/> event.
+        /// </summary>
+        protected virtual void OnVisibleChanged()
+        {
+            var temp = VisibleChanged;
+            if (temp != null)
+            {
+                temp(this);
+            }
+        }
+
+        /// <summary>
+        /// Raises the <see cref="PaddingChanged"/> event.
+        /// </summary>
+        protected virtual void OnPaddingChanged()
+        {
+            var temp = PaddingChanged;
+            if (temp != null)
+            {
+                temp(this);
+            }
+        }
+
+        /// <summary>
         /// Raises the <see cref="FontColorChanged"/> event.
         /// </summary>
         protected virtual void OnFontColorChanged()
@@ -419,7 +490,7 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         /// <typeparam name="TOutput">The type of object being loaded.</typeparam>
         /// <param name="asset">The identifier of the asset to load.</param>
         /// <returns>The asset that was loaded.</returns>
-        protected TOutput LoadContent<TOutput>(Sourced<AssetID> asset)
+        protected TOutput LoadContent<TOutput>(SourcedVal<AssetID> asset)
         {
             if (View == null)
                 return default(TOutput);
@@ -689,15 +760,49 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         }
 
         /// <summary>
+        /// Occurs when the value of the <see cref="Enabled"/> dependency property changes.
+        /// </summary>
+        /// <param name="dobj">The object that raised the event.</param>
+        private static void HandleEnabledChanged(DependencyObject dobj)
+        {
+            var element = (UIElement)dobj;
+            element.OnEnabledChanged();
+        }
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="Visible"/> dependency property changes.
+        /// </summary>
+        /// <param name="dobj">The object that raised the event.</param>
+        private static void HandleVisibleChanged(DependencyObject dobj)
+        {
+            var element = (UIElement)dobj;
+            element.OnVisibleChanged();
+        }
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="Padding"/> dependency property changes.
+        /// </summary>
+        /// <param name="dobj">The object that raised the event.</param>
+        private static void HandlePaddingChanged(DependencyObject dobj)
+        {
+            var element = (UIElement)dobj;
+            element.OnPaddingChanged();
+        }
+
+        /// <summary>
         /// Occurs when the value of the <see cref="FontColor"/> dependency property changes.
         /// </summary>
         /// <param name="dobj">The object that raised the event.</param>
         private static void HandleFontColorChanged(DependencyObject dobj)
         {
             var element = (UIElement)dobj;
+            if (element.Container != null)
+            {
+                element.Container.PerformLayout(element);
+            }
             element.OnFontColorChanged();
         }
-
+        
         /// <summary>
         /// Occurs when the value of the <see cref="FontAssetID"/> dependency property changes.
         /// </summary>
@@ -731,18 +836,22 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         }
 
         // Dependency properties.
-        private static readonly DependencyProperty dpIsEnabled = DependencyProperty.Register("IsEnabled", typeof(Boolean), typeof(UIElement),
-            new DependencyPropertyMetadata(null, () => true, DependencyPropertyOptions.None));
+        private static readonly DependencyProperty dpEnabled = DependencyProperty.Register("Enabled", typeof(Boolean), typeof(UIElement),
+            new DependencyPropertyMetadata(HandleEnabledChanged, () => true, DependencyPropertyOptions.None));
 
         [Styled("visible")]
-        private static readonly DependencyProperty dpIsVisible = DependencyProperty.Register("IsVisible", typeof(Boolean), typeof(UIElement),
-            new DependencyPropertyMetadata(null, () => true, DependencyPropertyOptions.None));
+        private static readonly DependencyProperty dpVisible = DependencyProperty.Register("Visible", typeof(Boolean), typeof(UIElement),
+            new DependencyPropertyMetadata(HandleVisibleChanged, () => true, DependencyPropertyOptions.None));
+
+        [Styled("padding")]
+        private static readonly DependencyProperty dpPadding = DependencyProperty.Register("Padding", typeof(Int32), typeof(UIElement),
+            new DependencyPropertyMetadata(HandlePaddingChanged, null, DependencyPropertyOptions.None));
 
         [Styled("font-color")]
         private static readonly DependencyProperty dpFontColor = DependencyProperty.Register("FontColor", typeof(Color), typeof(UIElement),
             new DependencyPropertyMetadata(HandleFontColorChanged, () => Color.White, DependencyPropertyOptions.Inherited));
         [Styled("font-asset")]
-        private static readonly DependencyProperty dpFontAssetID = DependencyProperty.Register("FontAssetID", typeof(Sourced<AssetID>), typeof(UIElement),
+        private static readonly DependencyProperty dpFontAssetID = DependencyProperty.Register("FontAssetID", typeof(SourcedVal<AssetID>), typeof(UIElement),
             new DependencyPropertyMetadata(HandleFontAssetIDChanged, null, DependencyPropertyOptions.Inherited));
 
         [Styled("background-color")]

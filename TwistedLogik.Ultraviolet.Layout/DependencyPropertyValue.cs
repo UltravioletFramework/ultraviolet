@@ -245,7 +245,7 @@ namespace TwistedLogik.Ultraviolet.Layout
                     }
                 }
 
-                expressions.Add(Expression.Return(returnTarget, currentPartVar, typeof(T)));
+                expressions.Add(Expression.Return(returnTarget, Expression.Convert(currentPartVar, typeof(T)), typeof(T)));
                 expressions.Add(Expression.Label(returnTarget, Expression.Default(typeof(T))));
 
                 var lambdaBody = Expression.Block(variables, expressions);

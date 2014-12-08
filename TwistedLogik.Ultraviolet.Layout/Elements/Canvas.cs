@@ -16,7 +16,7 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         /// Initializes a new instance of the <see cref="Canvas"/> class.
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
-        /// <param name="id">The element's unique identifier within its layout.</param>
+        /// <param name="id">The element's unique identifier within its view.</param>
         public Canvas(UltravioletContext uv, String id)
             : base(uv, id)
         {
@@ -238,6 +238,10 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
             // If we have both top and bottom, calculate height
             if (top != null && bottom != null)
                 height = CalculatedHeight - (top.GetValueOrDefault() + bottom.GetValueOrDefault());
+
+            // If we're missing a dimension, calculate the recommended dimension.
+            if (width == null || height == null)
+                child.CalculateRecommendedSize(ref width, ref height);
 
             // If we have no width, assume 0
             if (width == null)

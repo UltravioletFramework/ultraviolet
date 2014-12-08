@@ -61,7 +61,8 @@
     <Compile Include="Elements\Label.cs" />
     <Compile Include="Elements\Button.cs" />
     <Compile Include="Elements\SourcedRef.cs" />
-    <Compile Include="Elements\Sourced.cs" />
+    <Compile Include="Elements\SourcedVal.cs" />
+    <Compile Include="Elements\TextualElement.cs" />
     <Compile Include="Elements\UIContainer.cs" />
     <Compile Include="Elements\UIElement.cs" />
     <Compile Include="Elements\UIElementAttribute.cs" />

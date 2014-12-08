@@ -179,7 +179,7 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         /// <typeparam name="TOutput">The type of object being loaded.</typeparam>
         /// <param name="asset">The identifier of the asset to load.</param>
         /// <returns>The asset that was loaded.</returns>
-        public TOutput LoadContent<TOutput>(Sourced<AssetID> asset)
+        public TOutput LoadContent<TOutput>(SourcedVal<AssetID> asset)
         {
             if (!asset.Value.IsValid)
                 return default(TOutput);

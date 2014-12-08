@@ -1,7 +1,5 @@
 ﻿using System;
-using System.ComponentModel;
 using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
-using TwistedLogik.Ultraviolet.Graphics;
 
 namespace TwistedLogik.Ultraviolet.Layout.Elements
 {
@@ -9,30 +7,29 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
     /// Represents a button on a user interface.
     /// </summary>
     [UIElement("Button")]
-    [DefaultProperty("Text")]
-    public class Button : UIElement
+    public class Button : TextualElement
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Button"/> class.
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
-        /// <param name="id">The element's unique identifier within its layout.</param>
+        /// <param name="id">The element's unique identifier within its view.</param>
         public Button(UltravioletContext uv, String id)
             : base(uv, id)
         {
 
         }
 
-        /// <summary>
-        /// Gets or sets the button's text.
-        /// </summary>
-        public String Text
+        /// <inheritdoc/>
+        protected override void OnDrawing(UltravioletTime time, SpriteBatch spriteBatch)
         {
-            get { return GetValue<String>(dpText); }
-            set { SetValue<String>(dpText, value); }
+            DrawBackgroundImage(spriteBatch);
+            if (Font != null && CachedLayoutResult.Count > 0)
+            {
+                var position = new Vector2(AbsoluteScreenX + Padding, AbsoluteScreenY + Padding);
+                UIElementResources.TextRenderer.Draw(spriteBatch, CachedLayoutResult, position, FontColor);
+            }
+            base.OnDrawing(time, spriteBatch);
         }
-
-        // Dependency properties.
-        private static readonly DependencyProperty dpText = DependencyProperty.Register("Text", typeof(String), typeof(Button));
     }
 }
