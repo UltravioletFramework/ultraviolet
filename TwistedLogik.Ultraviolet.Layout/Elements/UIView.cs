@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Xml.Linq;
 using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet.Content;
@@ -93,6 +94,18 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         public Vector2 ViewPositionToScreenPosition(Vector2 position)
         {
             return ViewPositionToScreenPosition((Int32)position.X, (Int32)position.Y);
+        }
+
+        /// <summary>
+        /// Gets the element with the specified identifier.
+        /// </summary>
+        /// <param name="id">The identifier of the element to retrieve.</param>
+        /// <returns>The element with the specified identifier, or <c>null</c> if no such element exists.</returns>
+        public UIElement GetElementByID(String id)
+        {
+            UIElement element;
+            elementsByID.TryGetValue(id, out element);
+            return element;
         }
 
         /// <summary>
@@ -461,6 +474,38 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
             Canvas.Update(time);
         }
 
+        /// <summary>
+        /// Registers an element with the view's identifier cache.
+        /// </summary>
+        /// <param name="element">The element to register.</param>
+        internal void RegisterElementID(UIElement element)
+        {
+            if (String.IsNullOrEmpty(element.ID))
+                return;
+
+            UIElement existing;
+            if (elementsByID.TryGetValue(element.ID, out existing))
+                throw new InvalidOperationException(LayoutStrings.ElementWithIDAlreadyExists.Format(element.ID));
+
+            elementsByID[element.ID] = element;
+        }
+
+        /// <summary>
+        /// Removes an element from the view's identifier cache.
+        /// </summary>
+        /// <param name="element">The element to remove.</param>
+        internal void UnregisterElementID(UIElement element)
+        {
+            if (String.IsNullOrEmpty(element.ID))
+                return;
+
+            UIElement existing;
+            elementsByID.TryGetValue(element.ID, out existing);
+
+            if (existing == element)
+                elementsByID.Remove(element.ID);
+        }
+
         // Property values.
         private UIViewCollection container;
         private ContentManager globalContent;
@@ -470,5 +515,9 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         private readonly Type viewModelType;
         private Rectangle area;
         private Canvas canvas;
+
+        // A dictionary which associates element IDs with elements.
+        private readonly Dictionary<String, UIElement> elementsByID = 
+            new Dictionary<String, UIElement>(StringComparer.InvariantCultureIgnoreCase);
     }
 }

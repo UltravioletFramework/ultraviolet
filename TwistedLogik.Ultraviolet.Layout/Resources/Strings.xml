@@ -70,4 +70,9 @@
       <Variant>An element tried to bind a dependency property, but no view model is defined for the element's view.</Variant>
     </en-US>
   </String>
+  <String Key="ELEMENT_WITH_ID_ALREADY_EXISTS">
+    <en-US>
+      <Variant>An element with ID '{0}' already exists within the view.</Variant>
+    </en-US>
+  </String>
 </LocalizedStrings>

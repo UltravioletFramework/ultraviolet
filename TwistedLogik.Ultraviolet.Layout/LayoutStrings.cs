@@ -38,6 +38,7 @@ namespace TwistedLogik.Ultraviolet.Layout
         public static readonly StringResource UnrecognizedUIElement                = new StringResource(StringDatabase, "UNRECOGNIZED_UIELEMENT");
         public static readonly StringResource InvalidDefaultProperty               = new StringResource(StringDatabase, "INVALID_DEFAULT_PROPERTY");
         public static readonly StringResource NoViewModel                          = new StringResource(StringDatabase, "NO_VIEW_MODEL");
+        public static readonly StringResource ElementWithIDAlreadyExists           = new StringResource(StringDatabase, "ELEMENT_WITH_ID_ALREADY_EXISTS");
 #pragma warning restore 1591
     }
 }

@@ -93,6 +93,17 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         }
 
         /// <summary>
+        /// Calculates the element's recommended size based on its content
+        /// and the specified constraints.
+        /// </summary>
+        /// <param name="width">The element's recommended width.</param>
+        /// <param name="height">The element's recommended height.</param>
+        public virtual void CalculateRecommendedSize(ref Int32? width, ref Int32? height)
+        {
+
+        }
+
+        /// <summary>
         /// Releases resources associated with the object.
         /// </summary>
         public void Dispose()
@@ -176,22 +187,19 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         }
 
         /// <summary>
-        /// Calculates the element's recommended size based on its content
-        /// and the specified constraints.
-        /// </summary>
-        /// <param name="width">The element's recommended width.</param>
-        /// <param name="height">The element's recommended height.</param>
-        public virtual void CalculateRecommendedSize(ref Int32? width, ref Int32? height)
-        {
-
-        }
-
-        /// <summary>
         /// Gets the Ultraviolet context that created the element.
         /// </summary>
         public UltravioletContext Ultraviolet
         {
             get { return uv; }
+        }
+
+        /// <summary>
+        /// Gets the element's collection of styling classes.
+        /// </summary>
+        public UIElementClassCollection Classes
+        {
+            get { return classes; }
         }
 
         /// <summary>
@@ -208,14 +216,6 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         public String Name
         {
             get { return name; }
-        }
-
-        /// <summary>
-        /// Gets the element's collection of styling classes.
-        /// </summary>
-        public UIElementClassCollection Classes
-        {
-            get { return classes; }
         }
 
         /// <summary>
@@ -837,7 +837,14 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         /// <param name="view">The view to associate with this element.</param>
         internal virtual void UpdateView(UIView view)
         {
+            if (this.view != null)
+                this.view.UnregisterElementID(this);
+
             this.view = view;
+
+            if (this.view != null)
+                this.view.RegisterElementID(this);
+         
             if (view == null || view.Stylesheet == null)
             {
                 ClearStyledValues();
