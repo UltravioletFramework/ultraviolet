@@ -31,7 +31,7 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
     /// Represents the method that is called when the mouse cursor enters or leaves a UI element.
     /// </summary>
     /// <param name="element">The element that raised the event.</param>
-    /// <param name="mouse">The mouse device.</param>
+    /// <param name="device">The mouse device.</param>
     public delegate void UIElementMouseEventHandler(UIElement element, MouseDevice device);
 
     /// <summary>
@@ -755,7 +755,7 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         }
 
         /// <summary>
-        /// Raises the <see cref="MouseButtonPressed event."/>
+        /// Raises the <see cref="MouseButtonPressed"/> event.
         /// </summary>
         /// <param name="device">The mouse device.</param>
         /// <param name="button">The mouse button that was pressed or released.</param>
@@ -815,7 +815,6 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         /// Updates the element's state.
         /// </summary>
         /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Draw(UltravioletTime)"/>.</param>
-        /// <param name="spriteBatch">The sprite batch with which to draw the element.</param>
         internal virtual void Update(UltravioletTime time)
         {
             Digest();

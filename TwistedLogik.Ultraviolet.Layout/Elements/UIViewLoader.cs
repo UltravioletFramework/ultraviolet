@@ -228,7 +228,7 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         /// </summary>
         /// <param name="uiElement">The UI element to modify.</param>
         /// <param name="dprop">The dependency property to bind or set.</param>
-        /// <param name="value">The binding expression to set on the property.</param>
+        /// <param name="expression">The binding expression to set on the property.</param>
         /// <param name="viewModelType">The view's associated view model type.</param>
         private static void BindProperty(UIElement uiElement, DependencyProperty dprop, String expression, Type viewModelType)
         {

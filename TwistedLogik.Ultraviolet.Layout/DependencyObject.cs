@@ -14,9 +14,9 @@ namespace TwistedLogik.Ultraviolet.Layout
         /// </summary>
         public void Digest()
         {
-            for (int i = 0; i < dependencyPropertyValuesList.Count; i++)
+            for (int i = 0; i < digestedDependencyProperties.Count; i++)
             {
-                dependencyPropertyValuesList[i].Digest();
+                digestedDependencyProperties[i].Digest();
             }
         }
 
@@ -223,15 +223,36 @@ namespace TwistedLogik.Ultraviolet.Layout
                     wrapper.DefaultValue = (T)dp.Metadata.DefaultCallback();
                 }
                 dependencyPropertyValues[dp.ID] = wrapper;
-                dependencyPropertyValuesList.Add(wrapper);
             }
             return wrapper;
         }
 
-        // State values.
-        private readonly List<IDependencyPropertyValue> dependencyPropertyValuesList =
-            new List<IDependencyPropertyValue>();
+        /// <summary>
+        /// Updates the specified dependency property's participation in the digest cycle.
+        /// </summary>
+        /// <param name="value">The dependency property to update.</param>
+        /// <param name="digest">A value indicating whether the dependency property should participate in the digest cycle.</param>
+        private void UpdateDigestParticipation(IDependencyPropertyValue value, Boolean digest)
+        {
+            if (digest)
+            {
+                if (!digestedDependencyProperties.Contains(value))
+                {
+                    digestedDependencyProperties.Add(value);
+                }
+            }
+            else
+            {
+                digestedDependencyProperties.Remove(value);
+            }
+        }
+
+        // The list of values for this object's dependency properties.
         private readonly Dictionary<Int64, IDependencyPropertyValue> dependencyPropertyValues =
             new Dictionary<Int64, IDependencyPropertyValue>();
+
+        // The list of dependency properties which need to participate in the digest cycle.
+        private readonly List<IDependencyPropertyValue> digestedDependencyProperties = 
+            new List<IDependencyPropertyValue>();
     }
 }

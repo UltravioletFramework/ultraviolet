@@ -7,24 +7,24 @@ using TwistedLogik.Nucleus;
 
 namespace TwistedLogik.Ultraviolet.Layout
 {
-    /// <summary>
-    /// Represents a method which is used to retrieve the value of a data bound property.
-    /// </summary>
-    /// <typeparam name="T">The type of the property which was bound.</typeparam>
-    /// <param name="model">The model object for the current binding context.</param>
-    /// <returns>The current value of the bound property.</returns>
-    internal delegate T DataBindingGetter<T>(Object model);
-
-    /// <summary>
-    /// Represents a method 
-    /// </summary>
-    /// <typeparam name="T">The type of the property which was bound.</typeparam>
-    /// <param name="model">The model object for the current binding context.</param>
-    /// <param name="value">The value to set on the bound property.</param>
-    internal delegate void DataBindingSetter<T>(Object model, T value);
-
     partial class DependencyObject
     {
+        /// <summary>
+        /// Represents a method which is used to retrieve the value of a data bound property.
+        /// </summary>
+        /// <typeparam name="T">The type of the property which was bound.</typeparam>
+        /// <param name="model">The model object for the current binding context.</param>
+        /// <returns>The current value of the bound property.</returns>
+        internal delegate T DataBindingGetter<T>(Object model);
+
+        /// <summary>
+        /// Represents a method 
+        /// </summary>
+        /// <typeparam name="T">The type of the property which was bound.</typeparam>
+        /// <param name="model">The model object for the current binding context.</param>
+        /// <param name="value">The value to set on the bound property.</param>
+        internal delegate void DataBindingSetter<T>(Object model, T value);
+
         /// <summary>
         /// Represents the value contained by a dependency property.
         /// </summary>
@@ -58,6 +58,8 @@ namespace TwistedLogik.Ultraviolet.Layout
                 bound             = true;
                 dataBindingGetter = CreateBindingGetter(viewModelType, expression);
                 dataBindingSetter = CreateBindingSetter(viewModelType, expression);
+
+                UpdateRequiresDigest();
             }
 
             /// <summary>
@@ -68,6 +70,8 @@ namespace TwistedLogik.Ultraviolet.Layout
                 bound             = false;
                 dataBindingGetter = null;
                 dataBindingSetter = null;
+
+                UpdateRequiresDigest();
             }
 
             /// <inheritdoc/>
@@ -151,6 +155,7 @@ namespace TwistedLogik.Ultraviolet.Layout
                 {
                     localValue = value;
                     hasLocalValue = true;
+                    UpdateRequiresDigest();
                 }
             }
 
@@ -164,6 +169,7 @@ namespace TwistedLogik.Ultraviolet.Layout
                 {
                     styledValue = value;
                     hasStyledValue = true;
+                    UpdateRequiresDigest();
                 }
             }
 
@@ -173,7 +179,11 @@ namespace TwistedLogik.Ultraviolet.Layout
             public T DefaultValue
             {
                 get { return defaultValue; }
-                set { defaultValue = value; }
+                set 
+                { 
+                    defaultValue = value;
+                    UpdateRequiresDigest();
+                }
             }
 
             /// <summary>
@@ -442,6 +452,22 @@ namespace TwistedLogik.Ultraviolet.Layout
                 };
             }
 
+            /// <summary>
+            /// Updates the value which tracks whether this value needs to participate 
+            /// in the digest cycle.
+            /// </summary>
+            private void UpdateRequiresDigest()
+            {
+                var requiresDigestNew = IsDataBound ||
+                    (Property.Metadata.IsInherited && !hasLocalValue && !hasStyledValue && Owner.DependencyContainer != null);
+
+                if (requiresDigestNew != requiresDigest)
+                {
+                    Owner.UpdateDigestParticipation(this, requiresDigestNew);
+                    requiresDigest = requiresDigestNew;
+                }
+            }
+
             // Property values.
             private readonly DependencyObject owner;
             private readonly DependencyProperty property;
@@ -453,6 +479,7 @@ namespace TwistedLogik.Ultraviolet.Layout
             private T previousValue;
 
             // State values.
+            private Boolean requiresDigest;
             private Boolean bound;
             private DataBindingGetter<T> dataBindingGetter;
             private DataBindingSetter<T> dataBindingSetter;
