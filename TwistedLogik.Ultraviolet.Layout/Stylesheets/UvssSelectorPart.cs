@@ -83,20 +83,28 @@ namespace TwistedLogik.Ultraviolet.Layout.Stylesheets
         {
             var priority = 0;
 
-            const Int32 ElementPriority = 1;
+            const Int32 ElementPriority    = 1;
+            const Int32 ClassPriority      = 10;
+            const Int32 IdentifierPriority = 100;
+
             if (!String.IsNullOrEmpty(element))
             {
-                priority += ElementPriority;
+                if (String.Equals(element, "document", StringComparison.OrdinalIgnoreCase))
+                {
+                    priority += IdentifierPriority;
+                }
+                else
+                {
+                    priority += ElementPriority;
+                }
             }
 
-            const Int32 IdentifierPriority = 100;
+            priority += ClassPriority * classes.Count();
+
             if (!String.IsNullOrEmpty(id))
             {
                 priority += IdentifierPriority;
             }
-
-            const Int32 ClassPriority = 10;
-            priority += ClassPriority * classes.Count();
 
             return priority;
         }
