@@ -25,11 +25,8 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         protected override void OnDrawing(UltravioletTime time, SpriteBatch spriteBatch)
         {
             DrawBackgroundImage(spriteBatch);
-            if (Font != null && CachedLayoutResult.Count > 0)
-            {
-                var position = new Vector2(AbsoluteScreenX + Padding, AbsoluteScreenY + Padding);
-                UIElementResources.TextRenderer.Draw(spriteBatch, CachedLayoutResult, position, FontColor);
-            }
+            DrawText(spriteBatch);
+
             base.OnDrawing(time, spriteBatch);
         }
     }

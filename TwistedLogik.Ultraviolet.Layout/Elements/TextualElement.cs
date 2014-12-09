@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text;
 using TwistedLogik.Ultraviolet.Layout.Stylesheets;
+using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
 
 namespace TwistedLogik.Ultraviolet.Layout.Elements
 {
@@ -73,6 +74,20 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         {
             UpdateCachedTextLayout();
             base.OnFontAssetIDChanged();
+        }
+
+        /// <summary>
+        /// Draws the element's text.
+        /// </summary>
+        /// <param name="spriteBatch">The sprite batch with which to draw.</param>
+        protected void DrawText(SpriteBatch spriteBatch)
+        {
+            if (cachedLayoutResult.Count > 0)
+            {
+                var fontColor = GetCurrentFontColor();
+                var position  = new Vector2(AbsoluteScreenX + Padding, AbsoluteScreenY + Padding);
+                UIElementResources.TextRenderer.Draw(spriteBatch, CachedLayoutResult, position, fontColor);
+            }
         }
 
         /// <summary>

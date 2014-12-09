@@ -440,6 +440,183 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         public event UIElementEventHandler BackgroundImageHoverChanged;
 
         /// <summary>
+        /// Applies a style to the element.
+        /// </summary>
+        /// <param name="name">The name of the style.</param>
+        /// <param name="pseudoClass">The pseudo-class of the style.</param>
+        /// <param name="value">The value to apply to the style.</param>
+        /// <param name="attached">A value indicating whether thie style represents an attached property.</param>
+        internal void ApplyStyle(String name, String pseudoClass, String value, Boolean attached)
+        {
+            Contract.RequireNotEmpty(name, "name");
+            Contract.RequireNotEmpty(value, "value");
+
+            var setter = attached ? Container.GetStyleSetter(name, pseudoClass) : GetStyleSetter(name, pseudoClass);
+            if (setter == null)
+                return;
+
+            setter(this, value, CultureInfo.InvariantCulture);
+        }
+
+        /// <summary>
+        /// Draws the element.
+        /// </summary>
+        /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Draw(UltravioletTime)"/>.</param>
+        /// <param name="spriteBatch">The sprite batch with which to draw the view.</param>
+        internal virtual void Draw(UltravioletTime time, SpriteBatch spriteBatch)
+        {
+            OnDrawing(time, spriteBatch);
+        }
+
+        /// <summary>
+        /// Updates the element's state.
+        /// </summary>
+        /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Draw(UltravioletTime)"/>.</param>
+        internal virtual void Update(UltravioletTime time)
+        {
+            Digest();
+            OnUpdating(time);
+        }
+
+        /// <summary>
+        /// Updates the view model associated with this element.
+        /// </summary>
+        /// <param name="viewModel">The view model to associate with this element.</param>
+        internal virtual void UpdateViewModel(Object viewModel)
+        {
+            this.viewModel = viewModel;
+        }
+
+        /// <summary>
+        /// Updates the view associated with this element.
+        /// </summary>
+        /// <param name="view">The view to associate with this element.</param>
+        internal virtual void UpdateView(UIView view)
+        {
+            if (this.view != null)
+                this.view.UnregisterElementID(this);
+
+            this.view = view;
+
+            if (this.view != null)
+                this.view.RegisterElementID(this);
+
+            if (view == null || view.Stylesheet == null)
+            {
+                ClearStyledValues();
+            }
+            else
+            {
+                view.Stylesheet.ApplyStylesRecursively(this);
+            }
+
+            UpdateViewModel(view == null ? null : view.ViewModel);
+
+            ReloadContent();
+        }
+
+        /// <summary>
+        /// Updates the container which holds this element.
+        /// </summary>
+        /// <param name="container">The container to associate with this element.</param>
+        internal virtual void UpdateContainer(UIContainer container)
+        {
+            this.container = container;
+
+            var view = (container == null) ? null : container.View;
+            if (view != this.view)
+            {
+                UpdateView(view);
+            }
+        }
+
+        /// <summary>
+        /// Gets the element at the specified point in element space.
+        /// </summary>
+        /// <param name="x">The x-coordinate of the point to evaluate.</param>
+        /// <param name="y">The y-coordinate of the point to evaluate.</param>
+        /// <returns>The element at the specified point in element space, or null if no such element exists.</returns>
+        internal virtual UIElement GetElementAtPointInternal(Int32 x, Int32 y)
+        {
+            var bounds = new Rectangle(0, 0, CalculatedWidth, CalculatedHeight);
+            return bounds.Contains(x, y) ? this : null;
+        }
+
+        /// <summary>
+        /// Gets the x-coordinate of the element's absolute screen position.
+        /// </summary>
+        internal virtual Int32 AbsoluteScreenXInternal
+        {
+            get { return (Container == null ? 0 : Container.AbsoluteScreenX) + containerRelativeX; }
+        }
+
+        /// <summary>
+        /// Gets the y-coordinate of the element's absolute screen position.
+        /// </summary>
+        internal virtual Int32 AbsoluteScreenYInternal
+        {
+            get { return (Container == null ? 0 : Container.AbsoluteScreenY) + containerRelativeY; }
+        }
+
+        /// <summary>
+        /// Raises the <see cref="MouseEnter"/> event.
+        /// </summary>
+        /// <param name="device">The mouse device.</param>
+        protected internal virtual void OnMouseEnter(MouseDevice device)
+        {
+            hovering = true;
+
+            var temp = MouseEnter;
+            if (temp != null)
+            {
+                temp(this, device);
+            }
+        }
+
+        /// <summary>
+        /// Raises the <see cref="MouseLeave"/> event.
+        /// </summary>
+        /// <param name="device">The mouse device.</param>
+        protected internal virtual void OnMouseLeave(MouseDevice device)
+        {
+            hovering = false;
+
+            var temp = MouseLeave;
+            if (temp != null)
+            {
+                temp(this, device);
+            }
+        }
+
+        /// <summary>
+        /// Raises the <see cref="MouseButtonPressed"/> event.
+        /// </summary>
+        /// <param name="device">The mouse device.</param>
+        /// <param name="button">The mouse button that was pressed or released.</param>
+        protected internal virtual void OnMouseButtonPressed(MouseDevice device, MouseButton button)
+        {
+            var temp = MouseButtonPressed;
+            if (temp != null)
+            {
+                temp(this, device, button);
+            }
+        }
+
+        /// <summary>
+        /// Raises the <see cref="MouseButtonReleased"/> event.
+        /// </summary>
+        /// <param name="device">The mouse device.</param>
+        /// <param name="button">The mouse button that was pressed or released.</param>
+        protected internal virtual void OnMouseButtonReleased(MouseDevice device, MouseButton button)
+        {
+            var temp = MouseButtonReleased;
+            if (temp != null)
+            {
+                temp(this, device, button);
+            }
+        }
+
+        /// <summary>
         /// Gets the element's area relative to its container after layout has been performed.
         /// </summary>
         protected internal Rectangle ContainerRelativeLayout
@@ -790,14 +967,16 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         /// <param name="spriteBatch">The sprite batch with which to draw.</param>
         protected void DrawBackgroundImage(SpriteBatch spriteBatch)
         {
-            var img = BackgroundImage.Value;
-            if (img == null || !img.IsLoaded)
+            var bgColor = GetCurrentBackgroundColor();
+            var bgImage = GetCurrentBackgroundImage();
+
+            if (bgColor.Equals(Color.Transparent))
+                return;
+
+            if (bgImage == null || !bgImage.IsLoaded)
             {
-                if (!BackgroundColor.Equals(Color.Transparent))
-                {
-                    var area = new RectangleF(AbsoluteScreenX, AbsoluteScreenY, CalculatedWidth, CalculatedHeight);
-                    spriteBatch.Draw(UIElementResources.BlankTexture, area, BackgroundColor);
-                }
+                var area = new RectangleF(AbsoluteScreenX, AbsoluteScreenY, CalculatedWidth, CalculatedHeight);
+                spriteBatch.Draw(UIElementResources.BlankTexture, area, bgColor);
             }
             else
             {
@@ -807,8 +986,44 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
                     AbsoluteScreenX + (CalculatedWidth / 2f),
                     AbsoluteScreenY + (CalculatedHeight / 2f));
 
-                spriteBatch.DrawImage(img, position, CalculatedWidth, CalculatedHeight, BackgroundColor, 0f, origin, effects, 0f);
+                spriteBatch.DrawImage(bgImage, position, CalculatedWidth, CalculatedHeight, bgColor, 0f, origin, effects, 0f);
             }
+        }
+
+        /// <summary>
+        /// Gets the element's current background image.
+        /// </summary>
+        /// <returns>The element's current background image.</returns>
+        protected virtual StretchableImage9 GetCurrentBackgroundImage()
+        {
+            return (Hovering ? BackgroundImageHover : BackgroundImage) ?? BackgroundImage;
+        }
+
+        /// <summary>
+        /// Gets the element's current background color.
+        /// </summary>
+        /// <returns>The element's current background color.</returns>
+        protected virtual Color GetCurrentBackgroundColor()
+        {
+            return (Hovering ? BackgroundColorHover : BackgroundColor) ?? BackgroundColor;
+        }
+
+        /// <summary>
+        /// Gets the element's current font.
+        /// </summary>
+        /// <returns>The element's current font.</returns>
+        protected virtual SpriteFont GetCurrentFont()
+        {
+            return Font;
+        }
+
+        /// <summary>
+        /// Gets the element's current font color.
+        /// </summary>
+        /// <returns>The element's current font color.</returns>
+        protected virtual Color GetCurrentFontColor()
+        {
+            return (Hovering ? FontColorHover : FontColor) ?? FontColor;
         }
 
         /// <summary>
@@ -825,183 +1040,6 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         protected sealed override Object DependencyDataSource
         {
             get { return ViewModel; }
-        }
-
-        /// <summary>
-        /// Raises the <see cref="MouseEnter"/> event.
-        /// </summary>
-        /// <param name="device">The mouse device.</param>
-        protected internal virtual void OnMouseEnter(MouseDevice device)
-        {
-            hovering = true;
-
-            var temp = MouseEnter;
-            if (temp != null)
-            {
-                temp(this, device);
-            }
-        }
-
-        /// <summary>
-        /// Raises the <see cref="MouseLeave"/> event.
-        /// </summary>
-        /// <param name="device">The mouse device.</param>
-        protected internal virtual void OnMouseLeave(MouseDevice device)
-        {
-            hovering = false;
-
-            var temp = MouseLeave;
-            if (temp != null)
-            {
-                temp(this, device);
-            }
-        }
-
-        /// <summary>
-        /// Raises the <see cref="MouseButtonPressed"/> event.
-        /// </summary>
-        /// <param name="device">The mouse device.</param>
-        /// <param name="button">The mouse button that was pressed or released.</param>
-        protected internal virtual void OnMouseButtonPressed(MouseDevice device, MouseButton button)
-        {
-            var temp = MouseButtonPressed;
-            if (temp != null)
-            {
-                temp(this, device, button);
-            }
-        }
-
-        /// <summary>
-        /// Raises the <see cref="MouseButtonReleased"/> event.
-        /// </summary>
-        /// <param name="device">The mouse device.</param>
-        /// <param name="button">The mouse button that was pressed or released.</param>
-        protected internal virtual void OnMouseButtonReleased(MouseDevice device, MouseButton button)
-        {
-            var temp = MouseButtonReleased;
-            if (temp != null)
-            {
-                temp(this, device, button);
-            }
-        }
-
-        /// <summary>
-        /// Applies a style to the element.
-        /// </summary>
-        /// <param name="name">The name of the style.</param>
-        /// <param name="pseudoClass">The pseudo-class of the style.</param>
-        /// <param name="value">The value to apply to the style.</param>
-        /// <param name="attached">A value indicating whether thie style represents an attached property.</param>
-        internal void ApplyStyle(String name, String pseudoClass, String value, Boolean attached)
-        {
-            Contract.RequireNotEmpty(name, "name");
-            Contract.RequireNotEmpty(value, "value");
-
-            var setter = attached ? Container.GetStyleSetter(name, pseudoClass) : GetStyleSetter(name, pseudoClass);
-            if (setter == null)
-                return;
-
-            setter(this, value, CultureInfo.InvariantCulture);
-        }
-
-        /// <summary>
-        /// Draws the element.
-        /// </summary>
-        /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Draw(UltravioletTime)"/>.</param>
-        /// <param name="spriteBatch">The sprite batch with which to draw the view.</param>
-        internal virtual void Draw(UltravioletTime time, SpriteBatch spriteBatch)
-        {
-            OnDrawing(time, spriteBatch);
-        }
-
-        /// <summary>
-        /// Updates the element's state.
-        /// </summary>
-        /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Draw(UltravioletTime)"/>.</param>
-        internal virtual void Update(UltravioletTime time)
-        {
-            Digest();
-            OnUpdating(time);
-        }
-
-        /// <summary>
-        /// Updates the view model associated with this element.
-        /// </summary>
-        /// <param name="viewModel">The view model to associate with this element.</param>
-        internal virtual void UpdateViewModel(Object viewModel)
-        {
-            this.viewModel = viewModel;
-        }
-
-        /// <summary>
-        /// Updates the view associated with this element.
-        /// </summary>
-        /// <param name="view">The view to associate with this element.</param>
-        internal virtual void UpdateView(UIView view)
-        {
-            if (this.view != null)
-                this.view.UnregisterElementID(this);
-
-            this.view = view;
-
-            if (this.view != null)
-                this.view.RegisterElementID(this);
-         
-            if (view == null || view.Stylesheet == null)
-            {
-                ClearStyledValues();
-            }
-            else
-            {
-                view.Stylesheet.ApplyStylesRecursively(this);
-            }
-
-            UpdateViewModel(view == null ? null : view.ViewModel);
-
-            ReloadContent();
-        }
-
-        /// <summary>
-        /// Updates the container which holds this element.
-        /// </summary>
-        /// <param name="container">The container to associate with this element.</param>
-        internal virtual void UpdateContainer(UIContainer container)
-        {
-            this.container = container;
-
-            var view = (container == null) ? null : container.View;
-            if (view != this.view)
-            {
-                UpdateView(view);
-            }
-        }
-
-        /// <summary>
-        /// Gets the element at the specified point in element space.
-        /// </summary>
-        /// <param name="x">The x-coordinate of the point to evaluate.</param>
-        /// <param name="y">The y-coordinate of the point to evaluate.</param>
-        /// <returns>The element at the specified point in element space, or null if no such element exists.</returns>
-        internal virtual UIElement GetElementAtPointInternal(Int32 x, Int32 y)
-        {
-            var bounds = new Rectangle(0, 0, CalculatedWidth, CalculatedHeight);
-            return bounds.Contains(x, y) ? this : null;
-        }
-
-        /// <summary>
-        /// Gets the x-coordinate of the element's absolute screen position.
-        /// </summary>
-        internal virtual Int32 AbsoluteScreenXInternal
-        {
-            get { return (Container == null ? 0 : Container.AbsoluteScreenX) + containerRelativeX; }
-        }
-
-        /// <summary>
-        /// Gets the y-coordinate of the element's absolute screen position.
-        /// </summary>
-        internal virtual Int32 AbsoluteScreenYInternal
-        {
-            get { return (Container == null ? 0 : Container.AbsoluteScreenY) + containerRelativeY; }
         }
 
         /// <summary>
