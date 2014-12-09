@@ -152,7 +152,11 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
             {
                 if (depressed)
                 {
-                    OnClick();
+                    var position = device.GetPositionInWindow(View.Container.Window);
+                    if (position != null && ScreenBounds.Contains(position.Value))
+                    {
+                        OnClick();
+                    }
                     View.ReleaseMouse(this);
                 }
                 depressed = false;

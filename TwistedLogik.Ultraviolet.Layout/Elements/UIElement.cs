@@ -245,6 +245,22 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         }
 
         /// <summary>
+        /// Gets the element's bounding box in element space.
+        /// </summary>
+        public Rectangle Bounds
+        {
+            get { return new Rectangle(0, 0, CalculatedWidth, CalculatedHeight); }
+        }
+
+        /// <summary>
+        /// Gets the element's bounding box in screen space.
+        /// </summary>
+        public Rectangle ScreenBounds
+        {
+            get { return new Rectangle(AbsoluteScreenX, AbsoluteScreenY, CalculatedWidth, CalculatedHeight); }
+        }
+
+        /// <summary>
         /// Gets a value indicating whether this is an anonymous element.
         /// </summary>
         /// <remarks>An anonymous element is one which has no explicit identifier.</remarks>
@@ -548,8 +564,7 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         /// <returns>The element at the specified point in element space, or null if no such element exists.</returns>
         internal virtual UIElement GetElementAtPointInternal(Int32 x, Int32 y)
         {
-            var bounds = new Rectangle(0, 0, CalculatedWidth, CalculatedHeight);
-            return bounds.Contains(x, y) ? this : null;
+            return Bounds.Contains(x, y) ? this : null;
         }
 
         /// <summary>
@@ -1315,7 +1330,7 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
             new DependencyPropertyMetadata(HandleBackgroundImageChanged, null, DependencyPropertyOptions.None));
         [Styled("background-image", "hover")]
         private static readonly DependencyProperty dpBackgroundImageHover = DependencyProperty.Register("BackgroundImageHover", typeof(SourcedRef<StretchableImage9>?), typeof(UIElement),
-            new DependencyPropertyMetadata(HandleBackgroundImageChanged, null, DependencyPropertyOptions.None));
+            new DependencyPropertyMetadata(HandleBackgroundImageHoverChanged, null, DependencyPropertyOptions.None));
 
         // Property values.
         private readonly UltravioletContext uv;

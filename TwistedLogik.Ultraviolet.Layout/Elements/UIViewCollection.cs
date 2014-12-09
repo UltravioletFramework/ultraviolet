@@ -338,18 +338,14 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
             if (window != Window)
                 return;
 
-            if (elementUnderMouse != null)
+            var recipient = elementWithMouseCapture ?? elementUnderMouse;
+            if (recipient != null)
             {
-                if (elementUnderMouse.View != null)
+                if (recipient.View != null)
                 {
-                    BringToFront(elementUnderMouse.View);
+                    BringToFront(recipient.View);
                 }
-                elementUnderMouse.OnMouseButtonPressed(device, button);
-            }
-
-            if (elementWithMouseCapture != null && elementWithMouseCapture != elementUnderMouse)
-            {
-                elementWithMouseCapture.OnMouseButtonPressed(device, button);
+                recipient.OnMouseButtonPressed(device, button);
             }
         }
 
@@ -361,14 +357,10 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
             if (window != Window)
                 return;
 
-            if (elementUnderMouse != null)
+            var recipient = elementWithMouseCapture ?? elementUnderMouse;
+            if (recipient != null)
             {
-                elementUnderMouse.OnMouseButtonReleased(device, button);
-            }
-
-            if (elementWithMouseCapture != null && elementWithMouseCapture != elementUnderMouse)
-            {
-                elementWithMouseCapture.OnMouseButtonReleased(device, button);
+                recipient.OnMouseButtonReleased(device, button);
             }
         }
 

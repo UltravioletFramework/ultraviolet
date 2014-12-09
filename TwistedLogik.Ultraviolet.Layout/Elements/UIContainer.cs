@@ -224,8 +224,7 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         /// <returns>The element at the specified point in element space, or null if no such element exists.</returns>
         internal override UIElement GetElementAtPointInternal(Int32 x, Int32 y)
         {
-            var bounds = new Rectangle(0, 0, CalculatedWidth, CalculatedHeight);
-            if (!bounds.Contains(x, y))
+            if (!Bounds.Contains(x, y))
                 return null;
 
             foreach (var child in children)
