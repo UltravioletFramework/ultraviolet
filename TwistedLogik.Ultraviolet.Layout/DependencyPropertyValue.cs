@@ -43,6 +43,13 @@ namespace TwistedLogik.Ultraviolet.Layout
                 this.owner    = owner;
                 this.property = property;
                 this.comparer = GetComparisonFunction();
+
+                if (property.Metadata.DefaultCallback != null)
+                {
+                    this.defaultValue = (T)property.Metadata.DefaultCallback();
+                }
+
+                UpdateRequiresDigest(GetValue());
             }
 
             /// <summary>
@@ -55,11 +62,13 @@ namespace TwistedLogik.Ultraviolet.Layout
                 Contract.Require(viewModelType, "viewModelType");
                 Contract.RequireNotEmpty(expression, "expression");
 
+                var oldValue = GetValue();
+                
                 bound             = true;
                 dataBindingGetter = CreateBindingGetter(viewModelType, expression);
                 dataBindingSetter = CreateBindingSetter(viewModelType, expression);
 
-                UpdateRequiresDigest();
+                UpdateRequiresDigest(oldValue);
             }
 
             /// <summary>
@@ -67,11 +76,16 @@ namespace TwistedLogik.Ultraviolet.Layout
             /// </summary>
             public void Unbind()
             {
-                bound             = false;
-                dataBindingGetter = null;
-                dataBindingSetter = null;
+                if (bound)
+                {
+                    var oldValue = GetValue();
 
-                UpdateRequiresDigest();
+                    bound             = false;
+                    dataBindingGetter = null;
+                    dataBindingSetter = null;
+
+                    UpdateRequiresDigest(oldValue);
+                }
             }
 
             /// <inheritdoc/>
@@ -91,13 +105,21 @@ namespace TwistedLogik.Ultraviolet.Layout
             /// <inheritdoc/>
             public void ClearLocalValue()
             {
+                var oldValue = GetValue();
+
                 hasLocalValue = false;
+
+                UpdateRequiresDigest(oldValue);
             }
 
             /// <inheritdoc/>
             public void ClearStyledValue()
             {
+                var oldValue = GetValue();
+
                 hasStyledValue = false;
+
+                UpdateRequiresDigest(oldValue);
             }
 
             /// <summary>
@@ -153,9 +175,12 @@ namespace TwistedLogik.Ultraviolet.Layout
                 get { return localValue; }
                 internal set
                 {
+                    var oldValue = GetValue();
+
                     localValue = value;
                     hasLocalValue = true;
-                    UpdateRequiresDigest();
+
+                    UpdateRequiresDigest(oldValue);
                 }
             }
 
@@ -167,9 +192,11 @@ namespace TwistedLogik.Ultraviolet.Layout
                 get { return styledValue; }
                 internal set
                 {
+                    var oldValue = GetValue();
+
                     styledValue = value;
                     hasStyledValue = true;
-                    UpdateRequiresDigest();
+                    UpdateRequiresDigest(oldValue);
                 }
             }
 
@@ -180,9 +207,11 @@ namespace TwistedLogik.Ultraviolet.Layout
             {
                 get { return defaultValue; }
                 set 
-                { 
+                {
+                    var oldValue = GetValue();
+
                     defaultValue = value;
-                    UpdateRequiresDigest();
+                    UpdateRequiresDigest(oldValue);
                 }
             }
 
@@ -456,15 +485,25 @@ namespace TwistedLogik.Ultraviolet.Layout
             /// Updates the value which tracks whether this value needs to participate 
             /// in the digest cycle.
             /// </summary>
-            private void UpdateRequiresDigest()
+            /// <param name="oldValue">The property's value before the change which prompted this update.</param>
+            private void UpdateRequiresDigest(T oldValue)
             {
                 var requiresDigestNew = IsDataBound ||
-                    (Property.Metadata.IsInherited && !hasLocalValue && !hasStyledValue && Owner.DependencyContainer != null);
+                    (Property.Metadata.IsInherited && !hasLocalValue && !hasStyledValue);
 
                 if (requiresDigestNew != requiresDigest)
                 {
                     Owner.UpdateDigestParticipation(this, requiresDigestNew);
                     requiresDigest = requiresDigestNew;
+                }
+
+                var changed = !comparer(oldValue, GetValue());
+                if (changed && !requiresDigestNew)
+                {
+                    if (Property.Metadata != null && Property.Metadata.ChangedCallback != null)
+                    {
+                        Property.Metadata.ChangedCallback(Owner);
+                    }
                 }
             }
 

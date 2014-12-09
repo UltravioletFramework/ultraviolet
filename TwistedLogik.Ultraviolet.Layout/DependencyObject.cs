@@ -218,10 +218,6 @@ namespace TwistedLogik.Ultraviolet.Layout
             if (wrapper == null)
             {
                 wrapper = new DependencyPropertyValue<T>(this, dp);
-                if (dp.Metadata.DefaultCallback != null)
-                {
-                    wrapper.DefaultValue = (T)dp.Metadata.DefaultCallback();
-                }
                 dependencyPropertyValues[dp.ID] = wrapper;
             }
             return wrapper;

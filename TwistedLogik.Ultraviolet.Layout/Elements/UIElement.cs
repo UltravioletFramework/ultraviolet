@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Reflection;
 using TwistedLogik.Nucleus;
 using TwistedLogik.Nucleus.Data;
@@ -1077,6 +1078,21 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
 
                         foreach (var prop in styledDependencyProperties)
                         {
+                            var dp                  = (DependencyProperty)prop.FieldInfo.GetValue(null);
+                            var dpType              = Type.GetTypeFromHandle(dp.PropertyType);
+
+                            var setStyledValue      = miSetStyledValue.MakeGenericMethod(dpType);
+
+                            var expParameterElement = Expression.Parameter(typeof(UIElement), "element");
+                            var expParameterValue   = Expression.Parameter(typeof(String), "value");
+                            var expParameterFmtProv = Expression.Parameter(typeof(IFormatProvider), "provider");
+                            var expResolveValue     = Expression.Convert(Expression.Call(miFromString, expParameterValue, Expression.Constant(dpType), expParameterFmtProv), dpType);
+                            var expCallMethod       = Expression.Call(expParameterElement, setStyledValue, Expression.Constant(dp), expResolveValue);
+
+                            var lambda = Expression.Lambda<StyleSetter>(expCallMethod, expParameterElement, expParameterValue, expParameterFmtProv).Compile();
+
+                            var styleKey = new UvssStyleKey(prop.Attribute.Name, prop.Attribute.PseudoClass);
+                            styleSettersForCurrentType[styleKey] = lambda;
                         }
 
                         styleSetters[typeID] = styleSettersForCurrentType;
