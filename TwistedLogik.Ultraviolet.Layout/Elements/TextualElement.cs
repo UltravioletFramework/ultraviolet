@@ -1,8 +1,8 @@
 ﻿using System;
 using System.ComponentModel;
+using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
 using TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text;
 using TwistedLogik.Ultraviolet.Layout.Stylesheets;
-using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
 
 namespace TwistedLogik.Ultraviolet.Layout.Elements
 {

@@ -76,6 +76,7 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
             if (view.Container != null)
                 view.Container.Remove(view);
 
+            view.Container = this;
             views.AddLast(view);
             return true;
         }
@@ -190,6 +191,39 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
             get { return views.Count; }
         }
 
+        /// <summary>
+        /// Assigns mouse capture to the specified element.
+        /// </summary>
+        /// <param name="element">The element to which to assign mouse capture.</param>
+        internal void CaptureMouse(UIElement element)
+        {
+            Contract.Require(element, "element");
+
+            if (elementWithMouseCapture == element)
+                return;
+
+            if (elementWithMouseCapture != null)
+                elementWithMouseCapture.OnLostMouseCapture();
+
+            elementWithMouseCapture = element;
+            elementWithMouseCapture.OnGainedMouseCapture();
+        }
+
+        /// <summary>
+        /// Releases the mouse from the element that is currently capturing it.
+        /// </summary>
+        /// <param name="element">The element that is attempting to release mouse capture.</param>
+        internal void ReleaseMouse(UIElement element)
+        {
+            Contract.Require(element, "element");
+
+            if (elementWithMouseCapture != element)
+                return;
+
+            elementWithMouseCapture.OnLostMouseCapture();
+            elementWithMouseCapture = null;
+        }
+
         /// <inheritdoc/>
         protected override void Dispose(Boolean disposing)
         {
@@ -273,13 +307,17 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         /// </summary>
         private void HandleMouseInput()
         {
+            var mouse = Ultraviolet.GetInput().GetMouse();
+
             // Determine which element is currently under the mouse cursor.
-            var mouse     = Ultraviolet.GetInput().GetMouse();
-            var mousePos  = mouse.Position;
-            var mouseView = mouse.Window == Window ? GetViewAtPoint(mousePos) : null; 
-            
-            elementUnderMousePrev = elementUnderMouse;
-            elementUnderMouse     = (mouseView == null) ? null : mouseView.GetElementAtScreenPoint(mousePos);
+            if (elementWithMouseCapture == null)
+            {
+                var mousePos  = mouse.Position;
+                var mouseView = mouse.Window == Window ? GetViewAtPoint(mousePos) : null;
+
+                elementUnderMousePrev = elementUnderMouse;
+                elementUnderMouse     = (mouseView == null) ? null : mouseView.GetElementAtScreenPoint(mousePos);
+            }
 
             // Handle mouse motion events
             if (elementUnderMouse != elementUnderMousePrev)
@@ -302,7 +340,16 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
 
             if (elementUnderMouse != null)
             {
+                if (elementUnderMouse.View != null)
+                {
+                    BringToFront(elementUnderMouse.View);
+                }
                 elementUnderMouse.OnMouseButtonPressed(device, button);
+            }
+
+            if (elementWithMouseCapture != null && elementWithMouseCapture != elementUnderMouse)
+            {
+                elementWithMouseCapture.OnMouseButtonPressed(device, button);
             }
         }
 
@@ -318,6 +365,11 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
             {
                 elementUnderMouse.OnMouseButtonReleased(device, button);
             }
+
+            if (elementWithMouseCapture != null && elementWithMouseCapture != elementUnderMouse)
+            {
+                elementWithMouseCapture.OnMouseButtonReleased(device, button);
+            }
         }
 
         // Property values.
@@ -330,5 +382,6 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         // Input tracking values.
         private UIElement elementUnderMousePrev;
         private UIElement elementUnderMouse;
+        private UIElement elementWithMouseCapture;
     }
 }

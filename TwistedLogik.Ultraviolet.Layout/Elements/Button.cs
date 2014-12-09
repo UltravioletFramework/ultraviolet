@@ -128,11 +128,19 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         public event UIElementEventHandler Click;
 
         /// <inheritdoc/>
+        protected internal override void OnLostMouseCapture()
+        {
+            depressed = false;
+            base.OnLostMouseCapture();
+        }
+
+        /// <inheritdoc/>
         protected internal override void OnMouseButtonPressed(MouseDevice device, MouseButton button)
         {
             if (button == MouseButton.Left)
             {
                 depressed = true;
+                View.CaptureMouse(this);
             }
             base.OnMouseButtonPressed(device, button);
         }
@@ -145,6 +153,7 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
                 if (depressed)
                 {
                     OnClick();
+                    View.ReleaseMouse(this);
                 }
                 depressed = false;
             }

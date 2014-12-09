@@ -55,6 +55,30 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         }
 
         /// <summary>
+        /// Assigns mouse capture to the specified element.
+        /// </summary>
+        /// <param name="element">The element to which to assign mouse capture.</param>
+        public void CaptureMouse(UIElement element)
+        {
+            if (Container != null)
+            {
+                Container.CaptureMouse(element);
+            }
+        }
+
+        /// <summary>
+        /// Releases the mouse from the element that is currently capturing it.
+        /// </summary>
+        /// <param name="element">The element that is attempting to release mouse capture.</param>
+        public void ReleaseMouse(UIElement element)
+        {
+            if (Container != null)
+            {
+                Container.ReleaseMouse(element);
+            }
+        }
+
+        /// <summary>
         /// Converts a position in screen space to a position in view space.
         /// </summary>
         /// <param name="x">The x-coordinate of the screen space position to convert.</param>

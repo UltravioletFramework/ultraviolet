@@ -370,6 +370,16 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         public event UIElementUpdatingEventHandler Updating;
 
         /// <summary>
+        /// Occurs when the element gains mouse capture.
+        /// </summary>
+        public event UIElementEventHandler GainedMouseCapture;
+
+        /// <summary>
+        /// Occurs when the element loses mouse capture.
+        /// </summary>
+        public event UIElementEventHandler LostMouseCapture;
+
+        /// <summary>
         /// Occurs when the mouse cursor enters the element.
         /// </summary>
         public event UIElementMouseEventHandler MouseEnter;
@@ -556,6 +566,30 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         internal virtual Int32 AbsoluteScreenYInternal
         {
             get { return (Container == null ? 0 : Container.AbsoluteScreenY) + containerRelativeY; }
+        }
+
+        /// <summary>
+        /// Raises the <see cref="GainedMouseCapture"/> event.
+        /// </summary>
+        protected internal virtual void OnGainedMouseCapture()
+        {
+            var temp = GainedMouseCapture;
+            if (temp != null)
+            {
+                temp(this);
+            }
+        }
+
+        /// <summary>
+        /// Raises the <see cref="LostMouseCapture"/> event.
+        /// </summary>
+        protected internal virtual void OnLostMouseCapture()
+        {
+            var temp = LostMouseCapture;
+            if (temp != null)
+            {
+                temp(this);
+            }
         }
 
         /// <summary>
