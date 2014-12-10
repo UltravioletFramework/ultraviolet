@@ -666,6 +666,22 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         }
 
         /// <summary>
+        /// Gets the dependency object's containing object.
+        /// </summary>
+        protected internal sealed override DependencyObject DependencyContainer
+        {
+            get { return Container; }
+        }
+
+        /// <summary>
+        /// Gets or sets the data source from which the object's dependency properties will retrieve values if they are data bound.
+        /// </summary>
+        protected internal sealed override Object DependencyDataSource
+        {
+            get { return ViewModel; }
+        }
+
+        /// <summary>
         /// Gets the element's area relative to its container after layout has been performed.
         /// </summary>
         protected internal Rectangle ContainerRelativeLayout
@@ -1073,22 +1089,6 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         protected virtual Color GetCurrentFontColor()
         {
             return (Hovering ? FontColorHover : FontColor) ?? FontColor;
-        }
-
-        /// <summary>
-        /// Gets the dependency object's containing object.
-        /// </summary>
-        protected sealed override DependencyObject DependencyContainer
-        {
-            get { return Container; }
-        }
-
-        /// <summary>
-        /// Gets or sets the data source from which the object's dependency properties will retrieve values if they are data bound.
-        /// </summary>
-        protected sealed override Object DependencyDataSource
-        {
-            get { return ViewModel; }
         }
 
         /// <summary>

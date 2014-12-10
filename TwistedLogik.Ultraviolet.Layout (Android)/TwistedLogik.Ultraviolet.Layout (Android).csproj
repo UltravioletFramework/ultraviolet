@@ -59,6 +59,15 @@
     <Compile Include="..\TwistedLogik.Ultraviolet.Layout\DataBindingSetterBuilder.cs">
       <Link>DataBindingSetterBuilder.cs</Link>
     </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.Layout\DependencyBoundValue.cs">
+      <Link>DependencyBoundValue.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.Layout\DependencyBoundValueConverting.cs">
+      <Link>DependencyBoundValueConverting.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.Layout\DependencyBoundValueNonConverting.cs">
+      <Link>DependencyBoundValueNonConverting.cs</Link>
+    </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.Layout\DependencyObject.cs">
       <Link>DependencyObject.cs</Link>
     </Compile>
@@ -94,6 +103,9 @@
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.Layout\Elements\SourcedVal.cs">
       <Link>Elements\SourcedVal.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.Layout\Elements\TextBox.cs">
+      <Link>Elements\TextBox.cs</Link>
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.Layout\Elements\TextualElement.cs">
       <Link>Elements\TextualElement.cs</Link>
@@ -139,6 +151,9 @@
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.Layout\Elements\UvmlException.cs">
       <Link>Elements\UvmlException.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.Layout\IDependencyBoundValue.cs">
+      <Link>IDependencyBoundValue.cs</Link>
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.Layout\IDependencyPropertyValue.cs">
       <Link>IDependencyPropertyValue.cs</Link>
@@ -199,6 +214,9 @@
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.Layout\Stylesheets\UvssStyleList.IEnumerable.cs">
       <Link>Stylesheets\UvssStyleList.IEnumerable.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.Layout\TypeExtensions.cs">
+      <Link>TypeExtensions.cs</Link>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

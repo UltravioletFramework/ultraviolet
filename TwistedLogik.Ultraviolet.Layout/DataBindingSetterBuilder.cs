@@ -8,16 +8,20 @@ namespace TwistedLogik.Ultraviolet.Layout
     /// <summary>
     /// Represents an object which builds instances of <see cref="DataBindingSetter{T}"/>.
     /// </summary>
-    internal sealed class DataBindingSetterBuilder<T> : BindingExpressionBuilder
+    internal sealed class DataBindingSetterBuilder : BindingExpressionBuilder
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="DataBindingSetterBuilder{T}"/> class.
+        /// Initializes a new instance of the <see cref="DataBindingSetterBuilder"/> class.
         /// </summary>
+        /// <param name="expressionType">The type of the bound expression.</param>
         /// <param name="viewModelType">The type of view model to which the value is being bound.</param>
         /// <param name="expression">The binding expression with which to bind the dependency property.</param>
-        public DataBindingSetterBuilder(Type viewModelType, String expression)
+        public DataBindingSetterBuilder(Type expressionType, Type viewModelType, String expression)
             : base(viewModelType)
         {
+            this.boundType    = expressionType;
+            this.delegateType = typeof(DataBindingSetter<>).MakeGenericType(expressionType);
+
             CreateReturnTarget();
 
             var components = BindingExpressions.ParseBindingExpression(expression).ToArray();
@@ -48,7 +52,7 @@ namespace TwistedLogik.Ultraviolet.Layout
             AddReturnLabel();
 
             var lambdaBody = Expression.Block(variables, expressions);
-            var lambda     = Expression.Lambda<DataBindingSetter<T>>(lambdaBody, parameters);
+            var lambda     = Expression.Lambda(delegateType, lambdaBody, parameters);
 
             lambdaExpression = lambda;
         }
@@ -57,7 +61,7 @@ namespace TwistedLogik.Ultraviolet.Layout
         /// Compiles a new instance of the <see cref="DataBindingSetter{T}"/> delegate type.
         /// </summary>
         /// <returns>The <see cref="DataBindingGetter{T}"/> that was compiled.</returns>
-        public DataBindingSetter<T> Compile()
+        public Delegate Compile()
         {
             return (lambdaExpression == null) ? null : lambdaExpression.Compile();
         }
@@ -89,7 +93,7 @@ namespace TwistedLogik.Ultraviolet.Layout
         /// <returns>The parameter expression that was added.</returns>
         private Expression AddValueParameter()
         {
-            var parameter = Expression.Parameter(typeof(T), "value");
+            var parameter = Expression.Parameter(boundType, "value");
             parameters.Add(parameter);
 
             return parameter;
@@ -119,6 +123,8 @@ namespace TwistedLogik.Ultraviolet.Layout
         }
 
         // State values.
-        private readonly Expression<DataBindingSetter<T>> lambdaExpression;
+        private readonly Type boundType;
+        private readonly Type delegateType;
+        private readonly LambdaExpression lambdaExpression;
     }
 }

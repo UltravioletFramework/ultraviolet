@@ -54,6 +54,9 @@
     <Compile Include="BindingExpressions.cs" />
     <Compile Include="BindingExpressionBuilder.cs" />
     <Compile Include="BoundEventBuilder.cs" />
+    <Compile Include="DependencyBoundValue.cs" />
+    <Compile Include="DependencyBoundValueNonConverting.cs" />
+    <Compile Include="DependencyBoundValueConverting.cs" />
     <Compile Include="DataBindingSetterBuilder.cs" />
     <Compile Include="DataBindingGetterBuilder.cs" />
     <Compile Include="DependencyObject.cs" />
@@ -68,6 +71,7 @@
     <Compile Include="Elements\Button.cs" />
     <Compile Include="Elements\SourcedRef.cs" />
     <Compile Include="Elements\SourcedVal.cs" />
+    <Compile Include="Elements\TextBox.cs" />
     <Compile Include="Elements\TextualElement.cs" />
     <Compile Include="Elements\UIContainer.cs" />
     <Compile Include="Elements\UIElement.cs" />
@@ -83,6 +87,7 @@
     <Compile Include="Elements\UIViewLoader.cs" />
     <Compile Include="Elements\UIViewLoader.UIElementMetadata.cs" />
     <Compile Include="Elements\UvmlException.cs" />
+    <Compile Include="IDependencyBoundValue.cs" />
     <Compile Include="IDependencyPropertyValue.cs" />
     <Compile Include="LayoutStrings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -104,6 +109,7 @@
     <Compile Include="Stylesheets\UvssStyleKey.cs" />
     <Compile Include="Stylesheets\UvssStyleList.cs" />
     <Compile Include="Stylesheets\UvssStyleList.IEnumerable.cs" />
+    <Compile Include="TypeExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TwistedLogik.Nucleus\TwistedLogik.Nucleus.csproj">

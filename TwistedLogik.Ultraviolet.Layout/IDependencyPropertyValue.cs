@@ -39,6 +39,22 @@ namespace TwistedLogik.Ultraviolet.Layout
         }
 
         /// <summary>
+        /// Gets a value indicating whether the dependency property's underlying value is a reference type.
+        /// </summary>
+        Boolean IsReferenceType
+        {
+            get;
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the dependency property's underlying value is a value type.
+        /// </summary>
+        Boolean IsValueType
+        {
+            get;
+        }
+
+        /// <summary>
         /// Gets a value indicating whether the dependency property is bound to a property on a model object.
         /// </summary>
         Boolean IsDataBound

@@ -74,27 +74,18 @@ namespace TwistedLogik.Ultraviolet.Layout
         /// <summary>
         /// Creates the lambda's return target label with the specified type.
         /// </summary>
-        /// <typeparam name="T">The target's type.</typeparam>
-        protected void CreateReturnTarget<T>()
+        /// <param name="type">The target's type.</param>
+        protected void CreateReturnTarget(Type type)
         {
-            exitTarget       = Expression.Label(typeof(T), "exit");
-            exitLabel        = Expression.Label(exitTarget, Expression.Default(typeof(T)));
-            defaultReturnExpression = Expression.Return(exitTarget, Expression.Default(typeof(T)));
+            exitTarget       = Expression.Label(type, "exit");
+            exitLabel        = Expression.Label(exitTarget, Expression.Default(type));
+            defaultReturnExpression = Expression.Return(exitTarget, Expression.Default(type));
         }
 
         /// <summary>
         /// Adds a return label with void type to the lambda.
         /// </summary>
         protected void AddReturnLabel()
-        {
-            expressions.Add(exitLabel);
-        }
-
-        /// <summary>
-        /// Adds a return label with the specified type to the lambda.
-        /// </summary>
-        /// <typeparam name="T">The label's type.</typeparam>
-        protected void AddReturnLabel<T>()
         {
             expressions.Add(exitLabel);
         }

@@ -190,7 +190,7 @@ namespace TwistedLogik.Ultraviolet.Layout
         /// <summary>
         /// Gets the dependency object's containing object.
         /// </summary>
-        protected abstract DependencyObject DependencyContainer
+        protected internal abstract DependencyObject DependencyContainer
         {
             get;
         }
@@ -198,7 +198,7 @@ namespace TwistedLogik.Ultraviolet.Layout
         /// <summary>
         /// Gets or sets the data source from which the object's dependency properties will retrieve values if they are data bound.
         /// </summary>
-        protected abstract Object DependencyDataSource
+        protected internal abstract Object DependencyDataSource
         {
             get;
         }

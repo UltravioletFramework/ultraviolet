@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
 using TwistedLogik.Nucleus;
 
 namespace TwistedLogik.Ultraviolet.Layout
@@ -25,7 +22,10 @@ namespace TwistedLogik.Ultraviolet.Layout
 
                 this.owner    = owner;
                 this.property = property;
-                this.comparer = GetComparisonFunction();
+                this.comparer = (DataBindingComparer<T>)BindingExpressions.GetComparisonFunction(typeof(T));
+
+                this.isReferenceType = typeof(T).IsClass;
+                this.isValueType     = typeof(T).IsValueType;
 
                 if (property.Metadata.DefaultCallback != null)
                 {
@@ -46,10 +46,9 @@ namespace TwistedLogik.Ultraviolet.Layout
                 Contract.RequireNotEmpty(expression, "expression");
 
                 var oldValue = GetValue();
-                
-                bound             = true;
-                dataBindingGetter = BindingExpressions.CreateBindingGetter<T>(viewModelType, expression);
-                dataBindingSetter = BindingExpressions.CreateBindingSetter<T>(viewModelType, expression);
+
+                bound = true;
+                CreateCachedBoundValue(viewModelType, expression);
 
                 UpdateRequiresDigest(oldValue);
             }
@@ -63,9 +62,8 @@ namespace TwistedLogik.Ultraviolet.Layout
                 {
                     var oldValue = GetValue();
 
-                    bound             = false;
-                    dataBindingGetter = null;
-                    dataBindingSetter = null;
+                    bound            = false;
+                    cachedBoundValue = null;
 
                     UpdateRequiresDigest(oldValue);
                 }
@@ -74,15 +72,28 @@ namespace TwistedLogik.Ultraviolet.Layout
             /// <inheritdoc/>
             public void Digest()
             {
-                var currentValue = GetValue();
-                if (!comparer(currentValue, previousValue))
+                var value   = default(T);
+                var changed = false;
+
+                if (cachedBoundValue != null)
                 {
-                    if (Property.Metadata.ChangedCallback != null)
+                    if (cachedBoundValue.CheckHasChanged())
                     {
-                        Property.Metadata.ChangedCallback(Owner);
+                        value   = cachedBoundValue.Get();
+                        changed = true;
                     }
-                    previousValue = currentValue;
                 }
+                else
+                {
+                    value   = GetValue();
+                    changed = !comparer(value, previousValue);
+                }
+
+                if (changed && Property.Metadata.ChangedCallback != null)
+                {
+                    Property.Metadata.ChangedCallback(Owner);
+                }
+                previousValue = value;
             }
 
             /// <inheritdoc/>
@@ -113,11 +124,7 @@ namespace TwistedLogik.Ultraviolet.Layout
             {
                 if (IsDataBound)
                 {
-                    if (dataBindingSetter == null)
-                    {
-                        throw new InvalidOperationException(LayoutStrings.BindingIsReadOnly);
-                    }
-                    dataBindingSetter(Owner.DependencyDataSource, value);
+                    cachedBoundValue.Set(value);
                 }
                 else
                 {
@@ -133,7 +140,7 @@ namespace TwistedLogik.Ultraviolet.Layout
             {
                 if (IsDataBound)
                 {
-                    return dataBindingGetter(Owner.DependencyDataSource);
+                    return cachedBoundValue.Get();
                 }
                 if (hasLocalValue)
                 {
@@ -219,6 +226,18 @@ namespace TwistedLogik.Ultraviolet.Layout
             }
 
             /// <inheritdoc/>
+            public Boolean IsReferenceType
+            {
+                get { return isReferenceType; }
+            }
+
+            /// <inheritdoc/>
+            public Boolean IsValueType
+            {
+                get { return isValueType; }
+            }
+
+            /// <inheritdoc/>
             public Boolean IsDataBound
             {
                 get { return bound; }
@@ -237,104 +256,35 @@ namespace TwistedLogik.Ultraviolet.Layout
             }
 
             /// <summary>
-            /// Gets the comparison function for the current type.
+            /// Gets a value indicating whether the specified pair of types require
+            /// special conversion logic.
             /// </summary>
-            /// <returns>The comparison function for the current type.</returns>
-            private static Func<T, T, Boolean> GetComparisonFunction()
+            /// <param name="type1">The first type to evaluate.</param>
+            /// <param name="type2">The second type to evaluate.</param>
+            /// <returns><c>true</c> if the specified types require special conversion logic; otherwise, <c>false</c>.</returns>
+            private static Boolean TypesRequireSpecialConversion(Type type1, Type type2)
             {
-                if (typeof(T).IsClass)
+                if (type1 == type2)
+                    return false;
+
+                var nullable1 = Nullable.GetUnderlyingType(type1);
+                if (nullable1 != null && nullable1.IsMutuallyConvertibleTo(type2))
                 {
-                    return referenceComparer;
+                    return false;
                 }
-                else
+
+                var nullable2 = Nullable.GetUnderlyingType(type2);
+                if (nullable2 != null && nullable2.IsMutuallyConvertibleTo(type1))
                 {
-                    lock (comparerRegistry)
-                    {
-                        var typeHandle   = typeof(T).TypeHandle.Value.ToInt64();
-                        var typeComparer = default(Func<T, T, Boolean>);
-
-                        if (!comparerRegistry.TryGetValue(typeHandle, out typeComparer))
-                        {
-                            if (typeof(T).GetInterfaces().Where(x => x == typeof(IEquatable<T>)).Any())
-                            {
-                                typeComparer = GetIEquatableComparisonFunction();
-                            }
-                            else if (typeof(T).IsGenericType && typeof(T).GetGenericTypeDefinition() == typeof(Nullable<>))
-                            {
-                                typeComparer = GetNullableComparisonFunction();
-                            }
-                            else if (typeof(T).IsEnum)
-                            {
-                                typeComparer = GetEnumComparisonFunction();
-                            }
-                            else
-                            {
-                                typeComparer = GetFallbackComparisonFunction();
-                            }
-                            comparerRegistry[typeHandle] = typeComparer;
-                        }
-
-                        return typeComparer;
-                    }
+                    return false;
                 }
-            }
 
-            /// <summary>
-            /// Gets a fallback comparison function for value types which implement <see cref="IEquatable{T}"/>.
-            /// </summary>
-            /// <returns>The comparison function for the dependency property value's type.</returns>
-            private static Func<T, T, Boolean> GetIEquatableComparisonFunction()
-            {
-                var equalsMethod = typeof(T).GetMethod("Equals", new[] { typeof(T) });
-
-                var arg1 = Expression.Parameter(typeof(T), "o1");
-                var arg2 = Expression.Parameter(typeof(T), "o2");
-
-                return Expression.Lambda<Func<T, T, Boolean>>(
-                    Expression.Call(arg1, equalsMethod, arg2), arg1, arg2).Compile();
-            }
-
-            /// <summary>
-            /// Gets a comparison function for nullable value types.
-            /// </summary>
-            /// <returns>The comparison function for the dependency property value's type.</returns>
-            private static Func<T, T, Boolean> GetNullableComparisonFunction()
-            {
-                var nullableType = typeof(T).GetGenericArguments()[0];
-                var nullableEqualsMethod = typeof(Nullable).GetMethods()
-                    .Where(x => x.Name == "Equals" && x.IsGenericMethod)
-                    .Single().MakeGenericMethod(nullableType);
-
-                var arg1 = Expression.Parameter(typeof(T), "o1");
-                var arg2 = Expression.Parameter(typeof(T), "o2");
-
-                return Expression.Lambda<Func<T, T, Boolean>>(
-                    Expression.Call(nullableEqualsMethod, arg1, arg2), arg1, arg2).Compile();
-            }
-
-            /// <summary>
-            /// Gets a comparison function for enumeration types.
-            /// </summary>
-            /// <returns>The comparison function for the dependency property value's type.</returns>
-            private static Func<T, T, Boolean> GetEnumComparisonFunction()
-            {
-                var arg1 = Expression.Parameter(typeof(T), "o1");
-                var arg2 = Expression.Parameter(typeof(T), "o2");
-                var body = Expression.Equal(arg1, arg2);
-
-                return Expression.Lambda<Func<T, T, Boolean>>(body, arg1, arg2).Compile();
-            }
-
-            /// <summary>
-            /// Gets a fallback comparison function for types which don't fit any optimizable category.
-            /// </summary>
-            /// <returns>The comparison function for the dependency property value's type.</returns>
-            private static Func<T, T, Boolean> GetFallbackComparisonFunction()
-            {
-                return (o1, o2) =>
+                if (nullable1 != null && nullable2 != null && nullable1.IsMutuallyConvertibleTo(nullable2))
                 {
-                    return o1.Equals(o2);
-                };
+                    return false;
+                }
+
+                return !type1.IsMutuallyConvertibleTo(type2);
             }
 
             /// <summary>
@@ -363,9 +313,36 @@ namespace TwistedLogik.Ultraviolet.Layout
                 }
             }
 
+            /// <summary>
+            /// Creates the dependency property's cached bound value object.
+            /// </summary>
+            /// <param name="viewModelType">The type of view model to which the dependency property is bound.</param>
+            /// <param name="expression">The dependency property's binding expression.</param>
+            private void CreateCachedBoundValue(Type viewModelType, String expression)
+            {
+                var expressionType  = BindingExpressions.GetExpressionType(viewModelType, expression);
+
+                if (TypesRequireSpecialConversion(expressionType, typeof(T)))
+                {                
+                    var valueType       = typeof(DependencyBoundValueConverting<,>).MakeGenericType(typeof(T), expressionType);
+                    var valueInstance   = (IDependencyBoundValue<T>)Activator.CreateInstance(valueType, this, expressionType, viewModelType, expression);
+
+                    cachedBoundValue = valueInstance;
+                }
+                else
+                {
+                    var valueType       = typeof(DependencyBoundValueNonConverting<>).MakeGenericType(typeof(T));
+                    var valueInstance   = (IDependencyBoundValue<T>)Activator.CreateInstance(valueType, this, typeof(T), viewModelType, expression);
+
+                    cachedBoundValue = valueInstance;
+                }
+            }
+
             // Property values.
             private readonly DependencyObject owner;
             private readonly DependencyProperty property;
+            private readonly Boolean isReferenceType;
+            private readonly Boolean isValueType;
             private Boolean hasLocalValue;
             private Boolean hasStyledValue;
             private T localValue;
@@ -374,15 +351,10 @@ namespace TwistedLogik.Ultraviolet.Layout
             private T previousValue;
 
             // State values.
+            private readonly DataBindingComparer<T> comparer;
             private Boolean requiresDigest;
             private Boolean bound;
-            private DataBindingGetter<T> dataBindingGetter;
-            private DataBindingSetter<T> dataBindingSetter;
-
-            // Comparison functions for various types.
-            private static readonly Dictionary<Int64, Func<T, T, Boolean>> comparerRegistry = new Dictionary<Int64, Func<T, T, Boolean>>();
-            private static readonly Func<T, T, Boolean> referenceComparer = (o1, o2) => { return (Object)o1 == (Object)o2; };
-            private Func<T, T, Boolean> comparer;
+            private IDependencyBoundValue<T> cachedBoundValue;
         }
     }
 }

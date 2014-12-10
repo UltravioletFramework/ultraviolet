@@ -40,6 +40,11 @@
       <Variant>Attempted to write to a read-only data binding.</Variant>
     </en-US>
   </String>
+  <String Key="BINDING_IS_WRITE_ONLY">
+    <en-US>
+      <Variant>Attempted to read from a write-only binding.</Variant>
+    </en-US>
+  </String>
   <String Key="INCOMPATIBLE_VIEW_MODEL">
     <en-US>
       <Variant>The specified view model cannot be bound to this view because the view requires a view model of type '{0}'.</Variant>
