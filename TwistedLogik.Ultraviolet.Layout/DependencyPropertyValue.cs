@@ -2,29 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Reflection;
 using TwistedLogik.Nucleus;
 
 namespace TwistedLogik.Ultraviolet.Layout
 {
     partial class DependencyObject
     {
-        /// <summary>
-        /// Represents a method which is used to retrieve the value of a data bound property.
-        /// </summary>
-        /// <typeparam name="T">The type of the property which was bound.</typeparam>
-        /// <param name="model">The model object for the current binding context.</param>
-        /// <returns>The current value of the bound property.</returns>
-        internal delegate T DataBindingGetter<T>(Object model);
-
-        /// <summary>
-        /// Represents a method 
-        /// </summary>
-        /// <typeparam name="T">The type of the property which was bound.</typeparam>
-        /// <param name="model">The model object for the current binding context.</param>
-        /// <param name="value">The value to set on the bound property.</param>
-        internal delegate void DataBindingSetter<T>(Object model, T value);
-
         /// <summary>
         /// Represents the value contained by a dependency property.
         /// </summary>
@@ -65,8 +48,8 @@ namespace TwistedLogik.Ultraviolet.Layout
                 var oldValue = GetValue();
                 
                 bound             = true;
-                dataBindingGetter = CreateBindingGetter(viewModelType, expression);
-                dataBindingSetter = CreateBindingSetter(viewModelType, expression);
+                dataBindingGetter = BindingExpressions.CreateBindingGetter<T>(viewModelType, expression);
+                dataBindingSetter = BindingExpressions.CreateBindingSetter<T>(viewModelType, expression);
 
                 UpdateRequiresDigest(oldValue);
             }
@@ -241,143 +224,16 @@ namespace TwistedLogik.Ultraviolet.Layout
                 get { return bound; }
             }
 
-            /// <summary>
-            /// Creates a getter for the specified binding expression.
-            /// </summary>
-            /// <param name="viewModelType">The type of view model to which the value is being bound.</param>
-            /// <param name="expression">The binding expression with which to bind the dependency property.</param>
-            /// <returns>A <see cref="DataBindingGetter{T}"/> that represents the specified model and expression.</returns>
-            private static DataBindingGetter<T> CreateBindingGetter(Type viewModelType, String expression)
+            /// <inheritdoc/>
+            public Boolean HasLocalValue
             {
-                var expressionComponents = ParseBindingExpression(expression);
-
-                var expressions       = new List<Expression>();
-                var variables         = new List<ParameterExpression>();
-                var contextParameter  = Expression.Parameter(typeof(Object), "context");
-                var contextExpression = Expression.Convert(contextParameter, viewModelType);
-                var currentExpression = (Expression)contextExpression;
-                var currentPartVar    = (ParameterExpression)Expression.Variable(viewModelType, "part0");
-                var currentPartNum    = 0;
-                var returnTarget      = Expression.Label(typeof(T), "exit");
-
-                variables.Add(currentPartVar);
-                expressions.Add(Expression.Assign(currentPartVar, currentExpression));
-                expressions.Add(Expression.IfThen(
-                    Expression.Equal(currentPartVar, Expression.Constant(null)),
-                    Expression.Return(returnTarget, Expression.Default(typeof(T)), typeof(T))));
-
-                for (int i = 0; i < expressionComponents.Length; i++)
-                {
-                    var component = expressionComponents[i];
-
-                    currentExpression = Expression.PropertyOrField(currentPartVar, component);
-                    currentPartVar    = Expression.Variable(currentExpression.Type, "part" + (++currentPartNum));
-
-                    variables.Add(currentPartVar);
-                    expressions.Add(Expression.Assign(currentPartVar, currentExpression));
-
-                    if (currentExpression.Type.IsClass)
-                    {
-                        expressions.Add(Expression.IfThen(
-                            Expression.Equal(currentPartVar, Expression.Constant(null)),
-                            Expression.Return(returnTarget, Expression.Default(typeof(T)), typeof(T))));
-                    }
-                }
-
-                expressions.Add(Expression.Return(returnTarget, Expression.Convert(currentPartVar, typeof(T)), typeof(T)));
-                expressions.Add(Expression.Label(returnTarget, Expression.Default(typeof(T))));
-
-                var lambdaBody = Expression.Block(variables, expressions);
-                var lambda     = Expression.Lambda<DataBindingGetter<T>>(lambdaBody, contextParameter).Compile();
-
-                return lambda;
+                get { return hasLocalValue; }
             }
 
-            /// <summary>
-            /// Creates a setter for the specified binding expression.
-            /// </summary>
-            /// <param name="viewModelType">The type of view model to which the value is being bound.</param>
-            /// <param name="expression">The binding expression with which to bind the dependency property.</param>
-            /// <returns>A <see cref="DataBindingSetter{T}"/> that represents the specified model and expression.</returns>
-            private static DataBindingSetter<T> CreateBindingSetter(Type viewModelType, String expression)
+            /// <inheritdoc/>
+            public Boolean HasStyledValue
             {
-                var expressionComponents = ParseBindingExpression(expression);
-
-                var expressions           = new List<Expression>();
-                var variables             = new List<ParameterExpression>();
-                var contextParameter      = Expression.Parameter(typeof(Object), "context");
-                var contextExpression     = Expression.Convert(contextParameter, viewModelType);
-                var currentExpression     = (Expression)contextExpression;
-                var currentPartVar        = (ParameterExpression)Expression.Variable(viewModelType, "part0");
-                var currentPartNum        = 0;
-                var returnTarget          = Expression.Label("exit");
-                var valueParameter        = Expression.Parameter(typeof(T), "value");
-
-                variables.Add(currentPartVar);
-                expressions.Add(Expression.Assign(currentPartVar, currentExpression));
-                expressions.Add(Expression.IfThen(
-                    Expression.Equal(currentPartVar, Expression.Constant(null)),
-                    Expression.Return(returnTarget)));
-
-                for (int i = 0; i < expressionComponents.Length; i++)
-                {
-                    var component       = expressionComponents[i];
-                    var componentMember = Expression.PropertyOrField(currentExpression, component);
-
-                    if (i + 1 < expressionComponents.Length)
-                    {
-                        currentExpression     = Expression.PropertyOrField(currentPartVar, component);
-                        currentPartVar        = Expression.Variable(currentExpression.Type, "part" + (++currentPartNum));
-
-                        variables.Add(currentPartVar);
-                        expressions.Add(Expression.Assign(currentPartVar, currentExpression));
-
-                        if (currentExpression.Type.IsClass)
-                        {
-                            expressions.Add(Expression.IfThen(
-                                Expression.Equal(currentPartVar, Expression.Constant(null)),
-                                Expression.Return(returnTarget)));
-                        }
-                    }
-                    else
-                    {
-                        if (currentExpression.Type.IsValueType)
-                        {
-                            throw new InvalidOperationException(LayoutStrings.BindingAssignmentToValueType.Format(expression));
-                        }
-
-                        var memberExpression = Expression.PropertyOrField(currentPartVar, expressionComponents[i]);
-                        if (memberExpression.Member.MemberType == MemberTypes.Property && !((PropertyInfo)memberExpression.Member).CanWrite)
-                        {
-                            return null;
-                        }
-
-                        expressions.Add(Expression.Assign(memberExpression, Expression.Convert(valueParameter, memberExpression.Type)));
-                    }
-                }
-
-                expressions.Add(Expression.Label(returnTarget));
-
-                var lambdaBody = Expression.Block(variables, expressions);
-                var lambda     = Expression.Lambda<DataBindingSetter<T>>(lambdaBody, contextParameter, valueParameter).Compile();
-
-                return lambda;
-            }
-
-            /// <summary>
-            /// Parses the specified binding expression into its constituent components.
-            /// </summary>
-            /// <param name="expression">The binding expression to parse.</param>
-            /// <returns>The specified binding expression's constituent components.</returns>
-            private static String[] ParseBindingExpression(String expression)
-            {
-                if (!expression.StartsWith("{{") || !expression.EndsWith("}}"))
-                    throw new ArgumentException(LayoutStrings.InvalidBindingExpression.Format(expression));
-
-                var code       = expression.Substring("{{".Length, expression.Length - "{{}}".Length);
-                var components = code.Split('.');
-
-                return components;
+                get { return hasStyledValue; }
             }
 
             /// <summary>

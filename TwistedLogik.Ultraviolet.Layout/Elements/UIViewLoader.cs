@@ -75,6 +75,7 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
             var view = new UIView(uv, viewModelType);
 
             PopulateElementProperties(uv, view.Canvas, xml, viewModelType);
+            PopulateElementEvents(uv, view.Canvas, xml, viewModelType);
             PopulateElementChildren(uv, view.Canvas, xml, viewModelType);
 
             return view;
@@ -104,6 +105,27 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
             }
 
             return instance;
+        }
+
+        /// <summary>
+        /// Populates the specified element's events.
+        /// </summary>
+        /// <param name="uv">The Ultraviolet context.</param>
+        /// <param name="uiElement">The element whose dependency property values will be populated.</param>
+        /// <param name="xmlElement">The XML element that represents the UI element.</param>
+        /// <param name="viewModelType">The view's associated view model type.</param>
+        private static void PopulateElementEvents(UltravioletContext uv, UIElement uiElement, XElement xmlElement, Type viewModelType)
+        {
+            foreach (var attr in xmlElement.Attributes())
+            {
+                var attrName  = attr.Name.LocalName;
+                var attrEvent = uiElement.GetType().GetEvent(attrName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+                if (attrEvent == null || String.IsNullOrEmpty(attr.Value))
+                    continue;
+
+                var lambda = BindingExpressions.CreateBoundEventDelegate(uiElement, viewModelType, attrEvent.EventHandlerType, attr.Value);
+                attrEvent.AddEventHandler(uiElement, lambda);
+            }
         }
 
         /// <summary>
@@ -181,6 +203,7 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
                 uiContainer.Children.Add(uiElement);
 
                 PopulateElementProperties(uv, uiElement, child, viewModelType);
+                PopulateElementEvents(uv, uiElement, child, viewModelType);
 
                 var uiChildContainer = uiElement as UIContainer;
                 if (uiChildContainer != null)
@@ -271,7 +294,7 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         /// <returns><c>true</c> if the specified string is a binding expression; otherwise, <c>false</c>.</returns>
         private static Boolean IsBindingExpression(String value)
         {
-            return value.StartsWith("{{") && value.EndsWith("}}");
+            return BindingExpressions.IsBindingExpression(value);
         }
 
         // Reflection information.

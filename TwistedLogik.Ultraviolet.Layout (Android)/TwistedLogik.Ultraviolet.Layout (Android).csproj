@@ -44,6 +44,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\TwistedLogik.Ultraviolet.Layout\BindingExpressionBuilder.cs">
+      <Link>BindingExpressionBuilder.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.Layout\BindingExpressions.cs">
+      <Link>BindingExpressions.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.Layout\BoundEventBuilder.cs">
+      <Link>BoundEventBuilder.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.Layout\DataBindingGetterBuilder.cs">
+      <Link>DataBindingGetterBuilder.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.Layout\DataBindingSetterBuilder.cs">
+      <Link>DataBindingSetterBuilder.cs</Link>
+    </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.Layout\DependencyObject.cs">
       <Link>DependencyObject.cs</Link>
     </Compile>
@@ -210,7 +225,7 @@
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" ProjectLinkReference="71aaed78-c276-4018-a4b5-a97c4fbc1afb" />
+      <UserProperties ProjectLinkReference="71aaed78-c276-4018-a4b5-a97c4fbc1afb" ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" />
     </VisualStudio>
   </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

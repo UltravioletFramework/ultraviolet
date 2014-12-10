@@ -45,5 +45,21 @@ namespace TwistedLogik.Ultraviolet.Layout
         {
             get;
         }
+
+        /// <summary>
+        /// Gets a value indicating whether the dependency property has a local value.
+        /// </summary>
+        Boolean HasLocalValue
+        {
+            get;
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the dependency property has a styled value.
+        /// </summary>
+        Boolean HasStyledValue
+        {
+            get;
+        }
     }
 }

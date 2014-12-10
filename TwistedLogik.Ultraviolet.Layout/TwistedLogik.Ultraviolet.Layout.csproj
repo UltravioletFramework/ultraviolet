@@ -51,6 +51,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BindingExpressions.cs" />
+    <Compile Include="BindingExpressionBuilder.cs" />
+    <Compile Include="BoundEventBuilder.cs" />
+    <Compile Include="DataBindingSetterBuilder.cs" />
+    <Compile Include="DataBindingGetterBuilder.cs" />
     <Compile Include="DependencyObject.cs" />
     <Compile Include="DependencyProperty.cs" />
     <Compile Include="DependencyPropertyMetadata.cs" />
