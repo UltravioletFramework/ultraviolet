@@ -63,6 +63,55 @@ namespace TwistedLogik.Ultraviolet.Layout
         }
 
         /// <summary>
+        /// Parses the specified binding expression into its constituent components.
+        /// </summary>
+        /// <param name="expression">The binding expression to parse.</param>
+        /// <param name="braces">A value indicating whether the expression's containing braces are included.</param>
+        /// <returns>The specified binding expression's constituent components.</returns>
+        public static IEnumerable<String> ParseBindingExpression(String expression, Boolean braces = true)
+        {
+            if (!IsBindingExpression(expression, braces))
+                throw new ArgumentException(LayoutStrings.InvalidBindingExpression.Format(expression));
+
+            var path       = GetBindingMemberPathPartInternal(expression, braces);
+            var components = path.Split('.');
+
+            return components;
+        }
+
+        /// <summary>
+        /// Gets the part of a binding expression which represents the member navigation path.
+        /// </summary>
+        /// <param name="expression">The expression string to evaluate.</param>
+        /// <param name="braces">A value indicating whether the binding expression includes its enclosing braces.</param>
+        /// <returns>The part of the binding expression which represents the member navigation path, or <c>null</c> if no such part exists.</returns>
+        public static String GetBindingMemberPathPart(String expression, Boolean braces = true)
+        {
+            Contract.RequireNotEmpty(expression, "expression");
+
+            if (!IsBindingExpression(expression, braces))
+                throw new ArgumentException(LayoutStrings.InvalidBindingExpression.Format(expression));
+
+            return GetBindingMemberPathPartInternal(expression, braces);
+        }
+
+        /// <summary>
+        /// Gets the part of a binding expression which represents the format string.
+        /// </summary>
+        /// <param name="expression">The expression string to evaluate.</param>
+        /// <param name="braces">A value indicating whether the binding expression includes its enclosing braces.</param>
+        /// <returns>The part of the binding expression which represents the format string, or <c>null</c> if no such part exists.</returns>
+        public static String GetBindingFormatStringPart(String expression, Boolean braces = true)
+        {
+            Contract.RequireNotEmpty(expression, "expression");
+
+            if (!IsBindingExpression(expression, braces))
+                throw new ArgumentException(LayoutStrings.InvalidBindingExpression.Format(expression));
+
+            return GetBindingFormatStringPartInternal(expression, braces);
+        }
+
+        /// <summary>
         /// Gets the type of the specified binding expression.
         /// </summary>
         /// <param name="viewModelType">The type of view model to evaluate.</param>
@@ -280,20 +329,38 @@ namespace TwistedLogik.Ultraviolet.Layout
         }
 
         /// <summary>
-        /// Parses the specified binding expression into its constituent components.
+        /// Gets the part of a binding expression which represents the member navigation path.
         /// </summary>
-        /// <param name="expression">The binding expression to parse.</param>
-        /// <param name="braces">A value indicating whether the expression's containing braces are included.</param>
-        /// <returns>The specified binding expression's constituent components.</returns>
-        public static IEnumerable<String> ParseBindingExpression(String expression, Boolean braces = true)
+        /// <param name="expression">The expression string to evaluate.</param>
+        /// <param name="braces">A value indicating whether the binding expression includes its enclosing braces.</param>
+        /// <returns>The part of the binding expression which represents the member navigation path, or <c>null</c> if no such part exists.</returns>
+        private static String GetBindingMemberPathPartInternal(String expression, Boolean braces = true)
         {
-            if (!IsBindingExpression(expression, braces))
-                throw new ArgumentException(LayoutStrings.InvalidBindingExpression.Format(expression));
+            var ixDelimiter = expression.IndexOf('|');
+            if (ixDelimiter >= 0)
+            {
+                var offset = braces ? 2 : 0;
+                return expression.Substring(offset, ixDelimiter - offset);
+            }
+            return braces ? expression.Substring(2, expression.Length - 4) : expression;
+        }
 
-            var code       = braces ? expression.Substring("{{".Length, expression.Length - "{{}}".Length) : expression;
-            var components = code.Split('.');
-
-            return components;
+        /// <summary>
+        /// Gets the part of a binding expression which represents the format string.
+        /// </summary>
+        /// <param name="expression">The expression string to evaluate.</param>
+        /// <param name="braces">A value indicating whether the binding expression includes its enclosing braces.</param>
+        /// <returns>The part of the binding expression which represents the format string, or <c>null</c> if no such part exists.</returns>
+        private static String GetBindingFormatStringPartInternal(String expression, Boolean braces = true)
+        {
+            var ixDelimiter = expression.IndexOf('|');
+            if (ixDelimiter >= 0)
+            {
+                var offset = braces ? 2 : 0;
+                var length = (expression.Length - (braces ? 2 : 0)) - (ixDelimiter + 1);
+                return expression.Substring(ixDelimiter + 1, length);
+            }
+            return null;
         }
 
         // Reflection information for commonly-used methods.

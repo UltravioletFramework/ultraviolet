@@ -21,7 +21,7 @@ namespace TwistedLogik.Ultraviolet.Layout
         public DependencyBoundValueConverting(IDependencyPropertyValue value, Type expressionType, Type viewModelType, String expression)
             : base(value, expressionType, viewModelType, expression)
         {
-
+            this.formatString = BindingExpressions.GetBindingFormatStringPart(expression);
         }
 
         /// <inheritdoc/>
@@ -72,6 +72,11 @@ namespace TwistedLogik.Ultraviolet.Layout
             failed = false;
             if (conversionType == typeof(String))
             {
+                if (!String.IsNullOrEmpty(formatString))
+                {
+                    var dotNetFormatString = String.Format("{{0:{0}}}", formatString);
+                    return String.Format(dotNetFormatString, value);
+                }
                 return (value == null) ? null : value.ToString();
             }
             if (originalType == typeof(String))
@@ -110,5 +115,6 @@ namespace TwistedLogik.Ultraviolet.Layout
         private Boolean hasStringRepresentation;
         private TDependency cachedStringRepresentation;
         private TDependency cachedConvertedValue;
+        private String formatString;
     }
 }
