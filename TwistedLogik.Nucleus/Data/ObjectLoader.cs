@@ -562,9 +562,16 @@ namespace TwistedLogik.Nucleus.Data
             }
 
             // Handle list values.
-            if (typeof(IList).IsAssignableFrom(member.MemberType))
+            if (IsListType(member.MemberType))
             {
                 PopulateList(state, member, memberElement);
+                return objectInstance;
+            }
+
+            // Handle generic enumerables.
+            if (IsEnumerableType(member.MemberType))
+            {
+                PopulateEnumerable(state, member, memberElement);
                 return objectInstance;
             }
 
@@ -602,6 +609,98 @@ namespace TwistedLogik.Nucleus.Data
         }
 
         /// <summary>
+        /// Gets a value indicating whether the specified type is a list.
+        /// </summary>
+        /// <param name="type">The type to evaluate.</param>
+        /// <returns><c>true</c> if the specified type is a list; otherwise, <c>false</c>.</returns>
+        private static Boolean IsListType(Type type)
+        {
+            if (type == typeof(IList))
+                return true;
+
+            if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(IList<>))
+                return true;
+
+            var ifaces = type.GetInterfaces();
+
+            if (ifaces.Any(x => x.IsGenericType && x.GetGenericTypeDefinition() == typeof(IList<>)))
+                return true;
+
+            if (ifaces.Any(x => x == typeof(IList)))
+                return true;
+
+            return false;
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the specified type is an enumerable.
+        /// </summary>
+        /// <param name="type">The type to evaluate.</param>
+        /// <returns><c>true</c> if the specified type is an enumerable; otherwise, <c>false</c>.</returns>
+        private static Boolean IsEnumerableType(Type type)
+        {
+            return type.IsGenericType && type.GetGenericTypeDefinition() == typeof(IEnumerable<>);
+        }
+
+        /// <summary>
+        /// Gets the implementation type for the specified list type.
+        /// </summary>
+        /// <param name="listType">The list type to evaluate.</param>
+        /// <returns>The implementation type for the specified list type.</returns>
+        private static Type GetListImplementationType(Type listType)
+        {
+            if (listType == typeof(IList))
+                return typeof(ArrayList);
+
+            if (listType.IsGenericType && listType.GetGenericTypeDefinition() == typeof(IList<>))
+                return typeof(List<>).MakeGenericType(listType.GetGenericArguments()[0]);
+
+            return listType;
+        }
+
+        /// <summary>
+        /// Gets the element type for the specified list type.
+        /// </summary>
+        /// <param name="name">The name of the element that defines the list.</param>
+        /// <param name="listType">The list type to evaluate.</param>
+        /// <returns>The element type for the specified list type.</returns>
+        private static Type GetListElementType(String name, Type listType)
+        {
+            if (listType == typeof(IList))
+                return typeof(Object);
+
+            if (listType.IsGenericType && listType.GetGenericTypeDefinition() == typeof(IList<>))
+                return listType.GetGenericArguments()[0];
+
+            var ifaces = listType.GetInterfaces();
+
+            var listImpls = ifaces.Where(x => x.IsGenericType && x.GetGenericTypeDefinition() == typeof(IList<>));
+            if (listImpls.Count() > 1)
+            {
+                throw new InvalidOperationException(NucleusStrings.MemberImplementsMultipleListImpls.Format(name));
+            }
+
+            if (listImpls.Any())
+                return listImpls.Single().GetGenericArguments()[0];
+
+            if (ifaces.Any(x => x == typeof(IList)))
+                return typeof(Object);
+
+            return null;
+        }
+
+        /// <summary>
+        /// Gets the element type for the specified enumerable type.
+        /// </summary>
+        /// <param name="name">The name of the element that defines the enumerable.</param>
+        /// <param name="listType">The enumerable type to evaluate.</param>
+        /// <returns>The element type for the specified enumerable type.</returns>
+        private static Type GetEnumerableElementType(String name, Type enumerableType)
+        {
+            return enumerableType.GetGenericArguments()[0];
+        }
+
+        /// <summary>
         /// Populates an array value.
         /// </summary>
         /// <param name="state">The loader state.</param>
@@ -615,18 +714,25 @@ namespace TwistedLogik.Nucleus.Data
                 throw new InvalidOperationException(NucleusStrings.NonItemElementsInArrayDef);
             
             // Create the array.
-            var items = (itemsRoot == null) ? new List<DataElement>() : itemsRoot.Elements("Item").ToList();
-            var array = (Array)member.GetValueFromData(element);
-            if (array == null)
-            {
-                array = Array.CreateInstance(member.MemberType.GetElementType(), items.Count);
-                member.SetValueFromData(array, element);
-            }
+            var items            = (itemsRoot == null) ? new List<DataElement>() : itemsRoot.Elements("Item").ToList();
+            var arrayElementType = member.MemberType.GetElementType();
+            var array            = Array.CreateInstance(arrayElementType, items.Count);
+            member.SetValueFromData(array, element);
 
             // Populate the array's items.
             for (int i = 0; i < items.Count; i++)
             {
-                var value = ObjectResolver.FromString(items[i].Value, member.MemberType.GetElementType());
+                var value = default(Object);
+                var type = GetTypeFromElement(state, arrayElementType, items[i]);
+                if (items[i].Elements().Any())
+                {
+                    value = CreateObject<Object>(state, type, null, GetSpecifiedConstructorArguments(items[i]));
+                    value = PopulateObjectFromElements(state, value, items[i]);
+                }
+                else
+                {
+                    value = ObjectResolver.FromString(items[i].Value, type);
+                }
                 array.SetValue(value, i);
             }
         }
@@ -639,26 +745,10 @@ namespace TwistedLogik.Nucleus.Data
         /// <param name="element">The element that defines the member's value.</param>
         private static void PopulateList(ObjectLoaderState state, ObjectLoaderMember member, DataElement element)
         {
-            // Make sure that the list is properly defined.
-            var itemsRoot = element.Element("Items");
-            if (itemsRoot != null && itemsRoot.Elements().Where(x => x.Name != "Item").Any())
-                throw new InvalidOperationException(NucleusStrings.NonItemElementsInListDef);
-            
-            // Make sure that there's only a single generic argument.
-            var listImpls = member.MemberType.GetInterfaces().Where(x => x.IsGenericType && x.GetGenericTypeDefinition() == typeof(IList<>)).ToList();
-            if (!listImpls.Any())
-                throw new InvalidOperationException(NucleusStrings.MemberDoesNotImplementList.Format(element.Name));
-            if (listImpls.Count() > 1)
-                throw new InvalidOperationException(NucleusStrings.MemberImplementsMultipleListImpls.Format(element.Name));
-            var listElementType = listImpls.First().GetGenericArguments()[0];
-
             // Create the list.
-            var list = (IList)member.GetValueFromData(element);
-            if (list == null)
-            {
-                list = (IList)Activator.CreateInstance(member.MemberType);
-                member.SetValueFromData(list, element);
-            }
+            var listImplType  = GetListImplementationType(member.MemberType);
+            var listElemType  = GetListElementType(element.Name, listImplType);
+            var list          = Activator.CreateInstance(listImplType);
 
             // Populate the list's members.
             if (!member.IsIndexer)
@@ -666,15 +756,53 @@ namespace TwistedLogik.Nucleus.Data
                 PopulateObjectFromAttributes(state, list, element);
             }
             PopulateObjectFromElements(state, list, element, x => x.Name != "Items");
+            PopulateListItems(state, list, listElemType, element);
+
+            // Set the list on the object.
+            member.SetValueFromData(list, element);
+        }
+
+        /// <summary>
+        /// Populates an enumerable value.
+        /// </summary>
+        /// <param name="state">The loader state.</param>
+        /// <param name="member">The member to populate.</param>
+        /// <param name="element">The element that defines the member's value.</param>
+        private static void PopulateEnumerable(ObjectLoaderState state, ObjectLoaderMember member, DataElement element)
+        {
+            var listElemType = GetEnumerableElementType(element.Name, member.MemberType);
+            var listType     = typeof(List<>).MakeGenericType(listElemType);
+            var listInstance = Activator.CreateInstance(listType);
+
+            PopulateListItems(state, listInstance, listElemType, element);
+
+            member.SetValueFromData(listInstance, element);
+        }
+
+        /// <summary>
+        /// Populates a list with items.
+        /// </summary>
+        /// <param name="state">The loader state.</param>
+        /// <param name="list">The list to populate.</param>
+        /// <param name="listElemType">The type of elements in the list.</param>
+        /// <param name="element">The element that defines the list.</param>
+        private static void PopulateListItems(ObjectLoaderState state, Object list, Type listElemType, DataElement element)
+        {
+            // Make sure that the list is properly defined.
+            var itemsRoot = element.Element("Items");
+            if (itemsRoot != null && itemsRoot.Elements().Where(x => x.Name != "Item").Any())
+                throw new InvalidOperationException(NucleusStrings.NonItemElementsInListDef);
 
             // Populate the list's items.
             if (itemsRoot != null)
             {
+                var add   = list.GetType().GetMethod("Add", new[] { listElemType });
                 var items = itemsRoot.Elements("Item").ToList();
+
                 for (int i = 0; i < items.Count; i++)
                 {
                     var value = default(Object);
-                        var type = GetTypeFromElement(state, listElementType, items[i]);
+                    var type = GetTypeFromElement(state, listElemType, items[i]);
                     if (items[i].Elements().Any())
                     {
                         value = CreateObject<Object>(state, type, null, GetSpecifiedConstructorArguments(items[i]));
@@ -684,7 +812,7 @@ namespace TwistedLogik.Nucleus.Data
                     {
                         value = ObjectResolver.FromString(items[i].Value, type);
                     }
-                    list.Add(value);
+                    add.Invoke(list, new[] { value });
                 }
             }
         }

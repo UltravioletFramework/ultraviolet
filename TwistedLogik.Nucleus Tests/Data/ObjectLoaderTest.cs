@@ -1650,7 +1650,7 @@ namespace TwistedLogik.Nucleus.Tests.Data
         }
 
         [TestMethod]
-        public void ObjectLoader_Array_PreservesExistingArray()
+        public void ObjectLoader_Array_OverwritesExistingArray()
         {
             var xml = XDocument.Parse(@"
                 <ArrayModels>
@@ -1669,7 +1669,38 @@ namespace TwistedLogik.Nucleus.Tests.Data
                 .ShouldContainTheSpecifiedNumberOfItems(1);
 
             TheResultingCollection(results[0].ArrayValue)
-                .ShouldContainTheSpecifiedNumberOfItems(50);
+                .ShouldBeEmpty();
+        }
+
+        [TestMethod]
+        public void ObjectLoader_Array_LoadsComplexElements()
+        {
+            var xml = XDocument.Parse(@"
+                <ArrayModels>
+                    <ArrayModel Class='TwistedLogik.Nucleus.Tests.Data.ObjectLoader_ArrayComplexModel, TwistedLogik.Nucleus.Tests' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a'>
+                        <ArrayValue>
+                            <Items>
+                                <Item>
+                                    <X>1</X>
+                                    <Y>2</Y>
+                                    <Z>3</Z>
+                                </Item>                                
+                            </Items>
+                        </ArrayValue>
+                    </ArrayModel>
+                </ArrayModels>");
+
+            var results = ObjectLoader.LoadDefinitions<ObjectLoader_ArrayComplexModel>(xml, "ArrayModel").ToList();
+
+            TheResultingCollection(results)
+                .ShouldContainTheSpecifiedNumberOfItems(1);
+
+            TheResultingCollection(results[0].ArrayValue)
+                .ShouldContainTheSpecifiedNumberOfItems(1);
+
+            TheResultingValue(results[0].ArrayValue[0].X).ShouldBe(1);
+            TheResultingValue(results[0].ArrayValue[0].Y).ShouldBe(2);
+            TheResultingValue(results[0].ArrayValue[0].Z).ShouldBe(3);
         }
 
         [TestMethod]
@@ -1737,7 +1768,7 @@ namespace TwistedLogik.Nucleus.Tests.Data
         }
 
         [TestMethod]
-        public void ObjectLoader_Array_PreservesExistingList()
+        public void ObjectLoader_List_OverwritesExistingList()
         {
             var xml = XDocument.Parse(@"
                 <ListModels>
@@ -1756,12 +1787,162 @@ namespace TwistedLogik.Nucleus.Tests.Data
                 .ShouldContainTheSpecifiedNumberOfItems(1);
 
             TheResultingCollection(results[0].ListValue)
-                .ShouldContainTheSpecifiedNumberOfItems(10);
+                .ShouldBeEmpty();
+        }
+
+        [TestMethod]
+        public void ObjectLoader_List_LoadsComplexElements()
+        {
+            var xml = XDocument.Parse(@"
+                <ListModels>
+                    <ListModel Class='TwistedLogik.Nucleus.Tests.Data.ObjectLoader_ListComplexModel, TwistedLogik.Nucleus.Tests' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a'>
+                        <ListValue>
+                            <Items>
+                                <Item>
+                                    <X>1</X>
+                                    <Y>2</Y>
+                                    <Z>3</Z>
+                                </Item>                                
+                            </Items>
+                        </ListValue>
+                    </ListModel>
+                </ListModels>");
+
+            var results = ObjectLoader.LoadDefinitions<ObjectLoader_ListComplexModel>(xml, "ListModel").ToList();
+
+            TheResultingCollection(results)
+                .ShouldContainTheSpecifiedNumberOfItems(1);
+
+            TheResultingCollection(results[0].ListValue)
+                .ShouldContainTheSpecifiedNumberOfItems(1);
+
+            TheResultingValue(results[0].ListValue[0].X).ShouldBe(1);
+            TheResultingValue(results[0].ListValue[0].Y).ShouldBe(2);
+            TheResultingValue(results[0].ListValue[0].Z).ShouldBe(3);
         }
 
         [TestMethod]
         [ExpectedException(typeof(InvalidOperationException))]
         public void ObjectLoader_List_ThrowsOnInvalidListDefinition()
+        {
+            var xml = XDocument.Parse(@"
+                <ListModels>
+                    <ListModel Class='TwistedLogik.Nucleus.Tests.Data.ObjectLoader_ListModel, TwistedLogik.Nucleus.Tests' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a'>
+                        <ListValue>
+                            <Items>
+                                <Item>0</Item>
+                                <Foo>1</Foo>
+                            </Items>
+                        </ListValue>
+                    </ListModel>
+                </ListModels>");
+
+            ObjectLoader.LoadDefinitions<ObjectLoader_ListModel>(xml, "ListModel").ToList();
+        }
+
+        [TestMethod]
+        public void ObjectLoader_Enumerable_PopulatesValues()
+        {
+            var xml = XDocument.Parse(@"
+                <EnumerableModels>
+                    <EnumerableModel Class='TwistedLogik.Nucleus.Tests.Data.ObjectLoader_EnumerableModel, TwistedLogik.Nucleus.Tests' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a'>
+                        <EnumerableValue>
+                            <Items>
+                                <Item>5</Item>
+                                <Item>6</Item>
+                                <Item>7</Item>
+                            </Items>
+                        </EnumerableValue>
+                    </EnumerableModel>
+                </EnumerableModels>");
+
+            var results = ObjectLoader.LoadDefinitions<ObjectLoader_EnumerableModel>(xml, "EnumerableModel").ToList();
+
+            TheResultingCollection(results)
+                .ShouldContainTheSpecifiedNumberOfItems(1);
+
+            TheResultingCollection(results[0].EnumerableValue)
+                .ShouldBeExactly(5, 6, 7);
+        }
+
+        [TestMethod]
+        public void ObjectLoader_Enumerable_PopulatesEmptyEnumerable()
+        {
+            var xml = XDocument.Parse(@"
+                <EnumerableModels>
+                    <EnumerableModel Class='TwistedLogik.Nucleus.Tests.Data.ObjectLoader_EnumerableModel, TwistedLogik.Nucleus.Tests' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a'>
+                        <EnumerableValue>
+                        </EnumerableValue>
+                    </EnumerableModel>
+                </EnumerableModels>");
+
+            var results = ObjectLoader.LoadDefinitions<ObjectLoader_EnumerableModel>(xml, "EnumerableModel").ToList();
+
+            TheResultingCollection(results)
+                .ShouldContainTheSpecifiedNumberOfItems(1);
+
+            TheResultingCollection(results[0].EnumerableValue)
+                .ShouldBeEmpty();
+        }
+
+        [TestMethod]
+        public void ObjectLoader_Enumerable_OverwritesExistingEnumerable()
+        {
+            var xml = XDocument.Parse(@"
+                <EnumerableModels>
+                    <EnumerableModel Class='TwistedLogik.Nucleus.Tests.Data.ObjectLoader_EnumerableModel, TwistedLogik.Nucleus.Tests' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a'>
+                        <Constructor>
+                            <Argument>true</Argument>
+                        </Constructor>
+                        <EnumerableValue>
+                        </EnumerableValue>
+                    </EnumerableModel>
+                </EnumerableModels>");
+
+            var results = ObjectLoader.LoadDefinitions<ObjectLoader_EnumerableModel>(xml, "EnumerableModel").ToList();
+
+            TheResultingCollection(results)
+                .ShouldContainTheSpecifiedNumberOfItems(1);
+
+            TheResultingCollection(results[0].EnumerableValue)
+                .ShouldBeEmpty();
+        }
+
+        [TestMethod]
+        public void ObjectLoader_Enumerable_LoadsComplexElements()
+        {
+            var xml = XDocument.Parse(@"
+                <EnumerableModels>
+                    <EnumerableModel Class='TwistedLogik.Nucleus.Tests.Data.ObjectLoader_EnumerableComplexModel, TwistedLogik.Nucleus.Tests' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a'>
+                        <EnumerableValue>
+                            <Items>
+                                <Item>
+                                    <X>1</X>
+                                    <Y>2</Y>
+                                    <Z>3</Z>
+                                </Item>                                
+                            </Items>
+                        </EnumerableValue>
+                    </EnumerableModel>
+                </EnumerableModels>");
+
+            var results = ObjectLoader.LoadDefinitions<ObjectLoader_EnumerableComplexModel>(xml, "EnumerableModel").ToList();
+
+            TheResultingCollection(results)
+                .ShouldContainTheSpecifiedNumberOfItems(1);
+
+            TheResultingCollection(results[0].EnumerableValue)
+                .ShouldContainTheSpecifiedNumberOfItems(1);
+
+            var first = results[0].EnumerableValue.First();
+            TheResultingValue(first.X).ShouldBe(1);
+            TheResultingValue(first.Y).ShouldBe(2);
+            TheResultingValue(first.Z).ShouldBe(3);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(InvalidOperationException))]
+        public void ObjectLoader_Enumerable_ThrowsOnInvalidListDefinition()
         {
             var xml = XDocument.Parse(@"
                 <ListModels>
