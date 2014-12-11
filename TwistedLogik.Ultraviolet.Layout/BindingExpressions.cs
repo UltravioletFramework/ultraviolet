@@ -340,9 +340,9 @@ namespace TwistedLogik.Ultraviolet.Layout
             if (ixDelimiter >= 0)
             {
                 var offset = braces ? 2 : 0;
-                return expression.Substring(offset, ixDelimiter - offset);
+                return expression.Substring(offset, ixDelimiter - offset).Trim();
             }
-            return braces ? expression.Substring(2, expression.Length - 4) : expression;
+            return (braces ? expression.Substring(2, expression.Length - 4) : expression).Trim();
         }
 
         /// <summary>
@@ -358,7 +358,7 @@ namespace TwistedLogik.Ultraviolet.Layout
             {
                 var offset = braces ? 2 : 0;
                 var length = (expression.Length - (braces ? 2 : 0)) - (ixDelimiter + 1);
-                return expression.Substring(ixDelimiter + 1, length);
+                return expression.Substring(ixDelimiter + 1, length).Trim();
             }
             return null;
         }
