@@ -103,6 +103,9 @@
     <Compile Include="Collections\PooledObjectScopeTest.cs" />
     <Compile Include="Collections\PriorityQueueTest.cs" />
     <Compile Include="Collections\ExpandingPoolTest.cs" />
+    <Compile Include="Data\ObjectLoaderTest.ArrayComplexModel.cs" />
+    <Compile Include="Data\ObjectLoaderTest.EnumerableComplexModel.cs" />
+    <Compile Include="Data\ObjectLoaderTest.EnumerableModel.cs" />
     <Compile Include="Data\ObjectLoaderTest.ComplexIndexerModel.cs" />
     <Compile Include="Data\ObjectLoaderTest.ComplexList.cs" />
     <Compile Include="Data\ObjectLoaderTest.ComplexRefObjectF.cs" />
@@ -113,6 +116,7 @@
     <Compile Include="Data\ObjectLoaderTest.ComplexValueObject.cs" />
     <Compile Include="Data\ObjectLoaderTest.ListIndexerModel.cs" />
     <Compile Include="Data\ObjectLoaderTest.ArrayIndexerModel.cs" />
+    <Compile Include="Data\ObjectLoaderTest.ListComplexModel.cs" />
     <Compile Include="Data\ObjectLoaderTest.ListModel.cs" />
     <Compile Include="Data\ObjectLoaderTest.ArrayModel.cs" />
     <Compile Include="Data\ObjectLoaderTest.MultiIndexerModel.cs" />
@@ -121,6 +125,7 @@
     <Compile Include="Data\ObjectLoaderTest.CtorArgModelAmbiguousMatch.cs" />
     <Compile Include="Data\ObjectLoaderTest.CtorArgModelNoMatch.cs" />
     <Compile Include="Data\ObjectLoaderTest.CtorArgModel.cs" />
+    <Compile Include="Data\ObjectLoaderTest.ReservedKeywordModel.cs" />
     <Compile Include="Data\ObjectLoaderTest.SimpleModelBase.cs" />
     <Compile Include="Data\ObjectLoaderTest.SimpleFlags.cs" />
     <Compile Include="Data\ObjectLoaderTest.cs" />

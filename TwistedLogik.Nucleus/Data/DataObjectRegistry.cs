@@ -1,7 +1,11 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Xml.Linq;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace TwistedLogik.Nucleus.Data
 {
@@ -224,13 +228,23 @@ namespace TwistedLogik.Nucleus.Data
         }
 
         /// <summary>
+        /// Loads a data element from the specified file.
+        /// </summary>
+        /// <param name="file">The file from which to load the data element.</param>
+        /// <returns>The data element that was loaded.</returns>
+        protected virtual DataElement LoadDataElement(String file)
+        {
+            return DataElement.CreateFromFile(file);
+        }
+
+        /// <summary>
         /// Loads the registry's keys.
         /// </summary>
         protected virtual void LoadKeysInternal()
         {
             foreach (var file in registrySourceFiles)
             {
-                LoadKeysFromData(DataElementName, DataElement.CreateFromFile(file));
+                LoadKeysFromData(DataElementName, LoadDataElementFromFile(file));
             }
         }
 
@@ -242,7 +256,7 @@ namespace TwistedLogik.Nucleus.Data
             foreach (var file in registrySourceFiles)
             {
                 var error   = String.Empty;
-                var objects = ObjectLoader.LoadDefinitions<T>(ObjectLoaderDataType.Detect, file, DataElementName, DefaultObjectClass);
+                var objects = Path.GetExtension(file) == "json" ? LoadDefinitionsFromJson(file) : LoadDefinitionsFromXml(file);
                 foreach (var obj in objects)
                 {
                     if (!ValidateObject(obj, out error))
@@ -269,6 +283,40 @@ namespace TwistedLogik.Nucleus.Data
         {
             error = null;
             return true;
+        }
+
+        /// <summary>
+        /// Loads a <see cref="DataElement"/> from the specified file.
+        /// </summary>
+        /// <param name="file">The file from which to load the data element.</param>
+        /// <returns>The <see cref="DataElement"/> that was loaded from the specified file.</returns>
+        protected virtual DataElement LoadDataElementFromFile(String file)
+        {
+            return DataElement.CreateFromFile(file);
+        }
+
+        /// <summary>
+        /// Loads a set of object definitions from the specified XML file.
+        /// </summary>
+        /// <param name="file">The file from which to load the data objects.</param>
+        /// <returns>The collection of objects that were loaded.</returns>
+        protected virtual IEnumerable<T> LoadDefinitionsFromXml(String file)
+        {
+            return ObjectLoader.LoadDefinitions<T>(XDocument.Load(file), DataElementName, DefaultObjectClass);
+        }
+
+        /// <summary>
+        /// Loads a set of object definitions from the specified JSON file.
+        /// </summary>
+        /// <param name="file">The file from which to load the data objects.</param>
+        /// <returns>The collection of objects that were loaded.</returns>
+        protected virtual IEnumerable<T> LoadDefinitionsFromJson(String file)
+        {
+            using (var sreader = new StreamReader(file))
+            using (var jreader = new JsonTextReader(sreader))
+            {
+                return ObjectLoader.LoadDefinitions<T>(JObject.Load(jreader), DataElementName, DefaultObjectClass);
+            }
         }
 
         /// <summary>

@@ -182,6 +182,9 @@
     <Compile Include="..\TwistedLogik.Ultraviolet\Content\UltravioletContent.cs">
       <Link>Content\UltravioletContent.cs</Link>
     </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Content\UltravioletDataObject.cs">
+      <Link>Content\UltravioletDataObject.cs</Link>
+    </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet\Content\UltravioletDataObjectRegistry.cs">
       <Link>Content\UltravioletDataObjectRegistry.cs</Link>
     </Compile>

@@ -70,7 +70,7 @@ namespace TwistedLogik.Nucleus
         private static void Load_Win32NT(String name)
         {
             var file = Path.ChangeExtension(name, ".dll");
-            var path = Path.Combine(Environment.Is64BitProcess ? "x64" : "x86", "win32nt", file);
+            var path = Path.GetFullPath(Path.Combine(Environment.Is64BitProcess ? "x64" : "x86", "win32nt", file));
             var handle = NativeMethods.LoadLibraryEx(path, IntPtr.Zero, 0);
             if (handle == IntPtr.Zero)
             {
