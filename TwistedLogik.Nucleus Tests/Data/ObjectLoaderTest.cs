@@ -1307,6 +1307,32 @@ namespace TwistedLogik.Nucleus.Tests.Data
         }
 
         [TestMethod]
+        public void ObjectLoader_SimpleObject_HandlesReservedKeywordsInElements()
+        {
+            var xml = XDocument.Parse(@"
+                <KeywordModels>
+                    <KeywordModel Class='TwistedLogik.Nucleus.Tests.Data.ObjectLoader_ReservedKeywordModel, TwistedLogik.Nucleus.Tests' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a'>
+                        <Constructor>
+                            <Argument>Hello, world!</Argument>
+                        </Constructor>
+                        <Class>Set Class</Class>
+                        <ID>Set ID</ID>
+                        <Type>Set Type</Type>
+                    </KeywordModel>
+                </KeywordModels>");
+
+            var results = ObjectLoader.LoadDefinitions<ObjectLoader_ReservedKeywordModel>(xml, "KeywordModel").ToList();
+
+            TheResultingCollection(results)
+                .ShouldContainTheSpecifiedNumberOfItems(1);
+
+            TheResultingString(results[0].SetByConstructor).ShouldBe("Hello, world!");
+            TheResultingString(results[0].Class).ShouldBe("Set Class");
+            TheResultingString(results[0].ID).ShouldBe("Set ID");
+            TheResultingString(results[0].Type).ShouldBe("Set Type");
+        }
+
+        [TestMethod]
         public void ObjectLoader_ConstructorArgs_LoadsSimpleValuesSuccessfully()
         {
             var xml = XDocument.Parse(@"

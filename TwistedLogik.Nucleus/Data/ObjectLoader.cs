@@ -38,6 +38,24 @@ namespace TwistedLogik.Nucleus.Data
         }
 
         /// <summary>
+        /// Gets a value indicating whether the specified name is a forbidden keyword which cannot be used in an object
+        /// definition under any circumstance.
+        /// </summary>
+        /// <param name="name">The name to evaluate.</param>
+        /// <returns><c>true</c> if the name is forbidden; otherwise, <c>false</c>.</returns>
+        public static Boolean IsForbiddenKeyword(String name)
+        {
+            switch(name)
+            {
+                case "Key":
+                case "Constructor":
+                    return true;
+                default:
+                    return false;
+            }
+        }
+
+        /// <summary>
         /// Loads the objects defined in the specified file.
         /// </summary>
         /// <typeparam name="T">The type of object to load.</typeparam>
@@ -532,7 +550,7 @@ namespace TwistedLogik.Nucleus.Data
             var children = (filter == null) ? objectElement.Elements() : objectElement.Elements().Where(filter);
             foreach (var element in children)
             {
-                objectInstance = PopulateMemberFromElement(state, objectInstance, element);
+                objectInstance = PopulateMemberFromElement(state, objectInstance, element, false);
             }
 
             return objectInstance;
@@ -545,10 +563,15 @@ namespace TwistedLogik.Nucleus.Data
         /// <param name="objectInstance">The object instance.</param>
         /// <param name="memberElement">The element that defines the member.</param>
         /// <returns>The object instance.</returns>
-        private static Object PopulateMemberFromElement(ObjectLoaderState state, Object objectInstance, DataElement memberElement)
+        private static Object PopulateMemberFromElement(ObjectLoaderState state, Object objectInstance, DataElement memberElement, Boolean skipReservedKeywords = true)
         {
             if (IsReservedKeyword(memberElement.Name))
-                return objectInstance;
+            {
+                if (skipReservedKeywords || IsForbiddenKeyword(memberElement.Name))
+                {
+                    return objectInstance;
+                }
+            }
 
             var member = ObjectLoaderMember.Find(objectInstance, memberElement.Name, state.IgnoreMissingMembers);
             if (member == null)

@@ -125,6 +125,7 @@
     <Compile Include="Data\ObjectLoaderTest.CtorArgModelAmbiguousMatch.cs" />
     <Compile Include="Data\ObjectLoaderTest.CtorArgModelNoMatch.cs" />
     <Compile Include="Data\ObjectLoaderTest.CtorArgModel.cs" />
+    <Compile Include="Data\ObjectLoaderTest.ReservedKeywordModel.cs" />
     <Compile Include="Data\ObjectLoaderTest.SimpleModelBase.cs" />
     <Compile Include="Data\ObjectLoaderTest.SimpleFlags.cs" />
     <Compile Include="Data\ObjectLoaderTest.cs" />
