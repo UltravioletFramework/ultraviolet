@@ -693,7 +693,7 @@ namespace TwistedLogik.Nucleus.Data
         /// Gets the element type for the specified enumerable type.
         /// </summary>
         /// <param name="name">The name of the element that defines the enumerable.</param>
-        /// <param name="listType">The enumerable type to evaluate.</param>
+        /// <param name="enumerableType">The enumerable type to evaluate.</param>
         /// <returns>The element type for the specified enumerable type.</returns>
         private static Type GetEnumerableElementType(String name, Type enumerableType)
         {
