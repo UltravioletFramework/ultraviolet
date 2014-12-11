@@ -27,7 +27,7 @@ namespace TwistedLogik.Ultraviolet.Layout
         /// <inheritdoc/>
         public TDependency Get()
         {
-            return cachedConvertedValue;
+            return hasStringRepresentation ? cachedStringRepresentation : cachedConvertedValue;
         }
 
         /// <inheritdoc/>
@@ -40,8 +40,15 @@ namespace TwistedLogik.Ultraviolet.Layout
         /// <inheritdoc/>
         public void Set(TDependency value)
         {
-            var converted = (TBound)ConvertValue(value, typeof(TDependency), typeof(TBound));
+            var blargh = false;
+            var converted = (TBound)ConvertValue(value, typeof(TDependency), typeof(TBound), out blargh);
             SetUnderlyingValue(converted);
+            if (blargh)
+            {
+                Digest();
+                hasStringRepresentation = true;
+                cachedStringRepresentation = (TDependency)(Object)value;
+            }
         }
 
         /// <inheritdoc/>
@@ -56,9 +63,13 @@ namespace TwistedLogik.Ultraviolet.Layout
         /// <param name="value">The value to convert.</param>
         /// <param name="originalType">The value's original type.</param>
         /// <param name="conversionType">The type to which to convert the value.</param>
+        /// <param name="failed">A value indicating whether the conversion failed.</param>
         /// <returns>The converted value.</returns>
-        private static Object ConvertValue(Object value, Type originalType, Type conversionType)
+        private Object ConvertValue(Object value, Type originalType, Type conversionType, out Boolean failed)
         {
+            hasStringRepresentation = false;
+
+            failed = false;
             if (conversionType == typeof(String))
             {
                 return (value == null) ? null : value.ToString();
@@ -69,7 +80,11 @@ namespace TwistedLogik.Ultraviolet.Layout
                 {
                     return ObjectResolver.FromString((String)value, conversionType);
                 }
-                catch (FormatException) { return conversionType.IsClass ? null : Activator.CreateInstance(conversionType); }
+                catch (FormatException) 
+                {
+                    failed = true;
+                    return conversionType.IsClass ? null : Activator.CreateInstance(conversionType); 
+                }
             }
             return Convert.ChangeType(value, conversionType);
         }
@@ -81,10 +96,19 @@ namespace TwistedLogik.Ultraviolet.Layout
         /// <returns>The converted value.</returns>
         private TDependency ConvertBoundValue(TBound value)
         {
-            return (TDependency)ConvertValue(value, typeof(TBound), typeof(TDependency));
+            var failed = false;
+            var result = (TDependency)ConvertValue(value, typeof(TBound), typeof(TDependency), out failed);
+            if (failed)
+            {
+                hasStringRepresentation = true;
+                cachedStringRepresentation = (TDependency)(Object)value;
+            }
+            return result;
         }
 
         // State values.
+        private Boolean hasStringRepresentation;
+        private TDependency cachedStringRepresentation;
         private TDependency cachedConvertedValue;
     }
 }

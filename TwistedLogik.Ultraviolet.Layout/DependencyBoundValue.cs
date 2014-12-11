@@ -94,6 +94,14 @@ namespace TwistedLogik.Ultraviolet.Layout
             setter(dependencyValue.Owner.DependencyDataSource, value);
         }
 
+        /// <summary>
+        /// Immediately digests the dependency property.
+        /// </summary>
+        protected void Digest()
+        {
+            dependencyValue.Digest();
+        }
+
         // State values.
         private readonly IDependencyPropertyValue dependencyValue;
         private readonly DataBindingComparer<T> comparer;

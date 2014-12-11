@@ -138,7 +138,7 @@ namespace TwistedLogik.Nucleus.Data
             Contract.Ensure<ArgumentException>(type.IsEnum, "type");
 
             if (value == String.Empty)
-                return 0;
+                throw new FormatException();
 
             var values = value.Split('|');
             var numeric = 0;
