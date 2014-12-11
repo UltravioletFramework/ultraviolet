@@ -562,6 +562,7 @@ namespace TwistedLogik.Nucleus.Data
         /// <param name="state">The loader state.</param>
         /// <param name="objectInstance">The object instance.</param>
         /// <param name="memberElement">The element that defines the member.</param>
+        /// <param name="skipReservedKeywords">A value indicating whether to skip elements with the same names as reserved keywords.</param>
         /// <returns>The object instance.</returns>
         private static Object PopulateMemberFromElement(ObjectLoaderState state, Object objectInstance, DataElement memberElement, Boolean skipReservedKeywords = true)
         {
