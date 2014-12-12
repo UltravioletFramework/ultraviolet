@@ -1,5 +1,5 @@
 ﻿using System;
-using TwistedLogik.Nucleus.Data;
+using System.ComponentModel;
 
 namespace TwistedLogik.Ultraviolet.Layout
 {
@@ -72,26 +72,54 @@ namespace TwistedLogik.Ultraviolet.Layout
             failed = false;
             if (conversionType == typeof(String))
             {
-                if (!String.IsNullOrEmpty(formatString))
-                {
-                    var dotNetFormatString = String.Format("{{0:{0}}}", formatString);
-                    return String.Format(dotNetFormatString, value);
-                }
-                return (value == null) ? null : value.ToString();
+                return ConvertUsingToString(value, originalType, out failed);
             }
-            if (originalType == typeof(String))
+            return ConvertUsingTypeConverter(value, originalType, conversionType, out failed);
+        }
+
+        /// <summary>
+        /// Converts a value to the specified type using a <see cref="TypeConverter"/>, if one is available.
+        /// </summary>
+        /// <param name="value">The value to convert.</param>
+        /// <param name="originalType">The value's original type.</param>
+        /// <param name="conversionType">The type to which to convert the value.</param>
+        /// <param name="failed">A value indicating whether the conversion failed.</param>
+        /// <returns>The converted value.</returns>
+        private Object ConvertUsingTypeConverter(Object value, Type originalType, Type conversionType, out Boolean failed)
+        {
+            failed = true;
+
+            var converter = TypeDescriptor.GetConverter(conversionType);
+            if (converter != null && converter.CanConvertFrom(originalType))
             {
-                try
+                if (converter.IsValid(value))
                 {
-                    return ObjectResolver.FromString((String)value, conversionType);
-                }
-                catch (FormatException) 
-                {
-                    failed = true;
-                    return conversionType.IsClass ? null : Activator.CreateInstance(conversionType); 
+                    failed = false;
+                    return converter.ConvertFrom(value);
                 }
             }
-            return Convert.ChangeType(value, conversionType);
+
+            return conversionType.IsClass ? null : Activator.CreateInstance(conversionType);
+        }
+
+        /// <summary>
+        /// Converts a value to a string using the <see cref="Object.ToString()"/> method.
+        /// </summary>
+        /// <param name="value">The value to convert.</param>
+        /// <param name="originalType">The value's original type.</param>
+        /// <param name="failed">A value indicating whether the conversion failed.</param>
+        /// <returns>The converted value.</returns>
+        private Object ConvertUsingToString(Object value, Type originalType, out Boolean failed)
+        {
+            failed = false;
+
+            if (!String.IsNullOrEmpty(formatString))
+            {
+                var dotNetFormatString = String.Format("{{0:{0}}}", formatString);
+                return String.Format(dotNetFormatString, value);
+            }
+
+            return (value == null) ? null : value.ToString();
         }
 
         /// <summary>
