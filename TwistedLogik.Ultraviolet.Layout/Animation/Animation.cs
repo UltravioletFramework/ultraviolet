@@ -1,5 +1,4 @@
 ﻿using System;
-using TwistedLogik.Nucleus;
 
 namespace TwistedLogik.Ultraviolet.Layout.Animation
 {
@@ -12,21 +11,9 @@ namespace TwistedLogik.Ultraviolet.Layout.Animation
         /// <summary>
         /// Initializes a new instance of the <see cref="Animation{T}"/> class.
         /// </summary>
-        /// <param name="target">The storyboard target that owns this animation.</param>
-        internal Animation(StoryboardTarget target)
+        public Animation()
         {
-            Contract.Require(target, "target");
-
-            this.target    = target;
             this.keyframes = new AnimationKeyframeCollection<T>(this);
-        }
-
-        /// <summary>
-        /// Gets the storyboard target that owns this animation.
-        /// </summary>
-        public StoryboardTarget Target
-        {
-            get { return target; }
         }
 
         /// <summary>
@@ -71,11 +58,11 @@ namespace TwistedLogik.Ultraviolet.Layout.Animation
 
             duration = endTime - startTime;
 
-            target.Storyboard.RecalculateDuration();
+            if (Target != null && Target.Storyboard != null)
+                Target.Storyboard.RecalculateDuration();
         }
 
         // Property values.
-        private readonly StoryboardTarget target;
         private readonly AnimationKeyframeCollection<T> keyframes;
         private TimeSpan duration;
         private TimeSpan startTime;

@@ -21,6 +21,61 @@ namespace TwistedLogik.Ultraviolet.Layout.Animation
         }
 
         /// <summary>
+        /// Adds a storyboard target to the collection.
+        /// </summary>
+        /// <param name="target">The storyboard target to add to the collection.</param>
+        /// <returns><c>true</c> if the target was added to the collection; otherwise, <c>false</c>.</returns>
+        public Boolean Add(StoryboardTarget target)
+        {
+            Contract.Require(target, "target");
+
+            if (target.Storyboard == Storyboard)
+                return false;
+
+            if (target.Storyboard != null)
+                target.Storyboard.Targets.Remove(target);
+
+            targets.Add(target);
+            target.Storyboard = Storyboard;
+            Storyboard.RecalculateDuration();
+
+            return true;
+        }
+
+        /// <summary>
+        /// Removes a storyboard target from the collection.
+        /// </summary>
+        /// <param name="target">The storyboard target to remove from the collection.</param>
+        /// <returns><c>true</c> if the target was removed from the collection; otherwise, <c>false</c>.</returns>
+        public Boolean Remove(StoryboardTarget target)
+        {
+            Contract.Require(target, "Target");
+
+            if (target.Storyboard != Storyboard)
+                return false;
+
+            if (targets.Remove(target))
+            {
+                target.Storyboard = null;
+                Storyboard.RecalculateDuration();
+                return true;
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the collection contains the specified storyboard target.
+        /// </summary>
+        /// <param name="target">The storyboard target to evaluate.</param>
+        /// <returns><c>true</c> if the collection contains the specified target; otherwise, <c>false</c>.</returns>
+        public Boolean Contains(StoryboardTarget target)
+        {
+            Contract.Require(target, "target");
+
+            return targets.Contains(target);
+        }
+
+        /// <summary>
         /// Gets the storyboard that owns this collection.
         /// </summary>
         public Storyboard Storyboard

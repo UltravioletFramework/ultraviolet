@@ -9,6 +9,15 @@ namespace TwistedLogik.Ultraviolet.Layout.Animation
     public abstract class AnimationBase
     {
         /// <summary>
+        /// Gets the storyboard target that owns this animation.
+        /// </summary>
+        public StoryboardTarget Target
+        {
+            get { return target; }
+            internal set { target = value; }
+        }
+
+        /// <summary>
         /// Gets the animation's total duration.
         /// </summary>
         public abstract TimeSpan Duration
@@ -36,5 +45,8 @@ namespace TwistedLogik.Ultraviolet.Layout.Animation
         /// Recalculates the animation's duration.
         /// </summary>
         internal abstract void RecalculateDuration();
+
+        // Property values.
+        private StoryboardTarget target;
     }
 }

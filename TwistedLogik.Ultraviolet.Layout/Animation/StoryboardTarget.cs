@@ -10,12 +10,8 @@ namespace TwistedLogik.Ultraviolet.Layout.Animation
         /// <summary>
         /// Initializes a new instance of the <see cref="StoryboardTarget"/> class.
         /// </summary>
-        /// <param name="storyboard">The storyboard that owns the target.</param>
-        internal StoryboardTarget(Storyboard storyboard)
+        public StoryboardTarget()
         {
-            Contract.Require(storyboard, "storyboard");
-
-            this.storyboard = storyboard;
             this.animations = new StoryboardTargetAnimationCollection(this);
         }
 
@@ -25,6 +21,7 @@ namespace TwistedLogik.Ultraviolet.Layout.Animation
         public Storyboard Storyboard
         {
             get { return storyboard; }
+            internal set { storyboard = value; }
         }
 
         /// <summary>
@@ -36,9 +33,7 @@ namespace TwistedLogik.Ultraviolet.Layout.Animation
         }
 
         // Property values.
+        private Storyboard storyboard;
         private readonly StoryboardTargetAnimationCollection animations;
-
-        // State values.
-        private readonly Storyboard storyboard;
     }
 }
