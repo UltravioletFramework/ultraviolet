@@ -51,6 +51,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Animation\AnimationBase.cs" />
+    <Compile Include="Animation\Animation.cs" />
+    <Compile Include="Animation\AnimationKeyframe.cs" />
+    <Compile Include="Animation\AnimationKeyframeCollection.cs" />
+    <Compile Include="Animation\AnimationKeyframeCollection.IEnumerable.cs" />
+    <Compile Include="Animation\StoryboardTarget.cs" />
+    <Compile Include="Animation\Storyboard.cs" />
+    <Compile Include="Animation\StoryboardTargetAnimationCollection.cs" />
+    <Compile Include="Animation\StoryboardTargetAnimationCollection.IEnumerable.cs" />
+    <Compile Include="Animation\StoryboardTargetCollection.cs" />
+    <Compile Include="Animation\StoryboardTargetCollection.IEnumerable.cs" />
     <Compile Include="BindingExpressions.cs" />
     <Compile Include="BindingExpressionBuilder.cs" />
     <Compile Include="BoundEventBuilder.cs" />

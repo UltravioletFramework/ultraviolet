@@ -44,6 +44,39 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\TwistedLogik.Ultraviolet.Layout\Animation\Animation.cs">
+      <Link>Animation\Animation.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.Layout\Animation\AnimationBase.cs">
+      <Link>Animation\AnimationBase.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.Layout\Animation\AnimationKeyframe.cs">
+      <Link>Animation\AnimationKeyframe.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.Layout\Animation\AnimationKeyframeCollection.cs">
+      <Link>Animation\AnimationKeyframeCollection.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.Layout\Animation\AnimationKeyframeCollection.IEnumerable.cs">
+      <Link>Animation\AnimationKeyframeCollection.IEnumerable.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.Layout\Animation\Storyboard.cs">
+      <Link>Animation\Storyboard.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.Layout\Animation\StoryboardTarget.cs">
+      <Link>Animation\StoryboardTarget.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.Layout\Animation\StoryboardTargetAnimationCollection.cs">
+      <Link>Animation\StoryboardTargetAnimationCollection.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.Layout\Animation\StoryboardTargetAnimationCollection.IEnumerable.cs">
+      <Link>Animation\StoryboardTargetAnimationCollection.IEnumerable.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.Layout\Animation\StoryboardTargetCollection.cs">
+      <Link>Animation\StoryboardTargetCollection.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.Layout\Animation\StoryboardTargetCollection.IEnumerable.cs">
+      <Link>Animation\StoryboardTargetCollection.IEnumerable.cs</Link>
+    </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.Layout\BindingExpressionBuilder.cs">
       <Link>BindingExpressionBuilder.cs</Link>
     </Compile>
@@ -243,7 +276,7 @@
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties ProjectLinkReference="71aaed78-c276-4018-a4b5-a97c4fbc1afb" ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" />
+      <UserProperties ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" ProjectLinkReference="71aaed78-c276-4018-a4b5-a97c4fbc1afb" />
     </VisualStudio>
   </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

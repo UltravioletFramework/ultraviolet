@@ -12,11 +12,12 @@ namespace TwistedLogik.Ultraviolet.Layout
         /// <summary>
         /// Evaluates whether any of the object's dependency property values have changed and, if so, invokes the appropriate callbacks.
         /// </summary>
-        public void Digest()
+        /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Update(UltravioletTime)"/>.</param>
+        public void Digest(UltravioletTime time)
         {
             for (int i = 0; i < digestedDependencyProperties.Count; i++)
             {
-                digestedDependencyProperties[i].Digest();
+                digestedDependencyProperties[i].Digest(time);
             }
         }
 

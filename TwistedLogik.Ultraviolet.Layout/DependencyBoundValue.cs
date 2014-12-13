@@ -99,7 +99,7 @@ namespace TwistedLogik.Ultraviolet.Layout
         /// </summary>
         protected void Digest()
         {
-            dependencyValue.Digest();
+            dependencyValue.Digest(null);
         }
 
         // State values.

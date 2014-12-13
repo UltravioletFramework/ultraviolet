@@ -70,7 +70,7 @@ namespace TwistedLogik.Ultraviolet.Layout
             }
 
             /// <inheritdoc/>
-            public void Digest()
+            public void Digest(UltravioletTime time)
             {
                 var value   = default(T);
                 var changed = false;

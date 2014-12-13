@@ -500,7 +500,7 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Draw(UltravioletTime)"/>.</param>
         internal virtual void Update(UltravioletTime time)
         {
-            Digest();
+            Digest(time);
             OnUpdating(time);
         }
 
