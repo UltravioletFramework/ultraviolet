@@ -47,10 +47,13 @@ namespace TwistedLogik.Ultraviolet.Layout
 
                 var oldValue = GetValue();
 
+                ClearAnimation();
+
                 this.animation               = (Animation<T>)animation;
                 this.animationClock          = clock;
                 this.animationClock.Stopped += OnAnimationClockStopped;
                 this.animatedValue           = GetValueInternal(false);
+                this.animatedHandOffValue    = oldValue;
 
                 UpdateRequiresDigest(oldValue);
             }
@@ -381,7 +384,7 @@ namespace TwistedLogik.Ultraviolet.Layout
             private void UpdateAnimation(UltravioletTime time)
             {
                 // If our animation has become invalid since it was applied, remove it.
-                if (animation.Target == null || animation.Target.Storyboard == null)
+                if (animation.Target == null || animation.Target.Storyboard == null || animation.Keyframes.Count == 0)
                 {
                     ClearAnimation();
                     return;
@@ -392,7 +395,7 @@ namespace TwistedLogik.Ultraviolet.Layout
                 animation.GetKeyframes(animationClock.ElapsedTime, out kf1, out kf2);
 
                 // Determine which values correspond to our keyframes.
-                T value1 = (kf1 == null || !kf1.HasValue) ? GetValueInternal(false) : kf1.Value;
+                T value1 = (kf1 == null) ? animatedHandOffValue : (!kf1.HasValue) ? GetValueInternal(false) : kf1.Value;
                 T value2 = default(T);
                 if (kf2 == null)
                 {
@@ -480,6 +483,7 @@ namespace TwistedLogik.Ultraviolet.Layout
             private StoryboardClock animationClock;
             private Animation<T> animation;
             private T animatedValue;
+            private T animatedHandOffValue;
         }
     }
 }

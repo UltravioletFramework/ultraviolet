@@ -482,7 +482,8 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         /// <param name="storyboard">The storyboard to play on this element.</param>
         internal void BeginStoryboard(Storyboard storyboard)
         {
-            StopStoryboard(storyboard);
+            StoryboardClock existingClock;
+            storyboardClocks.TryGetValue(storyboard, out existingClock);
 
             var clock = RetrieveStoryboardClock(storyboard);
             storyboardClocks[storyboard] = clock;
@@ -490,6 +491,12 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
             ApplyStoryboard(storyboard, clock, this);
 
             clock.Start();
+
+            if (existingClock != null)
+            {
+                existingClock.Stop();
+                ReleaseStoryboardClock(existingClock);
+            }
         }
 
         /// <summary>

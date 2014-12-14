@@ -9,7 +9,7 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
     /// <summary>
     /// Represents one of a UI element's visual state groups.
     /// </summary>
-    public class VisualStateGroup
+    public partial class VisualStateGroup
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="VisualStateGroup"/> class.
@@ -49,11 +49,17 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
             if (states.ContainsKey(state))
                 return false;
 
-            var vs = new VisualState(state);
+            var vs = new VisualState(this, state);
             states[state] = vs;
 
             if (defaultState == null)
+            {
                 defaultState = vs;
+                if (currentState == null)
+                {
+                    GoToState(state);
+                }
+            }
 
             return true;
         }
@@ -112,20 +118,7 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
                 return false;
 
             currentState = vs;
-
-            if (currentState.Transition != null)
-            {
-                currentTransition = currentState.Transition;
-                currentTransition.Begin(element);
-            }
-            else
-            {
-                if (currentTransition != null)
-                {
-                    currentTransition.Stop(element);
-                    currentTransition = null;
-                }
-            }
+            BeginCurrentStateTransition();
 
             return true;
         }
@@ -160,6 +153,26 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         public VisualState CurrentState
         {
             get { return currentState; }
+        }
+
+        /// <summary>
+        /// Begins the state transition for the current state.
+        /// </summary>
+        private void BeginCurrentStateTransition()
+        {
+            if (currentState.Transition != null)
+            {
+                currentTransition = currentState.Transition;
+                currentTransition.Begin(element);
+            }
+            else
+            {
+                if (currentTransition != null)
+                {
+                    currentTransition.Stop(element);
+                    currentTransition = null;
+                }
+            }
         }
 
         // Property values.

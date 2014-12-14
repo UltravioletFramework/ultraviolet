@@ -83,7 +83,7 @@ namespace TwistedLogik.Ultraviolet.Layout.Animation
                 }
             }
 
-            kf1 = null;
+            kf1 = keyframes[keyframes.Count - 1];
             kf2 = null;
         }
 
