@@ -12,10 +12,12 @@ namespace TwistedLogik.Ultraviolet.Layout.Animation
         /// Initializes a new instance of the <see cref="AnimationKeyframe{T}"/> class.
         /// </summary>
         /// <param name="time">The keyframe time.</param>
-        public AnimationKeyframe(TimeSpan time)
+        /// <param name="easingFunction">The keyframe's easing function.</param>
+        public AnimationKeyframe(TimeSpan time, EasingFunction easingFunction = null)
         {
-            this.time     = time;
-            this.hasValue = false;
+            this.time           = time;
+            this.hasValue       = false;
+            this.easingFunction = easingFunction;
         }
 
         /// <summary>
@@ -23,11 +25,13 @@ namespace TwistedLogik.Ultraviolet.Layout.Animation
         /// </summary>
         /// <param name="time">The keyframe time.</param>
         /// <param name="value">The keyframe value.</param>
-        public AnimationKeyframe(TimeSpan time, T value)
+        /// <param name="easingFunction">The keyframe's easing function.</param>
+        public AnimationKeyframe(TimeSpan time, T value, EasingFunction easingFunction = null)
         {
-            this.time     = time;
-            this.value    = value;
-            this.hasValue = true;
+            this.time           = time;
+            this.value          = value;
+            this.hasValue       = true;
+            this.easingFunction = easingFunction;
         }
 
         /// <summary>
@@ -54,9 +58,18 @@ namespace TwistedLogik.Ultraviolet.Layout.Animation
             get { return hasValue; }
         }
 
+        /// <summary>
+        /// Gets the keyframe's easing function.
+        /// </summary>
+        public EasingFunction EasingFunction
+        {
+            get { return easingFunction; }
+        }
+
         // Property values.
         private TimeSpan time;
         private T value;
         private Boolean hasValue;
+        private EasingFunction easingFunction;
     }
 }

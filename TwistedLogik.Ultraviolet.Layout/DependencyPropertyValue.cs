@@ -415,6 +415,7 @@ namespace TwistedLogik.Ultraviolet.Layout
                 // Interpolate between our keyframes.
                 var time1    = (kf1 == null) ? 0.0 : kf1.Time.TotalMilliseconds;
                 var time2    = (kf2 == null) ? animation.Target.Storyboard.Duration.TotalMilliseconds : kf2.Time.TotalMilliseconds;
+                var easing   = (kf2 == null) ? null : kf2.EasingFunction;
                 var duration = time2 - time1;
                 if (duration == 0)
                 {
@@ -423,7 +424,7 @@ namespace TwistedLogik.Ultraviolet.Layout
                 else
                 {
                     var factor = (float)((animationClock.ElapsedTime.TotalMilliseconds - time1) / duration);
-                    animatedValue = animation.InterpolateValues(value1, value2, null, factor);
+                    animatedValue = animation.InterpolateValues(value1, value2, easing, factor);
                 }
             }
 
