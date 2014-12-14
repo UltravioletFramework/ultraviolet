@@ -59,6 +59,15 @@
     <Compile Include="..\TwistedLogik.Ultraviolet.Layout\Animation\AnimationKeyframeCollection.IEnumerable.cs">
       <Link>Animation\AnimationKeyframeCollection.IEnumerable.cs</Link>
     </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.Layout\Animation\ColorAnimation.cs">
+      <Link>Animation\ColorAnimation.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.Layout\Animation\FillBehavior.cs">
+      <Link>Animation\FillBehavior.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.Layout\Animation\LoopBehavior.cs">
+      <Link>Animation\LoopBehavior.cs</Link>
+    </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.Layout\Animation\Storyboard.cs">
       <Link>Animation\Storyboard.cs</Link>
     </Compile>

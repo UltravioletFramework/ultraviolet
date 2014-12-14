@@ -26,6 +26,15 @@ namespace TwistedLogik.Ultraviolet.Layout.Animation
         }
 
         /// <summary>
+        /// Gets the storyboard's loop behavior.
+        /// </summary>
+        public LoopBehavior LoopBehavior
+        {
+            get { return loopBehavior; }
+            set { loopBehavior = value; }
+        }
+
+        /// <summary>
         /// Gets the storyboard's total duration.
         /// </summary>
         public TimeSpan Duration
@@ -55,5 +64,6 @@ namespace TwistedLogik.Ultraviolet.Layout.Animation
         // Property values.
         private readonly StoryboardTargetCollection targets;
         private TimeSpan duration;
+        private LoopBehavior loopBehavior = LoopBehavior.None;
     }
 }

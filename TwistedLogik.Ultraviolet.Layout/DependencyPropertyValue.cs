@@ -1,5 +1,6 @@
 ﻿using System;
 using TwistedLogik.Nucleus;
+using TwistedLogik.Ultraviolet.Layout.Animation;
 
 namespace TwistedLogik.Ultraviolet.Layout
 {
@@ -33,6 +34,25 @@ namespace TwistedLogik.Ultraviolet.Layout
                 }
 
                 UpdateRequiresDigest(GetValue());
+            }
+
+            /// <summary>
+            /// Applies the specified animation to the property value.
+            /// </summary>
+            /// <param name="animation">The animation to apply to the value, or <c>null</c> to disable animation.</param>
+            public void Animate(AnimationBase animation)
+            {
+                if (this.animation == animation)
+                    return;
+
+                var oldValue = GetValue();
+
+                this.animation      = (Animation<T>)animation;
+                this.animationTime  = 0.0;
+                this.animationDelta = 1.0;
+                this.animatedValue  = GetValueInternal(false);
+
+                UpdateRequiresDigest(oldValue);
             }
 
             /// <summary>
@@ -74,6 +94,11 @@ namespace TwistedLogik.Ultraviolet.Layout
             {
                 var value   = default(T);
                 var changed = false;
+
+                if (animation != null)
+                {
+                    UpdateAnimation(time);
+                }
 
                 if (cachedBoundValue != null)
                 {
@@ -122,6 +147,9 @@ namespace TwistedLogik.Ultraviolet.Layout
             /// <param name="value">The value to set.</param>
             public void SetValue(T value)
             {
+                if (IsAnimated)
+                    Animate(null);
+
                 if (IsDataBound)
                 {
                     cachedBoundValue.Set(value);
@@ -138,23 +166,7 @@ namespace TwistedLogik.Ultraviolet.Layout
             /// <returns>The dependency property's calculated value.</returns>
             public T GetValue()
             {
-                if (IsDataBound)
-                {
-                    return cachedBoundValue.Get();
-                }
-                if (hasLocalValue)
-                {
-                    return localValue;
-                }
-                if (hasStyledValue)
-                {
-                    return styledValue;
-                }
-                if (Property.Metadata.IsInherited && Owner.DependencyContainer != null)
-                {
-                    return Owner.DependencyContainer.GetValue<T>(Property);
-                }
-                return defaultValue;
+                return GetValueInternal(true);
             }
 
             /// <summary>
@@ -244,6 +256,12 @@ namespace TwistedLogik.Ultraviolet.Layout
             }
 
             /// <inheritdoc/>
+            public Boolean IsAnimated
+            {
+                get { return animation != null; }
+            }
+
+            /// <inheritdoc/>
             public Boolean HasLocalValue
             {
                 get { return hasLocalValue; }
@@ -294,7 +312,7 @@ namespace TwistedLogik.Ultraviolet.Layout
             /// <param name="oldValue">The property's value before the change which prompted this update.</param>
             private void UpdateRequiresDigest(T oldValue)
             {
-                var requiresDigestNew = IsDataBound ||
+                var requiresDigestNew = IsDataBound || IsAnimated ||
                     (Property.Metadata.IsInherited && !hasLocalValue && !hasStyledValue);
 
                 if (requiresDigestNew != requiresDigest)
@@ -338,6 +356,144 @@ namespace TwistedLogik.Ultraviolet.Layout
                 }
             }
 
+            /// <summary>
+            /// Updates the value's animation state.
+            /// </summary>
+            /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Update(UltravioletTime)"/>.</param>
+            private void UpdateAnimation(UltravioletTime time)
+            {
+                // If our animation has become invalid since it was applied, remove it.
+                if (animation.Target == null || animation.Target.Storyboard == null)
+                {
+                    Animate(null);
+                    return;
+                }
+
+                UpdateAnimationClock(time);
+                UpdateAnimationValue();
+            }
+
+            /// <summary>
+            /// Updates the clock of the currently-playing animation.
+            /// </summary>
+            /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Update(UltravioletTime)"/>.</param>
+            private void UpdateAnimationClock(UltravioletTime time)
+            {
+                var storyboardDuration     = animation.Target.Storyboard.Duration.TotalMilliseconds;
+                var animationTimeUpdated   = animationTime + (animationDelta * time.ElapsedTime.TotalMilliseconds);
+                var animationTimeClamped   = (animationTimeUpdated < 0) ? 0 : animationTimeUpdated > storyboardDuration ? storyboardDuration : animationTimeUpdated;
+                if (animationTimeUpdated < 0 || animationTimeUpdated >= storyboardDuration)
+                {
+                    switch (animation.Target.Storyboard.LoopBehavior)
+                    {
+                        case LoopBehavior.None:
+                            animationTime  = animationTimeClamped;
+                            animationDelta = 1.0;
+                            break;
+
+                        case LoopBehavior.Loop:
+                            animationTime  = animationTimeClamped % storyboardDuration;
+                            animationDelta = 1.0;
+                            break;
+
+                        case LoopBehavior.Reverse:
+                            {
+                                var remaining   = animationTimeUpdated < 0 ? Math.Abs(animationTimeUpdated) : animationTimeUpdated - storyboardDuration;
+                                var distributed = 0.0;
+
+                                while (remaining > 0)
+                                {
+                                    distributed           = Math.Min(remaining, storyboardDuration);
+                                    animationDelta        = -animationDelta;
+                                    animationTimeClamped += (animationDelta * distributed);
+                                    remaining            -= distributed;
+                                }
+                            }
+                            animationTime  = animationTimeClamped;
+                            break;
+                    }
+                }
+                else
+                {
+                    animationTime = animationTimeUpdated;
+                }
+            }
+
+            /// <summary>
+            /// Updates the dependency property's animated value based on the animation clock's current position.
+            /// </summary>
+            private void UpdateAnimationValue()
+            {
+                // Find our current keyframe pair.
+                AnimationKeyframe<T> kf1, kf2;
+                animation.GetKeyframes(TimeSpan.FromMilliseconds(animationTime), out kf1, out kf2);
+
+                // Determine which values correspond to our keyframes.
+                T value1 = (kf1 == null || !kf1.HasValue) ? GetValueInternal(false) : kf1.Value;
+                T value2 = default(T);
+                if (kf2 == null)
+                {
+                    switch (animation.FillBehavior)
+                    {
+                        case FillBehavior.HoldEnd:
+                            value2 = kf1.HasValue ? kf1.Value : GetValueInternal(false);
+                            break;
+
+                        case FillBehavior.Stop:
+                            value2 = GetValueInternal(false);
+                            break;
+                    }
+                }
+                else
+                {
+                    value2 = kf2.HasValue ?  kf2.Value : GetValueInternal(false);
+                }
+
+                // Interpolate between our keyframes.
+                var time1    = (kf1 == null) ? 0.0 : kf1.Time.TotalMilliseconds;
+                var time2    = (kf2 == null) ? animation.Target.Storyboard.Duration.TotalMilliseconds : kf2.Time.TotalMilliseconds;
+                var duration = time2 - time1;
+                if (duration == 0)
+                {
+                    animatedValue = value2;
+                }
+                else
+                {
+                    var factor = (float)((animationTime - time1) / duration);
+                    animatedValue = animation.InterpolateValues(value1, value2, factor);
+                }
+            }
+
+            /// <summary>
+            /// Gets the dependency property's calculated value.
+            /// </summary>
+            /// <param name="includeAnimation">A value indicating whether to consider values from animation.</param>
+            /// <returns>The dependency property's calculated value.</returns>
+            private T GetValueInternal(Boolean includeAnimation)
+            {
+                if (includeAnimation && IsAnimated)
+                {
+                    return animatedValue;
+                }
+                if (IsDataBound)
+                {
+                    return cachedBoundValue.Get();
+                }
+                if (hasLocalValue)
+                {
+                    return localValue;
+                }
+                if (hasStyledValue)
+                {
+                    return styledValue;
+                }
+                if (Property.Metadata.IsInherited && Owner.DependencyContainer != null)
+                {
+                    return Owner.DependencyContainer.GetValue<T>(Property);
+                }
+                return defaultValue;
+            }
+
             // Property values.
             private readonly DependencyObject owner;
             private readonly DependencyProperty property;
@@ -355,6 +511,12 @@ namespace TwistedLogik.Ultraviolet.Layout
             private Boolean requiresDigest;
             private Boolean bound;
             private IDependencyBoundValue<T> cachedBoundValue;
+
+            // Animation state.
+            private Animation<T> animation;
+            private Double animationTime;
+            private Double animationDelta = 1.0;
+            private T animatedValue;
         }
     }
 }

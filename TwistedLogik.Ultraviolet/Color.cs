@@ -347,8 +347,11 @@ namespace TwistedLogik.Ultraviolet
         /// <returns>The interpolated value.</returns>
         public Color Interpolate(Color target, Single t)
         {
-            var packedValue = Tweening.Lerp(this.packedValue, target.packedValue, t);
-            return new Color(packedValue);
+            var a = Tweening.Lerp(this.A, target.A, t);
+            var r = Tweening.Lerp(this.R, target.R, t);
+            var g = Tweening.Lerp(this.G, target.G, t);
+            var b = Tweening.Lerp(this.B, target.B, t);
+            return new Color(r, g, b, a);
         }
 
         /// <summary>

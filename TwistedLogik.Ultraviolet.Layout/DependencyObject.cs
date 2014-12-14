@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using TwistedLogik.Nucleus;
+using TwistedLogik.Ultraviolet.Layout.Animation;
 
 namespace TwistedLogik.Ultraviolet.Layout
 {
@@ -44,12 +45,29 @@ namespace TwistedLogik.Ultraviolet.Layout
         }
 
         /// <summary>
+        /// Applies the specified animation to a dependency property.
+        /// </summary>
+        /// <typeparam name="T">The type of value contained by the dependency property.</typeparam>
+        /// <param name="dp">A <see cref="DependencyProperty"/> instance which identifies the dependency property to animate.</param>
+        /// <param name="animation">The animation to apply to the dependency property, or <c>null</c> to cease animating the property.</param>
+        public void Animate<T>(DependencyProperty dp, AnimationBase animation)
+        {
+            Contract.Require(dp, "dp");
+
+            if (!typeof(T).TypeHandle.Equals(dp.PropertyType))
+                throw new InvalidCastException();
+
+            var wrapper = GetDependencyPropertyValue<T>(dp);
+            wrapper.Animate(animation);
+        }
+
+        /// <summary>
         /// Binds a dependency property to a property on a model.
         /// </summary>
         /// <typeparam name="T">The type of value contained by the dependency property.</typeparam>
+        /// <param name="dp">A <see cref="DependencyProperty"/> instance which identifies the dependency property to bind.</param>
         /// <param name="viewModelType">The type of view model to which to bind the property.</param>
         /// <param name="expression">The binding expression with which to bind the property.</param>
-        /// <param name="dp">A <see cref="DependencyProperty"/> instance which identifies the dependency property to bind.</param>
         public void BindValue<T>(DependencyProperty dp, Type viewModelType, String expression)
         {
             Contract.Require(dp, "dp");

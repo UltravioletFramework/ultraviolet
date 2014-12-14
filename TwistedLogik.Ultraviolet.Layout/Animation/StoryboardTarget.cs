@@ -1,5 +1,4 @@
-﻿using TwistedLogik.Nucleus;
-
+﻿
 namespace TwistedLogik.Ultraviolet.Layout.Animation
 {
     /// <summary>

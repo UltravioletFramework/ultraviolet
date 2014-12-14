@@ -6,7 +6,7 @@ namespace TwistedLogik.Ultraviolet.Layout.Animation
     /// Represents a keyframe in an animation.
     /// </summary>
     /// <typeparam name="T">The type of value being animated.</typeparam>
-    public abstract class AnimationKeyframe<T>
+    public sealed class AnimationKeyframe<T>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="AnimationKeyframe{T}"/> class.

@@ -17,6 +17,76 @@ namespace TwistedLogik.Ultraviolet.Layout.Animation
         }
 
         /// <summary>
+        /// Interpolates between two values.
+        /// </summary>
+        /// <param name="value1">The first value to interpolate.</param>
+        /// <param name="value2">The second value to interpolate.</param>
+        /// <param name="factor">The interpolation factor.</param>
+        /// <returns>The interpolated value.</returns>
+        public abstract T InterpolateValues(T value1, T value2, Single factor);
+
+        /// <summary>
+        /// Gets the animation's first keyframe.
+        /// </summary>
+        /// <returns>The animation's first keyframe, or <c>null</c> if the animation has no keyframes.</returns>
+        public AnimationKeyframe<T> GetFirstKeyframe()
+        {
+            return keyframes.Count == 0 ? null : keyframes[0];
+        }
+
+        /// <summary>
+        /// Gets the animation's last keyframe.
+        /// </summary>
+        /// <returns>The animation's last keyframe, or <c>null</c> if the animation has no keyframes.</returns>
+        public AnimationKeyframe<T> GetLastKeyframe()
+        {
+            return keyframes.Count == 0 ? null : keyframes[keyframes.Count - 1];
+        }
+
+        /// <summary>
+        /// Gets the keyframes that surround the specified moment in time.
+        /// </summary>
+        /// <param name="time">The time to evaluate.</param>
+        /// <param name="kf1">The keyframe that precedes the specified time.</param>
+        /// <param name="kf2">The keyframe that succeeds the specified time.</param>
+        public void GetKeyframes(TimeSpan time, out AnimationKeyframe<T> kf1, out AnimationKeyframe<T> kf2)
+        {
+            if (keyframes.Count == 0)
+            {
+                kf1 = null;
+                kf2 = null;
+                return;
+            }
+
+            if (time < keyframes[0].Time)
+            {
+                kf1 = null;
+                kf2 = keyframes[0];
+                return;
+            }
+
+            if (time > keyframes[keyframes.Count - 1].Time)
+            {
+                kf1 = keyframes[keyframes.Count - 1];
+                kf2 = null;
+                return;
+            }
+
+            for (int i = 0; i < keyframes.Count - 1; i++)
+            {
+                if (keyframes[i].Time <= time && keyframes[i + 1].Time >= time)
+                {
+                    kf1 = keyframes[i];
+                    kf2 = keyframes[i + 1];
+                    return;
+                }
+            }
+
+            kf1 = null;
+            kf2 = null;
+        }
+
+        /// <summary>
         /// Gets the animation's collection of keyframes.
         /// </summary>
         public AnimationKeyframeCollection<T> Keyframes

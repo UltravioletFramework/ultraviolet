@@ -64,6 +64,14 @@ namespace TwistedLogik.Ultraviolet.Layout
         }
 
         /// <summary>
+        /// Gets a value indicating whether the value is being animated.
+        /// </summary>
+        Boolean IsAnimated
+        {
+            get;
+        }
+
+        /// <summary>
         /// Gets a value indicating whether the dependency property has a local value.
         /// </summary>
         Boolean HasLocalValue

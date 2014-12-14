@@ -18,6 +18,17 @@ namespace TwistedLogik.Ultraviolet.Layout.Animation
         }
 
         /// <summary>
+        /// Gets or sets the animation's fill behavior, which specifies
+        /// how its value is calculated when the storyboard is outside
+        /// of the animation's active period.
+        /// </summary>
+        public FillBehavior FillBehavior
+        {
+            get { return fillBehavior; }
+            set { fillBehavior = value; }
+        }
+
+        /// <summary>
         /// Gets the animation's total duration.
         /// </summary>
         public abstract TimeSpan Duration
@@ -48,5 +59,6 @@ namespace TwistedLogik.Ultraviolet.Layout.Animation
 
         // Property values.
         private StoryboardTarget target;
+        private FillBehavior fillBehavior = FillBehavior.HoldEnd;
     }
 }
