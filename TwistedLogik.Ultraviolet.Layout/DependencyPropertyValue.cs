@@ -423,7 +423,7 @@ namespace TwistedLogik.Ultraviolet.Layout
                 else
                 {
                     var factor = (float)((animationClock.ElapsedTime.TotalMilliseconds - time1) / duration);
-                    animatedValue = animation.InterpolateValues(value1, value2, factor);
+                    animatedValue = animation.InterpolateValues(value1, value2, null, factor);
                 }
             }
 

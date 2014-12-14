@@ -59,17 +59,86 @@
     <Compile Include="..\TwistedLogik.Ultraviolet.Layout\Animation\AnimationKeyframeCollection.IEnumerable.cs">
       <Link>Animation\AnimationKeyframeCollection.IEnumerable.cs</Link>
     </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet.Layout\Animation\ColorAnimation.cs">
-      <Link>Animation\ColorAnimation.cs</Link>
+    <Compile Include="..\TwistedLogik.Ultraviolet.Layout\Animation\BooleanAnimation.cs">
+      <Link>Animation\BooleanAnimation.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.Layout\Animation\ByteAnimation.cs">
+      <Link>Animation\ByteAnimation.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.Layout\Animation\CharAnimation.cs">
+      <Link>Animation\CharAnimation.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.Layout\Animation\DecimalAnimation.cs">
+      <Link>Animation\DecimalAnimation.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.Layout\Animation\DoubleAnimation.cs">
+      <Link>Animation\DoubleAnimation.cs</Link>
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.Layout\Animation\FillBehavior.cs">
       <Link>Animation\FillBehavior.cs</Link>
     </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.Layout\Animation\Int16Animation.cs">
+      <Link>Animation\Int16Animation.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.Layout\Animation\Int32Animation.cs">
+      <Link>Animation\Int32Animation.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.Layout\Animation\Int64Animation.cs">
+      <Link>Animation\Int64Animation.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.Layout\Animation\InterpolatableAnimation.cs">
+      <Link>Animation\InterpolatableAnimation.cs</Link>
+    </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.Layout\Animation\LoopBehavior.cs">
       <Link>Animation\LoopBehavior.cs</Link>
     </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.Layout\Animation\NullableBooleanAnimation.cs">
+      <Link>Animation\NullableBooleanAnimation.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.Layout\Animation\NullableByteAnimation.cs">
+      <Link>Animation\NullableByteAnimation.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.Layout\Animation\NullableCharAnimation.cs">
+      <Link>Animation\NullableCharAnimation.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.Layout\Animation\NullableDecimalAnimation.cs">
+      <Link>Animation\NullableDecimalAnimation.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.Layout\Animation\NullableDoubleAnimation.cs">
+      <Link>Animation\NullableDoubleAnimation.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.Layout\Animation\NullableInt16Animation.cs">
+      <Link>Animation\NullableInt16Animation.cs</Link>
+    </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.Layout\Animation\NullableInt32Animation.cs">
       <Link>Animation\NullableInt32Animation.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.Layout\Animation\NullableInt64Animation.cs">
+      <Link>Animation\NullableInt64Animation.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.Layout\Animation\NullableInterpolatableAnimation.cs">
+      <Link>Animation\NullableInterpolatableAnimation.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.Layout\Animation\NullableSByteAnimation.cs">
+      <Link>Animation\NullableSByteAnimation.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.Layout\Animation\NullableSingleAnimation.cs">
+      <Link>Animation\NullableSingleAnimation.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.Layout\Animation\NullableUInt16Animation.cs">
+      <Link>Animation\NullableUInt16Animation.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.Layout\Animation\NullableUInt32Animation.cs">
+      <Link>Animation\NullableUInt32Animation.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.Layout\Animation\NullableUInt64Animation.cs">
+      <Link>Animation\NullableUInt64Animation.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.Layout\Animation\SByteAnimation.cs">
+      <Link>Animation\SByteAnimation.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.Layout\Animation\SingleAnimation.cs">
+      <Link>Animation\SingleAnimation.cs</Link>
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.Layout\Animation\Storyboard.cs">
       <Link>Animation\Storyboard.cs</Link>
@@ -94,6 +163,15 @@
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.Layout\Animation\StoryboardTargetCollection.IEnumerable.cs">
       <Link>Animation\StoryboardTargetCollection.IEnumerable.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.Layout\Animation\UInt16Animation.cs">
+      <Link>Animation\UInt16Animation.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.Layout\Animation\UInt32Animation.cs">
+      <Link>Animation\UInt32Animation.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.Layout\Animation\UInt64Animation.cs">
+      <Link>Animation\UInt64Animation.cs</Link>
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.Layout\BindingExpressionBuilder.cs">
       <Link>BindingExpressionBuilder.cs</Link>

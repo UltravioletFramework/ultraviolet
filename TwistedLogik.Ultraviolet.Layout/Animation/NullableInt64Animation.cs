@@ -3,12 +3,12 @@
 namespace TwistedLogik.Ultraviolet.Layout.Animation
 {
     /// <summary>
-    /// Represents an animation between nullable 32-bit integers.
+    /// Represents an animation between nullable 64-bit integers.
     /// </summary>
-    public sealed class NullableInt32Animation : Animation<Int32?>
+    public sealed class NullableInt64Animation : Animation<Int64?>
     {
         /// <inheritdoc/>
-        public override Int32? InterpolateValues(Int32? value1, Int32? value2, EasingFunction easing, Single factor)
+        public override Int64? InterpolateValues(Int64? value1, Int64? value2, EasingFunction easing, Single factor)
         {
             if (value1 == null || value2 == null)
                 return null;

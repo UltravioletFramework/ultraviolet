@@ -21,9 +21,10 @@ namespace TwistedLogik.Ultraviolet.Layout.Animation
         /// </summary>
         /// <param name="value1">The first value to interpolate.</param>
         /// <param name="value2">The second value to interpolate.</param>
+        /// <param name="easing">The easing function.</param>
         /// <param name="factor">The interpolation factor.</param>
         /// <returns>The interpolated value.</returns>
-        public abstract T InterpolateValues(T value1, T value2, Single factor);
+        public abstract T InterpolateValues(T value1, T value2, EasingFunction easing, Single factor);
 
         /// <summary>
         /// Gets the animation's first keyframe.
