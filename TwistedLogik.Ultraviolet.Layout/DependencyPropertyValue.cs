@@ -21,6 +21,8 @@ namespace TwistedLogik.Ultraviolet.Layout
                 Contract.Require(owner, "owner");
                 Contract.Require(property, "property");
 
+                this.animationClockStoppedHandler = OnAnimationClockStopped;
+
                 this.owner    = owner;
                 this.property = property;
                 this.comparer = (DataBindingComparer<T>)BindingExpressions.GetComparisonFunction(typeof(T));
@@ -51,7 +53,7 @@ namespace TwistedLogik.Ultraviolet.Layout
 
                 this.animation               = (Animation<T>)animation;
                 this.animationClock          = clock;
-                this.animationClock.Stopped += OnAnimationClockStopped;
+                this.animationClock.Stopped += animationClockStoppedHandler;
                 this.animatedValue           = GetValueInternal(false);
                 this.animatedHandOffValue    = oldValue;
 
@@ -124,7 +126,7 @@ namespace TwistedLogik.Ultraviolet.Layout
                 var oldValue = GetValue();
 
                 if (this.animationClock != null)
-                    this.animationClock.Stopped -= OnAnimationClockStopped;
+                    this.animationClock.Stopped -= animationClockStoppedHandler;
 
                 this.animation      = null;
                 this.animationClock = null;
@@ -480,6 +482,7 @@ namespace TwistedLogik.Ultraviolet.Layout
             private IDependencyBoundValue<T> cachedBoundValue;
 
             // Animation state.
+            private readonly StoryboardClockEventHandler animationClockStoppedHandler;
             private StoryboardClock animationClock;
             private Animation<T> animation;
             private T animatedValue;

@@ -9,7 +9,7 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
     /// <summary>
     /// Represents one of a UI element's visual state groups.
     /// </summary>
-    public partial class VisualStateGroup
+    public sealed partial class VisualStateGroup : IEnumerable<KeyValuePair<String, VisualStateGroup.VisualState>>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="VisualStateGroup"/> class.

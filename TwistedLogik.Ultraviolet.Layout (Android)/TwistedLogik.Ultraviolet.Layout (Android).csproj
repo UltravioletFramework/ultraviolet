@@ -236,9 +236,6 @@
     <Compile Include="..\TwistedLogik.Ultraviolet.Layout\Elements\SourcedVal.cs">
       <Link>Elements\SourcedVal.cs</Link>
     </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet.Layout\Elements\TextBox.cs">
-      <Link>Elements\TextBox.cs</Link>
-    </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.Layout\Elements\TextualElement.cs">
       <Link>Elements\TextualElement.cs</Link>
     </Compile>
@@ -287,11 +284,17 @@
     <Compile Include="..\TwistedLogik.Ultraviolet.Layout\Elements\VisualStateGroup.cs">
       <Link>Elements\VisualStateGroup.cs</Link>
     </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.Layout\Elements\VisualStateGroup.IEnumerable.cs">
+      <Link>Elements\VisualStateGroup.IEnumerable.cs</Link>
+    </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.Layout\Elements\VisualStateGroup.VisualState.cs">
       <Link>Elements\VisualStateGroup.VisualState.cs</Link>
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.Layout\Elements\VisualStateGroupCollection.cs">
       <Link>Elements\VisualStateGroupCollection.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.Layout\Elements\VisualStateGroupCollection.IEnumerable.cs">
+      <Link>Elements\VisualStateGroupCollection.IEnumerable.cs</Link>
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.Layout\IDependencyBoundValue.cs">
       <Link>IDependencyBoundValue.cs</Link>

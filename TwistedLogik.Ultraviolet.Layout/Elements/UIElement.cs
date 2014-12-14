@@ -207,6 +207,14 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         }
 
         /// <summary>
+        /// Gets the element's collection of visual state groups.
+        /// </summary>
+        public VisualStateGroupCollection VisualStateGroups
+        {
+            get { return visualStateGroups; }
+        }
+
+        /// <summary>
         /// Gets the element's unique identifier within its view.
         /// </summary>
         public String ID
@@ -1091,14 +1099,6 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         }
 
         /// <summary>
-        /// Gets the element's collection of visual state groups.
-        /// </summary>
-        public VisualStateGroupCollection VisualStateGroups
-        {
-            get { return visualStateGroups; }
-        }
-
-        /// <summary>
         /// Gets the style setter for the style with the specified name.
         /// </summary>
         /// <param name="name">The name of the style for which to retrieve a setter.</param>
@@ -1334,6 +1334,7 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         private readonly String id;
         private readonly String name;
         private readonly UIElementClassCollection classes;
+        private readonly VisualStateGroupCollection visualStateGroups;
         private Object viewModel;
         private UIView view;
         private UIContainer container;
@@ -1343,7 +1344,6 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         private Int32 calculatedWidth;
         private Int32 calculatedHeight;
         private SpriteFont font;
-        private readonly VisualStateGroupCollection visualStateGroups;
 
         // Storyboard clocks.
         private static readonly IPool<StoryboardClock> storyboardClockPool = 
