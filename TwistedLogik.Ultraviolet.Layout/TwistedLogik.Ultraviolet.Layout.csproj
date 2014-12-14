@@ -53,6 +53,7 @@
   <ItemGroup>
     <Compile Include="Animation\AnimationBase.cs" />
     <Compile Include="Animation\Animation.cs" />
+    <Compile Include="Animation\NullableInt32Animation.cs" />
     <Compile Include="Animation\StoryboardClock.cs" />
     <Compile Include="Animation\AnimationKeyframe.cs" />
     <Compile Include="Animation\AnimationKeyframeCollection.cs" />
@@ -78,6 +79,7 @@
     <Compile Include="DependencyObject.cs" />
     <Compile Include="DependencyProperty.cs" />
     <Compile Include="DependencyPropertyMetadata.cs" />
+    <Compile Include="DependencyPropertyName.cs" />
     <Compile Include="DependencyPropertyOptions.cs" />
     <Compile Include="DependencyPropertySystem.cs" />
     <Compile Include="DependencyPropertyValue.cs" />

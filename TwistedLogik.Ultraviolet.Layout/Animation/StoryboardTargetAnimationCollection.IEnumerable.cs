@@ -7,13 +7,13 @@ namespace TwistedLogik.Ultraviolet.Layout.Animation
     partial class StoryboardTargetAnimationCollection
     {
         /// <inheritdoc/>
-        public Dictionary<String, AnimationBase>.Enumerator GetEnumerator()
+        public Dictionary<DependencyPropertyName, AnimationBase>.Enumerator GetEnumerator()
         {
             return animations.GetEnumerator();
         }
 
         /// <inheritdoc/>
-        IEnumerator<KeyValuePair<String, AnimationBase>> IEnumerable<KeyValuePair<String, AnimationBase>>.GetEnumerator()
+        IEnumerator<KeyValuePair<DependencyPropertyName, AnimationBase>> IEnumerable<KeyValuePair<DependencyPropertyName, AnimationBase>>.GetEnumerator()
         {
             return GetEnumerator();
         }

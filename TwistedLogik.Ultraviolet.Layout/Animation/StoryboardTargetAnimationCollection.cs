@@ -7,7 +7,7 @@ namespace TwistedLogik.Ultraviolet.Layout.Animation
     /// <summary>
     /// Represents a storyboard target's collection of animations.
     /// </summary>
-    public sealed partial class StoryboardTargetAnimationCollection : IEnumerable<KeyValuePair<String, AnimationBase>>
+    public sealed partial class StoryboardTargetAnimationCollection : IEnumerable<KeyValuePair<DependencyPropertyName, AnimationBase>>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="StoryboardTargetAnimationCollection"/> class.
@@ -29,6 +29,20 @@ namespace TwistedLogik.Ultraviolet.Layout.Animation
         public Boolean Add(String property, AnimationBase animation)
         {
             Contract.RequireNotEmpty(property, "property");
+            Contract.Require(animation, "animation");
+
+            var name = new DependencyPropertyName(property);
+            return Add(name, animation);
+        }
+
+        /// <summary>
+        /// Adds the specified animation to this collection.
+        /// </summary>
+        /// <param name="property">The name of the dependency property to which the animation applies.</param>
+        /// <param name="animation">The animation to add to the collection.</param>
+        /// <returns><c>true</c> if the animation was added to the collection; otherwise, <c>false</c>.</returns>
+        public Boolean Add(DependencyPropertyName property, AnimationBase animation)
+        {
             Contract.Require(animation, "animation");
 
             Remove(property);
@@ -54,6 +68,17 @@ namespace TwistedLogik.Ultraviolet.Layout.Animation
         {
             Contract.RequireNotEmpty(property, "property");
 
+            var name = new DependencyPropertyName(property);
+            return Remove(name);
+        }
+
+        /// <summary>
+        /// Removes the animation for the specified property from this collection.
+        /// </summary>
+        /// <param name="property">The name of the property to remove from the collection.</param>
+        /// <returns><c>true</c> if the animation was removed from the collection; otherwise, <c>false</c>.</returns>
+        public Boolean Remove(DependencyPropertyName property)
+        {
             AnimationBase animation;
             if (!animations.TryGetValue(property, out animation))
                 return false;
@@ -78,17 +103,20 @@ namespace TwistedLogik.Ultraviolet.Layout.Animation
         {
             Contract.Require(animation, "animation");
 
-            var property = default(String);
+            var property = default(DependencyPropertyName);
+            var found    = false;
+
             foreach (var kvp in animations)
             {
                 if (kvp.Value == animation)
                 {
                     property = kvp.Key;
+                    found    = true;
                     break;
                 }
             }
 
-            if (property == null)
+            if(!found)
                 return false;
 
             return Remove(property);
@@ -103,6 +131,17 @@ namespace TwistedLogik.Ultraviolet.Layout.Animation
         {
             Contract.RequireNotEmpty(property, "property");
 
+            var name = new DependencyPropertyName(property);
+            return animations.ContainsKey(name);
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the collection contains an animation on the specified property.
+        /// </summary>
+        /// <param name="property">The name of the property to evaluate.</param>
+        /// <returns><c>true</c> if this collection contains an animation on the specified property; otherwise, <c>false</c>.</returns>
+        public Boolean ContainsKey(DependencyPropertyName property)
+        {
             return animations.ContainsKey(property);
         }
 
@@ -138,7 +177,7 @@ namespace TwistedLogik.Ultraviolet.Layout.Animation
         private readonly StoryboardTarget target;
 
         // State values.
-        private readonly Dictionary<String, AnimationBase> animations = 
-            new Dictionary<String, AnimationBase>();
+        private readonly Dictionary<DependencyPropertyName, AnimationBase> animations = 
+            new Dictionary<DependencyPropertyName, AnimationBase>();
     }
 }

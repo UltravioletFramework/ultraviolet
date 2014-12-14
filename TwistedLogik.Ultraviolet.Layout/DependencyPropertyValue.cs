@@ -47,9 +47,10 @@ namespace TwistedLogik.Ultraviolet.Layout
 
                 var oldValue = GetValue();
 
-                this.animation      = (Animation<T>)animation;
-                this.animationClock = clock;
-                this.animatedValue  = GetValueInternal(false);
+                this.animation               = (Animation<T>)animation;
+                this.animationClock          = clock;
+                this.animationClock.Stopped += OnAnimationClockStopped;
+                this.animatedValue           = GetValueInternal(false);
 
                 UpdateRequiresDigest(oldValue);
             }
@@ -118,6 +119,9 @@ namespace TwistedLogik.Ultraviolet.Layout
             public void ClearAnimation()
             {
                 var oldValue = GetValue();
+
+                if (this.animationClock != null)
+                    this.animationClock.Stopped -= OnAnimationClockStopped;
 
                 this.animation      = null;
                 this.animationClock = null;
@@ -308,6 +312,15 @@ namespace TwistedLogik.Ultraviolet.Layout
                 }
 
                 return !type1.IsMutuallyConvertibleTo(type2);
+            }
+
+            /// <summary>
+            /// Handles the <see cref="StoryboardClock.Stopped"/> event for the current storyboard clock.
+            /// </summary>
+            /// <param name="clock">The <see cref="StoryboardClock"/> that raised the event.</param>
+            private void OnAnimationClockStopped(StoryboardClock clock)
+            {
+                ClearAnimation();
             }
 
             /// <summary>

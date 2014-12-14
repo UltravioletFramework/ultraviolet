@@ -68,6 +68,9 @@
     <Compile Include="..\TwistedLogik.Ultraviolet.Layout\Animation\LoopBehavior.cs">
       <Link>Animation\LoopBehavior.cs</Link>
     </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.Layout\Animation\NullableInt32Animation.cs">
+      <Link>Animation\NullableInt32Animation.cs</Link>
+    </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.Layout\Animation\Storyboard.cs">
       <Link>Animation\Storyboard.cs</Link>
     </Compile>
@@ -124,6 +127,9 @@
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.Layout\DependencyPropertyMetadata.cs">
       <Link>DependencyPropertyMetadata.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.Layout\DependencyPropertyName.cs">
+      <Link>DependencyPropertyName.cs</Link>
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.Layout\DependencyPropertyOptions.cs">
       <Link>DependencyPropertyOptions.cs</Link>
@@ -291,7 +297,7 @@
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties ProjectLinkReference="71aaed78-c276-4018-a4b5-a97c4fbc1afb" ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" />
+      <UserProperties ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" ProjectLinkReference="71aaed78-c276-4018-a4b5-a97c4fbc1afb" />
     </VisualStudio>
   </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

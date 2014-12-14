@@ -468,6 +468,25 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         public event UIElementEventHandler BackgroundImageHoverChanged;
 
         /// <summary>
+        /// Searches the object for a dependency property which matches the specified name.
+        /// </summary>
+        /// <param name="name">The name of the dependency property for which to search.</param>
+        /// <returns>The <see cref="DependencyProperty"/> instance which matches the specified name, or <c>null</c> if no
+        /// such property exists on this object.</returns>
+        internal DependencyProperty FindDependencyPropertyByName(DependencyPropertyName name)
+        {
+            if (name.IsAttachedProperty)
+            {
+                if (Container != null && String.Equals(Container.Name, name.Container, StringComparison.OrdinalIgnoreCase))
+                {
+                    return DependencyProperty.FindByName(name.Name, Container.GetType());
+                }
+                return null;
+            }
+            return DependencyProperty.FindByName(name.Name, GetType());
+        }
+
+        /// <summary>
         /// Applies a style to the element.
         /// </summary>
         /// <param name="name">The name of the style.</param>
@@ -544,7 +563,7 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
                 {
                     foreach (var animation in target.Animations)
                     {
-                        var dp = DependencyProperty.FindByName(animation.Key, GetType());
+                        var dp = FindDependencyPropertyByName(animation.Key);
                         if (dp != null)
                         {
                             Animate(dp, animation.Value, clock);
