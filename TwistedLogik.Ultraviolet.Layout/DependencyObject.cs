@@ -47,51 +47,38 @@ namespace TwistedLogik.Ultraviolet.Layout
         /// <summary>
         /// Applies the specified animation to a dependency property.
         /// </summary>
-        /// <typeparam name="T">The type of value contained by the dependency property.</typeparam>
         /// <param name="dp">A <see cref="DependencyProperty"/> instance which identifies the dependency property to animate.</param>
         /// <param name="animation">The animation to apply to the dependency property, or <c>null</c> to cease animating the property.</param>
-        public void Animate<T>(DependencyProperty dp, AnimationBase animation)
+        /// <param name="clock">The clock which controls the animation's playback.</param>
+        public void Animate(DependencyProperty dp, AnimationBase animation, StoryboardClock clock)
         {
-            Contract.Require(dp, "dp");
-
-            if (!typeof(T).TypeHandle.Equals(dp.PropertyType))
-                throw new InvalidCastException();
-
-            var wrapper = GetDependencyPropertyValue<T>(dp);
-            wrapper.Animate(animation);
+            var wrapper = GetDependencyPropertyValue(dp, Type.GetTypeFromHandle(dp.PropertyType));
+            wrapper.Animate(animation, clock);
         }
 
         /// <summary>
         /// Binds a dependency property to a property on a model.
         /// </summary>
-        /// <typeparam name="T">The type of value contained by the dependency property.</typeparam>
         /// <param name="dp">A <see cref="DependencyProperty"/> instance which identifies the dependency property to bind.</param>
         /// <param name="viewModelType">The type of view model to which to bind the property.</param>
         /// <param name="expression">The binding expression with which to bind the property.</param>
-        public void BindValue<T>(DependencyProperty dp, Type viewModelType, String expression)
+        public void BindValue(DependencyProperty dp, Type viewModelType, String expression)
         {
             Contract.Require(dp, "dp");
 
-            if (!typeof(T).TypeHandle.Equals(dp.PropertyType))
-                throw new InvalidCastException();
-
-            var wrapper = GetDependencyPropertyValue<T>(dp);
+            var wrapper = GetDependencyPropertyValue(dp, Type.GetTypeFromHandle(dp.PropertyType));
             wrapper.Bind(viewModelType, expression);
         }
 
         /// <summary>
         /// Unbinds a dependency property.
         /// </summary>
-        /// <typeparam name="T">The type of value contained by the dependency property.</typeparam>
         /// <param name="dp">A <see cref="DependencyProperty"/> instance which identifies the dependency property to unbind.</param>
-        public void UnbindValue<T>(DependencyProperty dp)
+        public void UnbindValue(DependencyProperty dp)
         {
             Contract.Require(dp, "dp");
 
-            if (!typeof(T).TypeHandle.Equals(dp.PropertyType))
-                throw new InvalidCastException();
-
-            var wrapper = GetDependencyPropertyValue<T>(dp);
+            var wrapper = GetDependencyPropertyValue(dp, Type.GetTypeFromHandle(dp.PropertyType));
             wrapper.Unbind();
         }
 
@@ -181,6 +168,19 @@ namespace TwistedLogik.Ultraviolet.Layout
         }
 
         /// <summary>
+        /// Removes the specified dependency property's current animation, if it has one.
+        /// </summary>
+        /// <typeparam name="T">The type of value contained by the dependency property.</typeparam>
+        /// <param name="dp">A <see cref="DependencyProperty"/> instance which identifies the dependency property to clear.</param>
+        public void ClearAnimation<T>(DependencyProperty dp)
+        {
+            Contract.Require(dp, "dp");
+
+            var wrapper = GetDependencyPropertyValue<T>(dp);
+            wrapper.ClearAnimation();
+        }
+
+        /// <summary>
         /// Clears the local value associated with the specified dependency property.
         /// </summary>
         /// <typeparam name="T">The type of value contained by the dependency property.</typeparam>
@@ -230,16 +230,27 @@ namespace TwistedLogik.Ultraviolet.Layout
         /// <returns>The <see cref="DependencyPropertyValue{T}"/> instance which was retrieved.</returns>
         private DependencyPropertyValue<T> GetDependencyPropertyValue<T>(DependencyProperty dp)
         {
+            return (DependencyPropertyValue<T>)GetDependencyPropertyValue(dp, typeof(T));
+        }
+
+        /// <summary>
+        /// Gets an instance of <see cref="IDependencyPropertyValue"/> for the specified value typed dependency property.
+        /// </summary>
+        /// <param name="dp">The dependency property for which to create a value wrapper.</param>
+        /// <param name="type">The type of value contained by the dependency property.</param>
+        /// <returns>The <see cref="IDependencyPropertyValue"/> instance which was retrieved.</returns>
+        private IDependencyPropertyValue GetDependencyPropertyValue(DependencyProperty dp, Type type)
+        {
             IDependencyPropertyValue valueWrapper;
             dependencyPropertyValues.TryGetValue(dp.ID, out valueWrapper);
 
-            var wrapper = (DependencyPropertyValue<T>)valueWrapper;
-            if (wrapper == null)
+            if (valueWrapper == null)
             {
-                wrapper = new DependencyPropertyValue<T>(this, dp);
-                dependencyPropertyValues[dp.ID] = wrapper;
+                var dpValueType = typeof(DependencyPropertyValue<>).MakeGenericType(type);
+                valueWrapper = (IDependencyPropertyValue)Activator.CreateInstance(dpValueType, this, dp);
+                dependencyPropertyValues[dp.ID] = valueWrapper;
             }
-            return wrapper;
+            return valueWrapper;
         }
 
         /// <summary>

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace TwistedLogik.Ultraviolet.Layout.Animation
@@ -6,13 +7,13 @@ namespace TwistedLogik.Ultraviolet.Layout.Animation
     partial class StoryboardTargetAnimationCollection
     {
         /// <inheritdoc/>
-        List<AnimationBase>.Enumerator GetEnumerator()
+        public Dictionary<String, AnimationBase>.Enumerator GetEnumerator()
         {
             return animations.GetEnumerator();
         }
 
         /// <inheritdoc/>
-        IEnumerator<AnimationBase> IEnumerable<AnimationBase>.GetEnumerator()
+        IEnumerator<KeyValuePair<String, AnimationBase>> IEnumerable<KeyValuePair<String, AnimationBase>>.GetEnumerator()
         {
             return GetEnumerator();
         }

@@ -260,7 +260,7 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
 
             var type = Type.GetTypeFromHandle(dprop.PropertyType);
 
-            miBindValue.MakeGenericMethod(type).Invoke(uiElement, new Object[] { dprop, viewModelType, expression });
+            miBindValue.Invoke(uiElement, new Object[] { dprop, viewModelType, expression });
         }
 
         /// <summary>

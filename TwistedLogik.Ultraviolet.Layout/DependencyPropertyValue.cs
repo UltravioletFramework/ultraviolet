@@ -36,30 +36,25 @@ namespace TwistedLogik.Ultraviolet.Layout
                 UpdateRequiresDigest(GetValue());
             }
 
-            /// <summary>
-            /// Applies the specified animation to the property value.
-            /// </summary>
-            /// <param name="animation">The animation to apply to the value, or <c>null</c> to disable animation.</param>
-            public void Animate(AnimationBase animation)
+            /// <inheritdoc/>
+            public void Animate(AnimationBase animation, StoryboardClock clock)
             {
-                if (this.animation == animation)
+                Contract.Require(animation, "animation");
+                Contract.Require(clock, "clock");
+
+                if (this.animation == animation && this.animationClock == clock)
                     return;
 
                 var oldValue = GetValue();
 
                 this.animation      = (Animation<T>)animation;
-                this.animationTime  = 0.0;
-                this.animationDelta = 1.0;
+                this.animationClock = clock;
                 this.animatedValue  = GetValueInternal(false);
 
                 UpdateRequiresDigest(oldValue);
             }
 
-            /// <summary>
-            /// Binds the dependency property.
-            /// </summary>
-            /// <param name="viewModelType">The type of view model to which to bind the dependency property.</param>
-            /// <param name="expression">The binding expression with which to bind the dependency property.</param>
+            /// <inheritdoc/>
             public void Bind(Type viewModelType, String expression)
             {
                 Contract.Require(viewModelType, "viewModelType");
@@ -73,9 +68,7 @@ namespace TwistedLogik.Ultraviolet.Layout
                 UpdateRequiresDigest(oldValue);
             }
 
-            /// <summary>
-            /// Removes the dependency property's two-way binding.
-            /// </summary>
+            /// <inheritdoc/>
             public void Unbind()
             {
                 if (bound)
@@ -122,6 +115,17 @@ namespace TwistedLogik.Ultraviolet.Layout
             }
 
             /// <inheritdoc/>
+            public void ClearAnimation()
+            {
+                var oldValue = GetValue();
+
+                this.animation      = null;
+                this.animationClock = null;
+
+                UpdateRequiresDigest(oldValue);
+            }
+
+            /// <inheritdoc/>
             public void ClearLocalValue()
             {
                 var oldValue = GetValue();
@@ -148,8 +152,9 @@ namespace TwistedLogik.Ultraviolet.Layout
             public void SetValue(T value)
             {
                 if (IsAnimated)
-                    Animate(null);
-
+                {
+                    ClearAnimation();
+                }
                 if (IsDataBound)
                 {
                     cachedBoundValue.Set(value);
@@ -218,7 +223,7 @@ namespace TwistedLogik.Ultraviolet.Layout
             }
 
             /// <summary>
-            /// Gets the dependency property's previous value as of the last call to <see cref="Digest()"/>.
+            /// Gets the dependency property's previous value as of the last call to <see cref="Digest(UltravioletTime)"/>.
             /// </summary>
             public T PreviousValue
             {
@@ -365,68 +370,13 @@ namespace TwistedLogik.Ultraviolet.Layout
                 // If our animation has become invalid since it was applied, remove it.
                 if (animation.Target == null || animation.Target.Storyboard == null)
                 {
-                    Animate(null);
+                    ClearAnimation();
                     return;
                 }
 
-                UpdateAnimationClock(time);
-                UpdateAnimationValue();
-            }
-
-            /// <summary>
-            /// Updates the clock of the currently-playing animation.
-            /// </summary>
-            /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Update(UltravioletTime)"/>.</param>
-            private void UpdateAnimationClock(UltravioletTime time)
-            {
-                var storyboardDuration     = animation.Target.Storyboard.Duration.TotalMilliseconds;
-                var animationTimeUpdated   = animationTime + (animationDelta * time.ElapsedTime.TotalMilliseconds);
-                var animationTimeClamped   = (animationTimeUpdated < 0) ? 0 : animationTimeUpdated > storyboardDuration ? storyboardDuration : animationTimeUpdated;
-                if (animationTimeUpdated < 0 || animationTimeUpdated >= storyboardDuration)
-                {
-                    switch (animation.Target.Storyboard.LoopBehavior)
-                    {
-                        case LoopBehavior.None:
-                            animationTime  = animationTimeClamped;
-                            animationDelta = 1.0;
-                            break;
-
-                        case LoopBehavior.Loop:
-                            animationTime  = animationTimeClamped % storyboardDuration;
-                            animationDelta = 1.0;
-                            break;
-
-                        case LoopBehavior.Reverse:
-                            {
-                                var remaining   = animationTimeUpdated < 0 ? Math.Abs(animationTimeUpdated) : animationTimeUpdated - storyboardDuration;
-                                var distributed = 0.0;
-
-                                while (remaining > 0)
-                                {
-                                    distributed           = Math.Min(remaining, storyboardDuration);
-                                    animationDelta        = -animationDelta;
-                                    animationTimeClamped += (animationDelta * distributed);
-                                    remaining            -= distributed;
-                                }
-                            }
-                            animationTime  = animationTimeClamped;
-                            break;
-                    }
-                }
-                else
-                {
-                    animationTime = animationTimeUpdated;
-                }
-            }
-
-            /// <summary>
-            /// Updates the dependency property's animated value based on the animation clock's current position.
-            /// </summary>
-            private void UpdateAnimationValue()
-            {
                 // Find our current keyframe pair.
                 AnimationKeyframe<T> kf1, kf2;
-                animation.GetKeyframes(TimeSpan.FromMilliseconds(animationTime), out kf1, out kf2);
+                animation.GetKeyframes(animationClock.ElapsedTime, out kf1, out kf2);
 
                 // Determine which values correspond to our keyframes.
                 T value1 = (kf1 == null || !kf1.HasValue) ? GetValueInternal(false) : kf1.Value;
@@ -459,7 +409,7 @@ namespace TwistedLogik.Ultraviolet.Layout
                 }
                 else
                 {
-                    var factor = (float)((animationTime - time1) / duration);
+                    var factor = (float)((animationClock.ElapsedTime.TotalMilliseconds - time1) / duration);
                     animatedValue = animation.InterpolateValues(value1, value2, factor);
                 }
             }
@@ -513,9 +463,8 @@ namespace TwistedLogik.Ultraviolet.Layout
             private IDependencyBoundValue<T> cachedBoundValue;
 
             // Animation state.
+            private StoryboardClock animationClock;
             private Animation<T> animation;
-            private Double animationTime;
-            private Double animationDelta = 1.0;
             private T animatedValue;
         }
     }

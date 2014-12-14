@@ -53,12 +53,14 @@
   <ItemGroup>
     <Compile Include="Animation\AnimationBase.cs" />
     <Compile Include="Animation\Animation.cs" />
+    <Compile Include="Animation\StoryboardClock.cs" />
     <Compile Include="Animation\AnimationKeyframe.cs" />
     <Compile Include="Animation\AnimationKeyframeCollection.cs" />
     <Compile Include="Animation\AnimationKeyframeCollection.IEnumerable.cs" />
     <Compile Include="Animation\ColorAnimation.cs" />
     <Compile Include="Animation\FillBehavior.cs" />
     <Compile Include="Animation\LoopBehavior.cs" />
+    <Compile Include="Animation\StoryboardClockState.cs" />
     <Compile Include="Animation\StoryboardTarget.cs" />
     <Compile Include="Animation\Storyboard.cs" />
     <Compile Include="Animation\StoryboardTargetAnimationCollection.cs" />

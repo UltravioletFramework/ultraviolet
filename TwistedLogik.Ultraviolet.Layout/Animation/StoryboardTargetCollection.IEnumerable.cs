@@ -6,7 +6,7 @@ namespace TwistedLogik.Ultraviolet.Layout.Animation
     partial class StoryboardTargetCollection
     {
         /// <inheritdoc/>
-        List<StoryboardTarget>.Enumerator GetEnumerator()
+        public List<StoryboardTarget>.Enumerator GetEnumerator()
         {
             return targets.GetEnumerator();
         }

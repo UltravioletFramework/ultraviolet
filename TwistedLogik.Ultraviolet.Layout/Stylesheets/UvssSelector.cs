@@ -48,8 +48,9 @@ namespace TwistedLogik.Ultraviolet.Layout.Stylesheets
         /// Gets a value indicating whether the selector matches the specified UI element.
         /// </summary>
         /// <param name="element">The UI element to evaluate.</param>
+        /// <param name="root">The topmost root element to consider when tracing ancestors.</param>
         /// <returns><c>true</c> if the selector matches the specified UI element; otherwise, <c>false</c>.</returns>
-        public Boolean MatchesElement(UIElement element)
+        public Boolean MatchesElement(UIElement element, UIElement root = null)
         {
             if (parts.Count == 0)
                 return false;
@@ -125,12 +126,16 @@ namespace TwistedLogik.Ultraviolet.Layout.Stylesheets
         /// </summary>
         /// <param name="element">The UI element to evaluate. If a match is found, this variable will be updated to contain the matching element.</param>
         /// <param name="part">The selector part to evaluate.</param>
+        /// <param name="root">The topmost root element to consider when tracing ancestors.</param>
         /// <returns><c>true</c> if the element matches the selector part; otherwise, <c>false</c>.</returns>
-        private static Boolean AncestorMatchesSelectorPart(ref UIElement element, UvssSelectorPart part)
+        private static Boolean AncestorMatchesSelectorPart(ref UIElement element, UvssSelectorPart part, UIElement root = null)
         {
             var current = element;
             while (true)
             {
+                if (current == root)
+                    return false;
+
                 current = current.Container;
                 if (current == null)
                     break;

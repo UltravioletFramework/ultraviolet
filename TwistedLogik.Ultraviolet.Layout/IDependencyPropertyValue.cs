@@ -1,4 +1,5 @@
 ﻿using System;
+using TwistedLogik.Ultraviolet.Layout.Animation;
 
 namespace TwistedLogik.Ultraviolet.Layout
 {
@@ -12,6 +13,30 @@ namespace TwistedLogik.Ultraviolet.Layout
         /// </summary>
         /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Update(UltravioletTime)"/>.</param>
         void Digest(UltravioletTime time);
+
+        /// <summary>
+        /// Applies the specified animation to the property value.
+        /// </summary>
+        /// <param name="animation">The animation to apply to the value, or <c>null</c> to disable animation.</param>
+        /// <param name="clock">The clock which controls the animation's playback.</param>
+        void Animate(AnimationBase animation, StoryboardClock clock);
+
+        /// <summary>
+        /// Binds the dependency property.
+        /// </summary>
+        /// <param name="viewModelType">The type of view model to which to bind the dependency property.</param>
+        /// <param name="expression">The binding expression with which to bind the dependency property.</param>
+        void Bind(Type viewModelType, String expression);
+
+        /// <summary>
+        /// Removes the dependency property's two-way binding.
+        /// </summary>
+        void Unbind();
+
+        /// <summary>
+        /// Removes the property's current animation, if it has one.
+        /// </summary>
+        void ClearAnimation();
 
         /// <summary>
         /// Clears the dependency property's local value, if it has one.

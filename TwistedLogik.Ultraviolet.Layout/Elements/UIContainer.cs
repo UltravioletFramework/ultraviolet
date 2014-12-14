@@ -2,6 +2,7 @@
 using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet.Graphics;
 using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
+using TwistedLogik.Ultraviolet.Layout.Animation;
 
 namespace TwistedLogik.Ultraviolet.Layout.Elements
 {
@@ -145,6 +146,17 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         {
             get { return requiresScissorRectangle; }
             set { requiresScissorRectangle = value; }
+        }
+
+        /// <inheritdoc/>
+        internal override void ApplyStoryboard(Storyboard storyboard, StoryboardClock clock, UIElement root)
+        {
+            base.ApplyStoryboard(storyboard, clock, root);
+
+            foreach (var child in children)
+            {
+                child.ApplyStoryboard(storyboard, clock, root);
+            }
         }
 
         /// <inheritdoc/>

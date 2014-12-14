@@ -7,7 +7,7 @@ namespace TwistedLogik.Ultraviolet.Layout.Animation
     /// <summary>
     /// Represents a storyboard target's collection of animations.
     /// </summary>
-    public sealed partial class StoryboardTargetAnimationCollection : IEnumerable<AnimationBase>
+    public sealed partial class StoryboardTargetAnimationCollection : IEnumerable<KeyValuePair<String, AnimationBase>>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="StoryboardTargetAnimationCollection"/> class.
@@ -23,24 +23,49 @@ namespace TwistedLogik.Ultraviolet.Layout.Animation
         /// <summary>
         /// Adds the specified animation to this collection.
         /// </summary>
+        /// <param name="property">The name of the dependency property to which the animation applies.</param>
         /// <param name="animation">The animation to add to the collection.</param>
         /// <returns><c>true</c> if the animation was added to the collection; otherwise, <c>false</c>.</returns>
-        public Boolean Add(AnimationBase animation)
+        public Boolean Add(String property, AnimationBase animation)
         {
+            Contract.RequireNotEmpty(property, "property");
             Contract.Require(animation, "animation");
 
-            if (animation.Target == Target)
-                return false;
+            Remove(property);
 
             if (animation.Target != null)
                 animation.Target.Animations.Remove(animation);
 
             animation.Target = Target;
-            animations.Add(animation);
+            animations.Add(property, animation);
             if (Target.Storyboard != null)
             {
                 Target.Storyboard.RecalculateDuration();
             }
+            return true;
+        }
+
+        /// <summary>
+        /// Removes the animation for the specified property from this collection.
+        /// </summary>
+        /// <param name="property">The name of the property to remove from the collection.</param>
+        /// <returns><c>true</c> if the animation was removed from the collection; otherwise, <c>false</c>.</returns>
+        public Boolean Remove(String property)
+        {
+            Contract.RequireNotEmpty(property, "property");
+
+            AnimationBase animation;
+            if (!animations.TryGetValue(property, out animation))
+                return false;
+
+            animations.Remove(property);
+            animation.Target = null;
+
+            if (Target.Storyboard != null)
+            {
+                Target.Storyboard.RecalculateDuration();
+            }
+
             return true;
         }
 
@@ -53,19 +78,32 @@ namespace TwistedLogik.Ultraviolet.Layout.Animation
         {
             Contract.Require(animation, "animation");
 
-            if (animation.Target != Target)
+            var property = default(String);
+            foreach (var kvp in animations)
+            {
+                if (kvp.Value == animation)
+                {
+                    property = kvp.Key;
+                    break;
+                }
+            }
+
+            if (property == null)
                 return false;
 
-            if (animations.Remove(animation))
-            {
-                animation.Target = null;
-                if (Target.Storyboard != null)
-                {
-                    Target.Storyboard.RecalculateDuration();
-                }
-                return true;
-            }
-            return false;
+            return Remove(property);
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the collection contains an animation on the specified property.
+        /// </summary>
+        /// <param name="property">The name of the property to evaluate.</param>
+        /// <returns><c>true</c> if this collection contains an animation on the specified property; otherwise, <c>false</c>.</returns>
+        public Boolean ContainsKey(String property)
+        {
+            Contract.RequireNotEmpty(property, "property");
+
+            return animations.ContainsKey(property);
         }
 
         /// <summary>
@@ -73,11 +111,11 @@ namespace TwistedLogik.Ultraviolet.Layout.Animation
         /// </summary>
         /// <param name="animation">The animation to evaluate.</param>
         /// <returns><c>true</c> if this collection contains the specified animation; otherwise, <c>false</c>.</returns>
-        public Boolean Contains(AnimationBase animation)
+        public Boolean ContainsValue(AnimationBase animation)
         {
             Contract.Require(animation, "animation");
 
-            return animations.Contains(animation);
+            return animations.ContainsValue(animation);
         }
 
         /// <summary>
@@ -100,7 +138,7 @@ namespace TwistedLogik.Ultraviolet.Layout.Animation
         private readonly StoryboardTarget target;
 
         // State values.
-        private readonly List<AnimationBase> animations = 
-            new List<AnimationBase>();
+        private readonly Dictionary<String, AnimationBase> animations = 
+            new Dictionary<String, AnimationBase>();
     }
 }

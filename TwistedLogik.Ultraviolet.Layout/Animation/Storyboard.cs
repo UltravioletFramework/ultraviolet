@@ -1,4 +1,6 @@
 ﻿using System;
+using TwistedLogik.Nucleus;
+using TwistedLogik.Ultraviolet.Layout.Elements;
 
 namespace TwistedLogik.Ultraviolet.Layout.Animation
 {
@@ -15,6 +17,28 @@ namespace TwistedLogik.Ultraviolet.Layout.Animation
             : base(uv)
         {
             this.targets = new StoryboardTargetCollection(this);
+        }
+
+        /// <summary>
+        /// Begins playing the storyboard on the specified element.
+        /// </summary>
+        /// <param name="element">The element on which to begin playing the storyboard.</param>
+        public void Begin(UIElement element)
+        {
+            Contract.Require(element, "element");
+
+            element.BeginStoryboard(this);
+        }
+
+        /// <summary>
+        /// Stops the storyboard on the specified element.
+        /// </summary>
+        /// <param name="element">The element on which to stop the storyboard.</param>
+        public void Stop(UIElement element)
+        {
+            Contract.Require(element, "element");
+
+            element.StopStoryboard(this);
         }
 
         /// <summary>
@@ -53,9 +77,9 @@ namespace TwistedLogik.Ultraviolet.Layout.Animation
             {
                 foreach (var animation in target.Animations)
                 {
-                    if (animation.EndTime > duration)
+                    if (animation.Value.EndTime > duration)
                     {
-                        duration = animation.EndTime;
+                        duration = animation.Value.EndTime;
                     }
                 }
             }

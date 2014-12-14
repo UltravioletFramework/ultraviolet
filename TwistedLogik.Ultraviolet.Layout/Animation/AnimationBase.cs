@@ -5,7 +5,6 @@ namespace TwistedLogik.Ultraviolet.Layout.Animation
     /// <summary>
     /// Represents an animation.
     /// </summary>
-    /// <typeparam name="T">The type of value that is being animated.</typeparam>
     public abstract class AnimationBase
     {
         /// <summary>

@@ -1,4 +1,5 @@
-﻿
+﻿using TwistedLogik.Ultraviolet.Layout.Stylesheets;
+
 namespace TwistedLogik.Ultraviolet.Layout.Animation
 {
     /// <summary>
@@ -9,8 +10,10 @@ namespace TwistedLogik.Ultraviolet.Layout.Animation
         /// <summary>
         /// Initializes a new instance of the <see cref="StoryboardTarget"/> class.
         /// </summary>
-        public StoryboardTarget()
+        /// <param name="selector">The selector which specifies which elements this target applies to.</param>
+        public StoryboardTarget(UvssSelector selector)
         {
+            this.selector   = selector;
             this.animations = new StoryboardTargetAnimationCollection(this);
         }
 
@@ -24,6 +27,14 @@ namespace TwistedLogik.Ultraviolet.Layout.Animation
         }
 
         /// <summary>
+        /// Gets the selector that specifies which elements this target applies to.
+        /// </summary>
+        public UvssSelector Selector
+        {
+            get { return selector; }
+        }
+
+        /// <summary>
         /// Gets the target's collection of animations.
         /// </summary>
         public StoryboardTargetAnimationCollection Animations
@@ -33,6 +44,7 @@ namespace TwistedLogik.Ultraviolet.Layout.Animation
 
         // Property values.
         private Storyboard storyboard;
+        private UvssSelector selector;
         private readonly StoryboardTargetAnimationCollection animations;
     }
 }

@@ -5,10 +5,12 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using TwistedLogik.Nucleus;
+using TwistedLogik.Nucleus.Collections;
 using TwistedLogik.Nucleus.Data;
 using TwistedLogik.Ultraviolet.Content;
 using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
 using TwistedLogik.Ultraviolet.Input;
+using TwistedLogik.Ultraviolet.Layout.Animation;
 using TwistedLogik.Ultraviolet.Layout.Stylesheets;
 
 namespace TwistedLogik.Ultraviolet.Layout.Elements
@@ -485,6 +487,74 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         }
 
         /// <summary>
+        /// Begins playing the specified storyboard on this element.
+        /// </summary>
+        /// <param name="storyboard">The storyboard to play on this element.</param>
+        internal void BeginStoryboard(Storyboard storyboard)
+        {
+            StopStoryboard(storyboard);
+
+            var clock = RetrieveStoryboardClock(storyboard);
+            storyboardClocks[storyboard] = clock;
+
+            ApplyStoryboard(storyboard, clock, this);
+
+            clock.Start();
+        }
+
+        /// <summary>
+        /// Stops playing the specified storyboard on this element.
+        /// </summary>
+        /// <param name="storyboard">The storyboard to stop playing on this element.</param>
+        internal void StopStoryboard(Storyboard storyboard)
+        {
+            StoryboardClock clock;
+            if (storyboardClocks.TryGetValue(storyboard, out clock))
+            {
+                clock.Stop();
+                storyboardClocks.Remove(storyboard);
+                ReleaseStoryboardClock(clock);
+            }
+        }
+
+        /// <summary>
+        /// Applies the specified storyboard to this element.
+        /// </summary>
+        /// <param name="storyboard">The storyboard being applied to the element.</param>
+        /// <param name="clock">The storyboard clock that tracks playback.</param>
+        /// <param name="root">The root element to which the storyboard is being applied.</param>
+        internal virtual void ApplyStoryboard(Storyboard storyboard, StoryboardClock clock, UIElement root)
+        {
+            foreach (var target in storyboard.Targets)
+            {
+                var targetAppliesToElement = false;
+                if (target.Selector == null)
+                {
+                    if (this == root)
+                    {
+                        targetAppliesToElement = true;
+                    }
+                }
+                else
+                {
+                    target.Selector.MatchesElement(this, root);
+                }
+
+                if (targetAppliesToElement)
+                {
+                    foreach (var animation in target.Animations)
+                    {
+                        var dp = DependencyProperty.FindByName(animation.Key, GetType());
+                        if (dp != null)
+                        {
+                            Animate(dp, animation.Value, clock);
+                        }
+                    }
+                }
+            }
+        }
+
+        /// <summary>
         /// Draws the element.
         /// </summary>
         /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Draw(UltravioletTime)"/>.</param>
@@ -500,6 +570,9 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Draw(UltravioletTime)"/>.</param>
         internal virtual void Update(UltravioletTime time)
         {
+            foreach (var clock in storyboardClocks)
+                clock.Value.Update(time);
+
             Digest(time);
             OnUpdating(time);
         }
@@ -1297,6 +1370,36 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
             element.OnBackgroundImageHoverChanged();
         }
 
+        /// <summary>
+        /// Retrieves a storyboard clock from the pool.
+        /// </summary>
+        /// <param name="storyboard">The storyboard which the clock will track.</param>
+        /// <returns>The storyboard clock that was retrieved from the pool.</returns>
+        private static StoryboardClock RetrieveStoryboardClock(Storyboard storyboard)
+        {
+            StoryboardClock clock;
+            lock (storyboardClockPool)
+            {
+                clock = storyboardClockPool.Retrieve();
+            }
+            clock.ChangeStoryboard(storyboard);
+            return clock;
+        }
+
+        /// <summary>
+        /// Releases a storyboard clock back into the pool.
+        /// </summary>
+        /// <param name="clock">The clock to release back into the pool.</param>
+        private static void ReleaseStoryboardClock(StoryboardClock clock)
+        {
+            Contract.Require(clock, "clock");
+
+            lock (storyboardClockPool)
+            {
+                storyboardClockPool.Release(clock);
+            }
+        }
+
         // Dependency properties.
         private static readonly DependencyProperty dpEnabled = DependencyProperty.Register("Enabled", typeof(Boolean), typeof(UIElement),
             new DependencyPropertyMetadata(HandleEnabledChanged, () => true, DependencyPropertyOptions.None));
@@ -1346,6 +1449,12 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         private Int32 calculatedWidth;
         private Int32 calculatedHeight;
         private SpriteFont font;
+
+        // Storyboard clocks.
+        private static readonly IPool<StoryboardClock> storyboardClockPool = 
+            new ExpandingPool<StoryboardClock>(64, () => new StoryboardClock());
+        private readonly Dictionary<Storyboard, StoryboardClock> storyboardClocks = 
+            new Dictionary<Storyboard, StoryboardClock>();
 
         // Functions for setting styles on known element types.
         private static readonly MethodInfo miFromString;
