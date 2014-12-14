@@ -84,9 +84,8 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         {
             if (cachedLayoutResult.Count > 0)
             {
-                var fontColor = GetCurrentFontColor();
-                var position  = new Vector2(AbsoluteScreenX + Padding, AbsoluteScreenY + Padding);
-                UIElementResources.TextRenderer.Draw(spriteBatch, CachedLayoutResult, position, fontColor);
+                var position = new Vector2(AbsoluteScreenX + Padding, AbsoluteScreenY + Padding);
+                UIElementResources.TextRenderer.Draw(spriteBatch, CachedLayoutResult, position, FontColor);
             }
         }
 

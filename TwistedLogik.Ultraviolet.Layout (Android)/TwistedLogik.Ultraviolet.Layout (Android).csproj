@@ -284,6 +284,15 @@
     <Compile Include="..\TwistedLogik.Ultraviolet.Layout\Elements\UvmlException.cs">
       <Link>Elements\UvmlException.cs</Link>
     </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.Layout\Elements\VisualState.cs">
+      <Link>Elements\VisualState.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.Layout\Elements\VisualStateGroup.cs">
+      <Link>Elements\VisualStateGroup.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.Layout\Elements\VisualStateGroupCollection.cs">
+      <Link>Elements\VisualStateGroupCollection.cs</Link>
+    </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.Layout\IDependencyBoundValue.cs">
       <Link>IDependencyBoundValue.cs</Link>
     </Compile>

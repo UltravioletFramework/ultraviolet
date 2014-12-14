@@ -131,6 +131,9 @@
     <Compile Include="Elements\UIViewLoader.cs" />
     <Compile Include="Elements\UIViewLoader.UIElementMetadata.cs" />
     <Compile Include="Elements\UvmlException.cs" />
+    <Compile Include="Elements\VisualState.cs" />
+    <Compile Include="Elements\VisualStateGroupCollection.cs" />
+    <Compile Include="Elements\VisualStateGroup.cs" />
     <Compile Include="IDependencyBoundValue.cs" />
     <Compile Include="IDependencyPropertyValue.cs" />
     <Compile Include="LayoutStrings.cs" />
