@@ -97,6 +97,22 @@ namespace TwistedLogik.Ultraviolet.Layout.Stylesheets
         }
 
         /// <summary>
+        /// Gets the lexer instance used to lex Ultraviolet Stylesheet source code.
+        /// </summary>
+        internal static UvssLexer Lexer
+        {
+            get { return lexer; }
+        }
+
+        /// <summary>
+        /// Gets the parser instance used to parse Ultraviolet Stylesheet source code.
+        /// </summary>
+        internal static UvssParser Parser
+        {
+            get { return parser; }
+        }
+
+        /// <summary>
         /// Applies styles to the specified element.
         /// </summary>
         /// <param name="element">The element to which to apply styles.</param>

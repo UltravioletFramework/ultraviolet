@@ -150,6 +150,7 @@
     <Compile Include="Stylesheets\UvssParserState.cs" />
     <Compile Include="Stylesheets\UvssRule.cs" />
     <Compile Include="Stylesheets\UvssSelector.cs" />
+    <Compile Include="Stylesheets\UvssSelector.IEnumerable.cs" />
     <Compile Include="Stylesheets\UvssSelectorList.cs" />
     <Compile Include="Stylesheets\UvssSelectorList.IEnumerable.cs" />
     <Compile Include="Stylesheets\UvssSelectorPart.cs" />

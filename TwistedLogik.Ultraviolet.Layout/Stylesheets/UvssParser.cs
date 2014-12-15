@@ -37,6 +37,21 @@ namespace TwistedLogik.Ultraviolet.Layout.Stylesheets
         }
 
         /// <summary>
+        /// Parses an Ultraviolet Stylesheet selector from the specified token stream.
+        /// </summary>
+        /// <param name="source">The source text.</param>
+        /// <param name="tokens">The token stream to parse.</param>
+        /// <returns>The new instance of <see cref="UvssSelector"/> that was created.</returns>
+        public UvssSelector ParseSelector(String source, IList<UvssLexerToken> tokens)
+        {
+            Contract.Require(source, "source");
+            Contract.Require(tokens, "input");
+
+            var state = new UvssParserState(source, tokens);
+            return ConsumeSelector(state, true);
+        }
+
+        /// <summary>
         /// Throws an exception indicating that a syntax error was reached.
         /// </summary>
         /// <param name="message">The exception message.</param>
@@ -206,8 +221,9 @@ namespace TwistedLogik.Ultraviolet.Layout.Stylesheets
         /// Consumes a sequence of tokens representing a UVSS selector.
         /// </summary>
         /// <param name="state">The parser state.</param>
+        /// <param name="allowEOF">A value indicating whether hitting the end of file is valid.</param>
         /// <returns>A new <see cref="UvssSelector"/> object representing the rule that was consumed.</returns>
-        private static UvssSelector ConsumeSelector(UvssParserState state)
+        private static UvssSelector ConsumeSelector(UvssParserState state, Boolean allowEOF = false)
         {
             state.AdvanceBeyondWhiteSpace();
 
@@ -216,7 +232,7 @@ namespace TwistedLogik.Ultraviolet.Layout.Stylesheets
 
             while (true)
             {
-                var part = ConsumeSelectorPart(state);
+                var part = ConsumeSelectorPart(state, allowEOF);
                 if (part != null)
                 {
                     if (pseudoClass)
@@ -229,7 +245,13 @@ namespace TwistedLogik.Ultraviolet.Layout.Stylesheets
                 }
 
                 if (state.IsPastEndOfStream)
+                {
+                    if (allowEOF)
+                    {
+                        break;
+                    }
                     ThrowSyntaxException(LayoutStrings.StylesheetSyntaxError, state);
+                }
 
                 if (state.CurrentToken.TokenType == UvssLexerTokenType.Comma)
                     break;
@@ -247,8 +269,9 @@ namespace TwistedLogik.Ultraviolet.Layout.Stylesheets
         /// Consumes a sequence of tokens representing a UVSS selector part.
         /// </summary>
         /// <param name="state">The parser state.</param>
+        /// <param name="allowEOF">A value indicating whether hitting the end of file is valid.</param>
         /// <returns>A new <see cref="UvssSelectorPart"/> object representing the rule that was consumed.</returns>
-        private static UvssSelectorPart ConsumeSelectorPart(UvssParserState state)
+        private static UvssSelectorPart ConsumeSelectorPart(UvssParserState state, Boolean allowEOF = false)
         {
             var element     = default(String);
             var id          = default(String);
@@ -259,7 +282,13 @@ namespace TwistedLogik.Ultraviolet.Layout.Stylesheets
             while (true)
             {
                 if (state.IsPastEndOfStream)
+                {
+                    if (allowEOF)
+                    {
+                        break;
+                    }
                     ThrowSyntaxException(LayoutStrings.StylesheetSyntaxError, state);
+                }
 
                 var token = state.CurrentToken;
 

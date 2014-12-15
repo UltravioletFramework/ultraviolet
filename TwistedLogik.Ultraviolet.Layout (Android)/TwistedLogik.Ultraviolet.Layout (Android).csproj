@@ -338,6 +338,9 @@
     <Compile Include="..\TwistedLogik.Ultraviolet.Layout\Stylesheets\UvssSelector.cs">
       <Link>Stylesheets\UvssSelector.cs</Link>
     </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.Layout\Stylesheets\UvssSelector.IEnumerable.cs">
+      <Link>Stylesheets\UvssSelector.IEnumerable.cs</Link>
+    </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.Layout\Stylesheets\UvssSelectorList.cs">
       <Link>Stylesheets\UvssSelectorList.cs</Link>
     </Compile>
@@ -387,7 +390,7 @@
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" ProjectLinkReference="71aaed78-c276-4018-a4b5-a97c4fbc1afb" />
+      <UserProperties ProjectLinkReference="71aaed78-c276-4018-a4b5-a97c4fbc1afb" ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" />
     </VisualStudio>
   </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

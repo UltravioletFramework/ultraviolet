@@ -1,7 +1,7 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet.Layout.Elements;
 
 namespace TwistedLogik.Ultraviolet.Layout.Stylesheets
@@ -9,7 +9,7 @@ namespace TwistedLogik.Ultraviolet.Layout.Stylesheets
     /// <summary>
     /// Represents a selector in an Ultraviolet Stylesheet (UVSS) document.
     /// </summary>
-    public sealed class UvssSelector : IEnumerable<UvssSelectorPart>
+    public sealed partial class UvssSelector : IEnumerable<UvssSelectorPart>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="UvssSelector"/> class.
@@ -19,13 +19,32 @@ namespace TwistedLogik.Ultraviolet.Layout.Stylesheets
         {
             this.parts       = parts.ToList();
             this.priority    = parts.Sum(x => x.Priority);
+            this.text        = String.Join(" ", parts.Select(x => x.ToString()));
             this.pseudoClass = parts.Where(x => !String.IsNullOrEmpty(x.PseudoClass)).Select(x => x.PseudoClass).SingleOrDefault();
         }
-        
+
+        /// <summary>
+        /// Parses a selector from the specified string.
+        /// </summary>
+        /// <param name="str">The string from which to parse a selector.</param>
+        /// <returns>The selector that was parsed from the specified string.</returns>
+        public static UvssSelector Parse(String str)
+        {
+            Contract.Require(str, "str");
+
+            if (str == String.Empty)
+                return new UvssSelector(Enumerable.Empty<UvssSelectorPart>());
+    
+            var tokens   = UvssDocument.Lexer.Lex(str);
+            var selector = UvssDocument.Parser.ParseSelector(str, tokens);
+
+            return selector;
+        }
+
         /// <inheritdoc/>
         public override String ToString()
         {
-            return String.Join(" ", parts.Select(x => x.ToString()));
+            return Text;
         }
 
         /// <summary>
@@ -34,6 +53,14 @@ namespace TwistedLogik.Ultraviolet.Layout.Stylesheets
         public Int32 Priority
         {
             get { return priority; }
+        }
+
+        /// <summary>
+        /// Gets the selector's text.
+        /// </summary>
+        public String Text
+        {
+            get { return text; }
         }
 
         /// <summary>
@@ -69,24 +96,6 @@ namespace TwistedLogik.Ultraviolet.Layout.Stylesheets
                 }
             }
             return true;
-        }
-
-        /// <inheritdoc/>
-        public List<UvssSelectorPart>.Enumerator GetEnumerator()
-        {
-            return parts.GetEnumerator();
-        }
-
-        /// <inheritdoc/>
-        IEnumerator<UvssSelectorPart> IEnumerable<UvssSelectorPart>.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
-
-        /// <inheritdoc/>
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
         }
 
         /// <summary>
@@ -152,6 +161,7 @@ namespace TwistedLogik.Ultraviolet.Layout.Stylesheets
         // State values.
         private readonly List<UvssSelectorPart> parts;
         private readonly Int32 priority;
+        private readonly String text;
         private readonly String pseudoClass;
     }
 }
