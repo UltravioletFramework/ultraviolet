@@ -1,18 +1,19 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace TwistedLogik.Ultraviolet.Layout.Stylesheets
 {
-    partial class UvssSelectorList
+    partial class UvssStoryboardTargetFilter
     {
         /// <inheritdoc/>
-        List<UvssSelector>.Enumerator GetEnumerator()
+        public List<String>.Enumerator GetEnumerator()
         {
-            return selectors.GetEnumerator();
+            return types.GetEnumerator();
         }
 
         /// <inheritdoc/>
-        IEnumerator<UvssSelector> IEnumerable<UvssSelector>.GetEnumerator()
+        IEnumerator<String> IEnumerable<String>.GetEnumerator()
         {
             return GetEnumerator();
         }

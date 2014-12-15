@@ -151,13 +151,25 @@
     <Compile Include="Stylesheets\UvssRule.cs" />
     <Compile Include="Stylesheets\UvssSelector.cs" />
     <Compile Include="Stylesheets\UvssSelector.IEnumerable.cs" />
-    <Compile Include="Stylesheets\UvssSelectorList.cs" />
-    <Compile Include="Stylesheets\UvssSelectorList.IEnumerable.cs" />
+    <Compile Include="Stylesheets\UvssSelectorCollection.cs" />
+    <Compile Include="Stylesheets\UvssSelectorCollection.IEnumerable.cs" />
     <Compile Include="Stylesheets\UvssSelectorPart.cs" />
+    <Compile Include="Stylesheets\UvssStoryboard.cs" />
+    <Compile Include="Stylesheets\UvssStoryboardAnimation.cs" />
+    <Compile Include="Stylesheets\UvssStoryboardAnimationCollection.cs" />
+    <Compile Include="Stylesheets\UvssStoryboardAnimationCollection.IEnumerable.cs" />
+    <Compile Include="Stylesheets\UvssStoryboardKeyframe.cs" />
+    <Compile Include="Stylesheets\UvssStoryboardKeyframeCollection.cs" />
+    <Compile Include="Stylesheets\UvssStoryboardTargetCollection.IEnumerable.cs" />
+    <Compile Include="Stylesheets\UvssStoryboardKeyframeCollection.IEnumerable.cs" />
+    <Compile Include="Stylesheets\UvssStoryboardTarget.cs" />
+    <Compile Include="Stylesheets\UvssStoryboardTargetCollection.cs" />
+    <Compile Include="Stylesheets\UvssStoryboardTargetFilter.cs" />
+    <Compile Include="Stylesheets\UvssStoryboardTargetFilter.IEnumerable.cs" />
     <Compile Include="Stylesheets\UvssStyle.cs" />
     <Compile Include="Stylesheets\UvssStyleKey.cs" />
-    <Compile Include="Stylesheets\UvssStyleList.cs" />
-    <Compile Include="Stylesheets\UvssStyleList.IEnumerable.cs" />
+    <Compile Include="Stylesheets\UvssStyleCollection.cs" />
+    <Compile Include="Stylesheets\UvssStyleCollection.IEnumerable.cs" />
     <Compile Include="TypeExtensions.cs" />
   </ItemGroup>
   <ItemGroup>

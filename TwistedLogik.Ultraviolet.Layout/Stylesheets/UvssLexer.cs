@@ -15,27 +15,31 @@ namespace TwistedLogik.Ultraviolet.Layout.Stylesheets
         /// <returns>A sequence of lexer tokens produced from the specified input.</returns>
         public IList<UvssLexerToken> Lex(String input)
         {
-            var output = new List<UvssLexerToken>();
-            var ix     = 0;
-            var braces = 0;
+            var output     = new List<UvssLexerToken>();
+            var ix         = 0;
+            var braces     = 0;
+            var storyboard = false;
 
             while (ix < input.Length)
             {
                 if (ConsumeWhiteSpace(input, output, ref ix))
                     continue;
-                if (braces > 0)
+                if (!storyboard)
                 {
-                    if (ConsumeStyleName(input, output, ref ix))
-                        continue;
-                    if (ConsumeStyleQualifier(input, output, ref ix))
-                        continue;
+                    if (braces > 0)
+                    {
+                        if (ConsumeStyleName(input, output, ref ix))
+                            continue;
+                        if (ConsumeStyleQualifier(input, output, ref ix))
+                            continue;
+                    }
+                    else
+                    {
+                        if (ConsumePseudoClass(input, output, ref ix))
+                            continue;
+                    }
                 }
-                else
-                {
-                    if (ConsumePseudoClass(input, output, ref ix))
-                        continue;
-                }
-                if (ConsumeIdentifier(input, output, ref ix))
+                if (ConsumeIdentifier(input, output, ref ix, ref storyboard))
                     continue;
                 if (ConsumeNumber(input, output, ref ix))
                     continue;
@@ -53,6 +57,10 @@ namespace TwistedLogik.Ultraviolet.Layout.Stylesheets
                 if (ConsumeCloseCurlyBrace(input, output, ref ix))
                 {
                     braces--;
+                    if (braces == 0)
+                    {
+                        storyboard = false;
+                    }
                     continue;
                 }
                 if (ConsumeColon(input, output, ref ix))
@@ -235,7 +243,7 @@ namespace TwistedLogik.Ultraviolet.Layout.Stylesheets
         /// <summary>
         /// Attempts to consume an Identifier token.
         /// </summary>
-        private static Boolean ConsumeIdentifier(String input, IList<UvssLexerToken> output, ref Int32 ix)
+        private static Boolean ConsumeIdentifier(String input, IList<UvssLexerToken> output, ref Int32 ix, ref Boolean storyboard)
         {
             if (!IsValidStartIdentifier(input[ix]))
                 return false;
@@ -249,6 +257,9 @@ namespace TwistedLogik.Ultraviolet.Layout.Stylesheets
             var token = new UvssLexerToken(UvssLexerTokenType.Identifier, start, length, value);
             output.Add(token);
 
+            if (value.StartsWith("@"))
+                storyboard = true;
+
             return true;
         }
 
@@ -257,7 +268,7 @@ namespace TwistedLogik.Ultraviolet.Layout.Stylesheets
         /// </summary>
         private static Boolean IsValidStartIdentifier(Char c)
         {
-            return Char.IsLetter(c) || c == '_' || c == '.' || c == '#';
+            return Char.IsLetter(c) || c == '_' || c == '.' || c == '#' || c == '@';
         }
 
         /// <summary>

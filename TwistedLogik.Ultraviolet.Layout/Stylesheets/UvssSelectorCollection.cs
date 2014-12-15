@@ -7,13 +7,13 @@ namespace TwistedLogik.Ultraviolet.Layout.Stylesheets
     /// <summary>
     /// Represents a list of selectors in an Ultraviolet Stylesheet (UVSS) document.
     /// </summary>
-    public sealed partial class UvssSelectorList : IEnumerable<UvssSelector>
+    public sealed partial class UvssSelectorCollection : IEnumerable<UvssSelector>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="UvssSelectorList"/> class.
+        /// Initializes a new instance of the <see cref="UvssSelectorCollection"/> class.
         /// </summary>
         /// <param name="selectors">A collection containing the selectors to add to the list.</param>
-        internal UvssSelectorList(IEnumerable<UvssSelector> selectors)
+        internal UvssSelectorCollection(IEnumerable<UvssSelector> selectors)
         {
             this.selectors = selectors.ToList();
         }

@@ -341,26 +341,62 @@
     <Compile Include="..\TwistedLogik.Ultraviolet.Layout\Stylesheets\UvssSelector.IEnumerable.cs">
       <Link>Stylesheets\UvssSelector.IEnumerable.cs</Link>
     </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet.Layout\Stylesheets\UvssSelectorList.cs">
-      <Link>Stylesheets\UvssSelectorList.cs</Link>
+    <Compile Include="..\TwistedLogik.Ultraviolet.Layout\Stylesheets\UvssSelectorCollection.cs">
+      <Link>Stylesheets\UvssSelectorCollection.cs</Link>
     </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet.Layout\Stylesheets\UvssSelectorList.IEnumerable.cs">
-      <Link>Stylesheets\UvssSelectorList.IEnumerable.cs</Link>
+    <Compile Include="..\TwistedLogik.Ultraviolet.Layout\Stylesheets\UvssSelectorCollection.IEnumerable.cs">
+      <Link>Stylesheets\UvssSelectorCollection.IEnumerable.cs</Link>
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.Layout\Stylesheets\UvssSelectorPart.cs">
       <Link>Stylesheets\UvssSelectorPart.cs</Link>
     </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.Layout\Stylesheets\UvssStoryboard.cs">
+      <Link>Stylesheets\UvssStoryboard.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.Layout\Stylesheets\UvssStoryboardAnimation.cs">
+      <Link>Stylesheets\UvssStoryboardAnimation.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.Layout\Stylesheets\UvssStoryboardAnimationCollection.cs">
+      <Link>Stylesheets\UvssStoryboardAnimationCollection.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.Layout\Stylesheets\UvssStoryboardAnimationCollection.IEnumerable.cs">
+      <Link>Stylesheets\UvssStoryboardAnimationCollection.IEnumerable.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.Layout\Stylesheets\UvssStoryboardKeyframe.cs">
+      <Link>Stylesheets\UvssStoryboardKeyframe.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.Layout\Stylesheets\UvssStoryboardKeyframeCollection.cs">
+      <Link>Stylesheets\UvssStoryboardKeyframeCollection.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.Layout\Stylesheets\UvssStoryboardKeyframeCollection.IEnumerable.cs">
+      <Link>Stylesheets\UvssStoryboardKeyframeCollection.IEnumerable.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.Layout\Stylesheets\UvssStoryboardTarget.cs">
+      <Link>Stylesheets\UvssStoryboardTarget.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.Layout\Stylesheets\UvssStoryboardTargetCollection.cs">
+      <Link>Stylesheets\UvssStoryboardTargetCollection.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.Layout\Stylesheets\UvssStoryboardTargetCollection.IEnumerable.cs">
+      <Link>Stylesheets\UvssStoryboardTargetCollection.IEnumerable.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.Layout\Stylesheets\UvssStoryboardTargetFilter.cs">
+      <Link>Stylesheets\UvssStoryboardTargetFilter.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.Layout\Stylesheets\UvssStoryboardTargetFilter.IEnumerable.cs">
+      <Link>Stylesheets\UvssStoryboardTargetFilter.IEnumerable.cs</Link>
+    </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.Layout\Stylesheets\UvssStyle.cs">
       <Link>Stylesheets\UvssStyle.cs</Link>
     </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.Layout\Stylesheets\UvssStyleCollection.cs">
+      <Link>Stylesheets\UvssStyleCollection.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.Layout\Stylesheets\UvssStyleCollection.IEnumerable.cs">
+      <Link>Stylesheets\UvssStyleCollection.IEnumerable.cs</Link>
+    </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.Layout\Stylesheets\UvssStyleKey.cs">
       <Link>Stylesheets\UvssStyleKey.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet.Layout\Stylesheets\UvssStyleList.cs">
-      <Link>Stylesheets\UvssStyleList.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet.Layout\Stylesheets\UvssStyleList.IEnumerable.cs">
-      <Link>Stylesheets\UvssStyleList.IEnumerable.cs</Link>
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.Layout\TypeExtensions.cs">
       <Link>TypeExtensions.cs</Link>

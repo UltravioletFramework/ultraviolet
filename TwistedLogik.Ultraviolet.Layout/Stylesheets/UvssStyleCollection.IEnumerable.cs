@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace TwistedLogik.Ultraviolet.Layout.Stylesheets
 {
-    partial class UvssStyleList
+    partial class UvssStyleCollection
     {
         /// <inheritdoc/>
         List<UvssStyle>.Enumerator GetEnumerator()

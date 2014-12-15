@@ -16,11 +16,13 @@ namespace TwistedLogik.Ultraviolet.Layout.Stylesheets
         /// Initializes a new instance of the <see cref="UvssDocument"/> class.
         /// </summary>
         /// <param name="rules">A collection containing the document's rules.</param>
-        internal UvssDocument(IEnumerable<UvssRule> rules)
+        /// <param name="storyboards">A collection containing the document's storyboards.</param>
+        internal UvssDocument(IEnumerable<UvssRule> rules, IEnumerable<UvssStoryboard> storyboards)
         {
             Contract.Require(rules, "rules");
 
-            this.rules = rules.ToList();
+            this.rules       = (rules ?? Enumerable.Empty<UvssRule>()).ToList();
+            this.storyboards = (storyboards ?? Enumerable.Empty<UvssStoryboard>()).ToList();
         }
 
         /// <summary>
@@ -63,6 +65,14 @@ namespace TwistedLogik.Ultraviolet.Layout.Stylesheets
         public IEnumerable<UvssRule> Rules
         {
             get { return rules; }
+        }
+
+        /// <summary>
+        /// Gets the document's storyboards.
+        /// </summary>
+        public IEnumerable<UvssStoryboard> Storyboards
+        {
+            get { return storyboards; }
         }
 
         /// <summary>
@@ -184,5 +194,6 @@ namespace TwistedLogik.Ultraviolet.Layout.Stylesheets
 
         // Property values.
         private readonly List<UvssRule> rules;
+        private readonly List<UvssStoryboard> storyboards;
     }
 }

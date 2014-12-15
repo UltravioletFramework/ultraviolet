@@ -1,0 +1,41 @@
+﻿using System;
+
+namespace TwistedLogik.Ultraviolet.Layout.Stylesheets
+{
+    /// <summary>
+    /// Represents an Ultraviolet Stylesheet document's representation of a storyboard animation.
+    /// </summary>
+    public sealed class UvssStoryboard
+    {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="UvssStoryboard"/> class.
+        /// </summary>
+        /// <param name="name">The storyboard's name.</param>
+        /// <param name="targets">The storyboard's collection of targets.</param>
+        internal UvssStoryboard(String name, UvssStoryboardTargetCollection targets)
+        {
+            this.name    = name;
+            this.targets = targets;
+        }
+
+        /// <summary>
+        /// Gets the storyboard's name.
+        /// </summary>
+        public String Name
+        {
+            get { return name; }
+        }
+
+        /// <summary>
+        /// Gets the storyboard's collection of targets.
+        /// </summary>
+        public UvssStoryboardTargetCollection Targets
+        {
+            get { return targets; }
+        }
+
+        // Property values.
+        private readonly String name;
+        private readonly UvssStoryboardTargetCollection targets;
+    }
+}

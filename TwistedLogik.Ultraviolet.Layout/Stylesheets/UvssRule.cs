@@ -13,7 +13,7 @@ namespace TwistedLogik.Ultraviolet.Layout.Stylesheets
         /// </summary>
         /// <param name="selectors">The rule's selectors.</param>
         /// <param name="styles">The rule's styles.</param>
-        internal UvssRule(UvssSelectorList selectors, UvssStyleList styles)
+        internal UvssRule(UvssSelectorCollection selectors, UvssStyleCollection styles)
         {
             this.selectors = selectors;
             this.styles    = styles;
@@ -53,7 +53,7 @@ namespace TwistedLogik.Ultraviolet.Layout.Stylesheets
         /// <summary>
         /// Gets the rule's selectors.
         /// </summary>
-        public UvssSelectorList Selectors
+        public UvssSelectorCollection Selectors
         {
             get { return selectors; }
         }
@@ -61,13 +61,13 @@ namespace TwistedLogik.Ultraviolet.Layout.Stylesheets
         /// <summary>
         /// Gets the rule's styles.
         /// </summary>
-        public UvssStyleList Styles
+        public UvssStyleCollection Styles
         {
             get { return styles; }
         }
 
         // State values.
-        private readonly UvssSelectorList selectors;
-        private readonly UvssStyleList styles;
+        private readonly UvssSelectorCollection selectors;
+        private readonly UvssStyleCollection styles;
     }
 }

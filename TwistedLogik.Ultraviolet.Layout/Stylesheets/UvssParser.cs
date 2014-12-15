@@ -25,15 +25,29 @@ namespace TwistedLogik.Ultraviolet.Layout.Stylesheets
 
             var state = new UvssParserState(source, tokens);
 
-            var rules = new List<UvssRule>();
-            var rule  = default(UvssRule);
+            var rules       = new List<UvssRule>();
+            var rule        = default(UvssRule);
+            var storyboards = new List<UvssStoryboard>();
+            var storyboard  = default(UvssStoryboard);
 
-            while ((rule = ConsumeRule(state)) != null) 
+            while (true)
             {
-                rules.Add(rule);
+                if ((storyboard = ConsumeStoryboard(state)) != null)
+                {
+                    storyboards.Add(storyboard);
+                    continue;
+                }
+
+                if ((rule = ConsumeRule(state)) != null)
+                {
+                    rules.Add(rule);
+                    continue;
+                }
+
+                break;
             }
 
-            return new UvssDocument(rules);
+            return new UvssDocument(rules, storyboards);
         }
 
         /// <summary>
@@ -74,6 +88,27 @@ namespace TwistedLogik.Ultraviolet.Layout.Stylesheets
             var tokenSource = state.Source.Substring(tokenFirst.Start, tokenSourceLength);
 
             throw new UvssException(message.Format(tokenSource));
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the specified token is a match for the specified parameters.
+        /// </summary>
+        /// <param name="token">The token to evaluate.</param>
+        /// <param name="type">The desired token type.</param>
+        /// <param name="value">The desired token value.</param>
+        /// <returns><c>true</c> if the specified token is a match; otherwise, <c>false</c>.</returns>
+        private static Boolean MatchToken(UvssLexerToken? token, UvssLexerTokenType type, String value = null)
+        {
+            if (token == null)
+                return false;
+
+            if (token.Value.TokenType != type)
+                return false;
+
+            if (value != null && !String.Equals(token.Value.Value, value, StringComparison.OrdinalIgnoreCase))
+                return false;
+
+            return true;
         }
 
         /// <summary>
@@ -188,11 +223,225 @@ namespace TwistedLogik.Ultraviolet.Layout.Stylesheets
         }
 
         /// <summary>
+        /// Consumes a sequence of tokens representing a storyboard.
+        /// </summary>
+        /// <param name="state">The parser state.</param>
+        /// <returns>A new <see cref="UvssStoryboard"/> object representing the storyboard that was consumed.</returns>
+        private static UvssStoryboard ConsumeStoryboard(UvssParserState state)
+        {
+            state.AdvanceBeyondWhiteSpace();
+
+            if (state.IsPastEndOfStream)
+                return null;
+
+            if (state.CurrentToken.TokenType != UvssLexerTokenType.Identifier)
+                return null;
+
+            if (!state.CurrentToken.Value.StartsWith("@"))
+                return null;
+
+            var id      = state.Consume();
+            var targets = ConsumeStoryboardTargetList(state);
+
+            return new UvssStoryboard(id.Value.Substring(1), targets);
+        }
+
+        /// <summary>
+        /// Consumes a sequence of tokens representing a list of storyboard targets.
+        /// </summary>
+        /// <param name="state">The parser state.</param>
+        /// <returns>A new <see cref="UvssStoryboardTargetCollection"/> object representing the target collection that was consumed.</returns>
+        private static UvssStoryboardTargetCollection ConsumeStoryboardTargetList(UvssParserState state)
+        {
+            state.AdvanceBeyondWhiteSpace();
+
+            var target        = default(UvssStoryboardTarget);
+            var targets       = new UvssStoryboardTargetCollection();
+            var targetsTokens = GetTokensBetweenCurlyBraces(state);
+            var targetsState  = new UvssParserState(state.Source, targetsTokens);
+
+            while ((target = ConsumeStoryboardTarget(targetsState)) != null)
+            {
+                targets.Add(target);
+            }
+
+            return targets;
+        }
+
+        /// <summary>
+        /// Consumes a sequence of tokens representing a storyboard target.
+        /// </summary>
+        /// <param name="state">The parser state.</param>
+        /// <returns>A new <see cref="UvssStoryboardTarget"/> object representing the target that was consumed.</returns>
+        private static UvssStoryboardTarget ConsumeStoryboardTarget(UvssParserState state)
+        {
+            state.AdvanceBeyondWhiteSpace();
+
+            if (state.IsPastEndOfStream)
+                return null;
+
+            var targetToken = state.TryConsumeNonWhiteSpace();
+            if (!MatchToken(targetToken, UvssLexerTokenType.Identifier, "target"))
+                ThrowSyntaxException(LayoutStrings.StylesheetSyntaxError, state);
+
+            state.AdvanceBeyondWhiteSpace();
+
+            if (state.IsPastEndOfStream)
+                ThrowSyntaxException(LayoutStrings.StylesheetSyntaxError, state);
+
+            var filter = new UvssStoryboardTargetFilter();
+            while (state.CurrentToken.TokenType == UvssLexerTokenType.Identifier)
+            {
+                if (state.IsPastEndOfStream)
+                    ThrowSyntaxException(LayoutStrings.StylesheetSyntaxError, state);
+
+                var type = state.CurrentToken.Value;
+                filter.Add(type);
+
+                state.Consume();
+                state.AdvanceBeyondWhiteSpace();
+            }
+
+            if (filter.Count == 0)
+                ThrowSyntaxException(LayoutStrings.StylesheetSyntaxError, state);
+
+            var selector = default(UvssSelector);
+            if (state.CurrentToken.TokenType == UvssLexerTokenType.OpenParenthesis)
+            {
+                var tokens      = GetTokensBetweenParentheses(state);
+                var tokensState = new UvssParserState(state.Source, tokens);
+                selector        = ConsumeSelector(tokensState, true);
+            }
+            state.AdvanceBeyondWhiteSpace();
+
+            var animations = ConsumeStoryboardAnimationList(state);
+
+            return new UvssStoryboardTarget(selector, filter, animations);
+        }
+
+        /// <summary>
+        /// Consumes a sequence of tokens representing a list of storyboard animations.
+        /// </summary>
+        /// <param name="state">The parser state.</param>
+        /// <returns>A new <see cref="UvssStoryboardAnimationCollection"/> object representing the animation collection that was consumed.</returns>
+        private static UvssStoryboardAnimationCollection ConsumeStoryboardAnimationList(UvssParserState state)
+        {
+            var animation        = default(UvssStoryboardAnimation);
+            var animations       = new UvssStoryboardAnimationCollection();
+            var animationsTokens = GetTokensBetweenCurlyBraces(state);
+            var animationsState  = new UvssParserState(state.Source, animationsTokens);
+
+            while ((animation = ConsumeStoryboardAnimation(animationsState)) != null)
+            {
+                animations.Add(animation);
+            }
+
+            return animations;
+        }
+
+        /// <summary>
+        /// Consumes a sequence of tokens representing a storyboard animation.
+        /// </summary>
+        /// <param name="state">The parser state.</param>
+        /// <returns>A new <see cref="UvssStoryboardAnimation"/> object representing the animation that was consumed.</returns>
+        private static UvssStoryboardAnimation ConsumeStoryboardAnimation(UvssParserState state)
+        {
+            state.AdvanceBeyondWhiteSpace();
+
+            if (state.IsPastEndOfStream)
+                return null;
+
+            var animationToken = state.TryConsumeNonWhiteSpace();
+            if (!MatchToken(animationToken, UvssLexerTokenType.Identifier, "animation"))
+                ThrowSyntaxException(LayoutStrings.StylesheetSyntaxError, state);
+
+            var propertyToken = state.TryConsumeNonWhiteSpace();
+            if (!MatchToken(propertyToken, UvssLexerTokenType.Identifier))
+                ThrowSyntaxException(LayoutStrings.StylesheetSyntaxError, state);
+
+            state.AdvanceBeyondWhiteSpace();
+
+            if (state.IsPastEndOfStream)
+                ThrowSyntaxException(LayoutStrings.StylesheetSyntaxError, state);
+
+            var keyframes = ConsumeStoryboardKeyframeList(state);
+
+            return new UvssStoryboardAnimation(propertyToken.Value.Value, keyframes);
+        }
+
+        /// <summary>
+        /// Consumes a sequence of tokens representing a list of storyboard animation keyframes.
+        /// </summary>
+        /// <param name="state">The parser state.</param>
+        /// <returns>A new <see cref="UvssStoryboardKeyframeCollection"/> object representing the collection of keyframes that was consumed.</returns>
+        private static UvssStoryboardKeyframeCollection ConsumeStoryboardKeyframeList(UvssParserState state)
+        {
+            var keyframe        = default(UvssStoryboardKeyframe);
+            var keyframes       = new UvssStoryboardKeyframeCollection();
+            var keyframesTokens = GetTokensBetweenCurlyBraces(state);
+            var keyframesState = new UvssParserState(state.Source, keyframesTokens);
+
+            while ((keyframe = ConsumeStoryboardKeyframe(keyframesState)) != null)
+            {
+                keyframes.Add(keyframe);
+            }
+
+            return keyframes;
+        }
+
+        /// <summary>
+        /// Consumes a sequence of tokens representing a storyboard keyframe.
+        /// </summary>
+        /// <param name="state">The parser state.</param>
+        /// <returns>A new <see cref="UvssStoryboardKeyframe"/> object representing the keyframe that was consumed.</returns>
+        private static UvssStoryboardKeyframe ConsumeStoryboardKeyframe(UvssParserState state)
+        {
+            state.AdvanceBeyondWhiteSpace();
+
+            if (state.IsPastEndOfStream)
+                return null;
+
+            var keyframeToken = state.TryConsumeNonWhiteSpace();
+            if (!MatchToken(keyframeToken, UvssLexerTokenType.Identifier, "keyframe"))
+                ThrowSyntaxException(LayoutStrings.StylesheetSyntaxError, state);
+
+            state.AdvanceBeyondWhiteSpace();
+
+            if (state.IsPastEndOfStream)
+                ThrowSyntaxException(LayoutStrings.StylesheetSyntaxError, state);
+
+            var time = 0.0;
+            var timeToken = state.TryConsumeNonWhiteSpace();
+            if (!MatchToken(timeToken, UvssLexerTokenType.Number))
+                ThrowSyntaxException(LayoutStrings.StylesheetSyntaxError, state);
+
+            time = Double.Parse(timeToken.Value.Value);
+
+            state.AdvanceBeyondWhiteSpace();
+
+            if (state.IsPastEndOfStream)
+                ThrowSyntaxException(LayoutStrings.StylesheetSyntaxError, state);
+
+            var easing = default(String);
+            if (state.CurrentToken.TokenType == UvssLexerTokenType.Identifier)
+            {
+                easing = state.CurrentToken.Value;
+                state.Consume();
+                state.AdvanceBeyondWhiteSpace();
+            }
+
+            var valueTokens = GetTokensBetweenCurlyBraces(state);
+            var value       = String.Join(String.Empty, valueTokens.Select(x => x.Value));
+
+            return new UvssStoryboardKeyframe(easing, value, time);
+        }
+
+        /// <summary>
         /// Consumes a sequence of tokens representing a UVSS selector list.
         /// </summary>
         /// <param name="state">The parser state.</param>
-        /// <returns>A new <see cref="UvssSelectorList"/> object representing the rule that was consumed.</returns>
-        private static UvssSelectorList ConsumeSelectorList(UvssParserState state)
+        /// <returns>A new <see cref="UvssSelectorCollection"/> object representing the rule that was consumed.</returns>
+        private static UvssSelectorCollection ConsumeSelectorList(UvssParserState state)
         {
             state.AdvanceBeyondWhiteSpace();
 
@@ -214,7 +463,7 @@ namespace TwistedLogik.Ultraviolet.Layout.Stylesheets
                 state.Advance();
             }
 
-            return new UvssSelectorList(selectors);
+            return new UvssSelectorCollection(selectors);
         }
 
         /// <summary>
@@ -354,8 +603,8 @@ namespace TwistedLogik.Ultraviolet.Layout.Stylesheets
         /// Consumes a sequence of tokens representing a UVSS style list.
         /// </summary>
         /// <param name="state">The parser state.</param>
-        /// <returns>A new <see cref="UvssStyleList"/> object representing the rule that was consumed.</returns>
-        private static UvssStyleList ConsumeStyleList(UvssParserState state)
+        /// <returns>A new <see cref="UvssStyleCollection"/> object representing the rule that was consumed.</returns>
+        private static UvssStyleCollection ConsumeStyleList(UvssParserState state)
         {
             state.AdvanceBeyondWhiteSpace();
 
@@ -370,7 +619,7 @@ namespace TwistedLogik.Ultraviolet.Layout.Stylesheets
                 styles.Add(style);
             }
 
-            return new UvssStyleList(styles);
+            return new UvssStyleCollection(styles);
         }
 
         /// <summary>
