@@ -54,6 +54,7 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
     /// <summary>
     /// The base class for all UI elements.
     /// </summary>
+    [UIElement("Element")]
     public abstract class UIElement : DependencyObject
     {
         /// <summary>

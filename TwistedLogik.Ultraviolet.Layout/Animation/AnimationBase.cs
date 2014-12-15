@@ -50,7 +50,13 @@ namespace TwistedLogik.Ultraviolet.Layout.Animation
         {
             get;
         }
-        
+
+        /// <summary>
+        /// Adds a keyframe to the animation.
+        /// </summary>
+        /// <param name="keyframe">The keyframe to add to the animation.</param>
+        internal abstract void AddKeyframe(Object keyframe);
+
         /// <summary>
         /// Recalculates the animation's duration.
         /// </summary>

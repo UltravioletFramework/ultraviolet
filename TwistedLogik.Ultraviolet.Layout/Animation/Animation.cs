@@ -114,6 +114,12 @@ namespace TwistedLogik.Ultraviolet.Layout.Animation
         }
 
         /// <inheritdoc/>
+        internal override void AddKeyframe(Object keyframe)
+        {
+            Keyframes.Add((AnimationKeyframe<T>)keyframe);
+        }
+
+        /// <inheritdoc/>
         internal override void RecalculateDuration()
         {
             if (keyframes.Count > 0)

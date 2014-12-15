@@ -9,6 +9,7 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
     /// <summary>
     /// Represents an interface element which can contain other elements.
     /// </summary>
+    [UIElement("Container")]
     public abstract class UIContainer : UIElement
     {
         /// <summary>

@@ -57,6 +57,7 @@
     <Compile Include="Animation\NullableCharAnimation.cs" />
     <Compile Include="Animation\NullableSByteAnimation.cs" />
     <Compile Include="Animation\NullableByteAnimation.cs" />
+    <Compile Include="Animation\ObjectAnimation.cs" />
     <Compile Include="Animation\SByteAnimation.cs" />
     <Compile Include="Animation\ByteAnimation.cs" />
     <Compile Include="Animation\DecimalAnimation.cs" />

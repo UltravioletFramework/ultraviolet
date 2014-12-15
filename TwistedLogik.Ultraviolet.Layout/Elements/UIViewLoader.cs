@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
 using System.Xml.Linq;
+using TwistedLogik.Nucleus;
 using TwistedLogik.Nucleus.Data;
 using TwistedLogik.Nucleus.Xml;
 
@@ -82,6 +83,42 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         }
 
         /// <summary>
+        /// Gets the element type registered with the specified name.
+        /// </summary>
+        /// <param name="name">The name for which to retrieve an element type.</param>
+        /// <param name="caseSensitive">A value indicating whether the match is case-sensitive.</param>
+        /// <returns>The element type registered with the specified name, or <c>null</c> if no such type exists.</returns>
+        public static Type GetElementTypeFromName(String name, Boolean caseSensitive = true)
+        {
+            Contract.RequireNotEmpty(name, "name");
+
+            UIElementMetadata metadata;
+            if (TryGetElementMetadata(name, caseSensitive, out metadata))
+            {
+                return metadata.Type;
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// Gets the element type registered with the specified name. Abstract types are ignored.
+        /// </summary>
+        /// <param name="name">The name for which to retrieve an element type.</param>
+        /// <param name="caseSensitive">A value indicating whether the match is case-sensitive.</param>
+        /// <returns>The element type registered with the specified name, or <c>null</c> if no such type exists.</returns>
+        public static Type GetConcreteElementTypeFromName(String name, Boolean caseSensitive = true)
+        {
+            Contract.RequireNotEmpty(name, "name");
+
+            UIElementMetadata metadata;
+            if (TryGetConcreteElementMetadata(name, caseSensitive, out metadata))
+            {
+                return metadata.Type;
+            }
+            return null;
+        }
+
+        /// <summary>
         /// Instantiates a new element.
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
@@ -90,7 +127,7 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         private static UIElement InstantiateElement(UltravioletContext uv, XElement xmlElement)
         {
             UIElementMetadata metadata;
-            if (!uiElementMetadata.TryGetValue(xmlElement.Name.LocalName, out metadata))
+            if (!TryGetConcreteElementMetadata(xmlElement.Name.LocalName, true, out metadata))
                 throw new UvmlException(LayoutStrings.UnrecognizedUIElement.Format(xmlElement.Name.LocalName));
 
             var id        = xmlElement.AttributeValueString("ID");
@@ -175,7 +212,7 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         private static void PopulateElementDefaultProperty(UltravioletContext uv, UIElement uiElement, XElement xmlElement, Type viewModelType)
         {
             UIElementMetadata metadata;
-            if (!uiElementMetadata.TryGetValue(uiElement.Name, out metadata))
+            if (!TryGetConcreteElementMetadata(uiElement.Name, true, out metadata))
                 return;
 
             if (metadata.DefaultProperty != null && !String.IsNullOrEmpty(xmlElement.Value))
@@ -297,12 +334,54 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
             return BindingExpressions.IsBindingExpression(value);
         }
 
+        /// <summary>
+        /// Gets the metadata associated with the specified element type name.
+        /// </summary>
+        /// <param name="name">The element type name for which to retrieve metadata.</param>
+        /// <param name="caseSensitive">A value indicating whether the match is case-sensitive.</param>
+        /// <param name="metadata">The metadata that was retrieved for the specified type.</param>
+        /// <returns><c>true</c> if type metadata was retrieved; otherwise, <c>false</c>.</returns>
+        private static Boolean TryGetElementMetadata(String name, Boolean caseSensitive, out UIElementMetadata metadata)
+        {
+            if (uiElementMetadata.TryGetValue(name, out metadata))
+            {
+                if (caseSensitive && !String.Equals(name, metadata.Name, StringComparison.OrdinalIgnoreCase))
+                {
+                    metadata = default(UIElementMetadata);
+                    return false;
+                }
+                return true;
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Gets the metadata associated with the specified element type name. Abstract types are ignored.
+        /// </summary>
+        /// <param name="name">The element type name for which to retrieve metadata.</param>
+        /// <param name="caseSensitive">A value indicating whether the match is case-sensitive.</param>
+        /// <param name="metadata">The metadata that was retrieved for the specified type.</param>
+        /// <returns><c>true</c> if type metadata was retrieved; otherwise, <c>false</c>.</returns>
+        private static Boolean TryGetConcreteElementMetadata(String name, Boolean caseSensitive, out UIElementMetadata metadata)
+        {
+            if (uiElementMetadata.TryGetValue(name, out metadata) && !metadata.Type.IsAbstract)
+            {
+                if (caseSensitive && !String.Equals(name, metadata.Name, StringComparison.OrdinalIgnoreCase))
+                {
+                    metadata = default(UIElementMetadata);
+                    return false;
+                }
+                return true;
+            }
+            return false;
+        }
+
         // Reflection information.
         private static readonly MethodInfo miBindValue;
         private static readonly MethodInfo miSetLocalValue;
 
         // UI element metadata for registered types.
         private static readonly Dictionary<String, UIElementMetadata> uiElementMetadata = 
-            new Dictionary<String, UIElementMetadata>(StringComparer.InvariantCulture);
+            new Dictionary<String, UIElementMetadata>(StringComparer.OrdinalIgnoreCase);
     }
 }
