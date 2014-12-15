@@ -7,14 +7,12 @@ namespace TwistedLogik.Ultraviolet.Layout.Animation
     /// <summary>
     /// Represents a collection of related animations.
     /// </summary>
-    public sealed class Storyboard : UltravioletResource
+    public sealed class Storyboard
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Storyboard"/> class.
         /// </summary>
-        /// <param name="uv">The Ultraviolet context.</param>
         public Storyboard(UltravioletContext uv)
-            : base(uv)
         {
             this.targets = new StoryboardTargetCollection(this);
         }
