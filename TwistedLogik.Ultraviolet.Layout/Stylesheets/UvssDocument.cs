@@ -66,6 +66,7 @@ namespace TwistedLogik.Ultraviolet.Layout.Stylesheets
         /// <summary>
         /// Retrieves a reified instance of the specified storyboard definition, if it has been defined.
         /// </summary>
+        /// <param name="uv">The Ultraviolet context.</param>
         /// <param name="name">The name of the storyboard to retrieve.</param>
         /// <returns>The <see cref="Storyboard"/> instance that was retrieved, or <c>null</c> if no such storyboard exists.</returns>
         public Storyboard InstantiateStoryboardByName(UltravioletContext uv, String name)
