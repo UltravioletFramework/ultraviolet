@@ -1639,7 +1639,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
                 // Add the glyph to the batch.
                 Vector2.Transform(ref glyphPosRaw, ref transform, out glyphPosTransformed);
                 DrawInternal(fontFace.Texture, glyphPosTransformed,
-                    source, color, rotation, Vector2.Zero, scale, effects, 0f, data);
+                    source, color, rotation, Vector2.Zero, scale, effects, layerDepth, data);
 
                 cx += fontFace.MeasureGlyph(ref text, i).Width * dirX;
             }
