@@ -12,11 +12,13 @@ namespace TwistedLogik.Ultraviolet.Layout.Stylesheets
         /// Initializes a new instance of the <see cref="UvssStoryboard"/> class.
         /// </summary>
         /// <param name="name">The storyboard's name.</param>
+        /// <param name="loopBehavior">The storyboard's loop behavior.</param>
         /// <param name="targets">The storyboard's collection of targets.</param>
         internal UvssStoryboard(String name, LoopBehavior loopBehavior, UvssStoryboardTargetCollection targets)
         {
-            this.name    = name;
-            this.targets = targets;
+            this.name         = name;
+            this.loopBehavior = loopBehavior;
+            this.targets      = targets;
         }
 
         /// <summary>
@@ -25,6 +27,14 @@ namespace TwistedLogik.Ultraviolet.Layout.Stylesheets
         public String Name
         {
             get { return name; }
+        }
+
+        /// <summary>
+        /// Gets the storyboard's loop behavior.
+        /// </summary>
+        public LoopBehavior LoopBehavior
+        {
+            get { return loopBehavior; }
         }
 
         /// <summary>
@@ -37,6 +47,7 @@ namespace TwistedLogik.Ultraviolet.Layout.Stylesheets
 
         // Property values.
         private readonly String name;
+        private readonly LoopBehavior loopBehavior;
         private readonly UvssStoryboardTargetCollection targets;
     }
 }

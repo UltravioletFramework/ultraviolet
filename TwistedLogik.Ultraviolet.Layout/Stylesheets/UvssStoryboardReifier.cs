@@ -63,6 +63,7 @@ namespace TwistedLogik.Ultraviolet.Layout.Stylesheets
             Contract.Require(storyboardDefinition, "storyboardDefinition");
 
             var storyboard = new Storyboard(uv);
+            storyboard.LoopBehavior = storyboardDefinition.LoopBehavior;
 
             foreach (var targetDefinition in storyboardDefinition.Targets)
             {

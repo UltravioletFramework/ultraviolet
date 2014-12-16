@@ -24,8 +24,13 @@ namespace TwistedLogik.Ultraviolet.Layout.Stylesheets
 
             this.rules                    = (rules ?? Enumerable.Empty<UvssRule>()).ToList();
             this.storyboards              = (storyboards ?? Enumerable.Empty<UvssStoryboard>()).ToList();
-            this.storyboardsByName        = this.storyboards.ToDictionary(x => x.Name, StringComparer.OrdinalIgnoreCase);
+            this.storyboardsByName        = new Dictionary<String, UvssStoryboard>(StringComparer.OrdinalIgnoreCase);
             this.reifiedStoryboardsByName = new Dictionary<String, Storyboard>(StringComparer.OrdinalIgnoreCase);
+
+            foreach (var storyboard in storyboards)
+            {
+                this.storyboardsByName[storyboard.Name] = storyboard;
+            }
         }
 
         /// <summary>
