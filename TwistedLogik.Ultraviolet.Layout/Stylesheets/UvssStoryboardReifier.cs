@@ -102,6 +102,7 @@ namespace TwistedLogik.Ultraviolet.Layout.Stylesheets
         /// </summary>
         /// <param name="targetDefinition">The type filter on the storyboard target.</param>
         /// <param name="animationDefinition">The storyboard animation definition.</param>
+        /// <param name="animatedProperty">The name of the dependency property which is being animated.</param>
         /// <returns>The reified storyboard animation.</returns>
         public static AnimationBase ReifyStoryboardAnimation(UvssStoryboardTarget targetDefinition, UvssStoryboardAnimation animationDefinition, out String animatedProperty)
         {

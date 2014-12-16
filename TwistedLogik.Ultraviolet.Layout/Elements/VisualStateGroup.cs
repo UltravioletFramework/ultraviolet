@@ -9,7 +9,7 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
     /// <summary>
     /// Represents one of a UI element's visual state groups.
     /// </summary>
-    public sealed partial class VisualStateGroup : IEnumerable<KeyValuePair<String, VisualStateGroup.VisualState>>
+    public sealed partial class VisualStateGroup : IEnumerable<KeyValuePair<String, VisualState>>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="VisualStateGroup"/> class.
@@ -23,6 +23,63 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
 
             this.element = element;
             this.name    = name;
+        }
+
+        /// <summary>
+        /// Resets the group's visual state transitions.
+        /// </summary>
+        public void ClearVisualStateTransitions()
+        {
+            transitions.Clear();
+        }
+
+        /// <summary>
+        /// Sets the transition storyboard which is applied when moving between the specified visual states.
+        /// </summary>
+        /// <param name="from">The visual state which is being transitioned from.</param>
+        /// <param name="to">The visual state which is being transitioned to.</param>
+        /// <param name="transition">The storyboard to apply when transitioning between the specified visual states.</param>
+        /// <returns><c>true</c> if the visual state transition was set; otherwise, <c>false</c>.</returns>
+        public Boolean SetVisualStateTransition(String from, String to, Storyboard transition)
+        {
+            Contract.RequireNotEmpty(to, "to");
+
+            VisualStateTransitionKey key;
+            if (!GetVisualStateTransitionKey(from, to, out key, transitionMustExist: false))
+            {
+                transition = null;
+                return false;
+            }
+
+            if (transition != null)
+            {
+                transitions[key] = transition;
+            }
+            else
+            {
+                transitions.Remove(key);
+            }
+            return true;
+        }
+
+        /// <summary>
+        /// Retrieves the transition storyboard which is applied when moving between the specified visual states.
+        /// </summary>
+        /// <param name="from">The visual state which is being transitioned from.</param>
+        /// <param name="to">The visual state which is being transitioned to.</param>
+        /// <param name="transition">The storyboard which is applied when transitioning between the specified visual states.</param>
+        /// <returns><c>true</c> if the visual state transition was retrieved; otherwise, <c>false</c>.</returns>
+        public Boolean GetVisualStateTransition(String from, String to, out Storyboard transition)
+        {
+            Contract.RequireNotEmpty(to, "to");
+
+            VisualStateTransitionKey key;
+            if (!GetVisualStateTransitionKey(from, to, out key, transitionMustExist: false))
+            {
+                transition = null;
+                return false;
+            }
+            return transitions.TryGetValue(key, out transition);
         }
 
         /// <summary>
@@ -117,8 +174,14 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
             if (currentState == vs)
                 return false;
 
+            var previousState = currentState;
             currentState = vs;
-            BeginCurrentStateTransition();
+
+            VisualStateTransitionKey transitionKey;
+            if (GetVisualStateTransitionKey(previousState, currentState, out transitionKey, transitionMustExist: true))
+            {
+                transitions[transitionKey].Begin(Element);
+            }
 
             return true;
         }
@@ -156,23 +219,59 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         }
 
         /// <summary>
-        /// Begins the state transition for the current state.
+        /// Gets the <see cref="VisualStateTransitionKey"/> which corresponds to the specified transition, if the appropriate
+        /// visual states and transitions are defined within this group.
         /// </summary>
-        private void BeginCurrentStateTransition()
+        /// <param name="from">The visual state which is being transitioned from.</param>
+        /// <param name="to">The visual state which is being transitioned to.</param>
+        /// <param name="key">The visual state transition key which was created.</param>
+        /// <param name="transitionMustExist">A value indicating whether the specifiied transition must exist in order for a key to be created.</param>
+        /// <returns><c>true</c> if the visual state transition key was created; otherwise, <c>false</c>.</returns>
+        private Boolean GetVisualStateTransitionKey(VisualState from, VisualState to, out VisualStateTransitionKey key, Boolean transitionMustExist)
         {
-            if (currentState.Transition != null)
+            key = new VisualStateTransitionKey(from, to);
+            if (transitionMustExist && !transitions.ContainsKey(key))
             {
-                currentTransition = currentState.Transition;
-                currentTransition.Begin(element);
-            }
-            else
-            {
-                if (currentTransition != null)
+                key = new VisualStateTransitionKey(null, to);
+                if (transitionMustExist && !transitions.ContainsKey(key))
                 {
-                    currentTransition.Stop(element);
-                    currentTransition = null;
+                    key = default(VisualStateTransitionKey);
+                    return false;
                 }
             }
+            return true;
+        }
+
+        /// <summary>
+        /// Gets the <see cref="VisualStateTransitionKey"/> which corresponds to the specified transition, if the appropriate
+        /// visual states and transitions are defined within this group.
+        /// </summary>
+        /// <param name="from">The visual state which is being transitioned from.</param>
+        /// <param name="to">The visual state which is being transitioned to.</param>
+        /// <param name="key">The visual state transition key which was created.</param>
+        /// <param name="transitionMustExist">A value indicating whether the specifiied transition must exist in order for a key to be created.</param>
+        /// <returns><c>true</c> if the visual state transition key was created; otherwise, <c>false</c>.</returns>
+        private Boolean GetVisualStateTransitionKey(String from, String to, out VisualStateTransitionKey key, Boolean transitionMustExist)
+        {
+            var vsFrom = (VisualState)null;
+            if (from != null)
+            {
+                vsFrom = Get(from);
+                if (vsFrom == null)
+                {
+                    key = default(VisualStateTransitionKey);
+                    return false;
+                }
+            }
+
+            var vsTo = Get(to);
+            if (vsTo == null)
+            {
+                key = default(VisualStateTransitionKey);
+                return false;
+            }
+
+            return GetVisualStateTransitionKey(vsFrom, vsTo, out key, transitionMustExist);
         }
 
         // Property values.
@@ -184,6 +283,9 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
             new Dictionary<String, VisualState>(StringComparer.OrdinalIgnoreCase);
         private VisualState defaultState;
         private VisualState currentState;
-        private Storyboard currentTransition;
+
+        // Visual state transitions for this group.
+        private readonly Dictionary<VisualStateTransitionKey, Storyboard> transitions = 
+            new Dictionary<VisualStateTransitionKey, Storyboard>();
     }
 }

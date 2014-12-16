@@ -22,53 +22,57 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         }
 
         /// <summary>
-        /// Sets the visual transition storyboard for the specified state.
+        /// Resets the collection's visual state transitions.
         /// </summary>
-        /// <param name="group">The name of the visual state group that contains the state.</param>
-        /// <param name="state">The name of the visual state for which to set a transition.</param>
-        /// <param name="transition">The storyboard to set as the transition for the specified state.</param>
-        /// <returns><c>true</c> if the transition was set; otherwise, <c>false</c>.</returns>
-        public Boolean SetVisualStateTransition(String group, String state, Storyboard transition)
+        public void ClearVisualStateTransitions()
         {
-            Contract.RequireNotEmpty(group, "group");
-            Contract.RequireNotEmpty(state, "state");
-
-            var vsg = Get(group);
-            if (vsg == null)
-                return false;
-
-            var vs = vsg.Get(state);
-            if (vs == null)
-                return false;
-
-            vs.Transition = transition;
-            return true;
+            foreach (var vsg in groups)
+            {
+                vsg.Value.ClearVisualStateTransitions();
+            }
         }
 
         /// <summary>
-        /// Gets the visual transition storyboard for the specified state.
+        /// Sets the transition storyboard which is applied when moving between the specified visual states.
         /// </summary>
-        /// <param name="group">The name of the visual state group that contains the state.</param>
-        /// <param name="state">The name of the visual state for which to retrieve a transition.</param>
-        /// <param name="transition">The storyboard that serves as the transition for the specified state.</param>
-        /// <returns><c>true</c> if the transition was retrieved; otherwise, <c>false</c>.</returns>
-        public Boolean GetVisualStateTransition(String group, String state, out Storyboard transition)
+        /// <param name="group">The visual state group that contains the states.</param>
+        /// <param name="from">The visual state which is being transitioned from.</param>
+        /// <param name="to">The visual state which is being transitioned to.</param>
+        /// <param name="transition">The storyboard to apply when transitioning between the specified visual states.</param>
+        /// <returns><c>true</c> if the visual state transition was set; otherwise, <c>false</c>.</returns>
+        public Boolean SetVisualStateTransition(String group, String from, String to, Storyboard transition)
         {
             Contract.RequireNotEmpty(group, "group");
-            Contract.RequireNotEmpty(state, "state");
-
-            transition = null;
+            Contract.RequireNotEmpty(to, "to");
 
             var vsg = Get(group);
             if (vsg == null)
                 return false;
 
-            var vs = vsg.Get(state);
-            if (vs == null)
-                return false;
+            return vsg.SetVisualStateTransition(from, to, transition);
+        }
 
-            transition = vs.Transition;
-            return true;
+        /// <summary>
+        /// Retrieves the transition storyboard which is applied when moving between the specified visual states.
+        /// </summary>
+        /// <param name="group">The visual state group that contains the states.</param>
+        /// <param name="from">The visual state which is being transitioned from.</param>
+        /// <param name="to">The visual state which is being transitioned to.</param>
+        /// <param name="transition">The storyboard which is applied when transitioning between the specified visual states.</param>
+        /// <returns><c>true</c> if the visual state transition was retrieved; otherwise, <c>false</c>.</returns>
+        public Boolean GetVisualStateTransition(String group, String from, String to, out Storyboard transition)
+        {
+            Contract.RequireNotEmpty(group, "group");
+            Contract.RequireNotEmpty(to, "to");
+
+            var vsg = Get(group);
+            if (vsg == null)
+            {
+                transition = null;
+                return false;
+            }
+
+            return vsg.GetVisualStateTransition(from, to, out transition);
         }
 
         /// <summary>

@@ -11,6 +11,7 @@ namespace TwistedLogik.Ultraviolet.Layout.Stylesheets
         /// <summary>
         /// Initializes a new instance of the <see cref="UvssStyle"/> class.
         /// </summary>
+        /// <param name="arguments">The style's argument list.</param>
         /// <param name="container">The style's container.</param>
         /// <param name="name">The style's name.</param>
         /// <param name="value">The style's value.</param>

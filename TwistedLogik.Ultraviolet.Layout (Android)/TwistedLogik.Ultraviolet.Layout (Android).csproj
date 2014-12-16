@@ -287,20 +287,23 @@
     <Compile Include="..\TwistedLogik.Ultraviolet.Layout\Elements\UvmlException.cs">
       <Link>Elements\UvmlException.cs</Link>
     </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.Layout\Elements\VisualState.cs">
+      <Link>Elements\VisualState.cs</Link>
+    </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.Layout\Elements\VisualStateGroup.cs">
       <Link>Elements\VisualStateGroup.cs</Link>
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.Layout\Elements\VisualStateGroup.IEnumerable.cs">
       <Link>Elements\VisualStateGroup.IEnumerable.cs</Link>
     </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet.Layout\Elements\VisualStateGroup.VisualState.cs">
-      <Link>Elements\VisualStateGroup.VisualState.cs</Link>
-    </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.Layout\Elements\VisualStateGroupCollection.cs">
       <Link>Elements\VisualStateGroupCollection.cs</Link>
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.Layout\Elements\VisualStateGroupCollection.IEnumerable.cs">
       <Link>Elements\VisualStateGroupCollection.IEnumerable.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.Layout\Elements\VisualStateTransitionKey.cs">
+      <Link>Elements\VisualStateTransitionKey.cs</Link>
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.Layout\IDependencyBoundValue.cs">
       <Link>IDependencyBoundValue.cs</Link>
@@ -441,7 +444,7 @@
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" ProjectLinkReference="71aaed78-c276-4018-a4b5-a97c4fbc1afb" />
+      <UserProperties ProjectLinkReference="71aaed78-c276-4018-a4b5-a97c4fbc1afb" ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" />
     </VisualStudio>
   </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

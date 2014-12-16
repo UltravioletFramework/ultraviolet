@@ -648,13 +648,8 @@ namespace TwistedLogik.Ultraviolet.Layout.Stylesheets
             UvssStyleArgumentsCollection arguments;
             if (state.CurrentToken.TokenType == UvssLexerTokenType.OpenParenthesis)
             {
-                if (nameToken.Value.Value != "transition")
-                    ThrowSyntaxException(LayoutStrings.StylesheetSyntaxError, state);
-
                 arguments = ConsumeStyleArguments(state);
-
-                if (arguments.Count != 2)
-                    ThrowSyntaxException(LayoutStrings.StylesheetSyntaxError, state);
+                ValidateStyleArguments(state, nameToken.Value.Value, arguments);
             }
             else
             {
@@ -731,6 +726,21 @@ namespace TwistedLogik.Ultraviolet.Layout.Stylesheets
             }
 
             return new UvssStyleArgumentsCollection(args);
+        }
+
+        /// <summary>
+        /// Validates a style argument list.
+        /// </summary>
+        /// <param name="state">The parser state.</param>
+        /// <param name="style">The name of the style being validated.</param>
+        /// <param name="arguments">The style argument list being validated.</param>
+        private static void ValidateStyleArguments(UvssParserState state, String style, UvssStyleArgumentsCollection arguments)
+        {
+            if (!String.Equals(style, "transition", StringComparison.OrdinalIgnoreCase))
+                ThrowSyntaxException(LayoutStrings.StylesheetSyntaxError, state);
+
+            if (arguments.Count != 2 && arguments.Count != 3)
+                ThrowSyntaxException(LayoutStrings.StylesheetSyntaxError, state);
         }
     }
 }

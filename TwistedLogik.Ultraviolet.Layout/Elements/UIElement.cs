@@ -133,13 +133,7 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         /// </summary>
         public void ClearVisualStateTransitions()
         {
-            foreach (var vsg in VisualStateGroups)
-            {
-                foreach (var vs in vsg.Value)
-                {
-                    vs.Value.Transition = null;
-                }
-            }
+            visualStateGroups.ClearVisualStateTransitions();
         }
 
         /// <summary>
@@ -543,16 +537,7 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
 
             if (name == "transition")
             {
-                if (View != null && View.Stylesheet != null)
-                {
-                    var storyboard = View.Stylesheet.InstantiateStoryboardByName(Ultraviolet, value);
-                    if (storyboard != null)
-                    {
-                        var group = style.Arguments[0];
-                        var state = style.Arguments[1];
-                        VisualStateGroups.SetVisualStateTransition(group, state, storyboard);
-                    }
-                }
+                ApplyStyledVisualStateTransition(style, value);
             }
             else
             {
@@ -561,6 +546,48 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
                     return;
 
                 setter(this, value, CultureInfo.InvariantCulture);
+            }
+        }
+
+        /// <summary>
+        /// Applies a visual state transition to the element.
+        /// </summary>
+        /// <param name="style">The style which defines the state transition.</param>
+        /// <param name="value">The transition value.</param>
+        internal void ApplyStyledVisualStateTransition(UvssStyle style, String value)
+        {
+            Contract.Require(style, "style");
+            Contract.RequireNotEmpty(value, "value");
+
+            if (View != null && View.Stylesheet != null)
+            {
+                var storyboard = View.Stylesheet.InstantiateStoryboardByName(Ultraviolet, value);
+                if (storyboard != null)
+                {
+                    var group = default(String);
+                    var from  = default(String);
+                    var to    = default(String);
+
+                    switch (style.Arguments.Count)
+                    {
+                        case 2:
+                            group = style.Arguments[0];
+                            from  = null;
+                            to    = style.Arguments[1];
+                            break;
+
+                        case 3:
+                            group = style.Arguments[0];
+                            from  = style.Arguments[1];
+                            to    = style.Arguments[2];
+                            break;
+
+                        default:
+                            throw new NotSupportedException();
+                    }
+
+                    VisualStateGroups.SetVisualStateTransition(group, from, to, storyboard);
+                }
             }
         }
 
