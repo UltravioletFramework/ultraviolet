@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TwistedLogik.Nucleus;
 using TwistedLogik.Nucleus.Text;
+using TwistedLogik.Ultraviolet.Layout.Animation;
 
 namespace TwistedLogik.Ultraviolet.Layout.Stylesheets
 {
@@ -240,10 +241,62 @@ namespace TwistedLogik.Ultraviolet.Layout.Stylesheets
             if (!state.CurrentToken.Value.StartsWith("@"))
                 return null;
 
-            var id      = state.Consume();
-            var targets = ConsumeStoryboardTargetList(state);
+            var id           = state.Consume();
+            var loopBehavior = ConsumeOptionalLoopBehavior(state);
+            var targets      = ConsumeStoryboardTargetList(state);
 
-            return new UvssStoryboard(id.Value.Substring(1), targets);
+            return new UvssStoryboard(id.Value.Substring(1), loopBehavior, targets);
+        }
+
+        /// <summary>
+        /// Optionally consumes a token which represents a loop behavior, if such a token exists at
+        /// the current position within the token stream.
+        /// </summary>
+        /// <param name="state">The parser state.</param>
+        /// <returns>The <see cref="LoopBehavior"/> value which the consumed token represents.</returns>
+        private static LoopBehavior ConsumeOptionalLoopBehavior(UvssParserState state)
+        {
+            state.AdvanceBeyondWhiteSpace();
+
+            if (state.IsPastEndOfStream)
+                ThrowSyntaxException(LayoutStrings.StylesheetSyntaxError, state);
+
+            if (state.CurrentToken.TokenType == UvssLexerTokenType.Identifier)
+            {
+                return ConsumeLoopBehavior(state);
+            }
+
+            return LoopBehavior.None;
+        }
+
+        /// <summary>
+        /// Consumes a token which represents a loop behavior.
+        /// </summary>
+        /// <param name="state">The parser state.</param>
+        /// <returns>The <see cref="LoopBehavior"/> value which the consumed token represents.</returns>
+        private static LoopBehavior ConsumeLoopBehavior(UvssParserState state)
+        {
+            if (state.CurrentToken.TokenType != UvssLexerTokenType.Identifier)
+                ThrowSyntaxException(LayoutStrings.StylesheetSyntaxError, state);
+
+            if (String.Equals(state.CurrentToken.Value, "none", StringComparison.OrdinalIgnoreCase))
+            {
+                state.Consume();
+                return LoopBehavior.None;
+            }
+            else if (String.Equals(state.CurrentToken.Value, "loop", StringComparison.OrdinalIgnoreCase))
+            {
+                state.Consume();
+                return LoopBehavior.Loop;
+            }
+            else if (String.Equals(state.CurrentToken.Value, "reverse", StringComparison.OrdinalIgnoreCase))
+            {
+                state.Consume();
+                return LoopBehavior.Reverse;
+            }
+
+            ThrowSyntaxException(LayoutStrings.StylesheetSyntaxError, state);
+            return LoopBehavior.None;
         }
 
         /// <summary>
@@ -290,16 +343,23 @@ namespace TwistedLogik.Ultraviolet.Layout.Stylesheets
                 ThrowSyntaxException(LayoutStrings.StylesheetSyntaxError, state);
 
             var filter = new UvssStoryboardTargetFilter();
-            while (state.CurrentToken.TokenType == UvssLexerTokenType.Identifier)
+            if (state.CurrentToken.TokenType != UvssLexerTokenType.Identifier)
             {
-                if (state.IsPastEndOfStream)
-                    ThrowSyntaxException(LayoutStrings.StylesheetSyntaxError, state);
+                filter.Add("element");
+            }
+            else
+            {
+                while (state.CurrentToken.TokenType == UvssLexerTokenType.Identifier)
+                {
+                    if (state.IsPastEndOfStream)
+                        ThrowSyntaxException(LayoutStrings.StylesheetSyntaxError, state);
 
-                var type = state.CurrentToken.Value;
-                filter.Add(type);
+                    var type = state.CurrentToken.Value;
+                    filter.Add(type);
 
-                state.Consume();
-                state.AdvanceBeyondWhiteSpace();
+                    state.Consume();
+                    state.AdvanceBeyondWhiteSpace();
+                }
             }
 
             if (filter.Count == 0)

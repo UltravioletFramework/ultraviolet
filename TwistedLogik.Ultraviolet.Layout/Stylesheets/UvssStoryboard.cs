@@ -1,4 +1,5 @@
 ﻿using System;
+using TwistedLogik.Ultraviolet.Layout.Animation;
 
 namespace TwistedLogik.Ultraviolet.Layout.Stylesheets
 {
@@ -12,7 +13,7 @@ namespace TwistedLogik.Ultraviolet.Layout.Stylesheets
         /// </summary>
         /// <param name="name">The storyboard's name.</param>
         /// <param name="targets">The storyboard's collection of targets.</param>
-        internal UvssStoryboard(String name, UvssStoryboardTargetCollection targets)
+        internal UvssStoryboard(String name, LoopBehavior loopBehavior, UvssStoryboardTargetCollection targets)
         {
             this.name    = name;
             this.targets = targets;
