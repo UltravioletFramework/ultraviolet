@@ -80,9 +80,9 @@
       <Variant>An element with ID '{0}' already exists within the view.</Variant>
     </en-US>
   </String>
-  <String Key="AMBIGUOUS_DEPENDENCY_PROPERTY_TYPE">
+  <String Key="AMBIGUOUS_DEPENDENCY_PROPERTY">
     <en-US>
-      <Variant>Cannot resolve the type of dependency property '{0}': type is ambiguous under current filters.</Variant>
+      <Variant>Cannot resolve dependency property '{0}': property is ambiguous under current filters.</Variant>
     </en-US>
   </String>
 </LocalizedStrings>

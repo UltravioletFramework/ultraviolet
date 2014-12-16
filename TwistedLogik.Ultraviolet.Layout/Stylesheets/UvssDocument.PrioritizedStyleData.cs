@@ -12,32 +12,25 @@ namespace TwistedLogik.Ultraviolet.Layout.Stylesheets
             /// <summary>
             /// Initializes a new instance of the <see cref="PrioritizedStyleData"/> structure.
             /// </summary>
-            /// <param name="container">The name of the style's container, if it represents an attached property.</param>
-            /// <param name="name">The name of the style.</param>
-            /// <param name="value">The style's value.</param>
+            /// <param name="style">The style being applied.</param>
+            /// <param name="selector">The selector which caused the style to be applied.</param>
             /// <param name="priority">The style's priority.</param>
-            public PrioritizedStyleData(String container, String name, String value, Int32 priority)
+            public PrioritizedStyleData(UvssStyle style, UvssSelector selector, Int32 priority)
             {
-                this.Value     = value;
-                this.Container = container;
-                this.Name      = name;
-                this.Priority  = priority;
+                this.Style    = style;
+                this.Selector = selector;
+                this.Priority = priority;
             }
 
             /// <summary>
-            /// The name of the style's container, if it represents an attached property.
+            /// The style being applied.
             /// </summary>
-            public readonly String Container;
+            public readonly UvssStyle Style;
 
             /// <summary>
-            /// The name of the style.
+            /// The selector which caused this style to be applied.
             /// </summary>
-            public readonly String Name;
-
-            /// <summary>
-            /// The style's value.
-            /// </summary>
-            public readonly String Value;
+            public readonly UvssSelector Selector;
 
             /// <summary>
             /// The style's priority.

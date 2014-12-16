@@ -129,6 +129,20 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         }
 
         /// <summary>
+        /// Resets the element's visual state transitions.
+        /// </summary>
+        public void ClearVisualStateTransitions()
+        {
+            foreach (var vsg in VisualStateGroups)
+            {
+                foreach (var vs in vsg.Value)
+                {
+                    vs.Value.Transition = null;
+                }
+            }
+        }
+
+        /// <summary>
         /// Converts a position in screen space to a position in element space.
         /// </summary>
         /// <param name="x">The x-coordinate of the screen space position to convert.</param>
@@ -516,20 +530,38 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         /// <summary>
         /// Applies a style to the element.
         /// </summary>
-        /// <param name="name">The name of the style.</param>
-        /// <param name="pseudoClass">The pseudo-class of the style.</param>
-        /// <param name="value">The value to apply to the style.</param>
+        /// <param name="style">The style which is being applied.</param>
+        /// <param name="selector">The selector which caused the style to be applied.</param>
         /// <param name="attached">A value indicating whether thie style represents an attached property.</param>
-        internal void ApplyStyle(String name, String pseudoClass, String value, Boolean attached)
+        internal void ApplyStyle(UvssStyle style, UvssSelector selector, Boolean attached)
         {
-            Contract.RequireNotEmpty(name, "name");
-            Contract.RequireNotEmpty(value, "value");
+            Contract.Require(style, "style");
+            Contract.Require(selector, "selector");
 
-            var setter = attached ? Container.GetStyleSetter(name, pseudoClass) : GetStyleSetter(name, pseudoClass);
-            if (setter == null)
-                return;
+            var name  = style.Name;
+            var value = style.Value.Trim();
 
-            setter(this, value, CultureInfo.InvariantCulture);
+            if (name == "transition")
+            {
+                if (View != null && View.Stylesheet != null)
+                {
+                    var storyboard = View.Stylesheet.InstantiateStoryboardByName(Ultraviolet, value);
+                    if (storyboard != null)
+                    {
+                        var group = style.Arguments[0];
+                        var state = style.Arguments[1];
+                        VisualStateGroups.SetVisualStateTransition(group, state, storyboard);
+                    }
+                }
+            }
+            else
+            {
+                var setter = attached ? Container.GetStyleSetter(name, selector.PseudoClass) : GetStyleSetter(name, selector.PseudoClass);
+                if (setter == null)
+                    return;
+
+                setter(this, value, CultureInfo.InvariantCulture);
+            }
         }
 
         /// <summary>
@@ -656,6 +688,7 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
             if (view == null || view.Stylesheet == null)
             {
                 ClearStyledValues();
+                ClearVisualStateTransitions();
             }
             else
             {

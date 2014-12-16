@@ -169,6 +169,8 @@
     <Compile Include="Stylesheets\UvssStoryboardTargetFilter.cs" />
     <Compile Include="Stylesheets\UvssStoryboardTargetFilter.IEnumerable.cs" />
     <Compile Include="Stylesheets\UvssStyle.cs" />
+    <Compile Include="Stylesheets\UvssStyleArgumentsCollection.cs" />
+    <Compile Include="Stylesheets\UvssStyleArgumentsCollection.IEnumerable.cs" />
     <Compile Include="Stylesheets\UvssStyleKey.cs" />
     <Compile Include="Stylesheets\UvssStyleCollection.cs" />
     <Compile Include="Stylesheets\UvssStyleCollection.IEnumerable.cs" />

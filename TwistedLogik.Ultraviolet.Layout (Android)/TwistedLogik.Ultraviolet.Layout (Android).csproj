@@ -398,6 +398,12 @@
     <Compile Include="..\TwistedLogik.Ultraviolet.Layout\Stylesheets\UvssStyle.cs">
       <Link>Stylesheets\UvssStyle.cs</Link>
     </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.Layout\Stylesheets\UvssStyleArgumentsCollection.cs">
+      <Link>Stylesheets\UvssStyleArgumentsCollection.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.Layout\Stylesheets\UvssStyleArgumentsCollection.IEnumerable.cs">
+      <Link>Stylesheets\UvssStyleArgumentsCollection.IEnumerable.cs</Link>
+    </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.Layout\Stylesheets\UvssStyleCollection.cs">
       <Link>Stylesheets\UvssStyleCollection.cs</Link>
     </Compile>

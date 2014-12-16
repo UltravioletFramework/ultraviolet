@@ -86,10 +86,11 @@ namespace TwistedLogik.Ultraviolet.Layout.Stylesheets
 
             foreach (var animationDefinition in targetDefinition.Animations)
             {
-                var animation = ReifyStoryboardAnimation(targetDefinition.Filter, animationDefinition);
+                var animatedProperty = String.Empty;
+                var animation = ReifyStoryboardAnimation(targetDefinition, animationDefinition, out animatedProperty);
                 if (animation != null)
                 {
-                    target.Animations.Add(animationDefinition.AnimatedProperty, animation);
+                    target.Animations.Add(animatedProperty, animation);
                 }
             }
 
@@ -99,15 +100,18 @@ namespace TwistedLogik.Ultraviolet.Layout.Stylesheets
         /// <summary>
         /// Creates a new <see cref="AnimationBase"/> instance based on the specified <see cref="UvssStoryboardAnimation"/>.
         /// </summary>
-        /// <param name="filter">The type filter on the storyboard target.</param>
+        /// <param name="targetDefinition">The type filter on the storyboard target.</param>
         /// <param name="animationDefinition">The storyboard animation definition.</param>
         /// <returns>The reified storyboard animation.</returns>
-        public static AnimationBase ReifyStoryboardAnimation(UvssStoryboardTargetFilter filter, UvssStoryboardAnimation animationDefinition)
+        public static AnimationBase ReifyStoryboardAnimation(UvssStoryboardTarget targetDefinition, UvssStoryboardAnimation animationDefinition, out String animatedProperty)
         {
-            Contract.Require(filter, "filter");
+            Contract.Require(targetDefinition, "targetDefinition");
             Contract.Require(animationDefinition, "animationDefinition");
 
-            var propertyType = GetDependencyPropertyType(filter, animationDefinition.AnimatedProperty);
+            var propertyName = animationDefinition.AnimatedProperty;
+            var propertyType = GetDependencyPropertyType(targetDefinition.Filter, ref propertyName);
+            animatedProperty = propertyName;
+
             if (propertyType == null)
                 return null;
 
@@ -187,20 +191,30 @@ namespace TwistedLogik.Ultraviolet.Layout.Stylesheets
         /// <param name="filter">The type filter on the storyboard target.</param>
         /// <param name="property">The name of the dependency property being animated.</param>
         /// <returns>The type of the specified dependency property.</returns>
-        private static Type GetDependencyPropertyType(UvssStoryboardTargetFilter filter, String property)
+        private static Type GetDependencyPropertyType(UvssStoryboardTargetFilter filter, ref String property)
         {
-            var possiblePropertyTypes =
-                (from f in filter
-                 let elementType = ResolveElementType(f)
-                 let propertyID = UIElement.FindStyledDependencyProperty(property, elementType)
-                 let propertyType = (propertyID == null) ? null : Type.GetTypeFromHandle(propertyID.PropertyType)
-                 where propertyType != null
-                 select propertyType).Distinct();
+            var propertyName = property;
 
-            if (possiblePropertyTypes.Count() > 1)
-                throw new InvalidOperationException(LayoutStrings.AmbiguousDependencyPropertyType.Format(property));
+            var possiblePropertyMatches =
+                from f in filter
+                let elementType = ResolveElementType(f)
+                let propertyID = UIElement.FindStyledDependencyProperty(propertyName, elementType)
+                let propertyType = (propertyID == null) ? null : Type.GetTypeFromHandle(propertyID.PropertyType)
+                where propertyType != null
+                select new { PropertyID = propertyID, PropertyType = propertyType };
 
-            return possiblePropertyTypes.SingleOrDefault();
+            var distinctNames = possiblePropertyMatches.Select(x => x.PropertyID.Name).Distinct();
+            if (distinctNames.Count() > 1)
+                throw new InvalidOperationException(LayoutStrings.AmbiguousDependencyProperty.Format(property));
+
+            if (distinctNames.Any())
+                property = distinctNames.Single();
+
+            var distinctTypes = possiblePropertyMatches.Select(x => x.PropertyType).Distinct();
+            if (distinctTypes.Count() > 1)
+                throw new InvalidOperationException(LayoutStrings.AmbiguousDependencyProperty.Format(property));
+
+            return distinctTypes.FirstOrDefault();
         }
 
         /// <summary>

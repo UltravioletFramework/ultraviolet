@@ -40,7 +40,7 @@ namespace TwistedLogik.Ultraviolet.Layout
         public static readonly StringResource InvalidDefaultProperty               = new StringResource(StringDatabase, "INVALID_DEFAULT_PROPERTY");
         public static readonly StringResource NoViewModel                          = new StringResource(StringDatabase, "NO_VIEW_MODEL");
         public static readonly StringResource ElementWithIDAlreadyExists           = new StringResource(StringDatabase, "ELEMENT_WITH_ID_ALREADY_EXISTS");
-        public static readonly StringResource AmbiguousDependencyPropertyType      = new StringResource(StringDatabase, "AMBIGUOUS_DEPENDENCY_PROPERTY_TYPE");
+        public static readonly StringResource AmbiguousDependencyProperty          = new StringResource(StringDatabase, "AMBIGUOUS_DEPENDENCY_PROPERTY");
 #pragma warning restore 1591
     }
 }

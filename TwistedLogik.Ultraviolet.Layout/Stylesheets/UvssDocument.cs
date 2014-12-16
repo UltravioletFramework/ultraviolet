@@ -195,14 +195,14 @@ namespace TwistedLogik.Ultraviolet.Layout.Stylesheets
                         if (existingStyleData.Priority > stylePriority)
                             continue;
                     }
-                    styleAggregator[styleKey] = new PrioritizedStyleData(style.Container, style.Name, style.Value.Trim(), stylePriority);
+                    styleAggregator[styleKey] = new PrioritizedStyleData(style, selector, stylePriority);
                 }
             }
 
             // Apply styles to element
             foreach (var kvp in styleAggregator)
             {
-                ApplyStyleToElement(element, kvp.Value.Container, kvp.Value.Name, kvp.Key.PseudoClass, kvp.Value.Value);
+                ApplyStyleToElement(element, kvp.Value.Style, kvp.Value.Selector);
             }
             styleAggregator.Clear();
         }
@@ -211,24 +211,24 @@ namespace TwistedLogik.Ultraviolet.Layout.Stylesheets
         /// Applies a style to the specified element.
         /// </summary>
         /// <param name="element">The element to which to apply the style.</param>
-        /// <param name="container">The style's container, if it represents an attached property.</param>
-        /// <param name="style">The name of the style to apply.</param>
-        /// <param name="pseudoClass">The pseudo-class of the style to apply.</param>
-        /// <param name="value">The styled value to apply.</param>
-        private void ApplyStyleToElement(UIElement element, String container, String style, String pseudoClass, String value)
+        /// <param name="style">The style which is being applied.</param>
+        /// <param name="selector">The selector which caused the style to be applied.</param>
+        private void ApplyStyleToElement(UIElement element, UvssStyle style, UvssSelector selector)
         {
-            var styleIsForContainer = !String.IsNullOrEmpty(container);
+            var styleIsForContainer = !String.IsNullOrEmpty(style.Container);
             if (styleIsForContainer)
             {
-                var styleMatchesContainer = element.Container != null && String.Equals(element.Container.Name, container, StringComparison.OrdinalIgnoreCase);
+                var styleMatchesContainer = element.Container != null && 
+                    String.Equals(element.Container.Name, style.Container, StringComparison.OrdinalIgnoreCase);
+
                 if (styleMatchesContainer)
                 {
-                    element.ApplyStyle(style, pseudoClass, value, true);
+                    element.ApplyStyle(style, selector, true);
                     return;
                 }
             }
 
-            element.ApplyStyle(style, pseudoClass, value, false);
+            element.ApplyStyle(style, selector, false);
         }
 
         // State values.

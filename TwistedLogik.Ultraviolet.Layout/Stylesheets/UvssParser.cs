@@ -440,7 +440,7 @@ namespace TwistedLogik.Ultraviolet.Layout.Stylesheets
         /// Consumes a sequence of tokens representing a UVSS selector list.
         /// </summary>
         /// <param name="state">The parser state.</param>
-        /// <returns>A new <see cref="UvssSelectorCollection"/> object representing the rule that was consumed.</returns>
+        /// <returns>A new <see cref="UvssSelectorCollection"/> object representing the selector list that was consumed.</returns>
         private static UvssSelectorCollection ConsumeSelectorList(UvssParserState state)
         {
             state.AdvanceBeyondWhiteSpace();
@@ -471,7 +471,7 @@ namespace TwistedLogik.Ultraviolet.Layout.Stylesheets
         /// </summary>
         /// <param name="state">The parser state.</param>
         /// <param name="allowEOF">A value indicating whether hitting the end of file is valid.</param>
-        /// <returns>A new <see cref="UvssSelector"/> object representing the rule that was consumed.</returns>
+        /// <returns>A new <see cref="UvssSelector"/> object representing the selector that was consumed.</returns>
         private static UvssSelector ConsumeSelector(UvssParserState state, Boolean allowEOF = false)
         {
             state.AdvanceBeyondWhiteSpace();
@@ -519,7 +519,7 @@ namespace TwistedLogik.Ultraviolet.Layout.Stylesheets
         /// </summary>
         /// <param name="state">The parser state.</param>
         /// <param name="allowEOF">A value indicating whether hitting the end of file is valid.</param>
-        /// <returns>A new <see cref="UvssSelectorPart"/> object representing the rule that was consumed.</returns>
+        /// <returns>A new <see cref="UvssSelectorPart"/> object representing the selector part that was consumed.</returns>
         private static UvssSelectorPart ConsumeSelectorPart(UvssParserState state, Boolean allowEOF = false)
         {
             var element     = default(String);
@@ -603,7 +603,7 @@ namespace TwistedLogik.Ultraviolet.Layout.Stylesheets
         /// Consumes a sequence of tokens representing a UVSS style list.
         /// </summary>
         /// <param name="state">The parser state.</param>
-        /// <returns>A new <see cref="UvssStyleCollection"/> object representing the rule that was consumed.</returns>
+        /// <returns>A new <see cref="UvssStyleCollection"/> object representing the style list that was consumed.</returns>
         private static UvssStyleCollection ConsumeStyleList(UvssParserState state)
         {
             state.AdvanceBeyondWhiteSpace();
@@ -626,7 +626,7 @@ namespace TwistedLogik.Ultraviolet.Layout.Stylesheets
         /// Consumes a sequence of tokens representing a UVSS style.
         /// </summary>
         /// <param name="state">The parser state.</param>
-        /// <returns>A new <see cref="UvssStyle"/> object representing the rule that was consumed.</returns>
+        /// <returns>A new <see cref="UvssStyle"/> object representing the style that was consumed.</returns>
         private static UvssStyle ConsumeStyle(UvssParserState state)
         {
             state.AdvanceBeyondWhiteSpace();
@@ -639,6 +639,27 @@ namespace TwistedLogik.Ultraviolet.Layout.Stylesheets
             var nameToken = state.TryConsumeNonWhiteSpace();
             if (nameToken == null || nameToken.Value.TokenType != UvssLexerTokenType.StyleName)
                 ThrowSyntaxException(LayoutStrings.StylesheetSyntaxError, state);
+
+            state.AdvanceBeyondWhiteSpace();
+
+            if (state.IsPastEndOfStream)
+                ThrowSyntaxException(LayoutStrings.StylesheetSyntaxError, state);
+
+            UvssStyleArgumentsCollection arguments;
+            if (state.CurrentToken.TokenType == UvssLexerTokenType.OpenParenthesis)
+            {
+                if (nameToken.Value.Value != "transition")
+                    ThrowSyntaxException(LayoutStrings.StylesheetSyntaxError, state);
+
+                arguments = ConsumeStyleArguments(state);
+
+                if (arguments.Count != 2)
+                    ThrowSyntaxException(LayoutStrings.StylesheetSyntaxError, state);
+            }
+            else
+            {
+                arguments = new UvssStyleArgumentsCollection(null);
+            }
 
             var colonToken = state.TryConsumeNonWhiteSpace();
             if (colonToken == null || colonToken.Value.TokenType != UvssLexerTokenType.Colon)
@@ -674,7 +695,42 @@ namespace TwistedLogik.Ultraviolet.Layout.Stylesheets
                 name          = nameParts[1];
             }
 
-            return new UvssStyle(container, name, value, qualifierImportant);
+            return new UvssStyle(arguments, container, name, value, qualifierImportant);
+        }
+
+        /// <summary>
+        /// Consumes a sequence of tokens representing a UVSS style argument list.
+        /// </summary>
+        /// <param name="state">The parser state.</param>
+        /// <returns>A new <see cref="UvssStyleArgumentsCollection"/> object representing the argument list that was consumed.</returns>
+        private static UvssStyleArgumentsCollection ConsumeStyleArguments(UvssParserState state)
+        {
+            var argsTokens = GetTokensBetweenParentheses(state);
+            var argsState  = new UvssParserState(state.Source, argsTokens);
+            var args       = new List<String>();
+
+            while (true)
+            {
+                var token = argsState.TryConsumeNonWhiteSpace();
+                if (token == null)
+                    break;
+
+                if (token.Value.TokenType == UvssLexerTokenType.Identifier ||
+                    token.Value.TokenType == UvssLexerTokenType.String ||
+                    token.Value.TokenType == UvssLexerTokenType.Number)
+                {
+                    args.Add(token.Value.Value);
+                }
+
+                var comma = argsState.TryConsumeNonWhiteSpace();
+                if (comma == null)
+                    break;
+
+                if (comma.Value.TokenType != UvssLexerTokenType.Comma)
+                    ThrowSyntaxException(LayoutStrings.StylesheetSyntaxError, argsState);
+            }
+
+            return new UvssStyleArgumentsCollection(args);
         }
     }
 }

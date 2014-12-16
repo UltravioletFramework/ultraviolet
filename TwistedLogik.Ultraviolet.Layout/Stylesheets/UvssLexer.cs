@@ -18,13 +18,15 @@ namespace TwistedLogik.Ultraviolet.Layout.Stylesheets
             var output     = new List<UvssLexerToken>();
             var ix         = 0;
             var braces     = 0;
+            var parens     = 0;
             var storyboard = false;
+            var arglist    = false;
 
             while (ix < input.Length)
             {
                 if (ConsumeWhiteSpace(input, output, ref ix))
                     continue;
-                if (!storyboard)
+                if (!storyboard && !arglist)
                 {
                     if (braces > 0)
                     {
@@ -46,9 +48,20 @@ namespace TwistedLogik.Ultraviolet.Layout.Stylesheets
                 if (ConsumeString(input, output, ref ix))
                     continue;
                 if (ConsumeOpenParenthesis(input, output, ref ix))
+                {
+                    parens++;
+                    arglist = true;
                     continue;
+                }
                 if (ConsumeCloseParenthesis(input, output, ref ix))
+                {
+                    parens--;
+                    if (parens == 0)
+                    {
+                        arglist = false;
+                    }
                     continue;
+                }
                 if (ConsumeOpenCurlyBrace(input, output, ref ix))
                 {
                     braces++;

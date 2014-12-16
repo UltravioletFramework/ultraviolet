@@ -44,10 +44,12 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         public void ClearStyledValuesRecursive()
         {
             ClearStyledValues();
+            ClearVisualStateTransitions();
 
             foreach (var child in children)
             {
                 child.ClearStyledValues();
+                child.ClearVisualStateTransitions();
             }
         }
 
