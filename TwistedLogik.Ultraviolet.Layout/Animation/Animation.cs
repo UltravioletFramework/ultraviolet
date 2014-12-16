@@ -114,7 +114,7 @@ namespace TwistedLogik.Ultraviolet.Layout.Animation
         }
 
         /// <inheritdoc/>
-        internal override void AddKeyframe(Object keyframe)
+        internal override void AddKeyframe(AnimationKeyframeBase keyframe)
         {
             Keyframes.Add((AnimationKeyframe<T>)keyframe);
         }

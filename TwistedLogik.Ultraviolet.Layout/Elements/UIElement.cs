@@ -448,6 +448,40 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         public event UIElementEventHandler BackgroundImageChanged;
 
         /// <summary>
+        /// Finds a styled dependency property according to its styling name.
+        /// </summary>
+        /// <param name="name">The styling name of the dependency property to retrieve.</param>
+        /// <param name="type">The type to search for a dependency property.</param>
+        /// <returns>The <see cref="DependencyProperty"/> instance which matches the specified styling name, or <c>null</c> if no
+        /// such dependency property exists on this object.</returns>
+        internal static DependencyProperty FindStyledDependencyProperty(String name, Type type)
+        {
+            Contract.RequireNotEmpty("name", name);
+            Contract.Require(type, "type");
+
+            lock (styleSyncObject)
+            {
+                while (type != null)
+                {
+                    var typeID = type.TypeHandle.Value.ToInt64();
+
+                    Dictionary<String, DependencyProperty> styledPropertiesForCurrentType;
+                    if (styledProperties.TryGetValue(typeID, out styledPropertiesForCurrentType))
+                    {
+                        DependencyProperty dp;
+                        if (styledPropertiesForCurrentType.TryGetValue(name, out dp))
+                        {
+                            return dp;
+                        }
+                    }
+
+                    type = type.BaseType;
+                }
+            }
+            return null;
+        }
+
+        /// <summary>
         /// Searches the object for a dependency property which matches the specified name.
         /// </summary>
         /// <param name="name">The name of the dependency property for which to search.</param>
@@ -464,6 +498,19 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
                 return null;
             }
             return DependencyProperty.FindByName(name.Name, GetType());
+        }
+
+        /// <summary>
+        /// Finds a styled dependency property according to its styling name.
+        /// </summary>
+        /// <param name="name">The styling name of the dependency property to retrieve.</param>
+        /// <returns>The <see cref="DependencyProperty"/> instance which matches the specified styling name, or <c>null</c> if no
+        /// such dependency property exists on this object.</returns>
+        internal DependencyProperty FindStyledDependencyProperty(String name)
+        {
+            Contract.RequireNotEmpty(name, "name");
+
+            return FindStyledDependencyProperty(name, GetType());
         }
 
         /// <summary>
@@ -1150,16 +1197,18 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         {
             var currentType = GetType();
 
-            lock (styleSetters)
+            lock (styleSyncObject)
             {
                 while (currentType != null && typeof(UIElement).IsAssignableFrom(currentType))
                 {
                     var typeID = currentType.TypeHandle.Value.ToInt64();
 
                     Dictionary<UvssStyleKey, StyleSetter> styleSettersForCurrentType;
+                    Dictionary<String, DependencyProperty> styledPropertiesForCurrentType;
                     if (!styleSetters.TryGetValue(typeID, out styleSettersForCurrentType))
                     {
-                        styleSettersForCurrentType = new Dictionary<UvssStyleKey, StyleSetter>();
+                        styleSettersForCurrentType     = new Dictionary<UvssStyleKey, StyleSetter>();
+                        styledPropertiesForCurrentType = new Dictionary<String, DependencyProperty>();
 
                         var styledDependencyProperties = 
                             from field in currentType.GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static)
@@ -1188,9 +1237,11 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
 
                             var styleKey = new UvssStyleKey(prop.Attribute.Name, prop.Attribute.PseudoClass);
                             styleSettersForCurrentType[styleKey] = lambda;
+                            styledPropertiesForCurrentType[prop.Attribute.Name] = dp;
                         }
 
-                        styleSetters[typeID] = styleSettersForCurrentType;
+                        styleSetters[typeID]     = styleSettersForCurrentType;
+                        styledProperties[typeID] = styledPropertiesForCurrentType;
                     }
 
                     currentType = currentType.BaseType;
@@ -1355,6 +1406,9 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         // Functions for setting styles on known element types.
         private static readonly MethodInfo miFromString;
         private static readonly MethodInfo miSetStyledValue;
+        private static readonly Object styleSyncObject = new Object();
+        private static readonly Dictionary<Int64, Dictionary<String, DependencyProperty>> styledProperties = 
+            new Dictionary<Int64, Dictionary<String, DependencyProperty>>();
         private static readonly Dictionary<Int64, Dictionary<UvssStyleKey, StyleSetter>> styleSetters = 
             new Dictionary<Int64, Dictionary<UvssStyleKey, StyleSetter>>();
     }

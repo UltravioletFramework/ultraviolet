@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using TwistedLogik.Nucleus;
-using TwistedLogik.Nucleus.Data;
 using TwistedLogik.Ultraviolet.Layout.Animation;
 using TwistedLogik.Ultraviolet.Layout.Elements;
 
@@ -82,14 +81,6 @@ namespace TwistedLogik.Ultraviolet.Layout.Stylesheets
                 return storyboard;
             }
 
-            UvssStoryboard definition;
-            if (!storyboardsByName.TryGetValue(name, out definition))
-            {
-                storyboard = ReifyStoryboardDefinition(definition);
-                reifiedStoryboardsByName[name] = storyboard;
-                return storyboard;
-            }
-
             return null;
         }
 
@@ -157,154 +148,6 @@ namespace TwistedLogik.Ultraviolet.Layout.Stylesheets
         }
 
         /// <summary>
-        /// Creates a new <see cref="Storyboard"/> instance based on the specified <see cref="UvssStoryboard"/>.
-        /// </summary>
-        /// <param name="storyboardDefinition">The storyboard definition.</param>
-        /// <returns>The reified storyboard.</returns>
-        private static Storyboard ReifyStoryboardDefinition(UvssStoryboard storyboardDefinition)
-        {
-            // TODO: How can we get the UV context here?
-            var storyboard = new Storyboard(null);
-
-            foreach (var targetDefinition in storyboardDefinition.Targets)
-            {
-                var target = ReifyStoryboardTargetDefinition(targetDefinition);
-                storyboard.Targets.Add(target);
-            }
-
-            return storyboard;
-        }
-
-        /// <summary>
-        /// Creates a new <see cref="StoryboardTarget"/> instance based on the specified <see cref="UvssStoryboardTarget"/>.
-        /// </summary>
-        /// <param name="targetDefinition">The storyboard target definition.</param>
-        /// <returns>The reified storyboard target.</returns>
-        private static StoryboardTarget ReifyStoryboardTargetDefinition(UvssStoryboardTarget targetDefinition)
-        {
-            var target = new StoryboardTarget(targetDefinition.Selector);
-
-            foreach (var animationDefinition in targetDefinition.Animations)
-            {
-                var animation = ReifyStoryboardAnimationDefinition(targetDefinition.Filter, animationDefinition);
-                if (animation != null)
-                {
-                    target.Animations.Add(animationDefinition.AnimatedProperty, animation);
-                }
-            }
-
-            return target;
-        }
-
-        /// <summary>
-        /// Creates a new <see cref="AnimationBase"/> instance based on the specified <see cref="UvssStoryboardAnimation"/>.
-        /// </summary>
-        /// <param name="filter">The type filter on the storyboard target.</param>
-        /// <param name="animationDefinition">The storyboard animation definition.</param>
-        /// <returns>The reified storyboard animation.</returns>
-        private static AnimationBase ReifyStoryboardAnimationDefinition(UvssStoryboardTargetFilter filter, UvssStoryboardAnimation animationDefinition)
-        {
-            var propertyType = GetDependencyPropertyType(filter, animationDefinition.AnimatedProperty);
-            if (propertyType == null)
-                return null;
-
-            var animationType = GetAnimationType(propertyType);
-            if (animationType == null)
-                return null;
-
-            var animation = (AnimationBase)Activator.CreateInstance(animationType);
-
-            var keyframeType = typeof(AnimationKeyframe<>).MakeGenericType(propertyType);
-            foreach (var keyframeDefinition in animationDefinition.Keyframes)
-            {
-                var time     = TimeSpan.FromMilliseconds(keyframeDefinition.Time);
-                var value    = ObjectResolver.FromString(keyframeDefinition.Value, propertyType);
-                var easing   = ParseEasingFunction(keyframeDefinition.Easing);
-                var keyframe = Activator.CreateInstance(keyframeType, time, value, easing);
-
-                animation.AddKeyframe(keyframe);
-            }
-
-            return animation;
-        }
-
-        /// <summary>
-        /// Parses the name of an easing function into an instance of the <see cref="EasingFunction"/> delegate.
-        /// </summary>
-        /// <param name="str">The string to parse.</param>
-        /// <returns>The <see cref="EasingFunction"/> delegate instance which was created.</returns>
-        private static EasingFunction ParseEasingFunction(String str)
-        {
-            switch (str.ToLowerInvariant())
-            {
-                case "ease-in-linear":
-                    return Easings.EaseInLinear;
-
-                // TODO: The rest of the standard easings
-            }
-            return null;
-        }
-
-        /// <summary>
-        /// Resolves the specified element type name into a <see cref="Type"/> object.
-        /// </summary>
-        /// <param name="name">The element type name to resolve.</param>
-        /// <returns>The resolved <see cref="Type"/> object.</returns>
-        private static Type ResolveElementType(String name)
-        {
-            return UIViewLoader.GetElementTypeFromName(name, false);
-        }
-
-        /// <summary>
-        /// Gets the type of the specified dependency property.
-        /// </summary>
-        /// <param name="filter">The type filter on the storyboard target.</param>
-        /// <param name="property">The name of the dependency property being animated.</param>
-        /// <returns>The type of the specified dependency property.</returns>
-        private static Type GetDependencyPropertyType(UvssStoryboardTargetFilter filter, String property)
-        {
-            var possiblePropertyTypes =
-                from f in filter
-                let elementType = ResolveElementType(f)
-                let propertyID = DependencyProperty.FindByName(property, elementType)
-                let propertyType = (propertyID == null) ? null : Type.GetTypeFromHandle(propertyID.PropertyType)
-                where propertyType != null
-                select propertyType;
-
-            if (possiblePropertyTypes.Count() > 1)
-                throw new InvalidOperationException(LayoutStrings.AmbiguousDependencyPropertyType.Format(property));
-
-            return possiblePropertyTypes.SingleOrDefault();
-        }
-
-        /// <summary>
-        /// Gets the animation type which corresponds to the specified type of value.
-        /// </summary>
-        /// <param name="type">The type of value being animated.</param>
-        /// <returns>The animation type which corresponds to the specified type of value.</returns>
-        private static Type GetAnimationType(Type type)
-        {
-            var nullable = type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>);
-            if (nullable)
-                type = type.GetGenericArguments()[0];
-
-            if (type.IsPrimitive || type == typeof(Decimal))
-            {
-                var animationTypeName = nullable ? String.Format("Nullable{0}Animation", type.Name) : String.Format("{0}Animation", type.Name);
-                return Type.GetType(animationTypeName);
-            }
-
-            var interpolatableInterface = typeof(IInterpolatable<>).MakeGenericType(type);
-            if (type.GetInterfaces().Contains(interpolatableInterface))
-            {
-                return nullable ? typeof(NullableInterpolatableAnimation<>).MakeGenericType(type) :
-                    typeof(InterpolatableAnimation<>).MakeGenericType(type);
-            }
-
-            return typeof(ObjectAnimation<>).MakeGenericType(type);
-        }
-
-        /// <summary>
         /// Creates new <see cref="Storyboard"/> instances based on the current set of <see cref="UvssStoryboard"/> definitions.
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
@@ -319,7 +162,8 @@ namespace TwistedLogik.Ultraviolet.Layout.Stylesheets
 
             foreach (var storyboardDefinition in storyboards)
             {
-                reifiedStoryboardsByName[storyboardDefinition.Name] = ReifyStoryboardDefinition(storyboardDefinition);
+                var reifiedStoryboard = UvssStoryboardReifier.ReifyStoryboard(uv, storyboardDefinition);
+                reifiedStoryboardsByName[storyboardDefinition.Name] = reifiedStoryboard;
             }
         }
 

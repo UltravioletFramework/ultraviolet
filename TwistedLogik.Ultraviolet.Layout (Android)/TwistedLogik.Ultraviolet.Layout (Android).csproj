@@ -53,6 +53,9 @@
     <Compile Include="..\TwistedLogik.Ultraviolet.Layout\Animation\AnimationKeyframe.cs">
       <Link>Animation\AnimationKeyframe.cs</Link>
     </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.Layout\Animation\AnimationKeyframeBase.cs">
+      <Link>Animation\AnimationKeyframeBase.cs</Link>
+    </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.Layout\Animation\AnimationKeyframeCollection.cs">
       <Link>Animation\AnimationKeyframeCollection.cs</Link>
     </Compile>
@@ -373,6 +376,9 @@
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.Layout\Stylesheets\UvssStoryboardKeyframeCollection.IEnumerable.cs">
       <Link>Stylesheets\UvssStoryboardKeyframeCollection.IEnumerable.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.Layout\Stylesheets\UvssStoryboardReifier.cs">
+      <Link>Stylesheets\UvssStoryboardReifier.cs</Link>
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.Layout\Stylesheets\UvssStoryboardTarget.cs">
       <Link>Stylesheets\UvssStoryboardTarget.cs</Link>

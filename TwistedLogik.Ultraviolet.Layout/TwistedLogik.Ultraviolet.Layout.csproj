@@ -53,6 +53,7 @@
   <ItemGroup>
     <Compile Include="Animation\AnimationBase.cs" />
     <Compile Include="Animation\Animation.cs" />
+    <Compile Include="Animation\AnimationKeyframeBase.cs" />
     <Compile Include="Animation\CharAnimation.cs" />
     <Compile Include="Animation\NullableCharAnimation.cs" />
     <Compile Include="Animation\NullableSByteAnimation.cs" />
@@ -171,6 +172,7 @@
     <Compile Include="Stylesheets\UvssStyleKey.cs" />
     <Compile Include="Stylesheets\UvssStyleCollection.cs" />
     <Compile Include="Stylesheets\UvssStyleCollection.IEnumerable.cs" />
+    <Compile Include="Stylesheets\UvssStoryboardReifier.cs" />
     <Compile Include="TypeExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
