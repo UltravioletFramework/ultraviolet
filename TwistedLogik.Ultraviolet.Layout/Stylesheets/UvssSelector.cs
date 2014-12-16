@@ -90,7 +90,7 @@ namespace TwistedLogik.Ultraviolet.Layout.Stylesheets
             var current = element;
             for (var i = parts.Count - 2; i >= 0; i--)
             {
-                if (!AncestorMatchesSelectorPart(ref current, parts[i]))
+                if (!AncestorMatchesSelectorPart(ref current, parts[i], root))
                 {
                     return false;
                 }

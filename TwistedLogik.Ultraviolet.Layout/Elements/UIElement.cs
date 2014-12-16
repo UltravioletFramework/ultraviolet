@@ -622,7 +622,7 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
                 }
                 else
                 {
-                    target.Selector.MatchesElement(this, root);
+                    targetAppliesToElement = target.Selector.MatchesElement(this, root);
                 }
 
                 if (targetAppliesToElement)
