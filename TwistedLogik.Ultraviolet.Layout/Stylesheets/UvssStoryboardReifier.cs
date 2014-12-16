@@ -173,7 +173,12 @@ namespace TwistedLogik.Ultraviolet.Layout.Stylesheets
         /// <returns>The resolved <see cref="Type"/> object.</returns>
         private static Type ResolveElementType(String name)
         {
-            return UIViewLoader.GetElementTypeFromName(name, false);
+            var type = UIViewLoader.GetElementTypeFromName(name, false);
+            if (type == null)
+            {
+                throw new InvalidOperationException(LayoutStrings.UnrecognizedUIElement.Format(name));
+            }
+            return type;
         }
 
         /// <summary>
