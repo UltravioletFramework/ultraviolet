@@ -4,6 +4,7 @@ using System.Xml.Linq;
 using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet.Content;
 using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
+using TwistedLogik.Ultraviolet.Layout.Animation;
 using TwistedLogik.Ultraviolet.Layout.Stylesheets;
 
 namespace TwistedLogik.Ultraviolet.Layout.Elements
@@ -371,6 +372,23 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
                 default:
                     throw new NotSupportedException();
             }
+        }
+
+        /// <summary>
+        /// Searches the view's associated stylesheet for a storyboard with the specified name.
+        /// </summary>
+        /// <param name="name">The name of the storyboard to retrieve.</param>
+        /// <returns>The <see cref="Storyboard"/> with the specified name, or <c>null</c> if the specified storyboard does not exist.</returns>
+        public Storyboard FindStoryboard(String name)
+        {
+            Contract.RequireNotEmpty(name, "name");
+
+            if (Stylesheet != null)
+            {
+                return Stylesheet.InstantiateStoryboardByName(Canvas.Ultraviolet, name);
+            }
+
+            return null;
         }
 
         /// <summary>
