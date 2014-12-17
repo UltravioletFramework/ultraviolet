@@ -73,30 +73,6 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         }
 
         /// <summary>
-        /// Gets the width of the specified element.
-        /// </summary>
-        /// <param name="element">The element to evaluate.</param>
-        /// <returns>The width of the specified element.</returns>
-        public static Int32? GetWidth(UIElement element)
-        {
-            Contract.Require(element, "element");
-
-            return element.GetValue<Int32?>(WidthProperty);
-        }
-
-        /// <summary>
-        /// Gets the height of the specified element.
-        /// </summary>
-        /// <param name="element">The element to evaluate.</param>
-        /// <returns>The height of the specified element.</returns>
-        public static Int32? GetHeight(UIElement element)
-        {
-            Contract.Require(element, "element");
-
-            return element.GetValue<Int32?>(HeightProperty);
-        }
-
-        /// <summary>
         /// Sets the distance between the left edge of the canvas and the left edge of the specified element.
         /// </summary>
         /// <param name="element">The element to modify.</param>
@@ -145,30 +121,6 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         }
 
         /// <summary>
-        /// Sets the width of the specified element.
-        /// </summary>
-        /// <param name="element">The element to modify.</param>
-        /// <param name="value">The width of the specified element.</param>
-        public static void SetWidth(UIElement element, Int32? value)
-        {
-            Contract.Require(element, "element");
-
-            element.SetValue<Int32?>(WidthProperty, value);
-        }
-
-        /// <summary>
-        /// Sets the height of the specified element.
-        /// </summary>
-        /// <param name="element">The element to modify.</param>
-        /// <param name="value">The height of the specified element.</param>
-        public static void SetHeight(UIElement element, Int32? value)
-        {
-            Contract.Require(element, "element");
-
-            element.SetValue<Int32?>(HeightProperty, value);
-        }
-
-        /// <summary>
         /// Gets or sets a value indicating the distance between the left edge of the canvas and the left edge of the element.
         /// </summary>
         [Styled("left")]
@@ -196,20 +148,6 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         public static readonly DependencyProperty BottomProperty = DependencyProperty.Register("Bottom", typeof(Int32?), typeof(Canvas),
             new DependencyPropertyMetadata(OnLayoutPropertyChanged, null, DependencyPropertyOptions.None));
 
-        /// <summary>
-        /// Gets or sets a value indicating the width of the specified element.
-        /// </summary>
-        [Styled("width")]
-        public static readonly DependencyProperty WidthProperty = DependencyProperty.Register("Width", typeof(Int32?), typeof(Canvas),
-            new DependencyPropertyMetadata(OnLayoutPropertyChanged, null, DependencyPropertyOptions.None));
-
-        /// <summary>
-        /// Gets or sets a value indicating the height of the specified element.
-        /// </summary>
-        [Styled("height")]
-        public static readonly DependencyProperty HeightProperty = DependencyProperty.Register("Height", typeof(Int32?), typeof(Canvas),
-            new DependencyPropertyMetadata(OnLayoutPropertyChanged, null, DependencyPropertyOptions.None));
-
         /// <inheritdoc/>
         protected override Rectangle CalculateLayoutArea(UIElement child)
         {
@@ -220,8 +158,8 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
             var top    = GetTop(child);
             var right  = GetRight(child);
             var bottom = GetBottom(child);
-            var width  = GetWidth(child);
-            var height = GetHeight(child);
+            var width  = child.Width;
+            var height = child.Height;
 
             // If we have neither left nor right, assume left: 0
             if (left == null && right == null)

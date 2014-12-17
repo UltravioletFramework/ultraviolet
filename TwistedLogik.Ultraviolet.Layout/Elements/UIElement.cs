@@ -323,6 +323,24 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         }
 
         /// <summary>
+        /// Gets the element's width.
+        /// </summary>
+        public Int32? Width
+        {
+            get { return GetValue<Int32?>(dpWidth); }
+            set { SetValue<Int32?>(dpWidth, value); }
+        }
+
+        /// <summary>
+        /// Gets the element's height.
+        /// </summary>
+        public Int32? Height
+        {
+            get { return GetValue<Int32?>(dpHeight); }
+            set { SetValue<Int32?>(dpHeight, value); }
+        }
+
+        /// <summary>
         /// Gets or sets the amount of padding around the element's content.
         /// </summary>
         public Int32 Padding
@@ -429,6 +447,16 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         /// Occurs when the value of the <see cref="Hovering"/> property changes.
         /// </summary>
         public event UIElementEventHandler HoveringChanged;
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="Width"/> property changes.
+        /// </summary>
+        public event UIElementEventHandler WidthChanged;
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="Height"/> property changes.
+        /// </summary>
+        public event UIElementEventHandler HeightChanged;
 
         /// <summary>
         /// Occurs when the value of the <see cref="Padding"/> property changes.
@@ -1024,6 +1052,30 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         }
 
         /// <summary>
+        /// Raises the <see cref="WidthChanged"/> event.
+        /// </summary>
+        protected virtual void OnWidthChanged()
+        {
+            var temp = WidthChanged;
+            if (temp != null)
+            {
+                temp(this);
+            }
+        }
+
+        /// <summary>
+        /// Raises the <see cref="HeightChanged"/> event.
+        /// </summary>
+        protected virtual void OnHeightChanged()
+        {
+            var temp = HeightChanged;
+            if (temp != null)
+            {
+                temp(this);
+            }
+        }
+
+        /// <summary>
         /// Raises the <see cref="PaddingChanged"/> event.
         /// </summary>
         protected virtual void OnPaddingChanged()
@@ -1330,6 +1382,26 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         }
 
         /// <summary>
+        /// Occurs when the value of the <see cref="Width"/> dependency property changes.
+        /// </summary>
+        /// <param name="dobj">The object that raised the event.</param>
+        private static void HandleWidthChanged(DependencyObject dobj)
+        {
+            var element = (UIElement)dobj;
+            element.OnWidthChanged();
+        }
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="Height"/> dependency property changes.
+        /// </summary>
+        /// <param name="dobj">The object that raised the event.</param>
+        private static void HandleHeightChanged(DependencyObject dobj)
+        {
+            var element = (UIElement)dobj;
+            element.OnHeightChanged();
+        }
+
+        /// <summary>
         /// Occurs when the value of the <see cref="Padding"/> dependency property changes.
         /// </summary>
         /// <param name="dobj">The object that raised the event.</param>
@@ -1418,6 +1490,13 @@ namespace TwistedLogik.Ultraviolet.Layout.Elements
         // Dependency properties.
         private static readonly DependencyProperty dpEnabled = DependencyProperty.Register("Enabled", typeof(Boolean), typeof(UIElement),
             new DependencyPropertyMetadata(HandleEnabledChanged, () => true, DependencyPropertyOptions.None));
+
+        [Styled("width")]
+        private static readonly DependencyProperty dpWidth = DependencyProperty.Register("Width", typeof(Int32?), typeof(UIElement),
+            new DependencyPropertyMetadata(HandleWidthChanged, null, DependencyPropertyOptions.None));
+        [Styled("height")]
+        private static readonly DependencyProperty dpHeight = DependencyProperty.Register("Height", typeof(Int32?), typeof(UIElement),
+            new DependencyPropertyMetadata(HandleHeightChanged, null, DependencyPropertyOptions.None));
 
         [Styled("visible")]
         private static readonly DependencyProperty dpVisible = DependencyProperty.Register("Visible", typeof(Boolean), typeof(UIElement),
