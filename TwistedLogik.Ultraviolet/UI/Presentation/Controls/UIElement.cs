@@ -118,14 +118,22 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
-        /// Called when the element should reload its content.
+        /// Recursively clears the local values of all of the container's dependency properties
+        /// and all of the dependency properties of the container's descendents.
         /// </summary>
-        public void ReloadContent()
+        public virtual void ClearLocalValuesRecursive()
         {
-            ReloadFont();
-            ReloadBackgroundImage();
-            
-            OnReloadingContent();
+            ClearLocalValues();
+        }
+
+        /// <summary>
+        /// Recursively clears the styled values of all of the container's dependency properties
+        /// and all of the dependency properties of the container's descendents.
+        /// </summary>
+        public virtual void ClearStyledValuesRecursive()
+        {
+            ClearStyledValues();
+            ClearVisualStateTransitions();
         }
 
         /// <summary>
@@ -134,6 +142,33 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         public void ClearVisualStateTransitions()
         {
             visualStateGroups.ClearVisualStateTransitions();
+        }
+
+        /// <summary>
+        /// Resets the element's visual state transitions.
+        /// </summary>
+        public virtual void ClearVisualStateTransitionsRecursive()
+        {
+            ClearVisualStateTransitions();
+        }
+
+        /// <summary>
+        /// Called when the element should reload its content.
+        /// </summary>
+        public void ReloadContent()
+        {
+            ReloadFont();
+            ReloadBackgroundImage();
+
+            OnReloadingContent();
+        }
+
+        /// <summary>
+        /// Called when the element and its children should reload their content.
+        /// </summary>
+        public virtual void ReloadContentRecursive()
+        {
+            ReloadContent();
         }
 
         /// <summary>

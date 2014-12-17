@@ -246,7 +246,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             this.globalContent = global;
             this.localContent  = local;
 
-            Canvas.ReloadContent();
+            Canvas.ReloadContentRecursive();
         }
 
         /// <summary>

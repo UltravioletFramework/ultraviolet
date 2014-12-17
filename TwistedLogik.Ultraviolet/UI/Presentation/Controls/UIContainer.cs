@@ -23,33 +23,47 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             this.children = new UIElementCollection(this);
         }
 
-        /// <summary>
-        /// Recursively clears the local values of all of the container's dependency properties
-        /// and all of the dependency properties of the container's descendents.
-        /// </summary>
-        public void ClearLocalValuesRecursive()
+        /// <inheritdoc/>
+        public override void ClearLocalValuesRecursive()
         {
-            ClearLocalValues();
+            base.ClearLocalValuesRecursive();
 
             foreach (var child in children)
             {
-                child.ClearLocalValues();
+                child.ClearLocalValuesRecursive();
             }
         }
 
-        /// <summary>
-        /// Recursively clears the styled values of all of the container's dependency properties
-        /// and all of the dependency properties of the container's descendents.
-        /// </summary>
-        public void ClearStyledValuesRecursive()
+        /// <inheritdoc/>
+        public override void ClearStyledValuesRecursive()
         {
-            ClearStyledValues();
-            ClearVisualStateTransitions();
+            base.ClearStyledValuesRecursive();
 
             foreach (var child in children)
             {
-                child.ClearStyledValues();
-                child.ClearVisualStateTransitions();
+                child.ClearStyledValuesRecursive();
+            }
+        }
+
+        /// <inheritdoc/>
+        public override void ClearVisualStateTransitionsRecursive()
+        {
+            base.ClearVisualStateTransitionsRecursive();
+
+            foreach (var child in children)
+            {
+                child.ClearVisualStateTransitionsRecursive();
+            }
+        }
+
+        /// <inheritdoc/>
+        public override void ReloadContentRecursive()
+        {
+            base.ReloadContentRecursive();
+
+            foreach (var child in children)
+            {
+                child.ReloadContentRecursive();
             }
         }
 
@@ -87,27 +101,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             Contract.Ensure<ArgumentException>(Children.Contains(child), "child");
 
             PerformLayoutInternal(child, true);
-        }
-
-        /// <summary>
-        /// Called when the element and its children should reload their content.
-        /// </summary>
-        public void ReloadContentRecursively()
-        {
-            ReloadContent();
-
-            foreach (var child in children)
-            {
-                var container = child as UIContainer;
-                if (container != null)
-                {
-                    container.ReloadContentRecursively();
-                }
-                else
-                {
-                    container.ReloadContent();
-                }
-            }
         }
 
         /// <summary>

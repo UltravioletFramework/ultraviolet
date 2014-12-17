@@ -13,10 +13,11 @@ namespace TwistedLogik.Ultraviolet.UI
         /// <summary>
         /// Initializes a new instance of the <see cref="UIScreen"/> class.
         /// </summary>
+        /// <param name="rootDirectory">The root directory of the panel's local content manager.</param>
         /// <param name="definitionAsset">The asset path of the screen's definition file.</param>
-        /// <param name="rootDirectory">The root directory of the screen's <see cref="ContentManager"/>.</param>
-        protected UIScreen(String definitionAsset, String rootDirectory = null)
-            : this(null, definitionAsset, rootDirectory)
+        /// <param name="globalContent">The content manager with which to load globally-available assets.</param>
+        protected UIScreen(String rootDirectory, String definitionAsset, ContentManager globalContent)
+            : this(null, rootDirectory, definitionAsset, globalContent)
         {
 
         }
@@ -25,14 +26,13 @@ namespace TwistedLogik.Ultraviolet.UI
         /// Initializes a new instance of the <see cref="UIScreen"/> class.
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
+        /// <param name="rootDirectory">The root directory of the panel's local content manager.</param>
         /// <param name="definitionAsset">The asset path of the screen's definition file.</param>
-        /// <param name="rootDirectory">The root directory of the screen's <see cref="ContentManager"/>.</param>
-        protected UIScreen(UltravioletContext uv, String definitionAsset, String rootDirectory = null)
-            : base(uv)
-        {
-            this.content = ContentManager.Create(rootDirectory);
-            
-            var definition = String.IsNullOrEmpty(definitionAsset) ? null : content.Load<UIPanelDefinition>(definitionAsset);
+        /// <param name="globalContent">The content manager with which to load globally-available assets.</param>
+        protected UIScreen(UltravioletContext uv, String rootDirectory, String definitionAsset, ContentManager globalContent)
+            : base(uv, rootDirectory, globalContent)
+        {            
+            var definition = String.IsNullOrEmpty(definitionAsset) ? null : LocalContent.Load<UIPanelDefinition>(definitionAsset);
             if (definition != null)
             {
                 DefaultOpenTransitionDuration  = definition.DefaultOpenTransitionDuration;
@@ -179,19 +179,6 @@ namespace TwistedLogik.Ultraviolet.UI
             }
         }
 
-        /// <summary>
-        /// Gets the screen's content manager.
-        /// </summary>
-        public ContentManager Content
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return content;
-            }
-        }
-
         /// <inheritdoc/>
         internal override void HandleOpened()
         {
@@ -211,24 +198,12 @@ namespace TwistedLogik.Ultraviolet.UI
         {
             if (View != null)
             {
-                // TODO: Global content manager
-                View.SetContentManagers(Content, Content);
+                View.SetContentManagers(GlobalContent, LocalContent);
             }
             base.HandleViewLoaded();
         }
 
-        /// <inheritdoc/>
-        protected override void Dispose(Boolean disposing)
-        {
-            if (disposing)
-            {
-                SafeDispose.Dispose(this.content);
-            }
-            base.Dispose(disposing);
-        }
-
         // Property values.
-        private readonly ContentManager content;
         private Boolean isOpaque;
     }
 }

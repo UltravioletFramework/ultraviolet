@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using TwistedLogik.Nucleus;
+using TwistedLogik.Ultraviolet.Content;
 using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
 using TwistedLogik.Ultraviolet.Platform;
 using TwistedLogik.Ultraviolet.UI.Presentation;
@@ -36,9 +37,10 @@ namespace TwistedLogik.Ultraviolet.UI
         /// <summary>
         /// Initializes a new instance of the <see cref="UIPanel"/> class.
         /// </summary>
-        /// <param name="size">The panel's default size, or <c>null</c> to fit the panel to the primary window.</param>
-        internal UIPanel(Size2? size = null)
-            : this(null, size)
+        /// <param name="rootDirectory">The root directory of the panel's local content manager.</param>
+        /// <param name="globalContent">The content manager with which to load globally-available assets.</param>
+        internal UIPanel(String rootDirectory, ContentManager globalContent)
+            : this(null, rootDirectory, globalContent)
         {
 
         }
@@ -47,11 +49,16 @@ namespace TwistedLogik.Ultraviolet.UI
         /// Initializes a new instance of the <see cref="UIPanel"/> class.
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
-        /// <param name="size">The panel's default size, or <c>null</c> to fit the panel to the primary window.</param>
-        internal UIPanel(UltravioletContext uv, Size2? size = null)
+        /// <param name="rootDirectory">The root directory of the panel's local content manager.</param>
+        /// <param name="globalContent">The content manager with which to load globally-available assets.</param>
+        internal UIPanel(UltravioletContext uv, String rootDirectory, ContentManager globalContent)
             : base(uv ?? UltravioletContext.DemandCurrent())
         {
+            Contract.RequireNotEmpty(rootDirectory, "rootDirectory");
+            Contract.Require(globalContent, "globalContent");
 
+            this.localContent  = ContentManager.Create(rootDirectory);
+            this.globalContent = globalContent;
         }
 
         /// <summary>
@@ -97,6 +104,32 @@ namespace TwistedLogik.Ultraviolet.UI
             }
         }
 
+        /// <summary>
+        /// Gets the content manager which is used to load globally-available assets.
+        /// </summary>
+        public ContentManager GlobalContent
+        {
+            get
+            {
+                Contract.EnsureNotDisposed(this, Disposed);
+
+                return globalContent;
+            }
+        }
+
+        /// <summary>
+        /// Gets the content manager which is used to load assets which are local to this screen.
+        /// </summary>
+        public ContentManager LocalContent
+        {
+            get
+            {
+                Contract.EnsureNotDisposed(this, Disposed);
+
+                return localContent;
+            }
+        }
+        
         /// <summary>
         /// Gets the screen's view, if it has one.
         /// </summary>
@@ -398,7 +431,8 @@ namespace TwistedLogik.Ultraviolet.UI
         {
             if (disposing)
             {
-                SafeDispose.DisposeRef(ref this.view);
+                SafeDispose.Dispose(this.view);
+                SafeDispose.Dispose(this.localContent);
             }
             base.Dispose(disposing);
         }
@@ -524,7 +558,12 @@ namespace TwistedLogik.Ultraviolet.UI
 
             if (this.view != null)
             {
-                this.view.SetViewArea(Window, new Rectangle(X, Y, Width, Height));
+                if (this.window != null)
+                {
+                    var area = new Rectangle(X, Y, Width, Height);
+                    this.view.SetViewArea(this.window, area);
+                }
+
                 this.view.SetStylesheet(definition.Stylesheet);
 
                 if (IsFocused)
@@ -814,10 +853,10 @@ namespace TwistedLogik.Ultraviolet.UI
             return null;
         }
 
-        // The screen's view.
-        private UIView view;
-
         // Property values.
+        private readonly ContentManager globalContent;
+        private readonly ContentManager localContent;
+        private UIView view;
         private UIPanelState state = UIPanelState.Closed;
         private Boolean isFocused;
         private Double transitionPosition = 0f;
