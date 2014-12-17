@@ -365,12 +365,10 @@
     <Compile Include="UI\Presentation\Controls\UIElementCollection.cs" />
     <Compile Include="UI\Presentation\Controls\UIElementCollection.IEnumerable.cs" />
     <Compile Include="UI\Presentation\Controls\UIElementResources.cs" />
-    <Compile Include="UI\Presentation\Controls\UIView.cs" />
-    <Compile Include="UI\Presentation\Controls\UIViewCollection.cs" />
-    <Compile Include="UI\Presentation\Controls\UIViewCollection.IEnumerable.cs" />
-    <Compile Include="UI\Presentation\Controls\UIViewLoader.cs" />
-    <Compile Include="UI\Presentation\Controls\UIViewLoader.UIElementMetadata.cs" />
-    <Compile Include="UI\Presentation\Controls\UvmlException.cs" />
+    <Compile Include="UI\Presentation\UIView.cs" />
+    <Compile Include="UI\Presentation\UIViewLoader.cs" />
+    <Compile Include="UI\Presentation\UIViewLoader.UIElementMetadata.cs" />
+    <Compile Include="UI\Presentation\UvmlException.cs" />
     <Compile Include="UI\Presentation\Controls\VisualState.cs" />
     <Compile Include="UI\Presentation\Controls\VisualStateGroup.cs" />
     <Compile Include="UI\Presentation\Controls\VisualStateGroup.IEnumerable.cs" />

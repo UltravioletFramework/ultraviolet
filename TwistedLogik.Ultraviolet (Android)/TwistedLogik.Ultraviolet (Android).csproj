@@ -968,24 +968,6 @@
     <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Controls\UIElementResources.cs">
       <Link>UI\Presentation\Controls\UIElementResources.cs</Link>
     </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Controls\UIView.cs">
-      <Link>UI\Presentation\Controls\UIView.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Controls\UIViewCollection.cs">
-      <Link>UI\Presentation\Controls\UIViewCollection.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Controls\UIViewCollection.IEnumerable.cs">
-      <Link>UI\Presentation\Controls\UIViewCollection.IEnumerable.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Controls\UIViewLoader.cs">
-      <Link>UI\Presentation\Controls\UIViewLoader.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Controls\UIViewLoader.UIElementMetadata.cs">
-      <Link>UI\Presentation\Controls\UIViewLoader.UIElementMetadata.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Controls\UvmlException.cs">
-      <Link>UI\Presentation\Controls\UvmlException.cs</Link>
-    </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Controls\VisualState.cs">
       <Link>UI\Presentation\Controls\VisualState.cs</Link>
     </Compile>
@@ -1157,6 +1139,18 @@
     <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\TypeExtensions.cs">
       <Link>UI\Presentation\TypeExtensions.cs</Link>
     </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\UIView.cs">
+      <Link>UI\Presentation\UIView.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\UIViewLoader.cs">
+      <Link>UI\Presentation\UIViewLoader.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\UIViewLoader.UIElementMetadata.cs">
+      <Link>UI\Presentation\UIViewLoader.UIElementMetadata.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\UvmlException.cs">
+      <Link>UI\Presentation\UvmlException.cs</Link>
+    </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet\UI\UIPanel.cs">
       <Link>UI\UIPanel.cs</Link>
     </Compile>
@@ -1268,7 +1262,7 @@
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties ProjectLinkReference="f071abe3-05e5-4df9-a929-cf71b01ec50a" ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" />
+      <UserProperties ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" ProjectLinkReference="f071abe3-05e5-4df9-a929-cf71b01ec50a" />
     </VisualStudio>
   </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

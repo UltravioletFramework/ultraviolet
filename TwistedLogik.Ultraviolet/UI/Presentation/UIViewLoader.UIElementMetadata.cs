@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Reflection;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
+namespace TwistedLogik.Ultraviolet.UI.Presentation
 {
     partial class UIViewLoader
     {

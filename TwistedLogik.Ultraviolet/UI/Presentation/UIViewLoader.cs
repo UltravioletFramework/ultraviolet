@@ -7,8 +7,9 @@ using System.Xml.Linq;
 using TwistedLogik.Nucleus;
 using TwistedLogik.Nucleus.Data;
 using TwistedLogik.Nucleus.Xml;
+using TwistedLogik.Ultraviolet.UI.Presentation.Controls;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
+namespace TwistedLogik.Ultraviolet.UI.Presentation
 {
     /// <summary>
     /// Contains methods for loading UI views.

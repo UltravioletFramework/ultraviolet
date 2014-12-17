@@ -72,7 +72,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             {
                 if (depressed)
                 {
-                    var position = device.GetPositionInWindow(View.Container.Window);
+                    var position = device.GetPositionInWindow(View.Window);
                     if (position != null && ScreenBounds.Contains(position.Value))
                     {
                         OnClick();

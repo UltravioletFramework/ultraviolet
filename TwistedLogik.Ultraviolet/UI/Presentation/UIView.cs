@@ -4,15 +4,17 @@ using System.Xml.Linq;
 using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet.Content;
 using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
+using TwistedLogik.Ultraviolet.Platform;
 using TwistedLogik.Ultraviolet.UI.Presentation.Animations;
+using TwistedLogik.Ultraviolet.UI.Presentation.Controls;
 using TwistedLogik.Ultraviolet.UI.Presentation.Styles;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
+namespace TwistedLogik.Ultraviolet.UI.Presentation
 {
     /// <summary>
     /// Represents the top-level container for UI elements.
     /// </summary>
-    public sealed class UIView
+    public sealed class UIView : UltravioletResource
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="UIView"/> class.
@@ -20,6 +22,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <param name="uv">The Ultraviolet context.</param>
         /// <param name="viewModelType">The view's associated model type.</param>
         public UIView(UltravioletContext uv, Type viewModelType)
+            : base(uv)
         {
             this.viewModelType = viewModelType;
 
@@ -56,15 +59,53 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
+        /// Draws the view and all of its contained elements.
+        /// </summary>
+        /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Draw(UltravioletTime)"/>.</param>
+        /// <param name="spriteBatch">The sprite batch with which to draw the view.</param>
+        public void Draw(UltravioletTime time, SpriteBatch spriteBatch)
+        {
+            if (window == null)
+                return;
+
+            Canvas.Draw(time, spriteBatch);
+        }
+
+        /// <summary>
+        /// Updates the view's state and the state of its contained elements.
+        /// </summary>
+        /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Draw(UltravioletTime)"/>.</param>
+        public void Update(UltravioletTime time)
+        {
+            if (window == null)
+                return;
+
+            Canvas.Update(time);
+        }
+
+        /// <summary>
+        /// Gives input focus to the view.
+        /// </summary>
+        public void Focus()
+        {
+            // TODO: Focus view
+        }
+
+        /// <summary>
+        /// Removes input focus from the view.
+        /// </summary>
+        public void Blur()
+        {
+            // TODO: Blur view
+        }
+
+        /// <summary>
         /// Assigns mouse capture to the specified element.
         /// </summary>
         /// <param name="element">The element to which to assign mouse capture.</param>
         public void CaptureMouse(UIElement element)
         {
-            if (Container != null)
-            {
-                Container.CaptureMouse(element);
-            }
+            // TODO
         }
 
         /// <summary>
@@ -73,10 +114,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <param name="element">The element that is attempting to release mouse capture.</param>
         public void ReleaseMouse(UIElement element)
         {
-            if (Container != null)
-            {
-                Container.ReleaseMouse(element);
-            }
+            // TODO
         }
 
         /// <summary>
@@ -224,9 +262,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Sets the view's area on the screen.
         /// </summary>
+        /// <param name="window">The window that contains the view.</param>
         /// <param name="area">The area on the screen that is occupied by the view.</param>
-        public void SetViewArea(Rectangle area)
+        public void SetViewArea(IUltravioletWindow window, Rectangle area)
         {
+            Contract.Require(window, "window");
+
+            this.window = window;
+
             var newPosition = false;
             var newSize = false;
 
@@ -392,15 +435,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
-        /// Gets the <see cref="UIViewCollection"/> that contains the view, if any.
-        /// </summary>
-        public UIViewCollection Container
-        {
-            get { return container; }
-            internal set { container = value; }
-        }
-
-        /// <summary>
         /// Gets the content manager used to load globally-sourced assets.
         /// </summary>
         public ContentManager GlobalContent
@@ -438,6 +472,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         public Type ViewModelType
         {
             get { return viewModelType; }
+        }
+
+        /// <summary>
+        /// Gets the actual type of the view's current view model.
+        /// </summary>
+        public Type ViewModelActualType
+        {
+            get { return viewModel == null ? null : viewModel.GetType(); }
         }
 
         /// <summary>
@@ -496,24 +538,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         {
             get { return canvas; }
         }
-
+        
         /// <summary>
-        /// Draws the view and all of its contained elements.
+        /// Gets the window that contains the view.
         /// </summary>
-        /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Draw(UltravioletTime)"/>.</param>
-        /// <param name="spriteBatch">The sprite batch with which to draw the view.</param>
-        internal void Draw(UltravioletTime time, SpriteBatch spriteBatch)
+        public IUltravioletWindow Window
         {
-            Canvas.Draw(time, spriteBatch);
-        }
-
-        /// <summary>
-        /// Updates the view's state and the state of its contained elements.
-        /// </summary>
-        /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Draw(UltravioletTime)"/>.</param>
-        internal void Update(UltravioletTime time)
-        {
-            Canvas.Update(time);
+            get { return window; }
         }
 
         /// <summary>
@@ -549,7 +580,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         // Property values.
-        private UIViewCollection container;
         private ContentManager globalContent;
         private ContentManager localContent;
         private UvssDocument stylesheet;
@@ -557,6 +587,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         private readonly Type viewModelType;
         private Rectangle area;
         private Canvas canvas;
+        private IUltravioletWindow window;
 
         // A dictionary which associates element IDs with elements.
         private readonly Dictionary<String, UIElement> elementsByID = 
