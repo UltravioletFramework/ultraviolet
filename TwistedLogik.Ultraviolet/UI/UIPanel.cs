@@ -497,12 +497,33 @@ namespace TwistedLogik.Ultraviolet.UI
         }
 
         /// <summary>
+        /// Occurs when the panel's view is loaded.
+        /// </summary>
+        protected virtual void OnViewLoaded()
+        {
+
+        }
+
+        /// <summary>
         /// Loads the view from the specified panel definition.
         /// </summary>
         /// <param name="definition">The panel definition from which to load the view.</param>
         protected void LoadView(UIPanelDefinition definition)
         {
-            this.view = null; // TODO: Load view
+            this.view = (definition.ViewElement == null) ? null : UIView.Load(Ultraviolet, definition.ViewElement);
+
+            if (this.view != null)
+            {
+                this.view.SetViewArea(Window, new Rectangle(X, Y, Width, Height));
+                this.view.SetStylesheet(definition.Stylesheet);
+
+                if (IsFocused)
+                {
+                    this.view.Focus();
+                }
+            }
+
+            HandleViewLoaded();
         }
 
         /// <summary>
@@ -679,7 +700,15 @@ namespace TwistedLogik.Ultraviolet.UI
                 tcsClosed = null;
             }
         }
-        
+
+        /// <summary>
+        /// Occurs when the panel's view is loaded.
+        /// </summary>
+        internal virtual void HandleViewLoaded()
+        {
+            OnViewLoaded();
+        }
+
         /// <summary>
         /// Cancels any pending tasks associated with the panel's state.
         /// </summary>

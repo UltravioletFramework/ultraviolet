@@ -207,6 +207,17 @@ namespace TwistedLogik.Ultraviolet.UI
         }
 
         /// <inheritdoc/>
+        internal virtual void HandleViewLoaded()
+        {
+            if (View != null)
+            {
+                // TODO: Global content manager
+                View.SetContentManagers(Content, Content);
+            }
+            base.HandleViewLoaded();
+        }
+
+        /// <inheritdoc/>
         protected override void Dispose(Boolean disposing)
         {
             if (disposing)

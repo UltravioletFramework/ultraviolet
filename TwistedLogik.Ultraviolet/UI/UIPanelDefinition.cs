@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Xml.Linq;
+using TwistedLogik.Ultraviolet.UI.Presentation.Styles;
 
 namespace TwistedLogik.Ultraviolet.UI
 {
@@ -21,18 +23,23 @@ namespace TwistedLogik.Ultraviolet.UI
         public TimeSpan DefaultCloseTransitionDuration { get; internal set; }
 
         /// <summary>
-        /// Gets the root directory of the panel's layout files.
+        /// Gets the stylesheet which is applied to the panel's view.
         /// </summary>
-        public String LayoutRootDirectory { get; internal set; }
+        public UvssDocument Stylesheet { get; internal set; }
 
         /// <summary>
-        /// Gets the source file containing the panel's layout information.
+        /// Gets the set of XML elements which contain stylesheet references.
         /// </summary>
-        public String LayoutSource { get; internal set; }
+        public IEnumerable<XElement> StylesheetElements { get; internal set; }
 
         /// <summary>
-        /// Gets the XML element that contains the panel's layout information.
+        /// Gets the set of XML elements which contain custom constrol registrations.
         /// </summary>
-        public XElement Layout { get; internal set; }
+        public IEnumerable<XElement> ControlElements { get; internal set; }
+
+        /// <summary>
+        /// Gets the XML element which describes the panel's view layout.
+        /// </summary>
+        public XElement ViewElement { get; internal set; }
     }
 }
