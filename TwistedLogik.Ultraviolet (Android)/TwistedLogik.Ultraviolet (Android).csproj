@@ -779,6 +779,384 @@
     <Compile Include="..\TwistedLogik.Ultraviolet\UI\NamespaceDoc.cs">
       <Link>UI\NamespaceDoc.cs</Link>
     </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Animations\Animation.cs">
+      <Link>UI\Presentation\Animations\Animation.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Animations\AnimationBase.cs">
+      <Link>UI\Presentation\Animations\AnimationBase.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Animations\AnimationKeyframe.cs">
+      <Link>UI\Presentation\Animations\AnimationKeyframe.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Animations\AnimationKeyframeBase.cs">
+      <Link>UI\Presentation\Animations\AnimationKeyframeBase.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Animations\AnimationKeyframeCollection.cs">
+      <Link>UI\Presentation\Animations\AnimationKeyframeCollection.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Animations\AnimationKeyframeCollection.IEnumerable.cs">
+      <Link>UI\Presentation\Animations\AnimationKeyframeCollection.IEnumerable.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Animations\BooleanAnimation.cs">
+      <Link>UI\Presentation\Animations\BooleanAnimation.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Animations\ByteAnimation.cs">
+      <Link>UI\Presentation\Animations\ByteAnimation.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Animations\CharAnimation.cs">
+      <Link>UI\Presentation\Animations\CharAnimation.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Animations\DecimalAnimation.cs">
+      <Link>UI\Presentation\Animations\DecimalAnimation.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Animations\DoubleAnimation.cs">
+      <Link>UI\Presentation\Animations\DoubleAnimation.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Animations\FillBehavior.cs">
+      <Link>UI\Presentation\Animations\FillBehavior.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Animations\Int16Animation.cs">
+      <Link>UI\Presentation\Animations\Int16Animation.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Animations\Int32Animation.cs">
+      <Link>UI\Presentation\Animations\Int32Animation.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Animations\Int64Animation.cs">
+      <Link>UI\Presentation\Animations\Int64Animation.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Animations\InterpolatableAnimation.cs">
+      <Link>UI\Presentation\Animations\InterpolatableAnimation.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Animations\LoopBehavior.cs">
+      <Link>UI\Presentation\Animations\LoopBehavior.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Animations\NullableBooleanAnimation.cs">
+      <Link>UI\Presentation\Animations\NullableBooleanAnimation.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Animations\NullableByteAnimation.cs">
+      <Link>UI\Presentation\Animations\NullableByteAnimation.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Animations\NullableCharAnimation.cs">
+      <Link>UI\Presentation\Animations\NullableCharAnimation.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Animations\NullableDecimalAnimation.cs">
+      <Link>UI\Presentation\Animations\NullableDecimalAnimation.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Animations\NullableDoubleAnimation.cs">
+      <Link>UI\Presentation\Animations\NullableDoubleAnimation.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Animations\NullableInt16Animation.cs">
+      <Link>UI\Presentation\Animations\NullableInt16Animation.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Animations\NullableInt32Animation.cs">
+      <Link>UI\Presentation\Animations\NullableInt32Animation.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Animations\NullableInt64Animation.cs">
+      <Link>UI\Presentation\Animations\NullableInt64Animation.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Animations\NullableInterpolatableAnimation.cs">
+      <Link>UI\Presentation\Animations\NullableInterpolatableAnimation.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Animations\NullableSByteAnimation.cs">
+      <Link>UI\Presentation\Animations\NullableSByteAnimation.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Animations\NullableSingleAnimation.cs">
+      <Link>UI\Presentation\Animations\NullableSingleAnimation.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Animations\NullableUInt16Animation.cs">
+      <Link>UI\Presentation\Animations\NullableUInt16Animation.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Animations\NullableUInt32Animation.cs">
+      <Link>UI\Presentation\Animations\NullableUInt32Animation.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Animations\NullableUInt64Animation.cs">
+      <Link>UI\Presentation\Animations\NullableUInt64Animation.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Animations\ObjectAnimation.cs">
+      <Link>UI\Presentation\Animations\ObjectAnimation.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Animations\SByteAnimation.cs">
+      <Link>UI\Presentation\Animations\SByteAnimation.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Animations\SingleAnimation.cs">
+      <Link>UI\Presentation\Animations\SingleAnimation.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Animations\Storyboard.cs">
+      <Link>UI\Presentation\Animations\Storyboard.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Animations\StoryboardClock.cs">
+      <Link>UI\Presentation\Animations\StoryboardClock.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Animations\StoryboardClockState.cs">
+      <Link>UI\Presentation\Animations\StoryboardClockState.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Animations\StoryboardTarget.cs">
+      <Link>UI\Presentation\Animations\StoryboardTarget.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Animations\StoryboardTargetAnimationCollection.cs">
+      <Link>UI\Presentation\Animations\StoryboardTargetAnimationCollection.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Animations\StoryboardTargetAnimationCollection.IEnumerable.cs">
+      <Link>UI\Presentation\Animations\StoryboardTargetAnimationCollection.IEnumerable.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Animations\StoryboardTargetCollection.cs">
+      <Link>UI\Presentation\Animations\StoryboardTargetCollection.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Animations\StoryboardTargetCollection.IEnumerable.cs">
+      <Link>UI\Presentation\Animations\StoryboardTargetCollection.IEnumerable.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Animations\UInt16Animation.cs">
+      <Link>UI\Presentation\Animations\UInt16Animation.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Animations\UInt32Animation.cs">
+      <Link>UI\Presentation\Animations\UInt32Animation.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Animations\UInt64Animation.cs">
+      <Link>UI\Presentation\Animations\UInt64Animation.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\BindingExpressionBuilder.cs">
+      <Link>UI\Presentation\BindingExpressionBuilder.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\BindingExpressions.cs">
+      <Link>UI\Presentation\BindingExpressions.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\BoundEventBuilder.cs">
+      <Link>UI\Presentation\BoundEventBuilder.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Controls\AssetSource.cs">
+      <Link>UI\Presentation\Controls\AssetSource.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Controls\Button.cs">
+      <Link>UI\Presentation\Controls\Button.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Controls\Canvas.cs">
+      <Link>UI\Presentation\Controls\Canvas.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Controls\Label.cs">
+      <Link>UI\Presentation\Controls\Label.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Controls\SourcedAssetID.cs">
+      <Link>UI\Presentation\Controls\SourcedAssetID.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Controls\SourcedRef.cs">
+      <Link>UI\Presentation\Controls\SourcedRef.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Controls\SourcedVal.cs">
+      <Link>UI\Presentation\Controls\SourcedVal.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Controls\TextualElement.cs">
+      <Link>UI\Presentation\Controls\TextualElement.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Controls\UIContainer.cs">
+      <Link>UI\Presentation\Controls\UIContainer.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Controls\UIElement.cs">
+      <Link>UI\Presentation\Controls\UIElement.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Controls\UIElementAttribute.cs">
+      <Link>UI\Presentation\Controls\UIElementAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Controls\UIElementClassCollection.cs">
+      <Link>UI\Presentation\Controls\UIElementClassCollection.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Controls\UIElementClassCollection.IEnumerable.cs">
+      <Link>UI\Presentation\Controls\UIElementClassCollection.IEnumerable.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Controls\UIElementCollection.cs">
+      <Link>UI\Presentation\Controls\UIElementCollection.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Controls\UIElementCollection.IEnumerable.cs">
+      <Link>UI\Presentation\Controls\UIElementCollection.IEnumerable.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Controls\UIElementResources.cs">
+      <Link>UI\Presentation\Controls\UIElementResources.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Controls\UIView.cs">
+      <Link>UI\Presentation\Controls\UIView.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Controls\UIViewCollection.cs">
+      <Link>UI\Presentation\Controls\UIViewCollection.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Controls\UIViewCollection.IEnumerable.cs">
+      <Link>UI\Presentation\Controls\UIViewCollection.IEnumerable.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Controls\UIViewLoader.cs">
+      <Link>UI\Presentation\Controls\UIViewLoader.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Controls\UIViewLoader.UIElementMetadata.cs">
+      <Link>UI\Presentation\Controls\UIViewLoader.UIElementMetadata.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Controls\UvmlException.cs">
+      <Link>UI\Presentation\Controls\UvmlException.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Controls\VisualState.cs">
+      <Link>UI\Presentation\Controls\VisualState.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Controls\VisualStateGroup.cs">
+      <Link>UI\Presentation\Controls\VisualStateGroup.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Controls\VisualStateGroup.IEnumerable.cs">
+      <Link>UI\Presentation\Controls\VisualStateGroup.IEnumerable.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Controls\VisualStateGroupCollection.cs">
+      <Link>UI\Presentation\Controls\VisualStateGroupCollection.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Controls\VisualStateGroupCollection.IEnumerable.cs">
+      <Link>UI\Presentation\Controls\VisualStateGroupCollection.IEnumerable.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Controls\VisualStateTransitionKey.cs">
+      <Link>UI\Presentation\Controls\VisualStateTransitionKey.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\DataBindingGetterBuilder.cs">
+      <Link>UI\Presentation\DataBindingGetterBuilder.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\DataBindingSetterBuilder.cs">
+      <Link>UI\Presentation\DataBindingSetterBuilder.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\DependencyBoundValue.cs">
+      <Link>UI\Presentation\DependencyBoundValue.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\DependencyBoundValueConverting.cs">
+      <Link>UI\Presentation\DependencyBoundValueConverting.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\DependencyBoundValueNonConverting.cs">
+      <Link>UI\Presentation\DependencyBoundValueNonConverting.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\DependencyObject.cs">
+      <Link>UI\Presentation\DependencyObject.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\DependencyProperty.cs">
+      <Link>UI\Presentation\DependencyProperty.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\DependencyPropertyMetadata.cs">
+      <Link>UI\Presentation\DependencyPropertyMetadata.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\DependencyPropertyName.cs">
+      <Link>UI\Presentation\DependencyPropertyName.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\DependencyPropertyOptions.cs">
+      <Link>UI\Presentation\DependencyPropertyOptions.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\DependencyPropertySystem.cs">
+      <Link>UI\Presentation\DependencyPropertySystem.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\DependencyPropertyValue.cs">
+      <Link>UI\Presentation\DependencyPropertyValue.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\IDependencyBoundValue.cs">
+      <Link>UI\Presentation\IDependencyBoundValue.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\IDependencyPropertyValue.cs">
+      <Link>UI\Presentation\IDependencyPropertyValue.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\LayoutStrings.cs">
+      <Link>UI\Presentation\LayoutStrings.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Styles\StyledAttribute.cs">
+      <Link>UI\Presentation\Styles\StyledAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Styles\UvssDocument.cs">
+      <Link>UI\Presentation\Styles\UvssDocument.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Styles\UvssDocument.PrioritizedStyleData.cs">
+      <Link>UI\Presentation\Styles\UvssDocument.PrioritizedStyleData.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Styles\UvssException.cs">
+      <Link>UI\Presentation\Styles\UvssException.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Styles\UvssLexer.cs">
+      <Link>UI\Presentation\Styles\UvssLexer.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Styles\UvssLexerToken.cs">
+      <Link>UI\Presentation\Styles\UvssLexerToken.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Styles\UvssLexerTokenType.cs">
+      <Link>UI\Presentation\Styles\UvssLexerTokenType.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Styles\UvssParser.cs">
+      <Link>UI\Presentation\Styles\UvssParser.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Styles\UvssParserState.cs">
+      <Link>UI\Presentation\Styles\UvssParserState.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Styles\UvssRule.cs">
+      <Link>UI\Presentation\Styles\UvssRule.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Styles\UvssSelector.cs">
+      <Link>UI\Presentation\Styles\UvssSelector.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Styles\UvssSelector.IEnumerable.cs">
+      <Link>UI\Presentation\Styles\UvssSelector.IEnumerable.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Styles\UvssSelectorCollection.cs">
+      <Link>UI\Presentation\Styles\UvssSelectorCollection.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Styles\UvssSelectorCollection.IEnumerable.cs">
+      <Link>UI\Presentation\Styles\UvssSelectorCollection.IEnumerable.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Styles\UvssSelectorPart.cs">
+      <Link>UI\Presentation\Styles\UvssSelectorPart.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Styles\UvssStoryboard.cs">
+      <Link>UI\Presentation\Styles\UvssStoryboard.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Styles\UvssStoryboardAnimation.cs">
+      <Link>UI\Presentation\Styles\UvssStoryboardAnimation.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Styles\UvssStoryboardAnimationCollection.cs">
+      <Link>UI\Presentation\Styles\UvssStoryboardAnimationCollection.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Styles\UvssStoryboardAnimationCollection.IEnumerable.cs">
+      <Link>UI\Presentation\Styles\UvssStoryboardAnimationCollection.IEnumerable.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Styles\UvssStoryboardKeyframe.cs">
+      <Link>UI\Presentation\Styles\UvssStoryboardKeyframe.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Styles\UvssStoryboardKeyframeCollection.cs">
+      <Link>UI\Presentation\Styles\UvssStoryboardKeyframeCollection.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Styles\UvssStoryboardKeyframeCollection.IEnumerable.cs">
+      <Link>UI\Presentation\Styles\UvssStoryboardKeyframeCollection.IEnumerable.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Styles\UvssStoryboardReifier.cs">
+      <Link>UI\Presentation\Styles\UvssStoryboardReifier.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Styles\UvssStoryboardTarget.cs">
+      <Link>UI\Presentation\Styles\UvssStoryboardTarget.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Styles\UvssStoryboardTargetCollection.cs">
+      <Link>UI\Presentation\Styles\UvssStoryboardTargetCollection.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Styles\UvssStoryboardTargetCollection.IEnumerable.cs">
+      <Link>UI\Presentation\Styles\UvssStoryboardTargetCollection.IEnumerable.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Styles\UvssStoryboardTargetFilter.cs">
+      <Link>UI\Presentation\Styles\UvssStoryboardTargetFilter.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Styles\UvssStoryboardTargetFilter.IEnumerable.cs">
+      <Link>UI\Presentation\Styles\UvssStoryboardTargetFilter.IEnumerable.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Styles\UvssStyle.cs">
+      <Link>UI\Presentation\Styles\UvssStyle.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Styles\UvssStyleArgumentsCollection.cs">
+      <Link>UI\Presentation\Styles\UvssStyleArgumentsCollection.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Styles\UvssStyleArgumentsCollection.IEnumerable.cs">
+      <Link>UI\Presentation\Styles\UvssStyleArgumentsCollection.IEnumerable.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Styles\UvssStyleCollection.cs">
+      <Link>UI\Presentation\Styles\UvssStyleCollection.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Styles\UvssStyleCollection.IEnumerable.cs">
+      <Link>UI\Presentation\Styles\UvssStyleCollection.IEnumerable.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Styles\UvssStyleKey.cs">
+      <Link>UI\Presentation\Styles\UvssStyleKey.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\TypeExtensions.cs">
+      <Link>UI\Presentation\TypeExtensions.cs</Link>
+    </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet\UI\UILayoutState.cs">
       <Link>UI\UILayoutState.cs</Link>
     </Compile>
@@ -893,7 +1271,7 @@
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" ProjectLinkReference="f071abe3-05e5-4df9-a929-cf71b01ec50a" />
+      <UserProperties ProjectLinkReference="f071abe3-05e5-4df9-a929-cf71b01ec50a" ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" />
     </VisualStudio>
   </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
