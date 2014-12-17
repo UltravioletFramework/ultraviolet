@@ -42,7 +42,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 var constructor = uiElementType.ElementType.GetConstructor(new[] { typeof(UltravioletContext), typeof(String) });
                 if (constructor == null)
                 {
-                    throw new InvalidOperationException(LayoutStrings.UIElementInvalidCtor.Format(uiElementType));
+                    throw new InvalidOperationException(UltravioletStrings.UIElementInvalidCtor.Format(uiElementType));
                 }
 
                 var metadata = new UIElementMetadata(
@@ -69,7 +69,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 viewModelType = Type.GetType(viewModelTypeAttr.Value, false);
                 if (viewModelType == null)
                 {
-                    throw new InvalidOperationException(LayoutStrings.ViewModelTypeNotFound.Format(viewModelTypeAttr.Value));
+                    throw new InvalidOperationException(UltravioletStrings.ViewModelTypeNotFound.Format(viewModelTypeAttr.Value));
                 }
             }
 
@@ -128,7 +128,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         {
             UIElementMetadata metadata;
             if (!TryGetConcreteElementMetadata(xmlElement.Name.LocalName, true, out metadata))
-                throw new UvmlException(LayoutStrings.UnrecognizedUIElement.Format(xmlElement.Name.LocalName));
+                throw new UvmlException(UltravioletStrings.UnrecognizedUIElement.Format(xmlElement.Name.LocalName));
 
             var id        = xmlElement.AttributeValueString("ID");
             var classes   = xmlElement.AttributeValueString("Class");
@@ -219,7 +219,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             {
                 var dprop = DependencyProperty.FindByName(metadata.DefaultProperty, uiElement.GetType());
                 if (dprop == null)
-                    throw new InvalidOperationException(LayoutStrings.InvalidDefaultProperty.Format(metadata.DefaultProperty, uiElement.GetType()));
+                    throw new InvalidOperationException(UltravioletStrings.InvalidDefaultProperty.Format(metadata.DefaultProperty, uiElement.GetType()));
 
                 BindOrSetProperty(uiElement, dprop, xmlElement.Value, viewModelType);
             }
@@ -293,7 +293,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         private static void BindProperty(UIElement uiElement, DependencyProperty dprop, String expression, Type viewModelType)
         {
             if (viewModelType == null)
-                throw new InvalidOperationException(LayoutStrings.NoViewModel);
+                throw new InvalidOperationException(UltravioletStrings.NoViewModel);
 
             var type = Type.GetTypeFromHandle(dprop.PropertyType);
 

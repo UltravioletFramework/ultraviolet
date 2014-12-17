@@ -71,7 +71,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public static IEnumerable<String> ParseBindingExpression(String expression, Boolean braces = true)
         {
             if (!IsBindingExpression(expression, braces))
-                throw new ArgumentException(LayoutStrings.InvalidBindingExpression.Format(expression));
+                throw new ArgumentException(UltravioletStrings.InvalidBindingExpression.Format(expression));
 
             var path       = GetBindingMemberPathPartInternal(expression, braces);
             var components = path.Split('.');
@@ -90,7 +90,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             Contract.RequireNotEmpty(expression, "expression");
 
             if (!IsBindingExpression(expression, braces))
-                throw new ArgumentException(LayoutStrings.InvalidBindingExpression.Format(expression));
+                throw new ArgumentException(UltravioletStrings.InvalidBindingExpression.Format(expression));
 
             return GetBindingMemberPathPartInternal(expression, braces);
         }
@@ -106,7 +106,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             Contract.RequireNotEmpty(expression, "expression");
 
             if (!IsBindingExpression(expression, braces))
-                throw new ArgumentException(LayoutStrings.InvalidBindingExpression.Format(expression));
+                throw new ArgumentException(UltravioletStrings.InvalidBindingExpression.Format(expression));
 
             return GetBindingFormatStringPartInternal(expression, braces);
         }

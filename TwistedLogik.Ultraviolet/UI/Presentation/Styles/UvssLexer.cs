@@ -84,7 +84,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
                     continue;
 
                 var message = GetSyntaxErrorCallout(input, ix);
-                throw new UvssException(LayoutStrings.StylesheetSyntaxError.Format(message));
+                throw new UvssException(UltravioletStrings.StylesheetSyntaxError.Format(message));
             }
 
             return output;
@@ -346,7 +346,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
                 if (ix + 1 == input.Length && input[ix] != '"')
                 {
                     var message = GetSyntaxErrorCallout(input, ix);
-                    throw new UvssException(LayoutStrings.StylesheetSyntaxUnterminatedString.Format(message));
+                    throw new UvssException(UltravioletStrings.StylesheetSyntaxUnterminatedString.Format(message));
                 }
 
                 var c = input[ix++];

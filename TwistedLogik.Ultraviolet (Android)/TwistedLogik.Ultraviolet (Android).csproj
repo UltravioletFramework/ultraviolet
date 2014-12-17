@@ -821,6 +821,9 @@
     <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Animations\LoopBehavior.cs">
       <Link>UI\Presentation\Animations\LoopBehavior.cs</Link>
     </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Animations\NamespaceDoc.cs">
+      <Link>UI\Presentation\Animations\NamespaceDoc.cs</Link>
+    </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Animations\NullableBooleanAnimation.cs">
       <Link>UI\Presentation\Animations\NullableBooleanAnimation.cs</Link>
     </Compile>
@@ -925,6 +928,9 @@
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Controls\Label.cs">
       <Link>UI\Presentation\Controls\Label.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Controls\NamespaceDoc.cs">
+      <Link>UI\Presentation\Controls\NamespaceDoc.cs</Link>
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Controls\SourcedAssetID.cs">
       <Link>UI\Presentation\Controls\SourcedAssetID.cs</Link>
@@ -1040,8 +1046,11 @@
     <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\IDependencyPropertyValue.cs">
       <Link>UI\Presentation\IDependencyPropertyValue.cs</Link>
     </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\LayoutStrings.cs">
-      <Link>UI\Presentation\LayoutStrings.cs</Link>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\NamespaceDoc.cs">
+      <Link>UI\Presentation\NamespaceDoc.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Styles\NamespaceDoc.cs">
+      <Link>UI\Presentation\Styles\NamespaceDoc.cs</Link>
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Styles\StyledAttribute.cs">
       <Link>UI\Presentation\Styles\StyledAttribute.cs</Link>
@@ -1147,9 +1156,6 @@
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\TypeExtensions.cs">
       <Link>UI\Presentation\TypeExtensions.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet\UI\UILayoutState.cs">
-      <Link>UI\UILayoutState.cs</Link>
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet\UI\UIPanel.cs">
       <Link>UI\UIPanel.cs</Link>
@@ -1262,7 +1268,7 @@
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" ProjectLinkReference="f071abe3-05e5-4df9-a929-cf71b01ec50a" />
+      <UserProperties ProjectLinkReference="f071abe3-05e5-4df9-a929-cf71b01ec50a" ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" />
     </VisualStudio>
   </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

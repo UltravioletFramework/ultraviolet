@@ -316,6 +316,7 @@
     <Compile Include="UI\Presentation\Animations\Int64Animation.cs" />
     <Compile Include="UI\Presentation\Animations\InterpolatableAnimation.cs" />
     <Compile Include="UI\Presentation\Animations\LoopBehavior.cs" />
+    <Compile Include="UI\Presentation\Animations\NamespaceDoc.cs" />
     <Compile Include="UI\Presentation\Animations\NullableBooleanAnimation.cs" />
     <Compile Include="UI\Presentation\Animations\NullableByteAnimation.cs" />
     <Compile Include="UI\Presentation\Animations\NullableCharAnimation.cs" />
@@ -351,6 +352,7 @@
     <Compile Include="UI\Presentation\Controls\Button.cs" />
     <Compile Include="UI\Presentation\Controls\Canvas.cs" />
     <Compile Include="UI\Presentation\Controls\Label.cs" />
+    <Compile Include="UI\Presentation\Controls\NamespaceDoc.cs" />
     <Compile Include="UI\Presentation\Controls\SourcedAssetID.cs" />
     <Compile Include="UI\Presentation\Controls\SourcedRef.cs" />
     <Compile Include="UI\Presentation\Controls\SourcedVal.cs" />
@@ -389,7 +391,8 @@
     <Compile Include="UI\Presentation\DependencyPropertyValue.cs" />
     <Compile Include="UI\Presentation\IDependencyBoundValue.cs" />
     <Compile Include="UI\Presentation\IDependencyPropertyValue.cs" />
-    <Compile Include="UI\Presentation\LayoutStrings.cs" />
+    <Compile Include="UI\Presentation\NamespaceDoc.cs" />
+    <Compile Include="UI\Presentation\Styles\NamespaceDoc.cs" />
     <Compile Include="UI\Presentation\Styles\StyledAttribute.cs" />
     <Compile Include="UI\Presentation\Styles\UvssDocument.cs" />
     <Compile Include="UI\Presentation\Styles\UvssDocument.PrioritizedStyleData.cs" />
@@ -427,7 +430,6 @@
     <Compile Include="UI\Presentation\TypeExtensions.cs" />
     <Compile Include="UI\UIPanelDefinition.cs" />
     <Compile Include="UI\UIPanelDefinitionProcessor.cs" />
-    <Compile Include="UI\UILayoutState.cs" />
     <Compile Include="UI\UIPanel.cs" />
     <Compile Include="UI\UIPanelState.cs" />
     <Compile Include="UI\UIScreen.cs" />

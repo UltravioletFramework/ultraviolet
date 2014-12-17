@@ -26,7 +26,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var propertyDomain = GetPropertyDomain(ownerType);
             if (propertyDomain.ContainsKey(name))
             {
-                throw new ArgumentException(LayoutStrings.DependencyPropertyAlreadyRegistered);
+                throw new ArgumentException(UltravioletStrings.DependencyPropertyAlreadyRegistered);
             }
             var dp = new DependencyProperty(dpid++, name, propertyType.TypeHandle, ownerType.TypeHandle, metadata);
             propertyDomain[name] = dp;
@@ -46,7 +46,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             Contract.Require(ownerType, "ownerType");
 
             if (!ownerType.IsSubclassOf(typeof(DependencyObject)))
-                throw new InvalidOperationException(LayoutStrings.IsNotDependencyObject);
+                throw new InvalidOperationException(UltravioletStrings.IsNotDependencyObject);
 
             var type = ownerType;
             while (type != null)

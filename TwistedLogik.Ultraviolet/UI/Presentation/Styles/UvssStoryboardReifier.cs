@@ -182,7 +182,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
             var type = UIViewLoader.GetElementTypeFromName(name, false);
             if (type == null)
             {
-                throw new InvalidOperationException(LayoutStrings.UnrecognizedUIElement.Format(name));
+                throw new InvalidOperationException(UltravioletStrings.UnrecognizedUIElement.Format(name));
             }
             return type;
         }
@@ -207,14 +207,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
 
             var distinctNames = possiblePropertyMatches.Select(x => x.PropertyID.Name).Distinct();
             if (distinctNames.Count() > 1)
-                throw new InvalidOperationException(LayoutStrings.AmbiguousDependencyProperty.Format(property));
+                throw new InvalidOperationException(UltravioletStrings.AmbiguousDependencyProperty.Format(property));
 
             if (distinctNames.Any())
                 property = distinctNames.Single();
 
             var distinctTypes = possiblePropertyMatches.Select(x => x.PropertyType).Distinct();
             if (distinctTypes.Count() > 1)
-                throw new InvalidOperationException(LayoutStrings.AmbiguousDependencyProperty.Format(property));
+                throw new InvalidOperationException(UltravioletStrings.AmbiguousDependencyProperty.Format(property));
 
             return distinctTypes.FirstOrDefault();
         }

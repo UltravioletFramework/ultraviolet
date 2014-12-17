@@ -215,7 +215,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         public void SetViewModel(Object viewModel)
         {
             if (viewModel != null && viewModel.GetType() != viewModelType)
-                throw new ArgumentException(LayoutStrings.IncompatibleViewModel.Format(viewModelType));
+                throw new ArgumentException(UltravioletStrings.IncompatibleViewModel.Format(viewModelType));
 
             this.viewModel = viewModel;
             Canvas.UpdateViewModel(viewModel);
@@ -527,7 +527,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 
             UIElement existing;
             if (elementsByID.TryGetValue(element.ID, out existing))
-                throw new InvalidOperationException(LayoutStrings.ElementWithIDAlreadyExists.Format(element.ID));
+                throw new InvalidOperationException(UltravioletStrings.ElementWithIDAlreadyExists.Format(element.ID));
 
             elementsByID[element.ID] = element;
         }
