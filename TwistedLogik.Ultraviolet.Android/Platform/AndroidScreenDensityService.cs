@@ -23,6 +23,7 @@ namespace TwistedLogik.Ultraviolet.Android.Platform
         /// <summary>
         /// Gets the current Android activity.
         /// </summary>
+        [CLSCompliant(false)]
         public static Activity Activity
         {
             get { return activity; }
@@ -39,9 +40,16 @@ namespace TwistedLogik.Ultraviolet.Android.Platform
             }
         }
 
-        /// <summary>
-        /// Gets the screen's density in dots per inch along the horizontal axis.
-        /// </summary>
+        /// <inheritdoc/>
+        public override Single DensityScale
+        {
+            get
+            {
+                return (metrics == null) ? 1 : (160f / 72f) * metrics.Density;
+            }
+        }
+
+        /// <inheritdoc/>
         public override Single DensityX
         {
             get
@@ -50,9 +58,7 @@ namespace TwistedLogik.Ultraviolet.Android.Platform
             }
         }
 
-        /// <summary>
-        /// Gets the screen's density in dots per inch along the vertical axis.
-        /// </summary>
+        /// <inheritdoc/>
         public override Single DensityY
         {
             get
@@ -61,9 +67,7 @@ namespace TwistedLogik.Ultraviolet.Android.Platform
             }
         }
 
-        /// <summary>
-        /// Gets the screen's density bucket.
-        /// </summary>
+        /// <inheritdoc/>
         public override ScreenDensityBucket DensityBucket
         {
             get

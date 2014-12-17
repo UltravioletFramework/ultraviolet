@@ -18,25 +18,25 @@ namespace TwistedLogik.Ultraviolet.Desktop.Platform
 
         }
 
-        /// <summary>
-        /// Gets the screen's density in dots per inch along the horizontal axis.
-        /// </summary>
+        /// <inheritdoc/>
+        public override Single DensityScale
+        {
+            get { return 1f; }
+        }
+
+        /// <inheritdoc/>
         public override Single DensityX
         {
             get { return 72f; }
         }
 
-        /// <summary>
-        /// Gets the screen's density in dots per inch along the vertical axis.
-        /// </summary>
+        /// <inheritdoc/>
         public override Single DensityY
         {
             get { return 72f; }
         }
 
-        /// <summary>
-        /// Gets the screen's density bucket.
-        /// </summary>
+        /// <inheritdoc/>
         public override ScreenDensityBucket DensityBucket
         {
             get { return ScreenDensityBucket.Desktop; }

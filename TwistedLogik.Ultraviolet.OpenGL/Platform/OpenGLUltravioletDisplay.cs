@@ -61,6 +61,17 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
         }
 
         /// <summary>
+        /// Gets the scaling factor for device independent pixels.
+        /// </summary>
+        public Single DensityScale
+        {
+            get 
+            { 
+                return screenDensityService.DensityScale; 
+            }
+        }
+
+        /// <summary>
         /// Gets the display's density in dots per inch along the horizontal axis.
         /// </summary>
         public Single DpiX
