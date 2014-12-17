@@ -4,6 +4,7 @@ using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet.Content;
 using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
 using TwistedLogik.Ultraviolet.Platform;
+using TwistedLogik.Ultraviolet.UI.Presentation.Controls;
 
 namespace TwistedLogik.Ultraviolet.UI
 {
@@ -51,17 +52,7 @@ namespace TwistedLogik.Ultraviolet.UI
         internal UIPanel(UltravioletContext uv, Size2? size = null)
             : base(uv ?? UltravioletContext.DemandCurrent())
         {
-            var calculatedSize = CalculateInitialLayoutSize(size);
-
-            var layoutProvider = Ultraviolet.GetUI().GetLayoutProvider();
-            if (layoutProvider != null)
-            {
-                this.layout = layoutProvider.CreateLayout(0, 0, calculatedSize.Width, calculatedSize.Height);
-                this.layout.Initialized += (sender) => { OnLayoutInitialized(); };
-                this.layout.Loading += (sender) => { OnLayoutLoading(); };
-                this.layout.Ready += (sender) => { OnLayoutReady(); };
-                this.layout.Interactive = false;
-            }
+            this.views = new UIViewCollection(uv);
         }
 
         /// <summary>
@@ -84,10 +75,7 @@ namespace TwistedLogik.Ultraviolet.UI
         {
             Contract.EnsureNotDisposed(this, Disposed);
 
-            if (this.layout != null)
-            {
-                this.layout.Focus();
-            }
+            // TODO: Focus views
         }
 
         /// <summary>
@@ -97,23 +85,15 @@ namespace TwistedLogik.Ultraviolet.UI
         {
             Contract.EnsureNotDisposed(this, Disposed);
 
-            if (this.layout != null)
-            {
-                this.layout.Blur();
-            }
+            // TODO: Blur vies
         }
 
         /// <summary>
-        /// Gets the panel's layout.
+        /// Gets the screen's collection of views.
         /// </summary>
-        public IUILayout Layout
+        public UIViewCollection Views
         {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return this.layout;
-            }
+            get { return views; }
         }
 
         /// <summary>
@@ -269,11 +249,7 @@ namespace TwistedLogik.Ultraviolet.UI
                 Contract.EnsureNotDisposed(this, Disposed);
 
                 this.window = value;
-
-                if (this.layout != null)
-                {
-                    this.layout.Window = value;
-                }
+                this.views.Window = value;
             }
         }
 
@@ -403,7 +379,7 @@ namespace TwistedLogik.Ultraviolet.UI
         {
             if (disposing)
             {
-                SafeDispose.Dispose(layout);
+                SafeDispose.Dispose(views);
             }
             base.Dispose(disposing);
         }
@@ -548,35 +524,22 @@ namespace TwistedLogik.Ultraviolet.UI
         }
 
         /// <summary>
-        /// Draws the panel's layout.
+        /// Draws the panel's vies.
         /// </summary>
         /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Draw(UltravioletTime)"/>.</param>
         /// <param name="spriteBatch">The <see cref="SpriteBatch"/> with which the panel is being drawn.</param>
-        protected virtual void DrawLayout(UltravioletTime time, SpriteBatch spriteBatch)
+        protected void DrawViews(UltravioletTime time, SpriteBatch spriteBatch)
         {
-            if (this.layout != null)
-            {
-                this.layout.Draw(time, spriteBatch, Color.White);
-                OnDrawingLayout(time, spriteBatch);
-            }
+            views.Draw(time, spriteBatch);
         }
 
         /// <summary>
-        /// Updates the panel's layout.
+        /// Updates the panel's views.
         /// </summary>
         /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Update(UltravioletTime)"/>.</param>
-        protected void UpdateLayout(UltravioletTime time)
+        protected void UpdateViews(UltravioletTime time)
         {
-            if (layout == null)
-                return;
-
-            var window = Window;
-            if (window == null)
-                return;
-
-            layout.Position = Vector2.Zero;
-            layout.Size = window.ClientSize;
-            layout.Update(time);
+            views.Update(time);
         }
 
         /// <summary>
@@ -600,10 +563,7 @@ namespace TwistedLogik.Ultraviolet.UI
             }
             if (transitionPosition > 1)
             {
-                if (this.layout != null)
-                {
-                    this.layout.Interactive = true;
-                }
+                // TODO: Make views interactive
                 this.transitionPosition = 1;
                 this.transitionDuration = 0;
                 this.state = UIPanelState.Open;
@@ -619,11 +579,7 @@ namespace TwistedLogik.Ultraviolet.UI
         /// <returns><c>true</c> if the layout was loaded; otherwise, <c>false</c>.</returns>
         protected Boolean LoadLayout(ContentManager content, UIPanelDefinition definition)
         {
-            if (layout != null)
-            {
-                layout.LoadLayout(content, definition);
-                return true;
-            }
+            // TODO: Load views
             return false;
         }
 
@@ -748,20 +704,6 @@ namespace TwistedLogik.Ultraviolet.UI
         }
         
         /// <summary>
-        /// Gets the initial size of the panel's layout.
-        /// </summary>
-        /// <returns>The initial size of the panel's layout.</returns>
-        private Size2 CalculateInitialLayoutSize(Size2? requested)
-        {
-            if (requested.HasValue)
-            {
-                return requested.Value;
-            }
-            var window = Ultraviolet.GetPlatform().Windows.GetPrimary();
-            return window == null ? Size2.Zero : window.ClientSize;
-        }
-
-        /// <summary>
         /// Cancels any pending tasks associated with the panel's state.
         /// </summary>
         private void CancelPendingTasks()
@@ -802,10 +744,7 @@ namespace TwistedLogik.Ultraviolet.UI
             {
                 this.state = UIPanelState.Open;
                 this.transitionPosition = 1;
-                if (this.layout != null)
-                {
-                    this.layout.Interactive = true;
-                }
+                // TODO: Make views interactive
                 HandleOpened();
             }
 
@@ -830,10 +769,7 @@ namespace TwistedLogik.Ultraviolet.UI
             this.state = UIPanelState.Closing;
             this.transitionDuration = remaining * duration.TotalMilliseconds;
             this.transitionDirection = -1;
-            if (this.layout != null)
-            {
-                this.layout.Interactive = false;
-            }
+            // TODO: Make views non-interactive
             this.Blur();
 
             OnClosing();
@@ -864,8 +800,8 @@ namespace TwistedLogik.Ultraviolet.UI
             return null;
         }
 
-        // The screen's layout container.
-        private readonly IUILayout layout;
+        // The screen's views.
+        private readonly UIViewCollection views;
 
         // Property values.
         private UIPanelState state = UIPanelState.Closed;

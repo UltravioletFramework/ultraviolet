@@ -102,14 +102,5 @@ namespace TwistedLogik.Ultraviolet
             get;
             set;
         }
-
-        /// <summary>
-        /// Gets or sets the name of the assembly that contains the application's layout provider.
-        /// </summary>
-        public String LayoutProviderAssembly
-        {
-            get;
-            set;
-        }
     }
 }

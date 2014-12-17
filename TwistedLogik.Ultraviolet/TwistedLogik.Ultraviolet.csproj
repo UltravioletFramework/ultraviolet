@@ -427,8 +427,6 @@
     <Compile Include="UI\Presentation\TypeExtensions.cs" />
     <Compile Include="UI\UIPanelDefinition.cs" />
     <Compile Include="UI\UIPanelDefinitionProcessor.cs" />
-    <Compile Include="UI\IUILayout.cs" />
-    <Compile Include="UI\LayoutEngineException.cs" />
     <Compile Include="UI\UILayoutState.cs" />
     <Compile Include="UI\UIPanel.cs" />
     <Compile Include="UI\UIPanelState.cs" />
@@ -436,7 +434,6 @@
     <Compile Include="UI\UIScreenStack.cs" />
     <Compile Include="UI\UIScreenStackCollection.cs" />
     <Compile Include="UI\UltravioletUI.cs" />
-    <Compile Include="UI\IUILayoutProvider.cs" />
     <Compile Include="UltravioletCollection.cs" />
     <Compile Include="Graphics\SamplerState.cs" />
     <Compile Include="Graphics\RasterizerState.cs" />

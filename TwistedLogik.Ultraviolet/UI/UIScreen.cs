@@ -48,7 +48,7 @@ namespace TwistedLogik.Ultraviolet.UI
         {
             Contract.EnsureNotDisposed(this, Disposed);
 
-            UpdateLayout(time);
+            UpdateViews(time);
             UpdateTransition(time);
 
             OnUpdating(time);
@@ -68,7 +68,7 @@ namespace TwistedLogik.Ultraviolet.UI
                 return;
 
             OnDrawingBackground(time, spriteBatch);
-            DrawLayout(time, spriteBatch);
+            DrawViews(time, spriteBatch);
             OnDrawingForeground(time, spriteBatch);
         }
 
