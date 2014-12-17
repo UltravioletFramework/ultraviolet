@@ -207,7 +207,7 @@ namespace TwistedLogik.Ultraviolet.UI
         }
 
         /// <inheritdoc/>
-        internal virtual void HandleViewLoaded()
+        internal override void HandleViewLoaded()
         {
             if (View != null)
             {
@@ -222,7 +222,7 @@ namespace TwistedLogik.Ultraviolet.UI
         {
             if (disposing)
             {
-                this.content.Dispose();
+                SafeDispose.Dispose(this.content);
             }
             base.Dispose(disposing);
         }

@@ -4,6 +4,7 @@ using System.Xml.Linq;
 using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet.Content;
 using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
+using TwistedLogik.Ultraviolet.Input;
 using TwistedLogik.Ultraviolet.Platform;
 using TwistedLogik.Ultraviolet.UI.Presentation.Animations;
 using TwistedLogik.Ultraviolet.UI.Presentation.Controls;
@@ -28,6 +29,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             this.canvas = new Canvas(uv, null);
             this.canvas.UpdateView(this);
+
+            HookKeyboardEvents();
+            HookMouseEvents();
         }
 
         /// <summary>
@@ -80,6 +84,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (window == null)
                 return;
 
+            HandleUserInput();
+
             Canvas.Update(time);
         }
 
@@ -105,7 +111,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="element">The element to which to assign mouse capture.</param>
         public void CaptureMouse(UIElement element)
         {
-            // TODO
+            Contract.Require(element, "element");
+
+            if (elementWithMouseCapture == element)
+                return;
+
+            if (elementWithMouseCapture != null)
+                elementWithMouseCapture.OnLostMouseCapture();
+
+            elementWithMouseCapture = element;
+            elementWithMouseCapture.OnGainedMouseCapture();
         }
 
         /// <summary>
@@ -114,7 +129,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="element">The element that is attempting to release mouse capture.</param>
         public void ReleaseMouse(UIElement element)
         {
-            // TODO
+            Contract.Require(element, "element");
+
+            if (elementWithMouseCapture != element)
+                return;
+
+            elementWithMouseCapture.OnLostMouseCapture();
+            elementWithMouseCapture = null;
         }
 
         /// <summary>
@@ -579,6 +600,142 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 elementsByID.Remove(element.ID);
         }
 
+        /// <inheritdoc/>
+        protected override void Dispose(Boolean disposing)
+        {
+            if (disposing && !Ultraviolet.Disposed)
+            {
+                UnhookKeyboardEvents();
+                UnhookMouseEvents();
+            }
+            base.Dispose(disposing);
+        }
+
+        /// <summary>
+        /// Hooks into Ultraviolet's keyboard input events.
+        /// </summary>
+        private void HookKeyboardEvents()
+        {
+            // TODO
+        }
+
+        /// <summary>
+        /// Hooks into Ultraviolet's mouse input events.
+        /// </summary>
+        private void HookMouseEvents()
+        {
+            var input = Ultraviolet.GetInput();
+            if (input.IsMouseSupported())
+            {
+                var mouse             = input.GetMouse();
+                mouse.ButtonPressed  += mouse_ButtonPressed;
+                mouse.ButtonReleased += mouse_ButtonReleased;
+            }
+        }
+
+        /// <summary>
+        /// Unhooks from Ultraviolet's keyboard input events.
+        /// </summary>
+        private void UnhookKeyboardEvents()
+        {
+            // TODO
+        }
+
+        /// <summary>
+        /// Unhooks from Ultraviolet's mouse input events.
+        /// </summary>
+        private void UnhookMouseEvents()
+        {
+            var input = Ultraviolet.GetInput();
+            if (input.IsMouseSupported())
+            {
+                var mouse             = input.GetMouse();
+                mouse.ButtonPressed  -= mouse_ButtonPressed;
+                mouse.ButtonReleased -= mouse_ButtonReleased;
+            }
+        }
+
+        /// <summary>
+        /// Handles user input by raising input messages on the elements in the view.
+        /// </summary>
+        private void HandleUserInput()
+        {
+            if (Ultraviolet.GetInput().IsKeyboardSupported())
+            {
+                HandleKeyboardInput();
+            }
+            if (Ultraviolet.GetInput().IsMouseSupported())
+            {
+                HandleMouseInput();
+            }
+        }
+
+        /// <summary>
+        /// Handles keyboard input.
+        /// </summary>
+        private void HandleKeyboardInput()
+        {
+            // TODO
+        }
+
+        /// <summary>
+        /// Handles mouse input.
+        /// </summary>
+        private void HandleMouseInput()
+        {
+            var mouse = Ultraviolet.GetInput().GetMouse();
+
+            // Determine which element is currently under the mouse cursor.
+            if (elementWithMouseCapture == null)
+            {
+                var mousePos  = mouse.Position;
+                var mouseView = mouse.Window == Window ? this : null;
+
+                elementUnderMousePrev = elementUnderMouse;
+                elementUnderMouse     = (mouseView == null) ? null : mouseView.GetElementAtScreenPoint(mousePos);
+            }
+
+            // Handle mouse motion events
+            if (elementUnderMouse != elementUnderMousePrev)
+            {
+                if (elementUnderMousePrev != null)
+                    elementUnderMousePrev.OnMouseLeave(mouse);
+
+                if (elementUnderMouse != null)
+                    elementUnderMouse.OnMouseEnter(mouse);
+            }
+        }
+
+        /// <summary>
+        /// Handles the <see cref="MouseDevice.ButtonPressed"/> event.
+        /// </summary>
+        private void mouse_ButtonPressed(IUltravioletWindow window, MouseDevice device, MouseButton button)
+        {
+            if (window != Window)
+                return;
+
+            var recipient = elementWithMouseCapture ?? elementUnderMouse;
+            if (recipient != null)
+            {
+                recipient.OnMouseButtonPressed(device, button);
+            }
+        }
+
+        /// <summary>
+        /// Handles the <see cref="MouseDevice.ButtonReleased"/> event.
+        /// </summary>
+        private void mouse_ButtonReleased(IUltravioletWindow window, MouseDevice device, MouseButton button)
+        {
+            if (window != Window)
+                return;
+
+            var recipient = elementWithMouseCapture ?? elementUnderMouse;
+            if (recipient != null)
+            {
+                recipient.OnMouseButtonReleased(device, button);
+            }
+        }
+
         // Property values.
         private ContentManager globalContent;
         private ContentManager localContent;
@@ -588,6 +745,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         private Rectangle area;
         private Canvas canvas;
         private IUltravioletWindow window;
+
+        // State values.
+        private UIElement elementUnderMousePrev;
+        private UIElement elementUnderMouse;
+        private UIElement elementWithMouseCapture;
 
         // A dictionary which associates element IDs with elements.
         private readonly Dictionary<String, UIElement> elementsByID = 

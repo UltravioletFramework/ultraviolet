@@ -393,6 +393,16 @@ namespace TwistedLogik.Ultraviolet.UI
             return CloseInternal(duration ?? DefaultCloseTransitionDuration, true);
         }
 
+        /// <inheritdoc/>
+        protected override void Dispose(Boolean disposing)
+        {
+            if (disposing)
+            {
+                SafeDispose.DisposeRef(ref this.view);
+            }
+            base.Dispose(disposing);
+        }
+
         /// <summary>
         /// Raises the <see cref="Updating"/> event.
         /// </summary>
