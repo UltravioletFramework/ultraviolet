@@ -80,6 +80,38 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
+        /// Brings the specified element to the front of the collection.
+        /// </summary>
+        /// <param name="element">The element to bring to the front of the collection.</param>
+        /// <returns><c>true</c> if the element was brought to the front of the collection; otherwise, <c>false</c>.</returns>
+        public Boolean BringToFront(UIElement element)
+        {
+            Contract.Require(element, "element");
+
+            if (elements.Remove(element))
+            {
+                elements.Add(element);
+                return true;
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Sends the specified element to the back of the collection.
+        /// </summary>
+        /// <param name="element">The element to send to the back of the collection.</param>
+        /// <returns><c>true</c> if the element was sent to the back of the collection; otherwise, <c>false</c>.</returns>
+        public Boolean SendToBack(UIElement element)
+        {
+            if (elements.Remove(element))
+            {
+                elements.Insert(0, element);
+                return true;
+            }
+            return false;
+        }
+
+        /// <summary>
         /// Gets the container that owns this collection.
         /// </summary>
         public UIContainer Container
