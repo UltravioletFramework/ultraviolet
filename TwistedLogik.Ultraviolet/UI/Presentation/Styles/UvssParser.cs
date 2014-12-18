@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using TwistedLogik.Nucleus;
-using TwistedLogik.Nucleus.Text;
 using TwistedLogik.Ultraviolet.UI.Presentation.Animations;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
@@ -67,28 +66,114 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         }
 
         /// <summary>
-        /// Throws an exception indicating that a syntax error was reached.
+        /// Gets the specified line of source code.
         /// </summary>
-        /// <param name="message">The exception message.</param>
         /// <param name="state">The parser state.</param>
-        private static void ThrowSyntaxException(StringResource message, UvssParserState state)
+        /// <param name="line">The line of source code to retrieve.</param>
+        /// <returns>The line of source code that was retrieved.</returns>
+        private static String GetSourceLine(UvssParserState state, Int32 line)
         {
-            const Int32 CalloutLength = 32;
+            var lineNumber  = state.CurrentToken.Line;
+            var lineTokens  = state.Tokens.Where(x => !x.Value.StartsWith("\n") && x.Line == lineNumber);
+            var errorLine   = String.Join(String.Empty, lineTokens.Select(x => x.Value)).Trim();
 
-            var messageStart  = Math.Max(0, state.Position - (CalloutLength / 2));
-            var messageLength = Math.Min(CalloutLength, state.Tokens.Count - messageStart);
+            return errorLine;
+        }
 
-            var tokenFirst = state.Tokens[messageStart];
-            var tokenLast  = state.Tokens[messageStart + messageLength - 1];
+        /// <summary>
+        /// Throws an exception indicating that an expected token was not found.
+        /// </summary>
+        /// <param name="state">The parser state.</param>
+        /// <param name="token">The invalid token.</param>
+        /// <param name="expected">The expected token type.</param>
+        private static void ThrowExpectedToken(UvssParserState state, UvssLexerToken token, UvssLexerTokenType expected)
+        {
+            var lineNumber = token.Line;
+            throw new UvssException(UltravioletStrings.StylesheetSyntaxExpectedToken.Format(lineNumber, token.TokenType, expected));
+        }
 
-            var tokenSourceLength = 0;
-            for (int i = messageStart; i < messageStart + messageLength; i++)
-            {
-                tokenSourceLength += state.Tokens[i].Length;
-            }
-            var tokenSource = state.Source.Substring(tokenFirst.Start, tokenSourceLength);
+        /// <summary>
+        /// Throws an exception indicating that an expected value was not found.
+        /// </summary>
+        /// <param name="state">The parser state.</param>
+        /// <param name="token">The invalid token.</param>
+        /// <param name="expected">The expected value.</param>
+        private static void ThrowExpectedValue(UvssParserState state, UvssLexerToken token, String expected)
+        {
+            var lineNumber = token.Line;
+            throw new UvssException(UltravioletStrings.StylesheetSyntaxExpectedValue.Format(lineNumber, expected));
+        }
 
-            throw new UvssException(message.Format(tokenSource));
+        /// <summary>
+        /// Throws an exception indicating that an unexpected token was reached.
+        /// </summary>
+        /// <param name="state">The parser state.</param>
+        /// <param name="token">The invalid token.</param>
+        private static void ThrowUnexpectedToken(UvssParserState state, UvssLexerToken token)
+        {
+            var lineNumber = token.Line;
+            throw new UvssException(UltravioletStrings.StylesheetSyntaxUnexpectedToken.Format(lineNumber, token.TokenType));
+        }
+
+        /// <summary>
+        /// Throws an exception indicating that an unexpected value was reached.
+        /// </summary>
+        /// <param name="state">The parser state.</param>
+        /// <param name="token">The invalid token.</param>
+        private static void ThrowUnexpectedValue(UvssParserState state, UvssLexerToken token)
+        {
+            var lineNumber = token.Line;
+            throw new UvssException(UltravioletStrings.StylesheetSyntaxUnexpectedValue.Format(lineNumber, token.Value));
+        }
+
+        /// <summary>
+        /// Throws an exception indicating that the end of file was reached unexpectedly.
+        /// </summary>
+        /// <param name="state">The parser state.</param>
+        private static void ThrowUnexpectedEOF(UvssParserState state)
+        {
+            var lineNumber = state.Tokens.Last().Line;
+            throw new UvssException(UltravioletStrings.StylesheetSyntaxUnexpectedEOF.Format(lineNumber));
+        }
+
+        /// <summary>
+        /// Throws an exception indicating that an unterminated sequence was encountered.
+        /// </summary>
+        /// <param name="state">The parser state.</param>
+        private static void ThrowUnterminatedSequence(UvssParserState state)
+        {
+            var lineNumber = state.Tokens.Last().Line;
+            throw new UvssException(UltravioletStrings.StylesheetSyntaxUnterminatedSequence.Format(lineNumber));
+        }
+
+        /// <summary>
+        /// Throws an exception indicating that a style has an invalid argument list.
+        /// </summary>
+        /// <param name="state">The parser state.</param>
+        /// <param name="style">The name of the style with invalid arguments.</param>
+        private static void ThrowInvalidStyleArguments(UvssParserState state, String style)
+        {
+            var lineNumber = state.Tokens.Last().Line;
+            throw new UvssException(UltravioletStrings.StylesheetSyntaxInvalidStyleArgs.Format(lineNumber, style));
+        }
+
+        /// <summary>
+        /// Throws an exception if the specified token does not match the specified parameters.
+        /// </summary>
+        /// <param name="state">The parser state.</param>
+        /// <param name="token">The token to evaluate.</param>
+        /// <param name="type">The desired token type.</param>
+        /// <param name="value">The desired token value.</param>
+        private static void MatchTokenOrFail(UvssParserState state, UvssLexerToken? token, UvssLexerTokenType type, String value = null)
+        {
+            if (token == null)
+                ThrowUnexpectedEOF(state);
+
+            if (token.Value.TokenType != type)
+                ThrowExpectedToken(state, token.Value, type);
+
+            if (value != null && !String.Equals(token.Value.Value, value, StringComparison.OrdinalIgnoreCase))
+                ThrowExpectedValue(state, token.Value, value);
         }
 
         /// <summary>
@@ -152,7 +237,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         private static IList<UvssLexerToken> GetTokensBetweenMatchingPair(UvssParserState state, UvssLexerTokenType start, UvssLexerTokenType end)
         {
             if (state.CurrentToken.TokenType != start)
-                ThrowSyntaxException(UltravioletStrings.StylesheetSyntaxError, state);
+                ThrowExpectedToken(state, state.CurrentToken, start);
 
             var level  = 1;
             var tokens = new List<UvssLexerToken>();
@@ -162,7 +247,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
             while (true)
             {
                 if (state.IsPastEndOfStream)
-                    ThrowSyntaxException(UltravioletStrings.StylesheetSyntaxUnterminatedSequence, state);
+                    ThrowUnterminatedSequence(state);
 
                 var token = state.Consume();
                 if (token.TokenType == start)
@@ -203,6 +288,21 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         private static IList<UvssLexerToken> GetTokensBetweenParentheses(UvssParserState state)
         {
             return GetTokensBetweenMatchingPair(state, UvssLexerTokenType.OpenParenthesis, UvssLexerTokenType.CloseParenthesis);
+        }
+
+        /// <summary>
+        /// Advances the parser state beyond any current white space. If the end of the stream is reached,
+        /// a syntax exception is thrown.
+        /// </summary>
+        /// <param name="state">The parser state.</param>
+        private static void AdvanceBeyondWhiteSpaceOrFail(UvssParserState state)
+        {
+            state.AdvanceBeyondWhiteSpace();
+
+            if (state.IsPastEndOfStream)
+            {
+                ThrowUnexpectedEOF(state);
+            }
         }
 
         /// <summary>
@@ -256,10 +356,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// <returns>The <see cref="LoopBehavior"/> value which the consumed token represents.</returns>
         private static LoopBehavior ConsumeOptionalLoopBehavior(UvssParserState state)
         {
-            state.AdvanceBeyondWhiteSpace();
-
-            if (state.IsPastEndOfStream)
-                ThrowSyntaxException(UltravioletStrings.StylesheetSyntaxError, state);
+            AdvanceBeyondWhiteSpaceOrFail(state);
 
             if (state.CurrentToken.TokenType == UvssLexerTokenType.Identifier)
             {
@@ -277,7 +374,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         private static LoopBehavior ConsumeLoopBehavior(UvssParserState state)
         {
             if (state.CurrentToken.TokenType != UvssLexerTokenType.Identifier)
-                ThrowSyntaxException(UltravioletStrings.StylesheetSyntaxError, state);
+                ThrowExpectedToken(state, state.CurrentToken, UvssLexerTokenType.Identifier);
 
             if (String.Equals(state.CurrentToken.Value, "none", StringComparison.OrdinalIgnoreCase))
             {
@@ -295,7 +392,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
                 return LoopBehavior.Reverse;
             }
 
-            ThrowSyntaxException(UltravioletStrings.StylesheetSyntaxError, state);
+            ThrowExpectedValue(state, state.CurrentToken, "none|loop|reverse");
             return LoopBehavior.None;
         }
 
@@ -334,15 +431,26 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
                 return null;
 
             var targetToken = state.TryConsumeNonWhiteSpace();
-            if (!MatchToken(targetToken, UvssLexerTokenType.Identifier, "target"))
-                ThrowSyntaxException(UltravioletStrings.StylesheetSyntaxError, state);
+            MatchTokenOrFail(state, targetToken, UvssLexerTokenType.Identifier, "target");
 
-            state.AdvanceBeyondWhiteSpace();
+            var filter     = ConsumeStoryboardTargetFilter(state);
+            var selector   = ConsumeStoryboardTargetSelector(state);
+            var animations = ConsumeStoryboardAnimationList(state);
 
-            if (state.IsPastEndOfStream)
-                ThrowSyntaxException(UltravioletStrings.StylesheetSyntaxError, state);
+            return new UvssStoryboardTarget(selector, filter, animations);
+        }
+
+        /// <summary>
+        /// Consumes a sequence of tokens representing a storyboard target filter.
+        /// </summary>
+        /// <param name="state">The parser state.</param>
+        /// <returns>A new <see cref="UvssStoryboardTargetFilter"/> object representing the filter that was consumed.</returns>
+        private static UvssStoryboardTargetFilter ConsumeStoryboardTargetFilter(UvssParserState state)
+        {
+            AdvanceBeyondWhiteSpaceOrFail(state);
 
             var filter = new UvssStoryboardTargetFilter();
+
             if (state.CurrentToken.TokenType != UvssLexerTokenType.Identifier)
             {
                 filter.Add("element");
@@ -352,7 +460,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
                 while (state.CurrentToken.TokenType == UvssLexerTokenType.Identifier)
                 {
                     if (state.IsPastEndOfStream)
-                        ThrowSyntaxException(UltravioletStrings.StylesheetSyntaxError, state);
+                        ThrowUnexpectedEOF(state);
 
                     var type = state.CurrentToken.Value;
                     filter.Add(type);
@@ -362,21 +470,28 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
                 }
             }
 
-            if (filter.Count == 0)
-                ThrowSyntaxException(UltravioletStrings.StylesheetSyntaxError, state);
+            return filter;
+        }
 
+        /// <summary>
+        /// Consumes a sequence of tokens representing a storyboard target selector.
+        /// </summary>
+        /// <param name="state">The parser state.</param>
+        /// <returns>A new <see cref="UvssSelector"/> object representing the selector that was consumed.</returns>
+        private static UvssSelector ConsumeStoryboardTargetSelector(UvssParserState state)
+        {
             var selector = default(UvssSelector);
+
             if (state.CurrentToken.TokenType == UvssLexerTokenType.OpenParenthesis)
             {
                 var tokens      = GetTokensBetweenParentheses(state);
                 var tokensState = new UvssParserState(state.Source, tokens);
                 selector        = ConsumeSelector(tokensState, true);
             }
+            
             state.AdvanceBeyondWhiteSpace();
 
-            var animations = ConsumeStoryboardAnimationList(state);
-
-            return new UvssStoryboardTarget(selector, filter, animations);
+            return selector;
         }
 
         /// <summary>
@@ -412,20 +527,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
                 return null;
 
             var animationToken = state.TryConsumeNonWhiteSpace();
-            if (!MatchToken(animationToken, UvssLexerTokenType.Identifier, "animation"))
-                ThrowSyntaxException(UltravioletStrings.StylesheetSyntaxError, state);
+            MatchTokenOrFail(state, animationToken, UvssLexerTokenType.Identifier, "animation");
 
             var propertyToken = state.TryConsumeNonWhiteSpace();
-            if (!MatchToken(propertyToken, UvssLexerTokenType.Identifier))
-                ThrowSyntaxException(UltravioletStrings.StylesheetSyntaxError, state);
+            MatchTokenOrFail(state, propertyToken, UvssLexerTokenType.Identifier);
 
-            state.AdvanceBeyondWhiteSpace();
-
-            if (state.IsPastEndOfStream)
-                ThrowSyntaxException(UltravioletStrings.StylesheetSyntaxError, state);
+            AdvanceBeyondWhiteSpaceOrFail(state);
 
             var keyframes = ConsumeStoryboardKeyframeList(state);
-
             return new UvssStoryboardAnimation(propertyToken.Value.Value, keyframes);
         }
 
@@ -462,38 +571,38 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
                 return null;
 
             var keyframeToken = state.TryConsumeNonWhiteSpace();
-            if (!MatchToken(keyframeToken, UvssLexerTokenType.Identifier, "keyframe"))
-                ThrowSyntaxException(UltravioletStrings.StylesheetSyntaxError, state);
+            MatchTokenOrFail(state, keyframeToken, UvssLexerTokenType.Identifier, "keyframe");
 
-            state.AdvanceBeyondWhiteSpace();
-
-            if (state.IsPastEndOfStream)
-                ThrowSyntaxException(UltravioletStrings.StylesheetSyntaxError, state);
-
-            var time = 0.0;
             var timeToken = state.TryConsumeNonWhiteSpace();
-            if (!MatchToken(timeToken, UvssLexerTokenType.Number))
-                ThrowSyntaxException(UltravioletStrings.StylesheetSyntaxError, state);
+            MatchTokenOrFail(state, timeToken, UvssLexerTokenType.Number);
 
-            time = Double.Parse(timeToken.Value.Value);
+            AdvanceBeyondWhiteSpaceOrFail(state);
 
-            state.AdvanceBeyondWhiteSpace();
-
-            if (state.IsPastEndOfStream)
-                ThrowSyntaxException(UltravioletStrings.StylesheetSyntaxError, state);
-
-            var easing = default(String);
-            if (state.CurrentToken.TokenType == UvssLexerTokenType.Identifier)
-            {
-                easing = state.CurrentToken.Value;
-                state.Consume();
-                state.AdvanceBeyondWhiteSpace();
-            }
-
+            var easing      = ConsumeOptionalEasingFunction(state);
             var valueTokens = GetTokensBetweenCurlyBraces(state);
             var value       = String.Join(String.Empty, valueTokens.Select(x => x.Value));
+            var time        = Double.Parse(timeToken.Value.Value);
 
             return new UvssStoryboardKeyframe(easing, value, time);
+        }
+
+        /// <summary>
+        /// Consumes an optional token which represents an easing function.
+        /// </summary>
+        /// <param name="state">The parser state.</param>
+        /// <returns>A string which represents one of the standard easing functions.</returns>
+        private static String ConsumeOptionalEasingFunction(UvssParserState state)
+        {
+            if (state.CurrentToken.TokenType == UvssLexerTokenType.Identifier)
+            {
+                var easing = state.CurrentToken.Value;
+
+                state.Advance();
+                state.AdvanceBeyondWhiteSpace();
+
+                return easing;
+            }
+            return null;
         }
 
         /// <summary>
@@ -512,10 +621,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
                 var selector = ConsumeSelector(state);
                 selectors.Add(selector);
 
-                state.AdvanceBeyondWhiteSpace();
-
-                if (state.IsPastEndOfStream)
-                    ThrowSyntaxException(UltravioletStrings.StylesheetSyntaxError, state);
+                AdvanceBeyondWhiteSpaceOrFail(state);
 
                 if (state.CurrentToken.TokenType != UvssLexerTokenType.Comma)
                     break;
@@ -541,12 +647,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
 
             while (true)
             {
-                var part = ConsumeSelectorPart(state, allowEOF);
+                var part = ConsumeSelectorPart(state, allowEOF, !pseudoClass);
                 if (part != null)
                 {
-                    if (pseudoClass)
-                        ThrowSyntaxException(UltravioletStrings.StylesheetSyntaxError, state);
-
                     if (!String.IsNullOrEmpty(part.PseudoClass))
                         pseudoClass = true;
 
@@ -559,7 +662,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
                     {
                         break;
                     }
-                    ThrowSyntaxException(UltravioletStrings.StylesheetSyntaxError, state);
+                    ThrowUnexpectedEOF(state);
                 }
 
                 if (state.CurrentToken.TokenType == UvssLexerTokenType.Comma)
@@ -579,8 +682,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// </summary>
         /// <param name="state">The parser state.</param>
         /// <param name="allowEOF">A value indicating whether hitting the end of file is valid.</param>
+        /// <param name="allowPseudoClass">A value indicating whether parts with pseduo classes are valid.</param>
         /// <returns>A new <see cref="UvssSelectorPart"/> object representing the selector part that was consumed.</returns>
-        private static UvssSelectorPart ConsumeSelectorPart(UvssParserState state, Boolean allowEOF = false)
+        private static UvssSelectorPart ConsumeSelectorPart(UvssParserState state, Boolean allowEOF, Boolean allowPseudoClass)
         {
             var element     = default(String);
             var id          = default(String);
@@ -596,7 +700,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
                     {
                         break;
                     }
-                    ThrowSyntaxException(UltravioletStrings.StylesheetSyntaxError, state);
+                    ThrowUnexpectedEOF(state);
                 }
 
                 var token = state.CurrentToken;
@@ -612,8 +716,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
 
                 if (token.TokenType == UvssLexerTokenType.PseudoClass)
                 {
-                    if (!String.IsNullOrEmpty(pseudoClass))
-                        ThrowSyntaxException(UltravioletStrings.StylesheetSyntaxError, state);
+                    if (!allowPseudoClass || !String.IsNullOrEmpty(pseudoClass))
+                        ThrowUnexpectedToken(state, token);
 
                     state.Advance();
 
@@ -624,14 +728,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
                 if (token.TokenType == UvssLexerTokenType.Identifier)
                 {
                     if (!String.IsNullOrEmpty(pseudoClass))
-                        ThrowSyntaxException(UltravioletStrings.StylesheetSyntaxError, state);
+                        ThrowUnexpectedToken(state, token);
 
                     state.Advance();
 
                     if (IsSelectorForElement(token.Value))
                     {
                         if (element != null)
-                            ThrowSyntaxException(UltravioletStrings.StylesheetSyntaxError, state);
+                            ThrowUnexpectedValue(state, token);
 
                         valid   = true;
                         element = token.Value;
@@ -641,7 +745,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
                     if (IsSelectorForID(token.Value))
                     {
                         if (id != null)
-                            ThrowSyntaxException(UltravioletStrings.StylesheetSyntaxError, state);
+                            ThrowUnexpectedValue(state, token);
 
                         valid = true;
                         id    = token.Value;
@@ -653,7 +757,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
                     continue;
                 }
 
-                ThrowSyntaxException(UltravioletStrings.StylesheetSyntaxError, state);
+                ThrowUnexpectedToken(state, token);
             }
 
             return valid ? new UvssSelectorPart(element, id, pseudoClass, classes) : null;
@@ -697,13 +801,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
             var qualifierImportant = false;
 
             var nameToken = state.TryConsumeNonWhiteSpace();
-            if (nameToken == null || nameToken.Value.TokenType != UvssLexerTokenType.StyleName)
-                ThrowSyntaxException(UltravioletStrings.StylesheetSyntaxError, state);
+            MatchTokenOrFail(state, nameToken, UvssLexerTokenType.StyleName);
 
-            state.AdvanceBeyondWhiteSpace();
-
-            if (state.IsPastEndOfStream)
-                ThrowSyntaxException(UltravioletStrings.StylesheetSyntaxError, state);
+            AdvanceBeyondWhiteSpaceOrFail(state);
 
             UvssStyleArgumentsCollection arguments;
             if (state.CurrentToken.TokenType == UvssLexerTokenType.OpenParenthesis)
@@ -717,8 +817,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
             }
 
             var colonToken = state.TryConsumeNonWhiteSpace();
-            if (colonToken == null || colonToken.Value.TokenType != UvssLexerTokenType.Colon)
-                ThrowSyntaxException(UltravioletStrings.StylesheetSyntaxError, state);
+            MatchTokenOrFail(state, colonToken, UvssLexerTokenType.Colon);
 
             var valueTokens = new List<UvssLexerToken>();
             while (!state.IsPastEndOfStream)
@@ -782,7 +881,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
                     break;
 
                 if (comma.Value.TokenType != UvssLexerTokenType.Comma)
-                    ThrowSyntaxException(UltravioletStrings.StylesheetSyntaxError, argsState);
+                    ThrowExpectedToken(state, comma.Value, UvssLexerTokenType.Comma);
             }
 
             return new UvssStyleArgumentsCollection(args);
@@ -797,10 +896,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         private static void ValidateStyleArguments(UvssParserState state, String style, UvssStyleArgumentsCollection arguments)
         {
             if (!String.Equals(style, "transition", StringComparison.OrdinalIgnoreCase))
-                ThrowSyntaxException(UltravioletStrings.StylesheetSyntaxError, state);
+                ThrowInvalidStyleArguments(state, style);
 
             if (arguments.Count != 2 && arguments.Count != 3)
-                ThrowSyntaxException(UltravioletStrings.StylesheetSyntaxError, state);
+                ThrowInvalidStyleArguments(state, style);
         }
     }
 }

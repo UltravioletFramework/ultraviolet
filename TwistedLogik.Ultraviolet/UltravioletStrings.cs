@@ -119,6 +119,13 @@ namespace TwistedLogik.Ultraviolet
         public static readonly StringResource StylesheetSyntaxError                = new StringResource(StringDatabase, "STYLESHEET_SYNTAX_ERROR");
         public static readonly StringResource StylesheetSyntaxUnterminatedString   = new StringResource(StringDatabase, "STYLESHEET_SYNTAX_UNTERMINATED_STRING");
         public static readonly StringResource StylesheetSyntaxUnterminatedSequence = new StringResource(StringDatabase, "STYLESHEET_SYNTAX_UNTERMINATED_SEQUENCE");
+        public static readonly StringResource StylesheetSyntaxInvalidStyleArgs     = new StringResource(StringDatabase, "STYLESHEET_SYNTAX_INVALID_STYLE_ARGS");
+        public static readonly StringResource StylesheetSyntaxExpectedToken        = new StringResource(StringDatabase, "STYLESHEET_SYNTAX_EXPECTED_TOKEN");
+        public static readonly StringResource StylesheetSyntaxUnexpectedToken      = new StringResource(StringDatabase, "STYLESHEET_SYNTAX_UNEXPECTED_TOKEN");
+        public static readonly StringResource StylesheetSyntaxExpectedValue        = new StringResource(StringDatabase, "STYLESHEET_SYNTAX_EXPECTED_VALUE");
+        public static readonly StringResource StylesheetSyntaxUnexpectedValue      = new StringResource(StringDatabase, "STYLESHEET_SYNTAX_UNEXPECTED_VALUE");
+        public static readonly StringResource StylesheetSyntaxUnexpectedEOF        = new StringResource(StringDatabase, "STYLESHEET_SYNTAX_UNEXPECTED_EOF");
+        public static readonly StringResource StylesheetInvalidCharacter           = new StringResource(StringDatabase, "STYLESHEET_SYNTAX_INVALID_CHARACTER");
         public static readonly StringResource IsNotDependencyObject                = new StringResource(StringDatabase, "IS_NOT_DEPENDENCY_OBJECT");
         public static readonly StringResource DependencyPropertyDoesNotExist       = new StringResource(StringDatabase, "DEPENDENCY_PROPERTY_DOES_NOT_EXIST");
         public static readonly StringResource DependencyPropertyAlreadyRegistered  = new StringResource(StringDatabase, "DEPENDENCY_PROPERTY_ALREADY_REGISTERED");

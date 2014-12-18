@@ -17,6 +17,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         {
             var output     = new List<UvssLexerToken>();
             var ix         = 0;
+            var line       = 0;
             var braces     = 0;
             var parens     = 0;
             var storyboard = false;
@@ -24,36 +25,36 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
 
             while (ix < input.Length)
             {
-                if (ConsumeWhiteSpace(input, output, ref ix))
+                if (ConsumeWhiteSpace(input, output, ref line, ref ix))
                     continue;
                 if (!storyboard && !arglist)
                 {
                     if (braces > 0)
                     {
-                        if (ConsumeStyleName(input, output, ref ix))
+                        if (ConsumeStyleName(input, output, line, ref ix))
                             continue;
-                        if (ConsumeStyleQualifier(input, output, ref ix))
+                        if (ConsumeStyleQualifier(input, output, line, ref ix))
                             continue;
                     }
                     else
                     {
-                        if (ConsumePseudoClass(input, output, ref ix))
+                        if (ConsumePseudoClass(input, output, line, ref ix))
                             continue;
                     }
                 }
-                if (ConsumeIdentifier(input, output, ref ix, ref storyboard))
+                if (ConsumeIdentifier(input, output, line, ref ix, ref storyboard))
                     continue;
-                if (ConsumeNumber(input, output, ref ix))
+                if (ConsumeNumber(input, output, line, ref ix))
                     continue;
-                if (ConsumeString(input, output, ref ix))
+                if (ConsumeString(input, output, line, ref ix))
                     continue;
-                if (ConsumeOpenParenthesis(input, output, ref ix))
+                if (ConsumeOpenParenthesis(input, output, line, ref ix))
                 {
                     parens++;
                     arglist = true;
                     continue;
                 }
-                if (ConsumeCloseParenthesis(input, output, ref ix))
+                if (ConsumeCloseParenthesis(input, output, line, ref ix))
                 {
                     parens--;
                     if (parens == 0)
@@ -62,12 +63,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
                     }
                     continue;
                 }
-                if (ConsumeOpenCurlyBrace(input, output, ref ix))
+                if (ConsumeOpenCurlyBrace(input, output, line, ref ix))
                 {
                     braces++;
                     continue;
                 }
-                if (ConsumeCloseCurlyBrace(input, output, ref ix))
+                if (ConsumeCloseCurlyBrace(input, output, line, ref ix))
                 {
                     braces--;
                     if (braces == 0)
@@ -76,53 +77,48 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
                     }
                     continue;
                 }
-                if (ConsumeColon(input, output, ref ix))
+                if (ConsumeColon(input, output, line, ref ix))
                     continue;
-                if (ConsumeSemicolon(input, output, ref ix))
+                if (ConsumeSemicolon(input, output, line, ref ix))
                     continue;
-                if (ConsumeComma(input, output, ref ix))
+                if (ConsumeComma(input, output, line, ref ix))
                     continue;
 
-                var message = GetSyntaxErrorCallout(input, ix);
-                throw new UvssException(UltravioletStrings.StylesheetSyntaxError.Format(message));
+                throw new UvssException(UltravioletStrings.StylesheetInvalidCharacter.Format(line, input[ix]));
             }
 
             return output;
         }
 
         /// <summary>
-        /// Gets the callout string provided by syntax exceptions.
-        /// </summary>
-        private static String GetSyntaxErrorCallout(String input, Int32 ix)
-        {
-            const Int32 CalloutLength = 32;
-
-            var messageStart  = Math.Max(0, ix - (CalloutLength / 2));
-            var messageLength = Math.Min(CalloutLength, input.Length - messageStart);
-            var message       = input.Substring(messageStart, messageLength);
-
-            return message;
-        }
-
-        /// <summary>
         /// Attempts to consume a WhiteSpace token.
         /// </summary>
-        private static Boolean ConsumeWhiteSpace(String input, IList<UvssLexerToken> output, ref Int32 ix)
+        private static Boolean ConsumeWhiteSpace(String input, IList<UvssLexerToken> output, ref Int32 line, ref Int32 ix)
         {
-            if (!IsValidInWhiteSpace(input[ix]))
+            if (!IsValidStartWhiteSpace(input[ix]))
                 return false;
 
-            var start  = ix;
-            var length = 0;
+            var start   = ix;
+            var length  = 0;
+            var newline = false;
 
-            while (ix < input.Length && IsValidInWhiteSpace(input[ix])) 
-            { 
+            do
+            {
+                if (input[ix] == '\n')
+                {
+                    newline = true;
+                }
                 ix++;
                 length++;
-            }
+            } while (ix < input.Length && IsValidInWhiteSpace(input[ix]));
 
-            var token = new UvssLexerToken(UvssLexerTokenType.WhiteSpace, start, length);
+            var token = new UvssLexerToken(UvssLexerTokenType.WhiteSpace, start, length, line);
             output.Add(token);
+
+            if (newline)
+            {
+                line++;
+            }
 
             return true;
         }
@@ -130,15 +126,23 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// <summary>
         /// Evaluates whether the specified character is valid in a WhiteSpace token.
         /// </summary>
-        private static Boolean IsValidInWhiteSpace(Char c)
+        private static Boolean IsValidStartWhiteSpace(Char c)
         {
             return Char.IsWhiteSpace(c);
         }
 
         /// <summary>
+        /// Evaluates whether the specified character is valid in a WhiteSpace token.
+        /// </summary>
+        private static Boolean IsValidInWhiteSpace(Char c)
+        {
+            return c != '\n' && Char.IsWhiteSpace(c);
+        }
+
+        /// <summary>
         /// Attempts to consume a StyleName token.
         /// </summary>
-        private static Boolean ConsumeStyleName(String input, IList<UvssLexerToken> output, ref Int32 ix)
+        private static Boolean ConsumeStyleName(String input, IList<UvssLexerToken> output, Int32 line, ref Int32 ix)
         {
             if (!IsValidStartStyleName(input[ix]))
                 return false;
@@ -150,7 +154,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
             while (ix < input.Length && IsValidInStyleName(input[ix], ref qualified)) { ix++; length++; }
 
             var value = input.Substring(start, length);
-            var token = new UvssLexerToken(UvssLexerTokenType.StyleName, start, length, value);
+            var token = new UvssLexerToken(UvssLexerTokenType.StyleName, start, length, line, value);
             output.Add(token);
 
             return true;
@@ -184,7 +188,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// <summary>
         /// Attempts to consume a StyleQualifier token.
         /// </summary>
-        private static Boolean ConsumeStyleQualifier(String input, IList<UvssLexerToken> output, ref Int32 ix)
+        private static Boolean ConsumeStyleQualifier(String input, IList<UvssLexerToken> output, Int32 line, ref Int32 ix)
         {
             if (!IsValidStartStyleQualifier(input[ix]))
                 return false;
@@ -195,7 +199,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
             while (ix < input.Length && IsValidInStyleQualifier(input[ix])) { ix++; length++; }
 
             var value = input.Substring(start, length);
-            var token = new UvssLexerToken(UvssLexerTokenType.StyleQualifier, start, length, value);
+            var token = new UvssLexerToken(UvssLexerTokenType.StyleQualifier, start, length, line, value);
             output.Add(token);
 
             return true;
@@ -220,7 +224,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// <summary>
         /// Attempts to consume a PseudoClass token.
         /// </summary>
-        private static Boolean ConsumePseudoClass(String input, IList<UvssLexerToken> output, ref Int32 ix)
+        private static Boolean ConsumePseudoClass(String input, IList<UvssLexerToken> output, Int32 line, ref Int32 ix)
         {
             if (!IsValidStartPseudoClass(input[ix]))
                 return false;
@@ -231,7 +235,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
             while (ix < input.Length && IsValidInPseudoClass(input[ix])) { ix++; length++; }
 
             var value = input.Substring(start, length);
-            var token = new UvssLexerToken(UvssLexerTokenType.PseudoClass, start, length, value);
+            var token = new UvssLexerToken(UvssLexerTokenType.PseudoClass, start, length, line, value);
             output.Add(token);
 
             return true;
@@ -256,7 +260,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// <summary>
         /// Attempts to consume an Identifier token.
         /// </summary>
-        private static Boolean ConsumeIdentifier(String input, IList<UvssLexerToken> output, ref Int32 ix, ref Boolean storyboard)
+        private static Boolean ConsumeIdentifier(String input, IList<UvssLexerToken> output, Int32 line, ref Int32 ix, ref Boolean storyboard)
         {
             if (!IsValidStartIdentifier(input[ix]))
                 return false;
@@ -267,7 +271,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
             while (ix < input.Length && IsValidInIdentifier(input[ix])) { ix++; length++; }
 
             var value = input.Substring(start, length);
-            var token = new UvssLexerToken(UvssLexerTokenType.Identifier, start, length, value);
+            var token = new UvssLexerToken(UvssLexerTokenType.Identifier, start, length, line, value);
             output.Add(token);
 
             if (value.StartsWith("@"))
@@ -295,7 +299,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// <summary>
         /// Attempts to consume a Number token.
         /// </summary>
-        private static Boolean ConsumeNumber(String input, IList<UvssLexerToken> output, ref Int32 ix)
+        private static Boolean ConsumeNumber(String input, IList<UvssLexerToken> output, Int32 line, ref Int32 ix)
         {
             if (!Char.IsDigit(input[ix]))
                 return false;
@@ -307,7 +311,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
             while (ix < input.Length && IsValidInNumber(input[ix], ref dec)) { ix++; length++; }
 
             var value = input.Substring(start, length);
-            var token = new UvssLexerToken(UvssLexerTokenType.Number, start, length, value);
+            var token = new UvssLexerToken(UvssLexerTokenType.Number, start, length, line, value);
             output.Add(token);
 
             return true;
@@ -333,7 +337,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// <summary>
         /// Attempts to consume a String token.
         /// </summary>
-        private static Boolean ConsumeString(String input, IList<UvssLexerToken> output, ref Int32 ix)
+        private static Boolean ConsumeString(String input, IList<UvssLexerToken> output, Int32 line, ref Int32 ix)
         {
             if (input[ix] != '"')
                 return false;
@@ -345,8 +349,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
             {
                 if (ix + 1 == input.Length && input[ix] != '"')
                 {
-                    var message = GetSyntaxErrorCallout(input, ix);
-                    throw new UvssException(UltravioletStrings.StylesheetSyntaxUnterminatedString.Format(message));
+                    throw new UvssException(UltravioletStrings.StylesheetSyntaxUnterminatedString.Format(line));
                 }
 
                 var c = input[ix++];
@@ -357,7 +360,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
             }
 
             var value = input.Substring(start + 1, length - 2);
-            var token = new UvssLexerToken(UvssLexerTokenType.String, start, length, value);
+            var token = new UvssLexerToken(UvssLexerTokenType.String, start, length, line, value);
             output.Add(token);
 
             return true;
@@ -366,11 +369,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// <summary>
         /// Attempts to consume a punctuation token.
         /// </summary>
-        private static Boolean ConsumePunctuation(UvssLexerTokenType type, Char punctuation, String input, IList<UvssLexerToken> output, ref Int32 ix)
+        private static Boolean ConsumePunctuation(UvssLexerTokenType type, Char punctuation, String input, IList<UvssLexerToken> output, Int32 line, ref Int32 ix)
         {
             if (input[ix] == punctuation)
             {
-                var token = new UvssLexerToken(type, ix, 1);
+                var token = new UvssLexerToken(type, ix, 1, line);
                 output.Add(token);
 
                 ix++;
@@ -383,57 +386,57 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// <summary>
         /// Attempts to consume an OpenParenthesis token.
         /// </summary>
-        private static Boolean ConsumeOpenParenthesis(String input, IList<UvssLexerToken> output, ref Int32 ix)
+        private static Boolean ConsumeOpenParenthesis(String input, IList<UvssLexerToken> output, Int32 line, ref Int32 ix)
         {
-            return ConsumePunctuation(UvssLexerTokenType.OpenParenthesis, '(', input, output, ref ix);
+            return ConsumePunctuation(UvssLexerTokenType.OpenParenthesis, '(', input, output, line, ref ix);
         }
 
         /// <summary>
         /// Attempts to consume a CloseParenthesis token.
         /// </summary>
-        private static Boolean ConsumeCloseParenthesis(String input, IList<UvssLexerToken> output, ref Int32 ix)
+        private static Boolean ConsumeCloseParenthesis(String input, IList<UvssLexerToken> output, Int32 line, ref Int32 ix)
         {
-            return ConsumePunctuation(UvssLexerTokenType.CloseParenthesis, ')', input, output, ref ix);
+            return ConsumePunctuation(UvssLexerTokenType.CloseParenthesis, ')', input, output, line, ref ix);
         }
 
         /// <summary>
         /// Attempts to consume an OpenCurlyBrace token.
         /// </summary>
-        private static Boolean ConsumeOpenCurlyBrace(String input, IList<UvssLexerToken> output, ref Int32 ix)
+        private static Boolean ConsumeOpenCurlyBrace(String input, IList<UvssLexerToken> output, Int32 line, ref Int32 ix)
         {
-            return ConsumePunctuation(UvssLexerTokenType.OpenCurlyBrace, '{', input, output, ref ix);
+            return ConsumePunctuation(UvssLexerTokenType.OpenCurlyBrace, '{', input, output, line, ref ix);
         }
 
         /// <summary>
         /// Attempts to consume a CloseCurlyBrace token.
         /// </summary>
-        private static Boolean ConsumeCloseCurlyBrace(String input, IList<UvssLexerToken> output, ref Int32 ix)
+        private static Boolean ConsumeCloseCurlyBrace(String input, IList<UvssLexerToken> output, Int32 line, ref Int32 ix)
         {
-            return ConsumePunctuation(UvssLexerTokenType.CloseCurlyBrace, '}', input, output, ref ix);
+            return ConsumePunctuation(UvssLexerTokenType.CloseCurlyBrace, '}', input, output, line, ref ix);
         }
 
         /// <summary>
         /// Attempts to consume a Colon token.
         /// </summary>
-        private static Boolean ConsumeColon(String input, IList<UvssLexerToken> output, ref Int32 ix)
+        private static Boolean ConsumeColon(String input, IList<UvssLexerToken> output, Int32 line, ref Int32 ix)
         {
-            return ConsumePunctuation(UvssLexerTokenType.Colon, ':', input, output, ref ix);
+            return ConsumePunctuation(UvssLexerTokenType.Colon, ':', input, output, line, ref ix);
         }
 
         /// <summary>
         /// Attempts to consume a Semicolon token.
         /// </summary>
-        private static Boolean ConsumeSemicolon(String input, IList<UvssLexerToken> output, ref Int32 ix)
+        private static Boolean ConsumeSemicolon(String input, IList<UvssLexerToken> output, Int32 line, ref Int32 ix)
         {
-            return ConsumePunctuation(UvssLexerTokenType.Semicolon, ';', input, output, ref ix);
+            return ConsumePunctuation(UvssLexerTokenType.Semicolon, ';', input, output, line, ref ix);
         }
 
         /// <summary>
         /// Attempts to consume a Comma token.
         /// </summary>
-        private static Boolean ConsumeComma(String input, IList<UvssLexerToken> output, ref Int32 ix)
+        private static Boolean ConsumeComma(String input, IList<UvssLexerToken> output, Int32 line, ref Int32 ix)
         {
-            return ConsumePunctuation(UvssLexerTokenType.Comma, ',', input, output, ref ix);
+            return ConsumePunctuation(UvssLexerTokenType.Comma, ',', input, output, line, ref ix);
         }
     }
 }

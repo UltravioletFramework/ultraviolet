@@ -13,12 +13,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// <param name="tokenType">The token's type.</param>
         /// <param name="start">The index of the token within the source text.</param>
         /// <param name="length">The length of the token within the source text.</param>
+        /// <param name="line">The line of source code that contains the token.</param>
         /// <param name="value">The token's associated value.</param>
-        public UvssLexerToken(UvssLexerTokenType tokenType, Int32 start, Int32 length, String value = null)
+        public UvssLexerToken(UvssLexerTokenType tokenType, Int32 start, Int32 length, Int32 line, String value = null)
         {
             this.tokenType = tokenType;
             this.start     = start;
             this.length    = length;
+            this.line      = line;
 
             switch (tokenType)
             {
@@ -85,6 +87,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         }
 
         /// <summary>
+        /// Gets the line of source code that contains the token.
+        /// </summary>
+        public Int32 Line
+        {
+            get { return line; }
+        }
+
+        /// <summary>
         /// Gets the token's associated value, if it has one.
         /// </summary>
         public String Value
@@ -96,6 +106,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         private readonly UvssLexerTokenType tokenType;
         private readonly Int32 start;
         private readonly Int32 length;
+        private readonly Int32 line;
         private readonly String value;
     }
 }
