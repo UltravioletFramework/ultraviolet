@@ -45,7 +45,7 @@ namespace TwistedLogik.Ultraviolet.Android.Platform
         {
             get
             {
-                return (metrics == null) ? 1 : (160f / 72f) * metrics.Density;
+                return (metrics == null) ? 1 : (160f / 96f) * metrics.Density;
             }
         }
 

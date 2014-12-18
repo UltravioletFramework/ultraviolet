@@ -358,21 +358,21 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
-        /// Gets the element's width.
+        /// Gets the element's width in device independent pixel units (1/96 of an inch).
         /// </summary>
-        public Int32? Width
+        public Double Width
         {
-            get { return GetValue<Int32?>(dpWidth); }
-            set { SetValue<Int32?>(dpWidth, value); }
+            get { return GetValue<Double>(dpWidth); }
+            set { SetValue<Double>(dpWidth, value); }
         }
 
         /// <summary>
-        /// Gets the element's height.
+        /// Gets the element's height in device independent pixel units (1/96 of an inch).
         /// </summary>
-        public Int32? Height
+        public Double Height
         {
-            get { return GetValue<Int32?>(dpHeight); }
-            set { SetValue<Int32?>(dpHeight, value); }
+            get { return GetValue<Double>(dpHeight); }
+            set { SetValue<Double>(dpHeight, value); }
         }
 
         /// <summary>
@@ -1521,11 +1521,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             new DependencyPropertyMetadata(HandleEnabledChanged, () => true, DependencyPropertyOptions.None));
 
         [Styled("width")]
-        private static readonly DependencyProperty dpWidth = DependencyProperty.Register("Width", typeof(Int32?), typeof(UIElement),
-            new DependencyPropertyMetadata(HandleWidthChanged, null, DependencyPropertyOptions.None));
+        private static readonly DependencyProperty dpWidth = DependencyProperty.Register("Width", typeof(Double), typeof(UIElement),
+            new DependencyPropertyMetadata(HandleWidthChanged, () => Double.NaN, DependencyPropertyOptions.None));
         [Styled("height")]
-        private static readonly DependencyProperty dpHeight = DependencyProperty.Register("Height", typeof(Int32?), typeof(UIElement),
-            new DependencyPropertyMetadata(HandleHeightChanged, null, DependencyPropertyOptions.None));
+        private static readonly DependencyProperty dpHeight = DependencyProperty.Register("Height", typeof(Double), typeof(UIElement),
+            new DependencyPropertyMetadata(HandleHeightChanged, () => Double.NaN, DependencyPropertyOptions.None));
 
         [Styled("visible")]
         private static readonly DependencyProperty dpVisible = DependencyProperty.Register("Visible", typeof(Boolean), typeof(UIElement),

@@ -27,13 +27,13 @@ namespace TwistedLogik.Ultraviolet.Desktop.Platform
         /// <inheritdoc/>
         public override Single DensityX
         {
-            get { return 72f; }
+            get { return 96f; }
         }
 
         /// <inheritdoc/>
         public override Single DensityY
         {
-            get { return 72f; }
+            get { return 96f; }
         }
 
         /// <inheritdoc/>

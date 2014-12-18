@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
 using TwistedLogik.Ultraviolet.UI.Presentation.Styles;
@@ -29,11 +30,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         /// <param name="element">The element to evaluate.</param>
         /// <returns>The distance between the left edge of the canvas and the left edge of the specified element.</returns>
-        public static Int32? GetLeft(UIElement element)
+        public static Double GetLeft(UIElement element)
         {
             Contract.Require(element, "element");
 
-            return element.GetValue<Int32?>(LeftProperty);
+            return element.GetValue<Double>(LeftProperty);
         }
 
         /// <summary>
@@ -41,11 +42,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         /// <param name="element">The element to evaluate.</param>
         /// <returns>The distance between the top edge of the canvas and the top edge of the specified element.</returns>
-        public static Int32? GetTop(UIElement element)
+        public static Double GetTop(UIElement element)
         {
             Contract.Require(element, "element");
 
-            return element.GetValue<Int32?>(TopProperty);
+            return element.GetValue<Double>(TopProperty);
         }
 
         /// <summary>
@@ -53,11 +54,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         /// <param name="element">The element to evaluate.</param>
         /// <returns>The distance between the right edge of the canvas and the right edge of the specified element.</returns>
-        public static Int32? GetRight(UIElement element)
+        public static Double GetRight(UIElement element)
         {
             Contract.Require(element, "element");
 
-            return element.GetValue<Int32?>(RightProperty);
+            return element.GetValue<Double>(RightProperty);
         }
 
         /// <summary>
@@ -65,11 +66,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         /// <param name="element">The element to evaluate.</param>
         /// <returns>The distance between the bottom edge of the canvas and the bottom edge of the specified element.</returns>
-        public static Int32? GetBottom(UIElement element)
+        public static Double GetBottom(UIElement element)
         {
             Contract.Require(element, "element");
 
-            return element.GetValue<Int32?>(BottomProperty);
+            return element.GetValue<Double>(BottomProperty);
         }
 
         /// <summary>
@@ -77,11 +78,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         /// <param name="element">The element to modify.</param>
         /// <param name="value">The distance between the left edge of the canvas and the left edge of the specified element.</param>
-        public static void SetLeft(UIElement element, Int32? value)
+        public static void SetLeft(UIElement element, Double value)
         {
             Contract.Require(element, "element");
 
-            element.SetValue<Int32?>(LeftProperty, value);
+            element.SetValue<Double>(LeftProperty, value);
         }
 
         /// <summary>
@@ -89,11 +90,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         /// <param name="element">The element to modify.</param>
         /// <param name="value">The distance between the top edge of the canvas and the top edge of the specified element.</param>
-        public static void SetTop(UIElement element, Int32? value)
+        public static void SetTop(UIElement element, Double value)
         {
             Contract.Require(element, "element");
 
-            element.SetValue<Int32?>(TopProperty, value);
+            element.SetValue<Double>(TopProperty, value);
         }
 
         /// <summary>
@@ -101,11 +102,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         /// <param name="element">The element to modify.</param>
         /// <param name="value">The distance between the right edge of the canvas and the right edge of the specified element.</param>
-        public static void SetRight(UIElement element, Int32? value)
+        public static void SetRight(UIElement element, Double value)
         {
             Contract.Require(element, "element");
 
-            element.SetValue<Int32?>(RightProperty, value);
+            element.SetValue<Double>(RightProperty, value);
         }
 
         /// <summary>
@@ -113,46 +114,48 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         /// <param name="element">The element to modify.</param>
         /// <param name="value">The distance between the bottom edge of the canvas and the bottom edge of the specified element.</param>
-        public static void SetBottom(UIElement element, Int32? value)
+        public static void SetBottom(UIElement element, Double value)
         {
             Contract.Require(element, "element");
 
-            element.SetValue<Int32?>(BottomProperty, value);
+            element.SetValue<Double>(BottomProperty, value);
         }
 
         /// <summary>
         /// Gets or sets a value indicating the distance between the left edge of the canvas and the left edge of the element.
         /// </summary>
         [Styled("left")]
-        public static readonly DependencyProperty LeftProperty = DependencyProperty.Register("Left", typeof(Int32?), typeof(Canvas),
-            new DependencyPropertyMetadata(OnLayoutPropertyChanged, null, DependencyPropertyOptions.None));
+        public static readonly DependencyProperty LeftProperty = DependencyProperty.Register("Left", typeof(Double), typeof(Canvas),
+            new DependencyPropertyMetadata(OnLayoutPropertyChanged, () => Double.NaN, DependencyPropertyOptions.None));
 
         /// <summary>
         /// Gets or sets a value indicating the distance between the top edge of the canvas and the top edge of the element.
         /// </summary>
         [Styled("top")]
-        public static readonly DependencyProperty TopProperty = DependencyProperty.Register("Top", typeof(Int32?), typeof(Canvas),
-            new DependencyPropertyMetadata(OnLayoutPropertyChanged, null, DependencyPropertyOptions.None));
+        public static readonly DependencyProperty TopProperty = DependencyProperty.Register("Top", typeof(Double), typeof(Canvas),
+            new DependencyPropertyMetadata(OnLayoutPropertyChanged, () => Double.NaN, DependencyPropertyOptions.None));
 
         /// <summary>
         /// Gets or sets a value indicating the distance between the right edge of the canvas and the right edge of the element.
         /// </summary>
         [Styled("right")]
-        public static readonly DependencyProperty RightProperty = DependencyProperty.Register("Right", typeof(Int32?), typeof(Canvas),
-            new DependencyPropertyMetadata(OnLayoutPropertyChanged, null, DependencyPropertyOptions.None));
+        public static readonly DependencyProperty RightProperty = DependencyProperty.Register("Right", typeof(Double), typeof(Canvas),
+            new DependencyPropertyMetadata(OnLayoutPropertyChanged, () => Double.NaN, DependencyPropertyOptions.None));
 
         /// <summary>
         /// Gets or sets a value indicating the distance between the bottom edge of the canvas and the bottom edge of the element.
         /// </summary>
         [Styled("bottom")]
-        public static readonly DependencyProperty BottomProperty = DependencyProperty.Register("Bottom", typeof(Int32?), typeof(Canvas),
-            new DependencyPropertyMetadata(OnLayoutPropertyChanged, null, DependencyPropertyOptions.None));
+        public static readonly DependencyProperty BottomProperty = DependencyProperty.Register("Bottom", typeof(Double), typeof(Canvas),
+            new DependencyPropertyMetadata(OnLayoutPropertyChanged, () => Double.NaN, DependencyPropertyOptions.None));
 
         /// <inheritdoc/>
         protected override Rectangle CalculateLayoutArea(UIElement child)
         {
             if (View == null)
                 return Rectangle.Empty;
+
+            var display = Ultraviolet.GetPlatform().Displays.First();
 
             var left   = GetLeft(child);
             var top    = GetTop(child);
@@ -161,58 +164,65 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             var width  = child.Width;
             var height = child.Height;
 
+            var widthpx  = (Int32?)null;
+            var heightpx = (Int32?)null;
+
             // If we have neither left nor right, assume left: 0
-            if (left == null && right == null)
+            if (Double.IsNaN(left) && Double.IsNaN(right))
                 left = 0;
 
             // If we have neither top nor bottom, assume top: 0
-            if (top == null && bottom == null)
+            if (Double.IsNaN(top) && Double.IsNaN(bottom))
                 top = 0;
 
             // If we have both left and right, calculate width
-            if (left != null && right != null)
-                width = CalculatedWidth - (left.GetValueOrDefault() + right.GetValueOrDefault());
+            if (!Double.IsNaN(left) && !Double.IsNaN(right))
+                width = CalculatedWidth - (left + right);
 
             // If we have both top and bottom, calculate height
-            if (top != null && bottom != null)
-                height = CalculatedHeight - (top.GetValueOrDefault() + bottom.GetValueOrDefault());
+            if (!Double.IsNaN(top) && !Double.IsNaN(bottom))
+                height = CalculatedHeight - (top + bottom);
+
+            // Convert 
+            widthpx  = Double.IsNaN(width) ? (Int32?)null : display.DipsToPixels(width);
+            heightpx = Double.IsNaN(height) ? (Int32?)null : display.DipsToPixels(height);
 
             // If we're missing a dimension, calculate the recommended dimension.
-            if (width == null || height == null)
-                child.CalculateRecommendedSize(ref width, ref height);
+            if (widthpx == null || heightpx == null)
+                child.CalculateRecommendedSize(ref widthpx, ref heightpx);
 
             // If we have no width, assume 0
-            if (width == null)
-                width = 0;
+            if (widthpx == null)
+                widthpx = 0;
 
             // If we have no height, assume 0
-            if (height == null)
-                height = 0;
+            if (heightpx == null)
+                heightpx = 0;
 
             // Make sure we don't have negative dimensions.
-            width  = Math.Max(0, width.GetValueOrDefault());
-            height = Math.Max(0, height.GetValueOrDefault());
+            widthpx  = Math.Max(0, widthpx.GetValueOrDefault());
+            heightpx = Math.Max(0, heightpx.GetValueOrDefault());
 
             // Calculate the element's layout area.
             var x = 0;
             var y = 0;
-            if (left != null)
+            if (!Double.IsNaN(left))
             {
-                x = left.GetValueOrDefault();
+                x = display.DipsToPixels(left);
             }
             else
             {
-                x = CalculatedWidth - (right.GetValueOrDefault() + width.GetValueOrDefault());
+                x = CalculatedWidth - (display.DipsToPixels(right) + widthpx.GetValueOrDefault());
             }
-            if (top != null)
+            if (!Double.IsNaN(top))
             {
-                y = top.GetValueOrDefault();
+                y = display.DipsToPixels(top);
             }
             else
             {
-                y = CalculatedHeight - (bottom.GetValueOrDefault() + height.GetValueOrDefault());
+                y = CalculatedHeight - (display.DipsToPixels(bottom) + heightpx.GetValueOrDefault());
             }
-            return new Rectangle(x, y, width.GetValueOrDefault(), height.GetValueOrDefault());
+            return new Rectangle(x, y, widthpx.GetValueOrDefault(), heightpx.GetValueOrDefault());
         }
 
         /// <inheritdoc/>

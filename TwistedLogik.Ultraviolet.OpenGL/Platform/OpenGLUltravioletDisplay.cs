@@ -26,18 +26,37 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
             this.screenDensityService  = ScreenDensityService.Create(this);
         }
 
-        /// <summary>
-        /// Gets the display device's supported display modes.
-        /// </summary>
-        /// <returns>A collection containing the display device's supported display modes.</returns>
+        /// <inheritdoc/>
         public IEnumerable<DisplayMode> GetSupportedDisplayModes()
         {
             return displayModes;
         }
 
-        /// <summary>
-        /// Gets the display's bounds.
-        /// </summary>
+        /// <inheritdoc/>
+        public Int32 InchesToPixels(Double inches)
+        {
+            return DipsToPixels(96.0 * inches);
+        }
+
+        /// <inheritdoc/>
+        public Int32 DipsToPixels(Double dips)
+        {
+            return (Int32)(dips * DensityScale);
+        }
+
+        /// <inheritdoc/>
+        public Double InchesToDips(Double inches)
+        {
+            return 96.0 * inches;
+        }
+
+        /// <inheritdoc/>
+        public Double PixelsToDips(Int32 pixels)
+        {
+            return pixels / (Double)DensityScale;
+        }
+
+        /// <inheritdoc/>
         public Rectangle Bounds
         {
             get
@@ -49,9 +68,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
             }
         }
 
-        /// <summary>
-        /// Gets the display's rotation on devices which can be rotated.
-        /// </summary>
+        /// <inheritdoc/>
         public ScreenRotation Rotation
         {
             get
@@ -60,9 +77,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
             }
         }
 
-        /// <summary>
-        /// Gets the scaling factor for device independent pixels.
-        /// </summary>
+        /// <inheritdoc/>
         public Single DensityScale
         {
             get 
@@ -71,9 +86,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
             }
         }
 
-        /// <summary>
-        /// Gets the display's density in dots per inch along the horizontal axis.
-        /// </summary>
+        /// <inheritdoc/>
         public Single DpiX
         {
             get
@@ -82,9 +95,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
             }
         }
 
-        /// <summary>
-        /// Gets the display's density in dots per inch along the vertical axis.
-        /// </summary>
+        /// <inheritdoc/>
         public Single DpiY
         {
             get
@@ -93,9 +104,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
             }
         }
 
-        /// <summary>
-        /// Gets the display's density bucket.
-        /// </summary>
+        /// <inheritdoc/>
         public ScreenDensityBucket DensityBucket
         {
             get
