@@ -683,6 +683,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         private void HandleMouseInput()
         {
+            UpdateElementUnderMouse();
+        }
+
+        /// <summary>
+        /// Determines which element is currently under the mouse cursor.
+        /// </summary>
+        private void UpdateElementUnderMouse()
+        {
             var mouse = Ultraviolet.GetInput().GetMouse();
 
             // Determine which element is currently under the mouse cursor.
@@ -714,7 +722,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (window != Window)
                 return;
 
-            var recipient = elementWithMouseCapture ?? elementUnderMouse;
+            var recipient = elementWithMouseCapture;
+            if (recipient == null)
+            {
+                UpdateElementUnderMouse();
+
+                recipient = elementUnderMouse;
+            }
+
             if (recipient != null)
             {
                 recipient.OnMouseButtonPressed(device, button);
