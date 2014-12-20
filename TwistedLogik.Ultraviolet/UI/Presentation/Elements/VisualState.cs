@@ -1,7 +1,7 @@
 ﻿using System;
 using TwistedLogik.Nucleus;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
+namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
 {
     /// <summary>
     /// Represents one of a UI element's visual states.

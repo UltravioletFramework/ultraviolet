@@ -2,18 +2,18 @@
 using System.Collections;
 using System.Collections.Generic;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
+namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
 {
-    partial class UIElementClassCollection
+    partial class VisualStateGroup
     {
         /// <inheritdoc/>
-        public HashSet<String>.Enumerator GetEnumerator()
+        public Dictionary<String, VisualState>.Enumerator GetEnumerator()
         {
-            return classes.GetEnumerator();
+            return states.GetEnumerator();
         }
 
         /// <inheritdoc/>
-        IEnumerator<String> IEnumerable<String>.GetEnumerator()
+        IEnumerator<KeyValuePair<String, VisualState>> IEnumerable<KeyValuePair<String, VisualState>>.GetEnumerator()
         {
             return GetEnumerator();
         }

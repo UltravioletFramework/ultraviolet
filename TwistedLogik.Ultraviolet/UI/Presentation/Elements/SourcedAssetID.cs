@@ -2,7 +2,7 @@
 using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet.Content;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
+namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
 {
     /// <summary>
     /// Represents an asset identifier which is flagged as being either globally- or locally-sourced.

@@ -1,7 +1,7 @@
 ﻿using System;
 using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
+namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
 {
     /// <summary>
     /// Represents a label on a user interface.

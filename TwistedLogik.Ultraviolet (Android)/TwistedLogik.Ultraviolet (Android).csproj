@@ -917,75 +917,6 @@
     <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\BoundEventBuilder.cs">
       <Link>UI\Presentation\BoundEventBuilder.cs</Link>
     </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Controls\AssetSource.cs">
-      <Link>UI\Presentation\Controls\AssetSource.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Controls\Button.cs">
-      <Link>UI\Presentation\Controls\Button.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Controls\Canvas.cs">
-      <Link>UI\Presentation\Controls\Canvas.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Controls\Label.cs">
-      <Link>UI\Presentation\Controls\Label.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Controls\NamespaceDoc.cs">
-      <Link>UI\Presentation\Controls\NamespaceDoc.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Controls\SourcedAssetID.cs">
-      <Link>UI\Presentation\Controls\SourcedAssetID.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Controls\SourcedRef.cs">
-      <Link>UI\Presentation\Controls\SourcedRef.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Controls\SourcedVal.cs">
-      <Link>UI\Presentation\Controls\SourcedVal.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Controls\TextualElement.cs">
-      <Link>UI\Presentation\Controls\TextualElement.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Controls\UIContainer.cs">
-      <Link>UI\Presentation\Controls\UIContainer.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Controls\UIElement.cs">
-      <Link>UI\Presentation\Controls\UIElement.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Controls\UIElementAttribute.cs">
-      <Link>UI\Presentation\Controls\UIElementAttribute.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Controls\UIElementClassCollection.cs">
-      <Link>UI\Presentation\Controls\UIElementClassCollection.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Controls\UIElementClassCollection.IEnumerable.cs">
-      <Link>UI\Presentation\Controls\UIElementClassCollection.IEnumerable.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Controls\UIElementCollection.cs">
-      <Link>UI\Presentation\Controls\UIElementCollection.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Controls\UIElementCollection.IEnumerable.cs">
-      <Link>UI\Presentation\Controls\UIElementCollection.IEnumerable.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Controls\UIElementResources.cs">
-      <Link>UI\Presentation\Controls\UIElementResources.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Controls\VisualState.cs">
-      <Link>UI\Presentation\Controls\VisualState.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Controls\VisualStateGroup.cs">
-      <Link>UI\Presentation\Controls\VisualStateGroup.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Controls\VisualStateGroup.IEnumerable.cs">
-      <Link>UI\Presentation\Controls\VisualStateGroup.IEnumerable.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Controls\VisualStateGroupCollection.cs">
-      <Link>UI\Presentation\Controls\VisualStateGroupCollection.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Controls\VisualStateGroupCollection.IEnumerable.cs">
-      <Link>UI\Presentation\Controls\VisualStateGroupCollection.IEnumerable.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Controls\VisualStateTransitionKey.cs">
-      <Link>UI\Presentation\Controls\VisualStateTransitionKey.cs</Link>
-    </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\DataBindingGetterBuilder.cs">
       <Link>UI\Presentation\DataBindingGetterBuilder.cs</Link>
     </Compile>
@@ -1022,6 +953,75 @@
     <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\DependencyPropertyValue.cs">
       <Link>UI\Presentation\DependencyPropertyValue.cs</Link>
     </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Elements\AssetSource.cs">
+      <Link>UI\Presentation\Elements\AssetSource.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Elements\Button.cs">
+      <Link>UI\Presentation\Elements\Button.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Elements\Canvas.cs">
+      <Link>UI\Presentation\Elements\Canvas.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Elements\Label.cs">
+      <Link>UI\Presentation\Elements\Label.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Elements\NamespaceDoc.cs">
+      <Link>UI\Presentation\Elements\NamespaceDoc.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Elements\SourcedAssetID.cs">
+      <Link>UI\Presentation\Elements\SourcedAssetID.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Elements\SourcedRef.cs">
+      <Link>UI\Presentation\Elements\SourcedRef.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Elements\SourcedVal.cs">
+      <Link>UI\Presentation\Elements\SourcedVal.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Elements\TextualElement.cs">
+      <Link>UI\Presentation\Elements\TextualElement.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Elements\UIContainer.cs">
+      <Link>UI\Presentation\Elements\UIContainer.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Elements\UIElement.cs">
+      <Link>UI\Presentation\Elements\UIElement.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Elements\UIElementAttribute.cs">
+      <Link>UI\Presentation\Elements\UIElementAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Elements\UIElementClassCollection.cs">
+      <Link>UI\Presentation\Elements\UIElementClassCollection.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Elements\UIElementClassCollection.IEnumerable.cs">
+      <Link>UI\Presentation\Elements\UIElementClassCollection.IEnumerable.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Elements\UIElementCollection.cs">
+      <Link>UI\Presentation\Elements\UIElementCollection.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Elements\UIElementCollection.IEnumerable.cs">
+      <Link>UI\Presentation\Elements\UIElementCollection.IEnumerable.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Elements\UIElementResources.cs">
+      <Link>UI\Presentation\Elements\UIElementResources.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Elements\VisualState.cs">
+      <Link>UI\Presentation\Elements\VisualState.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Elements\VisualStateGroup.cs">
+      <Link>UI\Presentation\Elements\VisualStateGroup.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Elements\VisualStateGroup.IEnumerable.cs">
+      <Link>UI\Presentation\Elements\VisualStateGroup.IEnumerable.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Elements\VisualStateGroupCollection.cs">
+      <Link>UI\Presentation\Elements\VisualStateGroupCollection.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Elements\VisualStateGroupCollection.IEnumerable.cs">
+      <Link>UI\Presentation\Elements\VisualStateGroupCollection.IEnumerable.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Elements\VisualStateTransitionKey.cs">
+      <Link>UI\Presentation\Elements\VisualStateTransitionKey.cs</Link>
+    </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\IDependencyBoundValue.cs">
       <Link>UI\Presentation\IDependencyBoundValue.cs</Link>
     </Compile>
@@ -1030,6 +1030,12 @@
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\NamespaceDoc.cs">
       <Link>UI\Presentation\NamespaceDoc.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\PresentationFrameworkManager.cs">
+      <Link>UI\Presentation\PresentationFrameworkManager.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\PresentationFrameworkManager.RegisteredElement.cs">
+      <Link>UI\Presentation\PresentationFrameworkManager.RegisteredElement.cs</Link>
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Styles\NamespaceDoc.cs">
       <Link>UI\Presentation\Styles\NamespaceDoc.cs</Link>
@@ -1144,9 +1150,6 @@
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\UIViewLoader.cs">
       <Link>UI\Presentation\UIViewLoader.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\UIViewLoader.UIElementMetadata.cs">
-      <Link>UI\Presentation\UIViewLoader.UIElementMetadata.cs</Link>
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\UvmlException.cs">
       <Link>UI\Presentation\UvmlException.cs</Link>

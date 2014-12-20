@@ -4,7 +4,7 @@ using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
 using TwistedLogik.Ultraviolet.UI.Presentation.Styles;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
+namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
 {
     /// <summary>
     /// Represents an element container which positions its children according to their distance from the container's

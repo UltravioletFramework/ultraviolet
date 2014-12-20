@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using TwistedLogik.Nucleus;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
+namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
 {
     /// <summary>
     /// Represents a collection of interface elements belonging to a parent element.

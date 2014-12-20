@@ -1,6 +1,7 @@
 ﻿using System;
 using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet.Platform;
+using TwistedLogik.Ultraviolet.UI.Presentation;
 
 namespace TwistedLogik.Ultraviolet.UI
 {
@@ -17,7 +18,8 @@ namespace TwistedLogik.Ultraviolet.UI
         public UltravioletUI(UltravioletContext uv, UltravioletConfiguration configuration)
             : base(uv)
         {
-            screenStacks = new UIScreenStackCollection(uv);
+            screenStacks          = new UIScreenStackCollection(uv);
+            presentationFramework = uv.GetFactoryMethod<PresentationFrameworkManagerFactory>()(uv);
         }
 
         /// <summary>
@@ -65,6 +67,19 @@ namespace TwistedLogik.Ultraviolet.UI
         }
 
         /// <summary>
+        /// Gets the management object for the Ultraviolet Presentation Framework.
+        /// </summary>
+        public PresentationFrameworkManager PresentationFramework
+        {
+            get
+            {
+                Contract.EnsureNotDisposed(this, Disposed);
+
+                return presentationFramework;
+            }
+        }
+
+        /// <summary>
         /// Occurs when the subsystem is updating its state.
         /// </summary>
         public event UltravioletSubsystemUpdateEventHandler Updating;
@@ -78,6 +93,7 @@ namespace TwistedLogik.Ultraviolet.UI
             if (disposing && !Disposed)
             {
                 SafeDispose.Dispose(screenStacks);
+                SafeDispose.Dispose(presentationFramework);
             }
             base.Dispose(disposing);
         }
@@ -97,5 +113,8 @@ namespace TwistedLogik.Ultraviolet.UI
 
         // The collection of screens associated with each window.
         private readonly UIScreenStackCollection screenStacks;
+
+        // Property values.
+        private readonly PresentationFrameworkManager presentationFramework;
     }
 }

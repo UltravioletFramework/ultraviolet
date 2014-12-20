@@ -1,5 +1,6 @@
 ﻿using TwistedLogik.Ultraviolet.Platform;
 using TwistedLogik.Ultraviolet.UI;
+using TwistedLogik.Ultraviolet.UI.Presentation;
 
 namespace TwistedLogik.Ultraviolet
 {
@@ -21,5 +22,13 @@ namespace TwistedLogik.Ultraviolet
         /// or <c>null</c> to retrieve the screen stack for the primary window.</param>
         /// <returns>The <see cref="UIScreenStack"/> associated with the specified window.</returns>
         UIScreenStack GetScreens(IUltravioletWindow window);
+
+        /// <summary>
+        /// Gets the management object for the Ultraviolet Presentation Framework.
+        /// </summary>
+        PresentationFrameworkManager PresentationFramework
+        {
+            get;
+        }
     }
 }
