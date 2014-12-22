@@ -98,6 +98,40 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <summary>
+        /// Releases resources associated with the object.
+        /// </summary>
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        /// <summary>
+        /// Requests that a layout be performed during the next call to <see cref="UIElement.Update(UltravioletTime)"/>.
+        /// </summary>
+        public void RequestLayout()
+        {
+            layoutRequested = true;
+        }
+
+        /// <summary>
+        /// Immediately recalculates the layout of the element and its childen and subcomponents, if applicable.
+        /// </summary>
+        public virtual void PerformLayout()
+        {
+
+        }
+
+        /// <summary>
+        /// Immediately recalculates the layout of the specified child element.
+        /// </summary>
+        /// <param name="child">The child element for which to calculate a layout.</param>
+        public virtual void PerformLayout(UIElement child)
+        {
+
+        }
+
+        /// <summary>
         /// Calculates the element's recommended size based on its content
         /// and the specified constraints.
         /// </summary>
@@ -106,15 +140,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         public virtual void CalculateRecommendedSize(ref Int32? width, ref Int32? height)
         {
 
-        }
-
-        /// <summary>
-        /// Releases resources associated with the object.
-        /// </summary>
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
         }
 
         /// <summary>
@@ -139,7 +164,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <summary>
         /// Resets the element's visual state transitions.
         /// </summary>
-        public void ClearVisualStateTransitions()
+        public virtual void ClearVisualStateTransitions()
         {
             visualStateGroups.ClearVisualStateTransitions();
         }
@@ -155,7 +180,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <summary>
         /// Called when the element should reload its content.
         /// </summary>
-        public void ReloadContent()
+        public virtual void ReloadContent()
         {
             ReloadFont();
             ReloadBackgroundImage();
@@ -291,9 +316,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <summary>
-        /// Gets the <see cref="UIContainer"/> that contains this element.
+        /// Gets the <see cref="UIElement"/> that contains this element.
         /// </summary>
-        public UIContainer Container
+        public UIElement Container
         {
             get { return container; }
         }
@@ -691,6 +716,35 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <summary>
+        /// Attempts to remove the specified child or subcomponent from this element.
+        /// </summary>
+        /// <param name="element">The child or subcomponent to remove.</param>
+        /// <returns><c>true</c> if the child or subcomponent was removed; otherwise, <c>false</c>.</returns>
+        internal virtual Boolean RemoveChildOrSubcomponent(UIElement element)
+        {
+            return false;
+        }
+
+        /// <summary>
+        /// Updates the element's absolute screen position.
+        /// </summary>
+        /// <param name="x">The x-coordinate of the element's absolute screen position.</param>
+        /// <param name="y">The y-coordinate of the element's absolute screen position.</param>
+        internal virtual void UpdateAbsoluteScreenPosition(Int32 x, Int32 y)
+        {
+
+        }
+
+        /// <summary>
+        /// Applies the specified stylesheet's styles to this element and its children.
+        /// </summary>
+        /// <param name="stylesheet">The stylesheet to apply to the element.</param>
+        internal virtual void ApplyStyles(UvssDocument stylesheet)
+        {
+            stylesheet.ApplyStyles(this);
+        }
+
+        /// <summary>
         /// Applies the specified storyboard to this element.
         /// </summary>
         /// <param name="storyboard">The storyboard being applied to the element.</param>
@@ -748,6 +802,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
 
             Digest(time);
             OnUpdating(time);
+
+            if (layoutRequested)
+            {
+                layoutRequested = false;
+                PerformLayout();
+            }
         }
 
         /// <summary>
@@ -780,7 +840,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             }
             else
             {
-                view.Stylesheet.ApplyStylesRecursively(this);
+                view.Stylesheet.ApplyStyles(this);
             }
 
             UpdateViewModel(view == null ? null : view.ViewModel);
@@ -792,7 +852,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// Updates the container which holds this element.
         /// </summary>
         /// <param name="container">The container to associate with this element.</param>
-        internal virtual void UpdateContainer(UIContainer container)
+        internal virtual void UpdateContainer(UIElement container)
         {
             this.container = container;
 
@@ -1557,13 +1617,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         private readonly VisualStateGroupCollection visualStateGroups;
         private Object viewModel;
         private UIView view;
-        private UIContainer container;
+        private UIElement container;
         private Boolean hovering;
         private Int32 containerRelativeX;
         private Int32 containerRelativeY;
         private Int32 calculatedWidth;
         private Int32 calculatedHeight;
         private SpriteFont font;
+
+        // State values.
+        private Boolean layoutRequested;
 
         // Storyboard clocks.
         private static readonly IPool<StoryboardClock> storyboardClockPool = 

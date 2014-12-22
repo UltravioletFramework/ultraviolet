@@ -117,26 +117,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         }
 
         /// <summary>
-        /// Recursively applies styles to the specified element and all of its descendants.
-        /// </summary>
-        /// <param name="element">The element to which to apply styles.</param>
-        internal void ApplyStylesRecursively(UIElement element)
-        {
-            Contract.Require(element, "element");
-
-            ApplyStylesInternal(element);
-
-            var container = element as UIContainer;
-            if (container != null)
-            {
-                foreach (var child in container.Children)
-                {
-                    ApplyStylesRecursively(child);
-                }
-            }
-        }
-
-        /// <summary>
         /// Gets the lexer instance used to lex Ultraviolet Stylesheet source code.
         /// </summary>
         internal static UvssLexer Lexer

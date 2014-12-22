@@ -30,6 +30,22 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Gets a value indicating whether the element with the specified name is a user control.
+        /// </summary>
+        /// <param name="name">The name of the element to evaluate.</param>
+        /// <returns><c>true</c> if the specified element is a user control; otherwise, <c>false</c>.</returns>
+        public Boolean IsUserControl(String name)
+        {
+            Contract.RequireNotEmpty(name, "name");
+
+            RegisteredElement registration;
+            if (!IsElementRegistered(name, out registration))
+                return false;
+
+            return registration.Layout != null;
+        }
+
+        /// <summary>
         /// Attempts to create an instance of the element with the specified name.
         /// </summary>
         /// <param name="name">The name of the element to instantiate.</param>

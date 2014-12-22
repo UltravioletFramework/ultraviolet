@@ -36,17 +36,25 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// Adds an element to the collection.
         /// </summary>
         /// <param name="element">The element to add to the collection.</param>
-        public void Add(UIElement element)
+        /// <returns><c>true</c> if the element was added to the collection; otherwise, <c>false</c>.</returns>
+        public Boolean Add(UIElement element)
         {
             Contract.Require(element, "element");
 
             if (element.Container != null)
-                element.Container.Children.Remove(element);
-
+            {
+                if (!element.Container.RemoveChildOrSubcomponent(element))
+                {
+                    return false;
+                }
+            }
+            
             element.UpdateContainer(Container);
             elements.Add(element);
 
             Container.RequestLayout();
+
+            return true;
         }
 
         /// <summary>

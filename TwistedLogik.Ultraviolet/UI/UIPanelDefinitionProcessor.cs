@@ -28,8 +28,6 @@ namespace TwistedLogik.Ultraviolet.UI
                 DefaultOpenTransitionDuration  = TimeSpan.FromMilliseconds(defaultOpenTransitionDuration),
                 DefaultCloseTransitionDuration = TimeSpan.FromMilliseconds(defaultCloseTransitionDuration),
                 Stylesheet                     = ProcessStylesheets(manager, metadata, input),
-                StylesheetElements             = input.Root.Elements("Stylesheet"),
-                ControlElements                = input.Root.Elements("Control"),
                 ViewElement                    = input.Root.Element("View"),
             };
         }

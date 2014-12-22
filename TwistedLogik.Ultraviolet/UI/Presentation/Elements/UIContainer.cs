@@ -3,6 +3,7 @@ using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet.Graphics;
 using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
 using TwistedLogik.Ultraviolet.UI.Presentation.Animations;
+using TwistedLogik.Ultraviolet.UI.Presentation.Styles;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
 {
@@ -24,7 +25,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <inheritdoc/>
-        public override void ClearLocalValuesRecursive()
+        public sealed override void ClearLocalValuesRecursive()
         {
             base.ClearLocalValuesRecursive();
 
@@ -35,7 +36,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <inheritdoc/>
-        public override void ClearStyledValuesRecursive()
+        public sealed override void ClearStyledValuesRecursive()
         {
             base.ClearStyledValuesRecursive();
 
@@ -46,7 +47,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <inheritdoc/>
-        public override void ClearVisualStateTransitionsRecursive()
+        public sealed override void ClearVisualStateTransitionsRecursive()
         {
             base.ClearVisualStateTransitionsRecursive();
 
@@ -57,7 +58,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <inheritdoc/>
-        public override void ReloadContentRecursive()
+        public sealed override void ReloadContentRecursive()
         {
             base.ReloadContentRecursive();
 
@@ -67,18 +68,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             }
         }
 
-        /// <summary>
-        /// Requests that a layout be performed during the next call to <see cref="UIElement.Update(UltravioletTime)"/>.
-        /// </summary>
-        public void RequestLayout()
-        {
-            layoutRequested = true;
-        }
-
-        /// <summary>
-        /// Immediately recalculates the layout of the container and all of its children.
-        /// </summary>
-        public void PerformLayout()
+        /// <inheritdoc/>
+        public sealed override void PerformLayout()
         {
             OnPerformingLayout();
 
@@ -91,11 +82,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             OnPerformedLayout();
         }
 
-        /// <summary>
-        /// Immediately recalculates the layout of the specified child element.
-        /// </summary>
-        /// <param name="child">The child element for which to calculate a layout.</param>
-        public void PerformLayout(UIElement child)
+        /// <inheritdoc/>
+        public sealed override void PerformLayout(UIElement child)
         {
             Contract.Require(child, "child");
             Contract.Ensure<ArgumentException>(Children.Contains(child), "child");
@@ -144,6 +132,41 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             set { requiresScissorRectangle = value; }
         }
 
+        /// <summary>
+        /// Attempts to remove the specified child or subcomponent from this element.
+        /// </summary>
+        /// <param name="element">The child or subcomponent to remove.</param>
+        /// <returns><c>true</c> if the child or subcomponent was removed; otherwise, <c>false</c>.</returns>
+        internal override Boolean RemoveChildOrSubcomponent(UIElement element)
+        {
+            Contract.Require(element, "element");
+
+            return children.Remove(element);
+        }
+
+        /// <inheritdoc/>
+        internal override void UpdateAbsoluteScreenPosition(Int32 x, Int32 y)
+        {
+            this.absoluteScreenX = x;
+            this.absoluteScreenY = y;
+
+            foreach (var child in children)
+            {
+                child.UpdateAbsoluteScreenPosition(x + child.ContainerRelativeX, y + child.ContainerRelativeY);
+            }
+        }
+
+        /// <inheritdoc/>
+        internal override void ApplyStyles(UvssDocument stylesheet)
+        {
+            base.ApplyStyles(stylesheet);
+
+            foreach (var child in children)
+            {
+                child.ApplyStyles(stylesheet);
+            }
+        }
+
         /// <inheritdoc/>
         internal override void ApplyStoryboard(Storyboard storyboard, StoryboardClock clock, UIElement root)
         {
@@ -188,18 +211,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <inheritdoc/>
         internal override void Update(UltravioletTime time)
         {
-            base.Update(time);
-
             foreach (var child in children)
             {
                 child.Update(time);
             }
 
-            if (layoutRequested)
-            {
-                layoutRequested = false;
-                PerformLayout();
-            }
+            base.Update(time);
         }
 
         /// <inheritdoc/>
@@ -244,26 +261,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
                 }
             }
             return base.GetElementAtPointInternal(x, y);
-        }
-
-        /// <summary>
-        /// Updates the container's absolute screen position.
-        /// </summary>
-        /// <param name="x">The x-coordinate of the container's absolute screen position.</param>
-        /// <param name="y">The y-coordinate of the container's absolute screen position.</param>
-        internal void UpdateAbsoluteScreenPosition(Int32 x, Int32 y)
-        {
-            this.absoluteScreenX = x;
-            this.absoluteScreenY = y;
-
-            foreach (var child in children)
-            {
-                var container = child as UIContainer;
-                if (container != null)
-                {
-                    container.UpdateAbsoluteScreenPosition(x + container.ContainerRelativeX, y + container.ContainerRelativeY);
-                }
-            }
         }
 
         /// <summary>
@@ -363,8 +360,5 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         private Int32 absoluteScreenX;
         private Int32 absoluteScreenY;
         private Boolean requiresScissorRectangle;
-
-        // State values.
-        private Boolean layoutRequested;
     }
 }

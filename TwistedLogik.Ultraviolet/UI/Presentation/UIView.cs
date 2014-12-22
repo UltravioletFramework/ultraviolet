@@ -259,7 +259,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             if (stylesheet != null)
             {
-                stylesheet.ApplyStylesRecursively(Canvas);
+                Canvas.ApplyStyles(stylesheet);
             }
             else
             {
