@@ -13,18 +13,45 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Initializes a new instance of the <see cref="BoundEventBuilder"/> type.
         /// </summary>
-        /// <param name="uiElement">The element to which an event is being bound.</param>
-        /// <param name="viewModelType">The type of view model to which the event is being bound.</param>
-        /// <param name="delegateType">The type of delegate that handles the event being bound.</param>
-        /// <param name="expression">The expression which represents the path to the event handler.</param>
-        public BoundEventBuilder(UIElement uiElement, Type delegateType, Type viewModelType, String expression)
+        /// <param name="uiElement">The interface element which provides the event's data source.</param>
+        /// <param name="viewModelType">The type of view model that is referenced by the current view.</param>
+        /// <param name="delegateType">The type of delegate that will be created to bind to the event.</param>
+        /// <param name="expression">The binding expression that represents the method to bind to the event.</param>
+        public BoundEventBuilder(UIElement uiElement, Type viewModelType, Type delegateType, String expression)
+            : this(uiElement, null, delegateType, viewModelType, expression)
+        {
+
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BoundEventBuilder"/> type.
+        /// </summary>
+        /// <param name="userControl">The user control which provides the event's data source.</param>
+        /// <param name="viewModelType">The type of view model that is referenced by the current view.</param>
+        /// <param name="delegateType">The type of delegate that will be created to bind to the event.</param>
+        /// <param name="expression">The binding expression that represents the method to bind to the event.</param>
+        public BoundEventBuilder(UserControl userControl, Type viewModelType, Type delegateType, String expression)
+            : this(null, userControl, delegateType, viewModelType, expression)
+        {
+
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BoundEventBuilder"/> type.
+        /// </summary>
+        /// <param name="uiElement">The interface element which provides the event's data source, if any.</param>
+        /// <param name="userControl">The user control which provides the event's data source, if any.</param>
+        /// <param name="viewModelType">The type of view model that is referenced by the current view.</param>
+        /// <param name="delegateType">The type of delegate that will be created to bind to the event.</param>
+        /// <param name="expression">The binding expression that represents the method to bind to the event.</param>
+        private BoundEventBuilder(UIElement uiElement, UserControl userControl, Type delegateType, Type viewModelType, String expression)
             : base(viewModelType)
         {
             CreateParameters(delegateType);
             CreateReturnTarget();
 
             var components = BindingExpressions.ParseBindingExpression(expression, false).ToArray();
-            var current    = AddDataSourceReference(uiElement);
+            var current    = AddDataSourceReference(uiElement, userControl);
 
             for (int i = 0; i < components.Length; i++)
             {
@@ -78,9 +105,24 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Adds a reference to the data source. If accessing the data source would
         /// result in a <see cref="NullReferenceException"/>, the getter will return a default value.
         /// </summary>
+        /// <param name="uiElement">The element to which the event is being bound, if any.</param>
+        /// <param name="userControl">The user control to which the event is being bound, if any.</param>
+        /// <returns>The current expression in the chain.</returns>
+        private Expression AddDataSourceReference(UIElement uiElement, UserControl userControl)
+        {
+            if (userControl != null)
+            {
+                return AddUserControlReference(userControl);
+            }
+            return AddViewModelReference(uiElement);
+        }
+
+        /// <summary>
+        /// Adds a reference to the view model which contains the bound event method.
+        /// </summary>
         /// <param name="uiElement">The element to which an event is being bound.</param>
         /// <returns>The current expression in the chain.</returns>
-        private Expression AddDataSourceReference(UIElement uiElement)
+        private Expression AddViewModelReference(UIElement uiElement)
         {
             var elementVariable = Expression.Variable(typeof(UIElement), "uiElement");
             variables.Add(elementVariable);
@@ -95,7 +137,25 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             return refViewModel;
         }
-        
+
+        /// <summary>
+        /// Adds a reference to the user control which contains the bound event method.
+        /// </summary>
+        /// <param name="userControl">The user control to which an event is being bound.</param>
+        /// <returns>The current expression in the chain.</returns>
+        private Expression AddUserControlReference(UserControl userControl)
+        {
+            var userControlVariable = Expression.Variable(userControl.GetType(), "userControl");
+            variables.Add(userControlVariable);
+
+            var userControlAssignment = Expression.Assign(userControlVariable, Expression.Constant(userControl));
+            expressions.Add(userControlAssignment);
+
+            AddNullCheck(userControlVariable);
+
+            return userControlVariable;
+        }
+
         /// <summary>
         /// Adds the bound method invocation to the lambda.
         /// </summary>

@@ -39,7 +39,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 else
                 {
                     if (current.Type.IsValueType)
-                        throw new InvalidOperationException(UltravioletStrings.BindingAssignmentToValueType.Format(expression));
+                        return;
 
                     if (!AddValueAssignment(current, value, component))
                     {

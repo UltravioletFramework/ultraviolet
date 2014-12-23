@@ -289,14 +289,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             var layout = CalculateLayoutArea(child);
             child.ContainerRelativeLayout = layout;
 
-            var container = child as UIContainer;
-            if (container != null)
-            {
-                container.PerformLayout();
-                container.UpdateAbsoluteScreenPosition(
-                    absoluteScreenX + container.ContainerRelativeX, 
-                    absoluteScreenY + container.ContainerRelativeY);
-            }
+            child.PerformLayout();
+            child.UpdateAbsoluteScreenPosition(
+                absoluteScreenX + child.ContainerRelativeX,
+                absoluteScreenY + child.ContainerRelativeY);
 
             if (single)
                 DetermineIfScissorRectangleIsRequired();

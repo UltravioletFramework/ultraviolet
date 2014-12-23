@@ -1,5 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<Canvas ID="LayoutRoot">
-  <Button Canvas.Left="0" Canvas.Top="0" Canvas.Bottom="0" Width="32">Hello, world!</Button>
-  <Button Canvas.Right="0" Canvas.Top="0" Canvas.Bottom="0" Width="32">Goodbye, world!</Button>
-</Canvas>
+<UserControl Type="SafeProjectName.MyUserControl, SafeProjectName">
+  <Canvas>
+    <Button Canvas.Left="0" Canvas.Top="0" Canvas.Bottom="0" Width="128" Click="Foo">{{Year}}</Button>
+    <Button Canvas.Right="0" Canvas.Top="0" Canvas.Bottom="0" Width="64" Click="Bar">G</Button>
+  </Canvas>
+</UserControl>

@@ -41,29 +41,65 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 }
             }
 
-            var view = new UIView(uv, viewModelType);
+            var view    = new UIView(uv, viewModelType);
+            var context = new InstantiationContext(viewModelType);
 
-            PopulateElementProperties(uv, view.Canvas, xml, viewModelType);
-            PopulateElementEvents(uv, view.Canvas, xml, viewModelType);
-            PopulateElementChildren(uv, view.Canvas, xml, viewModelType);
+            PopulateElement(uv, view.Canvas, xml, context);
 
             return view;
         }
 
         /// <summary>
-        /// Instantiates a new element.
+        /// Initializes an instance of <see cref="UserControl"/> from the specified layout definition.
+        /// </summary>
+        /// <typeparam name="TViewModelType">The type of view model to which the user control will be bound.</typeparam>
+        /// <param name="userControl">The instance of <see cref="UserControl"/> to initialize.</param>
+        /// <param name="layout">The XML document that specifies the control's layout.</param>
+        /// <param name="bindingContext">The binding context for the user control, if any.</param>
+        public static void LoadUserControl<TViewModelType>(UserControl userControl, XDocument layout, String bindingContext = null)
+        {
+            LoadUserControl(userControl, layout, typeof(TViewModelType), bindingContext);
+        }
+
+        /// <summary>
+        /// Initializes an instance of <see cref="UserControl"/> from the specified layout definition.
+        /// </summary>
+        /// <param name="userControl">The instance of <see cref="UserControl"/> to initialize.</param>
+        /// <param name="layout">The XML document that specifies the control's layout.</param>
+        /// <param name="viewModelType">The type of view model to which the user control will be bound.</param>
+        /// <param name="bindingContext">The binding context for the user control, if any.</param>
+        public static void LoadUserControl(UserControl userControl, XDocument layout, Type viewModelType, String bindingContext = null)
+        {
+            if (bindingContext != null && !BindingExpressions.IsBindingExpression(bindingContext))
+                throw new ArgumentException(UltravioletStrings.InvalidBindingContext.Format(bindingContext));
+
+            var contentElement = layout.Root.Elements().SingleOrDefault();
+            if (contentElement == null)
+                return;
+
+            var uv      = userControl.Ultraviolet;
+            var context = new InstantiationContext(viewModelType, userControl, bindingContext);
+            var content = InstantiateAndPopulateElement(uv, null, contentElement, context);
+
+            userControl.Content = content;
+        }
+
+        /// <summary>
+        /// Instantiates a new interface element.
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
-        /// <param name="xmlElement">The XML element that represents the UI element.</param>
-        /// <returns>The new instance of <see cref="UIElement"/> that was instantiated.</returns>
-        private static UIElement InstantiateElement(UltravioletContext uv, XElement xmlElement)
+        /// <param name="container">The container which is the element's parent.</param>
+        /// <param name="xmlElement">The XML element that defines the element to instantiate.</param>
+        /// <param name="context">The current instantiation context.</param>
+        /// <returns>The interface element that was instantiated.</returns>
+        private static UIElement InstantiateElement(UltravioletContext uv, UIContainer container, XElement xmlElement, InstantiationContext context)
         {
             var id        = xmlElement.AttributeValueString("ID");
             var classes   = xmlElement.AttributeValueString("Class");
             var classList = (classes == null) ? Enumerable.Empty<String>() : classes.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
 
-            UIElement instance;
-            if (!uv.GetUI().PresentationFramework.InstantiateElementByName(xmlElement.Name.LocalName, id, out instance))
+            var instance = uv.GetUI().PresentationFramework.InstantiateElementByName(xmlElement.Name.LocalName, id, context.ViewModelType, context.BindingContext);
+            if (instance == null)
                 throw new UvmlException(UltravioletStrings.UnrecognizedUIElement.Format(xmlElement.Name.LocalName));
 
             foreach (var className in classList)
@@ -71,7 +107,62 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 instance.Classes.Add(className);
             }
 
+            if (container != null)
+            {
+                container.Children.Add(instance);
+            }
+
             return instance;
+        }
+
+        /// <summary>
+        /// Instantiates a new interface element.
+        /// </summary>
+        /// <param name="uv">The Ultraviolet context.</param>
+        /// <param name="container">The container which is the element's parent.</param>
+        /// <param name="xmlElement">The XML element that defines the element to instantiate.</param>
+        /// <param name="context">The current instantiation context.</param>
+        /// <returns>The interface element that was instantiated.</returns>
+        private static UIElement InstantiateAndPopulateElement(UltravioletContext uv, UIContainer container, XElement xmlElement, InstantiationContext context)
+        {
+            var bindingContext        = xmlElement.AttributeValueString("BindingContext");
+            var bindingContextDefined = (bindingContext != null);
+            if (bindingContextDefined)
+            {
+                if (!BindingExpressions.IsBindingExpression(bindingContext))
+                    throw new InvalidOperationException(UltravioletStrings.InvalidBindingContext.Format(bindingContext));
+
+                context.PushBindingContext(bindingContext);
+            }
+
+            var element = InstantiateElement(uv, container, xmlElement, context);
+            PopulateElement(uv, element, xmlElement, context);
+
+            if (bindingContextDefined)
+            {
+                context.PopBindingContext();
+            }
+
+            return element;
+        }
+
+        /// <summary>
+        /// Populates a UI element's events, properties, and children.
+        /// </summary>
+        /// <param name="uv">The Ultraviolet context.</param>
+        /// <param name="uiElement">The element whose dependency property values will be populated.</param>
+        /// <param name="xmlElement">The XML element that represents the UI element.</param>
+        /// <param name="context">The current instantiation context.</param>
+        private static void PopulateElement(UltravioletContext uv, UIElement uiElement, XElement xmlElement, InstantiationContext context)
+        {
+            PopulateElementProperties(uv, uiElement, xmlElement, context);
+            PopulateElementEvents(uv, uiElement, xmlElement, context);
+
+            var container = uiElement as UIContainer;
+            if (container != null)
+            {
+                PopulateElementChildren(uv, container, xmlElement, context);
+            }
         }
 
         /// <summary>
@@ -80,17 +171,30 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="uv">The Ultraviolet context.</param>
         /// <param name="uiElement">The element whose dependency property values will be populated.</param>
         /// <param name="xmlElement">The XML element that represents the UI element.</param>
-        /// <param name="viewModelType">The view's associated view model type.</param>
-        private static void PopulateElementEvents(UltravioletContext uv, UIElement uiElement, XElement xmlElement, Type viewModelType)
+        /// <param name="context">The current instantiation context.</param>
+        private static void PopulateElementEvents(UltravioletContext uv, UIElement uiElement, XElement xmlElement, InstantiationContext context)
         {
             foreach (var attr in xmlElement.Attributes())
             {
-                var attrName  = attr.Name.LocalName;
+                var attrName = attr.Name.LocalName;
+                if (attrName == "BindingContext")
+                    continue;
+
                 var attrEvent = uiElement.GetType().GetEvent(attrName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
                 if (attrEvent == null || String.IsNullOrEmpty(attr.Value))
                     continue;
 
-                var lambda = BindingExpressions.CreateBoundEventDelegate(uiElement, viewModelType, attrEvent.EventHandlerType, attr.Value);
+                Delegate lambda;
+                if (context.UserControl != null)
+                {
+                    lambda = BindingExpressions.CreateUserControlBoundEventDelegate(context.UserControl, context.ViewModelType, 
+                        attrEvent.EventHandlerType, attr.Value);
+                }
+                else
+                {
+                    lambda = BindingExpressions.CreateViewModelBoundEventDelegate(uiElement, context.ViewModelType, 
+                        attrEvent.EventHandlerType, attr.Value);
+                }
                 attrEvent.AddEventHandler(uiElement, lambda);
             }
         }
@@ -101,19 +205,22 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="uv">The Ultraviolet context.</param>
         /// <param name="uiElement">The element whose dependency property values will be populated.</param>
         /// <param name="xmlElement">The XML element that represents the UI element.</param>
-        /// <param name="viewModelType">The view's associated view model type.</param>
-        private static void PopulateElementProperties(UltravioletContext uv, UIElement uiElement, XElement xmlElement, Type viewModelType)
+        /// <param name="context">The current instantiation context.</param>
+        private static void PopulateElementProperties(UltravioletContext uv, UIElement uiElement, XElement xmlElement, InstantiationContext context)
         {
             var dprop = default(DependencyProperty);
 
             foreach (var attr in xmlElement.Attributes())
             {
-                var attrName          = attr.Name.LocalName;
+                var attrName = attr.Name.LocalName;
+                if (attrName == "BindingContext")
+                    continue;
+
                 var attachedContainer = String.Empty;
                 var attachedProperty  = String.Empty;
                 if (IsAttachedProperty(attrName, out attachedContainer, out attachedProperty))
                 {
-                    if (String.Equals(uiElement.Container.Name, attachedContainer, StringComparison.InvariantCulture))
+                    if (uiElement.Container != null && String.Equals(uiElement.Container.Name, attachedContainer, StringComparison.InvariantCulture))
                     {
                         dprop = DependencyProperty.FindByName(attachedProperty, uiElement.Container.GetType());
                     }
@@ -125,11 +232,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
                 if (dprop != null)
                 {
-                    BindOrSetProperty(uiElement, dprop, attr.Value, viewModelType);
+                    BindOrSetProperty(uiElement, dprop, attr.Value, context);
                 }
             }
 
-            PopulateElementDefaultProperty(uv, uiElement, xmlElement, viewModelType);
+            PopulateElementDefaultProperty(uv, uiElement, xmlElement, context);
         }
 
         /// <summary>
@@ -138,8 +245,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="uv">The Ultraviolet context.</param>
         /// <param name="uiElement">The element whose default property value will be populated.</param>
         /// <param name="xmlElement">The XML element that represents the UI element.</param>
-        /// <param name="viewModelType">The view's associated view model type.</param>
-        private static void PopulateElementDefaultProperty(UltravioletContext uv, UIElement uiElement, XElement xmlElement, Type viewModelType)
+        /// <param name="context">The current instantiation context.</param>
+        private static void PopulateElementDefaultProperty(UltravioletContext uv, UIElement uiElement, XElement xmlElement, InstantiationContext context)
         {
             String defaultProperty;
             if (!uv.GetUI().PresentationFramework.GetElementDefaultProperty(uiElement.GetType(), out defaultProperty))
@@ -151,7 +258,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 if (dprop == null)
                     throw new InvalidOperationException(UltravioletStrings.InvalidDefaultProperty.Format(defaultProperty, uiElement.GetType()));
 
-                BindOrSetProperty(uiElement, dprop, xmlElement.Value, viewModelType);
+                BindOrSetProperty(uiElement, dprop, xmlElement.Value, context);
             }
         }
 
@@ -161,22 +268,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="uv">The Ultraviolet container.</param>
         /// <param name="uiContainer">The container to populate with children.</param>
         /// <param name="xmlElement">The XML element that represents the UI container.</param>
-        /// <param name="viewModelType">The view's associated view model type.</param>
-        private static void PopulateElementChildren(UltravioletContext uv, UIContainer uiContainer, XElement xmlElement, Type viewModelType)
+        /// <param name="context">The current instantiation context.</param>
+        private static void PopulateElementChildren(UltravioletContext uv, UIContainer uiContainer, XElement xmlElement, InstantiationContext context)
         {
             foreach (var child in xmlElement.Elements())
             {
-                var uiElement = InstantiateElement(uv, child);
-                uiContainer.Children.Add(uiElement);
-
-                PopulateElementProperties(uv, uiElement, child, viewModelType);
-                PopulateElementEvents(uv, uiElement, child, viewModelType);
-
-                var uiChildContainer = uiElement as UIContainer;
-                if (uiChildContainer != null)
-                {
-                    PopulateElementChildren(uv, uiChildContainer, child, viewModelType);
-                }
+                InstantiateAndPopulateElement(uv, uiContainer, child, context);
             }
         }
 
@@ -186,12 +283,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="uiElement">The UI element to modify.</param>
         /// <param name="dprop">The dependency property to bind or set.</param>
         /// <param name="value">The binding expression or value to set on the property.</param>
-        /// <param name="viewModelType">The view's associated view model type.</param>
-        private static void BindOrSetProperty(UIElement uiElement, DependencyProperty dprop, String value, Type viewModelType)
+        /// <param name="context">The current instantiation context.</param>
+        private static void BindOrSetProperty(UIElement uiElement, DependencyProperty dprop, String value, InstantiationContext context)
         {
             if (IsBindingExpression(value))
             {
-                BindProperty(uiElement, dprop, value, viewModelType);
+                BindProperty(uiElement, dprop, value, context);
             }
             else
             {
@@ -219,15 +316,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="uiElement">The UI element to modify.</param>
         /// <param name="dprop">The dependency property to bind or set.</param>
         /// <param name="expression">The binding expression to set on the property.</param>
-        /// <param name="viewModelType">The view's associated view model type.</param>
-        private static void BindProperty(UIElement uiElement, DependencyProperty dprop, String expression, Type viewModelType)
+        /// <param name="context">The current instantiation context.</param>
+        private static void BindProperty(UIElement uiElement, DependencyProperty dprop, String expression, InstantiationContext context)
         {
-            if (viewModelType == null)
+            if (context.ViewModelType == null)
                 throw new InvalidOperationException(UltravioletStrings.NoViewModel);
 
-            var type = Type.GetTypeFromHandle(dprop.PropertyType);
+            var expressionType = Type.GetTypeFromHandle(dprop.PropertyType);
+            var expressionFull = BindingExpressions.Combine(context.BindingContext, expression);
 
-            miBindValue.Invoke(uiElement, new Object[] { dprop, viewModelType, expression });
+            miBindValue.Invoke(uiElement, new Object[] { dprop, context.ViewModelType, expressionFull });
         }
 
         /// <summary>

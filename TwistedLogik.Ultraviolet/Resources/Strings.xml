@@ -530,9 +530,9 @@
       <Variant>The specified expression '{0}' is not a valid binding expression.</Variant>
     </en-US>
   </String>
-  <String Key="BINDING_ASSIGNMENT_TO_VALUE_TYPE">
+  <String Key="INVALID_BINDING_CONTEXT">
     <en-US>
-      <Variant>The specified expression '{0}' is invalid because it would cause an assignment to a property on a value type.</Variant>
+      <Variant>The specified binding context '{0}' is not a valid binding expression.</Variant>
     </en-US>
   </String>
   <String Key="BINDING_IS_READ_ONLY">
@@ -583,6 +583,26 @@
   <String Key="AMBIGUOUS_DEPENDENCY_PROPERTY">
     <en-US>
       <Variant>Cannot resolve dependency property '{0}': property is ambiguous under current filters.</Variant>
+    </en-US>
+  </String>
+  <String Key="USER_CONTROL_DOES_NOT_DEFINE_TYPE">
+    <en-US>
+      <Variant>The specified user control definition is missing a Type attribute on the root element.</Variant>
+    </en-US>
+  </String>
+  <String Key="INVALID_USER_CONTROL_DEFINITION">
+    <en-US>
+      <Variant>Invalid user control definition.</Variant>
+    </en-US>
+  </String>
+  <String Key="INVALID_USER_CONTROL_TYPE">
+    <en-US>
+      <Variant>The specified type '{0}' does not derive from UserControl or does not have a UIElementAttribute.</Variant>
+    </en-US>
+  </String>
+  <String Key="INVALID_UI_ELEMENT_TYPE">
+    <en-US>
+      <Variant>The name '{0}' does not resolve to a known UI element type.</Variant>
     </en-US>
   </String>
 </LocalizedStrings>

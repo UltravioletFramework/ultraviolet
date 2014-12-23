@@ -30,6 +30,45 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Attempts to create an instance of the element with the specified name.
+        /// </summary>
+        /// <typeparam name="TViewModel">The type of view model to which the element will be bound.</typeparam>
+        /// <param name="name">The name of the element to instantiate.</param>
+        /// <param name="id">The ID with which to create the element.</param>
+        /// <param name="bindingContext">The binding context to apply to the element which is instantiated.</param>
+        /// <returns>The element that was created, or <c>null</c> if the element could not be created.</returns>
+        public UIElement InstantiateElementByName<TViewModel>(String name, String id, String bindingContext = null)
+        {
+            return InstantiateElementByName(name, id, typeof(TViewModel), bindingContext);
+        }
+
+        /// <summary>
+        /// Attempts to create an instance of the element with the specified name.
+        /// </summary>
+        /// <param name="name">The name of the element to instantiate.</param>
+        /// <param name="id">The ID with which to create the element.</param>
+        /// <param name="viewModelType">The type of view model to which the element will be bound.</param>
+        /// <param name="bindingContext">The binding context to apply to the element which is instantiated.</param>
+        /// <returns>The element that was created, or <c>null</c> if the element could not be created.</returns>
+        public UIElement InstantiateElementByName(String name, String id, Type viewModelType, String bindingContext = null)
+        {
+            if (bindingContext != null && !BindingExpressions.IsBindingExpression(bindingContext))
+                throw new ArgumentException("bindingContext");
+
+            RegisteredElement registration;
+            if (!IsElementRegistered(name, out registration))
+                return null;
+
+            var instance = (UIElement)Activator.CreateInstance(registration.Type, Ultraviolet, id);
+            if (registration.Layout != null)
+            {
+                UIViewLoader.LoadUserControl((UserControl)instance, registration.Layout, viewModelType, bindingContext);
+            }
+
+            return instance;
+        }
+
+        /// <summary>
         /// Gets a value indicating whether the element with the specified name is a user control.
         /// </summary>
         /// <param name="name">The name of the element to evaluate.</param>
@@ -43,29 +82,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 return false;
 
             return registration.Layout != null;
-        }
-
-        /// <summary>
-        /// Attempts to create an instance of the element with the specified name.
-        /// </summary>
-        /// <param name="name">The name of the element to instantiate.</param>
-        /// <param name="id">The ID with which to create the element.</param>
-        /// <param name="element">The element that was created.</param>
-        /// <returns><c>true</c> if the specified element was created; otherwise, <c>false</c>.</returns>
-        public Boolean InstantiateElementByName(String name, String id, out UIElement element)
-        {
-            element = null;
-
-            RegisteredElement registration;
-            if (!IsElementRegistered(name, out registration))
-                return false;
-
-            var instance = (UIElement)Activator.CreateInstance(registration.Type, Ultraviolet, id);
-
-            // TODO: Apply layout
-
-            element = instance;
-            return true;
         }
 
         /// <summary>
@@ -208,7 +224,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <returns><c>true</c> if the specified XML document is a valid element layout; otherwise, <c>false</c>.</returns>
         private static Boolean IsValidElementLayout(XDocument layout)
         {
-            return layout.Root.Name.LocalName == "Userelement";
+            return layout.Root.Name.LocalName == "UserControl";
         }
 
         /// <summary>
@@ -243,20 +259,20 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <returns>The element type associated with the specified layout.</returns>
         private static Type ExtractElementTypeFromLayout(XDocument layout)
         {
-            if(!IsValidElementLayout(layout))
-                throw new ArgumentException("TODO");
+            if (!IsValidElementLayout(layout))
+                throw new ArgumentException(UltravioletStrings.InvalidUserControlDefinition);
 
             var attr = layout.Root.Attribute("Type");
             if (attr == null)
-                throw new InvalidOperationException("TODO");
+                throw new InvalidOperationException(UltravioletStrings.UserControlDoesNotDefineType);
 
             var type = Type.GetType(attr.Value, false);
             if (type == null)
-                throw new InvalidOperationException("TODO");
+                throw new InvalidOperationException(UltravioletStrings.InvalidUserControlType.Format(attr.Value));
 
             String name;
             if (!IsValidElementType(type, out name))
-                throw new InvalidOperationException("TODO");
+                throw new InvalidOperationException(UltravioletStrings.InvalidUIElementType.Format(type.Name));
 
             return type;
         }
@@ -305,11 +321,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             String name;
             if (!IsValidElementType(type, out name))
-                throw new InvalidOperationException("TODO");
+                throw new InvalidOperationException(UltravioletStrings.InvalidUIElementType.Format(type.Name));
 
             RegisteredElement existingRegistration;
             if (IsElementRegistered(name, out existingRegistration))
-                throw new InvalidOperationException("TODO");
+                throw new InvalidOperationException(UltravioletStrings.UnrecognizedUIElement.Format(name));
 
             var defaultProperty = default(String);
             var defaultPropertyAttr = type.GetCustomAttributes(typeof(DefaultPropertyAttribute), true).Cast<DefaultPropertyAttribute>().SingleOrDefault();
@@ -320,7 +336,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             var ctor = type.GetConstructor(new[] { typeof(UltravioletContext), typeof(String) });
             if (ctor == null)
-                throw new InvalidOperationException("TODO");
+                throw new InvalidOperationException(UltravioletStrings.UIElementInvalidCtor.Format(type.Name));
 
             registeredElements[name] = new RegisteredElement(name, type, ctor, defaultProperty, layout);
         }

@@ -99,7 +99,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
                  
                     if (content != null)
                         content.UpdateContainer(this);
-                    
+
+                    PerformLayout();
+
                     OnContentChanged();
                 }
             }

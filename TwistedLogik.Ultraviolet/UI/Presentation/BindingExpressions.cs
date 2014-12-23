@@ -168,21 +168,39 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
-        /// Creates a bound event delegate.
+        /// Creates an event handler which is bound to a method on a view model.
         /// </summary>
-        /// <param name="uiElement">The element to which an event is being bound.</param>
-        /// <param name="viewModelType">The type of view model to which the event is being bound.</param>
-        /// <param name="delegateType">The type of delegate that handles the event being bound.</param>
-        /// <param name="expression">The expression which represents the path to the event handler.</param>
-        /// <returns>The bound event delegate that was created.</returns>
-        public static Delegate CreateBoundEventDelegate(UIElement uiElement, Type viewModelType, Type delegateType, String expression)
+        /// <param name="uiElement">The interface element to which the event will be bound.</param>
+        /// <param name="viewModelType">The type of the view model which is being bound.</param>
+        /// <param name="delegateType">The type of the event handler which is being bound.</param>
+        /// <param name="expression">The binding expression that represents the method to bind to the event.</param>
+        /// <returns>A <see cref="Delegate"/> which represents the bound event handler.</returns>
+        public static Delegate CreateViewModelBoundEventDelegate(UIElement uiElement, Type viewModelType, Type delegateType, String expression)
         {
-            Contract.Require(uiElement, "element");
+            Contract.Require(uiElement, "uiElement");
             Contract.Require(viewModelType, "viewModelType");
             Contract.Require(delegateType, "delegateType");
             Contract.RequireNotEmpty(expression, "expression");
 
-            var builder = new BoundEventBuilder(uiElement, delegateType, viewModelType, expression);
+            var builder = new BoundEventBuilder(uiElement, viewModelType, delegateType, expression);
+            return builder.Compile();
+        }
+
+        /// <summary>
+        /// Creates an event handler which is bound to a method on a user control.
+        /// </summary>
+        /// <param name="userControl">The user control to which the event will be bound.</param>
+        /// <param name="viewModelType">The type of the view model which is being bound.</param>
+        /// <param name="delegateType">The type of the event handler which is being bound.</param>
+        /// <param name="expression">The binding expression that represents the method to bind to the event.</param>
+        /// <returns>A <see cref="Delegate"/> which represents the bound event handler.</returns>
+        public static Delegate CreateUserControlBoundEventDelegate(UserControl userControl, Type viewModelType, Type delegateType, String expression)
+        {
+            Contract.Require(userControl, "userControl");
+            Contract.Require(delegateType, "delegateType");
+            Contract.RequireNotEmpty(expression, "expression");
+
+            var builder = new BoundEventBuilder(userControl, viewModelType, delegateType, expression);
             return builder.Compile();
         }
 
