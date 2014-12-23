@@ -525,6 +525,11 @@
       <Variant>Dependency property has already been registered.</Variant>
     </en-US>
   </String>
+  <String Key="CANNOT_RESOLVE_BINDING_EXPRESSION">
+    <en-US>
+      <Variant>The binding expression '{0}' cannot be resolved because a method or member which makes up part of the binding path could not be found.</Variant>
+    </en-US>
+  </String>
   <String Key="INVALID_BINDING_EXPRESSION">
     <en-US>
       <Variant>The specified expression '{0}' is not a valid binding expression.</Variant>
@@ -603,6 +608,16 @@
   <String Key="INVALID_UI_ELEMENT_TYPE">
     <en-US>
       <Variant>The name '{0}' does not resolve to a known UI element type.</Variant>
+    </en-US>
+  </String>
+  <String Key="INVALID_CHILD_ELEMENTS">
+    <en-US>
+      <Variant>Element '{0}' has child elements, but is not a container.</Variant>
+    </en-US>
+  </String>
+  <String Key="INVALID_ELEMENT_PROPERTY_VALUE">
+    <en-US>
+      <Variant>The value '{0}' specified for property '{1}' is not valid.</Variant>
     </en-US>
   </String>
 </LocalizedStrings>

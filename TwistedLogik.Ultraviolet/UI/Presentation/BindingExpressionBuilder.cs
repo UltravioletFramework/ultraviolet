@@ -22,13 +22,23 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Adds a safe reference to the specified component. If accessing the component would result
         /// in a <see cref="NullReferenceException"/>, the getter will return a default value.
         /// </summary>
+        /// <param name="bindingExpression">The binding expression being converted into a delegate.</param>
         /// <param name="current">The current expression in the chain.</param>
         /// <param name="component">The component to which to add a reference.</param>
         /// <param name="conversion">The type to which to convert the reference, if any.</param>
         /// <returns>The variable expression that contains the safe reference.</returns>
-        protected Expression AddSafeReference(Expression current, String component, Type conversion = null)
+        protected Expression AddSafeReference(String bindingExpression, Expression current, String component, Type conversion = null)
         {
-            var reference = (Expression)Expression.PropertyOrField(current, component);
+            Expression reference;
+            try
+            {
+                reference = (Expression)Expression.PropertyOrField(current, component);
+            }
+            catch (ArgumentException e) 
+            { 
+                throw new InvalidOperationException(UltravioletStrings.CannotResolveBindingExpression.Format(bindingExpression), e); 
+            }
+
             if (conversion != null)
             {
                 reference = Expression.Convert(reference, conversion);

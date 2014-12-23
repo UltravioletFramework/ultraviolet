@@ -26,7 +26,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             foreach (var component in components)
             {
-                current = AddSafeReference(current, component);
+                current = AddSafeReference(expression, current, component);
             }
 
             var result = Expression.Convert(current, expressionType);

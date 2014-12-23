@@ -272,7 +272,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             String name;
             if (!IsValidElementType(type, out name))
-                throw new InvalidOperationException(UltravioletStrings.InvalidUIElementType.Format(type.Name));
+                throw new InvalidOperationException(UltravioletStrings.InvalidUserControlType.Format(type.Name));
 
             return type;
         }

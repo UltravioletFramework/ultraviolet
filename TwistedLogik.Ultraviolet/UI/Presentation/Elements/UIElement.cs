@@ -132,12 +132,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <summary>
-        /// Calculates the element's recommended size based on its content
+        /// Calculates the element's size based on its content
         /// and the specified constraints.
         /// </summary>
-        /// <param name="width">The element's recommended width.</param>
-        /// <param name="height">The element's recommended height.</param>
-        public virtual void CalculateRecommendedSize(ref Int32? width, ref Int32? height)
+        /// <param name="width">The element's width.</param>
+        /// <param name="height">The element's height.</param>
+        public virtual void CalculateContentSize(ref Int32? width, ref Int32? height)
         {
 
         }
@@ -328,7 +328,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// </summary>
         public Rectangle Bounds
         {
-            get { return new Rectangle(0, 0, CalculatedWidth, CalculatedHeight); }
+            get { return new Rectangle(0, 0, ActualWidth, ActualHeight); }
         }
 
         /// <summary>
@@ -336,7 +336,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// </summary>
         public Rectangle ScreenBounds
         {
-            get { return new Rectangle(AbsoluteScreenX, AbsoluteScreenY, CalculatedWidth, CalculatedHeight); }
+            get { return new Rectangle(AbsoluteScreenX, AbsoluteScreenY, ActualWidth, ActualHeight); }
         }
 
         /// <summary>
@@ -392,12 +392,48 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <summary>
+        /// Gets the element's minimum width in device independent pixel units (1/96 of an inch).
+        /// </summary>
+        public Double MinWidth
+        {
+            get { return GetValue<Double>(dpMinWidth); }
+            set { SetValue<Double>(dpMinWidth, value); }
+        }
+
+        /// <summary>
+        /// Gets the element's maximum width in device independent pixel units (1/96 of an inch).
+        /// </summary>
+        public Double MaxWidth
+        {
+            get { return GetValue<Double>(dpMaxWidth); }
+            set { SetValue<Double>(dpMaxWidth, value); }
+        }
+
+        /// <summary>
         /// Gets the element's height in device independent pixel units (1/96 of an inch).
         /// </summary>
         public Double Height
         {
             get { return GetValue<Double>(dpHeight); }
             set { SetValue<Double>(dpHeight, value); }
+        }
+
+        /// <summary>
+        /// Gets the element's minimum height in device independent pixel units (1/96 of an inch).
+        /// </summary>
+        public Double MinHeight
+        {
+            get { return GetValue<Double>(dpMinHeight); }
+            set { SetValue<Double>(dpMinHeight, value); }
+        }
+
+        /// <summary>
+        /// Gets the element's maximum height in device independent pixel units (1/96 of an inch).
+        /// </summary>
+        public Double MaxHeight
+        {
+            get { return GetValue<Double>(dpMaxHeight); }
+            set { SetValue<Double>(dpMaxHeight, value); }
         }
 
         /// <summary>
@@ -514,9 +550,29 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         public event UIElementEventHandler WidthChanged;
 
         /// <summary>
+        /// Occurs when the value of the <see cref="MinWidth"/> property changes.
+        /// </summary>
+        public event UIElementEventHandler MinWidthChanged;
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="MaxWidth"/> property changes.
+        /// </summary>
+        public event UIElementEventHandler MaxWidthChanged;
+
+        /// <summary>
         /// Occurs when the value of the <see cref="Height"/> property changes.
         /// </summary>
         public event UIElementEventHandler HeightChanged;
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="MinHeight"/> property changes.
+        /// </summary>
+        public event UIElementEventHandler MinHeightChanged;
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="MaxHeight"/> property changes.
+        /// </summary>
+        public event UIElementEventHandler MaxHeightChanged;
 
         /// <summary>
         /// Occurs when the value of the <see cref="Padding"/> property changes.
@@ -1002,13 +1058,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// </summary>
         protected internal Rectangle ContainerRelativeLayout
         {
-            get { return new Rectangle(containerRelativeX, containerRelativeY, calculatedWidth, calculatedHeight); }
+            get { return new Rectangle(containerRelativeX, containerRelativeY, actualWidth, actualHeight); }
             set
             {
                 containerRelativeX = value.X;
                 containerRelativeY = value.Y;
-                calculatedWidth = value.Width;
-                calculatedHeight = value.Height;
+                actualWidth = value.Width;
+                actualHeight = value.Height;
                 OnContainerRelativeLayoutChanged();
             }
         }
@@ -1048,21 +1104,21 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <summary>
-        /// Gets the element's width as calculated during layout.
+        /// Gets the element's actual width as calculated during layout.
         /// </summary>
-        protected internal Int32 CalculatedWidth
+        protected internal Int32 ActualWidth
         {
-            get { return calculatedWidth; }
-            internal set { calculatedWidth = value; }
+            get { return actualWidth; }
+            internal set { actualWidth = value; }
         }
 
         /// <summary>
-        /// Gets the element's height as calculated during layout.
+        /// Gets the element's actual height as calculated during layout.
         /// </summary>
-        protected internal Int32 CalculatedHeight
+        protected internal Int32 ActualHeight
         {
-            get { return calculatedHeight; }
-            internal set { calculatedHeight = value; }
+            get { return actualHeight; }
+            internal set { actualHeight = value; }
         }
 
         /// <summary>
@@ -1166,11 +1222,59 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <summary>
+        /// Raises the <see cref="MinWidthChanged"/> event.
+        /// </summary>
+        protected virtual void OnMinWidthChanged()
+        {
+            var temp = MinWidthChanged;
+            if (temp != null)
+            {
+                temp(this);
+            }
+        }
+
+        /// <summary>
+        /// Raises the <see cref="MaxWidthChanged"/> event.
+        /// </summary>
+        protected virtual void OnMaxWidthChanged()
+        {
+            var temp = MaxWidthChanged;
+            if (temp != null)
+            {
+                temp(this);
+            }
+        }
+
+        /// <summary>
         /// Raises the <see cref="HeightChanged"/> event.
         /// </summary>
         protected virtual void OnHeightChanged()
         {
             var temp = HeightChanged;
+            if (temp != null)
+            {
+                temp(this);
+            }
+        }
+
+        /// <summary>
+        /// Raises the <see cref="MinHeightChanged"/> event.
+        /// </summary>
+        protected virtual void OnMinHeightChanged()
+        {
+            var temp = MinHeightChanged;
+            if (temp != null)
+            {
+                temp(this);
+            }
+        }
+
+        /// <summary>
+        /// Raises the <see cref="MaxHeightChanged"/> event.
+        /// </summary>
+        protected virtual void OnMaxHeightChanged()
+        {
+            var temp = MaxHeightChanged;
             if (temp != null)
             {
                 temp(this);
@@ -1345,18 +1449,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
 
             if (bgImage == null || !bgImage.IsLoaded)
             {
-                var area = new RectangleF(AbsoluteScreenX, AbsoluteScreenY, CalculatedWidth, CalculatedHeight);
+                var area = new RectangleF(AbsoluteScreenX, AbsoluteScreenY, ActualWidth, ActualHeight);
                 spriteBatch.Draw(UIElementResources.BlankTexture, area, bgColor);
             }
             else
             {
                 var effects  = SpriteEffects.None;
-                var origin   = new Vector2(CalculatedWidth / 2f, CalculatedHeight / 2f);
+                var origin   = new Vector2(ActualWidth / 2f, ActualHeight / 2f);
                 var position = new Vector2(
-                    AbsoluteScreenX + (CalculatedWidth / 2f),
-                    AbsoluteScreenY + (CalculatedHeight / 2f));
+                    AbsoluteScreenX + (ActualWidth / 2f),
+                    AbsoluteScreenY + (ActualHeight / 2f));
 
-                spriteBatch.DrawImage(bgImage, position, CalculatedWidth, CalculatedHeight, bgColor, 0f, origin, effects, 0f);
+                spriteBatch.DrawImage(bgImage, position, ActualWidth, ActualHeight, bgColor, 0f, origin, effects, 0f);
             }
         }
 
@@ -1490,6 +1594,26 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <summary>
+        /// Occurs when the value of the <see cref="MinWidth"/> dependency property changes.
+        /// </summary>
+        /// <param name="dobj">The object that raised the event.</param>
+        private static void HandleMinWidthChanged(DependencyObject dobj)
+        {
+            var element = (UIElement)dobj;
+            element.OnMinWidthChanged();
+        }
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="MaxWidth"/> dependency property changes.
+        /// </summary>
+        /// <param name="dobj">The object that raised the event.</param>
+        private static void HandleMaxWidthChanged(DependencyObject dobj)
+        {
+            var element = (UIElement)dobj;
+            element.OnMaxWidthChanged();
+        }
+
+        /// <summary>
         /// Occurs when the value of the <see cref="Height"/> dependency property changes.
         /// </summary>
         /// <param name="dobj">The object that raised the event.</param>
@@ -1497,6 +1621,26 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         {
             var element = (UIElement)dobj;
             element.OnHeightChanged();
+        }
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="MinHeight"/> dependency property changes.
+        /// </summary>
+        /// <param name="dobj">The object that raised the event.</param>
+        private static void HandleMinHeightChanged(DependencyObject dobj)
+        {
+            var element = (UIElement)dobj;
+            element.OnMinHeightChanged();
+        }
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="MaxHeight"/> dependency property changes.
+        /// </summary>
+        /// <param name="dobj">The object that raised the event.</param>
+        private static void HandleMaxHeightChanged(DependencyObject dobj)
+        {
+            var element = (UIElement)dobj;
+            element.OnMaxHeightChanged();
         }
 
         /// <summary>
@@ -1610,9 +1754,22 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         [Styled("width")]
         private static readonly DependencyProperty dpWidth = DependencyProperty.Register("Width", typeof(Double), typeof(UIElement),
             new DependencyPropertyMetadata(HandleWidthChanged, () => Double.NaN, DependencyPropertyOptions.None));
+        [Styled("min-width")]
+        private static readonly DependencyProperty dpMinWidth = DependencyProperty.Register("MinWidth", typeof(Double), typeof(UIElement),
+            new DependencyPropertyMetadata(HandleMinWidthChanged, null, DependencyPropertyOptions.None));
+        [Styled("max-width")]
+        private static readonly DependencyProperty dpMaxWidth = DependencyProperty.Register("MaxWidth", typeof(Double), typeof(UIElement),
+            new DependencyPropertyMetadata(HandleMaxWidthChanged, () => Double.PositiveInfinity, DependencyPropertyOptions.None));
+
         [Styled("height")]
         private static readonly DependencyProperty dpHeight = DependencyProperty.Register("Height", typeof(Double), typeof(UIElement),
             new DependencyPropertyMetadata(HandleHeightChanged, () => Double.NaN, DependencyPropertyOptions.None));
+        [Styled("min-height")]
+        private static readonly DependencyProperty dpMinHeight = DependencyProperty.Register("MinHeight", typeof(Double), typeof(UIElement),
+            new DependencyPropertyMetadata(HandleMinHeightChanged, null, DependencyPropertyOptions.None));
+        [Styled("max-height")]
+        private static readonly DependencyProperty dpMaxHeight = DependencyProperty.Register("MaxHeight", typeof(Double), typeof(UIElement),
+            new DependencyPropertyMetadata(HandleMaxHeightChanged, () => Double.PositiveInfinity, DependencyPropertyOptions.None));
 
         [Styled("visible")]
         private static readonly DependencyProperty dpVisible = DependencyProperty.Register("Visible", typeof(Boolean), typeof(UIElement),
@@ -1648,8 +1805,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         private Boolean hovering;
         private Int32 containerRelativeX;
         private Int32 containerRelativeY;
-        private Int32 calculatedWidth;
-        private Int32 calculatedHeight;
+        private Int32 actualWidth;
+        private Int32 actualHeight;
         private SpriteFont font;
 
         // State values.

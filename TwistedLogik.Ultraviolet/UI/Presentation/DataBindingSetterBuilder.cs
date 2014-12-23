@@ -34,7 +34,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
                 if (i + 1 < components.Length)
                 {
-                    current = AddSafeReference(current, component);
+                    current = AddSafeReference(expression, current, component);
                 }
                 else
                 {

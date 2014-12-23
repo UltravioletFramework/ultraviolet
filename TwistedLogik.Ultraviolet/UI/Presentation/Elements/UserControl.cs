@@ -63,7 +63,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         {
             if (Content != null)
             {
-                Content.ContainerRelativeLayout = new Rectangle(0, 0, CalculatedWidth, CalculatedHeight);
+                Content.ContainerRelativeLayout = new Rectangle(0, 0, ActualWidth, ActualHeight);
                 Content.PerformLayout();
             }
         }

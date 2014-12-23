@@ -29,7 +29,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// </summary>
         /// <param name="width">The element's recommended width.</param>
         /// <param name="height">The element's recommended height.</param>
-        public override void CalculateRecommendedSize(ref Int32? width, ref Int32? height)
+        public override void CalculateContentSize(ref Int32? width, ref Int32? height)
         {
             if (Font == null || String.IsNullOrEmpty(Text))
                 return;
@@ -155,8 +155,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
 
             if (cachedParserResult.Count > 0 && Font != null)
             {
-                var width    = CalculatedWidth - (2 * Padding);
-                var height   = CalculatedHeight - (2 * Padding);
+                var width    = ActualWidth - (2 * Padding);
+                var height   = ActualHeight - (2 * Padding);
                 var settings = new TextLayoutSettings(Font, width, height, TextAlignment);
                 UIElementResources.TextRenderer.CalculateLayout(cachedParserResult, cachedLayoutResult, settings);
             }

@@ -361,9 +361,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             /// <param name="expression">The dependency property's binding expression.</param>
             private void CreateCachedBoundValue(Type viewModelType, String expression)
             {
-                var expressionType  = BindingExpressions.GetExpressionType(viewModelType, expression);
-
-                if (TypesRequireSpecialConversion(expressionType, typeof(T)))
+                var expressionType = BindingExpressions.GetExpressionType(viewModelType, expression);
+                if (expressionType != null && TypesRequireSpecialConversion(expressionType, typeof(T)))
                 {                
                     var valueType       = typeof(DependencyBoundValueConverting<,>).MakeGenericType(typeof(T), expressionType);
                     var valueInstance   = (IDependencyBoundValue<T>)Activator.CreateInstance(valueType, this, expressionType, viewModelType, expression);

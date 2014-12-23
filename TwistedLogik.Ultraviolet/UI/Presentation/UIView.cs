@@ -301,8 +301,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             this.area = area;
 
-            Canvas.CalculatedWidth  = area.Width;
-            Canvas.CalculatedHeight = area.Height;
+            Canvas.ActualWidth  = area.Width;
+            Canvas.ActualHeight = area.Height;
 
             if (newSize)
             {

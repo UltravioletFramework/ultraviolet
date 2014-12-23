@@ -177,19 +177,30 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
 
             // If we have both left and right, calculate width
             if (!Double.IsNaN(left) && !Double.IsNaN(right))
-                width = CalculatedWidth - (left + right);
+                width = ActualWidth - (left + right);
 
             // If we have both top and bottom, calculate height
             if (!Double.IsNaN(top) && !Double.IsNaN(bottom))
-                height = CalculatedHeight - (top + bottom);
+                height = ActualHeight - (top + bottom);
 
-            // Convert 
+            // Honor dimensional constraints
+            if (width < MinWidth)
+                width = MinWidth;
+            if (width > MaxWidth)
+                width = MaxWidth;
+
+            if (height < MinHeight)
+                height = MinHeight;
+            if (height > MaxHeight)
+                height = MaxHeight;
+
+            // Convert from dips to pixels
             widthpx  = Double.IsNaN(width) ? (Int32?)null : display.DipsToPixels(width);
             heightpx = Double.IsNaN(height) ? (Int32?)null : display.DipsToPixels(height);
-
+            
             // If we're missing a dimension, calculate the recommended dimension.
             if (widthpx == null || heightpx == null)
-                child.CalculateRecommendedSize(ref widthpx, ref heightpx);
+                child.CalculateContentSize(ref widthpx, ref heightpx);
 
             // If we have no width, assume 0
             if (widthpx == null)
@@ -212,7 +223,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             }
             else
             {
-                x = CalculatedWidth - (display.DipsToPixels(right) + widthpx.GetValueOrDefault());
+                x = ActualWidth - (display.DipsToPixels(right) + widthpx.GetValueOrDefault());
             }
             if (!Double.IsNaN(top))
             {
@@ -220,7 +231,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             }
             else
             {
-                y = CalculatedHeight - (display.DipsToPixels(bottom) + heightpx.GetValueOrDefault());
+                y = ActualHeight - (display.DipsToPixels(bottom) + heightpx.GetValueOrDefault());
             }
             return new Rectangle(x, y, widthpx.GetValueOrDefault(), heightpx.GetValueOrDefault());
         }

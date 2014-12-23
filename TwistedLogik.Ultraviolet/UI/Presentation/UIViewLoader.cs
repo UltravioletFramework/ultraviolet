@@ -158,12 +158,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             PopulateElementProperties(uv, uiElement, xmlElement, context);
             PopulateElementEvents(uv, uiElement, xmlElement, context);
-
-            var container = uiElement as UIContainer;
-            if (container != null)
-            {
-                PopulateElementChildren(uv, container, xmlElement, context);
-            }
+            PopulateElementChildren(uv, uiElement, xmlElement, context);
         }
 
         /// <summary>
@@ -267,14 +262,26 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Populates the specified container with children.
         /// </summary>
         /// <param name="uv">The Ultraviolet container.</param>
-        /// <param name="uiContainer">The container to populate with children.</param>
+        /// <param name="uiElement">The element to populate with children.</param>
         /// <param name="xmlElement">The XML element that represents the UI container.</param>
         /// <param name="context">The current instantiation context.</param>
-        private static void PopulateElementChildren(UltravioletContext uv, UIContainer uiContainer, XElement xmlElement, InstantiationContext context)
+        private static void PopulateElementChildren(UltravioletContext uv, UIElement uiElement, XElement xmlElement, InstantiationContext context)
         {
-            foreach (var child in xmlElement.Elements())
+            var container = uiElement as UIContainer;
+            if (container != null)
             {
-                InstantiateAndPopulateElement(uv, uiContainer, child, context);
+                foreach (var child in xmlElement.Elements())
+                {
+                    InstantiateAndPopulateElement(uv, container, child, context);
+                }
+            }
+            else
+            {
+                if (xmlElement.Elements().Any())
+                {
+                    var id = uiElement.ID ?? uiElement.GetType().Name;
+                    throw new InvalidOperationException(UltravioletStrings.InvalidChildElements.Format(id));
+                }
             }
         }
 
@@ -305,10 +312,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="value">The value to set on the property.</param>
         private static void SetProperty(UIElement uiElement, DependencyProperty dprop, String value)
         {
-            var type          = Type.GetTypeFromHandle(dprop.PropertyType);
-            var resolvedValue = ObjectResolver.FromString(value, type);
+            try
+            {
+                var type          = Type.GetTypeFromHandle(dprop.PropertyType);
+                var resolvedValue = ObjectResolver.FromString(value, type);
 
-            miSetLocalValue.MakeGenericMethod(type).Invoke(uiElement, new Object[] { dprop, resolvedValue });
+                miSetLocalValue.MakeGenericMethod(type).Invoke(uiElement, new Object[] { dprop, resolvedValue });
+            }
+            catch (FormatException e)
+            {
+                throw new InvalidOperationException(UltravioletStrings.InvalidElementPropertyValue.Format(value, dprop.Name), e);
+            }
         }
 
         /// <summary>

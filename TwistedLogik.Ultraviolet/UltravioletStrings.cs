@@ -129,6 +129,7 @@ namespace TwistedLogik.Ultraviolet
         public static readonly StringResource IsNotDependencyObject                = new StringResource(StringDatabase, "IS_NOT_DEPENDENCY_OBJECT");
         public static readonly StringResource DependencyPropertyDoesNotExist       = new StringResource(StringDatabase, "DEPENDENCY_PROPERTY_DOES_NOT_EXIST");
         public static readonly StringResource DependencyPropertyAlreadyRegistered  = new StringResource(StringDatabase, "DEPENDENCY_PROPERTY_ALREADY_REGISTERED");
+        public static readonly StringResource CannotResolveBindingExpression       = new StringResource(StringDatabase, "CANNOT_RESOLVE_BINDING_EXPRESSION");
         public static readonly StringResource InvalidBindingExpression             = new StringResource(StringDatabase, "INVALID_BINDING_EXPRESSION");
         public static readonly StringResource InvalidBindingContext                = new StringResource(StringDatabase, "INVALID_BINDING_CONTEXT");
         public static readonly StringResource BindingIsReadOnly                    = new StringResource(StringDatabase, "BINDING_IS_READ_ONLY");
@@ -145,6 +146,8 @@ namespace TwistedLogik.Ultraviolet
         public static readonly StringResource InvalidUserControlDefinition         = new StringResource(StringDatabase, "INVALID_USER_CONTROL_DEFINITION");
         public static readonly StringResource InvalidUserControlType               = new StringResource(StringDatabase, "INVALID_USER_CONTROL_TYPE");
         public static readonly StringResource InvalidUIElementType                 = new StringResource(StringDatabase, "INVALID_UI_ELEMENT_TYPE");
+        public static readonly StringResource InvalidChildElements                 = new StringResource(StringDatabase, "INVALID_CHILD_ELEMENTS");
+        public static readonly StringResource InvalidElementPropertyValue          = new StringResource(StringDatabase, "INVALID_ELEMENT_PROPERTY_VALUE");
 #pragma warning restore 1591
     }
 }

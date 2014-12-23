@@ -321,8 +321,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             {
                 if (child.ContainerRelativeX < 0 || 
                     child.ContainerRelativeY < 0 ||
-                    child.ContainerRelativeX + child.CalculatedWidth > CalculatedWidth ||
-                    child.ContainerRelativeY + child.CalculatedHeight > CalculatedHeight)
+                    child.ContainerRelativeX + child.ActualWidth > ActualWidth ||
+                    child.ContainerRelativeY + child.ActualHeight > ActualHeight)
                 {
                     required = true;
                     break;
@@ -342,7 +342,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             spriteBatch.Begin(SpriteSortMode.Deferred, Graphics.BlendState.AlphaBlend);
 
             var scissorRectContainer = Ultraviolet.GetGraphics().GetScissorRectangle() ?? View.Area;
-            var scissorRectElement   = new Rectangle(AbsoluteScreenX, AbsoluteScreenY, CalculatedWidth, CalculatedHeight);
+            var scissorRectElement   = new Rectangle(AbsoluteScreenX, AbsoluteScreenY, ActualWidth, ActualHeight);
             var scissorRectIntersect = default(Rectangle);
             Rectangle.Intersect(ref scissorRectContainer, ref scissorRectElement, out scissorRectIntersect);
 
