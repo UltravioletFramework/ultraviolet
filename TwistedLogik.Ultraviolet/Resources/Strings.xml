@@ -577,7 +577,7 @@
   </String>
   <String Key="ELEMENT_WITH_ID_ALREADY_EXISTS">
     <en-US>
-      <Variant>An element with ID '{0}' already exists within the view.</Variant>
+      <Variant>An element with ID '{0}' already exists within the layout.</Variant>
     </en-US>
   </String>
   <String Key="AMBIGUOUS_DEPENDENCY_PROPERTY">

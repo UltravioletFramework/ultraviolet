@@ -366,6 +366,9 @@
     <Compile Include="UI\Presentation\Elements\UIElementCollection.IEnumerable.cs" />
     <Compile Include="UI\Presentation\Elements\UIElementResources.cs" />
     <Compile Include="UI\Presentation\Elements\UserControl.cs" />
+    <Compile Include="UI\Presentation\ILayoutDocumentContext.cs" />
+    <Compile Include="UI\Presentation\LayoutDocumentElementRegistry.IEnumerable.cs" />
+    <Compile Include="UI\Presentation\LayoutDocumentElementRegistry.cs" />
     <Compile Include="UI\Presentation\PresentationFrameworkManager.RegisteredElement.cs" />
     <Compile Include="UI\Presentation\PresentationFrameworkManager.cs" />
     <Compile Include="UI\Presentation\UIView.cs" />

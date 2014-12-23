@@ -135,6 +135,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             get { return elements.Count; }
         }
 
+        /// <summary>
+        /// Gets the element at the specified index within the collection.
+        /// </summary>
+        /// <param name="ix">The index of the element to retrieve.</param>
+        /// <returns>The element at the specified index within the collection.</returns>
+        public UIElement this[Int32 ix]
+        {
+            get { return elements[ix]; }
+        }
+
         // Property values.
         private readonly UIContainer container;
 

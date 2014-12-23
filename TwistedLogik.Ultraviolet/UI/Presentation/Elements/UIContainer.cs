@@ -241,6 +241,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             }
         }
 
+        /// <inheritdoc/>
+        internal override void UpdateContainer(UIElement container)
+        {
+            base.UpdateContainer(container);
+
+            foreach (var child in children)
+            {
+                child.UpdateContainer(this);
+            }
+        }
+
         /// <summary>
         /// Gets the element at the specified point in element space.
         /// </summary>
@@ -252,9 +263,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             if (!Bounds.Contains(x, y))
                 return null;
 
-            foreach (var child in children)
+            for (int i = children.Count - 1; i >= 0; i--)
             {
+                var child   = children[i];
                 var element = child.GetElementAtPointInternal(x - child.ContainerRelativeX, y - child.ContainerRelativeY);
+
                 if (element != null)
                 {
                     return element;

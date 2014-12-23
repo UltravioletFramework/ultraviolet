@@ -82,6 +82,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var content = InstantiateAndPopulateElement(uv, null, contentElement, context);
 
             userControl.Content = content;
+            userControl.PopulateFieldsFromRegisteredElements();
         }
 
         /// <summary>

@@ -825,13 +825,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <param name="view">The view to associate with this element.</param>
         internal virtual void UpdateView(UIView view)
         {
-            if (this.view != null)
-                this.view.UnregisterElementID(this);
-
             this.view = view;
-
-            if (this.view != null)
-                this.view.RegisterElementID(this);
 
             if (view == null || view.Stylesheet == null)
             {
@@ -854,7 +848,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <param name="container">The container to associate with this element.</param>
         internal virtual void UpdateContainer(UIElement container)
         {
-            this.container = container;
+            if (this.layoutDocumentContext != null)
+                this.layoutDocumentContext.UnregisterElementID(this);
+
+            this.container             = container;
+            this.layoutDocumentContext = FindLayoutDocumentContext();
+
+            if (this.layoutDocumentContext != null)
+                this.layoutDocumentContext.RegisterElementID(this);
 
             var view = (container == null) ? null : container.View;
             if (view != this.view)
@@ -888,6 +889,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         internal virtual Int32 AbsoluteScreenYInternal
         {
             get { return (Container == null ? 0 : Container.AbsoluteScreenY) + containerRelativeY; }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether this element is a component of a user control.
+        /// </summary>
+        internal Boolean IsUserControlComponent
+        {
+            get { return layoutDocumentContext is UserControl; }
         }
 
         /// <summary>
@@ -1576,6 +1585,24 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             }
         }
 
+        /// <summary>
+        /// Finds the element's layout document context.
+        /// </summary>
+        /// <returns>The element's layout document context, or <c>null</c> if it has no layout document context.</returns>
+        private ILayoutDocumentContext FindLayoutDocumentContext()
+        {
+            var current = Container;
+            while (current != null)
+            {
+                if (current is ILayoutDocumentContext)
+                {
+                    return (ILayoutDocumentContext)current;
+                }
+                current = current.Container;
+            }
+            return View;
+        }
+
         // Dependency properties.
         private static readonly DependencyProperty dpEnabled = DependencyProperty.Register("Enabled", typeof(Boolean), typeof(UIElement),
             new DependencyPropertyMetadata(HandleEnabledChanged, () => true, DependencyPropertyOptions.None));
@@ -1627,6 +1654,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
 
         // State values.
         private Boolean layoutRequested;
+        private ILayoutDocumentContext layoutDocumentContext;
 
         // Storyboard clocks.
         private static readonly IPool<StoryboardClock> storyboardClockPool = 

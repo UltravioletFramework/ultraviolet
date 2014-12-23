@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Linq;
+using System.Reflection;
 using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
 using TwistedLogik.Ultraviolet.UI.Presentation.Animations;
@@ -9,7 +11,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
     /// <summary>
     /// Represents a control which is defined by the application using a layout definition.
     /// </summary>
-    public abstract class UserControl : UIElement
+    public abstract class UserControl : UIElement, ILayoutDocumentContext
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="UserControl"/> class.
@@ -111,6 +113,39 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// Occurs when the value of the control's <see cref="Content"/> property changes.
         /// </summary>
         public event UIElementEventHandler ContentChanged;
+
+        /// <inheritdoc/>
+        void ILayoutDocumentContext.RegisterElementID(UIElement element)
+        {
+            elementRegistry.RegisterElementID(element);
+        }
+
+        /// <inheritdoc/>
+        void ILayoutDocumentContext.UnregisterElementID(UIElement element)
+        {
+            elementRegistry.UnregisterElementID(element);
+        }
+
+        /// <summary>
+        /// Populates any private fields of this object which match elements which
+        /// are registered with the user control's layout document.
+        /// </summary>
+        internal void PopulateFieldsFromRegisteredElements()
+        {
+            var fields = GetType().GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance).ToDictionary(x => x.Name);
+
+            foreach (var kvp in elementRegistry)
+            {
+                FieldInfo field;
+                if (!fields.TryGetValue(kvp.Key, out field))
+                    continue;
+
+                if (!field.FieldType.IsAssignableFrom(kvp.Value.GetType()))
+                    continue;
+
+                field.SetValue(this, kvp.Value);
+            }
+        }
 
         /// <summary>
         /// Attempts to remove the specified child or subcomponent from this element.
@@ -223,7 +258,20 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             }
         }
 
+        /// <summary>
+        /// Gets the element within the user control which has the specified identifier.
+        /// </summary>
+        /// <param name="id">The identifier of the element to retrieve.</param>
+        /// <returns>The element with the specified identifier, or <c>null</c> if no such element exists.</returns>
+        protected UIElement GetElementByID(String id)
+        {
+            return elementRegistry.GetElementByID(id);
+        }
+
         // Property values.
         private UIElement content;
+
+        // State values.
+        private readonly LayoutDocumentElementRegistry elementRegistry = new LayoutDocumentElementRegistry();
     }
 }

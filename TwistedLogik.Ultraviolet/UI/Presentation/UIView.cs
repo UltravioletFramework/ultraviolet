@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Xml.Linq;
 using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet.Content;
@@ -15,7 +14,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
     /// <summary>
     /// Represents the top-level container for UI elements.
     /// </summary>
-    public sealed class UIView : UltravioletResource
+    public sealed class UIView : UltravioletResource, ILayoutDocumentContext
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="UIView"/> class.
@@ -181,15 +180,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
-        /// Gets the element with the specified identifier.
+        /// Gets the element within the view which has the specified identifier.
         /// </summary>
         /// <param name="id">The identifier of the element to retrieve.</param>
         /// <returns>The element with the specified identifier, or <c>null</c> if no such element exists.</returns>
         public UIElement GetElementByID(String id)
         {
-            UIElement element;
-            elementsByID.TryGetValue(id, out element);
-            return element;
+            Contract.RequireNotEmpty(id, "id");
+
+            return elementRegistry.GetElementByID(id);
         }
 
         /// <summary>
@@ -568,36 +567,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             get { return window; }
         }
 
-        /// <summary>
-        /// Registers an element with the view's identifier cache.
-        /// </summary>
-        /// <param name="element">The element to register.</param>
-        internal void RegisterElementID(UIElement element)
+        /// <inheritdoc/>
+        void ILayoutDocumentContext.RegisterElementID(UIElement element)
         {
-            if (String.IsNullOrEmpty(element.ID))
-                return;
-
-            UIElement existing;
-            if (elementsByID.TryGetValue(element.ID, out existing))
-                throw new InvalidOperationException(UltravioletStrings.ElementWithIDAlreadyExists.Format(element.ID));
-
-            elementsByID[element.ID] = element;
+            elementRegistry.RegisterElementID(element);
         }
 
-        /// <summary>
-        /// Removes an element from the view's identifier cache.
-        /// </summary>
-        /// <param name="element">The element to remove.</param>
-        internal void UnregisterElementID(UIElement element)
+        /// <inheritdoc/>
+        void ILayoutDocumentContext.UnregisterElementID(UIElement element)
         {
-            if (String.IsNullOrEmpty(element.ID))
-                return;
-
-            UIElement existing;
-            elementsByID.TryGetValue(element.ID, out existing);
-
-            if (existing == element)
-                elementsByID.Remove(element.ID);
+            elementRegistry.UnregisterElementID(element);
         }
 
         /// <inheritdoc/>
@@ -762,12 +741,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         private IUltravioletWindow window;
 
         // State values.
+        private readonly LayoutDocumentElementRegistry elementRegistry = new LayoutDocumentElementRegistry();
         private UIElement elementUnderMousePrev;
         private UIElement elementUnderMouse;
         private UIElement elementWithMouseCapture;
-
-        // A dictionary which associates element IDs with elements.
-        private readonly Dictionary<String, UIElement> elementsByID = 
-            new Dictionary<String, UIElement>(StringComparer.InvariantCultureIgnoreCase);
     }
 }
