@@ -1,6 +1,6 @@
 ﻿using System;
-using TwistedLogik.Nucleus.Data;
 using System.Collections.Generic;
+using TwistedLogik.Nucleus.Data;
 
 namespace TwistedLogik.Nucleus.Tests.Data
 {

@@ -50,8 +50,23 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\TwistedLogik.Gluon\DSA\DirectStateAccessARBImpl.cs">
+      <Link>DSA\DirectStateAccessARBImpl.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Gluon\DSA\DirectStateAccessEXTImpl.cs">
+      <Link>DSA\DirectStateAccessEXTImpl.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Gluon\DSA\DirectStateAccessImpl.cs">
+      <Link>DSA\DirectStateAccessImpl.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Gluon\DSA\DirectStateAccessNullImpl.cs">
+      <Link>DSA\DirectStateAccessNullImpl.cs</Link>
+    </Compile>
     <Compile Include="..\TwistedLogik.Gluon\Extensions\ARB_debug_output.cs">
       <Link>Extensions\ARB_debug_output.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Gluon\Extensions\ARB_direct_state_access.cs">
+      <Link>Extensions\ARB_direct_state_access.cs</Link>
     </Compile>
     <Compile Include="..\TwistedLogik.Gluon\Extensions\ARB_framebuffer_object.cs">
       <Link>Extensions\ARB_framebuffer_object.cs</Link>
@@ -64,6 +79,9 @@
     </Compile>
     <Compile Include="..\TwistedLogik.Gluon\Extensions\ARB_shadow.cs">
       <Link>Extensions\ARB_shadow.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Gluon\Extensions\ARB_texture_storage.cs">
+      <Link>Extensions\ARB_texture_storage.cs</Link>
     </Compile>
     <Compile Include="..\TwistedLogik.Gluon\Extensions\ARB_vertex_array_object.cs">
       <Link>Extensions\ARB_vertex_array_object.cs</Link>
@@ -124,6 +142,9 @@
     </Compile>
     <Compile Include="..\TwistedLogik.Gluon\gl.Core_4_4.cs">
       <Link>gl.Core_4_4.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Gluon\gl.DSA.cs">
+      <Link>gl.DSA.cs</Link>
     </Compile>
     <Compile Include="..\TwistedLogik.Gluon\gl.Initialization.cs">
       <Link>gl.Initialization.cs</Link>
