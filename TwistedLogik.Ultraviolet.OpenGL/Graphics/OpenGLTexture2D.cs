@@ -308,10 +308,9 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         {
             return uv.QueueWorkItemAndWait(() =>
             {
-                var texture = gl.GenTexture();
-                gl.ThrowIfError();
+                uint texture;
 
-                using (OpenGLState.ScopedBindTexture2D(texture))
+                using (OpenGLState.ScopedCreateTexture2D(out texture))
                 {
                     gl.TextureParameteri(texture, gl.GL_TEXTURE_2D, gl.GL_TEXTURE_MAX_LEVEL, 0);
                     gl.ThrowIfError();
@@ -328,8 +327,22 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
                     gl.TextureParameteri(texture, gl.GL_TEXTURE_2D, gl.GL_TEXTURE_WRAP_T, (int)gl.GL_CLAMP_TO_EDGE);
                     gl.ThrowIfError();
 
-                    gl.TextureImage2D(texture, gl.GL_TEXTURE_2D, 0, (int)internalformat, width, height, 0, format, type, pixels);
-                    gl.ThrowIfError();
+                    if (gl.IsTextureStorageAvailable)
+                    {
+                        gl.TextureStorage2D(texture, gl.GL_TEXTURE_2D, 1, internalformat, width, height);
+                        gl.ThrowIfError();
+
+                        if (pixels != null)
+                        {
+                            gl.TextureSubImage2D(texture, gl.GL_TEXTURE_2D, 0, 0, 0, width, height, format, type, pixels);
+                            gl.ThrowIfError();
+                        }
+                    }
+                    else
+                    {
+                        gl.TextureImage2D(texture, gl.GL_TEXTURE_2D, 0, (int)internalformat, width, height, 0, format, type, pixels);
+                        gl.ThrowIfError();
+                    }
                 }
 
                 return texture;

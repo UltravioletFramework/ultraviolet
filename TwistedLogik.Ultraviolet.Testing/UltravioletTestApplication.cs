@@ -114,10 +114,16 @@ namespace TwistedLogik.Ultraviolet.Testing
         protected override UltravioletContext OnCreatingUltravioletContext()
         {
             var configuration = new OpenGLUltravioletConfiguration() { Headless = headless };
-            if (!String.IsNullOrEmpty(audioSubsystem))
+            configuration.Debug = true;
+            configuration.DebugLevels = DebugLevels.Error | DebugLevels.Warning;
+            configuration.DebugCallback = (uv, level, message) =>
             {
+                System.Diagnostics.Debug.WriteLine(message);
+            };
+
+            if (!String.IsNullOrEmpty(audioSubsystem))
                 configuration.AudioSubsystemAssembly = audioSubsystem;
-            }
+            
             return new OpenGLUltravioletContext(this, configuration);
         }
 

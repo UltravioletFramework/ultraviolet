@@ -30,10 +30,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
 
             uv.QueueWorkItemAndWait(() =>
             {
-                buffer = gl.GenBuffer();
-                gl.ThrowIfError();
-
-                using (OpenGLState.ScopedBindElementArrayBuffer(buffer))
+                using (OpenGLState.ScopedCreateElementArrayBuffer(out buffer))
                 {
                     gl.NamedBufferData(buffer, gl.GL_ELEMENT_ARRAY_BUFFER, size, null, usage);
                     gl.ThrowIfError();

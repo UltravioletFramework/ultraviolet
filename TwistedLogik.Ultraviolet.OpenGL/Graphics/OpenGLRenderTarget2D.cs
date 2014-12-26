@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using TwistedLogik.Gluon;
 using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet.Graphics;
@@ -29,12 +28,9 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
 
             uv.QueueWorkItemAndWait(() =>
             {
-                framebuffer = gl.GenFramebuffer();
-                gl.ThrowIfError();
-
-                if (buffers != null && buffers.Any())
+                using (OpenGLState.ScopedCreateFramebuffer(out framebuffer))
                 {
-                    using (OpenGLState.ScopedBindFramebuffer(framebuffer))
+                    if (buffers != null)
                     {
                         foreach (OpenGLRenderBuffer2D buffer in buffers)
                         {

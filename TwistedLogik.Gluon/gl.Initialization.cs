@@ -41,7 +41,9 @@ namespace TwistedLogik.Gluon
             LoadVersion();
             LoadExtensions();
 
-            gl.IsDirectStateAccessAvailable    = IsVersionAtLeast(4, 5) || IsExtensionSupported("GL_EXT_direct_state_access");
+            gl.InitializeDSA();
+
+            gl.IsTextureStorageAvailable       = IsVersionAtLeast(4, 2) || IsExtensionSupported("GL_ARB_texture_storage");
             gl.IsAnisotropicFilteringAvailable = IsExtensionSupported("GL_EXT_texture_filter_anisotropic");
 
             var functions = GetOpenGLFunctionFields();
@@ -72,7 +74,10 @@ namespace TwistedLogik.Gluon
             gl.minorVersion = 0;
             gl.extensions.Clear();
 
-            gl.IsDirectStateAccessAvailable = false;
+            gl.dsaimpl                         = null;
+            gl.IsARBDirectStateAccessAvailable = false;
+            gl.IsEXTDirectStateAccessAvailable = false;
+            gl.IsTextureStorageAvailable       = false;
 
             var functions = GetOpenGLFunctionFields();
             foreach (var function in functions)
@@ -249,7 +254,7 @@ namespace TwistedLogik.Gluon
             var functions = 
                 from field in typeof(gl).GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static)
                 where
-                    typeof(Delegate).IsAssignableFrom(field.FieldType) && !field.FieldType.IsGenericType
+                    typeof(Delegate).IsAssignableFrom(field.FieldType) && !field.FieldType.IsGenericType && field.Name.StartsWith("gl")
                 select field;
 
             return functions;

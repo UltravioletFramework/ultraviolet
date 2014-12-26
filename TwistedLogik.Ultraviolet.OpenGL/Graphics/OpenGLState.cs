@@ -24,6 +24,10 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
             BindElementArrayBuffer,
             BindFramebuffer,
             UseProgram,
+            CreateTexture2D,
+            CreateArrayBuffer,
+            CreateElementArrayBuffer,
+            CreateFramebuffer,
         }
 
         /// <summary>
@@ -265,6 +269,150 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         }
 
         /// <summary>
+        /// Immediately creates an array buffer and updates the state cache.
+        /// </summary>
+        /// <param name="buffer">The identifier of the buffer that was created.</param>
+        public static void CreateArrayBuffer(out UInt32 buffer)
+        {
+            if (gl.IsARBDirectStateAccessAvailable)
+            {
+                buffer = gl.CreateBuffer();
+            }
+            else
+            {
+                buffer = gl.GenBuffer();
+                gl.BindBuffer(gl.GL_ARRAY_BUFFER, buffer);
+
+                OpenGLState.GL_ARRAY_BUFFER_BINDING.Update(buffer);
+                OpenGLState.VerifyCache();
+            }
+        }
+
+        /// <summary>
+        /// Creates an instance of <see cref="OpenGLState"/> which creates an array buffer.
+        /// </summary>
+        /// <param name="buffer">The identifier of the buffer that was created.</param>
+        public static OpenGLState ScopedCreateArrayBuffer(out UInt32 buffer)
+        {
+            var state = pool.Retrieve();
+
+            state.stateType             = OpenGLStateType.CreateArrayBuffer;
+            state.disposed              = false;
+
+            state.Apply_CreateArrayBuffer(out buffer);
+
+            return state;
+        }
+
+        /// <summary>
+        /// Immediately creates an element array buffer and updates the state cache.
+        /// </summary>
+        /// <param name="buffer">The identifier of the buffer that was created.</param>
+        public static void CreateElementArrayBuffer(out UInt32 buffer)
+        {
+            if (gl.IsARBDirectStateAccessAvailable)
+            {
+                buffer = gl.CreateBuffer();
+            }
+            else
+            {
+                buffer = gl.GenBuffer();
+                gl.BindBuffer(gl.GL_ELEMENT_ARRAY_BUFFER, buffer);
+
+                OpenGLState.GL_ELEMENT_ARRAY_BUFFER_BINDING.Update(buffer);
+                OpenGLState.VerifyCache();
+            }
+        }
+
+        /// <summary>
+        /// Creates an instance of <see cref="OpenGLState"/> which creates an element array buffer.
+        /// </summary>
+        /// <param name="buffer">The identifier of the buffer that was created.</param>
+        public static OpenGLState ScopedCreateElementArrayBuffer(out UInt32 buffer)
+        {
+            var state = pool.Retrieve();
+
+            state.stateType             = OpenGLStateType.CreateElementArrayBuffer;
+            state.disposed              = false;
+
+            state.Apply_CreateElementArrayBuffer(out buffer);
+
+            return state;
+        }
+
+        /// <summary>
+        /// Immediately creates a 2D texture and updates the state cache.
+        /// </summary>
+        /// <param name="texture">The identifier of the texture that was created.</param>
+        public static void CreateTexture2D(out UInt32 texture)
+        {
+            if (gl.IsARBDirectStateAccessAvailable)
+            {
+                texture = gl.CreateTexture(gl.GL_TEXTURE_2D);
+            }
+            else
+            {
+                texture = gl.GenTexture();
+                gl.BindTexture(gl.GL_TEXTURE_2D, texture);
+
+                OpenGLState.GL_TEXTURE_BINDING_2D.Update(texture);
+                OpenGLState.VerifyCache();
+            }
+        }
+
+        /// <summary>
+        /// Creates an instance of <see cref="OpenGLState"/> which creates a 2D texture.
+        /// </summary>
+        /// <param name="texture">The identifier of the texture that was created.</param>
+        public static OpenGLState ScopedCreateTexture2D(out UInt32 texture)
+        {
+            var state = pool.Retrieve();
+
+            state.stateType             = OpenGLStateType.CreateTexture2D;
+            state.disposed              = false;
+
+            state.Apply_CreateTexture2D(out texture);
+
+            return state;
+        }
+
+        /// <summary>
+        /// Immediately creates a framebuffer and updates the state cache.
+        /// </summary>
+        /// <param name="framebuffer">The identifier of the framebuffer that was created.</param>
+        public static void CreateFramebuffer(out UInt32 framebuffer)
+        {
+            if (gl.IsARBDirectStateAccessAvailable)
+            {
+                framebuffer = gl.CreateFramebuffer();
+            }
+            else
+            {
+                framebuffer = gl.GenFramebuffer();
+                gl.BindFramebuffer(gl.GL_FRAMEBUFFER, framebuffer);
+
+                OpenGLState.GL_FRAMEBUFFER_BINDING.Update(framebuffer);
+                OpenGLState.VerifyCache();
+            }
+        }
+
+        /// <summary>
+        /// Creates an instance of <see cref="OpenGLState"/> which creates a framebuffer.
+        /// </summary>
+        /// <param name="framebuffer">The identifier of the framebuffer that was created.</param>
+        public static OpenGLState ScopedCreateFramebuffer(out UInt32 framebuffer)
+        {
+            var state = pool.Retrieve();
+
+            state.stateType             = OpenGLStateType.CreateFramebuffer;
+            state.disposed              = false;
+
+            state.Apply_CreateFramebuffer(out framebuffer);
+
+            return state;
+        }
+
+        /// <summary>
         /// Applies the state object's values to the OpenGL context.
         /// </summary>
         public void Apply()
@@ -370,6 +518,85 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
             oldGL_CURRENT_PROGRAM = OpenGLState.GL_CURRENT_PROGRAM.Update(newGL_CURRENT_PROGRAM);
         }
 
+        private void Apply_CreateElementArrayBuffer(out UInt32 buffer)
+        {
+            if (gl.IsARBDirectStateAccessAvailable)
+            {
+                buffer = gl.CreateBuffer();
+                gl.ThrowIfError();
+            }
+            else
+            {
+                buffer = gl.GenBuffer();
+                gl.ThrowIfError();
+
+                gl.BindBuffer(gl.GL_ELEMENT_ARRAY_BUFFER, buffer);
+                gl.ThrowIfError();
+
+                newGL_ELEMENT_ARRAY_BUFFER_BINDING = buffer;
+                oldGL_ELEMENT_ARRAY_BUFFER_BINDING = OpenGLState.GL_ELEMENT_ARRAY_BUFFER_BINDING.Update(buffer);
+            }
+        }
+
+        private void Apply_CreateArrayBuffer(out UInt32 buffer)
+        {
+            if (gl.IsARBDirectStateAccessAvailable)
+            {
+                buffer = gl.CreateBuffer();
+                gl.ThrowIfError();
+            }
+            else
+            {
+                buffer = gl.GenBuffer();
+                gl.ThrowIfError();
+
+                gl.BindBuffer(gl.GL_ARRAY_BUFFER, buffer);
+                gl.ThrowIfError();
+
+                newGL_ARRAY_BUFFER_BINDING = buffer;
+                oldGL_ARRAY_BUFFER_BINDING = OpenGLState.GL_ARRAY_BUFFER_BINDING.Update(buffer);
+            }
+        }
+
+        private void Apply_CreateTexture2D(out UInt32 texture)
+        {
+            if (gl.IsARBDirectStateAccessAvailable)
+            {
+                texture = gl.CreateTexture(gl.GL_TEXTURE_2D);
+                gl.ThrowIfError();
+            }
+            else
+            {
+                texture = gl.GenTexture();
+                gl.ThrowIfError();
+
+                gl.BindTexture(gl.GL_TEXTURE_2D, texture);
+                gl.ThrowIfError();
+
+                newGL_TEXTURE_BINDING_2D = texture;
+                oldGL_TEXTURE_BINDING_2D = OpenGLState.GL_TEXTURE_BINDING_2D.Update(texture);
+            }
+        }
+
+        private void Apply_CreateFramebuffer(out UInt32 framebuffer)
+        {
+            if (gl.IsARBDirectStateAccessAvailable)
+            {
+                framebuffer = gl.CreateFramebuffer();
+            }
+            else
+            {
+                framebuffer = gl.GenFramebuffer();
+                gl.ThrowIfError();
+
+                gl.BindFramebuffer(gl.GL_FRAMEBUFFER, framebuffer);
+                gl.ThrowIfError();
+
+                newGL_FRAMEBUFFER_BINDING = framebuffer;
+                oldGL_FRAMEBUFFER_BINDING = OpenGLState.GL_FRAMEBUFFER_BINDING.Update(framebuffer);
+            }
+        }
+
         /// <summary>
         /// Resets the OpenGL context to its values prior to this object's application.
         /// </summary>
@@ -405,6 +632,22 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
 
                 case OpenGLStateType.UseProgram:
                     Dispose_UseProgram();
+                    break;
+
+                case OpenGLStateType.CreateTexture2D:
+                    Dispose_CreateTexture2D();
+                    break;
+
+                case OpenGLStateType.CreateArrayBuffer:
+                    Dispose_CreateArrayBuffer();
+                    break;
+
+                case OpenGLStateType.CreateElementArrayBuffer:
+                    Dispose_CreateElementArrayBuffer();
+                    break;
+
+                case OpenGLStateType.CreateFramebuffer:
+                    Dispose_CreateFramebuffer();
                     break;
 
                 default:
@@ -480,6 +723,50 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
             gl.ThrowIfError();
 
             OpenGLState.GL_CURRENT_PROGRAM.Update(oldGL_CURRENT_PROGRAM);
+        }
+
+        private void Dispose_CreateArrayBuffer()
+        {
+            if (!gl.IsARBDirectStateAccessAvailable)
+            {
+                gl.BindBuffer(gl.GL_ARRAY_BUFFER, oldGL_ARRAY_BUFFER_BINDING);
+                gl.ThrowIfError();
+
+                OpenGLState.GL_ARRAY_BUFFER_BINDING.Update(oldGL_ARRAY_BUFFER_BINDING);
+            }
+        }
+
+        private void Dispose_CreateElementArrayBuffer()
+        {
+            if (!gl.IsARBDirectStateAccessAvailable)
+            {
+                gl.BindBuffer(gl.GL_ELEMENT_ARRAY_BUFFER, oldGL_ELEMENT_ARRAY_BUFFER_BINDING);
+                gl.ThrowIfError();
+
+                OpenGLState.GL_ELEMENT_ARRAY_BUFFER_BINDING.Update(oldGL_ELEMENT_ARRAY_BUFFER_BINDING);
+            }
+        }
+
+        private void Dispose_CreateTexture2D()
+        {
+            if (!gl.IsARBDirectStateAccessAvailable)
+            {
+                gl.BindTexture(gl.GL_TEXTURE_2D, oldGL_TEXTURE_BINDING_2D);
+                gl.ThrowIfError();
+
+                OpenGLState.GL_TEXTURE_BINDING_2D.Update(oldGL_TEXTURE_BINDING_2D);
+            }
+        }
+
+        private void Dispose_CreateFramebuffer()
+        {
+            if (!gl.IsARBDirectStateAccessAvailable)
+            {
+                gl.BindFramebuffer(gl.GL_FRAMEBUFFER, oldGL_FRAMEBUFFER_BINDING);
+                gl.ThrowIfError();
+
+                OpenGLState.GL_FRAMEBUFFER_BINDING.Update(oldGL_FRAMEBUFFER_BINDING);
+            }
         }
 
         /// <summary>
