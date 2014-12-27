@@ -31,6 +31,18 @@ namespace TwistedLogik.Gluon
             glTexStorage3D(target, levels, internalformat, width, height, depth);
         }
 
+        private delegate void glTextureStorage1DEXTDelegate(uint texture, uint target, int levels, uint internalformat, int width);
+        [Require(Extension = "GL_EXT_direct_state_access")]
+        private static readonly glTextureStorage1DEXTDelegate glTextureStorage1DEXT = null;
+
+        private delegate void glTextureStorage2DEXTDelegate(uint texture, uint target, int levels, uint internalformat, int width, int height);
+        [Require(Extension = "GL_EXT_direct_state_access")]
+        private static readonly glTextureStorage2DEXTDelegate glTextureStorage2DEXT = null;
+
+        private delegate void glTextureStorage3DEXTDelegate(uint texture, uint target, int levels, uint internalformat, int width, int height, int depth);
+        [Require(Extension = "GL_EXT_direct_state_access")]
+        private static readonly glTextureStorage3DEXTDelegate glTextureStorage3DEXT = null;
+
         public const UInt32 TEXTURE_IMMUTABLE_FORMAT = 0x912F;
     }
 }

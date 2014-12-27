@@ -46,17 +46,17 @@ namespace TwistedLogik.Gluon
 
             public override void TextureStorage1D(uint texture, uint target, int levels, uint internalformat, int width)
             {
-                glTextureStorage1D(texture, levels, internalformat, width);
+                glTextureStorage1DEXT(texture, target, levels, internalformat, width);
             }
 
             public override void TextureStorage2D(uint texture, uint target, int levels, uint internalformat, int width, int height)
             {
-                glTextureStorage2D(texture, levels, internalformat, width, height);
+                glTextureStorage2DEXT(texture, target, levels, internalformat, width, height);
             }
 
             public override void TextureStorage3D(uint texture, uint target, int levels, uint internalformat, int width, int height, int depth)
             {
-                glTextureStorage3D(texture, levels, internalformat, width, height, depth);
+                glTextureStorage3DEXT(texture, target, levels, internalformat, width, height, depth);
             }
         }
     }
