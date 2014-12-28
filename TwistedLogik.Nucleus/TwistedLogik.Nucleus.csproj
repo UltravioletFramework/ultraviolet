@@ -99,9 +99,6 @@
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>..\Binaries\AnyCPU\Release\TwistedLogik.Nucleus.XML</DocumentationFile>
   </PropertyGroup>
-  <PropertyGroup>
-    <SignAssembly>true</SignAssembly>
-  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Production|AnyCPU'">
     <OutputPath>..\Binaries\AnyCPU\Production\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
