@@ -25,10 +25,10 @@
     <CppCommentsFixup>False</CppCommentsFixup>
     <CleanIntermediates>True</CleanIntermediates>
     <DocumentationSources>
-      <DocumentationSource sourceFile="Binaries\AnyCPU\Release\TwistedLogik.Nucleus.dll" xmlns="" />
-      <DocumentationSource sourceFile="Binaries\AnyCPU\Release\TwistedLogik.Nucleus.XML" xmlns="" />
-      <DocumentationSource sourceFile="Binaries\AnyCPU\Release\TwistedLogik.Ultraviolet.dll" xmlns="" />
-      <DocumentationSource sourceFile="Binaries\AnyCPU\Release\TwistedLogik.Ultraviolet.XML" xmlns="" />
+      <DocumentationSource sourceFile="Binaries\AnyCPU\Production\TwistedLogik.Nucleus.dll" xmlns="" />
+      <DocumentationSource sourceFile="Binaries\AnyCPU\Production\TwistedLogik.Nucleus.XML" xmlns="" />
+      <DocumentationSource sourceFile="Binaries\AnyCPU\Production\TwistedLogik.Ultraviolet.dll" xmlns="" />
+      <DocumentationSource sourceFile="Binaries\AnyCPU\Production\TwistedLogik.Ultraviolet.XML" xmlns="" />
     </DocumentationSources>
     <MaximumGroupParts>2</MaximumGroupParts>
     <NamespaceGrouping>False</NamespaceGrouping>
@@ -81,10 +81,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="TwistedLogik.Nucleus">
-      <HintPath>Binaries\AnyCPU\Release\TwistedLogik.Nucleus.dll</HintPath>
+      <HintPath>Binaries\AnyCPU\Production\TwistedLogik.Nucleus.dll</HintPath>
     </Reference>
     <Reference Include="TwistedLogik.Ultraviolet">
-      <HintPath>Binaries\AnyCPU\Release\TwistedLogik.Ultraviolet.dll</HintPath>
+      <HintPath>Binaries\AnyCPU\Production\TwistedLogik.Ultraviolet.dll</HintPath>
     </Reference>
   </ItemGroup>
   <!-- Import the SHFB build targets -->
