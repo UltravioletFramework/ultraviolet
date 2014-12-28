@@ -36,23 +36,9 @@ The Ultraviolet Framework's source code is [available on GitHub](https://github.
 Known Issues
 ============
 
-* __Strong Naming__
-
-  If you're going to build Ultraviolet from source, you're going to need to account for the fact that all of its assemblies are delay signed. The easiest way to do this is to open a Visual Studio command prompt and enter the following command:
-  
-  ``sn -Vr *,78da2f4877323311``
-  
-  This command registers TwistedLogik's public key token for verification skipping on your machine. This means that the CLR will load assemblies with this public key token even if they are not correctly signed, making it possible to build and debug Ultraviolet assemblies without requiring access to the TwistedLogik private key file.
-  
-  There are seperate verification skipping lists for 32-bit and 64-bit processes. Running the ``sn`` tool from a 32-bit command prompt will add entries to the 32-bit list, while running it from a 64-bit command prompt will add entries to the 64-bit list, so be mindful of which one you're using when you execute the above command. The 64-bit Visual Studio command prompt is usually called something like "Visual Studio x64 Win64 Command Prompt" in the Start menu. If you're using Visual Studio 2013, [you may need to go digging for it](http://stackoverflow.com/a/22702405/923592).
-  
-  Be sure to run the command prompt as an administrator. Failure to do so will result in the following error:
-  
-  ``Failed to open registry key -- Unable to format error message 00000005``
-
 * __Building the Samples__
 
-  If you encounter errors when attempting to build ``Ultraviolet Framework Samples.sln``, make sure that you've built ``TwistedLogik.Ultraviolet.sln`` in ``Release`` mode first.
+  If you encounter errors when attempting to build ``Ultraviolet Framework Samples.sln``, make sure that you've previously built the corresponding configuration (i.e. ``Debug``, ``Release``, or ``Production``) of ``TwistedLogik.Ultraviolet.sln``. The first sample project runs a script which copies the latest versions of the Ultraviolet assemblies from the ``Binaries`` folder to the ``Ultraviolet Framework Samples\Dependencies`` folder, and this script will fail if they don't exist.
   
 * __General Compatibility__
 
