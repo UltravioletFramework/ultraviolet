@@ -83,10 +83,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         {
             Contract.Require(content, "content");
 
-            // TODO
-//            if (content.Owner != this && !Children.Contains(content))
-//                throw new ArgumentException("content");
-
             PerformLayoutInternal(content, true);
         }
 
@@ -248,7 +244,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <inheritdoc/>
-        internal override UIElement GetElementAtPointInternal(Int32 x, Int32 y)
+        internal override UIElement GetElementAtPointInternal(Int32 x, Int32 y, Boolean hitTest)
         {
             if (!Bounds.Contains(x, y))
                 return null;
@@ -260,7 +256,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
                 for (int i = children.Count - 1; i >= 0; i--)
                 {
                     var child   = children[i];
-                    var element = child.GetElementAtPointInternal(contentX - child.ContainerRelativeX, contentY - child.ContainerRelativeY);
+                    var element = child.GetElementAtPointInternal(contentX - child.ContainerRelativeX, contentY - child.ContainerRelativeY, hitTest);
 
                     if (element != null)
                     {
@@ -269,7 +265,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
                 }
             }
 
-            return base.GetElementAtPointInternal(x, y);
+            return base.GetElementAtPointInternal(x, y, hitTest);
         }
 
         /// <inheritdoc/>

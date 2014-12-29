@@ -256,20 +256,22 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// </summary>
         /// <param name="x">The x-coordinate of the point to evaluate.</param>
         /// <param name="y">The y-coordinate of the point to evaluate.</param>
+        /// <param name="hitTest">A value indicating whether to honor the value of the <see cref="HitTestVisible"/> property.</param>
         /// <returns>The element at the specified point in element space, or null if no such element exists.</returns>
-        public UIElement GetElementAtPoint(Int32 x, Int32 y)
+        public UIElement GetElementAtPoint(Int32 x, Int32 y, Boolean hitTest)
         {
-            return GetElementAtPointInternal(x, y);
+            return GetElementAtPointInternal(x, y, hitTest);
         }
 
         /// <summary>
         /// Gets the element at the specified point in element space.
         /// </summary>
         /// <param name="position">The point to evaluate.</param>
+        /// <param name="hitTest">A value indicating whether to honor the value of the <see cref="HitTestVisible"/> property.</param>
         /// <returns>The element at the specified point in element space, or null if no such element exists.</returns>
-        public UIElement GetElementAtPoint(Vector2 position)
+        public UIElement GetElementAtPoint(Vector2 position, Boolean hitTest)
         {
-            return GetElementAtPointInternal((Int32)position.X, (Int32)position.Y);
+            return GetElementAtPointInternal((Int32)position.X, (Int32)position.Y, hitTest);
         }
 
         /// <summary>
@@ -368,6 +370,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         public Boolean IsComponent
         {
             get { return control != null; }
+        }
+        
+        /// <summary>
+        /// Gets or sets a value indicating whether the element is visible to a hit test (i.e., for picking via the cursor).
+        /// </summary>
+        public Boolean HitTestVisible
+        {
+            get { return GetValue<Boolean>(HitTestVisibleProperty); }
+            set { SetValue<Boolean>(HitTestVisibleProperty, value); }
         }
 
         /// <summary>
@@ -560,6 +571,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// Occurs after the element has performed a layout.
         /// </summary>
         public event UIElementEventHandler PerformedLayout;
+        
+        /// <summary>
+        /// Occurs when the value of the <see cref="HitTestVisible"/> property changes.
+        /// </summary>
+        public event UIElementEventHandler HitTestVisibleChanged;
 
         /// <summary>
         /// Occurs when the value of the <see cref="Enabled"/> property changes.
@@ -636,6 +652,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// </summary>
         public static readonly DependencyProperty EnabledProperty = DependencyProperty.Register("Enabled", typeof(Boolean), typeof(UIElement),
             new DependencyPropertyMetadata(HandleEnabledChanged, () => true, DependencyPropertyOptions.None));
+        
+        /// <summary>
+        /// Identifies the HitTestVisible dependency property.
+        /// </summary>
+        [Styled("hit-visible")]
+        public static readonly DependencyProperty HitTestVisibleProperty = DependencyProperty.Register("HitTestVisible", typeof(Boolean), typeof(UIElement),
+            new DependencyPropertyMetadata(HandleHitTestVisibleChanged, () => true, DependencyPropertyOptions.None));
 
         /// <summary>
         /// Identifies the Width dependency property.
@@ -1071,10 +1094,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// </summary>
         /// <param name="x">The x-coordinate of the point to evaluate.</param>
         /// <param name="y">The y-coordinate of the point to evaluate.</param>
+        /// <param name="hitTest">A value indicating whether to honor the value of the <see cref="HitTestVisible"/> property.</param>
         /// <returns>The element at the specified point in element space, or null if no such element exists.</returns>
-        internal virtual UIElement GetElementAtPointInternal(Int32 x, Int32 y)
+        internal virtual UIElement GetElementAtPointInternal(Int32 x, Int32 y, Boolean hitTest)
         {
-            return Bounds.Contains(x, y) ? this : null;
+            return Bounds.Contains(x, y) && HitTestVisible ? this : null;
         }
 
         /// <summary>
@@ -1343,6 +1367,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         protected virtual void OnPerformedLayout()
         {
             var temp = PerformedLayout;
+            if (temp != null)
+            {
+                temp(this);
+            }
+        }
+        
+        /// <summary>
+        /// Raises the <see cref="HitTestVisibleChanged"/> event.
+        /// </summary>
+        protected virtual void OnHitTestVisibleChanged()
+        {
+            var temp = HitTestVisibleChanged;
             if (temp != null)
             {
                 temp(this);
@@ -1737,6 +1773,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
                     currentType = currentType.BaseType;
                 }
             }
+        }
+        
+        /// <summary>
+        /// Occurs when the value of the <see cref="HitTestVisible"/> dependency property changes.
+        /// </summary>
+        /// <param name="dobj">The object that raised the event.</param>
+        private static void HandleHitTestVisibleChanged(DependencyObject dobj)
+        {
+            var element = (UIElement)dobj;
+            element.OnHitTestVisibleChanged();
         }
 
         /// <summary>

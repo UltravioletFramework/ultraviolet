@@ -58,12 +58,6 @@ namespace TwistedLogik.Ultraviolet
         Int32 GetGamePadCount();
 
         /// <summary>
-        /// Gets the highest index belonging to a connected game pad.
-        /// </summary>
-        /// <returns>The highest index belonging to a connected game pad.</returns>
-        Int32 GetGamePadMaxIndex();
-
-        /// <summary>
         /// Gets a value indicating whether the current platform supports game pad input.
         /// </summary>
         /// <returns><c>true</c> if the current platform supports game pad input; otherwise, <c>false</c>.</returns>

@@ -196,20 +196,22 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         /// <param name="x">The x-coordinate of the position in view space to evaluate.</param>
         /// <param name="y">The y-coordinate of the position in view space to evaluate.</param>
+        /// <param name="hitTest">A value indicating whether to honor the value of the <see cref="UIElement.HitTestVisible"/> property.</param>
         /// <returns>The element within this view at the specified point in view space, or <c>null</c> if no element exists at that point.</returns>
-        public UIElement GetElementAtPoint(Int32 x, Int32 y)
+        public UIElement GetElementAtPoint(Int32 x, Int32 y, Boolean hitTest)
         {
-            return Canvas.GetElementAtPoint(x, y);
+            return Canvas.GetElementAtPoint(x, y, hitTest);
         }
 
         /// <summary>
         /// Gets the element within this view at the specified point in view space.
         /// </summary>
         /// <param name="position">The position in view space to evaluate.</param>
+        /// <param name="hitTest">A value indicating whether to honor the value of the <see cref="UIElement.HitTestVisible"/> property.</param>
         /// <returns>The element within this view at the specified point in view space, or <c>null</c> if no element exists at that point.</returns>
-        public UIElement GetElementAtPoint(Vector2 position)
+        public UIElement GetElementAtPoint(Vector2 position, Boolean hitTest)
         {
-            return GetElementAtPoint((Int32)position.X, (Int32)position.Y);
+            return GetElementAtPoint((Int32)position.X, (Int32)position.Y, hitTest);
         }
 
         /// <summary>
@@ -217,22 +219,24 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         /// <param name="x">The x-coordinate of the position in screen space to evaluate.</param>
         /// <param name="y">The y-coordinate of the position in screen space to evaluate.</param>
+        /// <param name="hitTest">A value indicating whether to honor the value of the <see cref="UIElement.HitTestVisible"/> property.</param>
         /// <returns>The element within this view at the specified point in screen space, or <c>null</c> if no element exists at that point.</returns>
-        public UIElement GetElementAtScreenPoint(Int32 x, Int32 y)
+        public UIElement GetElementAtScreenPoint(Int32 x, Int32 y, Boolean hitTest)
         {
             var xprime = x - Area.X;
             var yprime = y - Area.Y;
-            return GetElementAtPoint(xprime, yprime);
+            return GetElementAtPoint(xprime, yprime, hitTest);
         }
 
         /// <summary>
         /// Gets the element within this view at the specified point in screen space.
         /// </summary>
         /// <param name="position">The position in screen space to evaluate.</param>
+        /// <param name="hitTest">A value indicating whether to honor the value of the <see cref="UIElement.HitTestVisible"/> property.</param>
         /// <returns>The element within this view at the specified point in screen space, or <c>null</c> if no element exists at that point.</returns>
-        public UIElement GetElementAtScreenPoint(Vector2 position)
+        public UIElement GetElementAtScreenPoint(Vector2 position, Boolean hitTest)
         {
-            return GetElementAtScreenPoint((Int32)position.X, (Int32)position.Y);
+            return GetElementAtScreenPoint((Int32)position.X, (Int32)position.Y, hitTest);
         }
 
         /// <summary>
@@ -675,8 +679,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 var mouseView = mouse.Window == Window ? this : null;
 
                 elementUnderMousePrev = elementUnderMouse;
-                elementUnderMouse     = (mouseView == null) ? null : mouseView.GetElementAtScreenPoint(mousePos);
+                elementUnderMouse     = (mouseView == null) ? null : mouseView.GetElementAtScreenPoint(mousePos, true);
             }
+
+            if (elementUnderMouse != null && !elementUnderMouse.HitTestVisible)
+                elementUnderMouse = null;
+
+            if (elementWithMouseCapture != null && !elementWithMouseCapture.HitTestVisible)
+                ReleaseMouse(elementWithMouseCapture);
 
             // Handle mouse motion events
             if (elementUnderMouse != elementUnderMousePrev)

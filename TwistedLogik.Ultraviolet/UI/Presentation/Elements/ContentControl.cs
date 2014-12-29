@@ -224,7 +224,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <inheritdoc/>
-        internal override UIElement GetElementAtPointInternal(Int32 x, Int32 y)
+        internal override UIElement GetElementAtPointInternal(Int32 x, Int32 y, Boolean hitTest)
         {
             if (!Bounds.Contains(x, y))
                 return null;
@@ -233,12 +233,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             var contentY = y - ContentElement.ContainerRelativeY;
             if (Content != null && ContentElement.Bounds.Contains(contentX, contentY))
             {
-                return Content.GetElementAtPointInternal(
+                var content = Content.GetElementAtPointInternal(
                     contentX - Content.ContainerRelativeX, 
-                    contentY - Content.ContainerRelativeY);
+                    contentY - Content.ContainerRelativeY, hitTest);
+
+                if (content != null)
+                {
+                    return content;
+                }
             }
 
-            return base.GetElementAtPointInternal(x, y);
+            return base.GetElementAtPointInternal(x, y, hitTest);
         }
 
         /// <inheritdoc/>

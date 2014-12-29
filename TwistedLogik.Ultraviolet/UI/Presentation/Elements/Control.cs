@@ -162,19 +162,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <inheritdoc/>
-        internal override UIElement GetElementAtPointInternal(Int32 x, Int32 y)
+        internal override UIElement GetElementAtPointInternal(Int32 x, Int32 y, Boolean hitTest)
         {
             if (!Bounds.Contains(x, y))
                 return null;
 
             if (componentRoot != null)
             {
-                var component = componentRoot.GetElementAtPointInternal(x, y);
+                var component = componentRoot.GetElementAtPointInternal(x, y, hitTest);
                 if (component != null)
                     return component;
             }
 
-            return base.GetElementAtPointInternal(x, y);
+            return base.GetElementAtPointInternal(x, y, hitTest);
         }
 
         /// <summary>
