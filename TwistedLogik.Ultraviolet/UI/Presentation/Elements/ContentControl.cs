@@ -224,6 +224,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <inheritdoc/>
+        internal override UIElement GetContentElementInternal(int ix)
+        {
+            if (Content == null || ix != 0)
+                throw new ArgumentOutOfRangeException("ix");
+
+            return Content;
+        }
+
+        /// <inheritdoc/>
         internal override UIElement GetElementAtPointInternal(Int32 x, Int32 y, Boolean hitTest)
         {
             if (!Bounds.Contains(x, y))
@@ -257,6 +266,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             }
 
             return null;
+        }
+
+        /// <inheritdoc/>
+        internal override Int32 ContentElementCountInternal
+        {
+            get { return Content == null ? 0 : 1; }
         }
 
         /// <summary>

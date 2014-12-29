@@ -169,6 +169,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <summary>
+        /// Reapplies the collection's current set of states.
+        /// </summary>
+        public void ReapplyStates()
+        {
+            foreach (var vsg in groups)
+            {
+                vsg.Value.ReapplyState();
+            }
+        }
+
+        /// <summary>
         /// Gets the UI element that owns the collection.
         /// </summary>
         public UIElement Element

@@ -51,10 +51,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             }
         }
 
+        /// <summary>
+        /// Toggles the value of the <see cref="Checked"/> property.
+        /// </summary>
+        protected virtual void ToggleChecked()
+        {
+            Checked = !Checked;
+        }
+
         /// <inheritdoc/>
         protected override void OnButtonPressed()
         {
-            Checked = !Checked;
+            ToggleChecked();
             base.OnButtonPressed();
         }
 

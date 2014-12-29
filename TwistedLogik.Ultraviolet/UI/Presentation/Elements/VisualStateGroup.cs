@@ -174,7 +174,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             if (currentState == vs)
                 return false;
 
-            var previousState = currentState;
+            previousState = currentState;
             currentState = vs;
 
             VisualStateTransitionKey transitionKey;
@@ -184,6 +184,22 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             }
 
             return true;
+        }
+
+        /// <summary>
+        /// Reapplies the group's current state.
+        /// </summary>
+        public void ReapplyState()
+        {
+            if (currentState != null)
+            {
+                VisualStateTransitionKey transitionKey;
+                if (GetVisualStateTransitionKey(previousState, currentState, out transitionKey, transitionMustExist: true))
+                {
+                    transitions[transitionKey].Stop(Element);
+                    transitions[transitionKey].Begin(Element);
+                }
+            }
         }
 
         /// <summary>
@@ -282,6 +298,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         private readonly Dictionary<String, VisualState> states = 
             new Dictionary<String, VisualState>(StringComparer.OrdinalIgnoreCase);
         private VisualState defaultState;
+        private VisualState previousState;
         private VisualState currentState;
 
         // Visual state transitions for this group.

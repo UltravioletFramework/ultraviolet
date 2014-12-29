@@ -244,6 +244,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <inheritdoc/>
+        internal override UIElement GetContentElementInternal(Int32 ix)
+        {
+            Contract.EnsureRange(ix >= 0 && ix < Children.Count, "ix");
+
+            return Children[ix];
+        }
+
+        /// <inheritdoc/>
         internal override UIElement GetElementAtPointInternal(Int32 x, Int32 y, Boolean hitTest)
         {
             if (!Bounds.Contains(x, y))
@@ -279,6 +287,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             }
 
             return null;
+        }
+
+        /// <inheritdoc/>
+        internal override Int32 ContentElementCountInternal
+        {
+            get { return Children.Count; }
         }
 
         /// <summary>

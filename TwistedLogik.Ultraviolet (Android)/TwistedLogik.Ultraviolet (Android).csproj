@@ -1002,6 +1002,9 @@
     <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Elements\NamespaceDoc.cs">
       <Link>UI\Presentation\Elements\NamespaceDoc.cs</Link>
     </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Elements\RadioButton.cs">
+      <Link>UI\Presentation\Elements\RadioButton.cs</Link>
+    </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Elements\ScrollViewer.cs">
       <Link>UI\Presentation\Elements\ScrollViewer.cs</Link>
     </Compile>

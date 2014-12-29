@@ -112,11 +112,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <inheritdoc/>
         protected override void OnDrawing(UltravioletTime time, SpriteBatch spriteBatch)
         {
-            DrawBackgroundImage(spriteBatch);
-            DrawCheckBoxImage(spriteBatch);
-            DrawText(spriteBatch);
+            base.OnDrawing(time, spriteBatch);
 
-            //base.OnDrawing(time, spriteBatch);
+            DrawCheckBoxImage(spriteBatch);
         }
 
         /// <inheritdoc/>

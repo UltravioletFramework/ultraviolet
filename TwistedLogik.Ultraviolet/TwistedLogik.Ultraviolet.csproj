@@ -332,6 +332,7 @@
     <Compile Include="Size3.cs" />
     <Compile Include="Size3F.cs" />
     <Compile Include="TaskUtil.cs" />
+    <Compile Include="UI\Presentation\Elements\RadioButton.cs" />
     <Compile Include="UI\Presentation\Elements\CheckBox.cs" />
     <Compile Include="UI\Presentation\Elements\ToggleButton.cs" />
     <Compile Include="UI\Presentation\Elements\ButtonBase.cs" />

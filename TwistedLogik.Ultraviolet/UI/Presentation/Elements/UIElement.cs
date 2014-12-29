@@ -275,6 +275,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <summary>
+        /// Gets the content element with the specified index within this container.
+        /// </summary>
+        /// <param name="ix">The index of the content element to retrieve.</param>
+        /// <returns>The content element with the specified index within this container.</returns>
+        public UIElement GetContentElement(Int32 ix)
+        {
+            return GetContentElementInternal(ix);
+        }
+
+        /// <summary>
         /// Gets the Ultraviolet context that created the element.
         /// </summary>
         public UltravioletContext Ultraviolet
@@ -520,6 +530,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         {
             get { return GetValue<SourcedRef<StretchableImage9>>(BackgroundImageProperty); }
             set { SetValue<SourcedRef<StretchableImage9>>(BackgroundImageProperty, value); }
+        }
+
+        /// <summary>
+        /// Gets the number of content elements contained by this element.
+        /// </summary>
+        public Int32 ContentElementCount
+        {
+            get { return ContentElementCountInternal; }
         }
 
         /// <summary>
@@ -945,6 +963,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         internal virtual void ApplyStyles(UvssDocument stylesheet)
         {
             stylesheet.ApplyStyles(this);
+
+            VisualStateGroups.ReapplyStates();
         }
 
         /// <summary>
@@ -1090,6 +1110,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <summary>
+        /// Gets the content element with the specified index within this container.
+        /// </summary>
+        /// <param name="ix">The index of the content element to retrieve.</param>
+        /// <returns>The content element with the specified index within this container.</returns>
+        internal virtual UIElement GetContentElementInternal(Int32 ix)
+        {
+            throw new ArgumentOutOfRangeException("ix");
+        }
+
+        /// <summary>
         /// Gets the element at the specified point in element space.
         /// </summary>
         /// <param name="x">The x-coordinate of the point to evaluate.</param>
@@ -1111,6 +1141,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
                 return this;
 
             return null;
+        }
+
+        /// <summary>
+        /// Gets the number of content elements contained by this element.
+        /// </summary>
+        internal virtual Int32 ContentElementCountInternal
+        {
+            get { return 0; }
         }
 
         /// <summary>
