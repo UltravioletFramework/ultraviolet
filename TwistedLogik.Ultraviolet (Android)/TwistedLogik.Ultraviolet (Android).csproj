@@ -975,8 +975,14 @@
     <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Elements\Button.cs">
       <Link>UI\Presentation\Elements\Button.cs</Link>
     </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Elements\ButtonBase.cs">
+      <Link>UI\Presentation\Elements\ButtonBase.cs</Link>
+    </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Elements\Canvas.cs">
       <Link>UI\Presentation\Elements\Canvas.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Elements\CheckBox.cs">
+      <Link>UI\Presentation\Elements\CheckBox.cs</Link>
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Elements\Container.cs">
       <Link>UI\Presentation\Elements\Container.cs</Link>
@@ -1010,6 +1016,9 @@
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Elements\TextualElement.cs">
       <Link>UI\Presentation\Elements\TextualElement.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Elements\ToggleButton.cs">
+      <Link>UI\Presentation\Elements\ToggleButton.cs</Link>
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Elements\UIElement.cs">
       <Link>UI\Presentation\Elements\UIElement.cs</Link>

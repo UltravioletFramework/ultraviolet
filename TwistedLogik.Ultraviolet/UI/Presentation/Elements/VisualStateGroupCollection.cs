@@ -99,7 +99,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             Contract.Require(states, "states");
 
             if (IsDefined(group))
-                return false;
+                Destroy(group);
 
             Create(group);
 

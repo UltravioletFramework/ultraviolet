@@ -100,6 +100,41 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <summary>
+        /// Updates the parsed text cache.
+        /// </summary>
+        protected void UpdateCachedTextParse()
+        {
+            if (String.IsNullOrEmpty(Text))
+            {
+                cachedParserResult.Clear();
+            }
+            else
+            {
+                UIElementResources.TextRenderer.Parse(Text, cachedParserResult);
+            }
+            UpdateCachedTextLayout();
+        }
+
+        /// <summary>
+        /// Updates the text layout cache.
+        /// </summary>
+        protected void UpdateCachedTextLayout()
+        {
+            cachedLayoutResult.Clear();
+
+            if (cachedParserResult.Count > 0 && Font != null)
+            {
+                var display = Ultraviolet.GetPlatform().Displays.PrimaryDisplay;
+
+                var padding  = display.DipsToPixels(Padding);
+                var width    = TextAreaWidth  - ((Int32)padding.Left + (Int32)padding.Right);
+                var height   = TextAreaHeight - ((Int32)padding.Top + (Int32)padding.Bottom);
+                var settings = new TextLayoutSettings(Font, width, height, TextAlignment);
+                UIElementResources.TextRenderer.CalculateLayout(cachedParserResult, cachedLayoutResult, settings);
+            }
+        }
+
+        /// <summary>
         /// Draws the element's text.
         /// </summary>
         /// <param name="spriteBatch">The sprite batch with which to draw.</param>
@@ -111,11 +146,45 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
                 var padding = display.DipsToPixels(Padding);
 
                 var position = new Vector2(
-                    AbsoluteScreenX + (Int32)padding.Left,
-                    AbsoluteScreenY + (Int32)padding.Top);
+                    AbsoluteScreenX + (Int32)padding.Left + TextAreaX,
+                    AbsoluteScreenY + (Int32)padding.Top  + TextAreaY);
 
                 UIElementResources.TextRenderer.Draw(spriteBatch, CachedLayoutResult, position, FontColor);
             }
+        }
+
+        /// <summary>
+        /// Gets the distance between the left edge of the element's content area and
+        /// the left edge of the area in which the element draws its text.
+        /// </summary>
+        protected virtual Int32 TextAreaX
+        {
+            get { return 0; }
+        }
+
+        /// <summary>
+        /// Gets the distance between the top edge of the element's content area and
+        /// the top edge of the area in which the element draws its text.
+        /// </summary>
+        protected virtual Int32 TextAreaY
+        {
+            get { return 0; }
+        }
+
+        /// <summary>
+        /// Gets the width of the area in which the element draws its text.
+        /// </summary>
+        protected virtual Int32 TextAreaWidth
+        {
+            get { return ActualWidth; }
+        }
+
+        /// <summary>
+        /// Gets the height of the area in which the element draws its text.
+        /// </summary>
+        protected virtual Int32 TextAreaHeight
+        {
+            get { return ActualHeight; }
         }
 
         /// <summary>
@@ -157,41 +226,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         {
             var label = (TextualElement)dobj;
             label.UpdateCachedTextLayout();
-        }
-
-        /// <summary>
-        /// Updates the parsed text cache.
-        /// </summary>
-        private void UpdateCachedTextParse()
-        {
-            if (String.IsNullOrEmpty(Text))
-            {
-                cachedParserResult.Clear();
-            }
-            else
-            {
-                UIElementResources.TextRenderer.Parse(Text, cachedParserResult);
-            }
-            UpdateCachedTextLayout();
-        }
-
-        /// <summary>
-        /// Updates the text layout cache.
-        /// </summary>
-        private void UpdateCachedTextLayout()
-        {
-            cachedLayoutResult.Clear();
-
-            if (cachedParserResult.Count > 0 && Font != null)
-            {
-                var display = Ultraviolet.GetPlatform().Displays.PrimaryDisplay;
-
-                var padding  = display.DipsToPixels(Padding);
-                var width    = ActualWidth - ((Int32)padding.Left + (Int32)padding.Right);
-                var height   = ActualHeight - ((Int32)padding.Top + (Int32)padding.Bottom);
-                var settings = new TextLayoutSettings(Font, width, height, TextAlignment);
-                UIElementResources.TextRenderer.CalculateLayout(cachedParserResult, cachedLayoutResult, settings);
-            }
         }
 
         // State values.

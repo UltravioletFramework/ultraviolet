@@ -138,6 +138,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Gets a value indicating whether the specified element has mouse capture.
+        /// </summary>
+        /// <param name="element">The element to evaluate.</param>
+        /// <returns><c>true</c> if the specified element has mouse capture; otherwise, <c>false</c>.</returns>
+        public Boolean HasMouseCapture(UIElement element)
+        {
+            return element == elementWithMouseCapture;
+        }
+
+        /// <summary>
         /// Converts a position in screen space to a position in view space.
         /// </summary>
         /// <param name="x">The x-coordinate of the screen space position to convert.</param>
@@ -683,7 +693,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             }
 
             if (elementUnderMouse != null && !elementUnderMouse.HitTestVisible)
-                elementUnderMouse = null;
+                elementUnderMousePrev = elementUnderMouse;
 
             if (elementWithMouseCapture != null && !elementWithMouseCapture.HitTestVisible)
                 ReleaseMouse(elementWithMouseCapture);
