@@ -26,13 +26,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         {
             var display = Ultraviolet.GetPlatform().Displays.PrimaryDisplay;
 
-            var thickness = (Int32)display.DipsToPixels(BorderThickness);
+            var thickness = BorderThickness;
+            var left      = (Int32)display.DipsToPixels(thickness.Left);
+            var top       = (Int32)display.DipsToPixels(thickness.Top);
+            var right     = (Int32)display.DipsToPixels(thickness.Right);
+            var bottom    = (Int32)display.DipsToPixels(thickness.Bottom);
             var color     = BorderColor;
 
-            spriteBatch.Draw(UIElementResources.BlankTexture, new RectangleF(AbsoluteScreenX, AbsoluteScreenY, ActualWidth, thickness), color);
-            spriteBatch.Draw(UIElementResources.BlankTexture, new RectangleF(AbsoluteScreenX, AbsoluteScreenY, thickness, ActualHeight), color);
-            spriteBatch.Draw(UIElementResources.BlankTexture, new RectangleF(AbsoluteScreenX, AbsoluteScreenY + ActualHeight - thickness, ActualWidth, thickness), color);
-            spriteBatch.Draw(UIElementResources.BlankTexture, new RectangleF(AbsoluteScreenX + ActualWidth - thickness, AbsoluteScreenY, thickness, ActualHeight), color);
+            spriteBatch.Draw(UIElementResources.BlankTexture, new RectangleF(AbsoluteScreenX, AbsoluteScreenY, left, ActualHeight), color);
+            spriteBatch.Draw(UIElementResources.BlankTexture, new RectangleF(AbsoluteScreenX, AbsoluteScreenY, ActualWidth, top), color);
+            spriteBatch.Draw(UIElementResources.BlankTexture, new RectangleF(AbsoluteScreenX + ActualWidth - right, AbsoluteScreenY, right, ActualHeight), color);
+            spriteBatch.Draw(UIElementResources.BlankTexture, new RectangleF(AbsoluteScreenX, AbsoluteScreenY + ActualHeight - bottom, ActualWidth, bottom), color);
 
             base.OnContentDrawn(time, spriteBatch);
         }
@@ -40,10 +44,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <summary>
         /// Gets or sets the thickness of the element's border in device independent pixels (1/96 of an inch).
         /// </summary>
-        public Double BorderThickness
+        public Thickness BorderThickness
         {
-            get { return GetValue<Double>(BorderThicknessProperty); }
-            set { SetValue<Double>(BorderThicknessProperty, value); }
+            get { return GetValue<Thickness>(BorderThicknessProperty); }
+            set { SetValue<Thickness>(BorderThicknessProperty, value); }
         }
 
         /// <summary>
@@ -113,8 +117,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// Identifies the BorderThickness dependency property.
         /// </summary>
         [Styled("border-thickness")]
-        public static readonly DependencyProperty BorderThicknessProperty = DependencyProperty.Register("BorderThickness", typeof(Double), typeof(Border),
-            new DependencyPropertyMetadata(HandleBorderThicknessChanged, () => 1.0, DependencyPropertyOptions.None));
+        public static readonly DependencyProperty BorderThicknessProperty = DependencyProperty.Register("BorderThickness", typeof(Thickness), typeof(Border),
+            new DependencyPropertyMetadata(HandleBorderThicknessChanged, () => Thickness.One, DependencyPropertyOptions.None));
 
         /// <summary>
         /// Identifies the BorderColor dependency property.

@@ -626,9 +626,9 @@ namespace TwistedLogik.Ultraviolet.Content
         {
             result = null;
 
-            asset = NormalizeAssetPath(asset);
+            var normalizedAsset = NormalizeAssetPath(asset);
 
-            var metadata = GetAssetMetadata(asset, !preprocess);
+            var metadata = GetAssetMetadata(normalizedAsset, !preprocess);
             var preprocessed = IsPreprocessedFile(metadata.AssetFilePath);
             if (preprocess && preprocessed)
                 return true;
@@ -636,9 +636,9 @@ namespace TwistedLogik.Ultraviolet.Content
             if (preprocess)
             {
                 var intermediateObjectType = default(Type);
-                var intermediate = Import<Object>(asset, out intermediateObjectType);
-                var processor = FindContentProcessor(asset, intermediateObjectType, type);
-                var preprocessSucceeded = PreprocessInternal(asset, metadata, processor, intermediate, delete);
+                var intermediate = Import<Object>(normalizedAsset, out intermediateObjectType);
+                var processor = FindContentProcessor(normalizedAsset, intermediateObjectType, type);
+                var preprocessSucceeded = PreprocessInternal(normalizedAsset, metadata, processor, intermediate, delete);
                 if (preprocessSucceeded && delete)
                 {
                     if (batchDeletedFiles)
@@ -657,8 +657,8 @@ namespace TwistedLogik.Ultraviolet.Content
                 var importer = default(IContentImporter);
                 var processor = default(IContentProcessor);
                 var instance = preprocessed ? 
-                    LoadInternalPreprocessed(asset, metadata.AssetFilePath, out importer, out processor) : 
-                    LoadInternalRaw(type, asset, metadata, out importer, out processor);
+                    LoadInternalPreprocessed(normalizedAsset, metadata.AssetFilePath, out importer, out processor) : 
+                    LoadInternalRaw(type, normalizedAsset, metadata, out importer, out processor);
 
                 if (cache)
                 {

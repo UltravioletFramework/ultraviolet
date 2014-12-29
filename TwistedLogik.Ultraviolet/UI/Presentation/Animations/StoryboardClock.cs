@@ -1,4 +1,6 @@
 ﻿using System;
+using TwistedLogik.Nucleus;
+using TwistedLogik.Nucleus.Collections;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
 {
@@ -186,10 +188,35 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
         }
 
         /// <summary>
+        /// Adds a dependency property value to the clock's subscriber list.
+        /// </summary>
+        /// <param name="value">The dependency property value to add to the subscriber list.</param>
+        internal void Subscribe(IDependencyPropertyValue value)
+        {
+            Contract.Require(value, "value");
+
+            subscribers.AddLast(value);
+        }
+
+        /// <summary>
+        /// Removes a dependency property value from the clock's subscriber list.
+        /// </summary>
+        /// <param name="value">The dependency property value to remove from the subscriber list.</param>
+        internal void Unsubscribe(IDependencyPropertyValue value)
+        {
+            Contract.Require(value, "value");
+
+            subscribers.Remove(value);
+        }
+
+        /// <summary>
         /// Raises the <see cref="Started"/> event.
         /// </summary>
         private void OnStarted()
         {
+            foreach (var subscriber in subscribers)
+                subscriber.StoryboardClockStarted();
+
             var temp = Started;
             if (temp != null)
             {
@@ -202,6 +229,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
         /// </summary>
         private void OnStopped()
         {
+            foreach (var subscriber in subscribers)
+                subscriber.StoryboardClockStopped();
+
             var temp = Stopped;
             if (temp != null)
             {
@@ -214,6 +244,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
         /// </summary>
         private void OnPaused()
         {
+            foreach (var subscriber in subscribers)
+                subscriber.StoryboardClockPaused();
+
             var temp = Paused;
             if (temp != null)
             {
@@ -226,6 +259,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
         /// </summary>
         private void OnResumed()
         {
+            foreach (var subscriber in subscribers)
+                subscriber.StoryboardClockResumed();
+
             var temp = Resumed;
             if (temp != null)
             {
@@ -239,5 +275,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
         private Double total;
         private Double delta = 1;
         private Storyboard storyboard;
+        private readonly PooledLinkedList<IDependencyPropertyValue> subscribers = 
+            new PooledLinkedList<IDependencyPropertyValue>();
     }
 }

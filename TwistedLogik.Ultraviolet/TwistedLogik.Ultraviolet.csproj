@@ -332,6 +332,8 @@
     <Compile Include="Size3.cs" />
     <Compile Include="Size3F.cs" />
     <Compile Include="TaskUtil.cs" />
+    <Compile Include="UI\Presentation\IUltravioletDisplayExtensions.cs" />
+    <Compile Include="UI\Presentation\Thickness.cs" />
     <Compile Include="Tweening.cs" />
     <Compile Include="UI\NamespaceDoc.cs" />
     <Compile Include="UI\Presentation\Animations\Animation.cs" />

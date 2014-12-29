@@ -37,11 +37,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             var settings = new TextLayoutSettings(Font, width ?? Int32.MaxValue, height ?? Int32.MaxValue, TextAlignment);
             UIElementResources.TextRenderer.CalculateLayout(cachedParserResult, cachedLayoutResult, settings);
 
+            var display = Ultraviolet.GetPlatform().Displays.PrimaryDisplay;
+            var padding = display.DipsToPixels(Padding);
+
             if (width == null)
-                width = (2 * Padding) + cachedLayoutResult.ActualWidth;
+                width = (Int32)padding.Left + (Int32)padding.Right + cachedLayoutResult.ActualWidth;
 
             if (height == null)
-                height = (2 * Padding) + cachedLayoutResult.ActualHeight;
+                height = (Int32)padding.Top + (Int32)padding.Bottom + cachedLayoutResult.ActualHeight;
         }
 
         /// <summary>
@@ -49,8 +52,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// </summary>
         public String Text
         {
-            get { return GetValue<String>(dpText); }
-            set { SetValue<String>(dpText, value); }
+            get { return GetValue<String>(TextProperty); }
+            set { SetValue<String>(TextProperty, value); }
         }
 
         /// <summary>
@@ -58,9 +61,22 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// </summary>
         public TextFlags TextAlignment
         {
-            get { return GetValue<TextFlags>(dpTextAlignment); }
-            set { SetValue<TextFlags>(dpTextAlignment, value); }
+            get { return GetValue<TextFlags>(TextAlignmentProperty); }
+            set { SetValue<TextFlags>(TextAlignmentProperty, value); }
         }
+
+        /// <summary>
+        /// Identifies the Text dependency property.
+        /// </summary>
+        public static readonly DependencyProperty TextProperty = DependencyProperty.Register("Text", typeof(String), typeof(TextualElement),
+            new DependencyPropertyMetadata(HandleTextChanged, null, DependencyPropertyOptions.None));
+
+         /// <summary>
+        /// Identifies the TextAlignment dependency property.
+        /// </summary>
+        [Styled("text-align")]
+        public static readonly DependencyProperty TextAlignmentProperty = DependencyProperty.Register("TextAlignment", typeof(TextFlags), typeof(TextualElement),
+            new DependencyPropertyMetadata(HandleTextAlignmentChanged, () => TextFlags.AlignCenter | TextFlags.AlignMiddle, DependencyPropertyOptions.None));
 
         /// <inheritdoc/>
         protected override void OnContainerRelativeLayoutChanged()
@@ -76,6 +92,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             base.OnFontAssetIDChanged();
         }
 
+        /// <inheritdoc/>
+        protected override void OnPaddingChanged()
+        {
+            UpdateCachedTextLayout();
+            base.OnPaddingChanged();
+        }
+
         /// <summary>
         /// Draws the element's text.
         /// </summary>
@@ -84,7 +107,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         {
             if (cachedLayoutResult.Count > 0)
             {
-                var position = new Vector2(AbsoluteScreenX + Padding, AbsoluteScreenY + Padding);
+                var display = Ultraviolet.GetPlatform().Displays.PrimaryDisplay;
+                var padding = display.DipsToPixels(Padding);
+
+                var position = new Vector2(
+                    AbsoluteScreenX + (Int32)padding.Left,
+                    AbsoluteScreenY + (Int32)padding.Top);
+
                 UIElementResources.TextRenderer.Draw(spriteBatch, CachedLayoutResult, position, FontColor);
             }
         }
@@ -155,20 +184,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
 
             if (cachedParserResult.Count > 0 && Font != null)
             {
-                var width    = ActualWidth - (2 * Padding);
-                var height   = ActualHeight - (2 * Padding);
+                var display = Ultraviolet.GetPlatform().Displays.PrimaryDisplay;
+
+                var padding  = display.DipsToPixels(Padding);
+                var width    = ActualWidth - ((Int32)padding.Left + (Int32)padding.Right);
+                var height   = ActualHeight - ((Int32)padding.Top + (Int32)padding.Bottom);
                 var settings = new TextLayoutSettings(Font, width, height, TextAlignment);
                 UIElementResources.TextRenderer.CalculateLayout(cachedParserResult, cachedLayoutResult, settings);
             }
         }
-
-        // Dependency properties.
-        private static readonly DependencyProperty dpText = DependencyProperty.Register("Text", typeof(String), typeof(TextualElement),
-            new DependencyPropertyMetadata(HandleTextChanged, null, DependencyPropertyOptions.None));
-
-        [Styled("text-align")]
-        private static readonly DependencyProperty dpTextAlignment = DependencyProperty.Register("TextAlignment", typeof(TextFlags), typeof(TextualElement),
-            new DependencyPropertyMetadata(HandleTextAlignmentChanged, () => TextFlags.AlignCenter | TextFlags.AlignMiddle, DependencyPropertyOptions.None));
 
         // State values.
         private readonly TextParserResult cachedParserResult = new TextParserResult();

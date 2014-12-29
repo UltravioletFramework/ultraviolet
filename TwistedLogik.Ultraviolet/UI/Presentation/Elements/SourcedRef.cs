@@ -83,7 +83,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
                 str    = str.Substring(0, str.Length - " global".Length);
             }
 
-            var underlyingValue = (T)ObjectResolver.FromString(str, typeof(T), provider);
+            var underlyingValue = (T)ObjectResolver.FromString(str.Trim(), typeof(T), provider);
             return new SourcedRef<T>(underlyingValue, source);
         }
 

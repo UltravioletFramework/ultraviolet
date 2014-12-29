@@ -49,6 +49,26 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         void ClearStyledValue();
 
         /// <summary>
+        /// Called when the value's associated storyboard clock is started.
+        /// </summary>
+        void StoryboardClockStarted();
+
+        /// <summary>
+        /// Called when the value's associated storyboard clock is stopped.
+        /// </summary>
+        void StoryboardClockStopped();
+
+        /// <summary>
+        /// Called when the value's associated storyboard clock is paused.
+        /// </summary>
+        void StoryboardClockPaused();
+
+        /// <summary>
+        /// Called when the value's associated storyboard clock is resumed.
+        /// </summary>
+        void StoryboardClockResumed();
+
+        /// <summary>
         /// Gets or sets the dependency object which owns this property value.
         /// </summary>
         DependencyObject Owner

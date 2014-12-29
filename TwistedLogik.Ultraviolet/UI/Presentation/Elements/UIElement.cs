@@ -472,10 +472,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <summary>
         /// Gets or sets the amount of padding around the element's content.
         /// </summary>
-        public Int32 Padding
+        public Thickness Padding
         {
-            get { return GetValue<Int32>(PaddingProperty); }
-            set { SetValue<Int32>(PaddingProperty, value); }
+            get { return GetValue<Thickness>(PaddingProperty); }
+            set { SetValue<Thickness>(PaddingProperty, value); }
         }
 
         /// <summary>
@@ -713,7 +713,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// Identifies the Padding dependency property.
         /// </summary>
         [Styled("padding")]
-        public static readonly DependencyProperty PaddingProperty = DependencyProperty.Register("Padding", typeof(Int32), typeof(UIElement),
+        public static readonly DependencyProperty PaddingProperty = DependencyProperty.Register("Padding", typeof(Thickness), typeof(UIElement),
             new DependencyPropertyMetadata(HandlePaddingChanged, null, DependencyPropertyOptions.None));
 
         /// <summary>

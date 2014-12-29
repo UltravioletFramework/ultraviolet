@@ -21,8 +21,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 Contract.Require(owner, "owner");
                 Contract.Require(property, "property");
 
-                this.animationClockStoppedHandler = OnAnimationClockStopped;
-
                 this.owner    = owner;
                 this.property = property;
                 this.comparer = (DataBindingComparer<T>)BindingExpressions.GetComparisonFunction(typeof(T));
@@ -53,9 +51,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
                 this.animation               = (Animation<T>)animation;
                 this.animationClock          = clock;
-                this.animationClock.Stopped += animationClockStoppedHandler;
                 this.animatedValue           = GetValueInternal(false);
                 this.animatedHandOffValue    = oldValue;
+
+                this.animationClock.Subscribe(this);
 
                 UpdateRequiresDigest(oldValue);
             }
@@ -126,7 +125,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 var oldValue = GetValue();
 
                 if (this.animationClock != null)
-                    this.animationClock.Stopped -= animationClockStoppedHandler;
+                    this.animationClock.Unsubscribe(this);
 
                 this.animation      = null;
                 this.animationClock = null;
@@ -287,6 +286,30 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 get { return hasStyledValue; }
             }
 
+            /// <inheritdoc/>
+            void IDependencyPropertyValue.StoryboardClockStarted()
+            {
+
+            }
+
+            /// <inheritdoc/>
+            void IDependencyPropertyValue.StoryboardClockStopped()
+            {
+                ClearAnimation();
+            }
+
+            /// <inheritdoc/>
+            void IDependencyPropertyValue.StoryboardClockPaused()
+            {
+
+            }
+
+            /// <inheritdoc/>
+            void IDependencyPropertyValue.StoryboardClockResumed()
+            {
+
+            }
+
             /// <summary>
             /// Gets a value indicating whether the specified pair of types require
             /// special conversion logic.
@@ -317,15 +340,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 }
 
                 return !type1.IsMutuallyConvertibleTo(type2);
-            }
-
-            /// <summary>
-            /// Handles the <see cref="StoryboardClock.Stopped"/> event for the current storyboard clock.
-            /// </summary>
-            /// <param name="clock">The <see cref="StoryboardClock"/> that raised the event.</param>
-            private void OnAnimationClockStopped(StoryboardClock clock)
-            {
-                ClearAnimation();
             }
 
             /// <summary>
@@ -481,7 +495,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             private IDependencyBoundValue<T> cachedBoundValue;
 
             // Animation state.
-            private readonly StoryboardClockEventHandler animationClockStoppedHandler;
             private StoryboardClock animationClock;
             private Animation<T> animation;
             private T animatedValue;
