@@ -203,8 +203,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
             var styleIsForContainer = !String.IsNullOrEmpty(style.Container);
             if (styleIsForContainer)
             {
-                var styleMatchesContainer = element.Container != null && 
-                    String.Equals(element.Container.Name, style.Container, StringComparison.OrdinalIgnoreCase);
+                var styleMatchesContainer = element.Parent != null && 
+                    String.Equals(element.Parent.Name, style.Container, StringComparison.OrdinalIgnoreCase);
 
                 if (styleMatchesContainer)
                 {

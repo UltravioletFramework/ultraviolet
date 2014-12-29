@@ -329,9 +329,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <summary>
-        /// Gets the <see cref="UIElement"/> that contains this element.
+        /// Gets the element's parent element.
         /// </summary>
-        public UIElement Container
+        public UIElement Parent
         {
             get { return container; }
         }
@@ -357,8 +357,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// </summary>
         public Boolean Enabled
         {
-            get { return GetValue<Boolean>(dpEnabled); }
-            set { SetValue<Boolean>(dpEnabled, value); }
+            get { return GetValue<Boolean>(EnabledProperty); }
+            set { SetValue<Boolean>(EnabledProperty, value); }
         }
 
         /// <summary>
@@ -366,8 +366,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// </summary>
         public Boolean Visible
         {
-            get { return GetValue<Boolean>(dpVisible); }
-            set { SetValue<Boolean>(dpVisible, value); }
+            get { return GetValue<Boolean>(VisibleProperty); }
+            set { SetValue<Boolean>(VisibleProperty, value); }
         }
 
         /// <summary>
@@ -391,8 +391,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// </summary>
         public Double Width
         {
-            get { return GetValue<Double>(dpWidth); }
-            set { SetValue<Double>(dpWidth, value); }
+            get { return GetValue<Double>(WidthProperty); }
+            set { SetValue<Double>(WidthProperty, value); }
         }
 
         /// <summary>
@@ -400,8 +400,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// </summary>
         public Double MinWidth
         {
-            get { return GetValue<Double>(dpMinWidth); }
-            set { SetValue<Double>(dpMinWidth, value); }
+            get { return GetValue<Double>(MinWidthProperty); }
+            set { SetValue<Double>(MinWidthProperty, value); }
         }
 
         /// <summary>
@@ -409,8 +409,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// </summary>
         public Double MaxWidth
         {
-            get { return GetValue<Double>(dpMaxWidth); }
-            set { SetValue<Double>(dpMaxWidth, value); }
+            get { return GetValue<Double>(MaxWidthProperty); }
+            set { SetValue<Double>(MaxWidthProperty, value); }
         }
 
         /// <summary>
@@ -418,8 +418,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// </summary>
         public Double Height
         {
-            get { return GetValue<Double>(dpHeight); }
-            set { SetValue<Double>(dpHeight, value); }
+            get { return GetValue<Double>(HeightProperty); }
+            set { SetValue<Double>(HeightProperty, value); }
         }
 
         /// <summary>
@@ -427,8 +427,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// </summary>
         public Double MinHeight
         {
-            get { return GetValue<Double>(dpMinHeight); }
-            set { SetValue<Double>(dpMinHeight, value); }
+            get { return GetValue<Double>(MinHeightProperty); }
+            set { SetValue<Double>(MinHeightProperty, value); }
         }
 
         /// <summary>
@@ -436,8 +436,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// </summary>
         public Double MaxHeight
         {
-            get { return GetValue<Double>(dpMaxHeight); }
-            set { SetValue<Double>(dpMaxHeight, value); }
+            get { return GetValue<Double>(MaxHeightProperty); }
+            set { SetValue<Double>(MaxHeightProperty, value); }
         }
 
         /// <summary>
@@ -445,8 +445,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// </summary>
         public Int32 Padding
         {
-            get { return GetValue<Int32>(dpPadding); }
-            set { SetValue<Int32>(dpPadding, value); }
+            get { return GetValue<Int32>(PaddingProperty); }
+            set { SetValue<Int32>(PaddingProperty, value); }
         }
 
         /// <summary>
@@ -454,8 +454,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// </summary>
         public Color FontColor
         {
-            get { return GetValue<Color>(dpFontColor); }
-            set { SetValue<Color>(dpFontColor, value); }
+            get { return GetValue<Color>(FontColorProperty); }
+            set { SetValue<Color>(FontColorProperty, value); }
         }
 
         /// <summary>
@@ -463,8 +463,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// </summary>
         public SourcedVal<AssetID> FontAssetID
         {
-            get { return GetValue<SourcedVal<AssetID>>(dpFontAssetID); }
-            set { SetValue<SourcedVal<AssetID>>(dpFontAssetID, value); }
+            get { return GetValue<SourcedVal<AssetID>>(FontAssetIDProperty); }
+            set { SetValue<SourcedVal<AssetID>>(FontAssetIDProperty, value); }
         }
 
         /// <summary>
@@ -480,8 +480,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// </summary>
         public Color BackgroundColor
         {
-            get { return GetValue<Color>(dpBackgroundColor); }
-            set { SetValue<Color>(dpBackgroundColor, value); }
+            get { return GetValue<Color>(BackgroundColorProperty); }
+            set { SetValue<Color>(BackgroundColorProperty, value); }
         }
 
         /// <summary>
@@ -489,8 +489,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// </summary>
         public SourcedRef<StretchableImage9> BackgroundImage
         {
-            get { return GetValue<SourcedRef<StretchableImage9>>(dpBackgroundImage); }
-            set { SetValue<SourcedRef<StretchableImage9>>(dpBackgroundImage, value); }
+            get { return GetValue<SourcedRef<StretchableImage9>>(BackgroundImageProperty); }
+            set { SetValue<SourcedRef<StretchableImage9>>(BackgroundImageProperty, value); }
         }
 
         /// <summary>
@@ -638,6 +638,96 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         public event UIElementEventHandler BackgroundImageChanged;
 
         /// <summary>
+        /// Identifies the Enabled dependency property.
+        /// </summary>
+        public static readonly DependencyProperty EnabledProperty = DependencyProperty.Register("Enabled", typeof(Boolean), typeof(UIElement),
+            new DependencyPropertyMetadata(HandleEnabledChanged, () => true, DependencyPropertyOptions.None));
+
+        /// <summary>
+        /// Identifies the Width dependency property.
+        /// </summary>
+        [Styled("width")]
+        public static readonly DependencyProperty WidthProperty = DependencyProperty.Register("Width", typeof(Double), typeof(UIElement),
+            new DependencyPropertyMetadata(HandleWidthChanged, () => Double.NaN, DependencyPropertyOptions.None));
+
+        /// <summary>
+        /// Identifies the MinWidth dependency property.
+        /// </summary>
+        [Styled("min-width")]
+        public static readonly DependencyProperty MinWidthProperty = DependencyProperty.Register("MinWidth", typeof(Double), typeof(UIElement),
+            new DependencyPropertyMetadata(HandleMinWidthChanged, null, DependencyPropertyOptions.None));
+
+        /// <summary>
+        /// Identifies the MaxWidth dependency property.
+        /// </summary>
+        [Styled("max-width")]
+        public static readonly DependencyProperty MaxWidthProperty = DependencyProperty.Register("MaxWidth", typeof(Double), typeof(UIElement),
+            new DependencyPropertyMetadata(HandleMaxWidthChanged, () => Double.PositiveInfinity, DependencyPropertyOptions.None));
+
+        /// <summary>
+        /// Identifies the Height dependency property.
+        /// </summary>
+        [Styled("height")]
+        public static readonly DependencyProperty HeightProperty = DependencyProperty.Register("Height", typeof(Double), typeof(UIElement),
+            new DependencyPropertyMetadata(HandleHeightChanged, () => Double.NaN, DependencyPropertyOptions.None));
+
+        /// <summary>
+        /// Identifies the MinHeight dependency property.
+        /// </summary>
+        [Styled("min-height")]
+        public static readonly DependencyProperty MinHeightProperty = DependencyProperty.Register("MinHeight", typeof(Double), typeof(UIElement),
+            new DependencyPropertyMetadata(HandleMinHeightChanged, null, DependencyPropertyOptions.None));
+
+        /// <summary>
+        /// Identifies the MaxHeight dependency property.
+        /// </summary>
+        [Styled("max-height")]
+        public static readonly DependencyProperty MaxHeightProperty = DependencyProperty.Register("MaxHeight", typeof(Double), typeof(UIElement),
+            new DependencyPropertyMetadata(HandleMaxHeightChanged, () => Double.PositiveInfinity, DependencyPropertyOptions.None));
+
+        /// <summary>
+        /// Identifies the Visible dependency property.
+        /// </summary>
+        [Styled("visible")]
+        public static readonly DependencyProperty VisibleProperty = DependencyProperty.Register("Visible", typeof(Boolean), typeof(UIElement),
+            new DependencyPropertyMetadata(HandleVisibleChanged, () => true, DependencyPropertyOptions.None));
+
+        /// <summary>
+        /// Identifies the Padding dependency property.
+        /// </summary>
+        [Styled("padding")]
+        public static readonly DependencyProperty PaddingProperty = DependencyProperty.Register("Padding", typeof(Int32), typeof(UIElement),
+            new DependencyPropertyMetadata(HandlePaddingChanged, null, DependencyPropertyOptions.None));
+
+        /// <summary>
+        /// Identifies the FontColor dependency property.
+        /// </summary>
+        [Styled("font-color")]
+        public static readonly DependencyProperty FontColorProperty = DependencyProperty.Register("FontColor", typeof(Color), typeof(UIElement),
+            new DependencyPropertyMetadata(HandleFontColorChanged, () => Color.White, DependencyPropertyOptions.Inherited));
+
+        /// <summary>
+        /// Identifies the FontAssetID dependency property.
+        /// </summary>
+        [Styled("font-asset")]
+        public static readonly DependencyProperty FontAssetIDProperty = DependencyProperty.Register("FontAssetID", typeof(SourcedVal<AssetID>), typeof(UIElement),
+            new DependencyPropertyMetadata(HandleFontAssetIDChanged, null, DependencyPropertyOptions.Inherited));
+
+        /// <summary>
+        /// Identifies the BackgroundColor dependency property.
+        /// </summary>
+        [Styled("background-color")]
+        public static readonly DependencyProperty BackgroundColorProperty = DependencyProperty.Register("BackgroundColor", typeof(Color), typeof(UIElement),
+            new DependencyPropertyMetadata(HandleBackgroundColorChanged, () => Color.White, DependencyPropertyOptions.None));
+
+        /// <summary>
+        /// Identifies the BackgroundImage dependency property.
+        /// </summary>
+        [Styled("background-image")]
+        public static readonly DependencyProperty BackgroundImageProperty = DependencyProperty.Register("BackgroundImage", typeof(SourcedRef<StretchableImage9>), typeof(UIElement),
+            new DependencyPropertyMetadata(HandleBackgroundImageChanged, null, DependencyPropertyOptions.None));
+
+        /// <summary>
         /// Finds a styled dependency property according to its styling name.
         /// </summary>
         /// <param name="name">The styling name of the dependency property to retrieve.</param>
@@ -679,9 +769,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         {
             if (name.IsAttachedProperty)
             {
-                if (Container != null && String.Equals(Container.Name, name.Container, StringComparison.OrdinalIgnoreCase))
+                if (Parent != null && String.Equals(Parent.Name, name.Container, StringComparison.OrdinalIgnoreCase))
                 {
-                    return DependencyProperty.FindByName(name.Name, Container.GetType());
+                    return DependencyProperty.FindByName(name.Name, Parent.GetType());
                 }
                 return null;
             }
@@ -721,7 +811,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             }
             else
             {
-                var setter = attached ? Container.GetStyleSetter(name, selector.PseudoClass) : GetStyleSetter(name, selector.PseudoClass);
+                var setter = attached ? Parent.GetStyleSetter(name, selector.PseudoClass) : GetStyleSetter(name, selector.PseudoClass);
                 if (setter == null)
                     return;
 
@@ -1092,7 +1182,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// </summary>
         protected internal sealed override DependencyObject DependencyContainer
         {
-            get { return Container; }
+            get { return Parent; }
         }
 
         /// <summary>
@@ -1683,6 +1773,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         {
             var element = (UIElement)dobj;
             element.OnWidthChanged();
+
+            if (element.Parent != null)
+                element.Parent.PerformPartialLayout(element);
         }
 
         /// <summary>
@@ -1693,6 +1786,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         {
             var element = (UIElement)dobj;
             element.OnMinWidthChanged();
+
+            if (element.Parent != null)
+                element.Parent.PerformPartialLayout(element);
         }
 
         /// <summary>
@@ -1703,6 +1799,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         {
             var element = (UIElement)dobj;
             element.OnMaxWidthChanged();
+
+            if (element.Parent != null)
+                element.Parent.PerformPartialLayout(element);
         }
 
         /// <summary>
@@ -1713,6 +1812,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         {
             var element = (UIElement)dobj;
             element.OnHeightChanged();
+
+            if (element.Parent != null)
+                element.Parent.PerformPartialLayout(element);
         }
 
         /// <summary>
@@ -1723,6 +1825,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         {
             var element = (UIElement)dobj;
             element.OnMinHeightChanged();
+
+            if (element.Parent != null)
+                element.Parent.PerformPartialLayout(element);
         }
 
         /// <summary>
@@ -1733,6 +1838,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         {
             var element = (UIElement)dobj;
             element.OnMaxHeightChanged();
+
+            if (element.Parent != null)
+                element.Parent.PerformPartialLayout(element);
         }
 
         /// <summary>
@@ -1743,6 +1851,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         {
             var element = (UIElement)dobj;
             element.OnPaddingChanged();
+
+            if (element.Parent != null)
+                element.Parent.PerformPartialLayout(element);
         }
 
         /// <summary>
@@ -1762,9 +1873,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         private static void HandleFontAssetIDChanged(DependencyObject dobj)
         {
             var element = (UIElement)dobj;
-            if (element.Container != null)
+            if (element.Parent != null)
             {
-                element.Container.PerformPartialLayout(element);
+                element.Parent.PerformPartialLayout(element);
             }
             element.ReloadFont();
             element.OnFontAssetIDChanged();
@@ -1825,7 +1936,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <returns>The element registration context for this element.</returns>
         private ElementRegistry FindElementRegistry()
         {
-            var current = Container;
+            var current = Parent;
             while (current != null)
             {
                 if (isContainerComponent && current is UIContainer)
@@ -1878,52 +1989,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             this.PerformContentLayout();
             this.UpdateAbsoluteScreenPosition(AbsoluteScreenX, AbsoluteScreenY);
         }
-
-        // Dependency properties.
-        private static readonly DependencyProperty dpEnabled = DependencyProperty.Register("Enabled", typeof(Boolean), typeof(UIElement),
-            new DependencyPropertyMetadata(HandleEnabledChanged, () => true, DependencyPropertyOptions.None));
-
-        [Styled("width")]
-        private static readonly DependencyProperty dpWidth = DependencyProperty.Register("Width", typeof(Double), typeof(UIElement),
-            new DependencyPropertyMetadata(HandleWidthChanged, () => Double.NaN, DependencyPropertyOptions.None));
-        [Styled("min-width")]
-        private static readonly DependencyProperty dpMinWidth = DependencyProperty.Register("MinWidth", typeof(Double), typeof(UIElement),
-            new DependencyPropertyMetadata(HandleMinWidthChanged, null, DependencyPropertyOptions.None));
-        [Styled("max-width")]
-        private static readonly DependencyProperty dpMaxWidth = DependencyProperty.Register("MaxWidth", typeof(Double), typeof(UIElement),
-            new DependencyPropertyMetadata(HandleMaxWidthChanged, () => Double.PositiveInfinity, DependencyPropertyOptions.None));
-
-        [Styled("height")]
-        private static readonly DependencyProperty dpHeight = DependencyProperty.Register("Height", typeof(Double), typeof(UIElement),
-            new DependencyPropertyMetadata(HandleHeightChanged, () => Double.NaN, DependencyPropertyOptions.None));
-        [Styled("min-height")]
-        private static readonly DependencyProperty dpMinHeight = DependencyProperty.Register("MinHeight", typeof(Double), typeof(UIElement),
-            new DependencyPropertyMetadata(HandleMinHeightChanged, null, DependencyPropertyOptions.None));
-        [Styled("max-height")]
-        private static readonly DependencyProperty dpMaxHeight = DependencyProperty.Register("MaxHeight", typeof(Double), typeof(UIElement),
-            new DependencyPropertyMetadata(HandleMaxHeightChanged, () => Double.PositiveInfinity, DependencyPropertyOptions.None));
-
-        [Styled("visible")]
-        private static readonly DependencyProperty dpVisible = DependencyProperty.Register("Visible", typeof(Boolean), typeof(UIElement),
-            new DependencyPropertyMetadata(HandleVisibleChanged, () => true, DependencyPropertyOptions.None));
-
-        [Styled("padding")]
-        private static readonly DependencyProperty dpPadding = DependencyProperty.Register("Padding", typeof(Int32), typeof(UIElement),
-            new DependencyPropertyMetadata(HandlePaddingChanged, null, DependencyPropertyOptions.None));
-
-        [Styled("font-color")]
-        private static readonly DependencyProperty dpFontColor = DependencyProperty.Register("FontColor", typeof(Color), typeof(UIElement),
-            new DependencyPropertyMetadata(HandleFontColorChanged, () => Color.White, DependencyPropertyOptions.Inherited));
-        [Styled("font-asset")]
-        private static readonly DependencyProperty dpFontAssetID = DependencyProperty.Register("FontAssetID", typeof(SourcedVal<AssetID>), typeof(UIElement),
-            new DependencyPropertyMetadata(HandleFontAssetIDChanged, null, DependencyPropertyOptions.Inherited));
-
-        [Styled("background-color")]
-        private static readonly DependencyProperty dpBackgroundColor = DependencyProperty.Register("BackgroundColor", typeof(Color), typeof(UIElement),
-            new DependencyPropertyMetadata(HandleBackgroundColorChanged, () => Color.White, DependencyPropertyOptions.None));
-        [Styled("background-image")]
-        private static readonly DependencyProperty dpBackgroundImage = DependencyProperty.Register("BackgroundImage", typeof(SourcedRef<StretchableImage9>), typeof(UIElement),
-            new DependencyPropertyMetadata(HandleBackgroundImageChanged, null, DependencyPropertyOptions.None));
 
         // Property values.
         private readonly UltravioletContext uv;

@@ -384,6 +384,7 @@
     <Compile Include="UI\Presentation\BindingExpressions.cs" />
     <Compile Include="UI\Presentation\BoundEventBuilder.cs" />
     <Compile Include="UI\Presentation\Elements\AssetSource.cs" />
+    <Compile Include="UI\Presentation\Elements\Border.cs" />
     <Compile Include="UI\Presentation\Elements\Button.cs" />
     <Compile Include="UI\Presentation\Elements\ContentPanel.cs" />
     <Compile Include="UI\Presentation\Elements\Canvas.cs" />
@@ -401,6 +402,7 @@
     <Compile Include="UI\Presentation\Elements\UIElementCollection.cs" />
     <Compile Include="UI\Presentation\Elements\UIElementCollection.IEnumerable.cs" />
     <Compile Include="UI\Presentation\Elements\UIElementResources.cs" />
+    <Compile Include="UI\Presentation\Elements\ContentControl.cs" />
     <Compile Include="UI\Presentation\Elements\UserControl.cs" />
     <Compile Include="UI\Presentation\PresentationFrameworkManager.RegisteredElement.cs" />
     <Compile Include="UI\Presentation\PresentationFrameworkManager.cs" />

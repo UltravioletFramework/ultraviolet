@@ -114,9 +114,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             var element = (TextualElement)dobj;
             element.UpdateCachedTextParse();
 
-            if (element.Container != null)
+            if (element.Parent != null)
             {
-                element.Container.PerformPartialLayout(element);
+                element.Parent.PerformPartialLayout(element);
             }
         }
 

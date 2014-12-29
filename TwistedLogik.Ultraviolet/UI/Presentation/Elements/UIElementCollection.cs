@@ -41,9 +41,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         {
             Contract.Require(element, "element");
 
-            if (element.Container != null)
+            if (element.Parent != null)
             {
-                if (!element.Container.RemoveContent(element))
+                if (!element.Parent.RemoveContent(element))
                 {
                     return false;
                 }

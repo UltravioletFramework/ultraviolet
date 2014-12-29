@@ -972,11 +972,17 @@
     <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Elements\AssetSource.cs">
       <Link>UI\Presentation\Elements\AssetSource.cs</Link>
     </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Elements\Border.cs">
+      <Link>UI\Presentation\Elements\Border.cs</Link>
+    </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Elements\Button.cs">
       <Link>UI\Presentation\Elements\Button.cs</Link>
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Elements\Canvas.cs">
       <Link>UI\Presentation\Elements\Canvas.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Elements\ContentControl.cs">
+      <Link>UI\Presentation\Elements\ContentControl.cs</Link>
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Elements\ContentPanel.cs">
       <Link>UI\Presentation\Elements\ContentPanel.cs</Link>
@@ -1291,7 +1297,7 @@
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" ProjectLinkReference="f071abe3-05e5-4df9-a929-cf71b01ec50a" />
+      <UserProperties ProjectLinkReference="f071abe3-05e5-4df9-a929-cf71b01ec50a" ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" />
     </VisualStudio>
   </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

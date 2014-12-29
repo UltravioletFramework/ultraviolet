@@ -114,11 +114,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Instantiates a new interface element.
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
-        /// <param name="container">The container which is the element's parent.</param>
+        /// <param name="parent">The element which is the element's parent.</param>
         /// <param name="xmlElement">The XML element that defines the element to instantiate.</param>
         /// <param name="context">The current instantiation context.</param>
         /// <returns>The interface element that was instantiated.</returns>
-        private static UIElement InstantiateElement(UltravioletContext uv, UIContainer container, XElement xmlElement, InstantiationContext context)
+        private static UIElement InstantiateElement(UltravioletContext uv, UIElement parent, XElement xmlElement, InstantiationContext context)
         {
             var id        = xmlElement.AttributeValueString("ID");
             var classes   = xmlElement.AttributeValueString("Class");
@@ -133,10 +133,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 instance.Classes.Add(className);
             }
 
+            var container = parent as UIContainer;
             if (container != null)
-            {
                 container.Children.Add(instance);
-            }
+
+            var contentControl = parent as ContentControl;
+            if (contentControl != null)
+                contentControl.Content = instance;
 
             return instance;
         }
@@ -145,11 +148,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Instantiates a new interface element.
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
-        /// <param name="container">The container which is the element's parent.</param>
+        /// <param name="parent">The element which is the element's parent.</param>
         /// <param name="xmlElement">The XML element that defines the element to instantiate.</param>
         /// <param name="context">The current instantiation context.</param>
         /// <returns>The interface element that was instantiated.</returns>
-        private static UIElement InstantiateAndPopulateElement(UltravioletContext uv, UIContainer container, XElement xmlElement, InstantiationContext context)
+        private static UIElement InstantiateAndPopulateElement(UltravioletContext uv, UIElement parent, XElement xmlElement, InstantiationContext context)
         {
             var bindingContext        = xmlElement.AttributeValueString("BindingContext");
             var bindingContextDefined = (bindingContext != null);
@@ -161,17 +164,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 context.PushBindingContext(bindingContext);
             }
 
-            var element = InstantiateElement(uv, container, xmlElement, context);
+            var element = InstantiateElement(uv, parent, xmlElement, context);
             PopulateElement(uv, element, xmlElement, context);
 
             if (bindingContextDefined)
             {
                 context.PopBindingContext();
             }
-
-            // TODO
-//            if (context.UserControl != null)
-//                element.Owner = context.UserControl;
 
             return element;
         }
@@ -245,9 +244,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 var attachedProperty  = String.Empty;
                 if (IsAttachedProperty(attrName, out attachedContainer, out attachedProperty))
                 {
-                    if (uiElement.Container != null && String.Equals(uiElement.Container.Name, attachedContainer, StringComparison.InvariantCulture))
+                    if (uiElement.Parent != null && String.Equals(uiElement.Parent.Name, attachedContainer, StringComparison.InvariantCulture))
                     {
-                        dprop = DependencyProperty.FindByName(attachedProperty, uiElement.Container.GetType());
+                        dprop = DependencyProperty.FindByName(attachedProperty, uiElement.Parent.GetType());
                     }
                 }
                 else
@@ -301,15 +300,33 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             {
                 foreach (var child in xmlElement.Elements())
                 {
-                    InstantiateAndPopulateElement(uv, container, child, context);
+                    InstantiateAndPopulateElement(uv, uiElement, child, context);
                 }
             }
             else
             {
-                if (xmlElement.Elements().Any())
+                var contentControl = uiElement as ContentControl;
+                if (contentControl != null && !(uiElement is UserControl))
                 {
-                    var id = uiElement.ID ?? uiElement.GetType().Name;
-                    throw new InvalidOperationException(UltravioletStrings.InvalidChildElements.Format(id));
+                    if (xmlElement.Elements().Count() > 1)
+                    {
+                        var id = uiElement.ID ?? uiElement.GetType().Name;
+                        throw new InvalidOperationException(UltravioletStrings.InvalidChildElements.Format(id));
+                    }
+
+                    var contentElement = xmlElement.Elements().SingleOrDefault();
+                    if (contentElement != null)
+                    {
+                        InstantiateAndPopulateElement(uv, uiElement, contentElement, context);
+                    }
+                }
+                else
+                {
+                    if (xmlElement.Elements().Any())
+                    {
+                        var id = uiElement.ID ?? uiElement.GetType().Name;
+                        throw new InvalidOperationException(UltravioletStrings.InvalidChildElements.Format(id));
+                    }
                 }
             }
         }

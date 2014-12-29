@@ -612,7 +612,7 @@
   </String>
   <String Key="INVALID_CHILD_ELEMENTS">
     <en-US>
-      <Variant>Element '{0}' has child elements, but is not a container.</Variant>
+      <Variant>Element '{0}' has too many child elements.</Variant>
     </en-US>
   </String>
   <String Key="INVALID_ELEMENT_PROPERTY_VALUE">

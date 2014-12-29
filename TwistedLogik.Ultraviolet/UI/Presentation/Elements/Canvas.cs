@@ -30,8 +30,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         public Canvas(UltravioletContext uv, String id, Type viewModelType, String bindingContext = null)
             : base(uv, id)
         {
-            var dpBackgroundColor = DependencyProperty.FindByName("BackgroundColor", typeof(UIElement));
-            SetDefaultValue<Color>(dpBackgroundColor, Color.Transparent);
+            SetDefaultValue<Color>(UIElement.BackgroundColorProperty, Color.Transparent);
 
             if (ComponentTemplate != null)
                 UIViewLoader.LoadComponentRoot(this, ComponentTemplate, viewModelType, bindingContext);
@@ -271,9 +270,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         private static void OnLayoutPropertyChanged(DependencyObject dependencyObject)
         {
             var element = (UIElement)dependencyObject;
-            if (element.Container != null)
+            if (element.Parent != null)
             {
-                element.Container.PerformPartialLayout(element);
+                element.Parent.PerformPartialLayout(element);
             }
         }
     }

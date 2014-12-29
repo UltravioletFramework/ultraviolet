@@ -106,7 +106,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// <returns><c>true</c> if the element matches the selector part; otherwise, <c>false</c>.</returns>
         private static Boolean ElementMatchesSelectorPart(UIElement element, UvssSelectorPart part)
         {
-            if (element.Container == null && String.Equals(part.Element, "document", StringComparison.OrdinalIgnoreCase))
+            if (element.Parent == null && String.Equals(part.Element, "document", StringComparison.OrdinalIgnoreCase))
                 return true;
 
             if (!String.IsNullOrEmpty(part.ID))
@@ -145,7 +145,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
                 if (current == root)
                     return false;
 
-                current = current.Container;
+                current = current.Parent;
                 if (current == null)
                     break;
 
