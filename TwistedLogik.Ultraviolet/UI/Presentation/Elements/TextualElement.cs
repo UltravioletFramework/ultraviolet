@@ -116,7 +116,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
 
             if (element.Container != null)
             {
-                element.Container.PerformLayout(element);
+                element.Container.PerformPartialLayout(element);
             }
         }
 

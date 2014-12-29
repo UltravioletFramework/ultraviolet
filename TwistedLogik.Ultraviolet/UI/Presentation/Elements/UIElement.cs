@@ -115,18 +115,31 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <summary>
-        /// Immediately recalculates the layout of the element and its childen and subcomponents, if applicable.
+        /// Immediately recalculates the layout of the element and its content elements and subcomponents, if applicable.
         /// </summary>
         public virtual void PerformLayout()
+        {
+            OnPerformingLayout();
+
+            PerformContentLayout();
+            UpdateAbsoluteScreenPosition(AbsoluteScreenX, AbsoluteScreenY);
+
+            OnPerformedLayout();
+        }
+
+        /// <summary>
+        /// Immediately recalculates the layout of the element's content elements.
+        /// </summary>
+        public virtual void PerformContentLayout()
         {
 
         }
 
         /// <summary>
-        /// Immediately recalculates the layout of the specified child element.
+        /// Immediately recalculates the layout of the specified content element.
         /// </summary>
-        /// <param name="child">The child element for which to calculate a layout.</param>
-        public virtual void PerformLayout(UIElement child)
+        /// <param name="content">The content element for which to calculate a layout.</param>
+        public virtual void PerformPartialLayout(UIElement content)
         {
 
         }
@@ -340,15 +353,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <summary>
-        /// Gets a value indicating whether this is an anonymous element.
-        /// </summary>
-        /// <remarks>An anonymous element is one which has no explicit identifier.</remarks>
-        public Boolean Anonymous
-        {
-            get { return String.IsNullOrEmpty(id); }
-        }
-
-        /// <summary>
         /// Gets or sets a value indicating whether the element is enabled.
         /// </summary>
         public Boolean Enabled
@@ -490,6 +494,30 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <summary>
+        /// Gets a value indicating whether this element is a component of another element.
+        /// </summary>
+        public Boolean IsComponent
+        {
+            get { return IsContainerComponent || IsUserControlComponent; }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether this element is a component of a container.
+        /// </summary>
+        public Boolean IsContainerComponent
+        {
+            get { return isContainerComponent; }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether this element is a component of a user control.
+        /// </summary>
+        public Boolean IsUserControlComponent
+        {
+            get { return isUserControlComponent; }
+        }
+
+        /// <summary>
         /// Occurs when the element is being drawn.
         /// </summary>
         public event UIElementDrawingEventHandler Drawing;
@@ -528,6 +556,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// Occurs when a mouse button is released while the cursor is over the element.
         /// </summary>
         public event UIElementMouseButtonEventHandler MouseButtonReleased;
+
+        /// <summary>
+        /// Occurs when the element is about to perform a layout.
+        /// </summary>
+        public event UIElementEventHandler PerformingLayout;
+
+        /// <summary>
+        /// Occurs after the element has performed a layout.
+        /// </summary>
+        public event UIElementEventHandler PerformedLayout;
 
         /// <summary>
         /// Occurs when the value of the <see cref="Enabled"/> property changes.
@@ -742,7 +780,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             StoryboardClock existingClock;
             storyboardClocks.TryGetValue(storyboard, out existingClock);
 
-            var clock = RetrieveStoryboardClock(storyboard);
+            StoryboardClock clock;
+            RetrieveStoryboardClock(storyboard, out clock);
             storyboardClocks[storyboard] = clock;
 
             ApplyStoryboard(storyboard, clock, this);
@@ -772,11 +811,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <summary>
-        /// Attempts to remove the specified child or subcomponent from this element.
+        /// Attempts to remove the specified child or content element from this element.
         /// </summary>
-        /// <param name="element">The child or subcomponent to remove.</param>
-        /// <returns><c>true</c> if the child or subcomponent was removed; otherwise, <c>false</c>.</returns>
-        internal virtual Boolean RemoveChildOrSubcomponent(UIElement element)
+        /// <param name="element">The child or content element to remove.</param>
+        /// <returns><c>true</c> if the child or content element was removed; otherwise, <c>false</c>.</returns>
+        internal virtual Boolean RemoveContent(UIElement element)
         {
             return false;
         }
@@ -788,7 +827,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <param name="y">The y-coordinate of the element's absolute screen position.</param>
         internal virtual void UpdateAbsoluteScreenPosition(Int32 x, Int32 y)
         {
-
+            this.absoluteScreenX = x;
+            this.absoluteScreenY = y;
         }
 
         /// <summary>
@@ -881,7 +921,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <param name="view">The view to associate with this element.</param>
         internal virtual void UpdateView(UIView view)
         {
+            UnregisterElement();
+
             this.view = view;
+
+            RegisterElement();
 
             if (view == null || view.Stylesheet == null)
             {
@@ -904,20 +948,38 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <param name="container">The container to associate with this element.</param>
         internal virtual void UpdateContainer(UIElement container)
         {
-            if (this.layoutDocumentContext != null)
-                this.layoutDocumentContext.UnregisterElementID(this);
+            UnregisterElement();
 
-            this.container             = container;
-            this.layoutDocumentContext = FindLayoutDocumentContext();
+            UpdateIsComponent(
+                IsContainerComponent || ((container == null) ? false : container.IsContainerComponent), 
+                IsUserControlComponent || ((container == null) ? false : container.IsUserControlComponent));
 
-            if (this.layoutDocumentContext != null)
-                this.layoutDocumentContext.RegisterElementID(this);
+            this.container = container;
 
             var view = (container == null) ? null : container.View;
             if (view != this.view)
             {
                 UpdateView(view);
             }
+            else
+            {
+                RegisterElement();
+            }
+        }
+
+        /// <summary>
+        /// Updates the flags indicating whether this element is a component of a container or user control.
+        /// </summary>
+        /// <param name="isContainerComponent">A value indicating whether this element is a component of a container.</param>
+        /// <param name="isUserControlComponent">A value indicating whether this element is a component of a user control.</param>
+        internal virtual void UpdateIsComponent(Boolean isContainerComponent, Boolean isUserControlComponent)
+        {
+            UnregisterElement();
+
+            this.isContainerComponent   = isContainerComponent;
+            this.isUserControlComponent = isUserControlComponent;
+
+            RegisterElement();
         }
 
         /// <summary>
@@ -932,27 +994,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <summary>
-        /// Gets the x-coordinate of the element's absolute screen position.
+        /// Searches the element hierarchy for an instance of the <see cref="ContentPanel"/> class.
         /// </summary>
-        internal virtual Int32 AbsoluteScreenXInternal
+        /// <returns>The content panel, if it was found; otherwise, <c>null</c>.</returns>
+        internal virtual UIElement FindContentPanel()
         {
-            get { return (Container == null ? 0 : Container.AbsoluteScreenX) + containerRelativeX; }
-        }
+            if (this is ContentPanel)
+                return this;
 
-        /// <summary>
-        /// Gets the y-coordinate of the element's absolute screen position.
-        /// </summary>
-        internal virtual Int32 AbsoluteScreenYInternal
-        {
-            get { return (Container == null ? 0 : Container.AbsoluteScreenY) + containerRelativeY; }
-        }
-
-        /// <summary>
-        /// Gets a value indicating whether this element is a component of a user control.
-        /// </summary>
-        internal Boolean IsUserControlComponent
-        {
-            get { return layoutDocumentContext is UserControl; }
+            return null;
         }
 
         /// <summary>
@@ -1054,9 +1104,27 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <summary>
+        /// Gets the component element which contains this element's content.
+        /// </summary>
+        protected internal UIElement ContentElement
+        {
+            get { return contentElement ?? this; }
+            internal set
+            {
+                if (contentElement != null && contentElement != this)
+                    contentElement.PerformedLayout -= HandleContentElementPerformedLayout;
+                
+                contentElement = value;
+
+                if (contentElement != null && contentElement != this)
+                    contentElement.PerformedLayout += HandleContentElementPerformedLayout;
+            }
+        }
+
+        /// <summary>
         /// Gets the element's area relative to its container after layout has been performed.
         /// </summary>
-        protected internal Rectangle ContainerRelativeLayout
+        protected internal Rectangle ContainerRelativeArea
         {
             get { return new Rectangle(containerRelativeX, containerRelativeY, actualWidth, actualHeight); }
             set
@@ -1074,7 +1142,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// </summary>
         protected internal Int32 AbsoluteScreenX
         {
-            get { return AbsoluteScreenXInternal; }
+            get { return absoluteScreenX; }
         }
 
         /// <summary>
@@ -1082,7 +1150,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// </summary>
         protected internal Int32 AbsoluteScreenY
         {
-            get { return AbsoluteScreenYInternal; }
+            get { return absoluteScreenY; }
         }
 
         /// <summary>
@@ -1171,6 +1239,30 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         protected virtual void OnContainerRelativeLayoutChanged()
         {
 
+        }
+
+        /// <summary>
+        /// Raises the <see cref="PerformingLayout"/> event.
+        /// </summary>
+        protected virtual void OnPerformingLayout()
+        {
+            var temp = PerformingLayout;
+            if (temp != null)
+            {
+                temp(this);
+            }
+        }
+
+        /// <summary>
+        /// Raises the <see cref="PerformedLayout"/> event.
+        /// </summary>
+        protected virtual void OnPerformedLayout()
+        {
+            var temp = PerformedLayout;
+            if (temp != null)
+            {
+                temp(this);
+            }
         }
 
         /// <summary>
@@ -1672,7 +1764,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             var element = (UIElement)dobj;
             if (element.Container != null)
             {
-                element.Container.PerformLayout(element);
+                element.Container.PerformPartialLayout(element);
             }
             element.ReloadFont();
             element.OnFontAssetIDChanged();
@@ -1703,16 +1795,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// Retrieves a storyboard clock from the pool.
         /// </summary>
         /// <param name="storyboard">The storyboard which the clock will track.</param>
-        /// <returns>The storyboard clock that was retrieved from the pool.</returns>
-        private static StoryboardClock RetrieveStoryboardClock(Storyboard storyboard)
+        /// <param name="clock">The storyboard clock that was retrieved from the pool.</param>
+        private static void RetrieveStoryboardClock(Storyboard storyboard, out StoryboardClock clock)
         {
-            StoryboardClock clock;
             lock (storyboardClockPool)
             {
                 clock = storyboardClockPool.Retrieve();
             }
             clock.ChangeStoryboard(storyboard);
-            return clock;
         }
 
         /// <summary>
@@ -1730,21 +1820,63 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <summary>
-        /// Finds the element's layout document context.
+        /// Finds the element registration context for this element.
         /// </summary>
-        /// <returns>The element's layout document context, or <c>null</c> if it has no layout document context.</returns>
-        private ILayoutDocumentContext FindLayoutDocumentContext()
+        /// <returns>The element registration context for this element.</returns>
+        private ElementRegistry FindElementRegistry()
         {
             var current = Container;
             while (current != null)
             {
-                if (current is ILayoutDocumentContext)
-                {
-                    return (ILayoutDocumentContext)current;
-                }
-                current = current.Container;
+                if (isContainerComponent && current is UIContainer)
+                    return ((UIContainer)current).ComponentRegistry;
+
+                if (isUserControlComponent && current is UserControl)
+                    return ((UserControl)current).ComponentRegistry;
+
+                current = current.container;
             }
-            return View;
+            return (view == null) ? null : view.ElementRegistry;
+        }
+
+        /// <summary>
+        /// Adds the element to the current view's element registry.
+        /// </summary>
+        private void RegisterElement()
+        {
+            if (String.IsNullOrEmpty(id))
+                return;
+
+            elementRegistrationContext = FindElementRegistry();
+            if (elementRegistrationContext != null)
+            {
+                elementRegistrationContext.RegisterElement(this);
+            }
+        }
+
+        /// <summary>
+        /// Removes the element from the current view's element registry.
+        /// </summary>
+        private void UnregisterElement()
+        {
+            if (String.IsNullOrEmpty(id))
+                return;
+
+            if (elementRegistrationContext != null)
+            {
+                elementRegistrationContext.UnregisterElement(this);
+                elementRegistrationContext = null;
+            }
+        }
+
+        /// <summary>
+        /// Handles the <see cref="PerformedLayout"/> event raised by the element's content element.
+        /// </summary>
+        /// <param name="element">The element that raised the event.</param>
+        private void HandleContentElementPerformedLayout(UIElement element)
+        {
+            this.PerformContentLayout();
+            this.UpdateAbsoluteScreenPosition(AbsoluteScreenX, AbsoluteScreenY);
         }
 
         // Dependency properties.
@@ -1808,10 +1940,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         private Int32 actualWidth;
         private Int32 actualHeight;
         private SpriteFont font;
+        private Boolean isContainerComponent;
+        private Boolean isUserControlComponent;
 
         // State values.
         private Boolean layoutRequested;
-        private ILayoutDocumentContext layoutDocumentContext;
+        private Int32 absoluteScreenX;
+        private Int32 absoluteScreenY;
+        private UIElement contentElement;
+        private ElementRegistry elementRegistrationContext;
 
         // Storyboard clocks.
         private static readonly IPool<StoryboardClock> storyboardClockPool = 

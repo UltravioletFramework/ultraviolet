@@ -8,9 +8,11 @@ namespace TwistedLogik.Ultraviolet.Platform
     public interface IUltravioletDisplayInfo : IEnumerable<IUltravioletDisplay>
     {
         /// <summary>
-        /// Gets the collection's enumerator.
+        /// Gets the application's primary display device.
         /// </summary>
-        /// <returns>The collection's enumerator.</returns>
-        new List<IUltravioletDisplay>.Enumerator GetEnumerator();
+        IUltravioletDisplay PrimaryDisplay
+        {
+            get;
+        }
     }
 }

@@ -14,7 +14,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
     /// <summary>
     /// Represents the top-level container for UI elements.
     /// </summary>
-    public sealed class UIView : UltravioletResource, ILayoutDocumentContext
+    public sealed class UIView : UltravioletResource
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="UIView"/> class.
@@ -26,7 +26,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             this.viewModelType = viewModelType;
 
-            this.canvas = new Canvas(uv, null);
+            this.canvas = new Canvas(uv, null, viewModelType);
             this.canvas.UpdateView(this);
 
             HookKeyboardEvents();
@@ -513,7 +513,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 if (!area.Equals(value))
                 {
                     area = value;
-                    Canvas.ContainerRelativeLayout = new Rectangle(0, 0, value.Width, value.Height);
+                    Canvas.ContainerRelativeArea = new Rectangle(0, 0, value.Width, value.Height);
                     Canvas.PerformLayout();
                 }
             }
@@ -566,17 +566,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             get { return window; }
         }
-
-        /// <inheritdoc/>
-        void ILayoutDocumentContext.RegisterElementID(UIElement element)
+        
+        /// <summary>
+        /// Gets the view's element registry.
+        /// </summary>
+        internal ElementRegistry ElementRegistry
         {
-            elementRegistry.RegisterElementID(element);
-        }
-
-        /// <inheritdoc/>
-        void ILayoutDocumentContext.UnregisterElementID(UIElement element)
-        {
-            elementRegistry.UnregisterElementID(element);
+            get { return elementRegistry; }
         }
 
         /// <inheritdoc/>
@@ -731,6 +727,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         // Property values.
+        private readonly ElementRegistry elementRegistry = new ElementRegistry();
         private ContentManager globalContent;
         private ContentManager localContent;
         private UvssDocument stylesheet;
@@ -741,7 +738,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         private IUltravioletWindow window;
 
         // State values.
-        private readonly LayoutDocumentElementRegistry elementRegistry = new LayoutDocumentElementRegistry();
         private UIElement elementUnderMousePrev;
         private UIElement elementUnderMouse;
         private UIElement elementWithMouseCapture;

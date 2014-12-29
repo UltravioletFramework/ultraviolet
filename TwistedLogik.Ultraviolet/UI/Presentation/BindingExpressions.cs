@@ -182,25 +182,25 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             Contract.Require(delegateType, "delegateType");
             Contract.RequireNotEmpty(expression, "expression");
 
-            var builder = new BoundEventBuilder(uiElement, viewModelType, delegateType, expression);
+            var builder = new BoundEventBuilder(uiElement, viewModelType, delegateType, expression, false);
             return builder.Compile();
         }
 
         /// <summary>
-        /// Creates an event handler which is bound to a method on a user control.
+        /// Creates an event handler which is bound to a method on an element.
         /// </summary>
-        /// <param name="userControl">The user control to which the event will be bound.</param>
+        /// <param name="uiElement">The element to which the event will be bound.</param>
         /// <param name="viewModelType">The type of the view model which is being bound.</param>
         /// <param name="delegateType">The type of the event handler which is being bound.</param>
         /// <param name="expression">The binding expression that represents the method to bind to the event.</param>
         /// <returns>A <see cref="Delegate"/> which represents the bound event handler.</returns>
-        public static Delegate CreateUserControlBoundEventDelegate(UserControl userControl, Type viewModelType, Type delegateType, String expression)
+        public static Delegate CreateElementBoundEventDelegate(UIElement uiElement, Type viewModelType, Type delegateType, String expression)
         {
-            Contract.Require(userControl, "userControl");
+            Contract.Require(uiElement, "uiElement");
             Contract.Require(delegateType, "delegateType");
             Contract.RequireNotEmpty(expression, "expression");
 
-            var builder = new BoundEventBuilder(userControl, viewModelType, delegateType, expression);
+            var builder = new BoundEventBuilder(uiElement, viewModelType, delegateType, expression, true);
             return builder.Compile();
         }
 

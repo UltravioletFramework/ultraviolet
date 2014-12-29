@@ -25,11 +25,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             /// Initializes a new instance of the <see cref="InstantiationContext"/> class.
             /// </summary>
             /// <param name="viewModelType">The type of view model to which the view is bound.</param>
-            /// <param name="userControl">The current user control.</param>
+            /// <param name="componentOwner">The current user control.</param>
             /// <param name="initialBindingContext">The initial binding context.</param>
-            public InstantiationContext(Type viewModelType, UserControl userControl, String initialBindingContext)
+            public InstantiationContext(Type viewModelType, UIElement componentOwner, String initialBindingContext)
             {
-                this.userControl   = userControl;
+                this.componentOwner   = componentOwner;
                 this.viewModelType = viewModelType;
 
                 if (!String.IsNullOrEmpty(initialBindingContext))
@@ -60,14 +60,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             }
 
             /// <summary>
-            /// Gets or sets the current user control. Controls which are instantiated while this property is
-            /// not <c>null</c> are considered to be components of the user control and will have their events
-            /// bound to the <see cref="UserControl"/> object in question, rather than the view model.
+            /// Gets or sets the component owner for the current context. Elements which are created when this
+            /// property has a non-<c>null</c> value are considered components of the component owner element.
             /// </summary>
-            public UserControl UserControl
+            public UIElement ComponentOwner
             {
-                get { return userControl; }
-                set { userControl = value; }
+                get { return componentOwner; }
+                set { componentOwner = value; }
             }
 
             /// <summary>
@@ -117,7 +116,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             }
 
             // Property values.
-            private UserControl userControl;
+            private UIElement componentOwner;
             private String bindingContext;
             private Type viewModelType;
 

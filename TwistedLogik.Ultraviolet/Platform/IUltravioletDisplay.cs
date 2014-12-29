@@ -19,14 +19,14 @@ namespace TwistedLogik.Ultraviolet.Platform
         /// </summary>
         /// <param name="inches">The value in inches to convert.</param>
         /// <returns>The converted value in display units.</returns>
-        Int32 InchesToPixels(Double inches);
+        Double InchesToPixels(Double inches);
 
         /// <summary>
         /// Converts display independent pixels (1/96 of an inch) to display pixels.
         /// </summary>
         /// <param name="dips">The value in display independent units to convert.</param>
         /// <returns>The converted value in display units.</returns>
-        Int32 DipsToPixels(Double dips);
+        Double DipsToPixels(Double dips);
 
         /// <summary>
         /// Converts inches to display independent pixels (1/96 of an inch).
@@ -40,7 +40,7 @@ namespace TwistedLogik.Ultraviolet.Platform
         /// </summary>
         /// <param name="pixels">The value in display units to convert.</param>
         /// <returns>The converted value in display independent units.</returns>
-        Double PixelsToDips(Int32 pixels);
+        Double PixelsToDips(Double pixels);
 
         /// <summary>
         /// Gets the display's bounds.

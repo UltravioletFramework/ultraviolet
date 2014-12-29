@@ -11,7 +11,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
     /// <summary>
     /// Represents a control which is defined by the application using a layout definition.
     /// </summary>
-    public abstract class UserControl : UIElement, ILayoutDocumentContext
+    public abstract class UserControl : UIElement
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="UserControl"/> class.
@@ -63,24 +63,26 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         {
             if (Content != null)
             {
-                Content.ContainerRelativeLayout = new Rectangle(0, 0, ActualWidth, ActualHeight);
+                Content.ContainerRelativeArea = new Rectangle(0, 0, ActualWidth, ActualHeight);
                 Content.PerformLayout();
             }
         }
 
         /// <inheritdoc/>
-        public sealed override void PerformLayout(UIElement child)
+        public sealed override void PerformPartialLayout(UIElement content)
         {
-            if (Content != null)
+            Contract.Require(content, "content");
+
+            if (Content == null)
+                throw new ArgumentException("content");
+
+            if (Content == content)
             {
-                if (Content == child)
-                {
-                    PerformLayout();
-                }
-                else
-                {
-                    Content.PerformLayout(child);
-                }
+                PerformLayout();
+            }
+            else
+            {
+                Content.PerformPartialLayout(content);
             }
         }
 
@@ -98,9 +100,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
                         content.UpdateContainer(null);
 
                     content = value;
-                 
+
                     if (content != null)
+                    {
+                        content.UpdateIsComponent(false, true);
                         content.UpdateContainer(this);
+                    }
 
                     PerformLayout();
 
@@ -114,45 +119,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// </summary>
         public event UIElementEventHandler ContentChanged;
 
-        /// <inheritdoc/>
-        void ILayoutDocumentContext.RegisterElementID(UIElement element)
-        {
-            elementRegistry.RegisterElementID(element);
-        }
-
-        /// <inheritdoc/>
-        void ILayoutDocumentContext.UnregisterElementID(UIElement element)
-        {
-            elementRegistry.UnregisterElementID(element);
-        }
-
         /// <summary>
-        /// Populates any private fields of this object which match elements which
-        /// are registered with the user control's layout document.
+        /// Populates any private fields of this object which match components
+        /// of the user control.
         /// </summary>
         internal void PopulateFieldsFromRegisteredElements()
         {
-            var fields = GetType().GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance).ToDictionary(x => x.Name);
-
-            foreach (var kvp in elementRegistry)
-            {
-                FieldInfo field;
-                if (!fields.TryGetValue(kvp.Key, out field))
-                    continue;
-
-                if (!field.FieldType.IsAssignableFrom(kvp.Value.GetType()))
-                    continue;
-
-                field.SetValue(this, kvp.Value);
-            }
+            ComponentRegistry.PopulateFieldsFromRegisteredElements(this);
         }
 
-        /// <summary>
-        /// Attempts to remove the specified child or subcomponent from this element.
-        /// </summary>
-        /// <param name="element">The child or subcomponent to remove.</param>
-        /// <returns><c>true</c> if the child or subcomponent was removed; otherwise, <c>false</c>.</returns>
-        internal override Boolean RemoveChildOrSubcomponent(UIElement element)
+        /// <inheritdoc/>
+        internal override Boolean RemoveContent(UIElement element)
         {
             Contract.Require(element, "element");
 
@@ -163,7 +140,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             }
 
             if (Content != null)
-                return Content.RemoveChildOrSubcomponent(element);
+                return Content.RemoveContent(element);
 
             return false;
         }
@@ -198,6 +175,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <inheritdoc/>
         internal override void Draw(UltravioletTime time, SpriteBatch spriteBatch)
         {
+            base.Draw(time, spriteBatch);
+
             if (Content != null)
                 Content.Draw(time, spriteBatch);
         }
@@ -229,12 +208,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
                 Content.UpdateView(view);
         }
 
-        /// <summary>
-        /// Gets the element at the specified point in element space.
-        /// </summary>
-        /// <param name="x">The x-coordinate of the point to evaluate.</param>
-        /// <param name="y">The y-coordinate of the point to evaluate.</param>
-        /// <returns>The element at the specified point in element space, or null if no such element exists.</returns>
+        /// <inheritdoc/>
         internal override UIElement GetElementAtPointInternal(Int32 x, Int32 y)
         {
             if (!Bounds.Contains(x, y))
@@ -244,6 +218,27 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
                 return Content.GetElementAtPointInternal(x, y);
 
             return null;
+        }
+
+        /// <inheritdoc/>
+        internal override UIElement FindContentPanel()
+        {
+            if (Content != null)
+            {
+                var panel = Content.FindContentPanel();
+                if (panel != null)
+                    return panel;
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// Gets the user control's component registry.
+        /// </summary>
+        internal ElementRegistry ComponentRegistry
+        {
+            get { return componentRegistry; }
         }
 
         /// <summary>
@@ -263,15 +258,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// </summary>
         /// <param name="id">The identifier of the element to retrieve.</param>
         /// <returns>The element with the specified identifier, or <c>null</c> if no such element exists.</returns>
-        protected UIElement GetElementByID(String id)
+        protected UIElement GetComponentByID(String id)
         {
-            return elementRegistry.GetElementByID(id);
+            Contract.RequireNotEmpty(id, "id");
+
+            return componentRegistry.GetElementByID(id);
         }
 
         // Property values.
         private UIElement content;
 
         // State values.
-        private readonly LayoutDocumentElementRegistry elementRegistry = new LayoutDocumentElementRegistry();
+        private readonly ElementRegistry componentRegistry = 
+            new ElementRegistry();
     }
 }

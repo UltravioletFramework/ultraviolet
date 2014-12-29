@@ -33,15 +33,15 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
         }
 
         /// <inheritdoc/>
-        public Int32 InchesToPixels(Double inches)
+        public Double InchesToPixels(Double inches)
         {
             return DipsToPixels(96.0 * inches);
         }
 
         /// <inheritdoc/>
-        public Int32 DipsToPixels(Double dips)
+        public Double DipsToPixels(Double dips)
         {
-            return (Int32)(dips * DensityScale);
+            return dips * DensityScale;
         }
 
         /// <inheritdoc/>
@@ -51,7 +51,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
         }
 
         /// <inheritdoc/>
-        public Double PixelsToDips(Int32 pixels)
+        public Double PixelsToDips(Double pixels)
         {
             return pixels / (Double)DensityScale;
         }

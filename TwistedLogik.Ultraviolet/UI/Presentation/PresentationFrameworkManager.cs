@@ -59,7 +59,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (!IsElementRegistered(name, out registration))
                 return null;
 
-            var instance = (UIElement)Activator.CreateInstance(registration.Type, Ultraviolet, id);
+            var ctor = 
+                registration.Type.GetConstructor(new[] { typeof(UltravioletContext), typeof(String), typeof(Type), typeof(String) }) ??
+                registration.Type.GetConstructor(new[] { typeof(UltravioletContext), typeof(String) });
+
+            if (ctor == null)
+                throw new InvalidOperationException(UltravioletStrings.NoValidConstructor.Format(registration.GetType()));
+
+            var instance = ctor.GetParameters().Length == 4 ? 
+                (UIElement)ctor.Invoke(new Object[] { Ultraviolet, id, viewModelType, bindingContext }) :
+                (UIElement)ctor.Invoke(new Object[] { Ultraviolet, id });
+
             if (registration.Layout != null)
             {
                 UIViewLoader.LoadUserControl((UserControl)instance, registration.Layout, viewModelType, bindingContext);
@@ -297,16 +307,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                     defaultProperty = defaultPropertyAttr.Name;
                 }
 
-                var constructor = elementType.ElementType.GetConstructor(new[] { typeof(UltravioletContext), typeof(String) });
-                if (constructor == null)
-                {
+                var type = elementType.ElementType;
+                var ctor = 
+                    type.GetConstructor(new[] { typeof(UltravioletContext), typeof(String), typeof(Type), typeof(String) }) ??
+                    type.GetConstructor(new[] { typeof(UltravioletContext), typeof(String) });
+                
+                if (ctor == null)
                     throw new InvalidOperationException(UltravioletStrings.UIElementInvalidCtor.Format(elementType));
-                }
 
                 var registration = new RegisteredElement(
                     elementType.ElementAttribute.Name,
                     elementType.ElementType,
-                    constructor, defaultProperty);
+                    defaultProperty);
 
                 coreElements[elementType.ElementAttribute.Name] = registration;
             }
@@ -338,7 +350,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (ctor == null)
                 throw new InvalidOperationException(UltravioletStrings.UIElementInvalidCtor.Format(type.Name));
 
-            registeredElements[name] = new RegisteredElement(name, type, ctor, defaultProperty, layout);
+            registeredElements[name] = new RegisteredElement(name, type, defaultProperty, layout);
         }
 
         /// <summary>

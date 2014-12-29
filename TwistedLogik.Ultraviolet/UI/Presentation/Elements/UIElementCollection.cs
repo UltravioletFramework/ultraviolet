@@ -43,7 +43,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
 
             if (element.Container != null)
             {
-                if (!element.Container.RemoveChildOrSubcomponent(element))
+                if (!element.Container.RemoveContent(element))
                 {
                     return false;
                 }

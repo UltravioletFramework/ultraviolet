@@ -385,6 +385,7 @@
     <Compile Include="UI\Presentation\BoundEventBuilder.cs" />
     <Compile Include="UI\Presentation\Elements\AssetSource.cs" />
     <Compile Include="UI\Presentation\Elements\Button.cs" />
+    <Compile Include="UI\Presentation\Elements\ContentPanel.cs" />
     <Compile Include="UI\Presentation\Elements\Canvas.cs" />
     <Compile Include="UI\Presentation\Elements\Label.cs" />
     <Compile Include="UI\Presentation\Elements\NamespaceDoc.cs" />
@@ -401,12 +402,10 @@
     <Compile Include="UI\Presentation\Elements\UIElementCollection.IEnumerable.cs" />
     <Compile Include="UI\Presentation\Elements\UIElementResources.cs" />
     <Compile Include="UI\Presentation\Elements\UserControl.cs" />
-    <Compile Include="UI\Presentation\ILayoutDocumentContext.cs" />
-    <Compile Include="UI\Presentation\LayoutDocumentElementRegistry.IEnumerable.cs" />
-    <Compile Include="UI\Presentation\LayoutDocumentElementRegistry.cs" />
     <Compile Include="UI\Presentation\PresentationFrameworkManager.RegisteredElement.cs" />
     <Compile Include="UI\Presentation\PresentationFrameworkManager.cs" />
     <Compile Include="UI\Presentation\UIView.cs" />
+    <Compile Include="UI\Presentation\ElementRegistry.cs" />
     <Compile Include="UI\Presentation\UIViewLoader.cs" />
     <Compile Include="UI\Presentation\UvmlException.cs" />
     <Compile Include="UI\Presentation\Elements\VisualState.cs" />
@@ -550,6 +549,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Graphics\Graphics3D\" />
+    <Folder Include="UI\Presentation\Elements\Templates\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\TwistedLogik.Public.snk">

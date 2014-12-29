@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Linq;
+using System.Xml.Linq;
 using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
 using TwistedLogik.Ultraviolet.UI.Presentation.Styles;
@@ -16,13 +16,25 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <summary>
         /// Initializes a new instance of the <see cref="Canvas"/> class.
         /// </summary>
+        static Canvas()
+        {
+            ComponentTemplate = LoadComponentTemplateFromManifestResourceStream(typeof(Canvas).Assembly, 
+                "TwistedLogik.Ultraviolet.UI.Presentation.Elements.Templates.Canvas.xml");
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Canvas"/> class.
+        /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
         /// <param name="id">The element's unique identifier within its view.</param>
-        public Canvas(UltravioletContext uv, String id)
+        public Canvas(UltravioletContext uv, String id, Type viewModelType, String bindingContext = null)
             : base(uv, id)
         {
             var dpBackgroundColor = DependencyProperty.FindByName("BackgroundColor", typeof(UIElement));
             SetDefaultValue<Color>(dpBackgroundColor, Color.Transparent);
+
+            if (ComponentTemplate != null)
+                UIViewLoader.LoadComponentRoot(this, ComponentTemplate, viewModelType, bindingContext);
         }
 
         /// <summary>
@@ -122,6 +134,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <summary>
+        /// Gets or sets the template used to create the container's component tree.
+        /// </summary>
+        public static XDocument ComponentTemplate
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
         /// Gets or sets a value indicating the distance between the left edge of the canvas and the left edge of the element.
         /// </summary>
         [Styled("left")]
@@ -155,7 +176,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             if (View == null)
                 return Rectangle.Empty;
 
-            var display = Ultraviolet.GetPlatform().Displays.First();
+            var display = Ultraviolet.GetPlatform().Displays.PrimaryDisplay;
 
             var left   = GetLeft(child);
             var top    = GetTop(child);
@@ -195,8 +216,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
                 height = MaxHeight;
 
             // Convert from dips to pixels
-            widthpx  = Double.IsNaN(width) ? (Int32?)null : display.DipsToPixels(width);
-            heightpx = Double.IsNaN(height) ? (Int32?)null : display.DipsToPixels(height);
+            widthpx  = Double.IsNaN(width)  ? (Int32?)null : (Int32)Math.Ceiling(display.DipsToPixels(width));
+            heightpx = Double.IsNaN(height) ? (Int32?)null : (Int32)Math.Ceiling(display.DipsToPixels(height));
             
             // If we're missing a dimension, calculate the recommended dimension.
             if (widthpx == null || heightpx == null)
@@ -219,19 +240,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             var y = 0;
             if (!Double.IsNaN(left))
             {
-                x = display.DipsToPixels(left);
+                x = (Int32)display.DipsToPixels(left);
             }
             else
             {
-                x = ActualWidth - (display.DipsToPixels(right) + widthpx.GetValueOrDefault());
+                x = ActualWidth - ((Int32)display.DipsToPixels(right) + widthpx.GetValueOrDefault());
             }
             if (!Double.IsNaN(top))
             {
-                y = display.DipsToPixels(top);
+                y = (Int32)display.DipsToPixels(top);
             }
             else
             {
-                y = ActualHeight - (display.DipsToPixels(bottom) + heightpx.GetValueOrDefault());
+                y = ActualHeight - ((Int32)display.DipsToPixels(bottom) + heightpx.GetValueOrDefault());
             }
             return new Rectangle(x, y, widthpx.GetValueOrDefault(), heightpx.GetValueOrDefault());
         }
@@ -252,7 +273,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             var element = (UIElement)dependencyObject;
             if (element.Container != null)
             {
-                element.Container.PerformLayout(element);
+                element.Container.PerformPartialLayout(element);
             }
         }
     }

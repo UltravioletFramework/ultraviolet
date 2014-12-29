@@ -966,6 +966,9 @@
     <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\DependencyPropertyValue.cs">
       <Link>UI\Presentation\DependencyPropertyValue.cs</Link>
     </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\ElementRegistry.cs">
+      <Link>UI\Presentation\ElementRegistry.cs</Link>
+    </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Elements\AssetSource.cs">
       <Link>UI\Presentation\Elements\AssetSource.cs</Link>
     </Compile>
@@ -974,6 +977,9 @@
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Elements\Canvas.cs">
       <Link>UI\Presentation\Elements\Canvas.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Elements\ContentPanel.cs">
+      <Link>UI\Presentation\Elements\ContentPanel.cs</Link>
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Elements\Label.cs">
       <Link>UI\Presentation\Elements\Label.cs</Link>
@@ -1043,15 +1049,6 @@
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\IDependencyPropertyValue.cs">
       <Link>UI\Presentation\IDependencyPropertyValue.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\ILayoutDocumentContext.cs">
-      <Link>UI\Presentation\ILayoutDocumentContext.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\LayoutDocumentElementRegistry.cs">
-      <Link>UI\Presentation\LayoutDocumentElementRegistry.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\LayoutDocumentElementRegistry.IEnumerable.cs">
-      <Link>UI\Presentation\LayoutDocumentElementRegistry.IEnumerable.cs</Link>
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\NamespaceDoc.cs">
       <Link>UI\Presentation\NamespaceDoc.cs</Link>
@@ -1279,6 +1276,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Graphics\Graphics3D\" />
+    <Folder Include="UI\Presentation\Elements\Templates\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TwistedLogik.Gluon %28Android%29\TwistedLogik.Gluon %28Android%29.csproj">
@@ -1293,7 +1291,7 @@
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties ProjectLinkReference="f071abe3-05e5-4df9-a929-cf71b01ec50a" ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" />
+      <UserProperties ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" ProjectLinkReference="f071abe3-05e5-4df9-a929-cf71b01ec50a" />
     </VisualStudio>
   </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

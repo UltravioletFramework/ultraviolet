@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Reflection;
+using System.Xml.Linq;
 using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet.Graphics;
 using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
@@ -29,6 +31,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         {
             base.ClearLocalValuesRecursive();
 
+            if (componentRoot != null)
+                componentRoot.ClearLocalValuesRecursive();
+
             foreach (var child in children)
             {
                 child.ClearLocalValuesRecursive();
@@ -39,6 +44,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         public sealed override void ClearStyledValuesRecursive()
         {
             base.ClearStyledValuesRecursive();
+
+            if (componentRoot != null)
+                componentRoot.ClearStyledValuesRecursive();
 
             foreach (var child in children)
             {
@@ -51,6 +59,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         {
             base.ClearVisualStateTransitionsRecursive();
 
+            if (componentRoot != null)
+                componentRoot.ClearVisualStateTransitionsRecursive();
+
             foreach (var child in children)
             {
                 child.ClearVisualStateTransitionsRecursive();
@@ -61,6 +72,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         public sealed override void ReloadContentRecursive()
         {
             base.ReloadContentRecursive();
+
+            if (componentRoot != null)
+                componentRoot.ReloadContentRecursive();
 
             foreach (var child in children)
             {
@@ -73,22 +87,35 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         {
             OnPerformingLayout();
 
-            foreach (var child in children)
-            {
-                PerformLayoutInternal(child, false);
-            }
-            DetermineIfScissorRectangleIsRequired();
+            if (componentRoot != null)
+                PerformComponentLayout();
+
+            PerformContentLayout();
+            UpdateAbsoluteScreenPosition(AbsoluteScreenX, AbsoluteScreenY);
 
             OnPerformedLayout();
         }
 
         /// <inheritdoc/>
-        public sealed override void PerformLayout(UIElement child)
+        public sealed override void PerformContentLayout()
         {
-            Contract.Require(child, "child");
-            Contract.Ensure<ArgumentException>(Children.Contains(child), "child");
+            foreach (var child in children)
+            {
+                PerformLayoutInternal(child, false);
+            }
+            DetermineIfScissorRectangleIsRequired();
+        }
 
-            PerformLayoutInternal(child, true);
+        /// <inheritdoc/>
+        public sealed override void PerformPartialLayout(UIElement content)
+        {
+            Contract.Require(content, "content");
+
+            // TODO
+//            if (content.Owner != this && !Children.Contains(content))
+//                throw new ArgumentException("content");
+
+            PerformLayoutInternal(content, true);
         }
 
         /// <summary>
@@ -100,19 +127,46 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <summary>
-        /// Called before the container performs a layout.
+        /// Gets the root element of the container's component hierarchy.
         /// </summary>
-        protected virtual void OnPerformingLayout()
+        public UIContainer ComponentRoot
         {
+            get { return componentRoot; }
+            internal set
+            {
+                if (componentRoot != value)
+                {
+                    if (componentRoot != null)
+                        componentRoot.UpdateContainer(null);
 
+                    componentRoot = value;
+
+                    if (componentRoot != null)
+                        componentRoot.UpdateContainer(this);
+
+                    PerformLayout();
+                }
+            }
         }
 
         /// <summary>
-        /// Called after the container has performed a layout.
+        /// Loads a component template from a manifest resource stream.
         /// </summary>
-        protected virtual void OnPerformedLayout()
+        /// <param name="asm">The assembly that contains the manifest resource stream.</param>
+        /// <param name="resource">The name of the manifest resource stream to load.</param>
+        /// <returns>The component template that was loaded.</returns>
+        protected static XDocument LoadComponentTemplateFromManifestResourceStream(Assembly asm, String resource)
         {
+            Contract.Require(asm, "asm");
+            Contract.RequireNotEmpty(resource, "resource");
 
+            using (var stream = asm.GetManifestResourceStream(resource))
+            {
+                if (stream == null)
+                    return null;
+
+                return XDocument.Load(stream);
+            }
         }
 
         /// <summary>
@@ -133,11 +187,20 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <summary>
-        /// Attempts to remove the specified child or subcomponent from this element.
+        /// Populates any private fields of this object which match components
+        /// of the container.
         /// </summary>
-        /// <param name="element">The child or subcomponent to remove.</param>
-        /// <returns><c>true</c> if the child or subcomponent was removed; otherwise, <c>false</c>.</returns>
-        internal override Boolean RemoveChildOrSubcomponent(UIElement element)
+        internal void PopulateFieldsFromRegisteredElements()
+        {
+            ComponentRegistry.PopulateFieldsFromRegisteredElements(this);
+        }
+
+        /// <summary>
+        /// Attempts to remove the specified child or content element from this element.
+        /// </summary>
+        /// <param name="element">The child or content element to remove.</param>
+        /// <returns><c>true</c> if the child or content element was removed; otherwise, <c>false</c>.</returns>
+        internal override Boolean RemoveContent(UIElement element)
         {
             Contract.Require(element, "element");
 
@@ -147,12 +210,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <inheritdoc/>
         internal override void UpdateAbsoluteScreenPosition(Int32 x, Int32 y)
         {
-            this.absoluteScreenX = x;
-            this.absoluteScreenY = y;
+            base.UpdateAbsoluteScreenPosition(x, y);
+
+            if (componentRoot != null)
+                componentRoot.UpdateAbsoluteScreenPosition(x, y);
 
             foreach (var child in children)
             {
-                child.UpdateAbsoluteScreenPosition(x + child.ContainerRelativeX, y + child.ContainerRelativeY);
+                child.UpdateAbsoluteScreenPosition(
+                    ContentElement.AbsoluteScreenX + child.ContainerRelativeX, 
+                    ContentElement.AbsoluteScreenY + child.ContainerRelativeY);
             }
         }
 
@@ -160,6 +227,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         internal override void ApplyStyles(UvssDocument stylesheet)
         {
             base.ApplyStyles(stylesheet);
+
+            if (componentRoot != null)
+                componentRoot.ApplyStyles(stylesheet);
 
             foreach (var child in children)
             {
@@ -171,6 +241,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         internal override void ApplyStoryboard(Storyboard storyboard, StoryboardClock clock, UIElement root)
         {
             base.ApplyStoryboard(storyboard, clock, root);
+
+            if (componentRoot != null)
+                componentRoot.ApplyStoryboard(storyboard, clock, root);
 
             foreach (var child in children)
             {
@@ -185,6 +258,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
                 return;
 
             base.Draw(time, spriteBatch);
+
+            if (componentRoot != null)
+                componentRoot.Draw(time, spriteBatch);
 
             var scissor     = RequiresScissorRectangle;
             var scissorRect = default(Rectangle?);
@@ -211,6 +287,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <inheritdoc/>
         internal override void Update(UltravioletTime time)
         {
+            if (componentRoot != null)
+                componentRoot.Update(time);
+
             foreach (var child in children)
             {
                 child.Update(time);
@@ -224,6 +303,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         {
             base.UpdateViewModel(viewModel);
 
+            if (componentRoot != null)
+                componentRoot.UpdateViewModel(viewModel);
+
             foreach (var child in children)
             {
                 child.UpdateViewModel(viewModel);
@@ -234,6 +316,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         internal override void UpdateView(UIView view)
         {
             base.UpdateView(view);
+
+            if (componentRoot != null)
+                componentRoot.UpdateView(view);
 
             foreach (var child in children)
             {
@@ -246,50 +331,100 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         {
             base.UpdateContainer(container);
 
+            if (componentRoot != null)
+                componentRoot.UpdateContainer(this);
+
             foreach (var child in children)
             {
                 child.UpdateContainer(this);
             }
         }
 
-        /// <summary>
-        /// Gets the element at the specified point in element space.
-        /// </summary>
-        /// <param name="x">The x-coordinate of the point to evaluate.</param>
-        /// <param name="y">The y-coordinate of the point to evaluate.</param>
-        /// <returns>The element at the specified point in element space, or null if no such element exists.</returns>
+        /// <inheritdoc/>
+        internal override void UpdateIsComponent(Boolean isContainerComponent, Boolean isUserControlComponent)
+        {
+            base.UpdateIsComponent(isContainerComponent, isUserControlComponent);
+
+            foreach (var child in children)
+            {
+                child.UpdateIsComponent(isContainerComponent, isUserControlComponent);
+            }
+        }
+
+        /// <inheritdoc/>
         internal override UIElement GetElementAtPointInternal(Int32 x, Int32 y)
         {
             if (!Bounds.Contains(x, y))
                 return null;
 
-            for (int i = children.Count - 1; i >= 0; i--)
+            var contentX = x - ContentElement.ContainerRelativeX;
+            var contentY = y - ContentElement.ContainerRelativeY;
+            if (ContentElement.Bounds.Contains(contentX, contentY))
             {
-                var child   = children[i];
-                var element = child.GetElementAtPointInternal(x - child.ContainerRelativeX, y - child.ContainerRelativeY);
-
-                if (element != null)
+                for (int i = children.Count - 1; i >= 0; i--)
                 {
-                    return element;
+                    var child   = children[i];
+                    var element = child.GetElementAtPointInternal(contentX - child.ContainerRelativeX, contentY - child.ContainerRelativeY);
+
+                    if (element != null)
+                    {
+                        return element;
+                    }
                 }
             }
+
+            if (componentRoot != null)
+            {
+                var component = componentRoot.GetElementAtPointInternal(x, y);
+                if (component != null)
+                    return component;
+            }
+
             return base.GetElementAtPointInternal(x, y);
         }
 
-        /// <summary>
-        /// Gets the x-coordinate of the element's absolute screen position.
-        /// </summary>
-        internal override Int32 AbsoluteScreenXInternal
+        /// <inheritdoc/>
+        internal override UIElement FindContentPanel()
         {
-            get { return absoluteScreenX; }
+            foreach (var child in children)
+            {
+                var panel = child.FindContentPanel();
+                if (panel != null)
+                    return panel;
+            }
+
+            return null;
         }
 
         /// <summary>
-        /// Gets the y-coordinate of the element's absolute screen position.
+        /// Gets the container's component registry.
         /// </summary>
-        internal override Int32 AbsoluteScreenYInternal
+        internal ElementRegistry ComponentRegistry
         {
-            get { return absoluteScreenY; }
+            get { return componentRegistry; }
+        }
+
+        /// <summary>
+        /// Gets the element within the user control which has the specified identifier.
+        /// </summary>
+        /// <param name="id">The identifier of the element to retrieve.</param>
+        /// <returns>The element with the specified identifier, or <c>null</c> if no such element exists.</returns>
+        protected UIElement GetComponentByID(String id)
+        {
+            Contract.RequireNotEmpty(id, "id");
+
+            return componentRegistry.GetElementByID(id);
+        }
+
+        /// <summary>
+        /// Immediately recalculates the layout of the container's components.
+        /// </summary>
+        private void PerformComponentLayout()
+        {
+            ComponentRoot.ContainerRelativeArea = new Rectangle(0, 0, ActualWidth, ActualHeight);
+
+            ComponentRoot.PerformLayout();
+            ComponentRoot.UpdateAbsoluteScreenPosition(AbsoluteScreenX, AbsoluteScreenY);
         }
 
         /// <summary>
@@ -299,13 +434,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <param name="single">A value indicating whether this is the only element being laid out.</param>
         private void PerformLayoutInternal(UIElement child, Boolean single)
         {
-            var layout = CalculateLayoutArea(child);
-            child.ContainerRelativeLayout = layout;
+            var layout = (child == ComponentRoot) ? new Rectangle(0, 0, ActualWidth, ActualHeight) : CalculateLayoutArea(child);
+            child.ContainerRelativeArea = layout;
 
             child.PerformLayout();
             child.UpdateAbsoluteScreenPosition(
-                absoluteScreenX + child.ContainerRelativeX,
-                absoluteScreenY + child.ContainerRelativeY);
+                ContentElement.AbsoluteScreenX + child.ContainerRelativeX,
+                ContentElement.AbsoluteScreenY + child.ContainerRelativeY);
 
             if (single)
                 DetermineIfScissorRectangleIsRequired();
@@ -321,8 +456,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             {
                 if (child.ContainerRelativeX < 0 || 
                     child.ContainerRelativeY < 0 ||
-                    child.ContainerRelativeX + child.ActualWidth > ActualWidth ||
-                    child.ContainerRelativeY + child.ActualHeight > ActualHeight)
+                    child.ContainerRelativeX + child.ActualWidth > ContentElement.ActualWidth ||
+                    child.ContainerRelativeY + child.ActualHeight > ContentElement.ActualHeight)
                 {
                     required = true;
                     break;
@@ -341,8 +476,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             spriteBatch.End();
             spriteBatch.Begin(SpriteSortMode.Deferred, Graphics.BlendState.AlphaBlend);
 
+            var scissorX      = ContentElement.AbsoluteScreenX;
+            var scissorY      = ContentElement.AbsoluteScreenY;
+            var scissorWidth  = ContentElement.ActualWidth;
+            var scissorHeight = ContentElement.ActualHeight;
+
             var scissorRectContainer = Ultraviolet.GetGraphics().GetScissorRectangle() ?? View.Area;
-            var scissorRectElement   = new Rectangle(AbsoluteScreenX, AbsoluteScreenY, ActualWidth, ActualHeight);
+            var scissorRectElement   = new Rectangle(scissorX, scissorY, scissorWidth, scissorHeight);
             var scissorRectIntersect = default(Rectangle);
             Rectangle.Intersect(ref scissorRectContainer, ref scissorRectElement, out scissorRectIntersect);
 
@@ -366,8 +506,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
 
         // Property values.
         private readonly UIElementCollection children;
-        private Int32 absoluteScreenX;
-        private Int32 absoluteScreenY;
+        private UIContainer componentRoot;
         private Boolean requiresScissorRectangle;
+
+        // State values.
+        private readonly ElementRegistry componentRegistry = 
+            new ElementRegistry();
     }
 }

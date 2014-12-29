@@ -86,6 +86,31 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Loads the component root of the specified container.
+        /// </summary>
+        /// <param name="container">The instance of <see cref="UIContainer"/> for which to load a component root.</param>
+        /// <param name="template">The component template that specified the control's component layout.</param>
+        /// <param name="viewModelType">The type of view model to which the user control will be bound.</param>
+        /// <param name="bindingContext">The binding context for the user control, if any.</param>
+        public static void LoadComponentRoot(UIContainer container, XDocument template, Type viewModelType, String bindingContext = null)
+        {
+            if (bindingContext != null && !BindingExpressions.IsBindingExpression(bindingContext))
+                throw new ArgumentException(UltravioletStrings.InvalidBindingContext.Format(bindingContext));
+
+            var rootElement = template.Root.Elements().SingleOrDefault();
+            if (rootElement == null)
+                return;
+
+            var uv      = container.Ultraviolet;
+            var context = new InstantiationContext(viewModelType, container, bindingContext);
+            var root    = (UIContainer)InstantiateAndPopulateElement(uv, null, rootElement, context);
+
+            container.ComponentRoot = root;
+            container.ContentElement = container.ComponentRoot.FindContentPanel();
+            container.PopulateFieldsFromRegisteredElements();
+        }
+
+        /// <summary>
         /// Instantiates a new interface element.
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
@@ -144,6 +169,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 context.PopBindingContext();
             }
 
+            // TODO
+//            if (context.UserControl != null)
+//                element.Owner = context.UserControl;
+
             return element;
         }
 
@@ -181,9 +210,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                     continue;
 
                 Delegate lambda;
-                if (context.UserControl != null)
+                if (context.ComponentOwner != null)
                 {
-                    lambda = BindingExpressions.CreateUserControlBoundEventDelegate(context.UserControl, context.ViewModelType, 
+                    lambda = BindingExpressions.CreateElementBoundEventDelegate(context.ComponentOwner, context.ViewModelType, 
                         attrEvent.EventHandlerType, attr.Value);
                 }
                 else

@@ -111,7 +111,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
 
             if (!String.IsNullOrEmpty(part.ID))
             {
-                if (element.IsUserControlComponent || !String.Equals(element.ID, part.ID, StringComparison.OrdinalIgnoreCase))
+                if (element.IsComponent || !String.Equals(element.ID, part.ID, StringComparison.OrdinalIgnoreCase))
                     return false;
             }
 
