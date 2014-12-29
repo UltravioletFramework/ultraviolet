@@ -388,13 +388,15 @@
     <Compile Include="UI\Presentation\Elements\Button.cs" />
     <Compile Include="UI\Presentation\Elements\ContentPanel.cs" />
     <Compile Include="UI\Presentation\Elements\Canvas.cs" />
+    <Compile Include="UI\Presentation\Elements\Control.cs" />
     <Compile Include="UI\Presentation\Elements\Label.cs" />
     <Compile Include="UI\Presentation\Elements\NamespaceDoc.cs" />
+    <Compile Include="UI\Presentation\Elements\ScrollViewer.cs" />
     <Compile Include="UI\Presentation\Elements\SourcedAssetID.cs" />
     <Compile Include="UI\Presentation\Elements\SourcedRef.cs" />
     <Compile Include="UI\Presentation\Elements\SourcedVal.cs" />
     <Compile Include="UI\Presentation\Elements\TextualElement.cs" />
-    <Compile Include="UI\Presentation\Elements\UIContainer.cs" />
+    <Compile Include="UI\Presentation\Elements\Container.cs" />
     <Compile Include="UI\Presentation\Elements\UIElement.cs" />
     <Compile Include="UI\Presentation\Elements\UIElementAttribute.cs" />
     <Compile Include="UI\Presentation\Elements\UIElementClassCollection.cs" />
@@ -407,7 +409,7 @@
     <Compile Include="UI\Presentation\PresentationFrameworkManager.RegisteredElement.cs" />
     <Compile Include="UI\Presentation\PresentationFrameworkManager.cs" />
     <Compile Include="UI\Presentation\UIView.cs" />
-    <Compile Include="UI\Presentation\ElementRegistry.cs" />
+    <Compile Include="UI\Presentation\Elements\UIElementRegistry.cs" />
     <Compile Include="UI\Presentation\UIViewLoader.cs" />
     <Compile Include="UI\Presentation\UvmlException.cs" />
     <Compile Include="UI\Presentation\Elements\VisualState.cs" />
@@ -551,7 +553,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Graphics\Graphics3D\" />
-    <Folder Include="UI\Presentation\Elements\Templates\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\TwistedLogik.Public.snk">
@@ -573,6 +574,7 @@
     <None Include="TwistedLogik.Ultraviolet.Licenses.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <EmbeddedResource Include="UI\Presentation\Elements\Templates\ScrollViewer.xml" />
     <Content Include="uv.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

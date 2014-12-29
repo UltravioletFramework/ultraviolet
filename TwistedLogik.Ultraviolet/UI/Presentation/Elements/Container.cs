@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Reflection;
-using System.Xml.Linq;
 using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet.Graphics;
 using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
@@ -13,14 +11,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
     /// Represents an interface element which can contain other elements.
     /// </summary>
     [UIElement("Container")]
-    public abstract class UIContainer : UIElement
+    public abstract class Container : Control
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="UIContainer"/> class.
+        /// Initializes a new instance of the <see cref="Container"/> class.
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
         /// <param name="id">The element's unique identifier within its view.</param>
-        public UIContainer(UltravioletContext uv, String id)
+        public Container(UltravioletContext uv, String id)
             : base(uv, id)
         {
             this.children = new UIElementCollection(this);
@@ -30,9 +28,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         public sealed override void ClearLocalValuesRecursive()
         {
             base.ClearLocalValuesRecursive();
-
-            if (componentRoot != null)
-                componentRoot.ClearLocalValuesRecursive();
 
             foreach (var child in children)
             {
@@ -45,9 +40,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         {
             base.ClearStyledValuesRecursive();
 
-            if (componentRoot != null)
-                componentRoot.ClearStyledValuesRecursive();
-
             foreach (var child in children)
             {
                 child.ClearStyledValuesRecursive();
@@ -58,9 +50,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         public sealed override void ClearVisualStateTransitionsRecursive()
         {
             base.ClearVisualStateTransitionsRecursive();
-
-            if (componentRoot != null)
-                componentRoot.ClearVisualStateTransitionsRecursive();
 
             foreach (var child in children)
             {
@@ -73,27 +62,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         {
             base.ReloadContentRecursive();
 
-            if (componentRoot != null)
-                componentRoot.ReloadContentRecursive();
-
             foreach (var child in children)
             {
                 child.ReloadContentRecursive();
             }
-        }
-
-        /// <inheritdoc/>
-        public sealed override void PerformLayout()
-        {
-            OnPerformingLayout();
-
-            if (componentRoot != null)
-                PerformComponentLayout();
-
-            PerformContentLayout();
-            UpdateAbsoluteScreenPosition(AbsoluteScreenX, AbsoluteScreenY);
-
-            OnPerformedLayout();
         }
 
         /// <inheritdoc/>
@@ -127,49 +99,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <summary>
-        /// Gets the root element of the container's component hierarchy.
-        /// </summary>
-        public UIContainer ComponentRoot
-        {
-            get { return componentRoot; }
-            internal set
-            {
-                if (componentRoot != value)
-                {
-                    if (componentRoot != null)
-                        componentRoot.UpdateContainer(null);
-
-                    componentRoot = value;
-
-                    if (componentRoot != null)
-                        componentRoot.UpdateContainer(this);
-
-                    PerformLayout();
-                }
-            }
-        }
-
-        /// <summary>
-        /// Loads a component template from a manifest resource stream.
-        /// </summary>
-        /// <param name="asm">The assembly that contains the manifest resource stream.</param>
-        /// <param name="resource">The name of the manifest resource stream to load.</param>
-        /// <returns>The component template that was loaded.</returns>
-        protected static XDocument LoadComponentTemplateFromManifestResourceStream(Assembly asm, String resource)
-        {
-            Contract.Require(asm, "asm");
-            Contract.RequireNotEmpty(resource, "resource");
-
-            using (var stream = asm.GetManifestResourceStream(resource))
-            {
-                if (stream == null)
-                    return null;
-
-                return XDocument.Load(stream);
-            }
-        }
-
-        /// <summary>
         /// Calculates the container-relative layout area of the specified child element.
         /// </summary>
         /// <param name="child">The child element for which to calculate a layout area.</param>
@@ -184,15 +113,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         {
             get { return requiresScissorRectangle; }
             set { requiresScissorRectangle = value; }
-        }
-
-        /// <summary>
-        /// Populates any private fields of this object which match components
-        /// of the container.
-        /// </summary>
-        internal void PopulateFieldsFromRegisteredElements()
-        {
-            ComponentRegistry.PopulateFieldsFromRegisteredElements(this);
         }
 
         /// <summary>
@@ -212,9 +132,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         {
             base.UpdateAbsoluteScreenPosition(x, y);
 
-            if (componentRoot != null)
-                componentRoot.UpdateAbsoluteScreenPosition(x, y);
-
             foreach (var child in children)
             {
                 child.UpdateAbsoluteScreenPosition(
@@ -228,9 +145,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         {
             base.ApplyStyles(stylesheet);
 
-            if (componentRoot != null)
-                componentRoot.ApplyStyles(stylesheet);
-
             foreach (var child in children)
             {
                 child.ApplyStyles(stylesheet);
@@ -242,9 +156,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         {
             base.ApplyStoryboard(storyboard, clock, root);
 
-            if (componentRoot != null)
-                componentRoot.ApplyStoryboard(storyboard, clock, root);
-
             foreach (var child in children)
             {
                 child.ApplyStoryboard(storyboard, clock, root);
@@ -252,15 +163,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <inheritdoc/>
-        internal override void Draw(UltravioletTime time, SpriteBatch spriteBatch)
+        internal override Boolean Draw(UltravioletTime time, SpriteBatch spriteBatch)
         {
-            if (View == null || !Visible)
-                return;
-
-            base.Draw(time, spriteBatch);
-
-            if (componentRoot != null)
-                componentRoot.Draw(time, spriteBatch);
+            if (!base.Draw(time, spriteBatch))
+                return false;
 
             var scissor     = RequiresScissorRectangle;
             var scissorRect = default(Rectangle?);
@@ -282,14 +188,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             {
                 RestoreScissorRectangle(spriteBatch, scissorRect);
             }
+
+            return true;
         }
 
         /// <inheritdoc/>
         internal override void Update(UltravioletTime time)
         {
-            if (componentRoot != null)
-                componentRoot.Update(time);
-
             foreach (var child in children)
             {
                 child.Update(time);
@@ -303,9 +208,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         {
             base.UpdateViewModel(viewModel);
 
-            if (componentRoot != null)
-                componentRoot.UpdateViewModel(viewModel);
-
             foreach (var child in children)
             {
                 child.UpdateViewModel(viewModel);
@@ -316,9 +218,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         internal override void UpdateView(UIView view)
         {
             base.UpdateView(view);
-
-            if (componentRoot != null)
-                componentRoot.UpdateView(view);
 
             foreach (var child in children)
             {
@@ -331,9 +230,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         {
             base.UpdateContainer(container);
 
-            if (componentRoot != null)
-                componentRoot.UpdateContainer(this);
-
             foreach (var child in children)
             {
                 child.UpdateContainer(this);
@@ -341,13 +237,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <inheritdoc/>
-        internal override void UpdateIsComponent(Boolean isContainerComponent, Boolean isUserControlComponent)
+        internal override void UpdateControl()
         {
-            base.UpdateIsComponent(isContainerComponent, isUserControlComponent);
+            base.UpdateControl();
 
             foreach (var child in children)
             {
-                child.UpdateIsComponent(isContainerComponent, isUserControlComponent);
+                child.UpdateControl();
             }
         }
 
@@ -373,13 +269,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
                 }
             }
 
-            if (componentRoot != null)
-            {
-                var component = componentRoot.GetElementAtPointInternal(x, y);
-                if (component != null)
-                    return component;
-            }
-
             return base.GetElementAtPointInternal(x, y);
         }
 
@@ -394,37 +283,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             }
 
             return null;
-        }
-
-        /// <summary>
-        /// Gets the container's component registry.
-        /// </summary>
-        internal ElementRegistry ComponentRegistry
-        {
-            get { return componentRegistry; }
-        }
-
-        /// <summary>
-        /// Gets the element within the user control which has the specified identifier.
-        /// </summary>
-        /// <param name="id">The identifier of the element to retrieve.</param>
-        /// <returns>The element with the specified identifier, or <c>null</c> if no such element exists.</returns>
-        protected UIElement GetComponentByID(String id)
-        {
-            Contract.RequireNotEmpty(id, "id");
-
-            return componentRegistry.GetElementByID(id);
-        }
-
-        /// <summary>
-        /// Immediately recalculates the layout of the container's components.
-        /// </summary>
-        private void PerformComponentLayout()
-        {
-            ComponentRoot.ContainerRelativeArea = new Rectangle(0, 0, ActualWidth, ActualHeight);
-
-            ComponentRoot.PerformLayout();
-            ComponentRoot.UpdateAbsoluteScreenPosition(AbsoluteScreenX, AbsoluteScreenY);
         }
 
         /// <summary>
@@ -506,11 +364,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
 
         // Property values.
         private readonly UIElementCollection children;
-        private UIContainer componentRoot;
         private Boolean requiresScissorRectangle;
-
-        // State values.
-        private readonly ElementRegistry componentRegistry = 
-            new ElementRegistry();
     }
 }

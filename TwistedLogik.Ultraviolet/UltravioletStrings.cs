@@ -148,6 +148,7 @@ namespace TwistedLogik.Ultraviolet
         public static readonly StringResource InvalidUIElementType                 = new StringResource(StringDatabase, "INVALID_UI_ELEMENT_TYPE");
         public static readonly StringResource InvalidChildElements                 = new StringResource(StringDatabase, "INVALID_CHILD_ELEMENTS");
         public static readonly StringResource InvalidElementPropertyValue          = new StringResource(StringDatabase, "INVALID_ELEMENT_PROPERTY_VALUE");
+        public static readonly StringResource ComponentRootAlreadyLoaded           = new StringResource(StringDatabase, "COMPONENT_ROOT_ALREADY_LOADED");
 #pragma warning restore 1591
     }
 }

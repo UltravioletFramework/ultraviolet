@@ -3,14 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using TwistedLogik.Nucleus;
-using TwistedLogik.Ultraviolet.UI.Presentation.Elements;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation
+namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
 {
     /// <summary>
     /// 
     /// </summary>
-    internal sealed class ElementRegistry
+    internal sealed class UIElementRegistry
     {
         /// <summary>
         /// Clears the element registry.

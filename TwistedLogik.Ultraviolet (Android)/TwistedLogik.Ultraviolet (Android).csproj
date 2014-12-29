@@ -966,9 +966,6 @@
     <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\DependencyPropertyValue.cs">
       <Link>UI\Presentation\DependencyPropertyValue.cs</Link>
     </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\ElementRegistry.cs">
-      <Link>UI\Presentation\ElementRegistry.cs</Link>
-    </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Elements\AssetSource.cs">
       <Link>UI\Presentation\Elements\AssetSource.cs</Link>
     </Compile>
@@ -981,17 +978,26 @@
     <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Elements\Canvas.cs">
       <Link>UI\Presentation\Elements\Canvas.cs</Link>
     </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Elements\Container.cs">
+      <Link>UI\Presentation\Elements\Container.cs</Link>
+    </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Elements\ContentControl.cs">
       <Link>UI\Presentation\Elements\ContentControl.cs</Link>
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Elements\ContentPanel.cs">
       <Link>UI\Presentation\Elements\ContentPanel.cs</Link>
     </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Elements\Control.cs">
+      <Link>UI\Presentation\Elements\Control.cs</Link>
+    </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Elements\Label.cs">
       <Link>UI\Presentation\Elements\Label.cs</Link>
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Elements\NamespaceDoc.cs">
       <Link>UI\Presentation\Elements\NamespaceDoc.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Elements\ScrollViewer.cs">
+      <Link>UI\Presentation\Elements\ScrollViewer.cs</Link>
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Elements\SourcedAssetID.cs">
       <Link>UI\Presentation\Elements\SourcedAssetID.cs</Link>
@@ -1004,9 +1010,6 @@
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Elements\TextualElement.cs">
       <Link>UI\Presentation\Elements\TextualElement.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Elements\UIContainer.cs">
-      <Link>UI\Presentation\Elements\UIContainer.cs</Link>
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Elements\UIElement.cs">
       <Link>UI\Presentation\Elements\UIElement.cs</Link>
@@ -1025,6 +1028,9 @@
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Elements\UIElementCollection.IEnumerable.cs">
       <Link>UI\Presentation\Elements\UIElementCollection.IEnumerable.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Elements\UIElementRegistry.cs">
+      <Link>UI\Presentation\Elements\UIElementRegistry.cs</Link>
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Elements\UIElementResources.cs">
       <Link>UI\Presentation\Elements\UIElementResources.cs</Link>
@@ -1276,13 +1282,15 @@
     <Content Include="..\TwistedLogik.Ultraviolet\TwistedLogik.Ultraviolet.Licenses.txt">
       <Link>TwistedLogik.Ultraviolet.Licenses.txt</Link>
     </Content>
+    <Content Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Elements\Templates\ScrollViewer.xml">
+      <Link>UI\Presentation\Elements\Templates\ScrollViewer.xml</Link>
+    </Content>
     <Content Include="..\TwistedLogik.Ultraviolet\uv.ico">
       <Link>uv.ico</Link>
     </Content>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Graphics\Graphics3D\" />
-    <Folder Include="UI\Presentation\Elements\Templates\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TwistedLogik.Gluon %28Android%29\TwistedLogik.Gluon %28Android%29.csproj">

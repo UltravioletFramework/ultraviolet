@@ -81,18 +81,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var context = new InstantiationContext(viewModelType, userControl, bindingContext);
             var content = InstantiateAndPopulateElement(uv, null, contentElement, context);
 
-            userControl.Content = content;
+            userControl.ComponentRoot = content;
             userControl.PopulateFieldsFromRegisteredElements();
         }
 
         /// <summary>
-        /// Loads the component root of the specified container.
+        /// Loads the component root of the specified control.
         /// </summary>
-        /// <param name="container">The instance of <see cref="UIContainer"/> for which to load a component root.</param>
+        /// <param name="control">The instance of <see cref="Control"/> for which to load a component root.</param>
         /// <param name="template">The component template that specified the control's component layout.</param>
         /// <param name="viewModelType">The type of view model to which the user control will be bound.</param>
         /// <param name="bindingContext">The binding context for the user control, if any.</param>
-        public static void LoadComponentRoot(UIContainer container, XDocument template, Type viewModelType, String bindingContext = null)
+        public static void LoadComponentRoot(Control control, XDocument template, Type viewModelType, String bindingContext = null)
         {
             if (bindingContext != null && !BindingExpressions.IsBindingExpression(bindingContext))
                 throw new ArgumentException(UltravioletStrings.InvalidBindingContext.Format(bindingContext));
@@ -101,13 +101,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (rootElement == null)
                 return;
 
-            var uv      = container.Ultraviolet;
-            var context = new InstantiationContext(viewModelType, container, bindingContext);
-            var root    = (UIContainer)InstantiateAndPopulateElement(uv, null, rootElement, context);
+            var uv      = control.Ultraviolet;
+            var context = new InstantiationContext(viewModelType, control, bindingContext);
+            var root    = (Container)InstantiateAndPopulateElement(uv, null, rootElement, context);
 
-            container.ComponentRoot = root;
-            container.ContentElement = container.ComponentRoot.FindContentPanel();
-            container.PopulateFieldsFromRegisteredElements();
+            control.ComponentRoot = root;
+            control.PopulateFieldsFromRegisteredElements();
+            control.ContentElement = control.ComponentRoot.FindContentPanel();
         }
 
         /// <summary>
@@ -133,7 +133,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 instance.Classes.Add(className);
             }
 
-            var container = parent as UIContainer;
+            var container = parent as Container;
             if (container != null)
                 container.Children.Add(instance);
 
@@ -295,7 +295,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="context">The current instantiation context.</param>
         private static void PopulateElementChildren(UltravioletContext uv, UIElement uiElement, XElement xmlElement, InstantiationContext context)
         {
-            var container = uiElement as UIContainer;
+            var container = uiElement as Container;
             if (container != null)
             {
                 foreach (var child in xmlElement.Elements())

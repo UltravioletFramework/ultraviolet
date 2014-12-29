@@ -11,10 +11,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
     /// left, top, right, and bottom edges.
     /// </summary>
     [UIElement("Canvas")]
-    public class Canvas : UIContainer
+    public class Canvas : Container
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="Canvas"/> class.
+        /// Initializes the <see cref="Canvas"/> type.
         /// </summary>
         static Canvas()
         {
@@ -27,13 +27,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
         /// <param name="id">The element's unique identifier within its view.</param>
+        /// <param name="viewModelType">The type of view model to which the element will be bound.</param>
+        /// <param name="bindingContext">The binding context to apply to the element which is instantiated.</param
         public Canvas(UltravioletContext uv, String id, Type viewModelType, String bindingContext = null)
             : base(uv, id)
         {
             SetDefaultValue<Color>(UIElement.BackgroundColorProperty, Color.Transparent);
 
             if (ComponentTemplate != null)
-                UIViewLoader.LoadComponentRoot(this, ComponentTemplate, viewModelType, bindingContext);
+                LoadComponentRoot(ComponentTemplate, viewModelType, bindingContext);
         }
 
         /// <summary>
@@ -133,7 +135,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <summary>
-        /// Gets or sets the template used to create the container's component tree.
+        /// Gets or sets the template used to create the control's component tree.
         /// </summary>
         public static XDocument ComponentTemplate
         {

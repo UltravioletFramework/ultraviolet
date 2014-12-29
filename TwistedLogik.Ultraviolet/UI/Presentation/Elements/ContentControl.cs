@@ -9,7 +9,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
     /// <summary>
     /// Represents a control which has a single child element.
     /// </summary>
-    public abstract class ContentControl : UIElement
+    public abstract class ContentControl : Control
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ContentControl"/> class.
@@ -59,9 +59,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <inheritdoc/>
         public sealed override void PerformLayout()
         {
+            base.PerformLayout();
+
             if (Content != null)
             {
-                Content.ContainerRelativeArea = new Rectangle(0, 0, ActualWidth, ActualHeight);
+                Content.ContainerRelativeArea = new Rectangle(0, 0, ContentElement.ActualWidth, ContentElement.ActualHeight);
                 Content.PerformLayout();
             }
         }
@@ -100,10 +102,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
                     content = value;
 
                     if (content != null)
-                    {
-                        content.UpdateIsComponent(false, true);
                         content.UpdateContainer(this);
-                    }
 
                     PerformLayout();
 
@@ -116,15 +115,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// Occurs when the value of the control's <see cref="Content"/> property changes.
         /// </summary>
         public event UIElementEventHandler ContentChanged;
-
-        /// <summary>
-        /// Populates any private fields of this object which match components
-        /// of the user control.
-        /// </summary>
-        internal void PopulateFieldsFromRegisteredElements()
-        {
-            ComponentRegistry.PopulateFieldsFromRegisteredElements(this);
-        }
 
         /// <inheritdoc/>
         internal override Boolean RemoveContent(UIElement element)
@@ -149,7 +139,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             base.UpdateAbsoluteScreenPosition(x, y);
 
             if (Content != null)
-                Content.UpdateAbsoluteScreenPosition(x, y);
+            {
+                Content.UpdateAbsoluteScreenPosition(
+                    ContentElement.AbsoluteScreenX,
+                    ContentElement.AbsoluteScreenY);
+            }
         }
 
         /// <inheritdoc/>
@@ -171,14 +165,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <inheritdoc/>
-        internal override void Draw(UltravioletTime time, SpriteBatch spriteBatch)
+        internal override Boolean Draw(UltravioletTime time, SpriteBatch spriteBatch)
         {
-            base.Draw(time, spriteBatch);
+            if (!base.Draw(time, spriteBatch))
+                return false;
 
             if (Content != null)
                 Content.Draw(time, spriteBatch);
 
             OnContentDrawn(time, spriteBatch);
+
+            return true;
         }
 
         /// <inheritdoc/>
@@ -209,15 +206,39 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <inheritdoc/>
+        internal override void UpdateContainer(UIElement container)
+        {
+            base.UpdateContainer(container);
+
+            if (Content != null)
+                Content.UpdateContainer(container);
+        }
+
+        /// <inheritdoc/>
+        internal override void UpdateControl()
+        {
+            base.UpdateControl();
+
+            if (Content != null)
+                Content.UpdateControl();
+        }
+
+        /// <inheritdoc/>
         internal override UIElement GetElementAtPointInternal(Int32 x, Int32 y)
         {
             if (!Bounds.Contains(x, y))
                 return null;
+            
+            var contentX = x - ContentElement.ContainerRelativeX;
+            var contentY = y - ContentElement.ContainerRelativeY;
+            if (Content != null && ContentElement.Bounds.Contains(contentX, contentY))
+            {
+                return Content.GetElementAtPointInternal(
+                    contentX - Content.ContainerRelativeX, 
+                    contentY - Content.ContainerRelativeY);
+            }
 
-            if (Content != null)
-                return Content.GetElementAtPointInternal(x, y);
-
-            return null;
+            return base.GetElementAtPointInternal(x, y);
         }
 
         /// <inheritdoc/>
@@ -231,14 +252,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             }
 
             return null;
-        }
-
-        /// <summary>
-        /// Gets the user control's component registry.
-        /// </summary>
-        internal ElementRegistry ComponentRegistry
-        {
-            get { return componentRegistry; }
         }
 
         /// <summary>
@@ -264,23 +277,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
 
         }
 
-        /// <summary>
-        /// Gets the element within the user control which has the specified identifier.
-        /// </summary>
-        /// <param name="id">The identifier of the element to retrieve.</param>
-        /// <returns>The element with the specified identifier, or <c>null</c> if no such element exists.</returns>
-        protected UIElement GetComponentByID(String id)
-        {
-            Contract.RequireNotEmpty(id, "id");
-
-            return componentRegistry.GetElementByID(id);
-        }
-
         // Property values.
         private UIElement content;
-
-        // State values.
-        private readonly ElementRegistry componentRegistry = 
-            new ElementRegistry();
     }
 }

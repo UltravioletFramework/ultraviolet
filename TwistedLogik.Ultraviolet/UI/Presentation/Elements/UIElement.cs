@@ -333,7 +333,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// </summary>
         public UIElement Parent
         {
-            get { return container; }
+            get { return parent; }
+        }
+
+        /// <summary>
+        /// Gets the element's associated control. This will be <c>null</c> unless the element is
+        /// a component; in that case, this property will hold a reference to the element of which
+        /// this element is a component.
+        /// </summary>
+        public Control Control
+        {
+            get { return control; }
         }
 
         /// <summary>
@@ -350,6 +360,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         public Rectangle ScreenBounds
         {
             get { return new Rectangle(AbsoluteScreenX, AbsoluteScreenY, ActualWidth, ActualHeight); }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether this element is a component of a control.
+        /// </summary>
+        public Boolean IsComponent
+        {
+            get { return control != null; }
         }
 
         /// <summary>
@@ -491,30 +509,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         {
             get { return GetValue<SourcedRef<StretchableImage9>>(BackgroundImageProperty); }
             set { SetValue<SourcedRef<StretchableImage9>>(BackgroundImageProperty, value); }
-        }
-
-        /// <summary>
-        /// Gets a value indicating whether this element is a component of another element.
-        /// </summary>
-        public Boolean IsComponent
-        {
-            get { return IsContainerComponent || IsUserControlComponent; }
-        }
-
-        /// <summary>
-        /// Gets a value indicating whether this element is a component of a container.
-        /// </summary>
-        public Boolean IsContainerComponent
-        {
-            get { return isContainerComponent; }
-        }
-
-        /// <summary>
-        /// Gets a value indicating whether this element is a component of a user control.
-        /// </summary>
-        public Boolean IsUserControlComponent
-        {
-            get { return isUserControlComponent; }
         }
 
         /// <summary>
@@ -972,9 +966,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// </summary>
         /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Draw(UltravioletTime)"/>.</param>
         /// <param name="spriteBatch">The sprite batch with which to draw the view.</param>
-        internal virtual void Draw(UltravioletTime time, SpriteBatch spriteBatch)
+        /// <returns><c>true</c> if the element was drawn; otherwise, <c>false</c>.</returns>
+        internal virtual Boolean Draw(UltravioletTime time, SpriteBatch spriteBatch)
         {
             OnDrawing(time, spriteBatch);
+            return true;
         }
 
         /// <summary>
@@ -1030,6 +1026,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             UpdateViewModel(view == null ? null : view.ViewModel);
 
             ReloadContent();
+
+            if (Parent != null)
+                Parent.RequestLayout();
         }
 
         /// <summary>
@@ -1040,11 +1039,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         {
             UnregisterElement();
 
-            UpdateIsComponent(
-                IsContainerComponent || ((container == null) ? false : container.IsContainerComponent), 
-                IsUserControlComponent || ((container == null) ? false : container.IsUserControlComponent));
+            this.parent = container;
 
-            this.container = container;
+            UpdateControl();
 
             var view = (container == null) ? null : container.View;
             if (view != this.view)
@@ -1058,16 +1055,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <summary>
-        /// Updates the flags indicating whether this element is a component of a container or user control.
+        /// Updates the value of the <see cref="Control"/> property.
         /// </summary>
-        /// <param name="isContainerComponent">A value indicating whether this element is a component of a container.</param>
-        /// <param name="isUserControlComponent">A value indicating whether this element is a component of a user control.</param>
-        internal virtual void UpdateIsComponent(Boolean isContainerComponent, Boolean isUserControlComponent)
+        internal virtual void UpdateControl()
         {
             UnregisterElement();
 
-            this.isContainerComponent   = isContainerComponent;
-            this.isUserControlComponent = isUserControlComponent;
+            this.control = FindControl();
 
             RegisterElement();
         }
@@ -1934,18 +1928,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// Finds the element registration context for this element.
         /// </summary>
         /// <returns>The element registration context for this element.</returns>
-        private ElementRegistry FindElementRegistry()
+        private UIElementRegistry FindElementRegistry()
         {
-            var current = Parent;
-            while (current != null)
+            if (Control != null)
             {
-                if (isContainerComponent && current is UIContainer)
-                    return ((UIContainer)current).ComponentRegistry;
-
-                if (isUserControlComponent && current is UserControl)
-                    return ((UserControl)current).ComponentRegistry;
-
-                current = current.container;
+                return control.ComponentRegistry;
             }
             return (view == null) ? null : view.ElementRegistry;
         }
@@ -1990,6 +1977,26 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             this.UpdateAbsoluteScreenPosition(AbsoluteScreenX, AbsoluteScreenY);
         }
 
+        /// <summary>
+        /// Finds the control associated with this element.
+        /// </summary>
+        /// <returns>The control associated with this element.</returns>
+        private Control FindControl()
+        {
+            if (Parent is Control && ((Control)Parent).ComponentRoot == this)
+                return (Control)Parent;
+
+            var current = Parent;
+            while (current != null)
+            {
+                if (current.Control != null)
+                    return current.Control;
+
+                current = current.Parent;
+            }
+            return null;
+        }
+
         // Property values.
         private readonly UltravioletContext uv;
         private readonly String id;
@@ -1998,22 +2005,21 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         private readonly VisualStateGroupCollection visualStateGroups;
         private Object viewModel;
         private UIView view;
-        private UIElement container;
+        private UIElement parent;
+        private Control control;
         private Boolean hovering;
         private Int32 containerRelativeX;
         private Int32 containerRelativeY;
         private Int32 actualWidth;
         private Int32 actualHeight;
         private SpriteFont font;
-        private Boolean isContainerComponent;
-        private Boolean isUserControlComponent;
 
         // State values.
         private Boolean layoutRequested;
         private Int32 absoluteScreenX;
         private Int32 absoluteScreenY;
         private UIElement contentElement;
-        private ElementRegistry elementRegistrationContext;
+        private UIElementRegistry elementRegistrationContext;
 
         // Storyboard clocks.
         private static readonly IPool<StoryboardClock> storyboardClockPool = 

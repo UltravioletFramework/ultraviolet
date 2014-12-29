@@ -620,4 +620,9 @@
       <Variant>The value '{0}' specified for property '{1}' is not valid.</Variant>
     </en-US>
   </String>
+  <String Key="COMPONENT_ROOT_ALREADY_LOADED">
+    <en-US>
+      <Variant>The control's component root has already been loaded.</Variant>
+    </en-US>
+  </String>
 </LocalizedStrings>

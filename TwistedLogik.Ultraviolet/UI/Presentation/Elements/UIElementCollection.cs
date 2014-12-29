@@ -13,7 +13,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// Initializes a new instance of the <see cref="UIElementCollection"/> class.
         /// </summary>
         /// <param name="container">The container that owns this collection.</param>
-        public UIElementCollection(UIContainer container)
+        public UIElementCollection(Container container)
         {
             Contract.Require(container, "container");
 
@@ -122,7 +122,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <summary>
         /// Gets the container that owns this collection.
         /// </summary>
-        public UIContainer Container
+        public Container Container
         {
             get { return container; }
         }
@@ -146,7 +146,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         // Property values.
-        private readonly UIContainer container;
+        private readonly Container container;
 
         // State values.
         private readonly List<UIElement> elements = new List<UIElement>();

@@ -570,7 +570,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Gets the view's element registry.
         /// </summary>
-        internal ElementRegistry ElementRegistry
+        internal UIElementRegistry ElementRegistry
         {
             get { return elementRegistry; }
         }
@@ -727,7 +727,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         // Property values.
-        private readonly ElementRegistry elementRegistry = new ElementRegistry();
+        private readonly UIElementRegistry elementRegistry = new UIElementRegistry();
         private ContentManager globalContent;
         private ContentManager localContent;
         private UvssDocument stylesheet;
