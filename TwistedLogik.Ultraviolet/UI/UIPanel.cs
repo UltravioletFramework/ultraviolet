@@ -85,7 +85,7 @@ namespace TwistedLogik.Ultraviolet.UI
 
             if (view != null)
             {
-                view.Focus();
+                view.FocusView();
             }
         }
 
@@ -100,7 +100,7 @@ namespace TwistedLogik.Ultraviolet.UI
 
             if (view != null)
             {
-                view.Blur();
+                view.BlurView();
             }
         }
 
@@ -568,7 +568,7 @@ namespace TwistedLogik.Ultraviolet.UI
 
                 if (IsFocused)
                 {
-                    this.view.Focus();
+                    this.view.FocusView();
                 }
             }
 

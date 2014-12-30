@@ -38,6 +38,26 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         }
 
         /// <summary>
+        /// Flushes the current batch.
+        /// </summary>
+        public void Flush()
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
+            Contract.Ensure(begun, UltravioletStrings.BeginMustBeCalledBeforeEnd);
+
+            var sortMode          = this.sortMode;
+            var blendState        = this.blendState;
+            var samplerState      = this.samplerState;
+            var depthStencilState = this.depthStencilState;
+            var rasterizerState   = this.rasterizerState;
+            var effect            = this.customEffect;
+            var transformMatrix   = this.transformMatrix;
+
+            End();
+            Begin(sortMode, blendState, samplerState, depthStencilState, rasterizerState, effect, transformMatrix);
+        }
+
+        /// <summary>
         /// Begins a sprite batch operation using deferred sort and default state objects.
         /// </summary>
         public void Begin()

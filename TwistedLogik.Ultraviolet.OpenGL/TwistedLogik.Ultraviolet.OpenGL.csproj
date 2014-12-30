@@ -196,6 +196,7 @@
     <Compile Include="OpenGLUltravioletGraphics.cs" />
     <Compile Include="OpenGLUltravioletContext.cs" />
     <Compile Include="OpenGLUltravioletPlatform.cs" />
+    <Compile Include="Platform\OpenGLUltravioletClipboardInfo.cs" />
     <Compile Include="Platform\OpenGLUltravioletDisplay.cs" />
     <Compile Include="Platform\OpenGLUltravioletDisplayInfo.cs" />
     <Compile Include="Platform\OpenGLUltravioletWindow.cs" />

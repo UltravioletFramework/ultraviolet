@@ -314,6 +314,7 @@
     <Compile Include="Platform\FileSystemService.cs" />
     <Compile Include="Platform\IconLoader.cs" />
     <Compile Include="Platform\DisplayMode.cs" />
+    <Compile Include="Platform\IUltravioletClipboardInfo.cs" />
     <Compile Include="Platform\IUltravioletDisplay.cs" />
     <Compile Include="Platform\IUltravioletDisplayInfo.cs" />
     <Compile Include="Platform\IUltravioletWindow.cs" />
@@ -334,6 +335,7 @@
     <Compile Include="TaskUtil.cs" />
     <Compile Include="UI\Presentation\Elements\RadioButton.cs" />
     <Compile Include="UI\Presentation\Elements\CheckBox.cs" />
+    <Compile Include="UI\Presentation\Elements\TextBox.cs" />
     <Compile Include="UI\Presentation\Elements\ToggleButton.cs" />
     <Compile Include="UI\Presentation\Elements\ButtonBase.cs" />
     <Compile Include="UI\Presentation\IUltravioletDisplayExtensions.cs" />

@@ -31,6 +31,33 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
     public delegate void UIElementUpdatingEventHandler(UIElement element, UltravioletTime time);
 
     /// <summary>
+    /// Represents the method that is called when a UI element receives an event from a keyboard device.
+    /// </summary>
+    /// <param name="element">The element that raised the event.</param>
+    /// <param name="device">The keyboard device.</param>
+    public delegate void UIElementKeyboardEventHandler(UIElement element, KeyboardDevice device);
+
+    /// <summary>
+    /// Represents the method that is called when a keyboard key is pressed while an element has focus.
+    /// </summary>
+    /// <param name="element">The element that raised the event.</param>
+    /// <param name="device">The <see cref="KeyboardDevice"/> that raised the event.</param>
+    /// <param name="key">The <see cref="Key"/> value that represents the key that was pressed.</param>
+    /// <param name="ctrl">A value indicating whether the Control modifier is active.</param>
+    /// <param name="alt">A value indicating whether the Alt modifier is active.</param>
+    /// <param name="shift">A value indicating whether the Shift modifier is active.</param>
+    /// <param name="repeat">A value indicating whether this is a repeated key press.</param>
+    public delegate void UIElementKeyPressedEventHandler(UIElement element, KeyboardDevice device, Key key, Boolean ctrl, Boolean alt, Boolean shift, Boolean repeat);
+
+    /// <summary>
+    /// Represents the method that is called when a keyboard key is released while an element has focus.
+    /// </summary>
+    /// <param name="element">The element that raised the event.</param>
+    /// <param name="device">The <see cref="KeyboardDevice"/> that raised the event.</param>
+    /// <param name="key">The <see cref="Key"/> value that represents the key that was pressed.</param>
+    public delegate void UIElementKeyReleasedEventHandler(UIElement element, KeyboardDevice device, Key key);
+
+    /// <summary>
     /// Represents the method that is called when the mouse cursor enters or leaves a UI element.
     /// </summary>
     /// <param name="element">The element that raised the event.</param>
@@ -95,6 +122,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             }
 
             CreateStyleSetters();
+
+            VisualStateGroups.Create("focus", new[] { "blurred", "focused" });
         }
 
         /// <summary>
@@ -549,6 +578,31 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// Occurs when the element is being updated.
         /// </summary>
         public event UIElementUpdatingEventHandler Updating;
+
+        /// <summary>
+        /// Occurs when the element gains input focus.
+        /// </summary>
+        public event UIElementEventHandler Focused;
+
+        /// <summary>
+        /// Occurs when the element loses input focus.
+        /// </summary>
+        public event UIElementEventHandler Blurred;
+
+        /// <summary>
+        /// Occurs when a key is pressed while the element has input focus.
+        /// </summary>
+        public event UIElementKeyPressedEventHandler KeyPressed;
+
+        /// <summary>
+        /// Occurs when a key is released while the element has input focus.
+        /// </summary>
+        public event UIElementKeyReleasedEventHandler KeyReleased;
+
+        /// <summary>
+        /// Occurs when the element receives text input from the keyboard.
+        /// </summary>
+        public event UIElementKeyboardEventHandler TextInput;
 
         /// <summary>
         /// Occurs when the element gains mouse capture.
@@ -1152,6 +1206,79 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <summary>
+        /// Raises the <see cref="Focused"/> event.
+        /// </summary>
+        protected internal virtual void OnFocused()
+        {
+            VisualStateGroups.GoToState("focus", "focused");
+
+            var temp = Focused;
+            if (temp != null)
+            {
+                temp(this);
+            }
+        }
+
+        /// <summary>
+        /// Raises the <see cref="Blurred"/> event.
+        /// </summary>
+        protected internal virtual void OnBlurred()
+        {
+            VisualStateGroups.GoToState("focus", "blurred");
+
+            var temp = Blurred;
+            if (temp != null)
+            {
+                temp(this);
+            }
+        }
+
+        /// <summary>
+        /// Raises the <see cref="KeyPressed"/> event.
+        /// </summary>
+        /// <param name="device">The keyboard device.</param>
+        /// <param name="key">The <see cref="Key"/> value that represents the key that was pressed.</param>
+        /// <param name="ctrl">A value indicating whether the Control modifier is active.</param>
+        /// <param name="alt">A value indicating whether the Alt modifier is active.</param>
+        /// <param name="shift">A value indicating whether the Shift modifier is active.</param>
+        /// <param name="repeat">A value indicating whether this is a repeated key press.</param>
+        protected internal virtual void OnKeyPressed(KeyboardDevice device, Key key, Boolean ctrl, Boolean alt, Boolean shift, Boolean repeat)
+        {
+            var temp = KeyPressed;
+            if (temp != null)
+            {
+                temp(this, device, key, ctrl, alt, shift, repeat);
+            }
+        }
+
+        /// <summary>
+        /// Raises the <see cref="KeyReleased"/> event.
+        /// </summary>
+        /// <param name="device">The keyboard device.</param>
+        /// <param name="key">The <see cref="Key"/> value that represents the key that was released.</param>
+        protected internal virtual void OnKeyReleased(KeyboardDevice device, Key key)
+        {
+            var temp = KeyReleased;
+            if (temp != null)
+            {
+                temp(this, device, key);
+            }
+        }
+
+        /// <summary>
+        /// Raises the <see cref="TextInput"/> event.
+        /// </summary>
+        /// <param name="device">The keyboard device.</param>
+        protected internal virtual void OnTextInput(KeyboardDevice device)
+        {
+            var temp = TextInput;
+            if (temp != null)
+            {
+                temp(this, device);
+            }
+        }
+
+        /// <summary>
         /// Raises the <see cref="GainedMouseCapture"/> event.
         /// </summary>
         protected internal virtual void OnGainedMouseCapture()
@@ -1333,6 +1460,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         {
             get { return actualHeight; }
             internal set { actualHeight = value; }
+        }
+                
+        /// <summary>
+        /// Gets a value indicating whether the element can gain input focus.
+        /// </summary>
+        protected internal virtual Boolean CanGainFocus
+        {
+            get { return false; }
         }
 
         /// <summary>

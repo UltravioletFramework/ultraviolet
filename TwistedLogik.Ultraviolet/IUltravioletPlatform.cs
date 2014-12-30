@@ -18,6 +18,14 @@ namespace TwistedLogik.Ultraviolet
         }
 
         /// <summary>
+        /// Gets the system clipboard manager.
+        /// </summary>
+        IUltravioletClipboardInfo Clipboard
+        {
+            get;
+        }
+
+        /// <summary>
         /// Gets the window information manager.
         /// </summary>
         IUltravioletWindowInfo Windows

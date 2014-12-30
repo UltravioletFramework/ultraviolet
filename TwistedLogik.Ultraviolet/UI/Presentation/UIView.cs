@@ -91,17 +91,60 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Gives input focus to the view.
         /// </summary>
-        public void Focus()
+        public void FocusView()
         {
-            // TODO: Focus view
+            focused = true;
         }
 
         /// <summary>
         /// Removes input focus from the view.
         /// </summary>
-        public void Blur()
+        public void BlurView()
         {
-            // TODO: Blur view
+            focused = false;
+        }
+
+        /// <summary>
+        /// Grants input focus within this view to the specified element.
+        /// </summary>
+        /// <param name="element">The element to which to grant input focus.</param>
+        public void Focus(UIElement element)
+        {
+            Contract.Require(element, "element");
+
+            if (elementWithFocus == element || !element.CanGainFocus)
+                return;
+
+            if (elementWithFocus != null)
+                elementWithFocus.OnBlurred();
+
+            elementWithFocus = element;
+            elementWithFocus.OnFocused();
+        }
+
+        /// <summary>
+        /// Removes input focus within this view from the specified element.
+        /// </summary>
+        /// <param name="element">The element from which to remove input focus.</param>
+        public void Blur(UIElement element)
+        {
+            Contract.Require(element, "element");
+
+            if (elementWithFocus != element)
+                return;
+
+            elementWithFocus.OnBlurred();
+            elementWithFocus = null;
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the specified element has input focus.
+        /// </summary>
+        /// <param name="element">The element to evaluate.</param>
+        /// <returns><c>true</c> if the specified element has input focus; otherwise, <c>false</c>.</returns>
+        public Boolean HasFocus(UIElement element)
+        {
+            return element == elementWithFocus;
         }
 
         /// <summary>
@@ -566,13 +609,21 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Gets a value indicating whether the view has input focus.
+        /// </summary>
+        public Boolean Focused
+        {
+            get { return focused; }
+        }
+
+        /// <summary>
         /// Gets the <see cref="Canvas"/> that contains all of the UI's elements.
         /// </summary>
         public Canvas Canvas
         {
             get { return canvas; }
         }
-        
+
         /// <summary>
         /// Gets the window that contains the view.
         /// </summary>
@@ -605,7 +656,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         private void HookKeyboardEvents()
         {
-            // TODO
+            var input = Ultraviolet.GetInput();
+            if (input.IsKeyboardSupported())
+            {
+                var keyboard          = input.GetKeyboard();
+                keyboard.KeyPressed  += keyboard_KeyPressed;
+                keyboard.KeyReleased += keyboard_KeyReleased;
+                keyboard.TextInput   += keyboard_TextInput;
+            }
         }
 
         /// <summary>
@@ -627,7 +685,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         private void UnhookKeyboardEvents()
         {
-            // TODO
+            var input = Ultraviolet.GetInput();
+            if (input.IsKeyboardSupported())
+            {
+                var keyboard          = input.GetKeyboard();
+                keyboard.KeyPressed  -= keyboard_KeyPressed;
+                keyboard.KeyReleased -= keyboard_KeyReleased;
+                keyboard.TextInput   -= keyboard_TextInput;
+            }
         }
 
         /// <summary>
@@ -710,6 +775,42 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Handles the <see cref="KeyboardDevice.KeyPressed"/> event.
+        /// </summary>
+        private void keyboard_KeyPressed(IUltravioletWindow window, KeyboardDevice device, Key key, Boolean ctrl, Boolean alt, Boolean shift, Boolean repeat)
+        {
+            if (!focused)
+                return;
+
+            if (elementWithFocus != null)
+                elementWithFocus.OnKeyPressed(device, key, ctrl, alt, shift, repeat);
+        }
+
+        /// <summary>
+        /// Handles the <see cref="KeyboardDevice.KeyReleased"/> event.
+        /// </summary>
+        private void keyboard_KeyReleased(IUltravioletWindow window, KeyboardDevice device, Key key)
+        {
+            if (!focused)
+                return;
+
+            if (elementWithFocus != null)
+                elementWithFocus.OnKeyReleased(device, key);
+        }
+
+        /// <summary>
+        /// Handles the <see cref="KeyboardDevice.TextInput"/> event.
+        /// </summary>
+        private void keyboard_TextInput(IUltravioletWindow window, KeyboardDevice device)
+        {
+            if (!focused)
+                return;
+
+            if (elementWithFocus != null)
+                elementWithFocus.OnTextInput(device);
+        }
+
+        /// <summary>
         /// Handles the <see cref="MouseDevice.ButtonPressed"/> event.
         /// </summary>
         private void mouse_ButtonPressed(IUltravioletWindow window, MouseDevice device, MouseButton button)
@@ -754,6 +855,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         private Object viewModel;
         private readonly Type viewModelType;
         private Rectangle area;
+        private Boolean focused;
         private Canvas canvas;
         private IUltravioletWindow window;
 
@@ -761,5 +863,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         private UIElement elementUnderMousePrev;
         private UIElement elementUnderMouse;
         private UIElement elementWithMouseCapture;
+        private UIElement elementWithFocus;
     }
 }
