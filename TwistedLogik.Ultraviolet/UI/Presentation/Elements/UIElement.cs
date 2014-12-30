@@ -1877,7 +1877,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// Loads the specified image from the global content manager.
         /// </summary>
         /// <param name="image">The identifier of the image to load.</param>
-        protected void LoadGlobalContent(StretchableImage9 image)
+        protected void LoadGlobalContent<T>(T image) where T : Image
         {
             if (View == null)
                 return;
@@ -1889,7 +1889,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// Loads the specified image from the local content manager.
         /// </summary>
         /// <param name="image">The identifier of the image to load.</param>
-        protected void LoadLocalContent(StretchableImage9 image)
+        protected void LoadLocalContent<T>(T image) where T : Image
         {
             if (View == null)
                 return;
@@ -1901,7 +1901,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// Loads the specified sourced image.
         /// </summary>
         /// <param name="image">The identifier of the image to load.</param>
-        protected void LoadContent(SourcedRef<StretchableImage9> image)
+        protected void LoadContent<T>(SourcedRef<T> image) where T : Image
         {
             if (View == null)
                 return;

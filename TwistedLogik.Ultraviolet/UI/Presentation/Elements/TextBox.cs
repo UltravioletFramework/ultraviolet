@@ -47,6 +47,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
 
         }
 
+        /// <inheritdoc/>
+        public override void ReloadContent()
+        {
+            ReloadCaretImage();
+            ReloadSelectionImage();
+
+            base.ReloadContent();
+        }
+
         /// <summary>
         /// Gets or sets the text displayed by the text box.
         /// </summary>
@@ -80,6 +89,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <summary>
+        /// Gets or sets the image used to draw the caret.
+        /// </summary>
+        public SourcedRef<StaticImage> CaretImage
+        {
+            get { return GetValue<SourcedRef<StaticImage>>(CaretImageProperty); }
+            set { SetValue<SourcedRef<StaticImage>>(CaretImageProperty, value); }
+        }
+
+        /// <summary>
         /// Gets or sets the thickness of the caret while the text box's <see cref="InsertionMode"/> property
         /// is set to <see cref="TextBoxInsertionMode.Overwrite"/>, specified in device independent pixels (1/96 of an inch).
         /// </summary>
@@ -96,6 +114,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         {
             get { return GetValue<Color>(CaretColorProperty); }
             set { SetValue<Color>(CaretColorProperty, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets the image used to draw the selection highlight.
+        /// </summary>
+        public SourcedRef<StaticImage> SelectionImage
+        {
+            get { return GetValue<SourcedRef<StaticImage>>(SelectionImageProperty); }
+            set { SetValue<SourcedRef<StaticImage>>(SelectionImageProperty, value); }
         }
 
         /// <summary>
@@ -135,6 +162,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         public event UIElementEventHandler MaxLengthChanged;
 
         /// <summary>
+        /// Occurs when the value of the <see cref="CaretImage"/> property changes.
+        /// </summary>
+        public event UIElementEventHandler CaretImageChanged;
+
+        /// <summary>
         /// Occurs when the value of the <see cref="CaretThickness"/> property changes.
         /// </summary>
         public event UIElementEventHandler CaretThicknessChanged;
@@ -143,6 +175,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// Occurs when the value of the <see cref="CaretColor"/> property changes.
         /// </summary>
         public event UIElementEventHandler CaretColorChanged;
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="SelectionImage"/> property changes.
+        /// </summary>
+        public event UIElementEventHandler SelectionImageChanged;
 
         /// <summary>
         /// Occurs when the value of the <see cref="SelectionColor"/> property changes.
@@ -167,6 +204,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             new DependencyPropertyMetadata(HandleMaxLengthChanged, () => 0, DependencyPropertyOptions.None));
 
         /// <summary>
+        /// Identifies the <see cref="CaretImage"/> dependency property.
+        /// </summary>
+        [Styled("caret-image")]
+        public static readonly DependencyProperty CaretImageProperty = DependencyProperty.Register("CaretImage", typeof(SourcedRef<StaticImage>), typeof(TextBox),
+            new DependencyPropertyMetadata(HandleCaretImageChanged, null, DependencyPropertyOptions.None));
+
+        /// <summary>
         /// Identifies the <see cref="CaretColor"/> dependency property.
         /// </summary>
         [Styled("caret-color")]
@@ -179,6 +223,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         [Styled("caret-thickness")]
         public static readonly DependencyProperty CaretThicknessProperty = DependencyProperty.Register("CaretThickness", typeof(Double), typeof(TextBox),
             new DependencyPropertyMetadata(HandleCaretThicknessChanged, () => 4.0, DependencyPropertyOptions.None));
+
+        /// <summary>
+        /// Identifies the <see cref="SelectionImage"/> dependency property.
+        /// </summary>
+        [Styled("selection-image")]
+        public static readonly DependencyProperty SelectionImageProperty = DependencyProperty.Register("SelectionImage", typeof(SourcedRef<StaticImage>), typeof(TextBox),
+            new DependencyPropertyMetadata(HandleSelectionImageChanged, null, DependencyPropertyOptions.None));
 
         /// <summary>
         /// Identifies the <see cref="SelectionColor"/> dependency property.
@@ -386,6 +437,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <summary>
+        /// Raises the <see cref="CaretImageChanged"/> event.
+        /// </summary>
+        protected virtual void OnCaretImageChanged()
+        {
+            var temp = CaretImageChanged;
+            if (temp != null)
+            {
+                temp(this);
+            }
+        }
+
+        /// <summary>
         /// Raises the <see cref="CaretThicknessChanged"/> event.
         /// </summary>
         protected virtual void OnCaretThicknessChanged()
@@ -403,6 +466,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         protected virtual void OnCaretColorChanged()
         {
             var temp = CaretColorChanged;
+            if (temp != null)
+            {
+                temp(this);
+            }
+        }
+
+        /// <summary>
+        /// Raises the <see cref="SelectionImageChanged"/> event.
+        /// </summary>
+        protected virtual void OnSelectionImageChanged()
+        {
+            var temp = SelectionImageChanged;
             if (temp != null)
             {
                 temp(this);
@@ -471,16 +546,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <param name="textArea">A <see cref="Rectangle"/> describing the absolute screen area in which the element draws its text.</param>
         protected virtual void DrawTextSelection(SpriteBatch spriteBatch, Rectangle textArea)
         {
-            if (IsTextSelected)
+            if (IsTextSelected && SelectionImage.Value != null && SelectionImage.Value.IsLoaded && Font != null)
             {
                 var selectionStartOffset = CalculateOffsetFromIndex(SelectionStart);
                 var selectionEndOffset   = CalculateOffsetFromIndex(SelectionEnd);
                 var selectionWidth       = selectionEndOffset - selectionStartOffset;
-                var selectionArea        = new RectangleF(
-                    textArea.X + textScrollOffset + selectionStartOffset,
-                    textArea.Y, selectionWidth, Font.Regular.LineSpacing);
+                var selectionHeight      = Font.Regular.LineSpacing;
+                var selectionPosition    = new Vector2(textArea.X + textScrollOffset + selectionStartOffset, textArea.Y);
 
-                spriteBatch.Draw(UIElementResources.BlankTexture, selectionArea, SelectionColor);
+                spriteBatch.DrawImage(SelectionImage.Value, selectionPosition, selectionWidth, selectionHeight, SelectionColor);
             }
         }
 
@@ -493,12 +567,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         {
             if (IsCaretDisplayed && IsCaretVisible && !IsTextSelected)
             {
+                if (CaretImage.Value == null || !CaretImage.Value.IsLoaded)
+                    return;
+
                 var caretOffset = CalculateCaretOffset();
 
                 if (InsertionMode == TextBoxInsertionMode.Insert)
                 {
-                    var caretPosition = new RectangleF(textArea.X + textScrollOffset + caretOffset, textArea.Y, 1, Font.Regular.LineSpacing);
-                    spriteBatch.Draw(UIElementResources.BlankTexture, caretPosition, CaretColor);
+                    var caretPosition = new Vector2(textArea.X + textScrollOffset + caretOffset, textArea.Y);
+                    spriteBatch.DrawImage(CaretImage.Value, caretPosition, 1, Font.Regular.LineSpacing, CaretColor);
                 }
                 else
                 {
@@ -510,12 +587,27 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
                     var caretWidth = Font.Regular.MeasureGlyph(caretChar1, caretChar2).Width;
 
                     var caretThickness = (Int32)display.DipsToPixels(CaretThickness);
-                    var caretPosition  = new RectangleF(
-                        textArea.X + textScrollOffset + caretOffset, textArea.Bottom - caretThickness, caretWidth, caretThickness);
+                    var caretPosition  = new Vector2(textArea.X + textScrollOffset + caretOffset, textArea.Bottom - caretThickness);
 
-                    spriteBatch.Draw(UIElementResources.BlankTexture, caretPosition, CaretColor);
+                    spriteBatch.DrawImage(CaretImage.Value, caretPosition, caretWidth, caretThickness, CaretColor);
                 }
             }
+        }
+
+        /// <summary>
+        /// Reloads the caret image.
+        /// </summary>
+        protected void ReloadCaretImage()
+        {
+            LoadContent(CaretImage);
+        }
+
+        /// <summary>
+        /// Reloads the selection highlight image.
+        /// </summary>
+        protected void ReloadSelectionImage()
+        {
+            LoadContent(SelectionImage);
         }
 
         /// <summary>
@@ -542,6 +634,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <summary>
+        /// Occurs when the value of the <see cref="CaretImage"/> dependency property changes.
+        /// </summary>
+        /// <param name="dobj">The object that raised the event.</param>
+        private static void HandleCaretImageChanged(DependencyObject dobj)
+        {
+            var textbox = (TextBox)dobj;
+            textbox.OnCaretImageChanged();
+            textbox.ReloadCaretImage();
+        }
+
+        /// <summary>
         /// Occurs when the value of the <see cref="CaretColor"/> dependency property changes.
         /// </summary>
         /// <param name="dobj">The object that raised the event.</param>
@@ -559,6 +662,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         {
             var textbox = (TextBox)dobj;
             textbox.OnCaretThicknessChanged();
+        }
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="SelectionImage"/> dependency property changes.
+        /// </summary>
+        /// <param name="dobj">The object that raised the event.</param>
+        private static void HandleSelectionImageChanged(DependencyObject dobj)
+        {
+            var textbox = (TextBox)dobj;
+            textbox.OnSelectionImageChanged();
+            textbox.ReloadSelectionImage();
         }
 
         /// <summary>

@@ -48,10 +48,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <summary>
         /// Gets or sets the element's check box image.
         /// </summary>
-        public SourcedRef<StretchableImage9> CheckBoxImage
+        public SourcedRef<StaticImage> CheckBoxImage
         {
-            get { return GetValue<SourcedRef<StretchableImage9>>(CheckBoxImageProperty); }
-            set { SetValue<SourcedRef<StretchableImage9>>(CheckBoxImageProperty, value); }
+            get { return GetValue<SourcedRef<StaticImage>>(CheckBoxImageProperty); }
+            set { SetValue<SourcedRef<StaticImage>>(CheckBoxImageProperty, value); }
         }
 
         /// <summary>
@@ -92,7 +92,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// Identifies the CheckBoxImage dependency property.
         /// </summary>
         [Styled("checkbox-image")]
-        public static readonly DependencyProperty CheckBoxImageProperty = DependencyProperty.Register("CheckBoxImage", typeof(SourcedRef<StretchableImage9>), typeof(CheckBox),
+        public static readonly DependencyProperty CheckBoxImageProperty = DependencyProperty.Register("CheckBoxImage", typeof(SourcedRef<StaticImage>), typeof(CheckBox),
             new DependencyPropertyMetadata(HandleCheckBoxImageChanged, null, DependencyPropertyOptions.None));
 
         /// <summary>
