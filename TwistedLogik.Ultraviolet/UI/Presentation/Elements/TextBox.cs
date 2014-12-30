@@ -126,14 +126,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <summary>
-        /// Gets the length of the text box's current text selection.
-        /// </summary>
-        public Int32 SelectionLength
-        {
-            get { return textSelectionLength; }
-        }
-
-        /// <summary>
         /// Gets or sets the color used to highlight the text box's selected text.
         /// </summary>
         public Color SelectionColor
@@ -1179,6 +1171,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         private Int32 SelectionHead
         {
             get { return IsTextSelected ? textPosition + textSelectionLength : textPosition; }
+        }
+
+        /// <summary>
+        /// Gets the length of the text box's current text selection.
+        /// </summary>
+        private Int32 SelectionLength
+        {
+            get { return textSelectionLength; }
         }
 
         /// <summary>
