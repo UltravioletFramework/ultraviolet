@@ -15,6 +15,27 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
     public class TextBox : UIElement
     {
         /// <summary>
+        /// Represents the position of a text offset relative to the text area.
+        /// </summary>
+        private enum OffsetPosition
+        {
+            /// <summary>
+            /// The offset is to the left of the text area.
+            /// </summary>
+            Left,
+
+            /// <summary>
+            /// The offset is currently visible.
+            /// </summary>
+            Visible,
+
+            /// <summary>
+            /// The offset is to the right of the text area.
+            /// </summary>
+            Right,
+        }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="TextBox"/> class.
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
@@ -49,17 +70,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <summary>
-        /// Gets the position of the text box's cursor within its text.
+        /// Gets or sets the maximum length of the text box's text.
         /// </summary>
-        public Int32 TextPosition
+        public Int32 MaxLength
         {
-            get { return textPosition; }
+            get { return GetValue<Int32>(MaxLengthProperty); }
+            set { SetValue<Int32>(MaxLengthProperty, value); }
         }
 
         /// <summary>
         /// Gets the length of the text box's current text selection.
         /// </summary>
-        public Int32 TextSelectionLength
+        public Int32 SelectionLength
         {
             get { return textSelectionLength; }
         }
@@ -79,6 +101,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         public event UIElementEventHandler TextChanged;
 
         /// <summary>
+        /// Occurs when the value of the <see cref="MaxLength"/> property changes.
+        /// </summary>
+        public event UIElementEventHandler MaxLengthChanged;
+
+        /// <summary>
         /// Occurs when the value of the <see cref="SelectionColor"/> property changes.
         /// </summary>
         public event UIElementEventHandler SelectionColorChanged;
@@ -88,6 +115,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// </summary>
         public static readonly DependencyProperty TextProperty = DependencyProperty.Register("Text", typeof(String), typeof(TextBox),
             new DependencyPropertyMetadata(HandleTextChanged, null, DependencyPropertyOptions.None));
+
+        /// <summary>
+        /// Identifies the MaxLength dependency property.
+        /// </summary>
+        public static readonly DependencyProperty MaxLengthProperty = DependencyProperty.Register("MaxLength", typeof(Int32), typeof(TextBox),
+            new DependencyPropertyMetadata(HandleMaxLengthChanged, () => 0, DependencyPropertyOptions.None));
 
         /// <summary>
         /// Identifies the SelectionColor dependency property.
@@ -165,13 +198,72 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <inheritdoc/>
+        protected internal override void OnLostMouseCapture()
+        {
+            mouseSelectionInProgress = false;
+
+            base.OnLostMouseCapture();
+        }
+
+        /// <inheritdoc/>
+        protected internal override void OnMouseMotion(MouseDevice device, Int32 x, Int32 y, Int32 dx, Int32 dy)
+        {
+            if (mouseSelectionInProgress && !String.IsNullOrEmpty(Text))
+            {
+                // Cursor is inside box
+                var textArea = GetAbsoluteTextArea();
+                if (textArea.Left <= x && textArea.Right > x)
+                {
+                    var index = CalculateIndexFromCursor(device);
+                    SelectToIndex(index);
+                    ScrollToSelectionHead();
+                }
+                else
+                {
+                    // Cursor is left of box, moving left
+                    if (x < textArea.Left && dx < 0)
+                    {
+                        MoveSelectionLeft(Math.Abs(dx));
+                        ScrollToSelectionHead();
+                    }
+
+                    // Cursor is right of box, moving right
+                    if (x >= textArea.Right && dx > 0)
+                    {
+                        MoveSelectionRight(Math.Abs(dx));
+                        ScrollToSelectionHead();
+                    }
+                }
+            }
+            base.OnMouseMotion(device, x, y, dx, dy);
+        }
+
+        /// <inheritdoc/>
         protected internal override void OnMouseButtonPressed(MouseDevice device, MouseButton button)
         {
             if (button == MouseButton.Left)
             {
-                View.Focus(this);
+                mouseSelectionInProgress = true;
+
+                View.CaptureMouse(this);
+
+                textPosition        = CalculateIndexFromCursor(device);
+                textSelectionLength = 0;
+
+                ScrollForwardToCaret();
             }
             base.OnMouseButtonPressed(device, button);
+        }
+
+        /// <inheritdoc/>
+        protected internal override void OnMouseButtonReleased(MouseDevice device, MouseButton button)
+        {
+            if (button == MouseButton.Left)
+            {
+                mouseSelectionInProgress = false;
+                View.ReleaseMouse(this);
+            }
+            base.OnMouseButtonReleased(device, button);
         }
 
         /// <inheritdoc/>
@@ -184,6 +276,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         protected override void OnDrawing(UltravioletTime time, SpriteBatch spriteBatch)
         {
             DrawBackgroundImage(spriteBatch);
+            DrawFocusedImage(spriteBatch);
             DrawText(spriteBatch);
 
             base.OnDrawing(time, spriteBatch);
@@ -203,6 +296,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         protected virtual void OnTextChanged()
         {
             var temp = TextChanged;
+            if (temp != null)
+            {
+                temp(this);
+            }
+        }
+
+        /// <summary>
+        /// Raises the <see cref="MaxLengthChanged"/> event.
+        /// </summary>
+        protected virtual void OnMaxLengthChanged()
+        {
+            var temp = MaxLengthChanged;
             if (temp != null)
             {
                 temp(this);
@@ -240,8 +345,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
 
             if (IsTextSelected)
             {
-                var selectionStartOffset = CalculateOffset(SelectionStart);
-                var selectionEndOffset   = CalculateOffset(SelectionEnd);
+                var selectionStartOffset = CalculateOffsetFromIndex(SelectionStart);
+                var selectionEndOffset   = CalculateOffsetFromIndex(SelectionEnd);
                 var selectionWidth       = selectionEndOffset - selectionStartOffset;
                 var selectionArea        = new RectangleF(
                     textArea.X + textScrollOffset + selectionStartOffset, 
@@ -275,7 +380,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         {
             var textbox = (TextBox)dobj;
             textbox.OnTextChanged();
-            textbox.textPosition = Math.Min(textbox.textPosition, (textbox.Text == null) ? 0 : textbox.Text.Length);
+
+            textbox.textPosition        = Math.Min(textbox.textPosition, (textbox.Text == null) ? 0 : textbox.Text.Length);
+            textbox.textSelectionLength = 0;
+        }
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="MaxLength"/> dependency property changes.
+        /// </summary>
+        /// <param name="dobj">The object that raised the event.</param>
+        private static void HandleMaxLengthChanged(DependencyObject dobj)
+        {
+            var textbox = (TextBox)dobj;
+            textbox.OnMaxLengthChanged();
         }
 
         /// <summary>
@@ -296,15 +413,26 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         {
             DeleteSelection();
 
+            var charactersUsed      = (Text == null) ? 0 : Text.Length;
+            var charactersAvailable = ((MaxLength == 0) ? Int32.MaxValue : MaxLength) - charactersUsed;
+
+            if (charactersAvailable == 0)
+                return;
+
+            if (text != null && text.Length > charactersAvailable)
+                text = text.Substring(0, charactersAvailable);
+
+            var textLength = (text == null) ? 0 : text.Length;
+
             if (Text == null)
             {
                 Text         = text;
-                textPosition = Text.Length;
+                textPosition = textLength;
             }
             else
             {
                 Text         = Text.Insert(textPosition, text);
-                textPosition = textPosition + text.Length;
+                textPosition = textPosition + textLength;
             }
 
             ScrollForwardToCaret();
@@ -437,8 +565,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// </summary>
         private void ScrollForwardToCaret()
         {
+            ScrollForwardToIndex(textPosition);
+        }
+
+        /// <summary>
+        /// Scrolls the text forwards to the specified character index.
+        /// </summary>
+        /// <param name="ix">The index of the character to which to scroll the text box.</param>
+        private void ScrollForwardToIndex(Int32 ix)
+        {
             var width  = GetRelativeTextArea().Width;
-            var offset = CalculateCaretOffset();
+            var offset = CalculateOffsetFromIndex(ix);
             if (offset + textScrollOffset > width)
             {
                 ScrollToOffset((offset - width) + CaretWidth);
@@ -450,8 +587,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// </summary>
         private void ScrollBackwardToCaret()
         {
+            ScrollBackwardToIndex(textPosition);
+        }
+
+        /// <summary>
+        /// Scrolls the text backwards to the specified character index.
+        /// </summary>
+        /// <param name="ix">The index of the character to which to scroll the text box.</param>
+        private void ScrollBackwardToIndex(Int32 ix)
+        {
             var width  = GetRelativeTextArea().Width;
-            var offset = CalculateCaretOffset();
+            var offset = CalculateOffsetFromIndex(ix);
             if (offset + textScrollOffset < 0)
             {
                 ScrollToOffset((offset - (width / 3)) + CaretWidth);
@@ -468,6 +614,53 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <summary>
+        /// Scrolls the text box to the position of the selection head.
+        /// </summary>
+        private void ScrollToSelectionHead()
+        {
+            var offset   = CalculateOffsetFromIndex(SelectionHead);
+            var position = GetRelativeOffsetPosition(offset);
+            switch (position)
+            {
+                case OffsetPosition.Left:
+                    ScrollToOffset(offset);
+                    break;
+
+                case OffsetPosition.Right:
+                    var length = (Text == null) ? 0 : Text.Length;
+                    var next   = CalculateOffsetFromIndex(Math.Min(length, SelectionHead + 1));
+                    ScrollToOffset(next - GetRelativeTextArea().Width);
+                    break;
+            }
+        }
+
+        /// <summary>
+        /// Moves the current selection left by the specified number of characters.
+        /// </summary>
+        /// <param name="count">The number of characters to move the selection.</param>
+        private void MoveSelectionLeft(Int32 count)
+        {
+            if (Text == null)
+                return;
+
+            var minLength = -textPosition;
+            textSelectionLength = Math.Max(minLength, textSelectionLength - count);
+        }
+
+        /// <summary>
+        /// Moves the current selection right by the specified number of characters.
+        /// </summary>
+        /// <param name="count">The number of characters to move the selection.</param>
+        private void MoveSelectionRight(Int32 count)
+        {
+            if (Text == null)
+                return;
+
+            var maxLength = Text.Length - textPosition;
+            textSelectionLength = Math.Min(maxLength, textSelectionLength + count);
+        }
+
+        /// <summary>
         /// Selects the entire text.
         /// </summary>
         private void SelectAll()
@@ -480,6 +673,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <summary>
+        /// Moves the selection so that it is between the current caret position
+        /// and the specified character index.
+        /// </summary>
+        /// <param name="ix">The index which bounds the selection.</param>
+        private void SelectToIndex(Int32 ix)
+        {
+            textSelectionLength = ix - textPosition;
+        }
+
+        /// <summary>
         /// Deletes the currently selected text.
         /// </summary>
         private void DeleteSelection()
@@ -487,10 +690,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             if (!IsTextSelected)
                 return;
 
-            Text = Text.Remove(SelectionStart, SelectionEnd - SelectionStart);
+            var updatedText = Text.Remove(SelectionStart, SelectionEnd - SelectionStart);
 
             textPosition        = SelectionStart;
             textSelectionLength = 0;
+
+            Text = updatedText;
 
             ScrollBackwardToCaret();
         }
@@ -559,11 +764,84 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <summary>
+        /// Gets the position of the specified text offset relative to the currently visible text area.
+        /// </summary>
+        /// <param name="offset">The text offset to evaluate.</param>
+        /// <returns>A <see cref="OffsetPosition"/> value indicating whether the offset is to the left of, to the right of,
+        /// or inside of the currently visible text area.</returns>
+        private OffsetPosition GetRelativeOffsetPosition(Int32 offset)
+        {
+            var relativeArea   = GetRelativeTextArea();
+            var relativeOffset = offset + textScrollOffset;
+
+            if (relativeOffset < 0)
+                return OffsetPosition.Left;
+
+            if (relativeOffset >= relativeArea.Width)
+                return OffsetPosition.Right;
+
+            return OffsetPosition.Visible;
+        }
+
+        /// <summary>
+        /// Calculates the offset of the character beneath the mouse cursor.
+        /// </summary>
+        /// <param name="mouse">The mouse device.</param>
+        /// <returns>The offset of the character beneath the mouse cursor.</returns>
+        private Int32 CalculateOffsetFromCursor(MouseDevice mouse)
+        {
+            var cursorPosition = ScreenPositionToElementPosition(mouse.Position);
+
+            var textArea   = GetRelativeTextArea();
+            var textOffset = (cursorPosition.X - textArea.X) - textScrollOffset;
+
+            return (Int32)textOffset;
+        }
+
+        /// <summary>
+        /// Calculates the index of the character beneath the mouse cursor.
+        /// </summary>
+        /// <param name="mouse">The mouse device.</param>
+        /// <returns>The index of the character beneath the mouse cursor.</returns>
+        private Int32 CalculateIndexFromCursor(MouseDevice mouse)
+        {
+            var textOffset = CalculateOffsetFromCursor(mouse);
+            var textIndex  = CalculateIndexFromOffset(textOffset);
+
+            return textIndex;
+        }
+
+        /// <summary>
+        /// Calculates the index of the character at the specified offset within the text.
+        /// </summary>
+        /// <param name="offset">The offset in pixels for which to calculate an index.</param>
+        /// <returns>The index of the character at the specified offset within the text.</returns>
+        private Int32 CalculateIndexFromOffset(Int32 offset)
+        {
+            if (String.IsNullOrEmpty(Text) || Font == null)
+                return 0;
+
+            if (offset <= 0)
+                return 0;
+
+            var length = 0;
+            for (int i = 0; i < Text.Length; i++)
+            {
+                length += Font.Regular.MeasureGlyph(Text, i).Width;
+
+                if (offset < length)
+                    return i;
+            }
+
+            return Text.Length;
+        }
+
+        /// <summary>
         /// Calculates the offset of the specified character index.
         /// </summary>
         /// <param name="ix">The index of the character for which to calculate an offset.</param>
         /// <returns>The offset of the specified character in pixels.</returns>
-        private Int32 CalculateOffset(Int32 ix)
+        private Int32 CalculateOffsetFromIndex(Int32 ix)
         {
             if (String.IsNullOrEmpty(Text) || Font == null || ix <= 0 || ix > Text.Length)
                 return 0;
@@ -582,7 +860,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <returns>The offset of the caret in pixels.</returns>
         private Int32 CalculateCaretOffset()
         {
-            return CalculateOffset(textPosition);
+            return CalculateOffsetFromIndex(textPosition);
         }
 
         /// <summary>
@@ -590,7 +868,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// </summary>
         private Int32 SelectionStart
         {
-            get { return Math.Min(textPosition + textSelectionLength, textPosition); }
+            get { return IsTextSelected ? Math.Min(textPosition + textSelectionLength, textPosition) : textPosition; }
         }
 
         /// <summary>
@@ -598,7 +876,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// </summary>
         private Int32 SelectionEnd
         {
-            get { return Math.Max(textPosition + textSelectionLength, textPosition); }
+            get { return IsTextSelected ? Math.Max(textPosition + textSelectionLength, textPosition) : textPosition; }
+        }
+
+        /// <summary>
+        /// Gets the "head" of the current selection, which is the end of the selection
+        /// which is not the current text position.
+        /// </summary>
+        private Int32 SelectionHead
+        {
+            get { return IsTextSelected ? textPosition + textSelectionLength : textPosition; }
         }
 
         /// <summary>
@@ -635,6 +922,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
 
         // State values.
         private readonly StringBuilder textBuffer = new StringBuilder();
+        private Boolean mouseSelectionInProgress;
         private Int32 textPosition = 0;
         private Int32 textSelectionLength = 0;
         private Int32 textScrollOffset = 0;

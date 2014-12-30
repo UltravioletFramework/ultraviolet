@@ -73,6 +73,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
     public delegate void UIElementMouseButtonEventHandler(UIElement element, MouseDevice device, MouseButton button);
 
     /// <summary>
+    /// Represents the method that is called when the mouse moves over a control.
+    /// </summary>
+    /// <param name="element">The element that raised the event.</param>
+    /// <param name="device">The mouse device.</param>
+    /// <param name="x">The x-coordinate of the cursor in screen coordinates.</param>
+    /// <param name="y">The y-coordinate of the cursor in screen coordinates.</param>
+    /// <param name="dx">The difference between the x-coordinate of the mouse's 
+    /// current position and the x-coordinate of the mouse's previous position.</param>
+    /// <param name="dy">The difference between the y-coordinate of the mouse's 
+    /// current position and the y-coordinate of the mouse's previous position.</param>
+    public delegate void UIElementMouseMotionEventHandler(UIElement element, MouseDevice device, Int32 x, Int32 y, Int32 dx, Int32 dy);
+
+    /// <summary>
     /// Represents the method that is called when a UI element raises an event.
     /// </summary>
     /// <param name="element">The element that raised the event.</param>
@@ -226,6 +239,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         {
             ReloadFont();
             ReloadBackgroundImage();
+            ReloadFocusedImage();
 
             OnReloadingContent();
         }
@@ -562,6 +576,25 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <summary>
+        /// Gets or sets the color which is used to display the image that indicates
+        /// that the element has input focus.
+        /// </summary>
+        public Color FocusedColor
+        {
+            get { return GetValue<Color>(FocusedColorProperty); }
+            set { SetValue<Color>(FocusedColorProperty, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets the image that indicates that the element has input focus.
+        /// </summary>
+        public SourcedRef<StretchableImage9> FocusedImage
+        {
+            get { return GetValue<SourcedRef<StretchableImage9>>(FocusedImageProperty); }
+            set { SetValue<SourcedRef<StretchableImage9>>(FocusedImageProperty, value); }
+        }
+
+        /// <summary>
         /// Gets the number of content elements contained by this element.
         /// </summary>
         public Int32 ContentElementCount
@@ -613,6 +646,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// Occurs when the element loses mouse capture.
         /// </summary>
         public event UIElementEventHandler LostMouseCapture;
+
+        /// <summary>
+        /// Occurs when the mouse moves over the control.
+        /// </summary>
+        public event UIElementMouseMotionEventHandler MouseMotion;
 
         /// <summary>
         /// Occurs when the mouse cursor enters the element.
@@ -720,6 +758,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         public event UIElementEventHandler BackgroundImageChanged;
 
         /// <summary>
+        /// Occurs when the value of the <see cref="FocusedColor"/> property changes.
+        /// </summary>
+        public event UIElementEventHandler FocusedColorChanged;
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="FocusedImage"/> property changes.
+        /// </summary>
+        public event UIElementEventHandler FocusedImageChanged;
+
+        /// <summary>
         /// Identifies the Enabled dependency property.
         /// </summary>
         public static readonly DependencyProperty EnabledProperty = DependencyProperty.Register("Enabled", typeof(Boolean), typeof(UIElement),
@@ -815,6 +863,20 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         [Styled("background-image")]
         public static readonly DependencyProperty BackgroundImageProperty = DependencyProperty.Register("BackgroundImage", typeof(SourcedRef<StretchableImage9>), typeof(UIElement),
             new DependencyPropertyMetadata(HandleBackgroundImageChanged, null, DependencyPropertyOptions.None));
+
+        /// <summary>
+        /// Identifies the FocusedColor dependency property.
+        /// </summary>
+        [Styled("focused-color")]
+        public static readonly DependencyProperty FocusedColorProperty = DependencyProperty.Register("FocusedColor", typeof(Color), typeof(UIElement),
+            new DependencyPropertyMetadata(HandleFocusedColorChanged, () => Color.Cyan, DependencyPropertyOptions.None));
+
+        /// <summary>
+        /// Identifies the FocusedImage dependency property.
+        /// </summary>
+        [Styled("focused-image")]
+        public static readonly DependencyProperty FocusedImageProperty = DependencyProperty.Register("FocusedImage", typeof(SourcedRef<StretchableImage9>), typeof(UIElement),
+            new DependencyPropertyMetadata(HandleFocusedImageChanged, null, DependencyPropertyOptions.None));
 
         /// <summary>
         /// Finds a styled dependency property according to its styling name.
@@ -1303,6 +1365,25 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <summary>
+        /// Raises the <see cref="MouseMotion"/> event.
+        /// </summary>
+        /// <param name="device">The mouse device.</param>
+        /// <param name="x">The x-coordinate of the cursor in screen coordinates.</param>
+        /// <param name="y">The y-coordinate of the cursor in screen coordinates.</param>
+        /// <param name="dx">The difference between the x-coordinate of the mouse's 
+        /// current position and the x-coordinate of the mouse's previous position.</param>
+        /// <param name="dy">The difference between the y-coordinate of the mouse's 
+        /// current position and the y-coordinate of the mouse's previous position.</param>
+        protected internal virtual void OnMouseMotion(MouseDevice device, Int32 x, Int32 y, Int32 dx, Int32 dy)
+        {
+            var temp = MouseMotion;
+            if (temp != null)
+            {
+                temp(this, device, x, y, dx, dy);
+            }
+        }
+
+        /// <summary>
         /// Raises the <see cref="MouseEnter"/> event.
         /// </summary>
         /// <param name="device">The mouse device.</param>
@@ -1727,6 +1808,30 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <summary>
+        /// Raises the <see cref="FocusedColorChanged"/> event.
+        /// </summary>
+        protected virtual void OnFocusedColorChanged()
+        {
+            var temp = FocusedColorChanged;
+            if (temp != null)
+            {
+                temp(this);
+            }
+        }
+
+        /// <summary>
+        /// Raises the <see cref="FocusedImageChanged"/> event.
+        /// </summary>
+        protected virtual void OnFocusedImageChanged()
+        {
+            var temp = FocusedImageChanged;
+            if (temp != null)
+            {
+                temp(this);
+            }
+        }
+
+        /// <summary>
         /// Loads the specified asset from the global content manager.
         /// </summary>
         /// <typeparam name="TOutput">The type of object being loaded.</typeparam>
@@ -1821,21 +1926,29 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <summary>
+        /// Reloads the element's focused image.
+        /// </summary>
+        protected void ReloadFocusedImage()
+        {
+            LoadContent(FocusedImage);
+        }
+
+        /// <summary>
         /// Draws the element's background image.
         /// </summary>
         /// <param name="spriteBatch">The sprite batch with which to draw.</param>
         protected void DrawBackgroundImage(SpriteBatch spriteBatch)
         {
-            var bgColor = BackgroundColor;
-            var bgImage = BackgroundImage.Value;
+            var imgColor = BackgroundColor;
+            var img      = BackgroundImage.Value;
 
-            if (bgColor.Equals(Color.Transparent))
+            if (imgColor.Equals(Color.Transparent))
                 return;
 
-            if (bgImage == null || !bgImage.IsLoaded)
+            if (img == null || !img.IsLoaded)
             {
                 var area = new RectangleF(AbsoluteScreenX, AbsoluteScreenY, ActualWidth, ActualHeight);
-                spriteBatch.Draw(UIElementResources.BlankTexture, area, bgColor);
+                spriteBatch.Draw(UIElementResources.BlankTexture, area, imgColor);
             }
             else
             {
@@ -1845,7 +1958,31 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
                     AbsoluteScreenX + (ActualWidth / 2f),
                     AbsoluteScreenY + (ActualHeight / 2f));
 
-                spriteBatch.DrawImage(bgImage, position, ActualWidth, ActualHeight, bgColor, 0f, origin, effects, 0f);
+                spriteBatch.DrawImage(img, position, ActualWidth, ActualHeight, imgColor, 0f, origin, effects, 0f);
+            }
+        }
+
+        /// <summary>
+        /// Draws the image which indicates that the element has input focus.
+        /// </summary>
+        /// <param name="spriteBatch">The sprite batch with which to draw.</param>
+        protected void DrawFocusedImage(SpriteBatch spriteBatch)
+        {
+            var imgColor = FocusedColor;
+            var img      = FocusedImage.Value;
+
+            if (imgColor.Equals(Color.Transparent))
+                return;
+
+            if (img != null && img.IsLoaded)
+            {
+                var effects  = SpriteEffects.None;
+                var origin   = new Vector2(ActualWidth / 2f, ActualHeight / 2f);
+                var position = new Vector2(
+                    AbsoluteScreenX + (ActualWidth / 2f),
+                    AbsoluteScreenY + (ActualHeight / 2f));
+
+                spriteBatch.DrawImage(img, position, ActualWidth, ActualHeight, imgColor, 0f, origin, effects, 0f);
             }
         }
 
@@ -2113,6 +2250,27 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             var element = (UIElement)dobj;
             element.ReloadBackgroundImage();
             element.OnBackgroundImageChanged();
+        }
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="FocusedColor"/> dependency property changes.
+        /// </summary>
+        /// <param name="dobj">The object that raised the event.</param>
+        private static void HandleFocusedColorChanged(DependencyObject dobj)
+        {
+            var element = (UIElement)dobj;
+            element.OnFocusedColorChanged();
+        }
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="FocusedImage"/> dependency property changes.
+        /// </summary>
+        /// <param name="dobj">The object that raised the event.</param>
+        private static void HandleFocusedImageChanged(DependencyObject dobj)
+        {
+            var element = (UIElement)dobj;
+            element.ReloadFocusedImage();
+            element.OnFocusedImageChanged();
         }
 
         /// <summary>

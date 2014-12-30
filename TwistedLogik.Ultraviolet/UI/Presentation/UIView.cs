@@ -675,6 +675,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (input.IsMouseSupported())
             {
                 var mouse             = input.GetMouse();
+                mouse.Moved          += mouse_Moved;
                 mouse.ButtonPressed  += mouse_ButtonPressed;
                 mouse.ButtonReleased += mouse_ButtonReleased;
             }
@@ -704,6 +705,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (input.IsMouseSupported())
             {
                 var mouse             = input.GetMouse();
+                mouse.Moved          -= mouse_Moved;
                 mouse.ButtonPressed  -= mouse_ButtonPressed;
                 mouse.ButtonReleased -= mouse_ButtonReleased;
             }
@@ -811,6 +813,21 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Handles the <see cref="MouseDevice.Moved"/> event.
+        /// </summary>
+        private void mouse_Moved(IUltravioletWindow window, MouseDevice device, Int32 x, Int32 y, Int32 dx, Int32 dy)
+        {
+            if (window != Window)
+                return;
+
+            var recipient = elementWithMouseCapture ?? elementUnderMouse;
+            if (recipient != null)
+            {
+                recipient.OnMouseMotion(device, x, y, dx, dy);
+            }
+        }
+
+        /// <summary>
         /// Handles the <see cref="MouseDevice.ButtonPressed"/> event.
         /// </summary>
         private void mouse_ButtonPressed(IUltravioletWindow window, MouseDevice device, MouseButton button)
@@ -822,8 +839,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (recipient == null)
             {
                 UpdateElementUnderMouse();
-
                 recipient = elementUnderMouse;
+            }
+
+            if (recipient != elementWithFocus)
+            {
+                if (elementWithFocus != null)
+                {
+                    Blur(elementWithFocus);
+                }
+                if (recipient.CanGainFocus)
+                {
+                    Focus(recipient);
+                }
             }
 
             if (recipient != null)
