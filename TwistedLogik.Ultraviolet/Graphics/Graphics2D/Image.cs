@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Globalization;
 using TwistedLogik.Nucleus;
+using TwistedLogik.Nucleus.Data;
 using TwistedLogik.Ultraviolet.Content;
 
 namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
@@ -9,6 +11,22 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
     /// </summary>
     public abstract class Image
     {
+        /// <summary>
+        /// Initializes the <see cref="Image"/> type.
+        /// </summary>
+        static Image()
+        {
+            ObjectResolver.RegisterValueResolver<Image>(ImageResolver);
+        }
+        
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Image"/> class.
+        /// </summary>
+        internal Image()
+        {
+
+        }
+
         /// <summary>
         /// Loads the image's texture resource from the specified content manager.
         /// </summary>
@@ -49,6 +67,23 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         }
 
         /// <summary>
+        /// Gets the image's minimum size.
+        /// </summary>
+        public Size2 MinimumSize
+        {
+            get { return minimumSize; }
+            protected set { minimumSize = value; }
+        }
+
+        /// <summary>
+        /// Gets the size of the image's texture region.
+        /// </summary>
+        public Size2 TextureRegionSize
+        {
+            get { return new Size2(TextureRegion.Width, TextureRegion.Height); }
+        }
+
+        /// <summary>
         /// Gets or sets the region of the image's texture which contains the image.
         /// </summary>
         public Rectangle TextureRegion
@@ -82,9 +117,57 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
             where VertexType : struct, IVertexType
             where SpriteData : struct;
 
+        /// <summary>
+        /// Resolves a string into an instance of the <see cref="Image"/> class.
+        /// </summary>
+        /// <param name="value">The string value to resolve.</param>
+        /// <param name="provider">An object that supplies culture-specific formatting information.</param>
+        /// <returns>The resolved object.</returns>
+        private static Object ImageResolver(String s, IFormatProvider provider)
+        {
+            var numericComponents = CountNumericComponents(s);
+
+            switch (numericComponents)
+            {
+                case 4:
+                    return StaticImage.Parse(s, NumberStyles.Integer, provider);
+
+                case 6:
+                    return StretchableImage3.Parse(s, NumberStyles.Integer, provider);
+
+                case 8:
+                    return StretchableImage9.Parse(s, NumberStyles.Integer, provider);
+            }
+
+            throw new FormatException();
+        }
+
+        /// <summary>
+        /// Counts the number of numeric components in the specified image string.
+        /// </summary>
+        /// <param name="s">The string containing the image being parsed.</param>
+        /// <returns>The number of numeric components in the specified image string.</returns>
+        private static Int32 CountNumericComponents(String s)
+        {
+            var components = s.Split(' ');
+
+            var numericComponents = 0;
+            for (int i = 1; i < components.Length; i++)
+            {
+                Int32 value;
+                if (!Int32.TryParse(components[i], out value))
+                    break;
+
+                numericComponents++;
+            }
+
+            return numericComponents;
+        }
+
         // Property values.
         private Texture2D texture;
         private AssetID textureID;
+        private Size2 minimumSize;
         private Rectangle textureRegion;
     }
 }

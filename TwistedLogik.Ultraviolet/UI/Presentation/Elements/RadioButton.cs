@@ -48,10 +48,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <summary>
         /// Gets or sets the element's radio button image.
         /// </summary>
-        public SourcedRef<StaticImage> RadioButtonImage
+        public SourcedRef<Image> RadioButtonImage
         {
-            get { return GetValue<SourcedRef<StaticImage>>(RadioButtonImageProperty); }
-            set { SetValue<SourcedRef<StaticImage>>(RadioButtonImageProperty, value); }
+            get { return GetValue<SourcedRef<Image>>(RadioButtonImageProperty); }
+            set { SetValue<SourcedRef<Image>>(RadioButtonImageProperty, value); }
         }
 
         /// <summary>
@@ -92,7 +92,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// Identifies the RadioButtonImage dependency property.
         /// </summary>
         [Styled("radiobutton-image")]
-        public static readonly DependencyProperty RadioButtonImageProperty = DependencyProperty.Register("RadioButtonImage", typeof(SourcedRef<StaticImage>), typeof(RadioButton),
+        public static readonly DependencyProperty RadioButtonImageProperty = DependencyProperty.Register("RadioButtonImage", typeof(SourcedRef<Image>), typeof(RadioButton),
             new DependencyPropertyMetadata(HandleRadioButtonImageChanged, null, DependencyPropertyOptions.None));
 
         /// <summary>

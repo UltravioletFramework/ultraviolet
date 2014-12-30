@@ -75,7 +75,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// <returns><c>true</c> if <paramref name="s"/> was converted successfully; otherwise, <c>false</c>.</returns>
         public static Boolean TryParse(String s, out StretchableImage3 image)
         {
-            return TryParse(s, NumberStyles.Number, NumberFormatInfo.CurrentInfo, out image);
+            return TryParse(s, NumberStyles.Integer, NumberFormatInfo.CurrentInfo, out image);
         }
 
         /// <summary>
@@ -85,7 +85,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// <returns>An instance of the <see cref="StretchableImage3"/> class that is equivalent to the specified string.</returns>
         public static StretchableImage3 Parse(String s)
         {
-            return Parse(s, NumberStyles.Number, NumberFormatInfo.CurrentInfo);
+            return Parse(s, NumberStyles.Integer, NumberFormatInfo.CurrentInfo);
         }
 
         /// <summary>
@@ -99,6 +99,8 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// <returns><c>true</c> if <paramref name="s"/> was converted successfully; otherwise, <c>false</c>.</returns>
         public static Boolean TryParse(String s, NumberStyles style, IFormatProvider provider, out StretchableImage3 image)
         {
+            Contract.Require(s, "s");
+
             var components = s.Split(' ');
 
             var texture    = AssetID.Invalid;
@@ -115,27 +117,6 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
 
             switch (components.Length)
             {
-                case 3:
-                case 4:
-                case 5:
-                    if (!AssetID.TryParse(components[0], out texture))
-                        return false;
-                    if (!Int32.TryParse(components[1], out left))
-                        return false;
-                    if (!Int32.TryParse(components[2], out right))
-                        return false;
-                    if (components.Length > 3)
-                    {
-                        if (!ParseTilingParameter(components[3], ref tileCenter, ref tileEdges))
-                            return false;
-                    }
-                    if (components.Length > 4)
-                    {
-                        if (!ParseTilingParameter(components[4], ref tileCenter, ref tileEdges))
-                            return false;
-                    }
-                    break;
-
                 case 7:
                 case 8:
                 case 9:
@@ -203,6 +184,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
                 Contract.EnsureRange(value >= 0, "value");
 
                 left = value;
+                UpdateMinimumSize();
             }
         }
 
@@ -217,6 +199,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
                 Contract.EnsureRange(value >= 0, "value");
 
                 right = value;
+                UpdateMinimumSize();
             }
         }
 
@@ -224,6 +207,12 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         internal override void Draw<VertexType, SpriteData>(SpriteBatchBase<VertexType, SpriteData> spriteBatch, Vector2 position, Int32 width, Int32 height, Color color, Single rotation, Vector2 origin, SpriteEffects effects, Single layerDepth, SpriteData data)
         {
             effects |= SpriteEffects.OriginRelativeToDestination;
+
+            if (MinimumSize.Width > 0 && width < MinimumSize.Width)
+                width = MinimumSize.Width;
+
+            if (MinimumSize.Height > 0 && height < MinimumSize.Height)
+                height = MinimumSize.Height;
 
             var srcStretchableWidth  = this.TextureRegion.Width - (this.Left + this.Right);
             var srcStretchableHeight = this.TextureRegion.Height;
@@ -266,8 +255,16 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
                 var rightOrigin = origin - rightPosition;
                 spriteBatch.Draw(this.Texture, rightRegion, rightSource, color, rotation, rightOrigin, effects, layerDepth, data);
             }
-        }        
-        
+        }
+
+        /// <summary>
+        /// Updates the value of the <see cref="MinimumSize"/> property.
+        /// </summary>
+        private void UpdateMinimumSize()
+        {
+            MinimumSize = new Size2(left + right, 0);
+        }
+
         // Property values.
         private Int32 left;
         private Int32 right;

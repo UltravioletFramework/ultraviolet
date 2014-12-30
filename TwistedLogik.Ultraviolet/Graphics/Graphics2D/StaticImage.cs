@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Globalization;
+using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet.Content;
 
 namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
@@ -66,7 +67,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// <returns><c>true</c> if <paramref name="s"/> was converted successfully; otherwise, <c>false</c>.</returns>
         public static Boolean TryParse(String s, out StaticImage image)
         {
-            return TryParse(s, NumberStyles.Number, NumberFormatInfo.CurrentInfo, out image);
+            return TryParse(s, NumberStyles.Integer, NumberFormatInfo.CurrentInfo, out image);
         }
 
         /// <summary>
@@ -76,7 +77,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// <returns>An instance of the <see cref="StretchableImage3"/> class that is equivalent to the specified string.</returns>
         public static StaticImage Parse(String s)
         {
-            return Parse(s, NumberStyles.Number, NumberFormatInfo.CurrentInfo);
+            return Parse(s, NumberStyles.Integer, NumberFormatInfo.CurrentInfo);
         }
 
         /// <summary>
@@ -90,6 +91,8 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// <returns><c>true</c> if <paramref name="s"/> was converted successfully; otherwise, <c>false</c>.</returns>
         public static Boolean TryParse(String s, NumberStyles style, IFormatProvider provider, out StaticImage image)
         {
+            Contract.Require(s, "s");
+
             var components = s.Split(' ');
 
             var texture    = AssetID.Invalid;
@@ -100,29 +103,20 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
 
             image = null;
 
-            switch (components.Length)
-            {
-                case 1:
-                    if (!AssetID.TryParse(components[0], out texture))
-                        return false;
-                    break;
+            if (components.Length != 5)
+                return false;
 
-                case 5:
-                    if (!AssetID.TryParse(components[0], out texture))
-                        return false;
-                    if (!Int32.TryParse(components[1], out x))
-                        return false;
-                    if (!Int32.TryParse(components[2], out y))
-                        return false;
-                    if (!Int32.TryParse(components[3], out width))
-                        return false;
-                    if (!Int32.TryParse(components[4], out height))
-                        return false;
-                    break;
+            if (!AssetID.TryParse(components[0], out texture))
+                return false;
 
-                default:
-                    return false;
-            }
+            if (!Int32.TryParse(components[1], out x))
+                return false;
+            if (!Int32.TryParse(components[2], out y))
+                return false;
+            if (!Int32.TryParse(components[3], out width))
+                return false;
+            if (!Int32.TryParse(components[4], out height))
+                return false;
 
             image = Create(texture, x, y, width, height);
             return true;
@@ -148,6 +142,12 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// <inheritdoc/>
         internal override void Draw<VertexType, SpriteData>(SpriteBatchBase<VertexType, SpriteData> spriteBatch, Vector2 position, Int32 width, Int32 height, Color color, Single rotation, Vector2 origin, SpriteEffects effects, Single layerDepth, SpriteData data)
         {
+            if (MinimumSize.Width > 0 && width < MinimumSize.Width)
+                width = MinimumSize.Width;
+
+            if (MinimumSize.Height > 0 && height < MinimumSize.Height)
+                height = MinimumSize.Height;
+
             var srcRect = TextureRegion;
             var dstRect = new Rectangle((Int32)position.X, (Int32)position.Y, width, height);
             spriteBatch.Draw(Texture, dstRect, srcRect, color, rotation, origin, effects, layerDepth, data);

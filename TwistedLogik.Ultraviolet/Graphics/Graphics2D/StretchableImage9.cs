@@ -83,7 +83,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// <returns><c>true</c> if <paramref name="s"/> was converted successfully; otherwise, <c>false</c>.</returns>
         public static Boolean TryParse(String s, out StretchableImage9 image)
         {
-            return TryParse(s, NumberStyles.Number, NumberFormatInfo.CurrentInfo, out image);
+            return TryParse(s, NumberStyles.Integer, NumberFormatInfo.CurrentInfo, out image);
         }
 
         /// <summary>
@@ -93,7 +93,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// <returns>An instance of the <see cref="StretchableImage9"/> class that is equivalent to the specified string.</returns>
         public static StretchableImage9 Parse(String s)
         {
-            return Parse(s, NumberStyles.Number, NumberFormatInfo.CurrentInfo);
+            return Parse(s, NumberStyles.Integer, NumberFormatInfo.CurrentInfo);
         }
 
         /// <summary>
@@ -107,6 +107,8 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// <returns><c>true</c> if <paramref name="s"/> was converted successfully; otherwise, <c>false</c>.</returns>
         public static Boolean TryParse(String s, NumberStyles style, IFormatProvider provider, out StretchableImage9 image)
         {
+            Contract.Require(s, "s");
+
             var components = s.Split(' ');
 
             var texture    = AssetID.Invalid;
@@ -125,31 +127,6 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
 
             switch (components.Length)
             {
-                case 5:
-                case 6:
-                case 7:
-                    if (!AssetID.TryParse(components[0], out texture))
-                        return false;
-                    if (!Int32.TryParse(components[1], out left))
-                        return false;
-                    if (!Int32.TryParse(components[2], out top))
-                        return false;
-                    if (!Int32.TryParse(components[3], out right))
-                        return false;
-                    if (!Int32.TryParse(components[4], out bottom))
-                        return false;
-                    if (components.Length > 5)
-                    {
-                        if (!ParseTilingParameter(components[5], ref tileCenter, ref tileEdges))
-                            return false;
-                    }
-                    if (components.Length > 6)
-                    {
-                        if (!ParseTilingParameter(components[6], ref tileCenter, ref tileEdges))
-                            return false;
-                    }
-                    break;
-
                 case 9:
                 case 10:
                 case 11:
@@ -221,6 +198,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
                 Contract.EnsureRange(value >= 0, "value");
 
                 left = value;
+                UpdateMinimumSize();
             }
         }
 
@@ -235,6 +213,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
                 Contract.EnsureRange(value >= 0, "value");
 
                 top = value;
+                UpdateMinimumSize();
             }
         }
 
@@ -249,6 +228,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
                 Contract.EnsureRange(value >= 0, "value");
 
                 right = value;
+                UpdateMinimumSize();
             }
         }
 
@@ -263,6 +243,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
                 Contract.EnsureRange(value >= 0, "value");
 
                 bottom = value;
+                UpdateMinimumSize();
             }
         }
 
@@ -270,6 +251,12 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         internal override void Draw<VertexType, SpriteData>(SpriteBatchBase<VertexType, SpriteData> spriteBatch, Vector2 position, Int32 width, Int32 height, Color color, Single rotation, Vector2 origin, SpriteEffects effects, Single layerDepth, SpriteData data)
         {
             effects |= SpriteEffects.OriginRelativeToDestination;
+
+            if (MinimumSize.Width > 0 && width < MinimumSize.Width)
+                width = MinimumSize.Width;
+
+            if (MinimumSize.Height > 0 && height < MinimumSize.Height)
+                height = MinimumSize.Height;
 
             var srcStretchableWidth  = this.TextureRegion.Width - (this.Left + this.Right);
             var srcStretchableHeight = this.TextureRegion.Height - (this.Top + this.Bottom);
@@ -351,8 +338,16 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
             var cornerBROrigin   = origin - cornerBRPosition;
             var cornerBRSource   = new Rectangle(this.TextureRegion.Right - this.Right, this.TextureRegion.Bottom - this.Bottom, this.Left, this.Bottom);
             spriteBatch.Draw(this.Texture, cornerBRRegion, cornerBRSource, color, rotation, cornerBROrigin, effects, layerDepth, data);
-        }        
-        
+        }
+
+        /// <summary>
+        /// Updates the value of the <see cref="MinimumSize"/> property.
+        /// </summary>
+        private void UpdateMinimumSize()
+        {
+            MinimumSize = new Size2(left + right, top + bottom);
+        }
+
         // Property values.
         private Int32 left;
         private Int32 top;

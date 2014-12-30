@@ -578,10 +578,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <summary>
         /// Gets or sets the element's background image.
         /// </summary>
-        public SourcedRef<StretchableImage9> BackgroundImage
+        public SourcedRef<Image> BackgroundImage
         {
-            get { return GetValue<SourcedRef<StretchableImage9>>(BackgroundImageProperty); }
-            set { SetValue<SourcedRef<StretchableImage9>>(BackgroundImageProperty, value); }
+            get { return GetValue<SourcedRef<Image>>(BackgroundImageProperty); }
+            set { SetValue<SourcedRef<Image>>(BackgroundImageProperty, value); }
         }
 
         /// <summary>
@@ -597,10 +597,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <summary>
         /// Gets or sets the image that indicates that the element has input focus.
         /// </summary>
-        public SourcedRef<StretchableImage9> FocusedImage
+        public SourcedRef<Image> FocusedImage
         {
-            get { return GetValue<SourcedRef<StretchableImage9>>(FocusedImageProperty); }
-            set { SetValue<SourcedRef<StretchableImage9>>(FocusedImageProperty, value); }
+            get { return GetValue<SourcedRef<Image>>(FocusedImageProperty); }
+            set { SetValue<SourcedRef<Image>>(FocusedImageProperty, value); }
         }
 
         /// <summary>
@@ -881,7 +881,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// Identifies the <see cref="BackgroundImage"/> dependency property.
         /// </summary>
         [Styled("background-image")]
-        public static readonly DependencyProperty BackgroundImageProperty = DependencyProperty.Register("BackgroundImage", typeof(SourcedRef<StretchableImage9>), typeof(UIElement),
+        public static readonly DependencyProperty BackgroundImageProperty = DependencyProperty.Register("BackgroundImage", typeof(SourcedRef<Image>), typeof(UIElement),
             new DependencyPropertyMetadata(HandleBackgroundImageChanged, null, DependencyPropertyOptions.None));
 
         /// <summary>
@@ -895,7 +895,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// Identifies the <see cref="FocusedImage"/> dependency property.
         /// </summary>
         [Styled("focused-image")]
-        public static readonly DependencyProperty FocusedImageProperty = DependencyProperty.Register("FocusedImage", typeof(SourcedRef<StretchableImage9>), typeof(UIElement),
+        public static readonly DependencyProperty FocusedImageProperty = DependencyProperty.Register("FocusedImage", typeof(SourcedRef<Image>), typeof(UIElement),
             new DependencyPropertyMetadata(HandleFocusedImageChanged, null, DependencyPropertyOptions.None));
 
         /// <summary>

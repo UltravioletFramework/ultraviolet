@@ -91,10 +91,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <summary>
         /// Gets or sets the image used to draw the caret.
         /// </summary>
-        public SourcedRef<StaticImage> CaretImage
+        public SourcedRef<Image> CaretImage
         {
-            get { return GetValue<SourcedRef<StaticImage>>(CaretImageProperty); }
-            set { SetValue<SourcedRef<StaticImage>>(CaretImageProperty, value); }
+            get { return GetValue<SourcedRef<Image>>(CaretImageProperty); }
+            set { SetValue<SourcedRef<Image>>(CaretImageProperty, value); }
         }
 
         /// <summary>
@@ -119,10 +119,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <summary>
         /// Gets or sets the image used to draw the selection highlight.
         /// </summary>
-        public SourcedRef<StaticImage> SelectionImage
+        public SourcedRef<Image> SelectionImage
         {
-            get { return GetValue<SourcedRef<StaticImage>>(SelectionImageProperty); }
-            set { SetValue<SourcedRef<StaticImage>>(SelectionImageProperty, value); }
+            get { return GetValue<SourcedRef<Image>>(SelectionImageProperty); }
+            set { SetValue<SourcedRef<Image>>(SelectionImageProperty, value); }
         }
 
         /// <summary>
@@ -199,7 +199,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// Identifies the <see cref="CaretImage"/> dependency property.
         /// </summary>
         [Styled("caret-image")]
-        public static readonly DependencyProperty CaretImageProperty = DependencyProperty.Register("CaretImage", typeof(SourcedRef<StaticImage>), typeof(TextBox),
+        public static readonly DependencyProperty CaretImageProperty = DependencyProperty.Register("CaretImage", typeof(SourcedRef<Image>), typeof(TextBox),
             new DependencyPropertyMetadata(HandleCaretImageChanged, null, DependencyPropertyOptions.None));
 
         /// <summary>
@@ -220,7 +220,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// Identifies the <see cref="SelectionImage"/> dependency property.
         /// </summary>
         [Styled("selection-image")]
-        public static readonly DependencyProperty SelectionImageProperty = DependencyProperty.Register("SelectionImage", typeof(SourcedRef<StaticImage>), typeof(TextBox),
+        public static readonly DependencyProperty SelectionImageProperty = DependencyProperty.Register("SelectionImage", typeof(SourcedRef<Image>), typeof(TextBox),
             new DependencyPropertyMetadata(HandleSelectionImageChanged, null, DependencyPropertyOptions.None));
 
         /// <summary>
@@ -626,8 +626,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         private static void HandleCaretImageChanged(DependencyObject dobj)
         {
             var textbox = (TextBox)dobj;
-            textbox.OnCaretImageChanged();
             textbox.ReloadCaretImage();
+            textbox.OnCaretImageChanged();
         }
 
         /// <summary>
@@ -657,8 +657,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         private static void HandleSelectionImageChanged(DependencyObject dobj)
         {
             var textbox = (TextBox)dobj;
-            textbox.OnSelectionImageChanged();
             textbox.ReloadSelectionImage();
+            textbox.OnSelectionImageChanged();
         }
 
         /// <summary>

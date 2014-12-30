@@ -8,6 +8,14 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
     public abstract class StretchableImage : Image
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="StretchableImage"/> class.
+        /// </summary>
+        internal StretchableImage()
+        {
+
+        }
+
+        /// <summary>
         /// Gets or sets a value indicating whether the image should be drawn with tiled edges.
         /// </summary>
         public Boolean TileEdges
