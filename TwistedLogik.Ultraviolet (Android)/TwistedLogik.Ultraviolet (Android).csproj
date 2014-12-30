@@ -312,6 +312,9 @@
     <Compile Include="..\TwistedLogik.Ultraviolet\Graphics\Graphics2D\Graphics2DBinaryWriterExtensions.cs">
       <Link>Graphics\Graphics2D\Graphics2DBinaryWriterExtensions.cs</Link>
     </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Graphics\Graphics2D\Image.cs">
+      <Link>Graphics\Graphics2D\Image.cs</Link>
+    </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet\Graphics\Graphics2D\ISpriteBatchEffect.cs">
       <Link>Graphics\Graphics2D\ISpriteBatchEffect.cs</Link>
     </Compile>
@@ -407,6 +410,15 @@
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet\Graphics\Graphics2D\sspack\Packing\RectanglePacker.cs">
       <Link>Graphics\Graphics2D\sspack\Packing\RectanglePacker.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Graphics\Graphics2D\StaticImage.cs">
+      <Link>Graphics\Graphics2D\StaticImage.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Graphics\Graphics2D\StretchableImage.cs">
+      <Link>Graphics\Graphics2D\StretchableImage.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Graphics\Graphics2D\StretchableImage3.cs">
+      <Link>Graphics\Graphics2D\StretchableImage3.cs</Link>
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet\Graphics\Graphics2D\StretchableImage9.cs">
       <Link>Graphics\Graphics2D\StretchableImage9.cs</Link>

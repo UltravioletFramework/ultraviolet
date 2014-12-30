@@ -10,7 +10,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
     /// Represents a stretchable 2D image with nine segments.
     /// </summary>
     [DebuggerDisplay(@"\{Texture:{Texture} TextureRegion:{TextureRegion} Left:{Left} Top:{Top} Right:{Right} Bottom:{Bottom}\}")]
-    public sealed class StretchableImage9
+    public sealed class StretchableImage9 : StretchableImage
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="StretchableImage9"/> class.
@@ -50,7 +50,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         public static StretchableImage9 Create(AssetID texture, Int32 x, Int32 y, Int32 width, Int32 height, Int32 left, Int32 top, Int32 right, Int32 bottom)
         {
             var img           = new StretchableImage9();
-            img.TextureID       = texture;
+            img.TextureID     = texture;
             img.TextureRegion = new Rectangle(x, y, width, height);
             img.Left          = left;
             img.Top           = top;
@@ -78,7 +78,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// Converts the string representation of a stretchable image into an instance of the <see cref="StretchableImage9"/> class.
         /// A return value indicates whether the conversion succeeded.
         /// </summary>
-        /// <param name="s">A string containing an image to convert.</param>
+        /// <param name="s">A string containing the image to convert.</param>
         /// <param name="image">A variable to populate with the converted value.</param>
         /// <returns><c>true</c> if <paramref name="s"/> was converted successfully; otherwise, <c>false</c>.</returns>
         public static Boolean TryParse(String s, out StretchableImage9 image)
@@ -90,7 +90,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// Converts the string representation of a stretchable image to an equivalent instance of the <see cref="StretchableImage9"/> class.
         /// </summary>
         /// <param name="s">A string containing the image to convert.</param>
-        /// <returns>An instance of the <see cref="StretchableImage9"/> structure that is equivalent to the specified string.</returns>
+        /// <returns>An instance of the <see cref="StretchableImage9"/> class that is equivalent to the specified string.</returns>
         public static StretchableImage9 Parse(String s)
         {
             return Parse(s, NumberStyles.Number, NumberFormatInfo.CurrentInfo);
@@ -100,7 +100,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// Converts the string representation of a stretchable image into an instance of the <see cref="StretchableImage9"/> class.
         /// A return value indicates whether the conversion succeeded.
         /// </summary>
-        /// <param name="s">A string containing a stretchable image to convert.</param>
+        /// <param name="s">A string containing the image to convert.</param>
         /// <param name="style">A set of <see cref="NumberStyles"/> values indicating which elements are present in <paramref name="s"/>.</param>
         /// <param name="provider">A format provider that provides culture-specific formatting information.</param>
         /// <param name="image">A variable to populate with the converted value.</param>
@@ -196,7 +196,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// <summary>
         /// Converts the string representation of a stretchable image to an equivalent instance of the <see cref="StretchableImage9"/> class.
         /// </summary>
-        /// <param name="s">A string containing the angle to convert.</param>
+        /// <param name="s">A string containing the image to convert.</param>
         /// <param name="style">A set of <see cref="NumberStyles"/> values indicating which elements are present in <paramref name="s"/>.</param>
         /// <param name="provider">A format provider that provides culture-specific formatting information.</param>
         /// <returns>An instance of the <see cref="StretchableImage9"/> class that is equivalent to the specified string.</returns>
@@ -208,54 +208,6 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
                 throw new FormatException();
             }
             return value;
-        }
-
-        /// <summary>
-        /// Loads the image's texture resource from the specified content manager.
-        /// </summary>
-        /// <param name="content">The content manager with which to load the image's texture resource.</param>
-        public void Load(ContentManager content)
-        {
-            Contract.Require(content, "content");
-
-            texture = content.Load<Texture2D>(TextureID);
-            if (textureRegion.IsEmpty && texture != null)
-            {
-                textureRegion = new Rectangle(0, 0, texture.Width, texture.Height);
-            }
-        }
-
-        /// <summary>
-        /// Gets the image's texture resource.
-        /// </summary>
-        public Texture2D Texture
-        {
-            get { return texture; }
-        }
-
-        /// <summary>
-        /// Gets or sets the asset identifier of the texture which contains the stretchable image data.
-        /// </summary>
-        public AssetID TextureID
-        {
-            get { return textureID; }
-            set 
-            {
-                if (!textureID.Equals(value))
-                {
-                    textureID         = value;
-                    texture = null;
-                }
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets the region of the image's texture which contains the image.
-        /// </summary>
-        public Rectangle TextureRegion
-        {
-            get { return textureRegion; }
-            set { textureRegion = value; }
         }
 
         /// <summary>
@@ -314,71 +266,97 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
             }
         }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether the image should be drawn with tiled edges.
-        /// </summary>
-        public Boolean TileEdges
+        /// <inheritdoc/>
+        internal override void Draw<VertexType, SpriteData>(SpriteBatchBase<VertexType, SpriteData> spriteBatch, Vector2 position, Int32 width, Int32 height, Color color, Single rotation, Vector2 origin, SpriteEffects effects, Single layerDepth, SpriteData data)
         {
-            get { return tileEdges; }
-            set { tileEdges = value; }
-        }
+            effects |= SpriteEffects.OriginRelativeToDestination;
 
-        /// <summary>
-        /// Gets or sets a value indicating whether the image should be drawn with a tiled center piece.
-        /// </summary>
-        public Boolean TileCenter
-        {
-            get { return tileCenter; }
-            set { tileCenter = value; }
-        }
+            var srcStretchableWidth  = this.TextureRegion.Width - (this.Left + this.Right);
+            var srcStretchableHeight = this.TextureRegion.Height - (this.Top + this.Bottom);
 
-        /// <summary>
-        /// Gets a value indicating whether the image's texture resource has been loaded.
-        /// </summary>
-        public Boolean IsLoaded
-        {
-            get { return texture != null; }
-        }
+            var dstStretchableWidth  = width - (this.Left + this.Right);
+            var dstStretchableHeight = height - (this.Top + this.Bottom);
 
-        /// <summary>
-        /// Parses a tiling parameter included in a string which represents a stretchable image.
-        /// </summary>
-        /// <param name="parameter">The parameter string to parse.</param>
-        /// <param name="tileCenter">A value indicating whether the image is set to tile its center piece.</param>
-        /// <param name="tileEdges">A value indicating whether the image is set to tile its edges.</param>
-        /// <returns><c>true</c> if the parameter was parsed successfully; otherwise, <c>false</c>.</returns>
-        private static Boolean ParseTilingParameter(String parameter, ref Boolean tileCenter, ref Boolean tileEdges)
-        {
-            if (String.Equals(parameter, "tile-center", StringComparison.OrdinalIgnoreCase))
+            // Center
+            var centerSource   = new Rectangle(this.TextureRegion.Left + this.Left, this.TextureRegion.Top + this.Top, srcStretchableWidth, srcStretchableHeight);
+            var centerRegion   = new RectangleF(position.X, position.Y, dstStretchableWidth, dstStretchableHeight);
+            var centerPosition = new Vector2(this.Left, this.Top);
+            if (this.TileCenter)
             {
-                if (tileCenter)
-                {
-                    return false;
-                }
-                tileCenter = true;
-                return true;
+                TileImageSegment(spriteBatch, this.Texture, centerPosition, centerRegion, centerSource, color, rotation, origin, effects, layerDepth, data);
             }
-            if (String.Equals(parameter, "tile-edges", StringComparison.OrdinalIgnoreCase))
+            else
             {
-                if (tileEdges)
-                {
-                    return false;
-                }
-                tileEdges = true;
-                return true;
+                var centerOrigin   = origin - centerPosition;
+                spriteBatch.Draw(this.Texture, centerRegion, centerSource, color, rotation, centerOrigin, effects, layerDepth, data);
             }
-            return false;
-        }
 
+            // Edges
+            var leftSource = new Rectangle(this.TextureRegion.Left, this.TextureRegion.Top + this.Top, this.Left, srcStretchableHeight);
+            var leftRegion = new RectangleF(position.X, position.Y, this.Left, dstStretchableHeight);
+            var leftPosition = new Vector2(0, this.Top);
+
+            var rightSource = new Rectangle(this.TextureRegion.Right - this.Right, this.TextureRegion.Top + this.Top, this.Right, srcStretchableHeight);
+            var rightRegion = new RectangleF(position.X, position.Y, this.Right, dstStretchableHeight);
+            var rightPosition = new Vector2(width - this.Right, this.Top);
+
+            var topSource = new Rectangle(this.TextureRegion.Left + this.Left, this.TextureRegion.Top, srcStretchableWidth, this.Top);
+            var topRegion = new RectangleF(position.X, position.Y, dstStretchableWidth, this.Top);
+            var topPosition = new Vector2(this.Left, 0);
+
+            var bottomSource = new Rectangle(this.TextureRegion.Left + this.Left, this.TextureRegion.Bottom - this.Bottom, srcStretchableWidth, this.Bottom);
+            var bottomRegion = new RectangleF(position.X, position.Y, dstStretchableWidth, this.Bottom);
+            var bottomPosition = new Vector2(this.Left, height - this.Bottom);
+
+            if (this.TileEdges)
+            {
+                TileImageSegment(spriteBatch, this.Texture, leftPosition, leftRegion, leftSource, color, rotation, origin, effects, layerDepth, data);
+                TileImageSegment(spriteBatch, this.Texture, rightPosition, rightRegion, rightSource, color, rotation, origin, effects, layerDepth, data);
+                TileImageSegment(spriteBatch, this.Texture, topPosition, topRegion, topSource, color, rotation, origin, effects, layerDepth, data);
+                TileImageSegment(spriteBatch, this.Texture, bottomPosition, bottomRegion, bottomSource, color, rotation, origin, effects, layerDepth, data);
+            }
+            else
+            {
+                var leftOrigin = origin - leftPosition;
+                spriteBatch.Draw(this.Texture, leftRegion, leftSource, color, rotation, leftOrigin, effects, layerDepth, data);
+                var rightOrigin = origin - rightPosition;
+                spriteBatch.Draw(this.Texture, rightRegion, rightSource, color, rotation, rightOrigin, effects, layerDepth, data);
+                var topOrigin = origin - topPosition;
+                spriteBatch.Draw(this.Texture, topRegion, topSource, color, rotation, topOrigin, effects, layerDepth, data);
+                var bottomOrigin = origin - bottomPosition;
+                spriteBatch.Draw(this.Texture, bottomRegion, bottomSource, color, rotation, bottomOrigin, effects, layerDepth, data);
+            }
+
+            // Corners
+            var cornerTLRegion   = new RectangleF(position.X, position.Y, this.Left, this.Top);
+            var cornerTLPosition = new Vector2(0, 0);
+            var cornerTLOrigin   = origin - cornerTLPosition;
+            var cornerTLSource   = new Rectangle(this.TextureRegion.Left, this.TextureRegion.Top, this.Left, this.Top);
+            spriteBatch.Draw(this.Texture, cornerTLRegion, cornerTLSource, color, rotation, cornerTLOrigin, effects, layerDepth, data);
+
+            var cornerTRRegion   = new RectangleF(position.X, position.Y, this.Right, this.Top);
+            var cornerTRPosition = new Vector2(width - this.Right, 0);
+            var cornerTROrigin   = origin - cornerTRPosition;
+            var cornerTRSource   = new Rectangle(this.TextureRegion.Right - this.Right, this.TextureRegion.Top, this.Right, this.Top);
+            spriteBatch.Draw(this.Texture, cornerTRRegion, cornerTRSource, color, rotation, cornerTROrigin, effects, layerDepth, data);
+
+            var cornerBLRegion   = new RectangleF(position.X, position.Y, this.Left, this.Bottom);
+            var cornerBLPosition = new Vector2(0, height - this.Bottom);
+            var cornerBLOrigin   = origin - cornerBLPosition;
+            var cornerBLSource   = new Rectangle(this.TextureRegion.Left, this.TextureRegion.Bottom - this.Bottom, this.Left, this.Bottom);
+            spriteBatch.Draw(this.Texture, cornerBLRegion, cornerBLSource, color, rotation, cornerBLOrigin, effects, layerDepth, data);
+
+            var cornerBRRegion   = new RectangleF(position.X, position.Y, this.Right, this.Bottom);
+            var cornerBRPosition = new Vector2(width - this.Right, height - this.Bottom);
+            var cornerBROrigin   = origin - cornerBRPosition;
+            var cornerBRSource   = new Rectangle(this.TextureRegion.Right - this.Right, this.TextureRegion.Bottom - this.Bottom, this.Left, this.Bottom);
+            spriteBatch.Draw(this.Texture, cornerBRRegion, cornerBRSource, color, rotation, cornerBROrigin, effects, layerDepth, data);
+        }        
+        
         // Property values.
-        private Texture2D texture;
-        private AssetID textureID;
-        private Rectangle textureRegion;
         private Int32 left;
         private Int32 top;
         private Int32 right;
         private Int32 bottom;
-        private Boolean tileEdges;
-        private Boolean tileCenter;
     }
 }

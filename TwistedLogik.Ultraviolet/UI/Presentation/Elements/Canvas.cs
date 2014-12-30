@@ -28,7 +28,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <param name="uv">The Ultraviolet context.</param>
         /// <param name="id">The element's unique identifier within its view.</param>
         /// <param name="viewModelType">The type of view model to which the element will be bound.</param>
-        /// <param name="bindingContext">The binding context to apply to the element which is instantiated.</param
+        /// <param name="bindingContext">The binding context to apply to the element which is instantiated.</param>
         public Canvas(UltravioletContext uv, String id, Type viewModelType, String bindingContext = null)
             : base(uv, id)
         {

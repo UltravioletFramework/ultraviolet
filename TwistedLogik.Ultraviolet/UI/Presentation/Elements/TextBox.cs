@@ -81,7 +81,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
 
         /// <summary>
         /// Gets or sets the thickness of the caret while the text box's <see cref="InsertionMode"/> property
-        /// is set to <see cref="InsertionMode.Overwrite"/>, specified in device independent pixels (1/96 of an inch).
+        /// is set to <see cref="TextBoxInsertionMode.Overwrite"/>, specified in device independent pixels (1/96 of an inch).
         /// </summary>
         public Double CaretThickness
         {

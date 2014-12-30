@@ -289,7 +289,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <summary>
         /// Called after the control draws its content.
         /// </summary>
-        /// <summary>
         /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Draw(UltravioletTime)"/>.</param>
         /// <param name="spriteBatch">The sprite batch with which to draw the view.</param>
         protected virtual void OnContentDrawn(UltravioletTime time, SpriteBatch spriteBatch)
