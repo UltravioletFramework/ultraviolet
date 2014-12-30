@@ -92,7 +92,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 throw new InvalidOperationException(UltravioletStrings.BindingIsReadOnly);
             }
             setter(dependencyValue.Owner.DependencyDataSource, value);
-            CheckHasChanged();
+            Digest();
         }
 
         /// <summary>
