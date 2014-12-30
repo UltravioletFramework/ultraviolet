@@ -709,9 +709,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             {
                 if (InsertionMode == TextBoxInsertionMode.Overwrite && textPosition < Text.Length)
                     Text = Text.Remove(textPosition, 1);
-                
+
+                var position = textPosition + textLength;
                 Text         = Text.Insert(textPosition, text);
-                textPosition = textPosition + textLength;
+                textPosition = position;
             }
 
             ScrollForwardToCaret();
