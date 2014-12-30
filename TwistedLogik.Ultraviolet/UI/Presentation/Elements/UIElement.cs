@@ -435,6 +435,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <summary>
+        /// Gets or sets a value indicating whether the element can gain input focus.
+        /// </summary>
+        public Boolean Focusable
+        {
+            get { return GetValue<Boolean>(FocusableProperty); }
+            set { SetValue<Boolean>(FocusableProperty, value); }
+        }
+
+        /// <summary>
         /// Gets or sets a value indicating whether the element is enabled.
         /// </summary>
         public Boolean Enabled
@@ -688,6 +697,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         public event UIElementEventHandler HitTestVisibleChanged;
 
         /// <summary>
+        /// Occurs when the value of the <see cref="Focusable"/> property changes.
+        /// </summary>
+        public event UIElementEventHandler FocusableChanged;
+
+        /// <summary>
         /// Occurs when the value of the <see cref="Enabled"/> property changes.
         /// </summary>
         public event UIElementEventHandler EnabledChanged;
@@ -768,111 +782,117 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         public event UIElementEventHandler FocusedImageChanged;
 
         /// <summary>
-        /// Identifies the Enabled dependency property.
-        /// </summary>
-        public static readonly DependencyProperty EnabledProperty = DependencyProperty.Register("Enabled", typeof(Boolean), typeof(UIElement),
-            new DependencyPropertyMetadata(HandleEnabledChanged, () => true, DependencyPropertyOptions.None));
-        
-        /// <summary>
-        /// Identifies the HitTestVisible dependency property.
+        /// Identifies the <see cref="HitTestVisible"/> dependency property.
         /// </summary>
         [Styled("hit-visible")]
         public static readonly DependencyProperty HitTestVisibleProperty = DependencyProperty.Register("HitTestVisible", typeof(Boolean), typeof(UIElement),
             new DependencyPropertyMetadata(HandleHitTestVisibleChanged, () => true, DependencyPropertyOptions.None));
 
         /// <summary>
-        /// Identifies the Width dependency property.
+        /// Identifies the <see cref="Enabled"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty EnabledProperty = DependencyProperty.Register("Enabled", typeof(Boolean), typeof(UIElement),
+            new DependencyPropertyMetadata(HandleEnabledChanged, () => true, DependencyPropertyOptions.None));
+
+        /// <summary>
+        /// Identifies the <see cref="Focusable"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty FocusableProperty = DependencyProperty.Register("Focusable", typeof(Boolean), typeof(UIElement),
+            new DependencyPropertyMetadata(HandleFocusableChanged, () => false, DependencyPropertyOptions.None));
+
+        /// <summary>
+        /// Identifies the <see cref="Width"/> dependency property.
         /// </summary>
         [Styled("width")]
         public static readonly DependencyProperty WidthProperty = DependencyProperty.Register("Width", typeof(Double), typeof(UIElement),
             new DependencyPropertyMetadata(HandleWidthChanged, () => Double.NaN, DependencyPropertyOptions.None));
 
         /// <summary>
-        /// Identifies the MinWidth dependency property.
+        /// Identifies the <see cref="MinWidth"/> dependency property.
         /// </summary>
         [Styled("min-width")]
         public static readonly DependencyProperty MinWidthProperty = DependencyProperty.Register("MinWidth", typeof(Double), typeof(UIElement),
             new DependencyPropertyMetadata(HandleMinWidthChanged, null, DependencyPropertyOptions.None));
 
         /// <summary>
-        /// Identifies the MaxWidth dependency property.
+        /// Identifies the <see cref="MaxWidth"/> dependency property.
         /// </summary>
         [Styled("max-width")]
         public static readonly DependencyProperty MaxWidthProperty = DependencyProperty.Register("MaxWidth", typeof(Double), typeof(UIElement),
             new DependencyPropertyMetadata(HandleMaxWidthChanged, () => Double.PositiveInfinity, DependencyPropertyOptions.None));
 
         /// <summary>
-        /// Identifies the Height dependency property.
+        /// Identifies the <see cref="Height"/> dependency property.
         /// </summary>
         [Styled("height")]
         public static readonly DependencyProperty HeightProperty = DependencyProperty.Register("Height", typeof(Double), typeof(UIElement),
             new DependencyPropertyMetadata(HandleHeightChanged, () => Double.NaN, DependencyPropertyOptions.None));
 
         /// <summary>
-        /// Identifies the MinHeight dependency property.
+        /// Identifies the <see cref="MinHeight"/> dependency property.
         /// </summary>
         [Styled("min-height")]
         public static readonly DependencyProperty MinHeightProperty = DependencyProperty.Register("MinHeight", typeof(Double), typeof(UIElement),
             new DependencyPropertyMetadata(HandleMinHeightChanged, null, DependencyPropertyOptions.None));
 
         /// <summary>
-        /// Identifies the MaxHeight dependency property.
+        /// Identifies the <see cref="MaxHeight"/> dependency property.
         /// </summary>
         [Styled("max-height")]
         public static readonly DependencyProperty MaxHeightProperty = DependencyProperty.Register("MaxHeight", typeof(Double), typeof(UIElement),
             new DependencyPropertyMetadata(HandleMaxHeightChanged, () => Double.PositiveInfinity, DependencyPropertyOptions.None));
 
         /// <summary>
-        /// Identifies the Visible dependency property.
+        /// Identifies the <see cref="Visible"/> dependency property.
         /// </summary>
         [Styled("visible")]
         public static readonly DependencyProperty VisibleProperty = DependencyProperty.Register("Visible", typeof(Boolean), typeof(UIElement),
             new DependencyPropertyMetadata(HandleVisibleChanged, () => true, DependencyPropertyOptions.None));
 
         /// <summary>
-        /// Identifies the Padding dependency property.
+        /// Identifies the <see cref="Padding"/> dependency property.
         /// </summary>
         [Styled("padding")]
         public static readonly DependencyProperty PaddingProperty = DependencyProperty.Register("Padding", typeof(Thickness), typeof(UIElement),
             new DependencyPropertyMetadata(HandlePaddingChanged, null, DependencyPropertyOptions.None));
 
         /// <summary>
-        /// Identifies the FontColor dependency property.
+        /// Identifies the <see cref="FontColor"/> dependency property.
         /// </summary>
         [Styled("font-color")]
         public static readonly DependencyProperty FontColorProperty = DependencyProperty.Register("FontColor", typeof(Color), typeof(UIElement),
             new DependencyPropertyMetadata(HandleFontColorChanged, () => Color.White, DependencyPropertyOptions.Inherited));
 
         /// <summary>
-        /// Identifies the FontAssetID dependency property.
+        /// Identifies the <see cref="FontAssetID"/> dependency property.
         /// </summary>
         [Styled("font-asset")]
         public static readonly DependencyProperty FontAssetIDProperty = DependencyProperty.Register("FontAssetID", typeof(SourcedVal<AssetID>), typeof(UIElement),
             new DependencyPropertyMetadata(HandleFontAssetIDChanged, null, DependencyPropertyOptions.Inherited));
 
         /// <summary>
-        /// Identifies the BackgroundColor dependency property.
+        /// Identifies the <see cref="BackgroundColor"/> dependency property.
         /// </summary>
         [Styled("background-color")]
         public static readonly DependencyProperty BackgroundColorProperty = DependencyProperty.Register("BackgroundColor", typeof(Color), typeof(UIElement),
             new DependencyPropertyMetadata(HandleBackgroundColorChanged, () => Color.White, DependencyPropertyOptions.None));
 
         /// <summary>
-        /// Identifies the BackgroundImage dependency property.
+        /// Identifies the <see cref="BackgroundImage"/> dependency property.
         /// </summary>
         [Styled("background-image")]
         public static readonly DependencyProperty BackgroundImageProperty = DependencyProperty.Register("BackgroundImage", typeof(SourcedRef<StretchableImage9>), typeof(UIElement),
             new DependencyPropertyMetadata(HandleBackgroundImageChanged, null, DependencyPropertyOptions.None));
 
         /// <summary>
-        /// Identifies the FocusedColor dependency property.
+        /// Identifies the <see cref="FocusedColor"/> dependency property.
         /// </summary>
         [Styled("focused-color")]
         public static readonly DependencyProperty FocusedColorProperty = DependencyProperty.Register("FocusedColor", typeof(Color), typeof(UIElement),
             new DependencyPropertyMetadata(HandleFocusedColorChanged, () => Color.Cyan, DependencyPropertyOptions.None));
 
         /// <summary>
-        /// Identifies the FocusedImage dependency property.
+        /// Identifies the <see cref="FocusedImage"/> dependency property.
         /// </summary>
         [Styled("focused-image")]
         public static readonly DependencyProperty FocusedImageProperty = DependencyProperty.Register("FocusedImage", typeof(SourcedRef<StretchableImage9>), typeof(UIElement),
@@ -1544,14 +1564,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
                 
         /// <summary>
-        /// Gets a value indicating whether the element can gain input focus.
-        /// </summary>
-        protected internal virtual Boolean CanGainFocus
-        {
-            get { return false; }
-        }
-
-        /// <summary>
         /// Releases resources associated with the object.
         /// </summary>
         /// <param name="disposing"><c>true</c> if the object is being disposed; <c>false</c> if the object is being finalized.</param>
@@ -1633,6 +1645,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         protected virtual void OnHitTestVisibleChanged()
         {
             var temp = HitTestVisibleChanged;
+            if (temp != null)
+            {
+                temp(this);
+            }
+        }
+
+        /// <summary>
+        /// Raises the <see cref="FocusableChanged"/> event.
+        /// </summary>
+        protected virtual void OnFocusableChanged()
+        {
+            var temp = FocusableChanged;
             if (temp != null)
             {
                 temp(this);
@@ -2093,6 +2117,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         {
             var element = (UIElement)dobj;
             element.OnHitTestVisibleChanged();
+        }
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="Focusable"/> dependency property changes.
+        /// </summary>
+        /// <param name="dobj">The object that raised the event.</param>
+        private static void HandleFocusableChanged(DependencyObject dobj)
+        {
+            var element = (UIElement)dobj;
+            element.OnFocusableChanged();
         }
 
         /// <summary>

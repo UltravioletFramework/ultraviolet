@@ -44,7 +44,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         public TextBox(UltravioletContext uv, String id)
             : base(uv, id)
         {
-
+            SetDefaultValue<Boolean>(FocusableProperty, true);
         }
 
         /// <inheritdoc/>
@@ -378,12 +378,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
                 View.ReleaseMouse(this);
             }
             base.OnMouseButtonReleased(device, button);
-        }
-
-        /// <inheritdoc/>
-        protected internal override Boolean CanGainFocus
-        {
-            get { return true; }
         }
         
         /// <inheritdoc/>

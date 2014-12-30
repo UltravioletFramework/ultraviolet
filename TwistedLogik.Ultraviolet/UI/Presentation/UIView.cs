@@ -112,7 +112,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             Contract.Require(element, "element");
 
-            if (elementWithFocus == element || !element.CanGainFocus)
+            if (elementWithFocus == element || !element.Focusable)
                 return;
 
             if (elementWithFocus != null)
@@ -848,7 +848,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 {
                     Blur(elementWithFocus);
                 }
-                if (recipient.CanGainFocus)
+                if (recipient.Focusable)
                 {
                     Focus(recipient);
                 }
