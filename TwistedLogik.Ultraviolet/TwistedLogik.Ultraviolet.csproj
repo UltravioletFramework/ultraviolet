@@ -336,6 +336,7 @@
     <Compile Include="UI\Presentation\Elements\RadioButton.cs" />
     <Compile Include="UI\Presentation\Elements\CheckBox.cs" />
     <Compile Include="UI\Presentation\Elements\TextBox.cs" />
+    <Compile Include="UI\Presentation\Elements\TextBoxInsertionMode.cs" />
     <Compile Include="UI\Presentation\Elements\ToggleButton.cs" />
     <Compile Include="UI\Presentation\Elements\ButtonBase.cs" />
     <Compile Include="UI\Presentation\IUltravioletDisplayExtensions.cs" />

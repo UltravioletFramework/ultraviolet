@@ -4,6 +4,7 @@ using System.Text;
 using TwistedLogik.Nucleus.Text;
 using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
 using TwistedLogik.Ultraviolet.Input;
+using TwistedLogik.Ultraviolet.UI.Presentation.Styles;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
 {
@@ -79,6 +80,25 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <summary>
+        /// Gets or sets the thickness of the caret while the text box's <see cref="InsertionMode"/> property
+        /// is set to <see cref="InsertionMode.Overwrite"/>, specified in device independent pixels (1/96 of an inch).
+        /// </summary>
+        public Double CaretThickness
+        {
+            get { return GetValue<Double>(CaretThicknessProperty); }
+            set { SetValue<Double>(CaretThicknessProperty, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets the color with which the caret is rendered.
+        /// </summary>
+        public Color CaretColor
+        {
+            get { return GetValue<Color>(CaretColorProperty); }
+            set { SetValue<Color>(CaretColorProperty, value); }
+        }
+
+        /// <summary>
         /// Gets the length of the text box's current text selection.
         /// </summary>
         public Int32 SelectionLength
@@ -96,6 +116,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <summary>
+        /// Gets or sets the text box's current insertion mode.
+        /// </summary>
+        public TextBoxInsertionMode InsertionMode
+        {
+            get { return GetValue<TextBoxInsertionMode>(InsertionModeProperty); }
+            set { SetValue<TextBoxInsertionMode>(InsertionModeProperty, value); }
+        }
+
+        /// <summary>
         /// Occurs when the value of the <see cref="Text"/> property changes.
         /// </summary>
         public event UIElementEventHandler TextChanged;
@@ -106,33 +135,75 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         public event UIElementEventHandler MaxLengthChanged;
 
         /// <summary>
+        /// Occurs when the value of the <see cref="CaretThickness"/> property changes.
+        /// </summary>
+        public event UIElementEventHandler CaretThicknessChanged;
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="CaretColor"/> property changes.
+        /// </summary>
+        public event UIElementEventHandler CaretColorChanged;
+
+        /// <summary>
         /// Occurs when the value of the <see cref="SelectionColor"/> property changes.
         /// </summary>
         public event UIElementEventHandler SelectionColorChanged;
 
         /// <summary>
-        /// Identifies the Text dependency property.
+        /// Occurs when the value of the <see cref="InsertionMode"/> property changes.
+        /// </summary>
+        public event UIElementEventHandler InsertionModeChanged;
+
+        /// <summary>
+        /// Identifies the <see cref="Text"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty TextProperty = DependencyProperty.Register("Text", typeof(String), typeof(TextBox),
             new DependencyPropertyMetadata(HandleTextChanged, null, DependencyPropertyOptions.None));
 
         /// <summary>
-        /// Identifies the MaxLength dependency property.
+        /// Identifies the <see cref="MaxLength"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty MaxLengthProperty = DependencyProperty.Register("MaxLength", typeof(Int32), typeof(TextBox),
             new DependencyPropertyMetadata(HandleMaxLengthChanged, () => 0, DependencyPropertyOptions.None));
 
         /// <summary>
-        /// Identifies the SelectionColor dependency property.
+        /// Identifies the <see cref="CaretColor"/> dependency property.
         /// </summary>
+        [Styled("caret-color")]
+        public static readonly DependencyProperty CaretColorProperty = DependencyProperty.Register("CaretColor", typeof(Color), typeof(TextBox),
+            new DependencyPropertyMetadata(HandleCaretColorChanged, () => Color.DarkBlue * 0.8f, DependencyPropertyOptions.None));
+
+        /// <summary>
+        /// Identifies the <see cref="CaretThickness"/> dependency property.
+        /// </summary>
+        [Styled("caret-thickness")]
+        public static readonly DependencyProperty CaretThicknessProperty = DependencyProperty.Register("CaretThickness", typeof(Double), typeof(TextBox),
+            new DependencyPropertyMetadata(HandleCaretThicknessChanged, () => 4.0, DependencyPropertyOptions.None));
+
+        /// <summary>
+        /// Identifies the <see cref="SelectionColor"/> dependency property.
+        /// </summary>
+        [Styled("selection-color")]
         public static readonly DependencyProperty SelectionColorProperty = DependencyProperty.Register("SelectionColor", typeof(Color), typeof(TextBox),
             new DependencyPropertyMetadata(HandleSelectionColorChanged, () => Color.Blue * 0.4f, DependencyPropertyOptions.None));
+
+        /// <summary>
+        /// Identifies the <see cref="InsertionMode"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty InsertionModeProperty = DependencyProperty.Register("InsertionMode", typeof(TextBoxInsertionMode), typeof(TextBox),
+            new DependencyPropertyMetadata(HandleInsertionModeChanged, () => TextBoxInsertionMode.Insert, DependencyPropertyOptions.None));
 
         /// <inheritdoc/>
         protected internal override void OnKeyPressed(KeyboardDevice device, Key key, Boolean ctrl, Boolean alt, Boolean shift, Boolean repeat)
         {
             switch (key)
             {
+                case Key.Insert:
+                    InsertionMode = (InsertionMode == TextBoxInsertionMode.Insert) ? 
+                        TextBoxInsertionMode.Overwrite :
+                        TextBoxInsertionMode.Insert;
+                    break;
+
                 case Key.A:
                     if (ctrl)
                     {
@@ -315,11 +386,47 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <summary>
+        /// Raises the <see cref="CaretThicknessChanged"/> event.
+        /// </summary>
+        protected virtual void OnCaretThicknessChanged()
+        {
+            var temp = CaretThicknessChanged;
+            if (temp != null)
+            {
+                temp(this);
+            }
+        }
+
+        /// <summary>
+        /// Raises the <see cref="CaretColorChanged"/> event.
+        /// </summary>
+        protected virtual void OnCaretColorChanged()
+        {
+            var temp = CaretColorChanged;
+            if (temp != null)
+            {
+                temp(this);
+            }
+        }
+
+        /// <summary>
         /// Raises the <see cref="SelectionColorChanged"/> event.
         /// </summary>
         protected virtual void OnSelectionColorChanged()
         {
             var temp = SelectionColorChanged;
+            if (temp != null)
+            {
+                temp(this);
+            }
+        }
+
+        /// <summary>
+        /// Raises the <see cref="InsertionModeChanged"/> event.
+        /// </summary>
+        protected virtual void OnInsertionModeChanged()
+        {
+            var temp = InsertionModeChanged;
             if (temp != null)
             {
                 temp(this);
@@ -343,17 +450,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             spriteBatch.Flush();
             Ultraviolet.GetGraphics().SetScissorRectangle(scissorText);
 
-            if (IsTextSelected)
-            {
-                var selectionStartOffset = CalculateOffsetFromIndex(SelectionStart);
-                var selectionEndOffset   = CalculateOffsetFromIndex(SelectionEnd);
-                var selectionWidth       = selectionEndOffset - selectionStartOffset;
-                var selectionArea        = new RectangleF(
-                    textArea.X + textScrollOffset + selectionStartOffset, 
-                    textArea.Y, selectionWidth, Font.Regular.LineSpacing);
-
-                spriteBatch.Draw(UIElementResources.BlankTexture, selectionArea, SelectionColor);
-            }
+            DrawTextSelection(spriteBatch, textArea);
 
             if (!String.IsNullOrEmpty(Text))
             {
@@ -361,15 +458,64 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
                     new Vector2(textArea.X + textScrollOffset, textArea.Y), FontColor);
             }
 
-            if (IsCaretDisplayed && IsCaretVisible && !IsTextSelected)
-            {
-                var caretOffset   = CalculateCaretOffset();
-                var caretPosition = new RectangleF(textArea.X + textScrollOffset + caretOffset, textArea.Y, 1, Font.Regular.LineSpacing);
-                spriteBatch.Draw(UIElementResources.BlankTexture, caretPosition, Color.Blue);
-            }
+            DrawTextCaret(spriteBatch, textArea);
 
             spriteBatch.Flush();
             Ultraviolet.GetGraphics().SetScissorRectangle(scissorCurrent);
+        }
+
+        /// <summary>
+        /// Draws the text selection box.
+        /// </summary>
+        /// <param name="spriteBatch">The sprite batch with which to draw the text selection box.</param>
+        /// <param name="textArea">A <see cref="Rectangle"/> describing the absolute screen area in which the element draws its text.</param>
+        protected virtual void DrawTextSelection(SpriteBatch spriteBatch, Rectangle textArea)
+        {
+            if (IsTextSelected)
+            {
+                var selectionStartOffset = CalculateOffsetFromIndex(SelectionStart);
+                var selectionEndOffset   = CalculateOffsetFromIndex(SelectionEnd);
+                var selectionWidth       = selectionEndOffset - selectionStartOffset;
+                var selectionArea        = new RectangleF(
+                    textArea.X + textScrollOffset + selectionStartOffset,
+                    textArea.Y, selectionWidth, Font.Regular.LineSpacing);
+
+                spriteBatch.Draw(UIElementResources.BlankTexture, selectionArea, SelectionColor);
+            }
+        }
+
+        /// <summary>
+        /// Draws the text caret.
+        /// </summary>
+        /// <param name="spriteBatch">The sprite batch with which to draw the text caret.</param>
+        /// <param name="textArea">A <see cref="Rectangle"/> describing the absolute screen area in which the element draws its text.</param>
+        protected virtual void DrawTextCaret(SpriteBatch spriteBatch, Rectangle textArea)
+        {
+            if (IsCaretDisplayed && IsCaretVisible && !IsTextSelected)
+            {
+                var caretOffset = CalculateCaretOffset();
+
+                if (InsertionMode == TextBoxInsertionMode.Insert)
+                {
+                    var caretPosition = new RectangleF(textArea.X + textScrollOffset + caretOffset, textArea.Y, 1, Font.Regular.LineSpacing);
+                    spriteBatch.Draw(UIElementResources.BlankTexture, caretPosition, CaretColor);
+                }
+                else
+                {
+                    var display = Ultraviolet.GetPlatform().Displays.PrimaryDisplay;
+
+                    var textLength = (Text == null) ? 0 : Text.Length;
+                    var caretChar1 = (textPosition >= textLength) ? ' ' : Text[textPosition];
+                    var caretChar2 = (textPosition + 1 >= textLength) ? ' ' : Text[textPosition + 1];
+                    var caretWidth = Font.Regular.MeasureGlyph(caretChar1, caretChar2).Width;
+
+                    var caretThickness = (Int32)display.DipsToPixels(CaretThickness);
+                    var caretPosition  = new RectangleF(
+                        textArea.X + textScrollOffset + caretOffset, textArea.Bottom - caretThickness, caretWidth, caretThickness);
+
+                    spriteBatch.Draw(UIElementResources.BlankTexture, caretPosition, CaretColor);
+                }
+            }
         }
 
         /// <summary>
@@ -396,6 +542,26 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <summary>
+        /// Occurs when the value of the <see cref="CaretColor"/> dependency property changes.
+        /// </summary>
+        /// <param name="dobj">The object that raised the event.</param>
+        private static void HandleCaretColorChanged(DependencyObject dobj)
+        {
+            var textbox = (TextBox)dobj;
+            textbox.OnCaretColorChanged();
+        }
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="CaretThickness"/> dependency property changes.
+        /// </summary>
+        /// <param name="dobj">The object that raised the event.</param>
+        private static void HandleCaretThicknessChanged(DependencyObject dobj)
+        {
+            var textbox = (TextBox)dobj;
+            textbox.OnCaretThicknessChanged();
+        }
+
+        /// <summary>
         /// Occurs when the value of the <see cref="SelectionColor"/> dependency property changes.
         /// </summary>
         /// <param name="dobj">The object that raised the event.</param>
@@ -403,6 +569,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         {
             var textbox = (TextBox)dobj;
             textbox.OnSelectionColorChanged();
+        }
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="InsertionMode"/> dependency property changes.
+        /// </summary>
+        /// <param name="dobj">The object that raised the event.</param>
+        private static void HandleInsertionModeChanged(DependencyObject dobj)
+        {
+            var textbox = (TextBox)dobj;
+            textbox.OnInsertionModeChanged();
         }
 
         /// <summary>
@@ -431,6 +607,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             }
             else
             {
+                if (InsertionMode == TextBoxInsertionMode.Overwrite && textPosition < Text.Length)
+                    Text = Text.Remove(textPosition, 1);
+                
                 Text         = Text.Insert(textPosition, text);
                 textPosition = textPosition + textLength;
             }
@@ -750,7 +929,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             var textX          = (Int32)padding.Left;
             var textY          = (Int32)padding.Top + ((textAreaHeight - Font.Regular.LineSpacing) / 2);
 
-            return new Rectangle(textX, textY, textAreaWidth, textAreaHeight);
+            return new Rectangle(textX, textY, textAreaWidth, Font.Regular.LineSpacing);
         }
 
         /// <summary>
