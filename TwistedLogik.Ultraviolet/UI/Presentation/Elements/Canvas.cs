@@ -234,16 +234,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         private void UpdateContainerRelativeLayout(UIElement child)
         {
             if (View == null)
-            {
-                child.ContainerRelativeArea = Rectangle.Empty;
                 return;
-            }
 
-            if (child == ComponentRoot)
-            {
-                child.ContainerRelativeArea = new Rectangle(0, 0, ActualWidth, ActualHeight);
+            if (UpdateComponentRootLayout(child))
                 return;
-            }
 
             var display = Ultraviolet.GetPlatform().Displays.PrimaryDisplay;
 
@@ -251,12 +245,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             var top    = GetTop(child);
             var right  = GetRight(child);
             var bottom = GetBottom(child);
-            var width  = child.Width;
-            var height = child.Height;
+            var width  = Double.NaN;
+            var height = Double.NaN;
             var margin = child.Margin;
 
-            var widthpx  = (Int32?)null;
-            var heightpx = (Int32?)null;
+            var pxWidth  = (Int32?)null;
+            var pxHeight = (Int32?)null;
 
             // If we have neither left nor right, assume left: 0
             if (Double.IsNaN(left) && Double.IsNaN(right))
@@ -267,70 +261,72 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
                 top = 0;
 
             // Apply margins.
-            left += margin.Left;
-            top  += margin.Top;
+            if (!Double.IsNaN(margin.Left))
+                left += margin.Left;
+
+            if (!Double.IsNaN(margin.Top))
+                top  += margin.Top;
+
+            if (!Double.IsNaN(right) && !Double.IsNaN(margin.Right))
+                right += margin.Right;
+
+            if (!Double.IsNaN(bottom) && !Double.IsNaN(margin.Bottom))
+                bottom += margin.Bottom;
 
             // If we have both left and right, calculate width
             if (!Double.IsNaN(left) && !Double.IsNaN(right))
-                width = ActualWidth - (left + right);
+                width = display.PixelsToDips(ActualWidth) - (left + right);
 
             // If we have both top and bottom, calculate height
             if (!Double.IsNaN(top) && !Double.IsNaN(bottom))
-                height = ActualHeight - (top + bottom);
+                height = display.PixelsToDips(ActualHeight) - (top + bottom);
 
-            // Honor dimensional constraints
-            if (width < MinWidth)
-                width = MinWidth;
-            if (width > MaxWidth)
-                width = MaxWidth;
-
-            if (height < MinHeight)
-                height = MinHeight;
-            if (height > MaxHeight)
-                height = MaxHeight;
-
-            // Convert from dips to pixels
-            widthpx  = Double.IsNaN(width)  ? (Int32?)null : (Int32)Math.Ceiling(display.DipsToPixels(width));
-            heightpx = Double.IsNaN(height) ? (Int32?)null : (Int32)Math.Ceiling(display.DipsToPixels(height));
-
-            // If we're missing a dimension, calculate the recommended dimension.
-            if (widthpx == null || heightpx == null)
-                child.CalculateContentSize(ref widthpx, ref heightpx);
-
-            // If we have no width, assume 0
-            if (widthpx == null)
-                widthpx = 0;
-
-            // If we have no height, assume 0
-            if (heightpx == null)
-                heightpx = 0;
-
-            // Make sure we don't have negative dimensions.
-            widthpx  = Math.Max(0, widthpx.GetValueOrDefault());
-            heightpx = Math.Max(0, heightpx.GetValueOrDefault());
+            // Convert from dips to pixels and calculate our final size.
+            pxWidth  = Double.IsNaN(width)  ? (Int32?)null : (Int32)Math.Ceiling(display.DipsToPixels(width));
+            pxHeight = Double.IsNaN(height) ? (Int32?)null : (Int32)Math.Ceiling(display.DipsToPixels(height));
+            child.CalculateActualSize(ref pxWidth, ref pxHeight);
 
             // Calculate the element's layout area.
             var x = 0;
             var y = 0;
             if (!Double.IsNaN(left))
             {
-                x = (Int32)display.DipsToPixels(left);
+                var pxLeft = (Int32)display.DipsToPixels(left);
+                x = pxLeft;
             }
             else
             {
-                x = ActualWidth - ((Int32)display.DipsToPixels(right) + widthpx.GetValueOrDefault());
+                var pxRight = (Int32)display.DipsToPixels(right);
+                x = ActualWidth - (pxRight + (pxWidth ?? 0));
             }
             if (!Double.IsNaN(top))
             {
-                y = (Int32)display.DipsToPixels(top);
+                var pxTop = (Int32)display.DipsToPixels(top);
+                y = pxTop;
             }
             else
             {
-                y = ActualHeight - ((Int32)display.DipsToPixels(bottom) + heightpx.GetValueOrDefault());
+                var pxBottom = (Int32)display.DipsToPixels(bottom);
+                y = ActualHeight - (pxBottom + (pxHeight ?? 0));
             }
             
             // Apply the layout area to the element.
-            child.ContainerRelativeArea = new Rectangle(x, y, widthpx.GetValueOrDefault(), heightpx.GetValueOrDefault());
+            child.ContainerRelativeArea = new Rectangle(x, y, pxWidth ?? 0, pxHeight ?? 0);
+        }
+
+        /// <summary>
+        /// Updates the layout of the container's component root.
+        /// </summary>
+        /// <param name="child">The element to attempt to update.</param>
+        /// <returns><c>true</c> if the specified element is the container's component root; otherwise, <c>false</c>.</returns>
+        private Boolean UpdateComponentRootLayout(UIElement child)
+        {
+            if (ComponentRoot == child)
+            {
+                child.ContainerRelativeArea = new Rectangle(0, 0, ActualWidth, ActualHeight);
+                return true;
+            }
+            return false;
         }
     }
 }

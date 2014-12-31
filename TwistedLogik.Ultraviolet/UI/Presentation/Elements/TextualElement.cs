@@ -37,14 +37,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             var settings = new TextLayoutSettings(Font, width ?? Int32.MaxValue, height ?? Int32.MaxValue, TextAlignment);
             UIElementResources.TextRenderer.CalculateLayout(cachedParserResult, cachedLayoutResult, settings);
 
-            var display = Ultraviolet.GetPlatform().Displays.PrimaryDisplay;
-            var padding = display.DipsToPixels(Padding);
-
             if (width == null)
-                width = (Int32)padding.Left + (Int32)padding.Right + cachedLayoutResult.ActualWidth;
+                width = cachedLayoutResult.ActualWidth;
 
             if (height == null)
-                height = (Int32)padding.Top + (Int32)padding.Bottom + cachedLayoutResult.ActualHeight;
+                height = cachedLayoutResult.ActualHeight;
         }
 
         /// <summary>

@@ -504,6 +504,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
                 return;
 
             var textArea = GetAbsoluteTextArea();
+            if (textArea.Width <= 0 || textArea.Height <= 0)
+                return;
 
             var scissorCurrent = Ultraviolet.GetGraphics().GetScissorRectangle();
             var scissorText    = textArea;

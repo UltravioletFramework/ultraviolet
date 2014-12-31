@@ -157,24 +157,21 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <param name="partial">A value indicating whether this is a partial layout.</param>
         private void UpdateChildLayoutVertical(UIElement child, ref Int32 position, ref Size2 contentSize)
         {
-            var display = Ultraviolet.GetPlatform().Displays.PrimaryDisplay;
+            int? pxWidth  = (child.HorizontalAlignment == HorizontalAlignment.Stretch) ? (Int32?)CalculateStretchWidth(child) : null;
+            int? pxHeight = null;
+            child.CalculateActualSize(ref pxWidth, ref pxHeight);
 
-            var widthpx  = Double.IsNaN(child.Width) ? (Int32?)null : (Int32)display.DipsToPixels(child.Width);
-            var heightpx = Double.IsNaN(child.Height) ? (Int32?)null : (Int32)display.DipsToPixels(child.Height);
-            child.CalculateContentSize(ref widthpx, ref heightpx);
-
-            var margin = display.DipsToPixels(child.Margin);
-
+            var margin                  = ConvertThicknessToPixels(child.Margin, 0);
             var relativeX               = 0;
             var relativeY               = position + (Int32)margin.Top;
-            var relativeWidth           = widthpx ?? 0;
-            var relativeHeight          = heightpx ?? 0;
+            var relativeWidth           = pxWidth  ?? 0;
+            var relativeHeight          = pxHeight ?? 0;
 
             switch (child.HorizontalAlignment)
             {
                 case HorizontalAlignment.Center:
                 case HorizontalAlignment.Stretch:
-                    relativeX = ((ActualWidth - (widthpx ?? 0)) / 2) + ((Int32)margin.Left - (Int32)margin.Right);
+                    relativeX = ((ActualWidth - (pxWidth ?? 0)) / 2) + ((Int32)margin.Left - (Int32)margin.Right);
                     break;
 
                 case HorizontalAlignment.Left:
@@ -182,7 +179,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
                     break;
 
                 case HorizontalAlignment.Right:
-                    relativeX = ActualWidth - ((widthpx ?? 0) + (Int32)margin.Right);
+                    relativeX = ActualWidth - ((pxWidth ?? 0) + (Int32)margin.Right);
                     break;
             }
 
@@ -200,24 +197,21 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <param name="partial">A value indicating whether this is a partial layout.</param>
         private void UpdateChildLayoutHorizontal(UIElement child, ref Int32 position, ref Size2 contentSize)
         {
-            var display = Ultraviolet.GetPlatform().Displays.PrimaryDisplay;
+            int? pxWidth  = null;
+            int? pxHeight = (child.VerticalAlignment == VerticalAlignment.Stretch) ? (Int32?)CalculateStretchHeight(child) : null;
+            child.CalculateActualSize(ref pxWidth, ref pxHeight);
 
-            var widthpx  = Double.IsNaN(child.Width) ? (Int32?)null : (Int32)display.DipsToPixels(child.Width);
-            var heightpx = Double.IsNaN(child.Height) ? (Int32?)null : (Int32)display.DipsToPixels(child.Height);
-            child.CalculateContentSize(ref widthpx, ref heightpx);
-
-            var margin = display.DipsToPixels(child.Margin);
-
+            var margin                  = ConvertThicknessToPixels(child.Margin, 0);            
             var relativeX               = position + (Int32)margin.Left;
             var relativeY               = 0;
-            var relativeWidth           = widthpx ?? 0;
-            var relativeHeight          = heightpx ?? 0;
+            var relativeWidth           = pxWidth ?? 0;
+            var relativeHeight          = pxHeight ?? 0;
 
             switch (child.VerticalAlignment)
             {
                 case VerticalAlignment.Center:
                 case VerticalAlignment.Stretch:
-                    relativeY = ((ActualHeight - (heightpx ?? 0)) / 2) + ((Int32)margin.Top - (Int32)margin.Bottom);
+                    relativeY = ((ActualHeight - (pxHeight ?? 0)) / 2) + ((Int32)margin.Top - (Int32)margin.Bottom);
                     break;
 
                 case VerticalAlignment.Top:
@@ -225,7 +219,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
                     break;
 
                 case VerticalAlignment.Bottom:
-                    relativeY = ActualHeight - ((heightpx ?? 0) + (Int32)margin.Bottom);
+                    relativeY = ActualHeight - ((pxHeight ?? 0) + (Int32)margin.Bottom);
                     break;
             }
 
@@ -258,6 +252,40 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
                 contentHeight = marginBoundsBottom;
 
             contentSize = new Size2(contentWidth, contentHeight);
+        }
+
+        /// <summary>
+        /// Calculates the width of a stretched element.
+        /// </summary>
+        /// <param name="element">The element for which to calculate a width.</param>
+        /// <returns>The width of the element in pixels.</returns>
+        private Int32 CalculateStretchWidth(UIElement element)
+        {
+            if (!Double.IsNaN(element.Width))
+                return (Int32)ConvertMeasureToPixels(element.Width, 0);
+            
+            var margin      = ConvertThicknessToPixels(element.Margin, 0);
+            var marginLeft  = (Int32)margin.Left;
+            var marginRight = (Int32)margin.Right;
+
+            return ActualWidth - (marginLeft + marginRight);
+        }
+
+        /// <summary>
+        /// Calculates the height of a stretched element.
+        /// </summary>
+        /// <param name="element">The element for which to calculate a height.</param>
+        /// <returns>The height of the element in pixels.</returns>
+        private Int32 CalculateStretchHeight(UIElement element)
+        {
+            if (!Double.IsNaN(element.Height))
+                return (Int32)ConvertMeasureToPixels(element.Height, 0);
+
+            var margin       = ConvertThicknessToPixels(element.Margin, 0);
+            var marginTop    = (Int32)margin.Top;
+            var marginBottom = (Int32)margin.Bottom;
+
+            return ActualHeight - (marginTop + marginBottom);
         }
 
         // State values.

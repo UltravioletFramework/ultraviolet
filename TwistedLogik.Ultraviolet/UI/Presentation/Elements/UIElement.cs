@@ -187,11 +187,83 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <summary>
-        /// Calculates the element's size based on its content
-        /// and the specified constraints.
+        /// Calculates the element's actual size in pixels based on
+        /// its content and the specified constraints.
         /// </summary>
-        /// <param name="width">The element's width.</param>
-        /// <param name="height">The element's height.</param>
+        /// <param name="width">The element's specified width.</param>
+        /// <param name="height">The element's specified height.</param>
+        public virtual void CalculateActualSize(ref Int32? width, ref Int32? height)
+        {
+            int? contentWidth  = width;
+            int? contentHeight = height;
+            CalculateContentSize(ref contentWidth, ref contentHeight);
+
+            var padding       = ConvertThicknessToPixels(Padding, 0);
+            var paddingLeft   = (Int32)padding.Left;
+            var paddingTop    = (Int32)padding.Top;
+            var paddingRight  = (Int32)padding.Right;
+            var paddingBottom = (Int32)padding.Bottom;
+
+            var pxMinWidth  = (Int32)ConvertMeasureToPixels(MinWidth, 0, 0, 0);
+            var pxMaxWidth  = (Int32)ConvertMeasureToPixels(MaxWidth, 0);
+            var pxMinHeight = (Int32)ConvertMeasureToPixels(MinHeight, 0, 0, 0);
+            var pxMaxHeight = (Int32)ConvertMeasureToPixels(MaxHeight, 0);
+            
+            if (width == null)
+            {
+                if (!Double.IsNaN(Width))
+                {
+                    width = (Int32)ConvertMeasureToPixels(Width, 0);
+                }
+                else
+                {
+                    width = (contentWidth ?? 0) + paddingLeft + paddingRight;
+                }
+            }
+
+            if (width != null)
+            {
+                if (width < pxMinWidth)
+                    width = pxMinWidth;
+
+                if (width > pxMaxWidth)
+                    width = pxMaxWidth;
+
+                if (width < 0)
+                    width = 0;
+            }
+
+            if (height == null)
+            {
+                if (!Double.IsNaN(Height))
+                {
+                    height = (Int32)ConvertMeasureToPixels(Height, 0);
+                }
+                else
+                {
+                    height = (contentHeight ?? 0) + paddingTop + paddingBottom;
+                }
+            }
+
+            if (height != null)
+            {
+                if (height < pxMinHeight)
+                    height = pxMinHeight;
+
+                if (height > pxMaxHeight)
+                    height = pxMaxHeight;
+
+                if (height < 0)
+                    height = 0;
+            }
+        }
+
+        /// <summary>
+        /// Calculates the size of the element's content based on
+        /// the specified constraints.
+        /// </summary>
+        /// <param name="width">The element's specified width.</param>
+        /// <param name="height">The element's specified height.</param>
         public virtual void CalculateContentSize(ref Int32? width, ref Int32? height)
         {
 
@@ -2125,6 +2197,86 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
 
                 spriteBatch.DrawImage(img, position, ActualWidth, ActualHeight, imgColor, 0f, origin, effects, 0f);
             }
+        }
+
+        /// <summary>
+        /// Converts a <see cref="Thickness"/> value given in device independent pixels (1/96 of an inch) to device pixels.
+        /// </summary>
+        /// <param name="thickness">The bounding rectangle to convert.</param>
+        /// <param name="nan">The value to substitute for any of the bounding rectangle's parameters if that parameter is not a number.</param>
+        /// <returns>The converted <see cref="Thickness"/> value.</returns>
+        protected Thickness ConvertThicknessToPixels(Thickness thickness, Double nan)
+        {
+            var left   = ConvertMeasureToPixels(thickness.Left, nan);
+            var top    = ConvertMeasureToPixels(thickness.Top, nan);
+            var right  = ConvertMeasureToPixels(thickness.Right, nan);
+            var bottom = ConvertMeasureToPixels(thickness.Bottom, nan);
+
+            return new Thickness(left, top, right, bottom);
+        }
+
+        /// <summary>
+        /// Converts a <see cref="Thickness"/> value given in device independent pixels (1/96 of an inch) to device pixels.
+        /// </summary>
+        /// <param name="thickness">The bounding rectangle to convert.</param>
+        /// <param name="posInf">The value to substitute for any of the bounding rectangle's parameters if that parameter is positive infinity.</param>
+        /// <param name="negInf">The value to substitute for any of the bounding rectangle's parameters if that parameter is negative infinity.</param>
+        /// <param name="nan">The value to substitute for any of the bounding rectangle's parameters if that parameter is not a number.</param>
+        /// <returns>The converted <see cref="Thickness"/> value.</returns>
+        protected Thickness ConvertThicknessToPixels(Thickness thickness, Double posInf, Double negInf, Double nan)
+        {
+            var left   = ConvertMeasureToPixels(thickness.Left, posInf, negInf, nan);
+            var top    = ConvertMeasureToPixels(thickness.Top, posInf, negInf, nan);
+            var right  = ConvertMeasureToPixels(thickness.Right, posInf, negInf, nan);
+            var bottom = ConvertMeasureToPixels(thickness.Bottom, posInf, negInf, nan);
+
+            return new Thickness(left, top, right, bottom);
+        }
+
+        /// <summary>
+        /// Converts a measure given in device independent pixels (1/96 of an inch) to device pixels.
+        /// </summary>
+        /// <param name="measure">The measure to convert.</param>
+        /// <param name="nan">The value to substitute for <paramref name="measure"/> if <paramref name="measure"/> is not a number.</param>
+        /// <returns>The converted measure value.</returns>
+        protected Double ConvertMeasureToPixels(Double measure, Double nan)
+        {
+            if (Double.IsPositiveInfinity(measure))
+                return Int32.MaxValue;
+
+            if (Double.IsNegativeInfinity(measure))
+                return Int32.MinValue;
+
+            var display = Ultraviolet.GetPlatform().Displays.PrimaryDisplay;
+
+            if (Double.IsNaN(measure))
+                return display.DipsToPixels(nan);
+
+            return display.DipsToPixels(measure);
+        }
+
+        /// <summary>
+        /// Converts a measure given in device independent pixels (1/96 of an inch) to device pixels.
+        /// </summary>
+        /// <param name="measure">The measure to convert.</param>
+        /// <param name="posInf">The value to substitute for <paramref name="measure"/> if <paramref name="measure"/> is positive infinity.</param>
+        /// <param name="negInf">The value to substitute for <paramref name="measure"/> if <paramref name="measure"/> is negative infinity.</param>
+        /// <param name="nan">The value to substitute for <paramref name="measure"/> if <paramref name="measure"/> is not a number.</param>
+        /// <returns>The converted measure value.</returns>
+        protected Double ConvertMeasureToPixels(Double measure, Double posInf, Double negInf, Double nan)
+        {
+            var display = Ultraviolet.GetPlatform().Displays.PrimaryDisplay;
+
+            if (Double.IsPositiveInfinity(measure))
+                return display.DipsToPixels(posInf);
+
+            if (Double.IsNegativeInfinity(measure))
+                return display.DipsToPixels(negInf);
+
+            if (Double.IsNaN(measure))
+                return display.DipsToPixels(nan);
+
+            return display.DipsToPixels(measure);
         }
 
         /// <summary>
