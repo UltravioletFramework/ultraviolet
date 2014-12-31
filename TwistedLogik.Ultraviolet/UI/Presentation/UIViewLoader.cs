@@ -176,6 +176,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Gets a value indicating whether the specified XML element's name represents
+        /// a property on a UI element.
+        /// </summary>
+        /// <param name="element">The XML element to evaluate.</param>
+        /// <returns><c>true</c> if the specified XML element's name represents a property on
+        /// a UI element; otherwise, <c>false</c>.</returns>
+        private static Boolean ElementNameRepresentsProperty(XElement element)
+        {
+            return element.Name.LocalName.Contains('.');
+        }
+
+        /// <summary>
         /// Populates a UI element's events, properties, and children.
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
@@ -232,44 +244,87 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="context">The current instantiation context.</param>
         private static void PopulateElementProperties(UltravioletContext uv, UIElement uiElement, XElement xmlElement, InstantiationContext context)
         {
-            var dprop = default(DependencyProperty);
+            PopulateElementPropertiesFromAttributes(uv, uiElement, xmlElement, context);
+            PopulateElementPropertiesFromElements(uv, uiElement, xmlElement, context);
+            PopulateElementDefaultProperty(uv, uiElement, xmlElement, context);
+        }
 
+        /// <summary>
+        /// Populates the specified element's dependency property values using the values of the specified
+        /// XML element's attributes.
+        /// </summary>
+        /// <param name="uv">The Ultraviolet context.</param>
+        /// <param name="uiElement">The element whose dependency property values will be populated.</param>
+        /// <param name="xmlElement">The XML element that represents the UI element.</param>
+        /// <param name="context">The current instantiation context.</param>
+        private static void PopulateElementPropertiesFromAttributes(UltravioletContext uv, UIElement uiElement, XElement xmlElement, InstantiationContext context)
+        {
             foreach (var attr in xmlElement.Attributes())
             {
                 var attrName = attr.Name.LocalName;
                 if (attrName == "BindingContext" || attrName == "ViewModelType") 
                     continue;
 
-                var attachedContainer = String.Empty;
-                var attachedProperty  = String.Empty;
-                if (IsAttachedProperty(attrName, out attachedContainer, out attachedProperty))
-                {
-                    if (uiElement.Parent != null && String.Equals(uiElement.Parent.Name, attachedContainer, StringComparison.InvariantCulture))
-                    {
-                        dprop = DependencyProperty.FindByName(attachedProperty, uiElement.Parent.GetType());
-                    }
-                }
-                else
-                {
-                    dprop = DependencyProperty.FindByName(attrName, uiElement.GetType());
-                }
+                PopulateElementProperty(uiElement, attrName, attr.Value, context);
+            }
+        }
 
-                if (dprop != null)
-                {
-                    BindOrSetProperty(uiElement, dprop, attr.Value, context);
-                }
-                else
-                {
-                    var standardProperty = uiElement.GetType().GetProperty(attrName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
-                    if (standardProperty == null)
-                        throw new InvalidOperationException(UltravioletStrings.PropertyDoesNotExist.Format(attrName, uiElement.GetType()));
+        /// <summary>
+        /// Populates the specified element's dependency property values using the values of the specified
+        /// XML element's child elements.
+        /// </summary>
+        /// <param name="uv">The Ultraviolet context.</param>
+        /// <param name="uiElement">The element whose dependency property values will be populated.</param>
+        /// <param name="xmlElement">The XML element that represents the UI element.</param>
+        /// <param name="context">The current instantiation context.</param>
+        private static void PopulateElementPropertiesFromElements(UltravioletContext uv, UIElement uiElement, XElement xmlElement, InstantiationContext context)
+        {            
+            foreach (var element in xmlElement.Elements())
+            {
+                var elementName = element.Name.LocalName;
+                if (elementName == "BindingContext" || elementName == "ViewModelType" || !ElementNameRepresentsProperty(element))
+                    continue;
 
-                    var value = ObjectResolver.FromString(attr.Value, standardProperty.PropertyType);
-                    standardProperty.SetValue(uiElement, value, null);
+                var propDelimIndex = elementName.IndexOf('.');
+                var propOwnerName  = elementName.Substring(0, propDelimIndex);
+                var propName       = elementName.Substring(propDelimIndex + 1);
+                var isAttached     = !String.Equals(propOwnerName, uiElement.Name, StringComparison.InvariantCulture);
+
+                PopulateElementProperty(uiElement, isAttached ? elementName : propName, element.Value, context);
+            }
+        }
+
+        private static void PopulateElementProperty(UIElement uiElement, String propName, String propValue, InstantiationContext context)
+        {
+            var dprop = default(DependencyProperty);
+
+            var attachedContainer = String.Empty;
+            var attachedProperty  = String.Empty;
+            if (IsAttachedProperty(propName, out attachedContainer, out attachedProperty))
+            {
+                if (uiElement.Parent != null && String.Equals(uiElement.Parent.Name, attachedContainer, StringComparison.InvariantCulture))
+                {
+                    dprop = DependencyProperty.FindByName(attachedProperty, uiElement.Parent.GetType());
                 }
             }
+            else
+            {
+                dprop = DependencyProperty.FindByName(propName, uiElement.GetType());
+            }
 
-            PopulateElementDefaultProperty(uv, uiElement, xmlElement, context);
+            if (dprop != null)
+            {
+                BindOrSetProperty(uiElement, dprop, propValue, context);
+            }
+            else
+            {
+                var standardProperty = uiElement.GetType().GetProperty(propName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+                if (standardProperty == null)
+                    throw new InvalidOperationException(UltravioletStrings.PropertyDoesNotExist.Format(propName, uiElement.GetType()));
+
+                var value = ObjectResolver.FromString(propValue, standardProperty.PropertyType);
+                standardProperty.SetValue(uiElement, value, null);
+            }
         }
 
         /// <summary>
@@ -291,7 +346,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 if (dprop == null)
                     throw new InvalidOperationException(UltravioletStrings.InvalidDefaultProperty.Format(defaultProperty, uiElement.GetType()));
 
-                BindOrSetProperty(uiElement, dprop, xmlElement.Value, context);
+                var value = String.Join(String.Empty, xmlElement.Nodes().Where(x => x is XText).Select(x => ((XText)x).Value.Trim()));
+                if (!String.IsNullOrEmpty(value))
+                {
+                    BindOrSetProperty(uiElement, dprop, value, context);
+                }
             }
         }
 
@@ -304,11 +363,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="context">The current instantiation context.</param>
         private static void PopulateElementChildren(UltravioletContext uv, UIElement uiElement, XElement xmlElement, InstantiationContext context)
         {
+            var xmlChildren = xmlElement.Elements().Where(x => !ElementNameRepresentsProperty(x)).ToList();
+            
             var container = uiElement as Container;
             if (container != null)
             {
-                foreach (var child in xmlElement.Elements())
-                {
+                foreach (var child in xmlChildren)
+                {                    
                     InstantiateAndPopulateElement(uv, uiElement, child, context);
                 }
             }
@@ -317,13 +378,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 var contentControl = uiElement as ContentControl;
                 if (contentControl != null && !(uiElement is UserControl))
                 {
-                    if (xmlElement.Elements().Count() > 1)
+                    if (xmlChildren.Count > 1)
                     {
                         var id = uiElement.ID ?? uiElement.GetType().Name;
                         throw new InvalidOperationException(UltravioletStrings.InvalidChildElements.Format(id));
                     }
 
-                    var contentElement = xmlElement.Elements().SingleOrDefault();
+                    var contentElement = xmlChildren.SingleOrDefault();
                     if (contentElement != null)
                     {
                         InstantiateAndPopulateElement(uv, uiElement, contentElement, context);
@@ -331,7 +392,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 }
                 else
                 {
-                    if (xmlElement.Elements().Any())
+                    if (xmlChildren.Any())
                     {
                         var id = uiElement.ID ?? uiElement.GetType().Name;
                         throw new InvalidOperationException(UltravioletStrings.InvalidChildElements.Format(id));
