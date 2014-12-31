@@ -31,19 +31,32 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         public StackPanel(UltravioletContext uv, String id, Type viewModelType, String bindingContext = null)
             : base(uv, id)
         {
-            SetDefaultValue<Color>(UIElement.BackgroundColorProperty, Color.Red);
+            SetDefaultValue<Color>(UIElement.BackgroundColorProperty, Color.Transparent);
 
             if (ComponentTemplate != null)
                 LoadComponentRoot(ComponentTemplate, viewModelType, bindingContext);
         }
 
         /// <inheritdoc/>
+        public sealed override void CalculateContentSize(ref Int32? width, ref Int32? height)
+        {
+            if (width == null)
+                width = contentSize.Width;
+            if (height == null)
+                height = contentSize.Height;
+
+            base.CalculateContentSize(ref width, ref height);
+        }
+
+        /// <inheritdoc/>
         public sealed override void PerformContentLayout()
         {
+            contentSize = Size2.Zero;
+
             var position = 0;
             foreach (var child in Children)
             {
-                UpdateChildLayout(child, ref position);
+                UpdateChildLayout(child, ref position, ref contentSize);
             }
             UpdateScissorRectangle();
         }
@@ -113,6 +126,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             var element = (StackPanel)dobj;
             element.OnOrientationChanged();
             element.PerformLayout();
+
+            var parent = element.Parent;
+            if (parent != null)
+                parent.PerformPartialLayout(element);
         }
 
         /// <summary>
@@ -120,15 +137,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// </summary>
         /// <param name="child">The child element for which to calculate a layout.</param>
         /// <param name="partial">A value indicating whether this is a partial layout.</param>
-        private void UpdateChildLayout(UIElement child, ref Int32 position)
+        private void UpdateChildLayout(UIElement child, ref Int32 position, ref Size2 contentSize)
         {
             if (Orientation == Orientation.Horizontal)
             {
-                UpdateChildLayoutHorizontal(child, ref position);
+                UpdateChildLayoutHorizontal(child, ref position, ref contentSize);
             }
             else
             {
-                UpdateChildLayoutVertical(child, ref position);
+                UpdateChildLayoutVertical(child, ref position, ref contentSize);
             }
         }
 
@@ -138,7 +155,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// </summary>
         /// <param name="child">The child element for which to calculate a layout.</param>
         /// <param name="partial">A value indicating whether this is a partial layout.</param>
-        private void UpdateChildLayoutVertical(UIElement child, ref Int32 position)
+        private void UpdateChildLayoutVertical(UIElement child, ref Int32 position, ref Size2 contentSize)
         {
             var display = Ultraviolet.GetPlatform().Displays.PrimaryDisplay;
 
@@ -168,8 +185,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
                     relativeX = ActualWidth - ((widthpx ?? 0) + (Int32)margin.Right);
                     break;
             }
-            
+
             child.ContainerRelativeArea = new Rectangle(relativeX, relativeY, relativeWidth, relativeHeight);
+            UpdateContentSize(child, margin, ref contentSize);
 
             position = relativeY + child.ContainerRelativeArea.Height + (Int32)margin.Bottom;
         }
@@ -180,7 +198,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// </summary>
         /// <param name="child">The child element for which to calculate a layout.</param>
         /// <param name="partial">A value indicating whether this is a partial layout.</param>
-        private void UpdateChildLayoutHorizontal(UIElement child, ref Int32 position)
+        private void UpdateChildLayoutHorizontal(UIElement child, ref Int32 position, ref Size2 contentSize)
         {
             var display = Ultraviolet.GetPlatform().Displays.PrimaryDisplay;
 
@@ -212,8 +230,37 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             }
 
             child.ContainerRelativeArea = new Rectangle(relativeX, relativeY, relativeWidth, relativeHeight);
+            UpdateContentSize(child, margin, ref contentSize);
 
             position = relativeX + child.ContainerRelativeArea.Width + (Int32)margin.Right;
         }
+
+        /// <summary>
+        /// Updates the element's content size to include the size of the specified element.
+        /// </summary>
+        /// <param name="element">The element to add to the stack panel's content size.</param>
+        /// <param name="margin">The element margin converted to device pixels.</param>
+        /// <param name="contentSize">The stack panel's current content size.</param>
+        private void UpdateContentSize(UIElement element, Thickness margin, ref Size2 contentSize)
+        {
+            var elementArea = element.ContainerRelativeArea;
+
+            var marginBoundsRight  = elementArea.X + elementArea.Width + (Int32)margin.Right;
+            var marginBoundsBottom = elementArea.Y + elementArea.Height + (Int32)margin.Bottom;
+
+            var contentWidth  = contentSize.Width;
+            var contentHeight = contentSize.Height;
+
+            if (contentWidth < marginBoundsRight)
+                contentWidth = marginBoundsRight;
+
+            if (contentHeight < marginBoundsBottom)
+                contentHeight = marginBoundsBottom;
+
+            contentSize = new Size2(contentWidth, contentHeight);
+        }
+
+        // State values.
+        private Size2 contentSize;
     }
 }
