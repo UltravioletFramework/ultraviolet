@@ -141,7 +141,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <summary>
-        /// Gets or sets the stack panel's orientation.
+        /// Gets or sets the wrap panel's orientation.
         /// </summary>
         public Orientation Orientation
         {
@@ -150,7 +150,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <summary>
-        /// Gets or sets a value that specifies the width of elements which are contained by the stack panel.
+        /// Gets or sets a value that specifies the width of elements which are contained by the wrap panel.
         /// </summary>
         public Double ItemWidth
         {
@@ -159,7 +159,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <summary>
-        /// Gets or sets a value that specifies the height of elements which are contained by the stack panel.
+        /// Gets or sets a value that specifies the height of elements which are contained by the wrap panel.
         /// </summary>
         public Double ItemHeight
         {
@@ -284,7 +284,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// Immediately recalculates the layout of the specified child element.
         /// </summary>
         /// <param name="child">The child element for which to calculate a layout.</param>
-        /// <param name="partial">A value indicating whether this is a partial layout.</param>
         private void UpdateChildLayout(UIElement child)
         {
             if (Orientation == Orientation.Horizontal)
@@ -299,10 +298,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
 
         /// <summary>
         /// Immediately recalculates the layout of the specified child element when
-        /// the stack panel is in a vertical orientation.
+        /// the wrap panel is in a vertical orientation.
         /// </summary>
         /// <param name="child">The child element for which to calculate a layout.</param>
-        /// <param name="partial">A value indicating whether this is a partial layout.</param>
         private void UpdateChildLayoutVertical(UIElement child)
         {
 
@@ -310,10 +308,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
 
         /// <summary>
         /// Immediately recalculates the layout of the specified child element when
-        /// the stack panel is in a horizontal orientation.
+        /// the wrap panel is in a horizontal orientation.
         /// </summary>
         /// <param name="child">The child element for which to calculate a layout.</param>
-        /// <param name="partial">A value indicating whether this is a partial layout.</param>
         private void UpdateChildLayoutHorizontal(UIElement child)
         {
 
@@ -372,7 +369,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// </summary>
         /// <param name="columnIndex">The index of the first child element in the column.</param>
         /// <param name="columnCount">The number of elements in the column.</param>
-        /// <param name="columnHeight">The height of the column in pixels.</param>
+        /// <param name="columnWidth">The width of the column in pixels.</param>
         /// <param name="positionX">The distance in pixels between the left edge of the container and the left edge of the column.</param>
         /// <param name="positionY">The distance in pixels between the top edge of the container and the top edge of the column.</param>
         private void PerformColumnLayout(Int32 columnIndex, Int32 columnCount, Int32 columnWidth, ref Int32 positionX, ref Int32 positionY)

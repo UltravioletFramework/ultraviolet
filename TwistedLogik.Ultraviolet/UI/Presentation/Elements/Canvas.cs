@@ -215,7 +215,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <param name="partial">A value indicating whether this is a partial layout.</param>
         private void UpdateChildLayout(UIElement child, Boolean partial)
         {
-            UpdateContainerRelativeLayout(child);
+            UpdateContainerRelativeArea(child);
 
             child.PerformLayout();
             child.UpdateAbsoluteScreenPosition(
@@ -227,12 +227,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <summary>
-        /// Immediately recalculates the value of the <see cref="ContainerRelativeLayout"/> property
+        /// Immediately recalculates the value of the <see cref="UIElement.ContainerRelativeArea"/> property
         /// for the specified child element.
         /// </summary>
         /// <param name="child">The child element for which to calculate a layout.</param>
-        private void UpdateContainerRelativeLayout(UIElement child)
-        {
+        private void UpdateContainerRelativeArea(UIElement child)
+        {            
             if (View == null)
                 return;
 

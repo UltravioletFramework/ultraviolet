@@ -136,7 +136,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// Immediately recalculates the layout of the specified child element.
         /// </summary>
         /// <param name="child">The child element for which to calculate a layout.</param>
-        /// <param name="partial">A value indicating whether this is a partial layout.</param>
+        /// <param name="position">The current layout position.</param>
+        /// <param name="contentSize">The current size of the container's content.</param>
         private void UpdateChildLayout(UIElement child, ref Int32 position, ref Size2 contentSize)
         {
             if (Orientation == Orientation.Horizontal)
@@ -154,7 +155,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// the stack panel is in a vertical orientation.
         /// </summary>
         /// <param name="child">The child element for which to calculate a layout.</param>
-        /// <param name="partial">A value indicating whether this is a partial layout.</param>
+        /// <param name="position">The current layout position.</param>
+        /// <param name="contentSize">The current size of the container's content.</param>
         private void UpdateChildLayoutVertical(UIElement child, ref Int32 position, ref Size2 contentSize)
         {
             int? pxWidth  = (child.HorizontalAlignment == HorizontalAlignment.Stretch) ? (Int32?)CalculateStretchWidth(child) : null;
@@ -194,7 +196,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// the stack panel is in a horizontal orientation.
         /// </summary>
         /// <param name="child">The child element for which to calculate a layout.</param>
-        /// <param name="partial">A value indicating whether this is a partial layout.</param>
+        /// <param name="position">The current layout position.</param>
+        /// <param name="contentSize">The current size of the container's content.</param>
         private void UpdateChildLayoutHorizontal(UIElement child, ref Int32 position, ref Size2 contentSize)
         {
             int? pxWidth  = null;

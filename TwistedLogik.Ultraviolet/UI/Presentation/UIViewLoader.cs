@@ -294,6 +294,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             }
         }
 
+        /// <summary>
+        /// Populates the specified properties of a UI element with the specified value.
+        /// </summary>
+        /// <param name="uiElement">The element whose dependency property values will be populated.</param>
+        /// <param name="propName">The name of the property to set.</param>
+        /// <param name="propValue">The value to set in the specified property.</param>
+        /// <param name="context">The current instantiation context.</param>
         private static void PopulateElementProperty(UIElement uiElement, String propName, String propValue, InstantiationContext context)
         {
             var dprop = default(DependencyProperty);
