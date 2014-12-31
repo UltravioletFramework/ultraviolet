@@ -68,24 +68,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             }
         }
 
-        /// <inheritdoc/>
-        public sealed override void PerformContentLayout()
-        {
-            foreach (var child in children)
-            {
-                PerformLayoutInternal(child, false);
-            }
-            DetermineIfScissorRectangleIsRequired();
-        }
-
-        /// <inheritdoc/>
-        public sealed override void PerformPartialLayout(UIElement content)
-        {
-            Contract.Require(content, "content");
-
-            PerformLayoutInternal(content, true);
-        }
-
         /// <summary>
         /// Gets the container's collection of child elements.
         /// </summary>
@@ -95,11 +77,24 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <summary>
-        /// Calculates the container-relative layout area of the specified child element.
+        /// Determines whether a scissor rectangle must be applied to this container.
         /// </summary>
-        /// <param name="child">The child element for which to calculate a layout area.</param>
-        /// <returns>The container-relative layout area of the specified child element.</returns>
-        protected abstract Rectangle CalculateLayoutArea(UIElement child);
+        protected void UpdateScissorRectangle()
+        {
+            var required = false;
+            foreach (var child in children)
+            {
+                if (child.ContainerRelativeX < 0 || 
+                    child.ContainerRelativeY < 0 ||
+                    child.ContainerRelativeX + child.ActualWidth > ContentElement.ActualWidth ||
+                    child.ContainerRelativeY + child.ActualHeight > ContentElement.ActualHeight)
+                {
+                    required = true;
+                    break;
+                }
+            }
+            RequiresScissorRectangle = required;
+        }
 
         /// <summary>
         /// Gets or sets a value indicating whether this container requires that a scissor
@@ -111,51 +106,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             set { requiresScissorRectangle = value; }
         }
 
-        /// <summary>
-        /// Attempts to remove the specified child or content element from this element.
-        /// </summary>
-        /// <param name="element">The child or content element to remove.</param>
-        /// <returns><c>true</c> if the child or content element was removed; otherwise, <c>false</c>.</returns>
+        /// <inheritdoc/>
         internal override Boolean RemoveContent(UIElement element)
         {
             Contract.Require(element, "element");
 
             return children.Remove(element);
-        }
-
-        /// <inheritdoc/>
-        internal override void UpdateAbsoluteScreenPosition(Int32 x, Int32 y)
-        {
-            base.UpdateAbsoluteScreenPosition(x, y);
-
-            foreach (var child in children)
-            {
-                child.UpdateAbsoluteScreenPosition(
-                    ContentElement.AbsoluteScreenX + child.ContainerRelativeX, 
-                    ContentElement.AbsoluteScreenY + child.ContainerRelativeY);
-            }
-        }
-
-        /// <inheritdoc/>
-        internal override void ApplyStyles(UvssDocument stylesheet)
-        {
-            base.ApplyStyles(stylesheet);
-
-            foreach (var child in children)
-            {
-                child.ApplyStyles(stylesheet);
-            }
-        }
-
-        /// <inheritdoc/>
-        internal override void ApplyStoryboard(Storyboard storyboard, StoryboardClock clock, UIElement root)
-        {
-            base.ApplyStoryboard(storyboard, clock, root);
-
-            foreach (var child in children)
-            {
-                child.ApplyStoryboard(storyboard, clock, root);
-            }
         }
 
         /// <inheritdoc/>
@@ -186,6 +142,28 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             }
 
             return true;
+        }
+
+        /// <inheritdoc/>
+        internal override void ApplyStyles(UvssDocument stylesheet)
+        {
+            base.ApplyStyles(stylesheet);
+
+            foreach (var child in children)
+            {
+                child.ApplyStyles(stylesheet);
+            }
+        }
+
+        /// <inheritdoc/>
+        internal override void ApplyStoryboard(Storyboard storyboard, StoryboardClock clock, UIElement root)
+        {
+            base.ApplyStoryboard(storyboard, clock, root);
+
+            foreach (var child in children)
+            {
+                child.ApplyStoryboard(storyboard, clock, root);
+            }
         }
 
         /// <inheritdoc/>
@@ -244,6 +222,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <inheritdoc/>
+        internal override void UpdateAbsoluteScreenPosition(Int32 x, Int32 y)
+        {
+            base.UpdateAbsoluteScreenPosition(x, y);
+
+            foreach (var child in children)
+            {
+                child.UpdateAbsoluteScreenPosition(
+                    ContentElement.AbsoluteScreenX + child.ContainerRelativeX,
+                    ContentElement.AbsoluteScreenY + child.ContainerRelativeY);
+            }
+        }
+
+        /// <inheritdoc/>
         internal override UIElement GetContentElementInternal(Int32 ix)
         {
             Contract.EnsureRange(ix >= 0 && ix < Children.Count, "ix");
@@ -257,8 +248,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             if (!Bounds.Contains(x, y))
                 return null;
 
-            var contentX = x - ContentElement.ContainerRelativeX;
-            var contentY = y - ContentElement.ContainerRelativeY;
+            var contentX = x - ContentOriginX;
+            var contentY = y - ContentOriginY;
             if (ContentElement.Bounds.Contains(contentX, contentY))
             {
                 for (int i = children.Count - 1; i >= 0; i--)
@@ -293,45 +284,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         internal override Int32 ContentElementCountInternal
         {
             get { return Children.Count; }
-        }
-
-        /// <summary>
-        /// Immediately recalculates the layout of the specified child element.
-        /// </summary>
-        /// <param name="child">The child element for which to calculate a layout.</param>
-        /// <param name="single">A value indicating whether this is the only element being laid out.</param>
-        private void PerformLayoutInternal(UIElement child, Boolean single)
-        {
-            var layout = (child == ComponentRoot) ? new Rectangle(0, 0, ActualWidth, ActualHeight) : CalculateLayoutArea(child);
-            child.ContainerRelativeArea = layout;
-
-            child.PerformLayout();
-            child.UpdateAbsoluteScreenPosition(
-                ContentElement.AbsoluteScreenX + child.ContainerRelativeX,
-                ContentElement.AbsoluteScreenY + child.ContainerRelativeY);
-
-            if (single)
-                DetermineIfScissorRectangleIsRequired();
-        }
-
-        /// <summary>
-        /// Determines whether a scissor rectangle must be applied to this container.
-        /// </summary>
-        private void DetermineIfScissorRectangleIsRequired()
-        {
-            var required = false;
-            foreach (var child in children)
-            {
-                if (child.ContainerRelativeX < 0 || 
-                    child.ContainerRelativeY < 0 ||
-                    child.ContainerRelativeX + child.ActualWidth > ContentElement.ActualWidth ||
-                    child.ContainerRelativeY + child.ActualHeight > ContentElement.ActualHeight)
-                {
-                    required = true;
-                    break;
-                }
-            }
-            RequiresScissorRectangle = required;
         }
 
         /// <summary>

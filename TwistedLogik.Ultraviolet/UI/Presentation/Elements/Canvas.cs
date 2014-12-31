@@ -134,6 +134,24 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             element.SetValue<Double>(BottomProperty, value);
         }
 
+        /// <inheritdoc/>
+        public sealed override void PerformContentLayout()
+        {
+            foreach (var child in Children)
+            {
+                UpdateChildLayout(child, false);
+            }
+            UpdateScissorRectangle();
+        }
+
+        /// <inheritdoc/>
+        public sealed override void PerformPartialLayout(UIElement content)
+        {
+            Contract.Require(content, "content");
+
+            UpdateChildLayout(content, true);
+        }
+
         /// <summary>
         /// Gets or sets the template used to create the control's component tree.
         /// </summary>
@@ -148,34 +166,84 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// </summary>
         [Styled("left")]
         public static readonly DependencyProperty LeftProperty = DependencyProperty.Register("Left", typeof(Double), typeof(Canvas),
-            new DependencyPropertyMetadata(OnLayoutPropertyChanged, () => Double.NaN, DependencyPropertyOptions.None));
+            new DependencyPropertyMetadata(HandleLayoutPropertyChanged, () => Double.NaN, DependencyPropertyOptions.None));
 
         /// <summary>
         /// Gets or sets a value indicating the distance between the top edge of the canvas and the top edge of the element.
         /// </summary>
         [Styled("top")]
         public static readonly DependencyProperty TopProperty = DependencyProperty.Register("Top", typeof(Double), typeof(Canvas),
-            new DependencyPropertyMetadata(OnLayoutPropertyChanged, () => Double.NaN, DependencyPropertyOptions.None));
+            new DependencyPropertyMetadata(HandleLayoutPropertyChanged, () => Double.NaN, DependencyPropertyOptions.None));
 
         /// <summary>
         /// Gets or sets a value indicating the distance between the right edge of the canvas and the right edge of the element.
         /// </summary>
         [Styled("right")]
         public static readonly DependencyProperty RightProperty = DependencyProperty.Register("Right", typeof(Double), typeof(Canvas),
-            new DependencyPropertyMetadata(OnLayoutPropertyChanged, () => Double.NaN, DependencyPropertyOptions.None));
+            new DependencyPropertyMetadata(HandleLayoutPropertyChanged, () => Double.NaN, DependencyPropertyOptions.None));
 
         /// <summary>
         /// Gets or sets a value indicating the distance between the bottom edge of the canvas and the bottom edge of the element.
         /// </summary>
         [Styled("bottom")]
         public static readonly DependencyProperty BottomProperty = DependencyProperty.Register("Bottom", typeof(Double), typeof(Canvas),
-            new DependencyPropertyMetadata(OnLayoutPropertyChanged, () => Double.NaN, DependencyPropertyOptions.None));
+            new DependencyPropertyMetadata(HandleLayoutPropertyChanged, () => Double.NaN, DependencyPropertyOptions.None));
 
         /// <inheritdoc/>
-        protected override Rectangle CalculateLayoutArea(UIElement child)
+        protected override void OnDrawing(UltravioletTime time, SpriteBatch spriteBatch)
+        {
+            DrawBackgroundImage(spriteBatch);
+
+            base.OnDrawing(time, spriteBatch);
+        }
+
+        /// <summary>
+        /// Called when the value of a layout-required dependency property is changed on an object.
+        /// </summary>
+        /// <param name="dobj">The dependency object that was changed.</param>
+        private static void HandleLayoutPropertyChanged(DependencyObject dobj)
+        {
+            var element = (UIElement)dobj;
+            if (element.Parent != null)
+                element.Parent.PerformPartialLayout(element);
+        }
+
+        /// <summary>
+        /// Immediately recalculates the layout of the specified child element.
+        /// </summary>
+        /// <param name="child">The child element for which to calculate a layout.</param>
+        /// <param name="partial">A value indicating whether this is a partial layout.</param>
+        private void UpdateChildLayout(UIElement child, Boolean partial)
+        {
+            UpdateContainerRelativeLayout(child);
+
+            child.PerformLayout();
+            child.UpdateAbsoluteScreenPosition(
+                ContentElement.AbsoluteScreenX + child.ContainerRelativeX,
+                ContentElement.AbsoluteScreenY + child.ContainerRelativeY);
+
+            if (partial)
+                UpdateScissorRectangle();
+        }
+
+        /// <summary>
+        /// Immediately recalculates the value of the <see cref="ContainerRelativeLayout"/> property
+        /// for the specified child element.
+        /// </summary>
+        /// <param name="child">The child element for which to calculate a layout.</param>
+        private void UpdateContainerRelativeLayout(UIElement child)
         {
             if (View == null)
-                return Rectangle.Empty;
+            {
+                child.ContainerRelativeArea = Rectangle.Empty;
+                return;
+            }
+
+            if (child == ComponentRoot)
+            {
+                child.ContainerRelativeArea = new Rectangle(0, 0, ActualWidth, ActualHeight);
+                return;
+            }
 
             var display = Ultraviolet.GetPlatform().Displays.PrimaryDisplay;
 
@@ -185,6 +253,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             var bottom = GetBottom(child);
             var width  = child.Width;
             var height = child.Height;
+            var margin = child.Margin;
 
             var widthpx  = (Int32?)null;
             var heightpx = (Int32?)null;
@@ -196,6 +265,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             // If we have neither top nor bottom, assume top: 0
             if (Double.IsNaN(top) && Double.IsNaN(bottom))
                 top = 0;
+
+            // Apply margins.
+            left += margin.Left;
+            top  += margin.Top;
 
             // If we have both left and right, calculate width
             if (!Double.IsNaN(left) && !Double.IsNaN(right))
@@ -219,7 +292,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             // Convert from dips to pixels
             widthpx  = Double.IsNaN(width)  ? (Int32?)null : (Int32)Math.Ceiling(display.DipsToPixels(width));
             heightpx = Double.IsNaN(height) ? (Int32?)null : (Int32)Math.Ceiling(display.DipsToPixels(height));
-            
+
             // If we're missing a dimension, calculate the recommended dimension.
             if (widthpx == null || heightpx == null)
                 child.CalculateContentSize(ref widthpx, ref heightpx);
@@ -255,27 +328,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             {
                 y = ActualHeight - ((Int32)display.DipsToPixels(bottom) + heightpx.GetValueOrDefault());
             }
-            return new Rectangle(x, y, widthpx.GetValueOrDefault(), heightpx.GetValueOrDefault());
-        }
-
-        /// <inheritdoc/>
-        protected override void OnDrawing(UltravioletTime time, SpriteBatch spriteBatch)
-        {
-            DrawBackgroundImage(spriteBatch);
-            base.OnDrawing(time, spriteBatch);
-        }
-
-        /// <summary>
-        /// Called when the value of a layout-required dependency property is changed on an object.
-        /// </summary>
-        /// <param name="dependencyObject">The dependency object that was changed.</param>
-        private static void OnLayoutPropertyChanged(DependencyObject dependencyObject)
-        {
-            var element = (UIElement)dependencyObject;
-            if (element.Parent != null)
-            {
-                element.Parent.PerformPartialLayout(element);
-            }
+            
+            // Apply the layout area to the element.
+            child.ContainerRelativeArea = new Rectangle(x, y, widthpx.GetValueOrDefault(), heightpx.GetValueOrDefault());
         }
     }
 }

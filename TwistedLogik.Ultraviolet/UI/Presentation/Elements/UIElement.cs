@@ -541,6 +541,33 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <summary>
+        /// Gets or sets the element's outer margin.
+        /// </summary>
+        public Thickness Margin
+        {
+            get { return GetValue<Thickness>(MarginProperty); }
+            set { SetValue<Thickness>(MarginProperty, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets the element's horizontal alignment relative to its parent element.
+        /// </summary>
+        public HorizontalAlignment HorizontalAlignment
+        {
+            get { return GetValue<HorizontalAlignment>(HorizontalAlignmentProperty); }
+            set { SetValue<HorizontalAlignment>(HorizontalAlignmentProperty, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets the element's vertical alignment relative to its parent element.
+        /// </summary>
+        public VerticalAlignment VerticalAlignment
+        {
+            get { return GetValue<VerticalAlignment>(VerticalAlignmentProperty); }
+            set { SetValue<VerticalAlignment>(VerticalAlignmentProperty, value); }
+        }
+
+        /// <summary>
         /// Gets or sets the element's font color.
         /// </summary>
         public Color FontColor
@@ -752,6 +779,21 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         public event UIElementEventHandler PaddingChanged;
 
         /// <summary>
+        /// Occurs when the value of the <see cref="Margin"/> property changes.
+        /// </summary>
+        public event UIElementEventHandler MarginChanged;
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="HorizontalAlignment"/> property changes.
+        /// </summary>
+        public event UIElementEventHandler HorizontalAlignmentChanged;
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="VerticalAlignment"/> property changes.
+        /// </summary>
+        public event UIElementEventHandler VerticalAlignmentChanged;
+
+        /// <summary>
         /// Occurs when the value of the <see cref="FontColor"/> property changes.
         /// </summary>
         public event UIElementEventHandler FontColorChanged;
@@ -855,6 +897,27 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         [Styled("padding")]
         public static readonly DependencyProperty PaddingProperty = DependencyProperty.Register("Padding", typeof(Thickness), typeof(UIElement),
             new DependencyPropertyMetadata(HandlePaddingChanged, null, DependencyPropertyOptions.None));
+
+        /// <summary>
+        /// Identifies the <see cref="Margin"/> dependency property.
+        /// </summary>
+        [Styled("margin")]
+        public static readonly DependencyProperty MarginProperty = DependencyProperty.Register("Margin", typeof(Thickness), typeof(UIElement),
+            new DependencyPropertyMetadata(HandleMarginChanged, null, DependencyPropertyOptions.None));
+
+        /// <summary>
+        /// Identifies the <see cref="HorizontalAlignment"/> dependency property.
+        /// </summary>
+        [Styled("halign")]
+        public static readonly DependencyProperty HorizontalAlignmentProperty = DependencyProperty.Register("HorizontalAlignment", typeof(HorizontalAlignment), typeof(UIElement),
+            new DependencyPropertyMetadata(HandleHorizontalAlignmentChanged, () => HorizontalAlignment.Left, DependencyPropertyOptions.None));
+
+        /// <summary>
+        /// Identifies the <see cref="VerticalAlignment"/> dependency property.
+        /// </summary>
+        [Styled("valign")]
+        public static readonly DependencyProperty VerticalAlignmentProperty = DependencyProperty.Register("VerticalAlignment", typeof(VerticalAlignment), typeof(UIElement),
+            new DependencyPropertyMetadata(HandleVerticalAlignmentChanged, () => VerticalAlignment.Top, DependencyPropertyOptions.None));
 
         /// <summary>
         /// Identifies the <see cref="FontColor"/> dependency property.
@@ -1082,14 +1145,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <summary>
-        /// Updates the element's absolute screen position.
+        /// Draws the element.
         /// </summary>
-        /// <param name="x">The x-coordinate of the element's absolute screen position.</param>
-        /// <param name="y">The y-coordinate of the element's absolute screen position.</param>
-        internal virtual void UpdateAbsoluteScreenPosition(Int32 x, Int32 y)
+        /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Draw(UltravioletTime)"/>.</param>
+        /// <param name="spriteBatch">The sprite batch with which to draw the view.</param>
+        /// <returns><c>true</c> if the element was drawn; otherwise, <c>false</c>.</returns>
+        internal virtual Boolean Draw(UltravioletTime time, SpriteBatch spriteBatch)
         {
-            this.absoluteScreenX = x;
-            this.absoluteScreenY = y;
+            OnDrawing(time, spriteBatch);
+            return true;
         }
 
         /// <summary>
@@ -1138,18 +1202,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
                     }
                 }
             }
-        }
-
-        /// <summary>
-        /// Draws the element.
-        /// </summary>
-        /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Draw(UltravioletTime)"/>.</param>
-        /// <param name="spriteBatch">The sprite batch with which to draw the view.</param>
-        /// <returns><c>true</c> if the element was drawn; otherwise, <c>false</c>.</returns>
-        internal virtual Boolean Draw(UltravioletTime time, SpriteBatch spriteBatch)
-        {
-            OnDrawing(time, spriteBatch);
-            return true;
         }
 
         /// <summary>
@@ -1243,6 +1295,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             this.control = FindControl();
 
             RegisterElement();
+        }
+
+        /// <summary>
+        /// Updates the element's absolute screen position.
+        /// </summary>
+        /// <param name="x">The x-coordinate of the element's absolute screen position.</param>
+        /// <param name="y">The y-coordinate of the element's absolute screen position.</param>
+        internal virtual void UpdateAbsoluteScreenPosition(Int32 x, Int32 y)
+        {
+            this.absoluteScreenX = x;
+            this.absoluteScreenY = y;
         }
 
         /// <summary>
@@ -1562,6 +1625,24 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             get { return actualHeight; }
             internal set { actualHeight = value; }
         }
+
+        /// <summary>
+        /// Gets the distance in pixels between the left edge of this control and the left
+        /// edge of the control's content region.
+        /// </summary>
+        protected internal Int32 ContentOriginX
+        {
+            get { return ContentElement.AbsoluteScreenX - this.AbsoluteScreenX; }
+        }
+
+        /// <summary>
+        /// Gets the distance in pixels between the top edge of this control and the top
+        /// edge of the control's content region.
+        /// </summary>
+        protected internal Int32 ContentOriginY
+        {
+            get { return ContentElement.AbsoluteScreenY - this.AbsoluteScreenY; }
+        }
                 
         /// <summary>
         /// Releases resources associated with the object.
@@ -1777,6 +1858,42 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         protected virtual void OnPaddingChanged()
         {
             var temp = PaddingChanged;
+            if (temp != null)
+            {
+                temp(this);
+            }
+        }
+
+        /// <summary>
+        /// Raises the <see cref="MarginChanged"/> event.
+        /// </summary>
+        protected virtual void OnMarginChanged()
+        {
+            var temp = MarginChanged;
+            if (temp != null)
+            {
+                temp(this);
+            }
+        }
+
+        /// <summary>
+        /// Raises the <see cref="HorizontalAlignmentChanged"/> event.
+        /// </summary>
+        protected virtual void OnHorizontalAlignmentChanged()
+        {
+            var temp = HorizontalAlignmentChanged;
+            if (temp != null)
+            {
+                temp(this);
+            }
+        }
+
+        /// <summary>
+        /// Raises the <see cref="VerticalAlignmentChanged"/> event.
+        /// </summary>
+        protected virtual void OnVerticalAlignmentChanged()
+        {
+            var temp = VerticalAlignmentChanged;
             if (temp != null)
             {
                 temp(this);
@@ -2235,6 +2352,45 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         {
             var element = (UIElement)dobj;
             element.OnPaddingChanged();
+
+            if (element.Parent != null)
+                element.Parent.PerformPartialLayout(element);
+        }
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="Margin"/> dependency property changes.
+        /// </summary>
+        /// <param name="dobj">The object that raised the event.</param>
+        private static void HandleMarginChanged(DependencyObject dobj)
+        {
+            var element = (UIElement)dobj;
+            element.OnMarginChanged();
+
+            if (element.Parent != null)
+                element.Parent.PerformPartialLayout(element);
+        }
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="HorizontalAlignment"/> dependency property changes.
+        /// </summary>
+        /// <param name="dobj">The object that raised the event.</param>
+        private static void HandleHorizontalAlignmentChanged(DependencyObject dobj)
+        {
+            var element = (UIElement)dobj;
+            element.OnHorizontalAlignmentChanged();
+
+            if (element.Parent != null)
+                element.Parent.PerformPartialLayout(element);
+        }
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="VerticalAlignment"/> dependency property changes.
+        /// </summary>
+        /// <param name="dobj">The object that raised the event.</param>
+        private static void HandleVerticalAlignmentChanged(DependencyObject dobj)
+        {
+            var element = (UIElement)dobj;
+            element.OnVerticalAlignmentChanged();
 
             if (element.Parent != null)
                 element.Parent.PerformPartialLayout(element);

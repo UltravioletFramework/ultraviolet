@@ -337,6 +337,9 @@
     <Compile Include="Size3.cs" />
     <Compile Include="Size3F.cs" />
     <Compile Include="TaskUtil.cs" />
+    <Compile Include="UI\Presentation\Elements\HorizontalAlignment.cs" />
+    <Compile Include="UI\Presentation\Elements\Orientation.cs" />
+    <Compile Include="UI\Presentation\Elements\StackPanel.cs" />
     <Compile Include="UI\Presentation\Elements\ProgressBar.cs" />
     <Compile Include="UI\Presentation\Elements\RadioButton.cs" />
     <Compile Include="UI\Presentation\Elements\CheckBox.cs" />
@@ -344,6 +347,7 @@
     <Compile Include="UI\Presentation\Elements\TextBoxInsertionMode.cs" />
     <Compile Include="UI\Presentation\Elements\ToggleButton.cs" />
     <Compile Include="UI\Presentation\Elements\ButtonBase.cs" />
+    <Compile Include="UI\Presentation\Elements\VerticalAlignment.cs" />
     <Compile Include="UI\Presentation\IUltravioletDisplayExtensions.cs" />
     <Compile Include="UI\Presentation\Thickness.cs" />
     <Compile Include="Tweening.cs" />

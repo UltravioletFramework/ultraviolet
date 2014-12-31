@@ -238,8 +238,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             if (!Bounds.Contains(x, y))
                 return null;
             
-            var contentX = x - ContentElement.ContainerRelativeX;
-            var contentY = y - ContentElement.ContainerRelativeY;
+            var contentX = x - ContentOriginX;
+            var contentY = y - ContentOriginY;
             if (Content != null && ContentElement.Bounds.Contains(contentX, contentY))
             {
                 var content = Content.GetElementAtPointInternal(
