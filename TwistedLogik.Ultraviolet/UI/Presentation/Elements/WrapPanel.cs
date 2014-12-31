@@ -48,7 +48,46 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
 
             if (width == null || height == null)
             {
-                // TODO
+                var index       = 0;
+                var totalWidth  = 0;
+                var totalHeight = 0;
+
+                if (Orientation == Orientation.Horizontal)
+                {
+                    var extent    = width ?? ((Parent == null) ? 0 : Parent.ActualWidth - ContainerRelativeArea.X);
+                    var rowCount  = 0;
+                    var rowWidth  = 0;
+                    var rowHeight = 0;
+
+                    while (CalculateRowProperties(index, out rowCount, out rowWidth, out rowHeight, extent))
+                    {
+                        totalWidth  = Math.Max(totalWidth, rowWidth);
+                        totalHeight = totalHeight + rowHeight;
+
+                        index += rowCount;
+                    }
+                }
+                else
+                {
+                    var extent    = height ?? ((Parent == null) ? 0 : Parent.ActualHeight - ContainerRelativeArea.Y);
+                    var columnCount  = 0;
+                    var columnWidth  = 0;
+                    var columnHeight = 0;
+
+                    while (CalculateColumnProperties(index, out columnCount, out columnWidth, out columnHeight, extent))
+                    {
+                        totalWidth  = totalWidth + columnWidth;
+                        totalHeight = Math.Max(totalHeight, columnHeight);
+
+                        index += columnCount;
+                    }
+                }
+
+                if (width == null)
+                    width = totalWidth;
+
+                if (height == null)
+                    height = totalHeight;
             }
 
             base.CalculateContentSize(ref width, ref height);
@@ -64,9 +103,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             if (Orientation == Orientation.Horizontal)
             {
                 var rowCount  = 0;
+                var rowWidth  = 0;
                 var rowHeight = 0;
 
-                while (CalculateRowProperties(index, out rowCount, out rowHeight))
+                while (CalculateRowProperties(index, out rowCount, out rowWidth, out rowHeight))
                 {
                     positionX = 0;
                     PerformRowLayout(index, rowCount, rowHeight, ref positionX, ref positionY);
@@ -75,10 +115,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             }
             else
             {
-                var columnCount = 0;
-                var columnWidth = 0;
+                var columnCount  = 0;
+                var columnHeight = 0;
+                var columnWidth  = 0;
 
-                while (CalculateColumnProperties(index, out columnCount, out columnWidth))
+                while (CalculateColumnProperties(index, out columnCount, out columnWidth, out columnHeight))
                 {
                     positionY = 0;
                     PerformColumnLayout(index, columnCount, columnWidth, ref positionX, ref positionY);
@@ -115,15 +156,55 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <summary>
+        /// Gets or sets a value that specifies the width of elements which are contained by the stack panel.
+        /// </summary>
+        public Double ItemWidth
+        {
+            get { return GetValue<Double>(ItemWidthProperty); }
+            set { SetValue<Double>(ItemWidthProperty, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets a value that specifies the height of elements which are contained by the stack panel.
+        /// </summary>
+        public Double ItemHeight
+        {
+            get { return GetValue<Double>(ItemHeightProperty); }
+            set { SetValue<Double>(ItemHeightProperty, value); }
+        }
+
+        /// <summary>
         /// Occurs when the value of the <see cref="Orientation"/> property changes.
         /// </summary>
         public event UIElementEventHandler OrientationChanged;
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="ItemWidth"/> property changes.
+        /// </summary>
+        public event UIElementEventHandler ItemWidthChanged;
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="ItemHeight"/> property changes.
+        /// </summary>
+        public event UIElementEventHandler ItemHeightChanged;
 
         /// <summary>
         /// Identifies the <see cref="Orientation"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty OrientationProperty = DependencyProperty.Register("Orientation", typeof(Orientation), typeof(WrapPanel),
             new DependencyPropertyMetadata(HandleOrientationChanged, () => Orientation.Vertical, DependencyPropertyOptions.None));
+
+        /// <summary>
+        /// Identifies the <see cref="ItemWidth"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty ItemWidthProperty = DependencyProperty.Register("ItemWidth", typeof(Double), typeof(WrapPanel),
+            new DependencyPropertyMetadata(HandleItemWidthChanged, () => Double.NaN, DependencyPropertyOptions.None));
+
+        /// <summary>
+        /// Identifies the <see cref="ItemHeight"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty ItemHeightProperty = DependencyProperty.Register("ItemHeight", typeof(Double), typeof(WrapPanel),
+            new DependencyPropertyMetadata(HandleItemHeightChanged, () => Double.NaN, DependencyPropertyOptions.None));
 
         /// <inheritdoc/>
         protected override void OnDrawing(UltravioletTime time, SpriteBatch spriteBatch)
@@ -145,6 +226,30 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <summary>
+        /// Raises the <see cref="ItemWidthChanged"/> event.
+        /// </summary>
+        protected virtual void OnItemWidthChanged()
+        {
+            var temp = ItemWidthChanged;
+            if (temp != null)
+            {
+                temp(this);
+            }
+        }
+
+        /// <summary>
+        /// Raises the <see cref="ItemHeightChanged"/> event.
+        /// </summary>
+        protected virtual void OnItemHeightChanged()
+        {
+            var temp = ItemHeightChanged;
+            if (temp != null)
+            {
+                temp(this);
+            }
+        }
+
+        /// <summary>
         /// Occurs when the value of the <see cref="Orientation"/> dependency property changes.
         /// </summary>
         /// <param name="dobj">The object that raised the event.</param>
@@ -152,11 +257,33 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         {
             var element = (WrapPanel)dobj;
             element.OnOrientationChanged();
-            element.PerformLayout();
+            element.RequestLayout();
 
             var parent = element.Parent;
             if (parent != null)
                 parent.PerformPartialLayout(element);
+        }
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="ItemWidth"/> dependency property changes.
+        /// </summary>
+        /// <param name="dobj">The object that raised the event.</param>
+        private static void HandleItemWidthChanged(DependencyObject dobj)
+        {
+            var element = (WrapPanel)dobj;
+            element.OnItemWidthChanged();
+            element.RequestLayout();
+        }
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="ItemHeight"/> dependency property changes.
+        /// </summary>
+        /// <param name="dobj">The object that raised the event.</param>
+        private static void HandleItemHeightChanged(DependencyObject dobj)
+        {
+            var element = (WrapPanel)dobj;
+            element.OnItemHeightChanged();
+            element.RequestLayout();
         }
 
         /// <summary>
@@ -299,11 +426,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// </summary>
         /// <param name="index">The index of the first element in the layout row.</param>
         /// <param name="rowCount">The number of elements in the layout row.</param>
+        /// <param name="rowWidth">The width of the layout row in pixels.</param>
         /// <param name="rowHeight">The height of the layout row in pixels.</param>
+        /// <param name="extent">The maximum extent of a row. If <c>null</c>, this is the width of the container.</param>
         /// <returns><c>true</c> if the specified index is the beginning of a valid layout row; otherwise, <c>false</c>.</returns>
-        private Boolean CalculateRowProperties(Int32 index, out Int32 rowCount, out Int32 rowHeight)
+        private Boolean CalculateRowProperties(Int32 index, out Int32 rowCount, out Int32 rowWidth, out Int32 rowHeight, Int32? extent = null)
         {
             rowCount  = 0;
+            rowWidth  = 0;
             rowHeight = 0;
 
             if (index >= Children.Count)
@@ -316,7 +446,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             for (int i = index; i < Children.Count; i++)
             {
                 var size = CalculateElementRegionSize(Children[i]);
-                if (position + size.Width > ActualWidth)
+                if (position + size.Width > (extent ?? ActualWidth))
                     break;
 
                 count  = count + 1;
@@ -326,6 +456,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             }
 
             rowCount  = count;
+            rowWidth  = position;
             rowHeight = height;
 
             return rowCount > 0;
@@ -336,13 +467,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// </summary>
         /// <param name="index">The index of the first element in the layout column.</param>
         /// <param name="columnCount">The number of elements in the layout column.</param>
+        /// <param name="columnWidth">The width of the layout column in pixels.</param>
         /// <param name="columnHeight">The height of the layout column in pixels.</param>
+        /// <param name="extent">The maximum extent of a column. If <c>null</c>, this is the height of the container.</param>
         /// <returns><c>true</c> if the specified index is the beginning of a valid layout column; otherwise, <c>false</c>.</returns>
-        private Boolean CalculateColumnProperties(Int32 index, out Int32 columnCount, out Int32 columnWidth)
+        private Boolean CalculateColumnProperties(Int32 index, out Int32 columnCount, out Int32 columnWidth, out Int32 columnHeight, Int32? extent = null)
         {
-            columnCount = 0;
-            columnWidth = 0;
-
+            columnCount  = 0;
+            columnWidth  = 0;
+            columnHeight = 0;
+            
             if (index >= Children.Count)
                 return false;
 
@@ -353,7 +487,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             for (int i = index; i < Children.Count; i++)
             {
                 var size = CalculateElementRegionSize(Children[i]);
-                if (position + size.Height > ActualHeight)
+                if (position + size.Height > (extent ?? ActualHeight))
                     break;
 
                 count = count + 1;
@@ -362,8 +496,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
                 position += size.Height;
             }
 
-            columnCount = count;
-            columnWidth = width;
+            columnCount  = count;
+            columnWidth  = width;
+            columnHeight = position;
 
             return columnCount > 0;
         }
@@ -375,8 +510,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <returns>The size of the specified child element.</returns>
         private Size2 CalculateElementSize(UIElement element)
         {
-            int? pxWidth  = null;
-            int? pxHeight = null;
+            int? pxWidth  = Double.IsNaN(ItemWidth)  ? null : (Int32?)ConvertMeasureToPixels(ItemWidth, 0);
+            int? pxHeight = Double.IsNaN(ItemHeight) ? null : (Int32?)ConvertMeasureToPixels(ItemHeight, 0);
             element.CalculateActualSize(ref pxWidth, ref pxHeight);
 
             return new Size2(pxWidth ?? 0, pxHeight ?? 0);
