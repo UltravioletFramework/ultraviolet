@@ -515,9 +515,19 @@
       <Variant>Invalid character in stylesheet (line {0}): '{1}'</Variant>
     </en-US>
   </String>
+  <String Key="IS_NOT_DEPENDENCY_OBJECT">
+    <en-US>
+      <Variant>The specified object is not a dependency object.</Variant>
+    </en-US>
+  </String>
+  <String Key="PROPERTY_DOES_NOT_EXIST">
+    <en-US>
+      <Variant>No property named '{0}' exists on the type '{1}'</Variant>
+    </en-US>
+  </String>
   <String Key="DEPENDENCY_PROPERTY_DOES_NOT_EXIST">
     <en-US>
-      <Variant>No such dependency property exists on this object.</Variant>
+      <Variant>No dependency property named '{0}' exists on this object.</Variant>
     </en-US>
   </String>
   <String Key="DEPENDENCY_PROPERTY_ALREADY_REGISTERED">

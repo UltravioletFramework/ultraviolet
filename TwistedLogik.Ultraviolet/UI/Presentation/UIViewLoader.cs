@@ -237,7 +237,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             foreach (var attr in xmlElement.Attributes())
             {
                 var attrName = attr.Name.LocalName;
-                if (attrName == "BindingContext")
+                if (attrName == "BindingContext" || attrName == "ViewModelType") 
                     continue;
 
                 var attachedContainer = String.Empty;
@@ -257,6 +257,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 if (dprop != null)
                 {
                     BindOrSetProperty(uiElement, dprop, attr.Value, context);
+                }
+                else
+                {
+                    var standardProperty = uiElement.GetType().GetProperty(attrName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+                    if (standardProperty == null)
+                        throw new InvalidOperationException(UltravioletStrings.PropertyDoesNotExist.Format(attrName, uiElement.GetType()));
+
+                    var value = ObjectResolver.FromString(attr.Value, standardProperty.PropertyType);
+                    standardProperty.SetValue(uiElement, value, null);
                 }
             }
 
