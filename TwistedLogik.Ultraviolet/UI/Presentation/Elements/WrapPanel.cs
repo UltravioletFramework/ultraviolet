@@ -40,12 +40,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <inheritdoc/>
         public sealed override void CalculateContentSize(ref Int32? width, ref Int32? height)
         {
-            var parentWidth = (Parent == null) ? 0 : Parent.Width;
-            var layoutWidth = width ?? (Double.IsNaN(Width) ? parentWidth : Width);
-
-            var parentHeight = (Parent == null) ? 0 : Parent.Height;
-            var layoutHeight = height ?? (Double.IsNaN(Height) ? parentHeight : Height);
-
             if (width == null || height == null)
             {
                 var index       = 0;
