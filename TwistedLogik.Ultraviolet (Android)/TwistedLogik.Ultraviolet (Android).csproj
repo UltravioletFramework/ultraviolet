@@ -1339,6 +1339,9 @@
     <Content Include="..\TwistedLogik.Ultraviolet\TwistedLogik.Ultraviolet.Licenses.txt">
       <Link>TwistedLogik.Ultraviolet.Licenses.txt</Link>
     </Content>
+    <Content Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Elements\Templates\Border.xml">
+      <Link>UI\Presentation\Elements\Templates\Border.xml</Link>
+    </Content>
     <Content Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Elements\Templates\ScrollViewer.xml">
       <Link>UI\Presentation\Elements\Templates\ScrollViewer.xml</Link>
     </Content>

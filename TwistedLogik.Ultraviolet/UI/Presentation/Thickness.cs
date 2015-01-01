@@ -87,20 +87,32 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 return false;
 
             var components = s.Split(' ');
-            if (components.Length != 4)
+            if (components.Length != 1 && components.Length != 4)
                 return false;
 
-            Double top, left, right, bottom;
-            if (!Double.TryParse(components[0], style, provider, out top))
-                return false;
-            if (!Double.TryParse(components[1], style, provider, out left))
-                return false;
-            if (!Double.TryParse(components[2], style, provider, out right))
-                return false;
-            if (!Double.TryParse(components[3], style, provider, out bottom))
-                return false;
+            if (components.Length == 1)
+            {
+                Double value;
+                if (!Double.TryParse(components[0], style, provider, out value))
+                    return false;
 
-            thickness = new Thickness(top, left, right, bottom);
+                thickness = new Thickness(value, value, value, value);
+            }
+            else
+            {
+                Double top, left, right, bottom;
+                if (!Double.TryParse(components[0], style, provider, out top))
+                    return false;
+                if (!Double.TryParse(components[1], style, provider, out left))
+                    return false;
+                if (!Double.TryParse(components[2], style, provider, out right))
+                    return false;
+                if (!Double.TryParse(components[3], style, provider, out bottom))
+                    return false;
+
+                thickness = new Thickness(top, left, right, bottom);
+            }
+
             return true;
         }
 

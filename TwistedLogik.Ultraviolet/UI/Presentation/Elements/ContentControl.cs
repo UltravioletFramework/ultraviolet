@@ -21,6 +21,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         { }
 
         /// <inheritdoc/>
+        public override void CalculateContentSize(ref Int32? width, ref Int32? height)
+        {
+            if (Content != null)
+            {
+                Content.CalculateContentSize(ref width, ref height);
+            }
+            else
+            {
+                base.CalculateContentSize(ref width, ref height);
+            }
+        }
+
+        /// <inheritdoc/>
         public sealed override void ClearLocalValuesRecursive()
         {
             base.ClearLocalValuesRecursive();
@@ -57,18 +70,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <inheritdoc/>
-        public sealed override void PerformLayout()
-        {
-            base.PerformLayout();
-
-            if (Content != null)
-            {
-                Content.ContainerRelativeArea = new Rectangle(0, 0, ContentElement.ActualWidth, ContentElement.ActualHeight);
-                Content.PerformLayout();
-            }
-        }
-
-        /// <inheritdoc/>
         public sealed override void PerformPartialLayout(UIElement content)
         {
             Contract.Require(content, "content");
@@ -84,6 +85,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             {
                 Content.PerformPartialLayout(content);
             }
+        }
+
+        /// <inheritdoc/>
+        public sealed override void PerformContentLayout()
+        {
+            if (Content != null)
+            {
+                Content.ContainerRelativeArea = new Rectangle(0, 0, ContentElement.ActualWidth, ContentElement.ActualHeight);
+                Content.PerformLayout();
+            }
+
+            base.PerformContentLayout();
         }
 
         /// <summary>
@@ -132,18 +145,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
 
             return false;
         }
-
+        
         /// <inheritdoc/>
-        internal override void UpdateAbsoluteScreenPosition(Int32 x, Int32 y)
+        internal override Boolean Draw(UltravioletTime time, SpriteBatch spriteBatch)
         {
-            base.UpdateAbsoluteScreenPosition(x, y);
+            if (!base.Draw(time, spriteBatch))
+                return false;
 
             if (Content != null)
-            {
-                Content.UpdateAbsoluteScreenPosition(
-                    ContentElement.AbsoluteScreenX,
-                    ContentElement.AbsoluteScreenY);
-            }
+                Content.Draw(time, spriteBatch);
+
+            OnContentDrawn(time, spriteBatch);
+
+            return true;
         }
 
         /// <inheritdoc/>
@@ -162,20 +176,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
 
             if (Content != null)
                 Content.ApplyStoryboard(storyboard, clock, root);
-        }
-
-        /// <inheritdoc/>
-        internal override Boolean Draw(UltravioletTime time, SpriteBatch spriteBatch)
-        {
-            if (!base.Draw(time, spriteBatch))
-                return false;
-
-            if (Content != null)
-                Content.Draw(time, spriteBatch);
-
-            OnContentDrawn(time, spriteBatch);
-
-            return true;
         }
 
         /// <inheritdoc/>
@@ -221,6 +221,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
 
             if (Content != null)
                 Content.UpdateControl();
+        }
+
+        /// <inheritdoc/>
+        internal override void UpdateAbsoluteScreenPosition(Int32 x, Int32 y)
+        {
+            base.UpdateAbsoluteScreenPosition(x, y);
+
+            if (Content != null)
+            {
+                Content.UpdateAbsoluteScreenPosition(
+                    ContentElement.AbsoluteScreenX,
+                    ContentElement.AbsoluteScreenY);
+            }
         }
 
         /// <inheritdoc/>

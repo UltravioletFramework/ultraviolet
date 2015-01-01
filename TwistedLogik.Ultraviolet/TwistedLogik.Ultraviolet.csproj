@@ -594,6 +594,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <EmbeddedResource Include="UI\Presentation\Elements\Templates\ScrollViewer.xml" />
+    <EmbeddedResource Include="UI\Presentation\Elements\Templates\Border.xml" />
     <Content Include="uv.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

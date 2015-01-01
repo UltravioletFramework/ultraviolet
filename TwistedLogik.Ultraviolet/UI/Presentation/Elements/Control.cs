@@ -80,7 +80,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// </summary>
         internal void PopulateFieldsFromRegisteredElements()
         {
-
+            ComponentRegistry.PopulateFieldsFromRegisteredElements(this);
         }
 
         /// <inheritdoc/>

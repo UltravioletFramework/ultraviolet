@@ -261,6 +261,23 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Gets a value indicating whether the specified attribute name is reserved by the UVML loader.
+        /// </summary>
+        /// <param name="name">The name to evaluate.</param>
+        /// <returns><c>true</c> if the specified attribute name is reserved; otherwise, <c>false</c>.</returns>
+        private static Boolean IsReservedAttribute(String name)
+        {
+            switch (name)
+            {
+                case "ID":
+                case "ViewModelType":
+                case "BindingContext":
+                    return true;
+            }
+            return false;
+        }
+
+        /// <summary>
         /// Gets a value indicating whether the specified type represents an enumerable collection.
         /// </summary>
         /// <param name="enumType">The type to evaluate.</param>
@@ -355,7 +372,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             foreach (var attr in xmlElement.Attributes())
             {
                 var attrName = attr.Name.LocalName;
-                if (attrName == "BindingContext" || attrName == "ViewModelType") 
+                if (IsReservedAttribute(attrName))
                     continue;
 
                 PopulateElementProperty(uiElement, attrName, attr.Value, context);
@@ -375,7 +392,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             foreach (var element in xmlElement.Elements())
             {
                 var elementName = element.Name.LocalName;
-                if (elementName == "BindingContext" || elementName == "ViewModelType" || !ElementNameRepresentsProperty(element))
+                if (IsReservedAttribute(elementName) || !ElementNameRepresentsProperty(element))
                     continue;
 
                 var propDelimIndex = elementName.IndexOf('.');
