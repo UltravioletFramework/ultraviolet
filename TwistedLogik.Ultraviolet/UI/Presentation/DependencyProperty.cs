@@ -15,7 +15,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="propertyType">The dependency property's value type.</param>
         /// <param name="ownerType">The dependency property's owner type.</param>
         /// <param name="metadata">The dependency property's metadata.</param>
-        internal DependencyProperty(Int64 id, String name, RuntimeTypeHandle propertyType, RuntimeTypeHandle ownerType, DependencyPropertyMetadata metadata)
+        internal DependencyProperty(Int64 id, String name, Type propertyType, Type ownerType, DependencyPropertyMetadata metadata)
         {
             this.id           = id;
             this.name         = name;
@@ -68,7 +68,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Gets the dependency property's value type.
         /// </summary>
-        internal RuntimeTypeHandle PropertyType
+        internal Type PropertyType
         {
             get { return propertyType; }
         }
@@ -76,7 +76,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Gets the dependency property's owner type.
         /// </summary>
-        internal RuntimeTypeHandle OwnerType
+        internal Type OwnerType
         {
             get { return ownerType; }
         }
@@ -92,8 +92,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         // Property values.
         private readonly Int64 id;
         private readonly String name;
-        private readonly RuntimeTypeHandle propertyType;
-        private readonly RuntimeTypeHandle ownerType;
+        private readonly Type propertyType;
+        private readonly Type ownerType;
         private readonly DependencyPropertyMetadata metadata;
     }
 }

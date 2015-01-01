@@ -28,7 +28,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             {
                 throw new ArgumentException(UltravioletStrings.DependencyPropertyAlreadyRegistered);
             }
-            var dp = new DependencyProperty(dpid++, name, propertyType.TypeHandle, ownerType.TypeHandle, metadata);
+            var dp = new DependencyProperty(dpid++, name, propertyType, ownerType, metadata);
             propertyDomain[name] = dp;
             return dp;
         }

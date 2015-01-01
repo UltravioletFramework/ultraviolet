@@ -2352,7 +2352,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
                         foreach (var prop in styledDependencyProperties)
                         {
                             var dp                  = (DependencyProperty)prop.FieldInfo.GetValue(null);
-                            var dpType              = Type.GetTypeFromHandle(dp.PropertyType);
+                            var dpType              = dp.PropertyType;
 
                             var setStyledValue      = miSetStyledValue.MakeGenericMethod(dpType);
 

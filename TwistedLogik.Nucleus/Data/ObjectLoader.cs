@@ -158,9 +158,20 @@ namespace TwistedLogik.Nucleus.Data
         /// <returns>The object that was loaded.</returns>
         public static T LoadObject<T>(XElement xml, Boolean ignoreMissingMembers = false)
         {
-            Contract.Require(xml, "xml");
+            return LoadObject<T>(xml, CultureInfo.InvariantCulture, ignoreMissingMembers);
+        }
 
-            return LoadObject<T>(xml, Thread.CurrentThread.CurrentCulture, ignoreMissingMembers);
+        /// <summary>
+        /// Loads an object from the specified XML element.
+        /// </summary>
+        /// <param name="type">The type of object to load.</param>
+        /// <param name="xml">The XML element that contains the object data.</param>
+        /// <param name="ignoreMissingMembers">A value indicating whether the object loader 
+        /// should ignore members which do not exist on the type.</param>
+        /// <returns>The object that was loaded.</returns>
+        public static Object LoadObject(Type type, XElement xml, Boolean ignoreMissingMembers = false)
+        {
+            return LoadObject(type, xml, CultureInfo.InvariantCulture, ignoreMissingMembers);
         }
 
         /// <summary>
@@ -174,19 +185,34 @@ namespace TwistedLogik.Nucleus.Data
         /// <returns>The object that was loaded.</returns>
         public static T LoadObject<T>(XElement xml, CultureInfo culture, Boolean ignoreMissingMembers = false)
         {
+            return (T)LoadObject(typeof(T), xml, culture, ignoreMissingMembers);
+        }
+
+        /// <summary>
+        /// Loads an object from the specified XML element.
+        /// </summary>
+        /// <param name="type">The type of object to load.</param>
+        /// <param name="xml">The XML element that contains the object data.</param>
+        /// <param name="culture">The culture information to use when parsing values.</param>
+        /// <param name="ignoreMissingMembers">A value indicating whether the object loader 
+        /// should ignore members which do not exist on the type.</param>
+        /// <returns>The object that was loaded.</returns>
+        public static Object LoadObject(Type type, XElement xml, CultureInfo culture, Boolean ignoreMissingMembers = false)
+        {
+            Contract.Require(type, "type");
             Contract.Require(xml, "xml");
             Contract.Require(culture, "culture");
 
             var state = new ObjectLoaderState(globalAliases, culture);
             state.IgnoreMissingMembers = ignoreMissingMembers;
-            state.ParseClassAliases(null, typeof(T));
+            state.ParseClassAliases(null, type);
 
             var objectElement = DataElement.CreateFromXml(xml);
-            var objectInstance = CreateObjectFromRootElement<T>(state, objectElement);
+            var objectInstance = CreateObjectFromRootElement(state, type, objectElement);
 
-            return (T)PopulateObject(state, objectInstance, objectElement);
+            return PopulateObject(state, objectInstance, objectElement);
         }
-        
+
         /// <summary>
         /// Loads an object from the specified JSON object.
         /// </summary>
@@ -197,9 +223,20 @@ namespace TwistedLogik.Nucleus.Data
         /// <returns>The object that was loaded.</returns>
         public static T LoadObject<T>(JObject json, Boolean ignoreMissingMembers = false)
         {
-            Contract.Require(json, "json");
+            return (T)LoadObject(typeof(T), json, CultureInfo.InvariantCulture, ignoreMissingMembers);
+        }
 
-            return LoadObject<T>(json, Thread.CurrentThread.CurrentCulture, ignoreMissingMembers);
+        /// <summary>
+        /// Loads an object from the specified JSON object.
+        /// </summary>
+        /// <param name="type">The type of object to load.</param>
+        /// <param name="json">The JSON object that contains the object data.</param>
+        /// <param name="ignoreMissingMembers">A value indicating whether the object loader 
+        /// should ignore members which do not exist on the type.</param>
+        /// <returns>The object that was loaded.</returns>
+        public static Object LoadObject(Type type, JObject json, Boolean ignoreMissingMembers = false)
+        {
+            return LoadObject(type, json, CultureInfo.InvariantCulture, ignoreMissingMembers);
         }
 
         /// <summary>
@@ -213,17 +250,32 @@ namespace TwistedLogik.Nucleus.Data
         /// <returns>The object that was loaded.</returns>
         public static T LoadObject<T>(JObject json, CultureInfo culture, Boolean ignoreMissingMembers = false)
         {
+            return (T)LoadObject(typeof(T), json, culture, ignoreMissingMembers);
+        }
+
+        /// <summary>
+        /// Loads an object from the specified JSON object.
+        /// </summary>
+        /// <param name="type">The type of object to load.</param>
+        /// <param name="json">The JSON object that contains the object data.</param>
+        /// <param name="culture">The culture information to use when parsing values.</param>
+        /// <param name="ignoreMissingMembers">A value indicating whether the object loader 
+        /// should ignore members which do not exist on the type.</param>
+        /// <returns>The object that was loaded.</returns>
+        public static Object LoadObject(Type type, JObject json, CultureInfo culture, Boolean ignoreMissingMembers = false)
+        {
+            Contract.Require(type, "type");
             Contract.Require(json, "json");
             Contract.Require(culture, "culture");
 
             var state = new ObjectLoaderState(globalAliases, culture);
             state.IgnoreMissingMembers = ignoreMissingMembers;
-            state.ParseClassAliases(null, typeof(T));
+            state.ParseClassAliases(null, type);
 
             var objectElement = DataElement.CreateFromJson(json);
-            var objectInstance = CreateObjectFromRootElement<T>(state, objectElement);
-            
-            return (T)PopulateObject(state, objectInstance, objectElement);
+            var objectInstance = CreateObjectFromRootElement(state, type, objectElement);
+
+            return PopulateObject(state, objectInstance, objectElement);
         }
 
         /// <summary>
@@ -296,8 +348,9 @@ namespace TwistedLogik.Nucleus.Data
             Contract.Require(root, "root");
             Contract.Require(name, "name");
 
-            var culture = new CultureInfo(root.AttributeValue<String>("Culture") ?? "en-US");
-
+            var cultureString = root.AttributeValue<String>("Culture");
+            var culture       = String.IsNullOrWhiteSpace(cultureString) ? CultureInfo.InvariantCulture : new CultureInfo(cultureString);
+            
             try
             {
                 lockobj.EnterReadLock();
@@ -310,7 +363,7 @@ namespace TwistedLogik.Nucleus.Data
                 var objectList = new List<T>();
                 foreach (var objectElement in objectElements)
                 {
-                    var objectInstance = CreateObjectFromRootElement<T>(state, objectElement);
+                    var objectInstance = (T)CreateObjectFromRootElement(state, typeof(T), objectElement);
                     PopulateObject(state, objectInstance, objectElement);
                     objectList.Add(objectInstance);
                 }
@@ -328,11 +381,11 @@ namespace TwistedLogik.Nucleus.Data
         /// <summary>
         /// Creates an object from the specified root element.
         /// </summary>
-        /// <typeparam name="T">The type of object to create.</typeparam>
         /// <param name="state">The current loader state.</param>
+        /// <param name="type">The type of object to create.</param>
         /// <param name="element">The element from which to create an object.</param>
         /// <returns>The object that was created.</returns>
-        private static T CreateObjectFromRootElement<T>(ObjectLoaderState state, DataElement element)
+        private static Object CreateObjectFromRootElement(ObjectLoaderState state, Type type, DataElement element)
         {
             // First, ensure that we have a class, key, and identifier.
             var objClassName = state.ResolveClass(element.AttributeValue<String>("Class"));
@@ -341,7 +394,7 @@ namespace TwistedLogik.Nucleus.Data
             
             // If we're loading a Nucleus data object, parse its unique key and ID.
             var argsBase = default(Object[]);
-            if (typeof(DataObject).IsAssignableFrom(typeof(T)))
+            if (typeof(DataObject).IsAssignableFrom(type))
             {
                 var objKey = element.AttributeValue<String>("Key");
                 if (String.IsNullOrEmpty(objKey))
@@ -360,23 +413,22 @@ namespace TwistedLogik.Nucleus.Data
 
             // Attempt to find the object class and make sure it's of the correct type.
             var objClass = Type.GetType(objClassName, false);
-            if (objClass == null || !typeof(T).IsAssignableFrom(objClass))
+            if (objClass == null || !type.IsAssignableFrom(objClass))
                 throw new InvalidOperationException(NucleusStrings.DataObjectInvalidClass.Format(objClassName ?? "(null)", argsBase[0]));
             
             // Attempt to instantiate the object.
-            return CreateObject<T>(state, objClass, argsBase, GetSpecifiedConstructorArguments(element));
+            return CreateObject(state, objClass, argsBase, GetSpecifiedConstructorArguments(element));
         }
 
         /// <summary>
         /// Creates an object from the specified root element.
         /// </summary>
-        /// <typeparam name="T">The type of object to create.</typeparam>
         /// <param name="state">The loader state.</param>
         /// <param name="type">The type of object to create.</param>
         /// <param name="argsBase">The base set of arguments for this object's constructor.</param>
         /// <param name="argsSpecified">The specified set of arguments for this object's constructor.</param>
         /// <returns>The object that was created.</returns>
-        private static T CreateObject<T>(ObjectLoaderState state, Type type, Object[] argsBase, DataElement[] argsSpecified = null)
+        private static Object CreateObject(ObjectLoaderState state, Type type, Object[] argsBase, DataElement[] argsSpecified = null)
         {
             var argsBaseLength = (argsBase == null) ? 0 : argsBase.Length;
             var argsSpecifiedLength = (argsSpecified == null) ? 0 : argsSpecified.Length;
@@ -386,7 +438,7 @@ namespace TwistedLogik.Nucleus.Data
             var ctors = type.GetConstructors();
             if (!ctors.Any() && argsBaseLength == 0 && argsSpecifiedLength == 0)
             {
-                return (T)Activator.CreateInstance(type);
+                return Activator.CreateInstance(type);
             }
 
             var ctorMatches = ctors.Where(x => x.GetParameters().Count() == ctorArgs.Length).ToList();
@@ -410,7 +462,7 @@ namespace TwistedLogik.Nucleus.Data
                 var ctorArgValue = default(Object);
                 if (ctorArgElement.Elements().Any())
                 {
-                    ctorArgValue = CreateObject<Object>(state, ctorArgType, null, GetSpecifiedConstructorArguments(ctorArgElement));
+                    ctorArgValue = CreateObject(state, ctorArgType, null, GetSpecifiedConstructorArguments(ctorArgElement));
                     ctorArgValue = PopulateObjectFromElements(state, ctorArgValue, ctorArgElement);
                 }
                 else
@@ -421,7 +473,7 @@ namespace TwistedLogik.Nucleus.Data
             }
 
             // Attempt to instantiate the object.
-            return (T)ctorMatch.Invoke(ctorArgs);
+            return ctorMatch.Invoke(ctorArgs);
         }
 
         /// <summary>
@@ -606,7 +658,7 @@ namespace TwistedLogik.Nucleus.Data
                 var complexTypeValue = member.GetValueFromData(memberElement);
                 if (complexTypeValue == null)
                 {
-                    complexTypeValue = CreateObject<Object>(state, complexType, null, GetSpecifiedConstructorArguments(memberElement));
+                    complexTypeValue = CreateObject(state, complexType, null, GetSpecifiedConstructorArguments(memberElement));
                     if (!complexType.IsValueType)
                         member.SetValueFromData(complexTypeValue, memberElement);
                 }
@@ -750,7 +802,7 @@ namespace TwistedLogik.Nucleus.Data
                 var type = GetTypeFromElement(state, arrayElementType, items[i]);
                 if (items[i].Elements().Any())
                 {
-                    value = CreateObject<Object>(state, type, null, GetSpecifiedConstructorArguments(items[i]));
+                    value = CreateObject(state, type, null, GetSpecifiedConstructorArguments(items[i]));
                     value = PopulateObjectFromElements(state, value, items[i]);
                 }
                 else
@@ -829,7 +881,7 @@ namespace TwistedLogik.Nucleus.Data
                     var type = GetTypeFromElement(state, listElemType, items[i]);
                     if (items[i].Elements().Any())
                     {
-                        value = CreateObject<Object>(state, type, null, GetSpecifiedConstructorArguments(items[i]));
+                        value = CreateObject(state, type, null, GetSpecifiedConstructorArguments(items[i]));
                         value = PopulateObjectFromElements(state, value, items[i]);
                     }
                     else

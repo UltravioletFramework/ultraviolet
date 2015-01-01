@@ -176,6 +176,58 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Finds the identifier of the specified dependency property on the specified UI element.
+        /// </summary>
+        /// <param name="uiElement">The UI element to search for the dependency property.</param>
+        /// <param name="name">The name of the dependency property for which to search.</param>
+        /// <returns>The identifier of the specified dependency property, or <c>null</c> if no such property was found.</returns>
+        private static DependencyProperty FindElementDependencyProperty(UIElement uiElement, String name)
+        {
+            var attachedContainer = String.Empty;
+            var attachedProperty  = String.Empty;
+            if (IsAttachedProperty(name, out attachedContainer, out attachedProperty))
+            {
+                if (uiElement.Parent != null && String.Equals(uiElement.Parent.Name, attachedContainer, StringComparison.InvariantCulture))
+                {
+                    return DependencyProperty.FindByName(attachedProperty, uiElement.Parent.GetType());
+                }
+            }
+            else
+            {
+                return DependencyProperty.FindByName(name, uiElement.GetType());
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// Finds the property information for the specified standard property on the specified UI element.
+        /// </summary>
+        /// <param name="uiElement">The UI element to search for the standard property.</param>
+        /// <param name="name">The name of the standard property for which to search.</param>
+        /// <returns>The <see cref="PropertyInfo"/> for the specified property.</returns>
+        private static PropertyInfo FindElementStandardProperty(UIElement uiElement, String name)
+        {
+            return FindElementStandardProperty(uiElement, name, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+        }
+
+        /// <summary>
+        /// Finds the property information for the specified standard property on the specified UI element.
+        /// </summary>
+        /// <param name="uiElement">The UI element to search for the standard property.</param>
+        /// <param name="name">The name of the standard property for which to search.</param>
+        /// <param name="bindingAttr">A bitmask comprised of one or more <see cref="BindingFlags"/> that specify how the search is conducted.</param>
+        /// <returns>The <see cref="PropertyInfo"/> for the specified property.</returns>
+        private static PropertyInfo FindElementStandardProperty(UIElement uiElement, String name, BindingFlags bindingAttr)
+        {
+            var standardProperty = uiElement.GetType().GetProperty(name,  bindingAttr);
+            if (standardProperty == null)
+                throw new InvalidOperationException(UltravioletStrings.PropertyDoesNotExist.Format(name, uiElement.GetType()));
+
+            return standardProperty;
+        }
+
+        /// <summary>
         /// Gets a value indicating whether the specified XML element's name represents
         /// a property on a UI element.
         /// </summary>
@@ -236,10 +288,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
-        /// Populates the specified element's dependency property values.
+        /// Populates the specified element's property values.
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
-        /// <param name="uiElement">The element whose dependency property values will be populated.</param>
+        /// <param name="uiElement">The element whose property values will be populated.</param>
         /// <param name="xmlElement">The XML element that represents the UI element.</param>
         /// <param name="context">The current instantiation context.</param>
         private static void PopulateElementProperties(UltravioletContext uv, UIElement uiElement, XElement xmlElement, InstantiationContext context)
@@ -250,11 +302,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
-        /// Populates the specified element's dependency property values using the values of the specified
+        /// Populates the specified element's property values using the values of the specified
         /// XML element's attributes.
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
-        /// <param name="uiElement">The element whose dependency property values will be populated.</param>
+        /// <param name="uiElement">The element whose property values will be populated.</param>
         /// <param name="xmlElement">The XML element that represents the UI element.</param>
         /// <param name="context">The current instantiation context.</param>
         private static void PopulateElementPropertiesFromAttributes(UltravioletContext uv, UIElement uiElement, XElement xmlElement, InstantiationContext context)
@@ -270,11 +322,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
-        /// Populates the specified element's dependency property values using the values of the specified
+        /// Populates the specified element's property values using the values of the specified
         /// XML element's child elements.
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
-        /// <param name="uiElement">The element whose dependency property values will be populated.</param>
+        /// <param name="uiElement">The element whose property values will be populated.</param>
         /// <param name="xmlElement">The XML element that represents the UI element.</param>
         /// <param name="context">The current instantiation context.</param>
         private static void PopulateElementPropertiesFromElements(UltravioletContext uv, UIElement uiElement, XElement xmlElement, InstantiationContext context)
@@ -290,7 +342,39 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 var propName       = elementName.Substring(propDelimIndex + 1);
                 var isAttached     = !String.Equals(propOwnerName, uiElement.Name, StringComparison.InvariantCulture);
 
+                // If the element has child elements, then this must be a complex object;
+                // therefore we need to use Nucleus' XML serializer to load it.
+                // If the element is empty (i.e. has no value), then all we can do is create
+                // the object using a default constructor. Nucleus will also handle this case.
+                if (element.Elements().Any() || element.IsEmpty)
+                {
+                    PopulateElementPropertyWithSerializer(uiElement, isAttached ? elementName : propName, element);
+                    continue;
+                }
+
                 PopulateElementProperty(uiElement, isAttached ? elementName : propName, element.Value, context);
+            }
+        }
+
+        /// <summary>
+        /// Populates the specified property by deserializing an object from the specified XML element.
+        /// </summary>
+        /// <param name="uiElement">The element whose property value will be populated.</param>
+        /// <param name="name">The name of the property being populated.</param>
+        /// <param name="value">The XML element containing the value to deserialize.</param>
+        private static void PopulateElementPropertyWithSerializer(UIElement uiElement, String name, XElement value)
+        {
+            var dprop = FindElementDependencyProperty(uiElement, name);
+            if (dprop != null)
+            {
+                var propValue = ObjectLoader.LoadObject(dprop.PropertyType, value);
+                SetDependencyProperty(uiElement, dprop, propValue);
+            }
+            else
+            {
+                var propInfo = FindElementStandardProperty(uiElement, name);
+                var propValue = ObjectLoader.LoadObject(propInfo.PropertyType, value);
+                propInfo.SetValue(uiElement, propValue, null);
             }
         }
 
@@ -298,39 +382,21 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Populates the specified properties of a UI element with the specified value.
         /// </summary>
         /// <param name="uiElement">The element whose dependency property values will be populated.</param>
-        /// <param name="propName">The name of the property to set.</param>
-        /// <param name="propValue">The value to set in the specified property.</param>
+        /// <param name="name">The name of the property to set.</param>
+        /// <param name="value">The value to set in the specified property.</param>
         /// <param name="context">The current instantiation context.</param>
-        private static void PopulateElementProperty(UIElement uiElement, String propName, String propValue, InstantiationContext context)
+        private static void PopulateElementProperty(UIElement uiElement, String name, String value, InstantiationContext context)
         {
-            var dprop = default(DependencyProperty);
-
-            var attachedContainer = String.Empty;
-            var attachedProperty  = String.Empty;
-            if (IsAttachedProperty(propName, out attachedContainer, out attachedProperty))
-            {
-                if (uiElement.Parent != null && String.Equals(uiElement.Parent.Name, attachedContainer, StringComparison.InvariantCulture))
-                {
-                    dprop = DependencyProperty.FindByName(attachedProperty, uiElement.Parent.GetType());
-                }
-            }
-            else
-            {
-                dprop = DependencyProperty.FindByName(propName, uiElement.GetType());
-            }
-
+            var dprop = FindElementDependencyProperty(uiElement, name);
             if (dprop != null)
             {
-                BindOrSetProperty(uiElement, dprop, propValue, context);
+                BindOrSetDependencyProperty(uiElement, dprop, value, context);
             }
             else
             {
-                var standardProperty = uiElement.GetType().GetProperty(propName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
-                if (standardProperty == null)
-                    throw new InvalidOperationException(UltravioletStrings.PropertyDoesNotExist.Format(propName, uiElement.GetType()));
-
-                var value = ObjectResolver.FromString(propValue, standardProperty.PropertyType);
-                standardProperty.SetValue(uiElement, value, null);
+                var propInfo = FindElementStandardProperty(uiElement, name);
+                var propValue = ObjectResolver.FromString(value, propInfo.PropertyType);
+                propInfo.SetValue(uiElement, propValue, null);
             }
         }
 
@@ -356,7 +422,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 var value = String.Join(String.Empty, xmlElement.Nodes().Where(x => x is XText).Select(x => ((XText)x).Value.Trim()));
                 if (!String.IsNullOrEmpty(value))
                 {
-                    BindOrSetProperty(uiElement, dprop, value, context);
+                    BindOrSetDependencyProperty(uiElement, dprop, value, context);
                 }
             }
         }
@@ -415,15 +481,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="dprop">The dependency property to bind or set.</param>
         /// <param name="value">The binding expression or value to set on the property.</param>
         /// <param name="context">The current instantiation context.</param>
-        private static void BindOrSetProperty(UIElement uiElement, DependencyProperty dprop, String value, InstantiationContext context)
+        private static void BindOrSetDependencyProperty(UIElement uiElement, DependencyProperty dprop, String value, InstantiationContext context)
         {
             if (IsBindingExpression(value))
             {
-                BindProperty(uiElement, dprop, value, context);
+                BindDependencyProperty(uiElement, dprop, value, context);
             }
             else
             {
-                SetProperty(uiElement, dprop, value);
+                SetDependencyProperty(uiElement, dprop, value);
             }
         }
 
@@ -433,11 +499,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="uiElement">The UI element to modify.</param>
         /// <param name="dprop">The dependency property to bind or set.</param>
         /// <param name="value">The value to set on the property.</param>
-        private static void SetProperty(UIElement uiElement, DependencyProperty dprop, String value)
+        private static void SetDependencyProperty(UIElement uiElement, DependencyProperty dprop, String value)
         {
             try
             {
-                var type          = Type.GetTypeFromHandle(dprop.PropertyType);
+                var type          = dprop.PropertyType;
                 var resolvedValue = ObjectResolver.FromString(value, type);
 
                 miSetLocalValue.MakeGenericMethod(type).Invoke(uiElement, new Object[] { dprop, resolvedValue });
@@ -449,18 +515,29 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Sets the local value of the specified dependency property.
+        /// </summary>
+        /// <param name="uiElement">The UI element to modify.</param>
+        /// <param name="dprop">The dependency property to bind or set.</param>
+        /// <param name="value">The value to set on the property.</param>
+        private static void SetDependencyProperty(UIElement uiElement, DependencyProperty dprop, Object value)
+        {
+            miSetLocalValue.MakeGenericMethod(dprop.PropertyType).Invoke(uiElement, new Object[] { dprop, value });
+        }
+
+        /// <summary>
         /// Binds the specified dependency property.
         /// </summary>
         /// <param name="uiElement">The UI element to modify.</param>
         /// <param name="dprop">The dependency property to bind or set.</param>
         /// <param name="expression">The binding expression to set on the property.</param>
         /// <param name="context">The current instantiation context.</param>
-        private static void BindProperty(UIElement uiElement, DependencyProperty dprop, String expression, InstantiationContext context)
+        private static void BindDependencyProperty(UIElement uiElement, DependencyProperty dprop, String expression, InstantiationContext context)
         {
             if (context.ViewModelType == null)
                 throw new InvalidOperationException(UltravioletStrings.NoViewModel);
 
-            var expressionType = Type.GetTypeFromHandle(dprop.PropertyType);
+            var expressionType = dprop.PropertyType;
             var expressionFull = BindingExpressions.Combine(context.BindingContext, expression);
 
             miBindValue.Invoke(uiElement, new Object[] { dprop, context.ViewModelType, expressionFull });

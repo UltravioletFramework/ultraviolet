@@ -52,7 +52,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="clock">The clock which controls the animation's playback.</param>
         public void Animate(DependencyProperty dp, AnimationBase animation, StoryboardClock clock)
         {
-            var wrapper = GetDependencyPropertyValue(dp, Type.GetTypeFromHandle(dp.PropertyType));
+            var wrapper = GetDependencyPropertyValue(dp, dp.PropertyType);
             wrapper.Animate(animation, clock);
         }
 
@@ -66,7 +66,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             Contract.Require(dp, "dp");
 
-            var wrapper = GetDependencyPropertyValue(dp, Type.GetTypeFromHandle(dp.PropertyType));
+            var wrapper = GetDependencyPropertyValue(dp, dp.PropertyType);
             wrapper.Bind(viewModelType, expression);
         }
 
@@ -78,7 +78,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             Contract.Require(dp, "dp");
 
-            var wrapper = GetDependencyPropertyValue(dp, Type.GetTypeFromHandle(dp.PropertyType));
+            var wrapper = GetDependencyPropertyValue(dp, dp.PropertyType);
             wrapper.Unbind();
         }
 
@@ -92,7 +92,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             Contract.Require(dp, "dp");
 
-            if (!typeof(T).TypeHandle.Equals(dp.PropertyType))
+            if (!typeof(T).Equals(dp.PropertyType))
                 throw new InvalidCastException();
 
             var wrapper = GetDependencyPropertyValue<T>(dp);
@@ -109,7 +109,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             Contract.Require(dp, "dp");
 
-            if (!typeof(T).TypeHandle.Equals(dp.PropertyType))
+            if (!typeof(T).Equals(dp.PropertyType))
                 throw new InvalidCastException();
 
             var wrapper = GetDependencyPropertyValue<T>(dp);
@@ -126,7 +126,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             Contract.Require(dp, "dp");
 
-            if (!typeof(T).TypeHandle.Equals(dp.PropertyType))
+            if (!typeof(T).Equals(dp.PropertyType))
                 throw new InvalidCastException();
 
             var wrapper = GetDependencyPropertyValue<T>(dp);
@@ -143,7 +143,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             Contract.Require(dp, "dp");
 
-            if (!typeof(T).TypeHandle.Equals(dp.PropertyType))
+            if (!typeof(T).Equals(dp.PropertyType))
                 throw new InvalidCastException();
 
             var wrapper = GetDependencyPropertyValue<T>(dp);
@@ -160,7 +160,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             Contract.Require(dp, "dp");
 
-            if (!typeof(T).TypeHandle.Equals(dp.PropertyType))
+            if (!typeof(T).Equals(dp.PropertyType))
                 throw new InvalidCastException();
 
             var wrapper = GetDependencyPropertyValue<T>(dp);
