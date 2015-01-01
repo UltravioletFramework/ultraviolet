@@ -128,6 +128,8 @@ namespace TwistedLogik.Ultraviolet
         public static readonly StringResource StylesheetInvalidCharacter           = new StringResource(StringDatabase, "STYLESHEET_SYNTAX_INVALID_CHARACTER");
         public static readonly StringResource IsNotDependencyObject                = new StringResource(StringDatabase, "IS_NOT_DEPENDENCY_OBJECT");
         public static readonly StringResource PropertyDoesNotExist                 = new StringResource(StringDatabase, "PROPERTY_DOES_NOT_EXIST");
+        public static readonly StringResource PropertyHasNoGetter                  = new StringResource(StringDatabase, "PROPERTY_HAS_NO_GETTER");
+        public static readonly StringResource PropertyHasNoSetter                  = new StringResource(StringDatabase, "PROPERTY_HAS_NO_SETTER");
         public static readonly StringResource DependencyPropertyDoesNotExist       = new StringResource(StringDatabase, "DEPENDENCY_PROPERTY_DOES_NOT_EXIST");
         public static readonly StringResource DependencyPropertyAlreadyRegistered  = new StringResource(StringDatabase, "DEPENDENCY_PROPERTY_ALREADY_REGISTERED");
         public static readonly StringResource CannotResolveBindingExpression       = new StringResource(StringDatabase, "CANNOT_RESOLVE_BINDING_EXPRESSION");
@@ -150,6 +152,9 @@ namespace TwistedLogik.Ultraviolet
         public static readonly StringResource InvalidChildElements                 = new StringResource(StringDatabase, "INVALID_CHILD_ELEMENTS");
         public static readonly StringResource InvalidElementPropertyValue          = new StringResource(StringDatabase, "INVALID_ELEMENT_PROPERTY_VALUE");
         public static readonly StringResource ComponentRootAlreadyLoaded           = new StringResource(StringDatabase, "COMPONENT_ROOT_ALREADY_LOADED");
+        public static readonly StringResource CollectionContainsInvalidElements    = new StringResource(StringDatabase, "COLLECTION_CONTAINS_INVALID_ELEMENTS");
+        public static readonly StringResource CollectionHasNoAddMethod             = new StringResource(StringDatabase, "COLLECTION_HAS_NO_ADD_METHOD");
+        public static readonly StringResource CollectionCannotBeCleared            = new StringResource(StringDatabase, "COLLECTION_CANNOT_BE_CLEARED");
 #pragma warning restore 1591
     }
 }

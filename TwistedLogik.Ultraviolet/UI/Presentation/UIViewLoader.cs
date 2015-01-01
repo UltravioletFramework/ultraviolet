@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Xml.Linq;
@@ -20,6 +22,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             miBindValue     = typeof(DependencyObject).GetMethod("BindValue");
             miSetLocalValue = typeof(DependencyObject).GetMethod("SetLocalValue");
+            miGetValue      = typeof(DependencyObject).GetMethod("GetValue");
         }
 
         /// <summary>
@@ -228,6 +231,24 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Gets the type of the specified property.
+        /// </summary>
+        /// <param name="uiElement">The UI element to search for the specified property.</param>
+        /// <param name="name">The name of the property for which to search.</param>
+        /// <returns>The type of the specified property.</returns>
+        private static Type FindPropertyType(UIElement uiElement, String name)
+        {
+            var dprop = FindElementDependencyProperty(uiElement, name);
+            if (dprop != null)
+            {
+                return dprop.PropertyType;
+            }
+
+            var sprop = FindElementStandardProperty(uiElement, name);
+            return sprop.PropertyType;
+        }
+
+        /// <summary>
         /// Gets a value indicating whether the specified XML element's name represents
         /// a property on a UI element.
         /// </summary>
@@ -237,6 +258,26 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         private static Boolean ElementNameRepresentsProperty(XElement element)
         {
             return element.Name.LocalName.Contains('.');
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the specified type represents an enumerable collection.
+        /// </summary>
+        /// <param name="enumType">The type to evaluate.</param>
+        /// <param name="itemType">The type of item contained by the collection.</param>
+        /// <returns><c>true</c> if the specified type represents an enumerable collection; otherwise, <c>false</c>.</returns>
+        private static Boolean IsTypeAnEnumerableCollection(Type enumType, out Type itemType)
+        {
+            var ifaces = enumType.GetInterfaces().Where(x => x.IsGenericType && x.GetGenericTypeDefinition() == typeof(IEnumerable<>));
+            if (ifaces.Count() > 1 || !ifaces.Any())
+            {
+                itemType = null;
+                return false;
+            }
+
+            var iface = ifaces.Single();
+            itemType = iface.GetGenericArguments()[0];
+            return true;
         }
 
         /// <summary>
@@ -341,6 +382,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 var propOwnerName  = elementName.Substring(0, propDelimIndex);
                 var propName       = elementName.Substring(propDelimIndex + 1);
                 var isAttached     = !String.Equals(propOwnerName, uiElement.Name, StringComparison.InvariantCulture);
+                if (isAttached)
+                    propName = elementName;
+
+                // Special case handling for implementations of IEnumerable<T>: we create the
+                // collection's items from this XML element's children.
+                var propType = FindPropertyType(uiElement, propName);
+                var itemType = default(Type);
+                if (IsTypeAnEnumerableCollection(propType, out itemType))
+                {
+                    PopulateEnumerableCollection(uiElement, propName, element, propType, itemType);
+                    continue;
+                }
 
                 // If the element has child elements, then this must be a complex object;
                 // therefore we need to use Nucleus' XML serializer to load it.
@@ -348,11 +401,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 // the object using a default constructor. Nucleus will also handle this case.
                 if (element.Elements().Any() || element.IsEmpty)
                 {
-                    PopulateElementPropertyWithSerializer(uiElement, isAttached ? elementName : propName, element);
+                    PopulateElementPropertyWithSerializer(uiElement, propName, element);
                     continue;
                 }
 
-                PopulateElementProperty(uiElement, isAttached ? elementName : propName, element.Value, context);
+                PopulateElementProperty(uiElement, propName, element.Value, context);
             }
         }
 
@@ -373,6 +426,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             else
             {
                 var propInfo = FindElementStandardProperty(uiElement, name);
+                if (!propInfo.CanWrite)
+                    throw new InvalidOperationException(UltravioletStrings.PropertyHasNoSetter.Format(name));
+
                 var propValue = ObjectLoader.LoadObject(propInfo.PropertyType, value);
                 propInfo.SetValue(uiElement, propValue, null);
             }
@@ -381,8 +437,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Populates the specified properties of a UI element with the specified value.
         /// </summary>
-        /// <param name="uiElement">The element whose dependency property values will be populated.</param>
-        /// <param name="name">The name of the property to set.</param>
+        /// <param name="uiElement">The element whose property value will be populated.</param>
+        /// <param name="name">The name of the property to populate.</param>
         /// <param name="value">The value to set in the specified property.</param>
         /// <param name="context">The current instantiation context.</param>
         private static void PopulateElementProperty(UIElement uiElement, String name, String value, InstantiationContext context)
@@ -395,9 +451,97 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             else
             {
                 var propInfo = FindElementStandardProperty(uiElement, name);
+                if (!propInfo.CanWrite)
+                    throw new InvalidOperationException(UltravioletStrings.PropertyHasNoSetter.Format(name));
+                
                 var propValue = ObjectResolver.FromString(value, propInfo.PropertyType);
                 propInfo.SetValue(uiElement, propValue, null);
             }
+        }
+
+        /// <summary>
+        /// Populates a property on the specified UI element which is an enumerable collection.
+        /// </summary>
+        /// <param name="uiElement">The element whose property value will be populated.</param>
+        /// <param name="name">The name of the property to populate.</param>
+        /// <param name="value">The XML element that represents the value of the property.</param>
+        /// <param name="enumType">The type of enumerable collection to instantiate.</param>
+        /// <param name="itemType">The type of item contained by the enumerable collection.</param>
+        private static void PopulateEnumerableCollection(UIElement uiElement, String name, XElement value, Type enumType, Type itemType)
+        {
+            // Deserialize the collection's items from XML.
+            var itemElements = value.Elements(itemType.Name).ToList();
+            if (itemElements.Count != value.Elements().Count())
+                throw new InvalidOperationException(UltravioletStrings.CollectionContainsInvalidElements.Format(name));
+
+            var items = (IList)Activator.CreateInstance(typeof(List<>).MakeGenericType(itemType));
+            foreach (var itemElement in itemElements)
+            {
+                var item = ObjectLoader.LoadObject(itemType, itemElement);
+                items.Add(item);
+            }
+
+            // Check if an instance already exists, and if so, try to clear it, then use it
+            // as our instance instead of creating a new one.
+            var existingValue = (IEnumerable)GetPropertyValue(uiElement, name);
+            if (existingValue != null)
+            {
+                var clearMethod = existingValue.GetType().GetMethod("Clear", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance, 
+                    null, Type.EmptyTypes, null);
+
+                if (clearMethod == null)
+                    throw new InvalidOperationException(UltravioletStrings.CollectionCannotBeCleared.Format(name));
+
+                clearMethod.Invoke(existingValue, null);
+            }
+
+            // If an instance doesn't already exist, attempt to instantiate one.
+            var enumInstance = existingValue;
+            if (enumInstance == null)
+            {
+                var ctor = 
+                    enumType.GetConstructor(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance, null, new[] { typeof(IEnumerable<>).MakeGenericType(itemType) }, null) ??
+                    enumType.GetConstructor(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance, null, Type.EmptyTypes, null);
+
+                if (ctor == null)
+                    throw new InvalidOperationException(UltravioletStrings.NoValidConstructor.Format(enumType.Name));
+
+                if (ctor.GetParameters().Length == 0)
+                {
+                    enumInstance = (IEnumerable)ctor.Invoke(null);
+                    PopulateEnumerableCollectionItems(enumInstance, items, enumType, itemType);
+                }
+                else
+                {
+                    enumInstance = (IEnumerable)ctor.Invoke(new Object[] { items });
+                }
+
+                SetPropertyValue(uiElement, name, enumInstance);
+            }
+            else
+            {
+                PopulateEnumerableCollectionItems(enumInstance, items, enumType, itemType);
+            }
+        }
+
+        /// <summary>
+        /// Adds the specified set of items to a collection.
+        /// </summary>
+        /// <param name="collection">The collection to populate with items.</param>
+        /// <param name="items">The set of items to add to the collection.</param>
+        /// <param name="enumType">The type of enumerable collection.</param>
+        /// <param name="itemType">The type of item contained by the enumerable collection.</param>
+        private static void PopulateEnumerableCollectionItems(IEnumerable collection, IEnumerable items, Type enumType, Type itemType)
+        {
+            var addMethod = 
+                enumType.GetMethod("Add", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance, null, new[] { itemType }, null) ?? 
+                enumType.GetMethod("Add", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance, null, new[] { typeof(Object) }, null);
+
+            if (addMethod == null)
+                throw new InvalidOperationException(UltravioletStrings.CollectionHasNoAddMethod.Format(enumType.Name));
+
+            foreach (var item in items)
+                addMethod.Invoke(collection, new Object[] { item });
         }
 
         /// <summary>
@@ -544,6 +688,52 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Sets the value of the specified property.
+        /// </summary>
+        /// <param name="uiElement">The UI element on which to set the property value.</param>
+        /// <param name="name">The name of the property to set.</param>
+        /// <param name="value">The value to set for the specified property.</param>
+        private static void SetPropertyValue(UIElement uiElement, String name, Object value)
+        {
+            var dprop = FindElementDependencyProperty(uiElement, name);
+            if (dprop != null)
+            {
+                SetDependencyProperty(uiElement, dprop, value);
+            }
+            else
+            {
+                var propInfo = FindElementStandardProperty(uiElement, name);
+                if (!propInfo.CanWrite)
+                    throw new InvalidOperationException(UltravioletStrings.PropertyHasNoSetter.Format(name));
+
+                propInfo.SetValue(uiElement, value, null);
+            }
+        }
+
+        /// <summary>
+        /// Gets the value of the specified property.
+        /// </summary>
+        /// <param name="uiElement">The UI element from which to retrieve the property value.</param>
+        /// <param name="name">The name of the property to retrieve.</param>
+        /// <returns>The value of the specified property.</returns>
+        private static Object GetPropertyValue(UIElement uiElement, String name)
+        {
+            var dprop = FindElementDependencyProperty(uiElement, name);
+            if (dprop != null)
+            {
+                return miGetValue.MakeGenericMethod(dprop.PropertyType).Invoke(uiElement, new Object[] { dprop });
+            }
+            else
+            {
+                var propInfo = FindElementStandardProperty(uiElement, name);
+                if (!propInfo.CanRead)
+                    throw new InvalidOperationException(UltravioletStrings.PropertyHasNoGetter.Format(name));
+                
+                return propInfo.GetValue(uiElement, null);
+            }
+        }
+
+        /// <summary>
         /// Gets a value indicating whether the specified attribute name represents an attached property.
         /// </summary>
         /// <param name="name">The attribute name to evaluate.</param>
@@ -580,5 +770,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         // Reflection information.
         private static readonly MethodInfo miBindValue;
         private static readonly MethodInfo miSetLocalValue;
+        private static readonly MethodInfo miGetValue;
     }
 }

@@ -525,6 +525,16 @@
       <Variant>No property named '{0}' exists on the type '{1}'</Variant>
     </en-US>
   </String>
+  <String Key="PROPERTY_HAS_NO_GETTER">
+    <en-US>
+      <Variant>The property '{0}' cannot be used in this context because it has no get accessor.</Variant>
+    </en-US>
+  </String>
+  <String Key="PROPERTY_HAS_NO_SETTER">
+    <en-US>
+      <Variant>The property '{0}' cannot be used in this context because it has no set accessor.</Variant>
+    </en-US>
+  </String>
   <String Key="DEPENDENCY_PROPERTY_DOES_NOT_EXIST">
     <en-US>
       <Variant>No dependency property named '{0}' exists on this object.</Variant>
@@ -633,6 +643,21 @@
   <String Key="COMPONENT_ROOT_ALREADY_LOADED">
     <en-US>
       <Variant>The control's component root has already been loaded.</Variant>
+    </en-US>
+  </String>
+  <String Key="COLLECTION_CONTAINS_INVALID_ELEMENTS">
+    <en-US>
+      <Variant>The collection '{0}' contains invalid elements.</Variant>
+    </en-US>
+  </String>
+  <String Key="COLLECTION_HAS_NO_ADD_METHOD">
+    <en-US>
+      <Variant>The collection type '{0}' could not be instantiated because it has no 'Add' method.</Variant>
+    </en-US>
+  </String>
+  <String Key="COLLECTION_CANNOT_BE_CLEARED">
+    <en-US>
+      <Variant>The collection property '{0}' already has a value, but new items cannot be specified because the existing collection does not have a 'Clear' method.</Variant>
     </en-US>
   </String>
 </LocalizedStrings>
