@@ -261,6 +261,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Gets a value indicating whether the specified name corresponds to an event on the specified object.
+        /// </summary>
+        /// <param name="dobj">The dependency object to evaluate.</param>
+        /// <param name="name">The name to evaluate.</param>
+        /// <returns><c>true</c> if the specified name corresponds to an event; otherwise, <c>false</c>.</returns>
+        private static Boolean IsEvent(DependencyObject dobj, String name)
+        {
+            return (dobj.GetType().GetEvent(name) != null);
+        }
+
+        /// <summary>
         /// Gets a value indicating whether the specified attribute name is reserved by the UVML loader.
         /// </summary>
         /// <param name="name">The name to evaluate.</param>
@@ -506,6 +517,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             }
             else
             {
+                if (IsEvent(uiElement, name))
+                    return;
+
                 var propInfo = FindElementStandardProperty(uiElement, name);
                 if (!propInfo.CanWrite)
                     throw new InvalidOperationException(UltravioletStrings.PropertyHasNoSetter.Format(name));

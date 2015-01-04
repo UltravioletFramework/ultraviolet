@@ -338,6 +338,8 @@
     <Compile Include="Size3.cs" />
     <Compile Include="Size3F.cs" />
     <Compile Include="TaskUtil.cs" />
+    <Compile Include="UI\Presentation\Elements\ClickMode.cs" />
+    <Compile Include="UI\Presentation\Elements\RepeatButton.cs" />
     <Compile Include="UI\Presentation\Elements\Grid.CellMetadata.cs" />
     <Compile Include="UI\Presentation\Elements\RowDefinitionCollection.IEnumerable.cs" />
     <Compile Include="UI\Presentation\Elements\RowDefinitionCollection.cs" />

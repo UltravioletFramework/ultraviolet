@@ -38,6 +38,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <summary>
+        /// Gets or sets the button's click mode.
+        /// </summary>
+        public ClickMode ClickMode
+        {
+            get { return GetValue<ClickMode>(ClickModeProperty); }
+            set { SetValue<ClickMode>(ClickModeProperty, value); }
+        }
+
+        /// <summary>
         /// Occurs when the value of the <see cref="Depressed"/> property changes.
         /// </summary>
         public event UIElementEventHandler DepressedChanged;
@@ -57,6 +66,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// </summary>
         public event UIElementEventHandler ButtonReleased;
 
+        /// <summary>
+        /// Occurs when the value of the <see cref="ClickMode"/> property changes.
+        /// </summary>
+        public event UIElementEventHandler ClickModeChanged;
+
+        /// <summary>
+        /// Identifies the <see cref="ClickMode"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty ClickModeProperty = DependencyProperty.Register("ClickMode", typeof(ClickMode), typeof(ButtonBase),
+            new DependencyPropertyMetadata(HandleClickModeChanged, () => ClickMode.Release, DependencyPropertyOptions.None));
+
         /// <inheritdoc/>
         protected internal override void OnLostMouseCapture()
         {
@@ -71,6 +91,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             {
                 Depressed = true;
                 OnButtonPressed();
+
+                if (ClickMode == ClickMode.Press)
+                {
+                    OnClick();
+                }
             }
             base.OnMouseButtonPressed(device, button);
         }
@@ -85,7 +110,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
                 Depressed = false;
                 OnButtonReleased();
 
-                if (clicked)
+                if (clicked && ClickMode == ClickMode.Release)
                 {
                     var position = device.GetPositionInWindow(View.Window);
                     if (position != null && ScreenBounds.Contains(position.Value))
@@ -95,6 +120,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
                 }
             }
             base.OnMouseButtonReleased(device, button);
+        }
+
+        /// <inheritdoc/>
+        protected internal override void OnMouseEnter(MouseDevice device)
+        {
+            if (ClickMode == ClickMode.Hover)
+            {
+                OnClick();
+            }
+            base.OnMouseEnter(device);
         }
 
         /// <inheritdoc/>
@@ -180,6 +215,28 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             {
                 temp(this);
             }
+        }
+
+        /// <summary>
+        /// Raises the <see cref="ClickModeChanged"/> property.
+        /// </summary>
+        protected virtual void OnClickModeChanged()
+        {
+            var temp = ClickModeChanged;
+            if (temp != null)
+            {
+                temp(this);
+            }
+        }
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="ClickMode"/> dependency property changes.
+        /// </summary>
+        /// <param name="dobj">The object that raised the event.</param>
+        private static void HandleClickModeChanged(DependencyObject dobj)
+        {
+            var button = (ButtonBase)dobj;
+            button.OnClickModeChanged();
         }
 
         /// <summary>
