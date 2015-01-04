@@ -52,6 +52,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <returns>The element that was created, or <c>null</c> if the element could not be created.</returns>
         public UIElement InstantiateElementByName(String name, String id, Type viewModelType, String bindingContext = null)
         {
+            Contract.EnsureNotDisposed(this, Disposed);
+
             if (bindingContext != null && !BindingExpressions.IsBindingExpression(bindingContext))
                 throw new ArgumentException("bindingContext");
 
@@ -86,6 +88,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public Boolean IsUserControl(String name)
         {
             Contract.RequireNotEmpty(name, "name");
+            Contract.EnsureNotDisposed(this, Disposed);
 
             RegisteredElement registration;
             if (!IsElementRegistered(name, out registration))
@@ -115,6 +118,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public Boolean GetElementType(String name, Boolean isCaseSensitive, out Type type)
         {
             Contract.RequireNotEmpty(name, "name");
+            Contract.EnsureNotDisposed(this, Disposed);
 
             type = null;
 
@@ -138,6 +142,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public Boolean GetElementDefaultProperty(String name, out String property)
         {
             Contract.RequireNotEmpty(name, "name");
+            Contract.EnsureNotDisposed(this, Disposed);
 
             property = null;
 
@@ -158,6 +163,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public Boolean GetElementDefaultProperty(Type type, out String property)
         {
             Contract.Require(type, "type");
+            Contract.EnsureNotDisposed(this, Disposed);
 
             property = null;
 
@@ -176,6 +182,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public void RegisterElement(Type type)
         {
             Contract.Require(type, "type");
+            Contract.EnsureNotDisposed(this, Disposed);
 
             RegisterElementInternal(type, null);
         }
@@ -187,6 +194,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public void RegisterElement(XDocument layout)
         {
             Contract.Require(layout, "layout");
+            Contract.EnsureNotDisposed(this, Disposed);
 
             var type = ExtractElementTypeFromLayout(layout);
 
@@ -201,6 +209,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public Boolean UnregisterElement(Type type)
         {
             Contract.Require(type, "type");
+            Contract.EnsureNotDisposed(this, Disposed);
 
             RegisteredElement registration;
             if (!IsElementRegistered(type, out registration))
@@ -217,6 +226,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public Boolean UnregisterElement(XDocument layout)
         {
             Contract.Require(layout, "layout");
+            Contract.EnsureNotDisposed(this, Disposed);
 
             var type = ExtractElementTypeFromLayout(layout);
 
@@ -225,6 +235,25 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 return false;
 
             return registeredElements.Remove(registration.Name);
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether debug rendering is currently enabled for the Presentation Framework.
+        /// </summary>
+        public Boolean DebugRenderingEnabled
+        {
+            get
+            {
+                Contract.EnsureNotDisposed(this, Disposed);
+
+                return debugRenderingEnabled;
+            }
+            set
+            {
+                Contract.EnsureNotDisposed(this, Disposed);
+
+                debugRenderingEnabled = value;
+            }
         }
 
         /// <summary>
@@ -427,6 +456,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             registration = null;
             return false;
         }
+
+        // Property values.
+        private Boolean debugRenderingEnabled;
 
         // The core element registry.
         private readonly Dictionary<String, RegisteredElement> coreElements = 

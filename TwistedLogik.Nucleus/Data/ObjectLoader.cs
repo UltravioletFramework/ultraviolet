@@ -12,6 +12,16 @@ using Newtonsoft.Json.Linq;
 namespace TwistedLogik.Nucleus.Data
 {
     /// <summary>
+    /// Represents a method which can be passed to the <see cref="ObjectLoader"/> to allow external code
+    /// to resolve property values.
+    /// </summary>
+    /// <param name="obj">The object which is being populated.</param>
+    /// <param name="name">The name of the property which is being populated.</param>
+    /// <param name="value">The value which is being resolved.</param>
+    /// <returns><c>true</c> if the property was resolved; otherwise, <c>false</c>.</returns>
+    public delegate Boolean ObjectLoaderMemberResolutionHandler(Object obj, String name, String value);
+
+    /// <summary>
     /// Contains methods for loading object definitions from data files.
     /// </summary>
     [CLSCompliant(false)]
@@ -158,7 +168,22 @@ namespace TwistedLogik.Nucleus.Data
         /// <returns>The object that was loaded.</returns>
         public static T LoadObject<T>(XElement xml, Boolean ignoreMissingMembers = false)
         {
-            return LoadObject<T>(xml, CultureInfo.InvariantCulture, ignoreMissingMembers);
+            return (T)LoadObject(null, typeof(T), xml, CultureInfo.InvariantCulture, ignoreMissingMembers);
+        }
+
+        /// <summary>
+        /// Loads an object from the specified XML element.
+        /// </summary>
+        /// <typeparam name="T">The type of object to load.</typeparam>
+        /// <param name="resolver">A custom <see cref="ObjectLoaderMemberResolutionHandler"/> which allows external
+        /// code to optionally resolve deserialized member values.</param>
+        /// <param name="xml">The XML element that contains the object data.</param>
+        /// <param name="ignoreMissingMembers">A value indicating whether the object loader 
+        /// should ignore members which do not exist on the type.</param>
+        /// <returns>The object that was loaded.</returns>
+        public static T LoadObject<T>(ObjectLoaderMemberResolutionHandler resolver, XElement xml, Boolean ignoreMissingMembers = false)
+        {
+            return (T)LoadObject(resolver, typeof(T), xml, CultureInfo.InvariantCulture, ignoreMissingMembers);
         }
 
         /// <summary>
@@ -171,7 +196,22 @@ namespace TwistedLogik.Nucleus.Data
         /// <returns>The object that was loaded.</returns>
         public static Object LoadObject(Type type, XElement xml, Boolean ignoreMissingMembers = false)
         {
-            return LoadObject(type, xml, CultureInfo.InvariantCulture, ignoreMissingMembers);
+            return LoadObject(null, type, xml, CultureInfo.InvariantCulture, ignoreMissingMembers);
+        }
+
+        /// <summary>
+        /// Loads an object from the specified XML element.
+        /// </summary>
+        /// <param name="resolver">A custom <see cref="ObjectLoaderMemberResolutionHandler"/> which allows external
+        /// code to optionally resolve deserialized member values.</param>
+        /// <param name="type">The type of object to load.</param>
+        /// <param name="xml">The XML element that contains the object data.</param>
+        /// <param name="ignoreMissingMembers">A value indicating whether the object loader 
+        /// should ignore members which do not exist on the type.</param>
+        /// <returns>The object that was loaded.</returns>
+        public static Object LoadObject(ObjectLoaderMemberResolutionHandler resolver, Type type, XElement xml, Boolean ignoreMissingMembers = false)
+        {
+            return LoadObject(resolver, type, xml, CultureInfo.InvariantCulture, ignoreMissingMembers);
         }
 
         /// <summary>
@@ -185,7 +225,23 @@ namespace TwistedLogik.Nucleus.Data
         /// <returns>The object that was loaded.</returns>
         public static T LoadObject<T>(XElement xml, CultureInfo culture, Boolean ignoreMissingMembers = false)
         {
-            return (T)LoadObject(typeof(T), xml, culture, ignoreMissingMembers);
+            return (T)LoadObject(null, typeof(T), xml, culture, ignoreMissingMembers);
+        }
+
+        /// <summary>
+        /// Loads an object from the specified XML element.
+        /// </summary>
+        /// <typeparam name="T">The type of object to load.</typeparam>
+        /// <param name="resolver">A custom <see cref="ObjectLoaderMemberResolutionHandler"/> which allows external
+        /// code to optionally resolve deserialized member values.</param>
+        /// <param name="xml">The XML element that contains the object data.</param>
+        /// <param name="culture">The culture information to use when parsing values.</param>
+        /// <param name="ignoreMissingMembers">A value indicating whether the object loader 
+        /// should ignore members which do not exist on the type.</param>
+        /// <returns>The object that was loaded.</returns>
+        public static T LoadObject<T>(ObjectLoaderMemberResolutionHandler resolver, XElement xml, CultureInfo culture, Boolean ignoreMissingMembers = false)
+        {
+            return (T)LoadObject(resolver, typeof(T), xml, culture, ignoreMissingMembers);
         }
 
         /// <summary>
@@ -199,11 +255,27 @@ namespace TwistedLogik.Nucleus.Data
         /// <returns>The object that was loaded.</returns>
         public static Object LoadObject(Type type, XElement xml, CultureInfo culture, Boolean ignoreMissingMembers = false)
         {
+            return LoadObject(null, type, xml, culture, ignoreMissingMembers);
+        }
+
+        /// <summary>
+        /// Loads an object from the specified XML element.
+        /// </summary>
+        /// <param name="resolver">A custom <see cref="ObjectLoaderMemberResolutionHandler"/> which allows external
+        /// code to optionally resolve deserialized member values.</param>
+        /// <param name="type">The type of object to load.</param>
+        /// <param name="xml">The XML element that contains the object data.</param>
+        /// <param name="culture">The culture information to use when parsing values.</param>
+        /// <param name="ignoreMissingMembers">A value indicating whether the object loader 
+        /// should ignore members which do not exist on the type.</param>
+        /// <returns>The object that was loaded.</returns>
+        public static Object LoadObject(ObjectLoaderMemberResolutionHandler resolver, Type type, XElement xml, CultureInfo culture, Boolean ignoreMissingMembers = false)
+        {
             Contract.Require(type, "type");
             Contract.Require(xml, "xml");
             Contract.Require(culture, "culture");
 
-            var state = new ObjectLoaderState(globalAliases, culture);
+            var state = new ObjectLoaderState(globalAliases, culture, resolver);
             state.IgnoreMissingMembers = ignoreMissingMembers;
             state.ParseClassAliases(null, type);
 
@@ -223,7 +295,22 @@ namespace TwistedLogik.Nucleus.Data
         /// <returns>The object that was loaded.</returns>
         public static T LoadObject<T>(JObject json, Boolean ignoreMissingMembers = false)
         {
-            return (T)LoadObject(typeof(T), json, CultureInfo.InvariantCulture, ignoreMissingMembers);
+            return (T)LoadObject(null, typeof(T), json, CultureInfo.InvariantCulture, ignoreMissingMembers);
+        }
+
+        /// <summary>
+        /// Loads an object from the specified JSON object.
+        /// </summary>
+        /// <typeparam name="T">The type of object to load.</typeparam>
+        /// <param name="resolver">A custom <see cref="ObjectLoaderMemberResolutionHandler"/> which allows external
+        /// code to optionally resolve deserialized member values.</param>
+        /// <param name="json">The JSON object that contains the object data.</param>
+        /// <param name="ignoreMissingMembers">A value indicating whether the object loader 
+        /// should ignore members which do not exist on the type.</param>
+        /// <returns>The object that was loaded.</returns>
+        public static T LoadObject<T>(ObjectLoaderMemberResolutionHandler resolver, JObject json, Boolean ignoreMissingMembers = false)
+        {
+            return (T)LoadObject(resolver, typeof(T), json, CultureInfo.InvariantCulture, ignoreMissingMembers);
         }
 
         /// <summary>
@@ -236,7 +323,22 @@ namespace TwistedLogik.Nucleus.Data
         /// <returns>The object that was loaded.</returns>
         public static Object LoadObject(Type type, JObject json, Boolean ignoreMissingMembers = false)
         {
-            return LoadObject(type, json, CultureInfo.InvariantCulture, ignoreMissingMembers);
+            return LoadObject(null, type, json, CultureInfo.InvariantCulture, ignoreMissingMembers);
+        }
+
+        /// <summary>
+        /// Loads an object from the specified JSON object.
+        /// </summary>
+        /// <param name="resolver">A custom <see cref="ObjectLoaderMemberResolutionHandler"/> which allows external
+        /// code to optionally resolve deserialized member values.</param>
+        /// <param name="type">The type of object to load.</param>
+        /// <param name="json">The JSON object that contains the object data.</param>
+        /// <param name="ignoreMissingMembers">A value indicating whether the object loader 
+        /// should ignore members which do not exist on the type.</param>
+        /// <returns>The object that was loaded.</returns>
+        public static Object LoadObject(ObjectLoaderMemberResolutionHandler resolver, Type type, JObject json, Boolean ignoreMissingMembers = false)
+        {
+            return LoadObject(resolver, type, json, CultureInfo.InvariantCulture, ignoreMissingMembers);
         }
 
         /// <summary>
@@ -250,7 +352,23 @@ namespace TwistedLogik.Nucleus.Data
         /// <returns>The object that was loaded.</returns>
         public static T LoadObject<T>(JObject json, CultureInfo culture, Boolean ignoreMissingMembers = false)
         {
-            return (T)LoadObject(typeof(T), json, culture, ignoreMissingMembers);
+            return (T)LoadObject(null, typeof(T), json, culture, ignoreMissingMembers);
+        }
+
+        /// <summary>
+        /// Loads an object from the specified JSON object.
+        /// </summary>
+        /// <typeparam name="T">The type of object to load.</typeparam>
+        /// <param name="resolver">A custom <see cref="ObjectLoaderMemberResolutionHandler"/> which allows external
+        /// code to optionally resolve deserialized member values.</param>
+        /// <param name="json">The JSON object that contains the object data.</param>
+        /// <param name="culture">The culture information to use when parsing values.</param>
+        /// <param name="ignoreMissingMembers">A value indicating whether the object loader 
+        /// should ignore members which do not exist on the type.</param>
+        /// <returns>The object that was loaded.</returns>
+        public static T LoadObject<T>(ObjectLoaderMemberResolutionHandler resolver, JObject json, CultureInfo culture, Boolean ignoreMissingMembers = false)
+        {
+            return (T)LoadObject(resolver, typeof(T), json, culture, ignoreMissingMembers);
         }
 
         /// <summary>
@@ -264,11 +382,27 @@ namespace TwistedLogik.Nucleus.Data
         /// <returns>The object that was loaded.</returns>
         public static Object LoadObject(Type type, JObject json, CultureInfo culture, Boolean ignoreMissingMembers = false)
         {
+            return LoadObject(null, type, json, culture, ignoreMissingMembers);
+        }
+
+        /// <summary>
+        /// Loads an object from the specified JSON object.
+        /// </summary>
+        /// <param name="resolver">A custom <see cref="ObjectLoaderMemberResolutionHandler"/> which allows external
+        /// code to optionally resolve deserialized member values.</param>
+        /// <param name="type">The type of object to load.</param>
+        /// <param name="json">The JSON object that contains the object data.</param>
+        /// <param name="culture">The culture information to use when parsing values.</param>
+        /// <param name="ignoreMissingMembers">A value indicating whether the object loader 
+        /// should ignore members which do not exist on the type.</param>
+        /// <returns>The object that was loaded.</returns>
+        public static Object LoadObject(ObjectLoaderMemberResolutionHandler resolver, Type type, JObject json, CultureInfo culture, Boolean ignoreMissingMembers = false)
+        {
             Contract.Require(type, "type");
             Contract.Require(json, "json");
             Contract.Require(culture, "culture");
 
-            var state = new ObjectLoaderState(globalAliases, culture);
+            var state = new ObjectLoaderState(globalAliases, culture, resolver);
             state.IgnoreMissingMembers = ignoreMissingMembers;
             state.ParseClassAliases(null, type);
 
@@ -581,6 +715,9 @@ namespace TwistedLogik.Nucleus.Data
                 var attrMember = ObjectLoaderMember.Find(objectInstance, attr.Name, state.IgnoreMissingMembers);
                 if (attrMember != null)
                 {
+                    if (state.Resolver != null && state.Resolver(objectInstance, attr.Name, attr.Value))
+                        continue;
+
                     var attrValue = ObjectResolver.FromString(attr.Value, attrMember.MemberType);
                     attrMember.SetValue(attrValue, null);
                 }
@@ -625,6 +762,9 @@ namespace TwistedLogik.Nucleus.Data
                     return objectInstance;
                 }
             }
+
+            if (state.Resolver != null && state.Resolver(objectInstance, memberElement.Name, memberElement.Value))
+                return objectInstance;
 
             var member = ObjectLoaderMember.Find(objectInstance, memberElement.Name, state.IgnoreMissingMembers);
             if (member == null)

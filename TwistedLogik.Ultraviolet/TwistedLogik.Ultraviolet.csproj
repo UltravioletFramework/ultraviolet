@@ -20,7 +20,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>..\Binaries\AnyCPU\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;DEBUG_GRID</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
@@ -203,6 +203,7 @@
     <Compile Include="CurveKeyCollection.cs" />
     <Compile Include="CurveLoopType.cs" />
     <Compile Include="CurveProcessor.cs" />
+    <Compile Include="DebugColors.cs" />
     <Compile Include="Easings.cs" />
     <Compile Include="Graphics\EffectImplementation.cs" />
     <Compile Include="Graphics\EffectPass.cs" />
@@ -337,8 +338,17 @@
     <Compile Include="Size3.cs" />
     <Compile Include="Size3F.cs" />
     <Compile Include="TaskUtil.cs" />
+    <Compile Include="UI\Presentation\Elements\Grid.CellMetadata.cs" />
+    <Compile Include="UI\Presentation\Elements\RowDefinitionCollection.IEnumerable.cs" />
+    <Compile Include="UI\Presentation\Elements\RowDefinitionCollection.cs" />
+    <Compile Include="UI\Presentation\Elements\ColumnDefinitionCollection.IEnumerable.cs" />
+    <Compile Include="UI\Presentation\Elements\ColumnDefinitionCollection.cs" />
+    <Compile Include="UI\Presentation\Elements\DefinitionBase.cs" />
+    <Compile Include="UI\Presentation\Elements\Grid.cs" />
     <Compile Include="UI\Presentation\Elements\HorizontalAlignment.cs" />
     <Compile Include="UI\Presentation\Elements\Orientation.cs" />
+    <Compile Include="UI\Presentation\Elements\ColumnDefinition.cs" />
+    <Compile Include="UI\Presentation\Elements\RowDefinition.cs" />
     <Compile Include="UI\Presentation\Elements\WrapPanel.cs" />
     <Compile Include="UI\Presentation\Elements\StackPanel.cs" />
     <Compile Include="UI\Presentation\Elements\ProgressBar.cs" />
@@ -349,6 +359,8 @@
     <Compile Include="UI\Presentation\Elements\ToggleButton.cs" />
     <Compile Include="UI\Presentation\Elements\ButtonBase.cs" />
     <Compile Include="UI\Presentation\Elements\VerticalAlignment.cs" />
+    <Compile Include="UI\Presentation\GridLength.cs" />
+    <Compile Include="UI\Presentation\GridUnitType.cs" />
     <Compile Include="UI\Presentation\IUltravioletDisplayExtensions.cs" />
     <Compile Include="UI\Presentation\Thickness.cs" />
     <Compile Include="Tweening.cs" />

@@ -26,8 +26,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             this.viewModelType = viewModelType;
 
-            this.canvas = new Canvas(uv, null, viewModelType);
-            this.canvas.UpdateView(this);
+            this.grid = new Grid(uv, null, viewModelType);
+            this.grid.UpdateView(this);
 
             HookKeyboardEvents();
             HookMouseEvents();
@@ -71,7 +71,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (window == null)
                 return;
 
-            Canvas.Draw(time, spriteBatch);
+            LayoutRoot.Draw(time, spriteBatch);
         }
 
         /// <summary>
@@ -85,7 +85,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             HandleUserInput();
 
-            Canvas.Update(time);
+            LayoutRoot.Update(time);
         }
 
         /// <summary>
@@ -253,7 +253,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <returns>The element within this view at the specified point in view space, or <c>null</c> if no element exists at that point.</returns>
         public UIElement GetElementAtPoint(Int32 x, Int32 y, Boolean hitTest)
         {
-            return Canvas.GetElementAtPoint(x, y, hitTest);
+            return LayoutRoot.GetElementAtPoint(x, y, hitTest);
         }
 
         /// <summary>
@@ -302,7 +302,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             this.globalContent = global;
             this.localContent  = local;
 
-            Canvas.ReloadContentRecursive();
+            LayoutRoot.ReloadContentRecursive();
         }
 
         /// <summary>
@@ -315,11 +315,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             if (stylesheet != null)
             {
-                Canvas.ApplyStyles(stylesheet);
+                LayoutRoot.ApplyStyles(stylesheet);
             }
             else
             {
-                Canvas.ClearStyledValuesRecursive();
+                LayoutRoot.ClearStyledValuesRecursive();
             }
         }
 
@@ -333,7 +333,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 throw new ArgumentException(UltravioletStrings.IncompatibleViewModel.Format(viewModelType));
 
             this.viewModel = viewModel;
-            Canvas.UpdateViewModel(viewModel);
+            LayoutRoot.UpdateViewModel(viewModel);
         }
 
         /// <summary>
@@ -358,17 +358,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             this.area = area;
 
-            Canvas.ActualWidth  = area.Width;
-            Canvas.ActualHeight = area.Height;
+            LayoutRoot.ActualWidth  = area.Width;
+            LayoutRoot.ActualHeight = area.Height;
 
             if (newSize)
             {
-                Canvas.PerformLayout();
+                LayoutRoot.PerformLayout();
             }
 
             if (newSize || newPosition)
             {
-                Canvas.UpdateAbsoluteScreenPosition(area.X, area.Y);
+                LayoutRoot.UpdateAbsoluteScreenPosition(area.X, area.Y);
             }
         }
 
@@ -377,7 +377,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         public void RequestLayout()
         {
-            Canvas.RequestLayout();
+            LayoutRoot.RequestLayout();
         }
 
         /// <summary>
@@ -385,7 +385,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         public void PerformLayout()
         {
-            Canvas.PerformLayout();
+            LayoutRoot.PerformLayout();
         }
 
         /// <summary>
@@ -505,7 +505,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             if (Stylesheet != null)
             {
-                return Stylesheet.InstantiateStoryboardByName(Canvas.Ultraviolet, name);
+                return Stylesheet.InstantiateStoryboardByName(LayoutRoot.Ultraviolet, name);
             }
 
             return null;
@@ -570,8 +570,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 if (!area.Equals(value))
                 {
                     area = value;
-                    Canvas.ContainerRelativeArea = new Rectangle(0, 0, value.Width, value.Height);
-                    Canvas.PerformLayout();
+                    LayoutRoot.ParentRelativeArea = new Rectangle(0, 0, value.Width, value.Height);
+                    LayoutRoot.PerformLayout();
                 }
             }
         }
@@ -617,11 +617,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
-        /// Gets the <see cref="Canvas"/> that contains all of the UI's elements.
+        /// Gets the <see cref="LayoutRoot"/> that contains all of the UI's elements.
         /// </summary>
-        public Canvas Canvas
+        public Grid LayoutRoot
         {
-            get { return canvas; }
+            get { return grid; }
         }
 
         /// <summary>
@@ -884,7 +884,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         private readonly Type viewModelType;
         private Rectangle area;
         private Boolean focused;
-        private Canvas canvas;
+        private Grid grid;
         private IUltravioletWindow window;
 
         // State values.

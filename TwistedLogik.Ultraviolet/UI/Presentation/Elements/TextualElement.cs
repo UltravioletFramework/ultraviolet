@@ -35,13 +35,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
                 return;
 
             var settings = new TextLayoutSettings(Font, width ?? Int32.MaxValue, height ?? Int32.MaxValue, TextAlignment);
-            UIElementResources.TextRenderer.CalculateLayout(cachedParserResult, cachedLayoutResult, settings);
+            UIElementResources.TextRenderer.CalculateLayout(cachedParserResult, cachedLayoutResultTemp, settings);
 
             if (width == null)
-                width = cachedLayoutResult.ActualWidth;
+                width = cachedLayoutResultTemp.ActualWidth;
 
             if (height == null)
-                height = cachedLayoutResult.ActualHeight;
+                height = cachedLayoutResultTemp.ActualHeight;
         }
 
         /// <summary>
@@ -76,10 +76,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             new DependencyPropertyMetadata(HandleTextAlignmentChanged, () => TextFlags.AlignCenter | TextFlags.AlignMiddle, DependencyPropertyOptions.None));
 
         /// <inheritdoc/>
-        protected override void OnContainerRelativeLayoutChanged()
+        protected override void OnParentRelativeLayoutChanged()
         {
             UpdateCachedTextLayout();
-            base.OnContainerRelativeLayoutChanged();
+            base.OnParentRelativeLayoutChanged();
         }
 
         /// <inheritdoc/>
@@ -228,5 +228,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         // State values.
         private readonly TextParserResult cachedParserResult = new TextParserResult();
         private readonly TextLayoutResult cachedLayoutResult = new TextLayoutResult();
+
+        [ThreadStatic]
+        private static readonly TextLayoutResult cachedLayoutResultTemp = new TextLayoutResult();
     }
 }

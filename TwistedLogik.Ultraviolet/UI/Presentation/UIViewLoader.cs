@@ -47,7 +47,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var view    = new UIView(uv, viewModelType);
             var context = new InstantiationContext(viewModelType);
 
-            PopulateElement(uv, view.Canvas, xml, context);
+            PopulateElement(uv, view.LayoutRoot, xml, context);
 
             return view;
         }
@@ -296,6 +296,44 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             itemType = iface.GetGenericArguments()[0];
             return true;
         }
+        
+        /// <summary>
+        /// Resolves dependency properties when loading objects through the Nucleus object serializer.
+        /// </summary>
+        /// <param name="obj">The object which is being populated.</param>
+        /// <param name="name">The name of the property which is being populated.</param>
+        /// <param name="value">The value which is being resolved.</param>
+        /// <param name="context">The current instantiation context.</param>
+        /// <returns><c>true</c> if the property was resolved; otherwise, <c>false</c>.</returns>
+        private static Boolean DependencyPropertyResolutionHandler(Object obj, String name, String value, InstantiationContext context)
+        {
+            var dobj = obj as DependencyObject;
+            if (dobj == null)
+                return false;
+
+            var dprop = DependencyProperty.FindByName(name, dobj.GetType());
+            if (dprop == null)
+                return false;
+
+            BindOrSetDependencyProperty(dobj, dprop, value, context);
+
+            return true;
+        }
+
+        /// <summary>
+        /// Loads an object using the Nucleus object serializer.
+        /// </summary>
+        /// <param name="type">The type of object to load.</param>
+        /// <param name="value">The XML element to load as an object.</param>
+        /// <param name="context">The current instantiation context.</param>
+        /// <returns>The object that was loaded.</returns>
+        private static Object LoadObjectWithSerializer(Type type, XElement value, InstantiationContext context)
+        {
+            return ObjectLoader.LoadObject((loaderObj, loaderName, loaderValue) =>
+            {
+                return DependencyPropertyResolutionHandler(loaderObj, loaderName, loaderValue, context);
+            }, type, value);
+        }
 
         /// <summary>
         /// Populates a UI element's events, properties, and children.
@@ -408,7 +446,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 var itemType = default(Type);
                 if (IsTypeAnEnumerableCollection(propType, out itemType))
                 {
-                    PopulateEnumerableCollection(uiElement, propName, element, propType, itemType);
+                    PopulateEnumerableCollection(uiElement, propName, element, propType, itemType, context);
                     continue;
                 }
 
@@ -418,7 +456,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 // the object using a default constructor. Nucleus will also handle this case.
                 if (element.Elements().Any() || element.IsEmpty)
                 {
-                    PopulateElementPropertyWithSerializer(uiElement, propName, element);
+                    PopulateElementPropertyWithSerializer(uiElement, propName, element, context);
                     continue;
                 }
 
@@ -432,12 +470,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="uiElement">The element whose property value will be populated.</param>
         /// <param name="name">The name of the property being populated.</param>
         /// <param name="value">The XML element containing the value to deserialize.</param>
-        private static void PopulateElementPropertyWithSerializer(UIElement uiElement, String name, XElement value)
+        /// <param name="context">The current instantiation context.</param>
+        private static void PopulateElementPropertyWithSerializer(UIElement uiElement, String name, XElement value, InstantiationContext context)
         {
             var dprop = FindElementDependencyProperty(uiElement, name);
             if (dprop != null)
             {
-                var propValue = ObjectLoader.LoadObject(dprop.PropertyType, value);
+                var propValue = LoadObjectWithSerializer(dprop.PropertyType, value, context);
                 SetDependencyProperty(uiElement, dprop, propValue);
             }
             else
@@ -446,7 +485,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 if (!propInfo.CanWrite)
                     throw new InvalidOperationException(UltravioletStrings.PropertyHasNoSetter.Format(name));
 
-                var propValue = ObjectLoader.LoadObject(propInfo.PropertyType, value);
+                var propValue = LoadObjectWithSerializer(propInfo.PropertyType, value, context);
                 propInfo.SetValue(uiElement, propValue, null);
             }
         }
@@ -484,7 +523,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="value">The XML element that represents the value of the property.</param>
         /// <param name="enumType">The type of enumerable collection to instantiate.</param>
         /// <param name="itemType">The type of item contained by the enumerable collection.</param>
-        private static void PopulateEnumerableCollection(UIElement uiElement, String name, XElement value, Type enumType, Type itemType)
+        /// <param name="context">The current instantiation context.</param>
+        private static void PopulateEnumerableCollection(UIElement uiElement, String name, XElement value, Type enumType, Type itemType, InstantiationContext context)
         {
             // Deserialize the collection's items from XML.
             var itemElements = value.Elements(itemType.Name).ToList();
@@ -494,7 +534,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var items = (IList)Activator.CreateInstance(typeof(List<>).MakeGenericType(itemType));
             foreach (var itemElement in itemElements)
             {
-                var item = ObjectLoader.LoadObject(itemType, itemElement);
+                var item = LoadObjectWithSerializer(itemType, itemElement, context);
                 items.Add(item);
             }
 
@@ -638,36 +678,36 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Binds or sets the specified dependency property, depending on whether the given value is a binding expression.
         /// </summary>
-        /// <param name="uiElement">The UI element to modify.</param>
+        /// <param name="dobj">The dependency object to modify.</param>
         /// <param name="dprop">The dependency property to bind or set.</param>
         /// <param name="value">The binding expression or value to set on the property.</param>
         /// <param name="context">The current instantiation context.</param>
-        private static void BindOrSetDependencyProperty(UIElement uiElement, DependencyProperty dprop, String value, InstantiationContext context)
+        private static void BindOrSetDependencyProperty(DependencyObject dobj, DependencyProperty dprop, String value, InstantiationContext context)
         {
             if (IsBindingExpression(value))
             {
-                BindDependencyProperty(uiElement, dprop, value, context);
+                BindDependencyProperty(dobj, dprop, value, context);
             }
             else
             {
-                SetDependencyProperty(uiElement, dprop, value);
+                SetDependencyProperty(dobj, dprop, value);
             }
         }
 
         /// <summary>
         /// Sets the local value of the specified dependency property.
         /// </summary>
-        /// <param name="uiElement">The UI element to modify.</param>
+        /// <param name="dobj">The dependency object to modify.</param>
         /// <param name="dprop">The dependency property to bind or set.</param>
         /// <param name="value">The value to set on the property.</param>
-        private static void SetDependencyProperty(UIElement uiElement, DependencyProperty dprop, String value)
+        private static void SetDependencyProperty(DependencyObject dobj, DependencyProperty dprop, String value)
         {
             try
             {
                 var type          = dprop.PropertyType;
                 var resolvedValue = ObjectResolver.FromString(value, type);
 
-                miSetLocalValue.MakeGenericMethod(type).Invoke(uiElement, new Object[] { dprop, resolvedValue });
+                miSetLocalValue.MakeGenericMethod(type).Invoke(dobj, new Object[] { dprop, resolvedValue });
             }
             catch (FormatException e)
             {
@@ -678,22 +718,22 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Sets the local value of the specified dependency property.
         /// </summary>
-        /// <param name="uiElement">The UI element to modify.</param>
+        /// <param name="dobj">The dependency object to modify.</param>
         /// <param name="dprop">The dependency property to bind or set.</param>
         /// <param name="value">The value to set on the property.</param>
-        private static void SetDependencyProperty(UIElement uiElement, DependencyProperty dprop, Object value)
+        private static void SetDependencyProperty(DependencyObject dobj, DependencyProperty dprop, Object value)
         {
-            miSetLocalValue.MakeGenericMethod(dprop.PropertyType).Invoke(uiElement, new Object[] { dprop, value });
+            miSetLocalValue.MakeGenericMethod(dprop.PropertyType).Invoke(dobj, new Object[] { dprop, value });
         }
 
         /// <summary>
         /// Binds the specified dependency property.
         /// </summary>
-        /// <param name="uiElement">The UI element to modify.</param>
+        /// <param name="dobj">The dependency object to modify.</param>
         /// <param name="dprop">The dependency property to bind or set.</param>
         /// <param name="expression">The binding expression to set on the property.</param>
         /// <param name="context">The current instantiation context.</param>
-        private static void BindDependencyProperty(UIElement uiElement, DependencyProperty dprop, String expression, InstantiationContext context)
+        private static void BindDependencyProperty(DependencyObject dobj, DependencyProperty dprop, String expression, InstantiationContext context)
         {
             if (context.ViewModelType == null)
                 throw new InvalidOperationException(UltravioletStrings.NoViewModel);
@@ -701,7 +741,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var expressionType = dprop.PropertyType;
             var expressionFull = BindingExpressions.Combine(context.BindingContext, expression);
 
-            miBindValue.Invoke(uiElement, new Object[] { dprop, context.ViewModelType, expressionFull });
+            miBindValue.Invoke(dobj, new Object[] { dprop, context.ViewModelType, expressionFull });
         }
 
         /// <summary>

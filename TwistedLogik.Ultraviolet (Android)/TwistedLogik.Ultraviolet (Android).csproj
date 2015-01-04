@@ -237,6 +237,9 @@
     <Compile Include="..\TwistedLogik.Ultraviolet\CurveProcessor.cs">
       <Link>CurveProcessor.cs</Link>
     </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\DebugColors.cs">
+      <Link>DebugColors.cs</Link>
+    </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet\DebugLevels.cs">
       <Link>DebugLevels.cs</Link>
     </Compile>
@@ -999,6 +1002,15 @@
     <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Elements\CheckBox.cs">
       <Link>UI\Presentation\Elements\CheckBox.cs</Link>
     </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Elements\ColumnDefinition.cs">
+      <Link>UI\Presentation\Elements\ColumnDefinition.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Elements\ColumnDefinitionCollection.cs">
+      <Link>UI\Presentation\Elements\ColumnDefinitionCollection.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Elements\ColumnDefinitionCollection.IEnumerable.cs">
+      <Link>UI\Presentation\Elements\ColumnDefinitionCollection.IEnumerable.cs</Link>
+    </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Elements\Container.cs">
       <Link>UI\Presentation\Elements\Container.cs</Link>
     </Compile>
@@ -1010,6 +1022,15 @@
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Elements\Control.cs">
       <Link>UI\Presentation\Elements\Control.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Elements\DefinitionBase.cs">
+      <Link>UI\Presentation\Elements\DefinitionBase.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Elements\Grid.CellMetadata.cs">
+      <Link>UI\Presentation\Elements\Grid.CellMetadata.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Elements\Grid.cs">
+      <Link>UI\Presentation\Elements\Grid.cs</Link>
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Elements\HorizontalAlignment.cs">
       <Link>UI\Presentation\Elements\HorizontalAlignment.cs</Link>
@@ -1028,6 +1049,15 @@
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Elements\RadioButton.cs">
       <Link>UI\Presentation\Elements\RadioButton.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Elements\RowDefinition.cs">
+      <Link>UI\Presentation\Elements\RowDefinition.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Elements\RowDefinitionCollection.cs">
+      <Link>UI\Presentation\Elements\RowDefinitionCollection.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Elements\RowDefinitionCollection.IEnumerable.cs">
+      <Link>UI\Presentation\Elements\RowDefinitionCollection.IEnumerable.cs</Link>
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Elements\ScrollViewer.cs">
       <Link>UI\Presentation\Elements\ScrollViewer.cs</Link>
@@ -1106,6 +1136,12 @@
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Elements\WrapPanel.cs">
       <Link>UI\Presentation\Elements\WrapPanel.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\GridLength.cs">
+      <Link>UI\Presentation\GridLength.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\GridUnitType.cs">
+      <Link>UI\Presentation\GridUnitType.cs</Link>
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\IDependencyBoundValue.cs">
       <Link>UI\Presentation\IDependencyBoundValue.cs</Link>

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Globalization;
+using TwistedLogik.Nucleus;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation
 {
@@ -42,7 +43,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         /// <param name="t1">The first <see cref="Thickness"/> to compare.</param>
         /// <param name="t2">The second <see cref="Thickness"/> to compare.</param>
-        /// <returns><c>true</c> if the specified circles are unequal; otherwise, <c>false</c>.</returns>
+        /// <returns><c>true</c> if the specified thicknesses are unequal; otherwise, <c>false</c>.</returns>
         public static Boolean operator !=(Thickness t1, Thickness t2)
         {
             return !t1.Equals(t2);
@@ -71,16 +72,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
-        /// Converts the string representation of a circle into an instance of the <see cref="Circle"/> structure.
+        /// Converts the string representation of a bounding rectangle into an instance of the <see cref="Thickness"/> structure.
         /// A return value indicates whether the conversion succeeded.
         /// </summary>
-        /// <param name="s">A string containing a circle to convert.</param>
+        /// <param name="s">A string containing a bounding rectangle to convert.</param>
         /// <param name="style">A set of <see cref="NumberStyles"/> values indicating which elements are present in <paramref name="s"/>.</param>
         /// <param name="provider">A format provider that provides culture-specific formatting information.</param>
         /// <param name="thickness">A variable to populate with the converted value.</param>
         /// <returns><c>true</c> if <paramref name="s"/> was converted successfully; otherwise, <c>false</c>.</returns>
         public static Boolean TryParse(String s, NumberStyles style, IFormatProvider provider, out Thickness thickness)
         {
+            Contract.Require(s, "s");
+
             thickness = default(Thickness);
 
             if (String.IsNullOrEmpty(s))

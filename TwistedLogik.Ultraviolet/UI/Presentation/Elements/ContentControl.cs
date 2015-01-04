@@ -92,7 +92,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         {
             if (Content != null)
             {
-                Content.ContainerRelativeArea = new Rectangle(0, 0, ContentElement.ActualWidth, ContentElement.ActualHeight);
+                Content.ParentRelativeArea = new Rectangle(0, 0, ContentElement.ActualWidth, ContentElement.ActualHeight);
                 Content.PerformLayout();
             }
 
@@ -256,8 +256,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             if (Content != null && ContentElement.Bounds.Contains(contentX, contentY))
             {
                 var content = Content.GetElementAtPointInternal(
-                    contentX - Content.ContainerRelativeX, 
-                    contentY - Content.ContainerRelativeY, hitTest);
+                    contentX - Content.ParentRelativeX, 
+                    contentY - Content.ParentRelativeY, hitTest);
 
                 if (content != null)
                 {

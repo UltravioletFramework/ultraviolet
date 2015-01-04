@@ -14,10 +14,12 @@ namespace TwistedLogik.Nucleus.Data
         /// </summary>
         /// <param name="globalAliases">The registry of global aliases.</param>
         /// <param name="culture">The culture information to use when parsing objects.</param>
-        public ObjectLoaderState(Dictionary<String, String> globalAliases, CultureInfo culture)
+        /// <param name="resolver">The custom member resolution handler, if any.</param>
+        public ObjectLoaderState(Dictionary<String, String> globalAliases, CultureInfo culture, ObjectLoaderMemberResolutionHandler resolver = null)
         {
             this.globalClassAliases = globalAliases;
             this.culture = culture;
+            this.resolver = resolver;
         }
 
         /// <summary>
@@ -126,6 +128,14 @@ namespace TwistedLogik.Nucleus.Data
         }
 
         /// <summary>
+        /// Gets the custom member resolver, if any.
+        /// </summary>
+        public ObjectLoaderMemberResolutionHandler Resolver
+        {
+            get { return resolver; }
+        }
+
+        /// <summary>
         /// Gets or sets a value indicating whether the object loader should ignore
         /// members which do not exist on the type being loaded.
         /// </summary>
@@ -135,8 +145,9 @@ namespace TwistedLogik.Nucleus.Data
             set;
         }
 
-        // The object loader's culture.
+        // Property values.
         private readonly CultureInfo culture;
+        private readonly ObjectLoaderMemberResolutionHandler resolver;
 
         // Loaded class aliases.
         private readonly Dictionary<String, String> globalClassAliases;

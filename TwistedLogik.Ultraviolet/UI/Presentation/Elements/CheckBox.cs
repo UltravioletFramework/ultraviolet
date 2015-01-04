@@ -118,10 +118,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <inheritdoc/>
-        protected override void OnContainerRelativeLayoutChanged()
+        protected override void OnParentRelativeLayoutChanged()
         {
             UpdateTextArea();
-            base.OnContainerRelativeLayoutChanged();
+            base.OnParentRelativeLayoutChanged();
         }
 
         /// <summary>

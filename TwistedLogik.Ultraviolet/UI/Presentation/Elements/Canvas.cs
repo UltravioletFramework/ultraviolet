@@ -215,23 +215,23 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <param name="partial">A value indicating whether this is a partial layout.</param>
         private void UpdateChildLayout(UIElement child, Boolean partial)
         {
-            UpdateContainerRelativeArea(child);
+            UpdateParentRelativeArea(child);
 
             child.PerformLayout();
             child.UpdateAbsoluteScreenPosition(
-                ContentElement.AbsoluteScreenX + child.ContainerRelativeX,
-                ContentElement.AbsoluteScreenY + child.ContainerRelativeY);
+                ContentElement.AbsoluteScreenX + child.ParentRelativeX,
+                ContentElement.AbsoluteScreenY + child.ParentRelativeY);
 
             if (partial)
                 UpdateScissorRectangle();
         }
 
         /// <summary>
-        /// Immediately recalculates the value of the <see cref="UIElement.ContainerRelativeArea"/> property
+        /// Immediately recalculates the value of the <see cref="UIElement.ParentRelativeArea"/> property
         /// for the specified child element.
         /// </summary>
         /// <param name="child">The child element for which to calculate a layout.</param>
-        private void UpdateContainerRelativeArea(UIElement child)
+        private void UpdateParentRelativeArea(UIElement child)
         {            
             if (View == null)
                 return;
@@ -311,7 +311,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             }
             
             // Apply the layout area to the element.
-            child.ContainerRelativeArea = new Rectangle(x, y, pxWidth ?? 0, pxHeight ?? 0);
+            child.ParentRelativeArea = new Rectangle(x, y, pxWidth ?? 0, pxHeight ?? 0);
         }
 
         /// <summary>
@@ -323,7 +323,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         {
             if (ComponentRoot == child)
             {
-                child.ContainerRelativeArea = new Rectangle(0, 0, ActualWidth, ActualHeight);
+                child.ParentRelativeArea = new Rectangle(0, 0, ActualWidth, ActualHeight);
                 return true;
             }
             return false;

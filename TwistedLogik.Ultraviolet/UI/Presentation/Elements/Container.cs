@@ -77,17 +77,33 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <summary>
+        /// Draws the container's children.
+        /// </summary>
+        /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Draw(UltravioletTime)"/>.</param>
+        /// <param name="spriteBatch">The sprite batch with which to draw the view.</param>
+        protected virtual void DrawChildren(UltravioletTime time, SpriteBatch spriteBatch)
+        {
+            foreach (var child in children)
+            {
+                if (child.Visible)
+                {
+                    child.Draw(time, spriteBatch);
+                }
+            }
+        }
+
+        /// <summary>
         /// Determines whether a scissor rectangle must be applied to this container.
         /// </summary>
-        protected void UpdateScissorRectangle()
+        protected virtual void UpdateScissorRectangle()
         {
             var required = false;
             foreach (var child in children)
             {
-                if (child.ContainerRelativeX < 0 || 
-                    child.ContainerRelativeY < 0 ||
-                    child.ContainerRelativeX + child.ActualWidth > ContentElement.ActualWidth ||
-                    child.ContainerRelativeY + child.ActualHeight > ContentElement.ActualHeight)
+                if (child.ParentRelativeX < 0 || 
+                    child.ParentRelativeY < 0 ||
+                    child.ParentRelativeX + child.ActualWidth > ContentElement.ActualWidth ||
+                    child.ParentRelativeY + child.ActualHeight > ContentElement.ActualHeight)
                 {
                     required = true;
                     break;
@@ -128,13 +144,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
                 ApplyScissorRectangle(spriteBatch, out scissorRect);
             }
 
-            foreach (var child in children)
-            {
-                if (child.Visible)
-                {
-                    child.Draw(time, spriteBatch);
-                }
-            }
+            DrawChildren(time, spriteBatch);
 
             if (scissor)
             {
@@ -229,8 +239,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             foreach (var child in children)
             {
                 child.UpdateAbsoluteScreenPosition(
-                    ContentElement.AbsoluteScreenX + child.ContainerRelativeX,
-                    ContentElement.AbsoluteScreenY + child.ContainerRelativeY);
+                    ContentElement.AbsoluteScreenX + child.ParentRelativeX,
+                    ContentElement.AbsoluteScreenY + child.ParentRelativeY);
             }
         }
 
@@ -255,7 +265,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
                 for (int i = children.Count - 1; i >= 0; i--)
                 {
                     var child   = children[i];
-                    var element = child.GetElementAtPointInternal(contentX - child.ContainerRelativeX, contentY - child.ContainerRelativeY, hitTest);
+                    var element = child.GetElementAtPointInternal(contentX - child.ParentRelativeX, contentY - child.ParentRelativeY, hitTest);
 
                     if (element != null)
                     {

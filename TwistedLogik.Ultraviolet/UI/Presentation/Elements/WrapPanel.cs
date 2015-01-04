@@ -38,7 +38,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <inheritdoc/>
-        public sealed override void CalculateContentSize(ref Int32? width, ref Int32? height)
+        public override void CalculateContentSize(ref Int32? width, ref Int32? height)
         {
             if (width == null || height == null)
             {
@@ -48,7 +48,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
 
                 if (Orientation == Orientation.Horizontal)
                 {
-                    var extent    = width ?? ((Parent == null) ? 0 : Parent.ActualWidth - ContainerRelativeArea.X);
+                    var extent    = width ?? ((Parent == null) ? 0 : Parent.ActualWidth - ParentRelativeArea.X);
                     var rowCount  = 0;
                     var rowWidth  = 0;
                     var rowHeight = 0;
@@ -63,7 +63,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
                 }
                 else
                 {
-                    var extent    = height ?? ((Parent == null) ? 0 : Parent.ActualHeight - ContainerRelativeArea.Y);
+                    var extent    = height ?? ((Parent == null) ? 0 : Parent.ActualHeight - ParentRelativeArea.Y);
                     var columnCount  = 0;
                     var columnWidth  = 0;
                     var columnHeight = 0;
@@ -88,7 +88,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <inheritdoc/>
-        public sealed override void PerformContentLayout()
+        public override void PerformContentLayout()
         {
             var index     = 0;
             var positionX = 0;
@@ -124,7 +124,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <inheritdoc/>
-        public sealed override void PerformPartialLayout(UIElement content)
+        public override void PerformPartialLayout(UIElement content)
         {
             Contract.Require(content, "content");
 
@@ -281,42 +281,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <summary>
-        /// Immediately recalculates the layout of the specified child element.
-        /// </summary>
-        /// <param name="child">The child element for which to calculate a layout.</param>
-        private void UpdateChildLayout(UIElement child)
-        {
-            if (Orientation == Orientation.Horizontal)
-            {
-                UpdateChildLayoutHorizontal(child);
-            }
-            else
-            {
-                UpdateChildLayoutVertical(child);
-            }
-        }
-
-        /// <summary>
-        /// Immediately recalculates the layout of the specified child element when
-        /// the wrap panel is in a vertical orientation.
-        /// </summary>
-        /// <param name="child">The child element for which to calculate a layout.</param>
-        private void UpdateChildLayoutVertical(UIElement child)
-        {
-
-        }
-
-        /// <summary>
-        /// Immediately recalculates the layout of the specified child element when
-        /// the wrap panel is in a horizontal orientation.
-        /// </summary>
-        /// <param name="child">The child element for which to calculate a layout.</param>
-        private void UpdateChildLayoutHorizontal(UIElement child)
-        {
-
-        }
-
-        /// <summary>
         /// Lays out the elements in the specified layout row.
         /// </summary>
         /// <param name="rowIndex">The index of the first child element in the row.</param>
@@ -356,7 +320,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
                         break;
                 }
 
-                child.ContainerRelativeArea = new Rectangle(elementPosX, elementPosY, size.Width, size.Height);
+                child.ParentRelativeArea = new Rectangle(elementPosX, elementPosY, size.Width, size.Height);
 
                 positionX += size.Width + (Int32)margin.Left + (Int32)margin.Right;
             }
@@ -404,7 +368,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
                         break;
                 }
 
-                child.ContainerRelativeArea = new Rectangle(elementPosX, elementPosY, size.Width, size.Height);
+                child.ParentRelativeArea = new Rectangle(elementPosX, elementPosY, size.Width, size.Height);
 
                 positionY += size.Height + (Int32)margin.Top + (Int32)margin.Bottom;
             }

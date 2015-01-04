@@ -185,10 +185,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
                     break;
             }
 
-            child.ContainerRelativeArea = new Rectangle(relativeX, relativeY, relativeWidth, relativeHeight);
+            child.ParentRelativeArea = new Rectangle(relativeX, relativeY, relativeWidth, relativeHeight);
             UpdateContentSize(child, margin, ref contentSize);
 
-            position = relativeY + child.ContainerRelativeArea.Height + (Int32)margin.Bottom;
+            position = relativeY + child.ParentRelativeArea.Height + (Int32)margin.Bottom;
         }
 
         /// <summary>
@@ -226,10 +226,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
                     break;
             }
 
-            child.ContainerRelativeArea = new Rectangle(relativeX, relativeY, relativeWidth, relativeHeight);
+            child.ParentRelativeArea = new Rectangle(relativeX, relativeY, relativeWidth, relativeHeight);
             UpdateContentSize(child, margin, ref contentSize);
 
-            position = relativeX + child.ContainerRelativeArea.Width + (Int32)margin.Right;
+            position = relativeX + child.ParentRelativeArea.Width + (Int32)margin.Right;
         }
 
         /// <summary>
@@ -240,7 +240,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <param name="contentSize">The stack panel's current content size.</param>
         private void UpdateContentSize(UIElement element, Thickness margin, ref Size2 contentSize)
         {
-            var elementArea = element.ContainerRelativeArea;
+            var elementArea = element.ParentRelativeArea;
 
             var marginBoundsRight  = elementArea.X + elementArea.Width + (Int32)margin.Right;
             var marginBoundsBottom = elementArea.Y + elementArea.Height + (Int32)margin.Bottom;

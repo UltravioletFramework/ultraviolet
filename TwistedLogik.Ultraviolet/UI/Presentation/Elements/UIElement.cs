@@ -1631,18 +1631,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <summary>
-        /// Gets the element's area relative to its container after layout has been performed.
+        /// Gets the element's area relative to its parent after layout has been performed.
         /// </summary>
-        protected internal Rectangle ContainerRelativeArea
+        protected internal Rectangle ParentRelativeArea
         {
-            get { return new Rectangle(containerRelativeX, containerRelativeY, actualWidth, actualHeight); }
+            get { return new Rectangle(parentRelativeX, parentRelativeY, actualWidth, actualHeight); }
             set
             {
-                containerRelativeX = value.X;
-                containerRelativeY = value.Y;
+                parentRelativeX = value.X;
+                parentRelativeY = value.Y;
                 actualWidth = value.Width;
                 actualHeight = value.Height;
-                OnContainerRelativeLayoutChanged();
+                OnParentRelativeLayoutChanged();
             }
         }
 
@@ -1663,21 +1663,21 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <summary>
-        /// Gets the x-coordinate of the element relative to its container after layout has been performed.
+        /// Gets the x-coordinate of the element relative to its parent after layout has been performed.
         /// </summary>
-        protected internal Int32 ContainerRelativeX
+        protected internal Int32 ParentRelativeX
         {
-            get { return containerRelativeX; }
-            internal set { containerRelativeX = value; }
+            get { return parentRelativeX; }
+            internal set { parentRelativeX = value; }
         }
 
         /// <summary>
-        /// Gets the y-coordinate of the element relative to its container after layout has been performed.
+        /// Gets the y-coordinate of the element relative to its parent after layout has been performed.
         /// </summary>
-        protected internal Int32 ContainerRelativeY
+        protected internal Int32 ParentRelativeY
         {
-            get { return containerRelativeY; }
-            internal set { containerRelativeY = value; }
+            get { return parentRelativeY; }
+            internal set { parentRelativeY = value; }
         }
 
         /// <summary>
@@ -1761,9 +1761,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <summary>
-        /// Called when the element's container-relative layout changes.
+        /// Called when the element's parent-relative layout changes.
         /// </summary>
-        protected virtual void OnContainerRelativeLayoutChanged()
+        protected virtual void OnParentRelativeLayoutChanged()
         {
 
         }
@@ -2727,8 +2727,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         private UIElement parent;
         private Control control;
         private Boolean hovering;
-        private Int32 containerRelativeX;
-        private Int32 containerRelativeY;
+        private Int32 parentRelativeX;
+        private Int32 parentRelativeY;
         private Int32 actualWidth;
         private Int32 actualHeight;
         private SpriteFont font;

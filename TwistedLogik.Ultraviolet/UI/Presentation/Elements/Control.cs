@@ -259,7 +259,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// </summary>
         private void PerformComponentLayout()
         {
-            ComponentRoot.ContainerRelativeArea = new Rectangle(0, 0, ActualWidth, ActualHeight);
+            ComponentRoot.ParentRelativeArea = new Rectangle(0, 0, ActualWidth, ActualHeight);
 
             ComponentRoot.PerformLayout();
             ComponentRoot.UpdateAbsoluteScreenPosition(AbsoluteScreenX, AbsoluteScreenY);
