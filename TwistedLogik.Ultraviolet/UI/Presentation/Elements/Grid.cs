@@ -88,7 +88,33 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <inheritdoc/>
-        public sealed override void PerformPartialLayout(UIElement content)
+        public override void CalculateContentSize(ref Int32? width, ref Int32? height)
+        {
+            if (width == null && ColumnDefinitions.Count > 0)
+            {
+                var totalWidth = 0;
+                foreach (var column in ColumnDefinitions)
+                {
+                    totalWidth += column.ActualWidth;
+                }
+                width = totalWidth;
+            }
+            
+            if (height == null && RowDefinitions.Count > 0)
+            {
+                var totalHeight = 0;
+                foreach (var row in RowDefinitions)
+                {
+                    totalHeight += row.ActualHeight;
+                }
+                height = totalHeight;
+            }
+
+            base.CalculateContentSize(ref width, ref height);
+        }
+
+        /// <inheritdoc/>
+        public override void PerformPartialLayout(UIElement content)
         {
             Contract.Require(content, "content");
 
@@ -118,6 +144,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
 
             foreach (var child in Children)
             {
+                if (!ElementParticipatesInLayout(child))
+                    continue;
+
                 PerformContentLayout(child);
             }
 
@@ -237,6 +266,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             var cellIndex = (row * ColumnCount ) + column;
             var cell      = cells[cellIndex];
 
+            if (cell.ActualWidth == 0 || cell.ActualHeight == 0)
+                return;
+
             if (cell.RequiresScissorRectangle != scissor)
                 return;
 
@@ -266,7 +298,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             }
 
             foreach (var child in cell.Elements)
+            {
+                if (!ElementIsDrawn(child))
+                    continue;
+
                 child.Draw(time, spriteBatch);
+            }
 
             if (cell.RequiresScissorRectangle)
             {
@@ -420,6 +457,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
 
             foreach (var child in Children)
             {
+                if (!ElementParticipatesInLayout(child))
+                    continue;
+
                 if (GetColumn(child) != ix)
                     continue;
 
@@ -498,6 +538,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
 
             foreach (var child in Children)
             {
+                if (!ElementParticipatesInLayout(child))
+                    continue;
+
                 if (GetRow(child) != ix)
                     continue;
 
@@ -809,13 +852,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
                         if (childCol != col || childRow != row)
                             continue;
 
-                        var childSize = CalculateChildSizeWithMargin(child);
+                        if (ElementIsDrawn(child))
+                        {
+                            var childSize = CalculateChildSizeWithMargin(child);
 
-                        if (childSize.Width > cellWidth)
-                            cellWidth = childSize.Width;
+                            if (childSize.Width > cellWidth)
+                                cellWidth = childSize.Width;
 
-                        if (childSize.Height > cellHeight)
-                            cellHeight = childSize.Height;
+                            if (childSize.Height > cellHeight)
+                                cellHeight = childSize.Height;
+                        }
 
                         cell.Elements.Add(child);
                     }

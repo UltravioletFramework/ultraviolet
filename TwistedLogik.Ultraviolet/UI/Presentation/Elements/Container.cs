@@ -85,10 +85,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         {
             foreach (var child in children)
             {
-                if (child.Visible)
-                {
-                    child.Draw(time, spriteBatch);
-                }
+                if (!ElementIsDrawn(child))
+                    continue;
+
+                child.Draw(time, spriteBatch);
             }
         }
 
@@ -100,6 +100,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             var required = false;
             foreach (var child in children)
             {
+                if (!ElementIsDrawn(child))
+                    continue;
+
                 if (child.ParentRelativeX < 0 || 
                     child.ParentRelativeY < 0 ||
                     child.ParentRelativeX + child.ActualWidth > ContentElement.ActualWidth ||
@@ -255,7 +258,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <inheritdoc/>
         internal override UIElement GetElementAtPointInternal(Int32 x, Int32 y, Boolean hitTest)
         {
-            if (!Bounds.Contains(x, y))
+            if (!Bounds.Contains(x, y) || !ElementIsDrawn(this))
                 return null;
 
             var contentX = x - ContentOriginX;

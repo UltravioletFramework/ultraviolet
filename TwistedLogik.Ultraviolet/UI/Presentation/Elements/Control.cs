@@ -113,7 +113,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <inheritdoc/>
         internal override Boolean Draw(UltravioletTime time, SpriteBatch spriteBatch)
         {
-            if (View == null || !Visible)
+            if (View == null || Visibility != Visibility.Visible)
                 return false;
 
             if (!base.Draw(time, spriteBatch))

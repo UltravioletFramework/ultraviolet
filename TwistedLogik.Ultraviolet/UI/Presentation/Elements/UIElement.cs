@@ -140,6 +140,36 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <summary>
+        /// Gets a value indicating whether the specified UI element should be drawn.
+        /// </summary>
+        /// <param name="element">The element to evaluate.</param>
+        /// <returns><c>true</c> if the element should be drawn; otherwise, <c>false</c>.</returns>
+        public static Boolean ElementIsDrawn(UIElement element)
+        {
+            return element.Visibility == Visibility.Visible;
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the specified element participates in layout operations.
+        /// </summary>
+        /// <param name="element">The element to evaluate.</param>
+        /// <returns><c>true</c> if the element is part of the layout; otherwise, <c>false</c>.</returns>
+        public static Boolean ElementParticipatesInLayout(UIElement element)
+        {
+            return (element.Visibility != Visibility.Collapsed);
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the specified element receives user input.
+        /// </summary>
+        /// <param name="element">The element to evaluate.</param>
+        /// <returns><c>true</c> if the element receives user input; otherwise, <c>false</c>.</returns>
+        public static Boolean ElementRecievesInput(UIElement element)
+        {
+            return (element.Visibility == Visibility.Visible && element.Enabled && element.HitTestVisible);
+        }  
+
+        /// <summary>
         /// Releases resources associated with the object.
         /// </summary>
         public void Dispose()
@@ -525,15 +555,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the element is visible.
-        /// </summary>
-        public Boolean Visible
-        {
-            get { return GetValue<Boolean>(VisibleProperty); }
-            set { SetValue<Boolean>(VisibleProperty, value); }
-        }
-
-        /// <summary>
         /// Gets a value indicating whether the mouse cursor is hovering over this element.
         /// </summary>
         public Boolean Hovering
@@ -547,6 +568,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
                     OnHoveringChanged();
                 }
             }
+        }
+
+        /// <summary>
+        /// Gets or sets a value specifying the element's visibility.
+        /// </summary>
+        public Visibility Visibility
+        {
+            get { return GetValue<Visibility>(VisibleProperty); }
+            set { SetValue<Visibility>(VisibleProperty, value); }
         }
 
         /// <summary>
@@ -806,9 +836,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         public event UIElementEventHandler EnabledChanged;
 
         /// <summary>
-        /// Occurs when the value of the <see cref="Visible"/> property changes.
+        /// Occurs when the value of the <see cref="Visibility"/> property changes.
         /// </summary>
-        public event UIElementEventHandler VisibleChanged;
+        public event UIElementEventHandler VisibilityChanged;
 
         /// <summary>
         /// Occurs when the value of the <see cref="Hovering"/> property changes.
@@ -913,6 +943,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// </summary>
         public static readonly DependencyProperty FocusableProperty = DependencyProperty.Register("Focusable", typeof(Boolean), typeof(UIElement),
             new DependencyPropertyMetadata(HandleFocusableChanged, () => false, DependencyPropertyOptions.None));
+        
+        /// <summary>
+        /// Identifies the <see cref="Visibility"/> dependency property.
+        /// </summary>
+        [Styled("visibility")]
+        public static readonly DependencyProperty VisibleProperty = DependencyProperty.Register("Visibility", typeof(Visibility), typeof(UIElement),
+            new DependencyPropertyMetadata(HandleVisibilityChanged, () => Visibility.Visible, DependencyPropertyOptions.None));
 
         /// <summary>
         /// Identifies the <see cref="Width"/> dependency property.
@@ -955,13 +992,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         [Styled("max-height")]
         public static readonly DependencyProperty MaxHeightProperty = DependencyProperty.Register("MaxHeight", typeof(Double), typeof(UIElement),
             new DependencyPropertyMetadata(HandleMaxHeightChanged, () => Double.PositiveInfinity, DependencyPropertyOptions.None));
-
-        /// <summary>
-        /// Identifies the <see cref="Visible"/> dependency property.
-        /// </summary>
-        [Styled("visible")]
-        public static readonly DependencyProperty VisibleProperty = DependencyProperty.Register("Visible", typeof(Boolean), typeof(UIElement),
-            new DependencyPropertyMetadata(HandleVisibleChanged, () => true, DependencyPropertyOptions.None));
 
         /// <summary>
         /// Identifies the <see cref="Padding"/> dependency property.
@@ -1399,7 +1429,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <returns>The element at the specified point in element space, or null if no such element exists.</returns>
         internal virtual UIElement GetElementAtPointInternal(Int32 x, Int32 y, Boolean hitTest)
         {
-            return Bounds.Contains(x, y) && HitTestVisible ? this : null;
+            return Bounds.Contains(x, y) && ElementRecievesInput(this) ? this : null;
         }
 
         /// <summary>
@@ -1714,8 +1744,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         protected internal Int32 ContentOriginY
         {
             get { return ContentElement.AbsoluteScreenY - this.AbsoluteScreenY; }
-        }
-                
+        } 
+
         /// <summary>
         /// Releases resources associated with the object.
         /// </summary>
@@ -1829,11 +1859,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <summary>
-        /// Raises the <see cref="VisibleChanged"/> event.
+        /// Raises the <see cref="HoveringChanged"/> event.
         /// </summary>
-        protected virtual void OnVisibleChanged()
+        protected virtual void OnHoveringChanged()
         {
-            var temp = VisibleChanged;
+            var temp = HoveringChanged;
             if (temp != null)
             {
                 temp(this);
@@ -1841,11 +1871,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <summary>
-        /// Raises the <see cref="HoveringChanged"/> event.
+        /// Raises the <see cref="VisibilityChanged"/> event.
         /// </summary>
-        protected virtual void OnHoveringChanged()
+        protected virtual void OnVisibilityChanged()
         {
-            var temp = HoveringChanged;
+            var temp = VisibilityChanged;
             if (temp != null)
             {
                 temp(this);
@@ -2409,13 +2439,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <summary>
-        /// Occurs when the value of the <see cref="Visible"/> dependency property changes.
+        /// Occurs when the value of the <see cref="Visibility"/> dependency property changes.
         /// </summary>
         /// <param name="dobj">The object that raised the event.</param>
-        private static void HandleVisibleChanged(DependencyObject dobj)
+        private static void HandleVisibilityChanged(DependencyObject dobj)
         {
             var element = (UIElement)dobj;
-            element.OnVisibleChanged();
+            element.OnVisibilityChanged();
+
+            if (element.Parent != null)
+                element.Parent.PerformPartialLayout(element);
         }
 
         /// <summary>

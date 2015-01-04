@@ -152,8 +152,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             if (!base.Draw(time, spriteBatch))
                 return false;
 
-            if (Content != null)
+            if (Content != null && ElementIsDrawn(Content))
+            {
                 Content.Draw(time, spriteBatch);
+            }
 
             OnContentDrawn(time, spriteBatch);
 
@@ -248,7 +250,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <inheritdoc/>
         internal override UIElement GetElementAtPointInternal(Int32 x, Int32 y, Boolean hitTest)
         {
-            if (!Bounds.Contains(x, y))
+            if (!Bounds.Contains(x, y) || !ElementIsDrawn(this))
                 return null;
             
             var contentX = x - ContentOriginX;

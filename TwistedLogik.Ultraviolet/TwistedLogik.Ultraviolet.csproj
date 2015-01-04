@@ -351,6 +351,7 @@
     <Compile Include="UI\Presentation\Elements\Orientation.cs" />
     <Compile Include="UI\Presentation\Elements\ColumnDefinition.cs" />
     <Compile Include="UI\Presentation\Elements\RowDefinition.cs" />
+    <Compile Include="UI\Presentation\Elements\Visibility.cs" />
     <Compile Include="UI\Presentation\Elements\WrapPanel.cs" />
     <Compile Include="UI\Presentation\Elements\StackPanel.cs" />
     <Compile Include="UI\Presentation\Elements\ProgressBar.cs" />

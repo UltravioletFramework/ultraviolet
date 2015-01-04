@@ -294,7 +294,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
 
             for (int i = 0; i < rowCount; i++)
             {
-                var child  = Children[rowIndex + i];
+                var child = Children[rowIndex + i];
+                if (!ElementParticipatesInLayout(child))
+                    continue;
+
                 var size   = CalculateElementSize(child);
                 var margin = ConvertThicknessToPixels(child.Margin, 0);
 
@@ -342,7 +345,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
 
             for (int i = 0; i < columnCount; i++)
             {
-                var child  = Children[columnIndex + i];
+                var child = Children[columnIndex + i];
+                if (!ElementParticipatesInLayout(child))
+                    continue;
+
                 var size   = CalculateElementSize(child);
                 var margin = ConvertThicknessToPixels(child.Margin, 0);
 

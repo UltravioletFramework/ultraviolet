@@ -139,6 +139,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         {
             foreach (var child in Children)
             {
+                if (!ElementParticipatesInLayout(child))
+                    continue;
+
                 UpdateChildLayout(child, false);
             }
             UpdateScissorRectangle();
