@@ -160,13 +160,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <summary>
-        /// Gets a value indicating whether the specified element receives user input.
+        /// Gets a value indicating whether the specified element is visible to the input system.
         /// </summary>
         /// <param name="element">The element to evaluate.</param>
+        /// <param name="hitTest">A value indicating whether a hit test is being performed.</param>
         /// <returns><c>true</c> if the element receives user input; otherwise, <c>false</c>.</returns>
-        public static Boolean ElementRecievesInput(UIElement element)
+        public static Boolean ElementIsVisibleToInput(UIElement element, Boolean hitTest)
         {
-            return (element.Visibility == Visibility.Visible && element.Enabled && element.HitTestVisible);
+            return (element.Visibility == Visibility.Visible && element.Enabled && (!hitTest || element.HitTestVisible));
         }  
 
         /// <summary>
@@ -1404,10 +1405,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// </summary>
         /// <param name="x">The x-coordinate of the element's absolute screen position.</param>
         /// <param name="y">The y-coordinate of the element's absolute screen position.</param>
-        internal virtual void UpdateAbsoluteScreenPosition(Int32 x, Int32 y)
+        /// <param name="requestLayout">A value indicating whether a new layout should be requested for this element.</param>
+        internal virtual void UpdateAbsoluteScreenPosition(Int32 x, Int32 y, Boolean requestLayout = false)
         {
             this.absoluteScreenX = x;
             this.absoluteScreenY = y;
+
+            OnAbsolutePositionChanged();
+
+            if (requestLayout)
+            {
+                RequestLayout();
+            }
         }
 
         /// <summary>
@@ -1429,7 +1438,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <returns>The element at the specified point in element space, or null if no such element exists.</returns>
         internal virtual UIElement GetElementAtPointInternal(Int32 x, Int32 y, Boolean hitTest)
         {
-            return Bounds.Contains(x, y) && ElementRecievesInput(this) ? this : null;
+            return Bounds.Contains(x, y) && ElementIsVisibleToInput(this, hitTest) ? this : null;
         }
 
         /// <summary>
@@ -1788,6 +1797,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             {
                 temp(this, time);
             }
+        }
+
+        /// <summary>
+        /// Occurs when the element's absolute position changes.
+        /// </summary>
+        protected virtual void OnAbsolutePositionChanged()
+        {
+
         }
 
         /// <summary>
@@ -2725,8 +2742,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <param name="element">The element that raised the event.</param>
         private void HandleContentElementPerformedLayout(UIElement element)
         {
-            this.PerformContentLayout();
-            this.UpdateAbsoluteScreenPosition(AbsoluteScreenX, AbsoluteScreenY);
+            this.UpdateAbsoluteScreenPosition(AbsoluteScreenX, AbsoluteScreenY, true);
         }
 
         /// <summary>

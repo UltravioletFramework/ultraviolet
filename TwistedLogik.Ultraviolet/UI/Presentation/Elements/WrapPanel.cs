@@ -40,6 +40,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <inheritdoc/>
         public override void CalculateContentSize(ref Int32? width, ref Int32? height)
         {
+            if (View == null)
+                return;
+
             if (width == null || height == null)
             {
                 var index       = 0;
@@ -48,7 +51,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
 
                 if (Orientation == Orientation.Horizontal)
                 {
-                    var extent    = width ?? ((Parent == null) ? 0 : Parent.ActualWidth - ParentRelativeArea.X);
+                    var extent    = width ?? View.Width - AbsoluteScreenX;
                     var rowCount  = 0;
                     var rowWidth  = 0;
                     var rowHeight = 0;
@@ -63,7 +66,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
                 }
                 else
                 {
-                    var extent    = height ?? ((Parent == null) ? 0 : Parent.ActualHeight - ParentRelativeArea.Y);
+                    var extent    = height ?? View.Height - AbsoluteScreenY;
                     var columnCount  = 0;
                     var columnWidth  = 0;
                     var columnHeight = 0;
@@ -186,7 +189,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// Identifies the <see cref="Orientation"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty OrientationProperty = DependencyProperty.Register("Orientation", typeof(Orientation), typeof(WrapPanel),
-            new DependencyPropertyMetadata(HandleOrientationChanged, () => Orientation.Vertical, DependencyPropertyOptions.None));
+            new DependencyPropertyMetadata(HandleOrientationChanged, () => Orientation.Horizontal, DependencyPropertyOptions.None));
 
         /// <summary>
         /// Identifies the <see cref="ItemWidth"/> dependency property.
@@ -205,6 +208,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         {
             DrawBackgroundImage(spriteBatch);
             base.OnDrawing(time, spriteBatch);
+        }
+
+        /// <inheritdoc/>
+        protected override void OnAbsolutePositionChanged()
+        {
+            if (Double.IsNaN(Width) || Double.IsNaN(Height))
+            {
+                RequestLayout();
+            }
+            base.OnAbsolutePositionChanged();
         }
 
         /// <summary>

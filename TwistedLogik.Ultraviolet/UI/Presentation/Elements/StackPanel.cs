@@ -40,6 +40,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <inheritdoc/>
         public sealed override void CalculateContentSize(ref Int32? width, ref Int32? height)
         {
+            contentSize = MeasureContentSize();
+
             if (width == null)
                 width = contentSize.Width;
             if (height == null)
@@ -51,7 +53,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <inheritdoc/>
         public sealed override void PerformContentLayout()
         {
-            contentSize = Size2.Zero;
+            contentSize = MeasureContentSize();
 
             var position = 0;
             foreach (var child in Children)
@@ -189,7 +191,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             }
 
             child.ParentRelativeArea = new Rectangle(relativeX, relativeY, relativeWidth, relativeHeight);
-            UpdateContentSize(child, margin, ref contentSize);
 
             position = relativeY + child.ParentRelativeArea.Height + (Int32)margin.Bottom;
         }
@@ -230,7 +231,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             }
 
             child.ParentRelativeArea = new Rectangle(relativeX, relativeY, relativeWidth, relativeHeight);
-            UpdateContentSize(child, margin, ref contentSize);
 
             position = relativeX + child.ParentRelativeArea.Width + (Int32)margin.Right;
         }
@@ -239,14 +239,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// Updates the element's content size to include the size of the specified element.
         /// </summary>
         /// <param name="element">The element to add to the stack panel's content size.</param>
-        /// <param name="margin">The element margin converted to device pixels.</param>
         /// <param name="contentSize">The stack panel's current content size.</param>
-        private void UpdateContentSize(UIElement element, Thickness margin, ref Size2 contentSize)
+        private void UpdateContentSize(UIElement element, ref Size2 contentSize)
         {
-            var elementArea = element.ParentRelativeArea;
+            Int32? elementWidth  = null;
+            Int32? elementHeight = null;
+            element.CalculateActualSize(ref elementWidth, ref elementHeight);
 
-            var marginBoundsRight  = elementArea.X + elementArea.Width + (Int32)margin.Right;
-            var marginBoundsBottom = elementArea.Y + elementArea.Height + (Int32)margin.Bottom;
+            var elementMargin = ConvertThicknessToPixels(element.Margin, 0);     
+
+            var marginBoundsRight  = element.ParentRelativeX + (elementWidth ?? 0)  + (Int32)elementMargin.Right;
+            var marginBoundsBottom = element.ParentRelativeY + (elementHeight ?? 0) + (Int32)elementMargin.Bottom;
 
             var contentWidth  = contentSize.Width;
             var contentHeight = contentSize.Height;
@@ -292,6 +295,25 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             var marginBottom = (Int32)margin.Bottom;
 
             return ActualHeight - (marginTop + marginBottom);
+        }
+
+        /// <summary>
+        /// Measures the size of the panel's content.
+        /// </summary>
+        /// <returns>The size of the panel's content.</returns>
+        private Size2 MeasureContentSize()
+        {
+            var size = Size2.Zero;
+
+            foreach (var child in Children)
+            {
+                if (!ElementParticipatesInLayout(child))
+                    continue;
+
+                UpdateContentSize(child, ref size);
+            }
+
+            return size;
         }
 
         // State values.

@@ -226,15 +226,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <inheritdoc/>
-        internal override void UpdateAbsoluteScreenPosition(Int32 x, Int32 y)
+        internal override void UpdateAbsoluteScreenPosition(Int32 x, Int32 y, Boolean requestLayout)
         {
-            base.UpdateAbsoluteScreenPosition(x, y);
+            base.UpdateAbsoluteScreenPosition(x, y, requestLayout);
 
             if (Content != null)
             {
                 Content.UpdateAbsoluteScreenPosition(
                     ContentElement.AbsoluteScreenX,
-                    ContentElement.AbsoluteScreenY);
+                    ContentElement.AbsoluteScreenY, requestLayout);
             }
         }
 

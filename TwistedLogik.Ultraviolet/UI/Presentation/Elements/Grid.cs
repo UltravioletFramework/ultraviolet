@@ -694,11 +694,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             }
 
             child.ParentRelativeArea = new Rectangle(colX + childX, rowY + childY, childWidth, childHeight);
-
-            child.PerformLayout();
             child.UpdateAbsoluteScreenPosition(
                 ContentElement.AbsoluteScreenX + child.ParentRelativeX,
-                ContentElement.AbsoluteScreenY + child.ParentRelativeY);
+                ContentElement.AbsoluteScreenY + child.ParentRelativeY, true);
         }
 
         /// <summary>

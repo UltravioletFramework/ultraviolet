@@ -220,10 +220,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         {
             UpdateParentRelativeArea(child);
 
-            child.PerformLayout();
             child.UpdateAbsoluteScreenPosition(
                 ContentElement.AbsoluteScreenX + child.ParentRelativeX,
-                ContentElement.AbsoluteScreenY + child.ParentRelativeY);
+                ContentElement.AbsoluteScreenY + child.ParentRelativeY, true);
 
             if (partial)
                 UpdateScissorRectangle();
