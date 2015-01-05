@@ -109,22 +109,25 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
             if (element.Parent == null && String.Equals(part.Element, "document", StringComparison.OrdinalIgnoreCase))
                 return true;
 
-            if (!String.IsNullOrEmpty(part.ID))
+            if (part.HasID)
             {
                 if (element.IsComponent || !String.Equals(element.ID, part.ID, StringComparison.OrdinalIgnoreCase))
                     return false;
             }
 
-            if (!String.IsNullOrEmpty(part.Element))
+            if (part.HasElement)
             {
                 if (!String.Equals(element.Name, part.Element, StringComparison.OrdinalIgnoreCase))
                     return false;
             }
 
-            foreach (var className in part.Classes)
+            if (part.HasClasses)
             {
-                if (!element.Classes.Contains(className))
-                    return false;
+                foreach (var className in part.Classes)
+                {
+                    if (!element.Classes.Contains(className))
+                        return false;
+                }
             }
 
             return true;

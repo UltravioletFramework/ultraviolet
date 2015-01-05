@@ -251,7 +251,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             if (componentRoot != null)
                 throw new InvalidOperationException(UltravioletStrings.ComponentRootAlreadyLoaded);
 
-            UIViewLoader.LoadComponentRoot(this, template, viewModelType, bindingContext);
+            UvmlLoader.LoadComponentRoot(this, template, viewModelType, bindingContext);
         }
 
         /// <summary>

@@ -4,7 +4,7 @@ using TwistedLogik.Ultraviolet.UI.Presentation.Elements;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation
 {
-    partial class UIViewLoader
+    partial class UvmlLoader
     {
         /// <summary>
         /// Represents a context within which the view loader instantiates new controls. This context

@@ -44,7 +44,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             Contract.Require(uv, "uv");
             Contract.Require(xml, "xml");
 
-            return UIViewLoader.Load(uv, xml.Root);
+            return UvmlLoader.Load(uv, xml.Root);
         }
 
         /// <summary>
@@ -58,7 +58,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             Contract.Require(uv, "uv");
             Contract.Require(xml, "xml");
 
-            return UIViewLoader.Load(uv, xml);
+            return UvmlLoader.Load(uv, xml);
         }
 
         /// <summary>

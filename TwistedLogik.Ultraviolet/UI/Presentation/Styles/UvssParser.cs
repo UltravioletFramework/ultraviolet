@@ -691,6 +691,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
             var pseudoClass = default(String);
             var classes     = new List<String>();
             var valid       = false;
+            var universal   = false;
 
             while (true)
             {
@@ -725,21 +726,30 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
                     continue;
                 }
 
-                if (token.TokenType == UvssLexerTokenType.Identifier)
+                if (token.TokenType == UvssLexerTokenType.Identifier || token.TokenType == UvssLexerTokenType.UniversalSelector)
                 {
                     if (!String.IsNullOrEmpty(pseudoClass))
                         ThrowUnexpectedToken(state, token);
 
                     state.Advance();
 
-                    if (IsSelectorForElement(token.Value))
+                    if (token.TokenType == UvssLexerTokenType.UniversalSelector)
                     {
-                        if (element != null)
-                            ThrowUnexpectedValue(state, token);
-
-                        valid   = true;
-                        element = token.Value;
+                        valid     = true;
+                        universal = true;
                         continue;
+                    }
+                    else
+                    {
+                        if (IsSelectorForElement(token.Value))
+                        {
+                            if (element != null || universal)
+                                ThrowUnexpectedValue(state, token);
+
+                            valid   = true;
+                            element = token.Value;
+                            continue;
+                        }
                     }
 
                     if (IsSelectorForID(token.Value))

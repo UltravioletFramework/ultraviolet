@@ -74,7 +74,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             if (registration.Layout != null)
             {
-                UIViewLoader.LoadUserControl((UserControl)instance, registration.Layout, viewModelType, bindingContext);
+                UvmlLoader.LoadUserControl((UserControl)instance, registration.Layout, viewModelType, bindingContext);
             }
 
             return instance;

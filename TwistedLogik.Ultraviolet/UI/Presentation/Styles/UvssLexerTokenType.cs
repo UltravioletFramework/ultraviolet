@@ -75,5 +75,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// Represents a pseudo-class like :hover.
         /// </summary>
         PseudoClass,
+
+        /// <summary>
+        /// Represents the universal selector (*).
+        /// </summary>
+        UniversalSelector,
     }
 }

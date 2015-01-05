@@ -56,6 +56,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
                     this.value = ",";
                     break;
 
+                case UvssLexerTokenType.UniversalSelector:
+                    this.value = "*";
+                    break;
+
                 default:
                     this.value = value;
                     break;

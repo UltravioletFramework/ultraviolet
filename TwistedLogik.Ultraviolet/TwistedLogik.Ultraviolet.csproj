@@ -446,7 +446,7 @@
     <Compile Include="UI\Presentation\PresentationFrameworkManager.cs" />
     <Compile Include="UI\Presentation\UIView.cs" />
     <Compile Include="UI\Presentation\Elements\UIElementRegistry.cs" />
-    <Compile Include="UI\Presentation\UIViewLoader.cs" />
+    <Compile Include="UI\Presentation\UvmlLoader.cs" />
     <Compile Include="UI\Presentation\UvmlException.cs" />
     <Compile Include="UI\Presentation\Elements\VisualState.cs" />
     <Compile Include="UI\Presentation\Elements\VisualStateGroup.cs" />
@@ -512,7 +512,7 @@
     <Compile Include="UI\UIScreen.cs" />
     <Compile Include="UI\UIScreenStack.cs" />
     <Compile Include="UI\UIScreenStackCollection.cs" />
-    <Compile Include="UI\Presentation\UIViewLoader.InstantiationContext.cs" />
+    <Compile Include="UI\Presentation\UvmlLoader.InstantiationContext.cs" />
     <Compile Include="UI\UltravioletUI.cs" />
     <Compile Include="UltravioletCollection.cs" />
     <Compile Include="Graphics\SamplerState.cs" />

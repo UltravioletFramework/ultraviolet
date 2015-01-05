@@ -42,6 +42,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
                             continue;
                     }
                 }
+                if (ConsumeUniversalSelector(input, output, line, ref ix))
+                    continue;
                 if (ConsumeIdentifier(input, output, line, ref ix, ref storyboard))
                     continue;
                 if (ConsumeNumber(input, output, line, ref ix))
@@ -294,6 +296,20 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         private static Boolean IsValidInIdentifier(Char c)
         {
             return Char.IsLetterOrDigit(c) || c == '_' || c == '-';
+        }
+
+        /// <summary>
+        /// Attempts to consume a UniversalSelector token.
+        /// </summary>
+        private static Boolean ConsumeUniversalSelector(String input, IList<UvssLexerToken> output, Int32 line, ref Int32 ix)
+        {
+            if (input[ix] != '*')
+                return false;
+
+            var token = new UvssLexerToken(UvssLexerTokenType.UniversalSelector, ix++, 1, line);
+            output.Add(token);
+
+            return true;
         }
 
         /// <summary>

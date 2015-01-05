@@ -11,14 +11,14 @@ using TwistedLogik.Ultraviolet.UI.Presentation.Elements;
 namespace TwistedLogik.Ultraviolet.UI.Presentation
 {
     /// <summary>
-    /// Contains methods for loading UI views.
+    /// Contains methods for loading UI elements from UVML.
     /// </summary>
-    internal static partial class UIViewLoader
+    internal static partial class UvmlLoader
     {
         /// <summary>
-        /// Initializes the <see cref="UIViewLoader"/> type.
+        /// Initializes the <see cref="UvmlLoader"/> type.
         /// </summary>
-        static UIViewLoader()
+        static UvmlLoader()
         {
             miBindValue     = typeof(DependencyObject).GetMethod("BindValue");
             miSetLocalValue = typeof(DependencyObject).GetMethod("SetLocalValue");

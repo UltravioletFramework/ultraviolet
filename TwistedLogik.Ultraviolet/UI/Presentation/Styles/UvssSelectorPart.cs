@@ -24,15 +24,20 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
 
             this.element     = element;
             this.id          = rawID;
-            this.classes     = rawClassNames.ToList();
             this.pseudoClass = rawPseudoClass;
+            this.classes     = rawClassNames.ToList();
             this.priority    = CalculatePriority();
         }
 
         /// <inheritdoc/>
         public override String ToString()
         {
-            return String.Format("{0}{1}{2}", element, (id == null) ? null : "#" + id, String.Join(String.Empty, classes.Select(x => "." + x)));
+            var displayedElement = element;
+            if (!HasElement && !HasID && !HasClasses)
+            {
+                displayedElement = "*";
+            }
+            return String.Format("{0}{1}{2}", displayedElement, (id == null) ? null : "#" + id, String.Join(String.Empty, classes.Select(x => "." + x)));
         }
 
         /// <summary>
@@ -41,6 +46,38 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         public Int32 Priority
         {
             get { return priority; }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether this selector part includes an element type.
+        /// </summary>
+        public Boolean HasElement
+        {
+            get { return !String.IsNullOrEmpty(Element); }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether this selector part includes an ID.
+        /// </summary>
+        public Boolean HasID
+        {
+            get { return !String.IsNullOrEmpty(ID); }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether this selector part includes a pseudo-class.
+        /// </summary>
+        public Boolean HasPseudoClass
+        {
+            get { return !String.IsNullOrEmpty(PseudoClass); }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether this selector part includes any classes.
+        /// </summary>
+        public Boolean HasClasses
+        {
+            get { return classes.Any(); }
         }
 
         /// <summary>
