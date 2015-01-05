@@ -12,16 +12,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// <summary>
         /// Initializes a new instance of the <see cref="UvssSelectorPart"/> class.
         /// </summary>
+        /// <param name="child">A value indicating whether this selector must be the immediate child of the previous selector.</param>
         /// <param name="element">The name of the element type that matches this selector part.</param>
         /// <param name="id">The identifier of the element that matches this selector part.</param>
         /// <param name="pseudoClass">The selector part's pseudo-class, if any.</param>
         /// <param name="classes">The list of classes which match this selector part.</param>
-        internal UvssSelectorPart(String element, String id, String pseudoClass, IEnumerable<String> classes)
+        internal UvssSelectorPart(Boolean child, String element, String id, String pseudoClass, IEnumerable<String> classes)
         {
             var rawID          = (id != null && id.StartsWith("#")) ? id.Substring(1) : id;
             var rawPseudoClass = (pseudoClass != null && pseudoClass.StartsWith(":")) ? pseudoClass.Substring(1) : pseudoClass;
             var rawClassNames  = from c in classes select c.StartsWith(".") ? c.Substring(1) : c;
 
+            this.child       = child;
             this.element     = element;
             this.id          = rawID;
             this.pseudoClass = rawPseudoClass;
@@ -32,12 +34,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// <inheritdoc/>
         public override String ToString()
         {
-            var displayedElement = element;
-            if (!HasElement && !HasID && !HasClasses)
-            {
-                displayedElement = "*";
-            }
-            return String.Format("{0}{1}{2}", displayedElement, (id == null) ? null : "#" + id, String.Join(String.Empty, classes.Select(x => "." + x)));
+            var partChild   = Child ? " > " : String.Empty;
+            var partElement = Universal ? "*" : element;
+            var partID      = HasID ? "#" + ID : null;
+            var partClasses = String.Join(String.Empty, classes.Select(x => "." + x));
+
+            return String.Format("{0}{1}{2}{3}", partChild, partElement, partID, partClasses);
         }
 
         /// <summary>
@@ -46,6 +48,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         public Int32 Priority
         {
             get { return priority; }
+        }
+
+        public Boolean Child
+        {
+            get { return child; }
+        }
+
+        public Boolean Universal
+        {
+            get { return !HasElement && !HasID && !HasClasses; }
         }
 
         /// <summary>
@@ -148,6 +160,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
 
         // Property values.
         private readonly Int32 priority;
+        private readonly Boolean child;
         private readonly String element;
         private readonly String id;
         private readonly String pseudoClass;

@@ -77,6 +77,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         PseudoClass,
 
         /// <summary>
+        /// Represents the child selector (>).
+        /// </summary>
+        ChildSelector,
+
+        /// <summary>
         /// Represents the universal selector (*).
         /// </summary>
         UniversalSelector,

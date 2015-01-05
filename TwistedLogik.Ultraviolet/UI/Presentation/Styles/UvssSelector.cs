@@ -87,13 +87,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
             if (!ElementMatchesSelectorPart(element, firstSelectorPart))
                 return false;
 
-            var current = element;
+            var current   = element;
+            var immediate = false;
+
             for (var i = parts.Count - 2; i >= 0; i--)
             {
-                if (!AncestorMatchesSelectorPart(ref current, parts[i], root))
+                if (!AncestorMatchesSelectorPart(ref current, parts[i], root, immediate))
                 {
                     return false;
                 }
+                immediate = parts[i].Child;
             }
             return true;
         }
@@ -139,8 +142,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// <param name="element">The UI element to evaluate. If a match is found, this variable will be updated to contain the matching element.</param>
         /// <param name="part">The selector part to evaluate.</param>
         /// <param name="root">The topmost root element to consider when tracing ancestors.</param>
+        /// <param name="immediate">A value indicating whether only the immediate ancestor should be considered.</param>
         /// <returns><c>true</c> if the element matches the selector part; otherwise, <c>false</c>.</returns>
-        private static Boolean AncestorMatchesSelectorPart(ref UIElement element, UvssSelectorPart part, UIElement root = null)
+        private static Boolean AncestorMatchesSelectorPart(ref UIElement element, UvssSelectorPart part, UIElement root, Boolean immediate)
         {
             var current = element;
             while (true)
@@ -157,6 +161,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
                     element = current;
                     return true;
                 }
+
+                if (immediate)
+                    break;
             }
             return false;
         }

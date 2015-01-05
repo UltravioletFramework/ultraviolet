@@ -647,7 +647,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
 
             while (true)
             {
-                var part = ConsumeSelectorPart(state, allowEOF, !pseudoClass);
+                var part = ConsumeSelectorPart(state, allowEOF, !pseudoClass, parts.Any());
                 if (part != null)
                 {
                     if (!String.IsNullOrEmpty(part.PseudoClass))
@@ -683,21 +683,23 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// <param name="state">The parser state.</param>
         /// <param name="allowEOF">A value indicating whether hitting the end of file is valid.</param>
         /// <param name="allowPseudoClass">A value indicating whether parts with pseduo classes are valid.</param>
+        /// <param name="allowChild">A value indicating whether this selector part can be an immediate child.</param>
         /// <returns>A new <see cref="UvssSelectorPart"/> object representing the selector part that was consumed.</returns>
-        private static UvssSelectorPart ConsumeSelectorPart(UvssParserState state, Boolean allowEOF, Boolean allowPseudoClass)
+        private static UvssSelectorPart ConsumeSelectorPart(UvssParserState state, Boolean allowEOF, Boolean allowPseudoClass, Boolean allowChild)
         {
             var element     = default(String);
             var id          = default(String);
             var pseudoClass = default(String);
             var classes     = new List<String>();
             var valid       = false;
+            var child       = false;
             var universal   = false;
 
             while (true)
             {
                 if (state.IsPastEndOfStream)
                 {
-                    if (allowEOF)
+                    if (allowEOF && (!child || valid))
                     {
                         break;
                     }
@@ -706,14 +708,29 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
 
                 var token = state.CurrentToken;
 
-                if (token.TokenType == UvssLexerTokenType.WhiteSpace)
+                if (token.TokenType == UvssLexerTokenType.WhiteSpace ||
+                    token.TokenType == UvssLexerTokenType.Comma ||
+                    token.TokenType == UvssLexerTokenType.OpenCurlyBrace)
+                {
+                    if (child && !valid)
+                    {
+                        ThrowUnexpectedToken(state, token);
+                    }
                     break;
+                }
 
-                if (token.TokenType == UvssLexerTokenType.Comma)
-                    break;
+                if (token.TokenType == UvssLexerTokenType.ChildSelector)
+                {
+                    if (!allowChild)
+                        ThrowUnexpectedToken(state, token);
 
-                if (token.TokenType == UvssLexerTokenType.OpenCurlyBrace)
-                    break;
+                    child = true;
+
+                    state.Advance();
+                    state.AdvanceBeyondWhiteSpace();
+
+                    continue;
+                }
 
                 if (token.TokenType == UvssLexerTokenType.PseudoClass)
                 {
@@ -770,7 +787,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
                 ThrowUnexpectedToken(state, token);
             }
 
-            return valid ? new UvssSelectorPart(element, id, pseudoClass, classes) : null;
+            return valid ? new UvssSelectorPart(child, element, id, pseudoClass, classes) : null;
         }
 
         /// <summary>
