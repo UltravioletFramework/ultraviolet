@@ -188,6 +188,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             if (!Depressed)
                 return;
 
+            var input = Ultraviolet.GetInput();
+            if (input.IsMouseSupported())
+            {
+                var mouse = input.GetMouse();
+                if (!ScreenBounds.Contains(mouse.X, mouse.Y))
+                    return;
+            }
+
             repeatTimer += time.ElapsedTime.TotalMilliseconds;
             if (repeating)
             {

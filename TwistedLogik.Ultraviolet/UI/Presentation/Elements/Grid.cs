@@ -427,7 +427,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
                 }
             }
 
-            return availableSize;
+            return Math.Max(0, availableSize);
         }
 
         /// <summary>
@@ -508,7 +508,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
                 }
             }
 
-            return availableSize;
+            return Math.Max(0, availableSize);
         }
 
         /// <summary>
@@ -734,6 +734,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
 
             if (clampedSize > max)
                 clampedSize = max;
+
+            if (clampedSize < 0)
+                clampedSize = 0;
 
             return (Int32)display.DipsToPixels(clampedSize);
         }

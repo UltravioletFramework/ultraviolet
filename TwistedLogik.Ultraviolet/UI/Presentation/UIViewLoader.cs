@@ -281,6 +281,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             switch (name)
             {
                 case "ID":
+                case "Class":
                 case "ViewModelType":
                 case "BindingContext":
                     return true;

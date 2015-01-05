@@ -338,7 +338,9 @@
     <Compile Include="Size3.cs" />
     <Compile Include="Size3F.cs" />
     <Compile Include="TaskUtil.cs" />
+    <Compile Include="UI\Presentation\Elements\HScrollBar.cs" />
     <Compile Include="UI\Presentation\Elements\ClickMode.cs" />
+    <Compile Include="UI\Presentation\Elements\RangeBase.cs" />
     <Compile Include="UI\Presentation\Elements\RepeatButton.cs" />
     <Compile Include="UI\Presentation\Elements\Grid.CellMetadata.cs" />
     <Compile Include="UI\Presentation\Elements\RowDefinitionCollection.IEnumerable.cs" />
@@ -610,6 +612,7 @@
     </None>
     <EmbeddedResource Include="UI\Presentation\Elements\Templates\ScrollViewer.xml" />
     <EmbeddedResource Include="UI\Presentation\Elements\Templates\Border.xml" />
+    <EmbeddedResource Include="UI\Presentation\Elements\Templates\HScrollBar.xml" />
     <Content Include="uv.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

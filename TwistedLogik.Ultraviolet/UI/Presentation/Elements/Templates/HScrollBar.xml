@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ComponentTemplate>
+  <Grid ID="LayoutRoot">
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="Auto"/>
+      <ColumnDefinition Width="0"/>
+      <ColumnDefinition Width="Auto"/>
+      <ColumnDefinition Width="*"/>
+      <ColumnDefinition Width="Auto"/>
+    </Grid.ColumnDefinitions>
+    <RepeatButton ID="LeftSmall" Class="scroll-button scroll-left" Grid.Column="0" VerticalAlignment="Stretch" Click="HandleClickLeftSmall"></RepeatButton>
+    <RepeatButton ID="LeftLarge" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="HandleClickLeftLarge"></RepeatButton>
+    <Button ID="Thumb" Class="hscroll-thumb" VerticalAlignment="Stretch" Grid.Column="2" 
+            MouseButtonPressed="HandleThumbMouseButtonPressed" MouseMotion="HandleThumbMouseMotion"></Button>
+    <RepeatButton ID="RightLarge" Grid.Column="3" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="HandleClickRightLarge"></RepeatButton>
+    <RepeatButton ID="RightSmall" Class="scroll-button scroll-right" Grid.Column="4" VerticalAlignment="Stretch" Click="HandleClickRightSmall"></RepeatButton>
+  </Grid>
+</ComponentTemplate>
