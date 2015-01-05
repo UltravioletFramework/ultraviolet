@@ -88,7 +88,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
                 return false;
 
             var current   = element;
-            var immediate = false;
+            var immediate = firstSelectorPart.Child;
 
             for (var i = parts.Count - 2; i >= 0; i--)
             {

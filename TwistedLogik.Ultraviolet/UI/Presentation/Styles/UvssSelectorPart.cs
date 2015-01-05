@@ -50,11 +50,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
             get { return priority; }
         }
 
+        /// <summary>
+        /// Gets a value indicating whether this selector part is an immediate child of its predecessor.
+        /// </summary>
         public Boolean Child
         {
             get { return child; }
         }
 
+        /// <summary>
+        /// Gets a value indicating whether this is a universal selector.
+        /// </summary>
         public Boolean Universal
         {
             get { return !HasElement && !HasID && !HasClasses; }
