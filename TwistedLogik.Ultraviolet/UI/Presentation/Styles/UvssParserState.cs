@@ -28,6 +28,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
             /// <returns>The token that was consumed.</returns>
             public UvssLexerToken Consume()
             {
+                while (position < tokens.Count && tokens[position].IsComment)
+                {
+                    position++;
+                }
                 return tokens[position++];
             }
 
@@ -37,7 +41,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
             /// <returns>The token that was consumed, or <c>null</c> if no non-whitespace token was found.</returns>
             public UvssLexerToken? TryConsumeNonWhiteSpace()
             {
-                while (position < tokens.Count && tokens[position].TokenType == UvssLexerTokenType.WhiteSpace) 
+                while (position < tokens.Count && (tokens[position].TokenType == UvssLexerTokenType.WhiteSpace || tokens[position].IsComment)) 
                 { 
                     position++; 
                 }
@@ -58,7 +62,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
             /// </summary>
             public void Advance()
             {
-                position++;
+                do
+                {
+                    position++;
+                }
+                while (!IsPastEndOfStream && CurrentToken.IsComment);
             }
 
             /// <summary>
@@ -66,7 +74,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
             /// </summary>
             public void AdvanceBeyondWhiteSpace()
             {
-                while (!IsPastEndOfStream && CurrentToken.TokenType == UvssLexerTokenType.WhiteSpace)
+                while (!IsPastEndOfStream && (CurrentToken.TokenType == UvssLexerTokenType.WhiteSpace || CurrentToken.IsComment))
                 {
                     position++;
                 }

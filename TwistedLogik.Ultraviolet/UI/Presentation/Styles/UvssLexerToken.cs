@@ -106,6 +106,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
             get { return value; }
         }
 
+        /// <summary>
+        /// Gets a value indicating whether this token represents a comment.
+        /// </summary>
+        public Boolean IsComment
+        {
+            get { return TokenType == UvssLexerTokenType.SingleLineComment || TokenType == UvssLexerTokenType.MultiLineComment; }
+        }
+
         // Property values.
         private readonly UvssLexerTokenType tokenType;
         private readonly Int32 start;

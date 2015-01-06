@@ -867,7 +867,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
 
             var container = default(String);
             var name      = nameToken.Value.Value;
-            var value     = String.Join(String.Empty, valueTokens.Select(x => x.Value));
+            var value     = String.Join(String.Empty, valueTokens.Select(x => x.Value)).Trim();
 
             if (name.Contains('.'))
             {

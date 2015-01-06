@@ -27,6 +27,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
             {
                 if (ConsumeWhiteSpace(input, output, ref line, ref ix))
                     continue;
+                if (ConsumeSingleLineComment(input, output, line, ref ix))
+                    continue;
+                if (ConsumeMultiLineComment(input, output, ref line, ref ix))
+                    continue;
                 if (!storyboard && !arglist)
                 {
                     if (braces > 0)
@@ -141,6 +145,97 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         private static Boolean IsValidInWhiteSpace(Char c)
         {
             return c != '\n' && Char.IsWhiteSpace(c);
+        }
+
+        /// <summary>
+        /// Evaluates whether the specified character is valid at the beginning of a SingleLineComment token.
+        /// </summary>
+        private static Boolean IsValidStartSingleLineComment(String input, Int32 ix)
+        {
+            return ix + 1 < input.Length && input[ix] == '/' && input[ix + 1] == '/';
+        }
+
+        /// <summary>
+        /// Evaluates whether the specified character is valid at the end of a SingleLineComment token.
+        /// </summary>
+        private static Boolean IsValidEndSingleLineComment(String input, Int32 ix)
+        {
+            return input[ix] == '\r' || input[ix] == '\n';
+        }
+
+        /// <summary>
+        /// Attempts to consume a SingleLineComment token.
+        /// </summary>
+        private static Boolean ConsumeSingleLineComment(String input, IList<UvssLexerToken> output, Int32 line, ref Int32 ix)
+        {
+            if (!IsValidStartSingleLineComment(input, ix))
+                return false;
+
+            var start  = ix + 2;
+            var length = 0;
+
+            for (var position = start; position < input.Length; position++)
+            {
+                if (IsValidEndSingleLineComment(input, position))
+                    break;
+
+                length++;
+            }
+
+            var totalLength = length + "//".Length;
+            var token = new UvssLexerToken(UvssLexerTokenType.SingleLineComment, ix, totalLength, line, input.Substring(start, length));
+            output.Add(token);
+
+            ix += totalLength;
+
+            return true;
+        }
+
+        /// <summary>
+        /// Evaluates whether the specified character is valid at the beginning of a MultiLineComment token.
+        /// </summary>
+        private static Boolean IsValidStartMultiLineComment(String input, Int32 ix)
+        {
+            return ix + 1 < input.Length && input[ix] == '/' && input[ix + 1] == '*';
+        }
+
+        /// <summary>
+        /// Evaluates whether the specified character is valid at the end of a MultiLineComment token.
+        /// </summary>
+        private static Boolean IsValidEndMultiLineComment(String input, Int32 ix)
+        {
+            return ix + 1 < input.Length && input[ix] == '*' && input[ix + 1] == '/';
+        }
+
+        /// <summary>
+        /// Attempts to consume a MultiLineComment token.
+        /// </summary>
+        private static Boolean ConsumeMultiLineComment(String input, IList<UvssLexerToken> output, ref Int32 line, ref Int32 ix)
+        {
+            if (!IsValidStartMultiLineComment(input, ix))
+                return false;
+
+            var start  = ix + 2;
+            var length = 0;
+
+            for (var position = start; position < input.Length; position++)
+            {
+                if (input[position] == '\n')
+                    line++;
+
+                if (IsValidEndMultiLineComment(input, position))
+                    break;
+
+                length++;
+            }
+
+            var totalLength = length + "/**/".Length;
+            var token = new UvssLexerToken(UvssLexerTokenType.MultiLineComment, ix, totalLength, line, input.Substring(start, length));
+            output.Add(token);
+
+            ix += totalLength;
+
+            return true;
         }
 
         /// <summary>

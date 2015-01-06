@@ -85,5 +85,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// Represents the universal selector (*).
         /// </summary>
         UniversalSelector,
+
+        /// <summary>
+        /// Represents a single line comment (beginning with //).
+        /// </summary>
+        SingleLineComment,
+
+        /// <summary>
+        /// Represents a multi line comment (beginning with /* and ending with */).
+        /// </summary>
+        MultiLineComment,
     }
 }
