@@ -163,6 +163,7 @@
     <Compile Include="Native\SDL_GameControllerButton.cs" />
     <Compile Include="Native\SDL_GLprofile.cs" />
     <Compile Include="Native\SDL_GLcontextFlag.cs" />
+    <Compile Include="Native\SDL_PowerState.cs" />
     <Compile Include="Native\SDL_SysWMinfoUnion.cs" />
     <Compile Include="Native\SDL_SysWMinfo.cs" />
     <Compile Include="Native\SDL_SysWMinfo_mir.cs" />
@@ -218,6 +219,7 @@
     <Compile Include="Native\SDL_SysWMinfo_dfb.cs" />
     <Compile Include="Native\SDL_SysWMinfo_x11.cs" />
     <Compile Include="Native\SDL_SysWMinfo_win.cs" />
+    <Compile Include="Platform\SDL2PowerManagementService.cs" />
     <Compile Include="SDL2UltravioletInput.cs" />
     <Compile Include="SDL2UltravioletMessages.cs" />
     <Compile Include="SDL2Strings.cs" />

@@ -747,6 +747,12 @@
     <Compile Include="..\TwistedLogik.Ultraviolet\Platform\NamespaceDoc.cs">
       <Link>Platform\NamespaceDoc.cs</Link>
     </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Platform\PowerManagementService.cs">
+      <Link>Platform\PowerManagementService.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Platform\PowerState.cs">
+      <Link>Platform\PowerState.cs</Link>
+    </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet\Platform\ScreenDensityBucket.cs">
       <Link>Platform\ScreenDensityBucket.cs</Link>
     </Compile>
@@ -1419,7 +1425,7 @@
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" ProjectLinkReference="f071abe3-05e5-4df9-a929-cf71b01ec50a" />
+      <UserProperties ProjectLinkReference="f071abe3-05e5-4df9-a929-cf71b01ec50a" ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" />
     </VisualStudio>
   </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

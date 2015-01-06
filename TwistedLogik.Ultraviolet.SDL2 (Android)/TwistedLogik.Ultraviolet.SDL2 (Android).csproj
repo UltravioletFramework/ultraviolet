@@ -217,6 +217,9 @@
     <Compile Include="..\TwistedLogik.Ultraviolet.SDL2\Native\SDL_PixelType.cs">
       <Link>Native\SDL_PixelType.cs</Link>
     </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.SDL2\Native\SDL_PowerState.cs">
+      <Link>Native\SDL_PowerState.cs</Link>
+    </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.SDL2\Native\SDL_QuitEvent.cs">
       <Link>Native\SDL_QuitEvent.cs</Link>
     </Compile>
@@ -292,6 +295,9 @@
     <Compile Include="..\TwistedLogik.Ultraviolet.SDL2\Native\SDL_WindowFlags.cs">
       <Link>Native\SDL_WindowFlags.cs</Link>
     </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.SDL2\Platform\SDL2PowerManagementService.cs">
+      <Link>Platform\SDL2PowerManagementService.cs</Link>
+    </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.SDL2\Properties\AssemblyInfo.cs">
       <Link>Properties\AssemblyInfo.cs</Link>
     </Compile>
@@ -337,7 +343,7 @@
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" ProjectLinkReference="50aefa93-fe53-414a-89fc-c061c165c673" />
+      <UserProperties ProjectLinkReference="50aefa93-fe53-414a-89fc-c061c165c673" ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" />
     </VisualStudio>
   </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

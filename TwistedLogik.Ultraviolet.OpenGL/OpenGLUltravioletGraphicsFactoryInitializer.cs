@@ -3,6 +3,8 @@ using TwistedLogik.Ultraviolet.Graphics;
 using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
 using TwistedLogik.Ultraviolet.OpenGL.Graphics;
 using TwistedLogik.Ultraviolet.OpenGL.Graphics.Graphics2D;
+using TwistedLogik.Ultraviolet.Platform;
+using TwistedLogik.Ultraviolet.SDL2.Platform;
 
 namespace TwistedLogik.Ultraviolet.OpenGL
 {
@@ -82,6 +84,10 @@ namespace TwistedLogik.Ultraviolet.OpenGL
             factory.SetFactoryMethod<SamplerStateFactory>("LinearWrap", (uv) => samplerStateLinearWrap);
             factory.SetFactoryMethod<SamplerStateFactory>("AnisotropicClamp", (uv) => samplerStateAnisotropicClamp);
             factory.SetFactoryMethod<SamplerStateFactory>("AnisotropicWrap", (uv) => samplerStateAnisotropicWrap);
+
+            // Platform services
+            var powerManagementService = new SDL2PowerManagementService();
+            factory.SetFactoryMethod<PowerManagementServiceFactory>(() => powerManagementService);
         }
     }
 }
