@@ -381,13 +381,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
         
         /// <inheritdoc/>
-        protected override void OnDrawing(UltravioletTime time, SpriteBatch spriteBatch)
+        protected override void OnDrawing(UltravioletTime time, SpriteBatch spriteBatch, Single opacity)
         {
-            DrawBackgroundImage(spriteBatch);
-            DrawFocusedImage(spriteBatch);
-            DrawText(spriteBatch);
+            DrawBackgroundImage(spriteBatch, opacity);
+            DrawFocusedImage(spriteBatch, opacity);
+            DrawText(spriteBatch, opacity);
 
-            base.OnDrawing(time, spriteBatch);
+            base.OnDrawing(time, spriteBatch, opacity);
         }
 
         /// <inheritdoc/>
@@ -498,7 +498,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// Draws the element's text.
         /// </summary>
         /// <param name="spriteBatch">The sprite batch with which to draw the element's text.</param>
-        protected virtual void DrawText(SpriteBatch spriteBatch)
+        /// <param name="opacity">The opacity with which to draw the element's text.</param>
+        protected virtual void DrawText(SpriteBatch spriteBatch, Single opacity)
         {
             if (Font == null || (String.IsNullOrEmpty(Text) && !View.HasFocus(this)))
                 return;
@@ -513,15 +514,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             spriteBatch.Flush();
             Ultraviolet.GetGraphics().SetScissorRectangle(scissorText);
 
-            DrawTextSelection(spriteBatch, textArea);
+            DrawTextSelection(spriteBatch, opacity, textArea);
 
             if (!String.IsNullOrEmpty(Text))
             {
+                var fontColor = FontColor * Opacity * opacity;
+
                 spriteBatch.DrawString(Font.Regular, Text, 
-                    new Vector2(textArea.X + textScrollOffset, textArea.Y), FontColor);
+                    new Vector2(textArea.X + textScrollOffset, textArea.Y), fontColor);
             }
 
-            DrawTextCaret(spriteBatch, textArea);
+            DrawTextCaret(spriteBatch, opacity, textArea);
 
             spriteBatch.Flush();
             Ultraviolet.GetGraphics().SetScissorRectangle(scissorCurrent);
@@ -531,8 +534,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// Draws the text selection box.
         /// </summary>
         /// <param name="spriteBatch">The sprite batch with which to draw the text selection box.</param>
+        /// <param name="opacity">The cumulative opacity of all of the element's parent elements.</param>
         /// <param name="textArea">A <see cref="Rectangle"/> describing the absolute screen area in which the element draws its text.</param>
-        protected virtual void DrawTextSelection(SpriteBatch spriteBatch, Rectangle textArea)
+        protected virtual void DrawTextSelection(SpriteBatch spriteBatch, Single opacity, Rectangle textArea)
         {
             if (IsTextSelected && SelectionImage.Value != null && SelectionImage.Value.IsLoaded && Font != null)
             {
@@ -542,7 +546,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
                 var selectionHeight      = Font.Regular.LineSpacing;
                 var selectionPosition    = new Vector2(textArea.X + textScrollOffset + selectionStartOffset, textArea.Y);
 
-                spriteBatch.DrawImage(SelectionImage.Value, selectionPosition, selectionWidth, selectionHeight, SelectionColor);
+                spriteBatch.DrawImage(SelectionImage.Value, selectionPosition, selectionWidth, selectionHeight, SelectionColor * Opacity * opacity);
             }
         }
 
@@ -550,8 +554,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// Draws the text caret.
         /// </summary>
         /// <param name="spriteBatch">The sprite batch with which to draw the text caret.</param>
+        /// <param name="opacity">The cumulative opacity of all of the element's parent elements.</param>
         /// <param name="textArea">A <see cref="Rectangle"/> describing the absolute screen area in which the element draws its text.</param>
-        protected virtual void DrawTextCaret(SpriteBatch spriteBatch, Rectangle textArea)
+        protected virtual void DrawTextCaret(SpriteBatch spriteBatch, Single opacity, Rectangle textArea)
         {
             if (IsCaretDisplayed && IsCaretVisible && !IsTextSelected)
             {
@@ -563,7 +568,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
                 if (InsertionMode == TextBoxInsertionMode.Insert)
                 {
                     var caretPosition = new Vector2(textArea.X + textScrollOffset + caretOffset, textArea.Y);
-                    spriteBatch.DrawImage(CaretImage.Value, caretPosition, 1, Font.Regular.LineSpacing, CaretColor);
+                    spriteBatch.DrawImage(CaretImage.Value, caretPosition, 1, Font.Regular.LineSpacing, CaretColor * Opacity * opacity);
                 }
                 else
                 {
@@ -577,7 +582,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
                     var caretThickness = (Int32)display.DipsToPixels(CaretThickness);
                     var caretPosition  = new Vector2(textArea.X + textScrollOffset + caretOffset, textArea.Bottom - caretThickness);
 
-                    spriteBatch.DrawImage(CaretImage.Value, caretPosition, caretWidth, caretThickness, CaretColor);
+                    spriteBatch.DrawImage(CaretImage.Value, caretPosition, caretWidth, caretThickness, CaretColor * Opacity * opacity);
                 }
             }
         }

@@ -192,14 +192,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             new DependencyPropertyMetadata(HandleColumnChanged, () => 0, DependencyPropertyOptions.None));
 
         /// <inheritdoc/>
-        protected override void DrawChildren(UltravioletTime time, SpriteBatch spriteBatch)
+        protected override void DrawChildren(UltravioletTime time, SpriteBatch spriteBatch, Single opacity)
         {
             // Draw cells which do not require a scissor rect.
             for (int column = 0; column < ColumnCount; column++)
             {
                 for (int row = 0; row < RowCount; row++)
                 {
-                    DrawCell(time, spriteBatch, column, row, false);
+                    DrawCell(time, spriteBatch, opacity, column, row, false);
                 }
             }
 
@@ -208,7 +208,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             {
                 for (int row = 0; row < RowCount; row++)
                 {
-                    DrawCell(time, spriteBatch, column, row, true);
+                    DrawCell(time, spriteBatch, opacity, column, row, true);
                 }
             }
         }
@@ -258,10 +258,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// </summary>
         /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Draw(UltravioletTime)"/>.</param>
         /// <param name="spriteBatch">The sprite batch with which to draw the view.</param>
+        /// <param name="opacity">The opacity with which to draw the cell.</param>
         /// <param name="column">The index of the cell's column.</param>
         /// <param name="row">The index of the cell's row.</param>
         /// <param name="scissor">A value indicating whether to draw cells which require a scissor rectangle.</param>
-        protected virtual void DrawCell(UltravioletTime time, SpriteBatch spriteBatch, Int32 column, Int32 row, Boolean scissor)
+        protected virtual void DrawCell(UltravioletTime time, SpriteBatch spriteBatch, Single opacity, Int32 column, Int32 row, Boolean scissor)
         {
             var cellIndex = (row * ColumnCount ) + column;
             var cell      = cells[cellIndex];
@@ -297,12 +298,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
                     new RectangleF(cx, cy, cell.ActualWidth, cell.ActualHeight), DebugColors.Get(cellIndex) * 0.4f);
             }
 
+            var cumulativeOpacity = Opacity * opacity;
             foreach (var child in cell.Elements)
             {
                 if (!ElementIsDrawn(child))
                     continue;
 
-                child.Draw(time, spriteBatch);
+                child.Draw(time, spriteBatch, cumulativeOpacity);
             }
 
             if (cell.RequiresScissorRectangle)

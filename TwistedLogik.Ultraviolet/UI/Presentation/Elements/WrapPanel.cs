@@ -204,10 +204,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             new DependencyPropertyMetadata(HandleItemHeightChanged, () => Double.NaN, DependencyPropertyOptions.None));
 
         /// <inheritdoc/>
-        protected override void OnDrawing(UltravioletTime time, SpriteBatch spriteBatch)
+        protected override void OnDrawing(UltravioletTime time, SpriteBatch spriteBatch, Single opacity)
         {
-            DrawBackgroundImage(spriteBatch);
-            base.OnDrawing(time, spriteBatch);
+            DrawBackgroundImage(spriteBatch, opacity);
+            base.OnDrawing(time, spriteBatch, opacity);
         }
 
         /// <inheritdoc/>

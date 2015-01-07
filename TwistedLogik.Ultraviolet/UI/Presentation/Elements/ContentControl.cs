@@ -147,17 +147,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
         
         /// <inheritdoc/>
-        internal override Boolean Draw(UltravioletTime time, SpriteBatch spriteBatch)
+        internal override Boolean Draw(UltravioletTime time, SpriteBatch spriteBatch, Single opacity)
         {
-            if (!base.Draw(time, spriteBatch))
+            if (!base.Draw(time, spriteBatch, opacity))
                 return false;
 
             if (Content != null && ElementIsDrawn(Content))
             {
-                Content.Draw(time, spriteBatch);
+                var cumulativeOpacity = Opacity * opacity;
+                Content.Draw(time, spriteBatch, cumulativeOpacity);
+                OnContentDrawn(time, spriteBatch, opacity);
             }
-
-            OnContentDrawn(time, spriteBatch);
 
             return true;
         }
@@ -306,7 +306,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// </summary>
         /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Draw(UltravioletTime)"/>.</param>
         /// <param name="spriteBatch">The sprite batch with which to draw the view.</param>
-        protected virtual void OnContentDrawn(UltravioletTime time, SpriteBatch spriteBatch)
+        /// <param name="opacity">The cumulative opacity of all of the element's parent elements.</param>
+        protected virtual void OnContentDrawn(UltravioletTime time, SpriteBatch spriteBatch, Single opacity)
         {
 
         }

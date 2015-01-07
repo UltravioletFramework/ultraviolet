@@ -186,23 +186,24 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             new DependencyPropertyMetadata(HandleOverlayColorChanged, () => Color.White, DependencyPropertyOptions.None));
 
         /// <inheritdoc/>
-        protected override void OnDrawing(UltravioletTime time, SpriteBatch spriteBatch)
+        protected override void OnDrawing(UltravioletTime time, SpriteBatch spriteBatch, Single opacity)
         {
-            DrawBackgroundImage(spriteBatch);
-            DrawFill(spriteBatch);
-            DrawOverlay(spriteBatch);
+            DrawBackgroundImage(spriteBatch, opacity);
+            DrawFill(spriteBatch, opacity);
+            DrawOverlay(spriteBatch, opacity);
 
-            base.OnDrawing(time, spriteBatch);
+            base.OnDrawing(time, spriteBatch, opacity);
         }
 
         /// <summary>
         /// Draws the progress bar's fill.
         /// </summary>
         /// <param name="spriteBatch">The sprite batch with which to draw the progress bar's fill.</param>
-        protected void DrawFill(SpriteBatch spriteBatch)
+        /// <param name="opacity">The opacity with which to draw the progress bar's fill.</param>
+        protected void DrawFill(SpriteBatch spriteBatch, Single opacity)
         {
             var img      = FillImage.Value;
-            var imgColor = FillColor;
+            var imgColor = FillColor * opacity;
 
             if (imgColor.Equals(Color.Transparent) || img == null || !img.IsLoaded)
                 return;
@@ -222,10 +223,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// Draws the progress bar's overlay.
         /// </summary>
         /// <param name="spriteBatch">The sprite batch with which to draw the progress bar's overlay.</param>
-        protected void DrawOverlay(SpriteBatch spriteBatch)
+        /// <param name="opacity">The opacity with which to draw the progress bar's overlay.</param>
+        protected void DrawOverlay(SpriteBatch spriteBatch, Single opacity)
         {
             var img      = OverlayImage.Value;
-            var imgColor = OverlayColor;
+            var imgColor = OverlayColor * opacity;
 
             if (imgColor.Equals(Color.Transparent) || img == null || !img.IsLoaded)
                 return;

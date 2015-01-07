@@ -110,11 +110,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             new DependencyPropertyMetadata(HandleRadioButtonPaddingChanged, () => 8.0, DependencyPropertyOptions.None));
 
         /// <inheritdoc/>
-        protected override void OnDrawing(UltravioletTime time, SpriteBatch spriteBatch)
+        protected override void OnDrawing(UltravioletTime time, SpriteBatch spriteBatch, Single opacity)
         {
-            base.OnDrawing(time, spriteBatch);
+            base.OnDrawing(time, spriteBatch, opacity);
 
-            DrawRadioButtonImage(spriteBatch);
+            DrawRadioButtonImage(spriteBatch, opacity);
         }
 
         /// <inheritdoc/>
@@ -230,7 +230,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// Draws the element's radio button image.
         /// </summary>
         /// <param name="spriteBatch">The sprite batch with which to draw.</param>
-        protected void DrawRadioButtonImage(SpriteBatch spriteBatch)
+        /// <param name="opacity">The cumulative opacity of all of the element's parent elements.</param>
+        protected void DrawRadioButtonImage(SpriteBatch spriteBatch, Single opacity)
         {
             var checkBoxImage = RadioButtonImage.Value;
             if (checkBoxImage.IsLoaded)
@@ -244,7 +245,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
                     AbsoluteScreenX + (size / 2f),
                     AbsoluteScreenY + (size / 2f));
 
-                spriteBatch.DrawImage(checkBoxImage, position, size, size, Color.White, 0f, origin, effects, 0f);
+                spriteBatch.DrawImage(checkBoxImage, position, size, size, Color.White * Opacity * opacity, 0f, origin, effects, 0f);
             }
         }
 

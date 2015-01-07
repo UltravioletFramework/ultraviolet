@@ -135,7 +135,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// Draws the element's text.
         /// </summary>
         /// <param name="spriteBatch">The sprite batch with which to draw.</param>
-        protected void DrawText(SpriteBatch spriteBatch)
+        /// <param name="opacity">The cumulative opacity of all of the element's parent elements.</param>
+        protected void DrawText(SpriteBatch spriteBatch, Single opacity)
         {
             if (cachedLayoutResult.Count > 0)
             {
@@ -146,7 +147,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
                     AbsoluteScreenX + (Int32)padding.Left + TextAreaX,
                     AbsoluteScreenY + (Int32)padding.Top  + TextAreaY);
 
-                UIElementResources.TextRenderer.Draw(spriteBatch, CachedLayoutResult, position, FontColor);
+                UIElementResources.TextRenderer.Draw(spriteBatch, CachedLayoutResult, position, FontColor * Opacity * opacity);
             }
         }
 

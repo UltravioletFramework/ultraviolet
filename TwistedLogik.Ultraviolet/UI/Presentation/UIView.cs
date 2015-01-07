@@ -71,7 +71,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (window == null)
                 return;
 
-            LayoutRoot.Draw(time, spriteBatch);
+            LayoutRoot.Draw(time, spriteBatch, 1.0f);
         }
 
         /// <summary>

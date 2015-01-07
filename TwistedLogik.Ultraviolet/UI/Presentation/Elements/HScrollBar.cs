@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Xml.Linq;
+using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
 using TwistedLogik.Ultraviolet.Input;
+using TwistedLogik.Ultraviolet.UI.Presentation.Styles;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
 {
@@ -38,6 +40,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
                 LoadComponentRoot(ComponentTemplate, viewModelType, bindingContext);
         }
 
+        /// <inheritdoc/>
+        public override void ReloadContent()
+        {
+            ReloadTrackImage();
+
+            base.ReloadContent();
+        }
+
         /// <summary>
         /// Gets or sets the template used to create the control's component tree.
         /// </summary>
@@ -45,6 +55,75 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         {
             get;
             set;
+        }
+
+        /// <summary>
+        /// Gets or sets the image used to render the scroll bar's track.
+        /// </summary>
+        public SourcedRef<Image> TrackImage
+        {
+            get { return GetValue<SourcedRef<Image>>(TrackImageProperty); }
+            set { SetValue<SourcedRef<Image>>(TrackImageProperty, value); }
+        }
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="TrackImage"/> property changes.
+        /// </summary>
+        public event UIElementEventHandler TrackImageChanged;
+
+        /// <summary>
+        /// Identifies the <see cref="TrackImage"/> dependency property.
+        /// </summary>
+        [Styled("track-image")]
+        public static readonly DependencyProperty TrackImageProperty = DependencyProperty.Register("TrackImage", typeof(SourcedRef<Image>), typeof(HScrollBar),
+            new DependencyPropertyMetadata(HandleTrackImageChanged, null, DependencyPropertyOptions.None));
+
+        /// <inheritdoc/>
+        protected override void OnDrawing(UltravioletTime time, SpriteBatch spriteBatch, Single opacity)
+        {
+            DrawTrackImage(spriteBatch, opacity);
+
+            base.OnDrawing(time, spriteBatch, opacity);
+        }
+
+        /// <summary>
+        /// Raises the <see cref="TrackImageChanged"/> event.
+        /// </summary>
+        protected virtual void OnTrackImageChanged()
+        {
+            var temp = TrackImageChanged;
+            if (temp != null)
+            {
+                temp(this);
+            }
+        }
+
+        /// <summary>
+        /// Reloads the scroll bar's track image.
+        /// </summary>
+        protected void ReloadTrackImage()
+        {
+            LoadContent(TrackImage);
+        }
+
+        /// <summary>
+        /// Draws the scroll bar's track image.
+        /// </summary>
+        /// <param name="spriteBatch">The sprite batch with which to draw.</param>
+        /// <param name="opacity">The cumulative opacity of all of the element's parent elements.</param>
+        protected void DrawTrackImage(SpriteBatch spriteBatch, Single opacity)
+        {
+            // TODO
+        }
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="TrackImage"/> dependency property changes.
+        /// </summary>
+        /// <param name="dobj">The object that raised the event.</param>
+        private static void HandleTrackImageChanged(DependencyObject dobj)
+        {
+            var scrollbar = (HScrollBar)dobj;
+            scrollbar.OnTrackImageChanged();
         }
 
         /// <summary>

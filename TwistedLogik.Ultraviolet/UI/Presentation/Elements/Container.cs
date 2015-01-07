@@ -81,14 +81,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// </summary>
         /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Draw(UltravioletTime)"/>.</param>
         /// <param name="spriteBatch">The sprite batch with which to draw the view.</param>
-        protected virtual void DrawChildren(UltravioletTime time, SpriteBatch spriteBatch)
+        /// <param name="opacity">The cumulative opacity of all of the element's parent elements.</param>
+        protected virtual void DrawChildren(UltravioletTime time, SpriteBatch spriteBatch, Single opacity)
         {
+            var cumulativeOpacity = Opacity * opacity;
             foreach (var child in children)
             {
                 if (!ElementIsDrawn(child))
                     continue;
 
-                child.Draw(time, spriteBatch);
+                child.Draw(time, spriteBatch, cumulativeOpacity);
             }
         }
 
@@ -134,9 +136,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <inheritdoc/>
-        internal override Boolean Draw(UltravioletTime time, SpriteBatch spriteBatch)
+        internal override Boolean Draw(UltravioletTime time, SpriteBatch spriteBatch, Single opacity)
         {
-            if (!base.Draw(time, spriteBatch))
+            if (!base.Draw(time, spriteBatch, opacity))
                 return false;
 
             var scissor     = RequiresScissorRectangle;
@@ -147,7 +149,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
                 ApplyScissorRectangle(spriteBatch, out scissorRect);
             }
 
-            DrawChildren(time, spriteBatch);
+            DrawChildren(time, spriteBatch, opacity);
 
             if (scissor)
             {

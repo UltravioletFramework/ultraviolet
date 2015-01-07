@@ -111,16 +111,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <inheritdoc/>
-        internal override Boolean Draw(UltravioletTime time, SpriteBatch spriteBatch)
+        internal override Boolean Draw(UltravioletTime time, SpriteBatch spriteBatch, Single opacity)
         {
             if (View == null || Visibility != Visibility.Visible)
                 return false;
 
-            if (!base.Draw(time, spriteBatch))
+            if (!base.Draw(time, spriteBatch, opacity))
                 return false;
 
             if (componentRoot != null)
-                componentRoot.Draw(time, spriteBatch);
+            {
+                var cumulativeOpacity = Opacity * opacity;
+                componentRoot.Draw(time, spriteBatch, cumulativeOpacity);
+            }
 
             return true;
         }

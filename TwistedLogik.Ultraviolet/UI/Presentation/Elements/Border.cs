@@ -88,23 +88,23 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <inheritdoc/>
-        protected override void OnDrawing(UltravioletTime time, SpriteBatch spriteBatch)
+        protected override void OnDrawing(UltravioletTime time, SpriteBatch spriteBatch, Single opacity)
         {
-            DrawBackgroundImage(spriteBatch);
+            DrawBackgroundImage(spriteBatch, opacity);
 
             var thickness = ConvertThicknessToPixels(BorderThickness, 0);
             var left      = (Int32)thickness.Left;
             var top       = (Int32)thickness.Top;
             var right     = (Int32)thickness.Right;
             var bottom    = (Int32)thickness.Bottom;
-            var color     = BorderColor;
+            var color     = BorderColor * Opacity * opacity;
 
             spriteBatch.Draw(UIElementResources.BlankTexture, new RectangleF(AbsoluteScreenX, AbsoluteScreenY, left, ActualHeight), color);
             spriteBatch.Draw(UIElementResources.BlankTexture, new RectangleF(AbsoluteScreenX, AbsoluteScreenY, ActualWidth, top), color);
             spriteBatch.Draw(UIElementResources.BlankTexture, new RectangleF(AbsoluteScreenX + ActualWidth - right, AbsoluteScreenY, right, ActualHeight), color);
             spriteBatch.Draw(UIElementResources.BlankTexture, new RectangleF(AbsoluteScreenX, AbsoluteScreenY + ActualHeight - bottom, ActualWidth, bottom), color);
 
-            base.OnDrawing(time, spriteBatch);
+            base.OnDrawing(time, spriteBatch, opacity);
         }
 
         /// <inheritdoc/>

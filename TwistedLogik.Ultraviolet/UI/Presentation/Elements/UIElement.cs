@@ -21,7 +21,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
     /// <param name="element">The element being drawn.</param>
     /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Draw(UltravioletTime)"/>.</param>
     /// <param name="spriteBatch">The sprite batch with which to draw the view.</param>
-    public delegate void UIElementDrawingEventHandler(UIElement element, UltravioletTime time, SpriteBatch spriteBatch);
+    /// <param name="opacity">The cumulative opacity of all of the element's parent elements.</param>
+    public delegate void UIElementDrawingEventHandler(UIElement element, UltravioletTime time, SpriteBatch spriteBatch, Single opacity);
 
     /// <summary>
     /// Represents the method that is called when a UI element is updated.
@@ -146,7 +147,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <returns><c>true</c> if the element should be drawn; otherwise, <c>false</c>.</returns>
         public static Boolean ElementIsDrawn(UIElement element)
         {
-            return element.Visibility == Visibility.Visible;
+            return element.Visibility == Visibility.Visible && element.Opacity > 0f;
         }
 
         /// <summary>
@@ -671,6 +672,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <summary>
+        /// Gets or sets the opacity applied to this element and its children. Expected values are
+        /// between 0.0 (fully transparent) and 1.0 (fully opaque).
+        /// </summary>
+        public Single Opacity
+        {
+            get { return GetValue<Single>(OpacityProperty); }
+            set { SetValue<Single>(OpacityProperty, value); }
+        }
+
+        /// <summary>
         /// Gets or sets the element's font color.
         /// </summary>
         public Color FontColor
@@ -835,16 +846,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// Occurs when the value of the <see cref="Enabled"/> property changes.
         /// </summary>
         public event UIElementEventHandler EnabledChanged;
+        
+        /// <summary>
+        /// Occurs when the value of the <see cref="Hovering"/> property changes.
+        /// </summary>
+        public event UIElementEventHandler HoveringChanged;
 
         /// <summary>
         /// Occurs when the value of the <see cref="Visibility"/> property changes.
         /// </summary>
         public event UIElementEventHandler VisibilityChanged;
-
-        /// <summary>
-        /// Occurs when the value of the <see cref="Hovering"/> property changes.
-        /// </summary>
-        public event UIElementEventHandler HoveringChanged;
 
         /// <summary>
         /// Occurs when the value of the <see cref="Width"/> property changes.
@@ -895,6 +906,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// Occurs when the value of the <see cref="VerticalAlignment"/> property changes.
         /// </summary>
         public event UIElementEventHandler VerticalAlignmentChanged;
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="Opacity"/> property changes.
+        /// </summary>
+        public event UIElementEventHandler OpacityChanged;
 
         /// <summary>
         /// Occurs when the value of the <see cref="FontColor"/> property changes.
@@ -1021,6 +1037,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         [Styled("valign")]
         public static readonly DependencyProperty VerticalAlignmentProperty = DependencyProperty.Register("VerticalAlignment", typeof(VerticalAlignment), typeof(UIElement),
             new DependencyPropertyMetadata(HandleVerticalAlignmentChanged, () => VerticalAlignment.Top, DependencyPropertyOptions.None));
+
+        /// <summary>
+        /// Identifies the <see cref="Opacity"/> dependency property.
+        /// </summary>
+        [Styled("opacity")]
+        public static readonly DependencyProperty OpacityProperty = DependencyProperty.Register("Opacity", typeof(Single), typeof(UIElement),
+            new DependencyPropertyMetadata(HandleOpacityChanged, () => 1.0f, DependencyPropertyOptions.None));
 
         /// <summary>
         /// Identifies the <see cref="FontColor"/> dependency property.
@@ -1252,10 +1275,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// </summary>
         /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Draw(UltravioletTime)"/>.</param>
         /// <param name="spriteBatch">The sprite batch with which to draw the view.</param>
+        /// <param name="opacity">The cumulative opacity of all of the element's parent elements.</param>
         /// <returns><c>true</c> if the element was drawn; otherwise, <c>false</c>.</returns>
-        internal virtual Boolean Draw(UltravioletTime time, SpriteBatch spriteBatch)
+        internal virtual Boolean Draw(UltravioletTime time, SpriteBatch spriteBatch, Single opacity)
         {
-            OnDrawing(time, spriteBatch);
+            OnDrawing(time, spriteBatch, opacity);
             return true;
         }
 
@@ -1777,12 +1801,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// </summary>
         /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Draw(UltravioletTime)"/>.</param>
         /// <param name="spriteBatch">The sprite batch with which to draw the view.</param>
-        protected virtual void OnDrawing(UltravioletTime time, SpriteBatch spriteBatch)
+        /// <param name="opacity">The cumulative opacity of all of the element's parent elements.</param>
+        protected virtual void OnDrawing(UltravioletTime time, SpriteBatch spriteBatch, Single opacity)
         {
             var temp = Drawing;
             if (temp != null)
             {
-                temp(this, time, spriteBatch);
+                temp(this, time, spriteBatch, opacity);
             }
         }
 
@@ -2020,6 +2045,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <summary>
+        /// Raises the <see cref="OpacityChanged"/> event.
+        /// </summary>
+        protected virtual void OnOpacityChanged()
+        {
+            var temp = OpacityChanged;
+            if (temp != null)
+            {
+                temp(this);
+            }
+        }
+
+        /// <summary>
         /// Raises the <see cref="FontColorChanged"/> event.
         /// </summary>
         protected virtual void OnFontColorChanged()
@@ -2197,9 +2234,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// Draws the element's background image.
         /// </summary>
         /// <param name="spriteBatch">The sprite batch with which to draw.</param>
-        protected void DrawBackgroundImage(SpriteBatch spriteBatch)
+        /// <param name="opacity">The cumulative opacity of all of the element's parent elements.</param>
+        protected void DrawBackgroundImage(SpriteBatch spriteBatch, Single opacity)
         {
-            var imgColor = BackgroundColor;
+            var imgColor = BackgroundColor * Opacity * opacity;
             var img      = BackgroundImage.Value;
 
             if (imgColor.Equals(Color.Transparent))
@@ -2226,9 +2264,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// Draws the image which indicates that the element has input focus.
         /// </summary>
         /// <param name="spriteBatch">The sprite batch with which to draw.</param>
-        protected void DrawFocusedImage(SpriteBatch spriteBatch)
+        /// <param name="opacity">The cumulative opacity of all of the element's parent elements.</param>
+        protected void DrawFocusedImage(SpriteBatch spriteBatch, Single opacity)
         {
-            var imgColor = FocusedColor;
+            var imgColor = FocusedColor * Opacity * opacity;
             var img      = FocusedImage.Value;
 
             if (imgColor.Equals(Color.Transparent))
@@ -2466,6 +2505,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
 
             if (element.Parent != null)
                 element.Parent.PerformPartialLayout(element);
+        }
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="Opacity"/> dependency property changes.
+        /// </summary>
+        /// <param name="dobj">The object that raised the event.</param>
+        private static void HandleOpacityChanged(DependencyObject dobj)
+        {
+            var element = (UIElement)dobj;
+            element.OnOpacityChanged();
         }
 
         /// <summary>

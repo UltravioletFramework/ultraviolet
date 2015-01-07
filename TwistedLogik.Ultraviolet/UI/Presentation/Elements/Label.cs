@@ -22,12 +22,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <inheritdoc/>
-        protected override void OnDrawing(UltravioletTime time, SpriteBatch spriteBatch)
+        protected override void OnDrawing(UltravioletTime time, SpriteBatch spriteBatch, Single opacity)
         {
-            DrawBackgroundImage(spriteBatch);
-            DrawText(spriteBatch);
+            DrawBackgroundImage(spriteBatch, opacity);
+            DrawText(spriteBatch, opacity);
 
-            base.OnDrawing(time, spriteBatch);
+            base.OnDrawing(time, spriteBatch, opacity);
         }
     }
 }
