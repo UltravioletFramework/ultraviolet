@@ -199,6 +199,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             UpdateAbsoluteScreenPosition(AbsoluteScreenX, AbsoluteScreenY);
 
             OnPerformedLayout();
+
+            if (Parent != null)
+                Parent.PerformPartialLayout(this);
         }
 
         /// <summary>
@@ -966,77 +969,77 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// </summary>
         [Styled("visibility")]
         public static readonly DependencyProperty VisibleProperty = DependencyProperty.Register("Visibility", typeof(Visibility), typeof(UIElement),
-            new DependencyPropertyMetadata(HandleVisibilityChanged, () => Visibility.Visible, DependencyPropertyOptions.None));
+            new DependencyPropertyMetadata(HandleVisibilityChanged, () => Visibility.Visible, DependencyPropertyOptions.AffectsMeasure));
 
         /// <summary>
         /// Identifies the <see cref="Width"/> dependency property.
         /// </summary>
         [Styled("width")]
         public static readonly DependencyProperty WidthProperty = DependencyProperty.Register("Width", typeof(Double), typeof(UIElement),
-            new DependencyPropertyMetadata(HandleWidthChanged, () => Double.NaN, DependencyPropertyOptions.None));
+            new DependencyPropertyMetadata(HandleWidthChanged, () => Double.NaN, DependencyPropertyOptions.AffectsMeasure));
 
         /// <summary>
         /// Identifies the <see cref="MinWidth"/> dependency property.
         /// </summary>
         [Styled("min-width")]
         public static readonly DependencyProperty MinWidthProperty = DependencyProperty.Register("MinWidth", typeof(Double), typeof(UIElement),
-            new DependencyPropertyMetadata(HandleMinWidthChanged, null, DependencyPropertyOptions.None));
+            new DependencyPropertyMetadata(HandleMinWidthChanged, null, DependencyPropertyOptions.AffectsMeasure));
 
         /// <summary>
         /// Identifies the <see cref="MaxWidth"/> dependency property.
         /// </summary>
         [Styled("max-width")]
         public static readonly DependencyProperty MaxWidthProperty = DependencyProperty.Register("MaxWidth", typeof(Double), typeof(UIElement),
-            new DependencyPropertyMetadata(HandleMaxWidthChanged, () => Double.PositiveInfinity, DependencyPropertyOptions.None));
+            new DependencyPropertyMetadata(HandleMaxWidthChanged, () => Double.PositiveInfinity, DependencyPropertyOptions.AffectsMeasure));
 
         /// <summary>
         /// Identifies the <see cref="Height"/> dependency property.
         /// </summary>
         [Styled("height")]
         public static readonly DependencyProperty HeightProperty = DependencyProperty.Register("Height", typeof(Double), typeof(UIElement),
-            new DependencyPropertyMetadata(HandleHeightChanged, () => Double.NaN, DependencyPropertyOptions.None));
+            new DependencyPropertyMetadata(HandleHeightChanged, () => Double.NaN, DependencyPropertyOptions.AffectsMeasure));
 
         /// <summary>
         /// Identifies the <see cref="MinHeight"/> dependency property.
         /// </summary>
         [Styled("min-height")]
         public static readonly DependencyProperty MinHeightProperty = DependencyProperty.Register("MinHeight", typeof(Double), typeof(UIElement),
-            new DependencyPropertyMetadata(HandleMinHeightChanged, null, DependencyPropertyOptions.None));
+            new DependencyPropertyMetadata(HandleMinHeightChanged, null, DependencyPropertyOptions.AffectsMeasure));
 
         /// <summary>
         /// Identifies the <see cref="MaxHeight"/> dependency property.
         /// </summary>
         [Styled("max-height")]
         public static readonly DependencyProperty MaxHeightProperty = DependencyProperty.Register("MaxHeight", typeof(Double), typeof(UIElement),
-            new DependencyPropertyMetadata(HandleMaxHeightChanged, () => Double.PositiveInfinity, DependencyPropertyOptions.None));
+            new DependencyPropertyMetadata(HandleMaxHeightChanged, () => Double.PositiveInfinity, DependencyPropertyOptions.AffectsMeasure));
 
         /// <summary>
         /// Identifies the <see cref="Padding"/> dependency property.
         /// </summary>
         [Styled("padding")]
         public static readonly DependencyProperty PaddingProperty = DependencyProperty.Register("Padding", typeof(Thickness), typeof(UIElement),
-            new DependencyPropertyMetadata(HandlePaddingChanged, null, DependencyPropertyOptions.None));
+            new DependencyPropertyMetadata(HandlePaddingChanged, null, DependencyPropertyOptions.AffectsMeasure));
 
         /// <summary>
         /// Identifies the <see cref="Margin"/> dependency property.
         /// </summary>
         [Styled("margin")]
         public static readonly DependencyProperty MarginProperty = DependencyProperty.Register("Margin", typeof(Thickness), typeof(UIElement),
-            new DependencyPropertyMetadata(HandleMarginChanged, null, DependencyPropertyOptions.None));
+            new DependencyPropertyMetadata(HandleMarginChanged, null, DependencyPropertyOptions.AffectsMeasure));
 
         /// <summary>
         /// Identifies the <see cref="HorizontalAlignment"/> dependency property.
         /// </summary>
         [Styled("halign")]
         public static readonly DependencyProperty HorizontalAlignmentProperty = DependencyProperty.Register("HorizontalAlignment", typeof(HorizontalAlignment), typeof(UIElement),
-            new DependencyPropertyMetadata(HandleHorizontalAlignmentChanged, () => HorizontalAlignment.Left, DependencyPropertyOptions.None));
+            new DependencyPropertyMetadata(HandleHorizontalAlignmentChanged, () => HorizontalAlignment.Left, DependencyPropertyOptions.AffectsMeasure));
 
         /// <summary>
         /// Identifies the <see cref="VerticalAlignment"/> dependency property.
         /// </summary>
         [Styled("valign")]
         public static readonly DependencyProperty VerticalAlignmentProperty = DependencyProperty.Register("VerticalAlignment", typeof(VerticalAlignment), typeof(UIElement),
-            new DependencyPropertyMetadata(HandleVerticalAlignmentChanged, () => VerticalAlignment.Top, DependencyPropertyOptions.None));
+            new DependencyPropertyMetadata(HandleVerticalAlignmentChanged, () => VerticalAlignment.Top, DependencyPropertyOptions.AffectsMeasure));
 
         /// <summary>
         /// Identifies the <see cref="Opacity"/> dependency property.
@@ -1057,7 +1060,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// </summary>
         [Styled("font-asset")]
         public static readonly DependencyProperty FontAssetIDProperty = DependencyProperty.Register("FontAssetID", typeof(SourcedVal<AssetID>), typeof(UIElement),
-            new DependencyPropertyMetadata(HandleFontAssetIDChanged, null, DependencyPropertyOptions.Inherited));
+            new DependencyPropertyMetadata(HandleFontAssetIDChanged, null, DependencyPropertyOptions.Inherited | DependencyPropertyOptions.AffectsMeasure));
 
         /// <summary>
         /// Identifies the <see cref="BackgroundColor"/> dependency property.
@@ -1483,6 +1486,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         internal virtual Int32 ContentElementCountInternal
         {
             get { return 0; }
+        }
+
+        /// <inheritdoc/>
+        protected internal override void OnMeasureAffectingPropertyChanged()
+        {
+            RequestLayout();
+            
+            base.OnMeasureAffectingPropertyChanged();
         }
 
         /// <summary>
@@ -2504,19 +2515,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         {
             var element = (UIElement)dobj;
             element.OnVisibilityChanged();
-
-            if (element.Parent != null)
-                element.Parent.PerformPartialLayout(element);
-        }
-
-        /// <summary>
-        /// Occurs when the value of the <see cref="Opacity"/> dependency property changes.
-        /// </summary>
-        /// <param name="dobj">The object that raised the event.</param>
-        private static void HandleOpacityChanged(DependencyObject dobj)
-        {
-            var element = (UIElement)dobj;
-            element.OnOpacityChanged();
         }
 
         /// <summary>
@@ -2527,9 +2525,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         {
             var element = (UIElement)dobj;
             element.OnWidthChanged();
-
-            if (element.Parent != null)
-                element.Parent.PerformPartialLayout(element);
         }
 
         /// <summary>
@@ -2540,9 +2535,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         {
             var element = (UIElement)dobj;
             element.OnMinWidthChanged();
-
-            if (element.Parent != null)
-                element.Parent.PerformPartialLayout(element);
         }
 
         /// <summary>
@@ -2553,9 +2545,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         {
             var element = (UIElement)dobj;
             element.OnMaxWidthChanged();
-
-            if (element.Parent != null)
-                element.Parent.PerformPartialLayout(element);
         }
 
         /// <summary>
@@ -2566,9 +2555,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         {
             var element = (UIElement)dobj;
             element.OnHeightChanged();
-
-            if (element.Parent != null)
-                element.Parent.PerformPartialLayout(element);
         }
 
         /// <summary>
@@ -2579,9 +2565,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         {
             var element = (UIElement)dobj;
             element.OnMinHeightChanged();
-
-            if (element.Parent != null)
-                element.Parent.PerformPartialLayout(element);
         }
 
         /// <summary>
@@ -2592,9 +2575,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         {
             var element = (UIElement)dobj;
             element.OnMaxHeightChanged();
-
-            if (element.Parent != null)
-                element.Parent.PerformPartialLayout(element);
         }
 
         /// <summary>
@@ -2605,9 +2585,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         {
             var element = (UIElement)dobj;
             element.OnPaddingChanged();
-
-            if (element.Parent != null)
-                element.Parent.PerformPartialLayout(element);
         }
 
         /// <summary>
@@ -2618,9 +2595,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         {
             var element = (UIElement)dobj;
             element.OnMarginChanged();
-
-            if (element.Parent != null)
-                element.Parent.PerformPartialLayout(element);
         }
 
         /// <summary>
@@ -2631,9 +2605,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         {
             var element = (UIElement)dobj;
             element.OnHorizontalAlignmentChanged();
-
-            if (element.Parent != null)
-                element.Parent.PerformPartialLayout(element);
         }
 
         /// <summary>
@@ -2644,9 +2615,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         {
             var element = (UIElement)dobj;
             element.OnVerticalAlignmentChanged();
+        }
 
-            if (element.Parent != null)
-                element.Parent.PerformPartialLayout(element);
+        /// <summary>
+        /// Occurs when the value of the <see cref="Opacity"/> dependency property changes.
+        /// </summary>
+        /// <param name="dobj">The object that raised the event.</param>
+        private static void HandleOpacityChanged(DependencyObject dobj)
+        {
+            var element = (UIElement)dobj;
+            element.OnOpacityChanged();
         }
 
         /// <summary>
@@ -2666,10 +2644,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         private static void HandleFontAssetIDChanged(DependencyObject dobj)
         {
             var element = (UIElement)dobj;
-            if (element.Parent != null)
-            {
-                element.Parent.PerformPartialLayout(element);
-            }
             element.ReloadFont();
             element.OnFontAssetIDChanged();
         }

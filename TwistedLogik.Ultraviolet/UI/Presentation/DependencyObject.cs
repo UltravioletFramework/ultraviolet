@@ -207,6 +207,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Occurs when a dependency property which potentially affects the object's layout is changed.
+        /// </summary>
+        protected internal virtual void OnMeasureAffectingPropertyChanged()
+        {
+
+        }
+
+        /// <summary>
         /// Gets the dependency object's containing object.
         /// </summary>
         protected internal abstract DependencyObject DependencyContainer

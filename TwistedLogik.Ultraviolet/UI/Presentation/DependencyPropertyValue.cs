@@ -112,9 +112,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                     changed = !comparer(value, previousValue);
                 }
 
-                if (changed && Property.Metadata.ChangedCallback != null)
+                if (changed)
                 {
-                    Property.Metadata.ChangedCallback(Owner);
+                    Property.Metadata.HandleChanged(Owner);
                 }
                 previousValue = value;
             }
@@ -361,9 +361,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 var changed = !comparer(oldValue, GetValue());
                 if (changed && !requiresDigestNew)
                 {
-                    if (Property.Metadata != null && Property.Metadata.ChangedCallback != null)
+                    if (Property.Metadata != null)
                     {
-                        Property.Metadata.ChangedCallback(Owner);
+                        Property.Metadata.HandleChanged(Owner);
                     }
                 }
             }

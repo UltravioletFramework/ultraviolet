@@ -180,16 +180,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <summary>
-        /// Identifies the Row attached property.
+        /// Identifies the <see cref="Row"/> attached property.
         /// </summary>
         public static readonly DependencyProperty RowProperty = DependencyProperty.Register("Row", typeof(Int32), typeof(Grid),
-            new DependencyPropertyMetadata(HandleRowChanged, () => 0, DependencyPropertyOptions.None));
+            new DependencyPropertyMetadata(HandleRowChanged, () => 0, DependencyPropertyOptions.AffectsMeasure));
 
         /// <summary>
-        /// Identifies the Column attached property.
+        /// Identifies the <see cref="Column"/> attached property.
         /// </summary>
         public static readonly DependencyProperty ColumnProperty = DependencyProperty.Register("Column", typeof(Int32), typeof(Grid),
-            new DependencyPropertyMetadata(HandleColumnChanged, () => 0, DependencyPropertyOptions.None));
+            new DependencyPropertyMetadata(HandleColumnChanged, () => 0, DependencyPropertyOptions.AffectsMeasure));
 
         /// <inheritdoc/>
         protected override void DrawChildren(UltravioletTime time, SpriteBatch spriteBatch, Single opacity)
@@ -384,10 +384,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
 
             var grid = element.Parent as Grid;
             if (grid != null)
-            {
                 grid.UpdateCellMetadata();
-                grid.RequestLayout();
-            }
         }
 
         /// <summary>
@@ -400,10 +397,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
 
             var grid = element.Parent as Grid;
             if (grid != null)
-            {
                 grid.UpdateCellMetadata();
-                grid.RequestLayout();
-            }
         }
 
         /// <summary>

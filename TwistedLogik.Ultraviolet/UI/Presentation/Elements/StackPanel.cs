@@ -101,7 +101,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// Identifies the <see cref="Orientation"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty OrientationProperty = DependencyProperty.Register("Orientation", typeof(Orientation), typeof(StackPanel),
-            new DependencyPropertyMetadata(HandleOrientationChanged, () => Orientation.Vertical, DependencyPropertyOptions.None));
+            new DependencyPropertyMetadata(HandleOrientationChanged, () => Orientation.Vertical, DependencyPropertyOptions.AffectsMeasure));
 
         /// <inheritdoc/>
         protected override void OnDrawing(UltravioletTime time, SpriteBatch spriteBatch, Single opacity)
@@ -130,11 +130,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         {
             var element = (StackPanel)dobj;
             element.OnOrientationChanged();
-            element.PerformLayout();
-
-            var parent = element.Parent;
-            if (parent != null)
-                parent.PerformPartialLayout(element);
         }
 
         /// <summary>

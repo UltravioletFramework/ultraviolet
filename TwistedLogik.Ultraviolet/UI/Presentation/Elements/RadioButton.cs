@@ -164,14 +164,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// </summary>
         [Styled("radiobutton-size")]
         public static readonly DependencyProperty RadioButtonSizeProperty = DependencyProperty.Register("RadioButtonSize", typeof(Double), typeof(RadioButton),
-            new DependencyPropertyMetadata(HandleRadioButtonSizeChanged, () => 32.0, DependencyPropertyOptions.None));
+            new DependencyPropertyMetadata(HandleRadioButtonSizeChanged, () => 32.0, DependencyPropertyOptions.AffectsMeasure));
 
         /// <summary>
         /// Identifies the <see cref="RadioButtonPadding"/> dependency property.
         /// </summary>
         [Styled("radiobutton-padding")]
         public static readonly DependencyProperty RadioButtonPaddingProperty = DependencyProperty.Register("RadioButtonPadding", typeof(Double), typeof(RadioButton),
-            new DependencyPropertyMetadata(HandleRadioButtonPaddingChanged, () => 8.0, DependencyPropertyOptions.None));
+            new DependencyPropertyMetadata(HandleRadioButtonPaddingChanged, () => 8.0, DependencyPropertyOptions.AffectsMeasure));
 
         /// <inheritdoc/>
         protected override void OnDrawing(UltravioletTime time, SpriteBatch spriteBatch, Single opacity)

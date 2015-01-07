@@ -135,7 +135,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <inheritdoc/>
-        public sealed override void PerformContentLayout()
+        public override void PerformContentLayout()
         {
             foreach (var child in Children)
             {
@@ -148,7 +148,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <inheritdoc/>
-        public sealed override void PerformPartialLayout(UIElement content)
+        public override void PerformPartialLayout(UIElement content)
         {
             Contract.Require(content, "content");
 
@@ -169,28 +169,28 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// </summary>
         [Styled("left")]
         public static readonly DependencyProperty LeftProperty = DependencyProperty.Register("Left", typeof(Double), typeof(Canvas),
-            new DependencyPropertyMetadata(HandleLayoutPropertyChanged, () => Double.NaN, DependencyPropertyOptions.None));
+            new DependencyPropertyMetadata(null, () => Double.NaN, DependencyPropertyOptions.AffectsMeasure));
 
         /// <summary>
         /// Gets or sets a value indicating the distance between the top edge of the canvas and the top edge of the element.
         /// </summary>
         [Styled("top")]
         public static readonly DependencyProperty TopProperty = DependencyProperty.Register("Top", typeof(Double), typeof(Canvas),
-            new DependencyPropertyMetadata(HandleLayoutPropertyChanged, () => Double.NaN, DependencyPropertyOptions.None));
+            new DependencyPropertyMetadata(null, () => Double.NaN, DependencyPropertyOptions.AffectsMeasure));
 
         /// <summary>
         /// Gets or sets a value indicating the distance between the right edge of the canvas and the right edge of the element.
         /// </summary>
         [Styled("right")]
         public static readonly DependencyProperty RightProperty = DependencyProperty.Register("Right", typeof(Double), typeof(Canvas),
-            new DependencyPropertyMetadata(HandleLayoutPropertyChanged, () => Double.NaN, DependencyPropertyOptions.None));
+            new DependencyPropertyMetadata(null, () => Double.NaN, DependencyPropertyOptions.AffectsMeasure));
 
         /// <summary>
         /// Gets or sets a value indicating the distance between the bottom edge of the canvas and the bottom edge of the element.
         /// </summary>
         [Styled("bottom")]
         public static readonly DependencyProperty BottomProperty = DependencyProperty.Register("Bottom", typeof(Double), typeof(Canvas),
-            new DependencyPropertyMetadata(HandleLayoutPropertyChanged, () => Double.NaN, DependencyPropertyOptions.None));
+            new DependencyPropertyMetadata(null, () => Double.NaN, DependencyPropertyOptions.AffectsMeasure));
 
         /// <inheritdoc/>
         protected override void OnDrawing(UltravioletTime time, SpriteBatch spriteBatch, Single opacity)
@@ -198,17 +198,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             DrawBackgroundImage(spriteBatch, opacity);
 
             base.OnDrawing(time, spriteBatch, opacity);
-        }
-
-        /// <summary>
-        /// Called when the value of a layout-required dependency property is changed on an object.
-        /// </summary>
-        /// <param name="dobj">The dependency object that was changed.</param>
-        private static void HandleLayoutPropertyChanged(DependencyObject dobj)
-        {
-            var element = (UIElement)dobj;
-            if (element.Parent != null)
-                element.Parent.PerformPartialLayout(element);
         }
 
         /// <summary>

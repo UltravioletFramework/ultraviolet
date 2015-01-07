@@ -50,6 +50,23 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public static readonly DependencyPropertyMetadata Empty = new DependencyPropertyMetadata(DependencyPropertyOptions.None);
 
         /// <summary>
+        /// Indicates that the value of the dependency property has changed for the specified object.
+        /// </summary>
+        /// <param name="dobj">The dependency object for which the dependency property value has changed.</param>
+        internal void HandleChanged(DependencyObject dobj)
+        {
+            if (ChangedCallback != null)
+            {
+                ChangedCallback(dobj);
+            }
+
+            if (IsMeasureAffecting)
+            {
+                dobj.OnMeasureAffectingPropertyChanged();
+            }
+        }
+
+        /// <summary>
         /// Gets the callback that is invoked when the property's value changes.
         /// </summary>
         internal PropertyChangedCallback ChangedCallback
@@ -81,6 +98,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             get
             {
                 return (options & DependencyPropertyOptions.Inherited) == DependencyPropertyOptions.Inherited;
+            }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether this dependency property potentially affects the layout of its object.
+        /// </summary>
+        internal Boolean IsMeasureAffecting
+        {
+            get 
+            {
+                return (options & DependencyPropertyOptions.AffectsMeasure) == DependencyPropertyOptions.AffectsMeasure;
             }
         }
 

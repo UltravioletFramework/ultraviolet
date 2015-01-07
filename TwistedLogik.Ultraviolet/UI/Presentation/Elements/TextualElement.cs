@@ -66,7 +66,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// Identifies the Text dependency property.
         /// </summary>
         public static readonly DependencyProperty TextProperty = DependencyProperty.Register("Text", typeof(String), typeof(TextualElement),
-            new DependencyPropertyMetadata(HandleTextChanged, null, DependencyPropertyOptions.None));
+            new DependencyPropertyMetadata(HandleTextChanged, null, DependencyPropertyOptions.AffectsMeasure));
 
          /// <summary>
         /// Identifies the TextAlignment dependency property.
@@ -209,11 +209,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         {
             var element = (TextualElement)dobj;
             element.UpdateCachedTextParse();
-
-            if (element.Parent != null)
-            {
-                element.Parent.PerformPartialLayout(element);
-            }
         }
 
         /// <summary>

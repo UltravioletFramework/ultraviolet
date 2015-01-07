@@ -69,7 +69,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// </summary>
         [Styled("border-thickness")]
         public static readonly DependencyProperty BorderThicknessProperty = DependencyProperty.Register("BorderThickness", typeof(Thickness), typeof(Border),
-            new DependencyPropertyMetadata(HandleBorderThicknessChanged, () => Thickness.One, DependencyPropertyOptions.None));
+            new DependencyPropertyMetadata(HandleBorderThicknessChanged, () => Thickness.One, DependencyPropertyOptions.AffectsMeasure));
 
         /// <summary>
         /// Identifies the <see cref="BorderColor"/> dependency property.
@@ -153,7 +153,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         {
             var element = (Border)dobj;
             element.OnBorderThicknessChanged();
-            element.RequestLayout();
         }
 
         /// <summary>

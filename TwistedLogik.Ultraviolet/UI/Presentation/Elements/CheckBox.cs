@@ -164,14 +164,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// </summary>
         [Styled("checkbox-size")]
         public static readonly DependencyProperty CheckBoxSizeProperty = DependencyProperty.Register("CheckBoxSize", typeof(Double), typeof(CheckBox),
-            new DependencyPropertyMetadata(HandleCheckBoxSizeChanged, () => 32.0, DependencyPropertyOptions.None));
+            new DependencyPropertyMetadata(HandleCheckBoxSizeChanged, () => 32.0, DependencyPropertyOptions.AffectsMeasure));
 
         /// <summary>
         /// Identifies the <see cref="CheckBoxPadding"/> dependency property.
         /// </summary>
         [Styled("checkbox-padding")]
         public static readonly DependencyProperty CheckBoxPaddingProperty = DependencyProperty.Register("CheckBoxPadding", typeof(Double), typeof(CheckBox),
-            new DependencyPropertyMetadata(HandleCheckBoxPaddingChanged, () => 8.0, DependencyPropertyOptions.None));
+            new DependencyPropertyMetadata(HandleCheckBoxPaddingChanged, () => 8.0, DependencyPropertyOptions.AffectsMeasure));
 
         /// <inheritdoc/>
         protected override void OnDrawing(UltravioletTime time, SpriteBatch spriteBatch, Single opacity)

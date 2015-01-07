@@ -61,17 +61,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <inheritdoc/>
-        public override void PerformLayout()
+        public override void PerformContentLayout()
         {
-            OnPerformingLayout();
-
             if (componentRoot != null)
+            {
                 PerformComponentLayout();
-
-            PerformContentLayout();
-            UpdateAbsoluteScreenPosition(AbsoluteScreenX, AbsoluteScreenY);
-
-            OnPerformedLayout();
+            }
+            base.PerformContentLayout();
         }
 
         /// <summary>

@@ -189,19 +189,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// Identifies the <see cref="Orientation"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty OrientationProperty = DependencyProperty.Register("Orientation", typeof(Orientation), typeof(WrapPanel),
-            new DependencyPropertyMetadata(HandleOrientationChanged, () => Orientation.Horizontal, DependencyPropertyOptions.None));
+            new DependencyPropertyMetadata(HandleOrientationChanged, () => Orientation.Horizontal, DependencyPropertyOptions.AffectsMeasure));
 
         /// <summary>
         /// Identifies the <see cref="ItemWidth"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty ItemWidthProperty = DependencyProperty.Register("ItemWidth", typeof(Double), typeof(WrapPanel),
-            new DependencyPropertyMetadata(HandleItemWidthChanged, () => Double.NaN, DependencyPropertyOptions.None));
+            new DependencyPropertyMetadata(HandleItemWidthChanged, () => Double.NaN, DependencyPropertyOptions.AffectsMeasure));
 
         /// <summary>
         /// Identifies the <see cref="ItemHeight"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty ItemHeightProperty = DependencyProperty.Register("ItemHeight", typeof(Double), typeof(WrapPanel),
-            new DependencyPropertyMetadata(HandleItemHeightChanged, () => Double.NaN, DependencyPropertyOptions.None));
+            new DependencyPropertyMetadata(HandleItemHeightChanged, () => Double.NaN, DependencyPropertyOptions.AffectsMeasure));
 
         /// <inheritdoc/>
         protected override void OnDrawing(UltravioletTime time, SpriteBatch spriteBatch, Single opacity)
@@ -264,11 +264,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         {
             var element = (WrapPanel)dobj;
             element.OnOrientationChanged();
-            element.RequestLayout();
-
-            var parent = element.Parent;
-            if (parent != null)
-                parent.PerformPartialLayout(element);
         }
 
         /// <summary>
@@ -279,7 +274,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         {
             var element = (WrapPanel)dobj;
             element.OnItemWidthChanged();
-            element.RequestLayout();
         }
 
         /// <summary>
@@ -290,7 +284,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         {
             var element = (WrapPanel)dobj;
             element.OnItemHeightChanged();
-            element.RequestLayout();
         }
 
         /// <summary>
