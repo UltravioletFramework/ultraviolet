@@ -41,8 +41,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         public override void ReloadContent()
         {
             ReloadRadioButtonImage();
+            ReloadRadioButtonFillImage();
 
             base.ReloadContent();
+        }
+
+        /// <summary>
+        /// Gets or sets the color with which the element's radio button image is drawn.
+        /// </summary>
+        public Color RadioButtonColor
+        {
+            get { return GetValue<Color>(RadioButtonImageProperty); }
+            set { SetValue<Color>(RadioButtonImageProperty, value); }
         }
 
         /// <summary>
@@ -52,6 +62,24 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         {
             get { return GetValue<SourcedRef<Image>>(RadioButtonImageProperty); }
             set { SetValue<SourcedRef<Image>>(RadioButtonImageProperty, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets the color with which the element's radio button fill image is drawn.
+        /// </summary>
+        public Color RadioButtonFillColor
+        {
+            get { return GetValue<Color>(RadioButtonFillColorProperty); }
+            set { SetValue<Color>(RadioButtonFillColorProperty, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets the element's radio button fill image.
+        /// </summary>
+        public SourcedRef<Image> RadioButtonFillImage
+        {
+            get { return GetValue<SourcedRef<Image>>(RadioButtonFillImageProperty); }
+            set { SetValue<SourcedRef<Image>>(RadioButtonFillImageProperty, value); }
         }
 
         /// <summary>
@@ -74,9 +102,24 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <summary>
+        /// Occurs when the value of the <see cref="RadioButtonColor"/> property changes.
+        /// </summary>
+        public event UIElementEventHandler RadioButtonColorChanged;
+
+        /// <summary>
         /// Occurs when the value of the <see cref="RadioButtonImage"/> property changes.
         /// </summary>
         public event UIElementEventHandler RadioButtonImageChanged;
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="RadioButtonFillColor"/> property changes.
+        /// </summary>
+        public event UIElementEventHandler RadioButtonFillColorChanged;
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="RadioButtonFillImage"/> property changes.
+        /// </summary>
+        public event UIElementEventHandler RadioButtonFillImageChanged;
 
         /// <summary>
         /// Occurs when the value of the <see cref="RadioButtonSize"/> property changes.
@@ -89,21 +132,42 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         public event UIElementEventHandler RadioButtonPaddingChanged;
 
         /// <summary>
-        /// Identifies the RadioButtonImage dependency property.
+        /// Identifies the <see cref="RadioButtonColor"/> dependency property.
+        /// </summary>
+        [Styled("radiobutton-color")]
+        public static readonly DependencyProperty RadioButtonColorProperty = DependencyProperty.Register("RadioButtonColor", typeof(Color), typeof(RadioButton),
+            new DependencyPropertyMetadata(HandleRadioButtonColorChanged, null, DependencyPropertyOptions.None));
+
+        /// <summary>
+        /// Identifies the <see cref="RadioButtonImage"/> dependency property.
         /// </summary>
         [Styled("radiobutton-image")]
         public static readonly DependencyProperty RadioButtonImageProperty = DependencyProperty.Register("RadioButtonImage", typeof(SourcedRef<Image>), typeof(RadioButton),
             new DependencyPropertyMetadata(HandleRadioButtonImageChanged, null, DependencyPropertyOptions.None));
 
         /// <summary>
-        /// Identifies the RadioButtonSize dependency property.
+        /// Identifies the <see cref="RadioButtonFillColor"/> dependency property.
+        /// </summary>
+        [Styled("radiobutton-fill-color")]
+        public static readonly DependencyProperty RadioButtonFillColorProperty = DependencyProperty.Register("RadioButtonColor", typeof(Color), typeof(RadioButton),
+            new DependencyPropertyMetadata(HandleRadioButtonFillColorChanged, null, DependencyPropertyOptions.None));
+
+        /// <summary>
+        /// Identifies the <see cref="RadioButtonImage"/> dependency property.
+        /// </summary>
+        [Styled("radiobutton-fill-image")]
+        public static readonly DependencyProperty RadioButtonFillImageProperty = DependencyProperty.Register("RadioButtonFillImage", typeof(SourcedRef<Image>), typeof(RadioButton),
+            new DependencyPropertyMetadata(HandleRadioButtonFillImageChanged, null, DependencyPropertyOptions.None));
+
+        /// <summary>
+        /// Identifies the <see cref="RadioButtonSize"/> dependency property.
         /// </summary>
         [Styled("radiobutton-size")]
         public static readonly DependencyProperty RadioButtonSizeProperty = DependencyProperty.Register("RadioButtonSize", typeof(Double), typeof(RadioButton),
             new DependencyPropertyMetadata(HandleRadioButtonSizeChanged, () => 32.0, DependencyPropertyOptions.None));
 
         /// <summary>
-        /// Identifies the RadioButtonPadding dependency property.
+        /// Identifies the <see cref="RadioButtonPadding"/> dependency property.
         /// </summary>
         [Styled("radiobutton-padding")]
         public static readonly DependencyProperty RadioButtonPaddingProperty = DependencyProperty.Register("RadioButtonPadding", typeof(Double), typeof(RadioButton),
@@ -112,9 +176,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <inheritdoc/>
         protected override void OnDrawing(UltravioletTime time, SpriteBatch spriteBatch, Single opacity)
         {
-            base.OnDrawing(time, spriteBatch, opacity);
-
             DrawRadioButtonImage(spriteBatch, opacity);
+            DrawRadioButtonFillImage(spriteBatch, opacity);
+
+            base.OnDrawing(time, spriteBatch, opacity);
         }
 
         /// <inheritdoc/>
@@ -155,11 +220,47 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <summary>
+        /// Raises the <see cref="RadioButtonColorChanged"/> event.
+        /// </summary>
+        protected virtual void OnRadioButtonColorChanged()
+        {
+            var temp = RadioButtonColorChanged;
+            if (temp != null)
+            {
+                temp(this);
+            }
+        }
+
+        /// <summary>
         /// Raises the <see cref="RadioButtonImageChanged"/> event.
         /// </summary>
         protected virtual void OnRadioButtonImageChanged()
         {
             var temp = RadioButtonImageChanged;
+            if (temp != null)
+            {
+                temp(this);
+            }
+        }
+
+        /// <summary>
+        /// Raises the <see cref="RadioButtonFillColorChanged"/> event.
+        /// </summary>
+        protected virtual void OnRadioButtonFillColorChanged()
+        {
+            var temp = RadioButtonFillColorChanged;
+            if (temp != null)
+            {
+                temp(this);
+            }
+        }
+
+        /// <summary>
+        /// Raises the <see cref="RadioButtonFillImageChanged"/> event.
+        /// </summary>
+        protected virtual void OnRadioButtonFillImageChanged()
+        {
+            var temp = RadioButtonFillImageChanged;
             if (temp != null)
             {
                 temp(this);
@@ -219,6 +320,30 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <summary>
+        /// Draws the element's radio button image.
+        /// </summary>
+        /// <param name="spriteBatch">The sprite batch with which to draw.</param>
+        /// <param name="opacity">The cumulative opacity of all of the element's parent elements.</param>
+        protected virtual void DrawRadioButtonImage(SpriteBatch spriteBatch, Single opacity)
+        {
+            var size = (Int32)ConvertMeasureToPixels(RadioButtonSize, 0);
+            var area = new Rectangle(0, 0, size, size);
+            DrawElementImage(spriteBatch, RadioButtonImage, area, RadioButtonColor * Opacity * opacity);
+        }
+
+        /// <summary>
+        /// Draws the element's radio button fill image.
+        /// </summary>
+        /// <param name="spriteBatch">The sprite batch with which to draw.</param>
+        /// <param name="opacity">The cumulative opacity of all of the element's parent elements.</param>
+        protected virtual void DrawRadioButtonFillImage(SpriteBatch spriteBatch, Single opacity)
+        {
+            var size = (Int32)ConvertMeasureToPixels(RadioButtonSize, 0);
+            var area = new Rectangle(0, 0, size, size);
+            DrawElementImage(spriteBatch, RadioButtonFillImage, area, RadioButtonFillColor * Opacity * opacity, false);
+        }
+
+        /// <summary>
         /// Reloads the element's radio button image.
         /// </summary>
         protected void ReloadRadioButtonImage()
@@ -227,26 +352,21 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <summary>
-        /// Draws the element's radio button image.
+        /// Reloads the element's radio button fill image.
         /// </summary>
-        /// <param name="spriteBatch">The sprite batch with which to draw.</param>
-        /// <param name="opacity">The cumulative opacity of all of the element's parent elements.</param>
-        protected void DrawRadioButtonImage(SpriteBatch spriteBatch, Single opacity)
+        protected void ReloadRadioButtonFillImage()
         {
-            var checkBoxImage = RadioButtonImage.Value;
-            if (checkBoxImage.IsLoaded)
-            {
-                var display = Ultraviolet.GetPlatform().Displays.PrimaryDisplay;
-                var size    = (Int32)display.DipsToPixels(RadioButtonSize);
+            LoadContent(RadioButtonFillImage);
+        }
 
-                var effects  = SpriteEffects.None;
-                var origin   = new Vector2(size / 2f, size / 2f);
-                var position = new Vector2(
-                    AbsoluteScreenX + (size / 2f),
-                    AbsoluteScreenY + (size / 2f));
-
-                spriteBatch.DrawImage(checkBoxImage, position, size, size, Color.White * Opacity * opacity, 0f, origin, effects, 0f);
-            }
+        /// <summary>
+        /// Occurs when the value of the <see cref="RadioButtonColor"/> dependency property changes.
+        /// </summary>
+        /// <param name="dobj">The object that raised the event.</param>
+        private static void HandleRadioButtonColorChanged(DependencyObject dobj)
+        {
+            var element = (RadioButton)dobj;
+            element.OnRadioButtonColorChanged();
         }
 
         /// <summary>
@@ -258,6 +378,27 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             var element = (RadioButton)dobj;
             element.ReloadRadioButtonImage();
             element.OnRadioButtonImageChanged();
+        }
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="RadioButtonFillColor"/> dependency property changes.
+        /// </summary>
+        /// <param name="dobj">The object that raised the event.</param>
+        private static void HandleRadioButtonFillColorChanged(DependencyObject dobj)
+        {
+            var element = (RadioButton)dobj;
+            element.OnRadioButtonFillColorChanged();
+        }
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="RadioButtonFillImage"/> dependency property changes.
+        /// </summary>
+        /// <param name="dobj">The object that raised the event.</param>
+        private static void HandleRadioButtonFillImageChanged(DependencyObject dobj)
+        {
+            var element = (RadioButton)dobj;
+            element.ReloadRadioButtonFillImage();
+            element.OnRadioButtonFillImageChanged();
         }
 
         /// <summary>

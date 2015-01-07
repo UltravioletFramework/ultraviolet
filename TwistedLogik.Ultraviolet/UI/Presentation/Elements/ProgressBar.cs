@@ -189,8 +189,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         protected override void OnDrawing(UltravioletTime time, SpriteBatch spriteBatch, Single opacity)
         {
             DrawBackgroundImage(spriteBatch, opacity);
-            DrawFill(spriteBatch, opacity);
-            DrawOverlay(spriteBatch, opacity);
+            DrawFillImage(spriteBatch, opacity);
+            DrawOverlayImage(spriteBatch, opacity);
 
             base.OnDrawing(time, spriteBatch, opacity);
         }
@@ -200,22 +200,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// </summary>
         /// <param name="spriteBatch">The sprite batch with which to draw the progress bar's fill.</param>
         /// <param name="opacity">The opacity with which to draw the progress bar's fill.</param>
-        protected void DrawFill(SpriteBatch spriteBatch, Single opacity)
+        protected virtual void DrawFillImage(SpriteBatch spriteBatch, Single opacity)
         {
-            var img      = FillImage.Value;
-            var imgColor = FillColor * opacity;
-
-            if (imgColor.Equals(Color.Transparent) || img == null || !img.IsLoaded)
-                return;
-
             var range         = (Maximum - Minimum);
             var percentFilled = (Value - Minimum) / range;
             if (percentFilled > 0)
             {
-                var fillPosition = new Vector2(AbsoluteScreenX, AbsoluteScreenY);
-                var fillWidth = (Int32)(ActualWidth * percentFilled);
-                var fillHeight = ActualHeight;
-                spriteBatch.DrawImage(img, fillPosition, fillWidth, fillHeight, imgColor);
+                var area = new Rectangle(0, 0, (Int32)(ActualWidth * percentFilled), ActualHeight);
+                DrawElementImage(spriteBatch, FillImage, area, FillColor * Opacity * opacity);
             }
         }
 
@@ -224,16 +216,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// </summary>
         /// <param name="spriteBatch">The sprite batch with which to draw the progress bar's overlay.</param>
         /// <param name="opacity">The opacity with which to draw the progress bar's overlay.</param>
-        protected void DrawOverlay(SpriteBatch spriteBatch, Single opacity)
+        protected virtual void DrawOverlayImage(SpriteBatch spriteBatch, Single opacity)
         {
-            var img      = OverlayImage.Value;
-            var imgColor = OverlayColor * opacity;
-
-            if (imgColor.Equals(Color.Transparent) || img == null || !img.IsLoaded)
-                return;
-
-            var overlayPosition = new Vector2(AbsoluteScreenX, AbsoluteScreenY);
-            spriteBatch.DrawImage(img, overlayPosition, ActualWidth, ActualHeight, imgColor);
+            DrawElementImage(spriteBatch, OverlayImage, null, OverlayColor * Opacity * opacity);
         }
 
         /// <summary>

@@ -2129,6 +2129,26 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <summary>
+        /// Draws the element's background image.
+        /// </summary>
+        /// <param name="spriteBatch">The sprite batch with which to draw.</param>
+        /// <param name="opacity">The cumulative opacity of all of the element's parent elements.</param>
+        protected virtual void DrawBackgroundImage(SpriteBatch spriteBatch, Single opacity)
+        {
+            DrawElementImage(spriteBatch, BackgroundImage, null, BackgroundColor * Opacity * opacity, true);
+        }
+
+        /// <summary>
+        /// Draws the image which indicates that the element has input focus.
+        /// </summary>
+        /// <param name="spriteBatch">The sprite batch with which to draw.</param>
+        /// <param name="opacity">The cumulative opacity of all of the element's parent elements.</param>
+        protected virtual void DrawFocusedImage(SpriteBatch spriteBatch, Single opacity)
+        {
+            DrawElementImage(spriteBatch, FocusedImage, null, FocusedColor * Opacity * opacity);
+        }
+
+        /// <summary>
         /// Loads the specified asset from the global content manager.
         /// </summary>
         /// <typeparam name="TOutput">The type of object being loaded.</typeparam>
@@ -2231,57 +2251,39 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <summary>
-        /// Draws the element's background image.
+        /// Draws the specified element image.
         /// </summary>
-        /// <param name="spriteBatch">The sprite batch with which to draw.</param>
-        /// <param name="opacity">The cumulative opacity of all of the element's parent elements.</param>
-        protected void DrawBackgroundImage(SpriteBatch spriteBatch, Single opacity)
+        /// <param name="spriteBatch">The sprite batch with which to draw the element image.</param>
+        /// <param name="image">The image resource to draw.</param>
+        /// <param name="area">The area, relative to the element, in which to draw the image. A value of
+        /// <c>null</c> specifies that the image should fill the element's entire area on the screen.</param>
+        /// <param name="color">The color with which to draw the element image.</param>
+        /// <param name="drawBlankImage">A value indicating whether a blank placeholder should be drawn if 
+        /// the specified image does not exist or is not loaded.</param>
+        protected void DrawElementImage(SpriteBatch spriteBatch, SourcedRef<Image> image, Rectangle? area, Color color, Boolean drawBlankImage = false)
         {
-            var imgColor = BackgroundColor * Opacity * opacity;
-            var img      = BackgroundImage.Value;
-
-            if (imgColor.Equals(Color.Transparent))
+            if (color.Equals(Color.Transparent))
                 return;
 
-            if (img == null || !img.IsLoaded)
+            var imageAreaRel = area ?? new Rectangle(0, 0, ActualWidth, ActualHeight);
+            var imageAreaAbs = new Rectangle(AbsoluteScreenX + imageAreaRel.X, AbsoluteScreenY + imageAreaRel.Y, imageAreaRel.Width, imageAreaRel.Height);
+
+            var imageResource = image.Value;
+            if (imageResource == null || !imageResource.IsLoaded)
             {
-                var area = new RectangleF(AbsoluteScreenX, AbsoluteScreenY, ActualWidth, ActualHeight);
-                spriteBatch.Draw(UIElementResources.BlankTexture, area, imgColor);
+                if (drawBlankImage)
+                {
+                    spriteBatch.Draw(UIElementResources.BlankTexture, imageAreaAbs, color);
+                }
             }
             else
             {
                 var effects  = SpriteEffects.None;
-                var origin   = new Vector2(ActualWidth / 2f, ActualHeight / 2f);
-                var position = new Vector2(
-                    AbsoluteScreenX + (ActualWidth / 2f),
-                    AbsoluteScreenY + (ActualHeight / 2f));
+                var origin   = imageAreaRel.Center;
+                var position = imageAreaAbs.Center;
 
-                spriteBatch.DrawImage(img, position, ActualWidth, ActualHeight, imgColor, 0f, origin, effects, 0f);
-            }
-        }
-
-        /// <summary>
-        /// Draws the image which indicates that the element has input focus.
-        /// </summary>
-        /// <param name="spriteBatch">The sprite batch with which to draw.</param>
-        /// <param name="opacity">The cumulative opacity of all of the element's parent elements.</param>
-        protected void DrawFocusedImage(SpriteBatch spriteBatch, Single opacity)
-        {
-            var imgColor = FocusedColor * Opacity * opacity;
-            var img      = FocusedImage.Value;
-
-            if (imgColor.Equals(Color.Transparent))
-                return;
-
-            if (img != null && img.IsLoaded)
-            {
-                var effects  = SpriteEffects.None;
-                var origin   = new Vector2(ActualWidth / 2f, ActualHeight / 2f);
-                var position = new Vector2(
-                    AbsoluteScreenX + (ActualWidth / 2f),
-                    AbsoluteScreenY + (ActualHeight / 2f));
-
-                spriteBatch.DrawImage(img, position, ActualWidth, ActualHeight, imgColor, 0f, origin, effects, 0f);
+                spriteBatch.DrawImage(imageResource, position, 
+                    imageAreaAbs.Width, imageAreaAbs.Height, color, 0f, origin, effects, 0f);
             }
         }
 
