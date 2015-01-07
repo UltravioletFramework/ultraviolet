@@ -83,7 +83,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <inheritdoc/>
         protected internal override void OnLostMouseCapture()
         {
-            repeating = false;
+            repeating   = false;
+            repeatTimer = 0;
+
             base.OnLostMouseCapture();
         }
 
@@ -92,7 +94,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         {
             if (button == MouseButton.Left)
             {
-                repeating = false;
+                repeating   = false;
+                repeatTimer = 0;
             }
             base.OnMouseButtonReleased(device, button);
         }
