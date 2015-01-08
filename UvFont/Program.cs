@@ -460,8 +460,6 @@ namespace UvFont
                         from c1 in chars
                         from c2 in chars
                         let kerning = MeasureKerning(parameters, gfx, face.Font, c1, c2)
-                        where
-                         c1 != c2
                         select new
                         {
                             KerningValue = kerning,
