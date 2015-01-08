@@ -53,8 +53,8 @@ namespace TwistedLogik.Ultraviolet.OpenGL
             SDL.GL_SetAttribute(SDL_GLattr.CONTEXT_MAJOR_VERSION, versionRequested.Major);
             SDL.GL_SetAttribute(SDL_GLattr.CONTEXT_MINOR_VERSION, versionRequested.Minor);
 
-            SDL.GL_SetAttribute(SDL_GLattr.DEPTH_SIZE, 24);
-            SDL.GL_SetAttribute(SDL_GLattr.STENCIL_SIZE, 8);
+            SDL.GL_SetAttribute(SDL_GLattr.DEPTH_SIZE, configuration.BackBufferDepthSize);
+            SDL.GL_SetAttribute(SDL_GLattr.STENCIL_SIZE, configuration.BackBufferStencilSize);
 
             this.platform = new OpenGLUltravioletPlatform(this, configuration);
 

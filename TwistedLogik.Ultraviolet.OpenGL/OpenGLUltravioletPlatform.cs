@@ -17,7 +17,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
         /// <param name="configuration">The Ultraviolet Framework configuration settings for the current context.</param>
-        public OpenGLUltravioletPlatform(UltravioletContext uv, UltravioletConfiguration configuration)
+        public OpenGLUltravioletPlatform(UltravioletContext uv, OpenGLUltravioletConfiguration configuration)
             : base(uv)
         {
             this.clipboard = new OpenGLUltravioletClipboardInfo();

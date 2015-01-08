@@ -21,7 +21,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
         /// <param name="configuration">The Ultraviolet Framework configuration settings for the current context.</param>
-        internal OpenGLUltravioletWindowInfo(UltravioletContext uv, UltravioletConfiguration configuration)
+        internal OpenGLUltravioletWindowInfo(UltravioletContext uv, OpenGLUltravioletConfiguration configuration)
         {
             Contract.Require(uv, "uv");
             Contract.Require(configuration, "configuration");
@@ -353,17 +353,17 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
         /// Initializes the context's primary window.
         /// </summary>
         /// <param name="configuration">The Ultraviolet Framg</param>
-        private void InitializePrimaryWindow(UltravioletConfiguration configuration)
+        private void InitializePrimaryWindow(OpenGLUltravioletConfiguration configuration)
         {
             // Retrieve the caption for our window.
             var caption = Localization.Strings.Contains("WINDOW_CAPTION") ? 
                 Localization.Get("WINDOW_CAPTION") : UltravioletStrings.DefaultWindowCaption.Value;
             
             // Set the OpenGL attributes for the window we're about to create.
-            if (SDL.GL_SetAttribute(SDL_GLattr.MULTISAMPLEBUFFERS, 1) < 0)
+            if (SDL.GL_SetAttribute(SDL_GLattr.MULTISAMPLEBUFFERS, configuration.MultiSampleBuffers) < 0)
                 throw new SDL2Exception();
 
-            if (SDL.GL_SetAttribute(SDL_GLattr.MULTISAMPLESAMPLES, 4) < 0)
+            if (SDL.GL_SetAttribute(SDL_GLattr.MULTISAMPLESAMPLES, configuration.MultiSampleSamples) < 0)
                 throw new SDL2Exception();
 
             /*
