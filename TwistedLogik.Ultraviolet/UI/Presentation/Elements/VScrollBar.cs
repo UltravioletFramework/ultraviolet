@@ -5,28 +5,28 @@ using TwistedLogik.Ultraviolet.Input;
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
 {
     /// <summary>
-    /// Represents a horizontal scroll bar.
+    /// Represents a vertical scroll bar.
     /// </summary>
-    [UIElement("HScrollBar")]
-    public class HScrollBar : ScrollBarBase
+    [UIElement("VScrollBar")]
+    public class VScrollBar : ScrollBarBase
     {
         /// <summary>
-        /// Initializes the <see cref="HScrollBar"/> type.
+        /// Initializes the <see cref="VScrollBar"/> type.
         /// </summary>
-        static HScrollBar()
+        static VScrollBar()
         {
-            ComponentTemplate = LoadComponentTemplateFromManifestResourceStream(typeof(HScrollBar).Assembly,
-                "TwistedLogik.Ultraviolet.UI.Presentation.Elements.Templates.HScrollBar.xml");
+            ComponentTemplate = LoadComponentTemplateFromManifestResourceStream(typeof(VScrollBar).Assembly,
+                "TwistedLogik.Ultraviolet.UI.Presentation.Elements.Templates.VScrollBar.xml");
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="HScrollBar"/> class.
+        /// Initializes a new instance of the <see cref="VScrollBar"/> class.
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
         /// <param name="id">The element's unique identifier within its view.</param>
         /// <param name="viewModelType">The type of view model to which the element will be bound.</param>
         /// <param name="bindingContext">The binding context to apply to the element which is instantiated.</param>
-        public HScrollBar(UltravioletContext uv, String id, Type viewModelType, String bindingContext = null)
+        public VScrollBar(UltravioletContext uv, String id, Type viewModelType, String bindingContext = null)
             : base(uv, id)
         {
             if (ComponentTemplate != null)
@@ -45,13 +45,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <inheritdoc/>
         protected override void UpdateComponentLayout()
         {
-            if (LayoutRoot == null || LayoutRoot.ColumnDefinitions.Count < 5)
+            if (LayoutRoot == null || LayoutRoot.RowDefinitions.Count < 5)
                 return;
 
-            var thumbMinLength = (Thumb == null) ? 0 : Thumb.MinWidth;
+            var thumbMinLength = (Thumb == null) ? 0 : Thumb.MinHeight;
 
-            LayoutRoot.ColumnDefinitions[1].Width = CalculateThumbOffset();
-            LayoutRoot.ColumnDefinitions[2].Width = CalculateThumbLength(thumbMinLength);
+            LayoutRoot.RowDefinitions[1].Height = CalculateThumbOffset();
+            LayoutRoot.RowDefinitions[2].Height = CalculateThumbLength(thumbMinLength);
         }
 
         /// <summary>
@@ -59,12 +59,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// </summary>
         protected override Int32 ActualTrackOffsetX
         {
-            get
-            {
-                if (LayoutRoot == null || LayoutRoot.ColumnDefinitions.Count < 5)
-                    return 0;
-
-                return LayoutRoot.ColumnDefinitions[0].ActualWidth;
+            get 
+            { 
+                return 0; 
             }
         }
 
@@ -73,7 +70,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// </summary>
         protected override Int32 ActualTrackOffsetY
         {
-            get { return 0; }
+            get
+            {
+                if (LayoutRoot == null || LayoutRoot.RowDefinitions.Count < 5)
+                    return 0;
+
+                return LayoutRoot.RowDefinitions[0].ActualHeight; 
+            }
         }
 
         /// <summary>
@@ -81,7 +84,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// </summary>
         protected override Int32 ActualTrackWidth
         {
-            get { return ActualTrackLength; }
+            get { return ActualWidth; }
         }
 
         /// <summary>
@@ -89,7 +92,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// </summary>
         protected override Int32 ActualTrackHeight
         {
-            get { return ActualHeight; }
+            get { return ActualTrackLength; }
         }
 
         /// <summary>
@@ -99,12 +102,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         {
             get 
             {
-                if (LayoutRoot == null || LayoutRoot.ColumnDefinitions.Count < 5)
+                if (LayoutRoot == null || LayoutRoot.RowDefinitions.Count < 5)
                     return 0;
 
-                return ActualWidth - (
-                    LayoutRoot.ColumnDefinitions[0].ActualWidth + 
-                    LayoutRoot.ColumnDefinitions[4].ActualWidth);
+                return ActualHeight - (
+                    LayoutRoot.RowDefinitions[0].ActualHeight + 
+                    LayoutRoot.RowDefinitions[4].ActualHeight);
             }
         }
 
@@ -115,10 +118,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         {
             get
             {
-                if (LayoutRoot == null || LayoutRoot.ColumnDefinitions.Count < 5)
+                if (LayoutRoot == null || LayoutRoot.RowDefinitions.Count < 5)
                     return 0;
 
-                return LayoutRoot.ColumnDefinitions[2].ActualWidth;
+                return LayoutRoot.RowDefinitions[2].ActualHeight;
             }
         }
 
@@ -130,8 +133,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             var button = element as Button;
             if (button != null && button.Depressed)
             {
-                var relX = x - (AbsoluteScreenX + ActualTrackOffsetX + thumbOffset);
-                Value = OffsetToValue(relX); 
+                var relY = y - (AbsoluteScreenY + ActualTrackOffsetY + thumbOffset);
+                Value = OffsetToValue(relY); 
             }
         }
 
@@ -140,37 +143,37 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// </summary>
         private void HandleThumbMouseButtonPressed(UIElement element, MouseDevice device, MouseButton pressed)
         {
-            thumbOffset = device.X - element.AbsoluteScreenX;
+            thumbOffset = device.Y - element.AbsoluteScreenY;
         }
 
         /// <summary>
-        /// Handles the <see cref="ButtonBase.Click"/> event for the LeftSmall button.
+        /// Handles the <see cref="ButtonBase.Click"/> event for the UpSmall button.
         /// </summary>
-        private void HandleClickLeftSmall(UIElement element)
+        private void HandleClickUpSmall(UIElement element)
         {
             DecreaseSmall();
         }
 
         /// <summary>
-        /// Handles the <see cref="ButtonBase.Click"/> event for the LeftLarge button.
+        /// Handles the <see cref="ButtonBase.Click"/> event for the UpLarge button.
         /// </summary>
-        private void HandleClickLeftLarge(UIElement element)
+        private void HandleClickUpLarge(UIElement element)
         {
             DecreaseLarge();
         }
 
         /// <summary>
-        /// Handles the <see cref="ButtonBase.Click"/> event for the RightSmall button.
+        /// Handles the <see cref="ButtonBase.Click"/> event for the DownSmall button.
         /// </summary>
-        private void HandleClickRightSmall(UIElement small)
+        private void HandleClickDownSmall(UIElement small)
         {
             IncreaseSmall();
         }
 
         /// <summary>
-        /// Handles the <see cref="ButtonBase.Click"/> event for the RightLarge button.
+        /// Handles the <see cref="ButtonBase.Click"/> event for the DownLarge button.
         /// </summary>
-        private void HandleClickRightLarge(UIElement small)
+        private void HandleClickDownLarge(UIElement small)
         {
             IncreaseLarge();
         }

@@ -2290,7 +2290,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             else
             {
                 var effects  = SpriteEffects.None;
-                var origin   = imageAreaRel.Center;
+                var origin   = new Vector2(imageAreaRel.Width / 2f, imageAreaRel.Height / 2f);// imageAreaRel.Center;
                 var position = imageAreaAbs.Center;
 
                 spriteBatch.DrawImage(imageResource, position, 
