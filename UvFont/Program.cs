@@ -496,6 +496,9 @@ namespace UvFont
 
         private static Int32 MeasureKerning(FontGenerationParameters parameters, Graphics gfx, Font font, Char c1, Char c2)
         {
+            if (Char.IsWhiteSpace(c1) && Char.IsWhiteSpace(c2))
+                return 0;
+
             var c1Size = gfx.MeasureString(c1.ToString(), font);
             var c2Size = gfx.MeasureString(c2.ToString(), font);
             var kernedSize = gfx.MeasureString(String.Format("{0}{1}", c1, c2), font);
