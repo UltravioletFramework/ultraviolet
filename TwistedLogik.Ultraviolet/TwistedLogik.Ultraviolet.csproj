@@ -339,6 +339,7 @@
     <Compile Include="Size3.cs" />
     <Compile Include="Size3F.cs" />
     <Compile Include="TaskUtil.cs" />
+    <Compile Include="UI\Presentation\Elements\NumericLabel.cs" />
     <Compile Include="UI\Presentation\Elements\VScrollBar.cs" />
     <Compile Include="UI\Presentation\Elements\HScrollBar.cs" />
     <Compile Include="UI\Presentation\Elements\ClickMode.cs" />

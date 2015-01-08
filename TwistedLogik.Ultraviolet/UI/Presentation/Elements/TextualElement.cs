@@ -63,13 +63,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <summary>
-        /// Identifies the Text dependency property.
+        /// Identifies the <see cref="Text"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty TextProperty = DependencyProperty.Register("Text", typeof(String), typeof(TextualElement),
             new DependencyPropertyMetadata(HandleTextChanged, null, DependencyPropertyOptions.AffectsMeasure));
 
-         /// <summary>
-        /// Identifies the TextAlignment dependency property.
+        /// <summary>
+        /// Identifies the <see cref="TextAlignment"/> dependency property.
         /// </summary>
         [Styled("text-align")]
         public static readonly DependencyProperty TextAlignmentProperty = DependencyProperty.Register("TextAlignment", typeof(TextFlags), typeof(TextualElement),
@@ -140,9 +140,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         {
             if (cachedLayoutResult.Count > 0)
             {
-                var display = Ultraviolet.GetPlatform().Displays.PrimaryDisplay;
-                var padding = display.DipsToPixels(Padding);
-
+                var padding  = ConvertThicknessToPixels(Padding, 0);                
                 var position = new Vector2(
                     AbsoluteScreenX + (Int32)padding.Left + TextAreaX,
                     AbsoluteScreenY + (Int32)padding.Top  + TextAreaY);
