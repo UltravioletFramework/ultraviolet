@@ -25,6 +25,9 @@ namespace TwistedLogik.Nucleus.Data
 		/// </summary>
 		static ObjectResolver()
 		{
+            miResolveLazilyLoadedDataObject = typeof(ObjectResolver).GetMethod(
+                "ResolveLazilyLoadedDataObject", BindingFlags.NonPublic | BindingFlags.Static);
+
 			RegisterValueResolver<MaskedUInt32>  ((value, provider) => new MaskedUInt32(UInt32.Parse(value, provider)));
 			RegisterValueResolver<MaskedUInt64>  ((value, provider) => new MaskedUInt64(UInt64.Parse(value, provider)));
 			RegisterValueResolver<StringResource>((value, provider) => new StringResource(value));
@@ -100,6 +103,14 @@ namespace TwistedLogik.Nucleus.Data
 			{
 				return ParseEnum(type, value, false);
 			}
+
+            // Handle lazy loaders.
+            Type dataObjectType;
+            if (IsLazilyLoadedDataObjectType(type, out dataObjectType))
+            {
+                return miResolveLazilyLoadedDataObject.MakeGenericMethod(dataObjectType)
+                    .Invoke(null, new object[] { value });
+            }
 
 			// Handle object references.
 			if (type.Equals(typeof(Guid)))
@@ -219,6 +230,39 @@ namespace TwistedLogik.Nucleus.Data
 			return false;
 		}
 
+        /// <summary>
+        /// Gets a value indicating whether the specified type is a lazily-loaded Nucleus data object.
+        /// </summary>
+        /// <param name="type">The type to evaluate.</param>
+        /// <param name="dataObjectType">The type of data object to load.</param>
+        /// <returns><c>true</c> if the specified type is a lazily-loaded Nucleus data object; otherwise, <c>false</c>.</returns>
+        private static Boolean IsLazilyLoadedDataObjectType(Type type, out Type dataObjectType)
+        {
+            dataObjectType = null;
+
+            if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Lazy<>))
+            {
+                dataObjectType = type.GetGenericArguments()[0];
+                if (typeof(DataObject).IsAssignableFrom(dataObjectType))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// Resolves a value to an instance of <see cref="Lazy{T}"/>, where the lazily-loaded
+        /// object is an instance of <see cref="DataObject"/>.
+        /// </summary>
+        private static Object ResolveLazilyLoadedDataObject<T>(String value) where T : DataObject
+        {
+            var registry = DataObjectRegistries.Get<T>();
+            var reference = DataObjectRegistries.ResolveReference(value);
+            return new Lazy<T>(() => registry.GetObject(reference));
+        }
+
 		// Custom resolvers that have been registered with the object resolution system.
 		private static readonly Dictionary<Type, CustomObjectResolver> registeredCustomResolvers =
 			new Dictionary<Type, CustomObjectResolver>();
@@ -228,5 +272,8 @@ namespace TwistedLogik.Nucleus.Data
 			new Dictionary<Type, MethodInfo>();
 		private static readonly Dictionary<Type, MethodInfo> cachedCultureIgnorantParse =
 			new Dictionary<Type, MethodInfo>();
+
+        // Cached resolution methods.
+        private static readonly MethodInfo miResolveLazilyLoadedDataObject;
 	}
 }
