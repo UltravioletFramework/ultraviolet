@@ -339,6 +339,7 @@
     <Compile Include="Size3.cs" />
     <Compile Include="Size3F.cs" />
     <Compile Include="TaskUtil.cs" />
+    <Compile Include="UI\Presentation\Elements\VScrollBar.cs" />
     <Compile Include="UI\Presentation\Elements\HScrollBar.cs" />
     <Compile Include="UI\Presentation\Elements\ClickMode.cs" />
     <Compile Include="UI\Presentation\Elements\RangeBase.cs" />
@@ -354,6 +355,7 @@
     <Compile Include="UI\Presentation\Elements\Orientation.cs" />
     <Compile Include="UI\Presentation\Elements\ColumnDefinition.cs" />
     <Compile Include="UI\Presentation\Elements\RowDefinition.cs" />
+    <Compile Include="UI\Presentation\Elements\ScrollBarBase.cs" />
     <Compile Include="UI\Presentation\Elements\Visibility.cs" />
     <Compile Include="UI\Presentation\Elements\WrapPanel.cs" />
     <Compile Include="UI\Presentation\Elements\StackPanel.cs" />
@@ -614,6 +616,7 @@
     <EmbeddedResource Include="UI\Presentation\Elements\Templates\ScrollViewer.xml" />
     <EmbeddedResource Include="UI\Presentation\Elements\Templates\Border.xml" />
     <EmbeddedResource Include="UI\Presentation\Elements\Templates\HScrollBar.xml" />
+    <EmbeddedResource Include="UI\Presentation\Elements\Templates\VScrollBar.xml" />
     <Content Include="uv.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

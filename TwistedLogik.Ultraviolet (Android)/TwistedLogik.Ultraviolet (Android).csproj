@@ -1074,6 +1074,9 @@
     <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Elements\RowDefinitionCollection.IEnumerable.cs">
       <Link>UI\Presentation\Elements\RowDefinitionCollection.IEnumerable.cs</Link>
     </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Elements\ScrollBarBase.cs">
+      <Link>UI\Presentation\Elements\ScrollBarBase.cs</Link>
+    </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Elements\ScrollViewer.cs">
       <Link>UI\Presentation\Elements\ScrollViewer.cs</Link>
     </Compile>
@@ -1151,6 +1154,9 @@
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Elements\VisualStateTransitionKey.cs">
       <Link>UI\Presentation\Elements\VisualStateTransitionKey.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Elements\VScrollBar.cs">
+      <Link>UI\Presentation\Elements\VScrollBar.cs</Link>
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Elements\WrapPanel.cs">
       <Link>UI\Presentation\Elements\WrapPanel.cs</Link>
@@ -1402,6 +1408,9 @@
     <Content Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Elements\Templates\ScrollViewer.xml">
       <Link>UI\Presentation\Elements\Templates\ScrollViewer.xml</Link>
     </Content>
+    <Content Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Elements\Templates\VScrollBar.xml">
+      <Link>UI\Presentation\Elements\Templates\VScrollBar.xml</Link>
+    </Content>
     <Content Include="..\TwistedLogik.Ultraviolet\uv.ico">
       <Link>uv.ico</Link>
     </Content>
@@ -1422,7 +1431,7 @@
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" ProjectLinkReference="f071abe3-05e5-4df9-a929-cf71b01ec50a" />
+      <UserProperties ProjectLinkReference="f071abe3-05e5-4df9-a929-cf71b01ec50a" ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" />
     </VisualStudio>
   </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
