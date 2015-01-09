@@ -2,9 +2,9 @@
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
 {
     /// <summary>
-    /// Represents the playback state of a <see cref="StoryboardClock"/> instance.
+    /// Represents the playback state of a <see cref="Clock"/> instance.
     /// </summary>
-    public enum StoryboardClockState
+    public enum ClockState
     {
         /// <summary>
         /// The clock is stopped.

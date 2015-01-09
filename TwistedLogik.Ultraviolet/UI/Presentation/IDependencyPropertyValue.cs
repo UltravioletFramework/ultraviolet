@@ -19,7 +19,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         /// <param name="animation">The animation to apply to the value, or <c>null</c> to disable animation.</param>
         /// <param name="clock">The clock which controls the animation's playback.</param>
-        void Animate(AnimationBase animation, StoryboardClock clock);
+        void Animate(AnimationBase animation, Clock clock);
 
         /// <summary>
         /// Binds the dependency property.
@@ -49,24 +49,24 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         void ClearStyledValue();
 
         /// <summary>
-        /// Called when the value's associated storyboard clock is started.
+        /// Called when the value's associated clock is started.
         /// </summary>
-        void StoryboardClockStarted();
+        void ClockStarted();
 
         /// <summary>
-        /// Called when the value's associated storyboard clock is stopped.
+        /// Called when the value's associated clock is stopped.
         /// </summary>
-        void StoryboardClockStopped();
+        void ClockStopped();
 
         /// <summary>
-        /// Called when the value's associated storyboard clock is paused.
+        /// Called when the value's associated clock is paused.
         /// </summary>
-        void StoryboardClockPaused();
+        void ClockPaused();
 
         /// <summary>
-        /// Called when the value's associated storyboard clock is resumed.
+        /// Called when the value's associated clock is resumed.
         /// </summary>
-        void StoryboardClockResumed();
+        void ClockResumed();
 
         /// <summary>
         /// Gets or sets the dependency object which owns this property value.

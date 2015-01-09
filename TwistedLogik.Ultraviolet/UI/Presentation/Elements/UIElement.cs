@@ -2701,7 +2701,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             {
                 clock = storyboardClockPool.Retrieve();
             }
-            clock.ChangeStoryboard(storyboard);
+            clock.Storyboard = storyboard;
         }
 
         /// <summary>

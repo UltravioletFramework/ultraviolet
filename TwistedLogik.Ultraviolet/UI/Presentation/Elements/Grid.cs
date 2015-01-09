@@ -52,7 +52,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// Sets a value that indicates which column a specified content element should occupy within its <see cref="Grid"/> container.
         /// </summary>
         /// <param name="element">The element to modify.</param>
-        /// <param name="row">The index of the column that the element should occupy.</param>
+        /// <param name="column">The index of the column that the element should occupy.</param>
         public static void SetColumn(UIElement element, Int32 column)
         {
             Contract.Require(element, "element");
@@ -177,13 +177,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <summary>
-        /// Identifies the <see cref="Row"/> attached property.
+        /// Identifies the Row attached property.
         /// </summary>
         public static readonly DependencyProperty RowProperty = DependencyProperty.Register("Row", typeof(Int32), typeof(Grid),
             new DependencyPropertyMetadata(HandleRowChanged, () => 0, DependencyPropertyOptions.AffectsMeasure));
 
         /// <summary>
-        /// Identifies the <see cref="Column"/> attached property.
+        /// Identifies the Column attached property.
         /// </summary>
         public static readonly DependencyProperty ColumnProperty = DependencyProperty.Register("Column", typeof(Int32), typeof(Grid),
             new DependencyPropertyMetadata(HandleColumnChanged, () => 0, DependencyPropertyOptions.AffectsMeasure));
@@ -372,7 +372,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <summary>
-        /// Occurs when the value of the <see cref="Row"/> attached property changes.
+        /// Occurs when the value of the Row attached property changes.
         /// </summary>
         /// <param name="dobj">The object that raised the event.</param>
         private static void HandleRowChanged(DependencyObject dobj)
@@ -385,7 +385,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <summary>
-        /// Occurs when the value of the <see cref="Column"/> attached property changes.
+        /// Occurs when the value of the Column attached property changes.
         /// </summary>
         /// <param name="dobj">The object that raised the event.</param>
         private static void HandleColumnChanged(DependencyObject dobj)

@@ -801,6 +801,9 @@
     <Compile Include="..\TwistedLogik.Ultraviolet\Tweening.cs">
       <Link>Tweening.cs</Link>
     </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\TweeningInterpolationRegistry.cs">
+      <Link>TweeningInterpolationRegistry.cs</Link>
+    </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet\UI\NamespaceDoc.cs">
       <Link>UI\NamespaceDoc.cs</Link>
     </Compile>
@@ -809,6 +812,9 @@
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Animations\AnimationBase.cs">
       <Link>UI\Presentation\Animations\AnimationBase.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Animations\AnimationClock.cs">
+      <Link>UI\Presentation\Animations\AnimationClock.cs</Link>
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Animations\AnimationKeyframe.cs">
       <Link>UI\Presentation\Animations\AnimationKeyframe.cs</Link>
@@ -830,6 +836,12 @@
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Animations\CharAnimation.cs">
       <Link>UI\Presentation\Animations\CharAnimation.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Animations\Clock.cs">
+      <Link>UI\Presentation\Animations\Clock.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Animations\ClockState.cs">
+      <Link>UI\Presentation\Animations\ClockState.cs</Link>
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Animations\DecimalAnimation.cs">
       <Link>UI\Presentation\Animations\DecimalAnimation.cs</Link>
@@ -914,9 +926,6 @@
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Animations\StoryboardClock.cs">
       <Link>UI\Presentation\Animations\StoryboardClock.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Animations\StoryboardClockState.cs">
-      <Link>UI\Presentation\Animations\StoryboardClockState.cs</Link>
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Animations\StoryboardTarget.cs">
       <Link>UI\Presentation\Animations\StoryboardTarget.cs</Link>

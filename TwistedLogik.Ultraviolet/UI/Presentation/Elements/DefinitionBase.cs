@@ -4,7 +4,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
 {
     /// <summary>
     /// Represents the method that is called when the value of a property 
-    /// changes on an instance of the <see cref="DependencyBase"/> class.
+    /// changes on an instance of the <see cref="DefinitionBase"/> class.
     /// </summary>
     /// <param name="definition">The definition that raised the event.</param>
     public delegate void DefinitionEventHandler(DefinitionBase definition);

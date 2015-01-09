@@ -339,6 +339,9 @@
     <Compile Include="Size3.cs" />
     <Compile Include="Size3F.cs" />
     <Compile Include="TaskUtil.cs" />
+    <Compile Include="TweeningInterpolationRegistry.cs" />
+    <Compile Include="UI\Presentation\Animations\Clock.cs" />
+    <Compile Include="UI\Presentation\Animations\AnimationClock.cs" />
     <Compile Include="UI\Presentation\Elements\NumericLabel.cs" />
     <Compile Include="UI\Presentation\Elements\VScrollBar.cs" />
     <Compile Include="UI\Presentation\Elements\HScrollBar.cs" />
@@ -411,7 +414,7 @@
     <Compile Include="UI\Presentation\Animations\SingleAnimation.cs" />
     <Compile Include="UI\Presentation\Animations\Storyboard.cs" />
     <Compile Include="UI\Presentation\Animations\StoryboardClock.cs" />
-    <Compile Include="UI\Presentation\Animations\StoryboardClockState.cs" />
+    <Compile Include="UI\Presentation\Animations\ClockState.cs" />
     <Compile Include="UI\Presentation\Animations\StoryboardTarget.cs" />
     <Compile Include="UI\Presentation\Animations\StoryboardTargetAnimationCollection.cs" />
     <Compile Include="UI\Presentation\Animations\StoryboardTargetAnimationCollection.IEnumerable.cs" />

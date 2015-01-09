@@ -37,7 +37,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             }
 
             /// <inheritdoc/>
-            public void Animate(AnimationBase animation, StoryboardClock clock)
+            public void Animate(AnimationBase animation, Clock clock)
             {
                 Contract.Require(animation, "animation");
                 Contract.Require(clock, "clock");
@@ -49,10 +49,34 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
                 ClearAnimation();
 
-                this.animation               = (Animation<T>)animation;
-                this.animationClock          = clock;
-                this.animatedValue           = GetValueInternal(false);
-                this.animatedHandOffValue    = oldValue;
+                this.animation            = (Animation<T>)animation;
+                this.animationClock       = clock;
+                this.animatedValue        = GetValueInternal(false);
+                this.animatedHandOffValue = oldValue;
+
+                this.animationClock.Subscribe(this);
+
+                UpdateRequiresDigest(oldValue);
+            }
+
+            /// <summary>
+            /// Explicitly animates the dependency value.
+            /// </summary>
+            /// <param name="value">The target value.</param>
+            /// <param name="clock">The clock which drives the animation.</param>
+            public void Animate(T value, Clock clock)
+            {
+                Contract.Require(clock, "clock");
+
+                var oldValue = GetValue();
+
+                ClearAnimation();
+
+                this.animation            = null;
+                this.animationClock       = clock;
+                this.animatedValue        = GetValueInternal(false);
+                this.animatedTargetValue  = value;
+                this.animatedHandOffValue = oldValue;
 
                 this.animationClock.Subscribe(this);
 
@@ -93,7 +117,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 var value   = default(T);
                 var changed = false;
 
-                if (animation != null)
+                if (IsAnimated)
                 {
                     UpdateAnimation(time);
                 }
@@ -271,7 +295,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             /// <inheritdoc/>
             public Boolean IsAnimated
             {
-                get { return animation != null; }
+                get { return animationClock != null; }
             }
 
             /// <inheritdoc/>
@@ -287,25 +311,25 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             }
 
             /// <inheritdoc/>
-            void IDependencyPropertyValue.StoryboardClockStarted()
+            void IDependencyPropertyValue.ClockStarted()
             {
 
             }
 
             /// <inheritdoc/>
-            void IDependencyPropertyValue.StoryboardClockStopped()
+            void IDependencyPropertyValue.ClockStopped()
             {
                 ClearAnimation();
             }
 
             /// <inheritdoc/>
-            void IDependencyPropertyValue.StoryboardClockPaused()
+            void IDependencyPropertyValue.ClockPaused()
             {
 
             }
 
             /// <inheritdoc/>
-            void IDependencyPropertyValue.StoryboardClockResumed()
+            void IDependencyPropertyValue.ClockResumed()
             {
 
             }
@@ -391,12 +415,28 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                     cachedBoundValue = valueInstance;
                 }
             }
-
+            
             /// <summary>
             /// Updates the value's animation state.
             /// </summary>
             /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Update(UltravioletTime)"/>.</param>
             private void UpdateAnimation(UltravioletTime time)
+            {
+                if (animation != null)
+                {
+                    UpdateStoryboardAnimation(time);
+                }
+                else
+                {
+                    UpdateExplicitAnimation(time);
+                }
+            }
+
+            /// <summary>
+            /// Updates the value's animation state when using a storyboard animation.
+            /// </summary>
+            /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Update(UltravioletTime)"/>.</param>
+            private void UpdateStoryboardAnimation(UltravioletTime time)
             {
                 // If our animation has become invalid since it was applied, remove it.
                 if (animation.Target == null || animation.Target.Storyboard == null || animation.Keyframes.Count == 0)
@@ -444,6 +484,20 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                     var factor = (float)((animationClock.ElapsedTime.TotalMilliseconds - time1) / duration);
                     animatedValue = animation.InterpolateValues(value1, value2, easing, factor);
                 }
+            }
+
+            /// <summary>
+            /// Updates the value's animation state when using an explicit animation.
+            /// </summary>
+            /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Update(UltravioletTime)"/>.</param>
+            private void UpdateExplicitAnimation(UltravioletTime time)
+            {
+                var factor            = (Single)(animationClock.ElapsedTime.TotalMilliseconds / animationClock.Duration.TotalMilliseconds);
+                var valueStart        = animatedHandOffValue;
+                var valueEnd          = animatedTargetValue;
+                var valueInterpolated = Tweening.Tween(valueStart, valueEnd, Easings.EaseInLinear, factor);
+                
+                animatedValue = valueInterpolated;
             }
 
             /// <summary>
@@ -495,9 +549,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             private IDependencyBoundValue<T> cachedBoundValue;
 
             // Animation state.
-            private StoryboardClock animationClock;
+            private Clock animationClock;
             private Animation<T> animation;
             private T animatedValue;
+            private T animatedTargetValue;
             private T animatedHandOffValue;
         }
     }
