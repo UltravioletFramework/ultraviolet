@@ -438,7 +438,7 @@ namespace TwistedLogik.Ultraviolet
             var interpolator = Interpolators.Get<T>();
             if (interpolator == null)
             {
-                ((IInterpolatable<T>)tweenStart).Interpolate(tweenEnd, (fn ?? Easings.EaseInLinear)(t));
+                return ((IInterpolatable<T>)tweenStart).Interpolate(tweenEnd, (fn ?? Easings.EaseInLinear)(t));
             }
             return interpolator(tweenStart, tweenEnd, fn, t);
         }
@@ -456,7 +456,7 @@ namespace TwistedLogik.Ultraviolet
             var interpolator = Interpolators.Get<T>();
             if (interpolator == null)
             {
-                ((IInterpolatable<T>)lerpStart).Interpolate(lerpEnd, t);
+                return ((IInterpolatable<T>)lerpStart).Interpolate(lerpEnd, t);
             }
             return interpolator(lerpStart, lerpEnd, Easings.EaseInLinear, t);
         }
@@ -475,7 +475,7 @@ namespace TwistedLogik.Ultraviolet
             var interpolator = Interpolators.Get<T>();
             if (interpolator == null)
             {
-                ((IInterpolatable<T>)tweenStart).Interpolate(tweenEnd, (fn ?? Easings.EaseInLinear)(t));
+                return ((IInterpolatable<T>)tweenStart).Interpolate(tweenEnd, (fn ?? Easings.EaseInLinear)(t));
             }
             return interpolator(tweenStart, tweenEnd, fn, t);
         }
@@ -493,7 +493,7 @@ namespace TwistedLogik.Ultraviolet
             var interpolator = Interpolators.Get<T>();
             if (interpolator == null)
             {
-                ((IInterpolatable<T>)lerpStart).Interpolate(lerpEnd, t);
+                return ((IInterpolatable<T>)lerpStart).Interpolate(lerpEnd, t);
             }
             return interpolator(lerpStart, lerpEnd, Easings.EaseInLinear, t);
         }
