@@ -12,10 +12,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Initializes a new instance of the <see cref="BindingExpressionBuilder"/> class.
         /// </summary>
-        /// <param name="viewModelType">The type of view model to which the value is being bound.</param>
-        protected BindingExpressionBuilder(Type viewModelType)
+        /// <param name="dataSourceType">The type of the data source to which the value is being bound.</param>
+        protected BindingExpressionBuilder(Type dataSourceType)
         {
-            this.viewModelType = viewModelType;
+            this.dataSourceType = dataSourceType;
         }
 
         /// <summary>
@@ -118,8 +118,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         // State values.
-        protected readonly Type viewModelType;
-        protected readonly List<Expression> expressions         = new List<Expression>();
+        protected readonly Type dataSourceType;
+        protected readonly List<Expression> expressions = new List<Expression>();
         protected readonly List<ParameterExpression> variables  = new List<ParameterExpression>();
         protected readonly List<ParameterExpression> parameters = new List<ParameterExpression>();
         private LabelTarget exitTarget;

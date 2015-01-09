@@ -93,19 +93,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         /// <param name="control">The instance of <see cref="Control"/> for which to load a component root.</param>
         /// <param name="template">The component template that specified the control's component layout.</param>
-        /// <param name="viewModelType">The type of view model to which the user control will be bound.</param>
-        /// <param name="bindingContext">The binding context for the user control, if any.</param>
-        public static void LoadComponentRoot(Control control, XDocument template, Type viewModelType, String bindingContext = null)
+        public static void LoadComponentRoot(Control control, XDocument template)
         {
-            if (bindingContext != null && !BindingExpressions.IsBindingExpression(bindingContext))
-                throw new ArgumentException(UltravioletStrings.InvalidBindingContext.Format(bindingContext));
-
             var rootElement = template.Root.Elements().SingleOrDefault();
             if (rootElement == null)
                 return;
 
             var uv      = control.Ultraviolet;
-            var context = new InstantiationContext(viewModelType, control, bindingContext);
+            var context = new InstantiationContext(null, control, null);
             var root    = (Container)InstantiateAndPopulateElement(uv, null, rootElement, context);
 
             control.ComponentRoot = root;
@@ -383,7 +378,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 Delegate lambda;
                 if (context.ComponentOwner != null)
                 {
-                    lambda = BindingExpressions.CreateElementBoundEventDelegate(context.ComponentOwner, context.ViewModelType, 
+                    lambda = BindingExpressions.CreateElementBoundEventDelegate(context.ComponentOwner, 
                         attrEvent.EventHandlerType, attr.Value);
                 }
                 else
@@ -753,10 +748,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (context.ViewModelType == null)
                 throw new InvalidOperationException(UltravioletStrings.NoViewModel);
 
-            var expressionType = dprop.PropertyType;
-            var expressionFull = BindingExpressions.Combine(context.BindingContext, expression);
+            if (context.ComponentOwner == null)
+            {
+                var expressionType = dprop.PropertyType;
+                var expressionFull = BindingExpressions.Combine(context.BindingContext, expression);
 
-            miBindValue.Invoke(dobj, new Object[] { dprop, context.ViewModelType, expressionFull });
+                miBindValue.Invoke(dobj, new Object[] { dprop, context.ViewModelType, expressionFull });
+            }
+            else
+            {
+                miBindValue.Invoke(dobj, new Object[] { dprop, context.ComponentOwner.GetType(), expression });
+            }
         }
 
         /// <summary>

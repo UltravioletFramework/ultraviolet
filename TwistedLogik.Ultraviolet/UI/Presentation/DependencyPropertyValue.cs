@@ -60,15 +60,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             }
 
             /// <inheritdoc/>
-            public void Bind(Type viewModelType, String expression)
+            public void Bind(Type dataSourceType, String expression)
             {
-                Contract.Require(viewModelType, "viewModelType");
+                Contract.Require(dataSourceType, "dataSourceType");
                 Contract.RequireNotEmpty(expression, "expression");
 
                 var oldValue = GetValue();
 
                 bound = true;
-                CreateCachedBoundValue(viewModelType, expression);
+                CreateCachedBoundValue(dataSourceType, expression);
 
                 UpdateRequiresDigest(oldValue);
             }
@@ -371,22 +371,22 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             /// <summary>
             /// Creates the dependency property's cached bound value object.
             /// </summary>
-            /// <param name="viewModelType">The type of view model to which the dependency property is bound.</param>
+            /// <param name="dataSourceType">The type of the data source to which the dependency property is bound.</param>
             /// <param name="expression">The dependency property's binding expression.</param>
-            private void CreateCachedBoundValue(Type viewModelType, String expression)
+            private void CreateCachedBoundValue(Type dataSourceType, String expression)
             {
-                var expressionType = BindingExpressions.GetExpressionType(viewModelType, expression);
+                var expressionType = BindingExpressions.GetExpressionType(dataSourceType, expression);
                 if (expressionType != null && TypesRequireSpecialConversion(expressionType, typeof(T)))
                 {                
                     var valueType       = typeof(DependencyBoundValueConverting<,>).MakeGenericType(typeof(T), expressionType);
-                    var valueInstance   = (IDependencyBoundValue<T>)Activator.CreateInstance(valueType, this, expressionType, viewModelType, expression);
+                    var valueInstance   = (IDependencyBoundValue<T>)Activator.CreateInstance(valueType, this, expressionType, dataSourceType, expression);
 
                     cachedBoundValue = valueInstance;
                 }
                 else
                 {
                     var valueType       = typeof(DependencyBoundValueNonConverting<>).MakeGenericType(typeof(T));
-                    var valueInstance   = (IDependencyBoundValue<T>)Activator.CreateInstance(valueType, this, typeof(T), viewModelType, expression);
+                    var valueInstance   = (IDependencyBoundValue<T>)Activator.CreateInstance(valueType, this, typeof(T), dataSourceType, expression);
 
                     cachedBoundValue = valueInstance;
                 }

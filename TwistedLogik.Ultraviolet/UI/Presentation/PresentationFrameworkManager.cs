@@ -61,16 +61,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (!IsElementRegistered(name, out registration))
                 return null;
 
-            var ctor = 
-                registration.Type.GetConstructor(new[] { typeof(UltravioletContext), typeof(String), typeof(Type), typeof(String) }) ??
-                registration.Type.GetConstructor(new[] { typeof(UltravioletContext), typeof(String) });
-
+            var ctor = registration.Type.GetConstructor(new[] { typeof(UltravioletContext), typeof(String) });
             if (ctor == null)
-                throw new InvalidOperationException(UltravioletStrings.NoValidConstructor.Format(registration.GetType()));
+                throw new InvalidOperationException(UltravioletStrings.NoValidConstructor.Format(registration.Type));
 
-            var instance = ctor.GetParameters().Length == 4 ? 
-                (UIElement)ctor.Invoke(new Object[] { Ultraviolet, id, viewModelType, bindingContext }) :
-                (UIElement)ctor.Invoke(new Object[] { Ultraviolet, id });
+            var instance = (UIElement)ctor.Invoke(new Object[] { Ultraviolet, id });
 
             if (registration.Layout != null)
             {

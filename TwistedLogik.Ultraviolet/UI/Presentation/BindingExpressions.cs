@@ -144,17 +144,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Gets the type of the specified binding expression.
         /// </summary>
-        /// <param name="viewModelType">The type of view model to evaluate.</param>
+        /// <param name="dataSourceType">The type of the data source to evaluate.</param>
         /// <param name="expression">The binding expression to evaluate.</param>
         /// <param name="braces">A value indicating whether the binding expression includes its enclosing braces.</param>
         /// <returns>The type of the binding expression.</returns>
-        public static Type GetExpressionType(Type viewModelType, String expression, Boolean braces = true)
+        public static Type GetExpressionType(Type dataSourceType, String expression, Boolean braces = true)
         {
             var components = ParseBindingExpression(expression);
-            var currentType = viewModelType;
+            var currentType = dataSourceType;
             foreach (var component in components)
             {
-                var members = currentType.GetMember(component);
+                var members = currentType.GetMember(component, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
                 if (members == null || !members.Any())
                     return null;
 
@@ -171,18 +171,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Creates an event handler which is bound to a method on a view model.
         /// </summary>
         /// <param name="uiElement">The interface element to which the event will be bound.</param>
-        /// <param name="viewModelType">The type of the view model which is being bound.</param>
+        /// <param name="dataSourceType">The type of the data source to which the expression is being being bound.</param>
         /// <param name="delegateType">The type of the event handler which is being bound.</param>
         /// <param name="expression">The binding expression that represents the method to bind to the event.</param>
         /// <returns>A <see cref="Delegate"/> which represents the bound event handler.</returns>
-        public static Delegate CreateViewModelBoundEventDelegate(UIElement uiElement, Type viewModelType, Type delegateType, String expression)
+        public static Delegate CreateViewModelBoundEventDelegate(UIElement uiElement, Type dataSourceType, Type delegateType, String expression)
         {
             Contract.Require(uiElement, "uiElement");
-            Contract.Require(viewModelType, "viewModelType");
+            Contract.Require(dataSourceType, "dataSourceType");
             Contract.Require(delegateType, "delegateType");
             Contract.RequireNotEmpty(expression, "expression");
 
-            var builder = new BoundEventBuilder(uiElement, viewModelType, delegateType, expression, false);
+            var builder = new BoundEventBuilder(uiElement, dataSourceType, delegateType, expression, false);
             return builder.Compile();
         }
 
@@ -190,17 +190,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Creates an event handler which is bound to a method on an element.
         /// </summary>
         /// <param name="uiElement">The element to which the event will be bound.</param>
-        /// <param name="viewModelType">The type of the view model which is being bound.</param>
         /// <param name="delegateType">The type of the event handler which is being bound.</param>
         /// <param name="expression">The binding expression that represents the method to bind to the event.</param>
         /// <returns>A <see cref="Delegate"/> which represents the bound event handler.</returns>
-        public static Delegate CreateElementBoundEventDelegate(UIElement uiElement, Type viewModelType, Type delegateType, String expression)
+        public static Delegate CreateElementBoundEventDelegate(UIElement uiElement, Type delegateType, String expression)
         {
             Contract.Require(uiElement, "uiElement");
             Contract.Require(delegateType, "delegateType");
             Contract.RequireNotEmpty(expression, "expression");
 
-            var builder = new BoundEventBuilder(uiElement, viewModelType, delegateType, expression, true);
+            var builder = new BoundEventBuilder(uiElement, uiElement.GetType(), delegateType, expression, true);
             return builder.Compile();
         }
 
@@ -208,16 +207,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Creates a getter for the specified binding expression.
         /// </summary>
         /// <param name="boundType">The type of value to which the expression is being bound.</param>
-        /// <param name="viewModelType">The type of view model to which the expression is being bound.</param>
+        /// <param name="dataSourceType">The type of the data source to which the expression is being bound.</param>
         /// <param name="expression">The binding expression with which to bind the dependency property.</param>
         /// <returns>A <see cref="Delegate"/> that represents the specified model and expression.</returns>
-        public static Delegate CreateBindingGetter(Type boundType, Type viewModelType, String expression)
+        public static Delegate CreateBindingGetter(Type boundType, Type dataSourceType, String expression)
         {
             Contract.Require(boundType, "boundType");
-            Contract.Require(viewModelType, "viewModelType");
+            Contract.Require(dataSourceType, "dataSourceType");
             Contract.RequireNotEmpty(expression, "expression");
 
-            var builder = new DataBindingGetterBuilder(boundType, viewModelType, expression);
+            var builder = new DataBindingGetterBuilder(boundType, dataSourceType, expression);
             return builder.Compile();
         }
 
@@ -225,16 +224,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Creates a setter for the specified binding expression.
         /// </summary>
         /// <param name="boundType">The type of value to which the expression is being bound.</param>
-        /// <param name="viewModelType">The type of view model to which the expression is being bound.</param>
+        /// <param name="dataSourceType">The type of the data source to which the expression is being bound.</param>
         /// <param name="expression">The binding expression with which to bind the dependency property.</param>
         /// <returns>A <see cref="Delegate"/> that represents the specified model and expression.</returns>
-        public static Delegate CreateBindingSetter(Type boundType, Type viewModelType, String expression)
+        public static Delegate CreateBindingSetter(Type boundType, Type dataSourceType, String expression)
         {
             Contract.Require(boundType, "boundType");
-            Contract.Require(viewModelType, "viewModelType");
+            Contract.Require(dataSourceType, "dataSourceType");
             Contract.RequireNotEmpty(expression, "expression");
 
-            var builder = new DataBindingSetterBuilder(boundType, viewModelType, expression);
+            var builder = new DataBindingSetterBuilder(boundType, dataSourceType, expression);
             return builder.Compile();
         }
 

@@ -14,10 +14,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Initializes a new instance of the <see cref="DataBindingSetterBuilder"/> class.
         /// </summary>
         /// <param name="expressionType">The type of the bound expression.</param>
-        /// <param name="viewModelType">The type of view model to which the value is being bound.</param>
+        /// <param name="dataSourceType">The type of the data source to which the value is being bound.</param>
         /// <param name="expression">The binding expression with which to bind the dependency property.</param>
-        public DataBindingSetterBuilder(Type expressionType, Type viewModelType, String expression)
-            : base(viewModelType)
+        public DataBindingSetterBuilder(Type expressionType, Type dataSourceType, String expression)
+            : base(dataSourceType)
         {
             this.boundType    = expressionType;
             this.delegateType = typeof(DataBindingSetter<>).MakeGenericType(expressionType);
@@ -76,10 +76,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var dataSourceParam = Expression.Parameter(typeof(Object), "dataSource");
             parameters.Add(dataSourceParam);
 
-            var variable = Expression.Variable(viewModelType, "var0");
+            var variable = Expression.Variable(dataSourceType, "var0");
             variables.Add(variable);
 
-            var assignment = Expression.Assign(variable, Expression.Convert(dataSourceParam, viewModelType));
+            var assignment = Expression.Assign(variable, Expression.Convert(dataSourceParam, dataSourceType));
             expressions.Add(assignment);
 
             AddNullCheck(dataSourceParam);

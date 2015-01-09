@@ -23,11 +23,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <summary>
         /// Initializes a new instance of the <see cref="Grid"/> class.
         /// </summary>
-        /// <param name="uv"></param>
-        /// <param name="id"></param>
-        /// <param name="viewModelType"></param>
-        /// <param name="bindingContext"></param>
-        public Grid(UltravioletContext uv, String id, Type viewModelType, String bindingContext = null)
+        /// <param name="uv">The Ultraviolet context.</param>
+        /// <param name="id">The element's unique identifier within its view.</param>
+        public Grid(UltravioletContext uv, String id)
             : base(uv, id)
         {
             SetDefaultValue<Color>(BackgroundColorProperty, Color.Transparent);
@@ -35,8 +33,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             this.rowDefinitions    = new RowDefinitionCollection(this);
             this.columnDefinitions = new ColumnDefinitionCollection(this);
 
-            if (ComponentTemplate != null)
-                LoadComponentRoot(ComponentTemplate, viewModelType, bindingContext);
+            LoadComponentRoot(ComponentTemplate);
         }
 
         /// <summary>

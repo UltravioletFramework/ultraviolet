@@ -243,14 +243,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// Loads the control's component root from the specified template.
         /// </summary>
         /// <param name="template">The template from which to load the component root.</param>
-        /// <param name="viewModelType">The type of view model to which the element will be bound.</param>
-        /// <param name="bindingContext">The binding context to apply to the element which is instantiated.</param>
-        protected void LoadComponentRoot(XDocument template, Type viewModelType, String bindingContext = null)
+        protected void LoadComponentRoot(XDocument template)
         {
             if (componentRoot != null)
                 throw new InvalidOperationException(UltravioletStrings.ComponentRootAlreadyLoaded);
 
-            UvmlLoader.LoadComponentRoot(this, template, viewModelType, bindingContext);
+            if (template == null)
+                return;
+
+            UvmlLoader.LoadComponentRoot(this, template);
         }
 
         /// <summary>

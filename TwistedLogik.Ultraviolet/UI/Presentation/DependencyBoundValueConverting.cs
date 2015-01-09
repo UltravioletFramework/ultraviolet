@@ -16,10 +16,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         /// <param name="value">The dependency property value which created this object.</param>
         /// <param name="expressionType">The type of the bound expression.</param>
-        /// <param name="viewModelType">The type of the view model.</param>
+        /// <param name="dataSourceType">The type of the data source.</param>
         /// <param name="expression">The binding expression.</param>
-        public DependencyBoundValueConverting(IDependencyPropertyValue value, Type expressionType, Type viewModelType, String expression)
-            : base(value, expressionType, viewModelType, expression)
+        public DependencyBoundValueConverting(IDependencyPropertyValue value, Type expressionType, Type dataSourceType, String expression)
+            : base(value, expressionType, dataSourceType, expression)
         {
             this.formatString = BindingExpressions.GetBindingFormatStringPart(expression);
         }

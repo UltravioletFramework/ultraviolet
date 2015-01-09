@@ -60,14 +60,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Binds a dependency property to a property on a model.
         /// </summary>
         /// <param name="dp">A <see cref="DependencyProperty"/> instance which identifies the dependency property to bind.</param>
-        /// <param name="viewModelType">The type of view model to which to bind the property.</param>
+        /// <param name="dataSourceType">The type of the data source to which to bind the property.</param>
         /// <param name="expression">The binding expression with which to bind the property.</param>
-        public void BindValue(DependencyProperty dp, Type viewModelType, String expression)
+        public void BindValue(DependencyProperty dp, Type dataSourceType, String expression)
         {
             Contract.Require(dp, "dp");
 
             var wrapper = GetDependencyPropertyValue(dp, dp.PropertyType);
-            wrapper.Bind(viewModelType, expression);
+            wrapper.Bind(dataSourceType, expression);
         }
 
         /// <summary>

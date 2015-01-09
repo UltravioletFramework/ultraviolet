@@ -24,9 +24,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Binds the dependency property.
         /// </summary>
-        /// <param name="viewModelType">The type of view model to which to bind the dependency property.</param>
+        /// <param name="dataSourceType">The type of the data source to which to bind the dependency property.</param>
         /// <param name="expression">The binding expression with which to bind the dependency property.</param>
-        void Bind(Type viewModelType, String expression);
+        void Bind(Type dataSourceType, String expression);
 
         /// <summary>
         /// Removes the dependency property's two-way binding.

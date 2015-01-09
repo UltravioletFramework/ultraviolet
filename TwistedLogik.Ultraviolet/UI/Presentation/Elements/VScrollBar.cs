@@ -24,13 +24,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
         /// <param name="id">The element's unique identifier within its view.</param>
-        /// <param name="viewModelType">The type of view model to which the element will be bound.</param>
-        /// <param name="bindingContext">The binding context to apply to the element which is instantiated.</param>
-        public VScrollBar(UltravioletContext uv, String id, Type viewModelType, String bindingContext = null)
+        public VScrollBar(UltravioletContext uv, String id)
             : base(uv, id)
         {
-            if (ComponentTemplate != null)
-                LoadComponentRoot(ComponentTemplate, viewModelType, bindingContext);
+            LoadComponentRoot(ComponentTemplate);
         }
 
         /// <summary>

@@ -13,13 +13,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         /// <param name="value">The dependency property value which created this object.</param>
         /// <param name="expressionType">The type of the bound expression.</param>
-        /// <param name="viewModelType">The type of the view model.</param>
+        /// <param name="dataSourceType">The type of the data source.</param>
         /// <param name="expression">The binding expression.</param>
-        public DependencyBoundValue(IDependencyPropertyValue value, Type expressionType, Type viewModelType, String expression)
+        public DependencyBoundValue(IDependencyPropertyValue value, Type expressionType, Type dataSourceType, String expression)
         {
             this.dependencyValue = value;
-            this.getter          = (DataBindingGetter<T>)BindingExpressions.CreateBindingGetter(expressionType, viewModelType, expression);
-            this.setter          = (DataBindingSetter<T>)BindingExpressions.CreateBindingSetter(expressionType, viewModelType, expression);
+            this.getter          = (DataBindingGetter<T>)BindingExpressions.CreateBindingGetter(expressionType, dataSourceType, expression);
+            this.setter          = (DataBindingSetter<T>)BindingExpressions.CreateBindingSetter(expressionType, dataSourceType, expression);
             this.comparer        = (DataBindingComparer<T>)BindingExpressions.GetComparisonFunction(expressionType);
             this.forceUpdate     = true;
         }

@@ -26,7 +26,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             this.viewModelType = viewModelType;
 
-            this.grid = new Grid(uv, null, viewModelType);
+            this.grid = new Grid(uv, null);
             this.grid.UpdateView(this);
 
             HookKeyboardEvents();

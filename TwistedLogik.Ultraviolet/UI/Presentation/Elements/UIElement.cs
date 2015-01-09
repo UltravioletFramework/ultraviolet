@@ -1683,7 +1683,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// </summary>
         protected internal sealed override Object DependencyDataSource
         {
-            get { return ViewModel; }
+            get { return Control ?? ViewModel; }
         }
 
         /// <summary>

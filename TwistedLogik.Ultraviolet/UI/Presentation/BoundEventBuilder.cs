@@ -15,11 +15,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         /// <param name="uiElement">The interface element which provides the event's data source, if any.</param>
         /// <param name="delegateType">The type of delegate that will be created to bind to the event.</param>
-        /// <param name="viewModelType">The type of view model that is referenced by the current view.</param>
+        /// <param name="dataSourceType">The type of the data source to which the expression is being bound.</param>
         /// <param name="expression">The binding expression that represents the method to bind to the event.</param>
         /// <param name="bindToElement">A value indicating whether to bind events to the element object, rather than the view model.</param>
-        public BoundEventBuilder(UIElement uiElement, Type viewModelType, Type delegateType, String expression, Boolean bindToElement)
-            : base(viewModelType)
+        public BoundEventBuilder(UIElement uiElement, Type dataSourceType, Type delegateType, String expression, Boolean bindToElement)
+            : base(dataSourceType)
         {
             CreateParameters(delegateType);
             CreateReturnTarget();
@@ -109,7 +109,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             AddNullCheck(elementVariable);
 
             var refView      = AddSafeReference(expression, elementVariable, "View");
-            var refViewModel = AddSafeReference(expression, refView, "ViewModel", viewModelType);
+            var refViewModel = AddSafeReference(expression, refView, "ViewModel", dataSourceType);
 
             return refViewModel;
         }
