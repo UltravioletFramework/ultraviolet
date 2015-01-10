@@ -189,6 +189,10 @@ namespace TwistedLogik.Ultraviolet.UI
         /// <inheritdoc/>
         internal override void HandleClosed()
         {
+            if (View != null)
+            {
+                View.Cleanup();
+            }
             Blur();
             base.HandleClosed();
         }
@@ -201,6 +205,16 @@ namespace TwistedLogik.Ultraviolet.UI
                 View.SetContentManagers(GlobalContent, LocalContent);
             }
             base.HandleViewLoaded();
+        }
+
+        /// <inheritdoc/>
+        protected override void Dispose(Boolean disposing)
+        {
+            if (View != null)
+            {
+                View.Cleanup();
+            }
+            base.Dispose(disposing);
         }
 
         // Property values.

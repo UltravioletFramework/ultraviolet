@@ -1,4 +1,5 @@
 ﻿using System;
+using TwistedLogik.Nucleus.Collections;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
 {
@@ -18,6 +19,20 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
             this.duration = duration;
         }
 
+        /// <summary>
+        /// Finalizes the object.
+        /// </summary>
+        ~SimpleClock()
+        {
+            var pool = poolref.Target as IPool<SimpleClock>;
+            if (pool != null)
+            {
+                HandleReleased();
+                pool.Release(this);
+                GC.ReRegisterForFinalize(this);
+            }
+        }
+
         /// <inheritdoc/>
         public override LoopBehavior LoopBehavior
         {
@@ -35,11 +50,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
         /// </summary>
         /// <param name="loopBehavior">A <see cref="LoopBehavior"/> value specifying the clock's loop behavior.</param>
         /// <param name="duration">The clock's duration.</param>
-        internal void HandleRetrieved(LoopBehavior loopBehavior, TimeSpan duration)
+        internal void HandleRetrieved(IPool<SimpleClock> pool, LoopBehavior loopBehavior, TimeSpan duration)
         {
-            this.loopBehavior = loopBehavior;
-            this.duration     = duration;
-            this.pooled       = true;
+            this.loopBehavior   = loopBehavior;
+            this.duration       = duration;
+            this.pooled         = true;
+            this.poolref.Target = pool;
         }
 
         /// <summary>
@@ -47,13 +63,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
         /// </summary>
         internal void HandleReleased()
         {
-
+            this.pooled         = false;
+            this.poolref.Target = null;
         }
 
         /// <summary>
         /// Gets a value indicating whhether the clock was retrieved from the clock pool.
         /// </summary>
-        internal Boolean Pooled
+        internal Boolean IsPooled
         {
             get { return pooled; }
         }
@@ -68,5 +85,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
         private LoopBehavior loopBehavior;
         private TimeSpan duration;
         private Boolean pooled;
+        private readonly WeakReference poolref = new WeakReference(null);
     }
 }

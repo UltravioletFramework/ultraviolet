@@ -535,7 +535,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 if (simpleClock == null)
                     return;
 
-                if (simpleClock.Pooled)
+                if (simpleClock.IsPooled)
                 {
                     SimpleClockPool.Instance.Release(simpleClock);
                     animationClock = null;

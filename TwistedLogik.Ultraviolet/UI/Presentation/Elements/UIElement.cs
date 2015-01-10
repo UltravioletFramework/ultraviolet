@@ -169,15 +169,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         public static Boolean ElementIsVisibleToInput(UIElement element, Boolean hitTest)
         {
             return (element.Visibility == Visibility.Visible && element.Enabled && (!hitTest || element.HitTestVisible));
-        }  
+        }
 
         /// <summary>
-        /// Releases resources associated with the object.
+        /// Cleans up the element and its descendants.
         /// </summary>
-        public void Dispose()
+        /// <remarks>The <see cref="Cleanup()"/> method releases any internal resources which the element
+        /// and its descendants may be holding, allowing them to be reused by the Presentation Framework.
+        /// The object remains usable after a call to this method, but certain state values (such as
+        /// animations, dependency property values, etc.) may be reset.</remarks>
+        public void Cleanup()
         {
-            Dispose(true);
-            GC.SuppressFinalize(this);
+            ClearAnimationsRecursive();
         }
 
         /// <summary>

@@ -28,7 +28,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
         public SimpleClock Retrieve(LoopBehavior loopBehavior, TimeSpan duration)
         {
             var clock = pool.Retrieve();
-            clock.HandleRetrieved(loopBehavior, duration);
+            clock.HandleRetrieved(pool, loopBehavior, duration);
             activeClocks.AddLast(clock);
             return clock;
         }
