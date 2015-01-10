@@ -77,6 +77,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
         /// </summary>
         public void Start()
         {
+            if (this.state != ClockState.Stopped)
+                Stop();
+
             this.state   = ClockState.Playing;
             this.elapsed = 0;
 

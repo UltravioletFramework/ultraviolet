@@ -2697,10 +2697,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <param name="clock">The storyboard clock that was retrieved from the pool.</param>
         private static void RetrieveStoryboardClock(Storyboard storyboard, out StoryboardClock clock)
         {
-            lock (storyboardClockPool)
-            {
-                clock = storyboardClockPool.Retrieve();
-            }
+            clock = storyboardClockPool.Retrieve();
             clock.Storyboard = storyboard;
         }
 
@@ -2712,10 +2709,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         {
             Contract.Require(clock, "clock");
 
-            lock (storyboardClockPool)
-            {
-                storyboardClockPool.Release(clock);
-            }
+            storyboardClockPool.Release(clock);
         }
 
         /// <summary>

@@ -341,7 +341,8 @@
     <Compile Include="TaskUtil.cs" />
     <Compile Include="TweeningInterpolationRegistry.cs" />
     <Compile Include="UI\Presentation\Animations\Clock.cs" />
-    <Compile Include="UI\Presentation\Animations\AnimationClock.cs" />
+    <Compile Include="UI\Presentation\Animations\SimpleClock.cs" />
+    <Compile Include="UI\Presentation\Animations\SimpleClockPool.cs" />
     <Compile Include="UI\Presentation\Elements\NumericLabel.cs" />
     <Compile Include="UI\Presentation\Elements\VScrollBar.cs" />
     <Compile Include="UI\Presentation\Elements\HScrollBar.cs" />
