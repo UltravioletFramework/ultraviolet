@@ -23,6 +23,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Clears the animations on all of the object's dependency properties.
+        /// </summary>
+        public void ClearAnimations()
+        {
+            foreach (var kvp in dependencyPropertyValues)
+            {
+                kvp.Value.ClearAnimation();
+            }
+        }
+
+        /// <summary>
         /// Clears the local values on all of the object's dependency properties.
         /// </summary>
         public void ClearLocalValues()

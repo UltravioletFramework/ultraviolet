@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using TwistedLogik.Nucleus;
+using System.Reflection;
 
 namespace TwistedLogik.Ultraviolet
 {
@@ -21,15 +22,27 @@ namespace TwistedLogik.Ultraviolet
     public sealed class TweeningInterpolationRegistry
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="TweeningInterpolationRegistry"/> class.
+        /// </summary>
+        internal TweeningInterpolationRegistry()
+        {
+            miRegisterNullable = GetType().GetMethod("RegisterNullable", BindingFlags.NonPublic | BindingFlags.Instance);
+        }
+
+        /// <summary>
         /// Registers a custom interpolator function for the specified type.
         /// </summary>
         /// <typeparam name="T">The type of value for which to register a custom interpolator.</typeparam>
         /// <param name="interpolator">The custom interpolator function to register for the specified type.</param>
         public void Register<T>(Interpolator<T> interpolator)
         {
-            Contract.Require(interpolator, "interpolator");
-
             interpolators[typeof(T)] = interpolator;
+
+            if (typeof(T).IsValueType)
+            {
+                miRegisterNullable.MakeGenericMethod(typeof(T))
+                    .Invoke(this, new Object[] { interpolator });
+            }
         }
 
         /// <summary>
@@ -53,18 +66,49 @@ namespace TwistedLogik.Ultraviolet
         }
 
         /// <summary>
-        /// Gets the custom interpolation function for the specified type.
+        /// Attempts to retrieve the interpolator for the specified type.
         /// </summary>
-        /// <typeparam name="T">The type of value for which to retrieve a custom interpolation function.</typeparam>
-        /// <returns>The custom interpolation function for the specified type.</returns>
-        public Interpolator<T> Get<T>()
+        /// <typeparam name="T">The type of value for which to retrieve an interpolator.</typeparam>
+        /// <param name="interpolator">The interpolator for the specified type, if one exists.</param>
+        /// <returns><c>true</c> if an interpolator was registered for the specified type; otherwise, <c>false</c>.</returns>
+        public Boolean TryGet<T>(out Interpolator<T> interpolator)
         {
-            Object interpolator;
-            interpolators.TryGetValue(typeof(T), out interpolator);
-            return interpolator as Interpolator<T>;
+            Object interpolatorObj;
+            if (interpolators.TryGetValue(typeof(T), out interpolatorObj))
+            {
+                interpolator = (Interpolator<T>)interpolatorObj;
+                return true;
+            }
+            interpolator = null;
+            return false;
+        }
+
+        /// <summary>
+        /// Registers an interpolator for the nullable version of the specified type.
+        /// </summary>
+        /// <typeparam name="T">The type for which to register an interpolator.</typeparam>
+        /// <param name="interpolator">The interpolator for the non-nullable type.</param>
+        private void RegisterNullable<T>(Interpolator<T> interpolator) where T : struct
+        {
+            if (interpolator == null)
+            {
+                interpolators[typeof(T?)] = null;
+            }
+            else
+            {
+                var nullableInterpolator = new Interpolator<T?>((valueStart, valueEnd, fn, t) =>
+                {
+                    if (valueStart == null || valueEnd == null)
+                        return null;
+
+                    return interpolator(valueStart.GetValueOrDefault(), valueEnd.GetValueOrDefault(), fn, t);
+                });
+                interpolators[typeof(T?)] = nullableInterpolator;
+            }
         }
 
         // State values.
+        private readonly MethodInfo miRegisterNullable;
         private readonly Dictionary<Type, Object> interpolators = 
             new Dictionary<Type, Object>();
     }

@@ -305,8 +305,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <summary>
-        /// Recursively clears the local values of all of the container's dependency properties
-        /// and all of the dependency properties of the container's descendents.
+        /// Recursively clears the animations applied to all of the element's dependency properties
+        /// and all of the dependency properties of the element's descendents.
+        /// </summary>
+        public virtual void ClearAnimationsRecursive()
+        {
+            ClearAnimations();
+        }
+
+        /// <summary>
+        /// Recursively clears the local values of all of the element's dependency properties
+        /// and all of the dependency properties of the element's descendents.
         /// </summary>
         public virtual void ClearLocalValuesRecursive()
         {
@@ -314,8 +323,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <summary>
-        /// Recursively clears the styled values of all of the container's dependency properties
-        /// and all of the dependency properties of the container's descendents.
+        /// Recursively clears the styled values of all of the element's dependency properties
+        /// and all of the dependency properties of the element's descendents.
         /// </summary>
         public virtual void ClearStyledValuesRecursive()
         {
