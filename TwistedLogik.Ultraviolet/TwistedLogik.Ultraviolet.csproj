@@ -343,7 +343,9 @@
     <Compile Include="UI\Presentation\Animations\Clock.cs" />
     <Compile Include="UI\Presentation\Animations\SimpleClock.cs" />
     <Compile Include="UI\Presentation\Animations\SimpleClockPool.cs" />
+    <Compile Include="UI\Presentation\Elements\MeasureUtil.cs" />
     <Compile Include="UI\Presentation\Elements\NumericLabel.cs" />
+    <Compile Include="UI\Presentation\Elements\ScrollBarVisibility.cs" />
     <Compile Include="UI\Presentation\Elements\VScrollBar.cs" />
     <Compile Include="UI\Presentation\Elements\HScrollBar.cs" />
     <Compile Include="UI\Presentation\Elements\ClickMode.cs" />
@@ -375,6 +377,7 @@
     <Compile Include="UI\Presentation\GridLength.cs" />
     <Compile Include="UI\Presentation\GridUnitType.cs" />
     <Compile Include="UI\Presentation\IUltravioletDisplayExtensions.cs" />
+    <Compile Include="UI\Presentation\Elements\Pane.cs" />
     <Compile Include="UI\Presentation\Thickness.cs" />
     <Compile Include="Tweening.cs" />
     <Compile Include="UI\NamespaceDoc.cs" />

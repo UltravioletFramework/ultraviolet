@@ -129,6 +129,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             Contract.Require(content, "content");
 
             RequestLayout();
+
+            base.PerformPartialLayout(content);
         }
 
         /// <summary>
@@ -327,6 +329,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
                 }
 
                 child.ParentRelativeArea = new Rectangle(elementPosX, elementPosY, size.Width, size.Height);
+                UpdateContentElementPosition(child);
 
                 positionX += size.Width + (Int32)margin.Left + (Int32)margin.Right;
             }
@@ -378,6 +381,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
                 }
 
                 child.ParentRelativeArea = new Rectangle(elementPosX, elementPosY, size.Width, size.Height);
+                UpdateContentElementPosition(child);
 
                 positionY += size.Height + (Int32)margin.Top + (Int32)margin.Bottom;
             }

@@ -34,7 +34,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             if (Font == null || String.IsNullOrEmpty(Text))
                 return;
 
-            var settings = new TextLayoutSettings(Font, width ?? Int32.MaxValue, height ?? Int32.MaxValue, TextAlignment);
+            var availableWidth  = (Parent == null) ? Int32.MaxValue : Parent.ActualWidth;
+            var availableHeight = (Parent == null) ? Int32.MaxValue : Parent.ActualHeight;
+
+            var settings = new TextLayoutSettings(Font, width ?? availableWidth, height ?? availableHeight, TextAlignment);
             UIElementResources.TextRenderer.CalculateLayout(cachedParserResult, cachedLayoutResultTemp, settings);
 
             if (width == null)
@@ -118,6 +121,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         protected void UpdateCachedTextLayout()
         {
             cachedLayoutResult.Clear();
+
+            if (String.IsNullOrEmpty(Text))
+                return;
 
             if (cachedParserResult.Count > 0 && Font != null)
             {

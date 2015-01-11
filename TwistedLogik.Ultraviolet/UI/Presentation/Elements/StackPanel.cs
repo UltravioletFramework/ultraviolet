@@ -35,7 +35,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <inheritdoc/>
-        public sealed override void CalculateContentSize(ref Int32? width, ref Int32? height)
+        public override void CalculateContentSize(ref Int32? width, ref Int32? height)
         {
             contentSize = MeasureContentSize();
 
@@ -48,7 +48,25 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <inheritdoc/>
-        public sealed override void PerformContentLayout()
+        public override void RequestPartialLayout(UIElement content)
+        {
+            Contract.Require(content, "content");
+
+            RequestLayout();
+        }
+
+        /// <inheritdoc/>
+        public override void PerformPartialLayout(UIElement content)
+        {
+            Contract.Require(content, "content");
+
+            RequestLayout();
+
+            base.PerformPartialLayout(content);
+        }
+
+        /// <inheritdoc/>
+        public override void PerformContentLayout()
         {
             contentSize = MeasureContentSize();
 
@@ -61,14 +79,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
                 UpdateChildLayout(child, ref position, ref contentSize);
             }
             UpdateScissorRectangle();
-        }
-
-        /// <inheritdoc/>
-        public sealed override void PerformPartialLayout(UIElement content)
-        {
-            Contract.Require(content, "content");
-
-            RequestLayout();
         }
 
         /// <summary>
@@ -183,6 +193,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             }
 
             child.ParentRelativeArea = new Rectangle(relativeX, relativeY, relativeWidth, relativeHeight);
+            child.RequestLayout();
+            UpdateContentElementPosition(child);
 
             position = relativeY + child.ParentRelativeArea.Height + (Int32)margin.Bottom;
         }
@@ -223,6 +235,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             }
 
             child.ParentRelativeArea = new Rectangle(relativeX, relativeY, relativeWidth, relativeHeight);
+            UpdateContentElementPosition(child);
 
             position = relativeX + child.ParentRelativeArea.Width + (Int32)margin.Right;
         }

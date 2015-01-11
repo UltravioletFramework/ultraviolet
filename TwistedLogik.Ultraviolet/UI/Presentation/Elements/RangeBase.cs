@@ -58,16 +58,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             get
             {
                 var value = GetValue<Double>(ValueProperty);
-
-                if (value < Minimum)
-                    value = Minimum;
-
-                if (value > Maximum)
-                    value = Maximum;
-
-                return value;
+                return ClampValue(value);
             }
-            set { SetValue<Double>(ValueProperty, value); }
+            set 
+            {
+                var clamped = ClampValue(value);
+                SetValue<Double>(ValueProperty, clamped); 
+            }
         }
 
         /// <summary>
@@ -84,8 +81,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// </summary>
         public Double Maximum
         {
-            get { return GetValue<Double>(MaximumProperty); }
-            set { SetValue<Double>(MaximumProperty, value); }
+            get
+            {
+                var max = GetValue<Double>(MaximumProperty);
+                return ClampMaximum(max);
+            }
+            set
+            {
+                var clamped = ClampMaximum(value);
+                SetValue<Double>(MaximumProperty, clamped);
+            }
         }
 
         /// <summary>
@@ -271,6 +276,38 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         {
             var range = (RangeBase)dobj;
             range.OnLargeChangeChanged();
+        }
+
+        /// <summary>
+        /// Clamps the specified value to the element's range.
+        /// </summary>
+        /// <param name="value">The value to clamp.</param>
+        /// <returns>The clamped value.</returns>
+        private Double ClampValue(Double value)
+        {
+            var min = Minimum;
+            if (min > value)
+                return min;
+
+            var max = Maximum;
+            if (max < value)
+                return max;
+
+            return value;
+        }
+
+        /// <summary>
+        /// Clamps the specified maximum value so that it is always at least as big as the element's minimum value.
+        /// </summary>
+        /// <param name="maximum">The value to clamp.</param>
+        /// <returns>The clamped value.</returns>
+        private Double ClampMaximum(Double maximum)
+        {
+            var min = Minimum;
+            if (min > maximum)
+                return min;
+
+            return maximum;
         }
     }
 }

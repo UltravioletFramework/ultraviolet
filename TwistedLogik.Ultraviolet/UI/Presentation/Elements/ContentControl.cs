@@ -79,30 +79,27 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <inheritdoc/>
-        public sealed override void PerformPartialLayout(UIElement content)
-        {
-            Contract.Require(content, "content");
-
-            if (Content == null)
-                throw new ArgumentException("content");
-
-            if (Content == content)
-            {
-                PerformLayout();
-            }
-            else
-            {
-                Content.PerformPartialLayout(content);
-            }
-        }
-
-        /// <inheritdoc/>
         public sealed override void PerformContentLayout()
         {
             if (Content != null)
             {
-                Content.ParentRelativeArea = new Rectangle(0, 0, ContentElement.ActualWidth, ContentElement.ActualHeight);
+                var margin = ConvertThicknessToPixels(Content.Margin, 0);
+
+                var availableWidth  = ContentPanelWidth  - (Int32)(margin.Left + margin.Right);
+                var availableHeight = ContentPanelHeight - (Int32)(margin.Top  + margin.Bottom);
+
+                int? contentWidth  = Double.IsNaN(Content.Width)  ? availableWidth  : (int?)null;
+                int? contentHeight = Double.IsNaN(Content.Height) ? availableHeight : (int?)null;
+
+                Content.CalculateActualSize(ref contentWidth, ref contentHeight);
+
+                var contentX = (Int32)margin.Left;
+                var contentY = (Int32)margin.Top;
+
+                Content.ParentRelativeArea = new Rectangle(contentX, contentY, contentWidth ?? 0, contentHeight ?? 0);
                 Content.PerformLayout();
+
+                UpdateContentElementPosition(Content);
             }
 
             base.PerformContentLayout();
@@ -163,9 +160,34 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
 
             if (Content != null && ElementIsDrawn(Content))
             {
+                var scissor = 
+                    Content.ParentRelativeArea.Left < 0 || 
+                    Content.ParentRelativeArea.Top < 0 ||
+                    Content.ParentRelativeArea.Right > ContentPanel.ActualWidth ||
+                    Content.ParentRelativeArea.Bottom > ContentPanel.ActualHeight;
+
+                if (scissor)
+                {
+                    var scissorRectangle = new Rectangle(
+                        AbsoluteScreenX + ContentPanelX,
+                        AbsoluteScreenY + ContentPanelY,
+                        ContentPanel.ActualWidth,
+                        ContentPanel.ActualHeight);
+
+                    if (!ApplyScissorRectangle(spriteBatch, scissorRectangle))
+                    {
+                        return false;
+                    }
+                }
+
                 var cumulativeOpacity = Opacity * opacity;
                 Content.Draw(time, spriteBatch, cumulativeOpacity);
                 OnContentDrawn(time, spriteBatch, opacity);
+
+                if (scissor)
+                {
+                    RevertScissorRectangle(spriteBatch);
+                }
             }
 
             return true;
@@ -193,8 +215,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         internal override void Update(UltravioletTime time)
         {
             if (Content != null)
-                Content.Update(time);
-
+            {
+                UpdateContentElement(time, Content);
+            }
             base.Update(time);
         }
 
@@ -235,16 +258,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <inheritdoc/>
-        internal override void UpdateAbsoluteScreenPosition(Int32 x, Int32 y, Boolean requestLayout)
+        internal override Boolean UpdateAbsoluteScreenPosition(Int32 x, Int32 y, Boolean force = false)
         {
-            base.UpdateAbsoluteScreenPosition(x, y, requestLayout);
+            if (!base.UpdateAbsoluteScreenPosition(x, y, force))
+                return false;
 
             if (Content != null)
             {
-                Content.UpdateAbsoluteScreenPosition(
-                    ContentElement.AbsoluteScreenX,
-                    ContentElement.AbsoluteScreenY, requestLayout);
+                UpdateContentElementPosition(Content, force);
             }
+
+            return true;
         }
 
         /// <inheritdoc/>
@@ -262,13 +286,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             if (!Bounds.Contains(x, y) || !ElementIsDrawn(this))
                 return null;
             
-            var contentX = x - ContentOriginX;
-            var contentY = y - ContentOriginY;
-            if (Content != null && ContentElement.Bounds.Contains(contentX, contentY))
+            var contentX = x - ContentPanelX;
+            var contentY = y - ContentPanelY;
+            if (Content != null && ContentPanel.Bounds.Contains(contentX, contentY))
             {
                 var content = Content.GetElementAtPointInternal(
-                    contentX - Content.ParentRelativeX, 
-                    contentY - Content.ParentRelativeY, hitTest);
+                    contentX - (Content.ParentRelativeX - ContentScrollX), 
+                    contentY - (Content.ParentRelativeY - ContentScrollY), hitTest);
 
                 if (content != null)
                 {

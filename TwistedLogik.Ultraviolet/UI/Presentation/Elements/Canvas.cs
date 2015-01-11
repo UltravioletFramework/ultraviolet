@@ -150,6 +150,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             Contract.Require(content, "content");
 
             UpdateChildLayout(content, true);
+
+            base.PerformPartialLayout(content);
         }
 
         /// <summary>
@@ -204,11 +206,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <param name="partial">A value indicating whether this is a partial layout.</param>
         private void UpdateChildLayout(UIElement child, Boolean partial)
         {
-            UpdateParentRelativeArea(child);
+            child.RequestLayout();
 
-            child.UpdateAbsoluteScreenPosition(
-                ContentElement.AbsoluteScreenX + child.ParentRelativeX,
-                ContentElement.AbsoluteScreenY + child.ParentRelativeY, true);
+            UpdateParentRelativeArea(child);
+            UpdateContentElementPosition(child);
 
             if (partial)
                 UpdateScissorRectangle();

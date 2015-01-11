@@ -186,9 +186,21 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <summary>
         /// Requests that a layout be performed during the next call to <see cref="UIElement.Update(UltravioletTime)"/>.
         /// </summary>
-        public void RequestLayout()
+        public virtual void RequestLayout()
         {
-            layoutRequested = true;
+            isPendingLayout = true;
+        }
+
+        /// <summary>
+        /// Requests that a layout be performed for the specified content element 
+        /// during the next call to <see cref="UIElement.Update(UltravioletTime)"/>.
+        /// </summary>
+        /// <param name="content">The content element for which to calculate a layout.</param>
+        public virtual void RequestPartialLayout(UIElement content)
+        {
+            Contract.Require(content, "content");
+
+            content.isPendingPartialLayout = true;
         }
 
         /// <summary>
@@ -199,12 +211,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             OnPerformingLayout();
 
             PerformContentLayout();
-            UpdateAbsoluteScreenPosition(AbsoluteScreenX, AbsoluteScreenY);
 
             OnPerformedLayout();
-
-            if (Parent != null)
-                Parent.PerformPartialLayout(this);
         }
 
         /// <summary>
@@ -221,7 +229,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <param name="content">The content element for which to calculate a layout.</param>
         public virtual void PerformPartialLayout(UIElement content)
         {
+            Contract.Require(content, "content");
 
+            content.isPendingPartialLayout = false;
         }
 
         /// <summary>
@@ -534,6 +544,22 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         public Rectangle ScreenBounds
         {
             get { return new Rectangle(AbsoluteScreenX, AbsoluteScreenY, ActualWidth, ActualHeight); }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the element has a pending layout request.
+        /// </summary>
+        public Boolean IsPendingLayout
+        {
+            get { return isPendingLayout; }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the element has requested a partial layout from its parent.
+        /// </summary>
+        public Boolean IsPendingPartialLayout
+        {
+            get { return isPendingPartialLayout; }
         }
 
         /// <summary>
@@ -1358,9 +1384,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             Digest(time);
             OnUpdating(time);
 
-            if (layoutRequested)
+            if (isPendingContentPositionUpdate)
             {
-                layoutRequested = false;
+                isPendingContentPositionUpdate = false;
+                UpdateAbsoluteScreenPosition(AbsoluteScreenX, AbsoluteScreenY, force: true);
+            }
+
+            if (isPendingLayout)
+            {
+                isPendingLayout = false;
                 PerformLayout();
             }
         }
@@ -1401,7 +1433,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             ReloadContent();
 
             if (Parent != null)
-                Parent.RequestLayout();
+                Parent.RequestPartialLayout(this);
         }
 
         /// <summary>
@@ -1444,18 +1476,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// </summary>
         /// <param name="x">The x-coordinate of the element's absolute screen position.</param>
         /// <param name="y">The y-coordinate of the element's absolute screen position.</param>
-        /// <param name="requestLayout">A value indicating whether a new layout should be requested for this element.</param>
-        internal virtual void UpdateAbsoluteScreenPosition(Int32 x, Int32 y, Boolean requestLayout = false)
+        /// <param name="force">A value indicating whether to force an update.</param>
+        internal virtual Boolean UpdateAbsoluteScreenPosition(Int32 x, Int32 y, Boolean force = false)
         {
+            if (!force && this.absoluteScreenX == x && this.absoluteScreenY == y)
+                return false;
+
             this.absoluteScreenX = x;
             this.absoluteScreenY = y;
 
             OnAbsolutePositionChanged();
 
-            if (requestLayout)
-            {
-                RequestLayout();
-            }
+            return true;
         }
 
         /// <summary>
@@ -1503,8 +1535,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <inheritdoc/>
         protected internal override void OnMeasureAffectingPropertyChanged()
         {
-            RequestLayout();
-            
+            if (Parent != null)
+            {
+                Parent.RequestPartialLayout(this);
+            }
             base.OnMeasureAffectingPropertyChanged();
         }
 
@@ -1701,18 +1735,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <summary>
         /// Gets the component element which contains this element's content.
         /// </summary>
-        protected internal UIElement ContentElement
+        protected internal UIElement ContentPanel
         {
-            get { return contentElement ?? this; }
+            get { return contentPanel ?? this; }
             internal set
             {
-                if (contentElement != null && contentElement != this)
-                    contentElement.PerformedLayout -= HandleContentElementPerformedLayout;
+                if (contentPanel != null && contentPanel != this)
+                    contentPanel.PerformedLayout -= HandleContentPanelPerformedLayout;
                 
-                contentElement = value;
+                contentPanel = value;
 
-                if (contentElement != null && contentElement != this)
-                    contentElement.PerformedLayout += HandleContentElementPerformedLayout;
+                if (contentPanel != null && contentPanel != this)
+                    contentPanel.PerformedLayout += HandleContentPanelPerformedLayout;
             }
         }
 
@@ -1788,19 +1822,67 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// Gets the distance in pixels between the left edge of this control and the left
         /// edge of the control's content region.
         /// </summary>
-        protected internal Int32 ContentOriginX
+        protected internal Int32 ContentPanelX
         {
-            get { return ContentElement.AbsoluteScreenX - this.AbsoluteScreenX; }
+            get { return ContentPanel.AbsoluteScreenX - this.AbsoluteScreenX; }
         }
 
         /// <summary>
         /// Gets the distance in pixels between the top edge of this control and the top
         /// edge of the control's content region.
         /// </summary>
-        protected internal Int32 ContentOriginY
+        protected internal Int32 ContentPanelY
         {
-            get { return ContentElement.AbsoluteScreenY - this.AbsoluteScreenY; }
-        } 
+            get { return ContentPanel.AbsoluteScreenY - this.AbsoluteScreenY; }
+        }
+
+        /// <summary>
+        /// Gets the width of the area in which the element renders its content.
+        /// </summary>
+        protected internal Int32 ContentPanelWidth
+        {
+            get { return ContentPanel.ActualWidth; }
+        }
+
+        /// <summary>
+        /// Gets the height of the area in which the element renders its content.
+        /// </summary>
+        protected internal Int32 ContentPanelHeight
+        {
+            get { return ContentPanel.ActualHeight; }
+        }
+
+        /// <summary>
+        /// Gets the amount by which the element's content is scrolled along the x-axis.
+        /// </summary>
+        protected internal Int32 ContentScrollX
+        {
+            get { return contentScrollX; }
+            set
+            {
+                if (contentScrollX != value)
+                {
+                    contentScrollX = value;
+                    isPendingContentPositionUpdate = true;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets the amount by which the element's content is scrolled along the y-axis.
+        /// </summary>
+        protected internal Int32 ContentScrollY
+        {
+            get { return contentScrollY; }
+            set
+            {
+                if (contentScrollY != value)
+                {
+                    contentScrollY = value;
+                    isPendingContentPositionUpdate = true;
+                }
+            }
+        }
 
         /// <summary>
         /// Releases resources associated with the object.
@@ -2172,6 +2254,32 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <summary>
+        /// Updates the specified content element.
+        /// </summary>
+        /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Draw(UltravioletTime)"/>.</param>
+        /// <param name="element">The content element to update.</param>
+        protected virtual void UpdateContentElement(UltravioletTime time, UIElement element)
+        {
+            if (element.IsPendingPartialLayout)
+            {
+                PerformPartialLayout(element);
+            }
+            element.Update(time);
+        }
+
+        /// <summary>
+        /// Updates the position of the specified content element.
+        /// </summary>
+        /// <param name="element">The element to update.</param>
+        /// <param name="force">A value indicating whether to force the update.</param>
+        protected virtual void UpdateContentElementPosition(UIElement element, Boolean force = false)
+        {
+            element.UpdateAbsoluteScreenPosition(
+                ContentPanel.AbsoluteScreenX + element.ParentRelativeX - ContentScrollX,
+                ContentPanel.AbsoluteScreenY + element.ParentRelativeY - ContentScrollY, force);
+        }
+
+        /// <summary>
         /// Loads the specified asset from the global content manager.
         /// </summary>
         /// <typeparam name="TOutput">The type of object being loaded.</typeparam>
@@ -2388,6 +2496,53 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
                 return display.DipsToPixels(nan);
 
             return display.DipsToPixels(measure);
+        }
+
+        /// <summary>
+        /// Applies a scissor rectangle.
+        /// </summary>
+        /// <param name="spriteBatch">The sprite batch which is being used to render the element.</param>
+        /// <param name="scissorRectangle">The scissor rectangle to apply.</param>
+        /// <returns>If the resulting scissor rectangle is empty, it is not applied, and this method returns
+        /// <c>false</c> to indicate that nothing should be drawn.</returns>
+        protected Boolean ApplyScissorRectangle(SpriteBatch spriteBatch, Rectangle scissorRectangle)
+        {
+            var graphics = Ultraviolet.GetGraphics();
+
+            var currentScissorRectangle = graphics.GetScissorRectangle();
+            if (currentScissorRectangle != null)
+            {
+                scissorRectangle = Rectangle.Intersect(scissorRectangle, currentScissorRectangle.Value);
+            }
+
+            if (scissorRectangle.IsEmpty)
+                return false;
+
+            spriteBatch.Flush();
+            graphics.SetScissorRectangle(scissorRectangle);
+
+            previousScissorRectangle = currentScissorRectangle;
+            scissorApplied = true;
+
+            return true;
+        }
+
+        /// <summary>
+        /// Reverts to the previous scissor rectangle, if <see cref="ApplyScissorRectangle(SpriteBatch, Rectangle)"/>
+        /// was previously called by this element.
+        /// </summary>
+        /// <param name="spriteBatch">The sprite batch which is being used to render the element.</param>
+        /// <returns><c>true</c> if the scissor rectangle was reverted; otherwise, <c>false</c>.</returns>
+        protected Boolean RevertScissorRectangle(SpriteBatch spriteBatch)
+        {
+            if (!scissorApplied)
+                return false;
+
+            spriteBatch.Flush();
+            Ultraviolet.GetGraphics().SetScissorRectangle(previousScissorRectangle);
+            scissorApplied = false;
+
+            return true;
         }
 
         /// <summary>
@@ -2768,12 +2923,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <summary>
-        /// Handles the <see cref="PerformedLayout"/> event raised by the element's content element.
+        /// Handles the <see cref="PerformedLayout"/> event raised by the element's content panel.
         /// </summary>
         /// <param name="element">The element that raised the event.</param>
-        private void HandleContentElementPerformedLayout(UIElement element)
+        private void HandleContentPanelPerformedLayout(UIElement element)
         {
-            this.UpdateAbsoluteScreenPosition(AbsoluteScreenX, AbsoluteScreenY, true);
+            RequestLayout();
+            UpdateContentElementPosition(element);
         }
 
         /// <summary>
@@ -2806,6 +2962,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         private UIView view;
         private UIElement parent;
         private Control control;
+        private Boolean isPendingPartialLayout;
+        private Boolean isPendingLayout;
         private Boolean hovering;
         private Int32 parentRelativeX;
         private Int32 parentRelativeY;
@@ -2814,11 +2972,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         private SpriteFont font;
 
         // State values.
-        private Boolean layoutRequested;
+        private Boolean isPendingContentPositionUpdate;
         private Int32 absoluteScreenX;
         private Int32 absoluteScreenY;
-        private UIElement contentElement;
+        private Int32 contentScrollX;
+        private Int32 contentScrollY;
+        private UIElement contentPanel;
         private UIElementRegistry elementRegistrationContext;
+        private Rectangle? previousScissorRectangle;
+        private Boolean scissorApplied;
 
         // Storyboard clocks.
         private static readonly IPool<StoryboardClock> storyboardClockPool = 

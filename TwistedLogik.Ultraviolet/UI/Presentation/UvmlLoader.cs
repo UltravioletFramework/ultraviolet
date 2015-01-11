@@ -105,7 +105,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             control.ComponentRoot = root;
             control.PopulateFieldsFromRegisteredElements();
-            control.ContentElement = control.ComponentRoot.FindContentPanel();
+            control.ContentPanel = control.ComponentRoot.FindContentPanel();
         }
 
         /// <summary>
@@ -745,11 +745,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="context">The current instantiation context.</param>
         private static void BindDependencyProperty(DependencyObject dobj, DependencyProperty dprop, String expression, InstantiationContext context)
         {
-            if (context.ViewModelType == null)
-                throw new InvalidOperationException(UltravioletStrings.NoViewModel);
-
             if (context.ComponentOwner == null)
             {
+                if (context.ViewModelType == null)
+                    throw new InvalidOperationException(UltravioletStrings.NoViewModel);
+
                 var expressionType = dprop.PropertyType;
                 var expressionFull = BindingExpressions.Combine(context.BindingContext, expression);
 

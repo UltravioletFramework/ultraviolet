@@ -1,6 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ComponentTemplate>
   <Canvas>
-    <ContentPanel ID="ContentPanel" Canvas.Left="0" Canvas.Right="0" Canvas.Top="0" Canvas.Bottom="0"></ContentPanel>
+    <ContentPanel ID="LayoutRoot" 
+                  Canvas.Left="{{BorderThickness}}" 
+                  Canvas.Right="{{BorderThickness}}" 
+                  Canvas.Top="{{BorderThickness}}" 
+                  Canvas.Bottom="{{BorderThickness}}"></ContentPanel>
   </Canvas>
 </ComponentTemplate>

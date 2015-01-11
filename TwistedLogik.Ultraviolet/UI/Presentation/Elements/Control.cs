@@ -89,12 +89,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <inheritdoc/>
-        internal override void UpdateAbsoluteScreenPosition(Int32 x, Int32 y, Boolean requestLayout = false)
+        internal override Boolean UpdateAbsoluteScreenPosition(Int32 x, Int32 y, Boolean force = false)
         {
-            base.UpdateAbsoluteScreenPosition(x, y, requestLayout);
+            if (!base.UpdateAbsoluteScreenPosition(x, y, force))
+                return false;
 
             if (componentRoot != null)
-                componentRoot.UpdateAbsoluteScreenPosition(x, y, requestLayout);
+            {
+                componentRoot.UpdateAbsoluteScreenPosition(x, y, force);
+            }
+
+            return true;
         }
 
         /// <inheritdoc/>
@@ -139,7 +144,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             base.Update(time);
 
             if (componentRoot != null)
-                componentRoot.Update(time);
+            {
+                UpdateContentElement(time, componentRoot);
+            }
         }
 
         /// <inheritdoc/>
@@ -269,7 +276,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         private void PerformComponentLayout()
         {
             ComponentRoot.ParentRelativeArea = new Rectangle(0, 0, ActualWidth, ActualHeight);
-            ComponentRoot.UpdateAbsoluteScreenPosition(AbsoluteScreenX, AbsoluteScreenY, true);
+            ComponentRoot.UpdateAbsoluteScreenPosition(AbsoluteScreenX, AbsoluteScreenY);
         }
 
         // Property values.

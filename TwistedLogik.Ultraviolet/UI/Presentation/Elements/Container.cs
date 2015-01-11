@@ -87,57 +87,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             get { return children; }
         }
 
-        /// <summary>
-        /// Draws the container's children.
-        /// </summary>
-        /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Draw(UltravioletTime)"/>.</param>
-        /// <param name="spriteBatch">The sprite batch with which to draw the view.</param>
-        /// <param name="opacity">The cumulative opacity of all of the element's parent elements.</param>
-        protected virtual void DrawChildren(UltravioletTime time, SpriteBatch spriteBatch, Single opacity)
-        {
-            var cumulativeOpacity = Opacity * opacity;
-            foreach (var child in children)
-            {
-                if (!ElementIsDrawn(child))
-                    continue;
-
-                child.Draw(time, spriteBatch, cumulativeOpacity);
-            }
-        }
-
-        /// <summary>
-        /// Determines whether a scissor rectangle must be applied to this container.
-        /// </summary>
-        protected virtual void UpdateScissorRectangle()
-        {
-            var required = false;
-            foreach (var child in children)
-            {
-                if (!ElementIsDrawn(child))
-                    continue;
-
-                if (child.ParentRelativeX < 0 || 
-                    child.ParentRelativeY < 0 ||
-                    child.ParentRelativeX + child.ActualWidth > ContentElement.ActualWidth ||
-                    child.ParentRelativeY + child.ActualHeight > ContentElement.ActualHeight)
-                {
-                    required = true;
-                    break;
-                }
-            }
-            RequiresScissorRectangle = required;
-        }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether this container requires that a scissor
-        /// rectangle be applied prior to rendering its children.
-        /// </summary>
-        protected Boolean RequiresScissorRectangle
-        {
-            get { return requiresScissorRectangle; }
-            set { requiresScissorRectangle = value; }
-        }
-
         /// <inheritdoc/>
         internal override Boolean RemoveContent(UIElement element)
         {
@@ -152,19 +101,22 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             if (!base.Draw(time, spriteBatch, opacity))
                 return false;
 
-            var scissor     = RequiresScissorRectangle;
-            var scissorRect = default(Rectangle?);
-
+            var scissor = RequiresScissorRectangle;
             if (scissor)
             {
-                ApplyScissorRectangle(spriteBatch, out scissorRect);
+                var scissorRectangle = new Rectangle(
+                    AbsoluteScreenX + ContentPanelX, 
+                    AbsoluteScreenY + ContentPanelY, 
+                    ContentPanelWidth, ContentPanelHeight);
+
+                ApplyScissorRectangle(spriteBatch, scissorRectangle);
             }
 
             DrawChildren(time, spriteBatch, opacity);
 
             if (scissor)
             {
-                RestoreScissorRectangle(spriteBatch, scissorRect);
+                RevertScissorRectangle(spriteBatch);
             }
 
             return true;
@@ -197,9 +149,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         {
             foreach (var child in children)
             {
-                child.Update(time);
+                UpdateContentElement(time, child);
             }
-
             base.Update(time);
         }
 
@@ -248,16 +199,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <inheritdoc/>
-        internal override void UpdateAbsoluteScreenPosition(Int32 x, Int32 y, Boolean requestLayout = false)
+        internal override Boolean UpdateAbsoluteScreenPosition(Int32 x, Int32 y, Boolean force = false)
         {
-            base.UpdateAbsoluteScreenPosition(x, y, requestLayout);
+            if (!base.UpdateAbsoluteScreenPosition(x, y, force))
+                return false;
 
             foreach (var child in children)
             {
-                child.UpdateAbsoluteScreenPosition(
-                    ContentElement.AbsoluteScreenX + child.ParentRelativeX,
-                    ContentElement.AbsoluteScreenY + child.ParentRelativeY, requestLayout);
+                UpdateContentElementPosition(child, force);
             }
+
+            return true;
         }
 
         /// <inheritdoc/>
@@ -274,14 +226,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             if (!Bounds.Contains(x, y) || !ElementIsDrawn(this))
                 return null;
 
-            var contentX = x - ContentOriginX;
-            var contentY = y - ContentOriginY;
-            if (ContentElement.Bounds.Contains(contentX, contentY))
+            var contentX = x - ContentPanelX;
+            var contentY = y - ContentPanelY;
+            if (ContentPanel.Bounds.Contains(contentX, contentY))
             {
                 for (int i = children.Count - 1; i >= 0; i--)
                 {
                     var child   = children[i];
-                    var element = child.GetElementAtPointInternal(contentX - child.ParentRelativeX, contentY - child.ParentRelativeY, hitTest);
+                    var element = child.GetElementAtPointInternal(
+                        contentX - (child.ParentRelativeX - ContentScrollX), 
+                        contentY - (child.ParentRelativeY - ContentScrollY), hitTest);
 
                     if (element != null)
                     {
@@ -313,41 +267,54 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <summary>
-        /// Applies the container's scissor rectangle to the graphics device.
+        /// Draws the container's children.
         /// </summary>
-        /// <param name="spriteBatch">The sprite batch with which the container is being rendered.</param>
-        /// <param name="previous">The previous scissor rectangle, or <c>null</c> if the scissor test is disabled.</param>
-        private void ApplyScissorRectangle(SpriteBatch spriteBatch, out Rectangle? previous)
+        /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Draw(UltravioletTime)"/>.</param>
+        /// <param name="spriteBatch">The sprite batch with which to draw the view.</param>
+        /// <param name="opacity">The cumulative opacity of all of the element's parent elements.</param>
+        protected virtual void DrawChildren(UltravioletTime time, SpriteBatch spriteBatch, Single opacity)
         {
-            spriteBatch.End();
-            spriteBatch.Begin(SpriteSortMode.Deferred, Graphics.BlendState.AlphaBlend);
+            var cumulativeOpacity = Opacity * opacity;
+            foreach (var child in children)
+            {
+                if (!ElementIsDrawn(child))
+                    continue;
 
-            var scissorX      = ContentElement.AbsoluteScreenX;
-            var scissorY      = ContentElement.AbsoluteScreenY;
-            var scissorWidth  = ContentElement.ActualWidth;
-            var scissorHeight = ContentElement.ActualHeight;
-
-            var scissorRectContainer = Ultraviolet.GetGraphics().GetScissorRectangle() ?? View.Area;
-            var scissorRectElement   = new Rectangle(scissorX, scissorY, scissorWidth, scissorHeight);
-            var scissorRectIntersect = default(Rectangle);
-            Rectangle.Intersect(ref scissorRectContainer, ref scissorRectElement, out scissorRectIntersect);
-
-            Ultraviolet.GetGraphics().SetScissorRectangle(scissorRectIntersect);
-
-            previous = scissorRectContainer;
+                child.Draw(time, spriteBatch, cumulativeOpacity);
+            }
         }
 
         /// <summary>
-        /// Restores the previous scissor rectangle after the container is done rendering its children.
+        /// Determines whether a scissor rectangle must be applied to this container.
         /// </summary>
-        /// <param name="spriteBatch">The sprite batch with which the container is being rendered.</param>
-        /// <param name="rect">The scissor rectangle to apply to the graphics device.</param>
-        private void RestoreScissorRectangle(SpriteBatch spriteBatch, Rectangle? rect)
+        protected virtual void UpdateScissorRectangle()
         {
-            spriteBatch.End();
-            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend);
+            var required = false;
+            foreach (var child in children)
+            {
+                if (!ElementIsDrawn(child))
+                    continue;
 
-            Ultraviolet.GetGraphics().SetScissorRectangle(rect);
+                if (child.ParentRelativeX < 0 || 
+                    child.ParentRelativeY < 0 ||
+                    child.ParentRelativeX + child.ActualWidth > ContentPanelWidth ||
+                    child.ParentRelativeY + child.ActualHeight > ContentPanelHeight)
+                {
+                    required = true;
+                    break;
+                }
+            }
+            RequiresScissorRectangle = required;
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether this container requires that a scissor
+        /// rectangle be applied prior to rendering its children.
+        /// </summary>
+        protected Boolean RequiresScissorRectangle
+        {
+            get { return requiresScissorRectangle; }
+            set { requiresScissorRectangle = value; }
         }
 
         // Property values.

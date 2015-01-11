@@ -111,7 +111,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <inheritdoc/>
-        public override void PerformPartialLayout(UIElement content)
+        public override void RequestPartialLayout(UIElement content)
         {
             Contract.Require(content, "content");
 
@@ -119,10 +119,20 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <inheritdoc/>
+        public override void PerformPartialLayout(UIElement content)
+        {
+            Contract.Require(content, "content");
+
+            RequestLayout();
+
+            base.PerformPartialLayout(content);
+        }
+
+        /// <inheritdoc/>
         public override void PerformContentLayout()
         {
-            var pxAvailableWidth  = ContentElement.ActualWidth;
-            var pxAvailableHeight = ContentElement.ActualHeight;
+            var pxAvailableWidth  = ContentPanel.ActualWidth;
+            var pxAvailableHeight = ContentPanel.ActualHeight;
 
             var proportionalFactorColumns = 0.0;
             var proportionalFactorRows    = 0.0;
@@ -270,23 +280,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             if (cell.RequiresScissorRectangle != scissor)
                 return;
 
-            var cx = AbsoluteScreenX + ContentOriginX + cell.GridRelativeX;
-            var cy = AbsoluteScreenY + ContentOriginY + cell.GridRelativeY;
+            var cx = AbsoluteScreenX + ContentPanelX + cell.GridRelativeX;
+            var cy = AbsoluteScreenY + ContentPanelY + cell.GridRelativeY;
 
             var graphics    = Ultraviolet.GetGraphics();
             var gridScissor = (Rectangle?)null;
 
             if (cell.RequiresScissorRectangle)
             {
-                gridScissor = graphics.GetScissorRectangle();
-
                 var cellScissor = new Rectangle(cx, cy, cell.ActualWidth, cell.ActualHeight);
-
-                if (gridScissor != null)
-                    cellScissor = Rectangle.Intersect(cellScissor, gridScissor.Value);
-
-                spriteBatch.Flush();
-                graphics.SetScissorRectangle(cellScissor);
+                if (!ApplyScissorRectangle(spriteBatch, cellScissor))
+                    return;
             }
 
             if (Ultraviolet.GetUI().PresentationFramework.DebugRenderingEnabled)
@@ -306,8 +310,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
 
             if (cell.RequiresScissorRectangle)
             {
-                spriteBatch.Flush();
-                graphics.SetScissorRectangle(gridScissor);
+                RevertScissorRectangle(spriteBatch);
             }
         }
         
@@ -355,8 +358,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
 
             var cell = cells[ixCell];
 
-            var contentX = x - ContentOriginX;
-            var contentY = y - ContentOriginY;
+            var contentX = x - ContentPanelX;
+            var contentY = y - ContentPanelY;
             for (int i = cell.Elements.Count - 1; i >= 0; i--)
             {
                 var child   = cell.Elements[i];
@@ -431,11 +434,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <returns>The actual size of the column in pixels.</returns>
         private Int32 MeasureAutoOrStaticColumn(ColumnDefinition column, Int32 ix)
         {
-            if (column.Width.GridUnitType == GridUnitType.Auto)
+            switch (column.Width.GridUnitType)
             {
-                return MeasureAutoColumn(column, ix);
+                case GridUnitType.Auto:
+                    return MeasureAutoColumn(column, ix);
+                case GridUnitType.Pixel:
+                    return MeasureStaticColumn(column, ix);
             }
-            return MeasureStaticColumn(column, ix);
+            return 0;
         }
 
         /// <summary>
@@ -512,11 +518,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <returns>The actual size of the row in pixels.</returns>
         private Int32 MeasureAutoOrStaticRow(RowDefinition row, Int32 ix)
         {
-            if (row.Height.GridUnitType == GridUnitType.Auto)
+            switch (row.Height.GridUnitType)
             {
-                return MeasureAutoRow(row, ix);
+                case GridUnitType.Auto:
+                    return MeasureAutoRow(row, ix);
+                case GridUnitType.Pixel:
+                    return MeasureStaticRow(row, ix);
             }
-            return MeasureStaticRow(row, ix);
+            return 0;
         }
 
         /// <summary>
@@ -687,9 +696,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             }
 
             child.ParentRelativeArea = new Rectangle(colX + childX, rowY + childY, childWidth, childHeight);
-            child.UpdateAbsoluteScreenPosition(
-                ContentElement.AbsoluteScreenX + child.ParentRelativeX,
-                ContentElement.AbsoluteScreenY + child.ParentRelativeY, true);
+            child.RequestLayout();
+
+            UpdateContentElementPosition(child);
         }
 
         /// <summary>
@@ -761,8 +770,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <returns>The index of the row at the specified relative position.</returns>
         private Int32 GetRowAtPosition(Int32 x, Int32 y)
         {
-            x -= ContentOriginX;
-            y -= ContentOriginY;
+            x -= ContentPanelX;
+            y -= ContentPanelY;
 
             for (int i = 0; i < RowDefinitions.Count; i++)
             {
@@ -787,8 +796,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <returns>The index of the columns at the specified relative position.</returns>
         private Int32 GetColumnAtPosition(Int32 x, Int32 y)
         {
-            x -= ContentOriginX;
-            y -= ContentOriginY;
+            x -= ContentPanelX;
+            y -= ContentPanelY;
 
             for (int i = 0; i < ColumnDefinitions.Count; i++)
             {

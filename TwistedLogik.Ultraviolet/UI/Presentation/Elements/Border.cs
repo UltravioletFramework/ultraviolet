@@ -104,20 +104,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             base.OnDrawing(time, spriteBatch, opacity);
         }
 
-        /// <inheritdoc/>
-        protected override void OnPerformingLayout()
-        {
-            if (ContentPanel != null)
-            {
-                var thickness = BorderThickness;
-                Canvas.SetTop(ContentPanel, thickness.Top);
-                Canvas.SetLeft(ContentPanel, thickness.Left);
-                Canvas.SetRight(ContentPanel, thickness.Right);
-                Canvas.SetBottom(ContentPanel, thickness.Bottom);
-            }
-            base.OnPerformingLayout();
-        }
-
         /// <summary>
         /// Raises the <see cref="BorderThicknessChanged"/> event.
         /// </summary>
@@ -161,8 +147,5 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             var element = (Border)dobj;
             element.OnBorderColorChanged();
         }
-
-        // Component references.
-        private readonly ContentPanel ContentPanel = null;
     }
 }

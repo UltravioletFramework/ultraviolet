@@ -178,9 +178,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <returns>The scroll thumb's current offset.</returns>
         protected GridLength CalculateThumbOffset()
         {
+            var val = Value;
+            var min = Minimum;
+            var max = Maximum;
+
+            if (min == max)
+                return new GridLength(0);
+
             var available = ActualTrackLength - ActualThumbLength;
             var display   = Ultraviolet.GetPlatform().Displays.PrimaryDisplay;
-            var percent   = (Value - Minimum) / (Maximum - Minimum);
+            var percent   = (val - min) / (max - min);
             var used      = display.PixelsToDips(available * percent);
 
             return new GridLength(used);
@@ -193,8 +200,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <returns>The calculated thumb length.</returns>
         protected GridLength CalculateThumbLength(Double minimumLength)
         {
+            var max = Maximum;
+            var min = Minimum;
+            var vps = ViewportSize;
+
+            if (max - min + vps == 0)
+                return new GridLength(0);
+
             var pxLengthMin   = (Int32)ConvertMeasureToPixels(minimumLength, 0);
-            var pxLengthThumb = (Int32)((ViewportSize / (Maximum - Minimum + ViewportSize)) * ActualTrackLength);
+            var pxLengthThumb = (Int32)((vps / (max - min + vps)) * ActualTrackLength);
             if (pxLengthThumb < pxLengthMin)
             {
                 pxLengthThumb = pxLengthMin;
@@ -215,6 +229,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             var min = Minimum;
             var max = Maximum;
 
+            if (max == min)
+                return 0;
+
             var display = Ultraviolet.GetPlatform().Displays.PrimaryDisplay;
             var percent = (value - min) / (max - min);
             var used    = display.PixelsToDips(available * percent);
@@ -233,6 +250,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
 
             var min = Minimum;
             var max = Maximum;
+
+            if (max == min)
+                return 0;
 
             var display = Ultraviolet.GetPlatform().Displays.PrimaryDisplay;
             var percent = pixels / available;
@@ -296,6 +316,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         private static void HandleViewportSizeChanged(DependencyObject dobj)
         {
             var scrollbar = (ScrollBarBase)dobj;
+            scrollbar.UpdateComponentLayout();
             scrollbar.OnViewportSizeChanged();
         }
 
