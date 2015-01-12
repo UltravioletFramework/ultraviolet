@@ -32,6 +32,16 @@ namespace TwistedLogik.Ultraviolet.Testing
         /// </summary>
         /// <param name="value">The value to wrap.</param>
         /// <returns>The wrapped value.</returns>
+        protected static CircleDResult TheResultingValue(CircleD value)
+        {
+            return new CircleDResult(value);
+        }
+
+        /// <summary>
+        /// Wraps the specified unit test result for evaluation.
+        /// </summary>
+        /// <param name="value">The value to wrap.</param>
+        /// <returns>The wrapped value.</returns>
         protected static CircleResult TheResultingValue(Circle value)
         {
             return new CircleResult(value);
@@ -175,6 +185,36 @@ namespace TwistedLogik.Ultraviolet.Testing
         protected static Vector4Result TheResultingValue(Vector4 value)
         {
             return new Vector4Result(value);
+        }
+
+        /// <summary>
+        /// Wraps the specified unit test result for evaluation.
+        /// </summary>
+        /// <param name="value">The value to wrap.</param>
+        /// <returns>The wrapped value.</returns>
+        protected static Point2Result TheResultingValue(Point2 value)
+        {
+            return new Point2Result(value);
+        }
+
+        /// <summary>
+        /// Wraps the specified unit test result for evaluation.
+        /// </summary>
+        /// <param name="value">The value to wrap.</param>
+        /// <returns>The wrapped value.</returns>
+        protected static Point2FResult TheResultingValue(Point2F value)
+        {
+            return new Point2FResult(value);
+        }
+
+        /// <summary>
+        /// Wraps the specified unit test result for evaluation.
+        /// </summary>
+        /// <param name="value">The value to wrap.</param>
+        /// <returns>The wrapped value.</returns>
+        protected static Point2DResult TheResultingValue(Point2D value)
+        {
+            return new Point2DResult(value);
         }
     }
 }

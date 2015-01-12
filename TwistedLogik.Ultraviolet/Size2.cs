@@ -25,23 +25,23 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Compares two sizes for equality.
         /// </summary>
-        /// <param name="a1">The first <see cref="Size2"/> to compare.</param>
-        /// <param name="a2">The second <see cref="Size2"/> to compare.</param>
+        /// <param name="s1">The first <see cref="Size2"/> to compare.</param>
+        /// <param name="s2">The second <see cref="Size2"/> to compare.</param>
         /// <returns><c>true</c> if the specified sizes are equal; otherwise, <c>false</c>.</returns>
-        public static Boolean operator ==(Size2 a1, Size2 a2)
+        public static Boolean operator ==(Size2 s1, Size2 s2)
         {
-            return a1.Equals(a2);
+            return s1.Equals(s2);
         }
 
         /// <summary>
         /// Compares two sizes for inequality.
         /// </summary>
-        /// <param name="a1">The first <see cref="Size2"/> to compare.</param>
-        /// <param name="a2">The second <see cref="Size2"/> to compare.</param>
+        /// <param name="s1">The first <see cref="Size2"/> to compare.</param>
+        /// <param name="s2">The second <see cref="Size2"/> to compare.</param>
         /// <returns><c>true</c> if the specified sizes are unequal; otherwise, <c>false</c>.</returns>
-        public static Boolean operator !=(Size2 a1, Size2 a2)
+        public static Boolean operator !=(Size2 s1, Size2 s2)
         {
-            return !a1.Equals(a2);
+            return !s1.Equals(s2);
         }
 
         /// <summary>

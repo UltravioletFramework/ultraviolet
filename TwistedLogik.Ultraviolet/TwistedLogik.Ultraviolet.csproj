@@ -157,6 +157,7 @@
     <Compile Include="Audio\SoundEffect.cs" />
     <Compile Include="Audio\SoundEffectPlayer.cs" />
     <Compile Include="Circle.cs" />
+    <Compile Include="CircleD.cs" />
     <Compile Include="CircleF.cs" />
     <Compile Include="Color.cs" />
     <Compile Include="Content\ContentArchive.cs" />
@@ -329,6 +330,9 @@
     <Compile Include="Platform\ScreenDensityBucket.cs" />
     <Compile Include="Platform\ScreenDensityService.cs" />
     <Compile Include="Platform\WindowFlags.cs" />
+    <Compile Include="Point2D.cs" />
+    <Compile Include="Point2F.cs" />
+    <Compile Include="Point2.cs" />
     <Compile Include="Radians.cs" />
     <Compile Include="Rectangle.cs" />
     <Compile Include="RectangleD.cs" />

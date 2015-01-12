@@ -29,7 +29,7 @@ namespace TwistedLogik.Ultraviolet
         /// </summary>
         /// <param name="position">The position of the circle's center.</param>
         /// <param name="radius">The circle's radius.</param>
-        public CircleF(Vector2 position, Single radius)
+        public CircleF(Point2F position, Single radius)
             : this(position.X, position.Y, radius)
         {
 
@@ -64,7 +64,17 @@ namespace TwistedLogik.Ultraviolet
         /// <returns>The converted structure.</returns>
         public static explicit operator Circle(CircleF circle)
         {
-            return new Circle((int)circle.x, (int)circle.y, (int)circle.radius);
+            return new Circle((Int32)circle.x, (Int32)circle.y, (Int32)circle.radius);
+        }
+
+        /// <summary>
+        /// Implicitly converts a <see cref="Circle"/> structure to a <see cref="CircleF"/> structure.
+        /// </summary>
+        /// <param name="circle">The structure to convert.</param>
+        /// <returns>The converted structure.</returns>
+        public static implicit operator CircleF(Circle circle)
+        {
+            return new CircleF(circle.X, circle.Y, circle.Radius);
         }
 
         /// <summary>
@@ -218,9 +228,9 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Gets the circle's position.
         /// </summary>
-        public Vector2 Position
+        public Point2F Position
         {
-            get { return new Vector2(x, y); }
+            get { return new Point2F(x, y); }
         }
 
         /// <summary>

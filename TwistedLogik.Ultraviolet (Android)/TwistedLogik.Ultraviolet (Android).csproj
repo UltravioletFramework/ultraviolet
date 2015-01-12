@@ -90,6 +90,9 @@
     <Compile Include="..\TwistedLogik.Ultraviolet\Circle.cs">
       <Link>Circle.cs</Link>
     </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\CircleD.cs">
+      <Link>CircleD.cs</Link>
+    </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet\CircleF.cs">
       <Link>CircleF.cs</Link>
     </Compile>
@@ -770,6 +773,15 @@
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet\Platform\WindowState.cs">
       <Link>Platform\WindowState.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Point2.cs">
+      <Link>Point2.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Point2D.cs">
+      <Link>Point2D.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Point2F.cs">
+      <Link>Point2F.cs</Link>
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet\Properties\AssemblyInfo.cs">
       <Link>Properties\AssemblyInfo.cs</Link>

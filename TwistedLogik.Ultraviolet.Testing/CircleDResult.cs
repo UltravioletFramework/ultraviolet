@@ -4,15 +4,15 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace TwistedLogik.Ultraviolet.Testing
 {
     /// <summary>
-    /// Represents a unit test result containing a double-precision floating point rectangle value.
+    /// Represents a unit test result containing a double-precision floating-point circle value.
     /// </summary>
-    public sealed class RectangleDResult
+    public sealed class CircleDResult
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="RectangleDResult"/> class.
+        /// Initializes a new instance of the <see cref="CircleDResult"/> class.
         /// </summary>
         /// <param name="value">The value being examined.</param>
-        internal RectangleDResult(RectangleD value)
+        internal CircleDResult(CircleD value)
         {
             this.value = value;
         }
@@ -20,10 +20,10 @@ namespace TwistedLogik.Ultraviolet.Testing
         /// <summary>
         /// Asserts that this value should have the specified position.
         /// </summary>
-        /// <param name="x">The expected x-coordinate of the rectangle's top-left corner.</param>
-        /// <param name="y">The expected y-coordinate of the rectangle's top-left corner.</param>
+        /// <param name="x">The expected x-coordinate of the circle's center.</param>
+        /// <param name="y">The expected y-coordinate of the circle's center.</param>
         /// <returns>The result object.</returns>
-        public RectangleDResult ShouldHavePosition(Double x, Double y)
+        public CircleDResult ShouldHavePosition(Double x, Double y)
         {
             Assert.AreEqual(x, value.X, delta);
             Assert.AreEqual(y, value.Y, delta);
@@ -31,15 +31,13 @@ namespace TwistedLogik.Ultraviolet.Testing
         }
 
         /// <summary>
-        /// Asserts that this value should have the specified dimensions.
+        /// Asserts that this value should have the specified radius.
         /// </summary>
-        /// <param name="width">The expected width of the rectangle.</param>
-        /// <param name="height">The expected height of the rectangle.</param>
+        /// <param name="radius">The circle's expected radius.</param>
         /// <returns>The result object.</returns>
-        public RectangleDResult ShouldHaveDimensions(Double width, Double height)
+        public CircleDResult ShouldHaveRadius(Double radius)
         {
-            Assert.AreEqual(width, value.Width, delta);
-            Assert.AreEqual(height, value.Height, delta);
+            Assert.AreEqual(radius, value.Radius, delta);
             return this;
         }
 
@@ -48,7 +46,7 @@ namespace TwistedLogik.Ultraviolet.Testing
         /// </summary>
         /// <param name="delta">The delta value to set.</param>
         /// <returns>The result object.</returns>
-        public RectangleDResult WithinDelta(Double delta)
+        public CircleDResult WithinDelta(Double delta)
         {
             this.delta = delta;
             return this;
@@ -57,13 +55,13 @@ namespace TwistedLogik.Ultraviolet.Testing
         /// <summary>
         /// Gets the underlying value.
         /// </summary>
-        public RectangleD Value
+        public CircleD Value
         {
             get { return value; }
         }
 
         // State values.
-        private readonly RectangleD value;
+        private CircleD value;
         private Double delta = 0.001;
     }
 }

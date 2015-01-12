@@ -9,7 +9,7 @@ namespace TwistedLogik.Ultraviolet.Testing
     public sealed class Size3FResult
     {
         /// <summary>
-        /// Initializes a new instance of the Size3FResult class.
+        /// Initializes a new instance of the <see cref="Size3FResult"/> class.
         /// </summary>
         /// <param name="value">The value being examined.</param>
         internal Size3FResult(Size3F value)

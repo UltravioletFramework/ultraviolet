@@ -70,6 +70,16 @@ namespace TwistedLogik.Ultraviolet
         }
 
         /// <summary>
+        /// Implicitly converts a <see cref="Rectangle"/> structure to a <see cref="RectangleF"/> structure.
+        /// </summary>
+        /// <param name="rect">The structure to convert.</param>
+        /// <returns>The converted structure.</returns>
+        public static implicit operator RectangleF(Rectangle rect)
+        {
+            return new Rectangle(rect.X, rect.Y, rect.Width, rect.Height);
+        }
+
+        /// <summary>
         /// Converts the string representation of a rectangle into an instance of the <see cref="RectangleF"/> structure.
         /// A return value indicates whether the conversion succeeded.
         /// </summary>
@@ -390,6 +400,30 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Gets a value indicating whether the rectangle contains the specified point.
         /// </summary>
+        /// <param name="point">The point to evaluate.</param>
+        /// <param name="result">A value indicating whether the rectangle contains the specified point.</param>
+        public void Contains(ref Point2F point, out Boolean result)
+        {
+            result =
+                point.X >= this.x && point.X < this.x + this.width &&
+                point.Y >= this.y && point.Y < this.y + this.height;
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the rectangle contains the specified point.
+        /// </summary>
+        /// <param name="point">The point to evaluate.</param>
+        /// <returns><c>true</c> if the rectangle contains the specified point; otherwise, <c>false</c>.</returns>
+        public Boolean Contains(Point2F point)
+        {
+            return
+                point.X >= this.x && point.X < this.x + this.width &&
+                point.Y >= this.y && point.Y < this.y + this.height;
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the rectangle contains the specified point.
+        /// </summary>
         /// <param name="point">A <see cref="Vector2"/> representing the point to evaluate.</param>
         /// <param name="result">A value indicating whether the rectangle contains the specified point.</param>
         public void Contains(ref Vector2 point, out Boolean result)
@@ -433,28 +467,6 @@ namespace TwistedLogik.Ultraviolet
             return
                 this.x <= rectangle.x && rectangle.x + rectangle.width <= this.x + this.width &&
                 this.y <= rectangle.y && rectangle.y + rectangle.height <= this.y + this.height;
-        }
-
-        /// <summary>
-        /// Gets the coordinates of the top-left corner of the rectangle.
-        /// </summary>
-        /// <param name="x">The x-coordinate of the rectangle's location.</param>
-        /// <param name="y">The y-coordinate of the rectangle's location.</param>
-        public void GetLocation(out Single x, out Single y)
-        {
-            x = this.x;
-            y = this.y;
-        }
-
-        /// <summary>
-        /// Gets the coordinates of the center of the rectangle.
-        /// </summary>
-        /// <param name="x">The x-coordinate of the rectangle's center.</param>
-        /// <param name="y">The y-coordinate of the rectangle's center.</param>
-        public void GetCenter(out Single x, out Single y)
-        {
-            x = this.x + (width / 2f);
-            y = this.y + (height / 2f);
         }
 
         /// <summary>
@@ -555,17 +567,17 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Gets the position of the rectangle's top-left corner.
         /// </summary>
-        public Vector2 Location
+        public Point2F Location
         {
-            get { return new Vector2(x, y); }
+            get { return new Point2F(x, y); }
         }
 
         /// <summary>
         /// Gets the position of the rectangle's center.
         /// </summary>
-        public Vector2 Center
+        public Point2F Center
         {
-            get { return new Vector2(x + (width / 2f), y + (height / 2f)); }
+            get { return new Point2F(x + (width / 2.0f), y + (height / 2.0f)); }
         }
 
         // Property values.
