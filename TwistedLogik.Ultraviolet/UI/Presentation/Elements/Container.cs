@@ -25,6 +25,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <inheritdoc/>
+        public sealed override void ClearAnimationsRecursive()
+        {
+            base.ClearAnimationsRecursive();
+
+            foreach (var child in children)
+            {
+                child.ClearAnimationsRecursive();
+            }
+        }
+
+        /// <inheritdoc/>
         public sealed override void ClearLocalValuesRecursive()
         {
             base.ClearLocalValuesRecursive();

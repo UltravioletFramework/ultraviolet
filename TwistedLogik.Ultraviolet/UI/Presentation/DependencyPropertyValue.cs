@@ -60,11 +60,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             }
 
             /// <summary>
-            /// Explicitly animates the dependency value.
+            /// Animates the dependency value.
             /// </summary>
-            /// <param name="value">The target value.</param>
+            /// <param name="value">The animation's target value.</param>
+            /// <param name="fn">The animation's easing function.</param>
             /// <param name="clock">The clock which drives the animation.</param>
-            public void Animate(T value, Clock clock)
+            public void Animate(T value, EasingFunction fn, Clock clock)
             {
                 Contract.Require(clock, "clock");
 
@@ -77,10 +78,25 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 this.animatedValue        = GetValueInternal(false);
                 this.animatedTargetValue  = value;
                 this.animatedHandOffValue = oldValue;
+                this.animationEasing      = fn ?? Easings.EaseInLinear;
 
                 this.animationClock.Subscribe(this);
 
                 UpdateRequiresDigest(oldValue);
+            }
+
+            /// <summary>
+            /// Animates the dependency value using an internally-managed clock.
+            /// </summary>
+            /// <param name="value">The animation's target value.</param>
+            /// <param name="fn">The animation's easing function.</param>
+            /// <param name="loopBehavior">A <see cref="LoopBehavior"/> value specifying the loop behavior of the animation.</param>
+            /// <param name="duration">The animation's duration.</param>
+            public void Animate(T value, EasingFunction fn, LoopBehavior loopBehavior, TimeSpan duration)
+            {
+                var clock = SimpleClockPool.Instance.Retrieve(loopBehavior, duration);
+                clock.Start();
+                Animate(value, fn, clock);
             }
 
             /// <inheritdoc/>
@@ -151,8 +167,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 if (this.animationClock != null)
                     this.animationClock.Unsubscribe(this);
 
-                this.animation      = null;
-                this.animationClock = null;
+                ReleasePooledAnimationClock();
+
+                this.animation       = null;
+                this.animationClock  = null;
+                this.animationEasing = null;
 
                 UpdateRequiresDigest(oldValue);
             }
@@ -311,6 +330,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             }
 
             /// <inheritdoc/>
+            public Clock AnimationClock
+            {
+                get { return animationClock; }
+            }
+
+            /// <inheritdoc/>
             void IDependencyPropertyValue.ClockStarted()
             {
 
@@ -367,6 +392,30 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             }
 
             /// <summary>
+            /// Creates the dependency property's cached bound value object.
+            /// </summary>
+            /// <param name="dataSourceType">The type of the data source to which the dependency property is bound.</param>
+            /// <param name="expression">The dependency property's binding expression.</param>
+            private void CreateCachedBoundValue(Type dataSourceType, String expression)
+            {
+                var expressionType = BindingExpressions.GetExpressionType(dataSourceType, expression);
+                if (expressionType != null && TypesRequireSpecialConversion(expressionType, typeof(T)))
+                {
+                    var valueType       = typeof(DependencyBoundValueConverting<,>).MakeGenericType(typeof(T), expressionType);
+                    var valueInstance   = (IDependencyBoundValue<T>)Activator.CreateInstance(valueType, this, expressionType, dataSourceType, expression);
+
+                    cachedBoundValue = valueInstance;
+                }
+                else
+                {
+                    var valueType       = typeof(DependencyBoundValueNonConverting<>).MakeGenericType(typeof(T));
+                    var valueInstance   = (IDependencyBoundValue<T>)Activator.CreateInstance(valueType, this, typeof(T), dataSourceType, expression);
+
+                    cachedBoundValue = valueInstance;
+                }
+            }
+
+            /// <summary>
             /// Updates the value which tracks whether this value needs to participate 
             /// in the digest cycle.
             /// </summary>
@@ -391,30 +440,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                     }
                 }
             }
-
-            /// <summary>
-            /// Creates the dependency property's cached bound value object.
-            /// </summary>
-            /// <param name="dataSourceType">The type of the data source to which the dependency property is bound.</param>
-            /// <param name="expression">The dependency property's binding expression.</param>
-            private void CreateCachedBoundValue(Type dataSourceType, String expression)
-            {
-                var expressionType = BindingExpressions.GetExpressionType(dataSourceType, expression);
-                if (expressionType != null && TypesRequireSpecialConversion(expressionType, typeof(T)))
-                {                
-                    var valueType       = typeof(DependencyBoundValueConverting<,>).MakeGenericType(typeof(T), expressionType);
-                    var valueInstance   = (IDependencyBoundValue<T>)Activator.CreateInstance(valueType, this, expressionType, dataSourceType, expression);
-
-                    cachedBoundValue = valueInstance;
-                }
-                else
-                {
-                    var valueType       = typeof(DependencyBoundValueNonConverting<>).MakeGenericType(typeof(T));
-                    var valueInstance   = (IDependencyBoundValue<T>)Activator.CreateInstance(valueType, this, typeof(T), dataSourceType, expression);
-
-                    cachedBoundValue = valueInstance;
-                }
-            }
             
             /// <summary>
             /// Updates the value's animation state.
@@ -428,7 +453,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 }
                 else
                 {
-                    UpdateExplicitAnimation(time);
+                    UpdateSimpleAnimation(time);
                 }
             }
 
@@ -487,17 +512,34 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             }
 
             /// <summary>
-            /// Updates the value's animation state when using an explicit animation.
+            /// Updates the value's animation state when using a simple animation.
             /// </summary>
             /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Update(UltravioletTime)"/>.</param>
-            private void UpdateExplicitAnimation(UltravioletTime time)
+            private void UpdateSimpleAnimation(UltravioletTime time)
             {
                 var factor            = (Single)(animationClock.ElapsedTime.TotalMilliseconds / animationClock.Duration.TotalMilliseconds);
                 var valueStart        = animatedHandOffValue;
                 var valueEnd          = animatedTargetValue;
-                var valueInterpolated = Tweening.Tween(valueStart, valueEnd, Easings.EaseInLinear, factor);
+                var valueInterpolated = Tweening.Tween(valueStart, valueEnd, animationEasing, factor);
                 
                 animatedValue = valueInterpolated;
+            }
+
+            /// <summary>
+            /// If the value's animation clock is a simple clock retrieved from the pool,
+            /// this method returns the clock to the pool.
+            /// </summary>
+            private void ReleasePooledAnimationClock()
+            {
+                var simpleClock = animationClock as SimpleClock;
+                if (simpleClock == null)
+                    return;
+
+                if (simpleClock.IsPooled)
+                {
+                    SimpleClockPool.Instance.Release(simpleClock);
+                    animationClock = null;
+                }
             }
 
             /// <summary>
@@ -554,6 +596,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             private T animatedValue;
             private T animatedTargetValue;
             private T animatedHandOffValue;
+            private EasingFunction animationEasing;
         }
     }
 }

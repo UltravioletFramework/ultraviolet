@@ -7,7 +7,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
     /// Represents an asset which can be loaded from either the global or local content source.
     /// </summary>
     /// <typeparam name="T">The type of asset which this object represents.</typeparam>
-    public struct SourcedVal<T> : IEquatable<SourcedVal<T>> where T : struct, IEquatable<T>
+    public struct SourcedVal<T> : IEquatable<SourcedVal<T>>, IInterpolatable<SourcedVal<T>> where T : struct, IEquatable<T>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="SourcedVal{T}"/> structure.
@@ -85,6 +85,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
 
             var underlyingValue = (T)ObjectResolver.FromString(str, typeof(T), provider);
             return new SourcedVal<T>(underlyingValue, source);
+        }
+
+        /// <inheritdoc/>
+        public SourcedVal<T> Interpolate(SourcedVal<T> target, Single t)
+        {
+            return (t >= 1) ? target : this;
         }
 
         /// <inheritdoc/>

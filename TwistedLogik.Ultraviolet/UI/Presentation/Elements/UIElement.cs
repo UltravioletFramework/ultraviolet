@@ -169,15 +169,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         public static Boolean ElementIsVisibleToInput(UIElement element, Boolean hitTest)
         {
             return (element.Visibility == Visibility.Visible && element.Enabled && (!hitTest || element.HitTestVisible));
-        }  
+        }
 
         /// <summary>
-        /// Releases resources associated with the object.
+        /// Cleans up the element and its descendants.
         /// </summary>
-        public void Dispose()
+        /// <remarks>The <see cref="Cleanup()"/> method releases any internal resources which the element
+        /// and its descendants may be holding, allowing them to be reused by the Presentation Framework.
+        /// The object remains usable after a call to this method, but certain state values (such as
+        /// animations, dependency property values, etc.) may be reset.</remarks>
+        public void Cleanup()
         {
-            Dispose(true);
-            GC.SuppressFinalize(this);
+            ClearAnimationsRecursive();
         }
 
         /// <summary>
@@ -305,8 +308,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <summary>
-        /// Recursively clears the local values of all of the container's dependency properties
-        /// and all of the dependency properties of the container's descendents.
+        /// Recursively clears the animations applied to all of the element's dependency properties
+        /// and all of the dependency properties of the element's descendents.
+        /// </summary>
+        public virtual void ClearAnimationsRecursive()
+        {
+            ClearAnimations();
+        }
+
+        /// <summary>
+        /// Recursively clears the local values of all of the element's dependency properties
+        /// and all of the dependency properties of the element's descendents.
         /// </summary>
         public virtual void ClearLocalValuesRecursive()
         {
@@ -314,8 +326,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <summary>
-        /// Recursively clears the styled values of all of the container's dependency properties
-        /// and all of the dependency properties of the container's descendents.
+        /// Recursively clears the styled values of all of the element's dependency properties
+        /// and all of the dependency properties of the element's descendents.
         /// </summary>
         public virtual void ClearStyledValuesRecursive()
         {
@@ -2697,10 +2709,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <param name="clock">The storyboard clock that was retrieved from the pool.</param>
         private static void RetrieveStoryboardClock(Storyboard storyboard, out StoryboardClock clock)
         {
-            lock (storyboardClockPool)
-            {
-                clock = storyboardClockPool.Retrieve();
-            }
+            clock = storyboardClockPool.Retrieve();
             clock.Storyboard = storyboard;
         }
 
@@ -2712,10 +2721,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         {
             Contract.Require(clock, "clock");
 
-            lock (storyboardClockPool)
-            {
-                storyboardClockPool.Release(clock);
-            }
+            storyboardClockPool.Release(clock);
         }
 
         /// <summary>

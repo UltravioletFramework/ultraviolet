@@ -822,9 +822,6 @@
     <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Animations\AnimationBase.cs">
       <Link>UI\Presentation\Animations\AnimationBase.cs</Link>
     </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Animations\AnimationClock.cs">
-      <Link>UI\Presentation\Animations\AnimationClock.cs</Link>
-    </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Animations\AnimationKeyframe.cs">
       <Link>UI\Presentation\Animations\AnimationKeyframe.cs</Link>
     </Compile>
@@ -837,41 +834,14 @@
     <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Animations\AnimationKeyframeCollection.IEnumerable.cs">
       <Link>UI\Presentation\Animations\AnimationKeyframeCollection.IEnumerable.cs</Link>
     </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Animations\BooleanAnimation.cs">
-      <Link>UI\Presentation\Animations\BooleanAnimation.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Animations\ByteAnimation.cs">
-      <Link>UI\Presentation\Animations\ByteAnimation.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Animations\CharAnimation.cs">
-      <Link>UI\Presentation\Animations\CharAnimation.cs</Link>
-    </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Animations\Clock.cs">
       <Link>UI\Presentation\Animations\Clock.cs</Link>
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Animations\ClockState.cs">
       <Link>UI\Presentation\Animations\ClockState.cs</Link>
     </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Animations\DecimalAnimation.cs">
-      <Link>UI\Presentation\Animations\DecimalAnimation.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Animations\DoubleAnimation.cs">
-      <Link>UI\Presentation\Animations\DoubleAnimation.cs</Link>
-    </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Animations\FillBehavior.cs">
       <Link>UI\Presentation\Animations\FillBehavior.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Animations\Int16Animation.cs">
-      <Link>UI\Presentation\Animations\Int16Animation.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Animations\Int32Animation.cs">
-      <Link>UI\Presentation\Animations\Int32Animation.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Animations\Int64Animation.cs">
-      <Link>UI\Presentation\Animations\Int64Animation.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Animations\InterpolatableAnimation.cs">
-      <Link>UI\Presentation\Animations\InterpolatableAnimation.cs</Link>
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Animations\LoopBehavior.cs">
       <Link>UI\Presentation\Animations\LoopBehavior.cs</Link>
@@ -879,56 +849,11 @@
     <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Animations\NamespaceDoc.cs">
       <Link>UI\Presentation\Animations\NamespaceDoc.cs</Link>
     </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Animations\NullableBooleanAnimation.cs">
-      <Link>UI\Presentation\Animations\NullableBooleanAnimation.cs</Link>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Animations\SimpleClock.cs">
+      <Link>UI\Presentation\Animations\SimpleClock.cs</Link>
     </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Animations\NullableByteAnimation.cs">
-      <Link>UI\Presentation\Animations\NullableByteAnimation.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Animations\NullableCharAnimation.cs">
-      <Link>UI\Presentation\Animations\NullableCharAnimation.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Animations\NullableDecimalAnimation.cs">
-      <Link>UI\Presentation\Animations\NullableDecimalAnimation.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Animations\NullableDoubleAnimation.cs">
-      <Link>UI\Presentation\Animations\NullableDoubleAnimation.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Animations\NullableInt16Animation.cs">
-      <Link>UI\Presentation\Animations\NullableInt16Animation.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Animations\NullableInt32Animation.cs">
-      <Link>UI\Presentation\Animations\NullableInt32Animation.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Animations\NullableInt64Animation.cs">
-      <Link>UI\Presentation\Animations\NullableInt64Animation.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Animations\NullableInterpolatableAnimation.cs">
-      <Link>UI\Presentation\Animations\NullableInterpolatableAnimation.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Animations\NullableSByteAnimation.cs">
-      <Link>UI\Presentation\Animations\NullableSByteAnimation.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Animations\NullableSingleAnimation.cs">
-      <Link>UI\Presentation\Animations\NullableSingleAnimation.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Animations\NullableUInt16Animation.cs">
-      <Link>UI\Presentation\Animations\NullableUInt16Animation.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Animations\NullableUInt32Animation.cs">
-      <Link>UI\Presentation\Animations\NullableUInt32Animation.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Animations\NullableUInt64Animation.cs">
-      <Link>UI\Presentation\Animations\NullableUInt64Animation.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Animations\ObjectAnimation.cs">
-      <Link>UI\Presentation\Animations\ObjectAnimation.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Animations\SByteAnimation.cs">
-      <Link>UI\Presentation\Animations\SByteAnimation.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Animations\SingleAnimation.cs">
-      <Link>UI\Presentation\Animations\SingleAnimation.cs</Link>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Animations\SimpleClockPool.cs">
+      <Link>UI\Presentation\Animations\SimpleClockPool.cs</Link>
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Animations\Storyboard.cs">
       <Link>UI\Presentation\Animations\Storyboard.cs</Link>
@@ -950,15 +875,6 @@
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Animations\StoryboardTargetCollection.IEnumerable.cs">
       <Link>UI\Presentation\Animations\StoryboardTargetCollection.IEnumerable.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Animations\UInt16Animation.cs">
-      <Link>UI\Presentation\Animations\UInt16Animation.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Animations\UInt32Animation.cs">
-      <Link>UI\Presentation\Animations\UInt32Animation.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Animations\UInt64Animation.cs">
-      <Link>UI\Presentation\Animations\UInt64Animation.cs</Link>
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\BindingExpressionBuilder.cs">
       <Link>UI\Presentation\BindingExpressionBuilder.cs</Link>

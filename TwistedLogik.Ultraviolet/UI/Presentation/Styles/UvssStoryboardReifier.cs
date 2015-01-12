@@ -235,20 +235,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
             if (nullable)
                 type = type.GetGenericArguments()[0];
 
-            if (type.IsPrimitive || type == typeof(Decimal))
-            {
-                var animationTypeName = nullable ? String.Format("Nullable{0}Animation", type.Name) : String.Format("{0}Animation", type.Name);
-                return Type.GetType(animationTypeName);
-            }
-
-            var interpolatableInterface = typeof(IInterpolatable<>).MakeGenericType(type);
-            if (type.GetInterfaces().Contains(interpolatableInterface))
-            {
-                return nullable ? typeof(NullableInterpolatableAnimation<>).MakeGenericType(type) :
-                    typeof(InterpolatableAnimation<>).MakeGenericType(type);
-            }
-
-            return typeof(ObjectAnimation<>).MakeGenericType(type);
+            return typeof(Animation<>).MakeGenericType(type);
         }
 
         // The standard easing functions which can be specified in an animation.

@@ -23,6 +23,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Clears the animations on all of the object's dependency properties.
+        /// </summary>
+        public void ClearAnimations()
+        {
+            foreach (var kvp in dependencyPropertyValues)
+            {
+                kvp.Value.ClearAnimation();
+            }
+        }
+
+        /// <summary>
         /// Clears the local values on all of the object's dependency properties.
         /// </summary>
         public void ClearLocalValues()
@@ -52,8 +63,53 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="clock">The clock which controls the animation's playback.</param>
         public void Animate(DependencyProperty dp, AnimationBase animation, Clock clock)
         {
+            Contract.Require(dp, "dp");
+
+            if (animation != null)
+                Contract.Require(clock, "clock");
+
             var wrapper = GetDependencyPropertyValue(dp, dp.PropertyType);
             wrapper.Animate(animation, clock);
+        }
+
+        /// <summary>
+        /// Animates the specified dependency property to the specified target value.
+        /// </summary>
+        /// <typeparam name="T">The type of value being animated.</typeparam>
+        /// <param name="dp">A <see cref="DependencyProperty"/> instance which identifies the dependency property to animate.</param>
+        /// <param name="value">The animation's target value.</param>
+        /// <param name="fn">The animation's easing function.</param>
+        /// <param name="clock">The clock which drives the animation.</param>
+        public void Animate<T>(DependencyProperty dp, T value, EasingFunction fn, Clock clock)
+        {
+            Contract.Require(dp, "dp");
+            Contract.Require(clock, "clock");
+
+            if (!typeof(T).Equals(dp.PropertyType))
+                throw new InvalidCastException();
+
+            var wrapper = GetDependencyPropertyValue<T>(dp);
+            wrapper.Animate(value, fn, clock);
+        }
+
+        /// <summary>
+        /// Animates the specified dependency property to the specified target value using an internally-managed clock.
+        /// </summary>
+        /// <typeparam name="T">The type of value being animated.</typeparam>
+        /// <param name="dp">A <see cref="DependencyProperty"/> instance which identifies the dependency property to animate.</param>
+        /// <param name="value">The animation's target value.</param>
+        /// <param name="fn">The animation's easing function.</param>
+        /// <param name="loopBehavior">A <see cref="LoopBehavior"/> value specifying the loop behavior of the animation.</param>
+        /// <param name="duration">The animation's duration.</param>
+        public void Animate<T>(DependencyProperty dp, T value, EasingFunction fn, LoopBehavior loopBehavior, TimeSpan duration)
+        {
+            Contract.Require(dp, "dp");
+
+            if (!typeof(T).Equals(dp.PropertyType))
+                throw new InvalidCastException();
+
+            var wrapper = GetDependencyPropertyValue<T>(dp);
+            wrapper.Animate(value, fn, loopBehavior, duration);
         }
 
         /// <summary>

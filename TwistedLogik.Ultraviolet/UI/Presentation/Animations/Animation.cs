@@ -6,7 +6,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
     /// Represents an animation.
     /// </summary>
     /// <typeparam name="T">The type of value that is being animated.</typeparam>
-    public abstract class Animation<T> : AnimationBase
+    public sealed class Animation<T> : AnimationBase
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Animation{T}"/> class.
@@ -24,7 +24,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
         /// <param name="easing">The easing function.</param>
         /// <param name="factor">The interpolation factor.</param>
         /// <returns>The interpolated value.</returns>
-        public abstract T InterpolateValues(T value1, T value2, EasingFunction easing, Single factor);
+        public T InterpolateValues(T value1, T value2, EasingFunction easing, Single factor)
+        {
+            return Tweening.Tween(value1, value2, easing, factor);
+        }
 
         /// <summary>
         /// Gets the animation's first keyframe.

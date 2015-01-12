@@ -25,6 +25,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <inheritdoc/>
+        public override void ClearAnimationsRecursive()
+        {
+            base.ClearAnimationsRecursive();
+
+            if (componentRoot != null)
+                componentRoot.ClearAnimationsRecursive();
+        }
+
+        /// <inheritdoc/>
         public override void ClearLocalValuesRecursive()
         {
             base.ClearLocalValuesRecursive();

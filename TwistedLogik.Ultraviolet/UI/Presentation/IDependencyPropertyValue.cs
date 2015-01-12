@@ -131,5 +131,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             get;
         }
+
+        /// <summary>
+        /// Gets the clock which is driving the value's current animation, if any.
+        /// </summary>
+        Clock AnimationClock
+        {
+            get;
+        }
     }
 }
