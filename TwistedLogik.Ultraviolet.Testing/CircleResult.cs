@@ -9,7 +9,7 @@ namespace TwistedLogik.Ultraviolet.Testing
     public sealed class CircleResult
     {
         /// <summary>
-        /// Initializes a new instance of the CircleFResult class.
+        /// Initializes a new instance of the <see cref="CircleResult"/> class.
         /// </summary>
         /// <param name="value">The value being examined.</param>
         internal CircleResult(Circle value)

@@ -25,23 +25,23 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Compares two sizes for equality.
         /// </summary>
-        /// <param name="a1">The first <see cref="Size2D"/> to compare.</param>
-        /// <param name="a2">The second <see cref="Size2D"/> to compare.</param>
+        /// <param name="s1">The first <see cref="Size2D"/> to compare.</param>
+        /// <param name="s2">The second <see cref="Size2D"/> to compare.</param>
         /// <returns><c>true</c> if the specified sizes are equal; otherwise, <c>false</c>.</returns>
-        public static Boolean operator ==(Size2D a1, Size2D a2)
+        public static Boolean operator ==(Size2D s1, Size2D s2)
         {
-            return a1.Equals(a2);
+            return s1.Equals(s2);
         }
 
         /// <summary>
         /// Compares two sizes for inequality.
         /// </summary>
-        /// <param name="a1">The first <see cref="Size2D"/> to compare.</param>
-        /// <param name="a2">The second <see cref="Size2D"/> to compare.</param>
+        /// <param name="s1">The first <see cref="Size2D"/> to compare.</param>
+        /// <param name="s2">The second <see cref="Size2D"/> to compare.</param>
         /// <returns><c>true</c> if the specified sizes are unequal; otherwise, <c>false</c>.</returns>
-        public static Boolean operator !=(Size2D a1, Size2D a2)
+        public static Boolean operator !=(Size2D s1, Size2D s2)
         {
-            return !a1.Equals(a2);
+            return !s1.Equals(s2);
         }
 
         /// <summary>
@@ -52,6 +52,16 @@ namespace TwistedLogik.Ultraviolet
         public static explicit operator Size2(Size2D size)
         {
             return new Size2((Int32)size.width, (Int32)size.height);
+        }
+
+        /// <summary>
+        /// Implicitly converts a <see cref="Size2"/> structure to a <see cref="Size2D"/> structure.
+        /// </summary>
+        /// <param name="size">The structure to convert.</param>
+        /// <returns>The converted structure.</returns>
+        public static implicit operator Size2D(Size2 size)
+        {
+            return new Size2D(size.Width, size.Height);
         }
 
         /// <summary>

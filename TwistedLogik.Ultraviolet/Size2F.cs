@@ -25,33 +25,43 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Compares two sizes for equality.
         /// </summary>
-        /// <param name="a1">The first <see cref="Size2F"/> to compare.</param>
-        /// <param name="a2">The second <see cref="Size2F"/> to compare.</param>
+        /// <param name="s1">The first <see cref="Size2F"/> to compare.</param>
+        /// <param name="s2">The second <see cref="Size2F"/> to compare.</param>
         /// <returns><c>true</c> if the specified sizes are equal; otherwise, <c>false</c>.</returns>
-        public static Boolean operator ==(Size2F a1, Size2F a2)
+        public static Boolean operator ==(Size2F s1, Size2F s2)
         {
-            return a1.Equals(a2);
+            return s1.Equals(s2);
         }
 
         /// <summary>
         /// Compares two sizes for inequality.
         /// </summary>
-        /// <param name="a1">The first <see cref="Size2F"/> to compare.</param>
-        /// <param name="a2">The second <see cref="Size2F"/> to compare.</param>
+        /// <param name="s1">The first <see cref="Size2F"/> to compare.</param>
+        /// <param name="s2">The second <see cref="Size2F"/> to compare.</param>
         /// <returns><c>true</c> if the specified sizes are unequal; otherwise, <c>false</c>.</returns>
-        public static Boolean operator !=(Size2F a1, Size2F a2)
+        public static Boolean operator !=(Size2F s1, Size2F s2)
         {
-            return !a1.Equals(a2);
+            return !s1.Equals(s2);
         }
 
         /// <summary>
         /// Explicitly converts a <see cref="Size2F"/> structure to a <see cref="Size2"/> structure.
         /// </summary>
-        /// <param name="area">The structure to convert.</param>
+        /// <param name="size">The structure to convert.</param>
         /// <returns>The converted structure.</returns>
-        public static explicit operator Size2(Size2F area)
+        public static explicit operator Size2(Size2F size)
         {
-            return new Size2((int)area.width, (int)area.height);
+            return new Size2((Int32)size.width, (Int32)size.height);
+        }
+
+        /// <summary>
+        /// Implicitly converts a <see cref="Size2"/> structure to a <see cref="Size2F"/> structure.
+        /// </summary>
+        /// <param name="size">The structure to convert.</param>
+        /// <returns>The converted structure.</returns>
+        public static implicit operator Size2F(Size2 size)
+        {
+            return new Size2F(size.Width, size.Height);
         }
 
         /// <summary>

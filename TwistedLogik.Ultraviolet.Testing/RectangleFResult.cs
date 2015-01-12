@@ -4,12 +4,12 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace TwistedLogik.Ultraviolet.Testing
 {
     /// <summary>
-    /// Represents a unit test result containing a floating-point rectangle value.
+    /// Represents a unit test result containing a floating point rectangle value.
     /// </summary>
     public sealed class RectangleFResult
     {
         /// <summary>
-        /// Initializes a new instance of the RectangleFResult class.
+        /// Initializes a new instance of the <see cref="RectangleFResult"/> class.
         /// </summary>
         /// <param name="value">The value being examined.</param>
         internal RectangleFResult(RectangleF value)

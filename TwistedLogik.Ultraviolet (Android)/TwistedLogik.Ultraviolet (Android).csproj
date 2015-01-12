@@ -90,6 +90,9 @@
     <Compile Include="..\TwistedLogik.Ultraviolet\Circle.cs">
       <Link>Circle.cs</Link>
     </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\CircleD.cs">
+      <Link>CircleD.cs</Link>
+    </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet\CircleF.cs">
       <Link>CircleF.cs</Link>
     </Compile>
@@ -771,6 +774,15 @@
     <Compile Include="..\TwistedLogik.Ultraviolet\Platform\WindowState.cs">
       <Link>Platform\WindowState.cs</Link>
     </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Point2.cs">
+      <Link>Point2.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Point2D.cs">
+      <Link>Point2D.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Point2F.cs">
+      <Link>Point2F.cs</Link>
+    </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet\Properties\AssemblyInfo.cs">
       <Link>Properties\AssemblyInfo.cs</Link>
     </Compile>
@@ -1365,7 +1377,7 @@
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties ProjectLinkReference="f071abe3-05e5-4df9-a929-cf71b01ec50a" ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" />
+      <UserProperties ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" ProjectLinkReference="f071abe3-05e5-4df9-a929-cf71b01ec50a" />
     </VisualStudio>
   </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

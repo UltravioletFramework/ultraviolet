@@ -4,29 +4,29 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace TwistedLogik.Ultraviolet.Testing
 {
     /// <summary>
-    /// Represents a unit test result containing a two-dimensional floating point size value.
+    /// Represents a unit test result containing a two-dimensional point value with floating point components.
     /// </summary>
-    public sealed class Size2FResult
+    public sealed class Point2FResult
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="Size2FResult"/> class.
+        /// Initializes a new instance of the <see cref="Point2FResult"/> class.
         /// </summary>
         /// <param name="value">The value being examined.</param>
-        internal Size2FResult(Size2F value)
+        internal Point2FResult(Point2F value)
         {
             this.value = value;
         }
 
         /// <summary>
-        /// Asserts that this size should have the specified values.
+        /// Asserts that this point should have the specified values.
         /// </summary>
-        /// <param name="width">The expected width.</param>
-        /// <param name="height">The expected height.</param>
+        /// <param name="x">The expected x-coordinate.</param>
+        /// <param name="y">The expected y-coordinate.</param>
         /// <returns>The result object.</returns>
-        public Size2FResult ShouldBe(Single width, Single height)
+        public Point2FResult ShouldBe(Single x, Single y)
         {
-            Assert.AreEqual(width, value.Width, delta);
-            Assert.AreEqual(height, value.Height, delta);
+            Assert.AreEqual(x, value.X, delta);
+            Assert.AreEqual(y, value.Y, delta);
             return this;
         }
 
@@ -35,7 +35,7 @@ namespace TwistedLogik.Ultraviolet.Testing
         /// </summary>
         /// <param name="delta">The delta value to set.</param>
         /// <returns>The result object.</returns>
-        public Size2FResult WithinDelta(Single delta)
+        public Point2FResult WithinDelta(Single delta)
         {
             this.delta = delta;
             return this;
@@ -44,13 +44,13 @@ namespace TwistedLogik.Ultraviolet.Testing
         /// <summary>
         /// Gets the underlying value.
         /// </summary>
-        public Size2F Value
+        public Point2F Value
         {
             get { return value; }
         }
 
         // State values.
-        private readonly Size2F value;
+        private readonly Point2F value;
         private Single delta = 0.001f;
     }
 }

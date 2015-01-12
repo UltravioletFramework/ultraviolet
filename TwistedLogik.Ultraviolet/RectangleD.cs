@@ -59,6 +59,16 @@ namespace TwistedLogik.Ultraviolet
         }
 
         /// <summary>
+        /// Implicitly converts a <see cref="Rectangle"/> structure to a <see cref="RectangleD"/> structure.
+        /// </summary>
+        /// <param name="rect">The structure to convert.</param>
+        /// <returns>The converted structure.</returns>
+        public static implicit operator RectangleD(Rectangle rect)
+        {
+            return new RectangleD(rect.X, rect.Y, rect.Width, rect.Height);
+        }
+
+        /// <summary>
         /// Explicitly converts a <see cref="RectangleD"/> structure to a <see cref="RectangleF"/> structure.
         /// </summary>
         /// <param name="rect">The structure to convert.</param>
@@ -399,6 +409,30 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Gets a value indicating whether the rectangle contains the specified point.
         /// </summary>
+        /// <param name="point">The point to evaluate.</param>
+        /// <param name="result">A value indicating whether the rectangle contains the specified point.</param>
+        public void Contains(ref Point2D point, out Boolean result)
+        {
+            result =
+                point.X >= this.x && point.X < this.x + this.width &&
+                point.Y >= this.y && point.Y < this.y + this.height;
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the rectangle contains the specified point.
+        /// </summary>
+        /// <param name="point">The point to evaluate.</param>
+        /// <returns><c>true</c> if the rectangle contains the specified point; otherwise, <c>false</c>.</returns>
+        public Boolean Contains(Point2D point)
+        {
+            return
+                point.X >= this.x && point.X < this.x + this.width &&
+                point.Y >= this.y && point.Y < this.y + this.height;
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the rectangle contains the specified point.
+        /// </summary>
         /// <param name="point">A <see cref="Vector2"/> representing the point to evaluate.</param>
         /// <param name="result">A value indicating whether the rectangle contains the specified point.</param>
         public void Contains(ref Vector2 point, out Boolean result)
@@ -442,28 +476,6 @@ namespace TwistedLogik.Ultraviolet
             return
                 this.x <= rectangle.x && rectangle.x + rectangle.width <= this.x + this.width &&
                 this.y <= rectangle.y && rectangle.y + rectangle.height <= this.y + this.height;
-        }
-
-        /// <summary>
-        /// Gets the coordinates of the top-left corner of the rectangle.
-        /// </summary>
-        /// <param name="x">The x-coordinate of the rectangle's location.</param>
-        /// <param name="y">The y-coordinate of the rectangle's location.</param>
-        public void GetLocation(out Double x, out Double y)
-        {
-            x = this.x;
-            y = this.y;
-        }
-
-        /// <summary>
-        /// Gets the coordinates of the center of the rectangle.
-        /// </summary>
-        /// <param name="x">The x-coordinate of the rectangle's center.</param>
-        /// <param name="y">The y-coordinate of the rectangle's center.</param>
-        public void GetCenter(out Double x, out Double y)
-        {
-            x = this.x + (width / 2.0);
-            y = this.y + (height / 2.0);
         }
 
         /// <summary>
@@ -559,6 +571,22 @@ namespace TwistedLogik.Ultraviolet
         public Double Right
         {
             get { return x + width; }
+        }
+
+        /// <summary>
+        /// Gets the position of the rectangle's top-left corner.
+        /// </summary>
+        public Point2D Location
+        {
+            get { return new Point2D(x, y); }
+        }
+
+        /// <summary>
+        /// Gets the position of the rectangle's center.
+        /// </summary>
+        public Point2D Center
+        {
+            get { return new Point2D(x + (width / 2.0), y + (height / 2.0)); }
         }
 
         // Property values.
