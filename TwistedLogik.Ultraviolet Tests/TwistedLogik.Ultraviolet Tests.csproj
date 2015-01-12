@@ -126,9 +126,12 @@
     <Compile Include="Graphics\Graphics2D\Text\TextRendererTests.cs" />
     <Compile Include="Graphics\UltravioletGraphicsTests.cs" />
     <Compile Include="RadiansTest.cs" />
+    <Compile Include="RectangleDTests.cs" />
+    <Compile Include="Size2DTests.cs" />
     <Compile Include="Size2FTests.cs" />
     <Compile Include="RectangleFTests.cs" />
     <Compile Include="RectangleTests.cs" />
+    <Compile Include="Size3DTests.cs" />
     <Compile Include="Size3FTests.cs" />
     <Compile Include="MatrixTests.cs" />
     <Compile Include="Vector4Tests.cs" />

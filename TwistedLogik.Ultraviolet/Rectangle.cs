@@ -427,6 +427,28 @@ namespace TwistedLogik.Ultraviolet
         }
 
         /// <summary>
+        /// Gets the coordinates of the top-left corner of the rectangle.
+        /// </summary>
+        /// <param name="x">The x-coordinate of the rectangle's location.</param>
+        /// <param name="y">The y-coordinate of the rectangle's location.</param>
+        public void GetLocation(out Int32 x, out Int32 y)
+        {
+            x = this.x;
+            y = this.y;
+        }
+
+        /// <summary>
+        /// Gets the coordinates of the center of the rectangle.
+        /// </summary>
+        /// <param name="x">The x-coordinate of the rectangle's center.</param>
+        /// <param name="y">The y-coordinate of the rectangle's center.</param>
+        public void GetCenter(out Int32 x, out Int32 y)
+        {
+            x = this.x + (width / 2);
+            y = this.y + (height / 2);
+        }
+
+        /// <summary>
         /// Interpolates between this value and the specified value.
         /// </summary>
         /// <param name="target">The target value.</param>
