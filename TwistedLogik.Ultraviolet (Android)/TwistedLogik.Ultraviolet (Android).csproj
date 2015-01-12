@@ -780,17 +780,26 @@
     <Compile Include="..\TwistedLogik.Ultraviolet\Rectangle.cs">
       <Link>Rectangle.cs</Link>
     </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\RectangleD.cs">
+      <Link>RectangleD.cs</Link>
+    </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet\RectangleF.cs">
       <Link>RectangleF.cs</Link>
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet\Size2.cs">
       <Link>Size2.cs</Link>
     </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Size2D.cs">
+      <Link>Size2D.cs</Link>
+    </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet\Size2F.cs">
       <Link>Size2F.cs</Link>
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet\Size3.cs">
       <Link>Size3.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Size3D.cs">
+      <Link>Size3D.cs</Link>
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet\Size3F.cs">
       <Link>Size3F.cs</Link>
@@ -1440,7 +1449,7 @@
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" ProjectLinkReference="f071abe3-05e5-4df9-a929-cf71b01ec50a" />
+      <UserProperties ProjectLinkReference="f071abe3-05e5-4df9-a929-cf71b01ec50a" ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" />
     </VisualStudio>
   </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

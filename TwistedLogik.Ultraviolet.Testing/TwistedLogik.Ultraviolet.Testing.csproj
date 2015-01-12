@@ -56,6 +56,9 @@
   <ItemGroup>
     <Compile Include="BitmapResult.cs" />
     <Compile Include="IUltravioletTestApplication.cs" />
+    <Compile Include="RectangleDResult.cs" />
+    <Compile Include="Size2DResult.cs" />
+    <Compile Include="Size3DResult.cs" />
     <Compile Include="UltravioletApplicationTestFramework.cs" />
     <Compile Include="UltravioletTestApplication.cs" />
     <Compile Include="Vector4Result.cs" />
