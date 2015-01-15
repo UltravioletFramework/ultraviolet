@@ -315,8 +315,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var xMargin = margin.Left + margin.Right;
             var yMargin = margin.Top + margin.Bottom;
 
-            var desiredWidth  = Math.Min(DesiredSize.Width, finalRect.Width);
-            var desiredHeight = Math.Min(DesiredSize.Height, finalRect.Height);
+            var desiredWidth  = (HorizontalAlignment == HorizontalAlignment.Stretch) ? finalRect.Width : Math.Min(DesiredSize.Width, finalRect.Width);
+            var desiredHeight = (VerticalAlignment == VerticalAlignment.Stretch) ? finalRect.Height : Math.Min(DesiredSize.Height, finalRect.Height);
 
             var candidateSize = new Size2D(desiredWidth - xMargin, desiredHeight - yMargin);
             var usedSize      = ArrangeOverride(candidateSize, options);
