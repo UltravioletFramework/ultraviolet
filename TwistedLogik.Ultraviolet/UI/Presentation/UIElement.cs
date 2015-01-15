@@ -325,6 +325,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             }
 
             this.mostRecentFinalRect = finalRect;
+            this.mostRecentRelativeRect = new RectangleD(
+                finalRect.X + RenderOffset.X,
+                finalRect.Y + RenderOffset.Y, ActualWidth, ActualHeight);
             this.mostRecentAbsoluteRect = new RectangleD(
                 finalRect.X + RenderOffset.X + ((Parent == null) ? 0 : Parent.AbsoluteBounds.X),
                 finalRect.Y + RenderOffset.Y + ((Parent == null) ? 0 : Parent.AbsoluteBounds.Y),
@@ -356,6 +359,64 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             this.isArrangeValid = false;
             Ultraviolet.GetUI().PresentationFramework.ArrangeQueue.Enqueue(this);
+        }
+
+        /// <summary>
+        /// Gets the element at the specified pixel coordinates relative to this element's bounds.
+        /// </summary>
+        /// <param name="x">The element-relative x-coordinate of the pixel to evaluate.</param>
+        /// <param name="y">The element-relative y-coordinate of the pixel to evaluate.</param>
+        /// <param name="isHitTest">A value indicating whether this test should respect the value of the <see cref="IsHitTestVisible"/> property.</param>
+        /// <returns>The element at the specified pixel coordinates, or <c>null</c> if no such element exists.</returns>
+        public UIElement GetElementAtPixel(Int32 x, Int32 y, Boolean isHitTest)
+        {
+            var display = Ultraviolet.GetPlatform().Displays.PrimaryDisplay;
+
+            var dipsX = display.PixelsToDips(x);
+            var dipsY = display.PixelsToDips(y);
+
+            return GetElementAtPoint(dipsX, dipsY, isHitTest);
+        }
+
+        /// <summary>
+        /// Gets the element at the specified pixel coordinates relative to this element's bounds.
+        /// </summary>
+        /// <param name="pt">The relative coordinates of the pixel to evaluate.</param>
+        /// <param name="isHitTest">A value indicating whether this test should respect the value of the <see cref="IsHitTestVisible"/> property.</param>
+        /// <returns>The element at the specified pixel coordinates, or <c>null</c> if no such element exists.</returns>
+        public UIElement GetElementAtPixel(Point2 pt, Boolean isHitTest)
+        {
+            return GetElementAtPixel(pt.X, pt.Y, isHitTest);
+        }
+
+        /// <summary>
+        /// Gets the element at the specified device-independent coordinates relative to this element's bounds.
+        /// </summary>
+        /// <param name="x">The element-relative x-coordinate of the point to evaluate.</param>
+        /// <param name="y">The element-relative y-coordinate of the point to evaluate.</param>
+        /// <param name="isHitTest">A value indicating whether this test should respect the value of the <see cref="IsHitTestVisible"/> property.</param>
+        /// <returns>The element at the specified coordinates, or <c>null</c> if no such element exists.</returns>
+        public UIElement GetElementAtPoint(Double x, Double y, Boolean isHitTest)
+        {
+            if (isHitTest && !IsHitTestVisible)
+                return null;
+
+            if (Visibility != Visibility.Visible)
+                return null;
+
+            return GetElementAtPointCore(x, y, isHitTest);
+        }
+
+        /// <summary>
+        /// Gets the element at the specified device-independent coordinates relative to this element's bounds.
+        /// </summary>
+        /// <param name="pt">The relative coordinates of the point to evaluate.</param>
+        /// <param name="isHitTest">A value indicating whether this test should respect the
+        /// value of the <see cref="IsHitTestVisible"/> property.</param>
+        /// <returns>The element at the specified coordinates, or <c>null</c> if no such element exists.</returns>
+        public UIElement GetElementAtPoint(Point2D pt, Boolean isHitTest)
+        {
+            return GetElementAtPoint(pt.X, pt.Y, isHitTest);
         }
 
         /// <summary>
@@ -436,6 +497,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public RectangleD Bounds
         {
             get { return new RectangleD(0, 0, ActualWidth, ActualHeight); }
+        }
+
+        /// <summary>
+        /// Gets the element's bounds relative to its parent element.
+        /// </summary>
+        public RectangleD RelativeBounds
+        {
+            get { return mostRecentRelativeRect; }
         }
 
         /// <summary>
@@ -790,6 +859,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         internal RectangleD MostRecentFinalRect
         {
             get { return mostRecentFinalRect; }
+        }
+
+        /// <summary>
+        /// Gets the most recent result of determining the element's bounds relative to its parent.
+        /// </summary>
+        internal RectangleD MostRecentRelativeRect
+        {
+            get { return mostRecentRelativeRect; }
         }
 
         /// <summary>
@@ -1234,6 +1311,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// When overridden in a derived class, gets the element at the specified device-independent 
+        /// coordinates relative to this element's bounds.
+        /// </summary>
+        /// <param name="x">The element-relative x-coordinate of the point to evaluate.</param>
+        /// <param name="y">The element-relative y-coordinate of the point to evaluate.</param>
+        /// <param name="isHitTest">A value indicating whether this test should respect the value of the <see cref="IsHitTestVisible"/> property.</param>
+        /// <returns>The element at the specified coordinates, or <c>null</c> if no such element exists.</returns>
+        protected virtual UIElement GetElementAtPointCore(Double x, Double y, Boolean isHitTest)
+        {
+            return Bounds.Contains(x, y) ? this : null;
+        }
+
+        /// <summary>
         /// Occurs when the value of the <see cref="IsHitTestVisible"/> dependency property changes.
         /// </summary>
         /// <param name="dobj">The dependency object that raised the event.</param>
@@ -1460,6 +1550,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         // Layout parameters.
         private UvssDocument mostRecentStylesheet;
         private RectangleD mostRecentFinalRect;
+        private RectangleD mostRecentRelativeRect;
         private RectangleD mostRecentAbsoluteRect;
         private Size2D mostRecentAvailableSize;
         private Int32 layoutDepth;

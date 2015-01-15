@@ -282,52 +282,73 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
-        /// Gets the element within this view at the specified point in view space.
+        /// Gets the element at the specified pixel coordinates relative to screen space.
         /// </summary>
-        /// <param name="x">The x-coordinate of the position in view space to evaluate.</param>
-        /// <param name="y">The y-coordinate of the position in view space to evaluate.</param>
-        /// <param name="hitTest">A value indicating whether to honor the value of the <see cref="UIElement.IsHitTestVisible"/> property.</param>
-        /// <returns>The element within this view at the specified point in view space, or <c>null</c> if no element exists at that point.</returns>
-        public UIElement GetElementAtPoint(Int32 x, Int32 y, Boolean hitTest)
+        /// <param name="x">The screen-relative x-coordinate of the pixel to evaluate.</param>
+        /// <param name="y">The screen-relative y-coordinate of the pixel to evaluate.</param>
+        /// <param name="isHitTest">A value indicating whether this test should respect the value of the <see cref="IsHitTestVisible"/> property.</param>
+        /// <returns>The element at the specified pixel coordinates, or <c>null</c> if no such element exists.</returns>
+        public UIElement GetElementAtScreenPixel(Int32 x, Int32 y, Boolean isHitTest)
         {
-            // TODO return LayoutRoot.GetElementAtPoint(x, y, hitTest);
-            return null;
+            return LayoutRoot.GetElementAtPixel(x - area.X, y - area.Y, isHitTest);
         }
 
         /// <summary>
-        /// Gets the element within this view at the specified point in view space.
+        /// Gets the element at the specified pixel coordinates relative to screen space.
         /// </summary>
-        /// <param name="position">The position in view space to evaluate.</param>
-        /// <param name="hitTest">A value indicating whether to honor the value of the <see cref="UIElement.IsHitTestVisible"/> property.</param>
-        /// <returns>The element within this view at the specified point in view space, or <c>null</c> if no element exists at that point.</returns>
-        public UIElement GetElementAtPoint(Vector2 position, Boolean hitTest)
+        /// <param name="pt">The screen-relative coordinates of the pixel to evaluate.</param>
+        /// <param name="isHitTest">A value indicating whether this test should respect the value of the <see cref="IsHitTestVisible"/> property.</param>
+        /// <returns>The element at the specified pixel coordinates, or <c>null</c> if no such element exists.</returns>
+        public UIElement GetElementAtScreenPixel(Point2 pt, Boolean isHitTest)
         {
-            return GetElementAtPoint((Int32)position.X, (Int32)position.Y, hitTest);
+            return GetElementAtScreenPixel(pt.X, pt.Y, isHitTest);
         }
 
         /// <summary>
-        /// Gets the element within this view at the specified point in screen space.
+        /// Gets the element at the specified pixel coordinates relative to this view's bounds.
         /// </summary>
-        /// <param name="x">The x-coordinate of the position in screen space to evaluate.</param>
-        /// <param name="y">The y-coordinate of the position in screen space to evaluate.</param>
-        /// <param name="hitTest">A value indicating whether to honor the value of the <see cref="UIElement.IsHitTestVisible"/> property.</param>
-        /// <returns>The element within this view at the specified point in screen space, or <c>null</c> if no element exists at that point.</returns>
-        public UIElement GetElementAtScreenPoint(Int32 x, Int32 y, Boolean hitTest)
+        /// <param name="x">The view-relative x-coordinate of the pixel to evaluate.</param>
+        /// <param name="y">The view-relative y-coordinate of the pixel to evaluate.</param>
+        /// <param name="isHitTest">A value indicating whether this test should respect the value of the <see cref="IsHitTestVisible"/> property.</param>
+        /// <returns>The element at the specified pixel coordinates, or <c>null</c> if no such element exists.</returns>
+        public UIElement GetElementAtPixel(Int32 x, Int32 y, Boolean isHitTest)
         {
-            var xprime = x - Area.X;
-            var yprime = y - Area.Y;
-            return GetElementAtPoint(xprime, yprime, hitTest);
+            return LayoutRoot.GetElementAtPixel(x, y, isHitTest);
         }
 
         /// <summary>
-        /// Gets the element within this view at the specified point in screen space.
+        /// Gets the element at the specified pixel coordinates relative to this view's bounds.
         /// </summary>
-        /// <param name="position">The position in screen space to evaluate.</param>
-        /// <param name="hitTest">A value indicating whether to honor the value of the <see cref="UIElement.IsHitTestVisible"/> property.</param>
-        /// <returns>The element within this view at the specified point in screen space, or <c>null</c> if no element exists at that point.</returns>
-        public UIElement GetElementAtScreenPoint(Vector2 position, Boolean hitTest)
+        /// <param name="pt">The view-relative coordinates of the pixel to evaluate.</param>
+        /// <param name="isHitTest">A value indicating whether this test should respect the value of the <see cref="IsHitTestVisible"/> property.</param>
+        /// <returns>The element at the specified pixel coordinates, or <c>null</c> if no such element exists.</returns>
+        public UIElement GetElementAtPixel(Point2 pt, Boolean isHitTest)
         {
-            return GetElementAtScreenPoint((Int32)position.X, (Int32)position.Y, hitTest);
+            return LayoutRoot.GetElementAtPixel(pt, isHitTest);
+        }
+
+        /// <summary>
+        /// Gets the element at the specified device-independent coordinates relative to this view's bounds.
+        /// </summary>
+        /// <param name="x">The view-relative x-coordinate of the point to evaluate.</param>
+        /// <param name="y">The view-relative y-coordinate of the point to evaluate.</param>
+        /// <param name="isHitTest">A value indicating whether this test should respect the value of the <see cref="IsHitTestVisible"/> property.</param>
+        /// <returns>The element at the specified coordinates, or <c>null</c> if no such element exists.</returns>
+        public UIElement GetElementAtPoint(Double x, Double y, Boolean isHitTest)
+        {
+            return LayoutRoot.GetElementAtPoint(x, y, isHitTest);
+        }
+
+        /// <summary>
+        /// Gets the element at the specified device-independent coordinates relative to this view's bounds.
+        /// </summary>
+        /// <param name="pt">The view-relative coordinates of the point to evaluate.</param>
+        /// <param name="isHitTest">A value indicating whether this test should respect the
+        /// value of the <see cref="IsHitTestVisible"/> property.</param>
+        /// <returns>The element at the specified coordinates, or <c>null</c> if no such element exists.</returns>
+        public UIElement GetElementAtPoint(Point2D pt, Boolean isHitTest)
+        {
+            return LayoutRoot.GetElementAtPoint(pt, isHitTest);
         }
 
         /// <summary>
@@ -764,7 +785,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 var mouseView = mouse.Window == Window ? this : null;
 
                 elementUnderMousePrev = elementUnderMouse;
-                elementUnderMouse     = (mouseView == null) ? null : mouseView.GetElementAtScreenPoint(mousePos, true);
+                elementUnderMouse     = (mouseView == null) ? null : mouseView.GetElementAtScreenPixel((Point2)mousePos, true);
             }
 
             if (elementUnderMouse != null && !elementUnderMouse.IsHitTestVisible)
@@ -780,7 +801,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                     elementUnderMousePrev.OnMouseLeave(mouse);
 
                 if (elementUnderMouse != null)
+                {
                     elementUnderMouse.OnMouseEnter(mouse);
+                }
             }
         }
 
