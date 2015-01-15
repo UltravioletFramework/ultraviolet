@@ -1,5 +1,5 @@
 ﻿
-namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
+namespace TwistedLogik.Ultraviolet.UI.Presentation
 {
     /// <summary>
     /// Represents the display state of a framework element.

@@ -269,7 +269,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="finalRect">The element's final position and size relative to its parent element.</param>
         public void Arrange(RectangleD finalRect)
         {
-            this.renderSize = ArrangeCore(finalRect);
+            if (Visibility == Visibility.Collapsed)
+            {
+                this.renderSize = Size2.Zero;
+            }
+            else
+            {
+                this.renderSize = ArrangeCore(finalRect);
+            }
 
             this.mostRecentFinalRect = finalRect;
             this.mostRecentAbsoluteRect = new RectangleD(
@@ -444,6 +451,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Gets or sets a value specifying the element's visibility state.
+        /// </summary>
+        public Visibility Visibility
+        {
+            get { return GetValue<Visibility>(VisibilityProperty); }
+            set { SetValue<Visibility>(VisibilityProperty, value); }
+        }
+
+        /// <summary>
         /// Gets or sets the offset from the top-left corner of the element's layout
         /// area to the top-left corner of the element itself.
         /// </summary>
@@ -458,7 +474,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         public Size2D RenderSize
         {
-            get { return renderSize; }
+            get 
+            {
+                if (Visibility == Visibility.Collapsed)
+                {
+                    return Size2D.Zero;
+                }
+                return renderSize; 
+            }
         }
 
         /// <summary>
@@ -466,7 +489,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         public Size2D DesiredSize
         {
-            get { return desiredSize; }
+            get 
+            {
+                if (Visibility == Visibility.Collapsed)
+                {
+                    return Size2D.Zero;
+                }
+                return desiredSize; 
+            }
         }
 
         /// <summary>
@@ -576,16 +606,30 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public event UIElementEventHandler FocusableChanged;
 
         /// <summary>
+        /// Occurs when the value of the <see cref="Visibility"/> property changes.
+        /// </summary>
+        public event UIElementEventHandler VisibilityChanged;
+
+        /// <summary>
         /// Identifies the <see cref="IsHitTestVisible"/> dependency property.
         /// </summary>
+        [Styled("hit-test-visible")]
         public static readonly DependencyProperty IsHitTestVisibleProperty = DependencyProperty.Register("IsHitTestVisible", typeof(Boolean), typeof(UIElement),
             new DependencyPropertyMetadata(HandleIsHitTestVisibleChanged, () => true, DependencyPropertyOptions.None));
 
         /// <summary>
         /// Identifies the <see cref="Focusable"/> dependency property.
         /// </summary>
+        [Styled("focusable")]
         public static readonly DependencyProperty FocusableProperty = DependencyProperty.Register("Focusable", typeof(Boolean), typeof(UIElement),
             new DependencyPropertyMetadata(HandleFocusableChanged, () => false, DependencyPropertyOptions.None));
+
+        /// <summary>
+        /// Identifies the <see cref="Visibility"/> dependency property.
+        /// </summary>
+        [Styled("visibility")]
+        public static readonly DependencyProperty VisibilityProperty = DependencyProperty.Register("Visibility", typeof(Visibility), typeof(UIElement),
+            new DependencyPropertyMetadata(HandleVisibilityChanged, () => Visibility.Visible, DependencyPropertyOptions.AffectsMeasure));
 
         /// <summary>
         /// Finds a styled dependency property according to its styling name.
@@ -653,6 +697,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         protected internal sealed override void OnMeasureAffectingPropertyChanged()
         {
             InvalidateMeasure();
+            base.OnMeasureAffectingPropertyChanged();
+        }
+
+        /// <inheritdoc/>
+        protected internal sealed override void OnArrangeAffectingPropertyChanged()
+        {
+            InvalidateArrange();
             base.OnMeasureAffectingPropertyChanged();
         }
 
@@ -922,6 +973,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Raises the <see cref="VisibilityChanged"/> event.
+        /// </summary>
+        protected virtual void OnVisibilityChanged()
+        {
+            var temp = VisibilityChanged;
+            if (temp != null)
+            {
+                temp(this);
+            }
+        }
+
+        /// <summary>
         /// When overridden in a derived class, draws the element using the specified <see cref="SpriteBatch"/>.
         /// </summary>
         /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Draw(UltravioletTime)"/>.</param>
@@ -1047,13 +1110,23 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
-        /// Occurs when the value of the <see cref="FocusableChanged"/> dependency property changes.
+        /// Occurs when the value of the <see cref="Focusable"/> dependency property changes.
         /// </summary>
         /// <param name="dobj">The dependency object that raised the event.</param>
         private static void HandleFocusableChanged(DependencyObject dobj)
         {
             var element = (UIElement)dobj;
             element.OnFocusableChanged();
+        }
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="Visibility"/> dependency property changes.
+        /// </summary>
+        /// <param name="dobj">The dependency object that raised the event.</param>
+        private static void HandleVisibilityChanged(DependencyObject dobj)
+        {
+            var element = (UIElement)dobj;
+            element.OnVisibilityChanged();
         }
 
         /// <summary>

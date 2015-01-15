@@ -64,6 +64,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             {
                 dobj.OnMeasureAffectingPropertyChanged();
             }
+
+            if (IsArrangeAffecting)
+            {
+                dobj.OnArrangeAffectingPropertyChanged();
+            }
         }
 
         /// <summary>
@@ -102,7 +107,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
-        /// Gets a value indicating whether this dependency property potentially affects the layout of its object.
+        /// Gets a value indicating whether this dependency property potentially affects the arrangement state of its object.
+        /// </summary>
+        internal Boolean IsArrangeAffecting
+        {
+            get
+            {
+                return (options & DependencyPropertyOptions.AffectsArrange) == DependencyPropertyOptions.AffectsArrange;
+            }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether this dependency property potentially affects the measurement state of its object.
         /// </summary>
         internal Boolean IsMeasureAffecting
         {
