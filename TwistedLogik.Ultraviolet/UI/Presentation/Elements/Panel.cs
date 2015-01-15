@@ -1,6 +1,7 @@
 ﻿using System;
-using TwistedLogik.Ultraviolet.UI.Presentation.Styles;
 using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
+using TwistedLogik.Ultraviolet.UI.Presentation.Animations;
+using TwistedLogik.Ultraviolet.UI.Presentation.Styles;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
 {
@@ -135,6 +136,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
                 child.CacheLayoutParameters();
 
             base.CacheLayoutParametersCore();
+        }
+
+        /// <inheritdoc/>
+        protected override void AnimateCore(Storyboard storyboard, StoryboardClock clock, UIElement root)
+        {
+            foreach (var child in children)
+                child.Animate(storyboard, clock, root);
+
+            base.AnimateCore(storyboard, clock, root);
         }
 
         /// <inheritdoc/>

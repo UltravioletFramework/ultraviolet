@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet.UI.Presentation.Animations;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
+namespace TwistedLogik.Ultraviolet.UI.Presentation
 {
     /// <summary>
     /// Represents a collection of visual state groups belonging to a particular control.
@@ -13,8 +13,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <summary>
         /// Initializes a new instance of the <see cref="VisualStateGroupCollection"/> class.
         /// </summary>
-        /// <param name="element">The UI element that owns the collection.</param>
-        internal VisualStateGroupCollection(UIElement element)
+        /// <param name="element">The framework element that owns the collection.</param>
+        internal VisualStateGroupCollection(FrameworkElement element)
         {
             Contract.Require(element, "element");
 
@@ -180,15 +180,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <summary>
-        /// Gets the UI element that owns the collection.
+        /// Gets the framework element that owns the collection.
         /// </summary>
-        public UIElement Element
+        public FrameworkElement Element
         {
             get { return element; }
         }
 
         // Property values.
-        private readonly UIElement element;
+        private readonly FrameworkElement element;
 
         // State values.
         private readonly Dictionary<String, VisualStateGroup> groups = 

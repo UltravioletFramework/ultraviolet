@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
+using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
+using TwistedLogik.Ultraviolet.UI.Presentation.Animations;
 using TwistedLogik.Ultraviolet.UI.Presentation.Styles;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation
@@ -17,7 +20,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public FrameworkElement(UltravioletContext uv, String id)
             : base(uv, id)
         {
-
+            this.visualStateGroups = new VisualStateGroupCollection(this);
+            this.visualStateGroups.Create("focus", VSGFocus);
         }
 
         /// <summary>
@@ -209,6 +213,48 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public static readonly DependencyProperty VerticalAlignmentProperty = DependencyProperty.Register("VerticalAlignment", typeof(VerticalAlignment), typeof(FrameworkElement),
             new DependencyPropertyMetadata(HandleVerticalAlignmentChanged, () => VerticalAlignment.Top, DependencyPropertyOptions.AffectsArrange));
 
+        /// <summary>
+        /// Applies the specified visual state transition to this element.
+        /// </summary>
+        /// <param name="style">The style which defines the state transition.</param>
+        /// <param name="value">The transition value.</param>
+        internal void ApplyVisualStateTransition(UvssStyle style, String value)
+        {
+            Contract.Require(style, "style");
+            Contract.RequireNotEmpty(value, "value");
+
+            if (View != null && View.Stylesheet != null)
+            {
+                var storyboard = View.Stylesheet.InstantiateStoryboardByName(Ultraviolet, value);
+                if (storyboard != null)
+                {
+                    var group = default(String);
+                    var from  = default(String);
+                    var to    = default(String);
+
+                    switch (style.Arguments.Count)
+                    {
+                        case 2:
+                            group = style.Arguments[0];
+                            from  = null;
+                            to    = style.Arguments[1];
+                            break;
+
+                        case 3:
+                            group = style.Arguments[0];
+                            from  = style.Arguments[1];
+                            to    = style.Arguments[2];
+                            break;
+
+                        default:
+                            throw new NotSupportedException();
+                    }
+
+                    VisualStateGroups.SetVisualStateTransition(group, from, to, storyboard);
+                }
+            }
+        }
+
         /// <inheritdoc/>
         protected sealed override void DrawCore(UltravioletTime time, SpriteBatch spriteBatch, Single opacity)
         {
@@ -319,6 +365,22 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             usedSize = new Size2D(usedWidth, usedHeight);
             return usedSize;
+        }
+
+        /// <inheritdoc/>
+        protected internal override void OnFocused()
+        {
+            VisualStateGroups.GoToState("focus", "focused");
+
+            base.OnFocused();
+        }
+
+        /// <inheritdoc/>
+        protected internal override void OnBlurred()
+        {
+            VisualStateGroups.GoToState("focus", "blurred");
+
+            base.OnBlurred();
         }
 
         /// <summary>
@@ -486,6 +548,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Gets the element's collection of visual state groups.
+        /// </summary>
+        protected VisualStateGroupCollection VisualStateGroups
+        {
+            get { return visualStateGroups; }
+        }
+
+        /// <summary>
         /// Occurs when the value of the <see cref="Width"/> dependency property changes.
         /// </summary>
         /// <param name="dobj">The dependency object that raised the event.</param>
@@ -574,5 +644,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var frameworkElement = (FrameworkElement)dobj;
             frameworkElement.OnVerticalAlignmentChanged();
         }
+
+        // Standard visual state groups.
+        private static readonly String[] VSGFocus = new[] { "focused", "blurred" };
+
+        // Property values.
+        private readonly VisualStateGroupCollection visualStateGroups;
     }
 }

@@ -873,6 +873,9 @@
     <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Animations\StoryboardClock.cs">
       <Link>UI\Presentation\Animations\StoryboardClock.cs</Link>
     </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Animations\StoryboardClockPool.cs">
+      <Link>UI\Presentation\Animations\StoryboardClockPool.cs</Link>
+    </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Animations\StoryboardTarget.cs">
       <Link>UI\Presentation\Animations\StoryboardTarget.cs</Link>
     </Compile>
@@ -992,24 +995,6 @@
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Elements\UserControl.cs">
       <Link>UI\Presentation\Elements\UserControl.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Elements\VisualState.cs">
-      <Link>UI\Presentation\Elements\VisualState.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Elements\VisualStateGroup.cs">
-      <Link>UI\Presentation\Elements\VisualStateGroup.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Elements\VisualStateGroup.IEnumerable.cs">
-      <Link>UI\Presentation\Elements\VisualStateGroup.IEnumerable.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Elements\VisualStateGroupCollection.cs">
-      <Link>UI\Presentation\Elements\VisualStateGroupCollection.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Elements\VisualStateGroupCollection.IEnumerable.cs">
-      <Link>UI\Presentation\Elements\VisualStateGroupCollection.IEnumerable.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Elements\VisualStateTransitionKey.cs">
-      <Link>UI\Presentation\Elements\VisualStateTransitionKey.cs</Link>
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\FrameworkElement.cs">
       <Link>UI\Presentation\FrameworkElement.cs</Link>
@@ -1208,6 +1193,24 @@
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Visibility.cs">
       <Link>UI\Presentation\Visibility.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\VisualState.cs">
+      <Link>UI\Presentation\VisualState.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\VisualStateGroup.cs">
+      <Link>UI\Presentation\VisualStateGroup.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\VisualStateGroup.IEnumerable.cs">
+      <Link>UI\Presentation\VisualStateGroup.IEnumerable.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\VisualStateGroupCollection.cs">
+      <Link>UI\Presentation\VisualStateGroupCollection.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\VisualStateGroupCollection.IEnumerable.cs">
+      <Link>UI\Presentation\VisualStateGroupCollection.IEnumerable.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\VisualStateTransitionKey.cs">
+      <Link>UI\Presentation\VisualStateTransitionKey.cs</Link>
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet\UI\UIPanel.cs">
       <Link>UI\UIPanel.cs</Link>

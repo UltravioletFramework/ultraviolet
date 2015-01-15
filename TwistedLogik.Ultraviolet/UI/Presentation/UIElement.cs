@@ -8,6 +8,7 @@ using TwistedLogik.Nucleus;
 using TwistedLogik.Nucleus.Data;
 using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
 using TwistedLogik.Ultraviolet.Input;
+using TwistedLogik.Ultraviolet.UI.Presentation.Animations;
 using TwistedLogik.Ultraviolet.UI.Presentation.Styles;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation
@@ -222,6 +223,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         public void Cleanup()
         {
+            ClearAnimations(false);
+            CleanupStoryboards();
             CleanupCore();
         }
 
@@ -235,6 +238,49 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             CacheControl();
 
             CacheLayoutParametersCore();
+        }
+
+        /// <summary>
+        /// Animates this element using the specified storyboard.
+        /// </summary>
+        /// <param name="storyboard">The storyboard being applied to the element.</param>
+        /// <param name="clock">The storyboard clock that tracks playback.</param>
+        /// <param name="root">The root element to which the storyboard is being applied.</param>
+        public void Animate(Storyboard storyboard, StoryboardClock clock, UIElement root)
+        {
+            Contract.Require(storyboard, "storyboard");
+            Contract.Require(clock, "clock");
+            Contract.Require(root, "root");
+
+            foreach (var target in storyboard.Targets)
+            {
+                var targetAppliesToElement = false;
+                if (target.Selector == null)
+                {
+                    if (this == root)
+                    {
+                        targetAppliesToElement = true;
+                    }
+                }
+                else
+                {
+                    targetAppliesToElement = target.Selector.MatchesElement(this, root);
+                }
+
+                if (targetAppliesToElement)
+                {
+                    foreach (var animation in target.Animations)
+                    {
+                        var dp = FindDependencyPropertyByName(animation.Key);
+                        if (dp != null)
+                        {
+                            Animate(dp, animation.Value, clock);
+                        }
+                    }
+                }
+            }
+
+            AnimateCore(storyboard, clock, root);
         }
 
         /// <summary>
@@ -645,12 +691,89 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             while (type != null)
             {
-                // TODO
+                Dictionary<String, DependencyProperty> styledPropertiesForCurrentType;
+                if (styledProperties.TryGetValue(type, out styledPropertiesForCurrentType))
+                {
+                    DependencyProperty dp;
+                    if (styledPropertiesForCurrentType.TryGetValue(name, out dp))
+                    {
+                        return dp;
+                    }
+                }
 
                 type = type.BaseType;
             }
-
             return null;
+        }
+
+        /// <summary>
+        /// Searches the object for a dependency property which matches the specified name.
+        /// </summary>
+        /// <param name="name">The name of the dependency property for which to search.</param>
+        /// <returns>The <see cref="DependencyProperty"/> instance which matches the specified name, or <c>null</c> if no
+        /// such property exists on this object.</returns>
+        internal DependencyProperty FindDependencyPropertyByName(DependencyPropertyName name)
+        {
+            if (name.IsAttachedProperty)
+            {
+                if (Parent != null && String.Equals(Parent.Name, name.Container, StringComparison.OrdinalIgnoreCase))
+                {
+                    return DependencyProperty.FindByName(name.Name, Parent.GetType());
+                }
+                return null;
+            }
+            return DependencyProperty.FindByName(name.Name, GetType());
+        }
+
+        /// <summary>
+        /// Finds a styled dependency property according to its styling name.
+        /// </summary>
+        /// <param name="name">The styling name of the dependency property to retrieve.</param>
+        /// <returns>The <see cref="DependencyProperty"/> instance which matches the specified styling name, or <c>null</c> if no
+        /// such dependency property exists on this object.</returns>
+        internal DependencyProperty FindStyledDependencyProperty(String name)
+        {
+            Contract.RequireNotEmpty(name, "name");
+
+            return FindStyledDependencyProperty(name, GetType());
+        }
+
+        /// <summary>
+        /// Begins the specified storyboard on this element.
+        /// </summary>
+        /// <param name="storyboard">The storyboard to begin on this element.</param>
+        internal void BeginStoryboard(Storyboard storyboard)
+        {
+            StoryboardClock existingClock;
+            storyboardClocks.TryGetValue(storyboard, out existingClock);
+
+            var clock = StoryboardClockPool.Instance.Retrieve(storyboard);
+            storyboardClocks[storyboard] = clock;
+
+            Animate(storyboard, clock, this);
+
+            clock.Start();
+
+            if (existingClock != null)
+            {
+                existingClock.Stop();
+                StoryboardClockPool.Instance.Release(existingClock);
+            }
+        }
+
+        /// <summary>
+        /// Stops the specified storyboard on this element.
+        /// </summary>
+        /// <param name="storyboard">The storyboard to stop on this element.</param>
+        internal void StopStoryboard(Storyboard storyboard)
+        {
+            StoryboardClock clock;
+            if (storyboardClocks.TryGetValue(storyboard, out clock))
+            {
+                clock.Stop();
+                storyboardClocks.Remove(storyboard);
+                StoryboardClockPool.Instance.Release(clock);
+            }
         }
 
         /// <summary>
@@ -1068,6 +1191,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// When overridden in a derived class, animates this element using the specified storyboard.
+        /// </summary>
+        /// <param name="storyboard">The storyboard being applied to the element.</param>
+        /// <param name="clock">The storyboard clock that tracks playback.</param>
+        /// <param name="root">The root element to which the storyboard is being applied.</param>
+        protected virtual void AnimateCore(Storyboard storyboard, StoryboardClock clock, UIElement root)
+        {
+
+        }
+
+        /// <summary>
         /// When overridden in a derived class, applies the specified stylesheet
         /// to this element and to any child elements.
         /// </summary>
@@ -1294,6 +1428,20 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             }
         }
 
+        /// <summary>
+        /// Cleans up the element's storyboards by returning any storyboard clocks to the global pool.
+        /// </summary>
+        private void CleanupStoryboards()
+        {
+            var pool = StoryboardClockPool.Instance;
+            foreach (var kvp in storyboardClocks)
+            {
+                kvp.Value.Stop();
+                pool.Release(kvp.Value);
+            }
+            storyboardClocks.Clear();
+        }
+
         // Property values.
         private readonly UltravioletContext uv;
         private readonly UIElementClassCollection classes;
@@ -1315,6 +1463,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         private RectangleD mostRecentAbsoluteRect;
         private Size2D mostRecentAvailableSize;
         private Int32 layoutDepth;
+
+        // The collection of active storyboard clocks on this element.
+        private readonly Dictionary<Storyboard, StoryboardClock> storyboardClocks = 
+            new Dictionary<Storyboard, StoryboardClock>();
 
         // Functions for setting styles on known element types.
         private static readonly MethodInfo miFromString;
