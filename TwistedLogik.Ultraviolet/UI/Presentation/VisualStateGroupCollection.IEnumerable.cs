@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
+namespace TwistedLogik.Ultraviolet.UI.Presentation
 {
     partial class VisualStateGroupCollection
     {

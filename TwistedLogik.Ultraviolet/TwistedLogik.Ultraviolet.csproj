@@ -350,6 +350,7 @@
     <Compile Include="UI\Presentation\Animations\Clock.cs" />
     <Compile Include="UI\Presentation\Animations\SimpleClock.cs" />
     <Compile Include="UI\Presentation\Animations\SimpleClockPool.cs" />
+    <Compile Include="UI\Presentation\Animations\StoryboardClockPool.cs" />
     <Compile Include="UI\Presentation\Elements\ColumnDefinition.cs" />
     <Compile Include="UI\Presentation\Elements\ColumnDefinitionCollection.cs" />
     <Compile Include="UI\Presentation\Elements\ColumnDefinitionCollection.IEnumerable.cs" />
@@ -426,12 +427,12 @@
     <Compile Include="UI\Presentation\UIElementRegistry.cs" />
     <Compile Include="UI\Presentation\UvmlLoader.cs" />
     <Compile Include="UI\Presentation\UvmlException.cs" />
-    <Compile Include="UI\Presentation\Elements\VisualState.cs" />
-    <Compile Include="UI\Presentation\Elements\VisualStateGroup.cs" />
-    <Compile Include="UI\Presentation\Elements\VisualStateGroup.IEnumerable.cs" />
-    <Compile Include="UI\Presentation\Elements\VisualStateGroupCollection.cs" />
-    <Compile Include="UI\Presentation\Elements\VisualStateGroupCollection.IEnumerable.cs" />
-    <Compile Include="UI\Presentation\Elements\VisualStateTransitionKey.cs" />
+    <Compile Include="UI\Presentation\VisualState.cs" />
+    <Compile Include="UI\Presentation\VisualStateGroup.cs" />
+    <Compile Include="UI\Presentation\VisualStateGroup.IEnumerable.cs" />
+    <Compile Include="UI\Presentation\VisualStateGroupCollection.cs" />
+    <Compile Include="UI\Presentation\VisualStateGroupCollection.IEnumerable.cs" />
+    <Compile Include="UI\Presentation\VisualStateTransitionKey.cs" />
     <Compile Include="UI\Presentation\DataBindingGetterBuilder.cs" />
     <Compile Include="UI\Presentation\DataBindingSetterBuilder.cs" />
     <Compile Include="UI\Presentation\DependencyBoundValue.cs" />

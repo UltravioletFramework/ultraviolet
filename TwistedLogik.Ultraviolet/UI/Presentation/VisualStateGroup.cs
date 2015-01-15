@@ -4,7 +4,7 @@ using System.Linq;
 using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet.UI.Presentation.Animations;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
+namespace TwistedLogik.Ultraviolet.UI.Presentation
 {
     /// <summary>
     /// Represents one of a UI element's visual state groups.
@@ -14,9 +14,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <summary>
         /// Initializes a new instance of the <see cref="VisualStateGroup"/> class.
         /// </summary>
-        /// <param name="element">The UI element that owns the visual state group.</param>
+        /// <param name="element">The framework element that owns the visual state group.</param>
         /// <param name="name">The visual state group's name.</param>
-        internal VisualStateGroup(UIElement element, String name)
+        internal VisualStateGroup(FrameworkElement element, String name)
         {
             Contract.Require(element, "element");
             Contract.RequireNotEmpty(name, "name");
@@ -203,9 +203,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <summary>
-        /// Gets the UI element that owns the visual state group.
+        /// Gets the framework element that owns the visual state group.
         /// </summary>
-        public UIElement Element
+        public FrameworkElement Element
         {
             get { return element; }
         }
@@ -291,7 +291,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         // Property values.
-        private readonly UIElement element;
+        private readonly FrameworkElement element;
         private readonly String name;
 
         // State values.
