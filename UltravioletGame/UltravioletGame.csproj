@@ -133,6 +133,8 @@
     <Compile Include="Input\GameInputActions.cs" />
     <Compile Include="Input\IUltravioletInputExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UI\Screens\DebugViewScreen.cs" />
+    <Compile Include="UI\UIScreenService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Dependencies\BASS\x64\unix\libbass.so">
@@ -166,6 +168,12 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Content\UI\Screens\DebugViewScreen\DebugViewScreenStyles - Copy.uvss">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\UI\Screens\DebugViewScreen\DebugViewScreenStyles.uvss">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="README-SDL.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -213,6 +221,19 @@
     </None>
     <None Include="..\Dependencies\SDL2\x86\win32nt\SDL2.dll">
       <Link>x86\win32nt\SDL2.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\UI\Screens\DebugViewScreen\DebugViewScreen.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Content\UI\Screens\DebugViewScreen\MyUserControl.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\UI\DemoUITexture.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\UI\KenVectorFuture12.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <Content Include="uv.ico" />

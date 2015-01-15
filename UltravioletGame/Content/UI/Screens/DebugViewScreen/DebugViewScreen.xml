@@ -1,0 +1,50 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<UIPanelDefinition>
+  <Stylesheet>DebugViewScreenStyles.uvss</Stylesheet>
+  <View ViewModelType="SafeProjectName.UI.Screens.DebugViewModel, SafeProjectName">
+
+    <Grid Margin="100 100 0 0">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="Auto"></ColumnDefinition>
+        <ColumnDefinition Width="200"></ColumnDefinition>
+        <ColumnDefinition Width="Auto"></ColumnDefinition>
+      </Grid.ColumnDefinitions>
+      <Grid.RowDefinitions>
+        <RowDefinition Height="Auto"></RowDefinition>
+        <RowDefinition Height="200"></RowDefinition>
+        <RowDefinition Height="Auto"></RowDefinition>
+      </Grid.RowDefinitions>
+      <Rectangle Width="50" Height="50" Grid.Column="0" FillColor="#ffff0000"></Rectangle>
+      <Rectangle Width="50" Height="50" Grid.Column="2" FillColor="#ff00ff00"></Rectangle>
+      <Rectangle Width="50" Height="50" Grid.Column="0" Grid.Row="2" FillColor="#ff0000ff"></Rectangle>
+      <Rectangle Width="50" Height="50" Grid.Column="2" Grid.Row="2" FillColor="#ffff00ff"></Rectangle>
+    </Grid>
+
+    <!--
+    <Button Canvas.Left="20" Canvas.Right="20" Canvas.Top="100">Test</Button>
+    <StackPanel BackgroundColor="#ff00ff00">
+      <WrapPanel BackgroundColor="#ffff0000">
+        <Button>Hello</Button>
+        <Button>Hello</Button>
+        <Button>Hello</Button>
+        <Button>Hello</Button>
+        <Button>Hello</Button>
+        <Button>Hello</Button>
+        <Button>Hello</Button>
+        <Button>Hello</Button>
+        <Button>Hello</Button>
+        <Button>Hello</Button>
+        <Button>Hello</Button>
+        <Button>Hello</Button>
+        <Button>Hello</Button>
+        <Button>Hello</Button>
+        <Button>Hello</Button>
+        <Button>Hello</Button>
+        <Button>Hello</Button>
+        <Button>Hello</Button>
+      </WrapPanel>
+      <TextBox Width="400" Height="32"></TextBox>
+    </StackPanel>-->
+
+  </View>
+</UIPanelDefinition>
