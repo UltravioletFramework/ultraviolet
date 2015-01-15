@@ -308,7 +308,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <inheritdoc/>
-        protected sealed override Size2D ArrangeCore(RectangleD finalRect)
+        protected sealed override Size2D ArrangeCore(RectangleD finalRect, ArrangeOptions options)
         {
             var margin = Margin;
 
@@ -319,23 +319,24 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var desiredHeight = Math.Min(DesiredSize.Height, finalRect.Height);
 
             var candidateSize = new Size2D(desiredWidth - xMargin, desiredHeight - yMargin);
-            var usedSize      = ArrangeOverride(candidateSize);
+            var usedSize      = ArrangeOverride(candidateSize, options);
 
             var usedWidth  = Math.Min(usedSize.Width, candidateSize.Width);
             var usedHeight = Math.Min(usedSize.Height, candidateSize.Height);
 
-            var hAlign = HorizontalAlignment;
-            var vAlign = VerticalAlignment;
+            var fill   = (options & ArrangeOptions.Fill) == ArrangeOptions.Fill;
+            var hAlign = fill ? HorizontalAlignment.Stretch : HorizontalAlignment;
+            var vAlign = fill ? VerticalAlignment.Stretch : VerticalAlignment;
 
-            if (HorizontalAlignment == HorizontalAlignment.Stretch)
+            if (hAlign == HorizontalAlignment.Stretch)
                 usedWidth = finalRect.Width - xMargin;
 
-            if (VerticalAlignment == VerticalAlignment.Stretch)
+            if (vAlign == VerticalAlignment.Stretch)
                 usedHeight = finalRect.Height - yMargin;
 
             var xOffset = margin.Left;
 
-            switch (HorizontalAlignment)
+            switch (hAlign)
             {
                 case HorizontalAlignment.Center:
                     xOffset = margin.Left + (((finalRect.Width - xMargin) - usedWidth) / 2.0);
@@ -348,7 +349,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             var yOffset = margin.Top;
 
-            switch (VerticalAlignment)
+            switch (vAlign)
             {
                 case VerticalAlignment.Center:
                     yOffset = margin.Top + (((finalRect.Height - yMargin) - usedHeight) / 2.0);
@@ -432,7 +433,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// a <see cref="FrameworkElement"/> derived class.
         /// </summary>
         /// <param name="finalSize">The element's final size.</param>
-        protected virtual Size2D ArrangeOverride(Size2D finalSize)
+        /// <param name="options">A set of <see cref="ArrangeOptions"/> values specifying the options for this arrangement.</param>
+        protected virtual Size2D ArrangeOverride(Size2D finalSize, ArrangeOptions options)
         {
             return finalSize;
         }

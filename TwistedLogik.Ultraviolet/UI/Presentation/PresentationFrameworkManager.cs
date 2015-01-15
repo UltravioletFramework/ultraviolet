@@ -307,7 +307,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 if (element.IsArrangeValid)
                     continue;
 
-                element.Arrange(element.MostRecentFinalRect);
+                element.Arrange(element.MostRecentFinalRect, element.MostRecentArrangeOptions);
             }
         }
 
