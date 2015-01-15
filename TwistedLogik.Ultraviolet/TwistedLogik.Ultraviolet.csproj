@@ -359,7 +359,10 @@
     <Compile Include="UI\Presentation\Elements\DefinitionBase.cs" />
     <Compile Include="UI\Presentation\Elements\Grid.CellMetadata.cs" />
     <Compile Include="UI\Presentation\Elements\Grid.cs" />
-    <Compile Include="UI\Presentation\MeasureUtil.cs" />
+    <Compile Include="UI\Presentation\HorizontalAlignment.cs" />
+    <Compile Include="UI\Presentation\VerticalAlignment.cs" />
+    <Compile Include="UI\Presentation\Visibility.cs" />
+    <Compile Include="UI\Presentation\LayoutUtil.cs" />
     <Compile Include="UI\Presentation\Elements\Panel.cs" />
     <Compile Include="UI\Presentation\Elements\Rectangle.cs" />
     <Compile Include="UI\Presentation\Elements\RowDefinition.cs" />

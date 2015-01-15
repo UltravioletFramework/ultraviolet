@@ -173,12 +173,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
 
             foreach (var cell in cells)
             {
+                var cellRect = new RectangleD(
+                    cell.GridRelativeX, 
+                    cell.GridRelativeY, 
+                    cell.ActualWidth, 
+                    cell.ActualHeight);
+
                 foreach (var child in cell.Elements)
                 {
-                    var childRect = new RectangleD(cell.GridRelativeX, cell.GridRelativeY, 
-                        child.DesiredSize.Width, 
-                        child.DesiredSize.Height);
-                    child.Arrange(childRect);
+                    child.Arrange(cellRect);
                 }
             }
 
@@ -303,7 +306,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
 
             foreach (var child in Children)
             {
-                if (!MeasureUtil.IsSpaceFilling(child))
+                if (!LayoutUtil.IsSpaceFilling(child))
                     continue;
 
                 if (GetColumn(child) != ix)
@@ -329,7 +332,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         private Double MeasureStaticColumn(ColumnDefinition column, Int32 ix)
         {
             Double lower, upper;
-            MeasureUtil.GetBoundedMeasure(column.Width.Value, column.MinWidth, column.MaxWidth, out lower, out upper);
+            LayoutUtil.GetBoundedMeasure(column.Width.Value, column.MinWidth, column.MaxWidth, out lower, out upper);
             column.ActualWidth = lower;
             return lower;
         }
@@ -431,7 +434,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
 
             foreach (var child in Children)
             {
-                if (!MeasureUtil.IsSpaceFilling(child))
+                if (!LayoutUtil.IsSpaceFilling(child))
                     continue;
 
                 if (GetRow(child) != ix)
@@ -457,7 +460,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         private Double MeasureStaticRow(RowDefinition column, Int32 ix)
         {
             Double lower, upper;
-            MeasureUtil.GetBoundedMeasure(column.Height.Value, column.MinHeight, column.MaxHeight, out lower, out upper);
+            LayoutUtil.GetBoundedMeasure(column.Height.Value, column.MinHeight, column.MaxHeight, out lower, out upper);
             column.ActualHeight = lower;
             return lower;
         }

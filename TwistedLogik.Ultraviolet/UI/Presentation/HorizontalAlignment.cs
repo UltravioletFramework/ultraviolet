@@ -1,10 +1,10 @@
 ﻿
-namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
+namespace TwistedLogik.Ultraviolet.UI.Presentation
 {
     /// <summary>
-    /// Represents a value indicating how an element should be aligned along the vertical axis of its parent element.
+    /// Represents a value indicating how an element should be aligned along the horizontal axis of its parent element.
     /// </summary>
-    public enum VerticalAlignment
+    public enum HorizontalAlignment
     {
         /// <summary>
         /// The element is aligned to the center of the parent element.
@@ -12,14 +12,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         Center,
 
         /// <summary>
-        /// The element is aligned to the top of the parent element.
+        /// The element is aligned to the left of the parent element.
         /// </summary>
-        Top,
+        Left,
 
         /// <summary>
-        /// The element is aligned to the bottom of the parent element.
+        /// The element is aligned to the right of the parent element.
         /// </summary>
-        Bottom,
+        Right,
 
         /// <summary>
         /// The element is stretched to fill the parent element.

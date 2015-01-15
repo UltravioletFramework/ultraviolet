@@ -19,8 +19,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         Inherited = 1,
 
         /// <summary>
-        /// The dependency property's value influences the layout of its object.
+        /// The dependency property's value influences the arrangement of its object.
         /// </summary>
-        AffectsMeasure = 2,
+        AffectsArrange = 2,
+
+        /// <summary>
+        /// The dependency property's value influences the measurement of its object.
+        /// </summary>
+        AffectsMeasure = 4,
     }
 }

@@ -84,6 +84,24 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Gets or sets the element's horizontal alignment.
+        /// </summary>
+        public HorizontalAlignment HorizontalAlignment
+        {
+            get { return GetValue<HorizontalAlignment>(HorizontalAlignmentProperty); }
+            set { SetValue<HorizontalAlignment>(HorizontalAlignmentProperty, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets the element's vertical alignment.
+        /// </summary>
+        public VerticalAlignment VerticalAlignment
+        {
+            get { return GetValue<VerticalAlignment>(VerticalAlignmentProperty); }
+            set { SetValue<VerticalAlignment>(VerticalAlignmentProperty, value); }
+        }
+
+        /// <summary>
         /// Occurs when the value of the <see cref="Width"/> property changes.
         /// </summary>
         public event UIElementEventHandler WidthChanged;
@@ -119,50 +137,84 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public event UIElementEventHandler MarginChanged;
 
         /// <summary>
+        /// Occurs when the value of the <see cref="HorizontalAlignment"/> property changes.
+        /// </summary>
+        public event UIElementEventHandler HorizontalAlignmentChanged;
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="VerticalAlignment"/> property changes.
+        /// </summary>
+        public event UIElementEventHandler VerticalAlignmentChanged;
+
+        /// <summary>
         /// Identifies the <see cref="Width"/> dependency property.
         /// </summary>
+        [Styled("width")]
         public static readonly DependencyProperty WidthProperty = DependencyProperty.Register("Width", typeof(Double), typeof(FrameworkElement),
             new DependencyPropertyMetadata(HandleWidthChanged, () => Double.NaN, DependencyPropertyOptions.AffectsMeasure));
 
         /// <summary>
         /// Identifies the <see cref="MinWidth"/> dependency property.
         /// </summary>
+        [Styled("minwidth")]
         public static readonly DependencyProperty MinWidthProperty = DependencyProperty.Register("MinWidth", typeof(Double), typeof(FrameworkElement),
             new DependencyPropertyMetadata(HandleMinWidthChanged, () => 0.0, DependencyPropertyOptions.AffectsMeasure));
 
         /// <summary>
         /// Identifies the <see cref="MaxWidth"/> dependency property.
         /// </summary>
+        [Styled("maxwidth")]
         public static readonly DependencyProperty MaxWidthProperty = DependencyProperty.Register("MaxWidth", typeof(Double), typeof(FrameworkElement),
             new DependencyPropertyMetadata(HandleMaxWidthChanged, () => Double.PositiveInfinity, DependencyPropertyOptions.AffectsMeasure));
 
         /// <summary>
         /// Identifies the <see cref="Height"/> dependency property.
         /// </summary>
+        [Styled("height")]
         public static readonly DependencyProperty HeightProperty = DependencyProperty.Register("Height", typeof(Double), typeof(FrameworkElement),
             new DependencyPropertyMetadata(HandleHeightChanged, () => Double.NaN, DependencyPropertyOptions.AffectsMeasure));
 
         /// <summary>
         /// Identifies the <see cref="MinHeight"/> dependency property.
         /// </summary>
+        [Styled("minheight")]
         public static readonly DependencyProperty MinHeightProperty = DependencyProperty.Register("MinHeight", typeof(Double), typeof(FrameworkElement),
             new DependencyPropertyMetadata(HandleMinHeightChanged, () => 0.0, DependencyPropertyOptions.AffectsMeasure));
 
         /// <summary>
         /// Identifies the <see cref="MaxHeight"/> dependency property.
         /// </summary>
+        [Styled("maxheight")]
         public static readonly DependencyProperty MaxHeightProperty = DependencyProperty.Register("MaxHeight", typeof(Double), typeof(FrameworkElement),
             new DependencyPropertyMetadata(HandleMaxHeightChanged, () => Double.PositiveInfinity, DependencyPropertyOptions.AffectsMeasure));
 
         /// <summary>
         /// Identifies the <see cref="Margin"/> dependency property.
         /// </summary>
+        [Styled("margin")]
         public static readonly DependencyProperty MarginProperty = DependencyProperty.Register("Margin", typeof(Thickness), typeof(FrameworkElement),
             new DependencyPropertyMetadata(HandleMarginChanged, () => Thickness.Zero, DependencyPropertyOptions.AffectsMeasure));
+
+        /// <summary>
+        /// Identifies the <see cref="HorizontalAlignment"/> dependency property.
+        /// </summary>
+        [Styled("halign")]
+        public static readonly DependencyProperty HorizontalAlignmentProperty = DependencyProperty.Register("HorizontalAlignment", typeof(HorizontalAlignment), typeof(FrameworkElement),
+            new DependencyPropertyMetadata(HandleHorizontalAlignmentChanged, () => HorizontalAlignment.Left, DependencyPropertyOptions.AffectsArrange));
+
+        /// <summary>
+        /// Identifies the <see cref="VerticalAlignment"/> dependency property.
+        /// </summary>
+        [Styled("valign")]
+        public static readonly DependencyProperty VerticalAlignmentProperty = DependencyProperty.Register("VerticalAlignment", typeof(VerticalAlignment), typeof(FrameworkElement),
+            new DependencyPropertyMetadata(HandleVerticalAlignmentChanged, () => VerticalAlignment.Top, DependencyPropertyOptions.AffectsArrange));
 
         /// <inheritdoc/>
         protected sealed override void DrawCore(UltravioletTime time, SpriteBatch spriteBatch, Single opacity)
         {
+            if (!LayoutUtil.IsDrawn(this))
+                return;
+
             DrawOverride(time, spriteBatch, opacity);
         }
 
@@ -189,10 +241,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var yMargin = margin.Top + margin.Bottom;
 
             double minWidth, maxWidth;
-            MeasureUtil.GetBoundedMeasure(Width, MinWidth, MaxWidth, out minWidth, out maxWidth);
+            LayoutUtil.GetBoundedMeasure(Width, MinWidth, MaxWidth, out minWidth, out maxWidth);
 
             double minHeight, maxHeight;
-            MeasureUtil.GetBoundedMeasure(Height, MinHeight, MaxHeight, out minHeight, out maxHeight);
+            LayoutUtil.GetBoundedMeasure(Height, MinHeight, MaxHeight, out minHeight, out maxHeight);
 
             var availableWidthSansMargin  = Math.Max(0, availableSize.Width - xMargin);
             var availableHeightSansMargin = Math.Max(0, availableSize.Height - yMargin);
@@ -218,15 +270,54 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             var xMargin = margin.Left + margin.Right;
             var yMargin = margin.Top + margin.Bottom;
-            
-            var finalSize = new Size2D(finalRect.Width - xMargin, finalRect.Height - yMargin);
-            var usedSize  = ArrangeOverride(finalSize);
+
+            var desiredWidth  = Math.Min(DesiredSize.Width, finalRect.Width);
+            var desiredHeight = Math.Min(DesiredSize.Height, finalRect.Height);
+
+            var candidateSize = new Size2D(desiredWidth - xMargin, desiredHeight - yMargin);
+            var usedSize      = ArrangeOverride(candidateSize);
+
+            var usedWidth  = Math.Min(usedSize.Width, candidateSize.Width);
+            var usedHeight = Math.Min(usedSize.Height, candidateSize.Height);
+
+            var hAlign = HorizontalAlignment;
+            var vAlign = VerticalAlignment;
+
+            if (HorizontalAlignment == HorizontalAlignment.Stretch)
+                usedWidth = finalRect.Width - xMargin;
+
+            if (VerticalAlignment == VerticalAlignment.Stretch)
+                usedHeight = finalRect.Height - yMargin;
 
             var xOffset = margin.Left;
+
+            switch (HorizontalAlignment)
+            {
+                case HorizontalAlignment.Center:
+                    xOffset = margin.Left + (((finalRect.Width - xMargin) - usedWidth) / 2.0);
+                    break;
+
+                case HorizontalAlignment.Right:
+                    xOffset = finalRect.Width - (usedWidth + margin.Right);
+                    break;
+            }
+
             var yOffset = margin.Top;
+
+            switch (VerticalAlignment)
+            {
+                case VerticalAlignment.Center:
+                    yOffset = margin.Top + (((finalRect.Height - yMargin) - usedHeight) / 2.0);
+                    break;
+
+                case VerticalAlignment.Bottom:
+                    yOffset = finalRect.Height - (usedHeight + margin.Bottom);
+                    break;
+            }
 
             RenderOffset = new Point2D(xOffset, yOffset);
 
+            usedSize = new Size2D(usedWidth, usedHeight);
             return usedSize;
         }
 
@@ -369,7 +460,31 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 temp(this);
             }
         }
-        
+
+        /// <summary>
+        /// Raises the <see cref="HorizontalAlignmentChanged"/> event.
+        /// </summary>
+        protected virtual void OnHorizontalAlignmentChanged()
+        {
+            var temp = HorizontalAlignmentChanged;
+            if (temp != null)
+            {
+                temp(this);
+            }
+        }
+
+        /// <summary>
+        /// Raises the <see cref="VerticalAlignmentChanged"/> event.
+        /// </summary>
+        protected virtual void OnVerticalAlignmentChanged()
+        {
+            var temp = VerticalAlignmentChanged;
+            if (temp != null)
+            {
+                temp(this);
+            }
+        }
+
         /// <summary>
         /// Occurs when the value of the <see cref="Width"/> dependency property changes.
         /// </summary>
@@ -438,6 +553,26 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             var frameworkElement = (FrameworkElement)dobj;
             frameworkElement.OnMarginChanged();
+        }
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="HorizontalAlignment"/> dependency property changes.
+        /// </summary>
+        /// <param name="dobj">The dependency object that raised the event.</param>
+        private static void HandleHorizontalAlignmentChanged(DependencyObject dobj)
+        {
+            var frameworkElement = (FrameworkElement)dobj;
+            frameworkElement.OnHorizontalAlignmentChanged();
+        }
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="VerticalAlignment"/> dependency property changes.
+        /// </summary>
+        /// <param name="dobj">The dependency object that raised the event.</param>
+        private static void HandleVerticalAlignmentChanged(DependencyObject dobj)
+        {
+            var frameworkElement = (FrameworkElement)dobj;
+            frameworkElement.OnVerticalAlignmentChanged();
         }
     }
 }

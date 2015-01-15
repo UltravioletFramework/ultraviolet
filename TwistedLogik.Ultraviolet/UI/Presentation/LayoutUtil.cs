@@ -4,9 +4,9 @@ using TwistedLogik.Nucleus;
 namespace TwistedLogik.Ultraviolet.UI.Presentation
 {
     /// <summary>
-    /// Contains utility methods useful for measuring framework elements.
+    /// Contains utility methods useful for laying out framework elements.
     /// </summary>
-    public static class MeasureUtil
+    public static class LayoutUtil
     {
         /// <summary>
         /// Gets a value indicating whether the specified element is currently being drawn.
@@ -17,7 +17,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             Contract.Require(element, "element");
 
-            return true;
+            return element.Visibility == Visibility.Visible && !element.RenderSize.Equals(Size2.Zero);
         }
 
         /// <summary>
@@ -29,7 +29,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             Contract.Require(element, "element");
 
-            return true;
+            return element.Visibility != Visibility.Collapsed;
         }
 
         /// <summary>

@@ -263,9 +263,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
-        /// Occurs when a dependency property which potentially affects the object's layout is changed.
+        /// Occurs when a dependency property which potentially affects the object's measurement state is changed.
         /// </summary>
         protected internal virtual void OnMeasureAffectingPropertyChanged()
+        {
+
+        }
+
+        /// <summary>
+        /// Occurs when a dependency property which potentially affects the object's arrangement state is changed.
+        /// </summary>
+        protected internal virtual void OnArrangeAffectingPropertyChanged()
         {
 
         }
