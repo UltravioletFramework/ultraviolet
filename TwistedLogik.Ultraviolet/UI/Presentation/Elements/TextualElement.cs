@@ -23,29 +23,24 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
 
         }
 
-        /// <summary>
-        /// Calculates the element's recommended size based on its content
-        /// and the specified constraints.
-        /// </summary>
-        /// <param name="width">The element's recommended width.</param>
-        /// <param name="height">The element's recommended height.</param>
-        public override void CalculateContentSize(ref Int32? width, ref Int32? height)
+        protected override Size2 MeasureCore(Size2 availableSize)
         {
             if (Font == null || String.IsNullOrEmpty(Text))
-                return;
+                return Size2.Zero;
 
-            var availableWidth  = (Parent == null) ? Int32.MaxValue : Parent.ActualWidth;
-            var availableHeight = (Parent == null) ? Int32.MaxValue : Parent.ActualHeight;
-
-            var settings = new TextLayoutSettings(Font, width ?? availableWidth, height ?? availableHeight, TextAlignment);
+            var settings = new TextLayoutSettings(Font, availableSize.Width, availableSize.Height, TextAlignment);
             UIElementResources.TextRenderer.CalculateLayout(cachedParserResult, cachedLayoutResultTemp, settings);
 
-            if (width == null)
-                width = cachedLayoutResultTemp.ActualWidth;
-
-            if (height == null)
-                height = cachedLayoutResultTemp.ActualHeight;
+            return new Size2(cachedLayoutResultTemp.ActualWidth, cachedLayoutResultTemp.ActualHeight);
         }
+
+        protected override void ArrangeCore(Rectangle finalRect)
+        {
+            UpdateCachedTextLayout(finalRect);
+
+            base.ArrangeCore(finalRect);
+        }
+
 
         /// <summary>
         /// Gets or sets the label's text.
@@ -79,24 +74,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             new DependencyPropertyMetadata(HandleTextAlignmentChanged, () => TextFlags.AlignCenter | TextFlags.AlignMiddle, DependencyPropertyOptions.None));
 
         /// <inheritdoc/>
-        protected override void OnParentRelativeLayoutChanged()
-        {
-            UpdateCachedTextLayout();
-            base.OnParentRelativeLayoutChanged();
-        }
-
-        /// <inheritdoc/>
         protected override void OnFontAssetIDChanged()
         {
-            UpdateCachedTextLayout();
+            if (Parent != null)
+            {
+                Parent.InvalidateMeasure();
+                Parent.InvalidateArrange();
+            }
             base.OnFontAssetIDChanged();
-        }
-
-        /// <inheritdoc/>
-        protected override void OnPaddingChanged()
-        {
-            UpdateCachedTextLayout();
-            base.OnPaddingChanged();
         }
 
         /// <summary>
@@ -112,13 +97,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             {
                 UIElementResources.TextRenderer.Parse(Text, cachedParserResult);
             }
-            UpdateCachedTextLayout();
+
+            if (Parent != null)
+            {
+                Parent.InvalidateMeasure();
+                Parent.InvalidateArrange();
+            }
         }
 
         /// <summary>
         /// Updates the text layout cache.
         /// </summary>
-        protected void UpdateCachedTextLayout()
+        protected void UpdateCachedTextLayout(Rectangle finalRect)
         {
             cachedLayoutResult.Clear();
 
@@ -130,8 +120,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
                 var display = Ultraviolet.GetPlatform().Displays.PrimaryDisplay;
 
                 var padding  = display.DipsToPixels(Padding);
-                var width    = TextAreaWidth  - ((Int32)padding.Left + (Int32)padding.Right);
-                var height   = TextAreaHeight - ((Int32)padding.Top + (Int32)padding.Bottom);
+                var width    = finalRect.Width  - ((Int32)padding.Left + (Int32)padding.Right);
+                var height   = finalRect.Height - ((Int32)padding.Top + (Int32)padding.Bottom);
                 var settings = new TextLayoutSettings(Font, width, height, TextAlignment);
                 UIElementResources.TextRenderer.CalculateLayout(cachedParserResult, cachedLayoutResult, settings);
             }
@@ -146,7 +136,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         {
             if (cachedLayoutResult.Count > 0)
             {
-                var padding  = ConvertThicknessToPixels(Padding, 0);                
+                var padding  = MeasureUtil.ConvertThicknessToPixels(Ultraviolet, Padding, 0);                
                 var position = new Vector2(
                     AbsoluteScreenX + (Int32)padding.Left + TextAreaX,
                     AbsoluteScreenY + (Int32)padding.Top  + TextAreaY);
@@ -222,7 +212,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         private static void HandleTextAlignmentChanged(DependencyObject dobj)
         {
             var label = (TextualElement)dobj;
-            label.UpdateCachedTextLayout();
+
         }
 
         // State values.

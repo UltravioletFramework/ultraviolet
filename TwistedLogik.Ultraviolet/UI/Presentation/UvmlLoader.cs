@@ -101,11 +101,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             var uv      = control.Ultraviolet;
             var context = new InstantiationContext(null, control, null);
-            var root    = (Container)InstantiateAndPopulateElement(uv, null, rootElement, context);
+            var root    = (Panel)InstantiateAndPopulateElement(uv, null, rootElement, context);
 
             control.ComponentRoot = root;
+            control.ComponentContentViewer = context.ComponentContentViewer;
             control.PopulateFieldsFromRegisteredElements();
-            control.ContentPanel = control.ComponentRoot.FindContentPanel();
         }
 
         /// <summary>
@@ -131,13 +131,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 instance.Classes.Add(className);
             }
 
-            var container = parent as Container;
-            if (container != null)
-                container.Children.Add(instance);
+            var panel = parent as Panel;
+            if (panel != null)
+                panel.Children.Add(instance);
 
             var contentControl = parent as ContentControl;
             if (contentControl != null)
                 contentControl.Content = instance;
+
+            if (context.ComponentOwner != null && instance is ContentViewer)
+            {
+                context.ComponentContentViewer = instance;
+            }
 
             return instance;
         }
@@ -648,12 +653,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         private static void PopulateElementChildren(UltravioletContext uv, UIElement uiElement, XElement xmlElement, InstantiationContext context)
         {
             var xmlChildren = xmlElement.Elements().Where(x => !ElementNameRepresentsProperty(x)).ToList();
-            
-            var container = uiElement as Container;
-            if (container != null)
+
+            var panel = uiElement as Panel;
+            if (panel != null)
             {
                 foreach (var child in xmlChildren)
-                {                    
+                {
                     InstantiateAndPopulateElement(uv, uiElement, child, context);
                 }
             }

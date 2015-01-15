@@ -1,60 +1,66 @@
 ﻿using System;
-using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
 using TwistedLogik.Ultraviolet.UI.Presentation.Styles;
+using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
 {
     /// <summary>
-    /// Represents a control which displays a single item of content.
+    /// Represents a framework element with child elements.
     /// </summary>
-    public abstract class ContentControl : Control
+    public abstract class Panel : Control
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ContentControl"/> class.
+        /// Initializes a new instance of the <see cref="Panel"/> class.
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
         /// <param name="id">The unique identifier of this element within its layout.</param>
-        public ContentControl(UltravioletContext uv, String id)
+        public Panel(UltravioletContext uv, String id)
             : base(uv, id)
         {
-
+            this.children = new UIElementCollection(this);
         }
 
         /// <summary>
-        /// Gets or sets the control's content element.
+        /// Gets the panel's collection of children.
         /// </summary>
-        public UIElement Content
+        public UIElementCollection Children
         {
-            get { return content; }
-            set
-            {
-                if (content == value)
-                    return;
-
-                if (content != null && content.Parent != null)
-                    content.Parent.RemoveChild(content);
-
-                content = value;
-                content.Parent = this;
-            }
+            get { return children; }
         }
+
+        /// <summary>
+        /// Occurs when children are added to or removed from this panel.
+        /// </summary>
+        public event UIElementEventHandler ChildrenChanged;
 
         /// <inheritdoc/>
         protected internal override void RemoveChild(UIElement child)
         {
-            if (Content == child)
+            if (child != null)
             {
-                Content = null;
+                children.Remove(child);
             }
             base.RemoveChild(child);
+        }
+
+        /// <summary>
+        /// Raises the <see cref="ChildrenChanged"/> event.
+        /// </summary>
+        protected internal virtual void OnChildrenChanged()
+        {
+            var temp = ChildrenChanged;
+            if (temp != null)
+            {
+                temp(this);
+            }
         }
 
         /// <inheritdoc/>
         protected override void DrawOverride(UltravioletTime time, SpriteBatch spriteBatch, Single opacity)
         {
-            if (Content != null)
+            foreach (var child in children)
             {
-                Content.Draw(time, spriteBatch, opacity);
+                child.Draw(time, spriteBatch, opacity);
             }
             base.DrawOverride(time, spriteBatch, opacity);
         }
@@ -62,9 +68,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <inheritdoc/>
         protected override void UpdateOverride(UltravioletTime time)
         {
-            if (Content != null)
+            foreach (var child in children)
             {
-                Content.Update(time);
+                child.Update(time);
             }
             base.UpdateOverride(time);
         }
@@ -72,9 +78,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <inheritdoc/>
         protected override void ReloadContentCore(Boolean recursive)
         {
-            if (recursive && Content != null)
+            if (recursive)
             {
-                Content.ReloadContent(true);
+                foreach (var child in children)
+                    child.ReloadContent(recursive);
             }
             base.ReloadContentCore(recursive);
         }
@@ -82,9 +89,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <inheritdoc/>
         protected override void ClearAnimationsCore(Boolean recursive)
         {
-            if (recursive && Content != null)
+            if (recursive)
             {
-                Content.ClearAnimations(true);
+                foreach (var child in children)
+                    child.ClearAnimations(recursive);
             }
             base.ClearAnimationsCore(recursive);
         }
@@ -92,9 +100,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <inheritdoc/>
         protected override void ClearLocalValuesCore(Boolean recursive)
         {
-            if (recursive && Content != null)
+            if (recursive)
             {
-                Content.ClearLocalValues(true);
+                foreach (var child in children)
+                    child.ClearLocalValues(recursive);
             }
             base.ClearLocalValuesCore(recursive);
         }
@@ -102,9 +111,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <inheritdoc/>
         protected override void ClearStyledValuesCore(Boolean recursive)
         {
-            if (recursive && Content != null)
+            if (recursive)
             {
-                Content.ClearStyledValues(true);
+                foreach (var child in children)
+                    child.ClearStyledValues(recursive);
             }
             base.ClearStyledValuesCore(recursive);
         }
@@ -112,34 +122,31 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <inheritdoc/>
         protected override void CleanupCore()
         {
-            if (Content != null)
-            {
-                Content.Cleanup();
-            }
+            foreach (var child in children)
+                child.Cleanup();
+
             base.CleanupCore();
         }
 
         /// <inheritdoc/>
         protected override void CacheLayoutParametersCore()
         {
-            if (Content != null)
-            {
-                Content.CacheLayoutParameters();
-            }
+            foreach (var child in children)
+                child.CacheLayoutParameters();
+
             base.CacheLayoutParametersCore();
         }
 
-        /// <inheritdoc/>        
+        /// <inheritdoc/>
         protected override void StyleOverride(UvssDocument stylesheet)
         {
-            if (Content != null)
-            {
-                Content.Style(stylesheet);
-            }
+            foreach (var child in children)
+                child.Style(stylesheet);
+
             base.StyleOverride(stylesheet);
         }
 
         // Property values.
-        private UIElement content;
+        private readonly UIElementCollection children;
     }
 }

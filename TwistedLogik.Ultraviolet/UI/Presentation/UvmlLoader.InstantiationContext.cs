@@ -70,6 +70,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             }
 
             /// <summary>
+            /// Gets or sets the component content viewer associated with the current context.
+            /// </summary>
+            public UIElement ComponentContentViewer
+            {
+                get { return componentContentViewer; }
+                set { componentContentViewer = value; }
+            }
+
+            /// <summary>
             /// Gets or sets the current binding context. The binding context is prepended to all binding
             /// expressions within the instantiation context.
             /// </summary>
@@ -117,6 +126,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             // Property values.
             private UIElement componentOwner;
+            private UIElement componentContentViewer;
             private String bindingContext;
             private Type viewModelType;
 

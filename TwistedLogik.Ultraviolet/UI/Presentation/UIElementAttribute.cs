@@ -1,7 +1,7 @@
 ﻿using System;
 using TwistedLogik.Nucleus;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
+namespace TwistedLogik.Ultraviolet.UI.Presentation
 {
     /// <summary>
     /// Represents an attribute which marks a class as a UI element and associates it with

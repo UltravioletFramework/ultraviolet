@@ -24,6 +24,30 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             this.children = new UIElementCollection(this);
         }
 
+        protected override void UpdateLayoutDepthCore(int layoutDepth)
+        {
+            foreach (var child in Children)
+            {
+                child.UpdateLayoutDepth(layoutDepth + 1);
+            }
+            base.UpdateLayoutDepthCore(layoutDepth);
+        }
+
+        protected override void UpdateAbsoluteParentOriginCore(int x, int y)
+        {
+            // todo
+            var thisOriginX = x + 0;
+            var thisOriginY = y + 0;
+            foreach (var child in Children)
+            {
+                child.UpdateAbsoluteParentOrigin(thisOriginX, thisOriginY);
+            }
+            base.UpdateAbsoluteParentOriginCore(x, y);
+        }
+
+
+
+
         /// <inheritdoc/>
         public sealed override void ClearAnimationsRecursive()
         {
@@ -101,23 +125,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             if (!base.Draw(time, spriteBatch, opacity))
                 return false;
 
-            var scissor = RequiresScissorRectangle;
-            if (scissor)
-            {
-                var scissorRectangle = new Rectangle(
-                    AbsoluteScreenX + ContentPanelX, 
-                    AbsoluteScreenY + ContentPanelY, 
-                    ContentPanelWidth, ContentPanelHeight);
-
-                ApplyScissorRectangle(spriteBatch, scissorRectangle);
-            }
-
             DrawChildren(time, spriteBatch, opacity);
-
-            if (scissor)
-            {
-                RevertScissorRectangle(spriteBatch);
-            }
 
             return true;
         }
@@ -149,7 +157,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         {
             foreach (var child in children)
             {
-                UpdateContentElement(time, child);
+                child.Update(time);
             }
             base.Update(time);
         }
@@ -199,50 +207,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <inheritdoc/>
-        internal override Boolean UpdateAbsoluteScreenPosition(Int32 x, Int32 y, Boolean force = false)
-        {
-            if (!base.UpdateAbsoluteScreenPosition(x, y, force))
-                return false;
-
-            foreach (var child in children)
-            {
-                UpdateContentElementPosition(child, force);
-            }
-
-            return true;
-        }
-
-        /// <inheritdoc/>
-        internal override UIElement GetContentElementInternal(Int32 ix)
-        {
-            Contract.EnsureRange(ix >= 0 && ix < Children.Count, "ix");
-
-            return Children[ix];
-        }
-
-        /// <inheritdoc/>
         internal override UIElement GetElementAtPointInternal(Int32 x, Int32 y, Boolean hitTest)
         {
             if (!Bounds.Contains(x, y) || !ElementIsDrawn(this))
                 return null;
 
-            var contentX = x - ContentPanelX;
-            var contentY = y - ContentPanelY;
-            if (ContentPanel.Bounds.Contains(contentX, contentY))
-            {
-                for (int i = children.Count - 1; i >= 0; i--)
-                {
-                    var child   = children[i];
-                    var element = child.GetElementAtPointInternal(
-                        contentX - (child.ParentRelativeX - ContentScrollX), 
-                        contentY - (child.ParentRelativeY - ContentScrollY), hitTest);
-
-                    if (element != null)
-                    {
-                        return element;
-                    }
-                }
-            }
+            // TODO
 
             return base.GetElementAtPointInternal(x, y, hitTest);
         }
@@ -258,12 +228,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             }
 
             return null;
-        }
-
-        /// <inheritdoc/>
-        internal override Int32 ContentElementCountInternal
-        {
-            get { return Children.Count; }
         }
 
         /// <summary>
@@ -284,41 +248,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             }
         }
 
-        /// <summary>
-        /// Determines whether a scissor rectangle must be applied to this container.
-        /// </summary>
-        protected virtual void UpdateScissorRectangle()
-        {
-            var required = false;
-            foreach (var child in children)
-            {
-                if (!ElementIsDrawn(child))
-                    continue;
-
-                if (child.ParentRelativeX < 0 || 
-                    child.ParentRelativeY < 0 ||
-                    child.ParentRelativeX + child.ActualWidth > ContentPanelWidth ||
-                    child.ParentRelativeY + child.ActualHeight > ContentPanelHeight)
-                {
-                    required = true;
-                    break;
-                }
-            }
-            RequiresScissorRectangle = required;
-        }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether this container requires that a scissor
-        /// rectangle be applied prior to rendering its children.
-        /// </summary>
-        protected Boolean RequiresScissorRectangle
-        {
-            get { return requiresScissorRectangle; }
-            set { requiresScissorRectangle = value; }
-        }
-
         // Property values.
         private readonly UIElementCollection children;
-        private Boolean requiresScissorRectangle;
     }
 }

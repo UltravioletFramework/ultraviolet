@@ -6,9 +6,9 @@ using TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text;
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
 {
     /// <summary>
-    /// Contains common resources used by UI elements.
+    /// Contains common resources used by the Ultraviolet Presentation Framework.
     /// </summary>
-    public static class UIElementResources
+    internal static class FrameworkResources
     {
         /// <summary>
         /// Gets the string formatter used by UI elements.

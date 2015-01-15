@@ -1,286 +1,193 @@
 ﻿using System;
-using System.Reflection;
 using System.Xml.Linq;
-using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
-using TwistedLogik.Ultraviolet.UI.Presentation.Animations;
 using TwistedLogik.Ultraviolet.UI.Presentation.Styles;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
 {
     /// <summary>
-    /// Represents an interface element with non-client components.
+    /// Represents a framework element which consists of multiple component elements.
     /// </summary>
-    public abstract class Control : UIElement
+    public abstract class Control : FrameworkElement
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Control"/> class.
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
-        /// <param name="id">The element's unique identifier within its view.</param>
+        /// <param name="id">The unique identifier of this element within its layout.</param>
         public Control(UltravioletContext uv, String id)
             : base(uv, id)
         {
 
         }
 
-        /// <inheritdoc/>
-        public override void ClearAnimationsRecursive()
-        {
-            base.ClearAnimationsRecursive();
-
-            if (componentRoot != null)
-                componentRoot.ClearAnimationsRecursive();
-        }
-
-        /// <inheritdoc/>
-        public override void ClearLocalValuesRecursive()
-        {
-            base.ClearLocalValuesRecursive();
-
-            if (componentRoot != null)
-                componentRoot.ClearLocalValuesRecursive();
-        }
-
-        /// <inheritdoc/>
-        public override void ClearStyledValuesRecursive()
-        {
-            base.ClearStyledValuesRecursive();
-
-            if (componentRoot != null)
-                componentRoot.ClearStyledValuesRecursive();
-        }
-
-        /// <inheritdoc/>
-        public override void ClearVisualStateTransitionsRecursive()
-        {
-            base.ClearVisualStateTransitionsRecursive();
-
-            if (componentRoot != null)
-                componentRoot.ClearVisualStateTransitionsRecursive();
-        }
-
-        /// <inheritdoc/>
-        public override void ReloadContentRecursive()
-        {
-            base.ReloadContentRecursive();
-
-            if (componentRoot != null)
-                componentRoot.ReloadContentRecursive();
-        }
-
-        /// <inheritdoc/>
-        public override void PerformContentLayout()
-        {
-            if (componentRoot != null)
-            {
-                PerformComponentLayout();
-            }
-            base.PerformContentLayout();
-        }
-
         /// <summary>
-        /// Populates any private fields of this control which match 
-        /// the control's components.
+        /// Populates any fields of this object which represent references
+        /// to components in the current component tree.
         /// </summary>
         internal void PopulateFieldsFromRegisteredElements()
         {
-            ComponentRegistry.PopulateFieldsFromRegisteredElements(this);
-        }
-
-        /// <inheritdoc/>
-        internal override Boolean UpdateAbsoluteScreenPosition(Int32 x, Int32 y, Boolean force = false)
-        {
-            if (!base.UpdateAbsoluteScreenPosition(x, y, force))
-                return false;
-
-            if (componentRoot != null)
-            {
-                componentRoot.UpdateAbsoluteScreenPosition(x, y, force);
-            }
-
-            return true;
-        }
-
-        /// <inheritdoc/>
-        internal override void ApplyStyles(UvssDocument stylesheet)
-        {
-            base.ApplyStyles(stylesheet);
-
-            if (componentRoot != null)
-                componentRoot.ApplyStyles(stylesheet);
-        }
-
-        /// <inheritdoc/>
-        internal override void ApplyStoryboard(Storyboard storyboard, StoryboardClock clock, UIElement root)
-        {
-            base.ApplyStoryboard(storyboard, clock, root);
-
-            if (componentRoot != null)
-                componentRoot.ApplyStoryboard(storyboard, clock, root);
-        }
-
-        /// <inheritdoc/>
-        internal override Boolean Draw(UltravioletTime time, SpriteBatch spriteBatch, Single opacity)
-        {
-            if (View == null || Visibility != Visibility.Visible)
-                return false;
-
-            if (!base.Draw(time, spriteBatch, opacity))
-                return false;
-
-            if (componentRoot != null)
-            {
-                var cumulativeOpacity = Opacity * opacity;
-                componentRoot.Draw(time, spriteBatch, cumulativeOpacity);
-            }
-
-            return true;
-        }
-
-        /// <inheritdoc/>
-        internal override void Update(UltravioletTime time)
-        {
-            base.Update(time);
-
-            if (componentRoot != null)
-            {
-                UpdateContentElement(time, componentRoot);
-            }
-        }
-
-        /// <inheritdoc/>
-        internal override void UpdateViewModel(Object viewModel)
-        {
-            base.UpdateViewModel(viewModel);
-
-            if (componentRoot != null)
-                componentRoot.UpdateViewModel(viewModel);
-        }
-
-        /// <inheritdoc/>
-        internal override void UpdateView(UIView view)
-        {
-            base.UpdateView(view);
-
-            if (componentRoot != null)
-                componentRoot.UpdateView(view);
-        }
-
-        /// <inheritdoc/>
-        internal override void UpdateContainer(UIElement container)
-        {
-            base.UpdateContainer(container);
-
-            if (componentRoot != null)
-                componentRoot.UpdateContainer(this);
-        }
-
-        /// <inheritdoc/>
-        internal override UIElement GetElementAtPointInternal(Int32 x, Int32 y, Boolean hitTest)
-        {
-            if (!Bounds.Contains(x, y))
-                return null;
-
-            if (componentRoot != null)
-            {
-                var component = componentRoot.GetElementAtPointInternal(x, y, hitTest);
-                if (component != null)
-                    return component;
-            }
-
-            return base.GetElementAtPointInternal(x, y, hitTest);
+            componentRegistry.PopulateFieldsFromRegisteredElements(this);
         }
 
         /// <summary>
-        /// Gets the control's component registry.
-        /// </summary>
-        internal UIElementRegistry ComponentRegistry
-        {
-            get { return componentRegistry; }
-        }
-
-        /// <summary>
-        /// Gets the container which is the root of the control's component hierarchy.
+        /// Gets or sets the root of the control's component tree.
         /// </summary>
         internal UIElement ComponentRoot
         {
             get { return componentRoot; }
             set
             {
-                if (componentRoot != value)
-                {
-                    if (componentRoot != null)
-                        componentRoot.UpdateContainer(null);
+                if (componentRoot == value)
+                    return;
 
-                    componentRoot = value;
+                if (componentRoot != null && componentRoot.Parent != null)
+                    componentRoot.Parent.RemoveChild(componentRoot);
 
-                    if (componentRoot != null)
-                        componentRoot.UpdateContainer(this);
+                componentRoot = value;
 
-                    PerformLayout();
-                }
+                if (componentRoot != null)
+                    componentRoot.Parent = this;
+
+                InvalidateMeasure();
             }
         }
 
         /// <summary>
-        /// Loads a component template from a manifest resource stream.
+        /// Gets or sets the element which is used to specify the position and bounds
+        /// of the control's content view area.
         /// </summary>
-        /// <param name="asm">The assembly that contains the manifest resource stream.</param>
-        /// <param name="resource">The name of the manifest resource stream to load.</param>
-        /// <returns>The component template that was loaded.</returns>
-        protected static XDocument LoadComponentTemplateFromManifestResourceStream(Assembly asm, String resource)
+        internal UIElement ComponentContentViewer
         {
-            Contract.Require(asm, "asm");
-            Contract.RequireNotEmpty(resource, "resource");
-
-            using (var stream = asm.GetManifestResourceStream(resource))
+            get { return componentContentViewer ?? this; }
+            set
             {
-                if (stream == null)
-                    return null;
+                if (componentContentViewer != null && componentContentViewer.Parent != null)
+                    componentContentViewer.Parent.RemoveChild(componentContentViewer);
 
-                return XDocument.Load(stream);
+                componentContentViewer = value;
+
+                if (componentContentViewer != null)
+                    componentContentViewer.Parent = this;
+
+                InvalidateMeasure();
             }
         }
 
-        /// <summary>
-        /// Gets the component within the control which has the specified identifier.
-        /// </summary>
-        /// <param name="id">The identifier of the component to retrieve.</param>
-        /// <returns>The component with the specified identifier, or <c>null</c> if no such component exists.</returns>
-        protected UIElement GetComponentByID(String id)
+        /// <inheritdoc/>
+        protected internal override void RemoveChild(UIElement child)
         {
-            Contract.RequireNotEmpty(id, "id");
+            if (child == ComponentRoot)
+            {
+                ComponentRoot = null;
+            }
+            base.RemoveChild(child);
+        }
 
-            return componentRegistry.GetElementByID(id);
+        /// <inheritdoc/>
+        protected override void DrawOverride(UltravioletTime time, SpriteBatch spriteBatch, Single opacity)
+        {
+            if (ComponentRoot != null)
+            {
+                ComponentRoot.Draw(time, spriteBatch, opacity);
+            }
+            base.DrawOverride(time, spriteBatch, opacity);
+        }
+
+        /// <inheritdoc/>
+        protected override void UpdateOverride(UltravioletTime time)
+        {
+            if (ComponentRoot != null)
+            {
+                ComponentRoot.Update(time);
+            }
+            base.UpdateOverride(time);
+        }
+
+        /// <inheritdoc/>
+        protected override void ReloadContentCore(Boolean recursive)
+        {
+            if (componentRoot != null)
+            {
+                componentRoot.ReloadContent(true);
+            }
+            base.ReloadContentCore(recursive);
+        }
+
+        /// <inheritdoc/>
+        protected override void ClearAnimationsCore(Boolean recursive)
+        {
+            if (componentRoot != null)
+            {
+                componentRoot.ClearAnimations(true);
+            }
+            base.ClearAnimationsCore(recursive);
+        }
+
+        /// <inheritdoc/>
+        protected override void ClearLocalValuesCore(Boolean recursive)
+        {
+            if (componentRoot != null)
+            {
+                componentRoot.ClearLocalValues(true);
+            }
+            base.ClearLocalValuesCore(recursive);
+        }
+
+        /// <inheritdoc/>
+        protected override void ClearStyledValuesCore(Boolean recursive)
+        {
+            if (componentRoot != null)
+            {
+                componentRoot.ClearStyledValues(true);
+            }
+            base.ClearStyledValuesCore(recursive);
+        }
+
+        /// <inheritdoc/>
+        protected override void CleanupCore()
+        {
+            if (componentRoot != null)
+            {
+                componentRoot.Cleanup();
+            }
+            base.CleanupCore();
+        }
+
+        /// <inheritdoc/>
+        protected override void CacheLayoutParametersCore()
+        {
+            if (componentRoot != null)
+            {
+                componentRoot.CacheLayoutParameters();
+            }
+            base.CacheLayoutParametersCore();
+        }
+
+        /// <inheritdoc/>
+        protected override void StyleOverride(UvssDocument stylesheet)
+        {
+            if (componentRoot != null)
+            {
+                componentRoot.Style(stylesheet);
+            }
+            base.StyleOverride(stylesheet);
         }
 
         /// <summary>
         /// Loads the control's component root from the specified template.
         /// </summary>
-        /// <param name="template">The template from which to load the component root.</param>
+        /// <param name="template">The component template from which to load the control's component root.</param>
         protected void LoadComponentRoot(XDocument template)
         {
-            if (componentRoot != null)
-                throw new InvalidOperationException(UltravioletStrings.ComponentRootAlreadyLoaded);
-
-            if (template == null)
-                return;
-
-            UvmlLoader.LoadComponentRoot(this, template);
-        }
-
-        /// <summary>
-        /// Immediately recalculates the layout of the container's components.
-        /// </summary>
-        private void PerformComponentLayout()
-        {
-            ComponentRoot.ParentRelativeArea = new Rectangle(0, 0, ActualWidth, ActualHeight);
-            ComponentRoot.UpdateAbsoluteScreenPosition(AbsoluteScreenX, AbsoluteScreenY);
+            // TODO
         }
 
         // Property values.
-        private readonly UIElementRegistry componentRegistry = new UIElementRegistry();
         private UIElement componentRoot;
+        private UIElement componentContentViewer;
+
+        // The registry of components belonging to this control.
+        private readonly UIElementRegistry componentRegistry = new UIElementRegistry();
     }
 }

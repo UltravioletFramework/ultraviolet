@@ -5,19 +5,19 @@ using TwistedLogik.Nucleus;
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
 {
     /// <summary>
-    /// Represents a collection of interface elements belonging to a parent element.
+    /// Represents a collection of interface elements belonging to a panel.
     /// </summary>
     public sealed partial class UIElementCollection : IEnumerable<UIElement>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="UIElementCollection"/> class.
         /// </summary>
-        /// <param name="container">The container that owns this collection.</param>
-        public UIElementCollection(Container container)
+        /// <param name="panel">The <see cref="Panel"/> that owns this collection.</param>
+        public UIElementCollection(Panel panel)
         {
-            Contract.Require(container, "container");
+            Contract.Require(panel, "panel");
 
-            this.container = container;
+            this.panel = panel;
         }
 
         /// <summary>
@@ -27,9 +27,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         {
             foreach (var element in elements)
             {
-                element.UpdateContainer(null);
+                element.Parent = null;
             }
             elements.Clear();
+
+            Panel.OnChildrenChanged();
+            Panel.InvalidateMeasure();
         }
 
         /// <summary>
@@ -41,18 +44,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         {
             Contract.Require(element, "element");
 
-            if (element.Parent != null)
-            {
-                if (!element.Parent.RemoveContent(element))
-                {
-                    return false;
-                }
-            }
-            
-            element.UpdateContainer(Container);
+            element.Parent = Panel;
             elements.Add(element);
 
-            Container.RequestLayout();
+            Panel.OnChildrenChanged();
+            Panel.InvalidateMeasure();
 
             return true;
         }
@@ -68,8 +64,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
 
             if (elements.Remove(element))
             {
-                element.UpdateContainer(null);
-                Container.RequestLayout();
+                element.Parent = null;
+
+                Panel.OnChildrenChanged();
+                Panel.InvalidateMeasure();
+
                 return true;
             }
             return false;
@@ -122,9 +121,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <summary>
         /// Gets the container that owns this collection.
         /// </summary>
-        public Container Container
+        public Panel Panel
         {
-            get { return container; }
+            get { return panel; }
         }
 
         /// <summary>
@@ -146,9 +145,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         // Property values.
-        private readonly Container container;
+        private readonly Panel panel;
 
         // State values.
-        private readonly List<UIElement> elements = new List<UIElement>();
+        private readonly List<UIElement> elements = 
+            new List<UIElement>();
     }
 }

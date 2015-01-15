@@ -184,137 +184,82 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <summary>
-        /// Requests that a layout be performed during the next call to <see cref="UIElement.Update(UltravioletTime)"/>.
+        /// Updates the layout of this element and any child elements.
         /// </summary>
-        public virtual void RequestLayout()
+        public void UpdateLayout()
         {
-            isPendingLayout = true;
+            if (!IsMeasureValid)
+                Measure(PreviousMeasureSize);
+
+            if (!IsArrangeValid)
+                Arrange(PreviousArrangeRect);
         }
 
         /// <summary>
-        /// Requests that a layout be performed for the specified content element 
-        /// during the next call to <see cref="UIElement.Update(UltravioletTime)"/>.
+        /// Updates the <see cref="DesiredSize"/> of this element.
         /// </summary>
-        /// <param name="content">The content element for which to calculate a layout.</param>
-        public virtual void RequestPartialLayout(UIElement content)
+        /// <param name="availableSize">The available space for this element.</param>
+        public void Measure(Size2 availableSize)
         {
-            Contract.Require(content, "content");
+            this.previousMeasureSize = availableSize;
 
-            content.isPendingPartialLayout = true;
+            desiredSize = MeasureCore(availableSize);
+
+            var pad = MeasureUtil.ConvertThicknessToPixels(Ultraviolet, Padding, 0);
+
+            desiredSize = new Size2(desiredSize.Width + (int)pad.Left + (int)pad.Right,
+                desiredSize.Height + (int)pad.Top + (int)pad.Bottom);
+
+            isMeasureValid = true;
         }
 
         /// <summary>
-        /// Immediately recalculates the layout of the element and its content elements and subcomponents, if applicable.
+        /// Positions child elements and determines a size for the element.
         /// </summary>
-        public virtual void PerformLayout()
+        /// <param name="finalRect">The final size that the parent computes for the child element.</param>
+        public void Arrange(Rectangle finalRect)
         {
-            OnPerformingLayout();
+            this.finalRect = finalRect;
+            this.previousArrangeRect = finalRect;
 
-            PerformContentLayout();
+            ArrangeCore(finalRect);
 
-            OnPerformedLayout();
+            isArrangeValid = true;
+
+            UpdateAbsoluteParentOrigin(AbsoluteParentOriginX, AbsoluteParentOriginY);
+        }
+
+        internal Int32 LayoutDepth
+        {
+            get { return layoutDepth; }
+        }
+
+        internal Size2 PreviousMeasureSize
+        {
+            get { return previousMeasureSize; }
+        }
+
+        internal Rectangle PreviousArrangeRect
+        {
+            get { return previousArrangeRect; }
         }
 
         /// <summary>
-        /// Immediately recalculates the layout of the element's content elements.
+        /// Invalidates the measurement state of the element.
         /// </summary>
-        public virtual void PerformContentLayout()
+        public void InvalidateMeasure()
         {
-
+            isMeasureValid = false;
+            Ultraviolet.GetUI().PresentationFramework.MeasureQueue.Enqueue(this);
         }
 
         /// <summary>
-        /// Immediately recalculates the layout of the specified content element.
+        /// Invalidates the arrangement state of the element.
         /// </summary>
-        /// <param name="content">The content element for which to calculate a layout.</param>
-        public virtual void PerformPartialLayout(UIElement content)
+        public void InvalidateArrange()
         {
-            Contract.Require(content, "content");
-
-            content.isPendingPartialLayout = false;
-        }
-
-        /// <summary>
-        /// Calculates the element's actual size in pixels based on
-        /// its content and the specified constraints.
-        /// </summary>
-        /// <param name="width">The element's specified width.</param>
-        /// <param name="height">The element's specified height.</param>
-        public virtual void CalculateActualSize(ref Int32? width, ref Int32? height)
-        {
-            int? contentWidth  = width;
-            int? contentHeight = height;
-            CalculateContentSize(ref contentWidth, ref contentHeight);
-
-            var padding       = ConvertThicknessToPixels(Padding, 0);
-            var paddingLeft   = (Int32)padding.Left;
-            var paddingTop    = (Int32)padding.Top;
-            var paddingRight  = (Int32)padding.Right;
-            var paddingBottom = (Int32)padding.Bottom;
-
-            var pxMinWidth  = (Int32)ConvertMeasureToPixels(MinWidth, 0, 0, 0);
-            var pxMaxWidth  = (Int32)ConvertMeasureToPixels(MaxWidth, 0);
-            var pxMinHeight = (Int32)ConvertMeasureToPixels(MinHeight, 0, 0, 0);
-            var pxMaxHeight = (Int32)ConvertMeasureToPixels(MaxHeight, 0);
-            
-            if (width == null)
-            {
-                if (!Double.IsNaN(Width))
-                {
-                    width = (Int32)ConvertMeasureToPixels(Width, 0);
-                }
-                else
-                {
-                    width = (contentWidth ?? 0) + paddingLeft + paddingRight;
-                }
-            }
-
-            if (width != null)
-            {
-                if (width < pxMinWidth)
-                    width = pxMinWidth;
-
-                if (width > pxMaxWidth)
-                    width = pxMaxWidth;
-
-                if (width < 0)
-                    width = 0;
-            }
-
-            if (height == null)
-            {
-                if (!Double.IsNaN(Height))
-                {
-                    height = (Int32)ConvertMeasureToPixels(Height, 0);
-                }
-                else
-                {
-                    height = (contentHeight ?? 0) + paddingTop + paddingBottom;
-                }
-            }
-
-            if (height != null)
-            {
-                if (height < pxMinHeight)
-                    height = pxMinHeight;
-
-                if (height > pxMaxHeight)
-                    height = pxMaxHeight;
-
-                if (height < 0)
-                    height = 0;
-            }
-        }
-
-        /// <summary>
-        /// Calculates the size of the element's content based on
-        /// the specified constraints.
-        /// </summary>
-        /// <param name="width">The element's specified width.</param>
-        /// <param name="height">The element's specified height.</param>
-        public virtual void CalculateContentSize(ref Int32? width, ref Int32? height)
-        {
-
+            isArrangeValid = false;
+            Ultraviolet.GetUI().PresentationFramework.ArrangeQueue.Enqueue(this);
         }
 
         /// <summary>
@@ -447,16 +392,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <summary>
-        /// Gets the content element with the specified index within this container.
-        /// </summary>
-        /// <param name="ix">The index of the content element to retrieve.</param>
-        /// <returns>The content element with the specified index within this container.</returns>
-        public UIElement GetContentElement(Int32 ix)
-        {
-            return GetContentElementInternal(ix);
-        }
-
-        /// <summary>
         /// Gets the Ultraviolet context that created the element.
         /// </summary>
         public UltravioletContext Ultraviolet
@@ -547,19 +482,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <summary>
-        /// Gets a value indicating whether the element has a pending layout request.
+        /// Gets the size that was computed for this element during the measure pass of the layout process.
         /// </summary>
-        public Boolean IsPendingLayout
+        public Size2 DesiredSize
         {
-            get { return isPendingLayout; }
-        }
-
-        /// <summary>
-        /// Gets a value indicating whether the element has requested a partial layout from its parent.
-        /// </summary>
-        public Boolean IsPendingPartialLayout
-        {
-            get { return isPendingPartialLayout; }
+            get { return desiredSize; }
         }
 
         /// <summary>
@@ -569,7 +496,29 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         {
             get { return control != null; }
         }
-        
+
+        /// <summary>
+        /// Gets a value indicating whether the element's current measurement state is valid.
+        /// </summary>
+        public Boolean IsMeasureValid
+        {
+            get
+            {
+                return isMeasureValid;
+            }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the element's current arrangement state is valid.
+        /// </summary>
+        public Boolean IsArrangeValid
+        {
+            get
+            {
+                return isArrangeValid;
+            }
+        }
+
         /// <summary>
         /// Gets or sets a value indicating whether the element is visible to a hit test (i.e., for picking via the cursor).
         /// </summary>
@@ -786,14 +735,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <summary>
-        /// Gets the number of content elements contained by this element.
-        /// </summary>
-        public Int32 ContentElementCount
-        {
-            get { return ContentElementCountInternal; }
-        }
-
-        /// <summary>
         /// Occurs when the element is being drawn.
         /// </summary>
         public event UIElementDrawingEventHandler Drawing;
@@ -862,16 +803,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// Occurs when a mouse button is released while the cursor is over the element.
         /// </summary>
         public event UIElementMouseButtonEventHandler MouseButtonReleased;
-
-        /// <summary>
-        /// Occurs when the element is about to perform a layout.
-        /// </summary>
-        public event UIElementEventHandler PerformingLayout;
-
-        /// <summary>
-        /// Occurs after the element has performed a layout.
-        /// </summary>
-        public event UIElementEventHandler PerformedLayout;
         
         /// <summary>
         /// Occurs when the value of the <see cref="HitTestVisible"/> property changes.
@@ -1193,6 +1124,32 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <summary>
+        /// Updates the element's layout depth, which represents its position
+        /// within the element tree.
+        /// </summary>
+        /// <param name="layoutDepth">The element's layout depth.</param>
+        internal void UpdateLayoutDepth(Int32 layoutDepth)
+        {
+            this.layoutDepth = layoutDepth;
+
+            UpdateLayoutDepthCore(layoutDepth);
+        }
+
+        /// <summary>
+        /// Updates the element's absolute parent origin, which is used to determine
+        /// the element's absolute screen position based on its arrangement state.
+        /// </summary>
+        /// <param name="x">The x-coordinate of the element's parent origin.</param>
+        /// <param name="y">The y-coordinate of the element's parent origin.</param>
+        internal void UpdateAbsoluteParentOrigin(Int32 x, Int32 y)
+        {
+            this.absoluteParentOriginX = x;
+            this.absoluteParentOriginY = y;
+
+            UpdateAbsoluteParentOriginCore(x, y);
+        }
+
+        /// <summary>
         /// Applies a style to the element.
         /// </summary>
         /// <param name="style">The style which is being applied.</param>
@@ -1383,18 +1340,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
 
             Digest(time);
             OnUpdating(time);
-
-            if (isPendingContentPositionUpdate)
-            {
-                isPendingContentPositionUpdate = false;
-                UpdateAbsoluteScreenPosition(AbsoluteScreenX, AbsoluteScreenY, force: true);
-            }
-
-            if (isPendingLayout)
-            {
-                isPendingLayout = false;
-                PerformLayout();
-            }
         }
 
         /// <summary>
@@ -1432,8 +1377,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
 
             ReloadContent();
 
-            if (Parent != null)
-                Parent.RequestPartialLayout(this);
+            InvalidateMeasure();
+            InvalidateArrange();
         }
 
         /// <summary>
@@ -1447,6 +1392,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             this.parent = container;
 
             UpdateControl();
+            UpdateLayoutDepth((container == null) ? 0 : container.LayoutDepth + 1);
 
             var view = (container == null) ? null : container.View;
             if (view != this.view)
@@ -1457,6 +1403,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             {
                 RegisterElement();
             }
+
+            InvalidateMeasure();
+            InvalidateArrange();
         }
 
         /// <summary>
@@ -1469,35 +1418,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             this.control = FindControl();
 
             RegisterElement();
-        }
-
-        /// <summary>
-        /// Updates the element's absolute screen position.
-        /// </summary>
-        /// <param name="x">The x-coordinate of the element's absolute screen position.</param>
-        /// <param name="y">The y-coordinate of the element's absolute screen position.</param>
-        /// <param name="force">A value indicating whether to force an update.</param>
-        internal virtual Boolean UpdateAbsoluteScreenPosition(Int32 x, Int32 y, Boolean force = false)
-        {
-            if (!force && this.absoluteScreenX == x && this.absoluteScreenY == y)
-                return false;
-
-            this.absoluteScreenX = x;
-            this.absoluteScreenY = y;
-
-            OnAbsolutePositionChanged();
-
-            return true;
-        }
-
-        /// <summary>
-        /// Gets the content element with the specified index within this container.
-        /// </summary>
-        /// <param name="ix">The index of the content element to retrieve.</param>
-        /// <returns>The content element with the specified index within this container.</returns>
-        internal virtual UIElement GetContentElementInternal(Int32 ix)
-        {
-            throw new ArgumentOutOfRangeException("ix");
         }
 
         /// <summary>
@@ -1518,27 +1438,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <returns>The content panel, if it was found; otherwise, <c>null</c>.</returns>
         internal virtual UIElement FindContentPanel()
         {
-            if (this is ContentPanel)
-                return this;
+            //if (this is ContentPanel)
+            //    return this;
 
             return null;
-        }
-
-        /// <summary>
-        /// Gets the number of content elements contained by this element.
-        /// </summary>
-        internal virtual Int32 ContentElementCountInternal
-        {
-            get { return 0; }
         }
 
         /// <inheritdoc/>
         protected internal override void OnMeasureAffectingPropertyChanged()
         {
-            if (Parent != null)
-            {
-                Parent.RequestPartialLayout(this);
-            }
+            InvalidateMeasure();
             base.OnMeasureAffectingPropertyChanged();
         }
 
@@ -1741,88 +1650,64 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             internal set
             {
                 if (contentPanel != null && contentPanel != this)
-                    contentPanel.PerformedLayout -= HandleContentPanelPerformedLayout;
-                
+                { /* TODO */ }
+   
                 contentPanel = value;
 
                 if (contentPanel != null && contentPanel != this)
-                    contentPanel.PerformedLayout += HandleContentPanelPerformedLayout;
-            }
-        }
-
-        /// <summary>
-        /// Gets the element's area relative to its parent after layout has been performed.
-        /// </summary>
-        protected internal Rectangle ParentRelativeArea
-        {
-            get { return new Rectangle(parentRelativeX, parentRelativeY, actualWidth, actualHeight); }
-            set
-            {
-                parentRelativeX = value.X;
-                parentRelativeY = value.Y;
-                actualWidth = value.Width;
-                actualHeight = value.Height;
-                OnParentRelativeLayoutChanged();
+                { /* TODO */ }
             }
         }
 
         /// <summary>
         /// Gets the x-coordinate of the element's absolute screen position.
         /// </summary>
-        protected internal Int32 AbsoluteScreenX
+        protected Int32 AbsoluteScreenX
         {
-            get { return absoluteScreenX; }
+            get { return AbsoluteParentOriginX + finalRect.X; }
         }
 
         /// <summary>
         /// Gets the y-coordinate of the element's absolute screen position.
         /// </summary>
-        protected internal Int32 AbsoluteScreenY
+        protected Int32 AbsoluteScreenY
         {
-            get { return absoluteScreenY; }
+            get { return AbsoluteParentOriginY + finalRect.Y; }
         }
 
-        /// <summary>
-        /// Gets the x-coordinate of the element relative to its parent after layout has been performed.
-        /// </summary>
-        protected internal Int32 ParentRelativeX
+        protected Int32 AbsoluteParentOriginX
         {
-            get { return parentRelativeX; }
-            internal set { parentRelativeX = value; }
+            get { return absoluteParentOriginX; }
         }
 
-        /// <summary>
-        /// Gets the y-coordinate of the element relative to its parent after layout has been performed.
-        /// </summary>
-        protected internal Int32 ParentRelativeY
+        protected Int32 AbsoluteParentOriginY
         {
-            get { return parentRelativeY; }
-            internal set { parentRelativeY = value; }
+            get { return absoluteParentOriginY; }
         }
 
         /// <summary>
         /// Gets the element's actual width as calculated during layout.
         /// </summary>
-        protected internal Int32 ActualWidth
+        protected Int32 ActualWidth
         {
-            get { return actualWidth; }
-            internal set { actualWidth = value; }
+            get { return finalRect.Width; }
+            private set { actualWidth = value; }
         }
 
         /// <summary>
         /// Gets the element's actual height as calculated during layout.
         /// </summary>
-        protected internal Int32 ActualHeight
+        protected Int32 ActualHeight
         {
-            get { return actualHeight; }
-            internal set { actualHeight = value; }
+            get { return finalRect.Height; }
+            private set { actualHeight = value; }
         }
 
         /// <summary>
         /// Gets the distance in pixels between the left edge of this control and the left
         /// edge of the control's content region.
         /// </summary>
-        protected internal Int32 ContentPanelX
+        protected Int32 ContentPanelX
         {
             get { return ContentPanel.AbsoluteScreenX - this.AbsoluteScreenX; }
         }
@@ -1831,7 +1716,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// Gets the distance in pixels between the top edge of this control and the top
         /// edge of the control's content region.
         /// </summary>
-        protected internal Int32 ContentPanelY
+        protected Int32 ContentPanelY
         {
             get { return ContentPanel.AbsoluteScreenY - this.AbsoluteScreenY; }
         }
@@ -1839,7 +1724,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <summary>
         /// Gets the width of the area in which the element renders its content.
         /// </summary>
-        protected internal Int32 ContentPanelWidth
+        protected Int32 ContentPanelWidth
         {
             get { return ContentPanel.ActualWidth; }
         }
@@ -1847,41 +1732,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <summary>
         /// Gets the height of the area in which the element renders its content.
         /// </summary>
-        protected internal Int32 ContentPanelHeight
+        protected Int32 ContentPanelHeight
         {
             get { return ContentPanel.ActualHeight; }
-        }
-
-        /// <summary>
-        /// Gets the amount by which the element's content is scrolled along the x-axis.
-        /// </summary>
-        protected internal Int32 ContentScrollX
-        {
-            get { return contentScrollX; }
-            set
-            {
-                if (contentScrollX != value)
-                {
-                    contentScrollX = value;
-                    isPendingContentPositionUpdate = true;
-                }
-            }
-        }
-
-        /// <summary>
-        /// Gets the amount by which the element's content is scrolled along the y-axis.
-        /// </summary>
-        protected internal Int32 ContentScrollY
-        {
-            get { return contentScrollY; }
-            set
-            {
-                if (contentScrollY != value)
-                {
-                    contentScrollY = value;
-                    isPendingContentPositionUpdate = true;
-                }
-            }
         }
 
         /// <summary>
@@ -1930,45 +1783,44 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <summary>
-        /// Occurs when the element's absolute position changes.
+        /// Calculates the size of this element, potentially including any child elements.
         /// </summary>
-        protected virtual void OnAbsolutePositionChanged()
+        /// <param name="availableSize">The amount of space that is available for the element.</param>
+        /// <returns>The desired size of this element.</returns>
+        protected virtual Size2 MeasureCore(Size2 availableSize)
+        {
+            return Size2.Zero;
+        }
+
+        /// <summary>
+        /// Positions the element and arranges its children.
+        /// </summary>
+        /// <param name="finalRect">The region within the parent element that has been assigned
+        /// to this element and its children for layout.</param>
+        protected virtual void ArrangeCore(Rectangle finalRect)
         {
 
         }
 
         /// <summary>
-        /// Called when the element's parent-relative layout changes.
+        /// Updates the layout depth of the element's children.
         /// </summary>
-        protected virtual void OnParentRelativeLayoutChanged()
+        /// <param name="layoutDepth">The element's layout depth.</param>
+        protected virtual void UpdateLayoutDepthCore(Int32 layoutDepth)
         {
 
         }
 
         /// <summary>
-        /// Raises the <see cref="PerformingLayout"/> event.
+        /// Updates the absolute parent origin of the element's children.
         /// </summary>
-        protected virtual void OnPerformingLayout()
+        /// <param name="x">The x-coordinate of the element's parent origin.</param>
+        /// <param name="y">The y-coordinate of the element's parent origin.</param>
+        protected virtual void UpdateAbsoluteParentOriginCore(Int32 x, Int32 y)
         {
-            var temp = PerformingLayout;
-            if (temp != null)
-            {
-                temp(this);
-            }
+
         }
 
-        /// <summary>
-        /// Raises the <see cref="PerformedLayout"/> event.
-        /// </summary>
-        protected virtual void OnPerformedLayout()
-        {
-            var temp = PerformedLayout;
-            if (temp != null)
-            {
-                temp(this);
-            }
-        }
-        
         /// <summary>
         /// Raises the <see cref="HitTestVisibleChanged"/> event.
         /// </summary>
@@ -2254,32 +2106,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <summary>
-        /// Updates the specified content element.
-        /// </summary>
-        /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Draw(UltravioletTime)"/>.</param>
-        /// <param name="element">The content element to update.</param>
-        protected virtual void UpdateContentElement(UltravioletTime time, UIElement element)
-        {
-            if (element.IsPendingPartialLayout)
-            {
-                PerformPartialLayout(element);
-            }
-            element.Update(time);
-        }
-
-        /// <summary>
-        /// Updates the position of the specified content element.
-        /// </summary>
-        /// <param name="element">The element to update.</param>
-        /// <param name="force">A value indicating whether to force the update.</param>
-        protected virtual void UpdateContentElementPosition(UIElement element, Boolean force = false)
-        {
-            element.UpdateAbsoluteScreenPosition(
-                ContentPanel.AbsoluteScreenX + element.ParentRelativeX - ContentScrollX,
-                ContentPanel.AbsoluteScreenY + element.ParentRelativeY - ContentScrollY, force);
-        }
-
-        /// <summary>
         /// Loads the specified asset from the global content manager.
         /// </summary>
         /// <typeparam name="TOutput">The type of object being loaded.</typeparam>
@@ -2416,86 +2242,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
                 spriteBatch.DrawImage(imageResource, position, 
                     imageAreaAbs.Width, imageAreaAbs.Height, color, 0f, origin, effects, 0f);
             }
-        }
-
-        /// <summary>
-        /// Converts a <see cref="Thickness"/> value given in device independent pixels (1/96 of an inch) to device pixels.
-        /// </summary>
-        /// <param name="thickness">The bounding rectangle to convert.</param>
-        /// <param name="nan">The value to substitute for any of the bounding rectangle's parameters if that parameter is not a number.</param>
-        /// <returns>The converted <see cref="Thickness"/> value.</returns>
-        protected Thickness ConvertThicknessToPixels(Thickness thickness, Double nan)
-        {
-            var left   = ConvertMeasureToPixels(thickness.Left, nan);
-            var top    = ConvertMeasureToPixels(thickness.Top, nan);
-            var right  = ConvertMeasureToPixels(thickness.Right, nan);
-            var bottom = ConvertMeasureToPixels(thickness.Bottom, nan);
-
-            return new Thickness(left, top, right, bottom);
-        }
-
-        /// <summary>
-        /// Converts a <see cref="Thickness"/> value given in device independent pixels (1/96 of an inch) to device pixels.
-        /// </summary>
-        /// <param name="thickness">The bounding rectangle to convert.</param>
-        /// <param name="posInf">The value to substitute for any of the bounding rectangle's parameters if that parameter is positive infinity.</param>
-        /// <param name="negInf">The value to substitute for any of the bounding rectangle's parameters if that parameter is negative infinity.</param>
-        /// <param name="nan">The value to substitute for any of the bounding rectangle's parameters if that parameter is not a number.</param>
-        /// <returns>The converted <see cref="Thickness"/> value.</returns>
-        protected Thickness ConvertThicknessToPixels(Thickness thickness, Double posInf, Double negInf, Double nan)
-        {
-            var left   = ConvertMeasureToPixels(thickness.Left, posInf, negInf, nan);
-            var top    = ConvertMeasureToPixels(thickness.Top, posInf, negInf, nan);
-            var right  = ConvertMeasureToPixels(thickness.Right, posInf, negInf, nan);
-            var bottom = ConvertMeasureToPixels(thickness.Bottom, posInf, negInf, nan);
-
-            return new Thickness(left, top, right, bottom);
-        }
-
-        /// <summary>
-        /// Converts a measure given in device independent pixels (1/96 of an inch) to device pixels.
-        /// </summary>
-        /// <param name="measure">The measure to convert.</param>
-        /// <param name="nan">The value to substitute for <paramref name="measure"/> if <paramref name="measure"/> is not a number.</param>
-        /// <returns>The converted measure value.</returns>
-        protected Double ConvertMeasureToPixels(Double measure, Double nan)
-        {
-            if (Double.IsPositiveInfinity(measure))
-                return Int32.MaxValue;
-
-            if (Double.IsNegativeInfinity(measure))
-                return Int32.MinValue;
-
-            var display = Ultraviolet.GetPlatform().Displays.PrimaryDisplay;
-
-            if (Double.IsNaN(measure))
-                return display.DipsToPixels(nan);
-
-            return display.DipsToPixels(measure);
-        }
-
-        /// <summary>
-        /// Converts a measure given in device independent pixels (1/96 of an inch) to device pixels.
-        /// </summary>
-        /// <param name="measure">The measure to convert.</param>
-        /// <param name="posInf">The value to substitute for <paramref name="measure"/> if <paramref name="measure"/> is positive infinity.</param>
-        /// <param name="negInf">The value to substitute for <paramref name="measure"/> if <paramref name="measure"/> is negative infinity.</param>
-        /// <param name="nan">The value to substitute for <paramref name="measure"/> if <paramref name="measure"/> is not a number.</param>
-        /// <returns>The converted measure value.</returns>
-        protected Double ConvertMeasureToPixels(Double measure, Double posInf, Double negInf, Double nan)
-        {
-            var display = Ultraviolet.GetPlatform().Displays.PrimaryDisplay;
-
-            if (Double.IsPositiveInfinity(measure))
-                return display.DipsToPixels(posInf);
-
-            if (Double.IsNegativeInfinity(measure))
-                return display.DipsToPixels(negInf);
-
-            if (Double.IsNaN(measure))
-                return display.DipsToPixels(nan);
-
-            return display.DipsToPixels(measure);
         }
 
         /// <summary>
@@ -2928,8 +2674,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <param name="element">The element that raised the event.</param>
         private void HandleContentPanelPerformedLayout(UIElement element)
         {
-            RequestLayout();
-            UpdateContentElementPosition(element);
+            InvalidateArrange();
         }
 
         /// <summary>
@@ -2962,25 +2707,26 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         private UIView view;
         private UIElement parent;
         private Control control;
-        private Boolean isPendingPartialLayout;
-        private Boolean isPendingLayout;
+        private Size2 desiredSize;
+        private Boolean isMeasureValid;
+        private Boolean isArrangeValid;
         private Boolean hovering;
-        private Int32 parentRelativeX;
-        private Int32 parentRelativeY;
+        private Int32 absoluteParentOriginX;
+        private Int32 absoluteParentOriginY;
         private Int32 actualWidth;
         private Int32 actualHeight;
         private SpriteFont font;
 
+        private Int32 layoutDepth;
+        private Size2 previousMeasureSize;
+        private Rectangle previousArrangeRect;
+
         // State values.
-        private Boolean isPendingContentPositionUpdate;
-        private Int32 absoluteScreenX;
-        private Int32 absoluteScreenY;
-        private Int32 contentScrollX;
-        private Int32 contentScrollY;
         private UIElement contentPanel;
         private UIElementRegistry elementRegistrationContext;
         private Rectangle? previousScissorRectangle;
         private Boolean scissorApplied;
+        private Rectangle finalRect;
 
         // Storyboard clocks.
         private static readonly IPool<StoryboardClock> storyboardClockPool = 

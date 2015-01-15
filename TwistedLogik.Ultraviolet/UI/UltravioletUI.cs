@@ -35,6 +35,8 @@ namespace TwistedLogik.Ultraviolet.UI
                 stack.Update(time);
             }
 
+            PresentationFramework.Update(time);
+
             OnUpdating(time);
         }
 

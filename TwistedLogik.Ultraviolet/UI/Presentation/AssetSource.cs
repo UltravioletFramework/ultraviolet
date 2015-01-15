@@ -1,5 +1,5 @@
 ﻿
-namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
+namespace TwistedLogik.Ultraviolet.UI.Presentation
 {
     /// <summary>
     /// Represents a flag indicating which of a UI's content managers an asset should be loaded from.

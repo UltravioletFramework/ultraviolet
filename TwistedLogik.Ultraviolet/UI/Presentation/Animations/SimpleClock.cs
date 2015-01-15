@@ -48,6 +48,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
         /// <summary>
         /// Called when the clock is retrieved from the clock pool.
         /// </summary>
+        /// <param name="pool">The pool from which the clock was retrieved.</param>
         /// <param name="loopBehavior">A <see cref="LoopBehavior"/> value specifying the clock's loop behavior.</param>
         /// <param name="duration">The clock's duration.</param>
         internal void HandleRetrieved(IPool<SimpleClock> pool, LoopBehavior loopBehavior, TimeSpan duration)

@@ -200,6 +200,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// <param name="selector">The selector which caused the style to be applied.</param>
         private void ApplyStyleToElement(UIElement element, UvssStyle style, UvssSelector selector)
         {
+            /* TODO
             var styleIsForContainer = !String.IsNullOrEmpty(style.Container);
             if (styleIsForContainer)
             {
@@ -213,7 +214,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
                 }
             }
 
-            element.ApplyStyle(style, selector, false);
+            element.ApplyStyle(style, selector, false);*/
         }
 
         // State values.

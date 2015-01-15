@@ -3,8 +3,7 @@
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
 {
     /// <summary>
-    /// Represents a <see cref="Control"/> which is defined by the user with a UVML document
-    /// that is loaded at runtime.
+    /// Represents a control which is defined by the application using a layout definition.
     /// </summary>
     public abstract class UserControl : Control
     {
@@ -12,11 +11,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// Initializes a new instance of the <see cref="UserControl"/> class.
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
-        /// <param name="id">The unique identifier of this element within its layout.</param>
-        public UserControl(UltravioletContext uv, String id)
+        /// <param name="id">The element's unique identifier within its view.</param>
+        protected UserControl(UltravioletContext uv, String id)
             : base(uv, id)
-        {
-
-        }
+        { }
     }
 }

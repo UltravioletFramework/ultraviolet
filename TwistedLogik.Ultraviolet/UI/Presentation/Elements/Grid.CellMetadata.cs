@@ -21,7 +21,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             /// <summary>
             /// Gets or sets the cell's x-coordinate relative to its containing grid.
             /// </summary>
-            public Int32 GridRelativeX
+            public Double GridRelativeX
             {
                 get;
                 set;
@@ -30,7 +30,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             /// <summary>
             /// Gets or sets the cell's y-coordinate relative to its containing grid.
             /// </summary>
-            public Int32 GridRelativeY
+            public Double GridRelativeY
             {
                 get;
                 set;
@@ -39,7 +39,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             /// <summary>
             /// Gets or sets the cell's width in pixels.
             /// </summary>
-            public Int32 ActualWidth
+            public Double ActualWidth
             {
                 get;
                 set;
@@ -48,7 +48,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             /// <summary>
             /// Gets or sets the cell's height in pixels.
             /// </summary>
-            public Int32 ActualHeight
+            public Double ActualHeight
             {
                 get;
                 set;

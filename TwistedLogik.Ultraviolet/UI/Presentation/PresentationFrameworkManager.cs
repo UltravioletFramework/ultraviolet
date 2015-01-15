@@ -30,6 +30,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Updates the state of the presentation framework.
+        /// </summary>
+        /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Update(UltravioletTime)"/>.</param>
+        public void Update(UltravioletTime time)
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
+
+            ProcessStyleQueue();
+            ProcessMeasureQueue();
+            ProcessArrangeQueue();
+        }
+
+        /// <summary>
         /// Attempts to create an instance of the element with the specified name.
         /// </summary>
         /// <typeparam name="TViewModel">The type of view model to which the element will be bound.</typeparam>
@@ -252,6 +265,77 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Processes the queue of elements with invalid styling states.
+        /// </summary>
+        private void ProcessStyleQueue()
+        {
+            while (styleQueue.Count > 0)
+            {
+                var element = styleQueue.Dequeue();
+                if (element.IsStyleValid)
+                    continue;
+
+                element.Style(element.MostRecentStylesheet);
+                element.InvalidateMeasure();
+            }
+        }
+
+        /// <summary>
+        /// Processes the queue of elements with invalid measurement states.
+        /// </summary>
+        private void ProcessMeasureQueue()
+        {
+            while (measureQueue.Count > 0)
+            {
+                var element = measureQueue.Dequeue();
+                if (element.IsMeasureValid)
+                    continue;
+
+                element.Measure(element.MostRecentAvailableSize);
+                element.InvalidateArrange();
+            }
+        }
+
+        /// <summary>
+        /// Processes the queue of elements with invalid arrangement states.
+        /// </summary>
+        private void ProcessArrangeQueue()
+        {
+            while (arrangeQueue.Count > 0)
+            {
+                var element = arrangeQueue.Dequeue();
+                if (element.IsArrangeValid)
+                    continue;
+
+                element.Arrange(element.MostRecentFinalRect);
+            }
+        }
+
+        /// <summary>
+        /// Gets the queue of elements with invalid styling states.
+        /// </summary>
+        internal LayoutQueue StyleQueue
+        {
+            get { return styleQueue; }
+        }
+
+        /// <summary>
+        /// Gets the queue of elements with invalid measurement states.
+        /// </summary>
+        internal LayoutQueue MeasureQueue
+        {
+            get { return measureQueue; }
+        }
+
+        /// <summary>
+        /// Gets the queue of elements with invalid arrangement states.
+        /// </summary>
+        internal LayoutQueue ArrangeQueue
+        {
+            get { return arrangeQueue; }
+        }
+
+        /// <summary>
         /// Gets a value indicating whether the specified XML document is a valid element layout.
         /// </summary>
         /// <param name="layout">The XML document that defines the custom element's layout.</param>
@@ -462,5 +546,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         // The custom element registry.
         private readonly Dictionary<String, RegisteredElement> registeredElements = 
             new Dictionary<String, RegisteredElement>(StringComparer.OrdinalIgnoreCase);
+
+        // The queues of elements with invalid layouts.
+        private readonly LayoutQueue styleQueue = new LayoutQueue();
+        private readonly LayoutQueue measureQueue = new LayoutQueue();
+        private readonly LayoutQueue arrangeQueue = new LayoutQueue();
     }
 }

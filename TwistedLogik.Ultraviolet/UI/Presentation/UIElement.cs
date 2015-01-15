@@ -1,0 +1,1254 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Reflection;
+using TwistedLogik.Nucleus;
+using TwistedLogik.Nucleus.Data;
+using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
+using TwistedLogik.Ultraviolet.Input;
+using TwistedLogik.Ultraviolet.UI.Presentation.Styles;
+
+namespace TwistedLogik.Ultraviolet.UI.Presentation
+{
+    /// <summary>
+    /// Represents the method that is called when a class is added to or removed from a UI element.
+    /// </summary>
+    /// <param name="element">The UI element that raised the event.</param>
+    /// <param name="classname">The name of the class that was added or removed.</param>
+    public delegate void UIElementClassEventHandler(UIElement element, String classname);
+
+    /// <summary>
+    /// Represents the method that is called when a UI element is drawn.
+    /// </summary>
+    /// <param name="element">The element being drawn.</param>
+    /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Draw(UltravioletTime)"/>.</param>
+    /// <param name="spriteBatch">The sprite batch with which to draw the view.</param>
+    /// <param name="opacity">The cumulative opacity of all of the element's parent elements.</param>
+    public delegate void UIElementDrawingEventHandler(UIElement element, UltravioletTime time, SpriteBatch spriteBatch, Single opacity);
+
+    /// <summary>
+    /// Represents the method that is called when a UI element is updated.
+    /// </summary>
+    /// <param name="element">The element being updated.</param>
+    /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Draw(UltravioletTime)"/>.</param>
+    public delegate void UIElementUpdatingEventHandler(UIElement element, UltravioletTime time);
+
+    /// <summary>
+    /// Represents the method that is called when a UI element receives an event from a keyboard device.
+    /// </summary>
+    /// <param name="element">The element that raised the event.</param>
+    /// <param name="device">The keyboard device.</param>
+    public delegate void UIElementKeyboardEventHandler(UIElement element, KeyboardDevice device);
+
+    /// <summary>
+    /// Represents the method that is called when a keyboard key is pressed while an element has focus.
+    /// </summary>
+    /// <param name="element">The element that raised the event.</param>
+    /// <param name="device">The <see cref="KeyboardDevice"/> that raised the event.</param>
+    /// <param name="key">The <see cref="Key"/> value that represents the key that was pressed.</param>
+    /// <param name="ctrl">A value indicating whether the Control modifier is active.</param>
+    /// <param name="alt">A value indicating whether the Alt modifier is active.</param>
+    /// <param name="shift">A value indicating whether the Shift modifier is active.</param>
+    /// <param name="repeat">A value indicating whether this is a repeated key press.</param>
+    public delegate void UIElementKeyPressedEventHandler(UIElement element, KeyboardDevice device, Key key, Boolean ctrl, Boolean alt, Boolean shift, Boolean repeat);
+
+    /// <summary>
+    /// Represents the method that is called when a keyboard key is released while an element has focus.
+    /// </summary>
+    /// <param name="element">The element that raised the event.</param>
+    /// <param name="device">The <see cref="KeyboardDevice"/> that raised the event.</param>
+    /// <param name="key">The <see cref="Key"/> value that represents the key that was pressed.</param>
+    public delegate void UIElementKeyReleasedEventHandler(UIElement element, KeyboardDevice device, Key key);
+
+    /// <summary>
+    /// Represents the method that is called when the mouse cursor enters or leaves a UI element.
+    /// </summary>
+    /// <param name="element">The element that raised the event.</param>
+    /// <param name="device">The mouse device.</param>
+    public delegate void UIElementMouseEventHandler(UIElement element, MouseDevice device);
+
+    /// <summary>
+    /// Represents the method that is called when a button is pressed or released while an element is under the mouse.
+    /// </summary>
+    /// <param name="element">The element that raised the event.</param>
+    /// <param name="device">The mouse device.</param>
+    /// <param name="button">The mouse button that was pressed or released.</param>
+    public delegate void UIElementMouseButtonEventHandler(UIElement element, MouseDevice device, MouseButton button);
+
+    /// <summary>
+    /// Represents the method that is called when the mouse moves over a control.
+    /// </summary>
+    /// <param name="element">The element that raised the event.</param>
+    /// <param name="device">The mouse device.</param>
+    /// <param name="x">The x-coordinate of the cursor in screen coordinates.</param>
+    /// <param name="y">The y-coordinate of the cursor in screen coordinates.</param>
+    /// <param name="dx">The difference between the x-coordinate of the mouse's 
+    /// current position and the x-coordinate of the mouse's previous position.</param>
+    /// <param name="dy">The difference between the y-coordinate of the mouse's 
+    /// current position and the y-coordinate of the mouse's previous position.</param>
+    public delegate void UIElementMouseMotionEventHandler(UIElement element, MouseDevice device, Int32 x, Int32 y, Int32 dx, Int32 dy);
+
+    /// <summary>
+    /// Represents the method that is called when a UI element raises an event.
+    /// </summary>
+    /// <param name="element">The element that raised the event.</param>
+    public delegate void UIElementEventHandler(UIElement element);
+
+    /// <summary>
+    /// Represents the base class for all elements within the Ultraviolet Presentation Framework.
+    /// </summary>
+    public abstract class UIElement : DependencyObject
+    {
+        /// <summary>
+        /// Represents a method which sets the value of a styled property on a UI element.
+        /// </summary>
+        /// <param name="element">The UI element on which to set the style.</param>
+        /// <param name="value">The string representation of the value to set for the style.</param>
+        /// <param name="provider">An object that supplies culture-specific formatting information.</param>
+        internal delegate void StyleSetter(UIElement element, String value, IFormatProvider provider);
+
+        /// <summary>
+        /// Initialies the <see cref="UIElement"/> type.
+        /// </summary>
+        static UIElement()
+        {
+            miFromString     = typeof(ObjectResolver).GetMethod("FromString", new Type[] { typeof(String), typeof(Type), typeof(IFormatProvider) });
+            miSetStyledValue = typeof(DependencyObject).GetMethod("SetStyledValue");
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="UIElement"/> class.
+        /// </summary>
+        /// <param name="uv">The Ultraviolet context.</param>
+        /// <param name="id">The unique identifier of this element within its layout.</param>
+        public UIElement(UltravioletContext uv, String id)
+        {
+            Contract.Require(uv, "uv");
+
+            this.uv      = uv;
+            this.id      = id;
+            this.classes = new UIElementClassCollection(this);
+
+            var attr = (UIElementAttribute)GetType().GetCustomAttributes(typeof(UIElementAttribute), false).SingleOrDefault();
+            if (attr != null)
+            {
+                this.name = attr.Name;
+            }
+
+            CreateStyleSetters();
+        }
+
+        /// <summary>
+        /// Reloads this element's content and the content of any children of this element.
+        /// </summary>
+        public void ReloadContent(Boolean recursive = true)
+        {
+            ReloadContentCore(recursive);
+        }
+
+        /// <summary>
+        /// Clears the animations which are attached to this element, and optionally
+        /// any animations attached to children of this element.
+        /// </summary>
+        /// <param name="recursive">A value indicating whether to clear the animations
+        /// of this element's child elements.</param>
+        public void ClearAnimations(Boolean recursive = true)
+        {
+            ClearAnimationsCore(recursive);
+        }
+
+        /// <summary>
+        /// Clears the local values of this element's dependency properties,
+        /// and optionally the local values of any dependency properties belonging
+        /// to children of this element.
+        /// </summary>
+        /// <param name="recursive">A value indicating whether to clear the local dependency
+        /// property values of this element's child elements.</param>
+        public void ClearLocalValues(Boolean recursive = true)
+        {
+            ClearLocalValuesCore(recursive);
+        }
+
+        /// <summary>
+        /// Clears the styled values of this element's dependency properties,
+        /// and optionally the styled values of any dependency properties belonging
+        /// to children of this element.
+        /// </summary>
+        /// <param name="recursive">A value indicating whether to clear the styled dependency
+        /// property values of this element's child elements.</param>
+        public void ClearStyledValues(Boolean recursive = true)
+        {
+            ClearStyledValuesCore(recursive);
+        }
+
+        /// <summary>
+        /// Draws the element using the specified <see cref="SpriteBatch"/>.
+        /// </summary>
+        /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Draw(UltravioletTime)"/>.</param>
+        /// <param name="spriteBatch">The <see cref="SpriteBatch"/> with which to render the element.</param>
+        /// <param name="opacity">The cumulative opacity of all of the element's ancestor elements.</param>
+        public void Draw(UltravioletTime time, SpriteBatch spriteBatch, Single opacity)
+        {
+            DrawCore(time, spriteBatch, opacity);
+        }
+
+        /// <summary>
+        /// Updates the element's state.
+        /// </summary>
+        /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Update(UltravioletTime)"/>.</param>
+        public void Update(UltravioletTime time)
+        {
+            UpdateCore(time);
+        }
+
+        /// <summary>
+        /// Immediately updates the element's layout.
+        /// </summary>
+        public void UpdateLayout()
+        {
+            if (!IsMeasureValid && !IsArrangeValid)
+                return;
+
+            Measure(MostRecentAvailableSize);
+            Arrange(MostRecentFinalRect);
+        }
+
+        /// <summary>
+        /// Performs cleanup operations and releases any internal framework resources.
+        /// The object remains usable after this method is called, but certain aspects
+        /// of its state, such as animations, may be reset.
+        /// </summary>
+        public void Cleanup()
+        {
+            CleanupCore();
+        }
+
+        /// <summary>
+        /// Caches layout parameters related to the element's position within the element hierarchy.
+        /// </summary>
+        public void CacheLayoutParameters()
+        {
+            CacheLayoutDepth();
+            CacheView();
+            CacheControl();
+
+            CacheLayoutParametersCore();
+        }
+
+        /// <summary>
+        /// Applies the specified stylesheet to this element.
+        /// </summary>
+        /// <param name="stylesheet">The stylesheet to apply to this element.</param>
+        public void Style(UvssDocument stylesheet)
+        {
+            ApplyStyles(stylesheet);
+
+            StyleCore(stylesheet);
+
+            this.mostRecentStylesheet = stylesheet;
+        }
+
+        /// <summary>
+        /// Calculates the element's desired size.
+        /// </summary>
+        /// <param name="availableSize">The size of the area which the element's parent has 
+        /// specified is available for the element's layout.</param>
+        public void Measure(Size2D availableSize)
+        {
+            this.desiredSize = MeasureCore(availableSize);
+
+            this.mostRecentAvailableSize = availableSize;
+        }
+
+        /// <summary>
+        /// Sets the element's final area relative to its parent and arranges
+        /// the element's children within its layout area.
+        /// </summary>
+        /// <param name="finalRect">The element's final position and size relative to its parent element.</param>
+        public void Arrange(RectangleD finalRect)
+        {
+            this.renderSize = ArrangeCore(finalRect);
+
+            this.mostRecentFinalRect = finalRect;
+            this.mostRecentAbsoluteRect = new RectangleD(
+                finalRect.X + RenderOffset.X + ((Parent == null) ? 0 : Parent.AbsoluteBounds.X),
+                finalRect.Y + RenderOffset.Y + ((Parent == null) ? 0 : Parent.AbsoluteBounds.Y),
+                ActualWidth, ActualHeight);
+        }
+
+        /// <summary>
+        /// Invalidates the element's styling state.
+        /// </summary>
+        public void InvalidateStyle()
+        {
+            this.isStyleValid = false;
+            Ultraviolet.GetUI().PresentationFramework.StyleQueue.Enqueue(this);
+        }
+
+        /// <summary>
+        /// Invalidates the element's measurement state.
+        /// </summary>
+        public void InvalidateMeasure()
+        {
+            this.isMeasureValid = false;
+            Ultraviolet.GetUI().PresentationFramework.MeasureQueue.Enqueue(this);
+        }
+
+        /// <summary>
+        /// Invalidates the element's arrangement state.
+        /// </summary>
+        public void InvalidateArrange()
+        {
+            this.isArrangeValid = false;
+            Ultraviolet.GetUI().PresentationFramework.ArrangeQueue.Enqueue(this);
+        }
+
+        /// <summary>
+        /// Gets the Ultraviolet context that created this element.
+        /// </summary>
+        public UltravioletContext Ultraviolet
+        {
+            get { return uv; }
+        }
+
+        /// <summary>
+        /// Gets the collection of styling classes associated with this element.
+        /// </summary>
+        public UIElementClassCollection Classes
+        {
+            get { return classes; }
+        }
+
+        /// <summary>
+        /// Gets the element's unique identifier within its layout.
+        /// </summary>
+        public String ID
+        {
+            get { return id; }
+        }
+
+        /// <summary>
+        /// Gets the name that identifies this element type within the Presentation Framework.
+        /// </summary>
+        public String Name
+        {
+            get { return name; }
+        }
+
+        /// <summary>
+        /// Gets the element's associated view.
+        /// </summary>
+        public UIView View
+        {
+            get { return view; }
+        }
+
+        /// <summary>
+        /// Gets the element's associated view model.
+        /// </summary>
+        public Object ViewModel
+        {
+            get { return view == null ? null : View.ViewModel; }
+        }
+
+        /// <summary>
+        /// Gets the element's parent element.
+        /// </summary>
+        public UIElement Parent
+        {
+            get { return parent; }
+            internal set
+            {
+                if (parent != value)
+                {
+                    parent = value;
+                    CacheLayoutParameters();
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets the control that owns this element, if this element is a control component.
+        /// </summary>
+        public UIElement Control
+        {
+            get { return control; }
+        }
+
+        /// <summary>
+        /// Gets the element's bounds in element-local space.
+        /// </summary>
+        public RectangleD Bounds
+        {
+            get { return new RectangleD(0, 0, ActualWidth, ActualHeight); }
+        }
+
+        /// <summary>
+        /// Gets the element's bounds in absolute screen space.
+        /// </summary>
+        public RectangleD AbsoluteBounds
+        {
+            get { return mostRecentAbsoluteRect; }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether this element is a control component.
+        /// </summary>
+        public Boolean IsComponent
+        {
+            get { return control != null; }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the element's styling state is valid.
+        /// </summary>
+        public Boolean IsStyleValid
+        {
+            get { return isStyleValid; }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the element's arrangement state is valid.
+        /// </summary>
+        public Boolean IsArrangeValid
+        {
+            get { return isArrangeValid; }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the element's measurement state is valid.
+        /// </summary>
+        public Boolean IsMeasureValid
+        {
+            get { return isMeasureValid; }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the element is visible to hit tests.
+        /// </summary>
+        public Boolean IsHitTestVisible
+        {
+            get { return GetValue<Boolean>(IsHitTestVisibleProperty); }
+            set { SetValue<Boolean>(IsHitTestVisibleProperty, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the element can receive input focus.
+        /// </summary>
+        public Boolean Focusable
+        {
+            get { return GetValue<Boolean>(FocusableProperty); }
+            set { SetValue<Boolean>(FocusableProperty, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets the offset from the top-left corner of the element's layout
+        /// area to the top-left corner of the element itself.
+        /// </summary>
+        public Point2D RenderOffset
+        {
+            get { return renderOffset; }
+            protected set { renderOffset = value; }
+        }
+
+        /// <summary>
+        /// Gets the final render size of the element.
+        /// </summary>
+        public Size2D RenderSize
+        {
+            get { return renderSize; }
+        }
+
+        /// <summary>
+        /// Gets the element's desired size as calculated during the most recent measure pass.
+        /// </summary>
+        public Size2D DesiredSize
+        {
+            get { return desiredSize; }
+        }
+
+        /// <summary>
+        /// Gets the element's actual width as of the most recent layout pass.
+        /// </summary>
+        public Double ActualWidth
+        {
+            get { return RenderSize.Width; }
+        }
+
+        /// <summary>
+        /// Gets the element's actual height as of the most recent layout pass.
+        /// </summary>
+        public Double ActualHeight
+        {
+            get { return RenderSize.Height; }
+        }
+
+        /// <summary>
+        /// Occurs when a class is added to the element.
+        /// </summary>
+        public event UIElementClassEventHandler ClassAdded;
+
+        /// <summary>
+        /// Occurs when a class is removed from the element.
+        /// </summary>
+        public event UIElementClassEventHandler ClassRemoved;
+
+        /// <summary>
+        /// Occurs when the element is being drawn.
+        /// </summary>
+        public event UIElementDrawingEventHandler Drawing;
+
+        /// <summary>
+        /// Occurs when the element is being updated.
+        /// </summary>
+        public event UIElementUpdatingEventHandler Updating;
+
+        /// <summary>
+        /// Occurs when the element gains input focus.
+        /// </summary>
+        public event UIElementEventHandler Focused;
+
+        /// <summary>
+        /// Occurs when the element loses input focus.
+        /// </summary>
+        public event UIElementEventHandler Blurred;
+
+        /// <summary>
+        /// Occurs when a key is pressed while the element has input focus.
+        /// </summary>
+        public event UIElementKeyPressedEventHandler KeyPressed;
+
+        /// <summary>
+        /// Occurs when a key is released while the element has input focus.
+        /// </summary>
+        public event UIElementKeyReleasedEventHandler KeyReleased;
+
+        /// <summary>
+        /// Occurs when the element receives text input from the keyboard.
+        /// </summary>
+        public event UIElementKeyboardEventHandler TextInput;
+
+        /// <summary>
+        /// Occurs when the element gains mouse capture.
+        /// </summary>
+        public event UIElementEventHandler GainedMouseCapture;
+
+        /// <summary>
+        /// Occurs when the element loses mouse capture.
+        /// </summary>
+        public event UIElementEventHandler LostMouseCapture;
+
+        /// <summary>
+        /// Occurs when the mouse moves over the control.
+        /// </summary>
+        public event UIElementMouseMotionEventHandler MouseMotion;
+
+        /// <summary>
+        /// Occurs when the mouse cursor enters the element.
+        /// </summary>
+        public event UIElementMouseEventHandler MouseEnter;
+
+        /// <summary>
+        /// Occurs when the mouse cursor leaves the element.
+        /// </summary>
+        public event UIElementMouseEventHandler MouseLeave;
+
+        /// <summary>
+        /// Occurs when a mouse button is pressed while the cursor is over the element.
+        /// </summary>
+        public event UIElementMouseButtonEventHandler MouseButtonPressed;
+
+        /// <summary>
+        /// Occurs when a mouse button is released while the cursor is over the element.
+        /// </summary>
+        public event UIElementMouseButtonEventHandler MouseButtonReleased;
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="IsHitTestVisible"/> property changes.
+        /// </summary>
+        public event UIElementEventHandler IsHitTestVisibleChanged;
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="Focusable"/> dependency property changes.
+        /// </summary>
+        public event UIElementEventHandler FocusableChanged;
+
+        /// <summary>
+        /// Identifies the <see cref="IsHitTestVisible"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty IsHitTestVisibleProperty = DependencyProperty.Register("IsHitTestVisible", typeof(Boolean), typeof(UIElement),
+            new DependencyPropertyMetadata(HandleIsHitTestVisibleChanged, () => true, DependencyPropertyOptions.None));
+
+        /// <summary>
+        /// Identifies the <see cref="Focusable"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty FocusableProperty = DependencyProperty.Register("Focusable", typeof(Boolean), typeof(UIElement),
+            new DependencyPropertyMetadata(HandleFocusableChanged, () => false, DependencyPropertyOptions.None));
+
+        /// <summary>
+        /// Finds a styled dependency property according to its styling name.
+        /// </summary>
+        /// <param name="name">The styling name of the dependency property to retrieve.</param>
+        /// <param name="type">The type to search for a dependency property.</param>
+        /// <returns>The <see cref="DependencyProperty"/> instance which matches the specified styling name, or <c>null</c> if no
+        /// such dependency property exists on this object.</returns>
+        internal static DependencyProperty FindStyledDependencyProperty(String name, Type type)
+        {
+            Contract.RequireNotEmpty("name", name);
+            Contract.Require(type, "type");
+
+            while (type != null)
+            {
+                // TODO
+
+                type = type.BaseType;
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// Gets the stylesheet that was most recently passed to the <see cref="Style(UvssDocument)"/> method.
+        /// </summary>
+        internal UvssDocument MostRecentStylesheet
+        {
+            get { return mostRecentStylesheet; }
+        }
+
+        /// <summary>
+        /// Gets the final rectangle that was most recently passed to the <see cref="Arrange(RectangleD)"/> method.
+        /// </summary>
+        internal RectangleD MostRecentFinalRect
+        {
+            get { return mostRecentFinalRect; }
+        }
+
+        /// <summary>
+        /// Gets the most recent result of determining the element's absolute bounds on the screen.
+        /// </summary>
+        internal RectangleD MostRecentAbsoluteRect
+        {
+            get { return mostRecentAbsoluteRect; }
+        }
+
+        /// <summary>
+        /// Gets the available size that was most recently passed to the <see cref="Measure(Size2D)"/> method.
+        /// </summary>
+        internal Size2D MostRecentAvailableSize
+        {
+            get { return mostRecentAvailableSize; }
+        }
+
+        /// <summary>
+        /// Gets the element's depth within the layout tree.
+        /// </summary>
+        internal Int32 LayoutDepth
+        {
+            get { return layoutDepth; }
+        }
+
+        /// <inheritdoc/>
+        protected internal sealed override void OnMeasureAffectingPropertyChanged()
+        {
+            InvalidateMeasure();
+            base.OnMeasureAffectingPropertyChanged();
+        }
+
+        /// <summary>
+        /// Raises the <see cref="ClassAdded"/> event.
+        /// </summary>
+        /// <param name="classname">The name of the class that was added to the element.</param>
+        protected internal virtual void OnClassAdded(String classname)
+        {
+            var temp = ClassAdded;
+            if (temp != null)
+            {
+                temp(this, classname);
+            }
+        }
+
+        /// <summary>
+        /// Raises the <see cref="ClassRemoved"/> event.
+        /// </summary>
+        /// <param name="classname">The name of the class that was removed from the element.</param>
+        protected internal virtual void OnClassRemoved(String classname)
+        {
+            var temp = ClassRemoved;
+            if (temp != null)
+            {
+                temp(this, classname);
+            }
+        }
+
+        /// <summary>
+        /// Raises the <see cref="Drawing"/> event.
+        /// </summary>
+        /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Draw(UltravioletTime)"/>.</param>
+        /// <param name="spriteBatch">The sprite batch with which to draw the view.</param>
+        /// <param name="opacity">The cumulative opacity of all of the element's parent elements.</param>
+        protected internal virtual void OnDrawing(UltravioletTime time, SpriteBatch spriteBatch, Single opacity)
+        {
+            var temp = Drawing;
+            if (temp != null)
+            {
+                temp(this, time, spriteBatch, opacity);
+            }
+        }
+
+        /// <summary>
+        /// Raises the <see cref="Updating"/> event.
+        /// </summary>
+        /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Draw(UltravioletTime)"/>.</param>
+        protected internal virtual void OnUpdating(UltravioletTime time)
+        {
+            var temp = Updating;
+            if (temp != null)
+            {
+                temp(this, time);
+            }
+        }
+
+        /// <summary>
+        /// Raises the <see cref="Focused"/> event.
+        /// </summary>
+        protected internal virtual void OnFocused()
+        {
+            var temp = Focused;
+            if (temp != null)
+            {
+                temp(this);
+            }
+        }
+
+        /// <summary>
+        /// Raises the <see cref="Blurred"/> event.
+        /// </summary>
+        protected internal virtual void OnBlurred()
+        {
+            var temp = Blurred;
+            if (temp != null)
+            {
+                temp(this);
+            }
+        }
+
+        /// <summary>
+        /// Raises the <see cref="KeyPressed"/> event.
+        /// </summary>
+        /// <param name="device">The keyboard device.</param>
+        /// <param name="key">The <see cref="Key"/> value that represents the key that was pressed.</param>
+        /// <param name="ctrl">A value indicating whether the Control modifier is active.</param>
+        /// <param name="alt">A value indicating whether the Alt modifier is active.</param>
+        /// <param name="shift">A value indicating whether the Shift modifier is active.</param>
+        /// <param name="repeat">A value indicating whether this is a repeated key press.</param>
+        protected internal virtual void OnKeyPressed(KeyboardDevice device, Key key, Boolean ctrl, Boolean alt, Boolean shift, Boolean repeat)
+        {
+            var temp = KeyPressed;
+            if (temp != null)
+            {
+                temp(this, device, key, ctrl, alt, shift, repeat);
+            }
+        }
+
+        /// <summary>
+        /// Raises the <see cref="KeyReleased"/> event.
+        /// </summary>
+        /// <param name="device">The keyboard device.</param>
+        /// <param name="key">The <see cref="Key"/> value that represents the key that was released.</param>
+        protected internal virtual void OnKeyReleased(KeyboardDevice device, Key key)
+        {
+            var temp = KeyReleased;
+            if (temp != null)
+            {
+                temp(this, device, key);
+            }
+        }
+
+        /// <summary>
+        /// Raises the <see cref="TextInput"/> event.
+        /// </summary>
+        /// <param name="device">The keyboard device.</param>
+        protected internal virtual void OnTextInput(KeyboardDevice device)
+        {
+            var temp = TextInput;
+            if (temp != null)
+            {
+                temp(this, device);
+            }
+        }
+
+        /// <summary>
+        /// Raises the <see cref="GainedMouseCapture"/> event.
+        /// </summary>
+        protected internal virtual void OnGainedMouseCapture()
+        {
+            var temp = GainedMouseCapture;
+            if (temp != null)
+            {
+                temp(this);
+            }
+        }
+
+        /// <summary>
+        /// Raises the <see cref="LostMouseCapture"/> event.
+        /// </summary>
+        protected internal virtual void OnLostMouseCapture()
+        {
+            var temp = LostMouseCapture;
+            if (temp != null)
+            {
+                temp(this);
+            }
+        }
+
+        /// <summary>
+        /// Raises the <see cref="MouseMotion"/> event.
+        /// </summary>
+        /// <param name="device">The mouse device.</param>
+        /// <param name="x">The x-coordinate of the cursor in screen coordinates.</param>
+        /// <param name="y">The y-coordinate of the cursor in screen coordinates.</param>
+        /// <param name="dx">The difference between the x-coordinate of the mouse's 
+        /// current position and the x-coordinate of the mouse's previous position.</param>
+        /// <param name="dy">The difference between the y-coordinate of the mouse's 
+        /// current position and the y-coordinate of the mouse's previous position.</param>
+        protected internal virtual void OnMouseMotion(MouseDevice device, Int32 x, Int32 y, Int32 dx, Int32 dy)
+        {
+            var temp = MouseMotion;
+            if (temp != null)
+            {
+                temp(this, device, x, y, dx, dy);
+            }
+        }
+
+        /// <summary>
+        /// Raises the <see cref="MouseEnter"/> event.
+        /// </summary>
+        /// <param name="device">The mouse device.</param>
+        protected internal virtual void OnMouseEnter(MouseDevice device)
+        {
+            var temp = MouseEnter;
+            if (temp != null)
+            {
+                temp(this, device);
+            }
+        }
+
+        /// <summary>
+        /// Raises the <see cref="MouseLeave"/> event.
+        /// </summary>
+        /// <param name="device">The mouse device.</param>
+        protected internal virtual void OnMouseLeave(MouseDevice device)
+        {
+            var temp = MouseLeave;
+            if (temp != null)
+            {
+                temp(this, device);
+            }
+        }
+
+        /// <summary>
+        /// Raises the <see cref="MouseButtonPressed"/> event.
+        /// </summary>
+        /// <param name="device">The mouse device.</param>
+        /// <param name="button">The mouse button that was pressed or released.</param>
+        protected internal virtual void OnMouseButtonPressed(MouseDevice device, MouseButton button)
+        {
+            var temp = MouseButtonPressed;
+            if (temp != null)
+            {
+                temp(this, device, button);
+            }
+        }
+
+        /// <summary>
+        /// Raises the <see cref="MouseButtonReleased"/> event.
+        /// </summary>
+        /// <param name="device">The mouse device.</param>
+        /// <param name="button">The mouse button that was pressed or released.</param>
+        protected internal virtual void OnMouseButtonReleased(MouseDevice device, MouseButton button)
+        {
+            var temp = MouseButtonReleased;
+            if (temp != null)
+            {
+                temp(this, device, button);
+            }
+        }
+
+        /// <summary>
+        /// Removes the specified child element from this element.
+        /// </summary>
+        /// <param name="child">The child element to remove from this element.</param>
+        protected internal virtual void RemoveChild(UIElement child)
+        {
+
+        }
+
+        /// <inheritdoc/>
+        protected internal sealed override Object DependencyDataSource
+        {
+            get { return IsComponent ? Control : ViewModel; }
+        }
+
+        /// <inheritdoc/>
+        protected internal sealed override DependencyObject DependencyContainer
+        {
+            get { return Parent; }
+        }
+
+        /// <summary>
+        /// Raises the <see cref="IsHitTestVisibleChanged"/> event.
+        /// </summary>
+        protected virtual void OnIsHitTestVisibleChanged()
+        {
+            var temp = IsHitTestVisibleChanged;
+            if (temp != null)
+            {
+                temp(this);
+            }
+        }
+
+        /// <summary>
+        /// Raises the <see cref="FocusableChanged"/> event.
+        /// </summary>
+        protected virtual void OnFocusableChanged()
+        {
+            var temp = FocusableChanged;
+            if (temp != null)
+            {
+                temp(this);
+            }
+        }
+
+        /// <summary>
+        /// When overridden in a derived class, draws the element using the specified <see cref="SpriteBatch"/>.
+        /// </summary>
+        /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Draw(UltravioletTime)"/>.</param>
+        /// <param name="spriteBatch">The <see cref="SpriteBatch"/> with which to render the element.</param>
+        /// <param name="opacity">The cumulative opacity of all of the element's ancestor elements.</param>
+        protected virtual void DrawCore(UltravioletTime time, SpriteBatch spriteBatch, Single opacity)
+        {
+
+        }
+
+        /// <summary>
+        /// When overridden in a derived class, updates the element's state.
+        /// </summary>
+        /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Update(UltravioletTime)"/>.</param>
+        protected virtual void UpdateCore(UltravioletTime time)
+        {
+
+        }
+
+        /// <summary>
+        /// When overridden in a derived class, reloads this element's content 
+        /// and the content of any children of this element.
+        /// </summary>
+        protected virtual void ReloadContentCore(Boolean recursive)
+        {
+
+        }
+
+        /// <summary>
+        /// When overridden in a derived class, clears the animations which are attached to 
+        /// this element, and optionally any animations attached to children of this element.
+        /// </summary>
+        /// <param name="recursive">A value indicating whether to clear the animations
+        /// of this element's child elements.</param>
+        protected virtual void ClearAnimationsCore(Boolean recursive)
+        {
+            ClearAnimations();
+        }
+
+        /// <summary>
+        /// When overridden in a derived class, clears the local values of this element's 
+        /// dependency properties, and optionally the local values of any dependency properties belonging
+        /// to children of this element.
+        /// </summary>
+        /// <param name="recursive">A value indicating whether to clear the local dependency
+        /// property values of this element's child elements.</param>
+        protected virtual void ClearLocalValuesCore(Boolean recursive)
+        {
+            ClearLocalValues();
+        }
+
+        /// <summary>
+        /// When overridden in a derived class, clears the styled values of this element's 
+        /// dependency properties, and optionally the styled values of any dependency properties belonging
+        /// to children of this element.
+        /// </summary>
+        /// <param name="recursive">A value indicating whether to clear the styled dependency
+        /// property values of this element's child elements.</param>
+        protected virtual void ClearStyledValuesCore(Boolean recursive)
+        {
+            ClearStyledValues();
+        }
+
+        /// <summary>
+        /// When overridden in a derived class, performs cleanup operations and releases any 
+        /// internal framework resources for this element and any child elements.
+        /// </summary>
+        protected virtual void CleanupCore()
+        {
+
+        }
+
+        /// <summary>
+        /// When overridden in a derived class, caches layout parameters related to the
+        /// element's position within the element hierarchy for this element and for
+        /// any child elements.
+        /// </summary>
+        protected virtual void CacheLayoutParametersCore()
+        {
+
+        }
+
+        /// <summary>
+        /// When overridden in a derived class, applies the specified stylesheet
+        /// to this element and to any child elements.
+        /// </summary>
+        /// <param name="stylesheet">The stylesheet to apply to this element and its children.</param>
+        protected virtual void StyleCore(UvssDocument stylesheet)
+        {
+
+        }
+
+        /// <summary>
+        /// When overridden in a derived class, calculates the element's desired size and 
+        /// the desired sizes of any child elements.
+        /// </summary>
+        /// <param name="availableSize">The size of the area which the element's parent has 
+        /// specified is available for the element's layout.</param>
+        /// <returns>The element's desired size, considering the size of any content elements.</returns>
+        protected virtual Size2D MeasureCore(Size2D availableSize)
+        {
+            return Size2D.Zero;
+        }
+
+        /// <summary>
+        /// When overridden in a derived class, sets the element's final area relative to its 
+        /// parent and arranges the element's children within its layout area.
+        /// </summary>
+        /// <param name="finalRect">The element's final position and size relative to its parent element.</param>
+        protected virtual Size2D ArrangeCore(RectangleD finalRect)
+        {
+            return new Size2D(finalRect.Width, finalRect.Height);
+        }
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="IsHitTestVisible"/> dependency property changes.
+        /// </summary>
+        /// <param name="dobj">The dependency object that raised the event.</param>
+        private static void HandleIsHitTestVisibleChanged(DependencyObject dobj)
+        {
+            var element = (UIElement)dobj;
+            element.OnIsHitTestVisibleChanged();
+        }
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="FocusableChanged"/> dependency property changes.
+        /// </summary>
+        /// <param name="dobj">The dependency object that raised the event.</param>
+        private static void HandleFocusableChanged(DependencyObject dobj)
+        {
+            var element = (UIElement)dobj;
+            element.OnFocusableChanged();
+        }
+
+        /// <summary>
+        /// Gets the style setter for the style with the specified name.
+        /// </summary>
+        /// <param name="name">The name of the style for which to retrieve a setter.</param>
+        /// <returns>A function to set the value of the specified style.</returns>
+        private StyleSetter GetStyleSetter(String name)
+        {
+            return GetStyleSetter(name, null);
+        }
+
+        /// <summary>
+        /// Gets the style setter for the style with the specified name.
+        /// </summary>
+        /// <param name="name">The name of the style for which to retrieve a setter.</param>
+        /// <param name="pseudoClass">The pseudo-class of the style for which to retrieve a setter.</param>
+        /// <returns>A function to set the value of the specified style.</returns>
+        private StyleSetter GetStyleSetter(String name, String pseudoClass)
+        {
+            var currentType = GetType();
+
+            lock (styleSetters)
+            {
+                while (currentType != null && typeof(UIElement).IsAssignableFrom(currentType))
+                {
+                    Dictionary<UvssStyleKey, StyleSetter> styleSettersForCurrentType;
+                    if (styleSetters.TryGetValue(currentType, out styleSettersForCurrentType))
+                    {
+                        StyleSetter setter;
+                        if (styleSettersForCurrentType.TryGetValue(new UvssStyleKey(name, pseudoClass), out setter))
+                        {
+                            return setter;
+                        }
+                    }
+
+                    currentType = currentType.BaseType;
+                }
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// Dynamically compiles a collection of lambda methods which can be used to apply styles
+        /// to the element's properties.
+        /// </summary>
+        private void CreateStyleSetters()
+        {
+            var currentType = GetType();
+
+            while (currentType != null && typeof(UIElement).IsAssignableFrom(currentType))
+            {
+                Dictionary<UvssStyleKey, StyleSetter> styleSettersForCurrentType;
+                Dictionary<String, DependencyProperty> styledPropertiesForCurrentType;
+                if (!styleSetters.TryGetValue(currentType, out styleSettersForCurrentType))
+                {
+                    styleSettersForCurrentType     = new Dictionary<UvssStyleKey, StyleSetter>();
+                    styledPropertiesForCurrentType = new Dictionary<String, DependencyProperty>();
+
+                    var styledDependencyProperties = 
+                            from field in currentType.GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static)
+                            let attr = field.GetCustomAttributes(typeof(StyledAttribute), false).SingleOrDefault()
+                            let type = field.FieldType
+                            let name = field.Name
+                            where
+                                attr != null &&
+                                type == typeof(DependencyProperty)
+                            select new { Attribute = (StyledAttribute)attr, FieldInfo = field };
+
+                    foreach (var prop in styledDependencyProperties)
+                    {
+                        var dp                  = (DependencyProperty)prop.FieldInfo.GetValue(null);
+                        var dpType              = dp.PropertyType;
+
+                        var setStyledValue      = miSetStyledValue.MakeGenericMethod(dpType);
+
+                        var expParameterElement = Expression.Parameter(typeof(UIElement), "element");
+                        var expParameterValue   = Expression.Parameter(typeof(String), "value");
+                        var expParameterFmtProv = Expression.Parameter(typeof(IFormatProvider), "provider");
+                        var expResolveValue     = Expression.Convert(Expression.Call(miFromString, expParameterValue, Expression.Constant(dpType), expParameterFmtProv), dpType);
+                        var expCallMethod       = Expression.Call(expParameterElement, setStyledValue, Expression.Constant(dp), expResolveValue);
+
+                        var lambda = Expression.Lambda<StyleSetter>(expCallMethod, expParameterElement, expParameterValue, expParameterFmtProv).Compile();
+
+                        var styleKey = new UvssStyleKey(prop.Attribute.Name, prop.Attribute.PseudoClass);
+                        styleSettersForCurrentType[styleKey] = lambda;
+                        styledPropertiesForCurrentType[prop.Attribute.Name] = dp;
+                    }
+
+                    styleSetters[currentType]     = styleSettersForCurrentType;
+                    styledProperties[currentType] = styledPropertiesForCurrentType;
+                }
+
+                currentType = currentType.BaseType;
+            }
+        }
+
+        /// <summary>
+        /// Updates the value of the <see cref="LayoutDepth"/> property.
+        /// </summary>
+        private void CacheLayoutDepth()
+        {
+            this.layoutDepth = (Parent == null) ? 0 : Parent.LayoutDepth + 1;
+        }
+
+        /// <summary>
+        /// Updates the value of the <see cref="View"/> property.
+        /// </summary>
+        private void CacheView()
+        {
+            this.view = null;
+            for (var current = Parent; current != null; current = current.Parent)
+            {
+                if (current.View != null)
+                {
+                    this.view = current.View;
+                    break;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Updates the value of the <see cref="Control"/> property.
+        /// </summary>
+        private void CacheControl()
+        {
+            // TODO
+        }
+
+        /// <summary>
+        /// Applies the specified stylesheet's styles to this element and its children.
+        /// </summary>
+        /// <param name="stylesheet">The stylesheet to apply to the element.</param>
+        private void ApplyStyles(UvssDocument stylesheet)
+        {
+            stylesheet.ApplyStyles(this);
+        }
+
+        /// <summary>
+        /// Applies a style to the element.
+        /// </summary>
+        /// <param name="style">The style which is being applied.</param>
+        /// <param name="selector">The selector which caused the style to be applied.</param>
+        /// <param name="attached">A value indicating whether thie style represents an attached property.</param>
+        private void ApplyStyle(UvssStyle style, UvssSelector selector, Boolean attached)
+        {
+            Contract.Require(style, "style");
+            Contract.Require(selector, "selector");
+
+            var name  = style.Name;
+            var value = style.Value.Trim();
+
+            if (name == "transition")
+            {
+                // TODO ApplyStyledVisualStateTransition(style, value);
+            }
+            else
+            {
+                var setter = attached ? Parent.GetStyleSetter(name, selector.PseudoClass) : GetStyleSetter(name, selector.PseudoClass);
+                if (setter == null)
+                    return;
+
+                setter(this, value, CultureInfo.InvariantCulture);
+            }
+        }
+
+        // Property values.
+        private readonly UltravioletContext uv;
+        private readonly UIElementClassCollection classes;
+        private readonly String id;
+        private readonly String name;
+        private UIView view;
+        private UIElement parent;
+        private UIElement control = null;
+        private Boolean isStyleValid;
+        private Boolean isMeasureValid;
+        private Boolean isArrangeValid;
+        private Point2D renderOffset;
+        private Size2D renderSize;
+        private Size2D desiredSize;
+
+        // Layout parameters.
+        private UvssDocument mostRecentStylesheet;
+        private RectangleD mostRecentFinalRect;
+        private RectangleD mostRecentAbsoluteRect;
+        private Size2D mostRecentAvailableSize;
+        private Int32 layoutDepth;
+
+        // Functions for setting styles on known element types.
+        private static readonly MethodInfo miFromString;
+        private static readonly MethodInfo miSetStyledValue;
+        private static readonly Dictionary<Type, Dictionary<String, DependencyProperty>> styledProperties = 
+            new Dictionary<Type, Dictionary<String, DependencyProperty>>();
+        private static readonly Dictionary<Type, Dictionary<UvssStyleKey, StyleSetter>> styleSetters = 
+            new Dictionary<Type, Dictionary<UvssStyleKey, StyleSetter>>();
+    }
+}

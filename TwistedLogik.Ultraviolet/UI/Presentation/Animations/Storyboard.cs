@@ -25,7 +25,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
         {
             Contract.Require(element, "element");
 
-            element.BeginStoryboard(this);
+            // TODO element.BeginStoryboard(this);
         }
 
         /// <summary>
@@ -36,7 +36,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
         {
             Contract.Require(element, "element");
 
-            element.StopStoryboard(this);
+            // TODO element.StopStoryboard(this);
         }
 
         /// <summary>

@@ -1,20 +1,20 @@
 ﻿using System;
 using TwistedLogik.Nucleus.Data;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
+namespace TwistedLogik.Ultraviolet.UI.Presentation
 {
     /// <summary>
     /// Represents an asset which can be loaded from either the global or local content source.
     /// </summary>
     /// <typeparam name="T">The type of asset which this object represents.</typeparam>
-    public struct SourcedRef<T> : IEquatable<SourcedRef<T>>, IInterpolatable<SourcedRef<T>> where T : class
+    public struct SourcedVal<T> : IEquatable<SourcedVal<T>>, IInterpolatable<SourcedVal<T>> where T : struct, IEquatable<T>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="SourcedRef{T}"/> structure.
+        /// Initializes a new instance of the <see cref="SourcedVal{T}"/> structure.
         /// </summary>
         /// <param name="value">The underlying value of the sourced asset.</param>
         /// <param name="source">An <see cref="AssetSource"/> value describing how to load the asset.</param>
-        public SourcedRef(T value, AssetSource source)
+        public SourcedVal(T value, AssetSource source)
         {
             this.value  = value;
             this.source = source;
@@ -23,9 +23,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <summary>
         /// Implicitly converts a sourced asset to its underlying value.
         /// </summary>
-        /// <param name="sourced">The <see cref="SourcedRef{T}"/> to convert.</param>
+        /// <param name="sourced">The <see cref="SourcedVal{T}"/> to convert.</param>
         /// <returns>The underlying value of the sourced asset.</returns>
-        public static implicit operator T(SourcedRef<T> sourced)
+        public static implicit operator T(SourcedVal<T> sourced)
         {
             return sourced.Value;
         }
@@ -33,10 +33,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <summary>
         /// Returns <c>true</c> if the specified sourced assets are equal.
         /// </summary>
-        /// <param name="id1">The first <see cref="SourcedRef{T}"/> to compare.</param>
-        /// <param name="id2">The second <see cref="SourcedRef{T}"/> to compare.</param>
+        /// <param name="id1">The first <see cref="SourcedVal{T}"/> to compare.</param>
+        /// <param name="id2">The second <see cref="SourcedVal{T}"/> to compare.</param>
         /// <returns><c>true</c> if the specified sourced assets are equal; otherwise, <c>false</c>.</returns>
-        public static Boolean operator ==(SourcedRef<T> id1, SourcedRef<T> id2)
+        public static Boolean operator ==(SourcedVal<T> id1, SourcedVal<T> id2)
         {
             return id1.Equals(id2);
         }
@@ -44,31 +44,31 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <summary>
         /// Returns <c>true</c> if the specified sourced assets are not equal.
         /// </summary>
-        /// <param name="id1">The first <see cref="SourcedRef{T}"/> to compare.</param>
-        /// <param name="id2">The second <see cref="SourcedRef{T}"/> to compare.</param>
+        /// <param name="id1">The first <see cref="SourcedVal{T}"/> to compare.</param>
+        /// <param name="id2">The second <see cref="SourcedVal{T}"/> to compare.</param>
         /// <returns><c>true</c> if the specified sourced assets are unequal; otherwise, <c>false</c>.</returns>
-        public static Boolean operator !=(SourcedRef<T> id1, SourcedRef<T> id2)
+        public static Boolean operator !=(SourcedVal<T> id1, SourcedVal<T> id2)
         {
             return !id1.Equals(id2);
         }
 
         /// <summary>
-        /// Parses a string into an instance of <see cref="SourcedRef{T}"/>.
+        /// Parses a string into an instance of <see cref="SourcedVal{T}"/>.
         /// </summary>
         /// <param name="str">The string to parse.</param>
-        /// <returns>The <see cref="SourcedRef{T}"/> instance that was created from the specified string.</returns>
-        public static SourcedRef<T> Parse(String str)
+        /// <returns>The <see cref="SourcedVal{T}"/> instance that was created from the specified string.</returns>
+        public static SourcedVal<T> Parse(String str)
         {
             return Parse(str, null);
         }
 
         /// <summary>
-        /// Parses a string into an instance of <see cref="SourcedRef{T}"/>.
+        /// Parses a string into an instance of <see cref="SourcedVal{T}"/>.
         /// </summary>
         /// <param name="str">The string to parse.</param>
         /// <param name="provider">An object that supplies culture-specific formatting information.</param>
-        /// <returns>The <see cref="SourcedRef{T}"/> instance that was created from the specified string.</returns>
-        public static SourcedRef<T> Parse(String str, IFormatProvider provider)
+        /// <returns>The <see cref="SourcedVal{T}"/> instance that was created from the specified string.</returns>
+        public static SourcedVal<T> Parse(String str, IFormatProvider provider)
         {
             var source = AssetSource.Global;
 
@@ -83,12 +83,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
                 str    = str.Substring(0, str.Length - " global".Length);
             }
 
-            var underlyingValue = (T)ObjectResolver.FromString(str.Trim(), typeof(T), provider);
-            return new SourcedRef<T>(underlyingValue, source);
+            var underlyingValue = (T)ObjectResolver.FromString(str, typeof(T), provider);
+            return new SourcedVal<T>(underlyingValue, source);
         }
 
         /// <inheritdoc/>
-        public SourcedRef<T> Interpolate(SourcedRef<T> target, Single t)
+        public SourcedVal<T> Interpolate(SourcedVal<T> target, Single t)
         {
             return (t >= 1) ? target : this;
         }
@@ -114,14 +114,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <inheritdoc/>
         public override Boolean Equals(Object obj)
         {
-            return obj is SourcedRef<T> && Equals((SourcedRef<T>)obj);
+            return obj is SourcedVal<T> && Equals((SourcedVal<T>)obj);
         }
 
         /// <inheritdoc/>
-        public Boolean Equals(SourcedRef<T> other)
+        public Boolean Equals(SourcedVal<T> other)
         {
             return
-                this.value  == other.value &&
+                this.value.Equals(other.value) &&
                 this.source == other.source;
         }
 

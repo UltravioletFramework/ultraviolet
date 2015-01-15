@@ -8,15 +8,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
     public class RowDefinition : DefinitionBase
     {
         /// <summary>
-        /// Gets the row's calculated height in pixels.
-        /// </summary>
-        public Int32 ActualHeight
-        {
-            get { return actualHeight; }
-            internal set { actualHeight = value; }
-        }
-
-        /// <summary>
         /// Gets or sets the row's height.
         /// </summary>
         public GridLength Height
@@ -41,6 +32,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         {
             get { return GetValue<Double>(MaxHeightProperty); }
             set { SetValue<Double>(MaxHeightProperty, value); }
+        }
+
+        /// <summary>
+        /// Gets the row's calculated height.
+        /// </summary>
+        public Double ActualHeight
+        {
+            get { return actualHeight; }
+            internal set { actualHeight = value; }
         }
 
         /// <summary>
@@ -79,7 +79,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <summary>
         /// Gets or sets the distance between the top edge of the column's grid and the column's top edge.
         /// </summary>
-        internal Int32 GridRelativeY
+        internal Double GridRelativeY
         {
             get;
             set;
@@ -164,6 +164,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         // Property values.
-        private Int32 actualHeight;
+        private Double actualHeight;
     }
 }

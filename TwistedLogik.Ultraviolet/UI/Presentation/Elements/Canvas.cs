@@ -35,6 +35,42 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             LoadComponentRoot(ComponentTemplate);
         }
 
+        protected override Size2 MeasureCore(Size2 availableSize)
+        {
+            foreach (var child in Children)
+            {
+                child.Measure(new Size2(Int32.MaxValue, Int32.MaxValue));
+            }
+            return base.MeasureCore(availableSize);
+        }
+
+        protected override void ArrangeCore(Rectangle finalRect)
+        {
+            foreach (var child in Children)
+            {
+                var left   = Canvas.GetLeft(child);
+                var right  = Canvas.GetRight(child);
+                var top    = Canvas.GetTop(child);
+                var bottom = Canvas.GetBottom(child);
+
+                var width = child.DesiredSize.Width;
+                var height = child.DesiredSize.Height;
+
+                if (!Double.IsNaN(left) && !Double.IsNaN(right))
+                    width = finalRect.Width - ((int)left + (int)right);
+
+                if (!Double.IsNaN(top) && !Double.IsNaN(bottom))
+                    height = finalRect.Height - ((int)top + (int)bottom);
+
+                var x = Double.IsNaN(left) ? 0 : (int)left;
+                var y = Double.IsNaN(top) ? 0 : (int)top;
+
+                child.Arrange(new Rectangle(x, y, width, height));
+            }
+            base.ArrangeCore(finalRect);
+        }
+
+
         /// <summary>
         /// Gets the distance between the left edge of the canvas and the left edge of the specified element.
         /// </summary>
@@ -131,29 +167,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             element.SetValue<Double>(BottomProperty, value);
         }
 
-        /// <inheritdoc/>
-        public override void PerformContentLayout()
-        {
-            foreach (var child in Children)
-            {
-                if (!ElementParticipatesInLayout(child))
-                    continue;
-
-                UpdateChildLayout(child, false);
-            }
-            UpdateScissorRectangle();
-        }
-
-        /// <inheritdoc/>
-        public override void PerformPartialLayout(UIElement content)
-        {
-            Contract.Require(content, "content");
-
-            UpdateChildLayout(content, true);
-
-            base.PerformPartialLayout(content);
-        }
-
         /// <summary>
         /// Gets or sets the template used to create the control's component tree.
         /// </summary>
@@ -197,125 +210,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             DrawBackgroundImage(spriteBatch, opacity);
 
             base.OnDrawing(time, spriteBatch, opacity);
-        }
-
-        /// <summary>
-        /// Immediately recalculates the layout of the specified child element.
-        /// </summary>
-        /// <param name="child">The child element for which to calculate a layout.</param>
-        /// <param name="partial">A value indicating whether this is a partial layout.</param>
-        private void UpdateChildLayout(UIElement child, Boolean partial)
-        {
-            child.RequestLayout();
-
-            UpdateParentRelativeArea(child);
-            UpdateContentElementPosition(child);
-
-            if (partial)
-                UpdateScissorRectangle();
-        }
-
-        /// <summary>
-        /// Immediately recalculates the value of the <see cref="UIElement.ParentRelativeArea"/> property
-        /// for the specified child element.
-        /// </summary>
-        /// <param name="child">The child element for which to calculate a layout.</param>
-        private void UpdateParentRelativeArea(UIElement child)
-        {            
-            if (View == null)
-                return;
-
-            if (UpdateComponentRootLayout(child))
-                return;
-
-            var display = Ultraviolet.GetPlatform().Displays.PrimaryDisplay;
-
-            var left   = GetLeft(child);
-            var top    = GetTop(child);
-            var right  = GetRight(child);
-            var bottom = GetBottom(child);
-            var width  = Double.NaN;
-            var height = Double.NaN;
-            var margin = child.Margin;
-
-            var pxWidth  = (Int32?)null;
-            var pxHeight = (Int32?)null;
-
-            // If we have neither left nor right, assume left: 0
-            if (Double.IsNaN(left) && Double.IsNaN(right))
-                left = 0;
-
-            // If we have neither top nor bottom, assume top: 0
-            if (Double.IsNaN(top) && Double.IsNaN(bottom))
-                top = 0;
-
-            // Apply margins.
-            if (!Double.IsNaN(margin.Left))
-                left += margin.Left;
-
-            if (!Double.IsNaN(margin.Top))
-                top  += margin.Top;
-
-            if (!Double.IsNaN(right) && !Double.IsNaN(margin.Right))
-                right += margin.Right;
-
-            if (!Double.IsNaN(bottom) && !Double.IsNaN(margin.Bottom))
-                bottom += margin.Bottom;
-
-            // If we have both left and right, calculate width
-            if (!Double.IsNaN(left) && !Double.IsNaN(right))
-                width = display.PixelsToDips(ActualWidth) - (left + right);
-
-            // If we have both top and bottom, calculate height
-            if (!Double.IsNaN(top) && !Double.IsNaN(bottom))
-                height = display.PixelsToDips(ActualHeight) - (top + bottom);
-
-            // Convert from dips to pixels and calculate our final size.
-            pxWidth  = Double.IsNaN(width)  ? (Int32?)null : (Int32)Math.Ceiling(display.DipsToPixels(width));
-            pxHeight = Double.IsNaN(height) ? (Int32?)null : (Int32)Math.Ceiling(display.DipsToPixels(height));
-            child.CalculateActualSize(ref pxWidth, ref pxHeight);
-
-            // Calculate the element's layout area.
-            var x = 0;
-            var y = 0;
-            if (!Double.IsNaN(left))
-            {
-                var pxLeft = (Int32)display.DipsToPixels(left);
-                x = pxLeft;
-            }
-            else
-            {
-                var pxRight = (Int32)display.DipsToPixels(right);
-                x = ActualWidth - (pxRight + (pxWidth ?? 0));
-            }
-            if (!Double.IsNaN(top))
-            {
-                var pxTop = (Int32)display.DipsToPixels(top);
-                y = pxTop;
-            }
-            else
-            {
-                var pxBottom = (Int32)display.DipsToPixels(bottom);
-                y = ActualHeight - (pxBottom + (pxHeight ?? 0));
-            }
-            
-            // Apply the layout area to the element.
-            child.ParentRelativeArea = new Rectangle(x, y, pxWidth ?? 0, pxHeight ?? 0);
-        }
-
-        /// <summary>
-        /// Updates the layout of the container's component root.
-        /// </summary>
-        /// <param name="child">The element to attempt to update.</param>
-        /// <returns><c>true</c> if the specified element is the container's component root; otherwise, <c>false</c>.</returns>
-        private Boolean UpdateComponentRootLayout(UIElement child)
-        {
-            if (ComponentRoot == child)
-            {
-                child.ParentRelativeArea = new Rectangle(0, 0, ActualWidth, ActualHeight);
-                return true;
-            }
-            return false;
         }
     }
 }

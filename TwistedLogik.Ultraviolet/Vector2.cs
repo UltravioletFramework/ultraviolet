@@ -159,7 +159,7 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Explicitly converts a <see cref="Vector2"/> structure to a <see cref="Point2"/> structure.
         /// </summary>
-        /// <param name="rect">The structure to convert.</param>
+        /// <param name="vector">The structure to convert.</param>
         /// <returns>The converted structure.</returns>
         public static explicit operator Point2(Vector2 vector)
         {
@@ -169,7 +169,7 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Explicitly converts a <see cref="Vector2"/> structure to a <see cref="Point2F"/> structure.
         /// </summary>
-        /// <param name="rect">The structure to convert.</param>
+        /// <param name="vector">The structure to convert.</param>
         /// <returns>The converted structure.</returns>
         public static explicit operator Point2F(Vector2 vector)
         {
@@ -179,7 +179,7 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Explicitly converts a <see cref="Vector2"/> structure to a <see cref="Point2D"/> structure.
         /// </summary>
-        /// <param name="rect">The structure to convert.</param>
+        /// <param name="vector">The structure to convert.</param>
         /// <returns>The converted structure.</returns>
         public static explicit operator Point2D(Vector2 vector)
         {
@@ -189,7 +189,7 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Explicitly converts a <see cref="Point2"/> structure to a <see cref="Vector2"/> structure.
         /// </summary>
-        /// <param name="rect">The structure to convert.</param>
+        /// <param name="point">The structure to convert.</param>
         /// <returns>The converted structure.</returns>
         public static explicit operator Vector2(Point2 point)
         {
@@ -199,7 +199,7 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Explicitly converts a <see cref="Point2F"/> structure to a <see cref="Vector2"/> structure.
         /// </summary>
-        /// <param name="rect">The structure to convert.</param>
+        /// <param name="point">The structure to convert.</param>
         /// <returns>The converted structure.</returns>
         public static explicit operator Vector2(Point2F point)
         {
@@ -209,7 +209,7 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Explicitly converts a <see cref="Point2D"/> structure to a <see cref="Vector2"/> structure.
         /// </summary>
-        /// <param name="rect">The structure to convert.</param>
+        /// <param name="point">The structure to convert.</param>
         /// <returns>The converted structure.</returns>
         public static explicit operator Vector2(Point2D point)
         {

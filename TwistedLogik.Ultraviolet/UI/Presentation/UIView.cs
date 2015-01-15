@@ -26,8 +26,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             this.viewModelType = viewModelType;
 
-            this.grid = new Grid(uv, null);
-            this.grid.UpdateView(this);
+            this.layoutRoot = new Grid(uv, null);
+            this.layoutRoot.CacheLayoutParameters();
+            this.layoutRoot.InvalidateMeasure();
 
             HookKeyboardEvents();
             HookMouseEvents();
@@ -70,7 +71,31 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// animations, dependency property values, etc.) may be reset.</remarks>
         public void Cleanup()
         {
-            LayoutRoot.Cleanup();
+            // TODO
+        }
+
+        /// <summary>
+        /// Invalidates the styling state of the view's layout root.
+        /// </summary>
+        public void InvalidateStyle()
+        {
+            layoutRoot.InvalidateStyle();
+        }
+
+        /// <summary>
+        /// Invalidates the measurement state of the view's layout root.
+        /// </summary>
+        public void InvalidateMeasure()
+        {
+            layoutRoot.InvalidateMeasure();
+        }
+
+        /// <summary>
+        /// Invalidates the arrangement state of the view's layout root.
+        /// </summary>
+        public void InvalidateArrange()
+        {
+            layoutRoot.InvalidateArrange();
         }
 
         /// <summary>
@@ -83,7 +108,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (window == null)
                 return;
 
-            LayoutRoot.Draw(time, spriteBatch, 1.0f);
+            layoutRoot.Draw(time, spriteBatch, 1.0f);
         }
 
         /// <summary>
@@ -97,7 +122,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             HandleUserInput();
 
-            LayoutRoot.Update(time);
+            layoutRoot.Update(time);
         }
 
         /// <summary>
@@ -261,18 +286,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         /// <param name="x">The x-coordinate of the position in view space to evaluate.</param>
         /// <param name="y">The y-coordinate of the position in view space to evaluate.</param>
-        /// <param name="hitTest">A value indicating whether to honor the value of the <see cref="UIElement.HitTestVisible"/> property.</param>
+        /// <param name="hitTest">A value indicating whether to honor the value of the <see cref="UIElement.IsHitTestVisible"/> property.</param>
         /// <returns>The element within this view at the specified point in view space, or <c>null</c> if no element exists at that point.</returns>
         public UIElement GetElementAtPoint(Int32 x, Int32 y, Boolean hitTest)
         {
-            return LayoutRoot.GetElementAtPoint(x, y, hitTest);
+            // TODO return LayoutRoot.GetElementAtPoint(x, y, hitTest);
+            return null;
         }
 
         /// <summary>
         /// Gets the element within this view at the specified point in view space.
         /// </summary>
         /// <param name="position">The position in view space to evaluate.</param>
-        /// <param name="hitTest">A value indicating whether to honor the value of the <see cref="UIElement.HitTestVisible"/> property.</param>
+        /// <param name="hitTest">A value indicating whether to honor the value of the <see cref="UIElement.IsHitTestVisible"/> property.</param>
         /// <returns>The element within this view at the specified point in view space, or <c>null</c> if no element exists at that point.</returns>
         public UIElement GetElementAtPoint(Vector2 position, Boolean hitTest)
         {
@@ -284,7 +310,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         /// <param name="x">The x-coordinate of the position in screen space to evaluate.</param>
         /// <param name="y">The y-coordinate of the position in screen space to evaluate.</param>
-        /// <param name="hitTest">A value indicating whether to honor the value of the <see cref="UIElement.HitTestVisible"/> property.</param>
+        /// <param name="hitTest">A value indicating whether to honor the value of the <see cref="UIElement.IsHitTestVisible"/> property.</param>
         /// <returns>The element within this view at the specified point in screen space, or <c>null</c> if no element exists at that point.</returns>
         public UIElement GetElementAtScreenPoint(Int32 x, Int32 y, Boolean hitTest)
         {
@@ -297,7 +323,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Gets the element within this view at the specified point in screen space.
         /// </summary>
         /// <param name="position">The position in screen space to evaluate.</param>
-        /// <param name="hitTest">A value indicating whether to honor the value of the <see cref="UIElement.HitTestVisible"/> property.</param>
+        /// <param name="hitTest">A value indicating whether to honor the value of the <see cref="UIElement.IsHitTestVisible"/> property.</param>
         /// <returns>The element within this view at the specified point in screen space, or <c>null</c> if no element exists at that point.</returns>
         public UIElement GetElementAtScreenPoint(Vector2 position, Boolean hitTest)
         {
@@ -314,7 +340,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             this.globalContent = global;
             this.localContent  = local;
 
-            LayoutRoot.ReloadContentRecursive();
+            layoutRoot.ReloadContent(true);
         }
 
         /// <summary>
@@ -327,11 +353,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             if (stylesheet != null)
             {
-                LayoutRoot.ApplyStyles(stylesheet);
+                // TODO LayoutRoot.ApplyStyles(stylesheet);
             }
             else
             {
-                LayoutRoot.ClearStyledValuesRecursive();
+                // TODO LayoutRoot.ClearStyledValuesRecursive();
             }
         }
 
@@ -345,7 +371,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 throw new ArgumentException(UltravioletStrings.IncompatibleViewModel.Format(viewModelType));
 
             this.viewModel = viewModel;
-            LayoutRoot.UpdateViewModel(viewModel);
+
+            layoutRoot.CacheLayoutParameters();
         }
 
         /// <summary>
@@ -359,45 +386,23 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             this.window = window;
 
-            var newPosition = false;
             var newSize = false;
-
-            if (this.area.X != area.X || this.area.Y != area.Y)
-                newPosition = true;
 
             if (this.area.Width != area.Width || this.area.Height != area.Height)
                 newSize = true;
 
             this.area = area;
 
-            LayoutRoot.ActualWidth  = area.Width;
-            LayoutRoot.ActualHeight = area.Height;
-
             if (newSize)
             {
-                LayoutRoot.PerformLayout();
+                var display = Ultraviolet.GetPlatform().Displays.PrimaryDisplay;
+
+                var dipsWidth  = display.PixelsToDips(area.Width);
+                var dipsHeight = display.PixelsToDips(area.Height);
+
+                layoutRoot.Measure(new Size2D(dipsWidth, dipsHeight));
+                layoutRoot.Arrange(new RectangleD(0, 0, dipsWidth, dipsHeight));
             }
-
-            if (newSize || newPosition)
-            {
-                LayoutRoot.UpdateAbsoluteScreenPosition(area.X, area.Y);
-            }
-        }
-
-        /// <summary>
-        /// Requests that a layout be performed during the next call to <see cref="UIElement.Update(UltravioletTime)"/>.
-        /// </summary>
-        public void RequestLayout()
-        {
-            LayoutRoot.RequestLayout();
-        }
-
-        /// <summary>
-        /// Immediately recalculates the layout of the container and all of its children.
-        /// </summary>
-        public void PerformLayout()
-        {
-            LayoutRoot.PerformLayout();
         }
 
         /// <summary>
@@ -517,7 +522,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             if (Stylesheet != null)
             {
-                return Stylesheet.InstantiateStoryboardByName(LayoutRoot.Ultraviolet, name);
+                // TODO return Stylesheet.InstantiateStoryboardByName(LayoutRoot.Ultraviolet, name);
             }
 
             return null;
@@ -572,20 +577,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
-        /// Gets or sets the area on the screen that the UI view occupies.
+        /// Gets the area on the screen that the UI view occupies.
         /// </summary>
         public Rectangle Area
         {
             get { return area; }
-            set
-            {
-                if (!area.Equals(value))
-                {
-                    area = value;
-                    LayoutRoot.ParentRelativeArea = new Rectangle(0, 0, value.Width, value.Height);
-                    LayoutRoot.PerformLayout();
-                }
-            }
         }
 
         /// <summary>
@@ -629,11 +625,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
-        /// Gets the <see cref="LayoutRoot"/> that contains all of the UI's elements.
+        /// Gets the root element of the view's layout.
         /// </summary>
         public Grid LayoutRoot
         {
-            get { return grid; }
+            get { return layoutRoot; }
         }
 
         /// <summary>
@@ -771,10 +767,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 elementUnderMouse     = (mouseView == null) ? null : mouseView.GetElementAtScreenPoint(mousePos, true);
             }
 
-            if (elementUnderMouse != null && !elementUnderMouse.HitTestVisible)
+            if (elementUnderMouse != null && !elementUnderMouse.IsHitTestVisible)
                 elementUnderMousePrev = elementUnderMouse;
 
-            if (elementWithMouseCapture != null && !elementWithMouseCapture.HitTestVisible)
+            if (elementWithMouseCapture != null && !elementWithMouseCapture.IsHitTestVisible)
                 ReleaseMouse(elementWithMouseCapture);
 
             // Handle mouse motion events
@@ -896,7 +892,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         private readonly Type viewModelType;
         private Rectangle area;
         private Boolean focused;
-        private Grid grid;
+        private Grid layoutRoot;
         private IUltravioletWindow window;
 
         // State values.

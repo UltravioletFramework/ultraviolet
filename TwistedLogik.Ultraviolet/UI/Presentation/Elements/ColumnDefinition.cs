@@ -8,15 +8,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
     public class ColumnDefinition : DefinitionBase
     {
         /// <summary>
-        /// Gets the column's calculated width in pixels.
-        /// </summary>
-        public Int32 ActualWidth
-        {
-            get { return actualWidth; }
-            internal set { actualWidth = value; }
-        }
-
-        /// <summary>
         /// Gets or sets the column's width.
         /// </summary>
         public GridLength Width
@@ -41,6 +32,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         {
             get { return GetValue<Double>(MaxWidthProperty); }
             set { SetValue<Double>(MaxWidthProperty, value); }
+        }
+
+        /// <summary>
+        /// Gets the column's calculated width in pixels.
+        /// </summary>
+        public Double ActualWidth
+        {
+            get { return actualWidth; }
+            internal set { actualWidth = value; }
         }
 
         /// <summary>
@@ -79,7 +79,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <summary>
         /// Gets or sets the distance between the left edge of the column's grid and the column's left edge.
         /// </summary>
-        internal Int32 GridRelativeX
+        internal Double GridRelativeX
         {
             get;
             set;
@@ -164,6 +164,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         // Property values.
-        private Int32 actualWidth;
+        private Double actualWidth;
     }
 }

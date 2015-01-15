@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using TwistedLogik.Nucleus;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
+namespace TwistedLogik.Ultraviolet.UI.Presentation
 {
     /// <summary>
     /// Represents a collection of classes associated with a UI element.
@@ -27,7 +27,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <returns><c>true</c> if the class was added to the collection; otherwise, <c>false</c>.</returns>
         public Boolean Add(String className)
         {
-            return classes.Add(className);
+            if (classes.Add(className))
+            {
+                owner.OnClassAdded(className);
+                return true;
+            }
+            return false;
         }
 
         /// <summary>
@@ -40,9 +45,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             if (classes.Contains(className))
             {
                 classes.Remove(className);
+                owner.OnClassRemoved(className);
                 return false;
             }
             classes.Add(className);
+            owner.OnClassAdded(className);
             return true;
         }
 
@@ -53,7 +60,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <returns><c>true</c> if the class was removed from the collection; otherwise, <c>false</c>.</returns>
         public Boolean Remove(String className)
         {
-            return classes.Remove(className);
+            if (classes.Remove(className))
+            {
+                owner.OnClassRemoved(className);
+                return true;
+            }
+            return false;
         }
 
         /// <summary>
