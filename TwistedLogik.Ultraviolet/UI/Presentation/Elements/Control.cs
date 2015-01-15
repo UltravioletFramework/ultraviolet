@@ -185,6 +185,23 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             base.StyleOverride(stylesheet);
         }
 
+        /// <inheritdoc/>
+        protected override UIElement GetElementAtPointCore(Double x, Double y, Boolean isHitTest)
+        {
+            if (componentRoot != null)
+            {
+                var componentRelX = x - componentRoot.RelativeBounds.X;
+                var componentRelY = y - componentRoot.RelativeBounds.Y;
+
+                var componentMatch = componentRoot.GetElementAtPoint(componentRelX, componentRelY, isHitTest);
+                if (componentMatch != null)
+                {
+                    return componentMatch;
+                }
+            }
+            return base.GetElementAtPointCore(x, y, isHitTest);
+        }
+
         /// <summary>
         /// Loads the control's component root from the specified template.
         /// </summary>

@@ -156,6 +156,25 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             base.StyleOverride(stylesheet);
         }
 
+        /// <inheritdoc/>
+        protected override UIElement GetElementAtPointCore(Double x, Double y, Boolean isHitTest)
+        {
+            for (int i = children.Count - 1; i >= 0; i--)
+            {
+                var child = children[i];
+
+                var childRelX = x - child.RelativeBounds.X;
+                var childRelY = y - child.RelativeBounds.Y;
+
+                var childMatch = child.GetElementAtPoint(childRelX, childRelY, isHitTest);
+                if (childMatch != null)
+                {
+                    return childMatch;
+                }
+            }
+            return base.GetElementAtPointCore(x, y, isHitTest);
+        }
+
         // Property values.
         private readonly UIElementCollection children;
     }

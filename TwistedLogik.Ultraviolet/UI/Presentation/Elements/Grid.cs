@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Xml.Linq;
 using TwistedLogik.Nucleus;
-using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
 {
