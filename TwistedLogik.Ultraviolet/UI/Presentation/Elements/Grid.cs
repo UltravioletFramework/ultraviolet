@@ -148,7 +148,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <inheritdoc/>
-        protected override Size2D ArrangeOverride(Size2D finalSize)
+        protected override Size2D ArrangeOverride(Size2D finalSize, ArrangeOptions options)
         {
             MeasureWidth(finalSize.Width);
             MeasureHeight(finalSize.Height);
@@ -168,7 +168,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
                 gry += RowDefinitions[row].ActualHeight;
             }
 
-            UpdateCellMetadata();
+            UpdateCellMetadata(finalSize);
 
             foreach (var cell in cells)
             {
@@ -482,7 +482,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <summary>
         /// Updates the metadata for each of the grid's cells.
         /// </summary>
-        private void UpdateCellMetadata()
+        /// <param name="finalSize">The size of the layout region that has been assigned to the grid by its parent.</param>
+        private void UpdateCellMetadata(Size2D finalSize)
         {
             ExpandCellMetadataArray();
 
@@ -498,8 +499,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
 
                     cell.GridRelativeX = (coldef == null) ? 0 : coldef.GridRelativeX;
                     cell.GridRelativeY = (rowdef == null) ? 0 : rowdef.GridRelativeY;
-                    cell.ActualWidth   = (coldef == null) ? ActualWidth : coldef.ActualWidth;
-                    cell.ActualHeight  = (rowdef == null) ? ActualHeight : rowdef.ActualHeight;
+                    cell.ActualWidth   = (coldef == null) ? finalSize.Width : coldef.ActualWidth;
+                    cell.ActualHeight  = (rowdef == null) ? finalSize.Height : rowdef.ActualHeight;
 
                     cell.Elements.Clear();
                 }

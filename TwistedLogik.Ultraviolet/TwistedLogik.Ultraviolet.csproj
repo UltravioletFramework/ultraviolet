@@ -351,6 +351,8 @@
     <Compile Include="UI\Presentation\Animations\SimpleClock.cs" />
     <Compile Include="UI\Presentation\Animations\SimpleClockPool.cs" />
     <Compile Include="UI\Presentation\Animations\StoryboardClockPool.cs" />
+    <Compile Include="UI\Presentation\ArrangeOptions.cs" />
+    <Compile Include="UI\Presentation\Elements\Canvas.cs" />
     <Compile Include="UI\Presentation\Elements\ColumnDefinition.cs" />
     <Compile Include="UI\Presentation\Elements\ColumnDefinitionCollection.cs" />
     <Compile Include="UI\Presentation\Elements\ColumnDefinitionCollection.IEnumerable.cs" />

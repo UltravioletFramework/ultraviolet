@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Xml.Linq;
 using TwistedLogik.Nucleus;
-using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
 using TwistedLogik.Ultraviolet.UI.Presentation.Styles;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
@@ -11,17 +10,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
     /// left, top, right, and bottom edges.
     /// </summary>
     [UIElement("Canvas")]
-    public class Canvas : Container
+    public class Canvas : Panel
     {
-        /// <summary>
-        /// Initializes the <see cref="Canvas"/> type.
-        /// </summary>
-        static Canvas()
-        {
-            ComponentTemplate = LoadComponentTemplateFromManifestResourceStream(typeof(Canvas).Assembly, 
-                "TwistedLogik.Ultraviolet.UI.Presentation.Elements.Templates.Canvas.xml");
-        }
-
         /// <summary>
         /// Initializes a new instance of the <see cref="Canvas"/> class.
         /// </summary>
@@ -30,46 +20,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         public Canvas(UltravioletContext uv, String id)
             : base(uv, id)
         {
-            SetDefaultValue<Color>(UIElement.BackgroundColorProperty, Color.Transparent);
 
-            LoadComponentRoot(ComponentTemplate);
         }
-
-        protected override Size2 MeasureCore(Size2 availableSize)
-        {
-            foreach (var child in Children)
-            {
-                child.Measure(new Size2(Int32.MaxValue, Int32.MaxValue));
-            }
-            return base.MeasureCore(availableSize);
-        }
-
-        protected override void ArrangeCore(Rectangle finalRect)
-        {
-            foreach (var child in Children)
-            {
-                var left   = Canvas.GetLeft(child);
-                var right  = Canvas.GetRight(child);
-                var top    = Canvas.GetTop(child);
-                var bottom = Canvas.GetBottom(child);
-
-                var width = child.DesiredSize.Width;
-                var height = child.DesiredSize.Height;
-
-                if (!Double.IsNaN(left) && !Double.IsNaN(right))
-                    width = finalRect.Width - ((int)left + (int)right);
-
-                if (!Double.IsNaN(top) && !Double.IsNaN(bottom))
-                    height = finalRect.Height - ((int)top + (int)bottom);
-
-                var x = Double.IsNaN(left) ? 0 : (int)left;
-                var y = Double.IsNaN(top) ? 0 : (int)top;
-
-                child.Arrange(new Rectangle(x, y, width, height));
-            }
-            base.ArrangeCore(finalRect);
-        }
-
 
         /// <summary>
         /// Gets the distance between the left edge of the canvas and the left edge of the specified element.
@@ -181,35 +133,85 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// </summary>
         [Styled("left")]
         public static readonly DependencyProperty LeftProperty = DependencyProperty.Register("Left", typeof(Double), typeof(Canvas),
-            new DependencyPropertyMetadata(null, () => Double.NaN, DependencyPropertyOptions.AffectsMeasure));
+            new DependencyPropertyMetadata(null, () => Double.NaN, DependencyPropertyOptions.AffectsArrange));
 
         /// <summary>
         /// Gets or sets a value indicating the distance between the top edge of the canvas and the top edge of the element.
         /// </summary>
         [Styled("top")]
         public static readonly DependencyProperty TopProperty = DependencyProperty.Register("Top", typeof(Double), typeof(Canvas),
-            new DependencyPropertyMetadata(null, () => Double.NaN, DependencyPropertyOptions.AffectsMeasure));
+            new DependencyPropertyMetadata(null, () => Double.NaN, DependencyPropertyOptions.AffectsArrange));
 
         /// <summary>
         /// Gets or sets a value indicating the distance between the right edge of the canvas and the right edge of the element.
         /// </summary>
         [Styled("right")]
         public static readonly DependencyProperty RightProperty = DependencyProperty.Register("Right", typeof(Double), typeof(Canvas),
-            new DependencyPropertyMetadata(null, () => Double.NaN, DependencyPropertyOptions.AffectsMeasure));
+            new DependencyPropertyMetadata(null, () => Double.NaN, DependencyPropertyOptions.AffectsArrange));
 
         /// <summary>
         /// Gets or sets a value indicating the distance between the bottom edge of the canvas and the bottom edge of the element.
         /// </summary>
         [Styled("bottom")]
         public static readonly DependencyProperty BottomProperty = DependencyProperty.Register("Bottom", typeof(Double), typeof(Canvas),
-            new DependencyPropertyMetadata(null, () => Double.NaN, DependencyPropertyOptions.AffectsMeasure));
+            new DependencyPropertyMetadata(null, () => Double.NaN, DependencyPropertyOptions.AffectsArrange));
 
         /// <inheritdoc/>
-        protected override void OnDrawing(UltravioletTime time, SpriteBatch spriteBatch, Single opacity)
+        protected override Size2D MeasureOverride(Size2D availableSize)
         {
-            DrawBackgroundImage(spriteBatch, opacity);
+            foreach (var child in Children)
+                child.Measure(new Size2D(Double.PositiveInfinity, Double.PositiveInfinity));
 
-            base.OnDrawing(time, spriteBatch, opacity);
+            return Size2D.Zero;
+        }
+
+        /// <inheritdoc/>
+        protected override Size2D ArrangeOverride(Size2D finalSize, ArrangeOptions options)
+        {
+            foreach (var child in Children)
+            {
+                var left   = GetLeft(child);
+                var top    = GetTop(child);
+                var right  = GetRight(child);
+                var bottom = GetBottom(child);
+
+                var childWidth  = child.DesiredSize.Width;
+                var childHeight = child.DesiredSize.Height;
+
+                if (Double.IsNaN(left) && Double.IsNaN(right))
+                    left = 0;
+
+                if (Double.IsNaN(top) && Double.IsNaN(bottom))
+                    top = 0;
+
+                if (!Double.IsNaN(left) && !Double.IsNaN(right))
+                {
+                    childWidth = finalSize.Width - (left + right);
+                }
+
+                if (!Double.IsNaN(top) && !Double.IsNaN(bottom))
+                {
+                    childHeight = finalSize.Height - (top + bottom);
+                }
+                
+                var childX = 0.0;
+                var childY = 0.0;
+
+                if (!Double.IsNaN(left))
+                    childX = left;
+
+                if (!Double.IsNaN(top))
+                    childY = top;
+
+                if (!Double.IsNaN(right))
+                    childX = finalSize.Width - (right + childWidth);
+
+                if (!Double.IsNaN(bottom))
+                    childY = finalSize.Height - (bottom + childHeight);
+
+                child.Arrange(new RectangleD(childX, childY, childWidth, childHeight), ArrangeOptions.Fill);
+            }
+            return base.ArrangeOverride(finalSize, options);
         }
     }
 }

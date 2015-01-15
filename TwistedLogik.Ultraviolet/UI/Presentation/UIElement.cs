@@ -313,7 +313,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// the element's children within its layout area.
         /// </summary>
         /// <param name="finalRect">The element's final position and size relative to its parent element.</param>
-        public void Arrange(RectangleD finalRect)
+        /// <param name="options">A set of <see cref="ArrangeOptions"/> values specifying the options for this arrangement.</param>
+        public void Arrange(RectangleD finalRect, ArrangeOptions options = ArrangeOptions.None)
         {
             if (Visibility == Visibility.Collapsed)
             {
@@ -321,9 +322,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             }
             else
             {
-                this.renderSize = ArrangeCore(finalRect);
+                this.renderSize = ArrangeCore(finalRect, options);
             }
 
+            this.mostRecentArrangeOptions = options;
             this.mostRecentFinalRect = finalRect;
             this.mostRecentRelativeRect = new RectangleD(
                 finalRect.X + RenderOffset.X,
@@ -854,7 +856,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
-        /// Gets the final rectangle that was most recently passed to the <see cref="Arrange(RectangleD)"/> method.
+        /// Gets the arrangement options that were most recently passed to the <see cref="Arrange(RectangleD, ArrangeOptions)"/> method.
+        /// </summary>
+        internal ArrangeOptions MostRecentArrangeOptions
+        {
+            get { return mostRecentArrangeOptions; }
+        }
+
+        /// <summary>
+        /// Gets the final rectangle that was most recently passed to the <see cref="Arrange(RectangleD, ArrangeOptions)"/> method.
         /// </summary>
         internal RectangleD MostRecentFinalRect
         {
@@ -1305,7 +1315,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// parent and arranges the element's children within its layout area.
         /// </summary>
         /// <param name="finalRect">The element's final position and size relative to its parent element.</param>
-        protected virtual Size2D ArrangeCore(RectangleD finalRect)
+        /// <param name="options">A set of <see cref="ArrangeOptions"/> values specifying the options for this arrangement.</param>
+        protected virtual Size2D ArrangeCore(RectangleD finalRect, ArrangeOptions options)
         {
             return new Size2D(finalRect.Width, finalRect.Height);
         }
@@ -1549,6 +1560,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
         // Layout parameters.
         private UvssDocument mostRecentStylesheet;
+        private ArrangeOptions mostRecentArrangeOptions;
         private RectangleD mostRecentFinalRect;
         private RectangleD mostRecentRelativeRect;
         private RectangleD mostRecentAbsoluteRect;
