@@ -1,16 +1,15 @@
 ﻿using System;
 using System.Xml.Linq;
-using TwistedLogik.Nucleus;
-using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
 {
     /// <summary>
-    /// Represents an element container which positions its children according to their distance from the container's
-    /// left, top, right, and bottom edges.
+    /// Represents an element container which stacks its children either directly on top of each
+    /// other (if <see cref="StackPanel.Orientation"/> is <see cref="Orientation.Vertical"/>) or
+    /// side-by-side if (see <see cref="StackPanel.Orientation"/> is <see cref="Orientation.Horizontal"/>.
     /// </summary>
     [UIElement("StackPanel")]
-    public class StackPanel : Container
+    public class StackPanel : Panel
     {
         /// <summary>
         /// Initializes the <see cref="StackPanel"/> type.
@@ -29,56 +28,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         public StackPanel(UltravioletContext uv, String id)
             : base(uv, id)
         {
-            SetDefaultValue<Color>(UIElement.BackgroundColorProperty, Color.Transparent);
-
             LoadComponentRoot(ComponentTemplate);
-        }
-
-        /// <inheritdoc/>
-        public override void CalculateContentSize(ref Int32? width, ref Int32? height)
-        {
-            contentSize = MeasureContentSize();
-
-            if (width == null)
-                width = contentSize.Width;
-            if (height == null)
-                height = contentSize.Height;
-
-            base.CalculateContentSize(ref width, ref height);
-        }
-
-        /// <inheritdoc/>
-        public override void RequestPartialLayout(UIElement content)
-        {
-            Contract.Require(content, "content");
-
-            RequestLayout();
-        }
-
-        /// <inheritdoc/>
-        public override void PerformPartialLayout(UIElement content)
-        {
-            Contract.Require(content, "content");
-
-            RequestLayout();
-
-            base.PerformPartialLayout(content);
-        }
-
-        /// <inheritdoc/>
-        public override void PerformContentLayout()
-        {
-            contentSize = MeasureContentSize();
-
-            var position = 0;
-            foreach (var child in Children)
-            {
-                if (!ElementParticipatesInLayout(child))
-                    continue;
-
-                UpdateChildLayout(child, ref position, ref contentSize);
-            }
-            UpdateScissorRectangle();
         }
 
         /// <summary>
@@ -91,7 +41,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <summary>
-        /// Gets or sets the stack panel's orientation.
+        /// Gets or sets the panel's orientation.
         /// </summary>
         public Orientation Orientation
         {
@@ -111,10 +61,63 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             new DependencyPropertyMetadata(HandleOrientationChanged, () => Orientation.Vertical, DependencyPropertyOptions.AffectsMeasure));
 
         /// <inheritdoc/>
-        protected override void OnDrawing(UltravioletTime time, SpriteBatch spriteBatch, Single opacity)
+        protected override Size2D MeasureOverride(Size2D availableSize)
         {
-            DrawBackgroundImage(spriteBatch, opacity);
-            base.OnDrawing(time, spriteBatch, opacity);
+            var contentWidth  = 0.0;
+            var contentHeight = 0.0;
+
+            foreach (var child in Children)
+                child.Measure(new Size2D(Double.PositiveInfinity, Double.PositiveInfinity));
+
+            if (Orientation == Orientation.Vertical)
+            {
+                foreach (var child in Children)
+                {
+                    contentWidth  = Math.Max(contentWidth, child.DesiredSize.Width);
+                    contentHeight = contentHeight + child.DesiredSize.Height;
+                }
+            }
+            else
+            {
+                foreach (var child in Children)
+                {
+                    contentWidth  = contentWidth + child.DesiredSize.Width;
+                    contentHeight = Math.Max(contentHeight, child.DesiredSize.Height);
+                }
+            }
+
+            var contentSize = new Size2D(contentWidth, contentHeight);
+            return MeasureComponents(availableSize, contentSize);
+        }
+
+        /// <inheritdoc/>
+        protected override Size2D ArrangeOverride(Size2D finalSize, ArrangeOptions options)
+        {
+            ArrangeComponents(finalSize);
+
+            var contentRegionSize = GetContentRegionSize(finalSize);
+
+            var positionX = 0.0;
+            var positionY = 0.0;
+
+            if (Orientation == Orientation.Vertical)
+            {
+                foreach (var child in Children)
+                {
+                    child.Arrange(new RectangleD(positionX, positionY, contentRegionSize.Width, child.DesiredSize.Height));
+                    positionY += child.DesiredSize.Height;
+                }
+            }
+            else
+            {
+                foreach (var child in Children)
+                {
+                    child.Arrange(new RectangleD(positionX, positionY, child.DesiredSize.Width, contentRegionSize.Height));
+                    positionX += child.DesiredSize.Width;
+                }
+            }
+
+            return finalSize;
         }
 
         /// <summary>
@@ -132,196 +135,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <summary>
         /// Occurs when the value of the <see cref="Orientation"/> dependency property changes.
         /// </summary>
-        /// <param name="dobj">The object that raised the event.</param>
+        /// <param name="dobj">The dependency object that raised the event.</param>
         private static void HandleOrientationChanged(DependencyObject dobj)
         {
-            var element = (StackPanel)dobj;
-            element.OnOrientationChanged();
+            var stackPanel = (StackPanel)dobj;
+            stackPanel.OnOrientationChanged();
         }
-
-        /// <summary>
-        /// Immediately recalculates the layout of the specified child element.
-        /// </summary>
-        /// <param name="child">The child element for which to calculate a layout.</param>
-        /// <param name="position">The current layout position.</param>
-        /// <param name="contentSize">The current size of the container's content.</param>
-        private void UpdateChildLayout(UIElement child, ref Int32 position, ref Size2 contentSize)
-        {
-            if (Orientation == Orientation.Horizontal)
-            {
-                UpdateChildLayoutHorizontal(child, ref position, ref contentSize);
-            }
-            else
-            {
-                UpdateChildLayoutVertical(child, ref position, ref contentSize);
-            }
-        }
-
-        /// <summary>
-        /// Immediately recalculates the layout of the specified child element when
-        /// the stack panel is in a vertical orientation.
-        /// </summary>
-        /// <param name="child">The child element for which to calculate a layout.</param>
-        /// <param name="position">The current layout position.</param>
-        /// <param name="contentSize">The current size of the container's content.</param>
-        private void UpdateChildLayoutVertical(UIElement child, ref Int32 position, ref Size2 contentSize)
-        {
-            int? pxWidth  = (child.HorizontalAlignment == HorizontalAlignment.Stretch) ? (Int32?)CalculateStretchWidth(child) : null;
-            int? pxHeight = null;
-            child.CalculateActualSize(ref pxWidth, ref pxHeight);
-
-            var margin                  = ConvertThicknessToPixels(child.Margin, 0);
-            var relativeX               = 0;
-            var relativeY               = position + (Int32)margin.Top;
-            var relativeWidth           = pxWidth  ?? 0;
-            var relativeHeight          = pxHeight ?? 0;
-
-            switch (child.HorizontalAlignment)
-            {
-                case HorizontalAlignment.Center:
-                case HorizontalAlignment.Stretch:
-                    relativeX = ((ActualWidth - (pxWidth ?? 0)) / 2) + ((Int32)margin.Left - (Int32)margin.Right);
-                    break;
-
-                case HorizontalAlignment.Left:
-                    relativeX = (Int32)margin.Left;            
-                    break;
-
-                case HorizontalAlignment.Right:
-                    relativeX = ActualWidth - ((pxWidth ?? 0) + (Int32)margin.Right);
-                    break;
-            }
-
-            child.ParentRelativeArea = new Rectangle(relativeX, relativeY, relativeWidth, relativeHeight);
-            child.RequestLayout();
-            UpdateContentElementPosition(child);
-
-            position = relativeY + child.ParentRelativeArea.Height + (Int32)margin.Bottom;
-        }
-
-        /// <summary>
-        /// Immediately recalculates the layout of the specified child element when
-        /// the stack panel is in a horizontal orientation.
-        /// </summary>
-        /// <param name="child">The child element for which to calculate a layout.</param>
-        /// <param name="position">The current layout position.</param>
-        /// <param name="contentSize">The current size of the container's content.</param>
-        private void UpdateChildLayoutHorizontal(UIElement child, ref Int32 position, ref Size2 contentSize)
-        {
-            int? pxWidth  = null;
-            int? pxHeight = (child.VerticalAlignment == VerticalAlignment.Stretch) ? (Int32?)CalculateStretchHeight(child) : null;
-            child.CalculateActualSize(ref pxWidth, ref pxHeight);
-
-            var margin                  = ConvertThicknessToPixels(child.Margin, 0);            
-            var relativeX               = position + (Int32)margin.Left;
-            var relativeY               = 0;
-            var relativeWidth           = pxWidth ?? 0;
-            var relativeHeight          = pxHeight ?? 0;
-
-            switch (child.VerticalAlignment)
-            {
-                case VerticalAlignment.Center:
-                case VerticalAlignment.Stretch:
-                    relativeY = ((ActualHeight - (pxHeight ?? 0)) / 2) + ((Int32)margin.Top - (Int32)margin.Bottom);
-                    break;
-
-                case VerticalAlignment.Top:
-                    relativeY = (Int32)margin.Top;
-                    break;
-
-                case VerticalAlignment.Bottom:
-                    relativeY = ActualHeight - ((pxHeight ?? 0) + (Int32)margin.Bottom);
-                    break;
-            }
-
-            child.ParentRelativeArea = new Rectangle(relativeX, relativeY, relativeWidth, relativeHeight);
-            UpdateContentElementPosition(child);
-
-            position = relativeX + child.ParentRelativeArea.Width + (Int32)margin.Right;
-        }
-
-        /// <summary>
-        /// Updates the element's content size to include the size of the specified element.
-        /// </summary>
-        /// <param name="element">The element to add to the stack panel's content size.</param>
-        /// <param name="contentSize">The stack panel's current content size.</param>
-        private void UpdateContentSize(UIElement element, ref Size2 contentSize)
-        {
-            Int32? elementWidth  = null;
-            Int32? elementHeight = null;
-            element.CalculateActualSize(ref elementWidth, ref elementHeight);
-
-            var elementMargin = ConvertThicknessToPixels(element.Margin, 0);     
-
-            var marginBoundsRight  = element.ParentRelativeX + (elementWidth ?? 0)  + (Int32)elementMargin.Right;
-            var marginBoundsBottom = element.ParentRelativeY + (elementHeight ?? 0) + (Int32)elementMargin.Bottom;
-
-            var contentWidth  = contentSize.Width;
-            var contentHeight = contentSize.Height;
-
-            if (contentWidth < marginBoundsRight)
-                contentWidth = marginBoundsRight;
-
-            if (contentHeight < marginBoundsBottom)
-                contentHeight = marginBoundsBottom;
-
-            contentSize = new Size2(contentWidth, contentHeight);
-        }
-
-        /// <summary>
-        /// Calculates the width of a stretched element.
-        /// </summary>
-        /// <param name="element">The element for which to calculate a width.</param>
-        /// <returns>The width of the element in pixels.</returns>
-        private Int32 CalculateStretchWidth(UIElement element)
-        {
-            if (!Double.IsNaN(element.Width))
-                return (Int32)ConvertMeasureToPixels(element.Width, 0);
-            
-            var margin      = ConvertThicknessToPixels(element.Margin, 0);
-            var marginLeft  = (Int32)margin.Left;
-            var marginRight = (Int32)margin.Right;
-
-            return ActualWidth - (marginLeft + marginRight);
-        }
-
-        /// <summary>
-        /// Calculates the height of a stretched element.
-        /// </summary>
-        /// <param name="element">The element for which to calculate a height.</param>
-        /// <returns>The height of the element in pixels.</returns>
-        private Int32 CalculateStretchHeight(UIElement element)
-        {
-            if (!Double.IsNaN(element.Height))
-                return (Int32)ConvertMeasureToPixels(element.Height, 0);
-
-            var margin       = ConvertThicknessToPixels(element.Margin, 0);
-            var marginTop    = (Int32)margin.Top;
-            var marginBottom = (Int32)margin.Bottom;
-
-            return ActualHeight - (marginTop + marginBottom);
-        }
-
-        /// <summary>
-        /// Measures the size of the panel's content.
-        /// </summary>
-        /// <returns>The size of the panel's content.</returns>
-        private Size2 MeasureContentSize()
-        {
-            var size = Size2.Zero;
-
-            foreach (var child in Children)
-            {
-                if (!ElementParticipatesInLayout(child))
-                    continue;
-
-                UpdateContentSize(child, ref size);
-            }
-
-            return size;
-        }
-
-        // State values.
-        private Size2 contentSize;
     }
 }
