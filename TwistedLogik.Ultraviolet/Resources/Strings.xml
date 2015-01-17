@@ -660,4 +660,9 @@
       <Variant>The collection property '{0}' already has a value, but new items cannot be specified because the existing collection does not have a 'Clear' method.</Variant>
     </en-US>
   </String>
+  <String Key="CONTENT_PRESENTER_IS_NOT_A_COMPONENT">
+    <en-US>
+      <Variant>The specified content presenter is not a component of this control.</Variant>
+    </en-US>
+  </String>
 </LocalizedStrings>

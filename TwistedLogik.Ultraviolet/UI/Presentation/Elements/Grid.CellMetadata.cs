@@ -39,7 +39,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             /// <summary>
             /// Gets or sets the cell's width in pixels.
             /// </summary>
-            public Double ActualWidth
+            public Double Width
             {
                 get;
                 set;
@@ -48,7 +48,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             /// <summary>
             /// Gets or sets the cell's height in pixels.
             /// </summary>
-            public Double ActualHeight
+            public Double Height
             {
                 get;
                 set;

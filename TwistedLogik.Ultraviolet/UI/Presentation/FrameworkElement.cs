@@ -367,6 +367,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <inheritdoc/>
+        protected sealed override void PositionCore(Point2D position)
+        {
+            PositionOverride(position);
+
+            base.PositionCore(position);
+        }
+
+        /// <inheritdoc/>
         protected internal override void OnFocused()
         {
             VisualStateGroups.GoToState("focus", "focused");
@@ -437,6 +445,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         protected virtual Size2D ArrangeOverride(Size2D finalSize, ArrangeOptions options)
         {
             return finalSize;
+        }
+
+        /// <summary>
+        /// When overridden in a derived class, positions the element in absolute screen space for 
+        /// a <see cref="FrameworkElement"/> derived class.
+        /// </summary>
+        /// <param name="position">The position of the element's parent element in absolute screen space.</param>
+        protected virtual void PositionOverride(Point2D position)
+        {
+
         }
 
         /// <summary>

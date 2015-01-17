@@ -25,6 +25,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Removes the specified element from the queue.
+        /// </summary>
+        /// <param name="element">The element to remove from the queue.</param>
+        public void Remove(UIElement element)
+        {
+            Contract.Require(element, "element");
+
+            var entry = new Entry(element.LayoutDepth, element);
+            queue.Remove(entry);
+        }
+
+        /// <summary>
         /// Removes an element from the end of the queue.
         /// </summary>
         /// <returns>The element that was removed from the queue.</returns>

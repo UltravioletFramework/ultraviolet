@@ -151,6 +151,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <inheritdoc/>
+        protected override void PositionOverride(Point2D position)
+        {
+            PositionComponents(position);
+
+            if (Content != null)
+            {
+                Content.Position(AbsolutePosition);
+            }
+            base.PositionOverride(position);
+        }
+
+        /// <inheritdoc/>
         protected override UIElement GetElementAtPointCore(Double x, Double y, Boolean isHitTest)
         {
             if (Content != null)

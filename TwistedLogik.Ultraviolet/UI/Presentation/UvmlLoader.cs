@@ -104,7 +104,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var root    = (Panel)InstantiateAndPopulateElement(uv, null, rootElement, context);
 
             control.ComponentRoot = root;
-            control.ComponentContentViewer = context.ComponentContentViewer;
+            control.ContentPresenter = context.ContentPresenter;
             control.PopulateFieldsFromRegisteredElements();
         }
 
@@ -139,9 +139,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (contentControl != null)
                 contentControl.Content = instance;
 
-            if (context.ComponentOwner != null && instance is ContentViewer)
+            if (context.ComponentOwner != null && instance is ContentPresenter)
             {
-                context.ComponentContentViewer = instance;
+                context.ContentPresenter = (ContentPresenter)instance;
             }
 
             return instance;

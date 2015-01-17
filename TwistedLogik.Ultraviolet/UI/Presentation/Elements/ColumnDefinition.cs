@@ -8,7 +8,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
     public class ColumnDefinition : DefinitionBase
     {
         /// <summary>
-        /// Gets or sets the column's width.
+        /// Gets or sets the column's width in device independent pixels.
         /// </summary>
         public GridLength Width
         {
@@ -17,7 +17,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <summary>
-        /// Gets or sets the column's minimum width in device independent pixels (1/96 of an inch).
+        /// Gets or sets the column's minimum width in device independent pixels.
         /// </summary>
         public Double MinWidth
         {
@@ -26,7 +26,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <summary>
-        /// Gets or sets the column's maximum width in device independent pixels (1/96 of an inch).
+        /// Gets or sets the column's maximum width in device independent pixels.
         /// </summary>
         public Double MaxWidth
         {
@@ -35,9 +35,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <summary>
-        /// Gets the column's calculated width in pixels.
+        /// Gets the column's measured width in device-independent pixels.
         /// </summary>
-        public Double ActualWidth
+        public Double MeasuredWidth
         {
             get { return actualWidth; }
             internal set { actualWidth = value; }
@@ -79,7 +79,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <summary>
         /// Gets or sets the distance between the left edge of the column's grid and the column's left edge.
         /// </summary>
-        internal Double GridRelativeX
+        internal Double OffsetX
         {
             get;
             set;

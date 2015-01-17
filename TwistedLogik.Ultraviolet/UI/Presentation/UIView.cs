@@ -418,11 +418,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             {
                 var display = Ultraviolet.GetPlatform().Displays.PrimaryDisplay;
 
+                var dipsX      = display.PixelsToDips(area.X);
+                var dipsY      = display.PixelsToDips(area.Y);
                 var dipsWidth  = display.PixelsToDips(area.Width);
                 var dipsHeight = display.PixelsToDips(area.Height);
 
                 layoutRoot.Measure(new Size2D(dipsWidth, dipsHeight));
                 layoutRoot.Arrange(new RectangleD(0, 0, dipsWidth, dipsHeight));
+                layoutRoot.Position(new Point2D(dipsX, dipsY));
             }
         }
 

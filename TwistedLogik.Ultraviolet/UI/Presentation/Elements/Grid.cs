@@ -15,9 +15,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// </summary>
         static Grid()
         {
-            // TODO
-            // ComponentTemplate = LoadComponentTemplateFromManifestResourceStream(typeof(Grid).Assembly,
-            //   "TwistedLogik.Ultraviolet.UI.Presentation.Elements.Templates.Grid.xml");
+            ComponentTemplate = LoadComponentTemplateFromManifestResourceStream(typeof(Grid).Assembly,
+                "TwistedLogik.Ultraviolet.UI.Presentation.Elements.Templates.Grid.xml");
         }
 
         /// <summary>
@@ -144,28 +143,33 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             var desiredWidth  = MeasureWidth(availableSize.Width);
             var desiredHeight = MeasureHeight(availableSize.Height);
 
-            return new Size2D(desiredWidth, desiredHeight);
+            var contentSize = new Size2D(desiredWidth, desiredHeight);
+            return MeasureComponents(availableSize, contentSize);
         }
 
         /// <inheritdoc/>
         protected override Size2D ArrangeOverride(Size2D finalSize, ArrangeOptions options)
         {
-            MeasureWidth(finalSize.Width);
-            MeasureHeight(finalSize.Height);
+            ArrangeComponents(finalSize);
+
+            var contentRegionSize = GetContentRegionSize(finalSize);
+
+            MeasureWidth(contentRegionSize.Width);
+            MeasureHeight(contentRegionSize.Height);
 
             var grx = 0.0;
             var gry = 0.0;
 
             for (var col = 0; col < ColumnDefinitions.Count; col++)
             {
-                ColumnDefinitions[col].GridRelativeX = grx;
-                grx += ColumnDefinitions[col].ActualWidth;
+                ColumnDefinitions[col].OffsetX = grx;
+                grx += ColumnDefinitions[col].MeasuredWidth;
             }
 
             for (var row = 0; row < RowDefinitions.Count; row++)
             {
-                RowDefinitions[row].GridRelativeY = gry;
-                gry += RowDefinitions[row].ActualHeight;
+                RowDefinitions[row].OffsetY = gry;
+                gry += RowDefinitions[row].MeasuredHeight;
             }
 
             UpdateCellMetadata(finalSize);
@@ -175,8 +179,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
                 var cellRect = new RectangleD(
                     cell.GridRelativeX, 
                     cell.GridRelativeY, 
-                    cell.ActualWidth, 
-                    cell.ActualHeight);
+                    cell.Width, 
+                    cell.Height);
 
                 foreach (var child in cell.Elements)
                 {
@@ -244,7 +248,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             var desired = 0.0;
 
             foreach (var column in ColumnDefinitions)
-                desired += column.ActualWidth;
+                desired += column.MeasuredWidth;
 
             return desired;
         }
@@ -318,7 +322,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
                 }
             }
 
-            column.ActualWidth = size;
+            column.MeasuredWidth = size;
             return size;
         }
 
@@ -332,7 +336,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         {
             Double lower, upper;
             LayoutUtil.GetBoundedMeasure(column.Width.Value, column.MinWidth, column.MaxWidth, out lower, out upper);
-            column.ActualWidth = lower;
+            column.MeasuredWidth = lower;
             return lower;
         }
 
@@ -347,7 +351,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
                 if (column.Width.GridUnitType != GridUnitType.Star)
                     continue;
 
-                column.ActualWidth = (Int32)(column.Width.Value * proportionalUnit);
+                column.MeasuredWidth = (Int32)(column.Width.Value * proportionalUnit);
             }
         }
 
@@ -372,7 +376,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             var desired = 0.0;
 
             foreach (var column in RowDefinitions)
-                desired += column.ActualHeight;
+                desired += column.MeasuredHeight;
 
             return desired;
         }
@@ -446,7 +450,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
                 }
             }
 
-            column.ActualHeight = size;
+            column.MeasuredHeight = size;
             return size;
         }
 
@@ -460,7 +464,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         {
             Double lower, upper;
             LayoutUtil.GetBoundedMeasure(column.Height.Value, column.MinHeight, column.MaxHeight, out lower, out upper);
-            column.ActualHeight = lower;
+            column.MeasuredHeight = lower;
             return lower;
         }
 
@@ -475,7 +479,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
                 if (row.Height.GridUnitType != GridUnitType.Star)
                     continue;
 
-                row.ActualHeight = (Int32)(row.Height.Value * proportionalUnit);
+                row.MeasuredHeight = (Int32)(row.Height.Value * proportionalUnit);
             }
         }
 
@@ -487,6 +491,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         {
             ExpandCellMetadataArray();
 
+            var contentRegionSize = GetContentRegionSize(finalSize);
+
             for (var row = 0; row < RowCount; row++)
             {
                 var rowdef = (row >= RowDefinitions.Count) ? null : RowDefinitions[row];
@@ -497,10 +503,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
 
                     var cell = cells[(row * ColumnCount) + col];
 
-                    cell.GridRelativeX = (coldef == null) ? 0 : coldef.GridRelativeX;
-                    cell.GridRelativeY = (rowdef == null) ? 0 : rowdef.GridRelativeY;
-                    cell.ActualWidth   = (coldef == null) ? finalSize.Width : coldef.ActualWidth;
-                    cell.ActualHeight  = (rowdef == null) ? finalSize.Height : rowdef.ActualHeight;
+                    cell.GridRelativeX = (coldef == null) ? 0 : coldef.OffsetX;
+                    cell.GridRelativeY = (rowdef == null) ? 0 : rowdef.OffsetY;
+                    cell.Width   = (coldef == null) ? contentRegionSize.Width : coldef.MeasuredWidth;
+                    cell.Height  = (rowdef == null) ? contentRegionSize.Height : rowdef.MeasuredHeight;
 
                     cell.Elements.Clear();
                 }
