@@ -595,7 +595,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
         /// <summary>
         /// Gets the position of the element in absolute screen coordinates as of the
-        /// last call to the <see cref="Position(Size2D)"/> method.
+        /// last call to the <see cref="Position(Point2D)"/> method.
         /// </summary>
         public Point2D AbsolutePosition
         {

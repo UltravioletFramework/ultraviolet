@@ -5,8 +5,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
 {
     /// <summary>
     /// Represents an element container which stacks its children either directly on top of each
-    /// other (if <see cref="StackPanel.Orientation"/> is <see cref="Orientation.Vertical"/>) or
-    /// side-by-side if (see <see cref="StackPanel.Orientation"/> is <see cref="Orientation.Horizontal"/>,
+    /// other (if <see cref="StackPanel.Orientation"/> is <see cref="F:Orientation.Vertical"/>) or
+    /// side-by-side if (see <see cref="StackPanel.Orientation"/> is <see cref="F:Orientation.Horizontal"/>,
     /// wrapping the content if necessary to fit within the available space.
     /// </summary>
     [UIElement("WrapPanel")]
@@ -170,7 +170,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <summary>
         /// Arranges the panel when it is oriented vertically.
         /// </summary>
-        /// <param name="finalRect">The element's final position and size relative to its parent element.</param>
+        /// <param name="finalSize">The element's final size relative to its parent element.</param>
         /// <param name="options">A set of <see cref="ArrangeOptions"/> values specifying the options for this arrangement.</param>
         /// <returns>The panel's size after arrangement.</returns>
         private Size2D ArrangeVertically(Size2D finalSize, ArrangeOptions options)
@@ -207,7 +207,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <summary>
         /// Arranges the panel when it is oriented horizontally.
         /// </summary>
-        /// <param name="finalRect">The element's final position and size relative to its parent element.</param>
+        /// <param name="finalSize">The element's final relative to its parent element.</param>
         /// <param name="options">A set of <see cref="ArrangeOptions"/> values specifying the options for this arrangement.</param>
         /// <returns>The panel's size after arrangement.</returns>
         private Size2D ArrangeHorizontally(Size2D finalSize, ArrangeOptions options)

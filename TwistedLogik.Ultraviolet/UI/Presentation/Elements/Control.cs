@@ -209,6 +209,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <summary>
         /// Measures the control's components, if it has any.
         /// </summary>
+        /// <param name="availableSize">The size of the area which the element's parent has 
+        /// specified is available for the element's layout.</param>
         /// <param name="componentSize">The amount of space provided for the control's components.</param>
         protected Size2D MeasureComponents(Size2D availableSize, Size2D componentSize)
         {

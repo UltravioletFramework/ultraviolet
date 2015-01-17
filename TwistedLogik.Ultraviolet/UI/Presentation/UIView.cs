@@ -286,7 +286,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         /// <param name="x">The screen-relative x-coordinate of the pixel to evaluate.</param>
         /// <param name="y">The screen-relative y-coordinate of the pixel to evaluate.</param>
-        /// <param name="isHitTest">A value indicating whether this test should respect the value of the <see cref="IsHitTestVisible"/> property.</param>
+        /// <param name="isHitTest">A value indicating whether this test should respect the value of the <see cref="UIElement.IsHitTestVisible"/> property.</param>
         /// <returns>The element at the specified pixel coordinates, or <c>null</c> if no such element exists.</returns>
         public UIElement GetElementAtScreenPixel(Int32 x, Int32 y, Boolean isHitTest)
         {
@@ -297,7 +297,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Gets the element at the specified pixel coordinates relative to screen space.
         /// </summary>
         /// <param name="pt">The screen-relative coordinates of the pixel to evaluate.</param>
-        /// <param name="isHitTest">A value indicating whether this test should respect the value of the <see cref="IsHitTestVisible"/> property.</param>
+        /// <param name="isHitTest">A value indicating whether this test should respect the value of the <see cref="UIElement.IsHitTestVisible"/> property.</param>
         /// <returns>The element at the specified pixel coordinates, or <c>null</c> if no such element exists.</returns>
         public UIElement GetElementAtScreenPixel(Point2 pt, Boolean isHitTest)
         {
@@ -309,7 +309,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         /// <param name="x">The view-relative x-coordinate of the pixel to evaluate.</param>
         /// <param name="y">The view-relative y-coordinate of the pixel to evaluate.</param>
-        /// <param name="isHitTest">A value indicating whether this test should respect the value of the <see cref="IsHitTestVisible"/> property.</param>
+        /// <param name="isHitTest">A value indicating whether this test should respect the value of the <see cref="UIElement.IsHitTestVisible"/> property.</param>
         /// <returns>The element at the specified pixel coordinates, or <c>null</c> if no such element exists.</returns>
         public UIElement GetElementAtPixel(Int32 x, Int32 y, Boolean isHitTest)
         {
@@ -320,7 +320,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Gets the element at the specified pixel coordinates relative to this view's bounds.
         /// </summary>
         /// <param name="pt">The view-relative coordinates of the pixel to evaluate.</param>
-        /// <param name="isHitTest">A value indicating whether this test should respect the value of the <see cref="IsHitTestVisible"/> property.</param>
+        /// <param name="isHitTest">A value indicating whether this test should respect the value of the <see cref="UIElement.IsHitTestVisible"/> property.</param>
         /// <returns>The element at the specified pixel coordinates, or <c>null</c> if no such element exists.</returns>
         public UIElement GetElementAtPixel(Point2 pt, Boolean isHitTest)
         {
@@ -332,7 +332,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         /// <param name="x">The view-relative x-coordinate of the point to evaluate.</param>
         /// <param name="y">The view-relative y-coordinate of the point to evaluate.</param>
-        /// <param name="isHitTest">A value indicating whether this test should respect the value of the <see cref="IsHitTestVisible"/> property.</param>
+        /// <param name="isHitTest">A value indicating whether this test should respect the value of the <see cref="UIElement.IsHitTestVisible"/> property.</param>
         /// <returns>The element at the specified coordinates, or <c>null</c> if no such element exists.</returns>
         public UIElement GetElementAtPoint(Double x, Double y, Boolean isHitTest)
         {
@@ -344,7 +344,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         /// <param name="pt">The view-relative coordinates of the point to evaluate.</param>
         /// <param name="isHitTest">A value indicating whether this test should respect the
-        /// value of the <see cref="IsHitTestVisible"/> property.</param>
+        /// value of the <see cref="UIElement.IsHitTestVisible"/> property.</param>
         /// <returns>The element at the specified coordinates, or <c>null</c> if no such element exists.</returns>
         public UIElement GetElementAtPoint(Point2D pt, Boolean isHitTest)
         {
