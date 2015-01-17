@@ -40,6 +40,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             ProcessStyleQueue();
             ProcessMeasureQueue();
             ProcessArrangeQueue();
+            ProcessPositionQueue();
         }
 
         /// <summary>
@@ -265,53 +266,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
-        /// Processes the queue of elements with invalid styling states.
-        /// </summary>
-        private void ProcessStyleQueue()
-        {
-            while (styleQueue.Count > 0)
-            {
-                var element = styleQueue.Dequeue();
-                if (element.IsStyleValid)
-                    continue;
-
-                element.Style(element.MostRecentStylesheet);
-                element.InvalidateMeasure();
-            }
-        }
-
-        /// <summary>
-        /// Processes the queue of elements with invalid measurement states.
-        /// </summary>
-        private void ProcessMeasureQueue()
-        {
-            while (measureQueue.Count > 0)
-            {
-                var element = measureQueue.Dequeue();
-                if (element.IsMeasureValid)
-                    continue;
-
-                element.Measure(element.MostRecentAvailableSize);
-                element.InvalidateArrange();
-            }
-        }
-
-        /// <summary>
-        /// Processes the queue of elements with invalid arrangement states.
-        /// </summary>
-        private void ProcessArrangeQueue()
-        {
-            while (arrangeQueue.Count > 0)
-            {
-                var element = arrangeQueue.Dequeue();
-                if (element.IsArrangeValid)
-                    continue;
-
-                element.Arrange(element.MostRecentFinalRect, element.MostRecentArrangeOptions);
-            }
-        }
-
-        /// <summary>
         /// Gets the queue of elements with invalid styling states.
         /// </summary>
         internal LayoutQueue StyleQueue
@@ -333,6 +287,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         internal LayoutQueue ArrangeQueue
         {
             get { return arrangeQueue; }
+        }
+
+        /// <summary>
+        /// Gets the queue of elements with invalid position states.
+        /// </summary>
+        internal LayoutQueue PositionQueue
+        {
+            get { return positionQueue; }
         }
 
         /// <summary>
@@ -536,6 +498,68 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             return false;
         }
 
+        /// <summary>
+        /// Processes the queue of elements with invalid styling states.
+        /// </summary>
+        private void ProcessStyleQueue()
+        {
+            while (styleQueue.Count > 0)
+            {
+                var element = styleQueue.Dequeue();
+                if (element.IsStyleValid)
+                    continue;
+
+                element.Style(element.MostRecentStylesheet);
+                element.InvalidateMeasure();
+            }
+        }
+
+        /// <summary>
+        /// Processes the queue of elements with invalid measurement states.
+        /// </summary>
+        private void ProcessMeasureQueue()
+        {
+            while (measureQueue.Count > 0)
+            {
+                var element = measureQueue.Dequeue();
+                if (element.IsMeasureValid)
+                    continue;
+
+                element.Measure(element.MostRecentAvailableSize);
+                element.InvalidateArrange();
+            }
+        }
+
+        /// <summary>
+        /// Processes the queue of elements with invalid arrangement states.
+        /// </summary>
+        private void ProcessArrangeQueue()
+        {
+            while (arrangeQueue.Count > 0)
+            {
+                var element = arrangeQueue.Dequeue();
+                if (element.IsArrangeValid)
+                    continue;
+
+                element.Arrange(element.MostRecentFinalRect, element.MostRecentArrangeOptions);
+            }
+        }
+
+        /// <summary>
+        /// Processes the queue of elements with invalid position states.
+        /// </summary>
+        private void ProcessPositionQueue()
+        {
+            while (positionQueue.Count > 0)
+            {
+                var element = positionQueue.Dequeue();
+                if (element.IsArrangeValid)
+                    continue;
+
+                element.Position(element.MostRecentPosition);
+            }
+        }
+
         // Property values.
         private Boolean debugRenderingEnabled;
 
@@ -551,5 +575,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         private readonly LayoutQueue styleQueue = new LayoutQueue();
         private readonly LayoutQueue measureQueue = new LayoutQueue();
         private readonly LayoutQueue arrangeQueue = new LayoutQueue();
+        private readonly LayoutQueue positionQueue = new LayoutQueue();
     }
 }

@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Reflection;
 using System.Xml.Linq;
+using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
 using TwistedLogik.Ultraviolet.UI.Presentation.Animations;
 using TwistedLogik.Ultraviolet.UI.Presentation.Styles;
@@ -31,6 +33,67 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             componentRegistry.PopulateFieldsFromRegisteredElements(this);
         }
 
+        /// <inheritdoc/>
+        internal sealed override Point2D GetComponentRegionOffset()
+        {
+            return new Point2D(0, 0);
+        }
+
+        /// <inheritdoc/>
+        internal sealed override Point2D GetContentRegionOffset()
+        {
+            if (contentPresenter == null)
+            {
+                return new Point2D(0, 0);
+            }
+            var x = contentPresenter.AbsoluteBounds.X - AbsoluteBounds.X;
+            var y = contentPresenter.AbsoluteBounds.Y - AbsoluteBounds.Y;
+            return new Point2D(x, y);
+        }
+
+        /// <inheritdoc/>
+        internal sealed override Size2D GetComponentRegionSize(Size2D finalSize)
+        {
+            return finalSize;
+        }
+
+        /// <inheritdoc/>
+        internal sealed override Size2D GetContentRegionSize(Size2D finalSize)
+        {
+            if (contentPresenter == null)
+            {
+                return finalSize;
+            }
+            return contentPresenter.RenderSize;
+        }
+
+        /// <inheritdoc/>
+        internal sealed override RectangleD GetComponentRegion(Size2D finalSize)
+        {
+            return new RectangleD(0, 0, finalSize.Width, finalSize.Height);
+        }
+
+        /// <inheritdoc/>
+        internal sealed override RectangleD GetContentRegion(Size2D finalSize)
+        {
+            if (contentPresenter == null)
+            {
+                return new RectangleD(0, 0, finalSize.Width, finalSize.Height);
+            }
+            var x = contentPresenter.AbsoluteBounds.X - AbsoluteBounds.X;
+            var y = contentPresenter.AbsoluteBounds.Y - AbsoluteBounds.Y;
+            return new RectangleD(x, y, contentPresenter.RenderSize.Width, contentPresenter.RenderSize.Height);
+        }
+
+        /// <summary>
+        /// Gets the control's component registry, which is used to associate
+        /// component elements with their unique identifiers within the context of this control.
+        /// </summary>
+        internal UIElementRegistry ComponentRegistry
+        {
+            get { return componentRegistry; }
+        }
+
         /// <summary>
         /// Gets or sets the root of the control's component tree.
         /// </summary>
@@ -58,18 +121,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// Gets or sets the element which is used to specify the position and bounds
         /// of the control's content view area.
         /// </summary>
-        internal UIElement ComponentContentViewer
+        internal ContentPresenter ContentPresenter
         {
-            get { return componentContentViewer ?? this; }
+            get { return contentPresenter; }
             set
             {
-                if (componentContentViewer != null && componentContentViewer.Parent != null)
-                    componentContentViewer.Parent.RemoveChild(componentContentViewer);
+                if (value != null && value.Control != this)
+                    throw new ArgumentException(UltravioletStrings.ContentPresenterIsNotAComponent);
 
-                componentContentViewer = value;
-
-                if (componentContentViewer != null)
-                    componentContentViewer.Parent = this;
+                contentPresenter = value;
 
                 InvalidateMeasure();
             }
@@ -85,24 +145,116 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             base.RemoveChild(child);
         }
 
-        /// <inheritdoc/>
-        protected override void DrawOverride(UltravioletTime time, SpriteBatch spriteBatch, Single opacity)
+        /// <summary>
+        /// Loads a component template from a manifest resource stream.
+        /// </summary>
+        /// <param name="asm">The assembly that contains the manifest resource stream.</param>
+        /// <param name="resource">The name of the manifest resource stream to load.</param>
+        /// <returns>The component template that was loaded.</returns>
+        protected static XDocument LoadComponentTemplateFromManifestResourceStream(Assembly asm, String resource)
         {
-            if (ComponentRoot != null)
+            Contract.Require(asm, "asm");
+            Contract.RequireNotEmpty(resource, "resource");
+
+            using (var stream = asm.GetManifestResourceStream(resource))
             {
-                ComponentRoot.Draw(time, spriteBatch, opacity);
+                if (stream == null)
+                    return null;
+
+                return XDocument.Load(stream);
             }
-            base.DrawOverride(time, spriteBatch, opacity);
         }
 
-        /// <inheritdoc/>
-        protected override void UpdateOverride(UltravioletTime time)
+        /// <summary>
+        /// Loads the control's component root from the specified template.
+        /// </summary>
+        /// <param name="template">The component template from which to load the control's component root.</param>
+        protected void LoadComponentRoot(XDocument template)
         {
-            if (ComponentRoot != null)
+            if (componentRoot != null)
+                throw new InvalidOperationException(UltravioletStrings.ComponentRootAlreadyLoaded);
+
+            if (template == null)
+                return;
+
+            UvmlLoader.LoadComponentRoot(this, template);
+        }
+
+        /// <summary>
+        /// Draws the control's components, if it has any.
+        /// </summary>
+        /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Draw(UltravioletTime)"/>.</param>
+        /// <param name="spriteBatch">The <see cref="SpriteBatch"/> with which to render the element.</param>
+        /// <param name="opacity">The cumulative opacity of all of the element's ancestor elements.</param>
+        protected void DrawComponents(UltravioletTime time, SpriteBatch spriteBatch, Single opacity)
+        {
+            if (componentRoot != null)
             {
-                ComponentRoot.Update(time);
+                componentRoot.Draw(time, spriteBatch, opacity);
             }
-            base.UpdateOverride(time);
+        }
+
+        /// <summary>
+        /// Updates the control's components, if it has any.
+        /// </summary>
+        /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Update(UltravioletTime)"/>.</param>
+        protected void UpdateComponents(UltravioletTime time)
+        {
+            if (componentRoot != null)
+            {
+                componentRoot.Update(time);
+            }
+        }
+
+        /// <summary>
+        /// Measures the control's components, if it has any.
+        /// </summary>
+        /// <param name="componentSize">The amount of space provided for the control's components.</param>
+        protected Size2D MeasureComponents(Size2D availableSize, Size2D componentSize)
+        {
+            var clampedComponentWidth  = Math.Min(availableSize.Width, componentSize.Width);
+            var clampedComponentHeight = Math.Min(availableSize.Height, componentSize.Height);
+            var clampedComponentSize   = new Size2D(clampedComponentWidth, clampedComponentHeight);
+
+            if (componentRoot != null)
+            {
+                if (contentPresenter != null)
+                    contentPresenter.ContentSize = clampedComponentSize;
+
+                componentRoot.Measure(new Size2D(Double.PositiveInfinity, Double.PositiveInfinity));
+
+                var desiredComponentWidth  = Math.Min(componentRoot.DesiredSize.Width, availableSize.Width);
+                var desiredComponentHeight = Math.Min(componentRoot.DesiredSize.Height, availableSize.Height);
+                var desiredComponentSize   = new Size2D(desiredComponentWidth, desiredComponentHeight);
+
+                return desiredComponentSize;
+            }
+
+            return clampedComponentSize;
+        }
+
+        /// <summary>
+        /// Arranges the control's components, if it has any.
+        /// </summary>
+        /// <param name="componentSize">The amount of space provided for the control's components.</param>
+        protected void ArrangeComponents(Size2D componentSize)
+        {
+            if (componentRoot != null)
+            {
+                componentRoot.Arrange(new RectangleD(0, 0, componentSize.Width, componentSize.Height), ArrangeOptions.Fill);
+            }
+        }
+
+        /// <summary>
+        /// Positions the control's components, if it has any.
+        /// </summary>
+        /// <param name="position">The position of the element's parent element in absolute screen space.</param>
+        protected void PositionComponents(Point2D position)
+        {
+            if (componentRoot != null)
+            {
+                componentRoot.Position(AbsolutePosition);
+            }
         }
 
         /// <inheritdoc/>
@@ -201,19 +353,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             }
             return base.GetElementAtPointCore(x, y, isHitTest);
         }
-
-        /// <summary>
-        /// Loads the control's component root from the specified template.
-        /// </summary>
-        /// <param name="template">The component template from which to load the control's component root.</param>
-        protected void LoadComponentRoot(XDocument template)
-        {
-            // TODO
-        }
-
+       
         // Property values.
         private UIElement componentRoot;
-        private UIElement componentContentViewer;
+        private ContentPresenter contentPresenter;
 
         // The registry of components belonging to this control.
         private readonly UIElementRegistry componentRegistry = new UIElementRegistry();

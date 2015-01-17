@@ -8,7 +8,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
     public class RowDefinition : DefinitionBase
     {
         /// <summary>
-        /// Gets or sets the row's height.
+        /// Gets or sets the row's height in device independent pixels.
         /// </summary>
         public GridLength Height
         {
@@ -17,7 +17,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <summary>
-        /// Gets or sets the row's minimum height in device independent pixels (1/96 of an inch).
+        /// Gets or sets the row's minimum height in device independent pixels.
         /// </summary>
         public Double MinHeight
         {
@@ -26,7 +26,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <summary>
-        /// Gets or sets the row's maximum height in device independent pixels (1/96 of an inch).
+        /// Gets or sets the row's maximum height in device independent pixels.
         /// </summary>
         public Double MaxHeight
         {
@@ -35,9 +35,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <summary>
-        /// Gets the row's calculated height.
+        /// Gets the row's measured height in device independent pixels.
         /// </summary>
-        public Double ActualHeight
+        public Double MeasuredHeight
         {
             get { return actualHeight; }
             internal set { actualHeight = value; }
@@ -79,7 +79,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <summary>
         /// Gets or sets the distance between the top edge of the column's grid and the column's top edge.
         /// </summary>
-        internal Double GridRelativeY
+        internal Double OffsetY
         {
             get;
             set;

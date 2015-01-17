@@ -357,7 +357,7 @@
     <Compile Include="UI\Presentation\Elements\ColumnDefinitionCollection.cs" />
     <Compile Include="UI\Presentation\Elements\ColumnDefinitionCollection.IEnumerable.cs" />
     <Compile Include="UI\Presentation\Elements\ContentControl.cs" />
-    <Compile Include="UI\Presentation\Elements\ContentViewer.cs" />
+    <Compile Include="UI\Presentation\Elements\ContentPresenter.cs" />
     <Compile Include="UI\Presentation\Elements\Control.cs" />
     <Compile Include="UI\Presentation\Elements\DefinitionBase.cs" />
     <Compile Include="UI\Presentation\Elements\Grid.CellMetadata.cs" />

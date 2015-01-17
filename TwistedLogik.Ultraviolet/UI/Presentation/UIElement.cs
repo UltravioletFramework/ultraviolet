@@ -9,6 +9,7 @@ using TwistedLogik.Nucleus.Data;
 using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
 using TwistedLogik.Ultraviolet.Input;
 using TwistedLogik.Ultraviolet.UI.Presentation.Animations;
+using TwistedLogik.Ultraviolet.UI.Presentation.Elements;
 using TwistedLogik.Ultraviolet.UI.Presentation.Styles;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation
@@ -294,6 +295,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             StyleCore(stylesheet);
 
             this.mostRecentStylesheet = stylesheet;
+
+            Ultraviolet.GetUI().PresentationFramework.StyleQueue.Remove(this);
         }
 
         /// <summary>
@@ -306,6 +309,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             this.desiredSize = MeasureCore(availableSize);
 
             this.mostRecentAvailableSize = availableSize;
+
+            Ultraviolet.GetUI().PresentationFramework.MeasureQueue.Remove(this);
         }
 
         /// <summary>
@@ -327,13 +332,32 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             this.mostRecentArrangeOptions = options;
             this.mostRecentFinalRect = finalRect;
-            this.mostRecentRelativeRect = new RectangleD(
-                finalRect.X + RenderOffset.X,
-                finalRect.Y + RenderOffset.Y, ActualWidth, ActualHeight);
-            this.mostRecentAbsoluteRect = new RectangleD(
-                finalRect.X + RenderOffset.X + ((Parent == null) ? 0 : Parent.AbsoluteBounds.X),
-                finalRect.Y + RenderOffset.Y + ((Parent == null) ? 0 : Parent.AbsoluteBounds.Y),
-                ActualWidth, ActualHeight);
+
+            InvalidatePosition();
+
+            Ultraviolet.GetUI().PresentationFramework.ArrangeQueue.Remove(this);
+        }
+
+        /// <summary>
+        /// Positions the element in absolute screen space.
+        /// </summary>
+        /// <param name="position">The position of the element's parent element in absolute screen space.</param>
+        public void Position(Point2D position)
+        {
+            this.mostRecentPosition = position;
+
+            var contentRegionOffset = (Parent == null) ? Point2D.Zero : 
+                IsComponent ? Parent.GetComponentRegionOffset() : Parent.GetContentRegionOffset();
+
+            var offsetX = mostRecentFinalRect.X + RenderOffset.X + contentRegionOffset.X;
+            var offsetY = mostRecentFinalRect.Y + RenderOffset.Y + contentRegionOffset.Y;
+
+            this.relativeBounds = new RectangleD(offsetX, offsetY, RenderSize.Width, RenderSize.Height);
+            this.absoluteBounds = new RectangleD(position.X + offsetX, position.Y + offsetY, RenderSize.Width, RenderSize.Height);
+
+            PositionCore(position);
+
+            Ultraviolet.GetUI().PresentationFramework.PositionQueue.Remove(this);
         }
 
         /// <summary>
@@ -361,6 +385,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             this.isArrangeValid = false;
             Ultraviolet.GetUI().PresentationFramework.ArrangeQueue.Enqueue(this);
+        }
+
+        /// <summary>
+        /// Invalidates the element's position state.
+        /// </summary>
+        public void InvalidatePosition()
+        {
+            this.isPositionValid = false;
+            Ultraviolet.GetUI().PresentationFramework.PositionQueue.Enqueue(this);
         }
 
         /// <summary>
@@ -488,33 +521,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Gets the control that owns this element, if this element is a control component.
         /// </summary>
-        public UIElement Control
+        public Control Control
         {
             get { return control; }
-        }
-
-        /// <summary>
-        /// Gets the element's bounds in element-local space.
-        /// </summary>
-        public RectangleD Bounds
-        {
-            get { return new RectangleD(0, 0, ActualWidth, ActualHeight); }
-        }
-
-        /// <summary>
-        /// Gets the element's bounds relative to its parent element.
-        /// </summary>
-        public RectangleD RelativeBounds
-        {
-            get { return mostRecentRelativeRect; }
-        }
-
-        /// <summary>
-        /// Gets the element's bounds in absolute screen space.
-        /// </summary>
-        public RectangleD AbsoluteBounds
-        {
-            get { return mostRecentAbsoluteRect; }
         }
 
         /// <summary>
@@ -550,6 +559,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Gets a value indicating whether the element's position state is valid.
+        /// </summary>
+        public Boolean IsPositionValid
+        {
+            get { return isPositionValid; }
+        }
+
+        /// <summary>
         /// Gets or sets a value indicating whether the element is visible to hit tests.
         /// </summary>
         public Boolean IsHitTestVisible
@@ -574,6 +591,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             get { return GetValue<Visibility>(VisibilityProperty); }
             set { SetValue<Visibility>(VisibilityProperty, value); }
+        }
+
+        /// <summary>
+        /// Gets the position of the element in absolute screen coordinates as of the
+        /// last call to the <see cref="Position(Size2D)"/> method.
+        /// </summary>
+        public Point2D AbsolutePosition
+        {
+            get { return absoluteBounds.Location; }
         }
 
         /// <summary>
@@ -617,19 +643,27 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
-        /// Gets the element's actual width as of the most recent layout pass.
+        /// Gets the element's bounds in element-local space.
         /// </summary>
-        public Double ActualWidth
+        public RectangleD Bounds
         {
-            get { return RenderSize.Width; }
+            get { return new RectangleD(0, 0, RenderSize.Width, RenderSize.Height); }
         }
 
         /// <summary>
-        /// Gets the element's actual height as of the most recent layout pass.
+        /// Gets the element's bounds relative to its parent element.
         /// </summary>
-        public Double ActualHeight
+        public RectangleD RelativeBounds
         {
-            get { return RenderSize.Height; }
+            get { return relativeBounds; }
+        }
+
+        /// <summary>
+        /// Gets the element's bounds in absolute screen space.
+        /// </summary>
+        public RectangleD AbsoluteBounds
+        {
+            get { return absoluteBounds; }
         }
 
         /// <summary>
@@ -848,6 +882,66 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Gets the offset between the top-left corner of the element and the top-left corner
+        /// of the region that contains the element's components.
+        /// </summary>
+        /// <returns>The element's component offset.</returns>
+        internal virtual Point2D GetComponentRegionOffset()
+        {
+            return new Point2D(0, 0);
+        }
+
+        /// <summary>
+        /// Gets the offset between the top-left corner of the element and the top-left corner
+        /// of the region that contains the element's content.
+        /// </summary>
+        /// <returns>The element's content offset.</returns>
+        internal virtual Point2D GetContentRegionOffset()
+        {
+            return new Point2D(0, 0);
+        }
+
+        /// <summary>
+        /// Gets the size of the region that contains the element's components.
+        /// </summary>
+        /// <param name="finalSize">The element's final position and size relative to its parent element.</param>
+        /// <returns>A <see cref="Size2D"/> describing the size of the element's component region.</returns>
+        internal virtual Size2D GetComponentRegionSize(Size2D finalSize)
+        {
+            return finalSize;
+        }
+
+        /// <summary>
+        /// Gets the size of the region that contains the element's content.
+        /// </summary>
+        /// <param name="finalSize">The element's final position and size relative to its parent element.</param>
+        /// <returns>A <see cref="Size2D"/> describing the size of the element's content region.</returns>
+        internal virtual Size2D GetContentRegionSize(Size2D finalSize)
+        {
+            return finalSize;
+        }
+
+        /// <summary>
+        /// Gets the region on the element in which its components should be displayed.
+        /// </summary>
+        /// <param name="finalSize">The element's final position and size relative to its parent element.</param>
+        /// <returns>A <see cref="RectangleD"/> describing the element's component region.</returns>
+        internal virtual RectangleD GetComponentRegion(Size2D finalSize)
+        {
+            return new RectangleD(0, 0, finalSize.Width, finalSize.Height);
+        }
+
+        /// <summary>
+        /// Gets the region on the element in which its content should be displayed.
+        /// </summary>
+        /// <param name="finalSize">The element's final position and size relative to its parent element.</param>
+        /// <returns>A <see cref="RectangleD"/> describing the element's content region.</returns>
+        internal virtual RectangleD GetContentRegion(Size2D finalSize)
+        {
+            return new RectangleD(0, 0, finalSize.Width, finalSize.Height);
+        }
+
+        /// <summary>
         /// Gets the stylesheet that was most recently passed to the <see cref="Style(UvssDocument)"/> method.
         /// </summary>
         internal UvssDocument MostRecentStylesheet
@@ -872,27 +966,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
-        /// Gets the most recent result of determining the element's bounds relative to its parent.
-        /// </summary>
-        internal RectangleD MostRecentRelativeRect
-        {
-            get { return mostRecentRelativeRect; }
-        }
-
-        /// <summary>
-        /// Gets the most recent result of determining the element's absolute bounds on the screen.
-        /// </summary>
-        internal RectangleD MostRecentAbsoluteRect
-        {
-            get { return mostRecentAbsoluteRect; }
-        }
-
-        /// <summary>
         /// Gets the available size that was most recently passed to the <see cref="Measure(Size2D)"/> method.
         /// </summary>
         internal Size2D MostRecentAvailableSize
         {
             get { return mostRecentAvailableSize; }
+        }
+
+        /// <summary>
+        /// Gets the position that was most recently passed to the <see cref="Position(Point2D)"/> method.
+        /// </summary>
+        internal Point2D MostRecentPosition
+        {
+            get { return mostRecentPosition; }
         }
 
         /// <summary>
@@ -1322,6 +1408,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// When overridden in a derived class, positions the element in absolute screen space.
+        /// </summary>
+        /// <param name="position">The position of the element's parent element in absolute screen space.</param>
+        protected virtual void PositionCore(Point2D position)
+        {
+
+        }
+
+        /// <summary>
         /// When overridden in a derived class, gets the element at the specified device-independent 
         /// coordinates relative to this element's bounds.
         /// </summary>
@@ -1489,7 +1584,75 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         private void CacheControl()
         {
-            // TODO
+            UnregisterElement();
+
+            this.control = FindControl();
+
+            RegisterElement();
+        }
+
+        /// <summary>
+        /// Adds the element to the current view's element registry.
+        /// </summary>
+        private void RegisterElement()
+        {
+            if (String.IsNullOrEmpty(id))
+                return;
+
+            elementRegistrationContext = FindElementRegistry();
+            if (elementRegistrationContext != null)
+            {
+                elementRegistrationContext.RegisterElement(this);
+            }
+        }
+
+        /// <summary>
+        /// Removes the element from the current view's element registry.
+        /// </summary>
+        private void UnregisterElement()
+        {
+            if (String.IsNullOrEmpty(id))
+                return;
+
+            if (elementRegistrationContext != null)
+            {
+                elementRegistrationContext.UnregisterElement(this);
+                elementRegistrationContext = null;
+            }
+        }
+
+        /// <summary>
+        /// Finds the element registration context for this element.
+        /// </summary>
+        /// <returns>The element registration context for this element.</returns>
+        private UIElementRegistry FindElementRegistry()
+        {
+            if (Control != null)
+            {
+                return Control.ComponentRegistry;
+            }
+            return (view == null) ? null : view.ElementRegistry;
+        }
+
+        /// <summary>
+        /// Searches the element hierarchy for the control that owns
+        /// this element, if this element is a component.
+        /// </summary>
+        /// <returns>The control that owns this element, or <c>null</c> if this element is not a component.</returns>
+        private Control FindControl()
+        {
+            if (Parent is Control && ((Control)Parent).ComponentRoot == this)
+                return (Control)Parent;
+
+            var current = Parent;
+            while (current != null)
+            {
+                if (current.Control != null)
+                    return current.Control;
+
+                current = current.Parent;
+            }
+            return null;
         }
 
         /// <summary>
@@ -1550,22 +1713,27 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         private readonly String name;
         private UIView view;
         private UIElement parent;
-        private UIElement control = null;
+        private Control control = null;
         private Boolean isStyleValid;
         private Boolean isMeasureValid;
         private Boolean isArrangeValid;
+        private Boolean isPositionValid;
         private Point2D renderOffset;
         private Size2D renderSize;
         private Size2D desiredSize;
-
+        private RectangleD relativeBounds;
+        private RectangleD absoluteBounds;
+        
         // Layout parameters.
         private UvssDocument mostRecentStylesheet;
         private ArrangeOptions mostRecentArrangeOptions;
         private RectangleD mostRecentFinalRect;
-        private RectangleD mostRecentRelativeRect;
-        private RectangleD mostRecentAbsoluteRect;
         private Size2D mostRecentAvailableSize;
+        private Point2D mostRecentPosition;
         private Int32 layoutDepth;
+
+        // State values.
+        private UIElementRegistry elementRegistrationContext;
 
         // The collection of active storyboard clocks on this element.
         private readonly Dictionary<Storyboard, StoryboardClock> storyboardClocks = 

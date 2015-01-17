@@ -13,6 +13,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
     public class Canvas : Panel
     {
         /// <summary>
+        /// Initializes the <see cref="Canvas"/> type.
+        /// </summary>
+        static Canvas()
+        {
+            ComponentTemplate = LoadComponentTemplateFromManifestResourceStream(typeof(Canvas).Assembly,
+                "TwistedLogik.Ultraviolet.UI.Presentation.Elements.Templates.Canvas.xml");
+        }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="Canvas"/> class.
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
@@ -20,7 +29,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         public Canvas(UltravioletContext uv, String id)
             : base(uv, id)
         {
-
+            LoadComponentRoot(ComponentTemplate);
         }
 
         /// <summary>
@@ -159,15 +168,50 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <inheritdoc/>
         protected override Size2D MeasureOverride(Size2D availableSize)
         {
+            var contentWidth  = 0.0;
+            var contentHeight = 0.0;
+
             foreach (var child in Children)
+            {
                 child.Measure(new Size2D(Double.PositiveInfinity, Double.PositiveInfinity));
 
-            return Size2D.Zero;
+                if (Double.IsNaN(child.DesiredSize.Width) || Double.IsNaN(child.DesiredSize.Height))
+                    continue;
+
+                var cwidth = child.DesiredSize.Width;
+                var cheight = child.DesiredSize.Height;
+
+                var left   = GetLeft(child);
+                var top    = GetTop(child);
+                var right  = GetRight(child);
+                var bottom = GetBottom(child);
+
+                if (!Double.IsNaN(left))
+                    cwidth += left;
+
+                if (!Double.IsNaN(right))
+                    cwidth += right;
+
+                if (!Double.IsNaN(top))
+                    cheight += top;
+
+                if (!Double.IsNaN(bottom))
+                    cheight += bottom;
+
+                contentWidth = Math.Max(contentWidth, cwidth);
+                contentHeight = Math.Max(contentHeight, cheight);
+            }
+
+            return MeasureComponents(availableSize, new Size2D(contentWidth, contentHeight));
         }
 
         /// <inheritdoc/>
         protected override Size2D ArrangeOverride(Size2D finalSize, ArrangeOptions options)
         {
+            ArrangeComponents(finalSize);
+
+            var contentRegionSize = GetContentRegionSize(finalSize);
+
             foreach (var child in Children)
             {
                 var left   = GetLeft(child);
@@ -186,12 +230,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
 
                 if (!Double.IsNaN(left) && !Double.IsNaN(right))
                 {
-                    childWidth = finalSize.Width - (left + right);
+                    childWidth = contentRegionSize.Width - (left + right);
                 }
 
                 if (!Double.IsNaN(top) && !Double.IsNaN(bottom))
                 {
-                    childHeight = finalSize.Height - (top + bottom);
+                    childHeight = contentRegionSize.Height - (top + bottom);
                 }
                 
                 var childX = 0.0;
@@ -204,10 +248,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
                     childY = top;
 
                 if (!Double.IsNaN(right))
-                    childX = finalSize.Width - (right + childWidth);
+                    childX = contentRegionSize.Width - (right + childWidth);
 
                 if (!Double.IsNaN(bottom))
-                    childY = finalSize.Height - (bottom + childHeight);
+                    childY = contentRegionSize.Height - (bottom + childHeight);
 
                 child.Arrange(new RectangleD(childX, childY, childWidth, childHeight), ArrangeOptions.Fill);
             }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using TwistedLogik.Ultraviolet.UI.Presentation.Elements;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation
 {
@@ -69,9 +70,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             }
 
             /// <summary>
-            /// Gets or sets the component content viewer associated with the current context.
+            /// Gets or sets the component content presenter associated with the current context.
             /// </summary>
-            public UIElement ComponentContentViewer
+            public ContentPresenter ContentPresenter
             {
                 get { return componentContentViewer; }
                 set { componentContentViewer = value; }
@@ -125,7 +126,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             // Property values.
             private UIElement componentOwner;
-            private UIElement componentContentViewer;
+            private ContentPresenter componentContentViewer;
             private String bindingContext;
             private Type viewModelType;
 
