@@ -1008,6 +1008,9 @@
     <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Elements\UserControl.cs">
       <Link>UI\Presentation\Elements\UserControl.cs</Link>
     </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Elements\WrapPanel.cs">
+      <Link>UI\Presentation\Elements\WrapPanel.cs</Link>
+    </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\FrameworkElement.cs">
       <Link>UI\Presentation\FrameworkElement.cs</Link>
     </Compile>

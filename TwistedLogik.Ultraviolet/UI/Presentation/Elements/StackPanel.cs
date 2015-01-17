@@ -6,7 +6,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
     /// <summary>
     /// Represents an element container which stacks its children either directly on top of each
     /// other (if <see cref="StackPanel.Orientation"/> is <see cref="Orientation.Vertical"/>) or
-    /// side-by-side if (see <see cref="StackPanel.Orientation"/> is <see cref="Orientation.Horizontal"/>.
+    /// side-by-side if (see <see cref="StackPanel.Orientation"/> is <see cref="Orientation.Horizontal"/>).
     /// </summary>
     [UIElement("StackPanel")]
     public class StackPanel : Panel
