@@ -21,7 +21,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             /// <summary>
             /// Gets or sets the cell's x-coordinate relative to its containing grid.
             /// </summary>
-            public Double GridRelativeX
+            public Double OffsetX
             {
                 get;
                 set;
@@ -30,7 +30,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             /// <summary>
             /// Gets or sets the cell's y-coordinate relative to its containing grid.
             /// </summary>
-            public Double GridRelativeY
+            public Double OffsetY
             {
                 get;
                 set;
