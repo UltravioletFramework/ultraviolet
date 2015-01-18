@@ -5,7 +5,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
     /// <summary>
     /// Represents an image made of segments and designed to be stretched over an arbitrary area.
     /// </summary>
-    public abstract class StretchableImage : Image
+    public abstract class StretchableImage : TextureImage
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="StretchableImage"/> class.

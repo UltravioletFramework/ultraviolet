@@ -87,7 +87,7 @@ namespace TwistedLogik.Ultraviolet
         /// <returns>The converted structure.</returns>
         public static implicit operator RectangleF(Rectangle rect)
         {
-            return new Rectangle(rect.X, rect.Y, rect.Width, rect.Height);
+            return new RectangleF(rect.X, rect.Y, rect.Width, rect.Height);
         }
 
         /// <summary>

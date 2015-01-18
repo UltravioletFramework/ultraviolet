@@ -1714,7 +1714,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Loads the specified image from the global content manager.
         /// </summary>
         /// <param name="image">The image to load.</param>
-        protected void LoadGlobalImage<T>(T image) where T : Image
+        protected void LoadGlobalImage<T>(T image) where T : TextureImage
         {
             if (View == null)
                 return;
@@ -1726,7 +1726,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Loads the specified image from the local content manager.
         /// </summary>
         /// <param name="image">The image to load.</param>
-        protected void LoadLocalImage<T>(T image) where T : Image
+        protected void LoadLocalImage<T>(T image) where T : TextureImage
         {
             if (View == null)
                 return;

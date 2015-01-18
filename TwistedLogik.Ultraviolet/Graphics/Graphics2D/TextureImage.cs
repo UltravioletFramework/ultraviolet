@@ -7,22 +7,22 @@ using TwistedLogik.Ultraviolet.Content;
 namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
 {
     /// <summary>
-    /// Represents an image.
+    /// Represents a region on a texture which corresponds to a particular image.
     /// </summary>
-    public abstract class Image
+    public abstract class TextureImage
     {
         /// <summary>
-        /// Initializes the <see cref="Image"/> type.
+        /// Initializes the <see cref="TextureImage"/> type.
         /// </summary>
-        static Image()
+        static TextureImage()
         {
-            ObjectResolver.RegisterValueResolver<Image>(ImageResolver);
+            ObjectResolver.RegisterValueResolver<TextureImage>(ImageResolver);
         }
         
         /// <summary>
-        /// Initializes a new instance of the <see cref="Image"/> class.
+        /// Initializes a new instance of the <see cref="TextureImage"/> class.
         /// </summary>
-        internal Image()
+        internal TextureImage()
         {
 
         }
@@ -126,7 +126,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
             where SpriteData : struct;
 
         /// <summary>
-        /// Resolves a string into an instance of the <see cref="Image"/> class.
+        /// Resolves a string into an instance of the <see cref="TextureImage"/> class.
         /// </summary>
         /// <param name="value">The string value to resolve.</param>
         /// <param name="provider">An object that supplies culture-specific formatting information.</param>

@@ -22,7 +22,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <inheritdoc/>
         protected override void DrawOverride(UltravioletTime time, DrawingContext dc)
         {
-            var bounds = (RectangleF)AbsoluteBounds;
+            var display = Ultraviolet.GetPlatform().Displays.PrimaryDisplay;
+            var bounds  = (RectangleF)display.DipsToPixels(AbsoluteBounds);
 
             dc.SpriteBatch.Draw(FrameworkResources.BlankTexture, bounds, FillColor * dc.Opacity);
 

@@ -14,7 +14,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         /// <param name="image">The asset identifier of the resource.</param>
         /// <param name="source">An <see cref="AssetSource"/> value describing how to load the resource.</param>
-        public SourcedImage(Image image, AssetSource source)
+        public SourcedImage(TextureImage image, AssetSource source)
         {
             this.resource  = image;
             this.source = source;
@@ -25,7 +25,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         /// <param name="sourced">The <see cref="SourcedImage"/> to convert.</param>
         /// <returns>The underlying value of the sourced asset.</returns>
-        public static implicit operator Image(SourcedImage sourced)
+        public static implicit operator TextureImage(SourcedImage sourced)
         {
             return sourced.Resource;
         }
@@ -83,7 +83,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 str    = str.Substring(0, str.Length - " global".Length);
             }
 
-            var asset = (Image)ObjectResolver.FromString(str.Trim(), typeof(Image), provider);
+            var asset = (TextureImage)ObjectResolver.FromString(str.Trim(), typeof(TextureImage), provider);
             return new SourcedImage(asset, source);
         }
 
@@ -128,7 +128,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Gets the sourced resource.
         /// </summary>
-        public Image Resource
+        public TextureImage Resource
         {
             get { return resource; }
         }
@@ -158,7 +158,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         // Property values.
-        private readonly Image resource;
+        private readonly TextureImage resource;
         private readonly AssetSource source;
     }
 }
