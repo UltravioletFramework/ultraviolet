@@ -24,7 +24,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <summary>
-        /// Gets the desired content region for this control as of the last call to <see cref="Measure(Size2D)"/>.
+        /// Gets the desired content region for this control as of the last call to <see cref="UIElement.Measure(Size2D)"/>.
         /// </summary>
         public RectangleD DesiredContentRegion
         {
@@ -32,7 +32,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <summary>
-        /// Gets the final rendered content region for this control as of the last call to <see cref="Arrange(RectangleD, ArrangeOptions)"/>.
+        /// Gets the final rendered content region for this control as of the last call to <see cref="UIElement.Arrange(RectangleD, ArrangeOptions)"/>.
         /// </summary>
         public RectangleD RenderContentRegion
         {
@@ -41,7 +41,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
 
         /// <summary>
         /// Gets the final rendered content region for this control in absolute screen coordinates as 
-        /// of the last call to <see cref="Position(Point2D)"/>.
+        /// of the last call to <see cref="UIElement.Position(Point2D)"/>.
         /// </summary>
         public RectangleD AbsoluteContentRegion
         {

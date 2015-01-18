@@ -21,7 +21,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
         
         /// <summary>
-        /// Implicitly converts an instance of <see cref="Resource{T}"/> to its underlying resource.
+        /// Implicitly converts an instance of <see cref="FrameworkResource{T}"/> to its underlying resource.
         /// </summary>
         /// <param name="resource">The object to convert.</param>
         /// <returns>The converted object.</returns>

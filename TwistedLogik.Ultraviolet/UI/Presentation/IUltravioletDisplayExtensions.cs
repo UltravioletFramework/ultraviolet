@@ -89,7 +89,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// value with dimensions in display independent pixels.
         /// </summary>
         /// <param name="this">The <see cref="IUltravioletDisplay"/> with which to perform the conversion.</param>
-        /// <param name="pixels">The <see cref="Thickness"/> in inches to convert.</param>
+        /// <param name="inches">The <see cref="Thickness"/> in inches to convert.</param>
         /// <returns>The converted <see cref="Thickness"/> in display independent pixels.</returns>
         public static Thickness InchesToDips(this IUltravioletDisplay @this, Thickness inches)
         {

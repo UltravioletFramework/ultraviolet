@@ -1432,7 +1432,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
-        /// Raises the <see cref="Updating event."/>
+        /// Raises the <see cref="Updating"/> event.
         /// </summary>
         /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Update(UltravioletTime)"/>.</param>
         protected virtual void OnUpdating(UltravioletTime time)
@@ -1713,7 +1713,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Loads the specified image from the global content manager.
         /// </summary>
-        /// <param name="resource">The image to load.</param>
+        /// <param name="image">The image to load.</param>
         protected void LoadGlobalImage<T>(T image) where T : Image
         {
             if (View == null)
@@ -1725,7 +1725,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Loads the specified image from the local content manager.
         /// </summary>
-        /// <param name="resource">The image to load.</param>
+        /// <param name="image">The image to load.</param>
         protected void LoadLocalImage<T>(T image) where T : Image
         {
             if (View == null)
@@ -1737,7 +1737,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Loads the specified resource from the global content manager.
         /// </summary>
-        /// <param name="image">The resource to load.</param>
+        /// <param name="resource">The resource to load.</param>
         /// <param name="asset">The asset identifier that specifies which resource to load.</param>
         protected void LoadGlobalResource<T>(FrameworkResource<T> resource, AssetID asset) where T : class
         {
@@ -1750,7 +1750,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Loads the specified resource from the local content manager.
         /// </summary>
-        /// <param name="image">The resource to load.</param>
+        /// <param name="resource">The resource to load.</param>
         /// <param name="asset">The asset identifier that specifies which resource to load.</param>
         protected void LoadLocalResource<T>(FrameworkResource<T> resource, AssetID asset) where T : class
         {

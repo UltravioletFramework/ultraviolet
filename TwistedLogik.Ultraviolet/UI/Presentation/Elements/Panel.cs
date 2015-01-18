@@ -205,7 +205,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// </summary>
         /// <param name="x">The element-relative x-coordinate of the point to evaluate.</param>
         /// <param name="y">The element-relative y-coordinate of the point to evaluate.</param>
-        /// <param name="isHitTest">A value indicating whether this test should respect the value of the <see cref="IsHitTestVisible"/> property.</param>
+        /// <param name="isHitTest">A value indicating whether this test should respect the value of the <see cref="UIElement.IsHitTestVisible"/> property.</param>
         /// <returns>The child element at the specified coordinates, or <c>null</c> if no such element exists.</returns>
         protected virtual UIElement GetChildAtPoint(Double x, Double y, Boolean isHitTest)
         {

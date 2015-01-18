@@ -216,27 +216,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <summary>
-        /// Occurs when the value of the <see cref="BackgroundImage"/> dependency property changes.
-        /// </summary>
-        /// <param name="dobj">The object that raised the event.</param>
-        private static void HandleBackgroundImageChanged(DependencyObject dobj)
-        {
-            var element = (ProgressBar)dobj;
-            element.ReloadBackgroundImage();
-            element.OnBackgroundImageChanged();
-        }
-
-        /// <summary>
-        /// Occurs when the value of the <see cref="BackgroundColor"/> dependency property changes.
-        /// </summary>
-        /// <param name="dobj">The object that raised the event.</param>
-        private static void HandleBackgroundColorChanged(DependencyObject dobj)
-        {
-            var element = (ProgressBar)dobj;
-            element.OnBackgroundColorChanged();
-        }
-
-        /// <summary>
         /// Occurs when the value of the <see cref="FillImage"/> dependency property changes.
         /// </summary>
         /// <param name="dobj">The object that raised the event.</param>

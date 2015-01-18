@@ -297,7 +297,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             new DependencyPropertyMetadata(HandleVerticalAlignmentChanged, () => VerticalAlignment.Top, DependencyPropertyOptions.AffectsArrange));
 
         /// <summary>
-        /// Called immediately prior to <see cref="MeasureOverride(Size2D)"/>.
+        /// Called immediately prior to <see cref="FrameworkElement.MeasureOverride(Size2D)"/>.
         /// </summary>
         /// <param name="availableSize">The size of the area which the element's parent has 
         /// specified is available for the element's layout.</param>
@@ -307,7 +307,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
-        /// Called immediately prior to <see cref="ArrangeOverride(Size2D, ArrangeOptions)"/>.
+        /// Called immediately prior to <see cref="FrameworkElement.ArrangeOverride(Size2D, ArrangeOptions)"/>.
         /// </summary>
         /// <param name="finalSize">The element's final size.</param>
         /// <param name="options">A set of <see cref="ArrangeOptions"/> values specifying the options for this arrangement.</param>
@@ -317,7 +317,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
-        /// Called immediately prior to <see cref="Position(Point2D)"/>.
+        /// Called immediately prior to <see cref="FrameworkElement.PositionOverride(Point2D)"/>.
         /// </summary>
         /// <param name="position">The position of the element's parent element in absolute screen space.</param>
         internal virtual void PrePositionOverride(Point2D position)

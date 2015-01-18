@@ -7,7 +7,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
     /// <summary>
     /// Represents an asset which can be loaded from either the global or local content source.
     /// </summary>
-    /// <typeparam name="Image">The type of asset which this object represents.</typeparam>
     public struct SourcedImage : IEquatable<SourcedImage>, IInterpolatable<SourcedImage>
     {
         /// <summary>
