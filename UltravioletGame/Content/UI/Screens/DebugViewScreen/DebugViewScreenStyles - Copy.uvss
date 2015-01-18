@@ -37,11 +37,15 @@ button, repeatbutton
 }
 @button-to-hover
 {
-	target
+	target button
 	{
 		animation background-image
 		{
 			keyframe 0 { }
+		}
+		animation background-color
+		{
+			keyframe 250 { #ffff0000 }
 		}
 		animation padding
 		{

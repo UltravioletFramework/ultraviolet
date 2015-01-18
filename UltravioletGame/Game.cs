@@ -42,11 +42,6 @@ namespace SafeProjectName
         {
 
         }
-
-        protected override void OnDrawing(UltravioletTime time, SpriteBatch spriteBatch, Single opacity)
-        {
-            base.OnDrawing(time, spriteBatch, opacity);
-        }
     }
 
     /// <summary>

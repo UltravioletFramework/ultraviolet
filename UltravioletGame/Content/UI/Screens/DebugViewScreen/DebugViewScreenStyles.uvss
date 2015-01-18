@@ -1,13 +1,13 @@
 ﻿*
 {
-	font-asset: #Global:Fonts:KenVectorFuture12;
+	font: #Global:Fonts:KenVectorFuture12;
 	font-color: #ff000000;
 }
 
 button
 {
 	background-image: #Global:Textures:DemoUI 1 589 190 49 6 4 6 8;
-	padding: 8 8 8 8;
+	padding: 8 8 8 12;
 }
 
 button
@@ -19,11 +19,19 @@ button
 
 @button-to-normal
 {
-	target
+	target button
 	{
+		animation height
+		{
+			keyframe 100 { }
+		}
 		animation background-image
 		{
 			keyframe 0 { }
+		}
+		animation background-color
+		{
+			keyframe 250 { }
 		}
 		animation padding
 		{
@@ -37,11 +45,19 @@ button
 }
 @button-to-hover
 {
-	target
+	target button
 	{
+		animation height
+		{
+			keyframe 100 { 128 }
+		}
 		animation background-image
 		{
 			keyframe 0 { }
+		}
+		animation background-color
+		{
+			keyframe 250 { #ffff0000 }
 		}
 		animation padding
 		{
@@ -55,7 +71,7 @@ button
 }
 @button-to-pressed
 {
-	target
+	target button
 	{
 		animation background-image
 		{
@@ -63,7 +79,7 @@ button
 		}
 		animation padding
 		{
-			keyframe 0 { 8 12 8 4 }
+			keyframe 0 { 8 12 8 8 }
 		}
 		animation font-color
 		{
@@ -72,3 +88,10 @@ button
 	}
 }
 
+progressbar
+{
+	background-image: #Global:Textures:DemoUI 192 764 28 26 6 6;
+
+	fill-image: #Global:Textures:DemoUI 192 737 28 26 6 6;
+	fill-color: #ff00a0ff;
+}

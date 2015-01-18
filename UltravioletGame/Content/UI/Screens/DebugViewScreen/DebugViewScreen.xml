@@ -3,22 +3,43 @@
   <Stylesheet>DebugViewScreenStyles.uvss</Stylesheet>
   <View ViewModelType="SafeProjectName.UI.Screens.DebugViewModel, SafeProjectName">
 
-    <Grid Margin="100 100 0 0">
+    <Grid>
       <Grid.ColumnDefinitions>
         <ColumnDefinition Width="Auto"></ColumnDefinition>
-        <ColumnDefinition Width="200"></ColumnDefinition>
+        <ColumnDefinition Width="*"></ColumnDefinition>
         <ColumnDefinition Width="Auto"></ColumnDefinition>
       </Grid.ColumnDefinitions>
       <Grid.RowDefinitions>
         <RowDefinition Height="Auto"></RowDefinition>
-        <RowDefinition Height="200"></RowDefinition>
+        <RowDefinition Height="*"></RowDefinition>
         <RowDefinition Height="Auto"></RowDefinition>
       </Grid.RowDefinitions>
-      <Rectangle Width="50" Height="50" Grid.Column="0" FillColor="#ffff0000"></Rectangle>
-      <Rectangle Width="50" Height="50" Grid.Column="2" FillColor="#ff00ff00"></Rectangle>
-      <Rectangle Width="50" Height="50" Grid.Column="0" Grid.Row="2" FillColor="#ff0000ff"></Rectangle>
-      <Rectangle Width="50" Height="50" Grid.Column="2" Grid.Row="2" FillColor="#ffff00ff"></Rectangle>
+      <Button Grid.Column="0" Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Width="50" Height="50">A</Button>
+      <Button Grid.Column="2" Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Width="50" Height="50">B</Button>
+      <Button Grid.Column="0" Grid.Row="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Width="50" Height="50">C</Button>
+      <Button Grid.Column="2" Grid.Row="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Width="50" Height="50">D</Button>
+      <Image Grid.Column="1" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">#Global:Textures:DemoUI 192 700 36 36</Image>
     </Grid>
+
+    <!--
+    <StackPanel Width="300" Margin="100 100 0 0">
+      <ProgressBar Width="300" Height="32" Value="56"></ProgressBar>
+      <ProgressBar Width="300" Height="32" Value="77" FillColor="#ff00ff00"></ProgressBar>
+      <ProgressBar Width="300" Height="32" Value="12" FillColor="#ffff0000"></ProgressBar>
+      <WrapPanel Orientation="Horizontal" HorizontalAlignment="Center">
+        <ProgressBar Width="100" Height="32" Value="100"></ProgressBar>
+        <ProgressBar Width="100" Height="32" Value="100" FillColor="#ff00ff00"></ProgressBar>
+        <ProgressBar Width="100" Height="32" Value="100" FillColor="#ffff0000"></ProgressBar>
+        <ProgressBar Width="100" Height="32" Value="100"></ProgressBar>
+        <ProgressBar Width="100" Height="32" Value="100" FillColor="#ff00ff00"></ProgressBar>
+        <ProgressBar Width="100" Height="32" Value="100" FillColor="#ffff0000"></ProgressBar>
+      </WrapPanel>
+      <Canvas Width="300" Height="200">
+        <Rectangle Canvas.Left="8" Canvas.Right="8" Height="32"></Rectangle>
+        <Rectangle Canvas.Left="8" Canvas.Right="8" Canvas.Bottom="0" Height="32"></Rectangle>
+      </Canvas>
+    </StackPanel>
+    -->
 
     <!--
     <Button Canvas.Left="20" Canvas.Right="20" Canvas.Top="100">Test</Button>
