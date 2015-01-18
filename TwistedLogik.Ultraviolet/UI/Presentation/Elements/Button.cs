@@ -16,7 +16,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         public Button(UltravioletContext uv, String id)
             : base(uv, id)
         {
-
+            SetDefaultValue<HorizontalAlignment>(HorizontalContentAlignmentProperty, HorizontalAlignment.Center);
+            SetDefaultValue<VerticalAlignment>(VerticalContentAlignmentProperty, VerticalAlignment.Center);
         }
 
         /// <inheritdoc/>
