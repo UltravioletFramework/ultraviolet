@@ -990,6 +990,12 @@
     <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Elements\Panel.cs">
       <Link>UI\Presentation\Elements\Panel.cs</Link>
     </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Elements\ProgressBar.cs">
+      <Link>UI\Presentation\Elements\ProgressBar.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Elements\RangeBase.cs">
+      <Link>UI\Presentation\Elements\RangeBase.cs</Link>
+    </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Elements\Rectangle.cs">
       <Link>UI\Presentation\Elements\Rectangle.cs</Link>
     </Compile>

@@ -27,6 +27,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             this.viewModelType = viewModelType;
 
             this.layoutRoot = new Grid(uv, null);
+            this.layoutRoot.View = this;
             this.layoutRoot.CacheLayoutParameters();
             this.layoutRoot.InvalidateMeasure();
 
@@ -71,7 +72,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// animations, dependency property values, etc.) may be reset.</remarks>
         public void Cleanup()
         {
-            // TODO
+            layoutRoot.Cleanup();
         }
 
         /// <summary>
@@ -384,11 +385,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             if (stylesheet != null)
             {
-                // TODO LayoutRoot.ApplyStyles(stylesheet);
+                layoutRoot.Style(stylesheet);
             }
             else
             {
-                // TODO LayoutRoot.ClearStyledValuesRecursive();
+                layoutRoot.ClearStyledValues(true);
             }
         }
 
@@ -556,7 +557,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             if (Stylesheet != null)
             {
-                // TODO return Stylesheet.InstantiateStoryboardByName(LayoutRoot.Ultraviolet, name);
+                Stylesheet.InstantiateStoryboardByName(LayoutRoot.Ultraviolet, name);
             }
 
             return null;

@@ -266,7 +266,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             for (int i = index; i < Children.Count; i++)
             {
                 var child = Children[i];
-                if (position + child.DesiredSize.Width > ContentRegion.Width)
+                if (position + child.DesiredSize.Width > availableSize.Width)
                     break;
 
                 count  = count + 1;
@@ -307,7 +307,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             for (int i = index; i < Children.Count; i++)
             {
                 var child = Children[i];
-                if (position + child.DesiredSize.Height > ContentRegion.Height)
+                if (position + child.DesiredSize.Height > availableSize.Height)
                     break;
 
                 count = count + 1;

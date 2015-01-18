@@ -24,18 +24,49 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <summary>
-        /// Gets the position of the control's content region as of the last call to <see cref="Arrange(RectangleD, ArrangeOptions)"/>,
-        /// given in element-relative coordinates.
+        /// Gets the desired content region for this control as of the last call to <see cref="Measure(Size2D)"/>.
         /// </summary>
-        public RectangleD ContentRegion
+        public RectangleD DesiredContentRegion
         {
-            get { return contentRegion; }
+            get { return desiredContentRegion; }
+        }
+
+        /// <summary>
+        /// Gets the final rendered content region for this control as of the last call to <see cref="Arrange(RectangleD, ArrangeOptions)"/>.
+        /// </summary>
+        public RectangleD RenderContentRegion
+        {
+            get { return renderContentRegion; }
+        }
+
+        /// <summary>
+        /// Gets the final rendered content region for this control in absolute screen coordinates as 
+        /// of the last call to <see cref="Position(Point2D)"/>.
+        /// </summary>
+        public RectangleD AbsoluteContentRegion
+        {
+            get { return absoluteContentRegion; }
+        }
+
+        /// <inheritdoc/>
+        internal override void PreMeasureOverride(Size2D availableSize)
+        {
+            this.desiredContentRegion = GetContentRegion(availableSize);
         }
 
         /// <inheritdoc/>
         internal override void PreArrangeOverride(Size2D finalSize, ArrangeOptions options)
         {
-            this.contentRegion = GetContentRegion(finalSize);
+            this.renderContentRegion = GetContentRegion(finalSize);
+        }
+
+        /// <inheritdoc/>
+        internal override void PrePositionOverride(Point2D position)
+        {
+            this.absoluteContentRegion = new RectangleD(
+                AbsoluteBounds.X + renderContentRegion.X,
+                AbsoluteBounds.Y + renderContentRegion.Y,
+                renderContentRegion.Width, renderContentRegion.Height);
         }
 
         /// <summary>
@@ -370,7 +401,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
        
         // Property values.
-        private RectangleD contentRegion;
+        private RectangleD desiredContentRegion;
+        private RectangleD renderContentRegion;
+        private RectangleD absoluteContentRegion;
         private UIElement componentRoot;
         private ContentPresenter contentPresenter;
 

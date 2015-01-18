@@ -67,7 +67,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             var contentHeight = 0.0;
 
             foreach (var child in Children)
-                child.Measure(new Size2D(Double.PositiveInfinity, Double.PositiveInfinity));
+                child.Measure(availableSize);
 
             if (Orientation == Orientation.Vertical)
             {
@@ -86,7 +86,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
                 }
             }
 
-            var contentSize = new Size2D(contentWidth, contentHeight);
+            contentSize = new Size2D(contentWidth, contentHeight);
             return MeasureComponents(availableSize, contentSize);
         }
 
@@ -102,15 +102,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             {
                 foreach (var child in Children)
                 {
-                    child.Arrange(new RectangleD(positionX, positionY, ContentRegion.Width, child.DesiredSize.Height));
-                    positionY += child.DesiredSize.Height;
+                    child.Arrange(new RectangleD(positionX, positionY, contentSize.Width, child.DesiredSize.Height));
+                    positionY += child.RenderSize.Height;
                 }
             }
             else
             {
                 foreach (var child in Children)
                 {
-                    child.Arrange(new RectangleD(positionX, positionY, child.DesiredSize.Width, ContentRegion.Height));
+                    child.Arrange(new RectangleD(positionX, positionY, child.DesiredSize.Width, contentSize.Height));
                     positionX += child.DesiredSize.Width;
                 }
             }
@@ -139,5 +139,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             var stackPanel = (StackPanel)dobj;
             stackPanel.OnOrientationChanged();
         }
+
+        // State values.
+        private Size2D contentSize;
     }
 }

@@ -173,7 +173,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
 
             foreach (var child in Children)
             {
-                child.Measure(new Size2D(Double.PositiveInfinity, Double.PositiveInfinity));
+                child.Measure(availableSize);
 
                 if (Double.IsNaN(child.DesiredSize.Width) || Double.IsNaN(child.DesiredSize.Height))
                     continue;
@@ -228,12 +228,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
 
                 if (!Double.IsNaN(left) && !Double.IsNaN(right))
                 {
-                    childWidth = ContentRegion.Width - (left + right);
+                    childWidth = RenderContentRegion.Width - (left + right);
                 }
 
                 if (!Double.IsNaN(top) && !Double.IsNaN(bottom))
                 {
-                    childHeight = ContentRegion.Height - (top + bottom);
+                    childHeight = RenderContentRegion.Height - (top + bottom);
                 }
                 
                 var childX = 0.0;
@@ -246,10 +246,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
                     childY = top;
 
                 if (!Double.IsNaN(right))
-                    childX = ContentRegion.Width - (right + childWidth);
+                    childX = RenderContentRegion.Width - (right + childWidth);
 
                 if (!Double.IsNaN(bottom))
-                    childY = ContentRegion.Height - (bottom + childHeight);
+                    childY = RenderContentRegion.Height - (bottom + childHeight);
 
                 child.Arrange(new RectangleD(childX, childY, childWidth, childHeight), ArrangeOptions.Fill);
             }
