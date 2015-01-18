@@ -135,10 +135,31 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <inheritdoc/>
+        protected override void DrawChildren(UltravioletTime time, DrawingContext dc)
+        {
+            foreach (var cell in cells)
+            {
+                if (cell.RequiresScissorRectangle)
+                {
+                    var clip = new RectangleD(AbsoluteBounds.X + cell.OffsetX, AbsoluteBounds.Y + cell.OffsetY, cell.Width, cell.Height);
+                    dc.PushClipRectangle(clip);
+                }
+
+                foreach (var child in cell.Elements)
+                {
+                    child.Draw(time, dc);
+                }
+
+                if (cell.RequiresScissorRectangle)
+                    dc.PopClipRectangle();
+            }
+        }
+
+        /// <inheritdoc/>
         protected override Size2D MeasureOverride(Size2D availableSize)
         {
             foreach (var child in Children)
-                child.Measure(new Size2D(Double.PositiveInfinity, Double.PositiveInfinity));
+                child.Measure(availableSize);
 
             var desiredWidth  = MeasureWidth(availableSize.Width);
             var desiredHeight = MeasureHeight(availableSize.Height);
@@ -174,19 +195,33 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
 
             foreach (var cell in cells)
             {
-                var cellRect = new RectangleD(
-                    cell.GridRelativeX, 
-                    cell.GridRelativeY, 
-                    cell.Width, 
-                    cell.Height);
-
                 foreach (var child in cell.Elements)
                 {
-                    child.Arrange(cellRect);
+                    var childRect = new RectangleD(
+                        cell.OffsetX,
+                        cell.OffsetY,
+                        Math.Max(cell.Width, child.DesiredSize.Width),
+                        Math.Max(cell.Height, child.DesiredSize.Height));
+
+                    child.Arrange(childRect);
                 }
             }
 
             return finalSize;
+        }
+
+        /// <inheritdoc/>
+        protected override RectangleD? ClipCore()
+        {
+            return null;
+        }
+
+        /// <inheritdoc/>
+        protected override RectangleD? ClipContentCore()
+        {
+            UpdateCellClip(); 
+            
+            return null;
         }
 
         /// <summary>
@@ -505,8 +540,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
 
                     var cell = cells[(row * ColumnCount) + col];
 
-                    cell.GridRelativeX = (coldef == null) ? 0 : coldef.OffsetX;
-                    cell.GridRelativeY = (rowdef == null) ? 0 : rowdef.OffsetY;
+                    cell.OffsetX = (coldef == null) ? 0 : coldef.OffsetX;
+                    cell.OffsetY = (rowdef == null) ? 0 : rowdef.OffsetY;
                     cell.Width   = (coldef == null) ? RenderContentRegion.Width : coldef.MeasuredWidth;
                     cell.Height  = (rowdef == null) ? RenderContentRegion.Height : rowdef.MeasuredHeight;
 
@@ -521,6 +556,31 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
 
                 var cell = cells[(row * ColumnCount) + col];
                 cell.Elements.Add(child);
+            }
+        }
+
+        /// <summary>
+        /// Updates the clipping state of each of the grid's cells.
+        /// </summary>
+        private void UpdateCellClip()
+        {
+            foreach (var cell in cells)
+                cell.RequiresScissorRectangle = false;
+
+            foreach (var child in Children)
+            {
+                var row = Grid.GetRow(child);
+                var col = Grid.GetColumn(child);
+
+                var cell = cells[(row * ColumnCount) + col];
+
+                if (child.RelativeBounds.Left < cell.OffsetX ||
+                    child.RelativeBounds.Top < cell.OffsetY ||
+                    child.RelativeBounds.Right > cell.OffsetX + cell.Width ||
+                    child.RelativeBounds.Bottom > cell.OffsetY + cell.Height)
+                {
+                    cell.RequiresScissorRectangle = true;
+                }
             }
         }
 
