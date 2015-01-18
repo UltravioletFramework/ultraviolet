@@ -214,7 +214,6 @@
     <Compile Include="Graphics\Graphics2D\Graphics2DBinaryReaderExtensions.cs" />
     <Compile Include="Graphics\Graphics2D\Graphics2DBinaryWriterExtensions.cs" />
     <Compile Include="Graphics\Graphics2D\ContentManagerExtensions.cs" />
-    <Compile Include="Graphics\Graphics2D\TextureImage.cs" />
     <Compile Include="Graphics\Graphics2D\ISpriteBatchEffect.cs" />
     <Compile Include="Graphics\Graphics2D\NamespaceDoc.cs" />
     <Compile Include="Graphics\Graphics2D\SpriteAnimationID.cs" />
@@ -243,6 +242,7 @@
     <Compile Include="Graphics\FillMode.cs" />
     <Compile Include="Graphics\GeometryStream.cs" />
     <Compile Include="Graphics\Graphics2D\CharacterRegion.cs" />
+    <Compile Include="Graphics\Graphics2D\TextureImage.cs" />
     <Compile Include="Graphics\Graphics2D\Text\InlineIconInfo.cs" />
     <Compile Include="Graphics\Graphics2D\Text\NamespaceDoc.cs" />
     <Compile Include="Graphics\Graphics2D\Text\TextTableLayoutProcessor.cs" />
@@ -358,10 +358,10 @@
     <Compile Include="UI\Presentation\Elements\Button.cs" />
     <Compile Include="UI\Presentation\Elements\ButtonBase.cs" />
     <Compile Include="UI\Presentation\Elements\ClickMode.cs" />
+    <Compile Include="UI\Presentation\Elements\Image.cs" />
     <Compile Include="UI\Presentation\Elements\Orientation.cs" />
     <Compile Include="UI\Presentation\Elements\ProgressBar.cs" />
     <Compile Include="UI\Presentation\Elements\RangeBase.cs" />
-    <Compile Include="UI\Presentation\Elements\Image.cs" />
     <Compile Include="UI\Presentation\Elements\WrapPanel.cs" />
     <Compile Include="UI\Presentation\Elements\StackPanel.cs" />
     <Compile Include="UI\Presentation\Elements\Canvas.cs" />
