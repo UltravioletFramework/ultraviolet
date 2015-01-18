@@ -26,10 +26,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Gets or sets the font used to draw the element's text.
         /// </summary>
-        public SourcedResource<SpriteFontResource> Font
+        public SourcedResource<SpriteFont> Font
         {
-            get { return GetValue<SourcedResource<SpriteFontResource>>(FontProperty); }
-            set { SetValue<SourcedResource<SpriteFontResource>>(FontProperty, value); }
+            get { return GetValue<SourcedResource<SpriteFont>>(FontProperty); }
+            set { SetValue<SourcedResource<SpriteFont>>(FontProperty, value); }
         }
 
         /// <summary>
@@ -209,8 +209,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Identifies the <see cref="Font"/> dependency property.
         /// </summary>
         [Styled("font")]
-        public static readonly DependencyProperty FontProperty = DependencyProperty.Register("Font", typeof(SourcedResource<SpriteFontResource>), typeof(FrameworkElement),
-            new DependencyPropertyMetadata(HandleFontChanged, null, DependencyPropertyOptions.None));
+        public static readonly DependencyProperty FontProperty = DependencyProperty.Register("Font", typeof(SourcedResource<SpriteFont>), typeof(FrameworkElement),
+            new DependencyPropertyMetadata(HandleFontChanged, null, DependencyPropertyOptions.AffectsMeasure));
 
         /// <summary>
         /// Identifies the <see cref="FontColor"/> dependency property.
@@ -434,13 +434,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             var margin = Margin;
 
-            var xMargin = margin.Left + margin.Right;
-            var yMargin = margin.Top + margin.Bottom;
+            var finalRectSansMargins = finalRect - margin;
 
             var desiredWidth  = (HorizontalAlignment == HorizontalAlignment.Stretch) ? finalRect.Width : Math.Min(DesiredSize.Width, finalRect.Width);
             var desiredHeight = (VerticalAlignment == VerticalAlignment.Stretch) ? finalRect.Height : Math.Min(DesiredSize.Height, finalRect.Height);
+            var desiredSize   = new Size2D(desiredWidth, desiredHeight);
 
-            var candidateSize = new Size2D(desiredWidth - xMargin, desiredHeight - yMargin);
+            var candidateSize = desiredSize - margin;
             PreArrangeOverride(candidateSize, options);
 
             var usedSize = ArrangeOverride(candidateSize, options);
@@ -453,36 +453,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var vAlign = fill ? VerticalAlignment.Stretch : VerticalAlignment;
 
             if (hAlign == HorizontalAlignment.Stretch)
-                usedWidth = finalRect.Width - xMargin;
+                usedWidth = finalRectSansMargins.Width;
 
             if (vAlign == VerticalAlignment.Stretch)
-                usedHeight = finalRect.Height - yMargin;
+                usedHeight = finalRectSansMargins.Height;
 
-            var xOffset = margin.Left;
-
-            switch (hAlign)
-            {
-                case HorizontalAlignment.Center:
-                    xOffset = margin.Left + (((finalRect.Width - xMargin) - usedWidth) / 2.0);
-                    break;
-
-                case HorizontalAlignment.Right:
-                    xOffset = finalRect.Width - (usedWidth + margin.Right);
-                    break;
-            }
-
-            var yOffset = margin.Top;
-
-            switch (vAlign)
-            {
-                case VerticalAlignment.Center:
-                    yOffset = margin.Top + (((finalRect.Height - yMargin) - usedHeight) / 2.0);
-                    break;
-
-                case VerticalAlignment.Bottom:
-                    yOffset = finalRect.Height - (usedHeight + margin.Bottom);
-                    break;
-            }
+            var xOffset = margin.Left + LayoutUtil.PerformHorizontalAlignment(finalRectSansMargins.Size, usedSize, hAlign);
+            var yOffset = margin.Top + LayoutUtil.PerformVerticalAlignment(finalRectSansMargins.Size, usedSize, vAlign);
 
             RenderOffset = new Point2D(xOffset, yOffset);
 

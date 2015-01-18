@@ -553,7 +553,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             while (positionQueue.Count > 0)
             {
                 var element = positionQueue.Dequeue();
-                if (element.IsArrangeValid)
+                if (element.IsPositionValid)
                     continue;
 
                 element.Position(element.MostRecentPosition);

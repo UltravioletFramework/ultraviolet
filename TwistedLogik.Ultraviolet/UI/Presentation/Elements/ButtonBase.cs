@@ -150,11 +150,34 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <inheritdoc/>
-        protected override void OnDrawing(UltravioletTime time, DrawingContext dc)
+        protected override void DrawOverride(UltravioletTime time, DrawingContext dc)
         {
             DrawBackgroundImage(dc);
+            DrawContent(time, dc);
 
-            base.OnDrawing(time, dc);
+            base.DrawOverride(time, dc);
+        }
+
+        /// <inheritdoc/>
+        protected override void UpdateOverride(UltravioletTime time)
+        {
+            UpdateContent(time);
+
+            base.UpdateOverride(time);
+        }
+
+        /// <inheritdoc/>
+        protected override Size2D MeasureOverride(Size2D availableSize)
+        {
+            return MeasureContent(availableSize);
+        }
+
+        /// <inheritdoc/>
+        protected override Size2D ArrangeOverride(Size2D finalSize, ArrangeOptions options)
+        {
+            ArrangeContent(finalSize, options);
+
+            return base.ArrangeOverride(finalSize, options);
         }
 
         /// <inheritdoc/>

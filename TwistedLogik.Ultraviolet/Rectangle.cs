@@ -12,6 +12,17 @@ namespace TwistedLogik.Ultraviolet
     public struct Rectangle : IEquatable<Rectangle>, IInterpolatable<Rectangle>
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="Rectangle"/> class.
+        /// </summary>
+        /// <param name="position">The rectangle's position.</param>
+        /// <param name="size">The rectangle's size.</param>
+        public Rectangle(Point2 position, Size2 size)
+            : this(position.X, position.Y, size.Width, size.Height)
+        {
+
+        }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="Rectangle"/> structure.
         /// </summary>
         /// <param name="x">The x-coordinate of the rectangle's top-left corner.</param>
@@ -549,6 +560,14 @@ namespace TwistedLogik.Ultraviolet
         public Point2 Center
         {
             get { return new Point2(x + (width / 2), y + (height / 2)); }
+        }
+
+        /// <summary>
+        /// Gets the rectangle's size.
+        /// </summary>
+        public Size2 Size
+        {
+            get { return new Size2(width, height); }
         }
 
         // Property values.

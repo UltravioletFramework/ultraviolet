@@ -48,6 +48,28 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             get { return absoluteContentRegion; }
         }
 
+        /// <summary>
+        /// Gets or sets the amount of padding between the edges of the control
+        /// and its content region.
+        /// </summary>
+        public Thickness Padding
+        {
+            get { return GetValue<Thickness>(PaddingProperty); }
+            set { SetValue<Thickness>(PaddingProperty, value); }
+        }
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="Padding"/> property changes.
+        /// </summary>
+        public event UIElementEventHandler PaddingChanged;
+
+        /// <summary>
+        /// Identifies the <see cref="Padding"/> dependency property.
+        /// </summary>
+        [Styled("padding")]
+        public static readonly DependencyProperty PaddingProperty = DependencyProperty.Register("Padding", typeof(Thickness), typeof(ContentControl),
+            new DependencyPropertyMetadata(HandlePaddingChanged, () => Thickness.Zero, DependencyPropertyOptions.AffectsMeasure));
+
         /// <inheritdoc/>
         internal override void PreMeasureOverride(Size2D availableSize)
         {
@@ -87,12 +109,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <inheritdoc/>
         internal sealed override Point2D GetContentRegionOffset()
         {
+            var padding = Padding;
             if (contentPresenter == null)
             {
-                return new Point2D(0, 0);
-            }
-            var x = contentPresenter.AbsoluteBounds.X - AbsoluteBounds.X;
-            var y = contentPresenter.AbsoluteBounds.Y - AbsoluteBounds.Y;
+                return new Point2D(padding.Left, padding.Top);
+            }              
+            var x = padding.Left + contentPresenter.AbsoluteBounds.X - AbsoluteBounds.X;
+            var y = padding.Top + contentPresenter.AbsoluteBounds.Y - AbsoluteBounds.Y;            
             return new Point2D(x, y);
         }
 
@@ -107,9 +130,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         {
             if (contentPresenter == null)
             {
-                return finalSize;
+                return finalSize - Padding;
             }
-            return contentPresenter.RenderSize;
+            return contentPresenter.RenderSize - Padding;
         }
 
         /// <inheritdoc/>
@@ -121,13 +144,20 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <inheritdoc/>
         internal sealed override RectangleD GetContentRegion(Size2D finalSize)
         {
+            var padding = Padding;
             if (contentPresenter == null)
             {
-                return new RectangleD(0, 0, finalSize.Width, finalSize.Height);
+                finalSize -= padding;
+                return new RectangleD(padding.Left, padding.Top, finalSize.Width, finalSize.Height);
             }
-            var x = contentPresenter.AbsoluteBounds.X - AbsoluteBounds.X;
-            var y = contentPresenter.AbsoluteBounds.Y - AbsoluteBounds.Y;
-            return new RectangleD(x, y, contentPresenter.RenderSize.Width, contentPresenter.RenderSize.Height);
+            
+            var x      = contentPresenter.AbsoluteBounds.X - AbsoluteBounds.X;
+            var y      = contentPresenter.AbsoluteBounds.Y - AbsoluteBounds.Y;
+            var width  = contentPresenter.RenderSize.Width;
+            var height = contentPresenter.RenderSize.Height;
+            var region = new RectangleD(x, y, width, height);
+
+            return Padding + region;
         }
 
         /// <summary>
@@ -180,16 +210,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             }
         }
 
-        /// <inheritdoc/>
-        protected internal override void RemoveChild(UIElement child)
-        {
-            if (child == ComponentRoot)
-            {
-                ComponentRoot = null;
-            }
-            base.RemoveChild(child);
-        }
-
         /// <summary>
         /// Loads a component template from a manifest resource stream.
         /// </summary>
@@ -210,97 +230,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             }
         }
 
-        /// <summary>
-        /// Loads the control's component root from the specified template.
-        /// </summary>
-        /// <param name="template">The component template from which to load the control's component root.</param>
-        protected void LoadComponentRoot(XDocument template)
+        /// <inheritdoc/>
+        protected internal override void RemoveChild(UIElement child)
         {
-            if (componentRoot != null)
-                throw new InvalidOperationException(UltravioletStrings.ComponentRootAlreadyLoaded);
-
-            if (template == null)
-                return;
-
-            UvmlLoader.LoadComponentRoot(this, template);
-        }
-
-        /// <summary>
-        /// Draws the control's components, if it has any.
-        /// </summary>
-        /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Draw(UltravioletTime)"/>.</param>
-        /// <param name="dc">The drawing context that describes the render state of the layout.</param>
-        protected void DrawComponents(UltravioletTime time, DrawingContext dc)
-        {
-            if (componentRoot != null)
+            if (child == ComponentRoot)
             {
-                componentRoot.Draw(time, dc);
+                ComponentRoot = null;
             }
-        }
-
-        /// <summary>
-        /// Updates the control's components, if it has any.
-        /// </summary>
-        /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Update(UltravioletTime)"/>.</param>
-        protected void UpdateComponents(UltravioletTime time)
-        {
-            if (componentRoot != null)
-            {
-                componentRoot.Update(time);
-            }
-        }
-
-        /// <summary>
-        /// Measures the control's components, if it has any.
-        /// </summary>
-        /// <param name="availableSize">The size of the area which the element's parent has 
-        /// specified is available for the element's layout.</param>
-        /// <param name="componentSize">The amount of space provided for the control's components.</param>
-        protected Size2D MeasureComponents(Size2D availableSize, Size2D componentSize)
-        {
-            var clampedComponentWidth  = Math.Min(availableSize.Width, componentSize.Width);
-            var clampedComponentHeight = Math.Min(availableSize.Height, componentSize.Height);
-            var clampedComponentSize   = new Size2D(clampedComponentWidth, clampedComponentHeight);
-
-            if (componentRoot != null)
-            {
-                if (contentPresenter != null)
-                    contentPresenter.ContentSize = clampedComponentSize;
-
-                componentRoot.Measure(new Size2D(Double.PositiveInfinity, Double.PositiveInfinity));
-
-                var desiredComponentWidth  = Math.Min(componentRoot.DesiredSize.Width, availableSize.Width);
-                var desiredComponentHeight = Math.Min(componentRoot.DesiredSize.Height, availableSize.Height);
-                var desiredComponentSize   = new Size2D(desiredComponentWidth, desiredComponentHeight);
-
-                return desiredComponentSize;
-            }
-
-            return clampedComponentSize;
-        }
-
-        /// <summary>
-        /// Arranges the control's components, if it has any.
-        /// </summary>
-        /// <param name="componentSize">The amount of space provided for the control's components.</param>
-        protected void ArrangeComponents(Size2D componentSize)
-        {
-            if (componentRoot != null)
-            {
-                componentRoot.Arrange(new RectangleD(0, 0, componentSize.Width, componentSize.Height), ArrangeOptions.Fill);
-            }
-        }
-
-        /// <summary>
-        /// Positions the control's components, if it has any.
-        /// </summary>
-        /// <param name="position">The position of the element's parent element in absolute screen space.</param>
-        protected void PositionComponents(Point2D position)
-        {
-            if (componentRoot != null)
-            {
-                componentRoot.Position(AbsolutePosition);
-            }
+            base.RemoveChild(child);
         }
 
         /// <inheritdoc/>
@@ -399,7 +336,122 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             }
             return base.GetElementAtPointCore(x, y, isHitTest);
         }
-       
+
+        /// <summary>
+        /// Raises the <see cref="PaddingChanged"/> event.
+        /// </summary>
+        protected virtual void OnPaddingChanged()
+        {
+            var temp = PaddingChanged;
+            if (temp != null)
+            {
+                temp(this);
+            }
+        }
+
+        /// <summary>
+        /// Loads the control's component root from the specified template.
+        /// </summary>
+        /// <param name="template">The component template from which to load the control's component root.</param>
+        protected void LoadComponentRoot(XDocument template)
+        {
+            if (componentRoot != null)
+                throw new InvalidOperationException(UltravioletStrings.ComponentRootAlreadyLoaded);
+
+            if (template == null)
+                return;
+
+            UvmlLoader.LoadComponentRoot(this, template);
+        }
+
+        /// <summary>
+        /// Draws the control's components, if it has any.
+        /// </summary>
+        /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Draw(UltravioletTime)"/>.</param>
+        /// <param name="dc">The drawing context that describes the render state of the layout.</param>
+        protected void DrawComponents(UltravioletTime time, DrawingContext dc)
+        {
+            if (componentRoot != null)
+            {
+                componentRoot.Draw(time, dc);
+            }
+        }
+
+        /// <summary>
+        /// Updates the control's components, if it has any.
+        /// </summary>
+        /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Update(UltravioletTime)"/>.</param>
+        protected void UpdateComponents(UltravioletTime time)
+        {
+            if (componentRoot != null)
+            {
+                componentRoot.Update(time);
+            }
+        }
+
+        /// <summary>
+        /// Measures the control's components, if it has any.
+        /// </summary>
+        /// <param name="availableSize">The size of the area which the element's parent has 
+        /// specified is available for the element's layout.</param>
+        /// <param name="componentSize">The amount of space provided for the control's components.</param>
+        protected Size2D MeasureComponents(Size2D availableSize, Size2D componentSize)
+        {
+            var clampedComponentWidth  = Math.Min(availableSize.Width, componentSize.Width);
+            var clampedComponentHeight = Math.Min(availableSize.Height, componentSize.Height);
+            var clampedComponentSize   = new Size2D(clampedComponentWidth, clampedComponentHeight);
+
+            if (componentRoot != null)
+            {
+                if (contentPresenter != null)
+                    contentPresenter.ContentSize = clampedComponentSize;
+
+                componentRoot.Measure(new Size2D(Double.PositiveInfinity, Double.PositiveInfinity));
+
+                var desiredComponentWidth  = Math.Min(componentRoot.DesiredSize.Width, availableSize.Width);
+                var desiredComponentHeight = Math.Min(componentRoot.DesiredSize.Height, availableSize.Height);
+                var desiredComponentSize   = new Size2D(desiredComponentWidth, desiredComponentHeight);
+
+                return desiredComponentSize;
+            }
+
+            return clampedComponentSize;
+        }
+
+        /// <summary>
+        /// Arranges the control's components, if it has any.
+        /// </summary>
+        /// <param name="componentSize">The amount of space provided for the control's components.</param>
+        protected void ArrangeComponents(Size2D componentSize)
+        {
+            if (componentRoot != null)
+            {
+                componentRoot.Arrange(new RectangleD(0, 0, componentSize.Width, componentSize.Height), ArrangeOptions.Fill);
+            }
+        }
+
+        /// <summary>
+        /// Positions the control's components, if it has any.
+        /// </summary>
+        /// <param name="position">The position of the element's parent element in absolute screen space.</param>
+        protected void PositionComponents(Point2D position)
+        {
+            if (componentRoot != null)
+            {
+                componentRoot.Position(AbsolutePosition);
+            }
+        }
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="Padding"/> dependency property changes.
+        /// </summary>
+        /// <param name="dobj">The dependency object that raised the event.</param>
+        private static void HandlePaddingChanged(DependencyObject dobj)
+        {
+            var control = (ContentControl)dobj;
+            control.OnPaddingChanged();
+        }
+
         // Property values.
         private RectangleD desiredContentRegion;
         private RectangleD renderContentRegion;

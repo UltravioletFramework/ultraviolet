@@ -135,6 +135,22 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Gets a value indicating whether this object represents a valid resource.
+        /// </summary>
+        public Boolean IsValid
+        {
+            get { return resource != null && resource.IsValid; }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the resource has been loaded.
+        /// </summary>
+        public Boolean IsLoaded
+        {
+            get { return resource != null && resource.IsLoaded; }
+        }
+
+        /// <summary>
         /// Gets a <see cref="AssetSource"/> value indicating how to load the asset.
         /// </summary>
         public AssetSource Source

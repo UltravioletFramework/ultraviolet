@@ -6,7 +6,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
     /// <summary>
     /// Represents a resource used by the Presentation Framework.
     /// </summary>
-    public class FrameworkResource<T> where T : class
+    public sealed class FrameworkResource<T> where T : class
     {
         /// <summary>
         /// Loads the resource from the specified content manager.
@@ -17,7 +17,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             Contract.Require(content, "content");
 
-            resource = content.Load<T>(asset);
+            value = content.Load<T>(asset);
         }
         
         /// <summary>
@@ -27,18 +27,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <returns>The converted object.</returns>
         public static implicit operator T(FrameworkResource<T> resource)
         {
-            return (resource == null) ? null : resource.Resource;
+            return (resource == null) ? null : resource.Value;
         }
 
         /// <summary>
-        /// Gets the resource that this object represents.
+        /// Gets the resource value that this object represents.
         /// </summary>
-        public T Resource
+        public T Value
         {
-            get { return Resource; }
+            get { return value; }
         }
 
         // Property values.
-        private T resource;
+        private T value;
     }
 }
