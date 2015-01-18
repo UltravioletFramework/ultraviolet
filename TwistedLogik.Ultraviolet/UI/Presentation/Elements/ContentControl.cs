@@ -383,7 +383,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             }
             else
             {
-                UpdateTextLayoutCache(finalSize - padding);
+                UpdateTextLayoutCache(contentSpace);
             }
             return finalSize;
         }
