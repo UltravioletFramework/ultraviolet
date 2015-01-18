@@ -360,7 +360,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <summary>
         /// Arranges the control's content.
         /// </summary>
-        /// <param name="finalRect">The element's final position and size relative to its parent element.</param>
+        /// <param name="finalSize">The element's final size after arrangement.</param>
         /// <param name="options">A set of <see cref="ArrangeOptions"/> values specifying the options for this arrangement.</param>
         /// <returns>The final render size of the control's content.</returns>
         protected Size2D ArrangeContent(Size2D finalSize, ArrangeOptions options)

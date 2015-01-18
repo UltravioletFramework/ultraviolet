@@ -81,7 +81,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Adds a <see cref="Thickness"/> to a <see cref="RectangleD"/>.
         /// </summary>
-        /// <param name="size">The <see cref="RectangleD"/> to which to add the <see cref="Thickness"/>.</param>
+        /// <param name="rectangle">The <see cref="RectangleD"/> to which to add the <see cref="Thickness"/>.</param>
         /// <param name="thickness">The <see cref="Thickness"/> to add to the <see cref="RectangleD"/>.</param>
         /// <returns>A <see cref="RectangleD"/> that is the sum of the original <see cref="RectangleD"/> and the specified <see cref="Thickness"/>.</returns>
         public static RectangleD operator +(RectangleD rectangle, Thickness thickness)
@@ -99,7 +99,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Adds a <see cref="Thickness"/> to a <see cref="RectangleD"/>.
         /// </summary>
         /// <param name="thickness">The <see cref="Thickness"/> to add to the <see cref="RectangleD"/>.</param>
-        /// <param name="size">The <see cref="RectangleD"/> to which to add the <see cref="Thickness"/>.</param>
+        /// <param name="rectangle">The <see cref="RectangleD"/> to which to add the <see cref="Thickness"/>.</param>
         /// <returns>A <see cref="RectangleD"/> that is the sum of the original <see cref="RectangleD"/> and the specified <see cref="Thickness"/>.</returns>
         public static RectangleD operator +(Thickness thickness, RectangleD rectangle)
         {
@@ -115,7 +115,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Subtracts a <see cref="Thickness"/> from a <see cref="RectangleD"/>.
         /// </summary>
-        /// <param name="size">The <see cref="RectangleD"/> from which to subtract the <see cref="Thickness"/>.</param>
+        /// <param name="rectangle">The <see cref="RectangleD"/> from which to subtract the <see cref="Thickness"/>.</param>
         /// <param name="thickness">The <see cref="Thickness"/> to subtract from the <see cref="RectangleD"/>.</param>
         /// <returns>A <see cref="RectangleD"/> that is the difference of the original <see cref="RectangleD"/> and the specified <see cref="Thickness"/>.</returns>
         public static RectangleD operator -(RectangleD rectangle, Thickness thickness)
