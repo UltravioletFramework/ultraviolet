@@ -998,12 +998,12 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// <summary>
         /// Draws an image.
         /// </summary>
-        /// <param name="image">An <see cref="Image"/> that represents the image to draw.</param>
+        /// <param name="image">An <see cref="TextureImage"/> that represents the image to draw.</param>
         /// <param name="position">The position at which to draw the image.</param>
         /// <param name="width">The width of the image in pixels.</param>
         /// <param name="height">The height of the image in pixels.</param>
         /// <param name="color">The image's color.</param>
-        public void DrawImage(Image image, Vector2 position, Int32 width, Int32 height, Color color)
+        public void DrawImage(TextureImage image, Vector2 position, Int32 width, Int32 height, Color color)
         {
             DrawImage(image, position, width, height, color, 0f, Vector2.Zero, SpriteEffects.None, 0f, default(SpriteData));
         }        
@@ -1011,7 +1011,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// <summary>
         /// Draws an image.
         /// </summary>
-        /// <param name="image">An <see cref="Image"/> that represents the image to draw.</param>
+        /// <param name="image">An <see cref="TextureImage"/> that represents the image to draw.</param>
         /// <param name="position">The position at which to draw the image.</param>
         /// <param name="width">The width of the image in pixels.</param>
         /// <param name="height">The height of the image in pixels.</param>
@@ -1020,7 +1020,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// <param name="origin">The image's point of origin.</param>
         /// <param name="effects">The image's rendering effects.</param>
         /// <param name="layerDepth">The image's layer depth.</param>
-        public void DrawImage(Image image, Vector2 position, Int32 width, Int32 height, Color color, Single rotation, Vector2 origin, SpriteEffects effects, Single layerDepth)
+        public void DrawImage(TextureImage image, Vector2 position, Int32 width, Int32 height, Color color, Single rotation, Vector2 origin, SpriteEffects effects, Single layerDepth)
         {
             DrawImage(image, position, width, height, color, rotation, origin, effects, layerDepth, default(SpriteData));
         }
@@ -1028,13 +1028,13 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// <summary>
         /// Draws an image.
         /// </summary>
-        /// <param name="image">An <see cref="Image"/> that represents the image to draw.</param>
+        /// <param name="image">An <see cref="TextureImage"/> that represents the image to draw.</param>
         /// <param name="position">The position at which to draw the image.</param>
         /// <param name="width">The width of the image in pixels.</param>
         /// <param name="height">The height of the image in pixels.</param>
         /// <param name="color">The image's color.</param>
         /// <param name="data">The image's custom data.</param>
-        public void DrawImage(Image image, Vector2 position, Int32 width, Int32 height, Color color, SpriteData data)
+        public void DrawImage(TextureImage image, Vector2 position, Int32 width, Int32 height, Color color, SpriteData data)
         {
             DrawImage(image, position, width, height, color, 0f, Vector2.Zero, SpriteEffects.None, 0f, data);
         }        
@@ -1042,7 +1042,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// <summary>
         /// Draws an image.
         /// </summary>
-        /// <param name="image">An <see cref="Image"/> that represents the image to draw.</param>
+        /// <param name="image">An <see cref="TextureImage"/> that represents the image to draw.</param>
         /// <param name="position">The position at which to draw the image.</param>
         /// <param name="width">The width of the image in pixels.</param>
         /// <param name="height">The height of the image in pixels.</param>
@@ -1052,7 +1052,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// <param name="effects">The image's rendering effects.</param>
         /// <param name="layerDepth">The image's layer depth.</param>
         /// <param name="data">The image's custom data.</param>
-        public void DrawImage(Image image, Vector2 position, Int32 width, Int32 height, Color color, Single rotation, Vector2 origin, SpriteEffects effects, Single layerDepth, SpriteData data)
+        public void DrawImage(TextureImage image, Vector2 position, Int32 width, Int32 height, Color color, Single rotation, Vector2 origin, SpriteEffects effects, Single layerDepth, SpriteData data)
         {
             Contract.Require(image, "image");
             Contract.EnsureNotDisposed(this, Disposed);

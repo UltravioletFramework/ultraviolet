@@ -258,7 +258,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         }
 
         /// <summary>
-        /// Updates the value of the <see cref="Image.MinimumSize"/> property.
+        /// Updates the value of the <see cref="TextureImage.MinimumSize"/> property.
         /// </summary>
         private void UpdateMinimumSize()
         {

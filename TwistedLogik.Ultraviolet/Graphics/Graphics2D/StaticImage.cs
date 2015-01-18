@@ -10,7 +10,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
     /// Represents a static 2D image.
     /// </summary>
     [DebuggerDisplay(@"\{Texture:{Texture} TextureRegion:{TextureRegion}\}")]
-    public sealed class StaticImage : Image
+    public sealed class StaticImage : TextureImage
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="StaticImage"/> class.
@@ -142,6 +142,8 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// <inheritdoc/>
         internal override void Draw<VertexType, SpriteData>(SpriteBatchBase<VertexType, SpriteData> spriteBatch, Vector2 position, Int32 width, Int32 height, Color color, Single rotation, Vector2 origin, SpriteEffects effects, Single layerDepth, SpriteData data)
         {
+            effects |= SpriteEffects.OriginRelativeToDestination;
+
             if (MinimumSize.Width > 0 && width < MinimumSize.Width)
                 width = MinimumSize.Width;
 
