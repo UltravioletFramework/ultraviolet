@@ -1,42 +1,43 @@
 ﻿using System;
 using TwistedLogik.Nucleus.Data;
+using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation
 {
     /// <summary>
     /// Represents an asset which can be loaded from either the global or local content source.
     /// </summary>
-    /// <typeparam name="T">The type of asset which this object represents.</typeparam>
-    public struct SourcedVal<T> : IEquatable<SourcedVal<T>>, IInterpolatable<SourcedVal<T>> where T : struct, IEquatable<T>
+    /// <typeparam name="Image">The type of asset which this object represents.</typeparam>
+    public struct SourcedImage : IEquatable<SourcedImage>, IInterpolatable<SourcedImage>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="SourcedVal{T}"/> structure.
+        /// Initializes a new instance of the <see cref="SourcedImage"/> structure.
         /// </summary>
-        /// <param name="value">The underlying value of the sourced asset.</param>
-        /// <param name="source">An <see cref="AssetSource"/> value describing how to load the asset.</param>
-        public SourcedVal(T value, AssetSource source)
+        /// <param name="image">The asset identifier of the resource.</param>
+        /// <param name="source">An <see cref="AssetSource"/> value describing how to load the resource.</param>
+        public SourcedImage(Image image, AssetSource source)
         {
-            this.value  = value;
+            this.resource  = image;
             this.source = source;
         }
 
         /// <summary>
-        /// Implicitly converts a sourced asset to its underlying value.
+        /// Implicitly converts a sourced image to its underlying image object.
         /// </summary>
-        /// <param name="sourced">The <see cref="SourcedVal{T}"/> to convert.</param>
+        /// <param name="sourced">The <see cref="SourcedImage"/> to convert.</param>
         /// <returns>The underlying value of the sourced asset.</returns>
-        public static implicit operator T(SourcedVal<T> sourced)
+        public static implicit operator Image(SourcedImage sourced)
         {
-            return sourced.Value;
+            return sourced.Resource;
         }
 
         /// <summary>
         /// Returns <c>true</c> if the specified sourced assets are equal.
         /// </summary>
-        /// <param name="id1">The first <see cref="SourcedVal{T}"/> to compare.</param>
-        /// <param name="id2">The second <see cref="SourcedVal{T}"/> to compare.</param>
+        /// <param name="id1">The first <see cref="SourcedImage"/> to compare.</param>
+        /// <param name="id2">The second <see cref="SourcedImage"/> to compare.</param>
         /// <returns><c>true</c> if the specified sourced assets are equal; otherwise, <c>false</c>.</returns>
-        public static Boolean operator ==(SourcedVal<T> id1, SourcedVal<T> id2)
+        public static Boolean operator ==(SourcedImage id1, SourcedImage id2)
         {
             return id1.Equals(id2);
         }
@@ -44,31 +45,31 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Returns <c>true</c> if the specified sourced assets are not equal.
         /// </summary>
-        /// <param name="id1">The first <see cref="SourcedVal{T}"/> to compare.</param>
-        /// <param name="id2">The second <see cref="SourcedVal{T}"/> to compare.</param>
+        /// <param name="id1">The first <see cref="SourcedImage"/> to compare.</param>
+        /// <param name="id2">The second <see cref="SourcedImage"/> to compare.</param>
         /// <returns><c>true</c> if the specified sourced assets are unequal; otherwise, <c>false</c>.</returns>
-        public static Boolean operator !=(SourcedVal<T> id1, SourcedVal<T> id2)
+        public static Boolean operator !=(SourcedImage id1, SourcedImage id2)
         {
             return !id1.Equals(id2);
         }
 
         /// <summary>
-        /// Parses a string into an instance of <see cref="SourcedVal{T}"/>.
+        /// Parses a string into an instance of <see cref="SourcedImage"/>.
         /// </summary>
         /// <param name="str">The string to parse.</param>
-        /// <returns>The <see cref="SourcedVal{T}"/> instance that was created from the specified string.</returns>
-        public static SourcedVal<T> Parse(String str)
+        /// <returns>The <see cref="SourcedImage"/> instance that was created from the specified string.</returns>
+        public static SourcedImage Parse(String str)
         {
             return Parse(str, null);
         }
 
         /// <summary>
-        /// Parses a string into an instance of <see cref="SourcedVal{T}"/>.
+        /// Parses a string into an instance of <see cref="SourcedImage"/>.
         /// </summary>
         /// <param name="str">The string to parse.</param>
         /// <param name="provider">An object that supplies culture-specific formatting information.</param>
-        /// <returns>The <see cref="SourcedVal{T}"/> instance that was created from the specified string.</returns>
-        public static SourcedVal<T> Parse(String str, IFormatProvider provider)
+        /// <returns>The <see cref="SourcedImage"/> instance that was created from the specified string.</returns>
+        public static SourcedImage Parse(String str, IFormatProvider provider)
         {
             var source = AssetSource.Global;
 
@@ -83,12 +84,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 str    = str.Substring(0, str.Length - " global".Length);
             }
 
-            var underlyingValue = (T)ObjectResolver.FromString(str, typeof(T), provider);
-            return new SourcedVal<T>(underlyingValue, source);
+            var asset = (Image)ObjectResolver.FromString(str.Trim(), typeof(Image), provider);
+            return new SourcedImage(asset, source);
         }
 
         /// <inheritdoc/>
-        public SourcedVal<T> Interpolate(SourcedVal<T> target, Single t)
+        public SourcedImage Interpolate(SourcedImage target, Single t)
         {
             return (t >= 1) ? target : this;
         }
@@ -99,7 +100,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             unchecked
             {
                 var hash = 17;
-                hash = hash * 23 + value.GetHashCode();
+                hash = hash * 23 + resource.GetHashCode();
                 hash = hash * 23 + source.GetHashCode();
                 return hash;
             }
@@ -108,29 +109,29 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <inheritdoc/>
         public override String ToString()
         {
-            return String.Format("{0} {1}", value, source.ToString().ToLowerInvariant());
+            return String.Format("{0} {1}", resource, source.ToString().ToLowerInvariant());
         }
 
         /// <inheritdoc/>
         public override Boolean Equals(Object obj)
         {
-            return obj is SourcedVal<T> && Equals((SourcedVal<T>)obj);
+            return obj is SourcedImage && Equals((SourcedImage)obj);
         }
 
         /// <inheritdoc/>
-        public Boolean Equals(SourcedVal<T> other)
+        public Boolean Equals(SourcedImage other)
         {
             return
-                this.value.Equals(other.value) &&
+                this.resource  == other.resource &&
                 this.source == other.source;
         }
 
         /// <summary>
-        /// Gets the sourced asset value.
+        /// Gets the sourced resource.
         /// </summary>
-        public T Value
+        public Image Resource
         {
-            get { return value; }
+            get { return resource; }
         }
 
         /// <summary>
@@ -142,7 +143,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         // Property values.
-        private readonly T value;
+        private readonly Image resource;
         private readonly AssetSource source;
     }
 }

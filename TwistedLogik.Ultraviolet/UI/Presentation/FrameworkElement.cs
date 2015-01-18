@@ -8,6 +8,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
     /// <summary>
     /// Represents the base class for standard Ultraviolet Presentation Framework elements.
     /// </summary>
+    [UIElement("element")]
     public abstract class FrameworkElement : UIElement
     {
         /// <summary>
@@ -20,6 +21,42 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             this.visualStateGroups = new VisualStateGroupCollection(this);
             this.visualStateGroups.Create("focus", VSGFocus);
+        }
+
+        /// <summary>
+        /// Gets or sets the font used to draw the element's text.
+        /// </summary>
+        public SourcedResource<SpriteFontResource> Font
+        {
+            get { return GetValue<SourcedResource<SpriteFontResource>>(FontProperty); }
+            set { SetValue<SourcedResource<SpriteFontResource>>(FontProperty, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets the color used to draw the element's text.
+        /// </summary>
+        public Color FontColor
+        {
+            get { return GetValue<Color>(FontColorProperty); }
+            set { SetValue<Color>(FontColorProperty, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets the element's background image.
+        /// </summary>
+        public SourcedImage BackgroundImage
+        {
+            get { return GetValue<SourcedImage>(BackgroundImageProperty); }
+            set { SetValue<SourcedImage>(BackgroundImageProperty, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets the color used to draw the element's background image.
+        /// </summary>
+        public Color BackgroundColor
+        {
+            get { return GetValue<Color>(BackgroundColorProperty); }
+            set { SetValue<Color>(BackgroundColorProperty, value); }
         }
 
         /// <summary>
@@ -104,6 +141,26 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Occurs when the value of the <see cref="Font"/> property changes.
+        /// </summary>
+        public event UIElementEventHandler FontChanged;
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="FontColor"/> property changes.
+        /// </summary>
+        public event UIElementEventHandler FontColorChanged;
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="BackgroundImage"/> property changes.
+        /// </summary>
+        public event UIElementEventHandler BackgroundImageChanged;
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="BackgroundColor"/> property changes.
+        /// </summary>
+        public event UIElementEventHandler BackgroundColorChanged;
+
+        /// <summary>
         /// Occurs when the value of the <see cref="Width"/> property changes.
         /// </summary>
         public event UIElementEventHandler WidthChanged;
@@ -147,6 +204,34 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Occurs when the value of the <see cref="VerticalAlignment"/> property changes.
         /// </summary>
         public event UIElementEventHandler VerticalAlignmentChanged;
+
+        /// <summary>
+        /// Identifies the <see cref="Font"/> dependency property.
+        /// </summary>
+        [Styled("font")]
+        public static readonly DependencyProperty FontProperty = DependencyProperty.Register("Font", typeof(SourcedResource<SpriteFontResource>), typeof(FrameworkElement),
+            new DependencyPropertyMetadata(HandleFontChanged, null, DependencyPropertyOptions.None));
+
+        /// <summary>
+        /// Identifies the <see cref="FontColor"/> dependency property.
+        /// </summary>
+        [Styled("font-color")]
+        public static readonly DependencyProperty FontColorProperty = DependencyProperty.Register("FontColor", typeof(Color), typeof(FrameworkElement),
+            new DependencyPropertyMetadata(HandleFontColorChanged, () => Color.Black, DependencyPropertyOptions.None));
+
+        /// <summary>
+        /// Identifies the <see cref="BackgroundImage"/> dependency property.
+        /// </summary>
+        [Styled("background-image")]
+        public static readonly DependencyProperty BackgroundImageProperty = DependencyProperty.Register("BackgroundImage", typeof(SourcedImage), typeof(FrameworkElement),
+            new DependencyPropertyMetadata(HandleBackgroundImageChanged, null, DependencyPropertyOptions.None));
+
+        /// <summary>
+        /// Identifies the <see cref="BackgroundColor"/> dependency property.
+        /// </summary>
+        [Styled("background-color")]
+        public static readonly DependencyProperty BackgroundColorProperty = DependencyProperty.Register("BackgroundColor", typeof(Color), typeof(FrameworkElement),
+            new DependencyPropertyMetadata(HandleBackgroundColorChanged, () => Color.White, DependencyPropertyOptions.None));
 
         /// <summary>
         /// Identifies the <see cref="Width"/> dependency property.
@@ -291,6 +376,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         protected sealed override void UpdateCore(UltravioletTime time)
         {
             UpdateOverride(time);
+        }
+
+        /// <inheritdoc/>
+        protected override void ReloadContentCore(Boolean recursive)
+        {
+            ReloadFont();
+            ReloadBackgroundImage();
+
+            base.ReloadContentCore(recursive);
         }
 
         /// <inheritdoc/>
@@ -488,6 +582,54 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Raises the <see cref="FontChanged"/> event.
+        /// </summary>
+        protected virtual void OnFontChanged()
+        {
+            var temp = FontChanged;
+            if (temp != null)
+            {
+                temp(this);
+            }
+        }
+
+        /// <summary>
+        /// Raises the <see cref="FontColorChanged"/> event.
+        /// </summary>
+        protected virtual void OnFontColorChanged()
+        {
+            var temp = FontColorChanged;
+            if (temp != null)
+            {
+                temp(this);
+            }
+        }
+
+        /// <summary>
+        /// Raises the <see cref="BackgroundImageChanged"/> event.
+        /// </summary>
+        protected virtual void OnBackgroundImageChanged()
+        {
+            var temp = BackgroundImageChanged;
+            if (temp != null)
+            {
+                temp(this);
+            }
+        }
+
+        /// <summary>
+        /// Raises the <see cref="BackgroundColorChanged"/> event.
+        /// </summary>
+        protected virtual void OnBackgroundColorChanged()
+        {
+            var temp = BackgroundColorChanged;
+            if (temp != null)
+            {
+                temp(this);
+            }
+        }
+
+        /// <summary>
         /// Raises the <see cref="WidthChanged"/> event.
         /// </summary>
         protected virtual void OnWidthChanged()
@@ -601,6 +743,73 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         protected VisualStateGroupCollection VisualStateGroups
         {
             get { return visualStateGroups; }
+        }
+
+        /// <summary>
+        /// Draws the element's background.
+        /// </summary>
+        /// <param name="dc">The drawing context that describes the render state of the layout.</param>
+        protected virtual void DrawBackgroundImage(DrawingContext dc)
+        {
+            DrawImage(dc, BackgroundImage, BackgroundColor);
+        }
+
+        /// <summary>
+        /// Reloads the element's font.
+        /// </summary>
+        protected void ReloadFont()
+        {
+            LoadResource(Font);
+        }
+
+        /// <summary>
+        /// Reloads the element's background image.
+        /// </summary>
+        protected void ReloadBackgroundImage()
+        {
+            LoadImage(BackgroundImage);
+        }
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="Font"/> dependency property changes.
+        /// </summary>
+        /// <param name="dobj">The dependency object that raised the event.</param>
+        private static void HandleFontChanged(DependencyObject dobj)
+        {
+            var element = (FrameworkElement)dobj;
+            element.ReloadFont();
+            element.OnFontChanged();
+        }
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="FontColor"/> dependency property changes.
+        /// </summary>
+        /// <param name="dobj">The dependency object that raised the event.</param>
+        private static void HandleFontColorChanged(DependencyObject dobj)
+        {
+            var element = (FrameworkElement)dobj;
+            element.OnFontColorChanged();
+        }
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="BackgroundImage"/> dependency property changes.
+        /// </summary>
+        /// <param name="dobj">The dependency object that raised the event.</param>
+        private static void HandleBackgroundImageChanged(DependencyObject dobj)
+        {
+            var element = (FrameworkElement)dobj;
+            element.ReloadBackgroundImage();
+            element.OnBackgroundImageChanged();
+        }
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="BackgroundColor"/> dependency property changes.
+        /// </summary>
+        /// <param name="dobj">The dependency object that raised the event.</param>
+        private static void HandleBackgroundColorChanged(DependencyObject dobj)
+        {
+            var element = (FrameworkElement)dobj;
+            element.OnBackgroundColorChanged();
         }
 
         /// <summary>

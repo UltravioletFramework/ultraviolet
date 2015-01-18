@@ -1,6 +1,5 @@
 ﻿using System;
 using System.ComponentModel;
-using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
 using TwistedLogik.Ultraviolet.UI.Presentation.Styles;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
@@ -24,30 +23,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <summary>
-        /// Gets or sets the image used to draw the progress bar's background.
-        /// </summary>
-        public SourcedRef<Image> BackgroundImage
-        {
-            get { return GetValue<SourcedRef<Image>>(BackgroundImageProperty); }
-            set { SetValue<SourcedRef<Image>>(BackgroundImageProperty, value); }
-        }
-
-        /// <summary>
-        /// Gets or sets the color of the progress bar's background.
-        /// </summary>
-        public Color BackgroundColor
-        {
-            get { return GetValue<Color>(BackgroundColorProperty); }
-            set { SetValue<Color>(BackgroundColorProperty, value); }
-        }
-
-        /// <summary>
         /// Gets or sets the image used to draw the progress bar's fill.
         /// </summary>
-        public SourcedRef<Image> FillImage
+        public SourcedImage FillImage
         {
-            get { return GetValue<SourcedRef<Image>>(FillImageProperty); }
-            set { SetValue<SourcedRef<Image>>(FillImageProperty, value); }
+            get { return GetValue<SourcedImage>(FillImageProperty); }
+            set { SetValue<SourcedImage>(FillImageProperty, value); }
         }
 
         /// <summary>
@@ -62,10 +43,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <summary>
         /// Gets or sets the progress bar's overlay image.
         /// </summary>
-        public SourcedRef<Image> OverlayImage
+        public SourcedImage OverlayImage
         {
-            get { return GetValue<SourcedRef<Image>>(OverlayImageProperty); }
-            set { SetValue<SourcedRef<Image>>(OverlayImageProperty, value); }
+            get { return GetValue<SourcedImage>(OverlayImageProperty); }
+            set { SetValue<SourcedImage>(OverlayImageProperty, value); }
         }
 
         /// <summary>
@@ -76,16 +57,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             get { return GetValue<Color>(OverlayColorProperty); }
             set { SetValue<Color>(OverlayColorProperty, value); }
         }
-
-        /// <summary>
-        /// Occurs when the value of the <see cref="BackgroundImage"/> property changes.
-        /// </summary>
-        public event UIElementEventHandler BackgroundImageChanged;
-
-        /// <summary>
-        /// Occurs when the value of the <see cref="BackgroundColor"/> property changes.
-        /// </summary>
-        public event UIElementEventHandler BackgroundColorChanged;
 
         /// <summary>
         /// Occurs when the value of the <see cref="FillImage"/> property changes.
@@ -108,24 +79,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         public event UIElementEventHandler OverlayColorChanged;
 
         /// <summary>
-        /// Identifies the <see cref="BackgroundImage"/> dependency property.
-        /// </summary>
-        [Styled("background-image")]
-        public static readonly DependencyProperty BackgroundImageProperty = DependencyProperty.Register("BackgroundImage", typeof(SourcedRef<Image>), typeof(ProgressBar),
-            new DependencyPropertyMetadata(HandleBackgroundImageChanged, null, DependencyPropertyOptions.None));
-
-        /// <summary>
-        /// Identifies the <see cref="BackgroundColor"/> dependency property.
-        /// </summary>
-        [Styled("background-color")]
-        public static readonly DependencyProperty BackgroundColorProperty = DependencyProperty.Register("BackgroundColor", typeof(Color), typeof(ProgressBar),
-            new DependencyPropertyMetadata(HandleBackgroundColorChanged, () => Color.White, DependencyPropertyOptions.None));
-
-        /// <summary>
         /// Identifies the <see cref="FillImage"/> dependency property.
         /// </summary>
         [Styled("fill-image")]
-        public static readonly DependencyProperty FillImageProperty = DependencyProperty.Register("FillImage", typeof(SourcedRef<Image>), typeof(ProgressBar),
+        public static readonly DependencyProperty FillImageProperty = DependencyProperty.Register("FillImage", typeof(SourcedImage), typeof(ProgressBar),
             new DependencyPropertyMetadata(HandleFillImageChanged, null, DependencyPropertyOptions.None));
 
         /// <summary>
@@ -139,7 +96,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// Identifies the <see cref="OverlayImage"/> dependency property.
         /// </summary>
         [Styled("overlay-image")]
-        public static readonly DependencyProperty OverlayImageProperty = DependencyProperty.Register("OverlayImage", typeof(SourcedRef<Image>), typeof(ProgressBar),
+        public static readonly DependencyProperty OverlayImageProperty = DependencyProperty.Register("OverlayImage", typeof(SourcedImage), typeof(ProgressBar),
             new DependencyPropertyMetadata(HandleOverlayImageChanged, null, DependencyPropertyOptions.None));
 
         /// <summary>
@@ -150,6 +107,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             new DependencyPropertyMetadata(HandleOverlayColorChanged, () => Color.White, DependencyPropertyOptions.None));
 
         /// <inheritdoc/>
+        protected override void ReloadContentCore(Boolean recursive)
+        {
+            ReloadFillImage();
+            ReloadOverlayImage();
+
+            base.ReloadContentCore(recursive);
+        }
+
+        /// <inheritdoc/>
         protected override void DrawOverride(UltravioletTime time, DrawingContext dc)
         {
             DrawBackgroundImage(dc);
@@ -157,25 +123,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             DrawOverlayImage(dc);
 
             base.DrawOverride(time, dc);
-        }
-
-        /// <inheritdoc/>
-        protected override void ReloadContentCore(Boolean recursive)
-        {
-            ReloadBackgroundImage();
-            ReloadFillImage();
-            ReloadOverlayImage();
-
-            base.ReloadContentCore(recursive);
-        }
-
-        /// <summary>
-        /// Draws the progress bar's background.
-        /// </summary>
-        /// <param name="dc">The drawing context that describes the render state of the layout.</param>
-        protected virtual void DrawBackgroundImage(DrawingContext dc)
-        {
-            DrawImage(dc, BackgroundImage, BackgroundColor);
         }
 
         /// <summary>
@@ -202,30 +149,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         protected virtual void DrawOverlayImage(DrawingContext dc)
         {
             DrawImage(dc, OverlayImage, OverlayColor);
-        }
-
-        /// <summary>
-        /// Raises the <see cref="BackgroundImageChanged"/> event.
-        /// </summary>
-        protected virtual void OnBackgroundImageChanged()
-        {
-            var temp = BackgroundImageChanged;
-            if (temp != null)
-            {
-                temp(this);
-            }
-        }
-
-        /// <summary>
-        /// Raises the <see cref="BackgroundColorChanged"/> event.
-        /// </summary>
-        protected virtual void OnBackgroundColorChanged()
-        {
-            var temp = BackgroundColorChanged;
-            if (temp != null)
-            {
-                temp(this);
-            }
         }
 
         /// <summary>
@@ -277,19 +200,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <summary>
-        /// Reloads the progress bar's background image.
-        /// </summary>
-        protected void ReloadBackgroundImage()
-        {
-            LoadContent(BackgroundImage);
-        }
-
-        /// <summary>
         /// Reloads the progress bar's fill image.
         /// </summary>
         protected void ReloadFillImage()
         {
-            LoadContent(FillImage);
+            LoadImage(FillImage);
         }
 
         /// <summary>
@@ -297,7 +212,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// </summary>
         protected void ReloadOverlayImage()
         {
-            LoadContent(OverlayImage);
+            LoadImage(OverlayImage);
         }
 
         /// <summary>

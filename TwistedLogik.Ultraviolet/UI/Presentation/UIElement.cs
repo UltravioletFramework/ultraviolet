@@ -213,6 +213,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Update(UltravioletTime)"/>.</param>
         public void Update(UltravioletTime time)
         {
+            foreach (var clock in storyboardClocks)
+                clock.Value.Update(time);
+
+            Digest(time);
+
             UpdateCore(time);
             OnUpdating(time);
         }
@@ -476,6 +481,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <returns>The element at the specified coordinates, or <c>null</c> if no such element exists.</returns>
         public UIElement GetElementAtPoint(Double x, Double y, Boolean isHitTest)
         {
+            if (!Bounds.Contains(x, y))
+                return null;
+
+            if (!IsEnabled)
+                return null;
+
             if (isHitTest && !IsHitTestVisible)
                 return null;
 
@@ -608,6 +619,31 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public Boolean IsPositionValid
         {
             get { return isPositionValid; }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the element is enabled.
+        /// </summary>
+        public Boolean IsEnabled
+        {
+            get { return GetValue<Boolean>(IsEnabledProperty); }
+            set { SetValue<Boolean>(IsEnabledProperty, value); }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the mouse cursor is currently hovering over this element.
+        /// </summary>
+        public Boolean IsHovering
+        {
+            get { return isHovering; }
+            private set
+            {
+                if (isHovering != value)
+                {
+                    isHovering = value;
+                    OnIsHoveringChanged();
+                }
+            }
         }
 
         /// <summary>
@@ -818,6 +854,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public event UIElementMouseButtonEventHandler MouseButtonReleased;
 
         /// <summary>
+        /// Occurs when the value of the <see cref="IsEnabled"/> property changes.
+        /// </summary>
+        public event UIElementEventHandler IsEnabledChanged;
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="IsHovering"/> property changes.
+        /// </summary>
+        public event UIElementEventHandler IsHoveringChanged;
+
+        /// <summary>
         /// Occurs when the value of the <see cref="IsHitTestVisible"/> property changes.
         /// </summary>
         public event UIElementEventHandler IsHitTestVisibleChanged;
@@ -836,6 +882,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Occurs when the value of the <see cref="Opacity"/> property changes.
         /// </summary>
         public event UIElementEventHandler OpacityChanged;
+
+        /// <summary>
+        /// Identifies the <see cref="IsEnabled"/> dependency property.
+        /// </summary>
+        [Styled("enabled")]
+        public static readonly DependencyProperty IsEnabledProperty = DependencyProperty.Register("IsEnabled", typeof(Boolean), typeof(UIElement),
+            new DependencyPropertyMetadata(HandleIsEnabledChanged, () => true, DependencyPropertyOptions.None));
 
         /// <summary>
         /// Identifies the <see cref="IsHitTestVisible"/> dependency property.
@@ -1277,6 +1330,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="device">The mouse device.</param>
         protected internal virtual void OnMouseEnter(MouseDevice device)
         {
+            IsHovering = true;
+
             var temp = MouseEnter;
             if (temp != null)
             {
@@ -1290,6 +1345,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="device">The mouse device.</param>
         protected internal virtual void OnMouseLeave(MouseDevice device)
         {
+            IsHovering = false;
+
             var temp = MouseLeave;
             if (temp != null)
             {
@@ -1370,6 +1427,30 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (temp != null)
             {
                 temp(this, time);
+            }
+        }
+
+        /// <summary>
+        /// Raises the <see cref="IsEnabledChanged"/> event.
+        /// </summary>
+        protected virtual void OnIsEnabledChanged()
+        {
+            var temp = IsEnabledChanged;
+            if (temp != null)
+            {
+                temp(this);
+            }
+        }
+
+        /// <summary>
+        /// Raises the <see cref="IsHoveringChanged"/> event.
+        /// </summary>
+        protected virtual void OnIsHoveringChanged()
+        {
+            var temp = IsHoveringChanged;
+            if (temp != null)
+            {
+                temp(this);
             }
         }
 
@@ -1616,53 +1697,78 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
-        /// Loads the specified sourced asset.
-        /// </summary>
-        /// <typeparam name="TOutput">The type of object being loaded.</typeparam>
-        /// <param name="asset">The identifier of the asset to load.</param>
-        /// <returns>The asset that was loaded.</returns>
-        protected TOutput LoadContent<TOutput>(SourcedVal<AssetID> asset)
-        {
-            if (View == null)
-                return default(TOutput);
-
-            return View.LoadContent<TOutput>(asset);
-        }
-
-        /// <summary>
         /// Loads the specified image from the global content manager.
         /// </summary>
-        /// <param name="image">The identifier of the image to load.</param>
-        protected void LoadGlobalContent<T>(T image) where T : Image
+        /// <param name="resource">The image to load.</param>
+        protected void LoadGlobalImage<T>(T image) where T : Image
         {
             if (View == null)
                 return;
 
-            View.LoadGlobalContent(image);
+            View.LoadGlobalImage(image);
         }
 
         /// <summary>
         /// Loads the specified image from the local content manager.
         /// </summary>
-        /// <param name="image">The identifier of the image to load.</param>
-        protected void LoadLocalContent<T>(T image) where T : Image
+        /// <param name="resource">The image to load.</param>
+        protected void LoadLocalImage<T>(T image) where T : Image
         {
             if (View == null)
                 return;
 
-            View.LoadLocalContent(image);
+            View.LoadLocalImage(image);
+        }
+
+        /// <summary>
+        /// Loads the specified resource from the global content manager.
+        /// </summary>
+        /// <param name="image">The resource to load.</param>
+        /// <param name="asset">The asset identifier that specifies which resource to load.</param>
+        protected void LoadGlobalResource<T>(FrameworkResource<T> resource, AssetID asset) where T : class
+        {
+            if (View == null)
+                return;
+
+            View.LoadGlobalResource(resource, asset);
+        }
+
+        /// <summary>
+        /// Loads the specified resource from the local content manager.
+        /// </summary>
+        /// <param name="image">The resource to load.</param>
+        /// <param name="asset">The asset identifier that specifies which resource to load.</param>
+        protected void LoadLocalResource<T>(FrameworkResource<T> resource, AssetID asset) where T : class
+        {
+            if (View == null)
+                return;
+
+            View.LoadLocalResource(resource, asset);
         }
 
         /// <summary>
         /// Loads the specified sourced image.
         /// </summary>
-        /// <param name="image">The identifier of the image to load.</param>
-        protected void LoadContent<T>(SourcedRef<T> image) where T : Image
+        /// <param name="image">The sourced image to load.</param>
+        protected void LoadImage(SourcedImage image)
         {
             if (View == null)
                 return;
 
-            View.LoadContent(image);
+            View.LoadImage(image);
+        }
+
+        /// <summary>
+        /// Loads the specified sourced resource.
+        /// </summary>
+        /// <typeparam name="T">The type of resource being loaded.</typeparam>
+        /// <param name="resource">The sourced resource to load.</param>
+        protected void LoadResource<T>(SourcedResource<T> resource) where T : class
+        {
+            if (View == null)
+                return;
+
+            View.LoadResource(resource);
         }
 
         /// <summary>
@@ -1673,7 +1779,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="color">The color with which to draw the image.</param>
         /// <param name="drawBlankImage">A value indicating whether a blank placeholder should be drawn if 
         /// the specified image does not exist or is not loaded.</param>
-        protected void DrawImage(DrawingContext dc, SourcedRef<Image> image, Color color, Boolean drawBlankImage = false)
+        protected void DrawImage(DrawingContext dc, SourcedImage image, Color color, Boolean drawBlankImage = false)
         {
             DrawImage(dc, image, null, color, drawBlankImage);
         }
@@ -1688,7 +1794,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="color">The color with which to draw the image.</param>
         /// <param name="drawBlankImage">A value indicating whether a blank placeholder should be drawn if 
         /// the specified image does not exist or is not loaded.</param>
-        protected void DrawImage(DrawingContext dc, SourcedRef<Image> image, RectangleD? area, Color color, Boolean drawBlankImage = false)
+        protected void DrawImage(DrawingContext dc, SourcedImage image, RectangleD? area, Color color, Boolean drawBlankImage = false)
         {
             Contract.Require(dc, "dc");
 
@@ -1702,7 +1808,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             var imageAreaPix = (Rectangle)Ultraviolet.GetPlatform().Displays.PrimaryDisplay.DipsToPixels(imageAreaAbs);
 
-            var imageResource = image.Value;
+            var imageResource = image.Resource;
             if (imageResource == null || !imageResource.IsLoaded)
             {
                 if (drawBlankImage)
@@ -1719,6 +1825,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 dc.SpriteBatch.DrawImage(imageResource, position,
                     imageAreaPix.Width, imageAreaPix.Height, colorPlusOpacity, 0f, origin, effects, 0f);
             }
+        }
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="IsEnabled"/> dependency property changes.
+        /// </summary>
+        /// <param name="dobj">The dependency object that raised the event.</param>
+        private static void HandleIsEnabledChanged(DependencyObject dobj)
+        {
+            var element = (UIElement)dobj;
+            element.OnIsEnabledChanged();
         }
 
         /// <summary>
@@ -1986,6 +2102,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         private Boolean isMeasureValid;
         private Boolean isArrangeValid;
         private Boolean isPositionValid;
+        private Boolean isHovering;
         private Point2D renderOffset;
         private Size2D renderSize;
         private Size2D desiredSize;

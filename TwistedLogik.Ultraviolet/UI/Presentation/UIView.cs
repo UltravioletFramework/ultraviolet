@@ -469,34 +469,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
-        /// Loads the specified sourced asset.
-        /// </summary>
-        /// <typeparam name="TOutput">The type of object being loaded.</typeparam>
-        /// <param name="asset">The identifier of the asset to load.</param>
-        /// <returns>The asset that was loaded.</returns>
-        public TOutput LoadContent<TOutput>(SourcedVal<AssetID> asset)
-        {
-            if (!asset.Value.IsValid)
-                return default(TOutput);
-
-            switch (asset.Source)
-            {
-                case AssetSource.Global:
-                    return (globalContent == null) ? default(TOutput) : globalContent.Load<TOutput>(asset.Value);
-                
-                case AssetSource.Local:
-                    return (localContent == null) ? default(TOutput) : localContent.Load<TOutput>(asset.Value);
-
-                default:
-                    throw new NotSupportedException();
-            }
-        }
-
-        /// <summary>
         /// Loads the specified image from the global content manager.
         /// </summary>
-        /// <param name="image">The identifier of the image to load.</param>
-        public void LoadGlobalContent<T>(T image) where T : Image
+        /// <param name="image">The image to load.</param>
+        public void LoadGlobalImage<T>(T image) where T : Image
         {
             if (image == null || globalContent == null)
                 return;
@@ -507,8 +483,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Loads the specified image from the local content manager.
         /// </summary>
-        /// <param name="image">The identifier of the image to load.</param>
-        public void LoadLocalContent<T>(T image) where T : Image
+        /// <param name="image">The image to load.</param>
+        public void LoadLocalImage<T>(T image) where T : Image
         {
             if (image == null || localContent == null)
                 return;
@@ -517,12 +493,38 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Loads the specified resource from the global content manager.
+        /// </summary>
+        /// <param name="resource">The resource to load.</param>
+        /// <param name="asset">The asset identifier that specifies which resource to load.</param>
+        public void LoadGlobalResource<T>(FrameworkResource<T> resource, AssetID asset) where T : class
+        {
+            if (resource == null || globalContent == null)
+                return;
+
+            resource.Load(globalContent, asset);
+        }
+
+        /// <summary>
+        /// Loads the specified resource from the local content manager.
+        /// </summary>
+        /// <param name="resource">The resource to load.</param>
+        /// <param name="asset">The asset identifier that specifies which resource to load.</param>
+        public void LoadLocalResource<T>(FrameworkResource<T> resource, AssetID asset) where T : class
+        {
+            if (resource == null || localContent == null)
+                return;
+
+            resource.Load(localContent, asset);
+        }
+
+        /// <summary>
         /// Loads the specified sourced image.
         /// </summary>
         /// <param name="image">The identifier of the image to load.</param>
-        public void LoadContent<T>(SourcedRef<T> image) where T : Image
+        public void LoadImage(SourcedImage image)
         {
-            if (image.Value == null)
+            if (image.Resource == null)
                 return;
 
             switch (image.Source)
@@ -530,14 +532,44 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 case AssetSource.Global:
                     if (globalContent != null)
                     {
-                        image.Value.Load(globalContent);
+                        image.Resource.Load(globalContent);
                     }
                     break;
 
                 case AssetSource.Local:
                     if (localContent != null)
                     {
-                        image.Value.Load(localContent);
+                        image.Resource.Load(localContent);
+                    }
+                    break;
+
+                default:
+                    throw new NotSupportedException();
+            }
+        }
+
+        /// <summary>
+        /// Loads the specified sourced resource.
+        /// </summary>
+        /// <param name="resource">The identifier of the resource to load.</param>
+        public void LoadResource<T>(SourcedResource<T> resource) where T : class
+        {
+            if (resource.Resource == null)
+                return;
+
+            switch (resource.Source)
+            {
+                case AssetSource.Global:
+                    if (globalContent != null)
+                    {
+                        resource.Load(globalContent);
+                    }
+                    break;
+
+                case AssetSource.Local:
+                    if (localContent != null)
+                    {
+                        resource.Load(localContent);
                     }
                     break;
 

@@ -1,5 +1,4 @@
 ﻿using System;
-using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
 using TwistedLogik.Ultraviolet.Input;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
@@ -8,7 +7,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
     /// Represents the base class for buttons.
     /// </summary>
     [UIElement("ButtonBase")]
-    public abstract class ButtonBase : TextualElement
+    public abstract class ButtonBase : ContentControl
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ButtonBase"/> class.
@@ -24,7 +23,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <summary>
         /// Gets a value indicating whether the button is in the "depressed" state.
         /// </summary>
-        public Boolean Depressed
+        public Boolean IsDepressed
         {
             get { return depressed; }
             private set
@@ -32,7 +31,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
                 if (depressed != value)
                 {
                     depressed = value;
-                    OnDepressedChanged();
+                    OnIsDepressedChanged();
                 }
             }
         }
@@ -47,9 +46,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <summary>
-        /// Occurs when the value of the <see cref="Depressed"/> property changes.
+        /// Occurs when the value of the <see cref="IsDepressed"/> property changes.
         /// </summary>
-        public event UIElementEventHandler DepressedChanged;
+        public event UIElementEventHandler IsDepressedChanged;
 
         /// <summary>
         /// Occurs when the button is clicked.
@@ -80,7 +79,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <inheritdoc/>
         protected internal override void OnLostMouseCapture()
         {
-            Depressed = false;
+            IsDepressed = false;
             base.OnLostMouseCapture();
         }
 
@@ -89,7 +88,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         {
             if (button == MouseButton.Left)
             {
-                Depressed = true;
+                IsDepressed = true;
                 OnButtonPressed();
 
                 if (ClickMode == ClickMode.Press)
@@ -105,15 +104,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         {
             if (button == MouseButton.Left)
             {
-                var clicked = Depressed;
+                var clicked = IsDepressed;
 
-                Depressed = false;
+                IsDepressed = false;
                 OnButtonReleased();
 
                 if (clicked && ClickMode == ClickMode.Release)
                 {
                     var position = device.GetPositionInWindow(View.Window);
-                    if (position != null && ScreenBounds.Contains(position.Value))
+                    if (position != null && AbsoluteBounds.Contains(position.Value))
                     {
                         OnClick();
                     }
@@ -137,42 +136,49 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         {
             if (!View.HasMouseCapture(this))
             {
-                Depressed = false;
+                IsDepressed = false;
             }
             base.OnMouseLeave(device);
         }
 
         /// <inheritdoc/>
-        protected override void OnDrawing(UltravioletTime time, SpriteBatch spriteBatch, Single opacity)
+        protected override void ReloadContentCore(Boolean recursive)
         {
-            DrawBackgroundImage(spriteBatch, opacity);
-            DrawText(spriteBatch, opacity);
+            ReloadBackgroundImage();
 
-            base.OnDrawing(time, spriteBatch, opacity);
+            base.ReloadContentCore(recursive);
         }
 
         /// <inheritdoc/>
-        protected override void OnEnabledChanged()
+        protected override void OnDrawing(UltravioletTime time, DrawingContext dc)
         {
-            base.OnEnabledChanged();
+            DrawBackgroundImage(dc);
+
+            base.OnDrawing(time, dc);
+        }
+
+        /// <inheritdoc/>
+        protected override void OnIsEnabledChanged()
+        {
+            base.OnIsEnabledChanged();
 
             UpdateCommonState();
         }
 
         /// <inheritdoc/>
-        protected override void OnHoveringChanged()
+        protected override void OnIsHoveringChanged()
         {
-            base.OnHoveringChanged();
+            base.OnIsHoveringChanged();
 
             UpdateCommonState();
         }
 
         /// <summary>
-        /// Raises the <see cref="DepressedChanged"/> event.
+        /// Raises the <see cref="IsDepressedChanged"/> event.
         /// </summary>
-        protected virtual void OnDepressedChanged()
+        protected virtual void OnIsDepressedChanged()
         {
-            var temp = DepressedChanged;
+            var temp = IsDepressedChanged;
             if (temp != null)
             {
                 temp(this);
@@ -232,7 +238,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <summary>
         /// Occurs when the value of the <see cref="ClickMode"/> dependency property changes.
         /// </summary>
-        /// <param name="dobj">The object that raised the event.</param>
+        /// <param name="dobj">The dependency object that raised the event.</param>
         private static void HandleClickModeChanged(DependencyObject dobj)
         {
             var button = (ButtonBase)dobj;
@@ -244,15 +250,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// </summary>
         private void UpdateCommonState()
         {
-            if (Enabled)
+            if (IsEnabled)
             {
-                if (Depressed)
+                if (IsDepressed)
                 {
                     VisualStateGroups.GoToState("common", "pressed");
                 }
                 else
                 {
-                    if (Hovering)
+                    if (IsHovering)
                     {
                         VisualStateGroups.GoToState("common", "hover");
                     }
