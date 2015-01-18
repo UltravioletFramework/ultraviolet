@@ -176,8 +176,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             foreach (var child in Children)
             {
                 if (child.RelativeBounds.Left < 0 || child.RelativeBounds.Top < 0 ||
-                    child.RelativeBounds.Right > ContentRegion.Width ||
-                    child.RelativeBounds.Bottom > ContentRegion.Height)
+                    child.RelativeBounds.Right > RenderContentRegion.Width ||
+                    child.RelativeBounds.Bottom > RenderContentRegion.Height)
                 {
                     required = true;
                 }
@@ -186,12 +186,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
                     break;
             }
 
-            if (required)
-            {
-                return new RectangleD(AbsoluteBounds.X + ContentRegion.X, AbsoluteBounds.Y + ContentRegion.Y,
-                    ContentRegion.Width, ContentRegion.Height);
-            }
-            return null;
+            return required ? AbsoluteContentRegion : (RectangleD?)null;
         }
 
         /// <inheritdoc/>

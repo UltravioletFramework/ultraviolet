@@ -10,7 +10,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
     /// </summary>
     [UIElement("ProgressBar")]
     [DefaultProperty("Value")]
-    public class ProgressBar : UIElement
+    public class ProgressBar : RangeBase
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ProgressBar"/> class.
@@ -20,52 +20,25 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         public ProgressBar(UltravioletContext uv, String id)
             : base(uv, id)
         {
-
-        }
-
-        /// <inheritdoc/>
-        public override void ReloadContent()
-        {
-            ReloadFillImage();
-
-            base.ReloadContent();
+            SetDefaultValue<Double>(MaximumProperty, 100.0);
         }
 
         /// <summary>
-        /// Gets or sets the current value of the progress bar.
+        /// Gets or sets the image used to draw the progress bar's background.
         /// </summary>
-        public Double Value
+        public SourcedRef<Image> BackgroundImage
         {
-            get 
-            {
-                var value = GetValue<Double>(ValueProperty);
-                var min = Minimum;
-                var max = Maximum;
-
-                if (value < min) return min;
-                if (value > max) return max;
-
-                return value;
-            }
-            set { SetValue<Double>(ValueProperty, value); }
+            get { return GetValue<SourcedRef<Image>>(BackgroundImageProperty); }
+            set { SetValue<SourcedRef<Image>>(BackgroundImageProperty, value); }
         }
 
         /// <summary>
-        /// Gets or sets the smallest possible value of the progress bar.
+        /// Gets or sets the color of the progress bar's background.
         /// </summary>
-        public Double Minimum
+        public Color BackgroundColor
         {
-            get { return GetValue<Double>(MinimumProperty); }
-            set { SetValue<Double>(MinimumProperty, value); }
-        }
-
-        /// <summary>
-        /// Gets or sets the largest possible value of the progress bar.
-        /// </summary>
-        public Double Maximum
-        {
-            get { return GetValue<Double>(MaximumProperty); }
-            set { SetValue<Double>(MaximumProperty, value); }
+            get { return GetValue<Color>(BackgroundColorProperty); }
+            set { SetValue<Color>(BackgroundColorProperty, value); }
         }
 
         /// <summary>
@@ -105,19 +78,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <summary>
-        /// Occurs when the value of the <see cref="Value"/> property changes.
+        /// Occurs when the value of the <see cref="BackgroundImage"/> property changes.
         /// </summary>
-        public event UIElementEventHandler ValueChanged;
+        public event UIElementEventHandler BackgroundImageChanged;
 
         /// <summary>
-        /// Occurs when the value of the <see cref="Minimum"/> property changes.
+        /// Occurs when the value of the <see cref="BackgroundColor"/> property changes.
         /// </summary>
-        public event UIElementEventHandler MinimumChanged;
-
-        /// <summary>
-        /// Occurs when the value of the <see cref="Maximum"/> property changes.
-        /// </summary>
-        public event UIElementEventHandler MaximumChanged;
+        public event UIElementEventHandler BackgroundColorChanged;
 
         /// <summary>
         /// Occurs when the value of the <see cref="FillImage"/> property changes.
@@ -140,22 +108,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         public event UIElementEventHandler OverlayColorChanged;
 
         /// <summary>
-        /// Identifies the <see cref="Value"/> dependency property.
+        /// Identifies the <see cref="BackgroundImage"/> dependency property.
         /// </summary>
-        public static readonly DependencyProperty ValueProperty = DependencyProperty.Register("Value", typeof(Double), typeof(ProgressBar),
-            new DependencyPropertyMetadata(HandleValueChanged, null, DependencyPropertyOptions.None));
+        [Styled("background-image")]
+        public static readonly DependencyProperty BackgroundImageProperty = DependencyProperty.Register("BackgroundImage", typeof(SourcedRef<Image>), typeof(ProgressBar),
+            new DependencyPropertyMetadata(HandleBackgroundImageChanged, null, DependencyPropertyOptions.None));
 
         /// <summary>
-        /// Identifies the <see cref="Minimum"/> dependency property.
+        /// Identifies the <see cref="BackgroundColor"/> dependency property.
         /// </summary>
-        public static readonly DependencyProperty MinimumProperty = DependencyProperty.Register("Minimum", typeof(Double), typeof(ProgressBar),
-            new DependencyPropertyMetadata(HandleMinimumChanged, () => 0.0, DependencyPropertyOptions.None));
-
-        /// <summary>
-        /// Identifies the <see cref="Maximum"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty MaximumProperty = DependencyProperty.Register("Maximum", typeof(Double), typeof(ProgressBar),
-            new DependencyPropertyMetadata(HandleMaximumChanged, () => 100.0, DependencyPropertyOptions.None));
+        [Styled("background-color")]
+        public static readonly DependencyProperty BackgroundColorProperty = DependencyProperty.Register("BackgroundColor", typeof(Color), typeof(ProgressBar),
+            new DependencyPropertyMetadata(HandleBackgroundColorChanged, () => Color.White, DependencyPropertyOptions.None));
 
         /// <summary>
         /// Identifies the <see cref="FillImage"/> dependency property.
@@ -186,47 +150,66 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             new DependencyPropertyMetadata(HandleOverlayColorChanged, () => Color.White, DependencyPropertyOptions.None));
 
         /// <inheritdoc/>
-        protected override void OnDrawing(UltravioletTime time, SpriteBatch spriteBatch, Single opacity)
+        protected override void DrawOverride(UltravioletTime time, DrawingContext dc)
         {
-            DrawBackgroundImage(spriteBatch, opacity);
-            DrawFillImage(spriteBatch, opacity);
-            DrawOverlayImage(spriteBatch, opacity);
+            DrawBackgroundImage(dc);
+            DrawFillImage(dc);
+            DrawOverlayImage(dc);
 
-            base.OnDrawing(time, spriteBatch, opacity);
+            base.DrawOverride(time, dc);
+        }
+
+        /// <inheritdoc/>
+        protected override void ReloadContentCore(Boolean recursive)
+        {
+            ReloadBackgroundImage();
+            ReloadFillImage();
+            ReloadOverlayImage();
+
+            base.ReloadContentCore(recursive);
+        }
+
+        /// <summary>
+        /// Draws the progress bar's background.
+        /// </summary>
+        /// <param name="dc">The drawing context that describes the render state of the layout.</param>
+        protected virtual void DrawBackgroundImage(DrawingContext dc)
+        {
+            DrawImage(dc, BackgroundImage, BackgroundColor);
         }
 
         /// <summary>
         /// Draws the progress bar's fill.
         /// </summary>
-        /// <param name="spriteBatch">The sprite batch with which to draw the progress bar's fill.</param>
-        /// <param name="opacity">The opacity with which to draw the progress bar's fill.</param>
-        protected virtual void DrawFillImage(SpriteBatch spriteBatch, Single opacity)
+        /// <param name="dc">The drawing context that describes the render state of the layout.</param>
+        protected virtual void DrawFillImage(DrawingContext dc)
         {
             var range         = (Maximum - Minimum);
             var percentFilled = (Value - Minimum) / range;
             if (percentFilled > 0)
             {
-                var area = new Rectangle(0, 0, (Int32)(ActualWidth * percentFilled), ActualHeight);
-                DrawElementImage(spriteBatch, FillImage, area, FillColor * Opacity * opacity);
+                var area = new RectangleD(RenderContentRegion.X, RenderContentRegion.Y, 
+                    RenderContentRegion.Width * percentFilled, RenderContentRegion.Height);
+
+                DrawImage(dc, FillImage, area, FillColor);
             }
         }
 
         /// <summary>
         /// Draws the progress bar's overlay.
         /// </summary>
-        /// <param name="spriteBatch">The sprite batch with which to draw the progress bar's overlay.</param>
-        /// <param name="opacity">The opacity with which to draw the progress bar's overlay.</param>
-        protected virtual void DrawOverlayImage(SpriteBatch spriteBatch, Single opacity)
+        /// <param name="dc">The drawing context that describes the render state of the layout.</param>
+        protected virtual void DrawOverlayImage(DrawingContext dc)
         {
-            DrawElementImage(spriteBatch, OverlayImage, null, OverlayColor * Opacity * opacity);
+            DrawImage(dc, OverlayImage, OverlayColor);
         }
 
         /// <summary>
-        /// Raises the <see cref="ValueChanged"/> event.
+        /// Raises the <see cref="BackgroundImageChanged"/> event.
         /// </summary>
-        protected virtual void OnValueChanged()
+        protected virtual void OnBackgroundImageChanged()
         {
-            var temp = ValueChanged;
+            var temp = BackgroundImageChanged;
             if (temp != null)
             {
                 temp(this);
@@ -234,23 +217,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <summary>
-        /// Raises the <see cref="MinimumChanged"/> event.
+        /// Raises the <see cref="BackgroundColorChanged"/> event.
         /// </summary>
-        protected virtual void OnMinimumChanged()
+        protected virtual void OnBackgroundColorChanged()
         {
-            var temp = MinimumChanged;
-            if (temp != null)
-            {
-                temp(this);
-            }
-        }
-
-        /// <summary>
-        /// Raises the <see cref="MaximumChanged"/> event.
-        /// </summary>
-        protected virtual void OnMaximumChanged()
-        {
-            var temp = MaximumChanged;
+            var temp = BackgroundColorChanged;
             if (temp != null)
             {
                 temp(this);
@@ -306,6 +277,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <summary>
+        /// Reloads the progress bar's background image.
+        /// </summary>
+        protected void ReloadBackgroundImage()
+        {
+            LoadContent(BackgroundImage);
+        }
+
+        /// <summary>
         /// Reloads the progress bar's fill image.
         /// </summary>
         protected void ReloadFillImage()
@@ -322,33 +301,24 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <summary>
-        /// Occurs when the value of the <see cref="Value"/> dependency property changes.
+        /// Occurs when the value of the <see cref="BackgroundImage"/> dependency property changes.
         /// </summary>
         /// <param name="dobj">The object that raised the event.</param>
-        private static void HandleValueChanged(DependencyObject dobj)
+        private static void HandleBackgroundImageChanged(DependencyObject dobj)
         {
             var element = (ProgressBar)dobj;
-            element.OnValueChanged();
+            element.ReloadBackgroundImage();
+            element.OnBackgroundImageChanged();
         }
 
         /// <summary>
-        /// Occurs when the value of the <see cref="Minimum"/> dependency property changes.
+        /// Occurs when the value of the <see cref="BackgroundColor"/> dependency property changes.
         /// </summary>
         /// <param name="dobj">The object that raised the event.</param>
-        private static void HandleMinimumChanged(DependencyObject dobj)
+        private static void HandleBackgroundColorChanged(DependencyObject dobj)
         {
             var element = (ProgressBar)dobj;
-            element.OnMinimumChanged();
-        }
-
-        /// <summary>
-        /// Occurs when the value of the <see cref="Maximum"/> dependency property changes.
-        /// </summary>
-        /// <param name="dobj">The object that raised the event.</param>
-        private static void HandleMaximumChanged(DependencyObject dobj)
-        {
-            var element = (ProgressBar)dobj;
-            element.OnMaximumChanged();
+            element.OnBackgroundColorChanged();
         }
 
         /// <summary>

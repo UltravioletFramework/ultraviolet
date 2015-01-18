@@ -212,6 +212,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             new DependencyPropertyMetadata(HandleVerticalAlignmentChanged, () => VerticalAlignment.Top, DependencyPropertyOptions.AffectsArrange));
 
         /// <summary>
+        /// Called immediately prior to <see cref="MeasureOverride(Size2D)"/>.
+        /// </summary>
+        /// <param name="availableSize">The size of the area which the element's parent has 
+        /// specified is available for the element's layout.</param>
+        internal virtual void PreMeasureOverride(Size2D availableSize)
+        {
+
+        }
+
+        /// <summary>
         /// Called immediately prior to <see cref="ArrangeOverride(Size2D, ArrangeOptions)"/>.
         /// </summary>
         /// <param name="finalSize">The element's final size.</param>
@@ -222,11 +232,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
-        /// Applies the specified visual state transition to this element.
+        /// Called immediately prior to <see cref="Position(Point2D)"/>.
         /// </summary>
-        /// <param name="style">The style which defines the state transition.</param>
-        /// <param name="value">The transition value.</param>
-        internal void ApplyVisualStateTransition(UvssStyle style, String value)
+        /// <param name="position">The position of the element's parent element in absolute screen space.</param>
+        internal virtual void PrePositionOverride(Point2D position)
+        {
+
+        }
+
+        /// <inheritdoc/>
+        internal override void ApplyStyledVisualStateTransition(UvssStyle style, String value)
         {
             Contract.Require(style, "style");
             Contract.RequireNotEmpty(value, "value");
@@ -305,14 +320,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             var tentativeWidth  = Math.Max(minWidth, Math.Min(maxWidth, availableWidthSansMargin));
             var tentativeHeight = Math.Max(minHeight, Math.Min(maxHeight, availableHeightSansMargin));
+            var tentativeSize   = new Size2D(tentativeWidth, tentativeHeight);
 
-            var measuredSize = MeasureOverride(new Size2D(tentativeWidth, tentativeHeight));
+            PreMeasureOverride(tentativeSize);
+
+            var measuredSize = MeasureOverride(tentativeSize);
 
             var measuredWidth  = xMargin + Math.Max(minWidth, measuredSize.Width);
             var measuredHeight = yMargin + Math.Max(minHeight, measuredSize.Height);
 
-            var finalWidth  = Math.Min(availableSize.Width, Math.Max(0, measuredWidth));
-            var finalHeight = Math.Min(availableSize.Height, Math.Max(0, measuredHeight));
+            var finalWidth  = Math.Max(0, measuredWidth);
+            var finalHeight = Math.Max(0, measuredHeight);
 
             return new Size2D(finalWidth, finalHeight);
         }
@@ -381,6 +399,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <inheritdoc/>
         protected sealed override void PositionCore(Point2D position)
         {
+            PrePositionOverride(position);
             PositionOverride(position);
 
             base.PositionCore(position);

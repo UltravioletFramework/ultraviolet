@@ -6,6 +6,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 using TwistedLogik.Nucleus;
 using TwistedLogik.Nucleus.Data;
+using TwistedLogik.Ultraviolet.Content;
 using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
 using TwistedLogik.Ultraviolet.Input;
 using TwistedLogik.Ultraviolet.UI.Presentation.Animations;
@@ -26,15 +27,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
     /// </summary>
     /// <param name="element">The element being drawn.</param>
     /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Draw(UltravioletTime)"/>.</param>
-    /// <param name="spriteBatch">The sprite batch with which to draw the view.</param>
-    /// <param name="opacity">The cumulative opacity of all of the element's parent elements.</param>
-    public delegate void UIElementDrawingEventHandler(UIElement element, UltravioletTime time, SpriteBatch spriteBatch, Single opacity);
+    /// <param name="dc">The drawing context that describes the render state of the layout.</param>
+    public delegate void UIElementDrawingEventHandler(UIElement element, UltravioletTime time, DrawingContext dc);
 
     /// <summary>
     /// Represents the method that is called when a UI element is updated.
     /// </summary>
     /// <param name="element">The element being updated.</param>
-    /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Draw(UltravioletTime)"/>.</param>
+    /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Update(UltravioletTime)"/>.</param>
     public delegate void UIElementUpdatingEventHandler(UIElement element, UltravioletTime time);
 
     /// <summary>
@@ -199,6 +199,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             dc.PushOpacity(Opacity);
 
             DrawCore(time, dc);
+            OnDrawing(time, dc);
 
             dc.PopOpacity();
 
@@ -213,6 +214,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public void Update(UltravioletTime time)
         {
             UpdateCore(time);
+            OnUpdating(time);
         }
 
         /// <summary>
@@ -244,9 +246,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         public void CacheLayoutParameters()
         {
+            var view = View;
+
             CacheLayoutDepth();
             CacheView();
             CacheControl();
+
+            if (View != view)
+            {
+                ReloadContent(false);
+                InvalidateStyle();
+            }
 
             CacheLayoutParametersCore();
         }
@@ -300,11 +310,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="stylesheet">The stylesheet to apply to this element.</param>
         public void Style(UvssDocument stylesheet)
         {
+            this.mostRecentStylesheet = stylesheet; 
+            
             ApplyStyles(stylesheet);
-
             StyleCore(stylesheet);
 
-            this.mostRecentStylesheet = stylesheet;
+            this.isStyleValid = true;
 
             Ultraviolet.GetUI().PresentationFramework.StyleQueue.Remove(this);
         }
@@ -316,9 +327,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// specified is available for the element's layout.</param>
         public void Measure(Size2D availableSize)
         {
-            this.desiredSize = MeasureCore(availableSize);
-
             this.mostRecentAvailableSize = availableSize;
+
+            this.desiredSize = MeasureCore(availableSize);
+            this.isMeasureValid = true;
 
             Ultraviolet.GetUI().PresentationFramework.MeasureQueue.Remove(this);
         }
@@ -342,6 +354,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             {
                 this.renderSize = ArrangeCore(finalRect, options);
             }
+            this.isArrangeValid = true;
 
             InvalidatePosition();
 
@@ -366,6 +379,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             this.absoluteBounds = new RectangleD(position.X + offsetX, position.Y + offsetY, RenderSize.Width, RenderSize.Height);
 
             PositionCore(position);
+            this.isPositionValid = true;
+            
             Clip();
 
             Ultraviolet.GetUI().PresentationFramework.PositionQueue.Remove(this);
@@ -520,6 +535,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public UIView View
         {
             get { return view; }
+            internal set { view = value; }
         }
 
         /// <summary>
@@ -949,6 +965,53 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Applies the specified stylesheet's styles to this element and its children.
+        /// </summary>
+        /// <param name="stylesheet">The stylesheet to apply to the element.</param>
+        internal virtual void ApplyStyles(UvssDocument stylesheet)
+        {
+            stylesheet.ApplyStyles(this);
+        }
+
+        /// <summary>
+        /// Applies a style to the element.
+        /// </summary>
+        /// <param name="style">The style which is being applied.</param>
+        /// <param name="selector">The selector which caused the style to be applied.</param>
+        /// <param name="attached">A value indicating whether thie style represents an attached property.</param>
+        internal virtual void ApplyStyle(UvssStyle style, UvssSelector selector, Boolean attached)
+        {
+            Contract.Require(style, "style");
+            Contract.Require(selector, "selector");
+
+            var name  = style.Name;
+            var value = style.Value.Trim();
+
+            if (name == "transition")
+            {
+                ApplyStyledVisualStateTransition(style, value);
+            }
+            else
+            {
+                var setter = attached ? Parent.GetStyleSetter(name, selector.PseudoClass) : GetStyleSetter(name, selector.PseudoClass);
+                if (setter == null)
+                    return;
+
+                setter(this, value, CultureInfo.InvariantCulture);
+            }
+        }
+
+        /// <summary>
+        /// Applies a visual state transition to the element.
+        /// </summary>
+        /// <param name="style">The style which defines the state transition.</param>
+        /// <param name="value">The transition value.</param>
+        internal virtual void ApplyStyledVisualStateTransition(UvssStyle style, String value)
+        {
+
+        }
+
+        /// <summary>
         /// Gets the offset between the top-left corner of the element and the top-left corner
         /// of the region that contains the element's components.
         /// </summary>
@@ -1093,34 +1156,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (temp != null)
             {
                 temp(this, classname);
-            }
-        }
-
-        /// <summary>
-        /// Raises the <see cref="Drawing"/> event.
-        /// </summary>
-        /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Draw(UltravioletTime)"/>.</param>
-        /// <param name="spriteBatch">The sprite batch with which to draw the view.</param>
-        /// <param name="opacity">The cumulative opacity of all of the element's parent elements.</param>
-        protected internal virtual void OnDrawing(UltravioletTime time, SpriteBatch spriteBatch, Single opacity)
-        {
-            var temp = Drawing;
-            if (temp != null)
-            {
-                temp(this, time, spriteBatch, opacity);
-            }
-        }
-
-        /// <summary>
-        /// Raises the <see cref="Updating"/> event.
-        /// </summary>
-        /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Draw(UltravioletTime)"/>.</param>
-        protected internal virtual void OnUpdating(UltravioletTime time)
-        {
-            var temp = Updating;
-            if (temp != null)
-            {
-                temp(this, time);
             }
         }
 
@@ -1312,6 +1347,33 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Raises the <see cref="Drawing"/> event.
+        /// </summary>
+        /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Draw(UltravioletTime)"/>.</param>
+        /// <param name="dc">The drawing context that describes the render state of the layout.</param>
+        protected virtual void OnDrawing(UltravioletTime time, DrawingContext dc)
+        {
+            var temp = Drawing;
+            if (temp != null)
+            {
+                temp(this, time, dc);
+            }
+        }
+
+        /// <summary>
+        /// Raises the <see cref="Updating event."/>
+        /// </summary>
+        /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Update(UltravioletTime)"/>.</param>
+        protected virtual void OnUpdating(UltravioletTime time)
+        {
+            var temp = Updating;
+            if (temp != null)
+            {
+                temp(this, time);
+            }
+        }
+
+        /// <summary>
         /// Raises the <see cref="IsHitTestVisibleChanged"/> event.
         /// </summary>
         protected virtual void OnIsHitTestVisibleChanged()
@@ -1395,7 +1457,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// of this element's child elements.</param>
         protected virtual void ClearAnimationsCore(Boolean recursive)
         {
-            ClearAnimations();
+            ((DependencyObject)this).ClearAnimations();
         }
 
         /// <summary>
@@ -1407,7 +1469,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// property values of this element's child elements.</param>
         protected virtual void ClearLocalValuesCore(Boolean recursive)
         {
-            ClearLocalValues();
+            ((DependencyObject)this).ClearLocalValues();
         }
 
         /// <summary>
@@ -1419,7 +1481,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// property values of this element's child elements.</param>
         protected virtual void ClearStyledValuesCore(Boolean recursive)
         {
-            ClearStyledValues();
+            ((DependencyObject)this).ClearStyledValues();
         }
 
         /// <summary>
@@ -1523,6 +1585,140 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         protected virtual UIElement GetElementAtPointCore(Double x, Double y, Boolean isHitTest)
         {
             return Bounds.Contains(x, y) ? this : null;
+        }
+        
+        /// <summary>
+        /// Loads the specified asset from the global content manager.
+        /// </summary>
+        /// <typeparam name="TOutput">The type of object being loaded.</typeparam>
+        /// <param name="asset">The identifier of the asset to load.</param>
+        /// <returns>The asset that was loaded.</returns>
+        protected TOutput LoadGlobalContent<TOutput>(AssetID asset)
+        {
+            if (View == null)
+                return default(TOutput);
+
+            return View.LoadLocalContent<TOutput>(asset);
+        }
+
+        /// <summary>
+        /// Loads the specified asset from the local content manager.
+        /// </summary>
+        /// <typeparam name="TOutput">The type of object being loaded.</typeparam>
+        /// <param name="asset">The identifier of the asset to load.</param>
+        /// <returns>The asset that was loaded.</returns>
+        protected TOutput LoadLocalContent<TOutput>(AssetID asset)
+        {
+            if (View == null)
+                return default(TOutput);
+
+            return View.LoadLocalContent<TOutput>(asset);
+        }
+
+        /// <summary>
+        /// Loads the specified sourced asset.
+        /// </summary>
+        /// <typeparam name="TOutput">The type of object being loaded.</typeparam>
+        /// <param name="asset">The identifier of the asset to load.</param>
+        /// <returns>The asset that was loaded.</returns>
+        protected TOutput LoadContent<TOutput>(SourcedVal<AssetID> asset)
+        {
+            if (View == null)
+                return default(TOutput);
+
+            return View.LoadContent<TOutput>(asset);
+        }
+
+        /// <summary>
+        /// Loads the specified image from the global content manager.
+        /// </summary>
+        /// <param name="image">The identifier of the image to load.</param>
+        protected void LoadGlobalContent<T>(T image) where T : Image
+        {
+            if (View == null)
+                return;
+
+            View.LoadGlobalContent(image);
+        }
+
+        /// <summary>
+        /// Loads the specified image from the local content manager.
+        /// </summary>
+        /// <param name="image">The identifier of the image to load.</param>
+        protected void LoadLocalContent<T>(T image) where T : Image
+        {
+            if (View == null)
+                return;
+
+            View.LoadLocalContent(image);
+        }
+
+        /// <summary>
+        /// Loads the specified sourced image.
+        /// </summary>
+        /// <param name="image">The identifier of the image to load.</param>
+        protected void LoadContent<T>(SourcedRef<T> image) where T : Image
+        {
+            if (View == null)
+                return;
+
+            View.LoadContent(image);
+        }
+
+        /// <summary>
+        /// Draws an image that fills the entire element.
+        /// </summary>
+        /// <param name="dc">The drawing context that describes the render state of the layout.</param>
+        /// <param name="image">The image to draw.</param>
+        /// <param name="color">The color with which to draw the image.</param>
+        /// <param name="drawBlankImage">A value indicating whether a blank placeholder should be drawn if 
+        /// the specified image does not exist or is not loaded.</param>
+        protected void DrawImage(DrawingContext dc, SourcedRef<Image> image, Color color, Boolean drawBlankImage = false)
+        {
+            DrawImage(dc, image, null, color, drawBlankImage);
+        }
+
+        /// <summary>
+        /// Draws the specified image.
+        /// </summary>
+        /// <param name="dc">The drawing context that describes the render state of the layout.</param>
+        /// <param name="image">The image to draw.</param>
+        /// <param name="area">The area, relative to the element, in which to draw the image. A value of
+        /// <c>null</c> specifies that the image should fill the element's entire area on the screen.</param>
+        /// <param name="color">The color with which to draw the image.</param>
+        /// <param name="drawBlankImage">A value indicating whether a blank placeholder should be drawn if 
+        /// the specified image does not exist or is not loaded.</param>
+        protected void DrawImage(DrawingContext dc, SourcedRef<Image> image, RectangleD? area, Color color, Boolean drawBlankImage = false)
+        {
+            Contract.Require(dc, "dc");
+
+            var colorPlusOpacity = color * dc.Opacity;
+            if (colorPlusOpacity.Equals(Color.Transparent))
+                return;
+
+            var imageAreaRel = area ?? new RectangleD(0, 0, RenderSize.Width, RenderSize.Height);
+            var imageAreaAbs = new RectangleD(AbsoluteBounds.X + imageAreaRel.X, AbsoluteBounds.Y + imageAreaRel.Y, 
+                imageAreaRel.Width, imageAreaRel.Height);
+
+            var imageAreaPix = (Rectangle)Ultraviolet.GetPlatform().Displays.PrimaryDisplay.DipsToPixels(imageAreaAbs);
+
+            var imageResource = image.Value;
+            if (imageResource == null || !imageResource.IsLoaded)
+            {
+                if (drawBlankImage)
+                {
+                    dc.SpriteBatch.Draw(FrameworkResources.BlankTexture, imageAreaPix, colorPlusOpacity);
+                }
+            }
+            else
+            {
+                var effects  = SpriteEffects.None;
+                var origin   = new Vector2(imageAreaPix.Width / 2f, imageAreaPix.Height / 2f);
+                var position = (Vector2)imageAreaAbs.Center;
+
+                dc.SpriteBatch.DrawImage(imageResource, position,
+                    imageAreaPix.Width, imageAreaPix.Height, colorPlusOpacity, 0f, origin, effects, 0f);
+            }
         }
 
         /// <summary>
@@ -1674,6 +1870,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         private void CacheView()
         {
+            if (Parent == null)
+                return;
+
             this.view = null;
             for (var current = Parent; current != null; current = current.Parent)
             {
@@ -1759,43 +1958,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 current = current.Parent;
             }
             return null;
-        }
-
-        /// <summary>
-        /// Applies the specified stylesheet's styles to this element and its children.
-        /// </summary>
-        /// <param name="stylesheet">The stylesheet to apply to the element.</param>
-        private void ApplyStyles(UvssDocument stylesheet)
-        {
-            stylesheet.ApplyStyles(this);
-        }
-
-        /// <summary>
-        /// Applies a style to the element.
-        /// </summary>
-        /// <param name="style">The style which is being applied.</param>
-        /// <param name="selector">The selector which caused the style to be applied.</param>
-        /// <param name="attached">A value indicating whether thie style represents an attached property.</param>
-        private void ApplyStyle(UvssStyle style, UvssSelector selector, Boolean attached)
-        {
-            Contract.Require(style, "style");
-            Contract.Require(selector, "selector");
-
-            var name  = style.Name;
-            var value = style.Value.Trim();
-
-            if (name == "transition")
-            {
-                // TODO ApplyStyledVisualStateTransition(style, value);
-            }
-            else
-            {
-                var setter = attached ? Parent.GetStyleSetter(name, selector.PseudoClass) : GetStyleSetter(name, selector.PseudoClass);
-                if (setter == null)
-                    return;
-
-                setter(this, value, CultureInfo.InvariantCulture);
-            }
         }
 
         /// <summary>

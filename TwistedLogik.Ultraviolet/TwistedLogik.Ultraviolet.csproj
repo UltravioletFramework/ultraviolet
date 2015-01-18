@@ -356,6 +356,8 @@
     <Compile Include="UI\Presentation\DrawingContext.ClipState.cs" />
     <Compile Include="UI\Presentation\DrawingContext.OpacityState.cs" />
     <Compile Include="UI\Presentation\Elements\Orientation.cs" />
+    <Compile Include="UI\Presentation\Elements\ProgressBar.cs" />
+    <Compile Include="UI\Presentation\Elements\RangeBase.cs" />
     <Compile Include="UI\Presentation\Elements\WrapPanel.cs" />
     <Compile Include="UI\Presentation\Elements\StackPanel.cs" />
     <Compile Include="UI\Presentation\Elements\Canvas.cs" />
