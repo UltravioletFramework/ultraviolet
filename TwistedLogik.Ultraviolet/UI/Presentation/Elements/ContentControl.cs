@@ -188,6 +188,50 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <inheritdoc/>
+        protected override Size2D MeasureOverride(Size2D availableSize)
+        {
+            var padding = Padding;
+
+            var desiredContentSize            = MeasureContent(availableSize - padding);
+            var desiredContentSizeWithPadding = desiredContentSize + padding;
+
+            var width  = Math.Min(availableSize.Width, desiredContentSizeWithPadding.Width);
+            var height = Math.Min(availableSize.Height, desiredContentSizeWithPadding.Height);
+
+            return new Size2D(width, height);
+        }
+
+        /// <inheritdoc/>
+        protected override Size2D ArrangeOverride(Size2D finalSize, ArrangeOptions options)
+        {
+            ArrangeContent(finalSize, options);
+            return base.ArrangeOverride(finalSize, options);
+        }
+
+        /// <inheritdoc/>
+        protected override RectangleD? ClipContentCore()
+        {
+            if (contentElement != null)
+            {
+                if (contentElement.RelativeBounds.Left < 0 || contentElement.RelativeBounds.Y < 0 ||
+                    contentElement.RelativeBounds.Right > RenderContentRegion.Width ||
+                    contentElement.RelativeBounds.Bottom > RenderContentRegion.Height)
+                {
+                    return AbsoluteContentRegion;
+                }
+            }
+            else
+            {
+                if (textLayoutResult.ActualWidth > RenderContentRegion.Width || 
+                    textLayoutResult.ActualHeight > RenderContentRegion.Height)
+                {
+                    return AbsoluteContentRegion;
+                }
+            }
+            return null;
+        }
+
+        /// <inheritdoc/>
         protected override UIElement GetElementAtPointCore(Double x, Double y, Boolean isHitTest)
         {
             if (contentElement != null)
@@ -293,17 +337,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <returns>The desired size of the control's content.</returns>
         protected Size2D MeasureContent(Size2D availableSize)
         {
-            var padding = Padding;
-
             if (contentElement != null)
             {
                 var desiredContentSize = new Size2D(DesiredContentRegion.Width, DesiredContentRegion.Height);
-                contentElement.Measure(desiredContentSize - padding);
-                return contentElement.DesiredSize + padding;
+                contentElement.Measure(desiredContentSize);
+                return contentElement.DesiredSize;
             }
             else
             {
-                UpdateTextLayoutCache(availableSize - padding);
+                UpdateTextLayoutCache(availableSize);
 
                 var display = Ultraviolet.GetPlatform().Displays.PrimaryDisplay;
 
@@ -311,7 +353,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
                 var dipsHeight = display.PixelsToDips(textLayoutResult.ActualHeight);
                 var dipsSize   = new Size2D(dipsWidth, dipsHeight);
 
-                return dipsSize + padding;
+                return dipsSize;
             }
         }
 
@@ -335,24 +377,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
                 var contentY = LayoutUtil.PerformVerticalAlignment(contentSpace, contentSize, VerticalContentAlignment);
 
                 var contentPosition = new Point2D(contentX, contentY);
-                var contentRegion   = new RectangleD(contentPosition, contentSpace);
+                var contentRegion   = new RectangleD(contentPosition, contentSize);
 
-                contentElement.Arrange(contentRegion);
-                
-                return contentElement.RenderSize + padding;
+                contentElement.Arrange(contentRegion);                
             }
             else
             {
                 UpdateTextLayoutCache(finalSize - padding);
-
-                var display = Ultraviolet.GetPlatform().Displays.PrimaryDisplay;
-
-                var dipsWidth  = display.PixelsToDips(textLayoutResult.ActualWidth);
-                var dipsHeight = display.PixelsToDips(textLayoutResult.ActualHeight);
-                var dipsSize   = new Size2D(dipsWidth, dipsHeight);
-
-                return dipsSize + padding;
             }
+            return finalSize;
         }
 
         /// <summary>

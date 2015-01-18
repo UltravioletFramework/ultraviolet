@@ -167,20 +167,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <inheritdoc/>
-        protected override Size2D MeasureOverride(Size2D availableSize)
-        {
-            return MeasureContent(availableSize);
-        }
-
-        /// <inheritdoc/>
-        protected override Size2D ArrangeOverride(Size2D finalSize, ArrangeOptions options)
-        {
-            ArrangeContent(finalSize, options);
-
-            return base.ArrangeOverride(finalSize, options);
-        }
-
-        /// <inheritdoc/>
         protected override void OnIsEnabledChanged()
         {
             base.OnIsEnabledChanged();
