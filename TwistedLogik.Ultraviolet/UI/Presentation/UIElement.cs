@@ -322,6 +322,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             this.isStyleValid = true;
 
+            InvalidateMeasure();
+
             Ultraviolet.GetUI().PresentationFramework.StyleQueue.Remove(this);
         }
 
@@ -332,10 +334,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// specified is available for the element's layout.</param>
         public void Measure(Size2D availableSize)
         {
+            if (isMeasureValid && mostRecentAvailableSize.Equals(availableSize))
+                return;
+
             this.mostRecentAvailableSize = availableSize;
 
             this.desiredSize = MeasureCore(availableSize);
             this.isMeasureValid = true;
+
+            InvalidateArrange();
 
             Ultraviolet.GetUI().PresentationFramework.MeasureQueue.Remove(this);
         }
@@ -348,6 +355,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="options">A set of <see cref="ArrangeOptions"/> values specifying the options for this arrangement.</param>
         public void Arrange(RectangleD finalRect, ArrangeOptions options = ArrangeOptions.None)
         {
+            if (isArrangeValid && mostRecentFinalRect.Equals(finalRect) && ((Int32)mostRecentArrangeOptions).Equals((Int32)options))
+                return;
+
             this.mostRecentArrangeOptions = options;
             this.mostRecentFinalRect = finalRect;
 
@@ -1175,6 +1185,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <inheritdoc/>
         protected internal sealed override void OnMeasureAffectingPropertyChanged()
         {
+            if (Parent != null)
+            {
+                Parent.InvalidateMeasure();
+            }
             InvalidateMeasure();
             base.OnMeasureAffectingPropertyChanged();
         }
