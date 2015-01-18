@@ -1,5 +1,4 @@
 ﻿using System;
-using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
 {
@@ -21,13 +20,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <inheritdoc/>
-        protected override void DrawOverride(UltravioletTime time, SpriteBatch spriteBatch, Single opacity)
+        protected override void DrawOverride(UltravioletTime time, DrawingContext dc)
         {
             var bounds = (RectangleF)AbsoluteBounds;
 
-            spriteBatch.Draw(FrameworkResources.BlankTexture, bounds, FillColor * opacity);
+            dc.SpriteBatch.Draw(FrameworkResources.BlankTexture, bounds, FillColor * dc.Opacity);
 
-            base.DrawOverride(time, spriteBatch, opacity);
+            base.DrawOverride(time, dc);
         }
     }
 }

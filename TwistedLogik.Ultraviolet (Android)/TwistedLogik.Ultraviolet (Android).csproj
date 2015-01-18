@@ -942,6 +942,15 @@
     <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\DependencyPropertyValue.cs">
       <Link>UI\Presentation\DependencyPropertyValue.cs</Link>
     </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\DrawingContext.ClipState.cs">
+      <Link>UI\Presentation\DrawingContext.ClipState.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\DrawingContext.cs">
+      <Link>UI\Presentation\DrawingContext.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\DrawingContext.OpacityState.cs">
+      <Link>UI\Presentation\DrawingContext.OpacityState.cs</Link>
+    </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Elements\Canvas.cs">
       <Link>UI\Presentation\Elements\Canvas.cs</Link>
     </Compile>

@@ -105,10 +105,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="spriteBatch">The sprite batch with which to draw the view.</param>
         public void Draw(UltravioletTime time, SpriteBatch spriteBatch)
         {
+            Contract.Require(time, "time");
+            Contract.Require(spriteBatch, "spriteBatch");
+
             if (window == null)
                 return;
 
-            layoutRoot.Draw(time, spriteBatch, 1.0f);
+            drawingContext.Reset();
+            drawingContext.SpriteBatch = spriteBatch;
+
+            layoutRoot.Draw(time, drawingContext);
+            
+            drawingContext.SpriteBatch = null;
         }
 
         /// <summary>
@@ -117,6 +125,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Draw(UltravioletTime)"/>.</param>
         public void Update(UltravioletTime time)
         {
+            Contract.Require(time, "time");
+
             if (window == null)
                 return;
 
@@ -926,5 +936,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         private UIElement elementUnderMouse;
         private UIElement elementWithMouseCapture;
         private UIElement elementWithFocus;
+
+        // The UI's drawing context.
+        private readonly DrawingContext drawingContext = new DrawingContext();
     }
 }

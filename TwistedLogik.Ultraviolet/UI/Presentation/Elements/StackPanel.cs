@@ -95,8 +95,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         {
             ArrangeComponents(finalSize);
 
-            var contentRegionSize = GetContentRegionSize(finalSize);
-
             var positionX = 0.0;
             var positionY = 0.0;
 
@@ -104,7 +102,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             {
                 foreach (var child in Children)
                 {
-                    child.Arrange(new RectangleD(positionX, positionY, contentRegionSize.Width, child.DesiredSize.Height));
+                    child.Arrange(new RectangleD(positionX, positionY, ContentRegion.Width, child.DesiredSize.Height));
                     positionY += child.DesiredSize.Height;
                 }
             }
@@ -112,7 +110,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             {
                 foreach (var child in Children)
                 {
-                    child.Arrange(new RectangleD(positionX, positionY, child.DesiredSize.Width, contentRegionSize.Height));
+                    child.Arrange(new RectangleD(positionX, positionY, child.DesiredSize.Width, ContentRegion.Height));
                     positionX += child.DesiredSize.Width;
                 }
             }
