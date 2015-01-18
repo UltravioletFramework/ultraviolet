@@ -93,6 +93,14 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         }
 
         /// <summary>
+        /// Gets a value indicating whether this object represents a valid image.
+        /// </summary>
+        public Boolean IsValid
+        {
+            get { return textureID.IsValid; }
+        }
+
+        /// <summary>
         /// Gets a value indicating whether the image's texture resource has been loaded.
         /// </summary>
         public Boolean IsLoaded

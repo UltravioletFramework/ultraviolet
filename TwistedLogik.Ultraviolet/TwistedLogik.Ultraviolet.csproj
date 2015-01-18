@@ -376,7 +376,6 @@
     <Compile Include="UI\Presentation\HorizontalAlignment.cs" />
     <Compile Include="UI\Presentation\FrameworkResource.cs" />
     <Compile Include="UI\Presentation\SourcedImage.cs" />
-    <Compile Include="UI\Presentation\SpriteFontResource.cs" />
     <Compile Include="UI\Presentation\VerticalAlignment.cs" />
     <Compile Include="UI\Presentation\Visibility.cs" />
     <Compile Include="UI\Presentation\LayoutUtil.cs" />

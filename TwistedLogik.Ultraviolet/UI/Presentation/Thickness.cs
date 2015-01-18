@@ -28,6 +28,108 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Adds a <see cref="Thickness"/> to a <see cref="Size2D"/>.
+        /// </summary>
+        /// <param name="size">The <see cref="Size2D"/> to which to add the <see cref="Thickness"/>.</param>
+        /// <param name="thickness">The <see cref="Thickness"/> to add to the <see cref="Size2D"/>.</param>
+        /// <returns>A <see cref="Size2D"/> that is the sum of the original <see cref="Size2D"/> and the specified <see cref="Thickness"/>.</returns>
+        public static Size2D operator +(Size2D size, Thickness thickness)
+        {
+            var width  = Math.Max(0, size.Width + thickness.Left + thickness.Right);
+            var height = Math.Max(0, size.Height + thickness.Top + thickness.Bottom);
+
+            if (width == 0 || height == 0)
+                return Size2.Zero;
+
+            return new Size2D(width, height);
+        }
+
+        /// <summary>
+        /// Adds a <see cref="Thickness"/> to a <see cref="Size2D"/>.
+        /// </summary>
+        /// <param name="thickness">The <see cref="Thickness"/> to add to the <see cref="Size2D"/>.</param>
+        /// <param name="size">The <see cref="Size2D"/> to which to add the <see cref="Thickness"/>.</param>
+        /// <returns>A <see cref="Size2D"/> that is the sum of the original <see cref="Size2D"/> and the specified <see cref="Thickness"/>.</returns>
+        public static Size2D operator +(Thickness thickness, Size2D size)
+        {
+            var width  = Math.Max(0, size.Width + thickness.Left + thickness.Right);
+            var height = Math.Max(0, size.Height + thickness.Top + thickness.Bottom);
+
+            if (width == 0 || height == 0)
+                return Size2.Zero;
+
+            return new Size2D(width, height);
+        }
+
+        /// <summary>
+        /// Subtracts a <see cref="Thickness"/> from a <see cref="Size2D"/>.
+        /// </summary>
+        /// <param name="size">The <see cref="Size2D"/> from which to subtract the <see cref="Thickness"/>.</param>
+        /// <param name="thickness">The <see cref="Thickness"/> to subtract from the <see cref="Size2D"/>.</param>
+        /// <returns>A <see cref="Size2D"/> that is the difference of the original <see cref="Size2D"/> and the specified <see cref="Thickness"/>.</returns>
+        public static Size2D operator -(Size2D size, Thickness thickness)
+        {
+            var width  = Math.Max(0, size.Width - (thickness.Left + thickness.Right));
+            var height = Math.Max(0, size.Height - (thickness.Top + thickness.Bottom));
+
+            if (width == 0 || height == 0)
+                return Size2D.Zero;
+
+            return new Size2D(width, height);
+        }
+
+        /// <summary>
+        /// Adds a <see cref="Thickness"/> to a <see cref="RectangleD"/>.
+        /// </summary>
+        /// <param name="size">The <see cref="RectangleD"/> to which to add the <see cref="Thickness"/>.</param>
+        /// <param name="thickness">The <see cref="Thickness"/> to add to the <see cref="RectangleD"/>.</param>
+        /// <returns>A <see cref="RectangleD"/> that is the sum of the original <see cref="RectangleD"/> and the specified <see cref="Thickness"/>.</returns>
+        public static RectangleD operator +(RectangleD rectangle, Thickness thickness)
+        {
+            var width = Math.Max(0, rectangle.Width + thickness.Left + thickness.Right);
+            var height = Math.Max(0, rectangle.Height + thickness.Top + thickness.Bottom);
+
+            if (width == 0 || height == 0)
+                return RectangleD.Empty;
+
+            return new RectangleD(rectangle.X - thickness.Left, rectangle.Y - thickness.Top, width, height);
+        }
+
+        /// <summary>
+        /// Adds a <see cref="Thickness"/> to a <see cref="RectangleD"/>.
+        /// </summary>
+        /// <param name="thickness">The <see cref="Thickness"/> to add to the <see cref="RectangleD"/>.</param>
+        /// <param name="size">The <see cref="RectangleD"/> to which to add the <see cref="Thickness"/>.</param>
+        /// <returns>A <see cref="RectangleD"/> that is the sum of the original <see cref="RectangleD"/> and the specified <see cref="Thickness"/>.</returns>
+        public static RectangleD operator +(Thickness thickness, RectangleD rectangle)
+        {
+            var width = Math.Max(0, rectangle.Width + thickness.Left + thickness.Right);
+            var height = Math.Max(0, rectangle.Height + thickness.Top + thickness.Bottom);
+
+            if (width == 0 || height == 0)
+                return RectangleD.Empty;
+
+            return new RectangleD(rectangle.X - thickness.Left, rectangle.Y - thickness.Top, width, height);
+        }
+
+        /// <summary>
+        /// Subtracts a <see cref="Thickness"/> from a <see cref="RectangleD"/>.
+        /// </summary>
+        /// <param name="size">The <see cref="RectangleD"/> from which to subtract the <see cref="Thickness"/>.</param>
+        /// <param name="thickness">The <see cref="Thickness"/> to subtract from the <see cref="RectangleD"/>.</param>
+        /// <returns>A <see cref="RectangleD"/> that is the difference of the original <see cref="RectangleD"/> and the specified <see cref="Thickness"/>.</returns>
+        public static RectangleD operator -(RectangleD rectangle, Thickness thickness)
+        {
+            var width  = Math.Max(0, rectangle.Width - (thickness.Left + thickness.Right));
+            var height = Math.Max(0, rectangle.Height - (thickness.Top + thickness.Bottom));
+
+            if (width == 0 || height == 0)
+                return RectangleD.Empty;
+
+            return new RectangleD(rectangle.X + thickness.Left, rectangle.Y + thickness.Top, width, height);
+        }
+
+        /// <summary>
         /// Compares two <see cref="Thickness"/> values for equality.
         /// </summary>
         /// <param name="t1">The first <see cref="Thickness"/> to compare.</param>

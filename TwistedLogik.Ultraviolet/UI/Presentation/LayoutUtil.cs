@@ -33,6 +33,56 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Horizontally aligns content within the specified space.
+        /// </summary>
+        /// <param name="space">The space in which to align the content.</param>
+        /// <param name="content">The size of the content to align within <paramref name="space"/>.</param>
+        /// <param name="alignment">The type of alignment to perform on the specified content.</param>
+        /// <returns>The x-offset of the content within the specified space.</returns>
+        public static Double PerformHorizontalAlignment(Size2D space, Size2D content, HorizontalAlignment alignment)
+        {
+            var xOffset = 0.0;
+
+            switch (alignment)
+            {
+                case HorizontalAlignment.Center:
+                    xOffset = (space.Width - content.Width) / 2.0;
+                    break;
+
+                case HorizontalAlignment.Right:
+                    xOffset = space.Width - content.Width;
+                    break;
+            }
+
+            return xOffset;
+        }
+
+        /// <summary>
+        /// Vertically aligns content within the specified space.
+        /// </summary>
+        /// <param name="space">The space in which to align the content.</param>
+        /// <param name="content">The size of the content to align within <paramref name="space"/>.</param>
+        /// <param name="alignment">The type of alignment to perform on the specified content.</param>
+        /// <returns>The y-offset of the content within the specified space.</returns>
+        public static Double PerformVerticalAlignment(Size2D space, Size2D content, VerticalAlignment alignment)
+        {
+            var yOffset = 0.0;
+
+            switch (alignment)
+            {
+                case VerticalAlignment.Center:
+                    yOffset = (space.Height - content.Height) / 2.0;
+                    break;
+
+                case VerticalAlignment.Bottom:
+                    yOffset = space.Height - content.Height;
+                    break;
+            }
+
+            return yOffset;
+        }
+
+        /// <summary>
         /// Gets the upper and lower bounds of the specified measure value, taking its minimum and
         /// maximum values into account.
         /// </summary>
