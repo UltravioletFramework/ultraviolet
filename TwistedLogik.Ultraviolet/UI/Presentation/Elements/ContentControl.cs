@@ -54,7 +54,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         {
             if (Content != null)
             {
+                var clip = ClipContentRectangle;
+                if (clip != null)
+                    dc.PushClipRectangle(clip.Value);
+
                 Content.Draw(time, dc);
+
+                if (clip != null)
+                    dc.PopClipRectangle();
             }
             base.DrawOverride(time, dc);
         }
