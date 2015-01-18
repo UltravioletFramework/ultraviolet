@@ -189,11 +189,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Draws the element using the specified <see cref="SpriteBatch"/>.
         /// </summary>
         /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Draw(UltravioletTime)"/>.</param>
-        /// <param name="spriteBatch">The <see cref="SpriteBatch"/> with which to render the element.</param>
-        /// <param name="opacity">The cumulative opacity of all of the element's ancestor elements.</param>
-        public void Draw(UltravioletTime time, SpriteBatch spriteBatch, Single opacity)
+        /// <param name="dc">The drawing context that describes the render state of the layout.</param>
+        public void Draw(UltravioletTime time, DrawingContext dc)
         {
-            DrawCore(time, spriteBatch, opacity);
+            var clip = ClipRectangle;
+            if (clip != null)
+                dc.PushClipRectangle(clip.Value);
+
+            DrawCore(time, dc);
+
+            if (clip != null)
+                dc.PopClipRectangle();
         }
 
         /// <summary>
@@ -321,6 +327,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="options">A set of <see cref="ArrangeOptions"/> values specifying the options for this arrangement.</param>
         public void Arrange(RectangleD finalRect, ArrangeOptions options = ArrangeOptions.None)
         {
+            this.mostRecentArrangeOptions = options;
+            this.mostRecentFinalRect = finalRect;
+
             if (Visibility == Visibility.Collapsed)
             {
                 this.renderSize = Size2.Zero;
@@ -329,9 +338,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             {
                 this.renderSize = ArrangeCore(finalRect, options);
             }
-
-            this.mostRecentArrangeOptions = options;
-            this.mostRecentFinalRect = finalRect;
 
             InvalidatePosition();
 
@@ -356,10 +362,28 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             this.absoluteBounds = new RectangleD(position.X + offsetX, position.Y + offsetY, RenderSize.Width, RenderSize.Height);
 
             PositionCore(position);
+            Clip();
 
             Ultraviolet.GetUI().PresentationFramework.PositionQueue.Remove(this);
         }
 
+        /// <summary>
+        /// Calculates the clipping rectangle for the element.
+        /// </summary>
+        public void Clip()
+        {
+            this.clipRectangle = ClipCore();
+            ClipContent();
+        }
+
+        /// <summary>
+        /// Calculates the clipping rectangle for the element's content.
+        /// </summary>
+        public void ClipContent()
+        {
+            this.clipContentRectangle = ClipContentCore();
+        }
+        
         /// <summary>
         /// Invalidates the element's styling state.
         /// </summary>
@@ -664,6 +688,24 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public RectangleD AbsoluteBounds
         {
             get { return absoluteBounds; }
+        }
+
+        /// <summary>
+        /// Gets the element's clipping rectangle. A value of <c>null</c> indicates that
+        /// clipping is disabled for this element.
+        /// </summary>
+        public RectangleD? ClipRectangle
+        {
+            get { return clipRectangle; }
+        }
+
+        /// <summary>
+        /// Gets the element's content clipping rectangle. A value of <c>null</c> indicates that
+        /// content clipping is disabled for this element.
+        /// </summary>
+        public RectangleD? ClipContentRectangle
+        {
+            get { return clipContentRectangle; }
         }
 
         /// <summary>
@@ -1284,9 +1326,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// When overridden in a derived class, draws the element using the specified <see cref="SpriteBatch"/>.
         /// </summary>
         /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Draw(UltravioletTime)"/>.</param>
-        /// <param name="spriteBatch">The <see cref="SpriteBatch"/> with which to render the element.</param>
-        /// <param name="opacity">The cumulative opacity of all of the element's ancestor elements.</param>
-        protected virtual void DrawCore(UltravioletTime time, SpriteBatch spriteBatch, Single opacity)
+        /// <param name="dc">The drawing context that describes the render state of the layout.</param>
+        protected virtual void DrawCore(UltravioletTime time, DrawingContext dc)
         {
 
         }
@@ -1414,6 +1455,24 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         protected virtual void PositionCore(Point2D position)
         {
 
+        }
+
+        /// <summary>
+        /// When overridden in a derived class, calculates the clipping rectangle for this element.
+        /// </summary>
+        /// <returns>The clipping rectangle for this element in absolute screen coordinates, or <c>null</c> to disable clipping.</returns>
+        protected virtual RectangleD? ClipCore()
+        {
+            return null;
+        }
+
+        /// <summary>
+        /// When overridden in a derived class, calculates the content clipping rectangle for this element.
+        /// </summary>
+        /// <returns>The content clipping rectangle for this element in absolute screen coordinates, or <c>null</c> to disable clipping.</returns>
+        protected virtual RectangleD? ClipContentCore()
+        {
+            return null;
         }
 
         /// <summary>
@@ -1723,6 +1782,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         private Size2D desiredSize;
         private RectangleD relativeBounds;
         private RectangleD absoluteBounds;
+        private RectangleD? clipRectangle;
+        private RectangleD? clipContentRectangle;
         
         // Layout parameters.
         private UvssDocument mostRecentStylesheet;

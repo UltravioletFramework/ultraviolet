@@ -2,7 +2,6 @@
 using System.Reflection;
 using System.Xml.Linq;
 using TwistedLogik.Nucleus;
-using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
 using TwistedLogik.Ultraviolet.UI.Presentation.Animations;
 using TwistedLogik.Ultraviolet.UI.Presentation.Styles;
 
@@ -22,6 +21,21 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             : base(uv, id)
         {
 
+        }
+
+        /// <summary>
+        /// Gets the position of the control's content region as of the last call to <see cref="Arrange(RectangleD, ArrangeOptions)"/>,
+        /// given in element-relative coordinates.
+        /// </summary>
+        public RectangleD ContentRegion
+        {
+            get { return contentRegion; }
+        }
+
+        /// <inheritdoc/>
+        internal override void PreArrangeOverride(Size2D finalSize, ArrangeOptions options)
+        {
+            this.contentRegion = GetContentRegion(finalSize);
         }
 
         /// <summary>
@@ -184,13 +198,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// Draws the control's components, if it has any.
         /// </summary>
         /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Draw(UltravioletTime)"/>.</param>
-        /// <param name="spriteBatch">The <see cref="SpriteBatch"/> with which to render the element.</param>
-        /// <param name="opacity">The cumulative opacity of all of the element's ancestor elements.</param>
-        protected void DrawComponents(UltravioletTime time, SpriteBatch spriteBatch, Single opacity)
+        /// <param name="dc">The drawing context that describes the render state of the layout.</param>
+        protected void DrawComponents(UltravioletTime time, DrawingContext dc)
         {
             if (componentRoot != null)
             {
-                componentRoot.Draw(time, spriteBatch, opacity);
+                componentRoot.Draw(time, dc);
             }
         }
 
@@ -357,6 +370,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
        
         // Property values.
+        private RectangleD contentRegion;
         private UIElement componentRoot;
         private ContentPresenter contentPresenter;
 

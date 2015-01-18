@@ -252,8 +252,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <returns><c>true</c> if the specified index is the beginning of a valid layout row; otherwise, <c>false</c>.</returns>
         private Boolean CalculateRowProperties(Size2D availableSize, Int32 index, out Int32 rowCount, out Double rowWidth, out Double rowHeight)
         {
-            var contentRegionSize = GetContentRegionSize(availableSize);
-
             rowCount  = 0;
             rowWidth  = 0;
             rowHeight = 0.0;
@@ -268,7 +266,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             for (int i = index; i < Children.Count; i++)
             {
                 var child = Children[i];
-                if (position + child.DesiredSize.Width > contentRegionSize.Width)
+                if (position + child.DesiredSize.Width > ContentRegion.Width)
                     break;
 
                 count  = count + 1;
@@ -295,8 +293,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <returns><c>true</c> if the specified index is the beginning of a valid layout column; otherwise, <c>false</c>.</returns>
         private Boolean CalculateColumnProperties(Size2D availableSize, Int32 index, out Int32 columnCount, out Double columnWidth, out Double columnHeight)
         {
-            var contentRegionSize = GetContentRegionSize(availableSize);
-
             columnCount  = 0;
             columnWidth  = 0.0;
             columnHeight = 0.0;
@@ -311,7 +307,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             for (int i = index; i < Children.Count; i++)
             {
                 var child = Children[i];
-                if (position + child.DesiredSize.Height > contentRegionSize.Height)
+                if (position + child.DesiredSize.Height > ContentRegion.Height)
                     break;
 
                 count = count + 1;

@@ -210,8 +210,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         {
             ArrangeComponents(finalSize);
 
-            var contentRegionSize = GetContentRegionSize(finalSize);
-
             foreach (var child in Children)
             {
                 var left   = GetLeft(child);
@@ -230,12 +228,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
 
                 if (!Double.IsNaN(left) && !Double.IsNaN(right))
                 {
-                    childWidth = contentRegionSize.Width - (left + right);
+                    childWidth = ContentRegion.Width - (left + right);
                 }
 
                 if (!Double.IsNaN(top) && !Double.IsNaN(bottom))
                 {
-                    childHeight = contentRegionSize.Height - (top + bottom);
+                    childHeight = ContentRegion.Height - (top + bottom);
                 }
                 
                 var childX = 0.0;
@@ -248,13 +246,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
                     childY = top;
 
                 if (!Double.IsNaN(right))
-                    childX = contentRegionSize.Width - (right + childWidth);
+                    childX = ContentRegion.Width - (right + childWidth);
 
                 if (!Double.IsNaN(bottom))
-                    childY = contentRegionSize.Height - (bottom + childHeight);
+                    childY = ContentRegion.Height - (bottom + childHeight);
 
                 child.Arrange(new RectangleD(childX, childY, childWidth, childHeight), ArrangeOptions.Fill);
             }
+
             return base.ArrangeOverride(finalSize, options);
         }
     }

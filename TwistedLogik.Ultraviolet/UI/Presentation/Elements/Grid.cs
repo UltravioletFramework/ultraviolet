@@ -152,10 +152,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         {
             ArrangeComponents(finalSize);
 
-            var contentRegionSize = GetContentRegionSize(finalSize);
-
-            MeasureWidth(contentRegionSize.Width);
-            MeasureHeight(contentRegionSize.Height);
+            MeasureWidth(ContentRegion.Width);
+            MeasureHeight(ContentRegion.Height);
 
             var grx = 0.0;
             var gry = 0.0;
@@ -491,8 +489,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         {
             ExpandCellMetadataArray();
 
-            var contentRegionSize = GetContentRegionSize(finalSize);
-
             for (var row = 0; row < RowCount; row++)
             {
                 var rowdef = (row >= RowDefinitions.Count) ? null : RowDefinitions[row];
@@ -505,8 +501,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
 
                     cell.GridRelativeX = (coldef == null) ? 0 : coldef.OffsetX;
                     cell.GridRelativeY = (rowdef == null) ? 0 : rowdef.OffsetY;
-                    cell.Width   = (coldef == null) ? contentRegionSize.Width : coldef.MeasuredWidth;
-                    cell.Height  = (rowdef == null) ? contentRegionSize.Height : rowdef.MeasuredHeight;
+                    cell.Width   = (coldef == null) ? ContentRegion.Width : coldef.MeasuredWidth;
+                    cell.Height  = (rowdef == null) ? ContentRegion.Height : rowdef.MeasuredHeight;
 
                     cell.Elements.Clear();
                 }

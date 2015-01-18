@@ -1,5 +1,4 @@
 ﻿using System;
-using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
 using TwistedLogik.Ultraviolet.UI.Presentation.Animations;
 using TwistedLogik.Ultraviolet.UI.Presentation.Styles;
 
@@ -57,16 +56,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <inheritdoc/>
-        protected override void DrawOverride(UltravioletTime time, SpriteBatch spriteBatch, Single opacity)
+        protected override void DrawOverride(UltravioletTime time, DrawingContext dc)
         {
-            DrawComponents(time, spriteBatch, opacity);
+            DrawComponents(time, dc);
+            DrawChildren(time, dc);
 
-            foreach (var child in children)
-            {
-                child.Draw(time, spriteBatch, opacity);
-            }
-
-            base.DrawOverride(time, spriteBatch, opacity);
+            base.DrawOverride(time, dc);
         }
 
         /// <inheritdoc/>
@@ -174,6 +169,32 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <inheritdoc/>
+        protected override RectangleD? ClipContentCore()
+        {
+            var required = false;
+
+            foreach (var child in Children)
+            {
+                if (child.RelativeBounds.Left < 0 || child.RelativeBounds.Top < 0 ||
+                    child.RelativeBounds.Right > ContentRegion.Width ||
+                    child.RelativeBounds.Bottom > ContentRegion.Height)
+                {
+                    required = true;
+                }
+
+                if (required)
+                    break;
+            }
+
+            if (required)
+            {
+                return new RectangleD(AbsoluteBounds.X + ContentRegion.X, AbsoluteBounds.Y + ContentRegion.Y,
+                    ContentRegion.Width, ContentRegion.Height);
+            }
+            return null;
+        }
+
+        /// <inheritdoc/>
         protected override UIElement GetElementAtPointCore(Double x, Double y, Boolean isHitTest)
         {
             for (int i = children.Count - 1; i >= 0; i--)
@@ -190,6 +211,26 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
                 }
             }
             return base.GetElementAtPointCore(x, y, isHitTest);
+        }
+
+        /// <summary>
+        /// Draws the panel's children.
+        /// </summary>
+        /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Draw(UltravioletTime)"/>.</param>
+        /// <param name="dc">The drawing context that describes the render state of the layout.</param>
+        protected virtual void DrawChildren(UltravioletTime time, DrawingContext dc)
+        {
+            var clip = ClipContentRectangle;
+            if (clip != null)
+                dc.PushClipRectangle(clip.Value);
+
+            foreach (var child in children)
+            {
+                child.Draw(time, dc);
+            }
+
+            if (clip != null)
+                dc.PopClipRectangle();
         }
 
         // Property values.

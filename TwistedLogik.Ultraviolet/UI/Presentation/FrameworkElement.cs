@@ -212,6 +212,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             new DependencyPropertyMetadata(HandleVerticalAlignmentChanged, () => VerticalAlignment.Top, DependencyPropertyOptions.AffectsArrange));
 
         /// <summary>
+        /// Called immediately prior to <see cref="ArrangeOverride(Size2D, ArrangeOptions)"/>.
+        /// </summary>
+        /// <param name="finalSize">The element's final size.</param>
+        /// <param name="options">A set of <see cref="ArrangeOptions"/> values specifying the options for this arrangement.</param>
+        internal virtual void PreArrangeOverride(Size2D finalSize, ArrangeOptions options)
+        {
+
+        }
+
+        /// <summary>
         /// Applies the specified visual state transition to this element.
         /// </summary>
         /// <param name="style">The style which defines the state transition.</param>
@@ -254,12 +264,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <inheritdoc/>
-        protected sealed override void DrawCore(UltravioletTime time, SpriteBatch spriteBatch, Single opacity)
+        protected sealed override void DrawCore(UltravioletTime time, DrawingContext dc)
         {
             if (!LayoutUtil.IsDrawn(this))
                 return;
 
-            DrawOverride(time, spriteBatch, opacity);
+            DrawOverride(time, dc);
         }
 
         /// <inheritdoc/>
@@ -319,7 +329,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var desiredHeight = (VerticalAlignment == VerticalAlignment.Stretch) ? finalRect.Height : Math.Min(DesiredSize.Height, finalRect.Height);
 
             var candidateSize = new Size2D(desiredWidth - xMargin, desiredHeight - yMargin);
-            var usedSize      = ArrangeOverride(candidateSize, options);
+            PreArrangeOverride(candidateSize, options);
+
+            var usedSize = ArrangeOverride(candidateSize, options);
 
             var usedWidth  = Math.Min(usedSize.Width, candidateSize.Width);
             var usedHeight = Math.Min(usedSize.Height, candidateSize.Height);
@@ -395,9 +407,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// specified <see cref="SpriteBatch"/> for a <see cref="FrameworkElement"/> derived class.
         /// </summary>
         /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Draw(UltravioletTime)"/>.</param>
-        /// <param name="spriteBatch">The <see cref="SpriteBatch"/> with which to render the element.</param>
-        /// <param name="opacity">The cumulative opacity of all of the element's ancestor elements.</param>
-        protected virtual void DrawOverride(UltravioletTime time, SpriteBatch spriteBatch, Single opacity)
+        /// <param name="dc">The drawing context that describes the render state of the layout.</param>
+        protected virtual void DrawOverride(UltravioletTime time, DrawingContext dc)
         {
 
         }
