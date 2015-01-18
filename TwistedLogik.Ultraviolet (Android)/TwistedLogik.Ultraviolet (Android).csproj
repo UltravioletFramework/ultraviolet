@@ -951,8 +951,17 @@
     <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\DrawingContext.OpacityState.cs">
       <Link>UI\Presentation\DrawingContext.OpacityState.cs</Link>
     </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Elements\Button.cs">
+      <Link>UI\Presentation\Elements\Button.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Elements\ButtonBase.cs">
+      <Link>UI\Presentation\Elements\ButtonBase.cs</Link>
+    </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Elements\Canvas.cs">
       <Link>UI\Presentation\Elements\Canvas.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Elements\ClickMode.cs">
+      <Link>UI\Presentation\Elements\ClickMode.cs</Link>
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Elements\ColumnDefinition.cs">
       <Link>UI\Presentation\Elements\ColumnDefinition.cs</Link>
@@ -1029,6 +1038,9 @@
     <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\FrameworkElement.cs">
       <Link>UI\Presentation\FrameworkElement.cs</Link>
     </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\FrameworkResource.cs">
+      <Link>UI\Presentation\FrameworkResource.cs</Link>
+    </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\FrameworkResources.cs">
       <Link>UI\Presentation\FrameworkResources.cs</Link>
     </Compile>
@@ -1074,11 +1086,14 @@
     <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\SourcedAssetID.cs">
       <Link>UI\Presentation\SourcedAssetID.cs</Link>
     </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\SourcedRef.cs">
-      <Link>UI\Presentation\SourcedRef.cs</Link>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\SourcedImage.cs">
+      <Link>UI\Presentation\SourcedImage.cs</Link>
     </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\SourcedVal.cs">
-      <Link>UI\Presentation\SourcedVal.cs</Link>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\SourcedResource.cs">
+      <Link>UI\Presentation\SourcedResource.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\SpriteFontResource.cs">
+      <Link>UI\Presentation\SpriteFontResource.cs</Link>
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Styles\NamespaceDoc.cs">
       <Link>UI\Presentation\Styles\NamespaceDoc.cs</Link>
@@ -1365,7 +1380,7 @@
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" ProjectLinkReference="f071abe3-05e5-4df9-a929-cf71b01ec50a" />
+      <UserProperties ProjectLinkReference="f071abe3-05e5-4df9-a929-cf71b01ec50a" ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" />
     </VisualStudio>
   </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -355,6 +355,9 @@
     <Compile Include="UI\Presentation\DrawingContext.cs" />
     <Compile Include="UI\Presentation\DrawingContext.ClipState.cs" />
     <Compile Include="UI\Presentation\DrawingContext.OpacityState.cs" />
+    <Compile Include="UI\Presentation\Elements\Button.cs" />
+    <Compile Include="UI\Presentation\Elements\ButtonBase.cs" />
+    <Compile Include="UI\Presentation\Elements\ClickMode.cs" />
     <Compile Include="UI\Presentation\Elements\Orientation.cs" />
     <Compile Include="UI\Presentation\Elements\ProgressBar.cs" />
     <Compile Include="UI\Presentation\Elements\RangeBase.cs" />
@@ -371,6 +374,9 @@
     <Compile Include="UI\Presentation\Elements\Grid.CellMetadata.cs" />
     <Compile Include="UI\Presentation\Elements\Grid.cs" />
     <Compile Include="UI\Presentation\HorizontalAlignment.cs" />
+    <Compile Include="UI\Presentation\FrameworkResource.cs" />
+    <Compile Include="UI\Presentation\SourcedImage.cs" />
+    <Compile Include="UI\Presentation\SpriteFontResource.cs" />
     <Compile Include="UI\Presentation\VerticalAlignment.cs" />
     <Compile Include="UI\Presentation\Visibility.cs" />
     <Compile Include="UI\Presentation\LayoutUtil.cs" />
@@ -426,8 +432,7 @@
     <Compile Include="UI\Presentation\AssetSource.cs" />
     <Compile Include="UI\Presentation\Elements\NamespaceDoc.cs" />
     <Compile Include="UI\Presentation\SourcedAssetID.cs" />
-    <Compile Include="UI\Presentation\SourcedRef.cs" />
-    <Compile Include="UI\Presentation\SourcedVal.cs" />
+    <Compile Include="UI\Presentation\SourcedResource.cs" />
     <Compile Include="UI\Presentation\UIElementAttribute.cs" />
     <Compile Include="UI\Presentation\FrameworkResources.cs" />
     <Compile Include="UI\Presentation\PresentationFrameworkManager.RegisteredElement.cs" />

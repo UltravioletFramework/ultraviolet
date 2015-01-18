@@ -224,6 +224,29 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             return null;
         }
 
+        /// <inheritdoc/>
+        protected override UIElement GetChildAtPoint(Double x, Double y, Boolean isHitTest)
+        {
+            var col  = GetColumnAtPoint(x, y);
+            var row  = GetRowAtPoint(x, y);
+            var cell = cells[(row * ColumnCount) + col];
+
+            for (int i = cell.Elements.Count - 1; i >= 0; i--)
+            {
+                var child = cell.Elements[i];
+                var childRelX = x - child.RelativeBounds.X;
+                var childRelY = y - child.RelativeBounds.Y;
+
+                var childMatch = child.GetElementAtPoint(childRelX, childRelY, isHitTest);
+                if (childMatch != null)
+                {
+                    return childMatch;
+                }
+            }
+
+            return null;
+        }
+
         /// <summary>
         /// Gets the number of columns in the grid, including any implicit columns.
         /// </summary>
@@ -265,7 +288,59 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             if (grid != null)
                 grid.InvalidateMeasure();
         }
-        
+
+        /// <summary>
+        /// Gets the index of the row at the specified column in element space.
+        /// </summary>
+        /// <param name="x">The x-coordinate in element space to evaluate.</param>
+        /// <param name="y">The y-coordinate in element space to evaluate.</param>
+        /// <returns>The index of the column at the specified point in element space.</returns>
+        private Int32 GetColumnAtPoint(Double x, Double y)
+        {
+            var position = 0.0;
+
+            x -= RenderContentRegion.X;
+            y -= RenderContentRegion.Y;
+
+            for (int i = 0; i < ColumnCount; i++)
+            {
+                var width = (i >= ColumnDefinitions.Count) ? RenderContentRegion.Width : ColumnDefinitions[i].MeasuredWidth;
+                if (x >= position && x < position + width)
+                {
+                    return i;
+                }
+                position += width;
+            }
+
+            return 0;
+        }
+
+        /// <summary>
+        /// Gets the index of the row at the specified point in element space.
+        /// </summary>
+        /// <param name="x">The x-coordinate in element space to evaluate.</param>
+        /// <param name="y">The y-coordinate in element space to evaluate.</param>
+        /// <returns>The index of the row at the specified point in element space.</returns>
+        private Int32 GetRowAtPoint(Double x, Double y)
+        {
+            var position = 0.0;
+
+            x -= RenderContentRegion.X;
+            y -= RenderContentRegion.Y;
+
+            for (int i = 0; i < RowCount; i++)
+            {
+                var height = (i >= RowDefinitions.Count) ? RenderContentRegion.Height : RowDefinitions[i].MeasuredHeight;
+                if (y >= position && y < position + height)
+                {
+                    return i;
+                }
+                position += height;
+            }
+
+            return 0;
+        }
+
         /// <summary>
         /// Measures the combined width of the grid's columns.
         /// </summary>
