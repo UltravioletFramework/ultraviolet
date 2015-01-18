@@ -196,7 +196,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (clip != null)
                 dc.PushClipRectangle(clip.Value);
 
+            dc.PushOpacity(Opacity);
+
             DrawCore(time, dc);
+
+            dc.PopOpacity();
 
             if (clip != null)
                 dc.PopClipRectangle();
@@ -709,6 +713,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Gets or sets the opacity of the element and its children.
+        /// </summary>
+        public Single Opacity
+        {
+            get { return GetValue<Single>(OpacityProperty); }
+            set { SetValue<Single>(OpacityProperty, value); }
+        }
+
+        /// <summary>
         /// Occurs when a class is added to the element.
         /// </summary>
         public event UIElementClassEventHandler ClassAdded;
@@ -804,6 +817,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public event UIElementEventHandler VisibilityChanged;
 
         /// <summary>
+        /// Occurs when the value of the <see cref="Opacity"/> property changes.
+        /// </summary>
+        public event UIElementEventHandler OpacityChanged;
+
+        /// <summary>
         /// Identifies the <see cref="IsHitTestVisible"/> dependency property.
         /// </summary>
         [Styled("hit-test-visible")]
@@ -823,6 +841,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         [Styled("visibility")]
         public static readonly DependencyProperty VisibilityProperty = DependencyProperty.Register("Visibility", typeof(Visibility), typeof(UIElement),
             new DependencyPropertyMetadata(HandleVisibilityChanged, () => Visibility.Visible, DependencyPropertyOptions.AffectsMeasure));
+
+        /// <summary>
+        /// Identifies the <see cref="Opacity"/> dependency property.
+        /// </summary>
+        [Styled("opacity")]
+        public static readonly DependencyProperty OpacityProperty = DependencyProperty.Register("Opacity", typeof(Single), typeof(UIElement),
+            new DependencyPropertyMetadata(HandleOpacityChanged, () => 1.0f, DependencyPropertyOptions.None));
 
         /// <summary>
         /// Finds a styled dependency property according to its styling name.
@@ -1323,6 +1348,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Raises the <see cref="OpacityChanged"/> event.
+        /// </summary>
+        protected virtual void OnOpacityChanged()
+        {
+            var temp = OpacityChanged;
+            if (temp != null)
+            {
+                temp(this);
+            }
+        }
+
+        /// <summary>
         /// When overridden in a derived class, draws the element using the specified <see cref="SpriteBatch"/>.
         /// </summary>
         /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Draw(UltravioletTime)"/>.</param>
@@ -1516,6 +1553,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             var element = (UIElement)dobj;
             element.OnVisibilityChanged();
+        }
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="Opacity"/> dependency property changes.
+        /// </summary>
+        /// <param name="dobj">The dependency object that raised the event.</param>
+        private static void HandleOpacityChanged(DependencyObject dobj)
+        {
+            var element = (UIElement)dobj;
+            element.OnOpacityChanged();
         }
 
         /// <summary>
