@@ -42,7 +42,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         {
             if (Control != null)
             {
-                Control.OnContentPresenterPosition(position);
+                Control.OnContentPresenterPosition(AbsolutePosition);
             }
             base.PositionOverride(position);
         }

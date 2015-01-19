@@ -320,11 +320,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             if (componentRoot == null)
             {
                 CacheRelativeAndAbsoluteContentRegion();
-                PositionContent(position);
+                PositionContent(AbsolutePosition);
             }
             else
             {
-                PositionComponents(position);
+                PositionComponents(AbsolutePosition);
             }
         }
 
@@ -451,9 +451,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// </summary>
         protected void CacheDesiredContentRegion(Size2D availableSize)
         {
-            this.desiredContentRegion = (contentPresenter == null) ?
-                new RectangleD(Point2D.Zero, availableSize - Padding) :
-                new RectangleD(Point2D.Zero, contentPresenter.DesiredSize - Padding);
+            this.desiredContentRegion = new RectangleD(Point2D.Zero, availableSize - Padding);
         }
 
         /// <summary>
@@ -461,9 +459,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// </summary>
         protected void CacheRenderContentRegion(Size2D finalSize)
         {
-            this.renderContentRegion = (contentPresenter == null) ?
-                new RectangleD(Point2D.Zero, finalSize - Padding) :
-                new RectangleD(Point2D.Zero, contentPresenter.RenderSize - Padding);
+            this.renderContentRegion = new RectangleD(Point2D.Zero, finalSize - Padding);
         }
 
         /// <summary>

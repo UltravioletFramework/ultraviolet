@@ -361,6 +361,7 @@
     <Compile Include="UI\Presentation\Elements\Image.cs" />
     <Compile Include="UI\Presentation\Elements\Orientation.cs" />
     <Compile Include="UI\Presentation\Elements\ProgressBar.cs" />
+    <Compile Include="UI\Presentation\Elements\RadioButton.cs" />
     <Compile Include="UI\Presentation\Elements\RangeBase.cs" />
     <Compile Include="UI\Presentation\Elements\WrapPanel.cs" />
     <Compile Include="UI\Presentation\Elements\StackPanel.cs" />
@@ -608,6 +609,7 @@
     <EmbeddedResource Include="UI\Presentation\Elements\Templates\Border.xml" />
     <EmbeddedResource Include="UI\Presentation\Elements\Templates\HScrollBar.xml" />
     <EmbeddedResource Include="UI\Presentation\Elements\Templates\VScrollBar.xml" />
+    <EmbeddedResource Include="UI\Presentation\Elements\Templates\RadioButton.xml" />
     <Content Include="uv.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
