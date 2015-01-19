@@ -357,7 +357,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         private Double MeasureWidth(Double available, Boolean treatStarAsAuto = false)
         {
             if (ColumnDefinitions.Count == 0)
-                return available;
+                return treatStarAsAuto ? MeasureAutoColumn(null, 0) : available;
 
             var proportionalFactor = 0.0;
 
@@ -451,7 +451,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
                 }
             }
 
-            column.MeasuredWidth = size;
+            if (column != null)
+            {
+                column.MeasuredWidth = size;
+            }
+
             return size;
         }
 
@@ -493,7 +497,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         private Double MeasureHeight(Double available, Boolean treatStarAsAuto = false)
         {
             if (RowDefinitions.Count == 0)
-                return available;
+                return treatStarAsAuto ? MeasureAutoRow(null, 0) : available;
 
             var proportionalFactor = 0.0;
 
@@ -587,7 +591,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
                 }
             }
 
-            row.MeasuredHeight = size;
+            if (row != null)
+            {
+                row.MeasuredHeight = size;
+            }
+
             return size;
         }
 
