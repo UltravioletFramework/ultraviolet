@@ -166,7 +166,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             new DependencyPropertyMetadata(null, () => Double.NaN, DependencyPropertyOptions.AffectsArrange));
 
         /// <inheritdoc/>
-        protected override Size2D MeasureOverride(Size2D availableSize)
+        protected override Size2D MeasureContent(Size2D availableSize)
         {
             var contentWidth  = 0.0;
             var contentHeight = 0.0;
@@ -202,14 +202,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
                 contentHeight = Math.Max(contentHeight, cheight);
             }
 
-            return MeasureComponents(availableSize, new Size2D(contentWidth, contentHeight));
+            var contentSize = new Size2D(contentWidth, contentHeight);
+            return contentSize;
         }
 
         /// <inheritdoc/>
-        protected override Size2D ArrangeOverride(Size2D finalSize, ArrangeOptions options)
+        protected override Size2D ArrangeContent(Size2D finalSize, ArrangeOptions options)
         {
-            ArrangeComponents(finalSize);
-
             foreach (var child in Children)
             {
                 var left   = GetLeft(child);
@@ -254,7 +253,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
                 child.Arrange(new RectangleD(childX, childY, childWidth, childHeight), ArrangeOptions.Fill);
             }
 
-            return base.ArrangeOverride(finalSize, options);
+            return finalSize;
         }
     }
 }

@@ -23,6 +23,28 @@ namespace TwistedLogik.Ultraviolet
         }
 
         /// <summary>
+        /// Adds two points.
+        /// </summary>
+        /// <param name="p1">The first <see cref="Point2"/> to add.</param>
+        /// <param name="p2">The second <see cref="Point2"/> to add.</param>
+        /// <returns>A <see cref="Point2"/> that represents the sum of the specified points.</returns>
+        public static Point2 operator +(Point2 p1, Point2 p2)
+        {
+            return new Point2(p1.X + p2.X, p1.Y + p2.Y);
+        }
+
+        /// <summary>
+        /// Subtracts one point from another point.
+        /// </summary>
+        /// <param name="p1">The first <see cref="Point2"/> to subtract.</param>
+        /// <param name="p2">The second <see cref="Point2"/> to subtract.</param>
+        /// <returns>A <see cref="Point2"/> that represents the difference of the specified points.</returns>
+        public static Point2 operator -(Point2 p1, Point2 p2)
+        {
+            return new Point2(p1.X - p2.X, p1.Y - p2.Y);
+        }
+
+        /// <summary>
         /// Compares two points for equality.
         /// </summary>
         /// <param name="p1">The first <see cref="Point2"/> to compare.</param>

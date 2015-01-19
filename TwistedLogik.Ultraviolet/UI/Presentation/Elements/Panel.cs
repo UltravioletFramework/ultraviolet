@@ -58,7 +58,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <inheritdoc/>
         protected override void DrawOverride(UltravioletTime time, DrawingContext dc)
         {
-            DrawComponents(time, dc);
             DrawChildren(time, dc);
 
             base.DrawOverride(time, dc);
@@ -67,13 +66,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <inheritdoc/>
         protected override void UpdateOverride(UltravioletTime time)
         {
-            UpdateComponents(time);
-
             foreach (var child in children)
             {
                 child.Update(time);
             }
-
             base.UpdateOverride(time);
         }
 
@@ -155,17 +151,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
                 child.Style(stylesheet);
 
             base.StyleOverride(stylesheet);
-        }
-
-        /// <inheritdoc/>
-        protected override void PositionOverride(Point2D position)
-        {
-            PositionComponents(position);
-
-            foreach (var child in Children)
-                child.Position(AbsolutePosition);
-
-            base.PositionOverride(position);
         }
 
         /// <inheritdoc/>

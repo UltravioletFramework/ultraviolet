@@ -384,8 +384,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             this.mostRecentPosition = position;
 
-            var contentRegionOffset = (Parent == null) ? Point2D.Zero : 
-                IsComponent ? Parent.GetComponentRegionOffset() : Parent.GetContentRegionOffset();
+            var contentRegionOffset = (Parent == null || IsComponent) ? Point2D.Zero : Parent.RelativeContentRegion.Location;
 
             var offsetX = mostRecentFinalRect.X + RenderOffset.X + contentRegionOffset.X;
             var offsetY = mostRecentFinalRect.Y + RenderOffset.Y + contentRegionOffset.Y;
@@ -395,7 +394,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             PositionCore(position);
             this.isPositionValid = true;
-            
+
             Clip();
 
             Ultraviolet.GetUI().PresentationFramework.PositionQueue.Remove(this);
@@ -775,6 +774,38 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Gets the element's desired content region as of the last call to <see cref="Measure(Size2D)"/>.
+        /// </summary>
+        public virtual RectangleD DesiredContentRegion
+        {
+            get { return new RectangleD(Point2D.Zero, DesiredSize); }
+        }
+
+        /// <summary>
+        /// Gets the element's final rendered content region as of the last call to <see cref="Arrange(RectangleD, ArrangeOptions)"/>.
+        /// </summary>
+        public virtual RectangleD RenderContentRegion
+        {
+            get { return new RectangleD(Point2D.Zero, RenderSize); }
+        }
+
+        /// <summary>
+        /// Gets the element's final rendered content region in element-relative space as of the last call to <see cref="Position(Point2D)"/>.
+        /// </summary>
+        public virtual RectangleD RelativeContentRegion
+        {
+            get { return RelativeBounds; }
+        }
+
+        /// <summary>
+        /// Gets the element's final rendered content region in absolute screen space as of the last call to <see cref="Position(Point2D)"/>.
+        /// </summary>
+        public virtual RectangleD AbsoluteContentRegion
+        {
+            get { return AbsoluteBounds; }
+        }
+
+        /// <summary>
         /// Gets or sets the opacity of the element and its children.
         /// </summary>
         public Single Opacity
@@ -1072,66 +1103,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         internal virtual void ApplyStyledVisualStateTransition(UvssStyle style, String value)
         {
 
-        }
-
-        /// <summary>
-        /// Gets the offset between the top-left corner of the element and the top-left corner
-        /// of the region that contains the element's components.
-        /// </summary>
-        /// <returns>The element's component offset.</returns>
-        internal virtual Point2D GetComponentRegionOffset()
-        {
-            return new Point2D(0, 0);
-        }
-
-        /// <summary>
-        /// Gets the offset between the top-left corner of the element and the top-left corner
-        /// of the region that contains the element's content.
-        /// </summary>
-        /// <returns>The element's content offset.</returns>
-        internal virtual Point2D GetContentRegionOffset()
-        {
-            return new Point2D(0, 0);
-        }
-
-        /// <summary>
-        /// Gets the size of the region that contains the element's components.
-        /// </summary>
-        /// <param name="finalSize">The element's final position and size relative to its parent element.</param>
-        /// <returns>A <see cref="Size2D"/> describing the size of the element's component region.</returns>
-        internal virtual Size2D GetComponentRegionSize(Size2D finalSize)
-        {
-            return finalSize;
-        }
-
-        /// <summary>
-        /// Gets the size of the region that contains the element's content.
-        /// </summary>
-        /// <param name="finalSize">The element's final position and size relative to its parent element.</param>
-        /// <returns>A <see cref="Size2D"/> describing the size of the element's content region.</returns>
-        internal virtual Size2D GetContentRegionSize(Size2D finalSize)
-        {
-            return finalSize;
-        }
-
-        /// <summary>
-        /// Gets the region on the element in which its components should be displayed.
-        /// </summary>
-        /// <param name="finalSize">The element's final position and size relative to its parent element.</param>
-        /// <returns>A <see cref="RectangleD"/> describing the element's component region.</returns>
-        internal virtual RectangleD GetComponentRegion(Size2D finalSize)
-        {
-            return new RectangleD(0, 0, finalSize.Width, finalSize.Height);
-        }
-
-        /// <summary>
-        /// Gets the region on the element in which its content should be displayed.
-        /// </summary>
-        /// <param name="finalSize">The element's final position and size relative to its parent element.</param>
-        /// <returns>A <see cref="RectangleD"/> describing the element's content region.</returns>
-        internal virtual RectangleD GetContentRegion(Size2D finalSize)
-        {
-            return new RectangleD(0, 0, finalSize.Width, finalSize.Height);
         }
 
         /// <summary>
@@ -2124,7 +2095,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         private RectangleD absoluteBounds;
         private RectangleD? clipRectangle;
         private RectangleD? clipContentRectangle;
-        
+
         // Layout parameters.
         private UvssDocument mostRecentStylesheet;
         private ArrangeOptions mostRecentArrangeOptions;

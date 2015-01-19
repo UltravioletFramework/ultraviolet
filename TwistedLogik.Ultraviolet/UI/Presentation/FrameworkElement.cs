@@ -297,30 +297,39 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             new DependencyPropertyMetadata(HandleVerticalAlignmentChanged, () => VerticalAlignment.Top, DependencyPropertyOptions.AffectsArrange));
 
         /// <summary>
-        /// Called immediately prior to <see cref="FrameworkElement.MeasureOverride(Size2D)"/>.
+        /// Called immediately prior to <see cref="FrameworkElement.DrawOverride(UltravioletTime, DrawingContext)"/>.
         /// </summary>
-        /// <param name="availableSize">The size of the area which the element's parent has 
-        /// specified is available for the element's layout.</param>
-        internal virtual void PreMeasureOverride(Size2D availableSize)
+        /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Draw(UltravioletTime)"/>.</param>
+        /// <param name="dc">The drawing context that describes the render state of the layout.</param>
+        internal virtual void PreDrawOverride(UltravioletTime time, DrawingContext dc)
         {
 
         }
 
         /// <summary>
-        /// Called immediately prior to <see cref="FrameworkElement.ArrangeOverride(Size2D, ArrangeOptions)"/>.
+        /// Called immediately prior to <see cref="FrameworkElement.UpdateOverride(UltravioletTime)"/>.
         /// </summary>
-        /// <param name="finalSize">The element's final size.</param>
-        /// <param name="options">A set of <see cref="ArrangeOptions"/> values specifying the options for this arrangement.</param>
-        internal virtual void PreArrangeOverride(Size2D finalSize, ArrangeOptions options)
+        /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Update(UltravioletTime)"/>.</param>
+        internal virtual void PreUpdateOverride(UltravioletTime time)
         {
 
         }
 
         /// <summary>
-        /// Called immediately prior to <see cref="FrameworkElement.PositionOverride(Point2D)"/>.
+        /// Called immediately after <see cref="FrameworkElement.DrawOverride(UltravioletTime, DrawingContext)"/>
         /// </summary>
-        /// <param name="position">The position of the element's parent element in absolute screen space.</param>
-        internal virtual void PrePositionOverride(Point2D position)
+        /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Draw(UltravioletTime)"/>.</param>
+        /// <param name="dc">The drawing context that describes the render state of the layout.</param>
+        internal virtual void PostDrawOverride(UltravioletTime time, DrawingContext dc)
+        {
+
+        }
+
+        /// <summary>
+        /// Called immediately after <see cref="FrameworkElement.UpdateOverride(UltravioletTime)"/>.
+        /// </summary>
+        /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Update(UltravioletTime)"/>.</param>
+        internal virtual void PostUpdateOverride(UltravioletTime time)
         {
 
         }
@@ -369,13 +378,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (!LayoutUtil.IsDrawn(this))
                 return;
 
+            PreDrawOverride(time, dc);
             DrawOverride(time, dc);
+            PostDrawOverride(time, dc);
         }
 
         /// <inheritdoc/>
         protected sealed override void UpdateCore(UltravioletTime time)
         {
+            PreUpdateOverride(time);
             UpdateOverride(time);
+            PostUpdateOverride(time);
         }
 
         /// <inheritdoc/>
@@ -416,8 +429,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var tentativeHeight = Math.Max(minHeight, Math.Min(maxHeight, availableHeightSansMargin));
             var tentativeSize   = new Size2D(tentativeWidth, tentativeHeight);
 
-            PreMeasureOverride(tentativeSize);
-
             var measuredSize = MeasureOverride(tentativeSize);
 
             var measuredWidth  = xMargin + Math.Max(minWidth, measuredSize.Width);
@@ -441,9 +452,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var desiredSize   = new Size2D(desiredWidth, desiredHeight);
 
             var candidateSize = desiredSize - margin;
-            PreArrangeOverride(candidateSize, options);
-
-            var usedSize = ArrangeOverride(candidateSize, options);
+            var usedSize      = ArrangeOverride(candidateSize, options);
 
             var usedWidth  = Math.Min(usedSize.Width, candidateSize.Width);
             var usedHeight = Math.Min(usedSize.Height, candidateSize.Height);
@@ -470,7 +479,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <inheritdoc/>
         protected sealed override void PositionCore(Point2D position)
         {
-            PrePositionOverride(position);
             PositionOverride(position);
 
             base.PositionCore(position);
@@ -543,6 +551,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         /// <param name="finalSize">The element's final size.</param>
         /// <param name="options">A set of <see cref="ArrangeOptions"/> values specifying the options for this arrangement.</param>
+        /// <returns>The amount of space that was actually used by the element.</returns>
         protected virtual Size2D ArrangeOverride(Size2D finalSize, ArrangeOptions options)
         {
             return finalSize;
