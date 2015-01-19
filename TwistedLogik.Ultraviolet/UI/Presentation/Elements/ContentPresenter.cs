@@ -19,19 +19,32 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
 
         }
 
-        /// <summary>
-        /// Gets or sets the amount of space assigned to this presenter's content.
-        /// </summary>
-        internal Size2D ContentSize
-        {
-            get;
-            set;
-        }
-
         /// <inheritdoc/>
         protected override Size2D MeasureOverride(Size2D availableSize)
         {
-            return ContentSize;
+            if (Control == null)
+                return Size2D.Zero;
+
+            return Control.OnContentPresenterMeasure(availableSize);
+        }
+
+        /// <inheritdoc/>
+        protected override Size2D ArrangeOverride(Size2D finalSize, ArrangeOptions options)
+        {
+            if (Control == null)
+                return Size2D.Zero;
+
+            return Control.OnContentPresenterArrange(finalSize, options);
+        }
+
+        /// <inheritdoc/>
+        protected override void PositionOverride(Point2D position)
+        {
+            if (Control != null)
+            {
+                Control.OnContentPresenterPosition(position);
+            }
+            base.PositionOverride(position);
         }
     }
 }

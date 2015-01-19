@@ -62,7 +62,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             new DependencyPropertyMetadata(HandleOrientationChanged, () => Orientation.Horizontal, DependencyPropertyOptions.AffectsMeasure));
 
         /// <inheritdoc/>
-        protected override Size2D MeasureOverride(Size2D availableSize)
+        protected override Size2D MeasureContent(Size2D availableSize)
         {
             foreach (var child in Children)
                 child.Measure(new Size2D(Double.PositiveInfinity, Double.PositiveInfinity));
@@ -71,14 +71,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
                 MeasureVertically(availableSize) :
                 MeasureHorizontally(availableSize);
 
-            return MeasureComponents(availableSize, contentSize);
+            return contentSize;
         }
 
         /// <inheritdoc/>
-        protected override Size2D ArrangeOverride(Size2D finalSize, ArrangeOptions options)
+        protected override Size2D ArrangeContent(Size2D finalSize, ArrangeOptions options)
         {
-            ArrangeComponents(finalSize);
-
             if (Orientation == Orientation.Vertical)
             {
                 finalSize = ArrangeVertically(finalSize, options);
@@ -89,6 +87,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             }
 
             return finalSize;
+        }
+
+        /// <inheritdoc/>
+        protected override void PositionContent(Point2D position)
+        {
+            foreach (var child in Children)
+                child.Position(position);
+
+            base.PositionContent(position);
         }
 
         /// <summary>

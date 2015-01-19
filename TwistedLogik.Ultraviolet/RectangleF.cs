@@ -49,6 +49,28 @@ namespace TwistedLogik.Ultraviolet
         }
 
         /// <summary>
+        /// Offsets the specified <see cref="RectangleF"/> by adding the specified <see cref="Point2F"/> to its location.
+        /// </summary>
+        /// <param name="rect">The <see cref="RectangleF"/> to offset.</param>
+        /// <param name="point">The <see cref="Point2F"/> by which to offset the rectangle.</param>
+        /// <returns>A <see cref="RectangleF"/> that has been offset by the specified amount.</returns>
+        public static RectangleF operator +(RectangleF rect, Point2F point)
+        {
+            return new RectangleF(rect.X + point.X, rect.Y + point.Y, rect.Width, rect.Height);
+        }
+
+        /// <summary>
+        /// Offsets the specified <see cref="RectangleF"/> by subtracting the specified <see cref="Point2F"/> from its location.
+        /// </summary>
+        /// <param name="rect">The <see cref="RectangleF"/> to offset.</param>
+        /// <param name="point">The <see cref="Point2F"/> by which to offset the rectangle.</param>
+        /// <returns>A <see cref="RectangleF"/> that has been offset by the specified amount.</returns>
+        public static RectangleF operator -(RectangleF rect, Point2F point)
+        {
+            return new RectangleF(rect.X - point.X, rect.Y - point.Y, rect.Width, rect.Height);
+        }
+
+        /// <summary>
         /// Compares two rectangles for equality.
         /// </summary>
         /// <param name="r1">The first <see cref="RectangleF"/> to compare.</param>

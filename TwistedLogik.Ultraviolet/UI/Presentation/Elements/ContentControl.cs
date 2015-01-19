@@ -209,6 +209,64 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <inheritdoc/>
+        protected override Size2D MeasureContent(Size2D availableSize)
+        {
+            if (contentElement != null)
+            {
+                var desiredContentSize = new Size2D(DesiredContentRegion.Width, DesiredContentRegion.Height);
+                contentElement.Measure(desiredContentSize);
+                return contentElement.DesiredSize;
+            }
+            else
+            {
+                UpdateTextLayoutCache(availableSize);
+
+                var display = Ultraviolet.GetPlatform().Displays.PrimaryDisplay;
+
+                var dipsWidth  = display.PixelsToDips(textLayoutResult.ActualWidth);
+                var dipsHeight = display.PixelsToDips(textLayoutResult.ActualHeight);
+                var dipsSize   = new Size2D(dipsWidth, dipsHeight);
+
+                return dipsSize;
+            }
+        }
+
+        /// <inheritdoc/>
+        protected override Size2D ArrangeContent(Size2D finalSize, ArrangeOptions options)
+        {
+            var padding = Padding;
+
+            var contentSpace = finalSize - padding;
+
+            if (contentElement != null)
+            {
+                var contentSize = contentElement.DesiredSize;
+
+                var contentX = LayoutUtil.PerformHorizontalAlignment(contentSpace, contentSize, HorizontalContentAlignment);
+                var contentY = LayoutUtil.PerformVerticalAlignment(contentSpace, contentSize, VerticalContentAlignment);
+
+                var contentPosition = new Point2D(contentX, contentY);
+                var contentRegion   = new RectangleD(contentPosition, contentSize);
+
+                contentElement.Arrange(contentRegion);
+            }
+            else
+            {
+                UpdateTextLayoutCache(contentSpace);
+            }
+            return finalSize;
+        }
+
+        /// <inheritdoc/>
+        protected override void PositionContent(Point2D position)
+        {
+            if (contentElement != null)
+            {
+                contentElement.Position(AbsolutePosition);
+            }
+        }
+
+        /// <inheritdoc/>
         protected override RectangleD? ClipContentCore()
         {
             if (contentElement != null)
@@ -327,65 +385,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             {
                 contentElement.Update(time);
             }
-        }
-
-        /// <summary>
-        /// Measures the control's content.
-        /// </summary>
-        /// <param name="availableSize">The size of the area which the element's parent has 
-        /// specified is available for the element's layout.</param>
-        /// <returns>The desired size of the control's content.</returns>
-        protected Size2D MeasureContent(Size2D availableSize)
-        {
-            if (contentElement != null)
-            {
-                var desiredContentSize = new Size2D(DesiredContentRegion.Width, DesiredContentRegion.Height);
-                contentElement.Measure(desiredContentSize);
-                return contentElement.DesiredSize;
-            }
-            else
-            {
-                UpdateTextLayoutCache(availableSize);
-
-                var display = Ultraviolet.GetPlatform().Displays.PrimaryDisplay;
-
-                var dipsWidth  = display.PixelsToDips(textLayoutResult.ActualWidth);
-                var dipsHeight = display.PixelsToDips(textLayoutResult.ActualHeight);
-                var dipsSize   = new Size2D(dipsWidth, dipsHeight);
-
-                return dipsSize;
-            }
-        }
-
-        /// <summary>
-        /// Arranges the control's content.
-        /// </summary>
-        /// <param name="finalSize">The element's final size after arrangement.</param>
-        /// <param name="options">A set of <see cref="ArrangeOptions"/> values specifying the options for this arrangement.</param>
-        /// <returns>The final render size of the control's content.</returns>
-        protected Size2D ArrangeContent(Size2D finalSize, ArrangeOptions options)
-        {
-            var padding = Padding;
-
-            var contentSpace = finalSize - padding;
-
-            if (contentElement != null)
-            {
-                var contentSize = contentElement.DesiredSize;
-
-                var contentX = LayoutUtil.PerformHorizontalAlignment(contentSpace, contentSize, HorizontalContentAlignment);
-                var contentY = LayoutUtil.PerformVerticalAlignment(contentSpace, contentSize, VerticalContentAlignment);
-
-                var contentPosition = new Point2D(contentX, contentY);
-                var contentRegion   = new RectangleD(contentPosition, contentSize);
-
-                contentElement.Arrange(contentRegion);                
-            }
-            else
-            {
-                UpdateTextLayoutCache(contentSpace);
-            }
-            return finalSize;
         }
 
         /// <summary>
