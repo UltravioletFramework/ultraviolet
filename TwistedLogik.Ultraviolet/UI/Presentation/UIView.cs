@@ -27,6 +27,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             this.viewModelType = viewModelType;
 
             this.layoutRoot = new Grid(uv, null);
+            this.layoutRoot.HorizontalAlignment = HorizontalAlignment.Stretch;
+            this.layoutRoot.VerticalAlignment = VerticalAlignment.Stretch;
             this.layoutRoot.View = this;
             this.layoutRoot.CacheLayoutParameters();
             this.layoutRoot.InvalidateMeasure();
