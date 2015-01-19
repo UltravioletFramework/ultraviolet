@@ -176,46 +176,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <inheritdoc/>
-        protected override void PositionOverride(Point2D position)
-        {
-            PositionComponents(position);
-
-            if (contentElement != null)
-            {
-                contentElement.Position(AbsolutePosition);
-            }
-            base.PositionOverride(position);
-        }
-
-        /// <inheritdoc/>
-        protected override Size2D MeasureOverride(Size2D availableSize)
-        {
-            var padding = Padding;
-
-            var desiredContentSize            = MeasureContent(availableSize - padding);
-            var desiredContentSizeWithPadding = desiredContentSize + padding;
-
-            var width  = Math.Min(availableSize.Width, desiredContentSizeWithPadding.Width);
-            var height = Math.Min(availableSize.Height, desiredContentSizeWithPadding.Height);
-
-            return new Size2D(width, height);
-        }
-
-        /// <inheritdoc/>
-        protected override Size2D ArrangeOverride(Size2D finalSize, ArrangeOptions options)
-        {
-            ArrangeContent(finalSize, options);
-            return base.ArrangeOverride(finalSize, options);
-        }
-
-        /// <inheritdoc/>
         protected override Size2D MeasureContent(Size2D availableSize)
         {
             if (contentElement != null)
             {
                 var desiredContentSize = new Size2D(DesiredContentRegion.Width, DesiredContentRegion.Height);
                 contentElement.Measure(desiredContentSize);
-                return contentElement.DesiredSize;
+                return Padding + contentElement.DesiredSize;
             }
             else
             {
@@ -227,7 +194,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
                 var dipsHeight = display.PixelsToDips(textLayoutResult.ActualHeight);
                 var dipsSize   = new Size2D(dipsWidth, dipsHeight);
 
-                return dipsSize;
+                return Padding + dipsSize;
             }
         }
 
