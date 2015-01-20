@@ -1032,6 +1032,9 @@
     <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Elements\Rectangle.cs">
       <Link>UI\Presentation\Elements\Rectangle.cs</Link>
     </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Elements\RepeatButton.cs">
+      <Link>UI\Presentation\Elements\RepeatButton.cs</Link>
+    </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Elements\RowDefinition.cs">
       <Link>UI\Presentation\Elements\RowDefinition.cs</Link>
     </Compile>
@@ -1413,7 +1416,7 @@
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties ProjectLinkReference="f071abe3-05e5-4df9-a929-cf71b01ec50a" ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" />
+      <UserProperties ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" ProjectLinkReference="f071abe3-05e5-4df9-a929-cf71b01ec50a" />
     </VisualStudio>
   </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

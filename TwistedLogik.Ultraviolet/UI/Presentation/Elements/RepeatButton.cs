@@ -8,7 +8,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
     /// <summary>
     /// Represents a button that raises its <see cref="ButtonBase.Click"/> event repeatedly while it is pressed.
     /// </summary>
-    [UIElement("RepeatButton")]
+    [UIElement("RepeatButton", "TwistedLogik.Ultraviolet.UI.Presentation.Elements.Templates.RepeatButton.xml")]
     public class RepeatButton : Button
     {
         /// <summary>
@@ -188,14 +188,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Draw(UltravioletTime)"/>.</param>
         private void UpdateRepetitions(UltravioletTime time)
         {
-            if (!Depressed)
+            if (!IsDepressed)
                 return;
 
             var input = Ultraviolet.GetInput();
             if (input.IsMouseSupported())
             {
                 var mouse = input.GetMouse();
-                if (!ScreenBounds.Contains(mouse.X, mouse.Y))
+                if (!AbsoluteBounds.Contains(mouse.X, mouse.Y))
                     return;
             }
 
