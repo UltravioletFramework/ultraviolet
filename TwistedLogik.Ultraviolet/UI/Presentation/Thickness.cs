@@ -28,6 +28,28 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Adds two <see cref="Thickness"/> values together.
+        /// </summary>
+        /// <param name="t1">The first <see cref="Thickness"/> to add.</param>
+        /// <param name="t2">The second <see cref="Thickness"/> to add.</param>
+        /// <returns>A <see cref="Thickness"/> that is the sum of the specified <see cref="Thickness"/> values.</returns>
+        public static Thickness operator +(Thickness t1, Thickness t2)
+        {
+            return new Thickness(t1.Left + t2.Left, t1.Top + t2.Top, t1.Right + t2.Right, t1.Bottom + t2.Bottom);
+        }
+
+        /// <summary>
+        /// Subtracts a <see cref="Thickness"/> value from another <see cref="Thickness"/> value.
+        /// </summary>
+        /// <param name="t1">The first <see cref="Thickness"/> to subtract.</param>
+        /// <param name="t2">The second <see cref="Thickness"/> to subtract.</param>
+        /// <returns>A <see cref="Thickness"/> that is the difference of the specified <see cref="Thickness"/> values.</returns>
+        public static Thickness operator -(Thickness t1, Thickness t2)
+        {
+            return new Thickness(t1.Left - t2.Left, t1.Top - t2.Top, t1.Right - t2.Right, t1.Bottom - t2.Bottom);
+        }
+
+        /// <summary>
         /// Adds a <see cref="Thickness"/> to a <see cref="Size2D"/>.
         /// </summary>
         /// <param name="size">The <see cref="Size2D"/> to which to add the <see cref="Thickness"/>.</param>
