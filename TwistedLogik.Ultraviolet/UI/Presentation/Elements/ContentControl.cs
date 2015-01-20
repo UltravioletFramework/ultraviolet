@@ -444,41 +444,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
                 var availableWidth  = (Int32)display.DipsToPixels(availableSize.Width);
                 var availableHeight = (Int32)display.DipsToPixels(availableSize.Height);
 
-                var flags = (TextFlags)0;
-
-                switch (HorizontalContentAlignment)
-                {
-                    case HorizontalAlignment.Left:
-                    case HorizontalAlignment.Stretch:
-                        flags |= TextFlags.AlignLeft;
-                        break;
-
-                    case HorizontalAlignment.Right:
-                        flags |= TextFlags.AlignRight;
-                        break;
-
-                    case HorizontalAlignment.Center:
-                        flags |= TextFlags.AlignCenter;
-                        break;
-                }
-
-                switch (VerticalContentAlignment)
-                {
-                    case VerticalAlignment.Top:
-                    case VerticalAlignment.Stretch:
-                        flags |= TextFlags.AlignTop;
-                        break;
-
-                    case VerticalAlignment.Bottom:
-                        flags |= TextFlags.AlignBottom;
-                        break;
-
-                    case VerticalAlignment.Center:
-                        flags |= TextFlags.AlignMiddle;
-                        break;
-                }
-
-                var settings = new TextLayoutSettings(Font, availableWidth, availableHeight, flags);
+                var flags    = LayoutUtil.ConvertAlignmentsToTextFlags(HorizontalContentAlignment, VerticalContentAlignment);                
+                var settings = new TextLayoutSettings(Font, availableWidth, availableHeight, flags, FontStyle);
                 FrameworkResources.TextRenderer.CalculateLayout(textParserResult, textLayoutResult, settings);
             }
         }

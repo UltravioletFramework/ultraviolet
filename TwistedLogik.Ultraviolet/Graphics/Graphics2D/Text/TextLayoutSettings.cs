@@ -14,12 +14,14 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <param name="width">The width of the layout area.</param>
         /// <param name="height">The height of the layout area.</param>
         /// <param name="flags">A set of flags that specify how to render and align the text.</param>
-        public TextLayoutSettings(SpriteFont font, Int32? width, Int32? height, TextFlags flags)
+        /// <param name="style">The initial font style.</param>
+        public TextLayoutSettings(SpriteFont font, Int32? width, Int32? height, TextFlags flags, SpriteFontStyle style = SpriteFontStyle.Regular)
         {
-            this.font = font;
-            this.width = width;
+            this.font   = font;
+            this.width  = width;
             this.height = height;
-            this.flags = (flags == 0) ? TextFlags.Standard : flags;
+            this.flags  = (flags == 0) ? TextFlags.Standard : flags;
+            this.style  = style;
         }
 
         /// <summary>
@@ -54,10 +56,19 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             get { return flags; }
         }
 
+        /// <summary>
+        /// Gets the initial font style.
+        /// </summary>
+        public SpriteFontStyle Style
+        {
+            get { return style; }
+        }
+
         // Property values.
         private readonly SpriteFont font;
         private readonly Int32? width;
         private readonly Int32? height;
         private readonly TextFlags flags;
+        private readonly SpriteFontStyle style;
     }
 }

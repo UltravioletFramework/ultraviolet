@@ -996,8 +996,17 @@
     <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Elements\Image.cs">
       <Link>UI\Presentation\Elements\Image.cs</Link>
     </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Elements\Label.cs">
+      <Link>UI\Presentation\Elements\Label.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Elements\LabelBase.cs">
+      <Link>UI\Presentation\Elements\LabelBase.cs</Link>
+    </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Elements\NamespaceDoc.cs">
       <Link>UI\Presentation\Elements\NamespaceDoc.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Elements\NumericLabel.cs">
+      <Link>UI\Presentation\Elements\NumericLabel.cs</Link>
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Elements\Orientation.cs">
       <Link>UI\Presentation\Elements\Orientation.cs</Link>

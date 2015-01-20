@@ -1,13 +1,15 @@
 ﻿using System;
-using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
+using System.ComponentModel;
+using TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
 {
     /// <summary>
-    /// Represents a label on a user interface.
+    /// Represents a text label on a user interface.
     /// </summary>
     [UIElement("Label")]
-    public class Label : TextualElement
+    [DefaultProperty("Text")]
+    public class Label : LabelBase
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Label"/> class.
@@ -17,17 +19,125 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         public Label(UltravioletContext uv, String id)
             : base(uv, id)
         {
-            var dpBackgroundColor = DependencyProperty.FindByName("BackgroundColor", typeof(UIElement));
-            SetDefaultValue<Color>(dpBackgroundColor, Color.Transparent);
+
+        }
+
+        /// <summary>
+        /// Gets or sets the label's text.
+        /// </summary>
+        public String Text
+        {
+            get { return GetValue<String>(TextProperty); }
+            set { SetValue<String>(TextProperty, value); }
+        }
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="Text"/> property changes.
+        /// </summary>
+        public event UIElementEventHandler TextChanged;
+
+        /// <summary>
+        /// Identifies the <see cref="Text"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty TextProperty = DependencyProperty.Register("Text", typeof(String), typeof(Label),
+            new DependencyPropertyMetadata(HandleTextChanged, null, DependencyPropertyOptions.AffectsMeasure));
+
+        /// <summary>
+        /// Raises the <see cref="TextChanged"/> event.
+        /// </summary>
+        protected virtual void OnTextChanged()
+        {
+            var temp = TextChanged;
+            if (temp != null)
+            {
+                temp(this);
+            }
         }
 
         /// <inheritdoc/>
-        protected override void OnDrawing(UltravioletTime time, SpriteBatch spriteBatch, Single opacity)
+        protected override void DrawOverride(UltravioletTime time, DrawingContext dc)
         {
-            DrawBackgroundImage(spriteBatch, opacity);
-            DrawText(spriteBatch, opacity);
+            DrawBackgroundImage(dc);
 
-            base.OnDrawing(time, spriteBatch, opacity);
+            if (textLayoutResult.Count > 0)
+            {
+                var display  = Ultraviolet.GetPlatform().Displays.PrimaryDisplay;
+                var position = (Vector2)display.DipsToPixels(AbsolutePosition);
+                FrameworkResources.TextRenderer.Draw(dc.SpriteBatch, textLayoutResult, position, FontColor * dc.Opacity);
+            }
+
+            base.DrawOverride(time, dc);
         }
+
+        /// <inheritdoc/>
+        protected override Size2D MeasureOverride(Size2D availableSize)
+        {
+            UpdateTextLayoutResult(availableSize);
+
+            var display    = Ultraviolet.GetPlatform().Displays.PrimaryDisplay;
+            var sizePixels = new Size2D(textLayoutResult.ActualWidth, textLayoutResult.ActualHeight);
+            var sizeDips   = display.PixelsToDips(sizePixels);
+
+            return sizeDips;
+        }
+
+        /// <inheritdoc/>
+        protected override Size2D ArrangeOverride(Size2D finalSize, ArrangeOptions options)
+        {
+            UpdateTextLayoutResult(finalSize);
+
+            return base.ArrangeOverride(finalSize, options);
+        }
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="Text"/> dependency property changes.
+        /// </summary>
+        /// <param name="dobj">The dependency object that raised the event.</param>
+        private static void HandleTextChanged(DependencyObject dobj)
+        {
+            var label = (Label)dobj;
+            label.UpdateTextParserResult();
+            label.OnTextChanged();
+        }
+
+        /// <summary>
+        /// Updates the cache that contains the result of parsing the label's text.
+        /// </summary>
+        private void UpdateTextParserResult()
+        {
+            textParserResult.Clear();
+
+            var text = Text;
+            if (!String.IsNullOrEmpty(text))
+            {
+                FrameworkResources.TextRenderer.Parse(text, textParserResult);
+            }
+        }
+
+        /// <summary>
+        /// Updates the cache that contains the result of laying out the label's text.
+        /// </summary>
+        /// <param name="availableSize">The size of the space that is available for laying out text.</param>
+        private void UpdateTextLayoutResult(Size2D availableSize)
+        {
+            textLayoutResult.Clear();
+
+            if (textParserResult.Count > 0)
+            {
+                var display    = Ultraviolet.GetPlatform().Displays.PrimaryDisplay;
+                var sizePixels = display.DipsToPixels(availableSize);
+
+                var flags    = LayoutUtil.ConvertAlignmentsToTextFlags(HorizontalContentAlignment, VerticalContentAlignment);
+                var settings = new TextLayoutSettings(Font, 
+                    (Int32)sizePixels.Width, 
+                    (Int32)sizePixels.Height, flags, FontStyle);
+
+                FrameworkResources.TextRenderer.CalculateLayout(textParserResult, textLayoutResult, settings);
+            }
+        }
+
+        // State values.
+        private readonly TextParserResult textParserResult = new TextParserResult();
+        private readonly TextLayoutResult textLayoutResult = new TextLayoutResult();
     }
 }

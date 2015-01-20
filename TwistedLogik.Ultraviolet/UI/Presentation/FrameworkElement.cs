@@ -42,6 +42,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Gets or sets the font style which is used to draw the element's text.
+        /// </summary>
+        public SpriteFontStyle FontStyle
+        {
+            get { return GetValue<SpriteFontStyle>(FontStyleProperty); }
+            set { SetValue<SpriteFontStyle>(FontStyleProperty, value); }
+        }
+
+        /// <summary>
         /// Gets or sets the element's background image.
         /// </summary>
         public SourcedImage BackgroundImage
@@ -151,6 +160,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public event UIElementEventHandler FontColorChanged;
 
         /// <summary>
+        /// Occurs when the value of the <see cref="FontStyle"/> property changes.
+        /// </summary>
+        public event UIElementEventHandler FontStyleChanged;
+
+        /// <summary>
         /// Occurs when the value of the <see cref="BackgroundImage"/> property changes.
         /// </summary>
         public event UIElementEventHandler BackgroundImageChanged;
@@ -218,6 +232,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         [Styled("font-color")]
         public static readonly DependencyProperty FontColorProperty = DependencyProperty.Register("FontColor", typeof(Color), typeof(FrameworkElement),
             new DependencyPropertyMetadata(HandleFontColorChanged, () => Color.Black, DependencyPropertyOptions.None));
+
+        /// <summary>
+        /// Identifies the <see cref="FontStyle"/> dependency property.
+        /// </summary>
+        [Styled("font-style")]
+        public static readonly DependencyProperty FontStyleProperty = DependencyProperty.Register("FontStyle", typeof(SpriteFontStyle), typeof(FrameworkElement),
+           new DependencyPropertyMetadata(HandleFontStyleChanged, () => SpriteFontStyle.Regular, DependencyPropertyOptions.AffectsArrange));
 
         /// <summary>
         /// Identifies the <see cref="BackgroundImage"/> dependency property.
@@ -592,6 +613,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Raises the <see cref="FontStyleChanged"/> event.
+        /// </summary>
+        protected virtual void OnFontStyleChanged()
+        {
+            var temp = FontStyleChanged;
+            if (temp != null)
+            {
+                temp(this);
+            }
+        }
+
+        /// <summary>
         /// Raises the <see cref="BackgroundImageChanged"/> event.
         /// </summary>
         protected virtual void OnBackgroundImageChanged()
@@ -775,6 +808,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             var element = (FrameworkElement)dobj;
             element.OnFontColorChanged();
+        }
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="FontStyle"/> dependency property changes.
+        /// </summary>
+        /// <param name="dobj">The dependency object that raised the event.</param>
+        private static void HandleFontStyleChanged(DependencyObject dobj)
+        {
+            var element = (FrameworkElement)dobj;
+            element.OnFontStyleChanged();
         }
 
         /// <summary>
