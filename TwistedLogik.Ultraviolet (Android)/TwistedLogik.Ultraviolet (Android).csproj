@@ -960,6 +960,9 @@
     <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Elements\Canvas.cs">
       <Link>UI\Presentation\Elements\Canvas.cs</Link>
     </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Elements\CheckBox.cs">
+      <Link>UI\Presentation\Elements\CheckBox.cs</Link>
+    </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Elements\ClickMode.cs">
       <Link>UI\Presentation\Elements\ClickMode.cs</Link>
     </Compile>
@@ -1028,6 +1031,9 @@
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Elements\StackPanel.cs">
       <Link>UI\Presentation\Elements\StackPanel.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Elements\ToggleButton.cs">
+      <Link>UI\Presentation\Elements\ToggleButton.cs</Link>
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Elements\UIElementCollection.cs">
       <Link>UI\Presentation\Elements\UIElementCollection.cs</Link>
@@ -1354,6 +1360,9 @@
     <Content Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Elements\Templates\Border.xml">
       <Link>UI\Presentation\Elements\Templates\Border.xml</Link>
     </Content>
+    <Content Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Elements\Templates\CheckBox.xml">
+      <Link>UI\Presentation\Elements\Templates\CheckBox.xml</Link>
+    </Content>
     <Content Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Elements\Templates\HScrollBar.xml">
       <Link>UI\Presentation\Elements\Templates\HScrollBar.xml</Link>
     </Content>
@@ -1386,7 +1395,7 @@
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" ProjectLinkReference="f071abe3-05e5-4df9-a929-cf71b01ec50a" />
+      <UserProperties ProjectLinkReference="f071abe3-05e5-4df9-a929-cf71b01ec50a" ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" />
     </VisualStudio>
   </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

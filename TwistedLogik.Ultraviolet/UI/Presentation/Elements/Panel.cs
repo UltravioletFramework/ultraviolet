@@ -20,12 +20,27 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             this.children = new UIElementCollection(this);
         }
 
+        /// <inheritdoc/>
+        public override UIElement GetLogicalChild(int ix)
+        {
+            if(ix < 0 || ix >= children.Count)
+                throw new ArgumentOutOfRangeException("ix");
+
+            return children[ix];
+        }
+
         /// <summary>
         /// Gets the panel's collection of children.
         /// </summary>
         public UIElementCollection Children
         {
             get { return children; }
+        }
+
+        /// <inheritdoc/>
+        public override Int32 LogicalChildren
+        {
+            get { return children.Count; }
         }
 
         /// <summary>

@@ -23,6 +23,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
 
         }
 
+        /// <inheritdoc/>
+        public override UIElement GetLogicalChild(int ix)
+        {
+            if (contentElement == null || ix < 0 || ix > 1)
+                throw new ArgumentOutOfRangeException("ix");
+
+            return contentElement;
+        }
+
         /// <summary>
         /// Gets or sets the control's content.
         /// </summary>
@@ -48,6 +57,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         {
             get { return GetValue<VerticalAlignment>(VerticalContentAlignmentProperty); }
             set { SetValue<VerticalAlignment>(VerticalContentAlignmentProperty, value); }
+        }
+
+        /// <inheritdoc/>
+        public override Int32 LogicalChildren
+        {
+            get { return contentElement == null ? 0 : 1; }
         }
 
         /// <summary>

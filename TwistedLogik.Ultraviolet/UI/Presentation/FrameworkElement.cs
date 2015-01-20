@@ -243,14 +243,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Identifies the <see cref="MinWidth"/> dependency property.
         /// </summary>
-        [Styled("minwidth")]
+        [Styled("min-width")]
         public static readonly DependencyProperty MinWidthProperty = DependencyProperty.Register("MinWidth", typeof(Double), typeof(FrameworkElement),
             new DependencyPropertyMetadata(HandleMinWidthChanged, () => 0.0, DependencyPropertyOptions.AffectsMeasure));
 
         /// <summary>
         /// Identifies the <see cref="MaxWidth"/> dependency property.
         /// </summary>
-        [Styled("maxwidth")]
+        [Styled("max-width")]
         public static readonly DependencyProperty MaxWidthProperty = DependencyProperty.Register("MaxWidth", typeof(Double), typeof(FrameworkElement),
             new DependencyPropertyMetadata(HandleMaxWidthChanged, () => Double.PositiveInfinity, DependencyPropertyOptions.AffectsMeasure));
 
@@ -264,14 +264,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Identifies the <see cref="MinHeight"/> dependency property.
         /// </summary>
-        [Styled("minheight")]
+        [Styled("min-height")]
         public static readonly DependencyProperty MinHeightProperty = DependencyProperty.Register("MinHeight", typeof(Double), typeof(FrameworkElement),
             new DependencyPropertyMetadata(HandleMinHeightChanged, () => 0.0, DependencyPropertyOptions.AffectsMeasure));
 
         /// <summary>
         /// Identifies the <see cref="MaxHeight"/> dependency property.
         /// </summary>
-        [Styled("maxheight")]
+        [Styled("max-height")]
         public static readonly DependencyProperty MaxHeightProperty = DependencyProperty.Register("MaxHeight", typeof(Double), typeof(FrameworkElement),
             new DependencyPropertyMetadata(HandleMaxHeightChanged, () => Double.PositiveInfinity, DependencyPropertyOptions.AffectsMeasure));
 
