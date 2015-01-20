@@ -614,7 +614,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <EmbeddedResource Include="UI\Presentation\Elements\Templates\ScrollViewer.xml" />
-    <EmbeddedResource Include="UI\Presentation\Elements\Templates\Border.xml" />
     <EmbeddedResource Include="UI\Presentation\Elements\Templates\HScrollBar.xml" />
     <EmbeddedResource Include="UI\Presentation\Elements\Templates\VScrollBar.xml" />
     <EmbeddedResource Include="UI\Presentation\Elements\Templates\RadioButton.xml" />
