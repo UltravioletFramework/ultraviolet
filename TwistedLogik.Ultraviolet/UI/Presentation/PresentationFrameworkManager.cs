@@ -370,6 +370,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                     elementType.ElementType,
                     defaultProperty);
 
+                RegisterDefaultComponentTemplate(type, elementType.ElementAttribute);
+
                 coreElements[elementType.ElementAttribute.Name] = registration;
             }
         }
