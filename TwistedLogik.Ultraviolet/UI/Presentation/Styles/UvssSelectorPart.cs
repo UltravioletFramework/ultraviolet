@@ -27,7 +27,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
             this.element     = element;
             this.id          = rawID;
             this.pseudoClass = rawPseudoClass;
-            this.classes     = rawClassNames.ToList();
+            this.classes     = new UvssClassCollection(rawClassNames);
             this.priority    = CalculatePriority();
         }
 
@@ -95,7 +95,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// </summary>
         public Boolean HasClasses
         {
-            get { return classes.Any(); }
+            get { return classes.Count > 0; }
         }
 
         /// <summary>
@@ -125,7 +125,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// <summary>
         /// Gets the list of classes which match this selector part.
         /// </summary>
-        public IEnumerable<String> Classes
+        public UvssClassCollection Classes
         {
             get { return classes; }
         }
@@ -170,6 +170,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         private readonly String element;
         private readonly String id;
         private readonly String pseudoClass;
-        private readonly IEnumerable<String> classes;
+        private readonly UvssClassCollection classes;
     }
 }
