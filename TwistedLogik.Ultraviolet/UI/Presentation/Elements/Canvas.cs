@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Xml.Linq;
 using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet.UI.Presentation.Styles;
 
@@ -9,18 +8,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
     /// Represents an element container which positions its children according to their distance from the container's
     /// left, top, right, and bottom edges.
     /// </summary>
-    [UIElement("Canvas")]
+    [UIElement("Canvas", "TwistedLogik.Ultraviolet.UI.Presentation.Elements.Templates.Canvas.xml")]
     public class Canvas : Panel
     {
-        /// <summary>
-        /// Initializes the <see cref="Canvas"/> type.
-        /// </summary>
-        static Canvas()
-        {
-            ComponentTemplate = LoadComponentTemplateFromManifestResourceStream(typeof(Canvas).Assembly,
-                "TwistedLogik.Ultraviolet.UI.Presentation.Elements.Templates.Canvas.xml");
-        }
-
         /// <summary>
         /// Initializes a new instance of the <see cref="Canvas"/> class.
         /// </summary>
@@ -29,7 +19,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         public Canvas(UltravioletContext uv, String id)
             : base(uv, id)
         {
-            LoadComponentRoot(ComponentTemplate);
+
         }
 
         /// <summary>
@@ -126,15 +116,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             Contract.Require(element, "element");
 
             element.SetValue<Double>(BottomProperty, value);
-        }
-
-        /// <summary>
-        /// Gets or sets the template used to create the control's component tree.
-        /// </summary>
-        public static XDocument ComponentTemplate
-        {
-            get;
-            set;
         }
 
         /// <summary>

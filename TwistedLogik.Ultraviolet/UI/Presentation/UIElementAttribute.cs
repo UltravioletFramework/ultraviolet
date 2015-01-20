@@ -14,11 +14,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Initializes a new instance of the <see cref="UIElementAttribute"/> class.
         /// </summary>
         /// <param name="name">The name of the XML element that represents this class.</param>
-        public UIElementAttribute(String name)
+        /// <param name="componentTemplate">The manifest resource name of the element's default component template, if it has one.</param>
+        public UIElementAttribute(String name, String componentTemplate = null)
         {
             Contract.RequireNotEmpty(name, "name");
 
-            this.name = name;
+            this.name              = name;
+            this.componentTemplate = componentTemplate;
         }
 
         /// <summary>
@@ -29,7 +31,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             get { return name; }
         }
 
+        /// <summary>
+        /// Gets the manifest resource name of the element's default component template, if it has one.
+        /// </summary>
+        public String ComponentTemplate
+        {
+            get { return componentTemplate; }
+        }
+
         // Property values.
         private readonly String name;
+        private readonly String componentTemplate;
     }
 }

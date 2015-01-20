@@ -1,23 +1,13 @@
 ﻿using System;
-using System.Xml.Linq;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
 {
     /// <summary>
     /// Represents a check box.
     /// </summary>
-    [UIElement("CheckBox")]
+    [UIElement("CheckBox", "TwistedLogik.Ultraviolet.UI.Presentation.Elements.Templates.CheckBox.xml")]
     public class CheckBox : ToggleButton
     {
-        /// <summary>
-        /// Initializes the <see cref="CheckBox"/> type.
-        /// </summary>
-        static CheckBox()
-        {
-            ComponentTemplate = LoadComponentTemplateFromManifestResourceStream(typeof(CheckBox).Assembly,
-                "TwistedLogik.Ultraviolet.UI.Presentation.Elements.Templates.CheckBox.xml");
-        }
-
         /// <summary>
         /// Initializes a new instance of the <see cref="CheckBox"/> class.
         /// </summary>
@@ -26,16 +16,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         public CheckBox(UltravioletContext uv, String id)
             : base(uv, id)
         {
-            LoadComponentRoot(ComponentTemplate);
-        }
 
-        /// <summary>
-        /// Gets or sets the template used to create the control's component tree.
-        /// </summary>
-        public static XDocument ComponentTemplate
-        {
-            get;
-            set;
         }
 
         /// <summary>

@@ -1,26 +1,16 @@
 ﻿using System;
 using System.ComponentModel;
 using TwistedLogik.Ultraviolet.UI.Presentation.Styles;
-using System.Xml.Linq;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
 {
     /// <summary>
     /// Represents a UI element which displays progress towards some goal.
     /// </summary>
-    [UIElement("ProgressBar")]
+    [UIElement("ProgressBar", "TwistedLogik.Ultraviolet.UI.Presentation.Elements.Templates.ProgressBar.xml")]
     [DefaultProperty("Value")]
     public class ProgressBar : RangeBase
     {
-        /// <summary>
-        /// Initializes the <see cref="ProgressBar"/> type.
-        /// </summary>
-        static ProgressBar()
-        {
-            ComponentTemplate = LoadComponentTemplateFromManifestResourceStream(typeof(ProgressBar).Assembly,
-                "TwistedLogik.Ultraviolet.UI.Presentation.Elements.Templates.ProgressBar.xml");
-        }
-
         /// <summary>
         /// Initializes a new instance of the <see cref="ProgressBar"/> class.
         /// </summary>
@@ -30,17 +20,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             : base(uv, id)
         {
             SetDefaultValue<Double>(MaximumProperty, 100.0);
-
-            LoadComponentRoot(ComponentTemplate);
-        }
-
-        /// <summary>
-        /// Gets or sets the template used to create the control's component tree.
-        /// </summary>
-        public static XDocument ComponentTemplate
-        {
-            get;
-            set;
         }
 
         /// <summary>

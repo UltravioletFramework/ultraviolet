@@ -1,23 +1,13 @@
 ﻿using System;
-using System.Xml.Linq;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
 {
     /// <summary>
     /// Represents a radio button.
     /// </summary>
-    [UIElement("RadioButton")]
+    [UIElement("RadioButton", "TwistedLogik.Ultraviolet.UI.Presentation.Elements.Templates.RadioButton.xml")]
     public class RadioButton : ToggleButton
     {
-        /// <summary>
-        /// Initializes the <see cref="RadioButton"/> type.
-        /// </summary>
-        static RadioButton()
-        {
-            ComponentTemplate = LoadComponentTemplateFromManifestResourceStream(typeof(RadioButton).Assembly,
-                "TwistedLogik.Ultraviolet.UI.Presentation.Elements.Templates.RadioButton.xml");
-        }
-
         /// <summary>
         /// Initializes a new instance of the <see cref="RadioButton"/> class.
         /// </summary>
@@ -26,16 +16,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         public RadioButton(UltravioletContext uv, String id)
             : base(uv, id)
         {
-            LoadComponentRoot(ComponentTemplate);
-        }
 
-        /// <summary>
-        /// Gets or sets the template used to create the control's component tree.
-        /// </summary>
-        public static XDocument ComponentTemplate
-        {
-            get;
-            set;
         }
 
         /// <inheritdoc/>

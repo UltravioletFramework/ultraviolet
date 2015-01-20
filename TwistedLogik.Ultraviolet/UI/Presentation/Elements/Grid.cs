@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Xml.Linq;
 using TwistedLogik.Nucleus;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
@@ -7,18 +6,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
     /// <summary>
     /// Represents a grid of columns and columns which can contain child elements in each cell.
     /// </summary>
-    [UIElement("Grid")]
+    [UIElement("Grid", "TwistedLogik.Ultraviolet.UI.Presentation.Elements.Templates.Grid.xml")]
     public partial class Grid : Panel
     {
-        /// <summary>
-        /// Initializes the <see cref="Grid"/> type.
-        /// </summary>
-        static Grid()
-        {
-            ComponentTemplate = LoadComponentTemplateFromManifestResourceStream(typeof(Grid).Assembly,
-                "TwistedLogik.Ultraviolet.UI.Presentation.Elements.Templates.Grid.xml");
-        }
-
         /// <summary>
         /// Initializes a new instance of the <see cref="Grid"/> class.
         /// </summary>
@@ -29,8 +19,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         {
             this.rowDefinitions    = new RowDefinitionCollection(this);
             this.columnDefinitions = new ColumnDefinitionCollection(this);
-
-            LoadComponentRoot(ComponentTemplate);
         }
 
         /// <summary>
@@ -79,15 +67,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             Contract.Require(element, "element");
 
             return element.GetValue<Int32>(ColumnProperty);
-        }
-
-        /// <summary>
-        /// Gets or sets the template used to create the control's component tree.
-        /// </summary>
-        public static XDocument ComponentTemplate
-        {
-            get;
-            set;
         }
 
         /// <summary>
