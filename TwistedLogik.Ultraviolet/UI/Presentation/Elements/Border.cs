@@ -1,40 +1,26 @@
 ﻿using System;
-using System.Xml.Linq;
-using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
-using TwistedLogik.Ultraviolet.UI.Presentation.Styles;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
 {
     /// <summary>
-    /// Represents an element which draws a border around another element.
+    /// Represents a control which renders a border around its content.
     /// </summary>
     [UIElement("Border")]
     public class Border : ContentControl
     {
         /// <summary>
-        /// Initializes the <see cref="Border"/> type.
-        /// </summary>
-        static Border()
-        {
-            ComponentTemplate = LoadComponentTemplateFromManifestResourceStream(typeof(Border).Assembly,
-                "TwistedLogik.Ultraviolet.UI.Presentation.Elements.Templates.Border.xml");
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Border"/> element.
+        /// Initializes a new instance of the <see cref="Control"/> class.
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
-        /// <param name="id">The element's unique identifier within its view.</param>
+        /// <param name="id">The unique identifier of this element within its layout.</param>
         public Border(UltravioletContext uv, String id)
             : base(uv, id)
         {
-            SetDefaultValue<Color>(BackgroundColorProperty, Color.Transparent);
 
-            LoadComponentRoot(ComponentTemplate);
         }
 
         /// <summary>
-        /// Gets or sets the thickness of the element's border in device independent pixels (1/96 of an inch).
+        /// Gets or sets the thickness of the control's border.
         /// </summary>
         public Thickness BorderThickness
         {
@@ -43,7 +29,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <summary>
-        /// Gets or sets the color of the element's border.
+        /// Gets or sets the color of the control's border.
         /// </summary>
         public Color BorderColor
         {
@@ -64,44 +50,52 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <summary>
         /// Identifies the <see cref="BorderThickness"/> dependency property.
         /// </summary>
-        [Styled("border-thickness")]
         public static readonly DependencyProperty BorderThicknessProperty = DependencyProperty.Register("BorderThickness", typeof(Thickness), typeof(Border),
             new DependencyPropertyMetadata(HandleBorderThicknessChanged, () => Thickness.One, DependencyPropertyOptions.AffectsMeasure));
 
         /// <summary>
         /// Identifies the <see cref="BorderColor"/> dependency property.
         /// </summary>
-        [Styled("border-color")]
         public static readonly DependencyProperty BorderColorProperty = DependencyProperty.Register("BorderColor", typeof(Color), typeof(Border),
             new DependencyPropertyMetadata(HandleBorderColorChanged, () => Color.Black, DependencyPropertyOptions.None));
 
-        /// <summary>
-        /// Gets or sets the template used to create the control's component tree.
-        /// </summary>
-        public static XDocument ComponentTemplate
+        /// <inheritdoc/>
+        protected override Thickness GetTotalContentPadding()
         {
-            get;
-            set;
+            return base.GetTotalContentPadding() + BorderThickness;
         }
 
         /// <inheritdoc/>
-        protected override void OnDrawing(UltravioletTime time, SpriteBatch spriteBatch, Single opacity)
+        protected override void DrawOverride(UltravioletTime time, DrawingContext dc)
         {
-            DrawBackgroundImage(spriteBatch, opacity);
+            var display       = Ultraviolet.GetPlatform().Displays.PrimaryDisplay;
 
-            var thickness = ConvertThicknessToPixels(BorderThickness, 0);
-            var left      = (Int32)thickness.Left;
-            var top       = (Int32)thickness.Top;
-            var right     = (Int32)thickness.Right;
-            var bottom    = (Int32)thickness.Bottom;
-            var color     = BorderColor * Opacity * opacity;
+            var borderColor     = BorderColor;
+            var borderThickness = display.DipsToPixels(BorderThickness);
+            var borderArea      = display.DipsToPixels(AbsoluteBounds);
 
-            spriteBatch.Draw(UIElementResources.BlankTexture, new RectangleF(AbsoluteScreenX, AbsoluteScreenY, left, ActualHeight), color);
-            spriteBatch.Draw(UIElementResources.BlankTexture, new RectangleF(AbsoluteScreenX, AbsoluteScreenY, ActualWidth, top), color);
-            spriteBatch.Draw(UIElementResources.BlankTexture, new RectangleF(AbsoluteScreenX + ActualWidth - right, AbsoluteScreenY, right, ActualHeight), color);
-            spriteBatch.Draw(UIElementResources.BlankTexture, new RectangleF(AbsoluteScreenX, AbsoluteScreenY + ActualHeight - bottom, ActualWidth, bottom), color);
+            var leftSize = Math.Min(borderThickness.Left, borderArea.Width);
+            var leftArea = new RectangleD(borderArea.Left, borderArea.Top, leftSize, borderArea.Height);
 
-            base.OnDrawing(time, spriteBatch, opacity);
+            var topSize = Math.Min(borderThickness.Top, borderArea.Height);
+            var topArea = new RectangleD(borderArea.Left, borderArea.Top, borderArea.Width, topSize);
+
+            var rightSize = Math.Min(borderThickness.Right, borderArea.Width);
+            var rightPos  = Math.Max(borderArea.Left, borderArea.Right - rightSize);
+            var rightArea = new RectangleD(rightPos, borderArea.Top, rightSize, borderArea.Height);
+
+            var bottomSize = Math.Min(borderThickness.Bottom, borderArea.Height);
+            var bottomPos  = Math.Max(borderArea.Top, borderArea.Bottom - bottomSize);
+            var bottomArea = new RectangleD(borderArea.Left, bottomPos, borderArea.Width, bottomSize);
+
+            dc.SpriteBatch.Draw(FrameworkResources.BlankTexture, (RectangleF)leftArea, borderColor);
+            dc.SpriteBatch.Draw(FrameworkResources.BlankTexture, (RectangleF)topArea, borderColor);
+            dc.SpriteBatch.Draw(FrameworkResources.BlankTexture, (RectangleF)rightArea, borderColor);
+            dc.SpriteBatch.Draw(FrameworkResources.BlankTexture, (RectangleF)bottomArea, borderColor);
+
+            DrawContent(time, dc);
+
+            base.DrawOverride(time, dc);
         }
 
         /// <summary>
@@ -131,21 +125,21 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <summary>
         /// Occurs when the value of the <see cref="BorderThickness"/> dependency property changes.
         /// </summary>
-        /// <param name="dobj">The object that raised the event.</param>
+        /// <param name="dobj">The dependency object that raised the event.</param>
         private static void HandleBorderThicknessChanged(DependencyObject dobj)
         {
-            var element = (Border)dobj;
-            element.OnBorderThicknessChanged();
+            var border = (Border)dobj;
+            border.OnBorderThicknessChanged();
         }
 
         /// <summary>
         /// Occurs when the value of the <see cref="BorderColor"/> dependency property changes.
         /// </summary>
-        /// <param name="dobj">The object that raised the event.</param>
+        /// <param name="dobj">The dependency object that raised the event.</param>
         private static void HandleBorderColorChanged(DependencyObject dobj)
         {
-            var element = (Border)dobj;
-            element.OnBorderColorChanged();
+            var border = (Border)dobj;
+            border.OnBorderColorChanged();
         }
     }
 }

@@ -197,7 +197,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             {
                 var desiredContentSize = new Size2D(DesiredContentRegion.Width, DesiredContentRegion.Height);
                 contentElement.Measure(desiredContentSize);
-                return Padding + contentElement.DesiredSize;
+                return GetTotalContentPadding() + contentElement.DesiredSize;
             }
             else
             {
@@ -209,14 +209,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
                 var dipsHeight = display.PixelsToDips(textLayoutResult.ActualHeight);
                 var dipsSize   = new Size2D(dipsWidth, dipsHeight);
 
-                return Padding + dipsSize;
+                return GetTotalContentPadding() + dipsSize;
             }
         }
 
         /// <inheritdoc/>
         protected override Size2D ArrangeContent(Size2D finalSize, ArrangeOptions options)
         {
-            var padding = Padding;
+            var padding = GetTotalContentPadding();
 
             var contentSpace = finalSize - padding;
 
