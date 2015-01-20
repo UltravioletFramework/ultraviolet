@@ -1,23 +1,13 @@
 ﻿using System;
-using System.Xml.Linq;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
 {
     /// <summary>
     /// Represents a control which renders a border around its content.
     /// </summary>
-    [UIElement("Border")]
+    [UIElement("Border", "TwistedLogik.Ultraviolet.UI.Presentation.Elements.Templates.Border.xml")]
     public class Border : ContentControl
     {
-        /// <summary>
-        /// Initializes the <see cref="Border"/> type.
-        /// </summary>
-        static Border()
-        {
-            ComponentTemplate = LoadComponentTemplateFromManifestResourceStream(typeof(Border).Assembly,
-                "TwistedLogik.Ultraviolet.UI.Presentation.Elements.Templates.Border.xml");
-        }
-
         /// <summary>
         /// Initializes a new instance of the <see cref="Control"/> class.
         /// </summary>
@@ -26,16 +16,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         public Border(UltravioletContext uv, String id)
             : base(uv, id)
         {
-            LoadComponentRoot(ComponentTemplate);
-        }
 
-        /// <summary>
-        /// Gets or sets the template used to create the control's component tree.
-        /// </summary>
-        public static XDocument ComponentTemplate
-        {
-            get;
-            set;
         }
 
         /// <summary>

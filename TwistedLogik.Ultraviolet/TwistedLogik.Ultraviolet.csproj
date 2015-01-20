@@ -352,6 +352,7 @@
     <Compile Include="UI\Presentation\Animations\SimpleClockPool.cs" />
     <Compile Include="UI\Presentation\Animations\StoryboardClockPool.cs" />
     <Compile Include="UI\Presentation\ArrangeOptions.cs" />
+    <Compile Include="UI\Presentation\ComponentTemplateManager.cs" />
     <Compile Include="UI\Presentation\DrawingContext.cs" />
     <Compile Include="UI\Presentation\DrawingContext.ClipState.cs" />
     <Compile Include="UI\Presentation\DrawingContext.OpacityState.cs" />

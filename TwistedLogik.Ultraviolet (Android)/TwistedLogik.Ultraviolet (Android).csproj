@@ -906,6 +906,9 @@
     <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\BoundEventBuilder.cs">
       <Link>UI\Presentation\BoundEventBuilder.cs</Link>
     </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\ComponentTemplateManager.cs">
+      <Link>UI\Presentation\ComponentTemplateManager.cs</Link>
+    </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\DataBindingGetterBuilder.cs">
       <Link>UI\Presentation\DataBindingGetterBuilder.cs</Link>
     </Compile>

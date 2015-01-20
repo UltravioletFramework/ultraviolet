@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Xml.Linq;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
 {
@@ -9,18 +8,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
     /// side-by-side if (see <see cref="StackPanel.Orientation"/> is <see cref="F:Orientation.Horizontal"/>,
     /// wrapping the content if necessary to fit within the available space.
     /// </summary>
-    [UIElement("WrapPanel")]
+    [UIElement("WrapPanel", "TwistedLogik.Ultraviolet.UI.Presentation.Elements.Templates.WrapPanel.xml")]
     public class WrapPanel : Panel
     {
-        /// <summary>
-        /// Initializes the <see cref="WrapPanel"/> type.
-        /// </summary>
-        static WrapPanel()
-        {
-            ComponentTemplate = LoadComponentTemplateFromManifestResourceStream(typeof(WrapPanel).Assembly,
-                "TwistedLogik.Ultraviolet.UI.Presentation.Elements.Templates.WrapPanel.xml");
-        }
-
         /// <summary>
         /// Initializes a new instance of the <see cref="WrapPanel"/> class.
         /// </summary>
@@ -29,16 +19,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         public WrapPanel(UltravioletContext uv, String id)
             : base(uv, id)
         {
-            LoadComponentRoot(ComponentTemplate);
-        }
 
-        /// <summary>
-        /// Gets or sets the template used to create the control's component tree.
-        /// </summary>
-        public static XDocument ComponentTemplate
-        {
-            get;
-            set;
         }
 
         /// <summary>

@@ -247,22 +247,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether debug rendering is currently enabled for the Presentation Framework.
+        /// Gets the Presentation Framework's component template manager.
         /// </summary>
-        public Boolean DebugRenderingEnabled
+        public ComponentTemplateManager ComponentTemplates
         {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return debugRenderingEnabled;
-            }
-            set
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                debugRenderingEnabled = value;
-            }
+            get { return componentTemplateManager; }
         }
 
         /// <summary>
@@ -311,25 +300,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Gets a value indicating whether the specified type is a valid element type.
         /// </summary>
         /// <param name="type">The type to evaluate.</param>
-        /// <param name="name">The element's name.</param>
+        /// <param name="attr">The element's <see cref="UIElementAttribute"/> instance.</param>
         /// <returns><c>true</c> if the specified type is a valid element type; otherwise, <c>false</c>.</returns>
-        private static Boolean IsValidElementType(Type type, out String name)
+        private static Boolean IsValidElementType(Type type, out UIElementAttribute attr)
         {
+            attr = null;
+
             if (!typeof(UIElement).IsAssignableFrom(type))
-            {
-                name = null;
                 return false;
-            }
 
-            var attr = type.GetCustomAttributes(typeof(UIElementAttribute), false).Cast<UIElementAttribute>().SingleOrDefault();
-            if (attr == null)
-            {
-                name = null;
-                return false;
-            }
+            attr = type.GetCustomAttributes(typeof(UIElementAttribute), false).Cast<UIElementAttribute>().SingleOrDefault();
 
-            name = attr.Name;
-            return true;
+            return attr != null;
         }
 
         /// <summary>
@@ -350,8 +332,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (type == null)
                 throw new InvalidOperationException(UltravioletStrings.InvalidUserControlType.Format(attr.Value));
 
-            String name;
-            if (!IsValidElementType(type, out name))
+            UIElementAttribute uiElementAttr;
+            if (!IsValidElementType(type, out uiElementAttr))
                 throw new InvalidOperationException(UltravioletStrings.InvalidUserControlType.Format(type.Name));
 
             return type;
@@ -378,9 +360,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 }
 
                 var type = elementType.ElementType;
-                var ctor = 
-                    type.GetConstructor(new[] { typeof(UltravioletContext), typeof(String), typeof(Type), typeof(String) }) ??
-                    type.GetConstructor(new[] { typeof(UltravioletContext), typeof(String) });
+                var ctor = type.GetConstructor(new[] { typeof(UltravioletContext), typeof(String) });
                 
                 if (ctor == null)
                     throw new InvalidOperationException(UltravioletStrings.UIElementInvalidCtor.Format(elementType));
@@ -401,13 +381,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="layout">The XML document that defines the custom element's layout.</param>
         private void RegisterElementInternal(Type type, XDocument layout)
         {
-            String name;
-            if (!IsValidElementType(type, out name))
+            UIElementAttribute uiElementAttr;
+            if (!IsValidElementType(type, out uiElementAttr))
                 throw new InvalidOperationException(UltravioletStrings.InvalidUIElementType.Format(type.Name));
 
             RegisteredElement existingRegistration;
-            if (IsElementRegistered(name, out existingRegistration))
-                throw new InvalidOperationException(UltravioletStrings.UnrecognizedUIElement.Format(name));
+            if (IsElementRegistered(uiElementAttr.Name, out existingRegistration))
+                throw new InvalidOperationException(UltravioletStrings.UnrecognizedUIElement.Format(uiElementAttr.Name));
 
             var defaultProperty = default(String);
             var defaultPropertyAttr = type.GetCustomAttributes(typeof(DefaultPropertyAttribute), true).Cast<DefaultPropertyAttribute>().SingleOrDefault();
@@ -420,7 +400,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (ctor == null)
                 throw new InvalidOperationException(UltravioletStrings.UIElementInvalidCtor.Format(type.Name));
 
-            registeredElements[name] = new RegisteredElement(name, type, defaultProperty, layout);
+            RegisterDefaultComponentTemplate(type, uiElementAttr);
+
+            registeredElements[uiElementAttr.Name] = new RegisteredElement(uiElementAttr.Name, type, defaultProperty, layout);
         }
 
         /// <summary>
@@ -560,8 +542,31 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             }
         }
 
-        // Property values.
-        private Boolean debugRenderingEnabled;
+        /// <summary>
+        /// Registers the specified type's default component template, if it has one.
+        /// </summary>
+        /// <param name="type">The type that represents the element for which to register a component template.</param>
+        /// <param name="uiElementAttr">The <see cref="UIElementAttribute"/> instance which is associated with the element type.</param>
+        private void RegisterDefaultComponentTemplate(Type type, UIElementAttribute uiElementAttr)
+        {
+            if (String.IsNullOrEmpty(uiElementAttr.ComponentTemplate))
+                return;
+
+            var asm = type.Assembly;
+
+            using (var stream = asm.GetManifestResourceStream(uiElementAttr.ComponentTemplate))
+            {
+                if (stream == null)
+                    return;
+
+                var template = XDocument.Load(stream);
+                ComponentTemplates.SetDefault(type, template);
+            }
+        }
+
+        // The component template manager.
+        private readonly ComponentTemplateManager componentTemplateManager = 
+            new ComponentTemplateManager();
 
         // The core element registry.
         private readonly Dictionary<String, RegisteredElement> coreElements = 

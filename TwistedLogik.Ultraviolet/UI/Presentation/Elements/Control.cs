@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Reflection;
-using System.Xml.Linq;
-using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet.UI.Presentation.Animations;
 using TwistedLogik.Ultraviolet.UI.Presentation.Styles;
 
@@ -20,7 +17,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         public Control(UltravioletContext uv, String id)
             : base(uv, id)
         {
-
+            LoadComponentRoot();
         }
 
         /// <inheritdoc/>
@@ -179,26 +176,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
                 contentPresenter = value;
 
                 InvalidateMeasure();
-            }
-        }
-
-        /// <summary>
-        /// Loads a component template from a manifest resource stream.
-        /// </summary>
-        /// <param name="asm">The assembly that contains the manifest resource stream.</param>
-        /// <param name="resource">The name of the manifest resource stream to load.</param>
-        /// <returns>The component template that was loaded.</returns>
-        protected static XDocument LoadComponentTemplateFromManifestResourceStream(Assembly asm, String resource)
-        {
-            Contract.Require(asm, "asm");
-            Contract.RequireNotEmpty(resource, "resource");
-
-            using (var stream = asm.GetManifestResourceStream(resource))
-            {
-                if (stream == null)
-                    return null;
-
-                return XDocument.Load(stream);
             }
         }
 
@@ -398,21 +375,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <summary>
-        /// Loads the control's component root from the specified template.
-        /// </summary>
-        /// <param name="template">The component template from which to load the control's component root.</param>
-        protected void LoadComponentRoot(XDocument template)
-        {
-            if (componentRoot != null)
-                throw new InvalidOperationException(UltravioletStrings.ComponentRootAlreadyLoaded);
-
-            if (template == null)
-                return;
-
-            UvmlLoader.LoadComponentRoot(this, template);
-        }
-
-        /// <summary>
         /// Measures the control's components.
         /// </summary>
         /// <param name="availableSize">The size of the area which the element's parent has 
@@ -497,6 +459,21 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         {
             var control = (ContentControl)dobj;
             control.OnPaddingChanged();
+        }
+
+        /// <summary>
+        /// Loads the control's component root from the control's associated template.
+        /// </summary>
+        private void LoadComponentRoot()
+        {
+            if (componentRoot != null)
+                throw new InvalidOperationException(UltravioletStrings.ComponentRootAlreadyLoaded);
+
+            var template = Ultraviolet.GetUI().PresentationFramework.ComponentTemplates.Get(this);
+            if (template == null)
+                return;
+
+            UvmlLoader.LoadComponentRoot(this, template);
         }
 
         // Property values.
