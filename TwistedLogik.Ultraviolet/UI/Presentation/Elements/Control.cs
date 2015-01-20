@@ -346,6 +346,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <summary>
+        /// Gets the total padding around the control's content.
+        /// </summary>
+        /// <returns>A <see cref="Thickness"/> that describes the total padding around the control's content.</returns>
+        protected virtual Thickness GetTotalContentPadding()
+        {
+            return Padding;
+        }
+
+        /// <summary>
         /// Measures the control's content.
         /// </summary>
         /// <param name="availableSize">The size of the area which the element's parent has 
@@ -451,7 +460,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// </summary>
         protected void CacheDesiredContentRegion(Size2D availableSize)
         {
-            this.desiredContentRegion = new RectangleD(Point2D.Zero, availableSize - Padding);
+            this.desiredContentRegion = new RectangleD(Point2D.Zero, availableSize - GetTotalContentPadding());
         }
 
         /// <summary>
@@ -459,7 +468,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// </summary>
         protected void CacheRenderContentRegion(Size2D finalSize)
         {
-            this.renderContentRegion = new RectangleD(Point2D.Zero, finalSize - Padding);
+            this.renderContentRegion = new RectangleD(Point2D.Zero, finalSize - GetTotalContentPadding());
         }
 
         /// <summary>
@@ -470,7 +479,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             var contentRegionOffset = (contentPresenter == null) ? 
                 Point2D.Zero : (contentPresenter.AbsolutePosition - AbsolutePosition);
 
-            var padding = Padding;
+            var padding = GetTotalContentPadding();
 
             var contentRegionOffsetWithPadding = new Point2D(
                 padding.Left + contentRegionOffset.X,

@@ -452,8 +452,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             var measuredSize = MeasureOverride(tentativeSize);
 
-            var measuredWidth  = xMargin + Math.Max(minWidth, measuredSize.Width);
-            var measuredHeight = yMargin + Math.Max(minHeight, measuredSize.Height);
+            var measuredWidth  = xMargin + Math.Max(minWidth, Math.Min(maxWidth, measuredSize.Width));
+            var measuredHeight = yMargin + Math.Max(minHeight, Math.Min(maxHeight, measuredSize.Height));
 
             var finalWidth  = Math.Max(0, measuredWidth);
             var finalHeight = Math.Max(0, measuredHeight);

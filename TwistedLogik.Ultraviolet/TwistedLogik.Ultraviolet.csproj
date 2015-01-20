@@ -355,6 +355,7 @@
     <Compile Include="UI\Presentation\DrawingContext.cs" />
     <Compile Include="UI\Presentation\DrawingContext.ClipState.cs" />
     <Compile Include="UI\Presentation\DrawingContext.OpacityState.cs" />
+    <Compile Include="UI\Presentation\Elements\Border.cs" />
     <Compile Include="UI\Presentation\Elements\Button.cs" />
     <Compile Include="UI\Presentation\Elements\ButtonBase.cs" />
     <Compile Include="UI\Presentation\Elements\ClickMode.cs" />
