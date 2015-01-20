@@ -357,11 +357,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         private Double MeasureWidth(Double available, Boolean treatStarAsAuto = false)
         {
             if (ColumnDefinitions.Count == 0)
-                return treatStarAsAuto ? MeasureAutoColumn(null, 0) : available;
+                return treatStarAsAuto ? MeasureAutoColumn(available, null, 0) : available;
 
             var proportionalFactor = 0.0;
 
-            available = MeasureAutoAndStaticColumns(treatStarAsAuto, available, out proportionalFactor);
+            available = MeasureStaticColumns(available);
+            available = MeasureAutoColumns(available, treatStarAsAuto, out proportionalFactor);
 
             if (!treatStarAsAuto)
             {
@@ -378,52 +379,69 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <summary>
-        /// Calculates and updates the size of auto- and statically-sized columns.
+        /// Measures the width of the grid's static columns.
         /// </summary>
-        /// <param name="treatStarAsAuto">A value indicating whether to treat star (*) columns as if they were Auto columns.</param>
-        /// <param name="available">The amount of space available for columns.</param>
-        /// <param name="proportionalFactor">A value specifying the total number of proportionally sized units.</param>
-        /// <returns>The amount of remaining space available for columns after accounting for auto- and statically-sized columns.</returns>
-        private Double MeasureAutoAndStaticColumns(Boolean treatStarAsAuto, Double available, out Double proportionalFactor)
+        /// <param name="available">The amount of remaining space available for columns.</param>
+        /// <returns>The amount of space remaining after accounting for static columns.</returns>
+        private Double MeasureStaticColumns(Double available)
         {
-            proportionalFactor = 0.0;
-
             for (int i = 0; i < ColumnDefinitions.Count; i++)
             {
                 var column = ColumnDefinitions[i];
-                if (column.Width.GridUnitType == GridUnitType.Star)
-                {
-                    if (treatStarAsAuto)
-                    {
-                        available -= MeasureAutoColumn(column, i);
-                    }
-                    proportionalFactor += column.Width.Value;
-                }
-                else
-                {
-                    available -= MeasureAutoOrStaticColumn(column, i);
-                }
+                if (column.Width.GridUnitType != GridUnitType.Pixel)
+                    continue;
+
+                available -= MeasureStaticColumn(column, i);
             }
 
             return Math.Max(0, available);
         }
 
         /// <summary>
-        /// Calculates the size of an Auto- or statically-sized column.
+        /// Calculates the size of an statically-sized column.
         /// </summary>
         /// <param name="column">The column for which to calculate a size.</param>
         /// <param name="ix">The index of the column within the grid.</param>
         /// <returns>The actual size of the column in pixels.</returns>
-        private Double MeasureAutoOrStaticColumn(ColumnDefinition column, Int32 ix)
+        private Double MeasureStaticColumn(ColumnDefinition column, Int32 ix)
         {
-            switch (column.Width.GridUnitType)
+            Double lower, upper;
+            LayoutUtil.GetBoundedMeasure(column.Width.Value, column.MinWidth, column.MaxWidth, out lower, out upper);
+            column.MeasuredWidth = lower;
+            return lower;
+        }
+
+        /// <summary>
+        /// Measures the width of the grid's Auto columns.
+        /// </summary>
+        /// <param name="available">The amount of remaining space for available columns.</param>
+        /// <param name="treatStarAsAuto">A value indicating whether to treat Auto columns as if they were proportional columns.</param>
+        /// <param name="proportionalFactor">The combined proportional measurement factor for all of the grid's proportional columns.</param>
+        /// <returns>The amount of space remaining after accounting for Auto columns.</returns>
+        private Double MeasureAutoColumns(Double available, Boolean treatStarAsAuto, out Double proportionalFactor)
+        {
+            proportionalFactor = 0.0;
+
+            for (int i = 0; i < ColumnDefinitions.Count; i++)
             {
-                case GridUnitType.Auto:
-                    return MeasureAutoColumn(column, ix);
-                case GridUnitType.Pixel:
-                    return MeasureStaticColumn(column, ix);
+                var column = ColumnDefinitions[i];
+                switch (column.Width.GridUnitType)
+                {
+                    case GridUnitType.Star:
+                        if (treatStarAsAuto)
+                        {
+                            available -= MeasureAutoColumn(available, column, i);
+                        }
+                        proportionalFactor += column.Width.Value;
+                        break;
+
+                    case GridUnitType.Auto:
+                        available -= MeasureAutoColumn(available, column, i);
+                        break;
+                }
             }
-            return 0;
+
+            return Math.Max(0, available);
         }
 
         /// <summary>
@@ -432,7 +450,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <param name="column">The column for which to calculate a size.</param>
         /// <param name="ix">The index of the column within the grid.</param>
         /// <returns>The actual size of the column in pixels.</returns>
-        private Double MeasureAutoColumn(ColumnDefinition column, Int32 ix)
+        private Double MeasureAutoColumn(Double available, ColumnDefinition column, Int32 ix)
         {
             var size = 0.0;
 
@@ -451,26 +469,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
                 }
             }
 
+            size = Math.Min(available, size);
+
             if (column != null)
             {
                 column.MeasuredWidth = size;
             }
 
             return size;
-        }
-
-        /// <summary>
-        /// Calculates the size of an statically-sized column.
-        /// </summary>
-        /// <param name="column">The column for which to calculate a size.</param>
-        /// <param name="ix">The index of the column within the grid.</param>
-        /// <returns>The actual size of the column in pixels.</returns>
-        private Double MeasureStaticColumn(ColumnDefinition column, Int32 ix)
-        {
-            Double lower, upper;
-            LayoutUtil.GetBoundedMeasure(column.Width.Value, column.MinWidth, column.MaxWidth, out lower, out upper);
-            column.MeasuredWidth = lower;
-            return lower;
         }
 
         /// <summary>
@@ -497,11 +503,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         private Double MeasureHeight(Double available, Boolean treatStarAsAuto = false)
         {
             if (RowDefinitions.Count == 0)
-                return treatStarAsAuto ? MeasureAutoRow(null, 0) : available;
+                return treatStarAsAuto ? MeasureAutoRow(available, null, 0) : available;
 
             var proportionalFactor = 0.0;
 
-            available = MeasureAutoAndStaticRows(treatStarAsAuto, available, out proportionalFactor);
+            available = MeasureStaticRows(available);
+            available = MeasureAutoRows(treatStarAsAuto, available, out proportionalFactor);
 
             if (!treatStarAsAuto)
             {
@@ -518,52 +525,69 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <summary>
-        /// Calculates and updates the size of auto- and statically-sized rows.
+        /// Measures the width of the grid's static rows.
         /// </summary>
-        /// <param name="treatStarAsAuto">A value indicating whether to treat star (*) rows as if they were Auto rows.</param>
-        /// <param name="available">The amount of space available for columns.</param>
-        /// <param name="proportionalFactor">A value specifying the total number of proportionally sized units.</param>
-        /// <returns>The amount of remaining space available for columns after accounting for auto- and statically-sized columns.</returns>
-        private Double MeasureAutoAndStaticRows(Boolean treatStarAsAuto, Double available, out Double proportionalFactor)
+        /// <param name="available">The amount of remaining space available for rows.</param>
+        /// <returns>The amount of space remaining after accounting for static rows.</returns>
+        private Double MeasureStaticRows(Double available)
         {
-            proportionalFactor = 0.0;
-
             for (int i = 0; i < RowDefinitions.Count; i++)
             {
                 var row = RowDefinitions[i];
-                if (row.Height.GridUnitType == GridUnitType.Star)
-                {
-                    if (treatStarAsAuto)
-                    {
-                        available -= MeasureAutoRow(row, i);
-                    }
-                    proportionalFactor += row.Height.Value;
-                }
-                else
-                {
-                    available -= MeasureAutoOrStaticRow(row, i);
-                }
+                if (row.Height.GridUnitType != GridUnitType.Pixel)
+                    continue;
+
+                available -= MeasureStaticRow(row, i);
             }
 
             return Math.Max(0, available);
         }
 
         /// <summary>
-        /// Calculates the size of an Auto- or statically-sized row.
+        /// Calculates the size of an statically-sized row.
         /// </summary>
         /// <param name="row">The row for which to calculate a size.</param>
         /// <param name="ix">The index of the row within the grid.</param>
         /// <returns>The measured size of the row.</returns>
-        private Double MeasureAutoOrStaticRow(RowDefinition row, Int32 ix)
+        private Double MeasureStaticRow(RowDefinition row, Int32 ix)
         {
-            switch (row.Height.GridUnitType)
+            Double lower, upper;
+            LayoutUtil.GetBoundedMeasure(row.Height.Value, row.MinHeight, row.MaxHeight, out lower, out upper);
+            row.MeasuredHeight = lower;
+            return lower;
+        }
+
+        /// <summary>
+        /// Measures the width of the grid's Auto rows.
+        /// </summary>
+        /// <param name="available">The amount of remaining space for available rows.</param>
+        /// <param name="treatStarAsAuto">A value indicating whether to treat Auto rows as if they were proportional rows.</param>
+        /// <param name="proportionalFactor">The combined proportional measurement factor for all of the grid's proportional rows.</param>
+        /// <returns>The amount of space remaining after accounting for Auto rows.</returns>
+        private Double MeasureAutoRows(Boolean treatStarAsAuto, Double available, out Double proportionalFactor)
+        {
+            proportionalFactor = 0.0;
+
+            for (int i = 0; i < RowDefinitions.Count; i++)
             {
-                case GridUnitType.Auto:
-                    return MeasureAutoRow(row, ix);
-                case GridUnitType.Pixel:
-                    return MeasureStaticRow(row, ix);
+                var row = RowDefinitions[i];
+                switch (row.Height.GridUnitType)
+                {
+                    case GridUnitType.Star:
+                        if (treatStarAsAuto)
+                        {
+                            available -= MeasureAutoRow(available, row, i);
+                        }
+                        proportionalFactor += row.Height.Value;
+                        break;
+
+                    case GridUnitType.Auto:
+                        available -= MeasureAutoRow(available, row, i);
+                        break;
+                }
             }
-            return 0;
+
+            return Math.Max(0, available);
         }
 
         /// <summary>
@@ -572,7 +596,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <param name="row">The row for which to calculate a size.</param>
         /// <param name="ix">The index of the row within the grid.</param>
         /// <returns>The measured size of the row.</returns>
-        private Double MeasureAutoRow(RowDefinition row, Int32 ix)
+        private Double MeasureAutoRow(Double available, RowDefinition row, Int32 ix)
         {
             var size = 0.0;
 
@@ -591,26 +615,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
                 }
             }
 
+            size = Math.Min(available, size);
+
             if (row != null)
             {
                 row.MeasuredHeight = size;
             }
 
             return size;
-        }
-
-        /// <summary>
-        /// Calculates the size of an statically-sized row.
-        /// </summary>
-        /// <param name="row">The row for which to calculate a size.</param>
-        /// <param name="ix">The index of the row within the grid.</param>
-        /// <returns>The measured size of the row.</returns>
-        private Double MeasureStaticRow(RowDefinition row, Int32 ix)
-        {
-            Double lower, upper;
-            LayoutUtil.GetBoundedMeasure(row.Height.Value, row.MinHeight, row.MaxHeight, out lower, out upper);
-            row.MeasuredHeight = lower;
-            return lower;
         }
 
         /// <summary>
