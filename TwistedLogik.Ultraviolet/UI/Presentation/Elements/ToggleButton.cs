@@ -3,7 +3,7 @@
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
 {
     /// <summary>
-    /// Represents a button on a user interface.
+    /// Represents a button on a user interface which can be toggled between its states.
     /// </summary>
     [UIElement("ToggleButton")]
     public class ToggleButton : ButtonBase

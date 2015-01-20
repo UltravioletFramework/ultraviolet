@@ -454,6 +454,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Gets the specified logical child of this element.
+        /// </summary>
+        /// <param name="ix">The index of the logical child to retrieve.</param>
+        /// <returns>The logical child of this element with the specified index.</returns>
+        public virtual UIElement GetLogicalChild(Int32 ix)
+        {
+            throw new ArgumentOutOfRangeException("ix");
+        }
+
+        /// <summary>
         /// Gets the element at the specified pixel coordinates relative to this element's bounds.
         /// </summary>
         /// <param name="x">The element-relative x-coordinate of the pixel to evaluate.</param>
@@ -812,6 +822,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             get { return GetValue<Single>(OpacityProperty); }
             set { SetValue<Single>(OpacityProperty, value); }
+        }
+
+        /// <summary>
+        /// Gets the number of logical children which belong to this element.
+        /// </summary>
+        public virtual Int32 LogicalChildren
+        {
+            get { return 0; }
         }
 
         /// <summary>
