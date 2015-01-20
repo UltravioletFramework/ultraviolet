@@ -1,5 +1,6 @@
 ﻿using System;
 using TwistedLogik.Nucleus;
+using TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation
 {
@@ -80,6 +81,52 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             }
 
             return yOffset;
+        }
+
+        /// <summary>
+        /// Converts a <see cref="HorizontalAlignment"/> value and a <see cref="VerticalAlignment"/> value 
+        /// to the corresponding <see cref="TextFlags"/> value.
+        /// </summary>
+        /// <param name="horizontal">The <see cref="HorizontalAlignment"/> value to convert.</param>
+        /// <param name="vertical">The <see cref="VerticalAlignment"/> value to convert.</param>
+        /// <returns>The <see cref="TextFlags"/> value that corresponds to the specified set of alignments.</returns>
+        public static TextFlags ConvertAlignmentsToTextFlags(HorizontalAlignment horizontal, VerticalAlignment vertical)
+        {
+            var flags = (TextFlags)0;
+
+            switch (horizontal)
+            {
+                case HorizontalAlignment.Left:
+                case HorizontalAlignment.Stretch:
+                    flags |= TextFlags.AlignLeft;
+                    break;
+
+                case HorizontalAlignment.Right:
+                    flags |= TextFlags.AlignRight;
+                    break;
+
+                case HorizontalAlignment.Center:
+                    flags |= TextFlags.AlignCenter;
+                    break;
+            }
+
+            switch (vertical)
+            {
+                case VerticalAlignment.Top:
+                case VerticalAlignment.Stretch:
+                    flags |= TextFlags.AlignTop;
+                    break;
+
+                case VerticalAlignment.Bottom:
+                    flags |= TextFlags.AlignBottom;
+                    break;
+
+                case VerticalAlignment.Center:
+                    flags |= TextFlags.AlignMiddle;
+                    break;
+            }
+
+            return flags;
         }
 
         /// <summary>
