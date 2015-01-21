@@ -30,6 +30,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <inheritdoc/>
+        protected override void UpdateOverride(UltravioletTime time)
+        {
+            if (Control != null)
+            {
+                Control.OnContentPresenterUpdate(time);
+            }
+            base.UpdateOverride(time);
+        }
+
+        /// <inheritdoc/>
         protected override Size2D MeasureOverride(Size2D availableSize)
         {
             if (Control == null)

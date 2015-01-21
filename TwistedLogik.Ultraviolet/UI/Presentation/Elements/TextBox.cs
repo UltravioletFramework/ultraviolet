@@ -281,6 +281,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <inheritdoc/>
+        protected internal override void OnBlurred()
+        {
+            textSelectionLength = 0;
+
+            base.OnBlurred();
+        }
+
+        /// <inheritdoc/>
         protected internal override void OnLostMouseCapture()
         {
             mouseSelectionInProgress = false;
@@ -360,11 +368,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <inheritdoc/>
-        protected override void UpdateOverride(UltravioletTime time)
+        protected override void UpdateContent(UltravioletTime time)
         {
             caretBlinkTimer = (caretBlinkTimer + time.ElapsedTime.TotalMilliseconds) % 1000.0;
 
-            base.UpdateOverride(time);
+            base.UpdateContent(time);
         }
 
         /// <inheritdoc/>

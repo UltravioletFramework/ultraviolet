@@ -932,7 +932,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         // Standard visual state groups.
-        private static readonly String[] VSGFocus = new[] { "focused", "blurred" };
+        private static readonly String[] VSGFocus = new[] { "blurred", "focused" };
 
         // Property values.
         private readonly VisualStateGroupCollection visualStateGroups;

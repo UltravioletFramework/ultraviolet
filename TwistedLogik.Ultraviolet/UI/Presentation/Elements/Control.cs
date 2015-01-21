@@ -90,6 +90,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             if (componentRoot != null)
             {
                 componentRoot.Update(time);
+                if (contentPresenter == null)
+                {
+                    UpdateContent(time);
+                }
+            }
+            else
+            {
+                UpdateContent(time);
             }
             base.PostUpdateOverride(time);
         }
@@ -102,6 +110,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         internal void OnContentPresenterDraw(UltravioletTime time, DrawingContext dc)
         {
             DrawContent(time, dc);
+        }
+
+        /// <summary>
+        /// Called when the control's content presenter (if it has one) is updated.
+        /// </summary>
+        /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Update(UltravioletTime)"/>.</param>
+        internal void OnContentPresenterUpdate(UltravioletTime time)
+        {
+            UpdateContent(time);
         }
 
         /// <summary>
@@ -376,6 +393,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Draw(UltravioletTime)"/>.</param>
         /// <param name="dc">The drawing context that describes the render state of the layout.</param>
         protected virtual void DrawContent(UltravioletTime time, DrawingContext dc)
+        {
+
+        }
+
+        /// <summary>
+        /// Updates the control's content.
+        /// </summary>
+        /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Update(UltravioletTime)"/>.</param>
+        protected virtual void UpdateContent(UltravioletTime time)
         {
 
         }
