@@ -236,5 +236,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
 
             return finalSize;
         }
+
+        /// <inheritdoc/>
+        protected override void PositionContent(Point2D position)
+        {
+            foreach (var child in Children)
+                child.Position(position);
+
+            base.PositionContent(position);
+        }
     }
 }
