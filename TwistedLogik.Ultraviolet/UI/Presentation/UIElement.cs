@@ -129,8 +129,21 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Initializes the element's dependency properties and the dependency properties
+        /// of any children of this element.
+        /// </summary>
+        /// <param name="recursive">A value indicating whether to clear the dependency
+        /// properties of this element's child elements.</param>
+        public void InitializeDependencyProperties(Boolean recursive = true)
+        {
+            InitializeDependencyPropertiesCore(recursive);
+        }
+
+        /// <summary>
         /// Reloads this element's content and the content of any children of this element.
         /// </summary>
+        /// <param name="recursive">A value indicating whether to reload the content
+        /// of this element's child elements.</param>
         public void ReloadContent(Boolean recursive = true)
         {
             ReloadContentCore(recursive);
@@ -1485,6 +1498,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         protected virtual void UpdateCore(UltravioletTime time)
         {
 
+        }
+
+        /// <summary>
+        /// When overridden in a derived class, initializes the element's dependency
+        /// properties and the dependency properties of any children of this element.
+        /// </summary>
+        /// <param name="recursive">A value indicating whether to clear the dependency
+        /// properties of this element's child elements.</param>
+        protected virtual void InitializeDependencyPropertiesCore(Boolean recursive)
+        {
+            ((DependencyObject)this).InitializeDependencyProperties();
         }
 
         /// <summary>

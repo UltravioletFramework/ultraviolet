@@ -23,6 +23,25 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Initializes the object's dependency properties.
+        /// </summary>
+        public void InitializeDependencyProperties()
+        {
+            DependencyPropertySystem.InitializeObject(this);
+        }
+
+        /// <summary>
+        /// Initializes the specified dependency property.
+        /// </summary>
+        /// <param name="dp">A <see cref="DependencyProperty"/> instance which identifies the dependency property to initialize.</param>
+        public void InitializeDependencyProperty(DependencyProperty dp)
+        {
+            Contract.Require(dp, "dp");
+
+            GetDependencyPropertyValue(dp, dp.PropertyType);
+        }
+
+        /// <summary>
         /// Clears the animations on all of the object's dependency properties.
         /// </summary>
         public void ClearAnimations()

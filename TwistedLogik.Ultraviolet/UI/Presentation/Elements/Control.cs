@@ -225,6 +225,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <inheritdoc/>
+        protected override void InitializeDependencyPropertiesCore(Boolean recursive)
+        {
+            if (componentRoot != null)
+            {
+                componentRoot.InitializeDependencyProperties(true);
+            }
+            base.InitializeDependencyPropertiesCore(recursive);
+        }
+
+        /// <inheritdoc/>
         protected override void ReloadContentCore(Boolean recursive)
         {
             if (componentRoot != null)
