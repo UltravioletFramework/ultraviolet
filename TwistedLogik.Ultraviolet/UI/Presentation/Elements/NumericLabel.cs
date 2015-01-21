@@ -125,7 +125,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <summary>
-        /// Occurs when the value of the <see cref="Text"/> dependency property changes.
+        /// Occurs when the value of the <see cref="Value"/> dependency property changes.
         /// </summary>
         /// <param name="dobj">The dependency object that raised the event.</param>
         private static void HandleValueChanged(DependencyObject dobj)

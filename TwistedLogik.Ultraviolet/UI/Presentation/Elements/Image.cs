@@ -64,16 +64,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         public static readonly DependencyProperty SourceColorProperty = DependencyProperty.Register("SourceColor", typeof(Color), typeof(Image),
             new DependencyPropertyMetadata(HandleSourceColorChanged, () => Color.White, DependencyPropertyOptions.None));
 
-        protected override void ReloadContentCore(bool recursive)
+        /// <inheritdoc/>
+        protected override void ReloadContentCore(Boolean recursive)
         {
             ReloadSource();
 
             base.ReloadContentCore(recursive);
-        }
-
-        protected void ReloadSource()
-        {
-            LoadImage(Source);
         }
 
         /// <inheritdoc/>
@@ -116,6 +112,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             {
                 temp(this);
             }
+        }
+
+        /// <summary>
+        /// Reloads the element's source image.
+        /// </summary>
+        protected void ReloadSource()
+        {
+            LoadImage(Source);
         }
 
         /// <summary>

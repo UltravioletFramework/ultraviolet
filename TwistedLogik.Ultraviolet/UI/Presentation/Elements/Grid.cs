@@ -393,7 +393,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <summary>
         /// Measures the width of the grid's Auto columns.
         /// </summary>
-        /// <param name="available">The amount of remaining space for available columns.</param>
+        /// <param name="available">The amount of remaining space available for columns.</param>
         /// <param name="treatStarAsAuto">A value indicating whether to treat Auto columns as if they were proportional columns.</param>
         /// <param name="proportionalFactor">The combined proportional measurement factor for all of the grid's proportional columns.</param>
         /// <returns>The amount of space remaining after accounting for Auto columns.</returns>
@@ -426,6 +426,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <summary>
         /// Calculates the size of an Auto-sized column.
         /// </summary>
+        /// <param name="available">The amount of remaining space available for columns.</param>
         /// <param name="column">The column for which to calculate a size.</param>
         /// <param name="ix">The index of the column within the grid.</param>
         /// <returns>The actual size of the column in pixels.</returns>
@@ -572,6 +573,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <summary>
         /// Calculates the size of an Auto-sized row.
         /// </summary>
+        /// <param name="available">The amount of remaining space for available rows.</param>
         /// <param name="row">The row for which to calculate a size.</param>
         /// <param name="ix">The index of the row within the grid.</param>
         /// <returns>The measured size of the row.</returns>
