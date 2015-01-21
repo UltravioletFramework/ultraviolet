@@ -82,13 +82,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
     /// </summary>
     /// <param name="element">The element that raised the event.</param>
     /// <param name="device">The mouse device.</param>
-    /// <param name="x">The x-coordinate of the cursor in screen coordinates.</param>
-    /// <param name="y">The y-coordinate of the cursor in screen coordinates.</param>
+    /// <param name="x">The x-coordinate of the cursor in device-independent screen coordinates.</param>
+    /// <param name="y">The y-coordinate of the cursor in device-independent screen coordinates.</param>
     /// <param name="dx">The difference between the x-coordinate of the mouse's 
     /// current position and the x-coordinate of the mouse's previous position.</param>
     /// <param name="dy">The difference between the y-coordinate of the mouse's 
     /// current position and the y-coordinate of the mouse's previous position.</param>
-    public delegate void UIElementMouseMotionEventHandler(UIElement element, MouseDevice device, Int32 x, Int32 y, Int32 dx, Int32 dy);
+    public delegate void UIElementMouseMotionEventHandler(UIElement element, MouseDevice device, Double x, Double y, Double dx, Double dy);
 
     /// <summary>
     /// Represents the method that is called when a UI element raises an event.
@@ -1267,13 +1267,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Raises the <see cref="MouseMotion"/> event.
         /// </summary>
         /// <param name="device">The mouse device.</param>
-        /// <param name="x">The x-coordinate of the cursor in screen coordinates.</param>
-        /// <param name="y">The y-coordinate of the cursor in screen coordinates.</param>
+        /// <param name="x">The x-coordinate of the cursor in device-independent screen coordinates.</param>
+        /// <param name="y">The y-coordinate of the cursor in device-independent screen coordinates.</param>
         /// <param name="dx">The difference between the x-coordinate of the mouse's 
         /// current position and the x-coordinate of the mouse's previous position.</param>
         /// <param name="dy">The difference between the y-coordinate of the mouse's 
         /// current position and the y-coordinate of the mouse's previous position.</param>
-        protected internal virtual void OnMouseMotion(MouseDevice device, Int32 x, Int32 y, Int32 dx, Int32 dy)
+        protected internal virtual void OnMouseMotion(MouseDevice device, Double x, Double y, Double dx, Double dy)
         {
             var temp = MouseMotion;
             if (temp != null)

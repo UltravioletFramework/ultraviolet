@@ -936,7 +936,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var recipient = elementWithMouseCapture ?? elementUnderMouse;
             if (recipient != null)
             {
-                recipient.OnMouseMotion(device, x, y, dx, dy);
+                var dipsX      = Display.PixelsToDips(x);
+                var dipsY      = Display.PixelsToDips(y);
+                var dipsDeltaX = Display.PixelsToDips(dx);
+                var dipsDeltaY = Display.PixelsToDips(dy);
+
+                recipient.OnMouseMotion(device, dipsX, dipsY, dipsDeltaX, dipsDeltaY);
             }
         }
 
