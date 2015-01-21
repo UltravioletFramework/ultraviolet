@@ -277,7 +277,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
                 CacheDesiredContentRegion(availableSize);
                 return MeasureContent(availableSize);
             }
-            return MeasureComponents(availableSize);
+            else
+            {
+                if (contentPresenter == null)
+                {
+                    CacheDesiredContentRegion(availableSize);
+                    MeasureContent(availableSize);
+                }
+                return MeasureComponents(availableSize);
+            }
         }
 
         /// <inheritdoc/>
@@ -288,7 +296,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
                 CacheRenderContentRegion(finalSize);
                 return ArrangeContent(finalSize, options);
             }
-            return ArrangeComponents(finalSize, options);
+            else
+            {
+                if (contentPresenter == null)
+                {
+                    CacheRenderContentRegion(finalSize);
+                    ArrangeContent(finalSize, options);
+                }
+                return ArrangeComponents(finalSize, options);
+            }
         }
 
         /// <inheritdoc/>
@@ -301,6 +317,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             }
             else
             {
+                if (contentPresenter == null)
+                {
+                    CacheRelativeAndAbsoluteContentRegion();
+                    PositionContent(AbsolutePosition);
+                }
                 PositionComponents(AbsolutePosition);
             }
         }
