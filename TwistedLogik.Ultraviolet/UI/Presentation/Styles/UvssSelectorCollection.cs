@@ -24,6 +24,24 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
             return String.Join(", ", selectors.Select(x => x.ToString()));
         }
 
+        /// <summary>
+        /// Gets the selector at the specified index within the collection.
+        /// </summary>
+        /// <param name="ix">The index of the selector to retrieve.</param>
+        /// <returns>The selector at the specified index within the collection.</returns>
+        public UvssSelector this[Int32 ix]
+        {
+            get { return selectors[ix]; }
+        }
+
+        /// <summary>
+        /// Gets the number of selectors in the collection.
+        /// </summary>
+        public Int32 Count
+        {
+            get { return selectors.Count; }
+        }
+
         // State values.
         private readonly List<UvssSelector> selectors;
     }

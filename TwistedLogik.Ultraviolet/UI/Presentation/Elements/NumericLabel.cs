@@ -91,15 +91,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             var font = Font;
             if (font != null && font.IsLoaded)
             {
-                FrameworkResources.StringFormatter.Reset();
-                FrameworkResources.StringFormatter.AddArgument(Value);
-                FrameworkResources.StringFormatter.Format(Format ?? "{0}", FrameworkResources.StringBuffer);
+                View.Resources.StringFormatter.Reset();
+                View.Resources.StringFormatter.AddArgument(Value);
+                View.Resources.StringFormatter.Format(Format ?? "{0}", View.Resources.StringBuffer);
 
                 var display  = Ultraviolet.GetPlatform().Displays.PrimaryDisplay;
                 var face     = font.Resource.Value.GetFace(FontStyle);
                 var position = (Vector2)display.PixelsToDips(AbsolutePosition);
 
-                dc.SpriteBatch.DrawString(face, FrameworkResources.StringBuffer, position, FontColor * dc.Opacity);
+                dc.SpriteBatch.DrawString(face, View.Resources.StringBuffer, position, FontColor * dc.Opacity);
             }
             base.DrawOverride(time, dc);
         }
@@ -111,12 +111,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             if (font == null || !font.IsLoaded)
                 return Size2D.Zero;
 
-            FrameworkResources.StringFormatter.Reset();
-            FrameworkResources.StringFormatter.AddArgument(Value);
-            FrameworkResources.StringFormatter.Format(Format ?? "{0}", FrameworkResources.StringBuffer);
+            View.Resources.StringFormatter.Reset();
+            View.Resources.StringFormatter.AddArgument(Value);
+            View.Resources.StringFormatter.Format(Format ?? "{0}", View.Resources.StringBuffer);
 
             var face = font.Resource.Value.GetFace(FontStyle);
-            return face.MeasureString(FrameworkResources.StringBuffer);
+            return face.MeasureString(View.Resources.StringBuffer);
         }
 
         /// <inheritdoc/>

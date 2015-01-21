@@ -386,8 +386,10 @@
     <Compile Include="UI\Presentation\HorizontalAlignment.cs" />
     <Compile Include="UI\Presentation\FrameworkResource.cs" />
     <Compile Include="UI\Presentation\SourcedImage.cs" />
+    <Compile Include="UI\Presentation\StyledDependencyObject.cs" />
     <Compile Include="UI\Presentation\Styles\UvssClassCollection.cs" />
     <Compile Include="UI\Presentation\Styles\UvssClassCollection.IEnumerable.cs" />
+    <Compile Include="UI\Presentation\UIViewResources.cs" />
     <Compile Include="UI\Presentation\VerticalAlignment.cs" />
     <Compile Include="UI\Presentation\Visibility.cs" />
     <Compile Include="UI\Presentation\LayoutUtil.cs" />
@@ -445,7 +447,6 @@
     <Compile Include="UI\Presentation\SourcedAssetID.cs" />
     <Compile Include="UI\Presentation\SourcedResource.cs" />
     <Compile Include="UI\Presentation\UIElementAttribute.cs" />
-    <Compile Include="UI\Presentation\FrameworkResources.cs" />
     <Compile Include="UI\Presentation\PresentationFrameworkManager.RegisteredElement.cs" />
     <Compile Include="UI\Presentation\PresentationFrameworkManager.cs" />
     <Compile Include="UI\Presentation\UIElement.cs" />

@@ -71,6 +71,20 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         }
 
         /// <summary>
+        /// Gets a value indicating whether this selector matches the view's resource manager.
+        /// </summary>
+        /// <returns><c>true</c> if this selector matches the view's resource manager; otherwise, <c>false</c>.</returns>
+        public Boolean IsViewResourceSelector()
+        {
+            if (parts.Count != 1)
+                return false;
+
+            var part = parts[0];
+
+            return !part.HasClasses && !part.HasID && String.Equals(part.Element, "view");
+        }
+
+        /// <summary>
         /// Gets a value indicating whether the selector matches the specified UI element.
         /// </summary>
         /// <param name="element">The UI element to evaluate.</param>

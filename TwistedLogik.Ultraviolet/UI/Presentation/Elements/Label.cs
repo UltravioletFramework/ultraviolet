@@ -63,7 +63,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             {
                 var display  = Ultraviolet.GetPlatform().Displays.PrimaryDisplay;
                 var position = (Vector2)display.DipsToPixels(AbsolutePosition);
-                FrameworkResources.TextRenderer.Draw(dc.SpriteBatch, textLayoutResult, position, FontColor * dc.Opacity);
+                View.Resources.TextRenderer.Draw(dc.SpriteBatch, textLayoutResult, position, FontColor * dc.Opacity);
             }
 
             base.DrawOverride(time, dc);
@@ -110,7 +110,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             var text = Text;
             if (!String.IsNullOrEmpty(text))
             {
-                FrameworkResources.TextRenderer.Parse(text, textParserResult);
+                View.Resources.TextRenderer.Parse(text, textParserResult);
             }
         }
 
@@ -132,7 +132,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
                     (Int32)sizePixels.Width, 
                     (Int32)sizePixels.Height, flags, FontStyle);
 
-                FrameworkResources.TextRenderer.CalculateLayout(textParserResult, textLayoutResult, settings);
+                View.Resources.TextRenderer.CalculateLayout(textParserResult, textLayoutResult, settings);
             }
         }
 

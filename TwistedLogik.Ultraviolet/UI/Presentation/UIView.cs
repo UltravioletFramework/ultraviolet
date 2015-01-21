@@ -26,6 +26,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             this.viewModelType = viewModelType;
 
+            this.resources = new UIViewResources(this);
+
             this.layoutRoot = new Grid(uv, null);
             this.layoutRoot.HorizontalAlignment = HorizontalAlignment.Stretch;
             this.layoutRoot.VerticalAlignment = VerticalAlignment.Stretch;
@@ -374,6 +376,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             this.globalContent = global;
             this.localContent  = local;
 
+            resources.Reload();
+
             layoutRoot.ReloadContent(true);
         }
 
@@ -387,10 +391,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             if (stylesheet != null)
             {
+                LoadViewResources(stylesheet);
                 layoutRoot.Style(stylesheet);
             }
             else
             {
+                LoadViewResources(null);
                 layoutRoot.ClearStyledValues(true);
             }
         }
@@ -702,6 +708,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Gets the view's global resource collection.
+        /// </summary>
+        public UIViewResources Resources
+        {
+            get { return resources; }
+        }
+
+        /// <summary>
         /// Gets the window that contains the view.
         /// </summary>
         public IUltravioletWindow Window
@@ -726,6 +740,20 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 UnhookMouseEvents();
             }
             base.Dispose(disposing);
+        }
+
+        /// <summary>
+        /// Loads the view's global resources from the specified stylesheet.
+        /// </summary>
+        /// <param name="stylesheet">The stylesheet from which to load global resources.</param>
+        private void LoadViewResources(UvssDocument stylesheet)
+        {
+            resources.ClearStyledValues();
+
+            if (stylesheet != null)
+            {
+                resources.ApplyStyles(stylesheet);
+            }
         }
 
         /// <summary>
@@ -964,6 +992,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         private Rectangle area;
         private Boolean focused;
         private Grid layoutRoot;
+        private readonly UIViewResources resources;
         private IUltravioletWindow window;
 
         // State values.

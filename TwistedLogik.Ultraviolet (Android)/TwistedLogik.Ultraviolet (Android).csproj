@@ -1071,9 +1071,6 @@
     <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\FrameworkResource.cs">
       <Link>UI\Presentation\FrameworkResource.cs</Link>
     </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\FrameworkResources.cs">
-      <Link>UI\Presentation\FrameworkResources.cs</Link>
-    </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\GridLength.cs">
       <Link>UI\Presentation\GridLength.cs</Link>
     </Compile>
@@ -1121,6 +1118,9 @@
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\SourcedResource.cs">
       <Link>UI\Presentation\SourcedResource.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\StyledDependencyObject.cs">
+      <Link>UI\Presentation\StyledDependencyObject.cs</Link>
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Styles\NamespaceDoc.cs">
       <Link>UI\Presentation\Styles\NamespaceDoc.cs</Link>
@@ -1256,6 +1256,9 @@
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\UIView.cs">
       <Link>UI\Presentation\UIView.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\UIViewResources.cs">
+      <Link>UI\Presentation\UIViewResources.cs</Link>
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\UvmlException.cs">
       <Link>UI\Presentation\UvmlException.cs</Link>
@@ -1416,7 +1419,7 @@
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" ProjectLinkReference="f071abe3-05e5-4df9-a929-cf71b01ec50a" />
+      <UserProperties ProjectLinkReference="f071abe3-05e5-4df9-a929-cf71b01ec50a" ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" />
     </VisualStudio>
   </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

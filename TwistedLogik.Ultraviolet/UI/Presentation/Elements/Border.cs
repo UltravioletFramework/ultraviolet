@@ -72,7 +72,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
 
             var borderColor     = BorderColor;
             var borderThickness = display.DipsToPixels(BorderThickness);
-            var borderArea      = display.DipsToPixels(AbsoluteBounds);
+            var borderArea      = display.DipsToPixels(RelativeBounds);
 
             var leftSize = Math.Min(borderThickness.Left, borderArea.Width);
             var leftArea = new RectangleD(borderArea.Left, borderArea.Top, leftSize, borderArea.Height);
@@ -88,10 +88,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             var bottomPos  = Math.Max(borderArea.Top, borderArea.Bottom - bottomSize);
             var bottomArea = new RectangleD(borderArea.Left, bottomPos, borderArea.Width, bottomSize);
 
-            dc.SpriteBatch.Draw(FrameworkResources.BlankTexture, (RectangleF)leftArea, borderColor);
-            dc.SpriteBatch.Draw(FrameworkResources.BlankTexture, (RectangleF)topArea, borderColor);
-            dc.SpriteBatch.Draw(FrameworkResources.BlankTexture, (RectangleF)rightArea, borderColor);
-            dc.SpriteBatch.Draw(FrameworkResources.BlankTexture, (RectangleF)bottomArea, borderColor);
+            DrawBlank(dc, leftArea, borderColor);
+            DrawBlank(dc, topArea, borderColor);
+            DrawBlank(dc, rightArea, borderColor);
+            DrawBlank(dc, bottomArea, borderColor);
 
             DrawContent(time, dc);
 

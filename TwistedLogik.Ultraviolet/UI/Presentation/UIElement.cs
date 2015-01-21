@@ -2,10 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Linq.Expressions;
-using System.Reflection;
 using TwistedLogik.Nucleus;
-using TwistedLogik.Nucleus.Data;
 using TwistedLogik.Ultraviolet.Content;
 using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
 using TwistedLogik.Ultraviolet.Input;
@@ -101,23 +98,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
     /// <summary>
     /// Represents the base class for all elements within the Ultraviolet Presentation Framework.
     /// </summary>
-    public abstract class UIElement : DependencyObject
+    public abstract class UIElement : StyledDependencyObject
     {
-        /// <summary>
-        /// Represents a method which sets the value of a styled property on a UI element.
-        /// </summary>
-        /// <param name="element">The UI element on which to set the style.</param>
-        /// <param name="value">The string representation of the value to set for the style.</param>
-        /// <param name="provider">An object that supplies culture-specific formatting information.</param>
-        internal delegate void StyleSetter(UIElement element, String value, IFormatProvider provider);
-
         /// <summary>
         /// Initialies the <see cref="UIElement"/> type.
         /// </summary>
         static UIElement()
         {
-            miFromString     = typeof(ObjectResolver).GetMethod("FromString", new Type[] { typeof(String), typeof(Type), typeof(IFormatProvider) });
-            miSetStyledValue = typeof(DependencyObject).GetMethod("SetStyledValue");
         }
 
         /// <summary>
@@ -138,8 +125,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             {
                 this.name = attr.Name;
             }
-
-            CreateStyleSetters();
         }
 
         /// <summary>
@@ -978,32 +963,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             new DependencyPropertyMetadata(HandleOpacityChanged, () => 1.0f, DependencyPropertyOptions.None));
 
         /// <summary>
-        /// Finds a styled dependency property according to its styling name.
+        /// Applies a visual state transition to the element.
         /// </summary>
-        /// <param name="name">The styling name of the dependency property to retrieve.</param>
-        /// <param name="type">The type to search for a dependency property.</param>
-        /// <returns>The <see cref="DependencyProperty"/> instance which matches the specified styling name, or <c>null</c> if no
-        /// such dependency property exists on this object.</returns>
-        internal static DependencyProperty FindStyledDependencyProperty(String name, Type type)
+        /// <param name="style">The style which defines the state transition.</param>
+        /// <param name="value">The transition value.</param>
+        internal virtual void ApplyStyledVisualStateTransition(UvssStyle style, String value)
         {
-            Contract.RequireNotEmpty("name", name);
-            Contract.Require(type, "type");
 
-            while (type != null)
-            {
-                Dictionary<String, DependencyProperty> styledPropertiesForCurrentType;
-                if (styledProperties.TryGetValue(type, out styledPropertiesForCurrentType))
-                {
-                    DependencyProperty dp;
-                    if (styledPropertiesForCurrentType.TryGetValue(name, out dp))
-                    {
-                        return dp;
-                    }
-                }
-
-                type = type.BaseType;
-            }
-            return null;
         }
 
         /// <summary>
@@ -1077,53 +1043,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
-        /// Applies the specified stylesheet's styles to this element and its children.
-        /// </summary>
-        /// <param name="stylesheet">The stylesheet to apply to the element.</param>
-        internal virtual void ApplyStyles(UvssDocument stylesheet)
-        {
-            stylesheet.ApplyStyles(this);
-        }
-
-        /// <summary>
-        /// Applies a style to the element.
-        /// </summary>
-        /// <param name="style">The style which is being applied.</param>
-        /// <param name="selector">The selector which caused the style to be applied.</param>
-        /// <param name="attached">A value indicating whether thie style represents an attached property.</param>
-        internal virtual void ApplyStyle(UvssStyle style, UvssSelector selector, Boolean attached)
-        {
-            Contract.Require(style, "style");
-            Contract.Require(selector, "selector");
-
-            var name  = style.Name;
-            var value = style.Value.Trim();
-
-            if (name == "transition")
-            {
-                ApplyStyledVisualStateTransition(style, value);
-            }
-            else
-            {
-                var setter = attached ? Parent.GetStyleSetter(name, selector.PseudoClass) : GetStyleSetter(name, selector.PseudoClass);
-                if (setter == null)
-                    return;
-
-                setter(this, value, CultureInfo.InvariantCulture);
-            }
-        }
-
-        /// <summary>
-        /// Applies a visual state transition to the element.
-        /// </summary>
-        /// <param name="style">The style which defines the state transition.</param>
-        /// <param name="value">The transition value.</param>
-        internal virtual void ApplyStyledVisualStateTransition(UvssStyle style, String value)
-        {
-
-        }
-
-        /// <summary>
         /// Gets the stylesheet that was most recently passed to the <see cref="Style(UvssDocument)"/> method.
         /// </summary>
         internal UvssDocument MostRecentStylesheet
@@ -1187,6 +1106,43 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             InvalidateArrange();
             base.OnMeasureAffectingPropertyChanged();
+        }
+
+        /// <summary>
+        /// Applies the specified stylesheet's styles to this element and its children.
+        /// </summary>
+        /// <param name="stylesheet">The stylesheet to apply to the element.</param>
+        protected internal sealed override void ApplyStyles(UvssDocument stylesheet)
+        {
+            stylesheet.ApplyStyles(this);
+        }
+
+        /// <summary>
+        /// Applies a style to the element.
+        /// </summary>
+        /// <param name="style">The style which is being applied.</param>
+        /// <param name="selector">The selector which caused the style to be applied.</param>
+        /// <param name="attached">A value indicating whether thie style represents an attached property.</param>
+        protected internal sealed override void ApplyStyle(UvssStyle style, UvssSelector selector, Boolean attached)
+        {
+            Contract.Require(style, "style");
+            Contract.Require(selector, "selector");
+
+            var name  = style.Name;
+            var value = style.Value.Trim();
+
+            if (name == "transition")
+            {
+                ApplyStyledVisualStateTransition(style, value);
+            }
+            else
+            {
+                var setter = attached ? Parent.GetStyleSetter(name, selector.PseudoClass) : GetStyleSetter(name, selector.PseudoClass);
+                if (setter == null)
+                    return;
+
+                setter(this, value, CultureInfo.InvariantCulture);
+            }
         }
 
         /// <summary>
@@ -1795,9 +1751,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="area">The area, relative to the element, in which to draw the image. A value of
         /// <c>null</c> specifies that the image should fill the element's entire area on the screen.</param>
         /// <param name="color">The color with which to draw the image.</param>
-        /// <param name="drawBlankImage">A value indicating whether a blank placeholder should be drawn if 
+        /// <param name="drawBlank">A value indicating whether a blank placeholder should be drawn if 
         /// the specified image does not exist or is not loaded.</param>
-        protected void DrawImage(DrawingContext dc, SourcedImage image, RectangleD? area, Color color, Boolean drawBlankImage = false)
+        protected void DrawImage(DrawingContext dc, SourcedImage image, RectangleD? area, Color color, Boolean drawBlank = false)
         {
             Contract.Require(dc, "dc");
 
@@ -1805,29 +1761,56 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (colorPlusOpacity.Equals(Color.Transparent))
                 return;
 
-            var imageAreaRel = area ?? new RectangleD(0, 0, RenderSize.Width, RenderSize.Height);
-            var imageAreaAbs = new RectangleD(AbsoluteBounds.X + imageAreaRel.X, AbsoluteBounds.Y + imageAreaRel.Y, 
-                imageAreaRel.Width, imageAreaRel.Height);
-
-            var imageAreaPix = (Rectangle)Ultraviolet.GetPlatform().Displays.PrimaryDisplay.DipsToPixels(imageAreaAbs);
-
             var imageResource = image.Resource;
             if (imageResource == null || !imageResource.IsLoaded)
             {
-                if (drawBlankImage)
+                if (drawBlank)
                 {
-                    dc.SpriteBatch.Draw(FrameworkResources.BlankTexture, imageAreaPix, colorPlusOpacity);
+                    DrawBlank(dc, area, colorPlusOpacity);
                 }
             }
             else
             {
-                var effects  = SpriteEffects.None;
+                var imageAreaRel = area ?? new RectangleD(0, 0, RenderSize.Width, RenderSize.Height);
+                var imageAreaAbs = imageAreaRel + AbsolutePosition;
+                var imageAreaPix = (RectangleF)Ultraviolet.GetPlatform().Displays.PrimaryDisplay.DipsToPixels(imageAreaAbs);
+
                 var origin   = new Vector2(imageAreaPix.Width / 2f, imageAreaPix.Height / 2f);
                 var position = (Vector2)imageAreaAbs.Center;
 
-                dc.SpriteBatch.DrawImage(imageResource, position,
-                    imageAreaPix.Width, imageAreaPix.Height, colorPlusOpacity, 0f, origin, effects, 0f);
+                dc.SpriteBatch.DrawImage(imageResource, position, (Int32)imageAreaPix.Width, (Int32)imageAreaPix.Height, 
+                    colorPlusOpacity, 0f, origin, SpriteEffects.None, 0f);
             }
+        }
+
+        /// <summary>
+        /// Draws a blank rectangle.
+        /// </summary>
+        /// <param name="dc">The drawing context that describes the render state of the layout.</param>
+        /// <param name="area">The area, relative to the element, in which to draw the image. A value of
+        /// <c>null</c> specifies that the image should fill the element's entire area on the screen.</param>
+        /// <param name="color">The color with which to draw the image.</param>
+        protected void DrawBlank(DrawingContext dc, RectangleD? area, Color color)
+        {
+            Contract.Require(dc, "dc");
+
+            var colorPlusOpacity = color * dc.Opacity;
+            if (colorPlusOpacity.Equals(Color.Transparent))
+                return;
+
+            var imageResource = View.Resources.BlankImage.Resource;
+            if (imageResource == null)
+                return;
+            
+            var imageAreaRel = area ?? new RectangleD(0, 0, RenderSize.Width, RenderSize.Height);
+            var imageAreaAbs = imageAreaRel + AbsolutePosition;            
+            var imageAreaPix = (RectangleF)Ultraviolet.GetPlatform().Displays.PrimaryDisplay.DipsToPixels(imageAreaAbs);
+
+            var origin   = new Vector2(imageAreaPix.Width / 2f, imageAreaPix.Height / 2f);
+            var position = (Vector2)imageAreaAbs.Center;
+
+            dc.SpriteBatch.DrawImage(imageResource, position, (Int32)imageAreaPix.Width, (Int32)imageAreaPix.Height, 
+                colorPlusOpacity, 0f, origin, SpriteEffects.None, 0f);
         }
 
         /// <summary>
@@ -1878,102 +1861,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             var element = (UIElement)dobj;
             element.OnOpacityChanged();
-        }
-
-        /// <summary>
-        /// Gets the style setter for the style with the specified name.
-        /// </summary>
-        /// <param name="name">The name of the style for which to retrieve a setter.</param>
-        /// <returns>A function to set the value of the specified style.</returns>
-        private StyleSetter GetStyleSetter(String name)
-        {
-            return GetStyleSetter(name, null);
-        }
-
-        /// <summary>
-        /// Gets the style setter for the style with the specified name.
-        /// </summary>
-        /// <param name="name">The name of the style for which to retrieve a setter.</param>
-        /// <param name="pseudoClass">The pseudo-class of the style for which to retrieve a setter.</param>
-        /// <returns>A function to set the value of the specified style.</returns>
-        private StyleSetter GetStyleSetter(String name, String pseudoClass)
-        {
-            var currentType = GetType();
-
-            lock (styleSetters)
-            {
-                while (currentType != null && typeof(UIElement).IsAssignableFrom(currentType))
-                {
-                    Dictionary<UvssStyleKey, StyleSetter> styleSettersForCurrentType;
-                    if (styleSetters.TryGetValue(currentType, out styleSettersForCurrentType))
-                    {
-                        StyleSetter setter;
-                        if (styleSettersForCurrentType.TryGetValue(new UvssStyleKey(name, pseudoClass), out setter))
-                        {
-                            return setter;
-                        }
-                    }
-
-                    currentType = currentType.BaseType;
-                }
-            }
-
-            return null;
-        }
-
-        /// <summary>
-        /// Dynamically compiles a collection of lambda methods which can be used to apply styles
-        /// to the element's properties.
-        /// </summary>
-        private void CreateStyleSetters()
-        {
-            var currentType = GetType();
-
-            while (currentType != null && typeof(UIElement).IsAssignableFrom(currentType))
-            {
-                Dictionary<UvssStyleKey, StyleSetter> styleSettersForCurrentType;
-                Dictionary<String, DependencyProperty> styledPropertiesForCurrentType;
-                if (!styleSetters.TryGetValue(currentType, out styleSettersForCurrentType))
-                {
-                    styleSettersForCurrentType     = new Dictionary<UvssStyleKey, StyleSetter>();
-                    styledPropertiesForCurrentType = new Dictionary<String, DependencyProperty>();
-
-                    var styledDependencyProperties = 
-                            from field in currentType.GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static)
-                            let attr = field.GetCustomAttributes(typeof(StyledAttribute), false).SingleOrDefault()
-                            let type = field.FieldType
-                            let name = field.Name
-                            where
-                                attr != null &&
-                                type == typeof(DependencyProperty)
-                            select new { Attribute = (StyledAttribute)attr, FieldInfo = field };
-
-                    foreach (var prop in styledDependencyProperties)
-                    {
-                        var dp                  = (DependencyProperty)prop.FieldInfo.GetValue(null);
-                        var dpType              = dp.PropertyType;
-
-                        var setStyledValue      = miSetStyledValue.MakeGenericMethod(dpType);
-
-                        var expParameterElement = Expression.Parameter(typeof(UIElement), "element");
-                        var expParameterValue   = Expression.Parameter(typeof(String), "value");
-                        var expParameterFmtProv = Expression.Parameter(typeof(IFormatProvider), "provider");
-                        var expResolveValue     = Expression.Convert(Expression.Call(miFromString, expParameterValue, Expression.Constant(dpType), expParameterFmtProv), dpType);
-                        var expCallMethod       = Expression.Call(expParameterElement, setStyledValue, Expression.Constant(dp), expResolveValue);
-
-                        var lambda = Expression.Lambda<StyleSetter>(expCallMethod, expParameterElement, expParameterValue, expParameterFmtProv).Compile();
-
-                        var styleKey = new UvssStyleKey(prop.Attribute.Name, prop.Attribute.PseudoClass);
-                        styleSettersForCurrentType[styleKey] = lambda;
-                        styledPropertiesForCurrentType[prop.Attribute.Name] = dp;
-                    }
-
-                    styleSetters[currentType]     = styleSettersForCurrentType;
-                    styledProperties[currentType] = styledPropertiesForCurrentType;
-                }
-
-                currentType = currentType.BaseType;
-            }
         }
 
         /// <summary>
@@ -2128,13 +2015,5 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         // The collection of active storyboard clocks on this element.
         private readonly Dictionary<Storyboard, StoryboardClock> storyboardClocks = 
             new Dictionary<Storyboard, StoryboardClock>();
-
-        // Functions for setting styles on known element types.
-        private static readonly MethodInfo miFromString;
-        private static readonly MethodInfo miSetStyledValue;
-        private static readonly Dictionary<Type, Dictionary<String, DependencyProperty>> styledProperties = 
-            new Dictionary<Type, Dictionary<String, DependencyProperty>>();
-        private static readonly Dictionary<Type, Dictionary<UvssStyleKey, StyleSetter>> styleSetters = 
-            new Dictionary<Type, Dictionary<UvssStyleKey, StyleSetter>>();
     }
 }
