@@ -95,9 +95,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
                 View.Resources.StringFormatter.AddArgument(Value);
                 View.Resources.StringFormatter.Format(Format ?? "{0}", View.Resources.StringBuffer);
 
-                var display  = Ultraviolet.GetPlatform().Displays.PrimaryDisplay;
                 var face     = font.Resource.Value.GetFace(FontStyle);
-                var position = (Vector2)display.PixelsToDips(AbsolutePosition);
+                var position = (Vector2)Display.PixelsToDips(AbsolutePosition);
 
                 dc.SpriteBatch.DrawString(face, View.Resources.StringBuffer, position, FontColor * dc.Opacity);
             }

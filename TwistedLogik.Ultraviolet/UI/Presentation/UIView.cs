@@ -24,9 +24,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public UIView(UltravioletContext uv, Type viewModelType)
             : base(uv)
         {
-            this.viewModelType = viewModelType;
-
-            this.resources = new UIViewResources(this);
+            this.viewModelType  = viewModelType;
+            this.resources      = new UIViewResources(this);
+            this.drawingContext = new DrawingContext(this);
 
             this.layoutRoot = new Grid(uv, null);
             this.layoutRoot.HorizontalAlignment = HorizontalAlignment.Stretch;
@@ -435,12 +435,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             if (newSize)
             {
-                var display = Ultraviolet.GetPlatform().Displays.PrimaryDisplay;
-
-                var dipsX      = display.PixelsToDips(area.X);
-                var dipsY      = display.PixelsToDips(area.Y);
-                var dipsWidth  = display.PixelsToDips(area.Width);
-                var dipsHeight = display.PixelsToDips(area.Height);
+                var dipsX      = Display.PixelsToDips(area.X);
+                var dipsY      = Display.PixelsToDips(area.Y);
+                var dipsWidth  = Display.PixelsToDips(area.Width);
+                var dipsHeight = Display.PixelsToDips(area.Height);
 
                 layoutRoot.Measure(new Size2D(dipsWidth, dipsHeight));
                 layoutRoot.Arrange(new RectangleD(0, 0, dipsWidth, dipsHeight));
@@ -716,11 +714,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
-        /// Gets the window that contains the view.
+        /// Gets the window in which the view is being rendered.
         /// </summary>
         public IUltravioletWindow Window
         {
             get { return window; }
+        }
+
+        /// <summary>
+        /// Gets the display on which the view is being rendered.
+        /// </summary>
+        public IUltravioletDisplay Display
+        {
+            get { return Ultraviolet.GetPlatform().Displays.PrimaryDisplay; }
         }
         
         /// <summary>
@@ -1002,6 +1008,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         private UIElement elementWithFocus;
 
         // The UI's drawing context.
-        private readonly DrawingContext drawingContext = new DrawingContext();
+        private readonly DrawingContext drawingContext;
     }
 }

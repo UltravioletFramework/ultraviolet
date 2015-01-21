@@ -68,11 +68,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <inheritdoc/>
         protected override void DrawOverride(UltravioletTime time, DrawingContext dc)
         {
-            var display       = Ultraviolet.GetPlatform().Displays.PrimaryDisplay;
-
             var borderColor     = BorderColor;
-            var borderThickness = display.DipsToPixels(BorderThickness);
-            var borderArea      = display.DipsToPixels(RelativeBounds);
+            var borderThickness = Display.DipsToPixels(BorderThickness);
+            var borderArea      = Display.DipsToPixels(RelativeBounds);
 
             var leftSize = Math.Min(borderThickness.Left, borderArea.Width);
             var leftArea = new RectangleD(borderArea.Left, borderArea.Top, leftSize, borderArea.Height);
