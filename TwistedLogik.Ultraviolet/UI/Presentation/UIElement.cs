@@ -634,6 +634,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Gets a value indicating whether this element has input focus.
+        /// </summary>
+        public Boolean IsFocused
+        {
+            get { return (View == null) ? false : View.HasFocus(this); }
+        }
+
+        /// <summary>
         /// Gets a value indicating whether the mouse cursor is currently hovering over this element.
         /// </summary>
         public Boolean IsHovering

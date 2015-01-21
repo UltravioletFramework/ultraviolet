@@ -286,6 +286,42 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             return base.GetElementAtPointCore(x, y, isHitTest);
         }
 
+        /// <inheritdoc/>
+        protected override void DrawContent(UltravioletTime time, DrawingContext dc)
+        {
+            if (Content != null)
+            {
+                var clip = ClipContentRectangle;
+                if (clip != null)
+                    dc.PushClipRectangle(clip.Value);
+
+                if (contentElement != null)
+                {
+                    contentElement.Draw(time, dc);
+                }
+                else
+                {
+                    if (Content != null && Font.IsLoaded)
+                    {
+                        var position = (Vector2)Display.DipsToPixels(AbsoluteContentRegion.Location);
+                        View.Resources.TextRenderer.Draw(dc.SpriteBatch, textLayoutResult, position, FontColor * dc.Opacity);
+                    }
+                }
+
+                if (clip != null)
+                    dc.PopClipRectangle();
+            }
+        }
+
+        /// <inheritdoc/>
+        protected override void UpdateContent(UltravioletTime time)
+        {
+            if (contentElement != null)
+            {
+                contentElement.Update(time);
+            }
+        }
+
         /// <summary>
         /// Raises the <see cref="HorizontalContentAlignmentChanged"/> event.
         /// </summary>
@@ -319,49 +355,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             if (temp != null)
             {
                 temp(this);
-            }
-        }
-
-        /// <summary>
-        /// Draws the control's content.
-        /// </summary>
-        /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Draw(UltravioletTime)"/>.</param>
-        /// <param name="dc">The drawing context that describes the render state of the layout.</param>
-        protected override void DrawContent(UltravioletTime time, DrawingContext dc)
-        {
-            if (Content != null)
-            {
-                var clip = ClipContentRectangle;
-                if (clip != null)
-                    dc.PushClipRectangle(clip.Value);
-
-                if (contentElement != null)
-                {
-                    contentElement.Draw(time, dc);
-                }
-                else
-                {
-                    if (Content != null && Font.IsLoaded)
-                    {
-                        var position = (Vector2)Display.DipsToPixels(AbsoluteContentRegion.Location);
-                        View.Resources.TextRenderer.Draw(dc.SpriteBatch, textLayoutResult, position, FontColor * dc.Opacity);
-                    }
-                }
-
-                if (clip != null)
-                    dc.PopClipRectangle();
-            }
-        }
-
-        /// <summary>
-        /// Updates the control's content.
-        /// </summary>
-        /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Update(UltravioletTime)"/>.</param>
-        protected void UpdateContent(UltravioletTime time)
-        {
-            if (contentElement != null)
-            {
-                contentElement.Update(time);
             }
         }
 
