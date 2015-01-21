@@ -624,6 +624,7 @@
     <EmbeddedResource Include="UI\Presentation\Elements\Templates\VScrollBar.xml" />
     <EmbeddedResource Include="UI\Presentation\Elements\Templates\RadioButton.xml" />
     <EmbeddedResource Include="UI\Presentation\Elements\Templates\CheckBox.xml" />
+    <EmbeddedResource Include="UI\Presentation\Elements\Templates\TextBox.xml" />
     <Content Include="uv.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
