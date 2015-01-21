@@ -484,8 +484,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <summary>
         /// Draws the element's text.
         /// </summary>
-        /// <param name="spriteBatch">The sprite batch with which to draw the element's text.</param>
-        /// <param name="opacity">The opacity with which to draw the element's text.</param>
+        /// <param name="dc">The drawing context that describes the render state of the layout.</param>
         protected virtual void DrawText(DrawingContext dc)
         {
             if (!Font.IsLoaded || (String.IsNullOrEmpty(Text) && !View.HasFocus(this)))
@@ -516,9 +515,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <summary>
         /// Draws the text selection box.
         /// </summary>
-        /// <param name="spriteBatch">The sprite batch with which to draw the text selection box.</param>
-        /// <param name="opacity">The cumulative opacity of all of the element's parent elements.</param>
-        /// <param name="textArea">A <see cref="Rectangle"/> describing the absolute screen area in which the element draws its text.</param>
+        /// <param name="dc">The drawing context that describes the render state of the layout.</param>
         protected virtual void DrawTextSelection(DrawingContext dc)
         {
             if (!IsTextSelected || !Font.IsLoaded)
@@ -537,9 +534,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <summary>
         /// Draws the text caret.
         /// </summary>
-        /// <param name="spriteBatch">The sprite batch with which to draw the text caret.</param>
-        /// <param name="opacity">The cumulative opacity of all of the element's parent elements.</param>
-        /// <param name="textArea">A <see cref="Rectangle"/> describing the absolute screen area in which the element draws its text.</param>
+        /// <param name="dc">The drawing context that describes the render state of the layout.</param>
         protected virtual void DrawTextCaret(DrawingContext dc)
         {
             if (!IsCaretDisplayed || !IsCaretVisible || IsTextSelected)
