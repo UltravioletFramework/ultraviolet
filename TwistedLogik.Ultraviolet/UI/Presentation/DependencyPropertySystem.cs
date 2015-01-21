@@ -10,6 +10,28 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
     internal static class DependencyPropertySystem
     {
         /// <summary>
+        /// Initializes the specified object's dependency properties.
+        /// </summary>
+        /// <param name="dobj">The object to initialize.</param>
+        public static void InitializeObject(DependencyObject dobj)
+        {
+            Contract.Require(dobj, "dobj");
+
+            var type = dobj.GetType();
+            while (type != null && typeof(DependencyObject).IsAssignableFrom(type))
+            {
+                var domain = GetPropertyDomain(type);
+
+                foreach (var kvp in domain)
+                {
+                    dobj.InitializeDependencyProperty(kvp.Value);
+                }
+
+                type = type.BaseType;
+            }
+        }
+
+        /// <summary>
         /// Registers a new dependency property.
         /// </summary>
         /// <param name="name">The dependency property's name.</param>

@@ -49,6 +49,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             PopulateElement(uv, view.LayoutRoot, xml, context);
 
+            view.LayoutRoot.InitializeDependencyProperties(true);
+
             return view;
         }
 
