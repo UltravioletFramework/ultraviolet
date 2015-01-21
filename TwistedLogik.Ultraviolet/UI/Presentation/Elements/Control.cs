@@ -457,7 +457,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <param name="dobj">The dependency object that raised the event.</param>
         private static void HandlePaddingChanged(DependencyObject dobj)
         {
-            var control = (ContentControl)dobj;
+            var control = (Control)dobj;
             control.OnPaddingChanged();
         }
 

@@ -1050,6 +1050,15 @@
     <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Elements\StackPanel.cs">
       <Link>UI\Presentation\Elements\StackPanel.cs</Link>
     </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Elements\TextBox.cs">
+      <Link>UI\Presentation\Elements\TextBox.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Elements\TextBox.OffsetPosition.cs">
+      <Link>UI\Presentation\Elements\TextBox.OffsetPosition.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Elements\TextBoxInsertionMode.cs">
+      <Link>UI\Presentation\Elements\TextBoxInsertionMode.cs</Link>
+    </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Elements\ToggleButton.cs">
       <Link>UI\Presentation\Elements\ToggleButton.cs</Link>
     </Compile>

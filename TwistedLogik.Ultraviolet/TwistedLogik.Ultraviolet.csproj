@@ -370,6 +370,9 @@
     <Compile Include="UI\Presentation\Elements\RadioButton.cs" />
     <Compile Include="UI\Presentation\Elements\RangeBase.cs" />
     <Compile Include="UI\Presentation\Elements\RepeatButton.cs" />
+    <Compile Include="UI\Presentation\Elements\TextBox.cs" />
+    <Compile Include="UI\Presentation\Elements\TextBox.OffsetPosition.cs" />
+    <Compile Include="UI\Presentation\Elements\TextBoxInsertionMode.cs" />
     <Compile Include="UI\Presentation\Elements\ToggleButton.cs" />
     <Compile Include="UI\Presentation\Elements\WrapPanel.cs" />
     <Compile Include="UI\Presentation\Elements\StackPanel.cs" />
