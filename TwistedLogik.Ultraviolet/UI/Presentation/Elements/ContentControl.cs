@@ -327,7 +327,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// </summary>
         /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Draw(UltravioletTime)"/>.</param>
         /// <param name="dc">The drawing context that describes the render state of the layout.</param>
-        protected void DrawContent(UltravioletTime time, DrawingContext dc)
+        protected override void DrawContent(UltravioletTime time, DrawingContext dc)
         {
             if (Content != null)
             {

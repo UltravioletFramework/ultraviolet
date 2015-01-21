@@ -20,6 +20,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <inheritdoc/>
+        protected override void DrawOverride(UltravioletTime time, DrawingContext dc)
+        {
+            if (Control != null)
+            {
+                Control.OnContentPresenterDraw(time, dc);
+            }
+            base.DrawOverride(time, dc);
+        }
+
+        /// <inheritdoc/>
         protected override Size2D MeasureOverride(Size2D availableSize)
         {
             if (Control == null)

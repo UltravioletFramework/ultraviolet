@@ -153,7 +153,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         protected override void DrawOverride(UltravioletTime time, DrawingContext dc)
         {
             DrawBackgroundImage(dc);
-            DrawContent(time, dc);
 
             base.DrawOverride(time, dc);
         }

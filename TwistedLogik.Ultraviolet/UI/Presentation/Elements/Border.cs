@@ -69,8 +69,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         protected override void DrawOverride(UltravioletTime time, DrawingContext dc)
         {
             var borderColor     = BorderColor;
-            var borderThickness = Display.DipsToPixels(BorderThickness);
-            var borderArea      = Display.DipsToPixels(RelativeBounds);
+            var borderThickness = BorderThickness;
+            var borderArea      = new RectangleD(0, 0, RelativeBounds.Width, RelativeBounds.Height);
 
             var leftSize = Math.Min(borderThickness.Left, borderArea.Width);
             var leftArea = new RectangleD(borderArea.Left, borderArea.Top, leftSize, borderArea.Height);
@@ -90,8 +90,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             DrawBlank(dc, topArea, borderColor);
             DrawBlank(dc, rightArea, borderColor);
             DrawBlank(dc, bottomArea, borderColor);
-
-            DrawContent(time, dc);
 
             base.DrawOverride(time, dc);
         }
