@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Xml.Linq;
 using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet.UI.Presentation.Elements;
@@ -365,6 +366,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 if (ctor == null)
                     throw new InvalidOperationException(UltravioletStrings.UIElementInvalidCtor.Format(elementType));
 
+                RuntimeHelpers.RunClassConstructor(type.TypeHandle);
+
                 var registration = new RegisteredElement(
                     elementType.ElementAttribute.Name,
                     elementType.ElementType,
@@ -401,6 +404,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var ctor = type.GetConstructor(new[] { typeof(UltravioletContext), typeof(String) });
             if (ctor == null)
                 throw new InvalidOperationException(UltravioletStrings.UIElementInvalidCtor.Format(type.Name));
+
+            RuntimeHelpers.RunClassConstructor(type.TypeHandle);
 
             RegisterDefaultComponentTemplate(type, uiElementAttr);
 
