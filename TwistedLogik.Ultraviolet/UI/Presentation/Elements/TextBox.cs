@@ -289,7 +289,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <inheritdoc/>
-        protected internal override void OnMouseMotion(MouseDevice device, Int32 x, Int32 y, Int32 dx, Int32 dy)
+        protected internal override void OnMouseMotion(MouseDevice device, Double x, Double y, Double dx, Double dy)
         {
             if (mouseSelectionInProgress && !String.IsNullOrEmpty(Text))
             {
@@ -303,17 +303,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
                 }
                 else
                 {
+                    var delta = (Int32)dx;
+
                     // Cursor is left of box, moving left
-                    if (x < textArea.Left && dx < 0)
+                    if (x < textArea.Left && delta < 0)
                     {
-                        MoveSelectionLeft(Math.Abs(dx));
+                        MoveSelectionLeft(Math.Abs(delta));
                         ScrollToSelectionHead();
                     }
 
                     // Cursor is right of box, moving right
-                    if (x >= textArea.Right && dx > 0)
+                    if (x >= textArea.Right && delta > 0)
                     {
-                        MoveSelectionRight(Math.Abs(dx));
+                        MoveSelectionRight(Math.Abs(delta));
                         ScrollToSelectionHead();
                     }
                 }

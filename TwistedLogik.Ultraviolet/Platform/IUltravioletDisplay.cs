@@ -201,6 +201,54 @@ namespace TwistedLogik.Ultraviolet.Platform
         RectangleD DipsToInches(RectangleD dips);
 
         /// <summary>
+        /// Converts a <see cref="Vector2"/> value with coordinates and dimensions in inches 
+        /// to a <see cref="Vector2"/> value with coordinates and dimensions in display pixels.
+        /// </summary>
+        /// <param name="inches">The <see cref="Vector2"/> in inches to convert.</param>
+        /// <returns>The converted <see cref="Vector2"/> in display pixels.</returns>
+        Vector2 InchesToPixels(Vector2 inches);
+
+        /// <summary>
+        /// Converts a <see cref="Vector2"/> value with coordinates and dimensions in display pixels 
+        /// to a <see cref="Vector2"/> value with coordinates and dimensions in inches.
+        /// </summary>
+        /// <param name="pixels">The <see cref="Vector2"/> in display pixels to convert.</param>
+        /// <returns>The converted <see cref="Vector2"/> in inches.</returns>
+        Vector2 PixelsToInches(Vector2 pixels);
+
+        /// <summary>
+        /// Converts a <see cref="Vector2"/> value with coordinates and dimensions in display independent pixels 
+        /// to a <see cref="Vector2"/> value with coordinates and dimensions in display pixels.
+        /// </summary>
+        /// <param name="dips">The <see cref="Vector2"/> in display independent pixels to convert.</param>
+        /// <returns>The converted <see cref="Vector2"/> in display pixels.</returns>
+        Vector2 DipsToPixels(Vector2 dips);
+
+        /// <summary>
+        /// Converts a <see cref="Vector2"/> value with coordinates and dimensions in display pixels 
+        /// to a <see cref="Vector2"/> value with coordinates and dimensions in display independent pixels.
+        /// </summary>
+        /// <param name="pixels">The <see cref="Vector2"/> in display pixels to convert.</param>
+        /// <returns>The converted <see cref="Vector2"/> in display independent pixels.</returns>
+        Vector2 PixelsToDips(Vector2 pixels);
+
+        /// <summary>
+        /// Converts a <see cref="Vector2"/> value with coordinates and dimensions in inches 
+        /// to a <see cref="Vector2"/> value with coordinates and dimensions in display independent pixels.
+        /// </summary>
+        /// <param name="inches">The <see cref="Vector2"/> in inches to convert.</param>
+        /// <returns>The converted <see cref="Vector2"/> in display independent pixels.</returns>
+        Vector2 InchesToDips(Vector2 inches);
+
+        /// <summary>
+        /// Converts a <see cref="Vector2"/> value with coordinates and dimensions in display independent pixels 
+        /// to a <see cref="Vector2"/> value with coordinates and dimensions in inches.
+        /// </summary>
+        /// <param name="dips">The <see cref="Vector2"/> in display independent pixels to convert.</param>
+        /// <returns>The converted <see cref="Vector2"/> in inches.</returns>
+        Vector2 DipsToInches(Vector2 dips);
+        
+        /// <summary>
         /// Gets the display's bounds.
         /// </summary>
         Rectangle Bounds

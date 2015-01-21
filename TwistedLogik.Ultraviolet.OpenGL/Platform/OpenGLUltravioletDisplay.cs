@@ -243,6 +243,60 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
         }
 
         /// <inheritdoc/>
+        public Vector2 InchesToPixels(Vector2 inches)
+        {
+            var x = (Single)InchesToPixels(inches.X);
+            var y = (Single)InchesToPixels(inches.Y);
+
+            return new Vector2(x, y);
+        }
+
+        /// <inheritdoc/>
+        public Vector2 PixelsToInches(Vector2 pixels)
+        {
+            var x = (Single)PixelsToInches(pixels.X);
+            var y = (Single)PixelsToInches(pixels.Y);
+
+            return new Vector2(x, y);
+        }
+
+        /// <inheritdoc/>
+        public Vector2 DipsToPixels(Vector2 dips)
+        {
+            var x = (Single)DipsToPixels(dips.X);
+            var y = (Single)DipsToPixels(dips.Y);
+
+            return new Vector2(x, y);
+        }
+
+        /// <inheritdoc/>
+        public Vector2 PixelsToDips(Vector2 pixels)
+        {
+            var x = (Single)PixelsToDips(pixels.X);
+            var y = (Single)PixelsToDips(pixels.Y);
+
+            return new Vector2(x, y);
+        }
+
+        /// <inheritdoc/>
+        public Vector2 InchesToDips(Vector2 inches)
+        {
+            var x = (Single)InchesToDips(inches.X);
+            var y = (Single)InchesToDips(inches.Y);
+
+            return new Vector2(x, y);
+        }
+
+        /// <inheritdoc/>
+        public Vector2 DipsToInches(Vector2 dips)
+        {
+            var x = (Single)DipsToInches(dips.X);
+            var y = (Single)DipsToInches(dips.Y);
+
+            return new Vector2(x, y);
+        }
+
+        /// <inheritdoc/>
         public Rectangle Bounds
         {
             get
