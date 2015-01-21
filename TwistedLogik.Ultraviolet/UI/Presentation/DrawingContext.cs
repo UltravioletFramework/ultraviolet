@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation
@@ -13,9 +14,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Initializes a new instance of the <see cref="DrawingContext"/> class.
         /// </summary>
-        internal DrawingContext()
+        internal DrawingContext(UIView view)
         {
+            Contract.Require(view, "view");
 
+            this.view = view;
         }
 
         /// <summary>
@@ -114,8 +117,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 return;
 
             var uv       = SpriteBatch.Ultraviolet;
-            var display  = uv.GetPlatform().Displays.PrimaryDisplay;
-            var cliprect = (ClipRectangle == null) ? (Rectangle?)null : (Rectangle?)display.DipsToPixels(ClipRectangle.Value);
+            var cliprect = (ClipRectangle == null) ? (Rectangle?)null : (Rectangle?)view.Display.DipsToPixels(ClipRectangle.Value);
 
             SpriteBatch.Flush();
             SpriteBatch.Ultraviolet.GetGraphics().SetScissorRectangle(cliprect);
@@ -125,6 +127,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         private SpriteBatch spriteBatch;
 
         // State values.
+        private readonly UIView view;
         private readonly Stack<OpacityState> opacityStack = new Stack<OpacityState>(32);
         private readonly Stack<ClipState> clipStack = new Stack<ClipState>(32);
     }

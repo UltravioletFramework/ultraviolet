@@ -22,14 +22,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <inheritdoc/>
         protected override void DrawOverride(UltravioletTime time, DrawingContext dc)
         {
-            var display = Ultraviolet.GetPlatform().Displays.PrimaryDisplay;
-            var bounds  = (RectangleF)display.DipsToPixels(AbsoluteBounds);
-
-            var imgPosition = new Vector2(0, 0);
-            var imgWidth    = 0;
-            var imgHeight   = 0;
-
-            dc.SpriteBatch.DrawImage(View.Resources.BlankImage, imgPosition, imgWidth, imgHeight, FillColor * dc.Opacity);
+            DrawBlank(dc, null, FillColor * dc.Opacity);
 
             base.DrawOverride(time, dc);
         }

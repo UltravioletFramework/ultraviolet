@@ -89,8 +89,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             var source = Source;
             if (source.IsLoaded)
             {
-                var display = Ultraviolet.GetPlatform().Displays.PrimaryDisplay;
-                return display.PixelsToDips(source.Resource.MinimumSize);
+                return Display.PixelsToDips(source.Resource.MinimumSize);
             }
             return Size2D.Zero;
         }

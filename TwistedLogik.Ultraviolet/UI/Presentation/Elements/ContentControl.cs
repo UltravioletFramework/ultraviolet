@@ -203,10 +203,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             {
                 UpdateTextLayoutCache(availableSize);
 
-                var display = Ultraviolet.GetPlatform().Displays.PrimaryDisplay;
-
-                var dipsWidth  = display.PixelsToDips(textLayoutResult.ActualWidth);
-                var dipsHeight = display.PixelsToDips(textLayoutResult.ActualHeight);
+                var dipsWidth  = Display.PixelsToDips(textLayoutResult.ActualWidth);
+                var dipsHeight = Display.PixelsToDips(textLayoutResult.ActualHeight);
                 var dipsSize   = new Size2D(dipsWidth, dipsHeight);
 
                 return GetTotalContentPadding() + dipsSize;
@@ -345,9 +343,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
                 {
                     if (Content != null && Font.IsLoaded)
                     {
-                        var display  = Ultraviolet.GetPlatform().Displays.PrimaryDisplay;
-                        var position = (Vector2)display.DipsToPixels(AbsoluteContentRegion.Location);
-
+                        var position = (Vector2)Display.DipsToPixels(AbsoluteContentRegion.Location);
                         View.Resources.TextRenderer.Draw(dc.SpriteBatch, textLayoutResult, position, FontColor * dc.Opacity);
                     }
                 }
@@ -439,10 +435,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
 
             if (textParserResult.Count > 0)
             {
-                var display = Ultraviolet.GetPlatform().Displays.PrimaryDisplay;
-
-                var availableWidth  = (Int32)display.DipsToPixels(availableSize.Width);
-                var availableHeight = (Int32)display.DipsToPixels(availableSize.Height);
+                var availableWidth  = (Int32)Display.DipsToPixels(availableSize.Width);
+                var availableHeight = (Int32)Display.DipsToPixels(availableSize.Height);
 
                 var flags    = LayoutUtil.ConvertAlignmentsToTextFlags(HorizontalContentAlignment, VerticalContentAlignment);                
                 var settings = new TextLayoutSettings(Font, availableWidth, availableHeight, flags, FontStyle);

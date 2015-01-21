@@ -61,8 +61,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
 
             if (textLayoutResult.Count > 0)
             {
-                var display  = Ultraviolet.GetPlatform().Displays.PrimaryDisplay;
-                var position = (Vector2)display.DipsToPixels(AbsolutePosition);
+                var position = (Vector2)Display.DipsToPixels(AbsolutePosition);
                 View.Resources.TextRenderer.Draw(dc.SpriteBatch, textLayoutResult, position, FontColor * dc.Opacity);
             }
 
@@ -74,9 +73,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         {
             UpdateTextLayoutResult(availableSize);
 
-            var display    = Ultraviolet.GetPlatform().Displays.PrimaryDisplay;
             var sizePixels = new Size2D(textLayoutResult.ActualWidth, textLayoutResult.ActualHeight);
-            var sizeDips   = display.PixelsToDips(sizePixels);
+            var sizeDips   = Display.PixelsToDips(sizePixels);
 
             return sizeDips;
         }
@@ -124,8 +122,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
 
             if (textParserResult.Count > 0)
             {
-                var display    = Ultraviolet.GetPlatform().Displays.PrimaryDisplay;
-                var sizePixels = display.DipsToPixels(availableSize);
+                var sizePixels = Display.DipsToPixels(availableSize);
 
                 var flags    = LayoutUtil.ConvertAlignmentsToTextFlags(HorizontalContentAlignment, VerticalContentAlignment);
                 var settings = new TextLayoutSettings(Font, 

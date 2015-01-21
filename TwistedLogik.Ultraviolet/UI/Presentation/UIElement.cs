@@ -6,6 +6,7 @@ using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet.Content;
 using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
 using TwistedLogik.Ultraviolet.Input;
+using TwistedLogik.Ultraviolet.Platform;
 using TwistedLogik.Ultraviolet.UI.Presentation.Animations;
 using TwistedLogik.Ultraviolet.UI.Presentation.Elements;
 using TwistedLogik.Ultraviolet.UI.Presentation.Styles;
@@ -457,10 +458,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <returns>The element at the specified pixel coordinates, or <c>null</c> if no such element exists.</returns>
         public UIElement GetElementAtPixel(Int32 x, Int32 y, Boolean isHitTest)
         {
-            var display = Ultraviolet.GetPlatform().Displays.PrimaryDisplay;
-
-            var dipsX = display.PixelsToDips(x);
-            var dipsY = display.PixelsToDips(y);
+            var dipsX = Display.PixelsToDips(x);
+            var dipsY = Display.PixelsToDips(y);
 
             return GetElementAtPoint(dipsX, dipsY, isHitTest);
         }
@@ -1773,7 +1772,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             {
                 var imageAreaRel = area ?? new RectangleD(0, 0, RenderSize.Width, RenderSize.Height);
                 var imageAreaAbs = imageAreaRel + AbsolutePosition;
-                var imageAreaPix = (RectangleF)Ultraviolet.GetPlatform().Displays.PrimaryDisplay.DipsToPixels(imageAreaAbs);
+                var imageAreaPix = (RectangleF)Display.DipsToPixels(imageAreaAbs);
 
                 var origin   = new Vector2(imageAreaPix.Width / 2f, imageAreaPix.Height / 2f);
                 var position = (Vector2)imageAreaAbs.Center;
@@ -1804,13 +1803,29 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             
             var imageAreaRel = area ?? new RectangleD(0, 0, RenderSize.Width, RenderSize.Height);
             var imageAreaAbs = imageAreaRel + AbsolutePosition;            
-            var imageAreaPix = (RectangleF)Ultraviolet.GetPlatform().Displays.PrimaryDisplay.DipsToPixels(imageAreaAbs);
+            var imageAreaPix = (RectangleF)Display.DipsToPixels(imageAreaAbs);
 
             var origin   = new Vector2(imageAreaPix.Width / 2f, imageAreaPix.Height / 2f);
             var position = (Vector2)imageAreaAbs.Center;
 
             dc.SpriteBatch.DrawImage(imageResource, position, (Int32)imageAreaPix.Width, (Int32)imageAreaPix.Height, 
                 colorPlusOpacity, 0f, origin, SpriteEffects.None, 0f);
+        }
+
+        /// <summary>
+        /// Gets the window in which the element is being displayed.
+        /// </summary>
+        protected IUltravioletWindow Window
+        {
+            get { return (View == null) ? null : View.Window; }
+        }
+
+        /// <summary>
+        /// Gets the display on which the element is being displayed.
+        /// </summary>
+        protected IUltravioletDisplay Display
+        {
+            get { return (View == null) ? null : View.Display; }
         }
 
         /// <summary>
