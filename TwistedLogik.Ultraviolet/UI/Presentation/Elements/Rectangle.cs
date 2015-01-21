@@ -25,7 +25,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             var display = Ultraviolet.GetPlatform().Displays.PrimaryDisplay;
             var bounds  = (RectangleF)display.DipsToPixels(AbsoluteBounds);
 
-            dc.SpriteBatch.Draw(FrameworkResources.BlankTexture, bounds, FillColor * dc.Opacity);
+            var imgPosition = new Vector2(0, 0);
+            var imgWidth    = 0;
+            var imgHeight   = 0;
+
+            dc.SpriteBatch.DrawImage(View.Resources.BlankImage, imgPosition, imgWidth, imgHeight, FillColor * dc.Opacity);
 
             base.DrawOverride(time, dc);
         }

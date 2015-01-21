@@ -1,0 +1,133 @@
+﻿using System;
+using System.Linq;
+using System.Text;
+using TwistedLogik.Nucleus;
+using TwistedLogik.Nucleus.Text;
+using TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text;
+using TwistedLogik.Ultraviolet.UI.Presentation.Styles;
+
+namespace TwistedLogik.Ultraviolet.UI.Presentation
+{
+    /// <summary>
+    /// Contains the global resources used by a Presentation Framework view.
+    /// </summary>
+    public sealed class UIViewResources : StyledDependencyObject
+    {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="UIViewResources"/> class.
+        /// </summary>
+        /// <param name="view">The view that owns this resource collection.</param>
+        internal UIViewResources(UIView view)
+        {
+            Contract.Require(view, "view");
+
+            this.view = view;
+        }
+
+        /// <summary>
+        /// Gets or sets the blank image used by this view for rendering elements.
+        /// </summary>
+        public SourcedImage BlankImage
+        {
+            get { return GetValue<SourcedImage>(BlankImageProperty); }
+            internal set { SetValue<SourcedImage>(BlankImageProperty, value); }
+        }
+
+        /// <summary>
+        /// Gets the view's global string formatter.
+        /// </summary>
+        public StringFormatter StringFormatter
+        {
+            get { return stringFormatter; }
+        }
+
+        /// <summary>
+        /// Gets the view's global string buffer.
+        /// </summary>
+        public StringBuilder StringBuffer
+        {
+            get { return stringBuffer; }
+        }
+
+        /// <summary>
+        /// Gets the view's global text renderer.
+        /// </summary>
+        public TextRenderer TextRenderer
+        {
+            get { return textRenderer; }
+        }
+
+        /// <summary>
+        /// Identifies the <see cref="BlankImage"/> dependency property.
+        /// </summary>
+        [Styled("blank-image")]
+        internal static readonly DependencyProperty BlankImageProperty = DependencyProperty.Register("BlankImage", typeof(SourcedImage), typeof(UIViewResources),
+            new DependencyPropertyMetadata(HandleBlankImagePropertyChanged, null, DependencyPropertyOptions.None));
+
+        /// <summary>
+        /// Reloads the view's resources.
+        /// </summary>
+        internal void Reload()
+        {
+            ReloadBlankImage();
+        }
+
+        /// <summary>
+        /// Reloads the image exposed by the <see cref="BlankImage"/> property.
+        /// </summary>
+        internal void ReloadBlankImage()
+        {
+            view.LoadImage(BlankImage);
+        }
+
+        /// <inheritdoc/>
+        protected internal sealed override void ApplyStyles(UvssDocument document)
+        {
+            var rule = document.Rules.Where(x => x.IsViewResourceRule()).LastOrDefault();
+            if (rule != null)
+            {
+                foreach (var style in rule.Styles)
+                {
+                    ApplyStyle(style, rule.Selectors[0], false);
+                }
+            }
+            base.ApplyStyles(document);
+        }
+
+        /// <inheritdoc/>
+        protected internal sealed override void ApplyStyle(UvssStyle style, UvssSelector selector, bool attached)
+        {
+            base.ApplyStyle(style, selector, attached);
+        }
+
+        /// <inheritdoc/>
+        protected internal sealed override Object DependencyDataSource
+        {
+            get { return null; }
+        }
+
+        /// <inheritdoc/>
+        protected internal sealed override DependencyObject DependencyContainer
+        {
+            get { return null; }
+        }
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="BlankImageProperty"/> dependency property changes.
+        /// </summary>
+        /// <param name="dobj">The dependency object that raised the event.</param>
+        private static void HandleBlankImagePropertyChanged(DependencyObject dobj)
+        {
+            var resources = (UIViewResources)dobj;
+            resources.ReloadBlankImage();
+        }
+
+        // Property values.
+        private readonly StringFormatter stringFormatter = new StringFormatter();
+        private readonly StringBuilder stringBuffer = new StringBuilder();
+        private readonly TextRenderer textRenderer = new TextRenderer();
+
+        // State values.
+        private readonly UIView view;
+    }
+}

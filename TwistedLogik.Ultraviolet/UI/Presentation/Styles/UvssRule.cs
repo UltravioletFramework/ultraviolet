@@ -25,6 +25,20 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         }
 
         /// <summary>
+        /// Gets a value indicating whether this rule is applied to the view's resource manager.
+        /// </summary>
+        /// <returns><c>true</c> if this rule is applied to the view's resource manager; otherwise, <c>false</c>.</returns>
+        public Boolean IsViewResourceRule()
+        {
+            if (selectors.Count != 1)
+                return false;
+
+            var selector = selectors[0];
+
+            return selector.IsViewResourceSelector();
+        }
+
+        /// <summary>
         /// Gets a value indicating whether the rule matches the specified UI element.
         /// </summary>
         /// <param name="element">The UI element to evaluate.</param>
