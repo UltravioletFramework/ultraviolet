@@ -2,40 +2,18 @@
 using System.ComponentModel;
 using System.Text;
 using TwistedLogik.Nucleus.Text;
-using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
 using TwistedLogik.Ultraviolet.Input;
 using TwistedLogik.Ultraviolet.UI.Presentation.Styles;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
 {
     /// <summary>
-    /// Represents a UI element used for text entry.
+    /// Represents a element used for entering a single line of text.
     /// </summary>
-    [UIElement("TextBox")]
+    [UIElement("TextBox", "TwistedLogik.Ultraviolet.UI.Presentation.Elements.Templates.TextBox.xml")]
     [DefaultProperty("Text")]
-    public class TextBox : UIElement
+    public partial class TextBox : Control
     {
-        /// <summary>
-        /// Represents the position of a text offset relative to the text area.
-        /// </summary>
-        private enum OffsetPosition
-        {
-            /// <summary>
-            /// The offset is to the left of the text area.
-            /// </summary>
-            Left,
-
-            /// <summary>
-            /// The offset is currently visible.
-            /// </summary>
-            Visible,
-
-            /// <summary>
-            /// The offset is to the right of the text area.
-            /// </summary>
-            Right,
-        }
-
         /// <summary>
         /// Initializes a new instance of the <see cref="TextBox"/> class.
         /// </summary>
@@ -45,15 +23,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             : base(uv, id)
         {
             SetDefaultValue<Boolean>(FocusableProperty, true);
-        }
-
-        /// <inheritdoc/>
-        public override void ReloadContent()
-        {
-            ReloadCaretImage();
-            ReloadSelectionImage();
-
-            base.ReloadContent();
         }
 
         /// <summary>
@@ -89,22 +58,22 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <summary>
-        /// Gets or sets the image used to draw the caret.
-        /// </summary>
-        public SourcedRef<Image> CaretImage
-        {
-            get { return GetValue<SourcedRef<Image>>(CaretImageProperty); }
-            set { SetValue<SourcedRef<Image>>(CaretImageProperty, value); }
-        }
-
-        /// <summary>
         /// Gets or sets the thickness of the caret while the text box's <see cref="InsertionMode"/> property
-        /// is set to <see cref="TextBoxInsertionMode.Overwrite"/>, specified in device independent pixels (1/96 of an inch).
+        /// is set to <see cref="TextBoxInsertionMode.Overwrite"/>, specified in device independent pixels.
         /// </summary>
         public Double CaretThickness
         {
             get { return GetValue<Double>(CaretThicknessProperty); }
             set { SetValue<Double>(CaretThicknessProperty, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets the image used to draw the caret.
+        /// </summary>
+        public SourcedImage CaretImage
+        {
+            get { return GetValue<SourcedImage>(CaretImageProperty); }
+            set { SetValue<SourcedImage>(CaretImageProperty, value); }
         }
 
         /// <summary>
@@ -119,10 +88,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <summary>
         /// Gets or sets the image used to draw the selection highlight.
         /// </summary>
-        public SourcedRef<Image> SelectionImage
+        public SourcedImage SelectionImage
         {
-            get { return GetValue<SourcedRef<Image>>(SelectionImageProperty); }
-            set { SetValue<SourcedRef<Image>>(SelectionImageProperty, value); }
+            get { return GetValue<SourcedImage>(SelectionImageProperty); }
+            set { SetValue<SourcedImage>(SelectionImageProperty, value); }
         }
 
         /// <summary>
@@ -154,14 +123,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         public event UIElementEventHandler MaxLengthChanged;
 
         /// <summary>
-        /// Occurs when the value of the <see cref="CaretImage"/> property changes.
-        /// </summary>
-        public event UIElementEventHandler CaretImageChanged;
-
-        /// <summary>
         /// Occurs when the value of the <see cref="CaretThickness"/> property changes.
         /// </summary>
         public event UIElementEventHandler CaretThicknessChanged;
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="CaretImage"/> property changes.
+        /// </summary>
+        public event UIElementEventHandler CaretImageChanged;
 
         /// <summary>
         /// Occurs when the value of the <see cref="CaretColor"/> property changes.
@@ -196,20 +165,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             new DependencyPropertyMetadata(HandleMaxLengthChanged, () => 0, DependencyPropertyOptions.None));
 
         /// <summary>
-        /// Identifies the <see cref="CaretImage"/> dependency property.
-        /// </summary>
-        [Styled("caret-image")]
-        public static readonly DependencyProperty CaretImageProperty = DependencyProperty.Register("CaretImage", typeof(SourcedRef<Image>), typeof(TextBox),
-            new DependencyPropertyMetadata(HandleCaretImageChanged, null, DependencyPropertyOptions.None));
-
-        /// <summary>
-        /// Identifies the <see cref="CaretColor"/> dependency property.
-        /// </summary>
-        [Styled("caret-color")]
-        public static readonly DependencyProperty CaretColorProperty = DependencyProperty.Register("CaretColor", typeof(Color), typeof(TextBox),
-            new DependencyPropertyMetadata(HandleCaretColorChanged, () => Color.DarkBlue * 0.8f, DependencyPropertyOptions.None));
-
-        /// <summary>
         /// Identifies the <see cref="CaretThickness"/> dependency property.
         /// </summary>
         [Styled("caret-thickness")]
@@ -217,10 +172,24 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             new DependencyPropertyMetadata(HandleCaretThicknessChanged, () => 4.0, DependencyPropertyOptions.None));
 
         /// <summary>
+        /// Identifies the <see cref="CaretImage"/> dependency property.
+        /// </summary>
+        [Styled("caret-image")]
+        public static readonly DependencyProperty CaretImageProperty = DependencyProperty.Register("CaretImage", typeof(SourcedImage), typeof(TextBox),
+            new DependencyPropertyMetadata(HandleCaretImageChanged, null, DependencyPropertyOptions.None));
+
+        /// <summary>
+        /// Identifies the <see cref="CaretColor"/> dependency property.
+        /// </summary>
+        [Styled("caret-color")]
+        public static readonly DependencyProperty CaretColorProperty = DependencyProperty.Register("CaretColor", typeof(Color), typeof(TextBox),
+            new DependencyPropertyMetadata(HandleCaretColorChanged, () => Color.Blue * 0.4f, DependencyPropertyOptions.None));
+
+        /// <summary>
         /// Identifies the <see cref="SelectionImage"/> dependency property.
         /// </summary>
         [Styled("selection-image")]
-        public static readonly DependencyProperty SelectionImageProperty = DependencyProperty.Register("SelectionImage", typeof(SourcedRef<Image>), typeof(TextBox),
+        public static readonly DependencyProperty SelectionImageProperty = DependencyProperty.Register("SelectionImage", typeof(SourcedImage), typeof(TextBox),
             new DependencyPropertyMetadata(HandleSelectionImageChanged, null, DependencyPropertyOptions.None));
 
         /// <summary>
@@ -325,7 +294,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             if (mouseSelectionInProgress && !String.IsNullOrEmpty(Text))
             {
                 // Cursor is inside box
-                var textArea = GetAbsoluteTextArea();
+                var textArea = AbsoluteContentRegion;
                 if (textArea.Left <= x && textArea.Right > x)
                 {
                     var index = CalculateIndexFromCursor(device);
@@ -361,7 +330,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
 
                 View.CaptureMouse(this);
 
-                textPosition        = CalculateIndexFromCursor(device);
+                textCaretPosition   = CalculateIndexFromCursor(device);
                 textSelectionLength = 0;
 
                 ScrollForwardToCaret();
@@ -379,23 +348,40 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             }
             base.OnMouseButtonReleased(device, button);
         }
-        
-        /// <inheritdoc/>
-        protected override void OnDrawing(UltravioletTime time, SpriteBatch spriteBatch, Single opacity)
-        {
-            DrawBackgroundImage(spriteBatch, opacity);
-            DrawFocusedImage(spriteBatch, opacity);
-            DrawText(spriteBatch, opacity);
 
-            base.OnDrawing(time, spriteBatch, opacity);
+        /// <inheritdoc/>
+        protected override void DrawOverride(UltravioletTime time, DrawingContext dc)
+        {
+            DrawBackgroundImage(dc);
+            DrawText(dc);
+
+            base.DrawOverride(time, dc);
         }
 
         /// <inheritdoc/>
-        protected override void OnUpdating(UltravioletTime time)
+        protected override void UpdateOverride(UltravioletTime time)
         {
             caretBlinkTimer = (caretBlinkTimer + time.ElapsedTime.TotalMilliseconds) % 1000.0;
 
-            base.OnUpdating(time);
+            base.UpdateOverride(time);
+        }
+
+        /// <inheritdoc/>
+        protected override void ReloadContentCore(Boolean recursive)
+        {
+            ReloadCaretImage();
+            ReloadSelectionImage();
+
+            base.ReloadContentCore(recursive);
+        }
+        
+        /// <inheritdoc/>
+        protected override RectangleD? ClipContentCore()
+        {
+            if (!Font.IsLoaded || (String.IsNullOrEmpty(Text) && !View.HasFocus(this)))
+                return null;
+
+            return AbsoluteContentRegion;
         }
 
         /// <summary>
@@ -499,35 +485,31 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// </summary>
         /// <param name="spriteBatch">The sprite batch with which to draw the element's text.</param>
         /// <param name="opacity">The opacity with which to draw the element's text.</param>
-        protected virtual void DrawText(SpriteBatch spriteBatch, Single opacity)
+        protected virtual void DrawText(DrawingContext dc)
         {
-            if (Font == null || (String.IsNullOrEmpty(Text) && !View.HasFocus(this)))
+            if (!Font.IsLoaded || (String.IsNullOrEmpty(Text) && !View.HasFocus(this)))
                 return;
 
-            var textArea = GetAbsoluteTextArea();
+            var textArea = AbsoluteContentRegion;
             if (textArea.Width <= 0 || textArea.Height <= 0)
                 return;
 
-            var scissorCurrent = Ultraviolet.GetGraphics().GetScissorRectangle();
-            var scissorText    = textArea;
+            var clip = ClipContentRectangle;
+            if (clip != null)
+                dc.PushClipRectangle(clip.Value);
 
-            spriteBatch.Flush();
-            Ultraviolet.GetGraphics().SetScissorRectangle(scissorText);
-
-            DrawTextSelection(spriteBatch, opacity, textArea);
+            DrawTextSelection(dc);
 
             if (!String.IsNullOrEmpty(Text))
             {
-                var fontColor = FontColor * Opacity * opacity;
-
-                spriteBatch.DrawString(Font.Regular, Text, 
-                    new Vector2(textArea.X + textScrollOffset, textArea.Y), fontColor);
+                var textPos = Display.DipsToPixels(AbsoluteContentRegion.Location + new Point2D(textScrollOffset, 0));
+                dc.SpriteBatch.DrawString(Font.Resource.Value.Regular, Text, (Vector2)textPos, FontColor * dc.Opacity);
             }
 
-            DrawTextCaret(spriteBatch, opacity, textArea);
+            DrawTextCaret(dc);
 
-            spriteBatch.Flush();
-            Ultraviolet.GetGraphics().SetScissorRectangle(scissorCurrent);
+            if (clip != null)
+                dc.PopClipRectangle();
         }
 
         /// <summary>
@@ -536,18 +518,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <param name="spriteBatch">The sprite batch with which to draw the text selection box.</param>
         /// <param name="opacity">The cumulative opacity of all of the element's parent elements.</param>
         /// <param name="textArea">A <see cref="Rectangle"/> describing the absolute screen area in which the element draws its text.</param>
-        protected virtual void DrawTextSelection(SpriteBatch spriteBatch, Single opacity, Rectangle textArea)
+        protected virtual void DrawTextSelection(DrawingContext dc)
         {
-            if (IsTextSelected && SelectionImage.Value != null && SelectionImage.Value.IsLoaded && Font != null)
-            {
-                var selectionStartOffset = CalculateOffsetFromIndex(SelectionStart);
-                var selectionEndOffset   = CalculateOffsetFromIndex(SelectionEnd);
-                var selectionWidth       = selectionEndOffset - selectionStartOffset;
-                var selectionHeight      = Font.Regular.LineSpacing;
-                var selectionPosition    = new Vector2(textArea.X + textScrollOffset + selectionStartOffset, textArea.Y);
+            if (!IsTextSelected || !Font.IsLoaded)
+                return;
 
-                spriteBatch.DrawImage(SelectionImage.Value, selectionPosition, selectionWidth, selectionHeight, SelectionColor * Opacity * opacity);
-            }
+            var selectionStartOffset = CalculateOffsetFromIndex(SelectionStart);
+            var selectionEndOffset   = CalculateOffsetFromIndex(SelectionEnd);
+            var selectionWidth       = selectionEndOffset - selectionStartOffset;
+            var selectionHeight      = Font.Resource.Value.Regular.LineSpacing;
+            var selectionPosition    = RelativeContentRegion + new Point2D(textScrollOffset + selectionStartOffset, 0);
+            var selectionArea        = new RectangleD(selectionPosition.X, selectionPosition.Y, selectionWidth, selectionHeight);
+
+            DrawImage(dc, SelectionImage, selectionArea, SelectionColor);
         }
 
         /// <summary>
@@ -556,34 +539,32 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <param name="spriteBatch">The sprite batch with which to draw the text caret.</param>
         /// <param name="opacity">The cumulative opacity of all of the element's parent elements.</param>
         /// <param name="textArea">A <see cref="Rectangle"/> describing the absolute screen area in which the element draws its text.</param>
-        protected virtual void DrawTextCaret(SpriteBatch spriteBatch, Single opacity, Rectangle textArea)
+        protected virtual void DrawTextCaret(DrawingContext dc)
         {
-            if (IsCaretDisplayed && IsCaretVisible && !IsTextSelected)
+            if (!IsCaretDisplayed || !IsCaretVisible || IsTextSelected)
+                return;
+
+            var caretOffset = CalculateCaretOffset();
+
+            if (InsertionMode == TextBoxInsertionMode.Insert)
             {
-                if (CaretImage.Value == null || !CaretImage.Value.IsLoaded)
-                    return;
+                var caretPosition = new Point2D(RelativeContentRegion.X + textScrollOffset + caretOffset, RelativeContentRegion.Y);
+                var caretArea     = new RectangleD(caretPosition.X, caretPosition.Y, CaretWidth, Font.Resource.Value.Regular.LineSpacing);
 
-                var caretOffset = CalculateCaretOffset();
+                DrawImage(dc, CaretImage, caretArea, CaretColor);
+            }
+            else
+            {
+                var textLength = (Text == null) ? 0 : Text.Length;
+                var caretChar1 = (textCaretPosition >= textLength) ? ' ' : Text[textCaretPosition];
+                var caretChar2 = (textCaretPosition + 1 >= textLength) ? ' ' : Text[textCaretPosition + 1];
+                var caretWidth = Font.Resource.Value.Regular.MeasureGlyph(caretChar1, caretChar2).Width;
 
-                if (InsertionMode == TextBoxInsertionMode.Insert)
-                {
-                    var caretPosition = new Vector2(textArea.X + textScrollOffset + caretOffset, textArea.Y);
-                    spriteBatch.DrawImage(CaretImage.Value, caretPosition, 1, Font.Regular.LineSpacing, CaretColor * Opacity * opacity);
-                }
-                else
-                {
-                    var display = Ultraviolet.GetPlatform().Displays.PrimaryDisplay;
+                var caretThickness = (Int32)Display.DipsToPixels(CaretThickness);
+                var caretPosition  = new Point2D(RelativeContentRegion.X + textScrollOffset + caretOffset, RelativeContentRegion.Bottom - caretThickness);
+                var caretArea      = new RectangleD(caretPosition.X, caretPosition.Y, caretWidth, caretThickness);
 
-                    var textLength = (Text == null) ? 0 : Text.Length;
-                    var caretChar1 = (textPosition >= textLength) ? ' ' : Text[textPosition];
-                    var caretChar2 = (textPosition + 1 >= textLength) ? ' ' : Text[textPosition + 1];
-                    var caretWidth = Font.Regular.MeasureGlyph(caretChar1, caretChar2).Width;
-
-                    var caretThickness = (Int32)display.DipsToPixels(CaretThickness);
-                    var caretPosition  = new Vector2(textArea.X + textScrollOffset + caretOffset, textArea.Bottom - caretThickness);
-
-                    spriteBatch.DrawImage(CaretImage.Value, caretPosition, caretWidth, caretThickness, CaretColor * Opacity * opacity);
-                }
+                DrawImage(dc, CaretImage, caretArea, CaretColor);
             }
         }
 
@@ -592,7 +573,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// </summary>
         protected void ReloadCaretImage()
         {
-            LoadContent(CaretImage);
+            LoadImage(CaretImage);
         }
 
         /// <summary>
@@ -600,7 +581,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// </summary>
         protected void ReloadSelectionImage()
         {
-            LoadContent(SelectionImage);
+            LoadImage(SelectionImage);
         }
 
         /// <summary>
@@ -612,8 +593,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             var textbox = (TextBox)dobj;
             textbox.OnTextChanged();
 
-            textbox.textPosition        = Math.Min(textbox.textPosition, (textbox.Text == null) ? 0 : textbox.Text.Length);
+            textbox.textCaretPosition   = Math.Min(textbox.textCaretPosition, (textbox.Text == null) ? 0 : textbox.Text.Length);
             textbox.textSelectionLength = 0;
+
+            textbox.ClipContent();
         }
 
         /// <summary>
@@ -709,17 +692,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
 
             if (Text == null)
             {
-                Text         = text;
-                textPosition = textLength;
+                Text = text;
+                textCaretPosition = textLength;
             }
             else
             {
-                if (InsertionMode == TextBoxInsertionMode.Overwrite && textPosition < Text.Length)
-                    Text = Text.Remove(textPosition, 1);
+                if (InsertionMode == TextBoxInsertionMode.Overwrite && textCaretPosition < Text.Length)
+                    Text = Text.Remove(textCaretPosition, 1);
 
-                var position = textPosition + textLength;
-                Text         = Text.Insert(textPosition, text);
-                textPosition = position;
+                var position = textCaretPosition + textLength;
+                Text = Text.Insert(textCaretPosition, text);
+                textCaretPosition = position;
             }
 
             ScrollForwardToCaret();
@@ -738,10 +721,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             }
             else
             {
-                if (textPosition > 0)
+                if (textCaretPosition > 0)
                 {
-                    textPosition--;
-                    Text = Text.Remove(textPosition, 1);
+                    textCaretPosition--;
+                    Text = Text.Remove(textCaretPosition, 1);
                 }
             }
             ScrollBackwardToCaret();
@@ -759,9 +742,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             }
             else
             {
-                if (Text != null && textPosition < Text.Length)
+                if (Text != null && textCaretPosition < Text.Length)
                 {
-                    Text = Text.Remove(textPosition, 1);
+                    Text = Text.Remove(textCaretPosition, 1);
                 }
             }
             ScrollBackwardToCaret();
@@ -776,14 +759,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         {
             if (IsTextSelected && !select)
             {
-                textPosition = SelectionEnd;
+                textCaretPosition = SelectionEnd;
                 textSelectionLength = 0;
             }
             else
             {
-                if (Text != null && textPosition < Text.Length)
+                if (Text != null && textCaretPosition < Text.Length)
                 {
-                    textPosition++;
+                    textCaretPosition++;
                     if (select)
                     {
                         textSelectionLength--;
@@ -804,14 +787,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         {
             if (IsTextSelected && !select)
             {
-                textPosition = SelectionStart;
+                textCaretPosition = SelectionStart;
                 textSelectionLength = 0;
             }
             else
             {
-                if (textPosition > 0)
+                if (textCaretPosition > 0)
                 {
-                    textPosition--;
+                    textCaretPosition--;
                     if (select)
                     {
                         textSelectionLength++;
@@ -829,9 +812,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// </summary>
         private void MoveHome()
         {
-            textPosition     = 0;
-            textScrollOffset = 0;
-            caretBlinkTimer  = 0;
+            textCaretPosition = 0;
+            textScrollOffset  = 0;
+            caretBlinkTimer   = 0;
         }
 
         /// <summary>
@@ -841,7 +824,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         {
             if (Text != null)
             {
-                textPosition = Text.Length;
+                textCaretPosition = Text.Length;
                 ScrollForwardToCaret();
             }
             caretBlinkTimer = 0;
@@ -852,7 +835,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// </summary>
         private void ScrollForwardToCaret()
         {
-            ScrollForwardToIndex(textPosition);
+            ScrollForwardToIndex(textCaretPosition);
         }
 
         /// <summary>
@@ -861,7 +844,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <param name="ix">The index of the character to which to scroll the text box.</param>
         private void ScrollForwardToIndex(Int32 ix)
         {
-            var width  = GetRelativeTextArea().Width;
+            var width  = RelativeContentRegion.Width;
             var offset = CalculateOffsetFromIndex(ix);
             if (offset + textScrollOffset > width)
             {
@@ -874,7 +857,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// </summary>
         private void ScrollBackwardToCaret()
         {
-            ScrollBackwardToIndex(textPosition);
+            ScrollBackwardToIndex(textCaretPosition);
         }
 
         /// <summary>
@@ -883,7 +866,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <param name="ix">The index of the character to which to scroll the text box.</param>
         private void ScrollBackwardToIndex(Int32 ix)
         {
-            var width  = GetRelativeTextArea().Width;
+            var width  = RelativeContentRegion.Width;
             var offset = CalculateOffsetFromIndex(ix);
             if (offset + textScrollOffset < 0)
             {
@@ -895,7 +878,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// Scrolls the text to the specified offset.
         /// </summary>
         /// <param name="offset">The offset to which to scroll the text.</param>
-        private void ScrollToOffset(Int32 offset)
+        private void ScrollToOffset(Double offset)
         {
             textScrollOffset = -Math.Max(0, offset);
         }
@@ -916,7 +899,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
                 case OffsetPosition.Right:
                     var length = (Text == null) ? 0 : Text.Length;
                     var next   = CalculateOffsetFromIndex(Math.Min(length, SelectionHead + 1));
-                    ScrollToOffset(next - GetRelativeTextArea().Width);
+                    ScrollToOffset(next - RelativeContentRegion.Width);
                     break;
             }
         }
@@ -930,7 +913,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             if (Text == null)
                 return;
 
-            var minLength = -textPosition;
+            var minLength = -textCaretPosition;
             textSelectionLength = Math.Max(minLength, textSelectionLength - count);
         }
 
@@ -943,7 +926,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             if (Text == null)
                 return;
 
-            var maxLength = Text.Length - textPosition;
+            var maxLength = Text.Length - textCaretPosition;
             textSelectionLength = Math.Min(maxLength, textSelectionLength + count);
         }
 
@@ -955,7 +938,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             if (Text == null)
                 return;
 
-            textPosition        = 0;
+            textCaretPosition   = 0;
             textSelectionLength = Text.Length;
         }
 
@@ -966,7 +949,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <param name="ix">The index which bounds the selection.</param>
         private void SelectToIndex(Int32 ix)
         {
-            textSelectionLength = ix - textPosition;
+            textSelectionLength = ix - textCaretPosition;
         }
 
         /// <summary>
@@ -979,7 +962,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
 
             var updatedText = Text.Remove(SelectionStart, SelectionEnd - SelectionStart);
 
-            textPosition        = SelectionStart;
+            textCaretPosition   = SelectionStart;
             textSelectionLength = 0;
 
             Text = updatedText;
@@ -1021,44 +1004,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <summary>
-        /// Gets the element's text area in element space.
-        /// </summary>
-        /// <returns>The element's text area in element space.</returns>
-        private Rectangle GetRelativeTextArea()
-        {
-            if (Font == null)
-                return Rectangle.Empty;
-
-            var display = Ultraviolet.GetPlatform().Displays.PrimaryDisplay;
-            var padding = display.DipsToPixels(Padding);
-
-            var textAreaWidth  = ActualWidth - ((Int32)padding.Left + (Int32)padding.Right);
-            var textAreaHeight = ActualHeight - ((Int32)padding.Top + (Int32)padding.Bottom);
-            var textX          = (Int32)padding.Left;
-            var textY          = (Int32)padding.Top + ((textAreaHeight - Font.Regular.LineSpacing) / 2);
-
-            return new Rectangle(textX, textY, textAreaWidth, Font.Regular.LineSpacing);
-        }
-
-        /// <summary>
-        /// Gets the element's text area in screen space.
-        /// </summary>
-        /// <returns>The element's text area in screen space.</returns>
-        private Rectangle GetAbsoluteTextArea()
-        {
-            var relative = GetRelativeTextArea();
-            return new Rectangle(AbsoluteScreenX + relative.X, AbsoluteScreenY + relative.Y, relative.Width, relative.Height);
-        }
-
-        /// <summary>
         /// Gets the position of the specified text offset relative to the currently visible text area.
         /// </summary>
         /// <param name="offset">The text offset to evaluate.</param>
         /// <returns>A <see cref="OffsetPosition"/> value indicating whether the offset is to the left of, to the right of,
         /// or inside of the currently visible text area.</returns>
-        private OffsetPosition GetRelativeOffsetPosition(Int32 offset)
+        private OffsetPosition GetRelativeOffsetPosition(Double offset)
         {
-            var relativeArea   = GetRelativeTextArea();
+            var relativeArea   = RelativeContentRegion;
             var relativeOffset = offset + textScrollOffset;
 
             if (relativeOffset < 0)
@@ -1075,14 +1028,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// </summary>
         /// <param name="mouse">The mouse device.</param>
         /// <returns>The offset of the character beneath the mouse cursor.</returns>
-        private Int32 CalculateOffsetFromCursor(MouseDevice mouse)
+        private Double CalculateOffsetFromCursor(MouseDevice mouse)
         {
-            var cursorPosition = ScreenPositionToElementPosition(mouse.Position);
+            var cursorpos  = Display.PixelsToDips((Point2D)mouse.Position) - AbsolutePosition;            
+            var textOffset = (cursorpos.X - RelativeContentRegion.X) - textScrollOffset;
 
-            var textArea   = GetRelativeTextArea();
-            var textOffset = (cursorPosition.X - textArea.X) - textScrollOffset;
-
-            return (Int32)textOffset;
+            return textOffset;
         }
 
         /// <summary>
@@ -1103,20 +1054,23 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// </summary>
         /// <param name="offset">The offset in pixels for which to calculate an index.</param>
         /// <returns>The index of the character at the specified offset within the text.</returns>
-        private Int32 CalculateIndexFromOffset(Int32 offset)
+        private Int32 CalculateIndexFromOffset(Double offset)
         {
-            if (String.IsNullOrEmpty(Text) || Font == null)
+            if (String.IsNullOrEmpty(Text) || !Font.IsLoaded)
                 return 0;
 
             if (offset <= 0)
                 return 0;
 
-            var length = 0;
+            var font     = Font.Resource.Value.Regular;
+            var length   = 0;
+            var pxoffset = (Int32)Display.DipsToPixels(offset);
+
             for (int i = 0; i < Text.Length; i++)
             {
-                length += Font.Regular.MeasureGlyph(Text, i).Width;
+                length += font.MeasureGlyph(Text, i).Width;
 
-                if (offset < length)
+                if (pxoffset < length)
                     return i;
             }
 
@@ -1128,26 +1082,28 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// </summary>
         /// <param name="ix">The index of the character for which to calculate an offset.</param>
         /// <returns>The offset of the specified character in pixels.</returns>
-        private Int32 CalculateOffsetFromIndex(Int32 ix)
+        private Double CalculateOffsetFromIndex(Int32 ix)
         {
-            if (String.IsNullOrEmpty(Text) || Font == null || ix <= 0 || ix > Text.Length)
+            if (String.IsNullOrEmpty(Text) || !Font.IsLoaded || ix <= 0 || ix > Text.Length)
                 return 0;
 
+            var font      = Font.Resource.Value.Regular;
             var text      = Text;
             var endOfLine = ix == text.Length;
             var segment   = new StringSegment(text, 0, ix);
-            var kerning   = Font.Regular.Kerning.Get(text[ix - 1], endOfLine ? ' ' : text[ix]);
-            var measure   = Font.Regular.MeasureString(segment);
-            return measure.Width + kerning;
+            var kerning   = font.Kerning.Get(text[ix - 1], endOfLine ? ' ' : text[ix]);
+            var measure   = font.MeasureString(segment);
+
+            return Display.PixelsToDips(measure.Width + kerning);
         }
 
         /// <summary>
         /// Calculates the current offset of the caret.
         /// </summary>
         /// <returns>The offset of the caret in pixels.</returns>
-        private Int32 CalculateCaretOffset()
+        private Double CalculateCaretOffset()
         {
-            return CalculateOffsetFromIndex(textPosition);
+            return CalculateOffsetFromIndex(textCaretPosition);
         }
 
         /// <summary>
@@ -1155,7 +1111,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// </summary>
         private Int32 SelectionStart
         {
-            get { return IsTextSelected ? Math.Min(textPosition + textSelectionLength, textPosition) : textPosition; }
+            get { return IsTextSelected ? Math.Min(textCaretPosition + textSelectionLength, textCaretPosition) : textCaretPosition; }
         }
 
         /// <summary>
@@ -1163,7 +1119,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// </summary>
         private Int32 SelectionEnd
         {
-            get { return IsTextSelected ? Math.Max(textPosition + textSelectionLength, textPosition) : textPosition; }
+            get { return IsTextSelected ? Math.Max(textCaretPosition + textSelectionLength, textCaretPosition) : textCaretPosition; }
         }
 
         /// <summary>
@@ -1172,7 +1128,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// </summary>
         private Int32 SelectionHead
         {
-            get { return IsTextSelected ? textPosition + textSelectionLength : textPosition; }
+            get { return IsTextSelected ? textCaretPosition + textSelectionLength : textCaretPosition; }
         }
 
         /// <summary>
@@ -1186,9 +1142,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <summary>
         /// Gets the width of the text box's caret in pixels.
         /// </summary>
-        private Int32 CaretWidth
+        private Double CaretWidth
         {
-            get { return 1; }
+            get { return 1.0; }
         }
 
         /// <summary>
@@ -1218,9 +1174,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         // State values.
         private readonly StringBuilder textBuffer = new StringBuilder();
         private Boolean mouseSelectionInProgress;
-        private Int32 textPosition = 0;
+        private Int32 textCaretPosition = 0;
         private Int32 textSelectionLength = 0;
-        private Int32 textScrollOffset = 0;
+        private Double textScrollOffset = 0;
         private Double caretBlinkTimer;
     }
 }
