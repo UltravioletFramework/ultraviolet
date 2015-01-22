@@ -159,8 +159,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
                 if (Double.IsNaN(child.DesiredSize.Width) || Double.IsNaN(child.DesiredSize.Height))
                     continue;
 
-                var cwidth = child.DesiredSize.Width;
-                var cheight = child.DesiredSize.Height;
+                var childWidth  = child.DesiredSize.Width;
+                var childHeight = child.DesiredSize.Height;
 
                 var left   = GetLeft(child);
                 var top    = GetTop(child);
@@ -168,19 +168,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
                 var bottom = GetBottom(child);
 
                 if (!Double.IsNaN(left))
-                    cwidth += left;
+                    childWidth += left;
 
                 if (!Double.IsNaN(right))
-                    cwidth += right;
+                    childWidth += right;
 
                 if (!Double.IsNaN(top))
-                    cheight += top;
+                    childHeight += top;
 
                 if (!Double.IsNaN(bottom))
-                    cheight += bottom;
+                    childHeight += bottom;
 
-                contentWidth = Math.Max(contentWidth, cwidth);
-                contentHeight = Math.Max(contentHeight, cheight);
+                contentWidth = Math.Max(contentWidth, childWidth);
+                contentHeight = Math.Max(contentHeight, childHeight);
             }
 
             var contentSize = new Size2D(contentWidth, contentHeight);
