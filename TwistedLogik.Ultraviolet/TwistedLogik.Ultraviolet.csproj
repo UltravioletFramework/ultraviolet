@@ -360,6 +360,8 @@
     <Compile Include="UI\Presentation\Elements\Button.cs" />
     <Compile Include="UI\Presentation\Elements\ButtonBase.cs" />
     <Compile Include="UI\Presentation\Elements\ClickMode.cs" />
+    <Compile Include="UI\Presentation\Elements\Dock.cs" />
+    <Compile Include="UI\Presentation\Elements\DockPanel.cs" />
     <Compile Include="UI\Presentation\Elements\Image.cs" />
     <Compile Include="UI\Presentation\Elements\NumericLabel.cs" />
     <Compile Include="UI\Presentation\Elements\LabelBase.cs" />
