@@ -327,7 +327,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
                 if (contentPresenter == null)
                 {
                     CacheDesiredContentRegion(availableSize);
-                    MeasureContent(availableSize);
+
+                    var sizeOfComponents = MeasureComponents(availableSize);
+                    var sizeOfContent    = MeasureContent(availableSize);
+
+                    return new Size2D(
+                        Math.Max(sizeOfComponents.Width, sizeOfContent.Width),
+                        Math.Max(sizeOfComponents.Height, sizeOfContent.Height));
                 }
                 return MeasureComponents(availableSize);
             }
@@ -346,7 +352,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
                 if (contentPresenter == null)
                 {
                     CacheRenderContentRegion(finalSize);
-                    ArrangeContent(finalSize, options);
+
+                    var sizeOfComponents = ArrangeComponents(finalSize, options);
+                    var sizeOfContent    = ArrangeContent(finalSize, options);
+
+                    return new Size2D(
+                        Math.Max(sizeOfComponents.Width, sizeOfContent.Width),
+                        Math.Max(sizeOfComponents.Height, sizeOfContent.Height));
                 }
                 return ArrangeComponents(finalSize, options);
             }
