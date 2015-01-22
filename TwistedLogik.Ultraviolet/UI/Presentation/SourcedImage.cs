@@ -10,6 +10,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
     public struct SourcedImage : IEquatable<SourcedImage>, IInterpolatable<SourcedImage>
     {
         /// <summary>
+        /// Initializes the <see cref="SourcedImage"/> type.
+        /// </summary>
+        static SourcedImage()
+        {
+            Tweening.Interpolators.RegisterDefault<SourcedImage>();
+        }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="SourcedImage"/> structure.
         /// </summary>
         /// <param name="image">The asset identifier of the resource.</param>

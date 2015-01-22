@@ -13,6 +13,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
     public struct Thickness : IEquatable<Thickness>, IInterpolatable<Thickness>
     {
         /// <summary>
+        /// Initializes the <see cref="Thickness"/> type.
+        /// </summary>
+        static Thickness()
+        {
+            Tweening.Interpolators.RegisterDefault<Thickness>();
+        }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="Thickness"/> structure.
         /// </summary>
         /// <param name="left"></param>

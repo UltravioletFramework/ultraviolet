@@ -508,6 +508,14 @@ namespace TwistedLogik.Ultraviolet
         }
 
         /// <summary>
+        /// Gets a value indicating whether the context has been initialized.
+        /// </summary>
+        public Boolean IsInitialized
+        {
+            get { return isInitialized; }
+        }
+
+        /// <summary>
         /// Gets a value indicating whether the object has been disposed.
         /// </summary>
         public Boolean Disposed
@@ -521,14 +529,33 @@ namespace TwistedLogik.Ultraviolet
         public static event EventHandler ContextInvalidated;
 
         /// <summary>
+        /// Occurs when the current context is initialized.
+        /// </summary>
+        public static event EventHandler ContextInitialized;
+
+        /// <summary>
         /// Occurs when the context is updating the application's state.
         /// </summary>
         public event UltravioletContextUpdateEventHandler Updating;
 
         /// <summary>
+        /// Occurs when the context is initialized.
+        /// </summary>
+        public event UltravioletContextEventHandler Initialized;
+
+        /// <summary>
         /// Occurs when the Ultraviolet context is being shut down.
         /// </summary>
         public event UltravioletContextEventHandler Shutdown;
+
+        /// <summary>
+        /// Retrieves the current Ultraviolet context, throwing an exception if it does not exist.
+        /// </summary>
+        /// <returns>The current Ultraviolet context, or <c>null</c> if no contex exists.</returns>
+        internal static UltravioletContext RequestCurrent()
+        {
+            return current;
+        }
 
         /// <summary>
         /// Retrieves the current Ultraviolet context, throwing an exception if it does not exist.
@@ -569,6 +596,17 @@ namespace TwistedLogik.Ultraviolet
                     OnContextInvalidated();
                 }
             }
+        }
+
+        /// <summary>
+        /// Initializes the context and marks it ready for use.
+        /// </summary>
+        protected void InitializeContext()
+        {
+            isInitialized = true;
+
+            OnInitialized();
+            OnContextInitialized();
         }
 
         /// <summary>
@@ -656,6 +694,18 @@ namespace TwistedLogik.Ultraviolet
         }
 
         /// <summary>
+        /// Raises the <see cref="Initialized"/> event.
+        /// </summary>
+        protected virtual void OnInitialized()
+        {
+            var temp = Initialized;
+            if (temp != null)
+            {
+                temp(this);
+            }
+        }
+
+        /// <summary>
         /// Raises the <see cref="Shutdown"/> event.
         /// </summary>
         protected virtual void OnShutdown()
@@ -681,6 +731,18 @@ namespace TwistedLogik.Ultraviolet
         protected UltravioletFactory Factory
         {
             get { return factory; }
+        }
+
+        /// <summary>
+        /// Raises the <see cref="ContextInitialized"/> event.
+        /// </summary>
+        private static void OnContextInitialized()
+        {
+            var temp = ContextInitialized;
+            if (temp != null)
+            {
+                temp(null, EventArgs.Empty);
+            }
         }
 
         /// <summary>
@@ -781,6 +843,7 @@ namespace TwistedLogik.Ultraviolet
         private readonly UltravioletFactory factory = new UltravioletFactory();
         private readonly ConcurrentQueue<Task> queuedWorkItems = new ConcurrentQueue<Task>();
         private readonly Thread thread;
+        private Boolean isInitialized;
         private Boolean disposed;
         private Boolean disposing;
 

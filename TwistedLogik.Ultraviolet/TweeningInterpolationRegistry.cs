@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Reflection;
 
 namespace TwistedLogik.Ultraviolet
@@ -26,6 +27,34 @@ namespace TwistedLogik.Ultraviolet
         internal TweeningInterpolationRegistry()
         {
             miRegisterNullable = GetType().GetMethod("RegisterNullable", BindingFlags.NonPublic | BindingFlags.Instance);
+        }
+
+        /// <summary>
+        /// Registers a default interpolator for the specified type.
+        /// </summary>
+        /// <typeparam name="T">The type for which to register a default interpolator.</typeparam>
+        public void RegisterDefault<T>()
+        {
+            var interpolateMethod = typeof(T).GetMethod("Interpolate",
+                BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance, null, new Type[] { typeof(T), typeof(Single) }, null);
+
+            if (interpolateMethod == null)
+            {
+                Register<T>(null);
+                return;
+            }
+
+            var paramValueStart = Expression.Parameter(typeof(T), "valueStart");
+            var paramValueEnd   = Expression.Parameter(typeof(T), "valueEnd");
+            var paramFn         = Expression.Parameter(typeof(EasingFunction), "fn");
+            var paramT          = Expression.Parameter(typeof(Single), "t");
+
+            var expInvokeFn   = Expression.Invoke(Expression.Coalesce(paramFn, Expression.Constant(Easings.EaseInLinear)), paramT);
+            var expLambdaBody = Expression.Call(paramValueStart, interpolateMethod, paramValueEnd, expInvokeFn);
+
+            var interpolator = Expression.Lambda<Interpolator<T>>(expLambdaBody, paramValueStart, paramValueEnd, paramFn, paramT).Compile();
+
+            Register<T>(interpolator);
         }
 
         /// <summary>
@@ -77,6 +106,15 @@ namespace TwistedLogik.Ultraviolet
             {
                 interpolator = (Interpolator<T>)interpolatorObj;
                 return true;
+            }
+            else
+            {
+                RegisterDefault<T>();
+                if (interpolators.TryGetValue(typeof(T), out interpolatorObj))
+                {
+                    interpolator = (Interpolator<T>)interpolatorObj;
+                    return true;
+                }
             }
             interpolator = null;
             return false;

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Xml.Linq;
 using TwistedLogik.Nucleus;
+using TwistedLogik.Ultraviolet.UI.Presentation.Animations;
 using TwistedLogik.Ultraviolet.UI.Presentation.Elements;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation
@@ -27,6 +28,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         internal PresentationFrameworkManager(UltravioletContext uv)
             : base(uv)
         {
+            RuntimeHelpers.RunClassConstructor(typeof(Tweening).TypeHandle);
+            RuntimeHelpers.RunClassConstructor(typeof(SimpleClockPool).TypeHandle);
+            RuntimeHelpers.RunClassConstructor(typeof(StoryboardClockPool).TypeHandle);
+
             RegisterCoreElements();
         }
 

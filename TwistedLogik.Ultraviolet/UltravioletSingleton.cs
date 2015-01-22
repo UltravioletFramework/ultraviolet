@@ -20,6 +20,15 @@ namespace TwistedLogik.Ultraviolet
             Contract.Require(initializer, "initializer");
 
             this.initializer = initializer;
+
+            var uv = UltravioletContext.RequestCurrent();
+            if (uv != null && uv.IsInitialized)
+            {
+                initializer(uv);
+            }
+
+            UltravioletContext.ContextInitialized += UltravioletContext_ContextInitialized;
+            UltravioletContext.ContextInvalidated += UltravioletContext_ContextInvalidated;
         }
 
         /// <summary>
@@ -37,24 +46,41 @@ namespace TwistedLogik.Ultraviolet
         /// </summary>
         public T Value
         {
-            get
+            get 
             {
-                var uv = UltravioletContext.DemandCurrent();
-                if (resource == null || resource.Ultraviolet != uv)
-                {
-                    UltravioletContext.ContextInvalidated += uv_contextInvalidated;
-                    resource = initializer(uv);
-                }
-                return resource;
+                InitializeResource();
+                return resource; 
             }
         }
 
         /// <summary>
-        /// Handles the Ultraviolet context's <see cref="UltravioletContext.ContextInvalidated"/> event.
+        /// Initializes the singleton resource.
         /// </summary>
-        private void uv_contextInvalidated(object sender, EventArgs e)
+        private void InitializeResource()
         {
-            UltravioletContext.ContextInvalidated -= uv_contextInvalidated;
+            var uv = UltravioletContext.RequestCurrent();
+            if (uv == null)
+                return;
+
+            if (resource == null || resource.Ultraviolet != uv)
+            {
+                resource = initializer(uv);
+            }
+        }
+
+        /// <summary>
+        /// Handles the <see cref="UltravioletContext.ContextInitialized"/> event.
+        /// </summary>
+        private void UltravioletContext_ContextInitialized(object sender, EventArgs e)
+        {
+            InitializeResource();
+        }
+
+        /// <summary>
+        /// Handles the <see cref="UltravioletContext.ContextInvalidated"/> event.
+        /// </summary>
+        private void UltravioletContext_ContextInvalidated(object sender, EventArgs e)
+        {
             SafeDispose.DisposeRef(ref resource);
         }
 
