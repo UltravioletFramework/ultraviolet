@@ -238,7 +238,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// </summary>
         protected Int32 RowCount
         {
-            get { return columnDefinitions.Count == 0 ? 1 : columnDefinitions.Count; }
+            get { return rowDefinitions.Count == 0 ? 1 : rowDefinitions.Count; }
         }
 
         /// <summary>
@@ -470,7 +470,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
                 if (column.Width.GridUnitType != GridUnitType.Star)
                     continue;
 
-                column.MeasuredWidth = (Int32)(column.Width.Value * proportionalUnit);
+                column.MeasuredWidth = column.Width.Value * proportionalUnit;
             }
         }
 
@@ -617,7 +617,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
                 if (row.Height.GridUnitType != GridUnitType.Star)
                     continue;
 
-                row.MeasuredHeight = (Int32)(row.Height.Value * proportionalUnit);
+                row.MeasuredHeight = row.Height.Value * proportionalUnit;
             }
         }
 
