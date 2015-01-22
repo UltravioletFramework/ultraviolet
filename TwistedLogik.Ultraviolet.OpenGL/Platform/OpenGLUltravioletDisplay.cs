@@ -47,7 +47,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
         /// <inheritdoc/>
         public Double DipsToPixels(Double dips)
         {
-            return dips * DensityScale;
+            return Math.Round(dips * DensityScale);
         }
 
         /// <inheritdoc/>
@@ -201,12 +201,15 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
         /// <inheritdoc/>
         public RectangleD DipsToPixels(RectangleD dips)
         {
-            var x      = DipsToPixels(dips.X);
-            var y      = DipsToPixels(dips.Y);
-            var width  = DipsToPixels(dips.Width);
-            var height = DipsToPixels(dips.Height);
+            var left   = DipsToPixels(dips.Left);
+            var top    = DipsToPixels(dips.Top);
+            var right  = DipsToPixels(dips.Right);
+            var bottom = DipsToPixels(dips.Bottom);
 
-            return new RectangleD(x, y, width, height);
+            var width  = right - left;
+            var height = bottom - top;
+
+            return new RectangleD(left, top, width, height);
         }
 
         /// <inheritdoc/>
