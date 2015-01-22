@@ -23,6 +23,24 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <summary>
+        /// Gets or sets the image used to draw the progress bar's background.
+        /// </summary>
+        public SourcedImage BarImage
+        {
+            get { return GetValue<SourcedImage>(BarImageProperty); }
+            set { SetValue<SourcedImage>(BarImageProperty, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets the color of the progress bar's background.
+        /// </summary>
+        public Color BarColor
+        {
+            get { return GetValue<Color>(BarColorProperty); }
+            set { SetValue<Color>(BarColorProperty, value); }
+        }
+
+        /// <summary>
         /// Gets or sets the image used to draw the progress bar's fill.
         /// </summary>
         public SourcedImage FillImage
@@ -59,6 +77,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <summary>
+        /// Occurs when the value of the <see cref="BarImage"/> property changes.
+        /// </summary>
+        public event UIElementEventHandler BarImageChanged;
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="BarColor"/> property changes.
+        /// </summary>
+        public event UIElementEventHandler BarColorChanged;
+
+        /// <summary>
         /// Occurs when the value of the <see cref="FillImage"/> property changes.
         /// </summary>
         public event UIElementEventHandler FillImageChanged;
@@ -77,6 +105,20 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// Occurs when the value of the <see cref="OverlayColor"/> property changes.
         /// </summary>
         public event UIElementEventHandler OverlayColorChanged;
+
+        /// <summary>
+        /// Identifies the <see cref="BarImage"/> dependency property.
+        /// </summary>
+        [Styled("bar-image")]
+        public static readonly DependencyProperty BarImageProperty = DependencyProperty.Register("BarImage", typeof(SourcedImage), typeof(ProgressBar),
+            new DependencyPropertyMetadata(HandleBarImageChanged, null, DependencyPropertyOptions.None));
+
+        /// <summary>
+        /// Identifies the <see cref="BarColor"/> dependency property.
+        /// </summary>
+        [Styled("bar-color")]
+        public static readonly DependencyProperty BarColorProperty = DependencyProperty.Register("BarColor", typeof(Color), typeof(ProgressBar),
+            new DependencyPropertyMetadata(HandleBarColorChanged, () => Color.White, DependencyPropertyOptions.None));
 
         /// <summary>
         /// Identifies the <see cref="FillImage"/> dependency property.
@@ -109,6 +151,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <inheritdoc/>
         protected override void ReloadContentCore(Boolean recursive)
         {
+            ReloadBarImage();
             ReloadFillImage();
             ReloadOverlayImage();
 
@@ -118,11 +161,20 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <inheritdoc/>
         protected override void DrawOverride(UltravioletTime time, DrawingContext dc)
         {
-            DrawBackgroundImage(dc);
+            DrawBarImage(dc);
             DrawFillImage(dc);
             DrawOverlayImage(dc);
 
             base.DrawOverride(time, dc);
+        }
+
+        /// <summary>
+        /// Draws the progress bar's background.
+        /// </summary>
+        /// <param name="dc">The drawing context that describes the render state of the layout.</param>
+        protected virtual void DrawBarImage(DrawingContext dc)
+        {
+            DrawImage(dc, BarImage, BarColor);
         }
 
         /// <summary>
@@ -149,6 +201,30 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         protected virtual void DrawOverlayImage(DrawingContext dc)
         {
             DrawImage(dc, OverlayImage, OverlayColor);
+        }
+
+        /// <summary>
+        /// Raises the <see cref="BarImageChanged"/> event.
+        /// </summary>
+        protected virtual void OnBarImageChanged()
+        {
+            var temp = BarImageChanged;
+            if (temp != null)
+            {
+                temp(this);
+            }
+        }
+
+        /// <summary>
+        /// Raises the <see cref="BarColorChanged"/> event.
+        /// </summary>
+        protected virtual void OnBarColorChanged()
+        {
+            var temp = BarColorChanged;
+            if (temp != null)
+            {
+                temp(this);
+            }
         }
 
         /// <summary>
@@ -200,6 +276,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <summary>
+        /// Reloads the progress bar's background image.
+        /// </summary>
+        protected void ReloadBarImage()
+        {
+            LoadImage(BarImage);
+        }
+
+        /// <summary>
         /// Reloads the progress bar's fill image.
         /// </summary>
         protected void ReloadFillImage()
@@ -213,6 +297,27 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         protected void ReloadOverlayImage()
         {
             LoadImage(OverlayImage);
+        }
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="BarImage"/> dependency property changes.
+        /// </summary>
+        /// <param name="dobj">The object that raised the event.</param>
+        private static void HandleBarImageChanged(DependencyObject dobj)
+        {
+            var element = (ProgressBar)dobj;
+            element.ReloadBarImage();
+            element.OnBarImageChanged();
+        }
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="BarColor"/> dependency property changes.
+        /// </summary>
+        /// <param name="dobj">The object that raised the event.</param>
+        private static void HandleBarColorChanged(DependencyObject dobj)
+        {
+            var element = (ProgressBar)dobj;
+            element.OnBarColorChanged();
         }
 
         /// <summary>

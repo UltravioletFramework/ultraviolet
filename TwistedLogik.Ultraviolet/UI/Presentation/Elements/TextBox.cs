@@ -553,7 +553,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             if (InsertionMode == TextBoxInsertionMode.Insert)
             {
                 var caretPosition = new Point2D(RelativeContentRegion.X + textScrollOffset + caretOffset, RelativeContentRegion.Y);
-                var caretArea     = new RectangleD(caretPosition.X, caretPosition.Y, CaretWidth, Font.Resource.Value.Regular.LineSpacing);
+                var caretArea     = new RectangleD(caretPosition.X, caretPosition.Y, CaretWidth, RelativeContentRegion.Height);
 
                 DrawImage(dc, CaretImage, caretArea, CaretColor);
             }

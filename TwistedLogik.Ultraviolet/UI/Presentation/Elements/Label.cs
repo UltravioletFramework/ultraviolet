@@ -57,14 +57,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <inheritdoc/>
         protected override void DrawOverride(UltravioletTime time, DrawingContext dc)
         {
-            DrawBackgroundImage(dc);
-
             if (textLayoutResult.Count > 0)
             {
                 var position = (Vector2)Display.DipsToPixels(AbsolutePosition);
                 View.Resources.TextRenderer.Draw(dc.SpriteBatch, textLayoutResult, position, FontColor * dc.Opacity);
             }
-
             base.DrawOverride(time, dc);
         }
 

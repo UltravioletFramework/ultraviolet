@@ -51,24 +51,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
-        /// Gets or sets the element's background image.
-        /// </summary>
-        public SourcedImage BackgroundImage
-        {
-            get { return GetValue<SourcedImage>(BackgroundImageProperty); }
-            set { SetValue<SourcedImage>(BackgroundImageProperty, value); }
-        }
-
-        /// <summary>
-        /// Gets or sets the color used to draw the element's background image.
-        /// </summary>
-        public Color BackgroundColor
-        {
-            get { return GetValue<Color>(BackgroundColorProperty); }
-            set { SetValue<Color>(BackgroundColorProperty, value); }
-        }
-
-        /// <summary>
         /// Gets or sets the element's width in device-independent pixels.
         /// </summary>
         public Double Width
@@ -165,16 +147,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public event UIElementEventHandler FontStyleChanged;
 
         /// <summary>
-        /// Occurs when the value of the <see cref="BackgroundImage"/> property changes.
-        /// </summary>
-        public event UIElementEventHandler BackgroundImageChanged;
-
-        /// <summary>
-        /// Occurs when the value of the <see cref="BackgroundColor"/> property changes.
-        /// </summary>
-        public event UIElementEventHandler BackgroundColorChanged;
-
-        /// <summary>
         /// Occurs when the value of the <see cref="Width"/> property changes.
         /// </summary>
         public event UIElementEventHandler WidthChanged;
@@ -239,20 +211,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         [Styled("font-style")]
         public static readonly DependencyProperty FontStyleProperty = DependencyProperty.Register("FontStyle", typeof(SpriteFontStyle), typeof(FrameworkElement),
            new DependencyPropertyMetadata(HandleFontStyleChanged, () => SpriteFontStyle.Regular, DependencyPropertyOptions.AffectsArrange));
-
-        /// <summary>
-        /// Identifies the <see cref="BackgroundImage"/> dependency property.
-        /// </summary>
-        [Styled("background-image")]
-        public static readonly DependencyProperty BackgroundImageProperty = DependencyProperty.Register("BackgroundImage", typeof(SourcedImage), typeof(FrameworkElement),
-            new DependencyPropertyMetadata(HandleBackgroundImageChanged, null, DependencyPropertyOptions.None));
-
-        /// <summary>
-        /// Identifies the <see cref="BackgroundColor"/> dependency property.
-        /// </summary>
-        [Styled("background-color")]
-        public static readonly DependencyProperty BackgroundColorProperty = DependencyProperty.Register("BackgroundColor", typeof(Color), typeof(FrameworkElement),
-            new DependencyPropertyMetadata(HandleBackgroundColorChanged, () => Color.White, DependencyPropertyOptions.None));
 
         /// <summary>
         /// Identifies the <see cref="Width"/> dependency property.
@@ -416,7 +374,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         protected override void ReloadContentCore(Boolean recursive)
         {
             ReloadFont();
-            ReloadBackgroundImage();
 
             base.ReloadContentCore(recursive);
         }
@@ -625,30 +582,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
-        /// Raises the <see cref="BackgroundImageChanged"/> event.
-        /// </summary>
-        protected virtual void OnBackgroundImageChanged()
-        {
-            var temp = BackgroundImageChanged;
-            if (temp != null)
-            {
-                temp(this);
-            }
-        }
-
-        /// <summary>
-        /// Raises the <see cref="BackgroundColorChanged"/> event.
-        /// </summary>
-        protected virtual void OnBackgroundColorChanged()
-        {
-            var temp = BackgroundColorChanged;
-            if (temp != null)
-            {
-                temp(this);
-            }
-        }
-
-        /// <summary>
         /// Raises the <see cref="WidthChanged"/> event.
         /// </summary>
         protected virtual void OnWidthChanged()
@@ -765,28 +698,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
-        /// Draws the element's background.
-        /// </summary>
-        /// <param name="dc">The drawing context that describes the render state of the layout.</param>
-        protected virtual void DrawBackgroundImage(DrawingContext dc)
-        {
-            DrawImage(dc, BackgroundImage, BackgroundColor);
-        }
-
-        /// <summary>
         /// Reloads the element's font.
         /// </summary>
         protected void ReloadFont()
         {
             LoadResource(Font);
-        }
-
-        /// <summary>
-        /// Reloads the element's background image.
-        /// </summary>
-        protected void ReloadBackgroundImage()
-        {
-            LoadImage(BackgroundImage);
         }
 
         /// <summary>
@@ -818,27 +734,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             var element = (FrameworkElement)dobj;
             element.OnFontStyleChanged();
-        }
-
-        /// <summary>
-        /// Occurs when the value of the <see cref="BackgroundImage"/> dependency property changes.
-        /// </summary>
-        /// <param name="dobj">The dependency object that raised the event.</param>
-        private static void HandleBackgroundImageChanged(DependencyObject dobj)
-        {
-            var element = (FrameworkElement)dobj;
-            element.ReloadBackgroundImage();
-            element.OnBackgroundImageChanged();
-        }
-
-        /// <summary>
-        /// Occurs when the value of the <see cref="BackgroundColor"/> dependency property changes.
-        /// </summary>
-        /// <param name="dobj">The dependency object that raised the event.</param>
-        private static void HandleBackgroundColorChanged(DependencyObject dobj)
-        {
-            var element = (FrameworkElement)dobj;
-            element.OnBackgroundColorChanged();
         }
 
         /// <summary>
