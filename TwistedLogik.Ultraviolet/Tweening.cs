@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Linq.Expressions;
-using System.Reflection;
 
 namespace TwistedLogik.Ultraviolet
 {
@@ -28,6 +26,8 @@ namespace TwistedLogik.Ultraviolet
             Interpolators.Register<Single>(Tween);
             Interpolators.Register<Double>(Tween);
             Interpolators.Register<Decimal>(Tween);
+
+            Interpolators.RegisterDefault<Color>();
         }
 
         /// <summary>
@@ -464,13 +464,10 @@ namespace TwistedLogik.Ultraviolet
         public static T Tween<T>(T tweenStart, T tweenEnd, EasingFunction fn, Single t)
         {
             Interpolator<T> interpolator;
-
-            if (!Interpolators.TryGet<T>(out interpolator))
-                interpolator = CreateAndRegisterInterpolator<T>();
-
-            if (interpolator == null)
+            if (!Interpolators.TryGet<T>(out interpolator) || interpolator == null)
+            {
                 return (T)Tween((Object)tweenStart, (Object)tweenEnd, fn, t);
-
+            }
             return interpolator(tweenStart, tweenEnd, fn, t);
         }
 
@@ -485,13 +482,10 @@ namespace TwistedLogik.Ultraviolet
         public static T Lerp<T>(T lerpStart, T lerpEnd, Single t)
         {
             Interpolator<T> interpolator;
-
-            if (!Interpolators.TryGet<T>(out interpolator))
-                interpolator = CreateAndRegisterInterpolator<T>();
-
-            if (interpolator == null)
+            if (!Interpolators.TryGet<T>(out interpolator) || interpolator == null)
+            {
                 return (T)Tween((Object)lerpStart, (Object)lerpEnd, Easings.EaseInLinear, t);
-
+            }
             return interpolator(lerpStart, lerpEnd, Easings.EaseInLinear, t);
         }
 
@@ -507,13 +501,10 @@ namespace TwistedLogik.Ultraviolet
         public static T TweenRef<T>(ref T tweenStart, ref T tweenEnd, EasingFunction fn, Single t) where T : struct
         {
             Interpolator<T> interpolator;
-
-            if (!Interpolators.TryGet<T>(out interpolator))
-                interpolator = CreateAndRegisterInterpolator<T>();
-
-            if (interpolator == null)
+            if (!Interpolators.TryGet<T>(out interpolator) || interpolator == null)
+            {
                 return (T)Tween((Object)tweenStart, (Object)tweenEnd, fn, t);
-
+            }
             return interpolator(tweenStart, tweenEnd, fn, t);
         }
 
@@ -528,13 +519,10 @@ namespace TwistedLogik.Ultraviolet
         public static T LerpRef<T>(ref T lerpStart, ref T lerpEnd, Single t) where T : struct
         {
             Interpolator<T> interpolator;
-
-            if (!Interpolators.TryGet<T>(out interpolator))
-                interpolator = CreateAndRegisterInterpolator<T>();
-
-            if (interpolator == null)
+            if (!Interpolators.TryGet<T>(out interpolator) || interpolator == null)
+            {
                 return (T)Tween((Object)lerpStart, (Object)lerpEnd, Easings.EaseInLinear, t);
-
+            }
             return interpolator(lerpStart, lerpEnd, Easings.EaseInLinear, t);
         }
 
@@ -544,38 +532,6 @@ namespace TwistedLogik.Ultraviolet
         public static TweeningInterpolationRegistry Interpolators
         {
             get { return interpolators; }
-        }
-
-        /// <summary>
-        /// Creates an instance of <see cref="Interpolator{T}"/> for the specified type and registers
-        /// it with the tweening system.
-        /// </summary>
-        /// <typeparam name="T">The type for which to create an interpolator.</typeparam>
-        /// <returns>The interpolator that was created for the specified type.</returns>
-        private static Interpolator<T> CreateAndRegisterInterpolator<T>()
-        {
-            var interpolateMethod = typeof(T).GetMethod("Interpolate",
-                BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance, null, new Type[] { typeof(T), typeof(Single) }, null);
-
-            if (interpolateMethod == null)
-            {
-                Interpolators.Register<T>(null);
-                return null;
-            }
-
-            var paramValueStart = Expression.Parameter(typeof(T), "valueStart");
-            var paramValueEnd   = Expression.Parameter(typeof(T), "valueEnd");
-            var paramFn         = Expression.Parameter(typeof(EasingFunction), "fn");
-            var paramT          = Expression.Parameter(typeof(Single), "t");
-
-            var expInvokeFn   = Expression.Invoke(Expression.Coalesce(paramFn, Expression.Constant(Easings.EaseInLinear)), paramT);
-            var expLambdaBody = Expression.Call(paramValueStart, interpolateMethod, paramValueEnd, expInvokeFn);
-
-            var interpolator = Expression.Lambda<Interpolator<T>>(expLambdaBody, paramValueStart, paramValueEnd, paramFn, paramT).Compile();
-
-            Interpolators.Register<T>(interpolator);
-
-            return interpolator;
         }
 
         // State values.

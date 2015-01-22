@@ -70,6 +70,8 @@ namespace TwistedLogik.Ultraviolet.OpenGL
             this.content.Importers.RegisterImporter<XmlContentImporter>("prog");
 
             PumpEvents();
+
+            InitializeContext();
         }
 
         /// <inheritdoc/>
