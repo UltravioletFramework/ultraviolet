@@ -1393,6 +1393,9 @@
     <Content Include="..\TwistedLogik.Ultraviolet\TwistedLogik.Ultraviolet.Licenses.txt">
       <Link>TwistedLogik.Ultraviolet.Licenses.txt</Link>
     </Content>
+    <Content Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Elements\Templates\Button.xml">
+      <Link>UI\Presentation\Elements\Templates\Button.xml</Link>
+    </Content>
     <Content Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Elements\Templates\CheckBox.xml">
       <Link>UI\Presentation\Elements\Templates\CheckBox.xml</Link>
     </Content>
@@ -1401,6 +1404,9 @@
     </Content>
     <Content Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Elements\Templates\RadioButton.xml">
       <Link>UI\Presentation\Elements\Templates\RadioButton.xml</Link>
+    </Content>
+    <Content Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Elements\Templates\RepeatButton.xml">
+      <Link>UI\Presentation\Elements\Templates\RepeatButton.xml</Link>
     </Content>
     <Content Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Elements\Templates\ScrollViewer.xml">
       <Link>UI\Presentation\Elements\Templates\ScrollViewer.xml</Link>
@@ -1431,7 +1437,7 @@
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" ProjectLinkReference="f071abe3-05e5-4df9-a929-cf71b01ec50a" />
+      <UserProperties ProjectLinkReference="f071abe3-05e5-4df9-a929-cf71b01ec50a" ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" />
     </VisualStudio>
   </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

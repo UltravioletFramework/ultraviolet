@@ -142,22 +142,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <inheritdoc/>
-        protected override void ReloadContentCore(Boolean recursive)
-        {
-            ReloadBackgroundImage();
-
-            base.ReloadContentCore(recursive);
-        }
-
-        /// <inheritdoc/>
-        protected override void DrawOverride(UltravioletTime time, DrawingContext dc)
-        {
-            DrawBackgroundImage(dc);
-
-            base.DrawOverride(time, dc);
-        }
-
-        /// <inheritdoc/>
         protected override void UpdateOverride(UltravioletTime time)
         {
             UpdateContent(time);
