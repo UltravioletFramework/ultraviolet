@@ -1852,9 +1852,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             dc.SpriteBatch.DrawImage(imageResource, position, (Int32)imageAreaPix.Width, (Int32)imageAreaPix.Height, 
                 colorPlusOpacity, 0f, origin, SpriteEffects.None, 0f);
-
-            if (ID == "bar")
-                Console.WriteLine(imageAreaPix.Bottom);
         }
 
         /// <summary>
