@@ -362,6 +362,7 @@
     <Compile Include="UI\Presentation\Elements\ClickMode.cs" />
     <Compile Include="UI\Presentation\Elements\Dock.cs" />
     <Compile Include="UI\Presentation\Elements\DockPanel.cs" />
+    <Compile Include="UI\Presentation\Elements\HScrollBar.cs" />
     <Compile Include="UI\Presentation\Elements\Image.cs" />
     <Compile Include="UI\Presentation\Elements\NumericLabel.cs" />
     <Compile Include="UI\Presentation\Elements\LabelBase.cs" />
@@ -378,6 +379,7 @@
     <Compile Include="UI\Presentation\Elements\TextBox.OffsetPosition.cs" />
     <Compile Include="UI\Presentation\Elements\TextBoxInsertionMode.cs" />
     <Compile Include="UI\Presentation\Elements\ToggleButton.cs" />
+    <Compile Include="UI\Presentation\Elements\VScrollBar.cs" />
     <Compile Include="UI\Presentation\Elements\WrapPanel.cs" />
     <Compile Include="UI\Presentation\Elements\StackPanel.cs" />
     <Compile Include="UI\Presentation\Elements\Canvas.cs" />

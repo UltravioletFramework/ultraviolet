@@ -7,18 +7,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
     /// <summary>
     /// Represents a vertical scroll bar.
     /// </summary>
-    [UIElement("VScrollBar")]
+    [UIElement("VScrollBar", "TwistedLogik.Ultraviolet.UI.Presentation.Elements.Templates.VScrollBar.xml")]
     public class VScrollBar : ScrollBarBase
     {
-        /// <summary>
-        /// Initializes the <see cref="VScrollBar"/> type.
-        /// </summary>
-        static VScrollBar()
-        {
-            ComponentTemplate = LoadComponentTemplateFromManifestResourceStream(typeof(VScrollBar).Assembly,
-                "TwistedLogik.Ultraviolet.UI.Presentation.Elements.Templates.VScrollBar.xml");
-        }
-
         /// <summary>
         /// Initializes a new instance of the <see cref="VScrollBar"/> class.
         /// </summary>
@@ -27,20 +18,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         public VScrollBar(UltravioletContext uv, String id)
             : base(uv, id)
         {
-            LoadComponentRoot(ComponentTemplate);
-        }
 
-        /// <summary>
-        /// Gets or sets the template used to create the control's component tree.
-        /// </summary>
-        public static XDocument ComponentTemplate
-        {
-            get;
-            set;
         }
 
         /// <inheritdoc/>
-        protected override void UpdateComponentLayout()
+        protected override void UpdateScrollbarComponents()
         {
             if (LayoutRoot == null || LayoutRoot.RowDefinitions.Count < 5)
                 return;
@@ -54,7 +36,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <summary>
         /// Gets the offset in pixels from the left edge of the control to the left edge of the scroll bar's track.
         /// </summary>
-        protected override Int32 ActualTrackOffsetX
+        protected override Double ActualTrackOffsetX
         {
             get 
             { 
@@ -65,29 +47,29 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <summary>
         /// Gets the offset in pixels from the top edge of the control to the top edge of the scroll bar's track.
         /// </summary>
-        protected override Int32 ActualTrackOffsetY
+        protected override Double ActualTrackOffsetY
         {
             get
             {
                 if (LayoutRoot == null || LayoutRoot.RowDefinitions.Count < 5)
                     return 0;
 
-                return LayoutRoot.RowDefinitions[0].ActualHeight; 
+                return LayoutRoot.RowDefinitions[0].MeasuredHeight; 
             }
         }
 
         /// <summary>
         /// Gets the width of the scroll bar's track in pixels.
         /// </summary>
-        protected override Int32 ActualTrackWidth
+        protected override Double ActualTrackWidth
         {
-            get { return ActualWidth; }
+            get { return RenderSize.Width; }
         }
 
         /// <summary>
         /// Gets the height of the scroll bar's track in pixels.
         /// </summary>
-        protected override Int32 ActualTrackHeight
+        protected override Double ActualTrackHeight
         {
             get { return ActualTrackLength; }
         }
@@ -95,42 +77,42 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <summary>
         /// Gets the length in pixels of the scroll bar's track.
         /// </summary>
-        protected override Int32 ActualTrackLength
+        protected override Double ActualTrackLength
         {
             get 
             {
                 if (LayoutRoot == null || LayoutRoot.RowDefinitions.Count < 5)
                     return 0;
 
-                return ActualHeight - (
-                    LayoutRoot.RowDefinitions[0].ActualHeight + 
-                    LayoutRoot.RowDefinitions[4].ActualHeight);
+                return RenderSize.Height - (
+                    LayoutRoot.RowDefinitions[0].MeasuredHeight + 
+                    LayoutRoot.RowDefinitions[4].MeasuredHeight);
             }
         }
 
         /// <summary>
         /// Gets the length in pixels of the scroll bar's thumb.
         /// </summary>
-        protected override Int32 ActualThumbLength
+        protected override Double ActualThumbLength
         {
             get
             {
                 if (LayoutRoot == null || LayoutRoot.RowDefinitions.Count < 5)
                     return 0;
 
-                return LayoutRoot.RowDefinitions[2].ActualHeight;
+                return LayoutRoot.RowDefinitions[2].MeasuredHeight;
             }
         }
 
         /// <summary>
         /// Handles the <see cref="UIElement.MouseMotion"/> event for the Thumb button.
         /// </summary>
-        private void HandleThumbMouseMotion(UIElement element, MouseDevice device, Int32 x, Int32 y, Int32 dx, Int32 dy)
+        private void HandleThumbMouseMotion(UIElement element, MouseDevice device, Double x, Double y, Double dx, Double dy)
         {
             var button = element as Button;
-            if (button != null && button.Depressed)
+            if (button != null && button.IsDepressed)
             {
-                var relY = y - (AbsoluteScreenY + ActualTrackOffsetY + thumbOffset);
+                var relY = y - (AbsolutePosition.Y + ActualTrackOffsetY + thumbOffset);
                 Value = OffsetToValue(relY); 
             }
         }
@@ -140,7 +122,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// </summary>
         private void HandleThumbMouseButtonPressed(UIElement element, MouseDevice device, MouseButton pressed)
         {
-            thumbOffset = device.Y - element.AbsoluteScreenY;
+            thumbOffset = Display.PixelsToDips(device.Y) - element.AbsolutePosition.Y;
         }
 
         /// <summary>
@@ -180,6 +162,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         private readonly Button Thumb = null;
 
         // State values.
-        private Int32 thumbOffset;
+        private Double thumbOffset;
     }
 }

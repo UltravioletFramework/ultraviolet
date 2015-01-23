@@ -1005,6 +1005,9 @@
     <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Elements\Grid.cs">
       <Link>UI\Presentation\Elements\Grid.cs</Link>
     </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Elements\HScrollBar.cs">
+      <Link>UI\Presentation\Elements\HScrollBar.cs</Link>
+    </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Elements\Image.cs">
       <Link>UI\Presentation\Elements\Image.cs</Link>
     </Compile>
@@ -1082,6 +1085,9 @@
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Elements\UserControl.cs">
       <Link>UI\Presentation\Elements\UserControl.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Elements\VScrollBar.cs">
+      <Link>UI\Presentation\Elements\VScrollBar.cs</Link>
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet\UI\Presentation\Elements\WrapPanel.cs">
       <Link>UI\Presentation\Elements\WrapPanel.cs</Link>
