@@ -34,6 +34,46 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Gets a measure value, substituting a second value if the first value is not a number.
+        /// </summary>
+        /// <param name="measure">The measure value on which to perform substitutions.</param>
+        /// <param name="nan">The value to return if <paramref name="measure"/> is not a number.</param>
+        /// <returns>A valid measure value.</returns>
+        public static Double GetValidMeasure(Double measure, Double nan)
+        {
+            if (Double.IsNaN(measure))
+            {
+                return nan;
+            }
+            return measure;
+        }
+
+        /// <summary>
+        /// Gets a measure value, substituting other values if the first value is not a number, negative infinity, or positive infinity.
+        /// </summary>
+        /// <param name="measure">The measure value on which to perform substitutions.</param>
+        /// <param name="nan">The value to return if <paramref name="measure"/> is not a number.</param>
+        /// <param name="neginf">The value to return if <paramref name="measure"/> is negative infinity.</param>
+        /// <param name="posinf">The value to return if <paramref name="measure"/> is positive infinity.</param>
+        /// <returns>A valid measure value.</returns>
+        public static Double GetValidMeasure(Double measure, Double nan, Double neginf, Double posinf)
+        {
+            if (Double.IsNaN(measure))
+            {
+                return nan;
+            }
+            if (Double.IsNegativeInfinity(measure))
+            {
+                return neginf;
+            }
+            if (Double.IsPositiveInfinity(measure))
+            {
+                return posinf;
+            }
+            return measure;
+        }
+
+        /// <summary>
         /// Horizontally aligns content within the specified space.
         /// </summary>
         /// <param name="space">The space in which to align the content.</param>

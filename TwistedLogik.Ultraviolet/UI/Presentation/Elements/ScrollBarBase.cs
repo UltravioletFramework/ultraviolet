@@ -1,6 +1,4 @@
 ﻿using System;
-using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
-using TwistedLogik.Ultraviolet.UI.Presentation.Styles;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
 {
@@ -20,14 +18,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
 
         }
 
-        /// <inheritdoc/>
-        public override void ReloadContent()
-        {
-            ReloadTrackImage();
-
-            base.ReloadContent();
-        }
-
         /// <summary>
         /// Gets or sets the amount of scrollable content that is currently visible.
         /// </summary>
@@ -38,37 +28,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <summary>
-        /// Gets or sets the color with which the scroll bar's track is drawn.
-        /// </summary>
-        public Color TrackColor
-        {
-            get { return GetValue<Color>(TrackColorProperty); }
-            set { SetValue<Color>(TrackColorProperty, value); }
-        }
-
-        /// <summary>
-        /// Gets or sets the image used to render the scroll bar's track.
-        /// </summary>
-        public SourcedRef<Image> TrackImage
-        {
-            get { return GetValue<SourcedRef<Image>>(TrackImageProperty); }
-            set { SetValue<SourcedRef<Image>>(TrackImageProperty, value); }
-        }
-
-        /// <summary>
         /// Occurs when the value of the <see cref="ViewportSize"/> property changes.
         /// </summary>
         public event UIElementEventHandler ViewportSizeChanged;
-
-        /// <summary>
-        /// Occurs when the value of the <see cref="TrackColor"/> property changes.
-        /// </summary>
-        public event UIElementEventHandler TrackColorChanged;
-
-        /// <summary>
-        /// Occurs when the value of the <see cref="TrackImage"/> property changes.
-        /// </summary>
-        public event UIElementEventHandler TrackImageChanged;
 
         /// <summary>
         /// Identifies the <see cref="ViewportSize"/> dependency property.
@@ -77,55 +39,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             new DependencyPropertyMetadata(HandleViewportSizeChanged, null, DependencyPropertyOptions.None));
 
         /// <summary>
-        /// Identifies the <see cref="TrackColor"/> dependency property.
-        /// </summary>
-        [Styled("track-color")]
-        public static readonly DependencyProperty TrackColorProperty = DependencyProperty.Register("TrackColor", typeof(Color), typeof(ScrollBarBase),
-            new DependencyPropertyMetadata(HandleTrackColorChanged, () => Color.White, DependencyPropertyOptions.None));
-
-        /// <summary>
-        /// Identifies the <see cref="TrackImage"/> dependency property.
-        /// </summary>
-        [Styled("track-image")]
-        public static readonly DependencyProperty TrackImageProperty = DependencyProperty.Register("TrackImage", typeof(SourcedRef<Image>), typeof(ScrollBarBase),
-            new DependencyPropertyMetadata(HandleTrackImageChanged, null, DependencyPropertyOptions.None));
-
-        /// <summary>
         /// Updates the layout of the scroll bar's components.
         /// </summary>
-        protected abstract void UpdateComponentLayout();
-
-        /// <inheritdoc/>
-        protected override void OnParentRelativeLayoutChanged()
-        {
-            UpdateComponentLayout();
-            base.OnParentRelativeLayoutChanged();
-        }
-
-        /// <inheritdoc/>
-        protected override void OnDrawing(UltravioletTime time, SpriteBatch spriteBatch, Single opacity)
-        {
-            DrawTrackImage(spriteBatch, opacity);
-
-            base.OnDrawing(time, spriteBatch, opacity);
-        }
+        protected abstract void UpdateScrollbarComponents();
 
         /// <inheritdoc/>
         protected override void OnValueChanged()
         {
-            UpdateComponentLayout();
+            UpdateScrollbarComponents();
             base.OnValueChanged();
-        }
-
-        /// <summary>
-        /// Draws the scroll bar's track image.
-        /// </summary>
-        /// <param name="spriteBatch">The sprite batch with which to draw.</param>
-        /// <param name="opacity">The cumulative opacity of all of the element's parent elements.</param>
-        protected virtual void DrawTrackImage(SpriteBatch spriteBatch, Single opacity)
-        {
-            var area = new Rectangle(ActualTrackOffsetX, ActualTrackOffsetY, ActualTrackWidth, ActualTrackHeight);
-            DrawElementImage(spriteBatch, TrackImage, area, TrackColor * Opacity * opacity);
         }
 
         /// <summary>
@@ -138,38 +60,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             {
                 temp(this);
             }
-        }
-
-        /// <summary>
-        /// Raises the <see cref="TrackColorChanged"/> event.
-        /// </summary>
-        protected virtual void OnTrackColorChanged()
-        {
-            var temp = TrackColorChanged;
-            if (temp != null)
-            {
-                temp(this);
-            }
-        }
-
-        /// <summary>
-        /// Raises the <see cref="TrackImageChanged"/> event.
-        /// </summary>
-        protected virtual void OnTrackImageChanged()
-        {
-            var temp = TrackImageChanged;
-            if (temp != null)
-            {
-                temp(this);
-            }
-        }
-
-        /// <summary>
-        /// Reloads the scroll bar's track image.
-        /// </summary>
-        protected void ReloadTrackImage()
-        {
-            LoadContent(TrackImage);
         }
 
         /// <summary>
@@ -186,9 +76,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
                 return new GridLength(0);
 
             var available = ActualTrackLength - ActualThumbLength;
-            var display   = Ultraviolet.GetPlatform().Displays.PrimaryDisplay;
             var percent   = (val - min) / (max - min);
-            var used      = display.PixelsToDips(available * percent);
+            var used      = available * percent;
 
             return new GridLength(used);
         }
@@ -207,14 +96,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             if (max - min + vps == 0)
                 return new GridLength(0);
 
-            var pxLengthMin   = (Int32)ConvertMeasureToPixels(minimumLength, 0);
-            var pxLengthThumb = (Int32)((vps / (max - min + vps)) * ActualTrackLength);
-            if (pxLengthThumb < pxLengthMin)
+            var lengthMin   = LayoutUtil.GetValidMeasure(minimumLength, 0);
+            var lengthThumb = ((vps / (max - min + vps)) * ActualTrackLength);
+            if (lengthThumb < lengthMin)
             {
-                pxLengthThumb = pxLengthMin;
+                lengthThumb = lengthMin;
             }
 
-            return new GridLength(pxLengthThumb);
+            return new GridLength(lengthThumb);
         }
 
         /// <summary>
@@ -232,9 +121,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             if (max == min)
                 return 0;
 
-            var display = Ultraviolet.GetPlatform().Displays.PrimaryDisplay;
             var percent = (value - min) / (max - min);
-            var used    = display.PixelsToDips(available * percent);
+            var used    = available * percent;
 
             return used;
         }
@@ -254,7 +142,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             if (max == min)
                 return 0;
 
-            var display = Ultraviolet.GetPlatform().Displays.PrimaryDisplay;
             var percent = pixels / available;
             var value   = (percent * (Maximum - Minimum)) + Minimum;
 
@@ -262,49 +149,49 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <summary>
-        /// Gets the offset in pixels from the left edge of the control to the left edge of the scroll bar's track.
+        /// Gets the offset from the left edge of the control to the left edge of the scroll bar's track.
         /// </summary>
-        protected abstract Int32 ActualTrackOffsetX
+        protected abstract Double ActualTrackOffsetX
         {
             get;
         }
 
         /// <summary>
-        /// Gets the offset in pixels from the top edge of the control to the top edge of the scroll bar's track.
+        /// Gets the offset from the top edge of the control to the top edge of the scroll bar's track.
         /// </summary>
-        protected abstract Int32 ActualTrackOffsetY
+        protected abstract Double ActualTrackOffsetY
         {
             get;
         }
 
         /// <summary>
-        /// Gets the width of the scroll bar's track in pixels.
+        /// Gets the width of the scroll bar's track.
         /// </summary>
-        protected abstract Int32 ActualTrackWidth
+        protected abstract Double ActualTrackWidth
         {
             get;
         }
 
         /// <summary>
-        /// Gets the height of the scroll bar's track in pixels.
+        /// Gets the height of the scroll bar's track.
         /// </summary>
-        protected abstract Int32 ActualTrackHeight
+        protected abstract Double ActualTrackHeight
         {
             get;
         }
 
         /// <summary>
-        /// Gets the length in pixels of the scroll bar's track.
+        /// Gets the length of the scroll bar's track.
         /// </summary>
-        protected abstract Int32 ActualTrackLength
+        protected abstract Double ActualTrackLength
         {
             get;
         }
 
         /// <summary>
-        /// Gets the length in pixels of the scroll bar's thumb.
+        /// Gets the length of the scroll bar's thumb.
         /// </summary>
-        protected abstract Int32 ActualThumbLength
+        protected abstract Double ActualThumbLength
         {
             get;
         }
@@ -316,28 +203,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         private static void HandleViewportSizeChanged(DependencyObject dobj)
         {
             var scrollbar = (ScrollBarBase)dobj;
-            scrollbar.UpdateComponentLayout();
+            scrollbar.UpdateScrollbarComponents();
             scrollbar.OnViewportSizeChanged();
-        }
-
-        /// <summary>
-        /// Occurs when the value of the <see cref="TrackColor"/> dependency property changes.
-        /// </summary>
-        /// <param name="dobj">The object that raised the event.</param>
-        private static void HandleTrackColorChanged(DependencyObject dobj)
-        {
-            var scrollbar = (ScrollBarBase)dobj;
-            scrollbar.OnTrackColorChanged();
-        }
-
-        /// <summary>
-        /// Occurs when the value of the <see cref="TrackImage"/> dependency property changes.
-        /// </summary>
-        /// <param name="dobj">The object that raised the event.</param>
-        private static void HandleTrackImageChanged(DependencyObject dobj)
-        {
-            var scrollbar = (ScrollBarBase)dobj;
-            scrollbar.OnTrackImageChanged();
         }
     }
 }
