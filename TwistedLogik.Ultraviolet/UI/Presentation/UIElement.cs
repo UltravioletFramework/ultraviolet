@@ -1842,11 +1842,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var imageAreaAbs = imageAreaRel + AbsolutePosition;            
             var imageAreaPix = (RectangleF)Display.DipsToPixels(imageAreaAbs);
 
-            var origin   = new Vector2(imageAreaPix.Width / 2f, imageAreaPix.Height / 2f);
-            var position = (Vector2)imageAreaAbs.Center;
+            var origin = new Vector2(
+                (Int32)(imageAreaPix.Width / 2f),
+                (Int32)(imageAreaPix.Height / 2f));
+
+            var position = new Vector2(
+                (Int32)(imageAreaPix.X + (imageAreaPix.Width / 2f)),
+                (Int32)(imageAreaPix.Y + (imageAreaPix.Height / 2f)));
 
             dc.SpriteBatch.DrawImage(imageResource, position, (Int32)imageAreaPix.Width, (Int32)imageAreaPix.Height, 
                 colorPlusOpacity, 0f, origin, SpriteEffects.None, 0f);
+
+            if (ID == "bar")
+                Console.WriteLine(imageAreaPix.Bottom);
         }
 
         /// <summary>
