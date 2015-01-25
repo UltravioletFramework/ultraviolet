@@ -425,8 +425,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             var finalRectSansMargins = finalRect - margin;
 
-            var desiredWidth  = (HorizontalAlignment == HorizontalAlignment.Stretch) ? finalRect.Width : Math.Min(DesiredSize.Width, finalRect.Width);
-            var desiredHeight = (VerticalAlignment == VerticalAlignment.Stretch) ? finalRect.Height : Math.Min(DesiredSize.Height, finalRect.Height);
+            var desiredWidth = DesiredSize.Width;
+            var desiredHeight = DesiredSize.Height;
+
+            var fill   = (options & ArrangeOptions.Fill) == ArrangeOptions.Fill;
+            var hAlign = fill ? HorizontalAlignment.Stretch : HorizontalAlignment;
+            var vAlign = fill ? VerticalAlignment.Stretch : VerticalAlignment;
+
+            if (Double.IsNaN(Width) && hAlign == HorizontalAlignment.Stretch)
+                desiredWidth = finalRect.Width;
+
+            if (Double.IsNaN(Height) && vAlign == VerticalAlignment.Stretch)
+                desiredHeight = finalRect.Height;
+
             var desiredSize   = new Size2D(desiredWidth, desiredHeight);
 
             var candidateSize = desiredSize - margin;
@@ -435,22 +446,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var usedWidth  = Math.Min(usedSize.Width, candidateSize.Width);
             var usedHeight = Math.Min(usedSize.Height, candidateSize.Height);
 
-            var fill   = (options & ArrangeOptions.Fill) == ArrangeOptions.Fill;
-            var hAlign = fill ? HorizontalAlignment.Stretch : HorizontalAlignment;
-            var vAlign = fill ? VerticalAlignment.Stretch : VerticalAlignment;
-
-            if (hAlign == HorizontalAlignment.Stretch)
-                usedWidth = finalRectSansMargins.Width;
-
-            if (vAlign == VerticalAlignment.Stretch)
-                usedHeight = finalRectSansMargins.Height;
+            usedSize = new Size2D(usedWidth, usedHeight);
 
             var xOffset = margin.Left + LayoutUtil.PerformHorizontalAlignment(finalRectSansMargins.Size, usedSize, hAlign);
             var yOffset = margin.Top + LayoutUtil.PerformVerticalAlignment(finalRectSansMargins.Size, usedSize, vAlign);
 
             RenderOffset = new Point2D(xOffset, yOffset);
 
-            usedSize = new Size2D(usedWidth, usedHeight);
             return usedSize;
         }
 

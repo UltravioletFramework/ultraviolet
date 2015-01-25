@@ -86,6 +86,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             switch (alignment)
             {
+                case HorizontalAlignment.Stretch:
                 case HorizontalAlignment.Center:
                     xOffset = (space.Width - content.Width) / 2.0;
                     break;
@@ -111,6 +112,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             switch (alignment)
             {
+                case VerticalAlignment.Stretch:
                 case VerticalAlignment.Center:
                     yOffset = (space.Height - content.Height) / 2.0;
                     break;

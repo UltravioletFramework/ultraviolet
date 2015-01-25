@@ -54,15 +54,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
                 set;
             }
 
-            /// <summary>
-            /// Gets or sets a value indicating whether the cell requires a scissor rectangle.
-            /// </summary>
-            public Boolean RequiresScissorRectangle
-            {
-                get;
-                set;
-            }
-
             // Property values.
             private readonly List<UIElement> elements = new List<UIElement>();
         }
