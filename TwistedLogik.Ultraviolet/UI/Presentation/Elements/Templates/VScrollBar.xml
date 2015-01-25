@@ -1,22 +1,23 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ComponentTemplate>
-  <Grid ID="LayoutRoot">
+  <Grid ID="LayoutRoot" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
     <Grid.RowDefinitions>
       <RowDefinition Height="Auto"/>
-      <RowDefinition Height="0"/>
+      <RowDefinition Height="Auto"/>
       <RowDefinition Height="Auto"/>
       <RowDefinition Height="*"/>
       <RowDefinition Height="Auto"/>
     </Grid.RowDefinitions>
 
+    <Image ID="Track" Class="scroll-track-vertical" Grid.Row="1" Grid.RowSpan="3" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"></Image>
+
     <RepeatButton ID="UpSmall" Class="scroll-button scroll-button-up" Grid.Row="0" HorizontalAlignment="Stretch"
                   Click="HandleClickUpSmall"></RepeatButton>
 
-    <RepeatButton ID="UpLarge" Class="scroll-repeat-up" Grid.Row="1" Opacity="0" 
-                  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
+    <RepeatButton ID="UpLarge" Class="scroll-repeat-up" Grid.Row="1" Opacity="0" Height="0" HorizontalAlignment="Stretch" 
                   Click="HandleClickUpLarge"></RepeatButton>
 
-    <Button ID="Thumb" Class="scroll-thumb-vertical" Grid.Row="2" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" MinHeight="16"
+    <Button ID="Thumb" Class="scroll-thumb-vertical" Grid.Row="2" HorizontalAlignment="Stretch"
             MouseButtonPressed="HandleThumbMouseButtonPressed" MouseMotion="HandleThumbMouseMotion"></Button>
 
     <RepeatButton ID="DownLarge" Class="scroll-repeat-down" Grid.Row="3" Opacity="0" 

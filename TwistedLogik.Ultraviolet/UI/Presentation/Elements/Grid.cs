@@ -22,15 +22,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <summary>
-        /// Sets a value that indicates which column a specified content element should occupy within its <see cref="Grid"/> container.
+        /// Sets a value that indicates which row a specified content element should occupy within its <see cref="Grid"/> container.
         /// </summary>
         /// <param name="element">The element to modify.</param>
-        /// <param name="column">The index of the column that the element should occupy.</param>
-        public static void SetRow(UIElement element, Int32 column)
+        /// <param name="row">The index of the row that the element should occupy.</param>
+        public static void SetRow(UIElement element, Int32 row)
         {
             Contract.Require(element, "element");
 
-            element.SetValue<Int32>(RowProperty, column);
+            element.SetValue<Int32>(RowProperty, row);
         }
 
         /// <summary>
@@ -46,10 +46,34 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <summary>
-        /// Gets a value that indicates which column a specified content element should occupy within its <see cref="Grid"/> container.
+        /// Sets a value that indicates the total number of rows that the specified element spans within its parent grid.
+        /// </summary>
+        /// <param name="element">The element to modify.</param>
+        /// <param name="rowSpan">The total number of rows that the specified element spans within its parent grid.</param>
+        public static void SetRowSpan(UIElement element, Int32 rowSpan)
+        {
+            Contract.Require(element, "element");
+
+            element.SetValue<Int32>(RowSpanProperty, rowSpan);
+        }
+
+        /// <summary>
+        /// Sets a value that indicates the total number of columns that the specified element spans within its parent grid.
+        /// </summary>
+        /// <param name="element">The element to modify.</param>
+        /// <param name="columnSpan">The total number of columns that the specified element spans within its parent grid.</param>
+        public static void SetColumnSpan(UIElement element, Int32 columnSpan)
+        {
+            Contract.Require(element, "element");
+
+            element.SetValue<Int32>(ColumnSpanProperty, columnSpan);
+        }
+
+        /// <summary>
+        /// Gets a value that indicates which row a specified content element should occupy within its <see cref="Grid"/> container.
         /// </summary>
         /// <param name="element">The element to evaluate.</param>
-        /// <returns>The index of the column that the element should occupy.</returns>
+        /// <returns>The index of the row that the element should occupy.</returns>
         public static Int32 GetRow(UIElement element)
         {
             Contract.Require(element, "element");
@@ -67,6 +91,30 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             Contract.Require(element, "element");
 
             return element.GetValue<Int32>(ColumnProperty);
+        }
+
+        /// <summary>
+        /// Gets a value that indicates the total number of rows that the specified element spans within its parent grid.
+        /// </summary>
+        /// <param name="element">The element to evaluate.</param>
+        /// <returns>The total number of rows that the specified element spans within its parent grid.</returns>
+        public static Int32 GetRowSpan(UIElement element)
+        {
+            Contract.Require(element, "element");
+
+            return element.GetValue<Int32>(RowSpanProperty);
+        }
+
+        /// <summary>
+        /// Gets a value that indicates the total number of columns that the specified element spans within its parent grid.
+        /// </summary>
+        /// <param name="element">The element to evaluate.</param>
+        /// <returns>The total number of columns that the specified element spans within its parent grid.</returns>
+        public static Int32 GetColumnSpan(UIElement element)
+        {
+            Contract.Require(element, "element");
+
+            return element.GetValue<Int32>(ColumnSpanProperty);
         }
 
         /// <summary>
@@ -98,11 +146,23 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             new DependencyPropertyMetadata(HandleColumnChanged, () => 0, DependencyPropertyOptions.AffectsMeasure));
 
         /// <summary>
+        /// Identifies the <see cref="RowSpan"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty RowSpanProperty = DependencyProperty.Register("RowSpan", typeof(Int32), typeof(Grid),
+            new DependencyPropertyMetadata(null, () => 1, DependencyPropertyOptions.None));
+
+        /// <summary>
+        /// Identifies the <see cref="ColumnSpan"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty ColumnSpanProperty = DependencyProperty.Register("ColumnSpan", typeof(Int32), typeof(Grid),
+            new DependencyPropertyMetadata(null, () => 1, DependencyPropertyOptions.None));
+
+        /// <summary>
         /// Occurs when the grid's column definitions are modified.
         /// </summary>
         protected internal virtual void OnColumnsModified()
         {
-
+            InvalidateMeasure();
         }
 
         /// <summary>
@@ -110,28 +170,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// </summary>
         protected internal virtual void OnRowsModified()
         {
-
-        }
-
-        /// <inheritdoc/>
-        protected override void DrawChildren(UltravioletTime time, DrawingContext dc)
-        {
-            foreach (var cell in cells)
-            {
-                if (cell.RequiresScissorRectangle)
-                {
-                    var clip = new RectangleD(AbsoluteBounds.X + cell.OffsetX, AbsoluteBounds.Y + cell.OffsetY, cell.Width, cell.Height);
-                    dc.PushClipRectangle(clip);
-                }
-
-                foreach (var child in cell.Elements)
-                {
-                    child.Draw(time, dc);
-                }
-
-                if (cell.RequiresScissorRectangle)
-                    dc.PopClipRectangle();
-            }
+            InvalidateMeasure();
         }
 
         /// <inheritdoc/>
@@ -174,11 +213,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             {
                 foreach (var child in cell.Elements)
                 {
-                    var childRect = new RectangleD(
-                        cell.OffsetX,
-                        cell.OffsetY,
-                        Math.Max(cell.Width, child.DesiredSize.Width),
-                        Math.Max(cell.Height, child.DesiredSize.Height));
+                    var col = GetColumn(child);
+                    var row = GetRow(child);
+                    var colSpan = GetColumnSpan(child);
+                    var rowSpan = GetRowSpan(child);
+
+                    var childRect = GetLayoutRegion(col, row, colSpan, rowSpan);
 
                     child.Arrange(childRect);
                 }
@@ -194,20 +234,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
                 child.Position(position);
 
             base.PositionContent(position);
-        }
-
-        /// <inheritdoc/>
-        protected override RectangleD? ClipCore()
-        {
-            return null;
-        }
-
-        /// <inheritdoc/>
-        protected override RectangleD? ClipContentCore()
-        {
-            UpdateCellClip(); 
-            
-            return null;
         }
 
         /// <inheritdoc/>
@@ -659,31 +685,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <summary>
-        /// Updates the clipping state of each of the grid's cells.
-        /// </summary>
-        private void UpdateCellClip()
-        {
-            foreach (var cell in cells)
-                cell.RequiresScissorRectangle = false;
-
-            foreach (var child in Children)
-            {
-                var row = Grid.GetRow(child);
-                var col = Grid.GetColumn(child);
-
-                var cell = cells[(row * ColumnCount) + col];
-
-                if (child.RelativeBounds.Left < cell.OffsetX ||
-                    child.RelativeBounds.Top < cell.OffsetY ||
-                    child.RelativeBounds.Right > cell.OffsetX + cell.Width ||
-                    child.RelativeBounds.Bottom > cell.OffsetY + cell.Height)
-                {
-                    cell.RequiresScissorRectangle = true;
-                }
-            }
-        }
-
-        /// <summary>
         /// If necessary, expands the cell metadata array to accomodate all of the grid's rows and columns.
         /// </summary>
         private void ExpandCellMetadataArray()
@@ -696,6 +697,39 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             {
                 cells[i] = new CellMetadata();
             }
+        }
+
+        /// <summary>
+        /// Gets the layout region for an element with the specified column and row properties.
+        /// </summary>
+        /// <param name="col">The element's column index.</param>
+        /// <param name="row">The element's row index.</param>
+        /// <param name="colSpan">The element's column span.</param>
+        /// <param name="rowSpan">The element's row span.</param>
+        /// <returns>The layout region for an element with the specified column and row properties.</returns>
+        private RectangleD GetLayoutRegion(Int32 col, Int32 row, Int32 colSpan, Int32 rowSpan)
+        {
+            var cell = cells[(row * ColumnCount) + col];
+
+            var x = cell.OffsetX;
+            var y = cell.OffsetY;
+
+            var width = 0.0;
+            var height = 0.0;
+
+            for (int i = 0; i < colSpan; i++)
+            {
+                cell = cells[(row * ColumnCount) + col + i];
+                width += cell.Width;
+            }
+
+            for (int i = 0; i < rowSpan; i++)
+            {
+                cell = cells[((row + i) * ColumnCount) + col];
+                height += cell.Height;
+            }
+
+            return new RectangleD(x, y, width, height);
         }
 
         // Property values.

@@ -79,17 +79,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             base.DrawOverride(time, dc);
         }
 
-        /// <inheritdoc/>
-        protected override Size2D MeasureOverride(Size2D availableSize)
-        {
-            var source = Source;
-            if (source.IsLoaded)
-            {
-                return Display.PixelsToDips(source.Resource.MinimumSize);
-            }
-            return Size2D.Zero;
-        }
-
         /// <summary>
         /// Raises the <see cref="SourceChanged"/> event.
         /// </summary>

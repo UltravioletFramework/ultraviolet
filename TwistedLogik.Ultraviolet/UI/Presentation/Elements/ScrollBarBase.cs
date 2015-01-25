@@ -66,20 +66,20 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// Calculates the scroll thumb's offset.
         /// </summary>
         /// <returns>The scroll thumb's current offset.</returns>
-        protected GridLength CalculateThumbOffset()
+        protected Double CalculateThumbOffset()
         {
             var val = Value;
             var min = Minimum;
             var max = Maximum;
 
             if (min == max)
-                return new GridLength(0);
+                return 0;
 
             var available = ActualTrackLength - ActualThumbLength;
             var percent   = (val - min) / (max - min);
             var used      = available * percent;
 
-            return new GridLength(used);
+            return used;
         }
 
         /// <summary>
@@ -87,14 +87,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// </summary>
         /// <param name="minimumLength">The minimum length of the thumb.</param>
         /// <returns>The calculated thumb length.</returns>
-        protected GridLength CalculateThumbLength(Double minimumLength)
+        protected Double CalculateThumbLength(Double minimumLength)
         {
             var max = Maximum;
             var min = Minimum;
             var vps = ViewportSize;
 
             if (max - min + vps == 0)
-                return new GridLength(0);
+                return 0;
 
             var lengthMin   = LayoutUtil.GetValidMeasure(minimumLength, 0);
             var lengthThumb = ((vps / (max - min + vps)) * ActualTrackLength);
@@ -103,7 +103,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
                 lengthThumb = lengthMin;
             }
 
-            return new GridLength(lengthThumb);
+            return lengthThumb;
         }
 
         /// <summary>

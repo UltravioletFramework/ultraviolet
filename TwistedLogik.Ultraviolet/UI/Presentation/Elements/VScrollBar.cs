@@ -29,8 +29,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
 
             var thumbMinLength = (Thumb == null) ? 0 : Thumb.MinHeight;
 
-            LayoutRoot.RowDefinitions[1].Height = CalculateThumbOffset();
-            LayoutRoot.RowDefinitions[2].Height = CalculateThumbLength(thumbMinLength);
+            if (UpLarge != null)
+                UpLarge.Height = CalculateThumbOffset();
+
+            if (Thumb != null)
+                Thumb.Height = CalculateThumbLength(thumbMinLength);
         }
 
         /// <summary>
@@ -159,6 +162,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
 
         // Control component references.
         private readonly Grid LayoutRoot = null;
+        private readonly RepeatButton UpLarge = null;
         private readonly Button Thumb = null;
 
         // State values.

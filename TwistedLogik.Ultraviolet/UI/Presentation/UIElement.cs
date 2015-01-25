@@ -1633,7 +1633,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <returns>The clipping rectangle for this element in absolute screen coordinates, or <c>null</c> to disable clipping.</returns>
         protected virtual RectangleD? ClipCore()
         {
-            return null;
+            var clip = mostRecentFinalRect + (Parent == null ? Point2D.Zero : Parent.AbsolutePosition);
+            if (clip.Contains(AbsoluteBounds))
+            {
+                return null;
+            }
+            return clip;
         }
 
         /// <summary>
