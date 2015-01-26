@@ -226,17 +226,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         {
             var padding = GetTotalContentPadding();
 
-            var contentSpace = finalSize - padding;
+            var contentSpace = RenderContentRegion.Size;
 
             if (contentElement != null)
             {
-                var contentSize = contentElement.DesiredSize;
-
-                var contentX = LayoutUtil.PerformHorizontalAlignment(contentSpace, contentSize, HorizontalContentAlignment);
-                var contentY = LayoutUtil.PerformVerticalAlignment(contentSpace, contentSize, VerticalContentAlignment);
+                var contentX = LayoutUtil.PerformHorizontalAlignment(contentSpace, contentElement.DesiredSize, HorizontalContentAlignment);
+                var contentY = LayoutUtil.PerformVerticalAlignment(contentSpace, contentElement.DesiredSize, VerticalContentAlignment);
 
                 var contentPosition = new Point2D(contentX, contentY);
-                var contentRegion   = new RectangleD(contentPosition, contentSize);
+                var contentRegion   = new RectangleD(contentPosition, contentElement.DesiredSize);
 
                 contentElement.Arrange(contentRegion);
             }
@@ -282,7 +280,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <inheritdoc/>
         protected override UIElement GetElementAtPointCore(Double x, Double y, Boolean isHitTest)
         {
-            if (contentElement != null)
+            if (contentElement != null && RelativeContentRegion.Contains(x, y))
             {
                 var contentRelX = x - contentElement.RelativeBounds.X;
                 var contentRelY = y - contentElement.RelativeBounds.Y;

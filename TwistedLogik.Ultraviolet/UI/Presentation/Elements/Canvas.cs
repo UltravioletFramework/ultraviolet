@@ -197,15 +197,20 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
                 var right  = GetRight(child);
                 var bottom = GetBottom(child);
 
-                var childWidth  = child.DesiredSize.Width;
-                var childHeight = child.DesiredSize.Height;
-
                 if (Double.IsNaN(left) && Double.IsNaN(right))
                     left = 0;
 
                 if (Double.IsNaN(top) && Double.IsNaN(bottom))
                     top = 0;
 
+                var validLeft   = LayoutUtil.GetValidMeasure(left, 0);
+                var validTop    = LayoutUtil.GetValidMeasure(top, 0);
+                var validRight  = LayoutUtil.GetValidMeasure(right, 0);
+                var validBottom = LayoutUtil.GetValidMeasure(bottom, 0);
+
+                var childWidth  = Math.Min(child.DesiredSize.Width, RenderContentRegion.Width - (validLeft + validRight));
+                var childHeight = Math.Min(child.DesiredSize.Height, RenderContentRegion.Height - (validTop + validBottom));
+                
                 if (!Double.IsNaN(left) && !Double.IsNaN(right))
                 {
                     childWidth = RenderContentRegion.Width - (left + right);
