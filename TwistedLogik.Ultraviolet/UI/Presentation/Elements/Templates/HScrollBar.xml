@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ComponentTemplate>
-  <Grid ID="LayoutRoot" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+  <Grid ID="LayoutRoot" Class="scroll-component" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
     <Grid.ColumnDefinitions>
       <ColumnDefinition Width="Auto"/>
       <ColumnDefinition Width="Auto"/>
@@ -9,21 +9,18 @@
       <ColumnDefinition Width="Auto"/>
     </Grid.ColumnDefinitions>
 
-    <Image ID="Track" Class="scroll-track-horizontal" Grid.Column="1" Grid.ColumnSpan="3" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"></Image>
+    <Image ID="Track" Class="scroll-track scroll-track-horizontal" Grid.Column="1" Grid.ColumnSpan="3" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"></Image>
 
     <RepeatButton ID="LeftSmall" Class="scroll-button scroll-button-left" Grid.Column="0" VerticalAlignment="Stretch"
                   Click="HandleClickLeftSmall"></RepeatButton>
-
-    <RepeatButton ID="LeftLarge" Class="scroll-repeat-left" Grid.Column="1" Opacity="0" Width="0" VerticalAlignment="Stretch" Padding="0"
+    <RepeatButton ID="LeftLarge" Class="scroll-repeat scroll-repeat-left" Grid.Column="1" Opacity="0" Padding="0" Width="0" VerticalAlignment="Stretch"
                   Click="HandleClickLeftLarge"></RepeatButton>
 
-    <Button ID="Thumb" Class="scroll-thumb-horizontal" Grid.Column="2" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" MinWidth="16"
+    <Button ID="Thumb" Class="scroll-thumb scroll-thumb-horizontal" Grid.Column="2" VerticalAlignment="Stretch"
             MouseButtonPressed="HandleThumbMouseButtonPressed" MouseMotion="HandleThumbMouseMotion"></Button>
 
-    <RepeatButton ID="RightLarge" Class="scroll-repeat-right" Grid.Column="3" Opacity="0" 
-                  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
+    <RepeatButton ID="RightLarge" Class="scroll-repeat scroll-repeat-right" Grid.Column="3" Opacity="0" Padding="0" VerticalAlignment="Stretch" 
                   Click="HandleClickRightLarge"></RepeatButton>
-
     <RepeatButton ID="RightSmall" Class="scroll-button scroll-button-right" Grid.Column="4" VerticalAlignment="Stretch"
                   Click="HandleClickRightSmall"></RepeatButton>    
   </Grid>
