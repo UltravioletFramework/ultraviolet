@@ -526,8 +526,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 var propInfo = FindElementStandardProperty(uiElement, name);
                 if (!propInfo.CanWrite)
                     throw new InvalidOperationException(UltravioletStrings.PropertyHasNoSetter.Format(name));
-                
-                var propValue = ObjectResolver.FromString(value, propInfo.PropertyType);
+
+                var propValue = ResolveValue(value, propInfo.PropertyType);
                 propInfo.SetValue(uiElement, propValue, null);
             }
         }
@@ -722,8 +722,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             try
             {
                 var type          = dprop.PropertyType;
-                var resolvedValue = ObjectResolver.FromString(value, type);
-
+                var resolvedValue = ResolveValue(value, type);
+                
                 miSetLocalValue.MakeGenericMethod(type).Invoke(dobj, new Object[] { dprop, resolvedValue });
             }
             catch (FormatException e)
@@ -812,6 +812,21 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 
                 return propInfo.GetValue(uiElement, null);
             }
+        }
+
+        /// <summary>
+        /// Resolves a string to a value.
+        /// </summary>
+        /// <param name="value">The string to resolve.</param>
+        /// <param name="type">The type of value to resolve.</param>
+        /// <returns>The resolved value.</returns>
+        private static Object ResolveValue(String value, Type type)
+        {
+            if (value == "{{null}}")
+            {
+                return type.IsValueType ? Activator.CreateInstance(type) : null;
+            }
+            return ObjectResolver.FromString(value, type);
         }
 
         /// <summary>
