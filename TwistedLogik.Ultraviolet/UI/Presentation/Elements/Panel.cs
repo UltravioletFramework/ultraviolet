@@ -180,27 +180,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <inheritdoc/>
-        protected override RectangleD? ClipContentCore()
-        {
-            var required = false;
-
-            foreach (var child in Children)
-            {
-                if (child.RelativeBounds.Left < 0 || child.RelativeBounds.Top < 0 ||
-                    child.RelativeBounds.Right > RenderContentRegion.Width ||
-                    child.RelativeBounds.Bottom > RenderContentRegion.Height)
-                {
-                    required = true;
-                }
-
-                if (required)
-                    break;
-            }
-
-            return required ? AbsoluteContentRegion : (RectangleD?)null;
-        }
-
-        /// <inheritdoc/>
         protected override UIElement GetElementAtPointCore(Double x, Double y, Boolean isHitTest)
         {
             var childMatch = GetChildAtPoint(x, y, isHitTest);

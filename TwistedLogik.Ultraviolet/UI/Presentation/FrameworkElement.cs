@@ -448,8 +448,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             usedSize = new Size2D(usedWidth, usedHeight);
 
-            var xOffset = margin.Left + LayoutUtil.PerformHorizontalAlignment(finalRectSansMargins.Size, usedSize, hAlign);
-            var yOffset = margin.Top + LayoutUtil.PerformVerticalAlignment(finalRectSansMargins.Size, usedSize, vAlign);
+            var xOffset = margin.Left + LayoutUtil.PerformHorizontalAlignment(finalRectSansMargins.Size, usedSize, fill ? HorizontalAlignment.Left : hAlign);
+            var yOffset = margin.Top + LayoutUtil.PerformVerticalAlignment(finalRectSansMargins.Size, usedSize, fill ? VerticalAlignment.Top : vAlign);
 
             RenderOffset = new Point2D(xOffset, yOffset);
 
