@@ -8,6 +8,5 @@ namespace SafeProjectName.Assets
     public static class GlobalFontID
     {
         public static readonly AssetID SegoeUI;
-        public static readonly AssetID KenVectorFuture12;
     }
 }

@@ -2,9 +2,5 @@
 <ContentManifest Name="Global">
   <ContentGroup Name="Fonts" Directory="Fonts" Type="TwistedLogik.Ultraviolet.Graphics.Graphics2D.SpriteFont">
     <Asset Name="SegoeUI">SegoeUI</Asset>
-    <Asset Name="KenVectorFuture12">..\UI\KenVectorFuture12</Asset>
-  </ContentGroup>
-  <ContentGroup Name="Textures" Directory="Textures" Type="TwistedLogik.Ultraviolet.Graphics.Texture2D">
-    <Asset Name="DemoUI">..\UI\DemoUITexture</Asset>
   </ContentGroup>
 </ContentManifest>
