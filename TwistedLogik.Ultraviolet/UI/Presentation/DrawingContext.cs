@@ -119,6 +119,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var uv       = SpriteBatch.Ultraviolet;
             var cliprect = (ClipRectangle == null) ? (Rectangle?)null : (Rectangle?)view.Display.DipsToPixels(ClipRectangle.Value);
 
+            var current = SpriteBatch.Ultraviolet.GetGraphics().GetScissorRectangle();
+            if (current == cliprect)
+                return;
+
             SpriteBatch.Flush();
             SpriteBatch.Ultraviolet.GetGraphics().SetScissorRectangle(cliprect);
         }

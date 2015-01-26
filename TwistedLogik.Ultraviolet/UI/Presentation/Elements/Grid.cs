@@ -174,6 +174,43 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <inheritdoc/>
+        protected override void DrawChildren(UltravioletTime time, DrawingContext dc)
+        {
+            /* NOTE:
+             * By pre-emptively setting the clip region in the Grid itself, we can prevent
+             * multiple batch flushes when drawing consecutive children within the same clip region.
+             * This is because DrawingContext evaluates the current clip state and only performs
+             * a flush if something has changed. */
+
+            var clip = (RectangleD?)null;
+
+            foreach (var child in Children)
+            {
+                if (child.ClipRectangle != clip)
+                {
+                    if (clip.HasValue)
+                    {
+                        clip = null;
+                        dc.PopClipRectangle();
+                    }
+
+                    if (child.ClipRectangle.HasValue)
+                    {
+                        clip = child.ClipRectangle;
+                        dc.PushClipRectangle(clip.Value);
+                    }
+                }
+
+                child.Draw(time, dc);
+            }
+
+            if (clip.HasValue)
+                dc.PopClipRectangle();
+
+            base.DrawChildren(time, dc);
+        }
+
+        /// <inheritdoc/>
         protected override Size2D MeasureContent(Size2D availableSize)
         {
             foreach (var child in Children)
