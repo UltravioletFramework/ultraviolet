@@ -60,6 +60,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UvArchive", "UvArchive\UvAr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwistedLogik.Ultraviolet.Tooling", "TwistedLogik.Ultraviolet.Tooling\TwistedLogik.Ultraviolet.Tooling.csproj", "{6AAB1EDC-67E5-4F64-9633-50CECB8D9254}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UvDebugSandbox", "__Debugger\UvDebugSandbox.csproj", "{A8C85C23-03C2-41C6-8331-48835D257634}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -232,6 +234,12 @@ Global
 		{6AAB1EDC-67E5-4F64-9633-50CECB8D9254}.Production|Any CPU.Build.0 = Production|Any CPU
 		{6AAB1EDC-67E5-4F64-9633-50CECB8D9254}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6AAB1EDC-67E5-4F64-9633-50CECB8D9254}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A8C85C23-03C2-41C6-8331-48835D257634}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A8C85C23-03C2-41C6-8331-48835D257634}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A8C85C23-03C2-41C6-8331-48835D257634}.Production|Any CPU.ActiveCfg = Release|Any CPU
+		{A8C85C23-03C2-41C6-8331-48835D257634}.Production|Any CPU.Build.0 = Release|Any CPU
+		{A8C85C23-03C2-41C6-8331-48835D257634}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A8C85C23-03C2-41C6-8331-48835D257634}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

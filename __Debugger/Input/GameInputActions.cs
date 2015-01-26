@@ -1,7 +1,7 @@
 ﻿using TwistedLogik.Ultraviolet;
 using TwistedLogik.Ultraviolet.Input;
 
-namespace SafeProjectName.Input
+namespace UvDebugSandbox.Input
 {
     /// <summary>
     /// Contains the game's input actions.
