@@ -47,6 +47,14 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
         /// <inheritdoc/>
         public Double DipsToPixels(Double dips)
         {
+            if (Double.IsPositiveInfinity(dips))
+            {
+                return Int32.MaxValue;
+            }
+            if (Double.IsNegativeInfinity(dips))
+            {
+                return Int32.MinValue;
+            }
             return Math.Round(dips * DensityScale);
         }
 
