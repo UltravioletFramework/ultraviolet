@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <UserControl Type="SafeProjectName.MyUserControl, SafeProjectName">
   <Canvas>
-    <Button Canvas.Left="0" Canvas.Top="0" Canvas.Bottom="0" Width="128" Click="Foo">{{Year}}</Button>
-    <Button Canvas.Right="0" Canvas.Top="0" Canvas.Bottom="0" Width="64" Click="Bar">G</Button>
+    <Button ID="foo" Canvas.Left="0" Canvas.Top="0" Canvas.Bottom="0" Width="128" Click="Foo">{{Test}}</Button>
+    <Button ID="bar" Canvas.Right="0" Canvas.Top="0" Canvas.Bottom="0" Width="64">2</Button>
   </Canvas>
 </UserControl>

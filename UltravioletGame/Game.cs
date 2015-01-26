@@ -1,4 +1,6 @@
 ﻿using System;
+using TwistedLogik.Ultraviolet.UI.Presentation.Styles;
+using System.Xml.Linq;
 using System.IO;
 using System.Text;
 using SafeProjectName.Assets;
@@ -11,9 +13,37 @@ using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
 using TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text;
 using TwistedLogik.Ultraviolet.OpenGL;
 using TwistedLogik.Ultraviolet.Platform;
+using TwistedLogik.Ultraviolet.UI.Presentation;
+using SafeProjectName.UI.Screens;
+using SafeProjectName.UI;
+using TwistedLogik.Ultraviolet.UI.Presentation.Elements;
 
 namespace SafeProjectName
 {
+    [UIElement("MyUserControl")]
+    public class MyUserControl : UserControl
+    {
+        public MyUserControl(UltravioletContext uv, String id)
+            : base(uv, id)
+        {
+
+        }
+
+        public static readonly DependencyProperty TestProperty = DependencyProperty.Register("Test", typeof(Double), typeof(MyUserControl),
+            new DependencyPropertyMetadata(null, null, DependencyPropertyOptions.None));
+
+        public Double Test
+        {
+            get { return GetValue<Double>(TestProperty); }
+            set { SetValue<Double>(TestProperty, value); }
+        }
+
+        private void Foo(UIElement element)
+        {
+
+        }
+    }
+
     /// <summary>
     /// Represents the main application object.
     /// </summary>
@@ -87,13 +117,21 @@ namespace SafeProjectName
             LoadCursors();
 
             this.spriteBatch = SpriteBatch.Create();
-            this.spriteFont = this.content.Load<SpriteFont>(GlobalFontID.SegoeUI);
+            this.spriteFont = this.content.Load<SpriteFont>(GlobalFontID.KenVectorFuture12);
 
             this.textRenderer = new TextRenderer();
             this.textFormatter = new StringFormatter();
             this.textBuffer = new StringBuilder();
 
             GC.Collect(2);
+
+            var myUserControl = content.Load<XDocument>("UI/Screens/DebugViewScreen/MyUserControl");
+            Ultraviolet.GetUI().PresentationFramework.RegisterElement(myUserControl);
+
+            var screenService = new UIScreenService(content);
+            var screen = screenService.Get<DebugViewScreen>();
+
+            Ultraviolet.GetUI().GetScreens().Open(screen);
 
             base.OnLoadingContent();
         }

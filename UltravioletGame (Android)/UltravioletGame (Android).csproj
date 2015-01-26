@@ -90,6 +90,12 @@
     <Compile Include="..\UltravioletGame\Input\IUltravioletInputExtensions.cs">
       <Link>Input\IUltravioletInputExtensions.cs</Link>
     </Compile>
+    <Compile Include="..\UltravioletGame\UI\Screens\DebugViewScreen.cs">
+      <Link>UI\Screens\DebugViewScreen.cs</Link>
+    </Compile>
+    <Compile Include="..\UltravioletGame\UI\UIScreenService.cs">
+      <Link>UI\UIScreenService.cs</Link>
+    </Compile>
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -131,6 +137,12 @@
     <AndroidNativeLibrary Include="..\Dependencies\BASS\Android\x86\libbass_fx.so">
       <Link>lib\x86\libbass_fx.so</Link>
     </AndroidNativeLibrary>
+    <None Include="..\UltravioletGame\Content\UI\Screens\DebugViewScreen\DebugViewScreenStyles - Copy.uvss">
+      <Link>Content\UI\Screens\DebugViewScreen\DebugViewScreenStyles - Copy.uvss</Link>
+    </None>
+    <None Include="..\UltravioletGame\Content\UI\Screens\DebugViewScreen\DebugViewScreenStyles.uvss">
+      <Link>Content\UI\Screens\DebugViewScreen\DebugViewScreenStyles.uvss</Link>
+    </None>
     <None Include="Resources\AboutResources.txt" />
   </ItemGroup>
   <ItemGroup>
@@ -143,6 +155,18 @@
     <AndroidResource Include="Resources\drawable\Icon.png" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="..\UltravioletGame\Content\UI\DemoUITexture.png">
+      <Link>Content\UI\DemoUITexture.png</Link>
+    </Content>
+    <Content Include="..\UltravioletGame\Content\UI\KenVectorFuture12.xml">
+      <Link>Content\UI\KenVectorFuture12.xml</Link>
+    </Content>
+    <Content Include="..\UltravioletGame\Content\UI\Screens\DebugViewScreen\DebugViewScreen.xml">
+      <Link>Content\UI\Screens\DebugViewScreen\DebugViewScreen.xml</Link>
+    </Content>
+    <Content Include="..\UltravioletGame\Content\UI\Screens\DebugViewScreen\MyUserControl.xml">
+      <Link>Content\UI\Screens\DebugViewScreen\MyUserControl.xml</Link>
+    </Content>
     <Content Include="..\UltravioletGame\README-SDL.txt">
       <Link>README-SDL.txt</Link>
     </Content>
@@ -184,7 +208,7 @@
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties ProjectLinkReference="f6c64886-59bf-4dfd-af10-53c1700ee20d" ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" />
+      <UserProperties ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" ProjectLinkReference="f6c64886-59bf-4dfd-af10-53c1700ee20d" />
     </VisualStudio>
   </ProjectExtensions>
   <PropertyGroup>
