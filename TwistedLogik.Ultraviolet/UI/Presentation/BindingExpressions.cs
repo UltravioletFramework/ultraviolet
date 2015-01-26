@@ -58,6 +58,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (String.IsNullOrEmpty(expression))
                 return false;
 
+            if (expression == "{{null}}")
+                return false;
+
             return !braces || expression.StartsWith("{{") && expression.EndsWith("}}");
         }
 

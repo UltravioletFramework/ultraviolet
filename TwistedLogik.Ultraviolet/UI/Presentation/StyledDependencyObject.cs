@@ -28,8 +28,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         static StyledDependencyObject()
         {
-            miFromString     = typeof(ObjectResolver).GetMethod("FromString", new Type[] { typeof(String), typeof(Type), typeof(IFormatProvider) });
-            miSetStyledValue = typeof(DependencyObject).GetMethod("SetStyledValue");
+            miResolveStyledValue = typeof(StyledDependencyObject).GetMethod("ResolveStyledValue", BindingFlags.NonPublic | BindingFlags.Static);
+            miSetStyledValue     = typeof(DependencyObject).GetMethod("SetStyledValue");
         }
 
         /// <summary>
@@ -144,6 +144,22 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Converts a string to a value to be applied to a styled dependency property.
+        /// </summary>
+        /// <param name="value">The value string from which to create the object.</param>
+        /// <param name="type">The type of object to create.</param>
+        /// <param name="provider">An object that supplies culture-specific formatting information.</param>
+        /// <returns>The object that was created.</returns>
+        private static Object ResolveStyledValue(String value, Type type, IFormatProvider provider)
+        {
+            if (value == "null")
+            {
+                return type.IsValueType ? Activator.CreateInstance(type) : null;
+            }
+            return ObjectResolver.FromString(value, type, provider);
+        }
+
+        /// <summary>
         /// Dynamically compiles a collection of lambda methods which can be used to apply styles
         /// to the object's properties.
         /// </summary>
@@ -180,7 +196,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                         var expParameterDObj    = Expression.Parameter(typeof(StyledDependencyObject), "dobj");
                         var expParameterValue   = Expression.Parameter(typeof(String), "value");
                         var expParameterFmtProv = Expression.Parameter(typeof(IFormatProvider), "provider");
-                        var expResolveValue     = Expression.Convert(Expression.Call(miFromString, expParameterValue, Expression.Constant(dpType), expParameterFmtProv), dpType);
+                        var expResolveValue     = Expression.Convert(Expression.Call(miResolveStyledValue, expParameterValue, Expression.Constant(dpType), expParameterFmtProv), dpType);
                         var expCallMethod       = Expression.Call(expParameterDObj, setStyledValue, Expression.Constant(dp), expResolveValue);
 
                         var lambda = Expression.Lambda<StyleSetter>(expCallMethod, expParameterDObj, expParameterValue, expParameterFmtProv).Compile();
@@ -199,7 +215,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         // Functions for setting styles on known element types.
-        private static readonly MethodInfo miFromString;
+        private static readonly MethodInfo miResolveStyledValue;
         private static readonly MethodInfo miSetStyledValue;
         private static readonly Dictionary<Type, Dictionary<String, DependencyProperty>> styledProperties = 
             new Dictionary<Type, Dictionary<String, DependencyProperty>>();
