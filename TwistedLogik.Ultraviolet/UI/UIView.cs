@@ -53,7 +53,7 @@ namespace TwistedLogik.Ultraviolet.UI
         /// Cleans up the view and its elements.
         /// </summary>
         /// <remarks>The <see cref="Cleanup()"/> method releases any internal resources which the view
-        /// and its elements may be holding, allowing them to be reused by the Presentation Framework.
+        /// and its elements may be holding, allowing them to be reused by the Presentation Foundation.
         /// The view remains usable after a call to this method, but certain state values (such as
         /// animations, dependency property values, etc.) may be reset.</remarks>
         public abstract void Cleanup();

@@ -97,7 +97,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
     public delegate void UIElementEventHandler(UIElement element);
 
     /// <summary>
-    /// Represents the base class for all elements within the Ultraviolet Presentation Framework.
+    /// Represents the base class for all elements within the Ultraviolet Presentation Foundation.
     /// </summary>
     public abstract class UIElement : StyledDependencyObject
     {
@@ -323,7 +323,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             InvalidateMeasure();
 
-            Ultraviolet.GetUI().GetPresentationFramework().StyleQueue.Remove(this);
+            Ultraviolet.GetUI().GetPresentationFoundation().StyleQueue.Remove(this);
         }
 
         /// <summary>
@@ -343,7 +343,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             InvalidateArrange();
 
-            Ultraviolet.GetUI().GetPresentationFramework().MeasureQueue.Remove(this);
+            Ultraviolet.GetUI().GetPresentationFoundation().MeasureQueue.Remove(this);
         }
 
         /// <summary>
@@ -372,7 +372,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             InvalidatePosition();
 
-            Ultraviolet.GetUI().GetPresentationFramework().ArrangeQueue.Remove(this);
+            Ultraviolet.GetUI().GetPresentationFoundation().ArrangeQueue.Remove(this);
         }
 
         /// <summary>
@@ -396,7 +396,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             Clip();
 
-            Ultraviolet.GetUI().GetPresentationFramework().PositionQueue.Remove(this);
+            Ultraviolet.GetUI().GetPresentationFoundation().PositionQueue.Remove(this);
         }
 
         /// <summary>
@@ -422,7 +422,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public void InvalidateStyle()
         {
             this.isStyleValid = false;
-            uv.GetUI().GetPresentationFramework().StyleQueue.Enqueue(this);
+            uv.GetUI().GetPresentationFoundation().StyleQueue.Enqueue(this);
         }
 
         /// <summary>
@@ -431,7 +431,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public void InvalidateMeasure()
         {
             this.isMeasureValid = false;
-            uv.GetUI().GetPresentationFramework().MeasureQueue.Enqueue(this);
+            uv.GetUI().GetPresentationFoundation().MeasureQueue.Enqueue(this);
         }
 
         /// <summary>
@@ -440,7 +440,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public void InvalidateArrange()
         {
             this.isArrangeValid = false;
-            uv.GetUI().GetPresentationFramework().ArrangeQueue.Enqueue(this);
+            uv.GetUI().GetPresentationFoundation().ArrangeQueue.Enqueue(this);
         }
 
         /// <summary>
@@ -449,7 +449,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public void InvalidatePosition()
         {
             this.isPositionValid = false;
-            uv.GetUI().GetPresentationFramework().PositionQueue.Enqueue(this);
+            uv.GetUI().GetPresentationFoundation().PositionQueue.Enqueue(this);
         }
 
         /// <summary>
@@ -549,7 +549,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
-        /// Gets the name that identifies this element type within the Presentation Framework.
+        /// Gets the name that identifies this element type within the Presentation Foundation.
         /// </summary>
         public String Name
         {
@@ -559,7 +559,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Gets the element's associated view.
         /// </summary>
-        public PresentationFrameworkView View
+        public PresentationFoundationView View
         {
             get { return view; }
             internal set { view = value; }
@@ -2050,7 +2050,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         private readonly UIElementClassCollection classes;
         private readonly String id;
         private readonly String name;
-        private PresentationFrameworkView view;
+        private PresentationFoundationView view;
         private UIElement parent;
         private Control control = null;
         private Boolean isStyleValid;

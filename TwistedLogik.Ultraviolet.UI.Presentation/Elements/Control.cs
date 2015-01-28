@@ -566,7 +566,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             if (componentRoot != null)
                 throw new InvalidOperationException(UltravioletStrings.ComponentRootAlreadyLoaded);
 
-            var template = Ultraviolet.GetUI().GetPresentationFramework().ComponentTemplates.Get(this);
+            var template = Ultraviolet.GetUI().GetPresentationFoundation().ComponentTemplates.Get(this);
             if (template == null)
                 return;
 

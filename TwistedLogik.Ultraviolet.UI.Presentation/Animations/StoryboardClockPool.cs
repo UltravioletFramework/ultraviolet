@@ -4,7 +4,7 @@ using TwistedLogik.Nucleus.Collections;
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
 {
     /// <summary>
-    /// Represents the Presentation Framework's internal pool of <see cref="StoryboardClock"/> objects.
+    /// Represents the Presentation Foundation's internal pool of <see cref="StoryboardClock"/> objects.
     /// </summary>
     internal class StoryboardClockPool : UltravioletResource
     {

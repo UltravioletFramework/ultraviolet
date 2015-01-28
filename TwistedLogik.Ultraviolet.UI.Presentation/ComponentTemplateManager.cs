@@ -7,7 +7,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 {
     /// <summary>
     /// Stores and manages the collection of component templates that are
-    /// currently registered with the Ultraviolet Presentation Framework.
+    /// currently registered with the Ultraviolet Presentation Foundation.
     /// </summary>
     public sealed class ComponentTemplateManager
     {

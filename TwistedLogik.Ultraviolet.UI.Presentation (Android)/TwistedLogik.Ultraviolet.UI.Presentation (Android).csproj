@@ -371,20 +371,20 @@
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\NamespaceDoc.cs">
       <Link>NamespaceDoc.cs</Link>
     </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\PresentationFrameworkFactoryInitializer.cs">
-      <Link>PresentationFrameworkFactoryInitializer.cs</Link>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\PresentationFoundation.cs">
+      <Link>PresentationFoundation.cs</Link>
     </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\PresentationFrameworkManager.cs">
-      <Link>PresentationFrameworkManager.cs</Link>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\PresentationFoundation.RegisteredElement.cs">
+      <Link>PresentationFoundation.RegisteredElement.cs</Link>
     </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\PresentationFrameworkManager.RegisteredElement.cs">
-      <Link>PresentationFrameworkManager.RegisteredElement.cs</Link>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\PresentationFoundationFactoryInitializer.cs">
+      <Link>PresentationFoundationFactoryInitializer.cs</Link>
     </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\PresentationFrameworkView.cs">
-      <Link>PresentationFrameworkView.cs</Link>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\PresentationFoundationView.cs">
+      <Link>PresentationFoundationView.cs</Link>
     </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\PresentationFrameworkViewResources.cs">
-      <Link>PresentationFrameworkViewResources.cs</Link>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\PresentationFoundationViewResources.cs">
+      <Link>PresentationFoundationViewResources.cs</Link>
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Properties\AssemblyInfo.cs">
       <Link>Properties\AssemblyInfo.cs</Link>
@@ -608,7 +608,7 @@
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties ProjectLinkReference="7379d9e1-bb01-4b05-b4f7-5d39b393348f" ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" />
+      <UserProperties ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" ProjectLinkReference="7379d9e1-bb01-4b05-b4f7-5d39b393348f" />
     </VisualStudio>
   </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

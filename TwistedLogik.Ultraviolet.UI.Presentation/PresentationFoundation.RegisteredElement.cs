@@ -3,10 +3,10 @@ using System.Xml.Linq;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation
 {
-    partial class PresentationFrameworkManager
+    partial class PresentationFoundation
     {
         /// <summary>
-        /// Represents an element that has been registered with the Ultraviolet Presentation Framework.
+        /// Represents an element that has been registered with the Ultraviolet Presentation Foundation.
         /// </summary>
         private class RegisteredElement
         {

@@ -56,7 +56,7 @@ namespace UvDebugSandbox
             var configuration = new OpenGLUltravioletConfiguration();
             PopulateConfiguration(configuration);
 
-            PresentationFrameworkManager.Configure(configuration);
+            PresentationFoundation.Configure(configuration);
 
 #if DEBUG
             configuration.Debug = true;

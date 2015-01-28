@@ -14,7 +14,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Initializes a new instance of the <see cref="DrawingContext"/> class.
         /// </summary>
-        internal DrawingContext(PresentationFrameworkView view)
+        internal DrawingContext(PresentationFoundationView view)
         {
             Contract.Require(view, "view");
 
@@ -131,7 +131,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         private SpriteBatch spriteBatch;
 
         // State values.
-        private readonly PresentationFrameworkView view;
+        private readonly PresentationFoundationView view;
         private readonly Stack<OpacityState> opacityStack = new Stack<OpacityState>(32);
         private readonly Stack<ClipState> clipStack = new Stack<ClipState>(32);
     }

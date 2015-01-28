@@ -11,14 +11,14 @@ using TwistedLogik.Ultraviolet.UI.Presentation.Elements;
 namespace TwistedLogik.Ultraviolet.UI.Presentation
 {
     /// <summary>
-    /// Represents the state of the Ultraviolet Presentation Framework.
+    /// Represents the state of the Ultraviolet Presentation Foundation.
     /// </summary>
-    public partial class PresentationFrameworkManager : UltravioletResource
+    public partial class PresentationFoundation : UltravioletResource
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="PresentationFrameworkManager"/> class.
+        /// Initializes a new instance of the <see cref="PresentationFoundation"/> class.
         /// </summary>
-        internal PresentationFrameworkManager(UltravioletContext uv)
+        internal PresentationFoundation(UltravioletContext uv)
             : base(uv)
         {
             RuntimeHelpers.RunClassConstructor(typeof(Tweening).TypeHandle);
@@ -30,18 +30,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
         /// <summary>
         /// Modifies the specified <see cref="UltravioletConfiguration"/> instance so that the Ultraviolet
-        /// Presentation Framework will be registered as the context's view provider.
+        /// Presentation Foundation will be registered as the context's view provider.
         /// </summary>
         /// <param name="configuration">The <see cref="UltravioletConfiguration"/> instance to modify.</param>
         public static void Configure(UltravioletConfiguration configuration)
         {
             Contract.Require(configuration, "configuration");
 
-            configuration.ViewProviderAssembly = typeof(PresentationFrameworkManager).Assembly.FullName;
+            configuration.ViewProviderAssembly = typeof(PresentationFoundation).Assembly.FullName;
         }
 
         /// <summary>
-        /// Updates the state of the presentation framework.
+        /// Updates the state of the Presentation Foundation.
         /// </summary>
         /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Update(UltravioletTime)"/>.</param>
         public void Update(UltravioletTime time)
@@ -196,7 +196,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
-        /// Registers a custom element type with the Presentation Framework.
+        /// Registers a custom element type with the Presentation Foundation.
         /// </summary>
         /// <param name="type">The type that implements the custom element.</param>
         public void RegisterElement(Type type)
@@ -208,7 +208,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
-        /// Registers a custom element type with the Presentation Framework.
+        /// Registers a custom element type with the Presentation Foundation.
         /// </summary>
         /// <param name="layout">The XML document that defines the custom element's layout.</param>
         public void RegisterElement(XDocument layout)
@@ -258,7 +258,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
-        /// Gets the Presentation Framework's component template manager.
+        /// Gets the Presentation Foundation's component template manager.
         /// </summary>
         public ComponentTemplateManager ComponentTemplates
         {
@@ -351,7 +351,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
-        /// Registers the Presentation Framework's core elements.
+        /// Registers the Presentation Foundation's core elements.
         /// </summary>
         private void RegisterCoreElements()
         {
@@ -390,7 +390,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
-        /// Registers a custom element type with the Presentation Framework.
+        /// Registers a custom element type with the Presentation Foundation.
         /// </summary>
         /// <param name="type">The type that implements the custom element.</param>
         /// <param name="layout">The XML document that defines the custom element's layout.</param>

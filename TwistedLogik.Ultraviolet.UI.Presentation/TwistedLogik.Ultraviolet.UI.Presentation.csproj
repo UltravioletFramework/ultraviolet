@@ -170,9 +170,9 @@
     <Compile Include="LayoutQueue.EntryComparer.cs" />
     <Compile Include="LayoutUtil.cs" />
     <Compile Include="NamespaceDoc.cs" />
-    <Compile Include="PresentationFrameworkFactoryInitializer.cs" />
-    <Compile Include="PresentationFrameworkManager.cs" />
-    <Compile Include="PresentationFrameworkManager.RegisteredElement.cs" />
+    <Compile Include="PresentationFoundationFactoryInitializer.cs" />
+    <Compile Include="PresentationFoundation.cs" />
+    <Compile Include="PresentationFoundation.RegisteredElement.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SourcedAssetID.cs" />
     <Compile Include="SourcedImage.cs" />
@@ -222,8 +222,8 @@
     <Compile Include="UIElementClassCollection.cs" />
     <Compile Include="UIElementClassCollection.IEnumerable.cs" />
     <Compile Include="UIElementRegistry.cs" />
-    <Compile Include="PresentationFrameworkView.cs" />
-    <Compile Include="PresentationFrameworkViewResources.cs" />
+    <Compile Include="PresentationFoundationView.cs" />
+    <Compile Include="PresentationFoundationViewResources.cs" />
     <Compile Include="UvmlException.cs" />
     <Compile Include="UvmlLoader.cs" />
     <Compile Include="UvmlLoader.InstantiationContext.cs" />

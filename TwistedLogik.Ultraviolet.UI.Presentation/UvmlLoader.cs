@@ -26,12 +26,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
-        /// Loads an instance of the <see cref="PresentationFrameworkView"/> from an XML node.
+        /// Loads an instance of the <see cref="PresentationFoundationView"/> from an XML node.
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
         /// <param name="xml">The <see cref="XElement"/> from which to load the view.</param>
-        /// <returns>The <see cref="PresentationFrameworkView"/> that was loaded from the specified XML element.</returns>
-        public static PresentationFrameworkView Load(UltravioletContext uv, XElement xml)
+        /// <returns>The <see cref="PresentationFoundationView"/> that was loaded from the specified XML element.</returns>
+        public static PresentationFoundationView Load(UltravioletContext uv, XElement xml)
         {
             var viewModelType      = default(Type);
             var viewModelTypeAttr  = xml.Attribute("ViewModelType");
@@ -44,7 +44,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 }
             }
 
-            var view    = new PresentationFrameworkView(uv, viewModelType);
+            var view    = new PresentationFoundationView(uv, viewModelType);
             var context = new InstantiationContext(viewModelType);
 
             PopulateElement(uv, view.LayoutRoot, xml, context);
@@ -124,7 +124,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var classes   = xmlElement.AttributeValueString("Class");
             var classList = (classes == null) ? Enumerable.Empty<String>() : classes.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
 
-            var instance = uv.GetUI().GetPresentationFramework().InstantiateElementByName(xmlElement.Name.LocalName, id, context.ViewModelType, context.BindingContext);
+            var instance = uv.GetUI().GetPresentationFoundation().InstantiateElementByName(xmlElement.Name.LocalName, id, context.ViewModelType, context.BindingContext);
             if (instance == null)
                 throw new UvmlException(UltravioletStrings.UnrecognizedUIElement.Format(xmlElement.Name.LocalName));
 
@@ -628,7 +628,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         private static void PopulateElementDefaultProperty(UltravioletContext uv, UIElement uiElement, XElement xmlElement, InstantiationContext context)
         {
             String defaultProperty;
-            if (!uv.GetUI().GetPresentationFramework().GetElementDefaultProperty(uiElement.GetType(), out defaultProperty))
+            if (!uv.GetUI().GetPresentationFoundation().GetElementDefaultProperty(uiElement.GetType(), out defaultProperty))
                 return;
 
             if (defaultProperty != null && !String.IsNullOrEmpty(xmlElement.Value))

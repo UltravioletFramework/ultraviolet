@@ -9,15 +9,15 @@ using TwistedLogik.Ultraviolet.UI.Presentation.Styles;
 namespace TwistedLogik.Ultraviolet.UI.Presentation
 {
     /// <summary>
-    /// Contains the global resources used by a Presentation Framework view.
+    /// Contains the global resources used by a Presentation Foundation view.
     /// </summary>
-    public sealed class PresentationFrameworkViewResources : StyledDependencyObject
+    public sealed class PresentationFoundationViewResources : StyledDependencyObject
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="PresentationFrameworkViewResources"/> class.
+        /// Initializes a new instance of the <see cref="PresentationFoundationViewResources"/> class.
         /// </summary>
         /// <param name="view">The view that owns this resource collection.</param>
-        internal PresentationFrameworkViewResources(PresentationFrameworkView view)
+        internal PresentationFoundationViewResources(PresentationFoundationView view)
         {
             Contract.Require(view, "view");
 
@@ -61,7 +61,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Identifies the <see cref="BlankImage"/> dependency property.
         /// </summary>
         [Styled("blank-image")]
-        internal static readonly DependencyProperty BlankImageProperty = DependencyProperty.Register("BlankImage", typeof(SourcedImage), typeof(PresentationFrameworkViewResources),
+        internal static readonly DependencyProperty BlankImageProperty = DependencyProperty.Register("BlankImage", typeof(SourcedImage), typeof(PresentationFoundationViewResources),
             new DependencyPropertyMetadata(HandleBlankImagePropertyChanged, null, DependencyPropertyOptions.None));
 
         /// <summary>
@@ -118,7 +118,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="dobj">The dependency object that raised the event.</param>
         private static void HandleBlankImagePropertyChanged(DependencyObject dobj)
         {
-            var resources = (PresentationFrameworkViewResources)dobj;
+            var resources = (PresentationFoundationViewResources)dobj;
             resources.ReloadBlankImage();
         }
 
@@ -128,6 +128,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         private readonly TextRenderer textRenderer = new TextRenderer();
 
         // State values.
-        private readonly PresentationFrameworkView view;
+        private readonly PresentationFoundationView view;
     }
 }

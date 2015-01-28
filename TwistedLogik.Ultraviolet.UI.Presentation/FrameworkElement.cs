@@ -6,7 +6,7 @@ using TwistedLogik.Ultraviolet.UI.Presentation.Styles;
 namespace TwistedLogik.Ultraviolet.UI.Presentation
 {
     /// <summary>
-    /// Represents the base class for standard Ultraviolet Presentation Framework elements.
+    /// Represents the base class for standard Ultraviolet Presentation Foundation elements.
     /// </summary>
     [UIElement("element")]
     public abstract class FrameworkElement : UIElement

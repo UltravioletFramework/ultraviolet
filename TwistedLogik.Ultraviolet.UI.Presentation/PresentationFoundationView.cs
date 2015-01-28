@@ -13,18 +13,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
     /// <summary>
     /// Represents the top-level container for UI elements.
     /// </summary>
-    public sealed class PresentationFrameworkView : UIView
+    public sealed class PresentationFoundationView : UIView
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="PresentationFrameworkView"/> class.
+        /// Initializes a new instance of the <see cref="PresentationFoundationView"/> class.
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
         /// <param name="viewModelType">The view's associated model type.</param>
-        public PresentationFrameworkView(UltravioletContext uv, Type viewModelType)
+        public PresentationFoundationView(UltravioletContext uv, Type viewModelType)
             : base(uv, viewModelType)
         {
             this.elementRegistry = new UIElementRegistry();
-            this.resources       = new PresentationFrameworkViewResources(this);
+            this.resources       = new PresentationFoundationViewResources(this);
             this.drawingContext  = new DrawingContext(this);
 
             this.layoutRoot = new Grid(uv, null);
@@ -39,12 +39,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
-        /// Loads an instance of <see cref="PresentationFrameworkView"/> from an XML document.
+        /// Loads an instance of <see cref="PresentationFoundationView"/> from an XML document.
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
         /// <param name="uiPanelDefinition">The <see cref="UIPanelDefinition"/> that defines the view's containing panel.</param>
-        /// <returns>The <see cref="PresentationFrameworkView"/> that was loaded from the specified XML document.</returns>
-        public static PresentationFrameworkView Load(UltravioletContext uv, UIPanelDefinition uiPanelDefinition)
+        /// <returns>The <see cref="PresentationFoundationView"/> that was loaded from the specified XML document.</returns>
+        public static PresentationFoundationView Load(UltravioletContext uv, UIPanelDefinition uiPanelDefinition)
         {
             Contract.Require(uv, "uv");
             Contract.Require(uiPanelDefinition, "uiPanelDefinition");
@@ -436,7 +436,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Gets the view's global resource collection.
         /// </summary>
-        public PresentationFrameworkViewResources Resources
+        public PresentationFoundationViewResources Resources
         {
             get { return resources; }
         }
@@ -742,7 +742,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
         // Property values.
         private readonly UIElementRegistry elementRegistry;
-        private readonly PresentationFrameworkViewResources resources;
+        private readonly PresentationFoundationViewResources resources;
         private UvssDocument stylesheet;
         private Grid layoutRoot;
 

@@ -4,7 +4,7 @@ using TwistedLogik.Ultraviolet.Content;
 namespace TwistedLogik.Ultraviolet.UI.Presentation
 {
     /// <summary>
-    /// Represents a resource used by the Presentation Framework.
+    /// Represents a resource used by the Presentation Foundation.
     /// </summary>
     public sealed class FrameworkResource<T> where T : class
     {
