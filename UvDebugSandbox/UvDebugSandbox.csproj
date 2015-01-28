@@ -67,6 +67,7 @@
     <Compile Include="Input\IUltravioletInputExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UI\Screens\DebugViewScreen.cs" />
+    <Compile Include="UI\Screens\UvDebugScreen.cs" />
     <Compile Include="UI\UIScreenService.cs" />
   </ItemGroup>
   <ItemGroup>

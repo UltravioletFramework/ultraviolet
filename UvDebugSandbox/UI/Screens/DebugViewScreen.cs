@@ -1,7 +1,5 @@
 ﻿using System;
-using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet.Content;
-using TwistedLogik.Ultraviolet.UI;
 using TwistedLogik.Ultraviolet.UI.Presentation;
 
 namespace UvDebugSandbox.UI.Screens
@@ -14,14 +12,12 @@ namespace UvDebugSandbox.UI.Screens
         }
     }
 
-    public class DebugViewScreen : UIScreen
+    public class DebugViewScreen : UvDebugScreen
     {
         public DebugViewScreen(ContentManager globalContent, UIScreenService uiScreenService)
-            : base("Content/UI/Screens/DebugViewScreen", "DebugViewScreen", globalContent)
+            : base("Content/UI/Screens/DebugViewScreen", "DebugViewScreen", globalContent, uiScreenService)
         {
-            Contract.Require(uiScreenService, "uiScreenService");
 
-            this.uiScreenService = uiScreenService;
         }
 
         protected override void OnViewLoaded()
@@ -32,12 +28,5 @@ namespace UvDebugSandbox.UI.Screens
             }
             base.OnViewLoaded();
         }
-
-        protected override void OnDrawingBackground(TwistedLogik.Ultraviolet.UltravioletTime time, TwistedLogik.Ultraviolet.Graphics.Graphics2D.SpriteBatch spriteBatch)
-        {
-            base.OnDrawingBackground(time, spriteBatch);
-        }
-
-        private readonly UIScreenService uiScreenService;
     }
 }

@@ -3,6 +3,14 @@
   <Stylesheet>DebugViewScreenStyles.uvss</Stylesheet>
   <View ViewModelType="UvDebugSandbox.UI.Screens.DebugViewModel, UvDebugSandbox">
 
+    <StackPanel>
+      <Button ID="btn1" NavDown="btn2" Width="200">Test1</Button>
+      <Button ID="btn2" NavDown="btn3" NavUp="btn1" Width="200">Test2</Button>
+      <Button ID="btn3" NavDown="btn4" NavUp="btn2" Width="200">Test3</Button>
+      <Button ID="btn4" NavUp="btn3" Width="200">Test4</Button>
+    </StackPanel>
+    
+    <!--
     <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
       <Grid.ColumnDefinitions>
         <ColumnDefinition Width="100"></ColumnDefinition>
@@ -35,7 +43,7 @@
         <Button>the</Button>
         <Button>new</Button>
       </WrapPanel>
-    </Grid>
+    </Grid>-->
     
     <!--
     <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">

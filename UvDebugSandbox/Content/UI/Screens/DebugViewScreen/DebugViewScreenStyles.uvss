@@ -12,6 +12,9 @@ view
 button, repeatbutton
 {
 	padding: 8 8 8 12;
+	
+	transition (focus, blurred): button-to-blurred;
+	transition (focus, focused): button-to-focused;
 
 	transition (common, normal): button-to-normal;
 	transition (common, hover): button-to-hover;
@@ -101,6 +104,27 @@ repeatbutton .button-focus
 		{
 			keyframe 0 { #Global:Textures:DebugUI 1 639 190 49 6 8 6 4 }
 		}	
+	}
+}
+@button-to-focused
+{
+	target (.button-focus)
+	{
+		animation opacity
+		{
+			keyframe 250 { 1 }
+		}
+	}
+}
+
+@button-to-blurred
+{
+	target (.button-focus)
+	{
+		animation opacity
+		{
+			keyframe 250 { }
+		}
 	}
 }
 
