@@ -1,0 +1,274 @@
+﻿*
+{
+	font: #Global:Fonts:DebugUI;
+	font-color: #ff000000;
+}
+
+view
+{
+	blank-image: #Global:Textures:DebugUI 230 590 14 14;
+}
+
+button, repeatbutton
+{
+	padding: 8 8 8 12;
+
+	transition (common, normal): button-to-normal;
+	transition (common, hover): button-to-hover;
+	transition (common, pressed): button-to-pressed;
+}
+
+	  button .button-background, 
+repeatbutton .button-background
+{
+	source-image: #Global:Textures:DebugUI 1 589 190 49 6 4 6 8;
+}
+
+	  button .button-focus, 
+repeatbutton .button-focus
+{
+	source-image: #Global:Textures:DebugUI 1 789 190 49 8 8 8 8;
+	source-color: #ff0080ff;
+	opacity: 0;
+}
+
+@button-to-normal
+{
+	target button
+	{
+		animation padding
+		{
+			keyframe 0 { }
+		}
+		animation font-color
+		{
+			keyframe 100 { }
+		}
+	}
+	target image (.button-background)
+	{
+		animation source-image
+		{
+			keyframe 0 { }
+		}
+		animation source-color
+		{
+			keyframe 250 { }
+		}
+	}
+}
+@button-to-hover
+{
+	target button
+	{
+		animation padding
+		{
+			keyframe 0 { }
+		}
+		animation font-color
+		{
+			keyframe 100 { #ff004080 }
+		}
+	}
+	target image (.button-background)
+	{
+		animation source-image
+		{
+			keyframe 0 { }
+		}
+		animation source-color
+		{
+			keyframe 250 { #ffff0000 }
+		}	
+	}
+}
+@button-to-pressed
+{
+	target button
+	{
+		animation padding
+		{
+			keyframe 0 { 8 12 8 8 }
+		}
+		animation font-color
+		{
+			keyframe 100 { #ff004080 }
+		}
+	}
+	target image (.button-background)
+	{
+		animation source-image
+		{
+			keyframe 0 { #Global:Textures:DebugUI 1 639 190 49 6 8 6 4 }
+		}	
+	}
+}
+
+progressbar
+{
+	bar-image: #Global:Textures:DebugUI 192 764 28 26 6 6;
+	bar-color: #ffffffff;
+	fill-image: #Global:Textures:DebugUI 192 737 28 26 6 6;
+	fill-color: #ff00a0ff;
+}
+
+radiobutton, checkbox
+{
+	transition (common, normal): toggle-to-normal;
+	transition (common, hover): toggle-to-hover;
+}
+
+.radiobutton-component > .toggle-box
+{
+	source-image: #Global:Textures:DebugUI 192 663 36 36;
+	min-width: 36;
+	min-height: 36;
+}
+
+.radiobutton-component > .toggle-mark
+{
+	source-image: #Global:Textures:DebugUI 192 700 36 36;
+	source-color: #ff008000;
+	min-width: 36;
+	min-height: 36;
+}
+
+.checkbox-component > .toggle-box
+{
+	source-image: #Global:Textures:DebugUI 192 589 36 36;
+	min-width: 36;
+	min-height: 36;
+}
+
+.checkbox-component > .toggle-mark
+{
+	source-image: #Global:Textures:DebugUI 192 626 36 36;
+	source-color: #ff008000;
+	min-width: 36;
+	min-height: 36;
+}
+
+@toggle-to-normal
+{
+	target
+	{
+		animation font-color
+		{
+			keyframe 100 { }
+		}
+	}
+	target image (.toggle-mark)
+	{
+		animation source-color
+		{	
+			keyframe 100 { }
+		}
+	}
+}
+
+@toggle-to-hover
+{
+	target 
+	{
+		animation font-color
+		{
+			keyframe 100 { #ff004080 }
+		}
+	}
+	target image (.toggle-mark)
+	{
+		animation source-color
+		{	
+			keyframe 100 { #ff00ff00 }
+		}
+	}
+}
+
+textbox
+{
+	padding: 8;
+	caret-image: #Global:Textures:DebugUI 230 590 14 14;
+	caret-color: #ff0000ff;
+	selection-image: #Global:Textures:DebugUI 230 590 14 14;
+	selection-color: #ff0000ff;
+
+	transition (focus, focused): textbox-to-focused;
+	transition (focus, blurred): textbox-to-blurred;
+}
+
+.textbox-component .textbox-background
+{
+	source-image: #Global:Textures:DebugUI 1 739 190 49 8 8 8 8;
+	source-color: #ffffffff;
+}
+
+.textbox-component .textbox-focus
+{
+	source-image: #Global:Textures:DebugUI 1 789 190 49 8 8 8 8;
+	source-color: #ff0080ff;
+	opacity: 0;
+}
+
+@textbox-to-focused
+{
+	target (.textbox-focus)
+	{
+		animation opacity
+		{
+			keyframe 250 { 1 }
+		}
+	}
+}
+
+@textbox-to-blurred
+{
+	target (.textbox-focus)
+	{
+		animation opacity
+		{
+			keyframe 250 { }
+		}
+	}
+}
+
+.scroll-button
+{
+	width: 32;
+	height: 32;
+}
+
+.scroll-thumb-horizontal
+{
+	min-width: 16;
+}
+
+.scroll-thumb-vertical
+{
+	min-height: 20;
+}
+
+.scroll-track-horizontal
+{
+	source-image: #Global:Textures:DebugUI 192 791 28 28 3 3 3 3;
+}
+
+.scroll-track-vertical
+{
+	source-image: #Global:Textures:DebugUI 192 791 28 28 3 3 3 3;
+}
+
+hscrollbar, vscrollbar
+{
+	width: 32;
+	height: 32;
+}
+
+hscrollbar
+{
+	min-width: 80;
+}
+
+vscrollbar
+{
+	min-height: 80;
+}

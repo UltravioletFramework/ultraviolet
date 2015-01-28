@@ -426,10 +426,10 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
                         flags |= WindowFlags.Borderless;
 
                     var primary = Create(caption,
-                        (Int32)configuration.InitialWindowPosition.X,
-                        (Int32)configuration.InitialWindowPosition.Y,
-                               configuration.InitialWindowClientSize.Width,
-                               configuration.InitialWindowClientSize.Height, flags);
+                        configuration.InitialWindowPosition.X,
+                        configuration.InitialWindowPosition.Y,
+                        configuration.InitialWindowPosition.Width,
+                        configuration.InitialWindowPosition.Height, flags);
                     DesignatePrimary(primary);
                 }
             }

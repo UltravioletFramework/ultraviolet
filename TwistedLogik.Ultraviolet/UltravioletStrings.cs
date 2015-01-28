@@ -156,6 +156,7 @@ namespace TwistedLogik.Ultraviolet
         public static readonly StringResource CollectionHasNoAddMethod             = new StringResource(StringDatabase, "COLLECTION_HAS_NO_ADD_METHOD");
         public static readonly StringResource CollectionCannotBeCleared            = new StringResource(StringDatabase, "COLLECTION_CANNOT_BE_CLEARED");
         public static readonly StringResource ContentPresenterIsNotAComponent      = new StringResource(StringDatabase, "CONTENT_PRESENTER_IS_NOT_A_COMPONENT");
+        public static readonly StringResource InvalidViewProviderAssembly          = new StringResource(StringDatabase, "INVALID_VIEW_PROVIDER_ASSEMBLY");
 #pragma warning restore 1591
     }
 }

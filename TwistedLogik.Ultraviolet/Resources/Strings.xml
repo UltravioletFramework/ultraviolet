@@ -665,4 +665,9 @@
       <Variant>The specified content presenter is not a component of this control.</Variant>
     </en-US>
   </String>
+  <String Key="INVALID_VIEW_PROVIDER_ASSEMBLY">
+    <en-US>
+      <Variant>Invalid view provider assembly.</Variant>
+    </en-US>
+  </String>
 </LocalizedStrings>

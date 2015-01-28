@@ -1,13 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Xml.Linq;
-using TwistedLogik.Ultraviolet.UI.Presentation.Styles;
 
 namespace TwistedLogik.Ultraviolet.UI
 {
     /// <summary>
     /// Represents a UI panel's definition file.
     /// </summary>
-    public sealed class UIPanelDefinition
+    public class UIPanelDefinition
     {
         /// <summary>
         /// Gets the amount of time over which the panel will transition to
@@ -22,13 +22,18 @@ namespace TwistedLogik.Ultraviolet.UI
         public TimeSpan DefaultCloseTransitionDuration { get; internal set; }
 
         /// <summary>
-        /// Gets the stylesheet which is applied to the panel's view.
+        /// Gets the root element of the panel definition.
         /// </summary>
-        public UvssDocument Stylesheet { get; internal set; }
+        public XElement RootElement { get; internal set; }
 
         /// <summary>
         /// Gets the XML element which describes the panel's view layout.
         /// </summary>
         public XElement ViewElement { get; internal set; }
+
+        /// <summary>
+        /// The contents of the panel's associated stylesheets, if it has any.
+        /// </summary>
+        public IEnumerable<String> Stylesheets { get; internal set; }
     }
 }

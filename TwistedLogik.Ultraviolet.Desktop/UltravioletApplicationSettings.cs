@@ -35,7 +35,8 @@ namespace TwistedLogik.Ultraviolet
         /// Loads a set of application settings from the specified file.
         /// </summary>
         /// <param name="path">The path to the file from which to load the application settings.</param>
-        /// <returns>The <see cref="UltravioletApplicationSettings"/> which were deserialized from the specified file.</returns>
+        /// <returns>The <see cref="UltravioletApplicationSettings"/> which were deserialized from the specified file
+        /// or <c>null</c> if settings could not be loaded correctly.</returns>
         public static UltravioletApplicationSettings Load(String path)
         {
             var xml = XDocument.Load(path);
@@ -43,6 +44,8 @@ namespace TwistedLogik.Ultraviolet
             var settings = new UltravioletApplicationSettings();
 
             settings.Window = UltravioletApplicationWindowSettings.Load(xml.Root.Element("Window"));
+            if (settings.Window == null)
+                return null;
 
             return settings;
         }

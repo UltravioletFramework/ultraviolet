@@ -60,7 +60,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UvArchive", "UvArchive\UvAr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwistedLogik.Ultraviolet.Tooling", "TwistedLogik.Ultraviolet.Tooling\TwistedLogik.Ultraviolet.Tooling.csproj", "{6AAB1EDC-67E5-4F64-9633-50CECB8D9254}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UvDebugSandbox", "__Debugger\UvDebugSandbox.csproj", "{A8C85C23-03C2-41C6-8331-48835D257634}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UvDebugSandbox", "UvDebugSandbox\UvDebugSandbox.csproj", "{A8C85C23-03C2-41C6-8331-48835D257634}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwistedLogik.Ultraviolet.UI.Presentation", "TwistedLogik.Ultraviolet.UI.Presentation\TwistedLogik.Ultraviolet.UI.Presentation.csproj", "{7379D9E1-BB01-4B05-B4F7-5D39B393348F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -213,6 +215,7 @@ Global
 		{DBEFD71F-C99B-4128-8CF1-A998104A2B8D}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
 		{DBEFD71F-C99B-4128-8CF1-A998104A2B8D}.Production|Any CPU.ActiveCfg = Production|Any CPU
 		{DBEFD71F-C99B-4128-8CF1-A998104A2B8D}.Production|Any CPU.Build.0 = Production|Any CPU
+		{DBEFD71F-C99B-4128-8CF1-A998104A2B8D}.Production|Any CPU.Deploy.0 = Production|Any CPU
 		{DBEFD71F-C99B-4128-8CF1-A998104A2B8D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DBEFD71F-C99B-4128-8CF1-A998104A2B8D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{DBEFD71F-C99B-4128-8CF1-A998104A2B8D}.Release|Any CPU.Deploy.0 = Release|Any CPU
@@ -236,10 +239,16 @@ Global
 		{6AAB1EDC-67E5-4F64-9633-50CECB8D9254}.Release|Any CPU.Build.0 = Release|Any CPU
 		{A8C85C23-03C2-41C6-8331-48835D257634}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{A8C85C23-03C2-41C6-8331-48835D257634}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A8C85C23-03C2-41C6-8331-48835D257634}.Production|Any CPU.ActiveCfg = Release|Any CPU
-		{A8C85C23-03C2-41C6-8331-48835D257634}.Production|Any CPU.Build.0 = Release|Any CPU
+		{A8C85C23-03C2-41C6-8331-48835D257634}.Production|Any CPU.ActiveCfg = Production|Any CPU
+		{A8C85C23-03C2-41C6-8331-48835D257634}.Production|Any CPU.Build.0 = Production|Any CPU
 		{A8C85C23-03C2-41C6-8331-48835D257634}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A8C85C23-03C2-41C6-8331-48835D257634}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7379D9E1-BB01-4B05-B4F7-5D39B393348F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7379D9E1-BB01-4B05-B4F7-5D39B393348F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7379D9E1-BB01-4B05-B4F7-5D39B393348F}.Production|Any CPU.ActiveCfg = Production|Any CPU
+		{7379D9E1-BB01-4B05-B4F7-5D39B393348F}.Production|Any CPU.Build.0 = Production|Any CPU
+		{7379D9E1-BB01-4B05-B4F7-5D39B393348F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7379D9E1-BB01-4B05-B4F7-5D39B393348F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

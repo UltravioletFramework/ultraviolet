@@ -66,8 +66,6 @@ namespace TwistedLogik.Ultraviolet
 
             OnInitialized();
 
-            LoadSettings();
-
             OnLoadingContent();
 
             running = true;
@@ -363,8 +361,7 @@ namespace TwistedLogik.Ultraviolet
 
             if (this.settings != null && this.settings.Window != null)
             {
-                configuration.InitialWindowPosition   = this.settings.Window.WindowedPosition;
-                configuration.InitialWindowClientSize = this.settings.Window.WindowedClientSize;
+                configuration.InitialWindowPosition = this.settings.Window.WindowedPosition;
             }
         }
 
@@ -472,7 +469,11 @@ namespace TwistedLogik.Ultraviolet
             if (!File.Exists(path))
                 return;
 
-            this.settings = UltravioletApplicationSettings.Load(path);
+            var settings = UltravioletApplicationSettings.Load(path);
+            if (settings == null)
+                return;
+
+            this.settings = settings;
         }
 
         /// <summary>

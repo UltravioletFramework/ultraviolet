@@ -84,7 +84,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
                     break;
 
                 case SDL_WindowEventID.MOVED:
-                    UpdateWindowedPosition(new Vector2(msg.Event.window.data1, msg.Event.window.data2));
+                    UpdateWindowedPosition(new Point2(msg.Event.window.data1, msg.Event.window.data2));
                     break;
 
                 case SDL_WindowEventID.SIZE_CHANGED:
@@ -276,7 +276,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
         /// <summary>
         /// Gets or sets the window's position.
         /// </summary>
-        public Vector2 Position
+        public Point2 Position
         {
             get
             {
@@ -285,20 +285,20 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
                 Int32 x, y;
                 SDL.GetWindowPosition(ptr, out x, out y);
 
-                return new Vector2(x, y);
+                return new Point2(x, y);
             }
             set
             {
                 Contract.EnsureNotDisposed(this, disposed);
 
-                SDL.SetWindowPosition(ptr, (int)value.X, (int)value.Y);
+                SDL.SetWindowPosition(ptr, value.X, value.Y);
             }
         }
 
         /// <summary>
         /// Gets or sets the position to which the window will be restored upon entering non-maximized windowed mode.
         /// </summary>
-        public Vector2 WindowedPosition
+        public Point2 WindowedPosition
         {
             get
             {
@@ -741,7 +741,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
         /// Updates the window's windowed position, if it is currently in the correct mode and state.
         /// </summary>
         /// <param name="position">The new windowed position.</param>
-        private void UpdateWindowedPosition(Vector2 position)
+        private void UpdateWindowedPosition(Point2 position)
         {
             if (windowedPosition == null || (GetWindowState() == WindowState.Normal && GetWindowMode() == WindowMode.Windowed))
             {
@@ -767,7 +767,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
 
         // Property values.
         private readonly UInt32 id;
-        private Vector2? windowedPosition;
+        private Point2? windowedPosition;
         private Size2? windowedClientSize;
         private Boolean synchronizeWithVerticalRetrace;
         private readonly Boolean native;

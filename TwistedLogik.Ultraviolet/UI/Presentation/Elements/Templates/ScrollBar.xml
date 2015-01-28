@@ -1,8 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
-<ComponentTemplate>
-  <Canvas ID="LayoutRoot">
-    <Button ID="ButtonIncrease"></Button>
-    <Button ID="Thumb"></Button>
-    <Button ID="ButtonDecrease"></Button>
-  </Canvas>
-</ComponentTemplate>

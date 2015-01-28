@@ -59,7 +59,7 @@ namespace TwistedLogik.Ultraviolet
             this.messages = new LocalMessageQueue<UltravioletMessageID>();
             this.messages.Subscribe(this, UltravioletMessages.Quit);
 
-            InitializeFactory();
+            InitializeFactory(configuration);
         }
 
         /// <summary>
@@ -184,6 +184,31 @@ namespace TwistedLogik.Ultraviolet
         /// Gets the factory method of the specified delegate type.
         /// </summary>
         /// <typeparam name="T">The delegate type of the factory method to retrieve.</typeparam>
+        /// <returns>The default factory method of the specified delegate type, or <c>null</c> if no such factory method is registered.</returns>
+        public T TryGetFactoryMethod<T>() where T : class
+        {
+            Contract.EnsureNotDisposed(this, disposed);
+
+            return factory.TryGetFactoryMethod<T>();
+        }
+
+        /// <summary>
+        /// Attempts to retrieve a named factory method of the specified delegate type.
+        /// </summary>
+        /// <typeparam name="T">The delegate type of the factory method to retrieve.</typeparam>
+        /// <param name="name">The name of the factory method to retrieve.</param>
+        /// <returns>The specified named factory method, or <c>null</c> if no such factory method is registered.</returns>
+        public T TryGetFactoryMethod<T>(String name) where T : class
+        {
+            Contract.EnsureNotDisposed(this, disposed);
+
+            return factory.TryGetFactoryMethod<T>(name);
+        }
+
+        /// <summary>
+        /// Gets the factory method of the specified delegate type.
+        /// </summary>
+        /// <typeparam name="T">The delegate type of the factory method to retrieve.</typeparam>
         /// <returns>The default factory method of the specified delegate type.</returns>
         public T GetFactoryMethod<T>() where T : class
         {
@@ -197,7 +222,7 @@ namespace TwistedLogik.Ultraviolet
         /// </summary>
         /// <typeparam name="T">The delegate type of the factory method to retrieve.</typeparam>
         /// <param name="name">The name of the factory method to retrieve.</param>
-        /// <returns>The specified factory method of the specified type.</returns>
+        /// <returns>The specified named factory method.</returns>
         public T GetFactoryMethod<T>(String name) where T : class
         {
             Contract.EnsureNotDisposed(this, disposed);
@@ -760,7 +785,8 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Initializes the context's object factory.
         /// </summary>
-        private void InitializeFactory()
+        /// <param name="configuration">The Ultraviolet Framework configuration settings for this context.</param>
+        private void InitializeFactory(UltravioletConfiguration configuration)
         {
             var asmCore = typeof(UltravioletContext).Assembly;
             var asmImpl = GetType().Assembly;
@@ -768,6 +794,7 @@ namespace TwistedLogik.Ultraviolet
             InitializeFactoryMethodsInAssembly(asmCore);
             InitializeFactoryMethodsInAssembly(asmImpl);
             InitializeFactoryMethodsInCompatibilityShim();
+            InitializeFactoryMethodsInViewProvider(configuration);
         }
 
         /// <summary>
@@ -802,6 +829,33 @@ namespace TwistedLogik.Ultraviolet
             catch (FileNotFoundException e)
             {
                 throw new InvalidCompatibilityShimException(UltravioletStrings.MissingCompatibilityShim.Format(e.FileName));
+            }
+        }
+
+        /// <summary>
+        /// Initializes any factory methods exposed by the registered view provider.
+        /// </summary>
+        /// <param name="configuration">The Ultraviolet Framework configuration settings for this context.</param>
+        private void InitializeFactoryMethodsInViewProvider(UltravioletConfiguration configuration)
+        {
+            if (String.IsNullOrEmpty(configuration.ViewProviderAssembly))
+                return;
+
+            Assembly asm;
+            try
+            {
+                asm = Assembly.Load(configuration.ViewProviderAssembly);
+                InitializeFactoryMethodsInAssembly(asm);
+            }
+            catch (Exception e)
+            {
+                if (e is FileNotFoundException ||
+                    e is FileLoadException ||
+                    e is BadImageFormatException)
+                {
+                    throw new InvalidOperationException(UltravioletStrings.InvalidViewProviderAssembly, e);
+                }
+                throw;
             }
         }
 

@@ -4,7 +4,6 @@ using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet.Content;
 using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
 using TwistedLogik.Ultraviolet.Platform;
-using TwistedLogik.Ultraviolet.UI.Presentation;
 
 namespace TwistedLogik.Ultraviolet.UI
 {
@@ -85,7 +84,7 @@ namespace TwistedLogik.Ultraviolet.UI
 
             if (view != null)
             {
-                view.FocusView();
+                view.Focus();
             }
         }
 
@@ -100,7 +99,7 @@ namespace TwistedLogik.Ultraviolet.UI
 
             if (view != null)
             {
-                view.BlurView();
+                view.Blur();
             }
         }
 
@@ -554,23 +553,20 @@ namespace TwistedLogik.Ultraviolet.UI
         /// <param name="definition">The panel definition from which to load the view.</param>
         protected void LoadView(UIPanelDefinition definition)
         {
-            this.view = (definition.ViewElement == null) ? null : UIView.Load(Ultraviolet, definition.ViewElement);
-
-            if (this.view != null)
+            var view = UIView.Create(definition);
+            if (view != null)
             {
-                if (this.window != null)
+                if (window != null)
                 {
                     var area = new Rectangle(X, Y, Width, Height);
-                    this.view.SetViewArea(this.window, area);
+                    view.SetViewPosition(window, area);
                 }
-
-                this.view.SetStylesheet(definition.Stylesheet);
 
                 if (IsFocused)
-                {
-                    this.view.FocusView();
-                }
+                    view.Focus();
             }
+
+            this.view = view;
 
             HandleViewLoaded();
         }
@@ -597,7 +593,7 @@ namespace TwistedLogik.Ultraviolet.UI
             if (view != null && State == UIPanelState.Open)
             {
                 var area = new Rectangle(X, Y, Width, Height);
-                view.SetViewArea(Window, area);
+                view.SetViewPosition(Window, area);
                 view.Update(time);
             }
         }

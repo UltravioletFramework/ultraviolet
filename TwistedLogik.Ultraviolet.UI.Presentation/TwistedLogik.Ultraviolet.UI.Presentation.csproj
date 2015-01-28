@@ -1,0 +1,271 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{7379D9E1-BB01-4B05-B4F7-5D39B393348F}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>TwistedLogik.Ultraviolet.UI.Presentation</RootNamespace>
+    <AssemblyName>TwistedLogik.Ultraviolet.UI.Presentation</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\Binaries\AnyCPU\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\Binaries\AnyCPU\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Production|AnyCPU'">
+    <OutputPath>..\Binaries\AnyCPU\Production\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <Optimize>true</Optimize>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)' == 'Production'">
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <DelaySign>true</DelaySign>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>..\TwistedLogik.Public.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Dependencies\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Animations\Animation.cs" />
+    <Compile Include="Animations\AnimationBase.cs" />
+    <Compile Include="Animations\AnimationKeyframe.cs" />
+    <Compile Include="Animations\AnimationKeyframeBase.cs" />
+    <Compile Include="Animations\AnimationKeyframeCollection.cs" />
+    <Compile Include="Animations\AnimationKeyframeCollection.IEnumerable.cs" />
+    <Compile Include="Animations\Clock.cs" />
+    <Compile Include="Animations\ClockState.cs" />
+    <Compile Include="Animations\FillBehavior.cs" />
+    <Compile Include="Animations\LoopBehavior.cs" />
+    <Compile Include="Animations\NamespaceDoc.cs" />
+    <Compile Include="Animations\SimpleClock.cs" />
+    <Compile Include="Animations\SimpleClockPool.cs" />
+    <Compile Include="Animations\Storyboard.cs" />
+    <Compile Include="Animations\StoryboardClock.cs" />
+    <Compile Include="Animations\StoryboardClockPool.cs" />
+    <Compile Include="Animations\StoryboardTarget.cs" />
+    <Compile Include="Animations\StoryboardTargetAnimationCollection.cs" />
+    <Compile Include="Animations\StoryboardTargetAnimationCollection.IEnumerable.cs" />
+    <Compile Include="Animations\StoryboardTargetCollection.cs" />
+    <Compile Include="Animations\StoryboardTargetCollection.IEnumerable.cs" />
+    <Compile Include="ArrangeOptions.cs" />
+    <Compile Include="AssetSource.cs" />
+    <Compile Include="BindingExpressionBuilder.cs" />
+    <Compile Include="BindingExpressions.cs" />
+    <Compile Include="BoundEventBuilder.cs" />
+    <Compile Include="ComponentTemplateManager.cs" />
+    <Compile Include="DataBindingGetterBuilder.cs" />
+    <Compile Include="DataBindingSetterBuilder.cs" />
+    <Compile Include="DependencyBoundValue.cs" />
+    <Compile Include="DependencyBoundValueConverting.cs" />
+    <Compile Include="DependencyBoundValueNonConverting.cs" />
+    <Compile Include="DependencyObject.cs" />
+    <Compile Include="DependencyProperty.cs" />
+    <Compile Include="DependencyPropertyMetadata.cs" />
+    <Compile Include="DependencyPropertyName.cs" />
+    <Compile Include="DependencyPropertyOptions.cs" />
+    <Compile Include="DependencyPropertySystem.cs" />
+    <Compile Include="DependencyPropertyValue.cs" />
+    <Compile Include="DrawingContext.ClipState.cs" />
+    <Compile Include="DrawingContext.cs" />
+    <Compile Include="DrawingContext.OpacityState.cs" />
+    <Compile Include="Elements\Border.cs" />
+    <Compile Include="Elements\Button.cs" />
+    <Compile Include="Elements\ButtonBase.cs" />
+    <Compile Include="Elements\Canvas.cs" />
+    <Compile Include="Elements\CheckBox.cs" />
+    <Compile Include="Elements\ClickMode.cs" />
+    <Compile Include="Elements\ColumnDefinition.cs" />
+    <Compile Include="Elements\ColumnDefinitionCollection.cs" />
+    <Compile Include="Elements\ColumnDefinitionCollection.IEnumerable.cs" />
+    <Compile Include="Elements\ContentControl.cs" />
+    <Compile Include="Elements\ContentPresenter.cs" />
+    <Compile Include="Elements\Control.cs" />
+    <Compile Include="Elements\DefinitionBase.cs" />
+    <Compile Include="Elements\Dock.cs" />
+    <Compile Include="Elements\DockPanel.cs" />
+    <Compile Include="Elements\Grid.CellMetadata.cs" />
+    <Compile Include="Elements\Grid.cs" />
+    <Compile Include="Elements\HScrollBar.cs" />
+    <Compile Include="Elements\Image.cs" />
+    <Compile Include="Elements\Label.cs" />
+    <Compile Include="Elements\LabelBase.cs" />
+    <Compile Include="Elements\NamespaceDoc.cs" />
+    <Compile Include="Elements\NumericLabel.cs" />
+    <Compile Include="Elements\Orientation.cs" />
+    <Compile Include="Elements\Panel.cs" />
+    <Compile Include="Elements\ProgressBar.cs" />
+    <Compile Include="Elements\RadioButton.cs" />
+    <Compile Include="Elements\RangeBase.cs" />
+    <Compile Include="Elements\Rectangle.cs" />
+    <Compile Include="Elements\RepeatButton.cs" />
+    <Compile Include="Elements\RowDefinition.cs" />
+    <Compile Include="Elements\RowDefinitionCollection.cs" />
+    <Compile Include="Elements\RowDefinitionCollection.IEnumerable.cs" />
+    <Compile Include="Elements\ScrollBarBase.cs" />
+    <Compile Include="Elements\ScrollBarVisibility.cs" />
+    <Compile Include="Elements\Shape.cs" />
+    <Compile Include="Elements\StackPanel.cs" />
+    <Compile Include="Elements\TextBox.cs" />
+    <Compile Include="Elements\TextBox.OffsetPosition.cs" />
+    <Compile Include="Elements\TextBoxInsertionMode.cs" />
+    <Compile Include="Elements\ToggleButton.cs" />
+    <Compile Include="Elements\UIElementCollection.cs" />
+    <Compile Include="Elements\UIElementCollection.IEnumerable.cs" />
+    <Compile Include="Elements\UserControl.cs" />
+    <Compile Include="Elements\VScrollBar.cs" />
+    <Compile Include="Elements\WrapPanel.cs" />
+    <Compile Include="FrameworkElement.cs" />
+    <Compile Include="FrameworkResource.cs" />
+    <Compile Include="GridLength.cs" />
+    <Compile Include="GridUnitType.cs" />
+    <Compile Include="HorizontalAlignment.cs" />
+    <Compile Include="IDependencyBoundValue.cs" />
+    <Compile Include="IDependencyPropertyValue.cs" />
+    <Compile Include="IUltravioletDisplayExtensions.cs" />
+    <Compile Include="IUltravioletUIExtensions.cs" />
+    <Compile Include="LayoutQueue.cs" />
+    <Compile Include="LayoutQueue.Entry.cs" />
+    <Compile Include="LayoutQueue.EntryComparer.cs" />
+    <Compile Include="LayoutUtil.cs" />
+    <Compile Include="NamespaceDoc.cs" />
+    <Compile Include="PresentationFrameworkFactoryInitializer.cs" />
+    <Compile Include="PresentationFrameworkManager.cs" />
+    <Compile Include="PresentationFrameworkManager.RegisteredElement.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SourcedAssetID.cs" />
+    <Compile Include="SourcedImage.cs" />
+    <Compile Include="SourcedResource.cs" />
+    <Compile Include="StyledDependencyObject.cs" />
+    <Compile Include="Styles\NamespaceDoc.cs" />
+    <Compile Include="Styles\StyledAttribute.cs" />
+    <Compile Include="Styles\UvssClassCollection.cs" />
+    <Compile Include="Styles\UvssClassCollection.IEnumerable.cs" />
+    <Compile Include="Styles\UvssDocument.cs" />
+    <Compile Include="Styles\UvssDocument.PrioritizedStyleData.cs" />
+    <Compile Include="Styles\UvssException.cs" />
+    <Compile Include="Styles\UvssLexer.cs" />
+    <Compile Include="Styles\UvssLexerToken.cs" />
+    <Compile Include="Styles\UvssLexerTokenType.cs" />
+    <Compile Include="Styles\UvssParser.cs" />
+    <Compile Include="Styles\UvssParserState.cs" />
+    <Compile Include="Styles\UvssRule.cs" />
+    <Compile Include="Styles\UvssSelector.cs" />
+    <Compile Include="Styles\UvssSelector.IEnumerable.cs" />
+    <Compile Include="Styles\UvssSelectorCollection.cs" />
+    <Compile Include="Styles\UvssSelectorCollection.IEnumerable.cs" />
+    <Compile Include="Styles\UvssSelectorPart.cs" />
+    <Compile Include="Styles\UvssStoryboard.cs" />
+    <Compile Include="Styles\UvssStoryboardAnimation.cs" />
+    <Compile Include="Styles\UvssStoryboardAnimationCollection.cs" />
+    <Compile Include="Styles\UvssStoryboardAnimationCollection.IEnumerable.cs" />
+    <Compile Include="Styles\UvssStoryboardKeyframe.cs" />
+    <Compile Include="Styles\UvssStoryboardKeyframeCollection.cs" />
+    <Compile Include="Styles\UvssStoryboardKeyframeCollection.IEnumerable.cs" />
+    <Compile Include="Styles\UvssStoryboardReifier.cs" />
+    <Compile Include="Styles\UvssStoryboardTarget.cs" />
+    <Compile Include="Styles\UvssStoryboardTargetCollection.cs" />
+    <Compile Include="Styles\UvssStoryboardTargetCollection.IEnumerable.cs" />
+    <Compile Include="Styles\UvssStoryboardTargetFilter.cs" />
+    <Compile Include="Styles\UvssStoryboardTargetFilter.IEnumerable.cs" />
+    <Compile Include="Styles\UvssStyle.cs" />
+    <Compile Include="Styles\UvssStyleArgumentsCollection.cs" />
+    <Compile Include="Styles\UvssStyleArgumentsCollection.IEnumerable.cs" />
+    <Compile Include="Styles\UvssStyleCollection.cs" />
+    <Compile Include="Styles\UvssStyleCollection.IEnumerable.cs" />
+    <Compile Include="Styles\UvssStyleKey.cs" />
+    <Compile Include="Thickness.cs" />
+    <Compile Include="TypeExtensions.cs" />
+    <Compile Include="UIElement.cs" />
+    <Compile Include="UIElementAttribute.cs" />
+    <Compile Include="UIElementClassCollection.cs" />
+    <Compile Include="UIElementClassCollection.IEnumerable.cs" />
+    <Compile Include="UIElementRegistry.cs" />
+    <Compile Include="PresentationFrameworkView.cs" />
+    <Compile Include="PresentationFrameworkViewResources.cs" />
+    <Compile Include="UvmlException.cs" />
+    <Compile Include="UvmlLoader.cs" />
+    <Compile Include="UvmlLoader.InstantiationContext.cs" />
+    <Compile Include="VerticalAlignment.cs" />
+    <Compile Include="Visibility.cs" />
+    <Compile Include="VisualState.cs" />
+    <Compile Include="VisualStateGroup.cs" />
+    <Compile Include="VisualStateGroup.IEnumerable.cs" />
+    <Compile Include="VisualStateGroupCollection.cs" />
+    <Compile Include="VisualStateGroupCollection.IEnumerable.cs" />
+    <Compile Include="VisualStateTransitionKey.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\TwistedLogik.Nucleus\TwistedLogik.Nucleus.csproj">
+      <Project>{7da6158b-a0b9-4100-904e-22fd86949608}</Project>
+      <Name>TwistedLogik.Nucleus</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TwistedLogik.Ultraviolet\TwistedLogik.Ultraviolet.csproj">
+      <Project>{f071abe3-05e5-4df9-a929-cf71b01ec50a}</Project>
+      <Name>TwistedLogik.Ultraviolet</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Elements\Templates\Button.xml" />
+    <EmbeddedResource Include="Elements\Templates\CheckBox.xml" />
+    <EmbeddedResource Include="Elements\Templates\HScrollBar.xml" />
+    <EmbeddedResource Include="Elements\Templates\RadioButton.xml" />
+    <EmbeddedResource Include="Elements\Templates\RepeatButton.xml" />
+    <EmbeddedResource Include="Elements\Templates\TextBox.xml" />
+    <EmbeddedResource Include="Elements\Templates\VScrollBar.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\TwistedLogik.Public.snk">
+      <Link>TwistedLogik.Public.snk</Link>
+    </None>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

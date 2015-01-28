@@ -212,7 +212,7 @@ namespace TwistedLogik.Ultraviolet.UI
         {
             if (View != null)
             {
-                View.Cleanup();
+                View.Dispose();
             }
             base.Dispose(disposing);
         }

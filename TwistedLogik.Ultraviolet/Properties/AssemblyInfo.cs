@@ -25,7 +25,7 @@ using System.Security;
 [assembly: AssemblyProduct("Ultraviolet Framework")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyCompany("TwistedLogik Software")]
-[assembly: AssemblyCopyright("Copyright © Cole Campbell 2014")]
+[assembly: AssemblyCopyright("Copyright © Cole Campbell 2014-2015")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

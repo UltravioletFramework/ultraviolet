@@ -1,5 +1,4 @@
 ﻿using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
-using TwistedLogik.Ultraviolet.UI.Presentation;
 
 namespace TwistedLogik.Ultraviolet
 {
@@ -15,8 +14,6 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="factory">The <see cref="UltravioletFactory"/> to initialize.</param>
         public void Initialize(UltravioletContext owner, UltravioletFactory factory)
         {
-            var presentationFrameworkManager = new PresentationFrameworkManager(owner);
-            factory.SetFactoryMethod<PresentationFrameworkManagerFactory>((uv) => presentationFrameworkManager);
             factory.SetFactoryMethod<SpriteBatchFactory>((uv) => new SpriteBatch(uv));
         }
     }
