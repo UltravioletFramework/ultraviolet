@@ -271,6 +271,26 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Gets the first focusable element in the view.
+        /// </summary>
+        /// <param name="tabStop">A value indicating whether the element must also be a tab stop.</param>
+        /// <returns>The first focusable element in the view, or <c>null</c> if no such element exists.</returns>
+        public UIElement GetFirstFocusableElement(Boolean tabStop)
+        {
+            return GetFirstFocusableElementInternal(LayoutRoot, tabStop);
+        }
+
+        /// <summary>
+        /// Gets the last focusable element in the view.
+        /// </summary>
+        /// <param name="tabStop">A value indicating whether the element must also be a tab stop.</param>
+        /// <returns>The last focusable element in the view, or <c>null</c> if no such element exists.</returns>
+        public UIElement GetLastFocusableElement(Boolean tabStop)
+        {
+            return GetLastFocusableElementInternal(LayoutRoot, tabStop);
+        }
+
+        /// <summary>
         /// Sets the view's stylesheet.
         /// </summary>
         /// <param name="stylesheet">The view's stylesheet.</param>
@@ -487,6 +507,54 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             layoutRoot.Position(dipsArea.Location);
 
             base.OnViewSizeChanged();
+        }
+
+        /// <summary>
+        /// Recurses through the logical tree to find the first element which is focusable (and potentially, a tab stop).
+        /// </summary>
+        /// <param name="parent">The parent element which is being examined.</param>
+        /// <param name="tabStop">A value indicating whether a matching element must be a tab stop.</param>
+        /// <returns>The first element within this branch of the logical tree which meets the specified criteria.</returns>
+        private UIElement GetFirstFocusableElementInternal(UIElement parent, Boolean tabStop)
+        {
+            if (parent.Focusable && (!tabStop || parent.IsTabStop))
+                return parent;
+
+            for (int i = 0; i < parent.LogicalChildren; i++)
+            {
+                var child = parent.GetLogicalChild(i);
+                var match = GetFirstFocusableElementInternal(child, tabStop);
+                if (match != null)
+                {
+                    return match;
+                }
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// Recurses through the logical tree to find the last element which is focusable (and potentially, a tab stop).
+        /// </summary>
+        /// <param name="parent">The parent element which is being examined.</param>
+        /// <param name="tabStop">A value indicating whether a matching element must be a tab stop.</param>
+        /// <returns>The last element within this branch of the logical tree which meets the specified criteria.</returns>
+        private UIElement GetLastFocusableElementInternal(UIElement parent, Boolean tabStop)
+        {
+            for (int i = parent.LogicalChildren - 1; i >= 0; i--)
+            {
+                var child = parent.GetLogicalChild(i);
+                var match = GetFirstFocusableElementInternal(child, tabStop);
+                if (match != null)
+                {
+                    return match;
+                }
+            }
+
+            if (parent.Focusable && (!tabStop || parent.IsTabStop))
+                return parent;
+
+            return null;
         }
 
         /// <summary>

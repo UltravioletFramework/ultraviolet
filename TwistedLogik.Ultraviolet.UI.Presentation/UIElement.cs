@@ -525,6 +525,46 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Gets the element which is navigated to when focus is moved "up," usually by pressing 
+        /// up on the directional pad of a game controller.
+        /// </summary>
+        /// <returns>The specified element, or <c>null</c> if no such element is defined.</returns>
+        public UIElement GetNavUpElement()
+        {
+            return FindNavElement(NavUp);
+        }
+
+        /// <summary>
+        /// Gets the element which is navigated to when focus is moved "down," usually by pressing 
+        /// down on the directional pad of a game controller.
+        /// </summary>
+        /// <returns>The specified element, or <c>null</c> if no such element is defined.</returns>
+        public UIElement GetNavDownElement()
+        {
+            return FindNavElement(NavDown);
+        }
+
+        /// <summary>
+        /// Gets the element which is navigated to when focus is moved "left," usually by pressing 
+        /// left on the directional pad of a game controller.
+        /// </summary>
+        /// <returns>The specified element, or <c>null</c> if no such element is defined.</returns>
+        public UIElement GetNavLeftElement()
+        {
+            return FindNavElement(NavLeft);
+        }
+
+        /// <summary>
+        /// Gets the element which is navigated to when focus is moved "right," usually by pressing 
+        /// right on the directional pad of a game controller.
+        /// </summary>
+        /// <returns>The specified element, or <c>null</c> if no such element is defined.</returns>
+        public UIElement GetNavRightElement()
+        {
+            return FindNavElement(NavRight);
+        }
+
+        /// <summary>
         /// Gets the Ultraviolet context that created this element.
         /// </summary>
         public UltravioletContext Ultraviolet
@@ -680,6 +720,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Gets or sets a value indicating whether this element participates in tab navigation.
+        /// </summary>
+        public Boolean IsTabStop
+        {
+            get { return GetValue<Boolean>(IsTabStopProperty); }
+            set { SetValue<Boolean>(IsTabStopProperty, value); }
+        }
+
+        /// <summary>
         /// Gets or sets a value indicating whether the element can receive input focus.
         /// </summary>
         public Boolean Focusable
@@ -830,6 +879,56 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Gets or sets the identifier of the element which is navigated to when focus is
+        /// moved "up," usually by pressing up on the directional pad of a game controller.
+        /// </summary>
+        public String NavUp
+        {
+            get { return GetValue<String>(NavUpProperty); }
+            set { SetValue<String>(NavUpProperty, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets the identifier of the element which is navigated to when focus is
+        /// moved "down," usually by pressing down on the directional pad of a game controller.
+        /// </summary>
+        public String NavDown
+        {
+            get { return GetValue<String>(NavDownProperty); }
+            set { SetValue<String>(NavDownProperty, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets the identifier of the element which is navigated to when focus is
+        /// moved "left," usually by pressing down on the directional pad of a game controller.
+        /// </summary>
+        public String NavLeft
+        {
+            get { return GetValue<String>(NavLeftProperty); }
+            set { SetValue<String>(NavLeftProperty, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets the identifier of the element which is navigated to when focus is
+        /// moved "right," usually by pressing down on the directional pad of a game controller.
+        /// </summary>
+        public String NavRight
+        {
+            get { return GetValue<String>(NavRightProperty); }
+            set { SetValue<String>(NavRightProperty, value); }
+        }
+
+        /// <summary>
+        /// Gets a value which indicates the element's relative position within the tab order
+        /// of its parent element.
+        /// </summary>
+        public Int32 TabIndex
+        {
+            get { return GetValue<Int32>(TabIndexProperty); }
+            set { SetValue<Int32>(TabIndexProperty, value); }
+        }
+
+        /// <summary>
         /// Gets the number of logical children which belong to this element.
         /// </summary>
         public virtual Int32 LogicalChildren
@@ -933,6 +1032,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public event UIElementEventHandler IsHitTestVisibleChanged;
 
         /// <summary>
+        /// Occurs when the value of the <see cref="IsTabStop"/> property changes.
+        /// </summary>
+        public event UIElementEventHandler IsTabStopChanged;
+
+        /// <summary>
         /// Occurs when the value of the <see cref="Focusable"/> dependency property changes.
         /// </summary>
         public event UIElementEventHandler FocusableChanged;
@@ -948,6 +1052,31 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public event UIElementEventHandler OpacityChanged;
 
         /// <summary>
+        /// Occurs when the value of the <see cref="NavUp"/> property changes.
+        /// </summary>
+        public event UIElementEventHandler NavUpChanged;
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="NavDown"/> property changes.
+        /// </summary>
+        public event UIElementEventHandler NavDownChanged;
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="NavLeft"/> property changes.
+        /// </summary>
+        public event UIElementEventHandler NavLeftChanged;
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="NavRight"/> property changes.
+        /// </summary>
+        public event UIElementEventHandler NavRightChanged;
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="TabIndex"/> property changes.
+        /// </summary>
+        public event UIElementEventHandler TabIndexChanged;
+
+        /// <summary>
         /// Identifies the <see cref="IsEnabled"/> dependency property.
         /// </summary>
         [Styled("enabled")]
@@ -960,6 +1089,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         [Styled("hit-test-visible")]
         public static readonly DependencyProperty IsHitTestVisibleProperty = DependencyProperty.Register("IsHitTestVisible", typeof(Boolean), typeof(UIElement),
             new DependencyPropertyMetadata(HandleIsHitTestVisibleChanged, () => true, DependencyPropertyOptions.None));
+
+        /// <summary>
+        /// Identifies the <see cref="IsTabStop"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty IsTabStopProperty = DependencyProperty.Register("IsTabStop", typeof(Boolean), typeof(UIElement),
+            new DependencyPropertyMetadata(HandleIsTabStopChanged, () => true, DependencyPropertyOptions.None));
 
         /// <summary>
         /// Identifies the <see cref="Focusable"/> dependency property.
@@ -981,6 +1116,36 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         [Styled("opacity")]
         public static readonly DependencyProperty OpacityProperty = DependencyProperty.Register("Opacity", typeof(Single), typeof(UIElement),
             new DependencyPropertyMetadata(HandleOpacityChanged, () => 1.0f, DependencyPropertyOptions.None));
+
+        /// <summary>
+        /// Identifies the <see cref="NavUp"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty NavUpProperty = DependencyProperty.Register("NavUp", typeof(String), typeof(UIElement),
+            new DependencyPropertyMetadata(HandleNavUpChanged, () => null, DependencyPropertyOptions.None));
+
+        /// <summary>
+        /// Identifies the <see cref="NavDown"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty NavDownProperty = DependencyProperty.Register("NavDown", typeof(String), typeof(UIElement),
+            new DependencyPropertyMetadata(HandleNavDownChanged, () => null, DependencyPropertyOptions.None));
+
+        /// <summary>
+        /// Identifies the <see cref="NavLeft"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty NavLeftProperty = DependencyProperty.Register("NavLeft", typeof(String), typeof(UIElement),
+            new DependencyPropertyMetadata(HandleNavLeftChanged, () => null, DependencyPropertyOptions.None));
+
+        /// <summary>
+        /// Identifies the <see cref="NavRight"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty NavRightProperty = DependencyProperty.Register("NavRight", typeof(String), typeof(UIElement),
+            new DependencyPropertyMetadata(HandleNavRightChanged, () => null, DependencyPropertyOptions.None));
+
+        /// <summary>
+        /// Identifies the <see cref="TabIndex"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty TabIndexProperty = DependencyProperty.Register("TabIndex", typeof(Int32), typeof(UIElement),
+            new DependencyPropertyMetadata(HandleTabIndexChanged, () => 0, DependencyPropertyOptions.None));
 
         /// <summary>
         /// Applies a visual state transition to the element.
@@ -1446,6 +1611,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Raises the <see cref="IsTabStopChanged"/> event.
+        /// </summary>
+        protected virtual void OnIsTabStopChanged()
+        {
+            var temp = IsTabStopChanged;
+            if (temp != null)
+            {
+                temp(this);
+            }
+        }
+
+        /// <summary>
         /// Raises the <see cref="FocusableChanged"/> event.
         /// </summary>
         protected virtual void OnFocusableChanged()
@@ -1475,6 +1652,66 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         protected virtual void OnOpacityChanged()
         {
             var temp = OpacityChanged;
+            if (temp != null)
+            {
+                temp(this);
+            }
+        }
+
+        /// <summary>
+        /// Raises the <see cref="NavUpChanged"/> event.
+        /// </summary>
+        protected virtual void OnNavUpChanged()
+        {
+            var temp = NavUpChanged;
+            if (temp != null)
+            {
+                temp(this);
+            }
+        }
+
+        /// <summary>
+        /// Raises the <see cref="NavDownChanged"/> event.
+        /// </summary>
+        protected virtual void OnNavDownChanged()
+        {
+            var temp = NavDownChanged;
+            if (temp != null)
+            {
+                temp(this);
+            }
+        }
+
+        /// <summary>
+        /// Raises the <see cref="NavLeftChanged"/> event.
+        /// </summary>
+        protected virtual void OnNavLeftChanged()
+        {
+            var temp = NavLeftChanged;
+            if (temp != null)
+            {
+                temp(this);
+            }
+        }
+
+        /// <summary>
+        /// Raises the <see cref="NavRightChanged"/> event.
+        /// </summary>
+        protected virtual void OnNavRightChanged()
+        {
+            var temp = NavRightChanged;
+            if (temp != null)
+            {
+                temp(this);
+            }
+        }
+
+        /// <summary>
+        /// Raises the <see cref="TabIndexChanged"/> event.
+        /// </summary>
+        protected virtual void OnTabIndexChanged()
+        {
+            var temp = TabIndexChanged;
             if (temp != null)
             {
                 temp(this);
@@ -1899,6 +2136,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Occurs when the value of the <see cref="IsTabStop"/> dependency property changes.
+        /// </summary>
+        /// <param name="dobj">The dependency object that raised the event.</param>
+        private static void HandleIsTabStopChanged(DependencyObject dobj)
+        {
+            var element = (UIElement)dobj;
+            element.OnIsTabStopChanged();
+        }
+
+        /// <summary>
         /// Occurs when the value of the <see cref="Focusable"/> dependency property changes.
         /// </summary>
         /// <param name="dobj">The dependency object that raised the event.</param>
@@ -1926,6 +2173,56 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             var element = (UIElement)dobj;
             element.OnOpacityChanged();
+        }
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="NavUp"/> dependency property changes.
+        /// </summary>
+        /// <param name="dobj">The dependency object that raised the event.</param>
+        private static void HandleNavUpChanged(DependencyObject dobj)
+        {
+            var element = (UIElement)dobj;
+            element.OnNavUpChanged();
+        }
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="NavDown"/> dependency property changes.
+        /// </summary>
+        /// <param name="dobj">The dependency object that raised the event.</param>
+        private static void HandleNavDownChanged(DependencyObject dobj)
+        {
+            var element = (UIElement)dobj;
+            element.OnNavDownChanged();
+        }
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="NavLeft"/> dependency property changes.
+        /// </summary>
+        /// <param name="dobj">The dependency object that raised the event.</param>
+        private static void HandleNavLeftChanged(DependencyObject dobj)
+        {
+            var element = (UIElement)dobj;
+            element.OnNavLeftChanged();
+        }
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="NavRight"/> dependency property changes.
+        /// </summary>
+        /// <param name="dobj">The dependency object that raised the event.</param>
+        private static void HandleNavRightChanged(DependencyObject dobj)
+        {
+            var element = (UIElement)dobj;
+            element.OnNavRightChanged();
+        }
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="TabIndex"/> dependency property changes.
+        /// </summary>
+        /// <param name="dobj">The dependency object that raised the event.</param>
+        private static void HandleTabIndexChanged(DependencyObject dobj)
+        {
+            var element = (UIElement)dobj;
+            element.OnTabIndexChanged();
         }
 
         /// <summary>
@@ -2008,6 +2305,22 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 return Control.ComponentRegistry;
             }
             return (view == null) ? null : view.ElementRegistry;
+        }
+
+        /// <summary>
+        /// Gets the specified element within the current navigation context.
+        /// </summary>
+        /// <param name="id">The identifier of the element to retrieve.</param>
+        /// <returns>The element with the specified identifier, or <c>null</c> if no such element exists.</returns>
+        private UIElement FindNavElement(String id)
+        {
+            if (elementRegistrationContext == null)
+                return null;
+
+            if (String.IsNullOrEmpty(id))
+                return null;
+
+            return elementRegistrationContext.GetElementByID(id);
         }
 
         /// <summary>
