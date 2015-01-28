@@ -98,6 +98,58 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             layoutRoot.Update(time);
         }
 
+        /// <inheritdoc/>
+        public override void NavigateUp()
+        {
+            if (elementWithFocus == null)
+                return;
+
+            var target = elementWithFocus.GetNavUpElement();
+            if (target == null)
+                return;
+
+            FocusElement(target);
+        }
+
+        /// <inheritdoc/>
+        public override void NavigateDown()
+        {
+            if (elementWithFocus == null)
+                return;
+
+            var target = elementWithFocus.GetNavDownElement();
+            if (target == null)
+                return;
+
+            FocusElement(target);
+        }
+
+        /// <inheritdoc/>
+        public override void NavigateLeft()
+        {
+            if (elementWithFocus == null)
+                return;
+
+            var target = elementWithFocus.GetNavLeftElement();
+            if (target == null)
+                return;
+
+            FocusElement(target);
+        }
+
+        /// <inheritdoc/>
+        public override void NavigateRight()
+        {
+            if (elementWithFocus == null)
+                return;
+
+            var target = elementWithFocus.GetNavRightElement();
+            if (target == null)
+                return;
+
+            FocusElement(target);
+        }
+
         /// <summary>
         /// Invalidates the styling state of the view's layout root.
         /// </summary>
