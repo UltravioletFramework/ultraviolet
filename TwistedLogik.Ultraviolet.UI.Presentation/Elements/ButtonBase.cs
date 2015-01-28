@@ -17,6 +17,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         public ButtonBase(UltravioletContext uv, String id)
             : base(uv, id)
         {
+            SetDefaultValue<Boolean>(FocusableProperty, true);
+
             VisualStateGroups.Create("common", new[] { "normal", "hover", "pressed", "disabled" });
         }
 
