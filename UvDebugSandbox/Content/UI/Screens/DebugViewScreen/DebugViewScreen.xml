@@ -4,10 +4,16 @@
   <View ViewModelType="UvDebugSandbox.UI.Screens.DebugViewModel, UvDebugSandbox">
 
     <StackPanel>
-      <Button ID="btn1" NavDown="btn2" Width="200">Test1</Button>
-      <Button ID="btn2" NavDown="btn3" NavUp="btn1" Width="200">Test2</Button>
-      <Button ID="btn3" NavDown="btn4" NavUp="btn2" Width="200">Test3</Button>
-      <Button ID="btn4" NavUp="btn3" Width="200">Test4</Button>
+      <Button ID="btn1" NavRight="btn5" NavDown="btn2" Width="200">Test1</Button>
+      <Button ID="btn2" TabIndex="999" NavRight="btn6" NavDown="btn3" NavUp="btn1" Width="200">Test2</Button>
+      <Button ID="btn3" TabIndex="998" NavRight="btn7" NavDown="btn4" NavUp="btn2" Width="200">Test3</Button>
+      <Button ID="btn4" NavRight="btn8" NavUp="btn3" Width="200">Test4</Button>
+    </StackPanel>
+    <StackPanel Margin="200 0 0 0">
+      <Button ID="btn5" NavLeft="btn1" NavDown="btn6" Width="200">Test1</Button>
+      <Button ID="btn6" NavLeft="btn2" NavDown="btn7" NavUp="btn5" Width="200">Test2</Button>
+      <Button ID="btn7" IsTabStop="false" NavLeft="btn3" NavDown="btn8" NavUp="btn6" Width="200">Test3</Button>
+      <Button ID="btn8" NavLeft="btn4" NavUp="btn7" Width="200">Test4</Button>
     </StackPanel>
     
     <!--

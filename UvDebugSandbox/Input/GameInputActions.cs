@@ -28,7 +28,7 @@ namespace UvDebugSandbox.Input
         }
 
         /// <summary>
-        /// Gets or sets the input binding which moves navigation up.
+        /// Gets the input binding which moves navigation up.
         /// </summary>
         public InputAction NavigateUp
         {
@@ -37,7 +37,7 @@ namespace UvDebugSandbox.Input
         }
 
         /// <summary>
-        /// Gets or sets the input binding which moves navigation down.
+        /// Gets the input binding which moves navigation down.
         /// </summary>
         public InputAction NavigateDown
         {
@@ -46,7 +46,7 @@ namespace UvDebugSandbox.Input
         }
 
         /// <summary>
-        /// Gets or sets the input binding which moves navigation left.
+        /// Gets the input binding which moves navigation left.
         /// </summary>
         public InputAction NavigateLeft
         {
@@ -55,9 +55,27 @@ namespace UvDebugSandbox.Input
         }
 
         /// <summary>
-        /// Gets or sets the input binding which moves navigation right.
+        /// Gets the input binding which moves navigation right.
         /// </summary>
         public InputAction NavigateRight
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
+        /// Gets the input binding which moves navigation to the previous tab stop.
+        /// </summary>
+        public InputAction NavigatePreviousTabStop
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
+        /// Gets the input binding which moves navigation to the next tab stop.
+        /// </summary>
+        public InputAction NavigateNextTabStop
         {
             get;
             private set;
@@ -70,10 +88,12 @@ namespace UvDebugSandbox.Input
         {
             ExitApplication = CreateAction("EXIT_APPLICATION");
 
-            NavigateUp    = CreateAction("NAVIGATE_UP");
-            NavigateDown  = CreateAction("NAVIGATE_DOWN");
-            NavigateLeft  = CreateAction("NAVIGATE_LEFT");
-            NavigateRight = CreateAction("NAVIGATE_RIGHT");
+            NavigateUp              = CreateAction("NAVIGATE_UP");
+            NavigateDown            = CreateAction("NAVIGATE_DOWN");
+            NavigateLeft            = CreateAction("NAVIGATE_LEFT");
+            NavigateRight           = CreateAction("NAVIGATE_RIGHT");
+            NavigatePreviousTabStop = CreateAction("NAVIGATE_PREV_TAB");
+            NavigateNextTabStop     = CreateAction("NAVIGATE_NEXT_TAB");
 
             base.OnCreatingActions();
         }
@@ -88,10 +108,12 @@ namespace UvDebugSandbox.Input
 #else
             ExitApplication.Primary = CreateKeyboardBinding(Key.Escape);
 
-            NavigateUp.Primary    = CreateKeyboardBinding(Key.Up);
-            NavigateDown.Primary  = CreateKeyboardBinding(Key.Down);
-            NavigateLeft.Primary  = CreateKeyboardBinding(Key.Left);
-            NavigateRight.Primary = CreateKeyboardBinding(Key.Right);
+            NavigateUp.Primary              = CreateKeyboardBinding(Key.Up);
+            NavigateDown.Primary            = CreateKeyboardBinding(Key.Down);
+            NavigateLeft.Primary            = CreateKeyboardBinding(Key.Left);
+            NavigateRight.Primary           = CreateKeyboardBinding(Key.Right);
+            NavigatePreviousTabStop.Primary = CreateKeyboardBinding(Key.Tab, shift: true);
+            NavigateNextTabStop.Primary     = CreateKeyboardBinding(Key.Tab);
 #endif
 
             base.OnResetting();

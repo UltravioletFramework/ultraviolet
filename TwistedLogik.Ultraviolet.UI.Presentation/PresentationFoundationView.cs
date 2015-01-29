@@ -150,6 +150,26 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             FocusElement(target);
         }
 
+        /// <inheritdoc/>
+        public override void NavigatePreviousTabStop()
+        {
+            var target = (elementWithFocus == null) ? GetLastFocusableElement(true) : elementWithFocus.GetPreviousTabStop() ?? GetLastFocusableElement(true);
+            if (target == null)
+                return;
+
+            FocusElement(target);
+        }
+
+        /// <inheritdoc/>
+        public override void NavigateNextTabStop()
+        {
+            var target = (elementWithFocus == null) ? GetFirstFocusableElement(true) : elementWithFocus.GetNextTabStop() ?? GetFirstFocusableElement(true);
+            if (target == null)
+                return;
+
+            FocusElement(target);
+        }
+
         /// <summary>
         /// Invalidates the styling state of the view's layout root.
         /// </summary>
@@ -596,7 +616,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             for (int i = parent.LogicalChildren - 1; i >= 0; i--)
             {
                 var child = parent.GetLogicalChild(i);
-                var match = GetFirstFocusableElementInternal(child, tabStop);
+                var match = GetLastFocusableElementInternal(child, tabStop);
                 if (match != null)
                 {
                     return match;
