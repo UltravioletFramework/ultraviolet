@@ -565,6 +565,54 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Gets the element which is navigated to when focus is moved to the next tab stop.
+        /// </summary>
+        /// <returns>The specified element, or <c>null</c> if no such element is defined.</returns>
+        public UIElement GetNextTabStop()
+        {
+            return GetNextTabStopInternal();
+        }
+
+        /// <summary>
+        /// Gets the element which is navigated to when focus is moved to the previous tab stop.
+        /// </summary>
+        /// <returns>The specified element, or <c>null</c> if no such element is defined.</returns>
+        public UIElement GetPreviousTabStop()
+        {
+            return GetPreviousTabStopInternal();
+        }
+
+        /// <summary>
+        /// Gets the first focusable element in the part of the logical tree which is rooted in this element.
+        /// </summary>
+        /// <param name="tabStop">A value indicating whether the matching element must also be a tab stop.</param>
+        /// <returns>The first focusable element, or <c>null</c> if no such element exists.</returns>
+        public UIElement GetFirstFocusableDescendant(Boolean tabStop)
+        {
+            var match = GetFirstFocusableDescendantInternal(this, tabStop);
+            if (match == null && Focusable && (!tabStop || IsTabStop))
+            {
+                return this;
+            }
+            return match;
+        }
+
+        /// <summary>
+        /// Gets the last focusable element in the part of the logical tree which is rooted in this element.
+        /// </summary>
+        /// <param name="tabStop">A value indicating whether the element must also be a tab stop.</param>
+        /// <returns>The last focusable element, or <c>null</c> if no such element exists.</returns>
+        public UIElement GetLastFocusableDescendant(Boolean tabStop)
+        {
+            var match = GetLastFocusableDescendantInternal(this, tabStop);
+            if (match == null && Focusable && (!tabStop || IsTabStop))
+            {
+                return this;
+            }
+            return match;
+        }
+
+        /// <summary>
         /// Gets the Ultraviolet context that created this element.
         /// </summary>
         public UltravioletContext Ultraviolet
@@ -2231,6 +2279,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         private void CacheLayoutDepth()
         {
             this.layoutDepth = (Parent == null) ? 0 : Parent.LayoutDepth + 1;
+            this.logicalOrder = 0;
+
+            if (Parent != null)
+            {
+                for (int i = 0; i < Parent.LogicalChildren; i++)
+                {
+                    if (Parent.GetLogicalChild(i) == this)
+                    {
+                        this.logicalOrder = i;
+                        break;
+                    }
+                }
+            }
         }
 
         /// <summary>
@@ -2324,6 +2385,170 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Gets the element which is navigated to when focus is moved to the next tab stop.
+        /// </summary>
+        /// <param name="current">The currently focused element, if any.</param>
+        /// <returns>The specified element, or <c>null</c> if no such element is defined.</returns>
+        private UIElement GetNextTabStopInternal(UIElement current = null)
+        {
+            // Find the first matching child element.
+            var childMatch = this.GetNextTabStopWithinTree(current);
+            if (childMatch != null)
+                return childMatch;
+
+            // Find the next matching sibling.
+            if (Parent != null)
+            {
+                var siblingMatch = Parent.GetNextTabStopWithinTree(this);
+                if (siblingMatch != null)
+                    return siblingMatch;
+
+                // Find our parent's next sibling.
+                return Parent.GetNextTabStopInternal(this);
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// Gets the element which is navigated to when focus is moved to the previous tab stop.
+        /// </summary>
+        /// <returns>The specified element, or <c>null</c> if no such element is defined.</returns>
+        private UIElement GetPreviousTabStopInternal()
+        {
+            if (Parent != null)
+            {
+                // Find our previous sibling in the tab order.
+                var siblingMatch = Parent.GetPreviousTabStopWithinTree(this);
+                if (siblingMatch != null)
+                    return siblingMatch.GetLastFocusableDescendant(true);
+
+                // If we have no qualifying siblings, return our parent.
+                if (Parent.Focusable && Parent.IsTabStop)
+                    return Parent;
+
+                // If our parent doesn't qualify, let it figure it out!
+                return Parent.GetPreviousTabStopInternal();
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// Gets the next tab stop within the part of the logical tree that is rooted in the current element.
+        /// </summary>
+        /// <param name="currentStop">The current tab stop.</param>
+        /// <returns>The specified tab stop, or <c>null</c> if no such element exists.</returns>
+        private UIElement GetNextTabStopWithinTree(UIElement currentStop)
+        {
+            var currentFound    = false;
+            var currentTabIndex = (currentStop == null ? Int32.MinValue : currentStop.TabIndex);
+
+            var match = default(UIElement);
+            for (int i = 0; i < LogicalChildren; i++)
+            {
+                var child = GetLogicalChild(i);
+                if (child == currentStop)
+                {
+                    currentFound = true;
+                    continue;
+                }
+
+                var matchingDescendant = child.GetFirstFocusableDescendant(true);
+                if (matchingDescendant != null)
+                {
+                    if (currentFound && matchingDescendant.TabIndex == currentTabIndex)
+                        return matchingDescendant;
+
+                    if (matchingDescendant.TabIndex > currentTabIndex && (match == null || match.TabIndex > matchingDescendant.TabIndex))
+                        match = matchingDescendant;
+                }
+            }
+
+            return match;
+        }
+
+        /// <summary>
+        /// Gets the previous tab stop within the part of the logical tree that is rooted in the current element.
+        /// </summary>
+        /// <param name="currentStop">The current tab stop.</param>
+        /// <returns>The specified tab stop, or <c>null</c> if no such element exists.</returns>
+        private UIElement GetPreviousTabStopWithinTree(UIElement currentStop)
+        {
+            var currentFound    = false;
+            var currentTabIndex = (currentStop == null ? Int32.MaxValue : currentStop.TabIndex);
+
+            var match = default(UIElement);
+            for (int i = LogicalChildren - 1; i >= 0; i--)
+            {
+                var child = GetLogicalChild(i);
+                if (child == currentStop)
+                {
+                    currentFound = true;
+                    continue;
+                }
+
+                if (currentFound && child.TabIndex == currentTabIndex)
+                {
+                    var matchingDescendant = child.GetLastFocusableDescendant(true);
+                    if (matchingDescendant != null)
+                        return matchingDescendant;
+                }
+
+                if (child.TabIndex < currentTabIndex && (match == null || match.TabIndex < child.TabIndex))
+                    match = child;
+            }
+
+            return (match == null) ? null : match.GetLastFocusableDescendant(true); ;
+        }
+
+        /// <summary>
+        /// Recurses through the logical tree to find the first descendant of the specified element
+        /// which is focusable (and potentially, a tab stop).
+        /// </summary>
+        /// <param name="parent">The parent element which is being examined.</param>
+        /// <param name="tabStop">A value indicating whether a matching element must be a tab stop.</param>
+        /// <returns>The first element within this branch of the logical tree which meets the specified criteria.</returns>
+        private UIElement GetFirstFocusableDescendantInternal(UIElement parent, Boolean tabStop)
+        {
+            var children = EnumerateLogicalChildrenInTabOrder();
+            foreach (var child in children)
+            {
+                var candidate = child.GetFirstFocusableDescendant(tabStop);
+                if (candidate != null)
+                {
+                    children.Clear();
+                    return candidate;
+                }
+            }
+            children.Clear();
+            return null;
+        }
+
+        /// <summary>
+        /// Recurses through the logical tree to find the last descendant of the specified element
+        /// which is focusable (and potentially, a tab stop).
+        /// </summary>
+        /// <param name="parent">The parent element which is being examined.</param>
+        /// <param name="tabStop">A value indicating whether a matching element must be a tab stop.</param>
+        /// <returns>The last element within this branch of the logical tree which meets the specified criteria.</returns>
+        private UIElement GetLastFocusableDescendantInternal(UIElement parent, Boolean tabStop)
+        {
+            var children = EnumerateLogicalChildrenInReverseTabOrder();
+            foreach (var child in children)
+            {
+                var candidate = child.GetLastFocusableDescendant(tabStop);
+                if (candidate != null)
+                {
+                    children.Clear();
+                    return candidate;
+                }
+            }
+            children.Clear();
+            return null;
+        }
+
+        /// <summary>
         /// Searches the element hierarchy for the control that owns
         /// this element, if this element is a component.
         /// </summary>
@@ -2358,6 +2583,64 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             storyboardClocks.Clear();
         }
 
+        /// <summary>
+        /// Returns a list containing the element's logical children.
+        /// </summary>
+        /// <returns>A list containing the element's logical children.</returns>
+        private List<UIElement> EnumerateLogicalChildren()
+        {
+            childEnumerationBuffer.Clear();
+
+            for (int i = 0; i < LogicalChildren; i++)
+                childEnumerationBuffer.Add(GetLogicalChild(i));
+
+            return childEnumerationBuffer;
+        }
+
+        /// <summary>
+        /// Returns a list containing the element's logical children in tab order.
+        /// </summary>
+        /// <returns>A list containing the element's logical children in tab order.</returns>
+        private List<UIElement> EnumerateLogicalChildrenInTabOrder()
+        {
+            var buffer = EnumerateLogicalChildren();
+
+            buffer.Sort((element1, element2) =>
+            {
+                if (element1.TabIndex == element2.TabIndex)
+                {
+                    return element1.logicalOrder.CompareTo(element2.logicalOrder);
+                }
+                return element1.TabIndex.CompareTo(element2.TabIndex);
+            });
+
+            return buffer;
+        }
+
+        /// <summary>
+        /// Returns a list containing the element's logical children in reverse tab order.
+        /// </summary>
+        /// <returns>A list containing the element's logical children in reverse tab order.</returns>
+        private List<UIElement> EnumerateLogicalChildrenInReverseTabOrder()
+        {
+            var buffer = EnumerateLogicalChildren();
+
+            buffer.Sort((element1, element2) =>
+            {
+                if (element1.TabIndex == element2.TabIndex)
+                {
+                    return -element1.logicalOrder.CompareTo(element2.logicalOrder);
+                }
+                return -element1.TabIndex.CompareTo(element2.TabIndex);
+            });
+
+            return buffer;
+        }
+
+        // A buffer which is used to enumerate an element's logical children.
+        [ThreadStatic]
+        private readonly List<UIElement> childEnumerationBuffer = new List<UIElement>(32);
+
         // Property values.
         private readonly UltravioletContext uv;
         private readonly UIElementClassCollection classes;
@@ -2386,6 +2669,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         private Size2D mostRecentAvailableSize;
         private Point2D mostRecentPosition;
         private Int32 layoutDepth;
+        private Int32 logicalOrder;
 
         // State values.
         private UIElementRegistry elementRegistrationContext;

@@ -92,6 +92,16 @@ namespace TwistedLogik.Ultraviolet.UI
         public abstract void NavigateRight();
 
         /// <summary>
+        /// Moves focus to the previous tab stop.
+        /// </summary>
+        public abstract void NavigatePreviousTabStop();
+
+        /// <summary>
+        /// Moves focus to the next tab stop.
+        /// </summary>
+        public abstract void NavigateNextTabStop();
+
+        /// <summary>
         /// Grants focus to the view.
         /// </summary>
         public void Focus()
