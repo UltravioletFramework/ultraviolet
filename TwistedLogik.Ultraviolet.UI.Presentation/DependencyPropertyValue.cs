@@ -51,7 +51,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
                 this.animation            = (Animation<T>)animation;
                 this.animationClock       = clock;
-                this.animatedValue        = GetValueInternal(false);
+                this.animatedValue        = oldValue;
                 this.animatedHandOffValue = oldValue;
 
                 this.animationClock.Subscribe(this);
@@ -75,7 +75,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
                 this.animation            = null;
                 this.animationClock       = clock;
-                this.animatedValue        = GetValueInternal(false);
+                this.animatedValue        = oldValue;
                 this.animatedTargetValue  = value;
                 this.animatedHandOffValue = oldValue;
                 this.animationEasing      = fn ?? Easings.EaseInLinear;
