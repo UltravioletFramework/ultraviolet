@@ -531,7 +531,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <returns>The specified element, or <c>null</c> if no such element is defined.</returns>
         public UIElement GetNavUpElement()
         {
-            return FindNavElement(NavUp);
+            return FindNavElement(NavUp) ?? (Parent == null ? null : Parent.GetNavUpElement());
         }
 
         /// <summary>
@@ -541,7 +541,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <returns>The specified element, or <c>null</c> if no such element is defined.</returns>
         public UIElement GetNavDownElement()
         {
-            return FindNavElement(NavDown);
+            return FindNavElement(NavDown) ?? (Parent == null ? null : Parent.GetNavDownElement());
         }
 
         /// <summary>
@@ -551,7 +551,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <returns>The specified element, or <c>null</c> if no such element is defined.</returns>
         public UIElement GetNavLeftElement()
         {
-            return FindNavElement(NavLeft);
+            return FindNavElement(NavLeft) ?? (Parent == null ? null : Parent.GetNavLeftElement());
         }
 
         /// <summary>
@@ -561,7 +561,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <returns>The specified element, or <c>null</c> if no such element is defined.</returns>
         public UIElement GetNavRightElement()
         {
-            return FindNavElement(NavRight);
+            return FindNavElement(NavRight) ?? (Parent == null ? null : Parent.GetNavRightElement());
         }
 
         /// <summary>
@@ -2381,7 +2381,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (String.IsNullOrEmpty(id))
                 return null;
 
-            return elementRegistrationContext.GetElementByID(id);
+            var element = elementRegistrationContext.GetElementByID(id);
+            if (element == null || element.Focusable)
+                return element;
+
+            return element.GetFirstFocusableDescendant(false);
         }
 
         /// <summary>
