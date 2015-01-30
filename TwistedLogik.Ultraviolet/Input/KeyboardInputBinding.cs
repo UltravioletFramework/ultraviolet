@@ -75,7 +75,7 @@ namespace TwistedLogik.Ultraviolet.Input
             released = false;
             if (pressed)
             {
-                if (!Enabled || keyboard.IsKeyReleased(key))
+                if (!Enabled || keyboard.IsKeyReleased(key) || !AreModifiersSatisfied())
                 {
                     pressed = false;
                     released = true;
