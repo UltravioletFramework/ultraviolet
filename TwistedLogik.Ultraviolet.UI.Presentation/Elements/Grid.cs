@@ -157,12 +157,20 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         public static readonly DependencyProperty ColumnSpanProperty = DependencyProperty.Register("ColumnSpan", typeof(Int32), typeof(Grid),
             new DependencyPropertyMetadata(null, () => 1, DependencyPropertyOptions.None));
 
+        /// <inheritdoc/>
+        protected internal override void OnChildrenChanged()
+        {
+            UpdateVirtualCellMetadata();
+            base.OnChildrenChanged();
+        }
+
         /// <summary>
         /// Occurs when the grid's column definitions are modified.
         /// </summary>
         protected internal virtual void OnColumnsModified()
         {
             InvalidateMeasure();
+            UpdateVirtualCellMetadata();
         }
 
         /// <summary>
@@ -171,6 +179,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         protected internal virtual void OnRowsModified()
         {
             InvalidateMeasure();
+            UpdateVirtualCellMetadata();
         }
 
         /// <inheritdoc/>
@@ -244,9 +253,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
                 gry += RowDefinitions[row].MeasuredHeight;
             }
 
-            UpdateCellMetadata(finalSize);
+            UpdateLogicalCellMetadata(finalSize);
 
-            foreach (var cell in cells)
+            foreach (var cell in logicalCells)
             {
                 foreach (var child in cell.Elements)
                 {
@@ -278,7 +287,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         {
             var col  = GetColumnAtPoint(x, y);
             var row  = GetRowAtPoint(x, y);
-            var cell = cells[(row * ColumnCount) + col];
+            var cell = logicalCells[(row * ColumnCount) + col];
 
             for (int i = cell.Elements.Count - 1; i >= 0; i--)
             {
@@ -538,6 +547,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <summary>
+        /// Gets the measurement unit for the specified logical column.
+        /// </summary>
+        /// <param name="column">The index of the logical column to evaluate.</param>
+        /// <returns>A <see cref="GridUnitType"/> value that represents the specified column's measurement unit.</returns>
+        private GridUnitType GetColumnMeasureUnit(Int32 column)
+        {
+            if (column >= ColumnDefinitions.Count)
+                return GridUnitType.Star;
+
+            return ColumnDefinitions[column].Width.GridUnitType;
+        }
+
+        /// <summary>
         /// Measures the combined height of the grid's rows.
         /// </summary>
         /// <param name="available">The amount of available space for columns.</param>
@@ -685,12 +707,25 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <summary>
-        /// Updates the metadata for each of the grid's cells.
+        /// Gets the measurement unit for the specified logical row.
+        /// </summary>
+        /// <param name="row">The index of the logical row to evaluate.</param>
+        /// <returns>A <see cref="GridUnitType"/> value that represents the specified row's measurement unit.</returns>
+        private GridUnitType GetRowMeasureUnit(Int32 row)
+        {
+            if (row >= RowDefinitions.Count)
+                return GridUnitType.Star;
+
+            return RowDefinitions[row].Height.GridUnitType;
+        }
+
+        /// <summary>
+        /// Updates the metadata for each of the grid's logical cells.
         /// </summary>
         /// <param name="finalSize">The size of the layout region that has been assigned to the grid by its parent.</param>
-        private void UpdateCellMetadata(Size2D finalSize)
+        private void UpdateLogicalCellMetadata(Size2D finalSize)
         {
-            ExpandCellMetadataArray();
+            ExpandLogicalCellMetadataArray();
 
             for (var row = 0; row < RowCount; row++)
             {
@@ -700,7 +735,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
                 {
                     var coldef = (col >= ColumnDefinitions.Count) ? null : ColumnDefinitions[col];
 
-                    var cell = cells[(row * ColumnCount) + col];
+                    var cell = logicalCells[(row * ColumnCount) + col];
 
                     cell.OffsetX = (coldef == null) ? 0 : coldef.OffsetX;
                     cell.OffsetY = (rowdef == null) ? 0 : rowdef.OffsetY;
@@ -716,23 +751,95 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
                 var row = Grid.GetRow(child);
                 var col = Grid.GetColumn(child);
 
-                var cell = cells[(row * ColumnCount) + col];
+                var cell = logicalCells[(row * ColumnCount) + col];
                 cell.Elements.Add(child);
             }
         }
 
         /// <summary>
-        /// If necessary, expands the cell metadata array to accomodate all of the grid's rows and columns.
+        /// Updates the metadata for each of the grid's virtual cells.
         /// </summary>
-        private void ExpandCellMetadataArray()
+        private void UpdateVirtualCellMetadata()
         {
-            if (cells.Length >= RowCount * ColumnCount)
+            ExpandVirtualCellMetadataArray();
+
+            for (int i = 0; i < Children.Count; i++)
+            {
+                var element = Children[i];
+                var cell    = virtualCells[i];
+
+                cell.Element     = element;
+
+                cell.RowIndex    = GetRow(element);
+                cell.RowSpan     = GetRowSpan(element);
+                cell.ColumnIndex = GetColumn(element);
+                cell.ColumnSpan  = GetColumnSpan(element);
+
+                cell.ContainsAutoRows    = false;
+                cell.ContainsStarRows    = false;
+                cell.ContainsAutoColumns = false;
+                cell.ContainsStarColumns = false;
+
+                for (int col = 0; col < cell.ColumnSpan; col++)
+                {
+                    var colUnit = GetColumnMeasureUnit(col);
+                    switch (colUnit)
+                    {
+                        case GridUnitType.Auto:
+                            cell.ContainsAutoColumns = true;
+                            break;
+
+                        case GridUnitType.Star:
+                            cell.ContainsStarColumns = true;
+                            break;
+                    }
+
+                    for (int row = 0; row < cell.RowSpan; row++)
+                    {
+                        var rowUnit = GetRowMeasureUnit(row);
+                        switch (rowUnit)
+                        {
+                            case GridUnitType.Auto:
+                                cell.ContainsAutoRows = true;
+                                break;
+
+                            case GridUnitType.Star:
+                                cell.ContainsStarRows = true;
+                                break;
+                        }
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// If necessary, expands the logical cell metadata array to accomodate all of the grid's logical cells.
+        /// </summary>
+        private void ExpandLogicalCellMetadataArray()
+        {
+            if (logicalCells.Length >= RowCount * ColumnCount)
                 return;
 
-            cells = new CellMetadata[RowCount * ColumnCount];
-            for (int i = 0; i < cells.Length; i++)
+            logicalCells = new LogicalCellMetadata[RowCount * ColumnCount];
+            for (int i = 0; i < logicalCells.Length; i++)
             {
-                cells[i] = new CellMetadata();
+                logicalCells[i] = new LogicalCellMetadata();
+            }
+        }
+
+        /// <summary>
+        /// If necessary, expands the virtual cell metadata array to accomodate all of the grid's virtual cells.
+        /// </summary>
+        private void ExpandVirtualCellMetadataArray()
+        {
+            if (virtualCells != null && virtualCells.Length == Children.Count)
+                return;
+
+            virtualCells = new VirtualCellMetadata[Children.Count];
+            for (int i = 0; i < virtualCells.Length; i++)
+            {
+                virtualCells[i]         = new VirtualCellMetadata();
+                virtualCells[i].Element = Children[i];
             }
         }
 
@@ -746,7 +853,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <returns>The layout region for an element with the specified column and row properties.</returns>
         private RectangleD GetLayoutRegion(Int32 col, Int32 row, Int32 colSpan, Int32 rowSpan)
         {
-            var cell = cells[(row * ColumnCount) + col];
+            var cell = logicalCells[(row * ColumnCount) + col];
 
             var x = cell.OffsetX;
             var y = cell.OffsetY;
@@ -756,13 +863,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
 
             for (int i = 0; i < colSpan; i++)
             {
-                cell = cells[(row * ColumnCount) + col + i];
+                cell = logicalCells[(row * ColumnCount) + col + i];
                 width += cell.Width;
             }
 
             for (int i = 0; i < rowSpan; i++)
             {
-                cell = cells[((row + i) * ColumnCount) + col];
+                cell = logicalCells[((row + i) * ColumnCount) + col];
                 height += cell.Height;
             }
 
@@ -774,6 +881,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         private readonly ColumnDefinitionCollection columnDefinitions;
 
         // Cached cell metadata.
-        private CellMetadata[] cells = new[] { new CellMetadata() };
+        private LogicalCellMetadata[] logicalCells = new[] { new LogicalCellMetadata() };
+        private VirtualCellMetadata[] virtualCells;
     }
 }
