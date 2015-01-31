@@ -6,9 +6,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
     partial class Grid
     {
         /// <summary>
-        /// Represents the metadata for one of the grid's cells.
+        /// Represents the metadata for one of the grid's "logical cells," which represents
+        /// the intersection of a single row and column.
         /// </summary>
-        private class CellMetadata
+        private class LogicalCellMetadata
         {
             /// <summary>
             /// Gets the cache of elements in this cell.
