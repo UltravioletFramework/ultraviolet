@@ -809,6 +809,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
                         }
                     }
                 }
+
+                cell.UpdateMeasurementPriority();
             }
         }
 
