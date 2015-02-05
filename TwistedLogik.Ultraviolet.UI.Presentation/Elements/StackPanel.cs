@@ -90,7 +90,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
                 foreach (var child in Children)
                 {
                     child.Arrange(new RectangleD(positionX, positionY, child.DesiredSize.Width, contentSize.Height));
-                    positionX += child.DesiredSize.Width;
+                    positionX += child.RenderSize.Width;
                 }
             }
 

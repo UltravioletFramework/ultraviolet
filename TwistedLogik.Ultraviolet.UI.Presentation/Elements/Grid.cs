@@ -259,10 +259,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             var desiredHeight = 0.0;
 
             foreach (var column in ColumnDefinitions)
-                desiredWidth += column.FinalWidth;
+                desiredWidth += column.ActualWidth;
 
             foreach (var row in RowDefinitions)
-                desiredHeight += row.FinalHeight;
+                desiredHeight += row.ActualHeight;
 
             return new Size2D(desiredWidth, desiredHeight);
         }
@@ -391,7 +391,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
 
             for (int i = 0; i < ColumnCount; i++)
             {
-                var width = ColumnDefinitions[i].FinalWidth;
+                var width = ColumnDefinitions[i].ActualWidth;
                 if (x >= position && x < position + width)
                 {
                     return i;
@@ -417,7 +417,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
 
             for (int i = 0; i < RowCount; i++)
             {
-                var height = RowDefinitions[i].FinalHeight;
+                var height = RowDefinitions[i].ActualHeight;
                 if (y >= position && y < position + height)
                 {
                     return i;

@@ -45,7 +45,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
                 if (LayoutRoot == null || LayoutRoot.ColumnDefinitions.Count < 5)
                     return 0;
 
-                return LayoutRoot.ColumnDefinitions[0].MeasuredWidth;
+                return LayoutRoot.ColumnDefinitions[0].ActualWidth;
             }
         }
 
@@ -84,8 +84,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
                     return 0;
 
                 return RenderSize.Width - (
-                    LayoutRoot.ColumnDefinitions[0].MeasuredWidth + 
-                    LayoutRoot.ColumnDefinitions[4].MeasuredWidth);
+                    LayoutRoot.ColumnDefinitions[0].ActualWidth + 
+                    LayoutRoot.ColumnDefinitions[4].ActualWidth);
             }
         }
 
@@ -99,7 +99,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
                 if (LayoutRoot == null || LayoutRoot.ColumnDefinitions.Count < 5)
                     return 0;
 
-                return LayoutRoot.ColumnDefinitions[2].MeasuredWidth;
+                return LayoutRoot.ColumnDefinitions[2].ActualWidth;
             }
         }
 

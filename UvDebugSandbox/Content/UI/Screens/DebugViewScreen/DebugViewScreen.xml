@@ -3,8 +3,8 @@
   <Stylesheet>DebugViewScreenStyles.uvss</Stylesheet>
   <View ViewModelType="UvDebugSandbox.UI.Screens.DebugViewModel, UvDebugSandbox">
 
-    <StackPanel HorizontalAlignment="Stretch" Height="300">
-      <Grid>
+    <StackPanel HorizontalAlignment="Stretch">
+      <Grid ID="TestGrid" Height="300">
         <Grid.ColumnDefinitions>
           <ColumnDefinition Width="*"/>
           <ColumnDefinition Width="Auto"/>
@@ -25,7 +25,8 @@
         <Button ID="H" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">H</Button>
         <Button ID="I" Grid.Column="2" Grid.Row="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">I</Button>
       </Grid>
-      <Rectangle HorizontalAlignment="Stretch" Height="50"></Rectangle>
+      <HScrollBar ID="Foo" HorizontalAlignment="Stretch"></HScrollBar>
+      <VScrollBar ID="Bar" Height="100" HorizontalAlignment="Center"></VScrollBar>
     </StackPanel>
       
   </View>

@@ -281,18 +281,14 @@ textbox
 	source-image: #Global:Textures:DebugUI 192 791 28 28 3 3 3 3;
 }
 
-hscrollbar, vscrollbar
-{
-	width: 32;
-	height: 32;
-}
-
 hscrollbar
 {
+	height: 32;
 	min-width: 80;
 }
 
 vscrollbar
 {
+	width: 32;
 	min-height: 80;
 }
