@@ -123,6 +123,7 @@
     <Compile Include="Elements\ContentPresenter.cs" />
     <Compile Include="Elements\Control.cs" />
     <Compile Include="Elements\DefinitionBase.cs" />
+    <Compile Include="Elements\DefinitionBaseCollection.cs" />
     <Compile Include="Elements\Dock.cs" />
     <Compile Include="Elements\DockPanel.cs" />
     <Compile Include="Elements\Grid.GridMeasurementOptions.cs" />

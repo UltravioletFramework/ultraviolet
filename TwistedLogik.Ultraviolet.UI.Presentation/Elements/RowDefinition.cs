@@ -49,7 +49,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         public Double MeasuredContentHeight
         {
             get { return measuredContentHeight; }
-            private set { measuredContentHeight = value; }
         }
 
         /// <summary>
@@ -93,30 +92,46 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         public static readonly DependencyProperty MaxHeightProperty = DependencyProperty.Register("MaxHeight", typeof(Double), typeof(RowDefinition),
             new DependencyPropertyMetadata(HandleMaxHeightChanged, () => Double.PositiveInfinity, DependencyPropertyOptions.None));
 
-        /// <summary>
-        /// Resets the row's minimum content height.
-        /// </summary>
-        internal void ResetContentHeight()
+        /// <inheritdoc/>
+        internal override GridLength Dimension
         {
-            MeasuredContentHeight = 0;
+            get { return Height; }
         }
 
-        /// <summary>
-        /// Expands the row's minimum content height to the specified size if necessary.
-        /// </summary>
-        /// <param name="height">The height to which to expand the row.</param>
-        internal void ExpandContentHeight(Double height)
+        /// <inheritdoc/>
+        internal override Double MinDimension
         {
-            if (height > MeasuredContentHeight)
-            {
-                MeasuredContentHeight = height;
-            }
+            get { return MinHeight; }
         }
 
-        /// <summary>
-        /// Gets or sets the distance between the top edge of the column's grid and the column's top edge.
-        /// </summary>
-        internal Double OffsetY
+        /// <inheritdoc/>
+        internal override Double MaxDimension
+        {
+            get { return MaxHeight; }
+        }
+
+        /// <inheritdoc/>
+        internal override Double MeasuredDimension
+        {
+            get { return MeasuredHeight; }
+            set { MeasuredHeight = value; }
+        }
+
+        /// <inheritdoc/>
+        internal override Double MeasuredContentDimension
+        {
+            get { return measuredContentHeight; }
+            set { measuredContentHeight = value; }
+        }
+
+        /// <inheritdoc/>
+        internal override Double FinalDimension
+        {
+            get { return FinalHeight; }
+        }
+
+        /// <inheritdoc/>
+        internal override Double Position
         {
             get;
             set;
