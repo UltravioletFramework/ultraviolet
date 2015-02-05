@@ -39,8 +39,25 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// </summary>
         public Double MeasuredHeight
         {
-            get { return actualHeight; }
-            internal set { actualHeight = value; }
+            get { return measuredHeight; }
+            internal set { measuredHeight = value; }
+        }
+
+        /// <summary>
+        /// Gets the minimum height required to contain the row's content.
+        /// </summary>
+        public Double MeasuredContentHeight
+        {
+            get { return measuredContentHeight; }
+            private set { measuredContentHeight = value; }
+        }
+
+        /// <summary>
+        /// Gets the row's final height after arrangement.
+        /// </summary>
+        public Double FinalHeight
+        {
+            get { return Height.GridUnitType == GridUnitType.Auto ? MeasuredContentHeight : MeasuredHeight; }
         }
 
         /// <summary>
@@ -75,6 +92,26 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// </summary>
         public static readonly DependencyProperty MaxHeightProperty = DependencyProperty.Register("MaxHeight", typeof(Double), typeof(RowDefinition),
             new DependencyPropertyMetadata(HandleMaxHeightChanged, () => Double.PositiveInfinity, DependencyPropertyOptions.None));
+
+        /// <summary>
+        /// Resets the row's minimum content height.
+        /// </summary>
+        internal void ResetContentHeight()
+        {
+            MeasuredContentHeight = 0;
+        }
+
+        /// <summary>
+        /// Expands the row's minimum content height to the specified size if necessary.
+        /// </summary>
+        /// <param name="height">The height to which to expand the row.</param>
+        internal void ExpandContentHeight(Double height)
+        {
+            if (height > MeasuredContentHeight)
+            {
+                MeasuredContentHeight = height;
+            }
+        }
 
         /// <summary>
         /// Gets or sets the distance between the top edge of the column's grid and the column's top edge.
@@ -164,6 +201,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         // Property values.
-        private Double actualHeight;
+        private Double measuredHeight;
+        private Double measuredContentHeight;
     }
 }
