@@ -335,22 +335,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <summary>
-        /// Gets the number of columns in the grid, including any implicit columns.
-        /// </summary>
-        protected Int32 RowCount
-        {
-            get { return rowDefinitions.Count == 0 ? 1 : rowDefinitions.Count; }
-        }
-
-        /// <summary>
-        /// Gets the number of columns in the grid, including any implicit columns.
-        /// </summary>
-        protected Int32 ColumnCount
-        {
-            get { return columnDefinitions.Count == 0 ? 1 : columnDefinitions.Count; }
-        }
-
-        /// <summary>
         /// Occurs when the value of the Row attached property changes.
         /// </summary>
         /// <param name="dobj">The object that raised the event.</param>
@@ -389,7 +373,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             x -= RenderContentRegion.X;
             y -= RenderContentRegion.Y;
 
-            for (int i = 0; i < ColumnCount; i++)
+            for (int i = 0; i < ColumnDefinitions.Count; i++)
             {
                 var width = ColumnDefinitions[i].ActualWidth;
                 if (x >= position && x < position + width)
@@ -415,7 +399,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             x -= RenderContentRegion.X;
             y -= RenderContentRegion.Y;
 
-            for (int i = 0; i < RowCount; i++)
+            for (int i = 0; i < RowDefinitions.Count; i++)
             {
                 var height = RowDefinitions[i].ActualHeight;
                 if (y >= position && y < position + height)
@@ -434,6 +418,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <param name="priority">The measurement priority group to measure.</param>
         private void MeasureVirtualCells(Int32 priority, GridMeasurementOptions options = GridMeasurementOptions.None)
         {
+            if (!hasCellsOfPriority[priority])
+                return;
+
             foreach (var cell in virtualCells)
             {
                 if (cell.MeasurementPriority != priority)
@@ -594,6 +581,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <returns><c>true</c> if the columns can be resolved; otherwise, <c>false</c>.</returns>
         private Boolean CanResolveStarColumns()
         {
+            if (starColumnCount == 0)
+                return true;
+
             foreach (var cell in virtualCells)
             {
                 if (cell.MeasurementPriority == 1)
@@ -609,6 +599,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <returns><c>true</c> if the rows can be resolved; otherwise, <c>false</c>.</returns>
         private Boolean CanResolveStarRows()
         {
+            if (starRowCount == 0)
+                return true;
+
             foreach (var cell in virtualCells)
             {
                 if (cell.MeasurementPriority == 2 && cell.ContainsAutoRows)
@@ -624,6 +617,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <param name="availableDimension">The amount of space which is available to the grid.</param>
         private void ResolveStars(IDefinitionBaseCollection definitions, Double availableDimension)
         {
+            if ((definitions == RowDefinitions && starRowCount == 0) ||
+                (definitions == ColumnDefinitions && starColumnCount == 0))
+            {
+                return;
+            }
+
             availableDimension -= CalculateUsedDimension(definitions);
             var sumOfStarFactors = 0.0;
 
@@ -672,6 +671,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// </summary>
         private void UpdateVirtualCellMetadata()
         {
+            starColumnCount = 0;
+            starRowCount    = 0;
+
+            for (int i = 0; i < hasCellsOfPriority.Length; i++)
+                hasCellsOfPriority[i] = false;
+
             ExpandVirtualCellMetadataArray();
 
             for (int i = 0; i < Children.Count; i++)
@@ -702,6 +707,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
 
                         case GridUnitType.Star:
                             cell.ContainsStarColumns = true;
+                            starColumnCount++;
                             break;
                     }
                 }
@@ -717,11 +723,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
 
                         case GridUnitType.Star:
                             cell.ContainsStarRows = true;
+                            starRowCount++;
                             break;
                     }
                 }
 
                 cell.UpdateMeasurementPriority();
+
+                hasCellsOfPriority[cell.MeasurementPriority] = true;
             }
         }
 
@@ -747,5 +756,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
 
         // Cached cell metadata.
         private VirtualCellMetadata[] virtualCells;
+        private Int32 starColumnCount;
+        private Int32 starRowCount;
+        private readonly Boolean[] hasCellsOfPriority = new Boolean[4];
     }
 }
