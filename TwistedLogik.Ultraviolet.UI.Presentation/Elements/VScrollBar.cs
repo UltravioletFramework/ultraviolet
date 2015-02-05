@@ -56,7 +56,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
                 if (LayoutRoot == null || LayoutRoot.RowDefinitions.Count < 5)
                     return 0;
 
-                return LayoutRoot.RowDefinitions[0].MeasuredHeight; 
+                return LayoutRoot.RowDefinitions[0].ActualHeight; 
             }
         }
 
@@ -87,8 +87,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
                     return 0;
 
                 return RenderSize.Height - (
-                    LayoutRoot.RowDefinitions[0].MeasuredHeight + 
-                    LayoutRoot.RowDefinitions[4].MeasuredHeight);
+                    LayoutRoot.RowDefinitions[0].ActualHeight + 
+                    LayoutRoot.RowDefinitions[4].ActualHeight);
             }
         }
 
@@ -102,7 +102,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
                 if (LayoutRoot == null || LayoutRoot.RowDefinitions.Count < 5)
                     return 0;
 
-                return LayoutRoot.RowDefinitions[2].MeasuredHeight;
+                return LayoutRoot.RowDefinitions[2].ActualHeight;
             }
         }
 

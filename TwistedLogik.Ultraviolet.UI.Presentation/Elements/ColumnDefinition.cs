@@ -35,29 +35,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <summary>
-        /// Gets the column's measured width in device-independent pixels.
+        /// Gets the column's actual width after measurement and arrangement.
         /// </summary>
-        public Double MeasuredWidth
+        public Double ActualWidth
         {
-            get { return measuredWidth; }
-            internal set { measuredWidth = value; }
-        }
-
-        /// <summary>
-        /// Gets the minimum width required to contain the column's content.
-        /// </summary>
-        public Double MeasuredContentWidth
-        {
-            get { return measuredContentWidth; }
-            set { measuredContentWidth = value; }
-        }
-
-        /// <summary>
-        /// Gets the column's final width after arrangement.
-        /// </summary>
-        public Double FinalWidth
-        {
-            get { return Width.GridUnitType == GridUnitType.Auto ? MeasuredContentWidth : MeasuredWidth; }
+            get { return Width.GridUnitType == GridUnitType.Auto ? MeasuredContentDimension : MeasuredDimension; }
         }
 
         /// <summary>
@@ -114,21 +96,21 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <inheritdoc/>
         internal override Double MeasuredDimension
         {
-            get { return MeasuredWidth; }
-            set { MeasuredWidth = value; }
+            get;
+            set;
         }
 
         /// <inheritdoc/>
         internal override Double MeasuredContentDimension
         {
-            get { return measuredContentWidth; }
-            set { measuredContentWidth = value; }
+            get;
+            set;
         }
 
         /// <inheritdoc/>
         internal override Double FinalDimension
         {
-            get { return FinalWidth; }
+            get { return ActualWidth; }
         }
 
         /// <inheritdoc/>
@@ -215,9 +197,5 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             if (Grid != null)
                 Grid.OnColumnsModified();
         }
-
-        // Property values.
-        private Double measuredWidth;
-        private Double measuredContentWidth;
     }
 }

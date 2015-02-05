@@ -35,28 +35,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <summary>
-        /// Gets the row's measured height in device independent pixels.
+        /// Gets the row's actual height after measurement and arrangement.
         /// </summary>
-        public Double MeasuredHeight
+        public Double ActualHeight
         {
-            get { return measuredHeight; }
-            internal set { measuredHeight = value; }
-        }
-
-        /// <summary>
-        /// Gets the minimum height required to contain the row's content.
-        /// </summary>
-        public Double MeasuredContentHeight
-        {
-            get { return measuredContentHeight; }
-        }
-
-        /// <summary>
-        /// Gets the row's final height after arrangement.
-        /// </summary>
-        public Double FinalHeight
-        {
-            get { return Height.GridUnitType == GridUnitType.Auto ? MeasuredContentHeight : MeasuredHeight; }
+            get { return Height.GridUnitType == GridUnitType.Auto ? MeasuredContentDimension : MeasuredDimension; }
         }
 
         /// <summary>
@@ -113,21 +96,21 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <inheritdoc/>
         internal override Double MeasuredDimension
         {
-            get { return MeasuredHeight; }
-            set { MeasuredHeight = value; }
+            get;
+            set;
         }
 
         /// <inheritdoc/>
         internal override Double MeasuredContentDimension
         {
-            get { return measuredContentHeight; }
-            set { measuredContentHeight = value; }
+            get;
+            set;
         }
 
         /// <inheritdoc/>
         internal override Double FinalDimension
         {
-            get { return FinalHeight; }
+            get { return ActualHeight; }
         }
 
         /// <inheritdoc/>
@@ -214,9 +197,5 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             if (Grid != null)
                 Grid.OnRowsModified();
         }
-
-        // Property values.
-        private Double measuredHeight;
-        private Double measuredContentHeight;
     }
 }

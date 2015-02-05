@@ -13,15 +13,18 @@
 
     <RepeatButton ID="LeftSmall" Class="scroll-button scroll-button-left" Grid.Column="0" VerticalAlignment="Stretch"
                   Click="HandleClickLeftSmall"></RepeatButton>
-    <RepeatButton ID="LeftLarge" Class="scroll-repeat scroll-repeat-left" Grid.Column="1" Opacity="0" Padding="0" Width="0" VerticalAlignment="Stretch"
+    <RepeatButton ID="LeftLarge" Class="scroll-repeat scroll-repeat-left" Grid.Column="1" Padding="0" Opacity="0" Width="0" Focusable="false"
+                  VerticalAlignment="Stretch"
                   Click="HandleClickLeftLarge"></RepeatButton>
 
     <Button ID="Thumb" Class="scroll-thumb scroll-thumb-horizontal" Grid.Column="2" VerticalAlignment="Stretch"
             MouseButtonPressed="HandleThumbMouseButtonPressed" MouseMotion="HandleThumbMouseMotion"></Button>
 
-    <RepeatButton ID="RightLarge" Class="scroll-repeat scroll-repeat-right" Grid.Column="3" Opacity="0" Padding="0" VerticalAlignment="Stretch" 
+    <RepeatButton ID="RightLarge" Class="scroll-repeat scroll-repeat-right" Grid.Column="3" Padding="0" Opacity="0" Focusable="false"
+                  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
                   Click="HandleClickRightLarge"></RepeatButton>
     <RepeatButton ID="RightSmall" Class="scroll-button scroll-button-right" Grid.Column="4" VerticalAlignment="Stretch"
                   Click="HandleClickRightSmall"></RepeatButton>    
+    
   </Grid>
 </ComponentTemplate>
