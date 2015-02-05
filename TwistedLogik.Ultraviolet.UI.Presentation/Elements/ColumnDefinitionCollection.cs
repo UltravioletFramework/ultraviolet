@@ -7,7 +7,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
     /// <summary>
     /// Represents a collection of column definitions belonging to an instance of the <see cref="Grid"/> container class.
     /// </summary>
-    public sealed partial class ColumnDefinitionCollection
+    public sealed partial class ColumnDefinitionCollection : IDefinitionBaseCollection
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ColumnDefinitionCollection"/> class.
@@ -111,6 +111,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             }
         }
 
+        /// <inheritdoc/>
+        DefinitionBase IDefinitionBaseCollection.this[Int32 ix]
+        {
+            get { return this[ix]; }
+        }
+
         /// <summary>
         /// Gets the number of items in the collection.
         /// </summary>
@@ -124,6 +130,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
                 }
                 return storage.Count; 
             }
+        }
+
+        /// <inheritdoc/>
+        Int32 IDefinitionBaseCollection.Count
+        {
+            get { return this.Count; }
         }
 
         /// <summary>

@@ -27,18 +27,89 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <summary>
-        /// Gets the <see cref="Grid"/> that owns the definition.
+        /// Resets the row or column's minimum content dimension.
         /// </summary>
-        internal Grid Grid
+        internal void ResetContentDimension()
+        {
+            MeasuredContentDimension = 0;
+        }
+
+        /// <summary>
+        /// Expands the row or columns's minimum content dimension to the specified dimension if
+        /// it is smaller than that value.
+        /// </summary>
+        /// <param name="dimension">The dimension to which to expand the row or column's content.</param>
+        internal void ExpandContentDimension(Double dimension)
+        {
+            if (dimension > MeasuredContentDimension)
+            {
+                MeasuredContentDimension = dimension;
+            }
+        }
+
+        /// <summary>
+        /// Gets the row or column's relevant user-specified dimension.
+        /// </summary>
+        internal abstract GridLength Dimension
+        {
+            get;
+        }
+
+        /// <summary>
+        /// Gets the row or column's minimum dimension.
+        /// </summary>
+        internal abstract Double MinDimension
+        {
+            get;
+        }
+
+        /// <summary>
+        /// Gets the row or column's maximum dimension.
+        /// </summary>
+        internal abstract Double MaxDimension
+        {
+            get;
+        }
+
+        /// <summary>
+        /// Gets or sets the row or column's measured dimension.
+        /// </summary>
+        internal abstract Double MeasuredDimension
         {
             get;
             set;
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether this row or column requires a scissor rectangle.
+        /// Gets the measured dimension of the row or column's content.
         /// </summary>
-        internal Boolean RequiresScissorRectangle
+        internal abstract Double MeasuredContentDimension
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Gets the row or column's final dimension after arrangement.
+        /// </summary>
+        internal abstract Double FinalDimension
+        {
+            get;
+        }
+
+        /// <summary>
+        /// Gets or sets the row or column's final arranged position within the grid.
+        /// </summary>
+        internal abstract Double Position
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Gets the <see cref="Grid"/> that owns the definition.
+        /// </summary>
+        internal Grid Grid
         {
             get;
             set;

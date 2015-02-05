@@ -222,32 +222,33 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <inheritdoc/>
         protected override Size2D MeasureContent(Size2D availableSize)
         {
-            PrepareRowsForMeasure();
-            PrepareColumnsForMeasure();
+            PrepareForMeasure(RowDefinitions);
+            PrepareForMeasure(ColumnDefinitions);
 
             MeasureVirtualCells(0);
 
             if (CanResolveStarRows())
             {
-                ResolveStarRows(availableSize.Height);
+                ResolveStars(RowDefinitions, availableSize.Height);
                 MeasureVirtualCells(1);
-                ResolveStarColumns(availableSize.Width);
+                ResolveStars(ColumnDefinitions, availableSize.Width);
                 MeasureVirtualCells(2);
             }
             else
             {
                 if (CanResolveStarColumns())
                 {
-                    ResolveStarColumns(availableSize.Width);
+                    // NOTE: In this scenario there are no Priority 1 cells.
+                    ResolveStars(ColumnDefinitions, availableSize.Width);
                     MeasureVirtualCells(2);
-                    ResolveStarRows(availableSize.Height);
+                    ResolveStars(RowDefinitions, availableSize.Height);
                 }
                 else
                 {
                     MeasureVirtualCells(1, GridMeasurementOptions.AssumeInfiniteHeight);
-                    ResolveStarColumns(availableSize.Width);
+                    ResolveStars(ColumnDefinitions, availableSize.Width);
                     MeasureVirtualCells(2);
-                    ResolveStarRows(availableSize.Height);
+                    ResolveStars(RowDefinitions, availableSize.Height);
                     MeasureVirtualCells(1, GridMeasurementOptions.DiscardDesiredWidth);
                 }
             }
@@ -269,8 +270,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <inheritdoc/>
         protected override Size2D ArrangeContent(Size2D finalSize, ArrangeOptions options)
         {
-            FinalizeWidth(finalSize.Width);
-            FinalizeHeight(finalSize.Height);
+            FinalizeDimension(ColumnDefinitions, finalSize.Width);
+            FinalizeDimension(RowDefinitions, finalSize.Height);
 
             foreach (var cell in virtualCells)
             {
@@ -279,9 +280,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
                 var childColumn = ColumnDefinitions[cell.ColumnIndex];
                 var childRow    = RowDefinitions[cell.RowIndex];
 
-                var childArea    = new RectangleD(childColumn.OffsetX, childRow.OffsetY, 
-                    CalculateColumnSpanWidth(cell.ColumnIndex, cell.ColumnSpan),
-                    CalculateRowSpanHeight(cell.RowIndex, cell.RowSpan));
+                var childArea = new RectangleD(childColumn.Position, childRow.Position, 
+                    CalculateSpanDimension(ColumnDefinitions, cell.ColumnIndex, cell.ColumnSpan),
+                    CalculateSpanDimension(RowDefinitions, cell.RowIndex, cell.RowSpan));
 
                 childElement.Arrange(childArea);
             }
@@ -445,12 +446,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
 
                 if ((options & GridMeasurementOptions.DiscardDesiredWidth) != GridMeasurementOptions.DiscardDesiredWidth)
                 {
-                    DistributeVirtualCellWidth(cell.ColumnIndex, cell.ColumnSpan, childElement.DesiredSize.Width);
+                    DistributeVirtualCellDimension(ColumnDefinitions, cell.ColumnIndex, cell.ColumnSpan, childElement.DesiredSize.Width);
                 }
 
                 if ((options & GridMeasurementOptions.DiscardDesiredHeight) != GridMeasurementOptions.DiscardDesiredHeight)
                 {
-                    DistributeVirtualCellHeight(cell.RowIndex, cell.RowSpan, childElement.DesiredSize.Height);
+                    DistributeVirtualCellDimension(RowDefinitions, cell.RowIndex, cell.RowSpan, childElement.DesiredSize.Height);
                 }
             }
         }
@@ -480,7 +481,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
                 }
                 else
                 {
-                    cellWidth = CalculateColumnSpanWidth(cell.ColumnIndex, cell.ColumnSpan);
+                    cellWidth = CalculateSpanDimension(ColumnDefinitions, cell.ColumnIndex, cell.ColumnSpan);
                 }
             }
 
@@ -497,7 +498,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
                 }
                 else
                 {
-                    cellHeight = CalculateRowSpanHeight(cell.RowIndex, cell.RowSpan);
+                    cellHeight = CalculateSpanDimension(RowDefinitions, cell.RowIndex, cell.RowSpan);
                 }
             }
 
@@ -506,50 +507,36 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <summary>
-        /// Prepares the grid's rows for measurement.
+        /// Prepares the grid's rows or columns for measurement.
         /// </summary>
-        private void PrepareRowsForMeasure()
+        /// <param name="definitions">The collection of row or column definitions to prepare for measurement.</param>
+        private void PrepareForMeasure(IDefinitionBaseCollection definitions)
         {
-            foreach (var row in RowDefinitions)
+            for (int i = 0; i < definitions.Count; i++)
             {
-                row.MeasuredHeight = Double.PositiveInfinity;
-                row.ResetContentHeight();
+                var def = definitions[i];
+                def.MeasuredDimension = Double.PositiveInfinity;
+                def.ResetContentDimension();
 
-                if (row.Height.GridUnitType == GridUnitType.Pixel)
+                if (def.Dimension.GridUnitType == GridUnitType.Pixel)
                 {
-                    row.MeasuredHeight = row.Height.Value;
+                    def.MeasuredDimension = def.Dimension.Value;
                 }
             }
         }
 
         /// <summary>
-        /// Prepares the grid's columns for measurement.
+        /// Distributes the specified dimension amongst all of the cells in the specified row or column span.
         /// </summary>
-        private void PrepareColumnsForMeasure()
+        /// <param name="definitions">The collection of row or column definitions amongst which to distribute the specified dimension.</param>
+        /// <param name="index">The index of the first row or column in the span.</param>
+        /// <param name="span">The number of rows or columns in the span.</param>
+        /// <param name="dimension">The amount of space to distribute between the rows or columns in the span.</param>
+        private void DistributeVirtualCellDimension(IDefinitionBaseCollection definitions, Int32 index, Int32 span, Double dimension)
         {
-            foreach (var column in ColumnDefinitions)
+            if (span == 1)
             {
-                column.MeasuredWidth = Double.PositiveInfinity;
-                column.ResetContentWidth();
-
-                if (column.Width.GridUnitType == GridUnitType.Pixel)
-                {
-                    column.MeasuredWidth = column.Width.Value;
-                }
-            }
-        }
-
-        /// <summary>
-        /// Distributes the specified width amongst all of the cells in the specified column span.
-        /// </summary>
-        /// <param name="columnIndex">The index of the first column in the span.</param>
-        /// <param name="columnSpan">The number of columns in the span.</param>
-        /// <param name="width">The amount of space to distribute between the columns in the span.</param>
-        private void DistributeVirtualCellWidth(Int32 columnIndex, Int32 columnSpan, Double width)
-        {
-            if (columnSpan == 1)
-            {
-                ColumnDefinitions[columnIndex].ExpandContentWidth(width);
+                definitions[index].ExpandContentDimension(dimension);
             }
             else
             {
@@ -558,101 +545,47 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <summary>
-        /// Distributes the specified height amongst all of the cells in the specified row span.
+        /// Measures the total dimension of the specified row or column span.
         /// </summary>
-        /// <param name="rowIndex">The index of the first row in the span.</param>
-        /// <param name="rowSpan">The number of rows in the span.</param>
-        /// <param name="height">The amount of space to distribute between the rows in the span.</param>
-        private void DistributeVirtualCellHeight(Int32 rowIndex, Int32 rowSpan, Double height)
-        {
-            if (rowSpan == 1)
-            {
-                RowDefinitions[rowIndex].ExpandContentHeight(height);
-            }
-            else
-            {
-                // TODO
-            }
-        }
-
-        /// <summary>
-        /// Measures the total width of the specified column span.
-        /// </summary>
-        /// <param name="index">The index of the first column in the span.</param>
-        /// <param name="span">The number of columns in the span.</param>
-        /// <returns>The total width of the specified column span.</returns>
-        private Double CalculateColumnSpanWidth(Int32 index, Int32 span)
+        /// <param name="definitions">The collection of row or column definitions for which to calculate a total dimension.</param>
+        /// <param name="index">The index of the first row or column in the span.</param>
+        /// <param name="span">The number of rows or columns in the span.</param>
+        /// <returns>The total dimension of the specified row or column span.</returns>
+        private Double CalculateSpanDimension(IDefinitionBaseCollection definitions, Int32 index, Int32 span)
         {
             var size = 0.0;
 
             for (int i = 0; i < span; i++)
             {
-                size += ColumnDefinitions[index + i].FinalWidth;
+                size += definitions[index + i].FinalDimension;
             }
 
             return size;
         }
 
         /// <summary>
-        /// Measures the total height of the specified row span.
+        /// Measures the total amount of space which is occupied by non-star rows or columns in the specified collection.
         /// </summary>
-        /// <param name="index">The index of the first row in the span.</param>
-        /// <param name="span">The number of rows inthe span.</param>
-        /// <returns>The total height of the specified row span.</returns>
-        private Double CalculateRowSpanHeight(Int32 index, Int32 span)
+        /// <param name="definitions">The collection of row or column definitions for which to calculate a used dimension.</param>
+        /// <returns>The total amount of space which is occupied by non-star columns in <paramref name="definitions"/>.</returns>
+        private Double CalculateUsedDimension(IDefinitionBaseCollection definitions)
         {
-            var size = 0.0;
+            var dimension = 0.0;
 
-            for (int i = 0; i < span; i++)
+            for (int i = 0; i < definitions.Count; i++)
             {
-                size += RowDefinitions[index + i].FinalHeight;
-            }
+                var def = definitions[i];
 
-            return size;
-        }
-
-        /// <summary>
-        /// Measures the total amount of horizontal space which is occupied by non-star columns.
-        /// </summary>
-        /// <returns>The total amount of horizontal space which is occupied by non-star columns.</returns>
-        private Double CalculateUsedWidth()
-        {
-            var width = 0.0;
-
-            foreach (var column in ColumnDefinitions)
-            {
-                switch (column.Width.GridUnitType)
+                switch (def.Dimension.GridUnitType)
                 {
                     case GridUnitType.Auto:
                     case GridUnitType.Pixel:
-                        width += column.FinalWidth;
+                        dimension += def.FinalDimension;
                         break;
                 }
             }
 
-            return width;
-        }
-
-        /// <summary>
-        /// Measures the total amount of vertical space which is occupied by non-star rows.
-        /// </summary>
-        /// <returns>The total amount of vertical space which is occupied by non-star rows.</returns>
-        private Double CalculateUsedHeight()
-        {
-            var height = 0.0;
-
-            foreach (var row in RowDefinitions)
-            {
-                switch (row.Height.GridUnitType)
-                {
-                    case GridUnitType.Auto:
-                    case GridUnitType.Pixel:
-                        height += row.FinalHeight;
-                        break;
-                }
-            }
-
-            return height;
+            return dimension;
         }
 
         /// <summary>
@@ -685,90 +618,52 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <summary>
-        /// Resolves the width of the grid's star-sized columns.
+        /// Resolves the size of the grid's star-sized rows or columns.
         /// </summary>
-        private void ResolveStarColumns(Double availableWidth)
+        /// <param name="definitions">The collection of rows or columns to resolve.</param>
+        /// <param name="availableDimension">The amount of space which is available to the grid.</param>
+        private void ResolveStars(IDefinitionBaseCollection definitions, Double availableDimension)
         {
-            availableWidth -= CalculateUsedWidth();
+            availableDimension -= CalculateUsedDimension(definitions);
             var sumOfStarFactors = 0.0;
 
-            foreach (var column in ColumnDefinitions)
+            for (int i = 0; i < definitions.Count; i++)
             {
-                if (column.Width.GridUnitType != GridUnitType.Star)
+                var def = definitions[i];
+                if (def.Dimension.GridUnitType != GridUnitType.Star)
                     continue;
 
-                sumOfStarFactors += column.Width.Value;
+                sumOfStarFactors += def.Dimension.Value;
             }
 
-            var starFactorUnit = (sumOfStarFactors == 0) ? 0 : availableWidth / sumOfStarFactors;
+            var starFactorUnit = (sumOfStarFactors == 0) ? 0 : availableDimension / sumOfStarFactors;
 
-            foreach (var column in ColumnDefinitions)
+            for (int i = 0; i < definitions.Count; i++)
             {
-                if (column.Width.GridUnitType != GridUnitType.Star)
+                var def = definitions[i];
+                if (def.Dimension.GridUnitType != GridUnitType.Star)
                     continue;
 
-                column.MeasuredWidth = starFactorUnit * column.Width.Value;
+                def.MeasuredDimension = starFactorUnit * def.Dimension.Value;
             }
         }
 
         /// <summary>
-        /// Resolves the height of the grid's star-sized rows.
+        /// Finalizes the dimension of the grid's rows or columns during the arrange phase.
         /// </summary>
-        private void ResolveStarRows(Double availableHeight)
+        /// <param name="dimension">The collection of row or column definitions to finalize.</param>
+        /// <param name="definitions">The grid's final arranged dimension.</param>
+        private void FinalizeDimension(IDefinitionBaseCollection definitions, Double dimension)
         {
-            availableHeight -= CalculateUsedHeight();
-            var sumOfStarFactors = 0.0;
-
-            foreach (var row in RowDefinitions)
-            {
-                if (row.Height.GridUnitType != GridUnitType.Star)
-                    continue;
-
-                sumOfStarFactors += row.Height.Value;
-            }
-
-            var starFactorUnit = (sumOfStarFactors == 0) ? 0 : availableHeight / sumOfStarFactors;
-
-            foreach (var row in RowDefinitions)
-            {
-                if (row.Height.GridUnitType != GridUnitType.Star)
-                    continue;
-
-                row.MeasuredHeight = starFactorUnit * row.Height.Value;
-            }
-        }
-
-        /// <summary>
-        /// Finalizes the width of the grid during the arrange phase.
-        /// </summary>
-        /// <param name="width">The grid's final arranged width.</param>
-        private void FinalizeWidth(Double width)
-        {
-            ResolveStarColumns(width);
+            ResolveStars(definitions, dimension);
 
             var position = 0.0;
 
-            foreach (var col in ColumnDefinitions)
+            for (int i = 0; i < definitions.Count; i++)
             {
-                col.OffsetX = position;
-                position += col.FinalWidth;
-            }
-        }
-
-        /// <summary>
-        /// Finalizes the height of the grid during the arrange phase.
-        /// </summary>
-        /// <param name="height">The grid's final arranged height.</param>
-        private void FinalizeHeight(Double height)
-        {
-            ResolveStarRows(height);
-
-            var position = 0.0;
-
-            foreach (var row in RowDefinitions)
-            {
-                row.OffsetY = position;
-                position += row.FinalHeight;
+                var def = definitions[i];
+                def.Position = position;
+                position += def.FinalDimension;
             }
         }
 

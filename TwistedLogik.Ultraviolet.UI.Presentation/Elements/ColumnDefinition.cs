@@ -49,7 +49,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         public Double MeasuredContentWidth
         {
             get { return measuredContentWidth; }
-            private set { measuredContentWidth = value; }
+            set { measuredContentWidth = value; }
         }
 
         /// <summary>
@@ -93,30 +93,46 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         public static readonly DependencyProperty MaxWidthProperty = DependencyProperty.Register("MaxWidth", typeof(Double), typeof(ColumnDefinition),
             new DependencyPropertyMetadata(HandleMaxWidthChanged, () => Double.PositiveInfinity, DependencyPropertyOptions.None));
 
-        /// <summary>
-        /// Resets the column's minimum content width.
-        /// </summary>
-        internal void ResetContentWidth()
+        /// <inheritdoc/>
+        internal override GridLength Dimension
         {
-            MeasuredContentWidth = 0;
+            get { return Width; }
         }
 
-        /// <summary>
-        /// Expands the column's minimum content width to the specified size if necessary.
-        /// </summary>
-        /// <param name="width">The width to which to expand the column.</param>
-        internal void ExpandContentWidth(Double width)
+        /// <inheritdoc/>
+        internal override Double MinDimension
         {
-            if (width > MeasuredContentWidth)
-            {
-                MeasuredContentWidth = width;
-            }
+            get { return MinWidth; }
         }
 
-        /// <summary>
-        /// Gets or sets the distance between the left edge of the column's grid and the column's left edge.
-        /// </summary>
-        internal Double OffsetX
+        /// <inheritdoc/>
+        internal override Double MaxDimension
+        {
+            get { return MaxWidth; }
+        }
+
+        /// <inheritdoc/>
+        internal override Double MeasuredDimension
+        {
+            get { return MeasuredWidth; }
+            set { MeasuredWidth = value; }
+        }
+
+        /// <inheritdoc/>
+        internal override Double MeasuredContentDimension
+        {
+            get { return measuredContentWidth; }
+            set { measuredContentWidth = value; }
+        }
+
+        /// <inheritdoc/>
+        internal override Double FinalDimension
+        {
+            get { return FinalWidth; }
+        }
+
+        /// <inheritdoc/>
+        internal override Double Position
         {
             get;
             set;
