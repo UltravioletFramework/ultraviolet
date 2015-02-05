@@ -125,8 +125,8 @@
     <Compile Include="Elements\DefinitionBase.cs" />
     <Compile Include="Elements\Dock.cs" />
     <Compile Include="Elements\DockPanel.cs" />
+    <Compile Include="Elements\Grid.GridMeasurementOptions.cs" />
     <Compile Include="Elements\Grid.VirtualCellMetadata.cs" />
-    <Compile Include="Elements\Grid.LogicalCellMetadata.cs" />
     <Compile Include="Elements\Grid.cs" />
     <Compile Include="Elements\HScrollBar.cs" />
     <Compile Include="Elements\Image.cs" />

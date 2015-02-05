@@ -17,7 +17,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         {
             Contract.Require(grid, "grid");
 
-            this.grid = grid;
+            this.grid           = grid;
+            this.implicitColumn = new ColumnDefinition() { Grid = grid, Width = new GridLength(1.0, GridUnitType.Star) };
+            this.implicitStorage.Add(implicitColumn);
         }
 
         /// <summary>
@@ -82,6 +84,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         {
             Contract.Require(definition, "definition");
 
+            if (storage.Count == 0)
+            {
+                return definition == implicitColumn;
+            }
             return storage.Contains(definition);
         }
 
@@ -92,7 +98,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <returns>The column definition at the specified index within the collection.</returns>
         public ColumnDefinition this[Int32 ix]
         {
-            get { return storage[ix]; }
+            get 
+            {
+                if (storage.Count == 0)
+                {
+                    if (ix != 0)
+                        throw new ArgumentOutOfRangeException("ix");
+
+                    return implicitColumn;
+                }
+                return storage[ix]; 
+            }
         }
 
         /// <summary>
@@ -100,7 +116,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// </summary>
         public Int32 Count
         {
-            get { return storage.Count; }
+            get 
+            {
+                if (storage.Count == 0)
+                {
+                    return 1;
+                }
+                return storage.Count; 
+            }
         }
 
         /// <summary>
@@ -113,7 +136,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
 
         // State values.
         private readonly Grid grid;
-        private readonly List<ColumnDefinition> storage = 
-            new List<ColumnDefinition>();
+        private readonly List<ColumnDefinition> storage = new List<ColumnDefinition>();
+        private readonly List<ColumnDefinition> implicitStorage = new List<ColumnDefinition>();
+        private readonly ColumnDefinition implicitColumn;
     }
 }

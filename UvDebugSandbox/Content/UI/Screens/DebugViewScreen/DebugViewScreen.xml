@@ -3,126 +3,30 @@
   <Stylesheet>DebugViewScreenStyles.uvss</Stylesheet>
   <View ViewModelType="UvDebugSandbox.UI.Screens.DebugViewModel, UvDebugSandbox">
 
-    <StackPanel>
-      <Button ID="btn1" NavRight="btn5" NavDown="btn2" Width="200">Test1</Button>
-      <Button ID="btn2" TabIndex="999" NavRight="btn6" NavDown="btn3" NavUp="btn1" Width="200">Test2</Button>
-      <Button ID="btn3" TabIndex="998" NavRight="btn7" NavDown="btn4" NavUp="btn2" Width="200">Test3</Button>
-      <Button ID="btn4" NavRight="btn8" NavUp="btn3" Width="200">Test4</Button>
-    </StackPanel>
-    <StackPanel Margin="200 0 0 0">
-      <Button ID="btn5" NavLeft="btn1" NavDown="btn6" Width="200">Test1</Button>
-      <Button ID="btn6" NavLeft="btn2" NavDown="btn7" NavUp="btn5" Width="200">Test2</Button>
-      <Button ID="btn7" IsTabStop="false" NavLeft="btn3" NavDown="btn8" NavUp="btn6" Width="200">Test3</Button>
-      <Button ID="btn8" NavLeft="btn4" NavUp="btn7" Width="200">Test4</Button>
-    </StackPanel>
-    
-    <!--
-    <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-      <Grid.ColumnDefinitions>
-        <ColumnDefinition Width="100"></ColumnDefinition>
-        <ColumnDefinition Width="*"></ColumnDefinition>
-        <ColumnDefinition Width="100"></ColumnDefinition>
-      </Grid.ColumnDefinitions>
-      <Grid.RowDefinitions>
-        <RowDefinition Height="Auto"></RowDefinition>
-        <RowDefinition Height="*"></RowDefinition>
-        <RowDefinition Height="100"></RowDefinition>
-      </Grid.RowDefinitions>
-      <Button Grid.Column="0" Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">A</Button>
-      <Button Grid.Column="2" Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">A</Button>
-      <Button Grid.Column="0" Grid.Row="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">A</Button>
-      <Button Grid.Column="2" Grid.Row="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">A</Button>
-      <DockPanel Grid.Column="1" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-        <Rectangle DockPanel.Dock="Top" HorizontalAlignment="Stretch" Height="32" FillColor="#ffff0000"></Rectangle>
-        <Rectangle DockPanel.Dock="Bottom" HorizontalAlignment="Stretch" Height="32" FillColor="#ff00ff00"></Rectangle>
-        <Rectangle DockPanel.Dock="Left" VerticalAlignment="Stretch" Width="32" FillColor="#ff0000ff"></Rectangle>
-        <Rectangle DockPanel.Dock="Right" VerticalAlignment="Stretch" Width="32" FillColor="#ffff00ff"></Rectangle>
-      </DockPanel>
-      <WrapPanel Orientation="Horizontal" HorizontalAlignment="Stretch" Grid.Column="1">
-        <Button>Hello</Button>
-        <Button>world</Button>
-        <Button>this</Button>
-        <Button>is</Button>
-        <Button>a</Button>
-        <Button>test</Button>
-        <Button>of</Button>
-        <Button>the</Button>
-        <Button>new</Button>
-      </WrapPanel>
-    </Grid>-->
-    
-    <!--
-    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+    <StackPanel HorizontalAlignment="Stretch" Height="300">
       <Grid>
         <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="*"/>
           <ColumnDefinition Width="Auto"/>
-          <ColumnDefinition Width="8"/>
-          <ColumnDefinition Width="Auto"/>
+          <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
           <RowDefinition Height="Auto"/>
-          <RowDefinition Height="8"/>
+          <RowDefinition Height="*"/>
           <RowDefinition Height="Auto"/>
-          <RowDefinition Height="8"/>
         </Grid.RowDefinitions>
-        <Label Grid.Column="0" Grid.Row="0" HorizontalAlignment="Right" VerticalAlignment="Center">Name:</Label>
-        <TextBox Width="200" Height="32" Grid.Column="2" Grid.Row="0" />
-        <Label Grid.Column="0" Grid.Row="2" HorizontalAlignment="Right" VerticalAlignment="Center">Password:</Label>
-        <TextBox Width="200" Height="32" Grid.Column="2" Grid.Row="2" />
+        <Button ID="A" Grid.Column="0" Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">A</Button>
+        <Button ID="B" Grid.Column="1" Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">B</Button>
+        <Button ID="C" Grid.Column="2" Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">C</Button>
+        <Button ID="D" Grid.Column="0" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">D</Button>
+        <Button ID="E" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">E</Button>
+        <Button ID="F" Grid.Column="2" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">F</Button>
+        <Button ID="G" Grid.Column="0" Grid.Row="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">G</Button>
+        <Button ID="H" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">H</Button>
+        <Button ID="I" Grid.Column="2" Grid.Row="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">I</Button>
       </Grid>
-      <Button HorizontalAlignment="Right">Sign In</Button>
+      <Rectangle HorizontalAlignment="Stretch" Height="50"></Rectangle>
     </StackPanel>
-
-    <HScrollBar Margin="10" Width="300"></HScrollBar>
-
-    <VScrollBar Margin="10 80 10 10" Height="300"></VScrollBar>
-
-    <CheckBox Margin="64">Hello</CheckBox>
-    <RadioButton Margin="128">World</RadioButton>-->
-<!--
-    <StackPanel Width="300" Margin="100 100 0 0">
-      <ProgressBar Width="300" Height="32" Value="56"></ProgressBar>
-      <ProgressBar Width="300" Height="32" Value="77" FillColor="#ff00ff00"></ProgressBar>
-      <ProgressBar Width="300" Height="32" Value="12" FillColor="#ffff0000"></ProgressBar>
-      <WrapPanel Orientation="Horizontal" HorizontalAlignment="Center">
-        <ProgressBar Width="100" Height="32" Value="100"></ProgressBar>
-        <ProgressBar Width="100" Height="32" Value="100" FillColor="#ff00ff00"></ProgressBar>
-        <ProgressBar Width="100" Height="32" Value="100" FillColor="#ffff0000"></ProgressBar>
-        <ProgressBar Width="100" Height="32" Value="100"></ProgressBar>
-        <ProgressBar Width="100" Height="32" Value="100" FillColor="#ff00ff00"></ProgressBar>
-        <ProgressBar Width="100" Height="32" Value="100" FillColor="#ffff0000"></ProgressBar>
-      </WrapPanel>
-      <Canvas Width="300" Height="200">
-        <Rectangle Canvas.Left="8" Canvas.Right="8" Height="32"></Rectangle>
-        <Rectangle Canvas.Left="8" Canvas.Right="8" Canvas.Bottom="0" Height="32"></Rectangle>
-      </Canvas>
-    </StackPanel>
--->
-    <!--
-    <Button Canvas.Left="20" Canvas.Right="20" Canvas.Top="100">Test</Button>
-    <StackPanel BackgroundColor="#ff00ff00">
-      <WrapPanel BackgroundColor="#ffff0000">
-        <Button>Hello</Button>
-        <Button>Hello</Button>
-        <Button>Hello</Button>
-        <Button>Hello</Button>
-        <Button>Hello</Button>
-        <Button>Hello</Button>
-        <Button>Hello</Button>
-        <Button>Hello</Button>
-        <Button>Hello</Button>
-        <Button>Hello</Button>
-        <Button>Hello</Button>
-        <Button>Hello</Button>
-        <Button>Hello</Button>
-        <Button>Hello</Button>
-        <Button>Hello</Button>
-        <Button>Hello</Button>
-        <Button>Hello</Button>
-        <Button>Hello</Button>
-      </WrapPanel>
-      <TextBox Width="400" Height="32"></TextBox>
-    </StackPanel>-->
-
+      
   </View>
 </UIPanelDefinition>

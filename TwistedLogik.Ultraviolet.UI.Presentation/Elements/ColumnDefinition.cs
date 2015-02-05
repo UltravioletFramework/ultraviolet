@@ -39,8 +39,25 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// </summary>
         public Double MeasuredWidth
         {
-            get { return actualWidth; }
-            internal set { actualWidth = value; }
+            get { return measuredWidth; }
+            internal set { measuredWidth = value; }
+        }
+
+        /// <summary>
+        /// Gets the minimum width required to contain the column's content.
+        /// </summary>
+        public Double MeasuredContentWidth
+        {
+            get { return measuredContentWidth; }
+            private set { measuredContentWidth = value; }
+        }
+
+        /// <summary>
+        /// Gets the column's final width after arrangement.
+        /// </summary>
+        public Double FinalWidth
+        {
+            get { return Width.GridUnitType == GridUnitType.Auto ? MeasuredContentWidth : MeasuredWidth; }
         }
 
         /// <summary>
@@ -75,6 +92,26 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// </summary>
         public static readonly DependencyProperty MaxWidthProperty = DependencyProperty.Register("MaxWidth", typeof(Double), typeof(ColumnDefinition),
             new DependencyPropertyMetadata(HandleMaxWidthChanged, () => Double.PositiveInfinity, DependencyPropertyOptions.None));
+
+        /// <summary>
+        /// Resets the column's minimum content width.
+        /// </summary>
+        internal void ResetContentWidth()
+        {
+            MeasuredContentWidth = 0;
+        }
+
+        /// <summary>
+        /// Expands the column's minimum content width to the specified size if necessary.
+        /// </summary>
+        /// <param name="width">The width to which to expand the column.</param>
+        internal void ExpandContentWidth(Double width)
+        {
+            if (width > MeasuredContentWidth)
+            {
+                MeasuredContentWidth = width;
+            }
+        }
 
         /// <summary>
         /// Gets or sets the distance between the left edge of the column's grid and the column's left edge.
@@ -164,6 +201,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         // Property values.
-        private Double actualWidth;
+        private Double measuredWidth;
+        private Double measuredContentWidth;
     }
 }

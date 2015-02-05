@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using TwistedLogik.Nucleus.Collections;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
 {
@@ -11,7 +12,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <returns>A <see cref="List{RowDefinition}.Enumerator"/> object that can be used to iterate through the collection.</returns>
         public List<RowDefinition>.Enumerator GetEnumerator()
         {
-            return storage.GetEnumerator();
+            return storage.Count == 0 ? implicitStorage.GetEnumerator() : storage.GetEnumerator();
         }
 
         /// <inheritdoc/>
