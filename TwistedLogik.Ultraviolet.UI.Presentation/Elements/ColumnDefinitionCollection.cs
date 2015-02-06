@@ -18,7 +18,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             Contract.Require(grid, "grid");
 
             this.grid           = grid;
-            this.implicitColumn = new ColumnDefinition() { Grid = grid, Width = new GridLength(1.0, GridUnitType.Star) };
+            this.implicitColumn = new ColumnDefinition() { Grid = grid, Width = new GridLength(1.0, GridUnitType.Auto) };
             this.implicitStorage.Add(implicitColumn);
         }
 
