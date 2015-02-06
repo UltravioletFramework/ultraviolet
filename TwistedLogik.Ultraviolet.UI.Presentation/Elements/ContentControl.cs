@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text;
 using TwistedLogik.Ultraviolet.UI.Presentation.Animations;
 using TwistedLogik.Ultraviolet.UI.Presentation.Styles;
@@ -24,12 +25,31 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <inheritdoc/>
-        public override UIElement GetLogicalChild(int ix)
+        public override UIElement GetLogicalChild(Int32 ix)
         {
-            if (contentElement == null || ix < 0 || ix > 1)
-                throw new ArgumentOutOfRangeException("ix");
+            Contract.EnsureRange(contentElement != null && ix == 0, "ix");
 
             return contentElement;
+        }
+
+        /// <inheritdoc/>
+        public override UIElement GetVisualChild(Int32 ix)
+        {
+            if (contentElement != null)
+            {
+                switch (ix)
+                {
+                    case 0:
+                        return base.GetVisualChild(0);
+
+                    case 1:
+                        return GetLogicalChild(0);
+
+                    default:
+                        throw new ArgumentOutOfRangeException("ix");
+                }
+            }
+            return base.GetVisualChild(ix);
         }
 
         /// <summary>
@@ -63,6 +83,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         public override Int32 LogicalChildren
         {
             get { return contentElement == null ? 0 : 1; }
+        }
+
+        /// <inheritdoc/>
+        public override Int32 VisualChildren
+        {
+            get
+            {
+                return base.VisualChildren + LogicalChildren;
+            }
         }
 
         /// <summary>

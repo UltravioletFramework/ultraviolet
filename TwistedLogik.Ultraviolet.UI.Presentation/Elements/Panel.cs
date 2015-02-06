@@ -1,4 +1,5 @@
 ﻿using System;
+using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet.UI.Presentation.Animations;
 using TwistedLogik.Ultraviolet.UI.Presentation.Styles;
 
@@ -21,12 +22,28 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <inheritdoc/>
-        public override UIElement GetLogicalChild(int ix)
+        public override UIElement GetLogicalChild(Int32 ix)
         {
-            if(ix < 0 || ix >= children.Count)
-                throw new ArgumentOutOfRangeException("ix");
+            Contract.EnsureRange(ix >= 0 && ix < children.Count, "ix");
 
             return children[ix];
+        }
+
+        /// <inheritdoc/>
+        public override UIElement GetVisualChild(Int32 ix)
+        {
+            if (ComponentRoot != null)
+            {
+                if (ContentPresenter != null)
+                {
+                    Contract.EnsureRange(ix == 0, "ix");
+                    return ComponentRoot;
+                }
+                Contract.EnsureRange(ix >= 0 && ix < children.Count + 1, "ix");
+                return (ix == 0) ? ComponentRoot : GetLogicalChild(ix - 1);
+            }
+            Contract.EnsureRange(ix >= 0 && ix < children.Count, "ix");
+            return GetLogicalChild(ix);
         }
 
         /// <summary>
@@ -41,6 +58,23 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         public override Int32 LogicalChildren
         {
             get { return children.Count; }
+        }
+
+        /// <inheritdoc/>
+        public override Int32 VisualChildren
+        {
+            get
+            {
+                if (ComponentRoot != null)
+                {
+                    if (ContentPresenter != null)
+                    {
+                        return 1;
+                    }
+                    return 1 + children.Count;
+                }
+                return children.Count;
+            }
         }
 
         /// <summary>
