@@ -292,3 +292,14 @@ vscrollbar
 	width: 32;
 	min-height: 80;
 }
+
+numericupdown
+{
+	min-width: 64;
+	min-height: 32;
+}
+
+.updown-button
+{
+	width: 32;
+}

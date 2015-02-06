@@ -1,10 +1,12 @@
 ﻿using System;
+using System.ComponentModel;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
 {
     /// <summary>
     /// Represents the base class for controls which represent a value within a specified range.
     /// </summary>
+    [DefaultProperty("Value")]
     public abstract class RangeBase : Control
     {
         /// <summary>

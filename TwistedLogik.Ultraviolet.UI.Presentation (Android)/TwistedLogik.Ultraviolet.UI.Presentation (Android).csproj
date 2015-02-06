@@ -266,6 +266,9 @@
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Elements\NumericLabel.cs">
       <Link>Elements\NumericLabel.cs</Link>
     </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Elements\NumericUpDown.cs">
+      <Link>Elements\NumericUpDown.cs</Link>
+    </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Elements\Orientation.cs">
       <Link>Elements\Orientation.cs</Link>
     </Compile>
@@ -583,6 +586,9 @@
     <Content Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Elements\Templates\HScrollBar.xml">
       <Link>Elements\Templates\HScrollBar.xml</Link>
     </Content>
+    <Content Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Elements\Templates\NumericUpDown.xml">
+      <Link>Elements\Templates\NumericUpDown.xml</Link>
+    </Content>
     <Content Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Elements\Templates\RadioButton.xml">
       <Link>Elements\Templates\RadioButton.xml</Link>
     </Content>
@@ -614,7 +620,7 @@
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties ProjectLinkReference="7379d9e1-bb01-4b05-b4f7-5d39b393348f" ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" />
+      <UserProperties ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" ProjectLinkReference="7379d9e1-bb01-4b05-b4f7-5d39b393348f" />
     </VisualStudio>
   </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

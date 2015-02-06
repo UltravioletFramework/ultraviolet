@@ -6,6 +6,13 @@ namespace UvDebugSandbox.UI.Screens
 {
     public class DebugViewModel
     {
+        public Double Foo
+        {
+            get { return foo; }
+            set { foo = value; }
+        }
+        private Double foo;
+
         public void TestClick(UIElement element)
         {
             Console.WriteLine("click");
