@@ -18,10 +18,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="expressionType">The type of the bound expression.</param>
         /// <param name="dataSourceType">The type of the data source.</param>
         /// <param name="expression">The binding expression.</param>
-        public DependencyBoundValueConverting(IDependencyPropertyValue value, Type expressionType, Type dataSourceType, String expression)
+        /// <param name="coerce">A value indicating whether to coerce Object values to String values if no valid type conversion exists.</param>
+        public DependencyBoundValueConverting(IDependencyPropertyValue value, Type expressionType, Type dataSourceType, String expression, Boolean coerce)
             : base(value, expressionType, dataSourceType, expression)
         {
             this.formatString = BindingExpressions.GetBindingFormatStringPart(expression);
+            this.coerce       = coerce;
         }
 
         /// <inheritdoc/>
@@ -64,7 +66,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <returns>The converted value.</returns>
         private Object ConvertValue(Object value, Type originalType, Type conversionType)
         {
-            if (conversionType == typeof(String))
+            if (conversionType == typeof(String) || (conversionType == typeof(Object) && coerce))
             {
                 return ConvertUsingToString(value, originalType);
             }
@@ -88,6 +90,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                     return converter.ConvertFrom(value);
                 }
             }
+
+            if (conversionType == typeof(Object))
+                return value;
 
             return conversionType.IsClass ? null : Activator.CreateInstance(conversionType);
         }
@@ -124,5 +129,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         private TDependency cachedInputValue;
         private TDependency cachedConvertedValue;
         private String formatString;
+        private Boolean coerce;
     }
 }

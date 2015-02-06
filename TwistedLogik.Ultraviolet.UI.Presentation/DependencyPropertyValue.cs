@@ -401,8 +401,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 var expressionType = BindingExpressions.GetExpressionType(dataSourceType, expression);
                 if (expressionType != null && TypesRequireSpecialConversion(expressionType, typeof(T)))
                 {
+                    var coerce          = typeof(T) == typeof(Object) && property.Metadata.CoerceObjectToString;
                     var valueType       = typeof(DependencyBoundValueConverting<,>).MakeGenericType(typeof(T), expressionType);
-                    var valueInstance   = (IDependencyBoundValue<T>)Activator.CreateInstance(valueType, this, expressionType, dataSourceType, expression);
+                    var valueInstance   = (IDependencyBoundValue<T>)Activator.CreateInstance(valueType, this, expressionType, dataSourceType, expression, coerce);
 
                     cachedBoundValue = valueInstance;
                 }

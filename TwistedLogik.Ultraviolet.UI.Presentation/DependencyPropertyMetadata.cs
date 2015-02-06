@@ -128,6 +128,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             }
         }
 
+        /// <summary>
+        /// Gets a value indicating whether this dependency property should coerce its values to
+        /// strings if a valid type conversion cannot be found.
+        /// </summary>
+        internal Boolean CoerceObjectToString
+        {
+            get { return ((options & DependencyPropertyOptions.CoerceObjectToString) == DependencyPropertyOptions.CoerceObjectToString); }
+        }
+
         // Property values.
         private readonly PropertyChangedCallback changedCallback;
         private readonly PropertyDefaultCallback defaultCallback;

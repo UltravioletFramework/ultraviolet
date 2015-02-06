@@ -27,5 +27,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// The dependency property's value influences the measurement of its object.
         /// </summary>
         AffectsMeasure = 4,
+
+        /// <summary>
+        /// Indicates that dependency properties of type Object should be coerced into strings
+        /// if no valid type converter exists for the original type.
+        /// </summary>
+        CoerceObjectToString = 8,
     }
 }
