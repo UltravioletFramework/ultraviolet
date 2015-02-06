@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Text;
+using System.Text.RegularExpressions;
 using TwistedLogik.Nucleus.Text;
 using TwistedLogik.Ultraviolet.Input;
 using TwistedLogik.Ultraviolet.UI.Presentation.Styles;
@@ -48,6 +49,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             }
         }
 
+        /// <summary>
+        /// Gets or sets a regular expression which is used to limit the values
+        /// which can be entered into the text box.
+        /// </summary>
+        public String Pattern
+        {
+            get { return GetValue<String>(PatternProperty); }
+            set { SetValue<String>(PatternProperty, value); }
+        }
+        
         /// <summary>
         /// Gets or sets the maximum length of the text box's text.
         /// </summary>
@@ -118,6 +129,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         public event UIElementEventHandler TextChanged;
 
         /// <summary>
+        /// Occurs when the value of the <see cref="Pattern"/> property changes.
+        /// </summary>
+        public event UIElementEventHandler PatternChanged;
+
+        /// <summary>
         /// Occurs when the value of the <see cref="MaxLength"/> property changes.
         /// </summary>
         public event UIElementEventHandler MaxLengthChanged;
@@ -157,6 +173,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// </summary>
         public static readonly DependencyProperty TextProperty = DependencyProperty.Register("Text", typeof(String), typeof(TextBox),
             new DependencyPropertyMetadata(HandleTextChanged, null, DependencyPropertyOptions.None));
+
+        /// <summary>
+        /// Identifies the <see cref="Pattern"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty PatternProperty = DependencyProperty.Register("Pattern", typeof(String), typeof(TextBox),
+            new DependencyPropertyMetadata(HandlePatternChanged, null, DependencyPropertyOptions.None));
 
         /// <summary>
         /// Identifies the <see cref="MaxLength"/> dependency property.
@@ -406,6 +428,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <summary>
+        /// Raises the <see cref="PatternChanged"/> event.
+        /// </summary>
+        protected virtual void OnPatternChanged()
+        {
+            var temp = PatternChanged;
+            if (temp != null)
+            {
+                temp(this);
+            }
+        }
+
+        /// <summary>
         /// Raises the <see cref="MaxLengthChanged"/> event.
         /// </summary>
         protected virtual void OnMaxLengthChanged()
@@ -604,6 +638,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <summary>
+        /// Occurs when the value of the <see cref="Pattern"/> dependency property changes.
+        /// </summary>
+        /// <param name="dobj">The object that raised the event.</param>
+        private static void HandlePatternChanged(DependencyObject dobj)
+        {
+            var textbox = (TextBox)dobj;
+            var pattern = textbox.Pattern;
+            textbox.patternRegex = String.IsNullOrEmpty(pattern) ? null : new Regex("^" + pattern + "$", RegexOptions.Singleline);
+            textbox.OnPatternChanged();
+        }
+
+        /// <summary>
         /// Occurs when the value of the <see cref="MaxLength"/> dependency property changes.
         /// </summary>
         /// <param name="dobj">The object that raised the event.</param>
@@ -696,16 +742,26 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
 
             if (Text == null)
             {
+                if (patternRegex != null && !patternRegex.IsMatch(text))
+                    return;
+
                 Text = text;
                 textCaretPosition = textLength;
             }
             else
             {
+                var textTemp = Text;
+
                 if (InsertionMode == TextBoxInsertionMode.Overwrite && textCaretPosition < Text.Length)
-                    Text = Text.Remove(textCaretPosition, 1);
+                    textTemp = textTemp.Remove(textCaretPosition, 1);
 
                 var position = textCaretPosition + textLength;
-                Text = Text.Insert(textCaretPosition, text);
+                textTemp = textTemp.Insert(textCaretPosition, text);
+
+                if (patternRegex != null && !patternRegex.IsMatch(textTemp))
+                    return;
+
+                Text = textTemp;
                 textCaretPosition = position;
             }
 
@@ -727,8 +783,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             {
                 if (textCaretPosition > 0)
                 {
-                    textCaretPosition--;
-                    Text = Text.Remove(textCaretPosition, 1);
+                    var position = textCaretPosition;
+                    Text = Text.Remove(position - 1, 1);
+                    textCaretPosition = position - 1;
                 }
             }
             ScrollBackwardToCaret();
@@ -1182,5 +1239,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         private Int32 textSelectionLength = 0;
         private Double textScrollOffset = 0;
         private Double caretBlinkTimer;
+        private Regex patternRegex;
     }
 }

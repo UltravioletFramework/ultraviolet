@@ -10,7 +10,7 @@
       <RowDefinition Height="*"/>
     </Grid.RowDefinitions>
   
-    <TextBox ID="Input" Class="updown-input" KeyPressed="InputKeyPressed"
+    <TextBox ID="Input" Class="updown-input" KeyPressed="InputKeyPressed" Pattern="-?([0-9]*\.)?[0-9]*"
              Grid.RowSpan="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">{{Value|0.0}}</TextBox>
 
     <RepeatButton ID="UpButton" Class="updown-button updown-button-up" 
