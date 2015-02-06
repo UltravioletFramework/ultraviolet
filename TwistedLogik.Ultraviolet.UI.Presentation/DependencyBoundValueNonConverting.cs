@@ -23,6 +23,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <inheritdoc/>
+        public override void SetFormatString(String formatString)
+        {
+
+        }
+
+        /// <inheritdoc/>
         public TDependency Get()
         {
             return GetCachedValue();

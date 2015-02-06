@@ -196,6 +196,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 UpdateRequiresDigest(oldValue);
             }
 
+            /// <inheritdoc/>
+            public void SetFormatString(String formatString)
+            {
+                if (cachedBoundValue == null)
+                    return;
+
+                cachedBoundValue.SetFormatString(formatString);
+            }
+
             /// <summary>
             /// Sets the dependency property's value.
             /// </summary>

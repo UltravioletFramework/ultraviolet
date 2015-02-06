@@ -27,6 +27,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         TDependency GetFresh();
 
         /// <summary>
+        /// Sets the format string used to convert the bound value to a string.
+        /// </summary>
+        /// <param name="formatString">The format string used to convert the bound value to a string.</param>
+        void SetFormatString(String formatString);
+
+        /// <summary>
         /// Sets the underlying bound value.
         /// </summary>
         /// <param name="value">The value to set.</param>

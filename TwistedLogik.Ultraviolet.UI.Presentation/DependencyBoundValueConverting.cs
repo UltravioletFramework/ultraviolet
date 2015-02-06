@@ -27,6 +27,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <inheritdoc/>
+        public override void SetFormatString(String formatString)
+        {
+            this.formatString = formatString;
+
+            if (hasCachedInputValue)
+            {
+                Set(cachedInputValue);
+            }
+        }
+
+        /// <inheritdoc/>
         public TDependency Get()
         {
             return hasCachedInputValue ? cachedInputValue : cachedConvertedValue;

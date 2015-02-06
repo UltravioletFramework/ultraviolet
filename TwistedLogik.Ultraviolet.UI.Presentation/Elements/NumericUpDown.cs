@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 using TwistedLogik.Ultraviolet.Input;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
@@ -19,6 +20,54 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         {
             SetDefaultValue<Double>(MinimumProperty, 0.0);
             SetDefaultValue<Double>(MaximumProperty, 100.0);
+            SetDefaultValue<Double>(SmallChangeProperty, 1.0);
+
+            InvalidateFormatString();
+            InvalidatePattern();
+        }
+
+        /// <summary>
+        /// Gets or sets the number of decimal places that are displayed by the control.
+        /// </summary>
+        public Int32 DecimalPlaces
+        {
+            get { return GetValue<Int32>(DecimalPlacesProperty); }
+            set { SetValue<Int32>(DecimalPlacesProperty, value); }
+        }
+
+        /// <summary>
+        /// Identifies the <see cref="DecimalPlaces"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty DecimalPlacesProperty = DependencyProperty.Register("DecimalPlaces", typeof(Int32), typeof(NumericUpDown),
+            new DependencyPropertyMetadata(HandleDecimalPlacesChanged, () => 0, DependencyPropertyOptions.None));
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="DecimalPlaces"/> property changes.
+        /// </summary>
+        public event UIElementEventHandler DecimalPlacesChanged;
+
+        /// <summary>
+        /// Raises the <see cref="DecimalPlacesChanged"/> event.
+        /// </summary>
+        protected virtual void OnDecimalPlacesChanged()
+        {
+            var temp = DecimalPlacesChanged;
+            if (temp != null)
+            {
+                temp(this);
+            }
+        }
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="DecimalPlaces"/> dependency property changes.
+        /// </summary>
+        /// <param name="dobj">The dependency object that raised the event.</param>
+        private static void HandleDecimalPlacesChanged(DependencyObject dobj)
+        {
+            var updown = (NumericUpDown)dobj;
+            updown.InvalidatePattern();
+            updown.InvalidateFormatString();
+            updown.OnDecimalPlacesChanged();
         }
 
         /// <summary>
@@ -55,5 +104,44 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         {
             DecreaseSmall();
         }
+
+        /// <summary>
+        /// Invalidates the updown's input pattern.
+        /// </summary>
+        private void InvalidatePattern()
+        {
+            if (Input == null)
+                return;
+
+            var allowNegative = Minimum < 0;
+            var allowDecimals = DecimalPlaces > 0;
+
+            var sb = new StringBuilder();
+
+            if (allowNegative)
+                sb.Append("-?");
+
+            sb.Append("[0-9]*");
+
+            if (allowDecimals)
+                sb.Append("(\\.[0-9]{0," + DecimalPlaces + ")?");
+
+            Input.Pattern = sb.ToString();
+        }
+
+        /// <summary>
+        /// Invalidates the updown's format string.
+        /// </summary>
+        private void InvalidateFormatString()
+        {
+            if (Input == null)
+                return;
+
+            Input.SetFormatString(TextBox.TextProperty, DecimalPlaces > 0 ? 
+                "0." + new String('0', DecimalPlaces) : "0");
+        }
+
+        // Component references.
+        private readonly TextBox Input = null;
     }
 }

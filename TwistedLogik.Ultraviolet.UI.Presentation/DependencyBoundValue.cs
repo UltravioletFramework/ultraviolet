@@ -24,7 +24,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             this.forceUpdate     = true;
         }
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// Modifies the format string used to convert the bound value to a string, if applicable.
+        /// </summary>
+        public abstract void SetFormatString(String formatString);
+
+        /// <summary>
+        /// Checks to see whether the bound value has changed since the last digest cycle.
+        /// </summary>
+        /// <returns><c>true</c> if the value has changed; otherwise, false.</returns>
         public Boolean CheckHasChanged()
         {
             var value = GetUnderlyingValue();
@@ -38,13 +46,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             return false;
         }
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// Gets a value indicating whether the bound value is readable.
+        /// </summary>
         public Boolean IsReadable
         {
             get { return getter != null; }
         }
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// Gets a value indicating whether the bound value is writable.
+        /// </summary>
         public Boolean IsWritable
         {
             get { return setter != null; }

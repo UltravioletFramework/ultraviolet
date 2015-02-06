@@ -243,6 +243,20 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Sets the format string used to convert the specified dependency property's value to a string.
+        /// </summary>
+        /// <typeparam name="T">The typoe of value contained by the dependency property.</typeparam>
+        /// <param name="dp">A <see cref="DependencyProperty"/> instance which identifies the dependency property for which to set a format string.</param>
+        /// <param name="formatString">The format string to set for the specified dependency property.</param>
+        public void SetFormatString(DependencyProperty dp, String formatString)
+        {
+            Contract.Require(dp, "dp");
+
+            var val = GetDependencyPropertyValue(dp, dp.PropertyType);
+            val.SetFormatString(formatString);
+        }
+
+        /// <summary>
         /// Removes the specified dependency property's current animation, if it has one.
         /// </summary>
         /// <typeparam name="T">The type of value contained by the dependency property.</typeparam>

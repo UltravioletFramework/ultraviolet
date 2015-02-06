@@ -49,6 +49,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         void ClearStyledValue();
 
         /// <summary>
+        /// Sets the format string used to convert the dependency property value to a string.
+        /// </summary>
+        /// <param name="formatString">The format string used to convert the dependency property value to a string.</param>
+        void SetFormatString(String formatString);
+
+        /// <summary>
         /// Called when the value's associated clock is started.
         /// </summary>
         void ClockStarted();
