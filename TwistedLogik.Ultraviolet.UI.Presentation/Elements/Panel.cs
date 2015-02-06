@@ -214,6 +214,20 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <inheritdoc/>
+        protected override RectangleD? ClipContentCore()
+        {
+            foreach (var child in children)
+            {
+                if (child.RelativeBounds.Left < 0 || child.RelativeBounds.Top < 0 ||
+                    child.RelativeBounds.Right > RenderSize.Width || child.RelativeBounds.Bottom > RenderSize.Height)
+                {
+                    return AbsoluteContentRegion;
+                }
+            }
+            return null;
+        }
+
+        /// <inheritdoc/>
         protected override UIElement GetElementAtPointCore(Double x, Double y, Boolean isHitTest)
         {
             var childMatch = GetChildAtPoint(x, y, isHitTest);
