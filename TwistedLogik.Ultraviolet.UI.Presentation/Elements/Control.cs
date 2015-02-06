@@ -21,6 +21,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <inheritdoc/>
+        public override UIElement GetVisualChild(int ix)
+        {
+            if (ComponentRoot == null || ix != 0)
+                throw new ArgumentOutOfRangeException("ix");
+
+            return ComponentRoot;
+        }
+
+        /// <inheritdoc/>
         public override RectangleD DesiredContentRegion
         {
             get { return desiredContentRegion; }
@@ -42,6 +51,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         public override RectangleD AbsoluteContentRegion
         {
             get { return absoluteContentRegion; }
+        }
+
+        /// <inheritdoc/>
+        public override Int32 VisualChildren
+        {
+            get
+            {
+                return ComponentRoot == null ? 0 : 1;
+            }
         }
 
         /// <summary>

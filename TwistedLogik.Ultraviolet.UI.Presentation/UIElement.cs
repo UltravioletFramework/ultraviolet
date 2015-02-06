@@ -463,6 +463,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Gets the specified visual child of this element.
+        /// </summary>
+        /// <param name="ix">The index of the visual child to retrieve.</param>
+        /// <returns>The visual child of this element with the specified index.</returns>
+        public virtual UIElement GetVisualChild(Int32 ix)
+        {
+            return GetLogicalChild(ix);
+        }
+
+        /// <summary>
         /// Gets the element at the specified pixel coordinates relative to this element's bounds.
         /// </summary>
         /// <param name="x">The element-relative x-coordinate of the pixel to evaluate.</param>
@@ -980,6 +990,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Gets the number of logical children which belong to this element.
         /// </summary>
         public virtual Int32 LogicalChildren
+        {
+            get { return 0; }
+        }
+
+        /// <summary>
+        /// Gets the number of visual children which belong to this element.
+        /// </summary>
+        public virtual Int32 VisualChildren
         {
             get { return 0; }
         }
@@ -2439,7 +2457,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
-        /// Gets the next tab stop within the part of the logical tree that is rooted in the current element.
+        /// Gets the next tab stop within the part of the visual tree that is rooted in the current element.
         /// </summary>
         /// <param name="currentStop">The current tab stop.</param>
         /// <returns>The specified tab stop, or <c>null</c> if no such element exists.</returns>
@@ -2449,9 +2467,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var currentTabIndex = (currentStop == null ? Int32.MinValue : currentStop.TabIndex);
 
             var match = default(UIElement);
-            for (int i = 0; i < LogicalChildren; i++)
+            for (int i = 0; i < VisualChildren; i++)
             {
-                var child = GetLogicalChild(i);
+                var child = GetVisualChild(i);
                 if (child == currentStop)
                 {
                     currentFound = true;
@@ -2473,7 +2491,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
-        /// Gets the previous tab stop within the part of the logical tree that is rooted in the current element.
+        /// Gets the previous tab stop within the part of the visual tree that is rooted in the current element.
         /// </summary>
         /// <param name="currentStop">The current tab stop.</param>
         /// <returns>The specified tab stop, or <c>null</c> if no such element exists.</returns>
@@ -2483,9 +2501,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var currentTabIndex = (currentStop == null ? Int32.MaxValue : currentStop.TabIndex);
 
             var match = default(UIElement);
-            for (int i = LogicalChildren - 1; i >= 0; i--)
+            for (int i = VisualChildren - 1; i >= 0; i--)
             {
-                var child = GetLogicalChild(i);
+                var child = GetVisualChild(i);
                 if (child == currentStop)
                 {
                     currentFound = true;
@@ -2515,7 +2533,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <returns>The first element within this branch of the logical tree which meets the specified criteria.</returns>
         private UIElement GetFirstFocusableDescendantInternal(UIElement parent, Boolean tabStop)
         {
-            var children = EnumerateLogicalChildrenInTabOrder();
+            var children = EnumerateVisualChildrenInTabOrder();
             foreach (var child in children)
             {
                 var candidate = child.GetFirstFocusableDescendant(tabStop);
@@ -2538,7 +2556,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <returns>The last element within this branch of the logical tree which meets the specified criteria.</returns>
         private UIElement GetLastFocusableDescendantInternal(UIElement parent, Boolean tabStop)
         {
-            var children = EnumerateLogicalChildrenInReverseTabOrder();
+            var children = EnumerateVisualChildrenInReverseTabOrder();
             foreach (var child in children)
             {
                 var candidate = child.GetLastFocusableDescendant(tabStop);
@@ -2593,21 +2611,35 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <returns>A list containing the element's logical children.</returns>
         private List<UIElement> EnumerateLogicalChildren()
         {
-            childEnumerationBuffer.Clear();
+            logicalChildEnumerationBuffer.Clear();
 
             for (int i = 0; i < LogicalChildren; i++)
-                childEnumerationBuffer.Add(GetLogicalChild(i));
+                logicalChildEnumerationBuffer.Add(GetLogicalChild(i));
 
-            return childEnumerationBuffer;
+            return logicalChildEnumerationBuffer;
         }
 
         /// <summary>
-        /// Returns a list containing the element's logical children in tab order.
+        /// Returns a list containing the element's visual children.
         /// </summary>
-        /// <returns>A list containing the element's logical children in tab order.</returns>
-        private List<UIElement> EnumerateLogicalChildrenInTabOrder()
+        /// <returns>A list containing the element's visual children.</returns>
+        private List<UIElement> EnumerateVisualChildren()
         {
-            var buffer = EnumerateLogicalChildren();
+            visualChildEnumerationBuffer.Clear();
+
+            for (int i = 0; i < VisualChildren; i++)
+                visualChildEnumerationBuffer.Add(GetVisualChild(i));
+
+            return visualChildEnumerationBuffer;
+        }
+
+        /// <summary>
+        /// Returns a list containing the element's visual children in tab order.
+        /// </summary>
+        /// <returns>A list containing the element's visual children in tab order.</returns>
+        private List<UIElement> EnumerateVisualChildrenInTabOrder()
+        {
+            var buffer = EnumerateVisualChildren();
 
             buffer.Sort((element1, element2) =>
             {
@@ -2622,12 +2654,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
-        /// Returns a list containing the element's logical children in reverse tab order.
+        /// Returns a list containing the element's visual children in reverse tab order.
         /// </summary>
-        /// <returns>A list containing the element's logical children in reverse tab order.</returns>
-        private List<UIElement> EnumerateLogicalChildrenInReverseTabOrder()
+        /// <returns>A list containing the element's visual children in reverse tab order.</returns>
+        private List<UIElement> EnumerateVisualChildrenInReverseTabOrder()
         {
-            var buffer = EnumerateLogicalChildren();
+            var buffer = EnumerateVisualChildren();
 
             buffer.Sort((element1, element2) =>
             {
@@ -2641,9 +2673,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             return buffer;
         }
 
-        // A buffer which is used to enumerate an element's logical children.
+        // Buffers which are used to enumerate an element's logical children.
         [ThreadStatic]
-        private readonly List<UIElement> childEnumerationBuffer = new List<UIElement>(32);
+        private readonly List<UIElement> logicalChildEnumerationBuffer = new List<UIElement>(32);
+        [ThreadStatic]
+        private readonly List<UIElement> visualChildEnumerationBuffer = new List<UIElement>(32);
 
         // Property values.
         private readonly UltravioletContext uv;
