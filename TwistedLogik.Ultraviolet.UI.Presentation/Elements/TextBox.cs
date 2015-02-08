@@ -382,6 +382,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <inheritdoc/>
+        protected internal override void OnMouseDoubleClick(MouseDevice device, MouseButton button)
+        {
+            if (button == MouseButton.Left)
+            {
+                SelectAll();
+            }
+            base.OnMouseDoubleClick(device, button);
+        }
+
+        /// <inheritdoc/>
         protected override void DrawContent(UltravioletTime time, DrawingContext dc)
         {
             DrawText(dc);

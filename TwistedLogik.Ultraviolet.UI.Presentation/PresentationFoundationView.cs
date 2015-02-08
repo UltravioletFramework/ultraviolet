@@ -670,6 +670,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 mouse.Moved          += mouse_Moved;
                 mouse.ButtonPressed  += mouse_ButtonPressed;
                 mouse.ButtonReleased += mouse_ButtonReleased;
+                mouse.Click          += mouse_Click;
+                mouse.DoubleClick    += mouse_DoubleClick;
             }
         }
 
@@ -700,6 +702,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 mouse.Moved          -= mouse_Moved;
                 mouse.ButtonPressed  -= mouse_ButtonPressed;
                 mouse.ButtonReleased -= mouse_ButtonReleased;
+                mouse.Click          -= mouse_Click;
+                mouse.DoubleClick    -= mouse_DoubleClick;
             }
         }
 
@@ -877,6 +881,36 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (recipient != null)
             {
                 recipient.OnMouseButtonReleased(device, button);
+            }
+        }
+
+        /// <summary>
+        /// Handles the <see cref="MouseDevice.Click"/> event.
+        /// </summary>
+        private void mouse_Click(IUltravioletWindow window, MouseDevice device, MouseButton button)
+        {
+            if (window != Window)
+                return;
+
+            var recipient = elementWithMouseCapture ?? elementUnderMouse;
+            if (recipient != null)
+            {
+                recipient.OnMouseClick(device, button);
+            }
+        }
+
+        /// <summary>
+        /// Handles the <see cref="MouseDevice.DoubleClick"/> event.
+        /// </summary>
+        private void mouse_DoubleClick(IUltravioletWindow window, MouseDevice device, MouseButton button)
+        {
+            if (window != Window)
+                return;
+
+            var recipient = elementWithMouseCapture ?? elementUnderMouse;
+            if (recipient != null)
+            {
+                recipient.OnMouseDoubleClick(device, button);
             }
         }
 

@@ -1083,6 +1083,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public event UIElementMouseButtonEventHandler MouseButtonReleased;
 
         /// <summary>
+        /// Occurs when the mouse is clicked while the cursor is over this element.
+        /// </summary>
+        public event UIElementMouseButtonEventHandler MouseClick;
+
+        /// <summary>
+        /// Occurs when the mouse is double clicked while the cursor is over this element.
+        /// </summary>
+        public event UIElementMouseButtonEventHandler MouseDoubleClick;
+
+        /// <summary>
         /// Occurs when the value of the <see cref="IsEnabled"/> property changes.
         /// </summary>
         public event UIElementEventHandler IsEnabledChanged;
@@ -1586,6 +1596,34 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         protected internal virtual void OnMouseButtonReleased(MouseDevice device, MouseButton button)
         {
             var temp = MouseButtonReleased;
+            if (temp != null)
+            {
+                temp(this, device, button);
+            }
+        }
+
+        /// <summary>
+        /// Raises the <see cref="MouseClick"/> event.
+        /// </summary>
+        /// <param name="device">The mouse device.</param>
+        /// <param name="button">The mouse button that was pressed or released.</param>
+        protected internal virtual void OnMouseClick(MouseDevice device, MouseButton button)
+        {
+            var temp = MouseClick;
+            if (temp != null)
+            {
+                temp(this, device, button);
+            }
+        }
+
+        /// <summary>
+        /// Raises the <see cref="MouseDoubleClick"/> event.
+        /// </summary>
+        /// <param name="device">The mouse device.</param>
+        /// <param name="button">The mouse button that was pressed or released.</param>
+        protected internal virtual void OnMouseDoubleClick(MouseDevice device, MouseButton button)
+        {
+            var temp = MouseDoubleClick;
             if (temp != null)
             {
                 temp(this, device, button);
