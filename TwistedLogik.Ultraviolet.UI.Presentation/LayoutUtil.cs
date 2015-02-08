@@ -87,6 +87,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             switch (alignment)
             {
                 case HorizontalAlignment.Stretch:
+                    if (content.Width >= space.Width)
+                    {
+                        xOffset = 0;
+                    }
+                    else
+                    {
+                        xOffset = (space.Width - content.Width) / 2.0;
+                    }
+                    break;
+
                 case HorizontalAlignment.Center:
                     xOffset = (space.Width - content.Width) / 2.0;
                     break;
@@ -113,6 +123,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             switch (alignment)
             {
                 case VerticalAlignment.Stretch:
+                    if (content.Height >= space.Height)
+                    {
+                        yOffset = 0;
+                    }
+                    else
+                    {
+                        yOffset = (space.Width - content.Width) / 2.0;
+                    }
+                    break;
+
                 case VerticalAlignment.Center:
                     yOffset = (space.Height - content.Height) / 2.0;
                     break;

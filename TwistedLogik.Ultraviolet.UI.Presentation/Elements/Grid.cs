@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using TwistedLogik.Nucleus;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
@@ -222,8 +223,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <inheritdoc/>
         protected override Size2D MeasureContent(Size2D availableSize)
         {
-            PrepareForMeasure(RowDefinitions);
-            PrepareForMeasure(ColumnDefinitions);
+            var infiniteHeight = Double.IsPositiveInfinity(availableSize.Height);
+            var infiniteWidth  = Double.IsPositiveInfinity(availableSize.Width);
+
+            PrepareForMeasure(RowDefinitions, infiniteHeight);
+            PrepareForMeasure(ColumnDefinitions, infiniteWidth);
 
             MeasureVirtualCells(0);
 
@@ -421,25 +425,30 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             if (!hasCellsOfPriority[priority])
                 return;
 
+            var discardDesiredWidth  = ((options & GridMeasurementOptions.DiscardDesiredWidth) == GridMeasurementOptions.DiscardDesiredWidth);
+            var discardDesiredHeight = ((options & GridMeasurementOptions.DiscardDesiredHeight) == GridMeasurementOptions.DiscardDesiredHeight);
+
             foreach (var cell in virtualCells)
             {
                 if (cell.MeasurementPriority != priority)
                     continue;
 
-                var childElement     = cell.Element;
-                var childDesiredSize = childElement.DesiredSize;
-
                 MeasureVirtualCell(cell, options);
 
-                if ((options & GridMeasurementOptions.DiscardDesiredWidth) != GridMeasurementOptions.DiscardDesiredWidth)
-                {
-                    DistributeVirtualCellDimension(ColumnDefinitions, cell.ColumnIndex, cell.ColumnSpan, childElement.DesiredSize.Width);
-                }
+                if (!discardDesiredWidth && cell.ColumnSpan == 1)
+                    ColumnDefinitions[cell.ColumnIndex].ExpandContentDimension(cell.Element.DesiredSize.Width);
 
-                if ((options & GridMeasurementOptions.DiscardDesiredHeight) != GridMeasurementOptions.DiscardDesiredHeight)
-                {
-                    DistributeVirtualCellDimension(RowDefinitions, cell.RowIndex, cell.RowSpan, childElement.DesiredSize.Height);
-                }
+                if (!discardDesiredHeight && cell.RowSpan == 1)
+                    RowDefinitions[cell.RowIndex].ExpandContentDimension(cell.Element.DesiredSize.Height);
+            }
+
+            foreach (var cell in virtualCells)
+            {
+                if (!discardDesiredWidth && cell.ColumnSpan > 1)
+                    DistributeSpanDimension(ColumnDefinitions, cell.ColumnIndex, cell.ColumnSpan, cell.Element.DesiredSize.Width);
+
+                if (!discardDesiredHeight && cell.RowSpan > 1)
+                    DistributeSpanDimension(RowDefinitions, cell.RowIndex, cell.RowSpan, cell.Element.DesiredSize.Height);
             }
         }
 
@@ -497,18 +506,38 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// Prepares the grid's rows or columns for measurement.
         /// </summary>
         /// <param name="definitions">The collection of row or column definitions to prepare for measurement.</param>
-        private void PrepareForMeasure(IDefinitionBaseCollection definitions)
+        /// <param name="infiniteDimension">A value indicating whether the constraint for this dimension is infinite.</param>
+        private void PrepareForMeasure(IDefinitionBaseCollection definitions, Boolean infiniteDimension)
         {
             for (int i = 0; i < definitions.Count; i++)
             {
                 var def = definitions[i];
-                def.MeasuredDimension = Double.PositiveInfinity;
-                def.ResetContentDimension();
 
-                if (def.Dimension.GridUnitType == GridUnitType.Pixel)
+                var dim    = 0.0;
+                var dimMin = def.MinDimension;
+                var dimMax = Math.Max(dimMin, def.MaxDimension);
+
+                switch (def.Dimension.GridUnitType)
                 {
-                    def.MeasuredDimension = def.Dimension.Value;
+                    case GridUnitType.Auto:
+                        def.AssumedUnitType = GridUnitType.Auto;
+                        dim                 = Double.PositiveInfinity;
+                        break;
+
+                    case GridUnitType.Pixel:
+                        def.AssumedUnitType   = GridUnitType.Pixel;
+                        dim                   = def.Dimension.Value;
+                        dimMin                = Math.Max(dimMin, Math.Min(dim, dimMax));
+                        break;
+
+                    case GridUnitType.Star:
+                        def.AssumedUnitType = infiniteDimension ? GridUnitType.Auto : GridUnitType.Star;
+                        dim                 = Double.PositiveInfinity;
+                        break;
                 }
+
+                def.ResetContentDimension(dimMin);
+                def.MeasuredDimension = Math.Max(dimMin, Math.Min(dim, dimMax));
             }
         }
 
@@ -519,15 +548,106 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <param name="index">The index of the first row or column in the span.</param>
         /// <param name="span">The number of rows or columns in the span.</param>
         /// <param name="dimension">The amount of space to distribute between the rows or columns in the span.</param>
-        private void DistributeVirtualCellDimension(IDefinitionBaseCollection definitions, Int32 index, Int32 span, Double dimension)
+        private void DistributeSpanDimension(IDefinitionBaseCollection definitions, Int32 index, Int32 span, Double dimension)
         {
-            if (span == 1)
+            if (dimension == 0.0)
+                return;
+
+            var spanContentDimension = 0.0;
+            var spanDesiredDimension = 0.0;
+            var spanMaximumDimension = 0.0;
+
+            for (int i = 0; i < span; i++)
             {
-                definitions[index].ExpandContentDimension(dimension);
+                var def = definitions[index + i];
+
+                spanContentDimension += def.MeasuredContentDimension;
+                spanDesiredDimension += def.DesiredDimension;
+                spanMaximumDimension += Math.Max(def.MaxDimension, spanContentDimension);
             }
-            else
+
+            /* When the dimension to distribute is less than the current content 
+             * size of the span, we don't need to do anything. */
+            if (dimension <= spanContentDimension)
+                return;
+
+            /* Dimension to distribute is less than the desired dimension of the span.
+             * Ignore auto defs, distribute equally into content sizes of other defs in order 
+             * of lowest DesiredDimension to highest. */
+            if (dimension <= spanDesiredDimension)
             {
-                // TODO
+                var undistributed = dimension;
+
+                for (int i = 0; i < span; i++)
+                {
+                    var def = definitions[index + i];
+                    if (def.AssumedUnitType == GridUnitType.Auto)
+                        undistributed -= def.MeasuredContentDimension;
+                }
+
+                var defsInSpan = EnumerateNonAutoDefinitionsInSpanByDesiredDimension(definitions, index, span);
+                for (int i = 0; i < defsInSpan.Count; i++)
+                {
+                    var def             = defsInSpan[i];
+                    var defDistribution = undistributed / (span - i);
+                    var defContentSize  = Math.Min(defDistribution, def.DesiredDimension);
+
+                    def.ExpandContentDimension(defContentSize);
+
+                    undistributed -= defContentSize;
+                }
+                defsInSpan.Clear();
+
+                return;
+            }
+
+            /* Dimension to distribute is less than the maximum dimension of the span.
+             * Distribute into non-auto defs first, in order of lowest MaxSize to highest,
+             * then distribute any remaining space into auto defs. */
+            if (dimension <= spanMaximumDimension)
+            {
+                var undistributed = dimension - spanDesiredDimension;
+
+                var defsInSpan = EnumerateNonAutoDefinitionsInSpanByMaxDimension(definitions, index, span);
+                var autoInSpan = span - defsInSpan.Count;
+
+                // Non-auto defs
+                for (int i = 0; i < defsInSpan.Count; i++)
+                {
+                    var def             = defsInSpan[i];
+                    var defDesiredSize  = def.DesiredDimension;
+                    var defDistribution = defDesiredSize + undistributed / (span - autoInSpan - i);
+                    var defContentSize  = Math.Min(defDistribution, def.MaxDimension);
+
+                    def.ExpandContentDimension(defContentSize);
+
+                    var delta = def.MeasuredContentDimension - defDesiredSize;
+                    undistributed -= delta;
+                }
+
+                // Auto defs
+                defsInSpan = EnumerateAutoDefinitionsInSpanByContentDimension(definitions, index, span);
+                for (int i = 0; i < defsInSpan.Count; i++)
+                {
+                    var def = defsInSpan[i];
+                    var defDesiredSize = def.DesiredDimension;
+                    var defDistribution = defDesiredSize + undistributed / (autoInSpan - i);
+                    var defContentSize = Math.Min(defDistribution, def.MaxDimension);
+
+                    def.ExpandContentDimension(defContentSize);
+
+                    var delta = def.MeasuredContentDimension - defDesiredSize;
+                    undistributed -= delta;
+                }
+
+                return;
+            }
+
+            /* Dimension to distribute is greater than the max size of the span.
+             * Distribute equally into all spans. */
+            for (int i = 0; i < span; i++)
+            {
+                definitions[index + i].ExpandContentDimension(dimension / span);
             }
         }
 
@@ -544,7 +664,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
 
             for (int i = 0; i < span; i++)
             {
-                size += definitions[index + i].FinalDimension;
+                size += definitions[index + i].ActualDimension;
             }
 
             return size;
@@ -563,11 +683,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             {
                 var def = definitions[i];
 
-                switch (def.Dimension.GridUnitType)
+                switch (def.AssumedUnitType)
                 {
                     case GridUnitType.Auto:
                     case GridUnitType.Pixel:
-                        dimension += def.FinalDimension;
+                        dimension += def.ActualDimension;
                         break;
                 }
             }
@@ -629,7 +749,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             for (int i = 0; i < definitions.Count; i++)
             {
                 var def = definitions[i];
-                if (def.Dimension.GridUnitType != GridUnitType.Star)
+                if (def.AssumedUnitType != GridUnitType.Star)
                     continue;
 
                 sumOfStarFactors += def.Dimension.Value;
@@ -640,10 +760,53 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             for (int i = 0; i < definitions.Count; i++)
             {
                 var def = definitions[i];
-                if (def.Dimension.GridUnitType != GridUnitType.Star)
+                if (def.AssumedUnitType != GridUnitType.Star)
                     continue;
 
                 def.MeasuredDimension = starFactorUnit * def.Dimension.Value;
+            }
+        }
+
+        /// <summary>
+        /// Finalizes the dimensions of the grid's star rows or columns.
+        /// </summary>
+        /// <param name="dimension">The collection of row or column definitions to finalize.</param>
+        /// <param name="definitions">The grid's final arranged dimension.</param>
+        private void FinalizeStars(IDefinitionBaseCollection definitions, Double dimension)
+        {
+            var undistributed = dimension - CalculateUsedDimension(definitions);
+
+            var starCombinedWeight = 0.0;
+            var starCount          = 0;
+
+            for (int i = 0; i < definitions.Count; i++)
+            {
+                var def = definitions[i];
+                if (def.AssumedUnitType == GridUnitType.Star)
+                {
+                    starCount++;
+                    starCombinedWeight += def.Dimension.Value;
+                }
+            }
+
+            if (starCount == 0 || starCombinedWeight == 0)
+                return;
+
+            var starCountVisited = 0;
+
+            for (int i = 0; i < definitions.Count; i++)
+            {
+                var def = definitions[i];
+                if (def.AssumedUnitType != GridUnitType.Star)
+                    continue;
+
+                var defShare          = undistributed / (starCount - starCountVisited);
+                var defDimension      = Math.Min(defShare, def.MaxDimension);
+                def.MeasuredDimension = defDimension;
+
+                undistributed -= defDimension;
+
+                starCountVisited++;
             }
         }
 
@@ -654,7 +817,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <param name="definitions">The grid's final arranged dimension.</param>
         private void FinalizeDimension(IDefinitionBaseCollection definitions, Double dimension)
         {
-            ResolveStars(definitions, dimension);
+            FinalizeStars(definitions, dimension);
 
             var position = 0.0;
 
@@ -662,7 +825,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             {
                 var def = definitions[i];
                 def.Position = position;
-                position += def.FinalDimension;
+                position += def.ActualDimension;
             }
         }
 
@@ -698,7 +861,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
 
                 for (int col = 0; col < cell.ColumnSpan; col++)
                 {
-                    var colUnit = ColumnDefinitions[cell.ColumnIndex + col].Width.GridUnitType;
+                    var colUnit = ColumnDefinitions[cell.ColumnIndex + col].AssumedUnitType;
                     switch (colUnit)
                     {
                         case GridUnitType.Auto:
@@ -714,7 +877,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
 
                 for (int row = 0; row < cell.RowSpan; row++)
                 {
-                    var rowUnit = RowDefinitions[cell.RowIndex + row].Height.GridUnitType;
+                    var rowUnit = RowDefinitions[cell.RowIndex + row].AssumedUnitType;
                     switch (rowUnit)
                     {
                         case GridUnitType.Auto:
@@ -749,6 +912,109 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
                 virtualCells[i].Element = Children[i];
             }
         }
+
+        /// <summary>
+        /// Retrieves a buffer containing all of the row/column definitions in the specified span.
+        /// </summary>
+        /// <param name="definitions">The collection of definitions from which to retrieve the span.</param>
+        /// <param name="index">The index of the first definition in the span.</param>
+        /// <param name="span">The number of definitions in the span.</param>
+        /// <param name="auto">A value indicating whether to include auto-sized definitions.</param>
+        /// <param name="nonauto">A value indicating whether to include non-auto-sized definitions.</param>
+        /// <returns>A buffer containing the specified span of row/column definitions.</returns>
+        private List<DefinitionBase> EnumerateDefinitionsInSpan(IDefinitionBaseCollection definitions, Int32 index, Int32 span, 
+            Boolean auto = true, Boolean nonauto = true)
+        {
+            spanEnumerationBuffer.Clear();
+
+            for (int i = 0; i < span; i++)
+            {
+                var def = definitions[index + i];
+                switch (def.AssumedUnitType)
+                {
+                    case GridUnitType.Auto:
+                        if (auto)
+                        {
+                            spanEnumerationBuffer.Add(def);
+                        }
+                        break;
+
+                    case GridUnitType.Pixel:
+                    case GridUnitType.Star:
+                        if (nonauto)
+                        {
+                            spanEnumerationBuffer.Add(def);
+                        }
+                        break;
+                }
+            }
+
+            return spanEnumerationBuffer;
+        }
+
+        /// <summary>
+        /// Retrieves a buffer containing all of the non-auto-sized row/column definitions in the specified span.
+        /// The buffer is sorted in ascending order of <see cref="DefinitionBase.DesiredDiemsion"/>. 
+        /// </summary>
+        /// <param name="definitions">The collection of definitions from which to retrieve the span.</param>
+        /// <param name="index">The index of the first definition in the span.</param>
+        /// <param name="span">The number of definitions in the span.</param>
+        /// <returns>A buffer containing the specified span of row/column definitions.</returns>
+        private List<DefinitionBase> EnumerateNonAutoDefinitionsInSpanByDesiredDimension(IDefinitionBaseCollection definitions, Int32 index, Int32 span)
+        {
+            var buffer = EnumerateDefinitionsInSpan(definitions, index, span, auto: false);
+
+            buffer.Sort((def1, def2) =>
+            {
+                return def1.DesiredDimension.CompareTo(def2.DesiredDimension);
+            });
+
+            return buffer;
+        }
+
+        /// <summary>
+        /// Retrieves a buffer containing all of the non-auto-sized row/column definitions in the specified span.
+        /// The buffer is sorted in ascending order of <see cref="DefinitionBase.MaxDimension"/>.
+        /// </summary>
+        /// <param name="definitions">The collection of definitions from which to retrieve the span.</param>
+        /// <param name="index">The index of the first definition in the span.</param>
+        /// <param name="span">The number of definitions in the span.</param>
+        /// <returns>A buffer containing the specified span of row/column definitions.</returns>
+        private List<DefinitionBase> EnumerateNonAutoDefinitionsInSpanByMaxDimension(IDefinitionBaseCollection definitions, Int32 index, Int32 span)
+        {
+            var buffer = EnumerateDefinitionsInSpan(definitions, index, span, auto: false);
+
+            buffer.Sort((def1, def2) =>
+            {
+                return def1.MaxDimension.CompareTo(def2.MaxDimension);
+            });
+
+            return buffer;
+        }
+
+        /// <summary>
+        /// Retrieves a buffer containing all of the auto-sized row/column definitions in the specified span.
+        /// The buffer is sorted in ascending order of <see cref="DefinitionBase.MeasuredContentDimension"/>.
+        /// </summary>
+        /// <param name="definitions">The collection of definitions from which to retrieve the span.</param>
+        /// <param name="index">The index of the first definition in the span.</param>
+        /// <param name="span">The number of definitions in the span.</param>
+        /// <returns>A buffer containing the specified span of row/column definitions.</returns>
+        private List<DefinitionBase> EnumerateAutoDefinitionsInSpanByContentDimension(IDefinitionBaseCollection definitions, Int32 index, Int32 span)
+        {
+            var buffer = EnumerateDefinitionsInSpan(definitions, index, span, nonauto: false);
+
+            buffer.Sort((def1, def2) =>
+            {
+                return def1.MeasuredContentDimension.CompareTo(def2.MeasuredContentDimension);
+            });
+
+            return buffer;
+        }
+
+        // A buffer used to sort spanned definitions during measurement.
+        [ThreadStatic]
+        private readonly List<DefinitionBase> spanEnumerationBuffer = new List<DefinitionBase>(8);
 
         // Property values.
         private readonly RowDefinitionCollection rowDefinitions;

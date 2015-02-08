@@ -29,9 +29,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <summary>
         /// Resets the row or column's minimum content dimension.
         /// </summary>
-        internal void ResetContentDimension()
+        /// <param name="dimension">The value to which to reset the minimum content dimension.</param>
+        internal void ResetContentDimension(Double dimension = 0)
         {
-            MeasuredContentDimension = 0;
+            MeasuredContentDimension = dimension;
         }
 
         /// <summary>
@@ -45,6 +46,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             {
                 MeasuredContentDimension = dimension;
             }
+        }
+
+        /// <summary>
+        /// Gets or sets the definition's assumed unit type for purposes of measurement (which may be different
+        /// than the unit type of its <see cref="Dimension"/> property).
+        /// </summary>
+        internal GridUnitType AssumedUnitType
+        {
+            get;
+            set;
         }
 
         /// <summary>
@@ -90,9 +101,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <summary>
-        /// Gets the row or column's final dimension after arrangement.
+        /// Gets the row or column's actual dimension after measurement.
         /// </summary>
-        internal abstract Double FinalDimension
+        internal abstract Double ActualDimension
         {
             get;
         }
@@ -104,6 +115,21 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         {
             get;
             set;
+        }
+
+        /// <summary>
+        /// Gets the desired dimension of this row or column based on its current parameters.
+        /// </summary>
+        internal Double DesiredDimension
+        {
+            get
+            {
+                if (AssumedUnitType != GridUnitType.Auto)
+                {
+                    return Math.Max(MeasuredContentDimension, MeasuredDimension);
+                }
+                return MeasuredContentDimension;
+            }
         }
 
         /// <summary>
