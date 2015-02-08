@@ -512,24 +512,32 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             for (int i = 0; i < definitions.Count; i++)
             {
                 var def = definitions[i];
-                def.MeasuredDimension = Double.PositiveInfinity;
-                def.ResetContentDimension();
+
+                var dim    = 0.0;
+                var dimMin = def.MinDimension;
+                var dimMax = Math.Max(dimMin, def.MaxDimension);
 
                 switch (def.Dimension.GridUnitType)
                 {
                     case GridUnitType.Auto:
                         def.AssumedUnitType = GridUnitType.Auto;
+                        dim                 = Double.PositiveInfinity;
                         break;
 
                     case GridUnitType.Pixel:
                         def.AssumedUnitType   = GridUnitType.Pixel;
-                        def.MeasuredDimension = def.Dimension.Value;
+                        dim                   = def.Dimension.Value;
+                        dimMin                = Math.Max(dimMin, Math.Min(dim, dimMax));
                         break;
 
                     case GridUnitType.Star:
                         def.AssumedUnitType = infiniteDimension ? GridUnitType.Auto : GridUnitType.Star;
+                        dim                 = Double.PositiveInfinity;
                         break;
                 }
+
+                def.ResetContentDimension(dimMin);
+                def.MeasuredDimension = Math.Max(dimMin, Math.Min(dim, dimMax));
             }
         }
 

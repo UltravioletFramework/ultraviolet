@@ -29,9 +29,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <summary>
         /// Resets the row or column's minimum content dimension.
         /// </summary>
-        internal void ResetContentDimension()
+        /// <param name="dimension">The value to which to reset the minimum content dimension.</param>
+        internal void ResetContentDimension(Double dimension = 0)
         {
-            MeasuredContentDimension = 0;
+            MeasuredContentDimension = dimension;
         }
 
         /// <summary>
