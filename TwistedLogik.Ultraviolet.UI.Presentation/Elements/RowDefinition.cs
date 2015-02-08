@@ -39,7 +39,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// </summary>
         public Double ActualHeight
         {
-            get { return Height.GridUnitType == GridUnitType.Auto ? MeasuredContentDimension : MeasuredDimension; }
+            get { return AssumedUnitType == GridUnitType.Auto ? MeasuredContentDimension : MeasuredDimension; }
         }
 
         /// <summary>
@@ -108,7 +108,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <inheritdoc/>
-        internal override Double FinalDimension
+        internal override Double ActualDimension
         {
             get { return ActualHeight; }
         }
