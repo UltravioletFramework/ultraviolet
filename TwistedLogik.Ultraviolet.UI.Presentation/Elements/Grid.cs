@@ -760,13 +760,56 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <summary>
+        /// Finalizes the dimensions of the grid's star rows or columns.
+        /// </summary>
+        /// <param name="dimension">The collection of row or column definitions to finalize.</param>
+        /// <param name="definitions">The grid's final arranged dimension.</param>
+        private void FinalizeStars(IDefinitionBaseCollection definitions, Double dimension)
+        {
+            var undistributed = dimension - CalculateUsedDimension(definitions);
+
+            var starCombinedWeight = 0.0;
+            var starCount          = 0;
+
+            for (int i = 0; i < definitions.Count; i++)
+            {
+                var def = definitions[i];
+                if (def.AssumedUnitType == GridUnitType.Star)
+                {
+                    starCount++;
+                    starCombinedWeight += def.Dimension.Value;
+                }
+            }
+
+            if (starCount == 0 || starCombinedWeight == 0)
+                return;
+
+            var starCountVisited = 0;
+
+            for (int i = 0; i < definitions.Count; i++)
+            {
+                var def = definitions[i];
+                if (def.AssumedUnitType != GridUnitType.Star)
+                    continue;
+
+                var defShare          = undistributed / (starCount - starCountVisited);
+                var defDimension      = Math.Min(defShare, def.MaxDimension);
+                def.MeasuredDimension = defDimension;
+
+                undistributed -= defDimension;
+
+                starCountVisited++;
+            }
+        }
+
+        /// <summary>
         /// Finalizes the dimension of the grid's rows or columns during the arrange phase.
         /// </summary>
         /// <param name="dimension">The collection of row or column definitions to finalize.</param>
         /// <param name="definitions">The grid's final arranged dimension.</param>
         private void FinalizeDimension(IDefinitionBaseCollection definitions, Double dimension)
         {
-            ResolveStars(definitions, dimension);
+            FinalizeStars(definitions, dimension);
 
             var position = 0.0;
 
