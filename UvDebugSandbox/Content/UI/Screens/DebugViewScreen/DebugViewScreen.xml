@@ -3,7 +3,7 @@
   <Stylesheet>DebugViewScreenStyles.uvss</Stylesheet>
   <View ViewModelType="UvDebugSandbox.UI.Screens.DebugViewModel, UvDebugSandbox">
 
-    <StackPanel HorizontalAlignment="Stretch">
+    <StackPanel HorizontalAlignment="Stretch" Margin="0 100 0 0">
       <Grid ID="TestGrid" Height="300">
         <Grid.ColumnDefinitions>
           <ColumnDefinition Width="*"/>
@@ -15,7 +15,7 @@
           <RowDefinition Height="*"/>
           <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <Button ID="A" Grid.Column="0" Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">A</Button>
+        <Button ID="A" Class="red" Grid.Column="0" Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">A</Button>
         <Button ID="B" Grid.Column="1" Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">B</Button>
         <Button ID="C" Grid.Column="2" Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">C</Button>
         <Button ID="D" Grid.Column="0" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">{{Foo|0.00}}</Button>
@@ -23,7 +23,7 @@
         <Button ID="F" Grid.Column="2" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">F</Button>
         <Button ID="G" Grid.Column="0" Grid.Row="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">G</Button>
         <Button ID="H" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">H</Button>
-        <Button ID="I" Grid.Column="2" Grid.Row="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">I</Button>
+        <Button ID="I" Grid.Column="2" Grid.Row="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="TestClick">I</Button>
       </Grid>
       <HScrollBar ID="Foo" HorizontalAlignment="Stretch"></HScrollBar>
       <NumericUpDown Width="200" Height="32">{{Foo}}</NumericUpDown>

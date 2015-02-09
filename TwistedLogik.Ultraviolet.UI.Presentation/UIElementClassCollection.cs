@@ -30,6 +30,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (classes.Add(className))
             {
                 owner.OnClassAdded(className);
+                owner.InvalidateStyle();
                 return true;
             }
             return false;
@@ -50,6 +51,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             }
             classes.Add(className);
             owner.OnClassAdded(className);
+            owner.InvalidateStyle();
             return true;
         }
 
@@ -63,6 +65,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (classes.Remove(className))
             {
                 owner.OnClassRemoved(className);
+                owner.InvalidateStyle();
                 return true;
             }
             return false;

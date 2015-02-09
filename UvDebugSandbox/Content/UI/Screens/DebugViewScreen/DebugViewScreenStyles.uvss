@@ -4,6 +4,16 @@
 	font-color: #ff000000;
 }
 
+.red .button-background
+{
+	source-color: #ffff0000;
+}
+
+.blue .button-background
+{
+	source-color: #ff0000ff;
+}
+
 view
 {
 	blank-image: #Global:Textures:DebugUI 230 590 14 14;

@@ -1,11 +1,20 @@
 ﻿using System;
 using TwistedLogik.Ultraviolet.Content;
 using TwistedLogik.Ultraviolet.UI.Presentation;
+using TwistedLogik.Ultraviolet.UI.Presentation.Elements;
+using TwistedLogik.Ultraviolet.UI;
 
 namespace UvDebugSandbox.UI.Screens
 {
     public class DebugViewModel
     {
+        public DebugViewModel(PresentationFoundationView view)
+        {
+            this.view = view;
+        }
+
+        private PresentationFoundationView view;
+
         public Double Foo
         {
             get { return foo; }
@@ -15,7 +24,9 @@ namespace UvDebugSandbox.UI.Screens
 
         public void TestClick(UIElement element)
         {
-            Console.WriteLine("click");
+            var a = view.GetElementByID("A");
+            a.Classes.Toggle("red");
+            a.Classes.Toggle("blue");
         }
     }
 
@@ -31,7 +42,7 @@ namespace UvDebugSandbox.UI.Screens
         {
             if (View != null)
             {
-                View.SetViewModel(new DebugViewModel());
+                View.SetViewModel(new DebugViewModel((PresentationFoundationView)View));
             }
             base.OnViewLoaded();
         }
