@@ -314,13 +314,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <inheritdoc/>
-        internal override void ApplyStyledVisualStateTransition(UvssStyle style, String value)
+        internal override void ApplyStyledVisualStateTransition(UvssStyle style)
         {
             Contract.Require(style, "style");
-            Contract.RequireNotEmpty(value, "value");
 
             if (View != null && View.Stylesheet != null)
             {
+                var value = (style.CachedResolvedValue != null && style.CachedResolvedValue is String) ?
+                    (String)style.CachedResolvedValue : style.Value.Trim();
+
+                style.CachedResolvedValue = value;
+
                 var storyboard = View.Stylesheet.InstantiateStoryboardByName(Ultraviolet, value);
                 if (storyboard != null)
                 {

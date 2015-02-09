@@ -19,9 +19,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Represents a method which sets the value of a styled property on a dependency object.
         /// </summary>
         /// <param name="dobj">The dependency object on which to set the style.</param>
-        /// <param name="value">The string representation of the value to set for the style.</param>
+        /// <param name="style">The style to set on this dependency property.</param>
         /// <param name="provider">An object that supplies culture-specific formatting information.</param>
-        protected delegate void StyleSetter(StyledDependencyObject dobj, String value, IFormatProvider provider);
+        protected delegate void StyleSetter(StyledDependencyObject dobj, UvssStyle style, IFormatProvider provider);
 
         /// <summary>
         /// Initializes the <see cref="StyledDependencyObject"/> class.
@@ -92,14 +92,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (attached)
                 return;
 
-            var name  = style.Name;
-            var value = style.Value.Trim();
-
+            var name   = style.Name;
             var setter = GetStyleSetter(name, selector.PseudoClass);
+
             if (setter == null)
                 return;
 
-            setter(this, value, CultureInfo.InvariantCulture);
+            setter(this, style, CultureInfo.InvariantCulture);
         }
 
         /// <summary>
@@ -146,17 +145,24 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Converts a string to a value to be applied to a styled dependency property.
         /// </summary>
-        /// <param name="value">The value string from which to create the object.</param>
+        /// <param name="style">The style to resolve to a value.</param>
         /// <param name="type">The type of object to create.</param>
         /// <param name="provider">An object that supplies culture-specific formatting information.</param>
         /// <returns>The object that was created.</returns>
-        private static Object ResolveStyledValue(String value, Type type, IFormatProvider provider)
+        private static Object ResolveStyledValue(UvssStyle style, Type type, IFormatProvider provider)
         {
+            if (style.CachedResolvedValue != null && style.CachedResolvedValue.GetType() == type)
+                return style.CachedResolvedValue;
+
+            var value = style.Value.Trim();
             if (value == "null")
             {
                 return type.IsValueType ? Activator.CreateInstance(type) : null;
             }
-            return ObjectResolver.FromString(value, type, provider);
+
+            var resolvedValue = ObjectResolver.FromString(value, type, provider);
+            style.CachedResolvedValue = resolvedValue;
+            return resolvedValue;
         }
 
         /// <summary>
@@ -194,12 +200,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                         var setStyledValue      = miSetStyledValue.MakeGenericMethod(dpType);
 
                         var expParameterDObj    = Expression.Parameter(typeof(StyledDependencyObject), "dobj");
-                        var expParameterValue   = Expression.Parameter(typeof(String), "value");
+                        var expParameterStyle   = Expression.Parameter(typeof(UvssStyle), "style");
                         var expParameterFmtProv = Expression.Parameter(typeof(IFormatProvider), "provider");
-                        var expResolveValue     = Expression.Convert(Expression.Call(miResolveStyledValue, expParameterValue, Expression.Constant(dpType), expParameterFmtProv), dpType);
+                        var expResolveValue     = Expression.Convert(Expression.Call(miResolveStyledValue, expParameterStyle, Expression.Constant(dpType), expParameterFmtProv), dpType);
                         var expCallMethod       = Expression.Call(expParameterDObj, setStyledValue, Expression.Constant(dp), expResolveValue);
 
-                        var lambda = Expression.Lambda<StyleSetter>(expCallMethod, expParameterDObj, expParameterValue, expParameterFmtProv).Compile();
+                        var lambda = Expression.Lambda<StyleSetter>(expCallMethod, expParameterDObj, expParameterStyle, expParameterFmtProv).Compile();
 
                         var styleKey = new UvssStyleKey(prop.Attribute.Name, prop.Attribute.PseudoClass);
                         styleSettersForCurrentType[styleKey] = lambda;

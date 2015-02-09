@@ -85,6 +85,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         }
 
         /// <summary>
+        /// Gets or sets the last value that was resolved for this style.
+        /// </summary>
+        internal Object CachedResolvedValue
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
         /// Gets the qualified name for a style with the specified parameters.
         /// </summary>
         /// <param name="arguments">The style's list of arguments.</param>

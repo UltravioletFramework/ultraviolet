@@ -1227,8 +1227,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Applies a visual state transition to the element.
         /// </summary>
         /// <param name="style">The style which defines the state transition.</param>
-        /// <param name="value">The transition value.</param>
-        internal virtual void ApplyStyledVisualStateTransition(UvssStyle style, String value)
+        internal virtual void ApplyStyledVisualStateTransition(UvssStyle style)
         {
 
         }
@@ -1389,12 +1388,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             Contract.Require(style, "style");
             Contract.Require(selector, "selector");
 
-            var name  = style.Name;
-            var value = style.Value.Trim();
-
+            var name = style.Name;
             if (name == "transition")
             {
-                ApplyStyledVisualStateTransition(style, value);
+                ApplyStyledVisualStateTransition(style);
             }
             else
             {
@@ -1402,7 +1399,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 if (setter == null)
                     return;
 
-                setter(this, value, CultureInfo.InvariantCulture);
+                setter(this, style, CultureInfo.InvariantCulture);
             }
         }
 
