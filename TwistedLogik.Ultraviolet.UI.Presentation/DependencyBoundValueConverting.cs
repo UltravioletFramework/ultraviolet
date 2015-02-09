@@ -55,7 +55,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             var converted = (TBound)ConvertValue(value, typeof(TDependency), typeof(TBound));
             SetUnderlyingValue(converted);
-            Digest();
 
             cachedInputValue = value;
             hasCachedInputValue = true;

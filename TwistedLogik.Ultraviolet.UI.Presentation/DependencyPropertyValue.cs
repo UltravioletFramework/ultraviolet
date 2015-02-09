@@ -37,6 +37,23 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             }
 
             /// <inheritdoc/>
+            public void DigestImmediately()
+            {
+                CheckForChanges();
+            }
+
+            /// <inheritdoc/>
+            public void Digest(UltravioletTime time)
+            {
+                if (IsAnimated)
+                {
+                    UpdateAnimation(time);
+                }
+
+                CheckForChanges();
+            }
+
+            /// <inheritdoc/>
             public void Animate(AnimationBase animation, Clock clock)
             {
                 Contract.Require(animation, "animation");
@@ -125,38 +142,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
                     UpdateRequiresDigest(oldValue);
                 }
-            }
-
-            /// <inheritdoc/>
-            public void Digest(UltravioletTime time)
-            {
-                var value   = default(T);
-                var changed = false;
-
-                if (IsAnimated)
-                {
-                    UpdateAnimation(time);
-                }
-
-                if (cachedBoundValue != null)
-                {
-                    if (cachedBoundValue.CheckHasChanged())
-                    {
-                        value   = cachedBoundValue.Get();
-                        changed = true;
-                    }
-                }
-                else
-                {
-                    value   = GetValue();
-                    changed = !comparer(value, previousValue);
-                }
-
-                if (changed)
-                {
-                    Property.Metadata.HandleChanged(Owner);
-                }
-                previousValue = value;
             }
 
             /// <inheritdoc/>
@@ -398,6 +383,36 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 }
 
                 return !type1.IsMutuallyConvertibleTo(type2);
+            }
+
+            /// <summary>
+            /// Checks to determine whether the property's underlying value has changed,
+            /// and if so, handles it appropriately.
+            /// </summary>
+            private void CheckForChanges()
+            {
+                var value   = default(T);
+                var changed = false;
+
+                if (cachedBoundValue != null)
+                {
+                    if (cachedBoundValue.CheckHasChanged())
+                    {
+                        value   = cachedBoundValue.Get();
+                        changed = true;
+                    }
+                }
+                else
+                {
+                    value   = GetValue();
+                    changed = !comparer(value, previousValue);
+                }
+
+                if (changed)
+                {
+                    Property.Metadata.HandleChanged(Owner);
+                }
+                previousValue = value;
             }
 
             /// <summary>

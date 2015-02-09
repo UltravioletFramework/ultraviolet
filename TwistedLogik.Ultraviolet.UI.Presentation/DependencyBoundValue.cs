@@ -104,15 +104,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 throw new InvalidOperationException(UltravioletStrings.BindingIsReadOnly);
             }
             setter(dependencyValue.Owner.DependencyDataSource, value);
-            Digest();
-        }
-
-        /// <summary>
-        /// Immediately digests the dependency property.
-        /// </summary>
-        protected void Digest()
-        {
-            dependencyValue.Digest(null);
+            dependencyValue.DigestImmediately();
         }
 
         // State values.

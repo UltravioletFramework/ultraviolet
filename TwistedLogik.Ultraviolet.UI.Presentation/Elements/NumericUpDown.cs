@@ -46,6 +46,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// </summary>
         public event UIElementEventHandler DecimalPlacesChanged;
 
+        /// <inheritdoc/>
+        protected override void OnValueChanged()
+        {
+            if (Input != null)
+            {
+                Input.DigestImmediately(TextBox.TextProperty);
+                Input.MoveEnd();
+            }
+            base.OnValueChanged();
+        }
+
         /// <summary>
         /// Raises the <see cref="DecimalPlacesChanged"/> event.
         /// </summary>

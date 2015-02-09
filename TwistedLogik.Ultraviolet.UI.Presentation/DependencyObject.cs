@@ -11,6 +11,33 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
     public abstract partial class DependencyObject
     {
         /// <summary>
+        /// Immediately digests the specified dependency property, but only if it is currently data bound.
+        /// </summary>
+        /// <param name="dp">A <see cref="DependencyProperty"/> value which identifies the dependency property to digest.</param>
+        public void DigestImmediatelyIfDataBound(DependencyProperty dp)
+        {
+            Contract.Require(dp, "dp");
+
+            var wrapper = GetDependencyPropertyValue(dp, dp.PropertyType);
+            if (wrapper.IsDataBound)
+            {
+                wrapper.DigestImmediately();
+            }
+        }
+
+        /// <summary>
+        /// Immediately digests the specified dependency property.
+        /// </summary>
+        /// <param name="dp">A <see cref="DependencyProperty"/> value which identifies the dependency property to digest.</param>
+        public void DigestImmediately(DependencyProperty dp)
+        {
+            Contract.Require(dp, "dp");
+
+            var wrapper = GetDependencyPropertyValue(dp, dp.PropertyType);
+            wrapper.DigestImmediately();
+        }
+
+        /// <summary>
         /// Evaluates whether any of the object's dependency property values have changed and, if so, invokes the appropriate callbacks.
         /// </summary>
         /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Update(UltravioletTime)"/>.</param>

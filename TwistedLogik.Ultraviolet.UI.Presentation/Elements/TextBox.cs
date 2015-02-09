@@ -27,6 +27,29 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <summary>
+        /// Moves the caret to the beginning of the text.
+        /// </summary>
+        public void MoveHome()
+        {
+            textCaretPosition = 0;
+            textScrollOffset  = 0;
+            caretBlinkTimer   = 0;
+        }
+
+        /// <summary>
+        /// Moves the caret to the end of the text.
+        /// </summary>
+        public void MoveEnd()
+        {
+            if (Text != null)
+            {
+                textCaretPosition = Text.Length;
+                ScrollForwardToCaret();
+            }
+            caretBlinkTimer = 0;
+        }
+
+        /// <summary>
         /// Gets or sets the text displayed by the text box.
         /// </summary>
         public String Text
@@ -737,6 +760,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <param name="text">The text to insert.</param>
         private void ProcessInsertText(String text)
         {
+            var startingCaretPosition = textCaretPosition;
+
             DeleteSelection();
 
             var charactersUsed      = (Text == null) ? 0 : Text.Length;
@@ -762,17 +787,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             {
                 var textTemp = Text;
 
-                if (InsertionMode == TextBoxInsertionMode.Overwrite && textCaretPosition < Text.Length)
-                    textTemp = textTemp.Remove(textCaretPosition, 1);
+                if (InsertionMode == TextBoxInsertionMode.Overwrite && startingCaretPosition < Text.Length)
+                    textTemp = textTemp.Remove(startingCaretPosition, 1);
 
-                var position = textCaretPosition + textLength;
-                textTemp = textTemp.Insert(textCaretPosition, text);
+                textTemp = textTemp.Insert(startingCaretPosition, text);
 
                 if (patternRegex != null && !patternRegex.IsMatch(textTemp))
                     return;
 
                 Text = textTemp;
-                textCaretPosition = position;
+                textCaretPosition = startingCaretPosition + textLength;
             }
 
             ScrollForwardToCaret();
@@ -875,29 +899,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
 
             ScrollBackwardToCaret();
 
-            caretBlinkTimer = 0;
-        }
-        
-        /// <summary>
-        /// Moves the caret to the beginning of the text.
-        /// </summary>
-        private void MoveHome()
-        {
-            textCaretPosition = 0;
-            textScrollOffset  = 0;
-            caretBlinkTimer   = 0;
-        }
-
-        /// <summary>
-        /// Moves the caret to the end of the text.
-        /// </summary>
-        private void MoveEnd()
-        {
-            if (Text != null)
-            {
-                textCaretPosition = Text.Length;
-                ScrollForwardToCaret();
-            }
             caretBlinkTimer = 0;
         }
 
@@ -1031,12 +1032,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             if (!IsTextSelected)
                 return;
 
-            var updatedText = Text.Remove(SelectionStart, SelectionEnd - SelectionStart);
-
-            textCaretPosition   = SelectionStart;
-            textSelectionLength = 0;
+            var updatedText          = Text.Remove(SelectionStart, SelectionEnd - SelectionStart);
+            var updatedCaretPosition = SelectionStart;
 
             Text = updatedText;
+
+            textCaretPosition   = updatedCaretPosition;
+            textSelectionLength = 0;
 
             ScrollBackwardToCaret();
         }

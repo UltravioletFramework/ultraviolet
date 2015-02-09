@@ -9,6 +9,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
     internal interface IDependencyPropertyValue
     {
         /// <summary>
+        /// Immediately digests the dependency property value.
+        /// </summary>
+        void DigestImmediately();
+
+        /// <summary>
         /// Evaluates whether the dependency property's value has changed and, if so, invokes the appropriate callbacks.
         /// </summary>
         /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Update(UltravioletTime)"/>.</param>
