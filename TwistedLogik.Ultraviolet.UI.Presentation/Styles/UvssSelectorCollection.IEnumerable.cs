@@ -6,7 +6,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
     partial class UvssSelectorCollection
     {
         /// <inheritdoc/>
-        List<UvssSelector>.Enumerator GetEnumerator()
+        public List<UvssSelector>.Enumerator GetEnumerator()
         {
             return selectors.GetEnumerator();
         }
