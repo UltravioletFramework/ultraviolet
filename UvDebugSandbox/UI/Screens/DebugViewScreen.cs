@@ -24,10 +24,11 @@ namespace UvDebugSandbox.UI.Screens
 
         public void TestClick(UIElement element)
         {
-            var a = view.GetElementByID("A");
-            a.Classes.Toggle("red");
-            a.Classes.Toggle("blue");
+            A.Classes.Toggle("red");
+            A.Classes.Toggle("blue");
         }
+
+        private readonly Button A = null;
     }
 
     public class DebugViewScreen : UvDebugScreen

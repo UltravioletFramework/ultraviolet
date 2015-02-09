@@ -563,8 +563,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
         /// <inheritdoc/>
         protected override void OnViewModelChanged()
-        {
+        {            
             layoutRoot.CacheLayoutParameters();
+
+            if (ViewModel != null)
+                elementRegistry.PopulateFieldsFromRegisteredElements(ViewModel);
 
             base.OnViewModelChanged();
         }
