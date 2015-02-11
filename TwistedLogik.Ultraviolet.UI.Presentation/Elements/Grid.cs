@@ -763,7 +763,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
                 if (def.AssumedUnitType != GridUnitType.Star)
                     continue;
 
-                def.MeasuredDimension = starFactorUnit * def.Dimension.Value;
+                def.MeasuredDimension = Math.Max(0, starFactorUnit * def.Dimension.Value);
             }
         }
 
@@ -801,7 +801,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
                     continue;
 
                 var defShare          = undistributed / (starCount - starCountVisited);
-                var defDimension      = Math.Min(defShare, def.MaxDimension);
+                var defDimension      = Math.Max(0, Math.Min(defShare, def.MaxDimension));
                 def.MeasuredDimension = defDimension;
 
                 undistributed -= defDimension;
