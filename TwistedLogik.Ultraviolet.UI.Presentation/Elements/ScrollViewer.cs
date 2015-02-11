@@ -119,6 +119,168 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             }
         }
 
+        /// <summary>
+        /// Gets or sets a value specifying the visibility of the scroll viewer's horizontal scroll bar.
+        /// </summary>
+        public ScrollBarVisibility HorizontalScrollBarVisibility
+        {
+            get { return GetValue<ScrollBarVisibility>(HorizontalScrollBarVisibilityProperty); }
+            set { SetValue<ScrollBarVisibility>(HorizontalScrollBarVisibilityProperty, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets a value specifying the visibility of the scroll viewer's vertical scroll bar.
+        /// </summary>
+        public ScrollBarVisibility VerticalScrollBarVisibility
+        {
+            get { return GetValue<ScrollBarVisibility>(VerticalScrollBarVisibilityProperty); }
+            set { SetValue<ScrollBarVisibility>(VerticalScrollBarVisibilityProperty, value); }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the scroll viewer's horizontal scroll bar is visible.
+        /// </summary>
+        public Visibility ComputedHorizontalScrollBarVisibility
+        {
+            get 
+            {
+                switch (HorizontalScrollBarVisibility)
+                {
+                    case ScrollBarVisibility.Auto:
+                        return ExtentWidth > ViewportWidth ? Visibility.Visible : Visibility.Collapsed;
+
+                    case ScrollBarVisibility.Hidden:
+                        return Visibility.Collapsed;
+                }
+                return Visibility.Visible; 
+            }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the scroll viewer's vertical scroll bar is visible.
+        /// </summary>
+        public Visibility ComputedVerticalScrollBarVisibility
+        {
+            get 
+            {
+                switch (VerticalScrollBarVisibility)
+                {
+                    case ScrollBarVisibility.Auto:
+                        return ExtentHeight > ViewportHeight ? Visibility.Visible : Visibility.Collapsed;
+
+                    case ScrollBarVisibility.Hidden:
+                        return Visibility.Collapsed;
+                }
+                return Visibility.Visible;
+            }
+        }
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="HorizontalScrollBarVisibility"/> property changes.
+        /// </summary>
+        public event UIElementEventHandler HorizontalScrollBarVisibilityChanged;
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="VerticalScrollBarVisibility"/> property changes.
+        /// </summary>
+        public event UIElementEventHandler VerticalScrollBarVisibilityChanged;
+
+        /// <summary>
+        /// Identifies the <see cref="HorizontalScrollBarVisibility"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty HorizontalScrollBarVisibilityProperty = DependencyProperty.Register("HorizontalScrollBarVisibility", typeof(ScrollBarVisibility), typeof(ScrollViewer),
+            new DependencyPropertyMetadata(HandleHorizontalScrollBarVisibilityChanged, () => ScrollBarVisibility.Disabled, DependencyPropertyOptions.AffectsArrange));
+
+        /// <summary>
+        /// Identifies the <see cref="VerticalScrollBarVisibility"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty VerticalScrollBarVisibilityProperty = DependencyProperty.Register("VerticalScrollBarVisibility", typeof(ScrollBarVisibility), typeof(ScrollViewer),
+            new DependencyPropertyMetadata(HandleVerticalScrollBarVisibilityChanged, () => ScrollBarVisibility.Visible, DependencyPropertyOptions.AffectsArrange));
+
+        /// <summary>
+        /// Raises the <see cref="HorizontalScrollBarVisibilityChanged"/> event.
+        /// </summary>
+        protected virtual void OnHorizontalScrollBarVisibilityChanged()
+        {
+            var temp = HorizontalScrollBarVisibilityChanged;
+            if (temp != null)
+            {
+                temp(this);
+            }
+        }
+
+        /// <summary>
+        /// Raises the <see cref="VerticalScrollBarVisibilityChanged"/> event.
+        /// </summary>
+        protected virtual void OnVerticalScrollBarVisibilityChanged()
+        {
+            var temp = VerticalScrollBarVisibilityChanged;
+            if (temp != null)
+            {
+                temp(this);
+            }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the scroll viewer's vertical scroll bar is enabled.
+        /// </summary>
+        protected Boolean ComputedVerticalScrollBarEnabled
+        {
+            get 
+            { 
+                return ComputedVerticalScrollBarVisibility == Visibility.Visible &&
+                    VerticalScrollBarVisibility != ScrollBarVisibility.Disabled; 
+            }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the scroll viewer's horizontal scroll bar is enabled.
+        /// </summary>
+        protected Boolean ComputedHorizontalScrollBarEnabled
+        {
+            get
+            {
+                return ComputedHorizontalScrollBarVisibility == Visibility.Visible &&
+                    HorizontalScrollBarVisibility != ScrollBarVisibility.Disabled; 
+            }
+        }
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="HorizontalScrollBarVisibility"/> dependency property changes.
+        /// </summary>
+        /// <param name="dobj">The object that raised the event.</param>
+        private static void HandleHorizontalScrollBarVisibilityChanged(DependencyObject dobj)
+        {
+            var scrollViewer = (ScrollViewer)dobj;
+            scrollViewer.OnHorizontalScrollBarVisibilityChanged();
+        }
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="VerticalScrollBarVisibility"/> dependency property changes.
+        /// </summary>
+        /// <param name="dobj">The object that raised the event.</param>
+        private static void HandleVerticalScrollBarVisibilityChanged(DependencyObject dobj)
+        {
+            var scrollViewer = (ScrollViewer)dobj;
+            scrollViewer.OnVerticalScrollBarVisibilityChanged();
+        }
+
+        /// <summary>
+        /// Handles the horizontal scroll bar's <see cref="UIElement.VisibilityChanged"/> event.
+        /// </summary>
+        private void HScroll_VisibilityChanged(UIElement element)
+        {
+            InvalidateMeasure();
+        }
+
+        /// <summary>
+        /// Handles the vertical scroll bar's <see cref="UIElement.VisibilityChanged"/> event.
+        /// </summary>
+        private void VScroll_VisibilityChanged(UIElement element)
+        {
+            InvalidateMeasure();
+        }
+
         // Property values.
         private Double horizontalOffset;
         private Double verticalOffset;
