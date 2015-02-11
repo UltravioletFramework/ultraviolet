@@ -1,4 +1,5 @@
 ﻿using System;
+using TwistedLogik.Ultraviolet.UI.Presentation.Styles;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
 {
@@ -36,6 +37,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <summary>
         /// Identifies the <see cref="FillColor"/> dependency property.
         /// </summary>
+        [Styled("fill-color")]
         public static readonly DependencyProperty FillColorProperty = DependencyProperty.Register("FillColor", typeof(Color), typeof(Shape),
             new DependencyPropertyMetadata(HandleFillColorChanged, () => Color.White, DependencyPropertyOptions.None));
 

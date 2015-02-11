@@ -313,3 +313,8 @@ numericupdown
 {
 	width: 32;
 }
+
+.scrollview-rect
+{
+	fill-color: #ffeeeeee;
+}

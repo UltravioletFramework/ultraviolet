@@ -383,13 +383,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             this.mostRecentPosition = position;
 
-            var contentRegionOffset = (Parent == null || IsComponent) ? Point2D.Zero : Parent.RelativeContentRegion.Location;
+            var contentRegionOffset = (Parent == null || IsComponent) ? Point2D.Zero : 
+                Parent.RelativeContentRegion.Location + Parent.ContentOffset;
 
             var offsetX = mostRecentFinalRect.X + RenderOffset.X + contentRegionOffset.X;
             var offsetY = mostRecentFinalRect.Y + RenderOffset.Y + contentRegionOffset.Y;
+            var offset  = new Point2D(offsetX, offsetY);
 
-            this.relativeBounds = new RectangleD(offsetX, offsetY, RenderSize.Width, RenderSize.Height);
-            this.absoluteBounds = new RectangleD(position.X + offsetX, position.Y + offsetY, RenderSize.Width, RenderSize.Height);
+            this.relativeBounds = new RectangleD(offset.X, offset.Y, RenderSize.Width, RenderSize.Height);
+            this.absoluteBounds = new RectangleD(position.X + offset.X, position.Y + offset.Y, RenderSize.Width, RenderSize.Height);
 
             PositionCore(position);
             this.isPositionValid = true;
@@ -925,6 +927,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public virtual RectangleD AbsoluteContentRegion
         {
             get { return AbsoluteBounds; }
+        }
+
+        /// <summary>
+        /// Gets the offset applied to the region's content. This is usually used to scroll the 
+        /// element's content within its content region.
+        /// </summary>
+        public virtual Point2D ContentOffset
+        {
+            get { return Point2D.Zero; }
         }
 
         /// <summary>
