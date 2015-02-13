@@ -265,22 +265,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             scrollViewer.OnVerticalScrollBarVisibilityChanged();
         }
 
-        /// <summary>
-        /// Handles the horizontal scroll bar's <see cref="UIElement.VisibilityChanged"/> event.
-        /// </summary>
-        private void HScroll_VisibilityChanged(UIElement element)
-        {
-            InvalidateMeasure();
-        }
-
-        /// <summary>
-        /// Handles the vertical scroll bar's <see cref="UIElement.VisibilityChanged"/> event.
-        /// </summary>
-        private void VScroll_VisibilityChanged(UIElement element)
-        {
-            InvalidateMeasure();
-        }
-
         // Property values.
         private Double horizontalOffset;
         private Double verticalOffset;

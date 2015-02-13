@@ -21,7 +21,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <inheritdoc/>
-        protected override void UpdateScrollbarComponents()
+        protected override void PositionScrollBarComponents()
         {
             if (LayoutRoot == null || LayoutRoot.ColumnDefinitions.Count < 5)
                 return;

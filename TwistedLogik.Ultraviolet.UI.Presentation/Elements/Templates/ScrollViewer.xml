@@ -14,10 +14,11 @@
 
     <HScrollBar Class="scrollview-hscroll" Grid.Column="0" Grid.Row="1" HorizontalAlignment="Stretch" SmallChange="1" LargeChange="10"
                 Value="{{HorizontalOffset}}" Minimum="0" Maximum="{{ScrollableWidth}}" ViewportSize="{{ViewportWidth}}" 
-                IsEnabled="{{ComputedHorizontalScrollBarEnabled}}" Visibility="{{ComputedHorizontalScrollBarVisibility}}" VisibilityChanged="HScroll_VisibilityChanged"/>
+                IsEnabled="{{ComputedHorizontalScrollBarEnabled}}" Visibility="{{ComputedHorizontalScrollBarVisibility}}"/>
+    
     <VScrollBar Class="scrollview-vscroll" Grid.Column="1" Grid.Row="0" VerticalAlignment="Stretch" SmallChange="1" LargeChange="10"
                 Value="{{VerticalOffset}}" Minimum="0" Maximum="{{ScrollableHeight}}" ViewportSize="{{ViewportHeight}}" 
-                IsEnabled="{{ComputedVerticalScrollBarEnabled}}" Visibility="{{ComputedVerticalScrollBarVisibility}}" VisibilityChanged="VScroll_VisibilityChanged"/>
+                IsEnabled="{{ComputedVerticalScrollBarEnabled}}" Visibility="{{ComputedVerticalScrollBarVisibility}}"/>
 
     <Rectangle Class="scrollview-rect" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
     

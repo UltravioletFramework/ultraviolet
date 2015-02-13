@@ -36,17 +36,25 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// Identifies the <see cref="ViewportSize"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty ViewportSizeProperty = DependencyProperty.Register("ViewportSize", typeof(Double), typeof(ScrollBarBase),
-            new DependencyPropertyMetadata(HandleViewportSizeChanged, null, DependencyPropertyOptions.None));
+            new DependencyPropertyMetadata(HandleViewportSizeChanged, null, DependencyPropertyOptions.AffectsPosition));
 
         /// <summary>
         /// Updates the layout of the scroll bar's components.
         /// </summary>
-        protected abstract void UpdateScrollbarComponents();
+        protected abstract void PositionScrollBarComponents();
+
+        /// <inheritdoc/>
+        protected override void PositionOverride(Point2D position)
+        {
+            base.PositionOverride(position);
+
+            PositionScrollBarComponents();
+        }
 
         /// <inheritdoc/>
         protected override void OnValueChanged()
         {
-            UpdateScrollbarComponents();
+            PositionScrollBarComponents();
             base.OnValueChanged();
         }
 
@@ -203,7 +211,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         private static void HandleViewportSizeChanged(DependencyObject dobj)
         {
             var scrollbar = (ScrollBarBase)dobj;
-            scrollbar.UpdateScrollbarComponents();
             scrollbar.OnViewportSizeChanged();
         }
     }
