@@ -1379,6 +1379,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             base.OnMeasureAffectingPropertyChanged();
         }
 
+        /// <inheritdoc/>
+        protected internal sealed override void OnPositionAffectingPropertyChanged()
+        {
+            InvalidatePosition();
+            base.OnPositionAffectingPropertyChanged();
+        }
+
         /// <summary>
         /// Applies the specified stylesheet's styles to this element and its children.
         /// </summary>

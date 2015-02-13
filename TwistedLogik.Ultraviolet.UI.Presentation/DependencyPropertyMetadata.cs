@@ -69,6 +69,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             {
                 dobj.OnArrangeAffectingPropertyChanged();
             }
+
+            if (IsPositionAffecting)
+            {
+                dobj.OnPositionAffectingPropertyChanged();
+            }
         }
 
         /// <summary>
@@ -125,6 +130,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             get 
             {
                 return (options & DependencyPropertyOptions.AffectsMeasure) == DependencyPropertyOptions.AffectsMeasure;
+            }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether this dependency property potentially affects the positioning state of its object.
+        /// </summary>
+        internal Boolean IsPositionAffecting
+        {
+            get
+            {
+                return (options & DependencyPropertyOptions.AffectsPosition) == DependencyPropertyOptions.AffectsPosition;
             }
         }
 
