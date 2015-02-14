@@ -3,10 +3,8 @@
   <Stylesheet>DebugViewScreenStyles.uvss</Stylesheet>
   <View ViewModelType="UvDebugSandbox.UI.Screens.DebugViewModel, UvDebugSandbox">
 
-    <StackPanel>
-      <HSlider></HSlider>
-      <HSlider Width="200"></HSlider>
-      <VSlider></VSlider>
+    <StackPanel BindingContext="{{SObj}}">
+      <NumericLabel>{{::FooBar}}</NumericLabel>
     </StackPanel>
       
   </View>

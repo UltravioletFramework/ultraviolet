@@ -6,29 +6,39 @@ using TwistedLogik.Ultraviolet.UI;
 
 namespace UvDebugSandbox.UI.Screens
 {
+    public class SomeObject
+    {
+        public SomeObject()
+        {
+            Baz = 11111;
+        }
+
+        public Double Baz
+        {
+            get;
+            set;
+        }
+    }
+
     public class DebugViewModel
     {
-        public DebugViewModel(PresentationFoundationView view)
+        public DebugViewModel()
         {
-            this.view = view;
+            FooBar = 34243;
+            SObj = new SomeObject();
         }
 
-        private PresentationFoundationView view;
-
-        public Double Foo
+        public SomeObject SObj
         {
-            get { return foo; }
-            set { foo = value; }
-        }
-        private Double foo;
-
-        public void TestClick(UIElement element)
-        {
-            A.Classes.Toggle("red");
-            A.Classes.Toggle("blue");
+            get;
+            private set;
         }
 
-        private readonly Button A = null;
+        public Double FooBar
+        {
+            get;
+            set;
+        }
     }
 
     public class DebugViewScreen : UvDebugScreen
@@ -43,7 +53,7 @@ namespace UvDebugSandbox.UI.Screens
         {
             if (View != null)
             {
-                View.SetViewModel(new DebugViewModel((PresentationFoundationView)View));
+                View.SetViewModel(new DebugViewModel());
             }
             base.OnViewLoaded();
         }

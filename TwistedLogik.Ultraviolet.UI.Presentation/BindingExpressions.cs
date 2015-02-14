@@ -58,10 +58,43 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (String.IsNullOrEmpty(expression))
                 return false;
 
-            if (expression == "{{null}}")
+            if (IsNullBindingExpression(expression))
                 return false;
 
             return !braces || expression.StartsWith("{{") && expression.EndsWith("}}");
+        }
+        
+        /// <summary>
+        /// Gets a value indicating whether the specified binding expression is 
+        /// globally-scoped using the :: operator.
+        /// </summary>
+        /// <param name="expression">The expression string to evaluate.</param>
+        /// <param name="braces">A value indicating whether the binding expression includes its enclosing braces.</param>
+        /// <returns><c>true</c> if the specified string represents a globally-scoped binding expression; otherwise, <c>false</c>.</returns>
+        public static Boolean IsGloballyScopedBindingExpression(String expression, Boolean braces = true)
+        {
+            if (String.IsNullOrEmpty(expression))
+                return false;
+
+            if (IsNullBindingExpression(expression))
+                return false;
+
+            if (IsBindingExpression(expression))
+            {
+                return braces ? expression.StartsWith("{{::") : expression.StartsWith("::");
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the specified binding expression is
+        /// the special representation of a null reference (i.e. the {{null}} expression).
+        /// </summary>
+        /// <param name="expression">The expression to evaluate.</param>
+        /// <returns><c>true</c> if the specified expression represents <c>null</c>; otherwise, <c>false</c>.</returns>
+        public static Boolean IsNullBindingExpression(String expression)
+        {
+            return expression == "{{null}}";
         }
 
         /// <summary>
@@ -97,6 +130,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 return expression2;
             if (String.IsNullOrEmpty(expression2))
                 return expression1;
+
+            if (IsGloballyScopedBindingExpression(expression2, braces))
+                return expression2;
 
             var fmt1 = GetBindingFormatStringPartInternal(expression1, braces);
             var fmt2 = GetBindingFormatStringPartInternal(expression2, braces);
@@ -387,10 +423,22 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var ixDelimiter = expression.IndexOf('|');
             if (ixDelimiter >= 0)
             {
-                var offset = braces ? 2 : 0;
+                var offset = braces ? 
+                    expression.StartsWith("{{::") ? 4 : 2 : 
+                    expression.StartsWith("::") ? 2 : 0;
+
                 return expression.Substring(offset, ixDelimiter - offset).Trim();
             }
-            return (braces ? expression.Substring(2, expression.Length - 4) : expression).Trim();
+            else
+            {
+                if (braces)
+                {
+                    return (expression.StartsWith("{{::") ? 
+                    expression.Substring(4, expression.Length - 6) : 
+                    expression.Substring(2, expression.Length - 4)).Trim();
+                }
+                return (expression.StartsWith("::") ? expression.Substring(2) : expression).Trim();
+            }
         }
 
         /// <summary>
