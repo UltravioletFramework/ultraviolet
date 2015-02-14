@@ -46,7 +46,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         protected override Size2D MeasureContent(Size2D availableSize)
         {
             foreach (var child in Children)
-                child.Measure(new Size2D(Double.PositiveInfinity, Double.PositiveInfinity));
+                child.Measure(availableSize);
 
             var contentSize = (Orientation == Orientation.Vertical) ? 
                 MeasureVertically(availableSize) :

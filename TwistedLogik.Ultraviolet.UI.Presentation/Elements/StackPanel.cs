@@ -47,13 +47,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             var contentWidth  = 0.0;
             var contentHeight = 0.0;
 
-            foreach (var child in Children)
-                child.Measure(availableSize);
-
             if (Orientation == Orientation.Vertical)
             {
                 foreach (var child in Children)
                 {
+                    child.Measure(new Size2D(availableSize.Width, Double.PositiveInfinity));
+
                     contentWidth  = Math.Max(contentWidth, child.DesiredSize.Width);
                     contentHeight = contentHeight + child.DesiredSize.Height;
                 }
@@ -62,6 +61,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             {
                 foreach (var child in Children)
                 {
+                    child.Measure(new Size2D(Double.PositiveInfinity, availableSize.Height));
+
                     contentWidth  = contentWidth + child.DesiredSize.Width;
                     contentHeight = Math.Max(contentHeight, child.DesiredSize.Height);
                 }
