@@ -22,7 +22,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <inheritdoc/>
         public override Point2D ContentOffset
         {
-            get { return new Point2D(-horizontalOffset, -verticalOffset); }
+            get { return new Point2D(-HorizontalOffset, -VerticalOffset); }
         }
 
         /// <summary>
@@ -92,15 +92,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// </summary>
         public Double HorizontalOffset
         {
-            get { return horizontalOffset; }
-            private set
-            {
-                if (horizontalOffset != value)
-                {
-                    horizontalOffset = value;
-                    InvalidatePosition();
-                }
-            }
+            get { return HScroll == null ? 0 : HScroll.Value; }
         }
 
         /// <summary>
@@ -108,15 +100,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// </summary>
         public Double VerticalOffset
         {
-            get { return verticalOffset; }
-            private set
-            {
-                if (verticalOffset != value)
-                {
-                    verticalOffset = value;
-                    InvalidatePosition();
-                }
-            }
+            get { return VScroll == null ? 0 : VScroll.Value; }
         }
 
         /// <summary>
@@ -265,8 +249,38 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             scrollViewer.OnVerticalScrollBarVisibilityChanged();
         }
 
-        // Property values.
-        private Double horizontalOffset;
-        private Double verticalOffset;
+        private void HScroll_ValueChanged(UIElement element)
+        {
+            InvalidatePosition();
+        }
+
+        private void HScroll_MaximumChanged(UIElement element)
+        {
+            InvalidatePosition();
+        }
+
+        private void HScroll_VisibilityChanged(UIElement element)
+        {
+            ((ScrollBarBase)element).Value = 0;
+        }
+
+        private void VScroll_ValueChanged(UIElement element)
+        {
+            InvalidatePosition();
+        }
+
+        private void VScroll_MaximumChanged(UIElement element)
+        {
+            InvalidatePosition();
+        }
+
+        private void VScroll_VisibilityChanged(UIElement element)
+        {
+            ((ScrollBarBase)element).Value = 0;
+        }
+
+        // Control component references.
+        private readonly HScrollBar HScroll = null;
+        private readonly VScrollBar VScroll = null;
     }
 }

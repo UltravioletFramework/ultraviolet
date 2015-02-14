@@ -23,16 +23,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <inheritdoc/>
         protected override void PositionScrollBarComponents()
         {
-            if (LayoutRoot == null || LayoutRoot.RowDefinitions.Count < 5)
-                return;
-
-            var thumbMinLength = (Thumb == null) ? 0 : Thumb.MinHeight;
-
-            if (UpLarge != null)
-                UpLarge.Height = CalculateThumbOffset();
+            var thumbLengthMin = (Thumb == null) ? 0 : Thumb.MinHeight;
+            var thumbLength    = CalculateThumbLength(thumbLengthMin);
+            var thumbOffset    = CalculateThumbOffset(thumbLength);
 
             if (Thumb != null)
-                Thumb.Height = CalculateThumbLength(thumbMinLength);
+                Thumb.Height = thumbLength;
+
+            if (UpLarge != null)
+                UpLarge.Height = thumbOffset;
         }
 
         /// <summary>
@@ -114,7 +113,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             var button = element as Button;
             if (button != null && button.IsDepressed)
             {
-                var relY = y - (AbsolutePosition.Y + ActualTrackOffsetY + thumbOffset);
+                var relY = y - (AbsolutePosition.Y + ActualTrackOffsetY + thumbDragOffset);
                 Value = OffsetToValue(relY); 
             }
         }
@@ -124,7 +123,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// </summary>
         private void HandleThumbMouseButtonPressed(UIElement element, MouseDevice device, MouseButton pressed)
         {
-            thumbOffset = Display.PixelsToDips(device.Y) - element.AbsolutePosition.Y;
+            thumbDragOffset = Display.PixelsToDips(device.Y) - element.AbsolutePosition.Y;
         }
 
         /// <summary>
@@ -165,6 +164,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         private readonly Button Thumb = null;
 
         // State values.
-        private Double thumbOffset;
+        private Double thumbDragOffset;
     }
 }

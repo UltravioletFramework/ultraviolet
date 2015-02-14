@@ -23,16 +23,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <inheritdoc/>
         protected override void PositionScrollBarComponents()
         {
-            if (LayoutRoot == null || LayoutRoot.ColumnDefinitions.Count < 5)
-                return;
-
-            var thumbMinLength = (Thumb == null) ? 0 : Thumb.MinWidth;
-
-            if (LeftLarge != null)
-                LeftLarge.Width = CalculateThumbOffset();
+            var thumbLengthMin = (Thumb == null) ? 0 : Thumb.MinWidth;
+            var thumbLength    = CalculateThumbLength(thumbLengthMin);
+            var thumbOffset    = CalculateThumbOffset(thumbLength);
 
             if (Thumb != null)
-                Thumb.Width = CalculateThumbLength(thumbMinLength);
+                Thumb.Width = thumbLength;
+
+            if (LeftLarge != null)
+                LeftLarge.Width = thumbOffset;
         }
 
         /// <summary>
@@ -111,7 +110,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             var button = element as Button;
             if (button != null && button.IsDepressed)
             {
-                var relX = x - (AbsolutePosition.X + ActualTrackOffsetX + thumbOffset);
+                var relX = x - (AbsolutePosition.X + ActualTrackOffsetX + thumbDragOffset);
                 Value = OffsetToValue(relX); 
             }
         }
@@ -121,7 +120,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// </summary>
         private void HandleThumbMouseButtonPressed(UIElement element, MouseDevice device, MouseButton pressed)
         {
-            thumbOffset = Display.PixelsToDips(device.X) - element.AbsoluteBounds.X;
+            thumbDragOffset = Display.PixelsToDips(device.X) - element.AbsoluteBounds.X;
         }
 
         /// <summary>
@@ -162,6 +161,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         private readonly Button Thumb = null;
 
         // State values.
-        private Double thumbOffset;
+        private Double thumbDragOffset;
     }
 }
