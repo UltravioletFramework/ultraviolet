@@ -119,12 +119,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
 
             if (textParserResult.Count > 0)
             {
-                var sizePixels = Display.DipsToPixels(availableSize);
+                var unconstrainedWidth  = Double.IsNaN(Width)  && HorizontalAlignment != HorizontalAlignment.Stretch;
+                var unconstrainedHeight = Double.IsNaN(Height) && VerticalAlignment != VerticalAlignment.Stretch;
+
+                var constraintX = unconstrainedWidth  ? Int32.MaxValue : (Int32)Display.DipsToPixels(availableSize.Width);
+                var constraintY = unconstrainedHeight ? Int32.MaxValue : (Int32)Display.DipsToPixels(availableSize.Height);
 
                 var flags    = LayoutUtil.ConvertAlignmentsToTextFlags(HorizontalContentAlignment, VerticalContentAlignment);
-                var settings = new TextLayoutSettings(Font, 
-                    (Int32)sizePixels.Width, 
-                    (Int32)sizePixels.Height, flags, FontStyle);
+                var settings = new TextLayoutSettings(Font, constraintX, constraintY, flags, FontStyle);
 
                 View.Resources.TextRenderer.CalculateLayout(textParserResult, textLayoutResult, settings);
             }

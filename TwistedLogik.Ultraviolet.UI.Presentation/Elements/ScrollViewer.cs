@@ -32,11 +32,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         {
             get 
             {
-                if (Content == null)
-                    return 0;
-
-                // TODO: Handle non-UIElement content
-                return ((UIElement)Content).RenderSize.Width;
+                var element = Content as UIElement;
+                if (element != null)
+                {
+                    return element.RenderSize.Width;
+                }
+                return 0;
             }
         }
 
@@ -47,11 +48,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         {
             get
             {
-                if (Content == null)
-                    return 0;
-
-                // TODO: Handle non-UIElement content
-                return ((UIElement)Content).RenderSize.Height;
+                var element = Content as UIElement;
+                if (element != null)
+                {
+                    return element.RenderSize.Height;
+                }
+                return 0;
             }
         }
 
