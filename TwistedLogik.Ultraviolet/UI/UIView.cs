@@ -72,22 +72,22 @@ namespace TwistedLogik.Ultraviolet.UI
         public abstract void Update(UltravioletTime time);
 
         /// <summary>
-        /// Moves focus up, according to the value of the <see cref="UIElement.NavUp"/> property.
+        /// Moves focus up.
         /// </summary>
         public abstract void NavigateUp();
 
         /// <summary>
-        /// Moves focus down, according to the value of the <see cref="UIElement.NavDown"/> property.
+        /// Moves focus down.
         /// </summary>
         public abstract void NavigateDown();
 
         /// <summary>
-        /// Moves focus to the left, according to the value of the <see cref="UIElement.NavLeft"/> property.
+        /// Moves focus to the left.
         /// </summary>
         public abstract void NavigateLeft();
 
         /// <summary>
-        /// Moves focus to the right, according to the value of the <see cref="UIElement.NavRight"/> property.
+        /// Moves focus to the right.
         /// </summary>
         public abstract void NavigateRight();
 
