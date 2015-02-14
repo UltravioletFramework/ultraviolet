@@ -144,6 +144,7 @@ progressbar
 	bar-color: #ffffffff;
 	fill-image: #Global:Textures:DebugUI 192 737 28 26 6 6;
 	fill-color: #ff00a0ff;
+	height: 32;
 }
 
 radiobutton, checkbox
@@ -317,4 +318,57 @@ numericupdown
 .scrollview-rect
 {
 	fill-color: #ffeeeeee;
+}
+
+hslider
+{
+	width: 64;
+	height: 42;
+}
+
+vslider
+{
+	width: 42;
+	height: 64;
+}
+
+.slider-track-horizontal
+{
+	source-image: #Global:Textures:DebugUI 1 839 24 10 9 9;
+	height: 10;
+}
+
+.slider-track-vertical
+{
+	source-image: #Global:Textures:DebugUI 26 839 10 24 9 9 vertical;
+	width: 10;
+}
+
+.slider-thumb
+{
+	transition (focus, blurred): null;
+	transition (focus, focused): null;
+	transition (common, pressed): null;
+}
+
+.slider-thumb-horizontal
+{
+	width: 28;
+	height: 42;
+}
+
+.slider-thumb-vertical
+{
+	width: 39;
+	height: 31;
+}
+
+.slider-thumb-horizontal .button-background
+{
+	source-image: #Global:Textures:DebugUI 192 820 28 42;
+}
+
+.slider-thumb-vertical .button-background
+{
+	source-image: #Global:Textures:DebugUI 37 839 39 31;
 }

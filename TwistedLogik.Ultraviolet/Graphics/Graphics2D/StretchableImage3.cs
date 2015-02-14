@@ -112,6 +112,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
             var right      = 0;
             var tileCenter = false;
             var tileEdges  = false;
+            var vertical   = false;
 
             image = null;
 
@@ -120,6 +121,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
                 case 7:
                 case 8:
                 case 9:
+                case 10:
                     if (!AssetID.TryParse(components[0], out texture))
                         return false;
                     if (!Int32.TryParse(components[1], out x))
@@ -136,12 +138,17 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
                         return false;
                     if (components.Length > 7)
                     {
-                        if (!ParseTilingParameter(components[7], ref tileCenter, ref tileEdges))
+                        if (!ParseTilingParameter3(components[7], ref tileCenter, ref tileEdges, ref vertical))
                             return false;
                     }
                     if (components.Length > 8)
                     {
-                        if (!ParseTilingParameter(components[8], ref tileCenter, ref tileEdges))
+                        if (!ParseTilingParameter3(components[8], ref tileCenter, ref tileEdges, ref vertical))
+                            return false;
+                    }
+                    if (components.Length > 9)
+                    {
+                        if (!ParseTilingParameter3(components[9], ref tileCenter, ref tileEdges, ref vertical))
                             return false;
                     }
                     break;
@@ -153,6 +160,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
             image            = Create(texture, x, y, width, height, left, right);
             image.TileCenter = tileCenter;
             image.TileEdges  = tileEdges;
+            image.Vertical   = vertical;
             return true;
         }
 
@@ -203,6 +211,19 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
             }
         }
 
+        /// <summary>
+        /// Gets or sets a value indicating whether this image is rendered vertically.
+        /// </summary>
+        public Boolean Vertical
+        {
+            get { return vertical; }
+            set 
+            { 
+                vertical = value;
+                UpdateMinimumSize();
+            }
+        }
+
         /// <inheritdoc/>
         internal override void Draw<VertexType, SpriteData>(SpriteBatchBase<VertexType, SpriteData> spriteBatch, Vector2 position, Int32 width, Int32 height, Color color, Single rotation, Vector2 origin, SpriteEffects effects, Single layerDepth, SpriteData data)
         {
@@ -214,34 +235,107 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
             if (MinimumSize.Height > 0 && height < MinimumSize.Height)
                 height = MinimumSize.Height;
 
-            var srcStretchableWidth  = this.TextureRegion.Width - (this.Left + this.Right);
-            var srcStretchableHeight = this.TextureRegion.Height;
+            if (vertical)
+            {
+                DrawVertical<VertexType, SpriteData>(spriteBatch, position, width, height, color, rotation, origin, effects, layerDepth, data);
+            }
+            else
+            {
+                DrawHorizontal<VertexType, SpriteData>(spriteBatch, position, width, height, color, rotation, origin, effects, layerDepth, data);
+            }
+        }
 
-            var dstStretchableWidth  = width - (this.Left + this.Right);
-            var dstStretchableHeight = height;
+        /// <summary>
+        /// Draws vertical images.
+        /// </summary>
+        private void DrawVertical<VertexType, SpriteData>(SpriteBatchBase<VertexType, SpriteData> spriteBatch, Vector2 position, Int32 width, Int32 height, Color color, Single rotation, Vector2 origin, SpriteEffects effects, Single layerDepth, SpriteData data)
+            where VertexType : struct, IVertexType
+            where SpriteData : struct
+        {
+            var top    = this.Left;
+            var bottom = this.Right;
+
+            var srcStretchableWidth  = this.TextureRegion.Width;
+            var srcStretchableHeight = this.TextureRegion.Height - (top + bottom);
+
+            var dstStretchableWidth  = width;
+            var dstStretchableHeight = height - (top + bottom);
 
             // Center
-            var centerSource   = new Rectangle(this.TextureRegion.Left + this.Left, this.TextureRegion.Top, srcStretchableWidth, srcStretchableHeight);
+            var centerSource   = new Rectangle(this.TextureRegion.Left, this.TextureRegion.Top + top, srcStretchableWidth, srcStretchableHeight);
             var centerRegion   = new RectangleF(position.X, position.Y, dstStretchableWidth, dstStretchableHeight);
-            var centerPosition = new Vector2(this.Left, 0);
+            var centerPosition = new Vector2(0, top);
             if (this.TileCenter)
             {
                 TileImageSegment(spriteBatch, this.Texture, centerPosition, centerRegion, centerSource, color, rotation, origin, effects, layerDepth, data);
             }
             else
             {
-                var centerOrigin   = origin - centerPosition;
+                var centerOrigin = origin - centerPosition;
                 spriteBatch.Draw(this.Texture, centerRegion, centerSource, color, rotation, centerOrigin, effects, layerDepth, data);
             }
 
             // Edges
-            var leftSource = new Rectangle(this.TextureRegion.Left, this.TextureRegion.Top, this.Left, srcStretchableHeight);
-            var leftRegion = new RectangleF(position.X, position.Y, this.Left, dstStretchableHeight);
+            var topSource   = new Rectangle(this.TextureRegion.Left, this.TextureRegion.Top, srcStretchableWidth, top);
+            var topRegion   = new RectangleF(position.X, position.Y, dstStretchableWidth, top);
+            var topPosition = new Vector2(0, 0);
+
+            var bottomSource   = new Rectangle(this.TextureRegion.Left, this.TextureRegion.Bottom - bottom, srcStretchableWidth, bottom);
+            var bottomRegion   = new RectangleF(position.X, position.Y, dstStretchableWidth, bottom);
+            var bottomPosition = new Vector2(0, height - bottom);
+
+            if (this.TileEdges)
+            {
+                TileImageSegment(spriteBatch, this.Texture, topPosition, topRegion, topSource, color, rotation, origin, effects, layerDepth, data);
+                TileImageSegment(spriteBatch, this.Texture, bottomPosition, bottomRegion, bottomSource, color, rotation, origin, effects, layerDepth, data);
+            }
+            else
+            {
+                var topOrigin = origin - topPosition;
+                spriteBatch.Draw(this.Texture, topRegion, topSource, color, rotation, topOrigin, effects, layerDepth, data);
+                var bottomOrigin = origin - bottomPosition;
+                spriteBatch.Draw(this.Texture, bottomRegion, bottomSource, color, rotation, bottomOrigin, effects, layerDepth, data);
+            }
+        }
+
+        /// <summary>
+        /// Draws horizontal images.
+        /// </summary>
+        private void DrawHorizontal<VertexType, SpriteData>(SpriteBatchBase<VertexType, SpriteData> spriteBatch, Vector2 position, Int32 width, Int32 height, Color color, Single rotation, Vector2 origin, SpriteEffects effects, Single layerDepth, SpriteData data)
+            where VertexType : struct, IVertexType
+            where SpriteData : struct
+        {
+            var left  = this.Left;
+            var right = this.Right;
+
+            var srcStretchableWidth  = this.TextureRegion.Width - (left + right);
+            var srcStretchableHeight = this.TextureRegion.Height;
+
+            var dstStretchableWidth  = width - (left + right);
+            var dstStretchableHeight = height;
+
+            // Center
+            var centerSource   = new Rectangle(this.TextureRegion.Left + left, this.TextureRegion.Top, srcStretchableWidth, srcStretchableHeight);
+            var centerRegion   = new RectangleF(position.X, position.Y, dstStretchableWidth, dstStretchableHeight);
+            var centerPosition = new Vector2(left, 0);
+            if (this.TileCenter)
+            {
+                TileImageSegment(spriteBatch, this.Texture, centerPosition, centerRegion, centerSource, color, rotation, origin, effects, layerDepth, data);
+            }
+            else
+            {
+                var centerOrigin = origin - centerPosition;
+                spriteBatch.Draw(this.Texture, centerRegion, centerSource, color, rotation, centerOrigin, effects, layerDepth, data);
+            }
+
+            // Edges
+            var leftSource   = new Rectangle(this.TextureRegion.Left, this.TextureRegion.Top, left, srcStretchableHeight);
+            var leftRegion   = new RectangleF(position.X, position.Y, left, dstStretchableHeight);
             var leftPosition = new Vector2(0, 0);
 
-            var rightSource = new Rectangle(this.TextureRegion.Right - this.Right, this.TextureRegion.Top, this.Right, srcStretchableHeight);
-            var rightRegion = new RectangleF(position.X, position.Y, this.Right, dstStretchableHeight);
-            var rightPosition = new Vector2(width - this.Right, 0);
+            var rightSource   = new Rectangle(this.TextureRegion.Right - right, this.TextureRegion.Top, right, srcStretchableHeight);
+            var rightRegion   = new RectangleF(position.X, position.Y, right, dstStretchableHeight);
+            var rightPosition = new Vector2(width - right, 0);
 
             if (this.TileEdges)
             {
@@ -258,15 +352,45 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         }
 
         /// <summary>
+        /// Parses a tiling parameter included in a string which represents a stretchable image.
+        /// </summary>
+        /// <param name="parameter">The parameter string to parse.</param>
+        /// <param name="tileCenter">A value indicating whether the image is set to tile its center piece.</param>
+        /// <param name="tileEdges">A value indicating whether the image is set to tile its edges.</param>
+        /// <param name="vertical">A value indicating whether the image is rendered veritcally.</param>
+        /// <returns><c>true</c> if the parameter was parsed successfully; otherwise, <c>false</c>.</returns>
+        private static Boolean ParseTilingParameter3(String parameter, ref Boolean tileCenter, ref Boolean tileEdges, ref Boolean vertical)
+        {
+            if (String.Equals(parameter, "vertical", StringComparison.OrdinalIgnoreCase))
+            {
+                if (vertical)
+                {
+                    return false;
+                }
+                vertical = true;
+                return true;
+            }
+            return StretchableImage.ParseTilingParameter(parameter, ref tileCenter, ref tileEdges);
+        }
+
+        /// <summary>
         /// Updates the value of the <see cref="TextureImage.MinimumSize"/> property.
         /// </summary>
         private void UpdateMinimumSize()
         {
-            MinimumSize = new Size2(left + right, 0);
+            if (vertical)
+            {
+                MinimumSize = new Size2(0, left + right);
+            }
+            else
+            {
+                MinimumSize = new Size2(left + right, 0);
+            }
         }
 
         // Property values.
         private Int32 left;
         private Int32 right;
+        private Boolean vertical;
     }
 }

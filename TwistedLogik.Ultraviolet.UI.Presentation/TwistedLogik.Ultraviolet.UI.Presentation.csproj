@@ -111,6 +111,9 @@
     <Compile Include="DrawingContext.cs" />
     <Compile Include="DrawingContext.OpacityState.cs" />
     <Compile Include="Elements\Border.cs" />
+    <Compile Include="Elements\VSlider.cs" />
+    <Compile Include="Elements\HSlider.cs" />
+    <Compile Include="Elements\SliderBase.cs" />
     <Compile Include="Elements\ScrollViewer.cs" />
     <Compile Include="Elements\NumericUpDown.cs" />
     <Compile Include="Elements\Button.cs" />
@@ -254,10 +257,14 @@
     <EmbeddedResource Include="Elements\Templates\Button.xml" />
     <EmbeddedResource Include="Elements\Templates\CheckBox.xml" />
     <EmbeddedResource Include="Elements\Templates\HScrollBar.xml" />
-    <EmbeddedResource Include="Elements\Templates\RadioButton.xml" />
+    <EmbeddedResource Include="Elements\Templates\RadioButton.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Elements\Templates\RepeatButton.xml" />
     <EmbeddedResource Include="Elements\Templates\TextBox.xml" />
-    <EmbeddedResource Include="Elements\Templates\VScrollBar.xml" />
+    <EmbeddedResource Include="Elements\Templates\VScrollBar.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\TwistedLogik.Public.snk">
@@ -269,6 +276,12 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Elements\Templates\ScrollViewer.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Elements\Templates\HSlider.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Elements\Templates\VSlider.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
