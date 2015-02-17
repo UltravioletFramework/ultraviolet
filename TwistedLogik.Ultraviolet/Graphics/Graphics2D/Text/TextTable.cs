@@ -263,7 +263,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             if (inc == null)
                 return;
 
-            inc.Changed -= ViewModelChanged;
+            inc.PropertyChanged -= ViewModelChanged;
         }
 
         /// <summary>
@@ -275,14 +275,16 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             if (inc == null)
                 return;
 
-            inc.Changed += ViewModelChanged;
+            inc.PropertyChanged += ViewModelChanged;
         }
 
         /// <summary>
-        /// Handles the view model's Changed event.
+        /// Handles the view model's <see cref="INotifyPropertyChanged.PropertyChanged"/> event.
         /// </summary>
-        /// <param name="instance">The object that was changed.</param>
-        private void ViewModelChanged(Object instance)
+        /// <param name="instance">The object instance that changed.</param>
+        /// <param name="propertyName">The name of the property that was changed. If all of the object's properties have
+        /// changed, this value can be either <see cref="String.Empty"/> or <c>null</c>.</param>
+        private void ViewModelChanged(Object instance, String propertyName)
         {
             Refresh();
         }
