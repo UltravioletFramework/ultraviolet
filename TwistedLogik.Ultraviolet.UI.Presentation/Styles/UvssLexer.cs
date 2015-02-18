@@ -92,7 +92,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
                 if (ConsumeComma(input, output, line, ref ix))
                     continue;
 
-                throw new UvssException(UltravioletStrings.StylesheetInvalidCharacter.Format(line, input[ix]));
+                throw new UvssException(PresentationStrings.StylesheetInvalidCharacter.Format(line, input[ix]));
             }
 
             return output;
@@ -476,7 +476,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
             {
                 if (ix + 1 == input.Length && input[ix] != '"')
                 {
-                    throw new UvssException(UltravioletStrings.StylesheetSyntaxUnterminatedString.Format(line));
+                    throw new UvssException(PresentationStrings.StylesheetSyntaxUnterminatedString.Format(line));
                 }
 
                 var c = input[ix++];

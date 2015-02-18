@@ -338,7 +338,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             this.mostRecentAvailableSize = availableSize;
 
-            this.desiredSize = MeasureCore(availableSize);
+            var desiredSize = MeasureCore(availableSize);
+            if (Double.IsPositiveInfinity(desiredSize.Width) || Double.IsPositiveInfinity(desiredSize.Height))
+                throw new InvalidOperationException(PresentationStrings.MeasureMustProduceFiniteDesiredSize);
+
+            this.desiredSize    = desiredSize;
             this.isMeasureValid = true;
 
             InvalidateArrange();

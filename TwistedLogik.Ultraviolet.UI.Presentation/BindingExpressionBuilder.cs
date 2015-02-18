@@ -36,7 +36,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             }
             catch (ArgumentException e) 
             { 
-                throw new InvalidOperationException(UltravioletStrings.CannotResolveBindingExpression.Format(bindingExpression), e); 
+                throw new InvalidOperationException(PresentationStrings.CannotResolveBindingExpression.Format(bindingExpression), e); 
             }
 
             if (conversion != null)

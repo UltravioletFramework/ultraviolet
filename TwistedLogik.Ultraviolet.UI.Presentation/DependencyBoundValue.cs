@@ -88,7 +88,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             if (!IsReadable)
             {
-                throw new InvalidOperationException(UltravioletStrings.BindingIsReadOnly);
+                throw new InvalidOperationException(PresentationStrings.BindingIsReadOnly);
             }
             return getter(dependencyValue.Owner.DependencyDataSource);
         }
@@ -101,7 +101,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             if (!IsWritable)
             {
-                throw new InvalidOperationException(UltravioletStrings.BindingIsReadOnly);
+                throw new InvalidOperationException(PresentationStrings.BindingIsReadOnly);
             }
             setter(dependencyValue.Owner.DependencyDataSource, value);
             dependencyValue.DigestImmediately();

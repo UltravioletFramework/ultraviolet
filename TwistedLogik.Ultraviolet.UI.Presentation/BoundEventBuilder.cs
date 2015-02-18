@@ -147,7 +147,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             }
             catch (InvalidOperationException e)
             {
-                throw new InvalidOperationException(UltravioletStrings.CannotResolveBindingExpression.Format(expression), e);
+                throw new InvalidOperationException(PresentationStrings.CannotResolveBindingExpression.Format(expression), e);
             }
 
             expressions.Add(invocation);

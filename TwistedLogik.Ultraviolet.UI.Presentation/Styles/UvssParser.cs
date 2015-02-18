@@ -89,7 +89,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         private static void ThrowExpectedToken(UvssParserState state, UvssLexerToken token, UvssLexerTokenType expected)
         {
             var lineNumber = token.Line;
-            throw new UvssException(UltravioletStrings.StylesheetSyntaxExpectedToken.Format(lineNumber, token.TokenType, expected));
+            throw new UvssException(PresentationStrings.StylesheetSyntaxExpectedToken.Format(lineNumber, token.TokenType, expected));
         }
 
         /// <summary>
@@ -101,7 +101,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         private static void ThrowExpectedValue(UvssParserState state, UvssLexerToken token, String expected)
         {
             var lineNumber = token.Line;
-            throw new UvssException(UltravioletStrings.StylesheetSyntaxExpectedValue.Format(lineNumber, expected));
+            throw new UvssException(PresentationStrings.StylesheetSyntaxExpectedValue.Format(lineNumber, expected));
         }
 
         /// <summary>
@@ -112,7 +112,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         private static void ThrowUnexpectedToken(UvssParserState state, UvssLexerToken token)
         {
             var lineNumber = token.Line;
-            throw new UvssException(UltravioletStrings.StylesheetSyntaxUnexpectedToken.Format(lineNumber, token.TokenType));
+            throw new UvssException(PresentationStrings.StylesheetSyntaxUnexpectedToken.Format(lineNumber, token.TokenType));
         }
 
         /// <summary>
@@ -123,7 +123,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         private static void ThrowUnexpectedValue(UvssParserState state, UvssLexerToken token)
         {
             var lineNumber = token.Line;
-            throw new UvssException(UltravioletStrings.StylesheetSyntaxUnexpectedValue.Format(lineNumber, token.Value));
+            throw new UvssException(PresentationStrings.StylesheetSyntaxUnexpectedValue.Format(lineNumber, token.Value));
         }
 
         /// <summary>
@@ -133,7 +133,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         private static void ThrowUnexpectedEOF(UvssParserState state)
         {
             var lineNumber = state.Tokens.Last().Line;
-            throw new UvssException(UltravioletStrings.StylesheetSyntaxUnexpectedEOF.Format(lineNumber));
+            throw new UvssException(PresentationStrings.StylesheetSyntaxUnexpectedEOF.Format(lineNumber));
         }
 
         /// <summary>
@@ -143,7 +143,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         private static void ThrowUnterminatedSequence(UvssParserState state)
         {
             var lineNumber = state.Tokens.Last().Line;
-            throw new UvssException(UltravioletStrings.StylesheetSyntaxUnterminatedSequence.Format(lineNumber));
+            throw new UvssException(PresentationStrings.StylesheetSyntaxUnterminatedSequence.Format(lineNumber));
         }
 
         /// <summary>
@@ -154,7 +154,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         private static void ThrowInvalidStyleArguments(UvssParserState state, String style)
         {
             var lineNumber = state.Tokens.Last().Line;
-            throw new UvssException(UltravioletStrings.StylesheetSyntaxInvalidStyleArgs.Format(lineNumber, style));
+            throw new UvssException(PresentationStrings.StylesheetSyntaxInvalidStyleArgs.Format(lineNumber, style));
         }
 
         /// <summary>
