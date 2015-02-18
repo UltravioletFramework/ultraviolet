@@ -3,7 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TwistedLogik.Nucleus.Collections;
 using TwistedLogik.Nucleus.Testing;
 
-namespace TwistedLogik.Nucleus.Tests.IO
+namespace TwistedLogik.NucleusTests.Collections
 {
     [TestClass]
     public class ObservableDictionaryTest : NucleusTestFramework
@@ -37,6 +37,39 @@ namespace TwistedLogik.Nucleus.Tests.IO
             dict.Remove("Testing");
 
             TheResultingValue(removed).ShouldBe(true);
+        }
+
+        [TestMethod]
+        public void ObservableDictionary_RaisesItemPropertyChanged()
+        {
+            var list   = new ObservableDictionary<String, ObservableItem>();
+            var item   = new ObservableItem();
+            var raisedA = false;
+            var raisedB = false;
+
+            list.ItemPropertyChanged += (s, i, pn) =>
+            {
+                if (s == list && i == item)
+                {
+                    switch (pn)
+                    {
+                        case "PropertyA":
+                            raisedA = true;
+                            break;
+
+                        case "PropertyB":
+                            raisedB = true;
+                            break;
+                    }
+                }
+            };
+            list.Add("test", item);
+
+            item.PropertyA = "Hello, world!";
+            item.PropertyB = "Goodbye, world!";
+
+            TheResultingValue(raisedA).ShouldBe(true);
+            TheResultingValue(raisedB).ShouldBe(true);
         }
 
         [TestMethod]
