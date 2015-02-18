@@ -11,7 +11,7 @@ namespace TwistedLogik.Nucleus.Collections
     /// </summary>
     /// <typeparam name="T">The type of item contained by the list.</typeparam>
     /// <param name="list">The list that raised the event.</param>
-    public delegate void ObservableListEvent<T>(ObservableList<T> list);
+    public delegate void ObservableListEventHandler<T>(ObservableList<T> list);
 
     /// <summary>
     /// Represents a method that is called when an observable list performs an operation
@@ -20,7 +20,18 @@ namespace TwistedLogik.Nucleus.Collections
     /// <typeparam name="T">The type of item contained by the list.</typeparam>
     /// <param name="list">The list that raised the event.</param>
     /// <param name="item">The item that is the target of the operation.</param>
-    public delegate void ObservableListItemEvent<T>(ObservableList<T> list, T item);
+    public delegate void ObservableListItemEventHandler<T>(ObservableList<T> list, T item);
+
+    /// <summary>
+    /// Represents a method that is called when an observable list whose items implement the 
+    /// <see cref="INotifyPropertyChanged"/> interface receives a <see cref="INotifyPropertyChanged.PropertyChanged"/> event.
+    /// </summary>
+    /// <typeparam name="T">The type of item contained by the list.</typeparam>
+    /// <param name="list">The list that raised the event.</param>
+    /// <param name="item">The item that raised the event.</param>
+    /// <param name="propertyName">The name of the property that was changed. If all of the object's properties have
+    /// changed, this value can be either <see cref="String.Empty"/> or <c>null</c>.</param>
+    public delegate void ObservableListItemPropertyChangedEventHandler<T>(ObservableList<T> list, T item, String propertyName);
 
     /// <summary>
     /// Represents a list which raises events when items are added or removed.
@@ -185,9 +196,9 @@ namespace TwistedLogik.Nucleus.Collections
         {
             if (notifyPropertyChange)
             {
-                for (int i = 0; i < list.Count; i++)
+                foreach (var item in list)
                 {
-                    ((INotifyPropertyChanged)list[i]).PropertyChanged -= ItemPropertyChanged;
+                    ((INotifyPropertyChanged)item).PropertyChanged -= HandleItemPropertyChanged;
                 }
             }
             list.Clear();
@@ -315,22 +326,27 @@ namespace TwistedLogik.Nucleus.Collections
         /// <summary>
         /// Occurs whenever an operation is performed which modifies the contents of the list or their order.
         /// </summary>
-        public ObservableListEvent<T> Changed;
+        public ObservableListEventHandler<T> Changed;
 
         /// <summary>
         /// Occurs when the list is cleared.
         /// </summary>
-        public ObservableListEvent<T> Cleared;
+        public ObservableListEventHandler<T> Cleared;
 
         /// <summary>
         /// Occurs when an item is added to the list.
         /// </summary>
-        public ObservableListItemEvent<T> ItemAdded;
+        public ObservableListItemEventHandler<T> ItemAdded;
 
         /// <summary>
         /// Occurs when an item is removed from the list.
         /// </summary>
-        public ObservableListItemEvent<T> ItemRemoved;
+        public ObservableListItemEventHandler<T> ItemRemoved;
+
+        /// <summary>
+        /// Occurs when an item in the list raises the <see cref="INotifyPropertyChanged.PropertyChanged"/> event.
+        /// </summary>
+        public ObservableListItemPropertyChangedEventHandler<T> ItemPropertyChanged;
 
         /// <summary>
         /// Raises the <see cref="Changed"/> event.
@@ -383,14 +399,29 @@ namespace TwistedLogik.Nucleus.Collections
         }
 
         /// <summary>
+        /// Raises the <see cref="ItemPropertyChanged"/> event.
+        /// </summary>
+        /// <param name="item">The item that was changed.</param>
+        /// <param name="propertyName">The name of the property that was changed. If all of the object's properties have
+        /// changed, this value can be either <see cref="String.Empty"/> or <c>null</c>.</param>
+        protected virtual void OnItemPropertyChanged(T item, String propertyName)
+        {
+            var temp = ItemPropertyChanged;
+            if (temp != null)
+            {
+                temp(this, item, propertyName);
+            }
+        }
+
+        /// <summary>
         /// Handles the <see cref="INotifyPropertyChanged.PropertyChanged"/> event for the list's items.
         /// </summary>
         /// <param name="instance">The object instance that changed.</param>
         /// <param name="propertyName">The name of the property that was changed. If all of the object's properties have
         /// changed, this value can be either <see cref="String.Empty"/> or <c>null</c>.</param>
-        private void ItemPropertyChanged(Object instance, String propertyName)
+        private void HandleItemPropertyChanged(Object instance, String propertyName)
         {
-            // TODO
+            OnItemPropertyChanged((T)instance, propertyName);
         }
 
         /// <summary>
@@ -401,7 +432,7 @@ namespace TwistedLogik.Nucleus.Collections
         {
             if (notifyPropertyChange && item != null)
             {
-                ((INotifyPropertyChanged)item).PropertyChanged += ItemPropertyChanged;
+                ((INotifyPropertyChanged)item).PropertyChanged += HandleItemPropertyChanged;
             }
         }
 
@@ -413,7 +444,7 @@ namespace TwistedLogik.Nucleus.Collections
         {
             if (notifyPropertyChange && item != null)
             {
-                ((INotifyPropertyChanged)item).PropertyChanged -= ItemPropertyChanged;
+                ((INotifyPropertyChanged)item).PropertyChanged -= HandleItemPropertyChanged;
             }
         }
 
