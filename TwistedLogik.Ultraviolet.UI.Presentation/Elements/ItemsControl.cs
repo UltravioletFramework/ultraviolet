@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections;
+using TwistedLogik.Nucleus.Collections;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
 {
     /// <summary>
     /// Represents a control which presents the user with a list of items to select.
     /// </summary>
-    public class ItemsControl : Control
+    public abstract class ItemsControl : Control
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ItemsControl"/> class.
@@ -17,6 +18,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             : base(uv, id)
         {
             this.items = new ItemCollection(this);
+            this.items.CollectionReset += ItemsCollectionReset;
+            this.items.CollectionItemAdded += ItemsCollectionItemAdded;
+            this.items.CollectionItemRemoved += ItemsCollectionItemRemoved;
         }
 
         /// <summary>
@@ -110,6 +114,35 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         {
             var itemControl = (ItemsControl)dobj;
             itemControl.OnItemStringFormatChanged();
+        }
+
+        /// <summary>
+        /// Handles the <see cref="INotifyCollectionChanged.CollectionReset"/> event for the control's item collection.
+        /// </summary>
+        /// <param name="collection">The collection that raised the event.</param>
+        private void ItemsCollectionReset(INotifyCollectionChanged collection)
+        {
+            // TODO
+        }
+
+        /// <summary>
+        /// Handles the <see cref="INotifyCollectionChanged.CollectionItemAdded"/> event for the control's item collection.
+        /// </summary>
+        /// <param name="collection">The collection that raised the event.</param>
+        /// <param name="item">The item that was added to the collection.</param>
+        private void ItemsCollectionItemAdded(INotifyCollectionChanged collection, Object item)
+        {
+            // TODO
+        }
+
+        /// <summary>
+        /// Handles the <see cref="INotifyCollectionChanged.CollectionItemRemoved"/> event for the control's item collection.
+        /// </summary>
+        /// <param name="collection">The collection that raised the event.</param>
+        /// <param name="item">The item that was removed from the collection.</param>
+        private void ItemsCollectionItemRemoved(INotifyCollectionChanged collection, Object item)
+        {
+            // TODO
         }
 
         // Property values,

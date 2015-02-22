@@ -200,4 +200,9 @@
       <Variant>The MeasureOverride() method must always produce a finite desired size, even if the constraining size is infinite.</Variant>
     </en-US>
   </String>
+  <String Key="COLLECTION_IS_BOUND_TO_ITEMS_SOURCE">
+    <en-US>
+      <Variant>The collection cannot be directly modified because it is currently bound to the value of the ItemsSource property.</Variant>
+    </en-US>
+  </String>
 </LocalizedStrings>
