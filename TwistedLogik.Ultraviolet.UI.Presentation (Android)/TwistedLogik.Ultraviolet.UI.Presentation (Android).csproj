@@ -275,6 +275,12 @@
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Elements\LabelBase.cs">
       <Link>Elements\LabelBase.cs</Link>
     </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Elements\ListBox.cs">
+      <Link>Elements\ListBox.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Elements\ListBoxItem.cs">
+      <Link>Elements\ListBoxItem.cs</Link>
+    </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Elements\NamespaceDoc.cs">
       <Link>Elements\NamespaceDoc.cs</Link>
     </Compile>

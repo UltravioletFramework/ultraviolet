@@ -137,6 +137,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (panel != null)
                 panel.Children.Add(instance);
 
+            var itemsControl = parent as ItemsControl;
+            if (itemsControl != null)
+                itemsControl.Items.Add(instance);
+
             var contentControl = parent as ContentControl;
             if (contentControl != null)
                 contentControl.Content = instance;
@@ -656,8 +660,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             var xmlChildren = xmlElement.Elements().Where(x => !ElementNameRepresentsProperty(x)).ToList();
 
-            var panel = uiElement as Panel;
-            if (panel != null)
+            if (uiElement is Panel || uiElement is ItemsControl)
             {
                 foreach (var child in xmlChildren)
                 {

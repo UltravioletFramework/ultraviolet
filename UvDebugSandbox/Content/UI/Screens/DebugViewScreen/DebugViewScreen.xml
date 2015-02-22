@@ -3,9 +3,11 @@
   <Stylesheet>DebugViewScreenStyles.uvss</Stylesheet>
   <View ViewModelType="UvDebugSandbox.UI.Screens.DebugViewModel, UvDebugSandbox">
 
-    <StackPanel BindingContext="{{SObj}}">
-      <NumericLabel>{{::FooBar}}</NumericLabel>
-    </StackPanel>
+    <ListBox>
+      <Button>Test 1</Button>
+      <Button>Test 2</Button>
+      <Button>Test 3</Button>
+    </ListBox>
       
   </View>
 </UIPanelDefinition>

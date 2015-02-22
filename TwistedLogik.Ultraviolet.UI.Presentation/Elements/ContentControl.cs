@@ -445,6 +445,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         {
             textParserResult.Clear();
 
+            if (View == null)
+                return;
+
             var content = Content;
             if (content != null && contentElement == null)
             {
@@ -462,6 +465,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         private void UpdateTextLayoutCache(Size2D availableSize)
         {
             textLayoutResult.Clear();
+
+            if (View == null)
+                return;
 
             if (textParserResult.Count > 0 && Font.IsLoaded)
             {

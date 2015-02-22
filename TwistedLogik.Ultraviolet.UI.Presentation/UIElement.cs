@@ -314,6 +314,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="stylesheet">The stylesheet to apply to this element.</param>
         public void Style(UvssDocument stylesheet)
         {
+            if (View == null)
+            {
+                this.isStyleValid = true;
+                return;
+            }
+
             this.mostRecentStylesheet = stylesheet; 
             
             ApplyStyles(stylesheet);
@@ -333,6 +339,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// specified is available for the element's layout.</param>
         public void Measure(Size2D availableSize)
         {
+            if (View == null)
+            {
+                this.isMeasureValid = true;
+                return;
+            }
+
             if (isMeasureValid && mostRecentAvailableSize.Equals(availableSize))
                 return;
 
@@ -358,6 +370,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="options">A set of <see cref="ArrangeOptions"/> values specifying the options for this arrangement.</param>
         public void Arrange(RectangleD finalRect, ArrangeOptions options = ArrangeOptions.None)
         {
+            if (View == null)
+            {
+                this.isArrangeValid = true;
+                return;
+            }
+
             if (isArrangeValid && mostRecentFinalRect.Equals(finalRect) && ((Int32)mostRecentArrangeOptions).Equals((Int32)options))
                 return;
 
@@ -385,6 +403,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="position">The position of the element's parent element in absolute screen space.</param>
         public void Position(Point2D position)
         {
+            if (View == null)
+            {
+                this.isPositionValid = true;
+                return;
+            }
+
             this.mostRecentPosition = position;
 
             var contentRegionOffset = (Parent == null || IsComponent) ? Point2D.Zero : 
@@ -436,6 +460,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         public void InvalidateMeasure()
         {
+            if (View == null)
+                return;
+
             this.isMeasureValid = false;
             uv.GetUI().GetPresentationFoundation().MeasureQueue.Enqueue(this);
         }
@@ -445,6 +472,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         public void InvalidateArrange()
         {
+            if (View == null)
+                return;
+
             this.isArrangeValid = false;
             uv.GetUI().GetPresentationFoundation().ArrangeQueue.Enqueue(this);
         }
@@ -454,6 +484,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         public void InvalidatePosition()
         {
+            if (View == null)
+                return;
+
             this.isPositionValid = false;
             uv.GetUI().GetPresentationFoundation().PositionQueue.Enqueue(this);
         }
