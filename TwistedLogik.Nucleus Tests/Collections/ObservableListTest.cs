@@ -9,12 +9,12 @@ namespace TwistedLogik.NucleusTests.Collections
     public partial class ObservableListTest : NucleusTestFramework
     {
         [TestMethod]
-        public void ObservableList_RaisesItemAdded()
+        public void ObservableList_RaisesCollectionItemAdded()
         {
             var list  = new ObservableList<Int32>();
             var added = false;
 
-            list.ItemAdded += (source, value) =>
+            list.CollectionItemAdded += (source, value) =>
             {
                 added = (value == 1234);
             };
@@ -24,12 +24,12 @@ namespace TwistedLogik.NucleusTests.Collections
         }
 
         [TestMethod]
-        public void ObservableList_RaisesItemRemoved()
+        public void ObservableList_RaisesCollectionItemRemoved()
         {
             var list    = new ObservableList<Int32>();
             var removed = false;
 
-            list.ItemRemoved += (source, value) =>
+            list.CollectionItemRemoved += (source, value) =>
             {
                 removed = (value == 1234);
             };
@@ -40,52 +40,57 @@ namespace TwistedLogik.NucleusTests.Collections
         }
 
         [TestMethod]
-        public void ObservableList_RaisesItemPropertyChanged()
+        public void ObservableList_RaisesCollectionResetOnClear()
         {
-            var list   = new ObservableList<ObservableItem>();
-            var item   = new ObservableItem();
-            var raisedA = false;
-            var raisedB = false;
+            var list  = new ObservableList<Int32>();
+            var reset = false;
 
-            list.ItemPropertyChanged += (s, i, pn) =>
+            list.CollectionReset += (source) =>
             {
-                if (s == list && i == item)
-                {
-                    switch (pn)
-                    {
-                        case "PropertyA":
-                            raisedA = true;
-                            break;
-
-                        case "PropertyB":
-                            raisedB = true;
-                            break;
-                    }
-                }
-            };
-            list.Add(item);
-
-            item.PropertyA = "Hello, world!";
-            item.PropertyB = "Goodbye, world!";
-
-            TheResultingValue(raisedA).ShouldBe(true);
-            TheResultingValue(raisedB).ShouldBe(true);
-        }
-
-        [TestMethod]
-        public void ObservableList_RaisesCleared()
-        {
-            var list    = new ObservableList<Int32>();
-            var cleared = false;
-
-            list.Cleared += (source) =>
-            {
-                cleared = true;
+                reset = true;
             };
             list.Add(1234);
             list.Clear();
 
-            TheResultingValue(cleared).ShouldBe(true);
+            TheResultingValue(reset).ShouldBe(true);
+        }
+
+        [TestMethod]
+        public void ObservableList_RaisesCollectionResetOnSort()
+        {
+            var list  = new ObservableList<Int32>();
+            var reset = false;
+
+            list.CollectionReset += (source) =>
+            {
+                reset = true;
+            };
+            list.Add(4);
+            list.Add(6);
+            list.Add(1);
+            list.Add(3);
+            list.Sort();
+
+            TheResultingValue(reset).ShouldBe(true);
+        }
+
+        [TestMethod]
+        public void ObservableList_RaisesCollectionResetOnReverse()
+        {
+            var list  = new ObservableList<Int32>();
+            var reset = false;
+
+            list.CollectionReset += (source) =>
+            {
+                reset = true;
+            };
+            list.Add(1);
+            list.Add(2);
+            list.Add(3);
+            list.Add(4);
+            list.Reverse();
+
+            TheResultingValue(reset).ShouldBe(true);
         }
     }
 }

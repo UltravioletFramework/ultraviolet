@@ -155,6 +155,8 @@
     <Compile Include="Collections\BinaryHeap.Enumerator.cs" />
     <Compile Include="Collections\ExpandingPool.cs" />
     <Compile Include="Collections\GenericEnumerator.cs" />
+    <Compile Include="Collections\INotifyCollectionChanged.cs" />
+    <Compile Include="Collections\INotifyCollectionChangedOfT.cs" />
     <Compile Include="Collections\IPool.cs" />
     <Compile Include="Collections\NamespaceDoc.cs" />
     <Compile Include="Collections\ObservableDictionary.cs" />

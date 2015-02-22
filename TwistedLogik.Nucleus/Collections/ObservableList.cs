@@ -1,51 +1,21 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using TwistedLogik.Nucleus.Data;
 
 namespace TwistedLogik.Nucleus.Collections
 {
     /// <summary>
-    /// Represents the method that is called when an observable list performs an operation
-    /// that is not related to a specific item.
-    /// </summary>
-    /// <typeparam name="T">The type of item contained by the list.</typeparam>
-    /// <param name="list">The list that raised the event.</param>
-    public delegate void ObservableListEventHandler<T>(ObservableList<T> list);
-
-    /// <summary>
-    /// Represents a method that is called when an observable list performs an operation
-    /// relating to a specific item.
-    /// </summary>
-    /// <typeparam name="T">The type of item contained by the list.</typeparam>
-    /// <param name="list">The list that raised the event.</param>
-    /// <param name="item">The item that is the target of the operation.</param>
-    public delegate void ObservableListItemEventHandler<T>(ObservableList<T> list, T item);
-
-    /// <summary>
-    /// Represents a method that is called when an observable list whose items implement the 
-    /// <see cref="INotifyPropertyChanged"/> interface receives a <see cref="INotifyPropertyChanged.PropertyChanged"/> event.
-    /// </summary>
-    /// <typeparam name="T">The type of item contained by the list.</typeparam>
-    /// <param name="list">The list that raised the event.</param>
-    /// <param name="item">The item that raised the event.</param>
-    /// <param name="propertyName">The name of the property that was changed. If all of the object's properties have
-    /// changed, this value can be either <see cref="String.Empty"/> or <c>null</c>.</param>
-    public delegate void ObservableListItemPropertyChangedEventHandler<T>(ObservableList<T> list, T item, String propertyName);
-
-    /// <summary>
     /// Represents a list which raises events when items are added or removed.
     /// </summary>
     /// <typeparam name="T">The type of item contained by the list.</typeparam>
-    public class ObservableList<T> : IList<T>
+    public class ObservableList<T> : IList<T>, INotifyCollectionChanged<T>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ObservableList{T}"/> class.
         /// </summary>
         public ObservableList()
         {
-            this.list                 = new List<T>();
-            this.notifyPropertyChange = typeof(INotifyPropertyChanged).IsAssignableFrom(typeof(T));
+            this.list = new List<T>();
         }
 
         /// <summary>
@@ -54,8 +24,7 @@ namespace TwistedLogik.Nucleus.Collections
         /// <param name="capacity">The initial capacity of the list.</param>
         public ObservableList(Int32 capacity)
         {
-            this.list                 = new List<T>(capacity);
-            this.notifyPropertyChange = typeof(INotifyPropertyChanged).IsAssignableFrom(typeof(T));
+            this.list = new List<T>(capacity);
         }
 
         /// <summary>
@@ -65,8 +34,7 @@ namespace TwistedLogik.Nucleus.Collections
         /// <param name="collection">The collection that contains the elements to copy to this collection.</param>
         public ObservableList(IEnumerable<T> collection)
         {
-            this.list                 = new List<T>(collection);
-            this.notifyPropertyChange = typeof(INotifyPropertyChanged).IsAssignableFrom(typeof(T));
+            this.list = new List<T>(collection);
         }
 
         /// <summary>
@@ -85,7 +53,7 @@ namespace TwistedLogik.Nucleus.Collections
         public void Reverse()
         {
             list.Reverse();
-            OnChanged();
+            OnCollectionReset();
         }
 
         /// <summary>
@@ -96,7 +64,7 @@ namespace TwistedLogik.Nucleus.Collections
         public void Reverse(Int32 index, Int32 count)
         {
             list.Reverse(index, count);
-            OnChanged();
+            OnCollectionReset();
         }
 
         /// <summary>
@@ -105,7 +73,7 @@ namespace TwistedLogik.Nucleus.Collections
         public void Sort()
         {
             list.Sort();
-            OnChanged();
+            OnCollectionReset();
         }
 
         /// <summary>
@@ -115,7 +83,7 @@ namespace TwistedLogik.Nucleus.Collections
         public void Sort(Comparison<T> comparison)
         {
             list.Sort(comparison);
-            OnChanged();
+            OnCollectionReset();
         }
 
         /// <summary>
@@ -125,7 +93,7 @@ namespace TwistedLogik.Nucleus.Collections
         public void Sort(IComparer<T> comparer)
         {
             list.Sort(comparer);
-            OnChanged();
+            OnCollectionReset();
         }
         
         /// <summary>
@@ -136,10 +104,7 @@ namespace TwistedLogik.Nucleus.Collections
         public void Insert(Int32 index, T item)
         {
             list.Insert(index, item);
-            OnItemAdded(item);
-            OnChanged();
-
-            HookPropertyChanged(item);
+            OnCollectionItemAdded(item);
         }
 
         /// <summary>
@@ -149,10 +114,7 @@ namespace TwistedLogik.Nucleus.Collections
         public void Add(T item)
         {
             list.Add(item);
-            OnItemAdded(item);
-            OnChanged();
-
-            HookPropertyChanged(item);
+            OnCollectionItemAdded(item);
         }
 
         /// <summary>
@@ -164,11 +126,7 @@ namespace TwistedLogik.Nucleus.Collections
         {
             if (list.Remove(item))
             {
-                UnhookPropertyChanged(item);
-
-                OnItemRemoved(item);
-                OnChanged();
-
+                OnCollectionItemRemoved(item);
                 return true;
             }
             return false;
@@ -183,10 +141,7 @@ namespace TwistedLogik.Nucleus.Collections
             var item = list[index];
             list.RemoveAt(index);
 
-            UnhookPropertyChanged(item);
-
-            OnItemRemoved(item);
-            OnChanged();
+            OnCollectionItemRemoved(item);
         }
 
         /// <summary>
@@ -194,16 +149,8 @@ namespace TwistedLogik.Nucleus.Collections
         /// </summary>
         public void Clear()
         {
-            if (notifyPropertyChange)
-            {
-                foreach (var item in list)
-                {
-                    ((INotifyPropertyChanged)item).PropertyChanged -= HandleItemPropertyChanged;
-                }
-            }
             list.Clear();
-            OnCleared();
-            OnChanged();
+            OnCollectionReset();
         }
 
         /// <summary>
@@ -285,16 +232,11 @@ namespace TwistedLogik.Nucleus.Collections
             set 
             {
                 var existing = list[index];
-
-                UnhookPropertyChanged(existing);
-                OnItemRemoved(existing);
+                OnCollectionItemRemoved(existing);
 
                 list[index] = value;
 
-                OnItemAdded(value);
-                OnChanged();
-
-                HookPropertyChanged(value);
+                OnCollectionItemAdded(value);
             }
         }
 
@@ -316,6 +258,18 @@ namespace TwistedLogik.Nucleus.Collections
         }
 
         /// <summary>
+        /// Gets or sets a value indicating whether this collection is suppressing the untyped events raised by
+        /// the non-generic <see cref="INotifyCollectionChanged"/> interface. Where these events are not necessary,
+        /// suppressing them may be useful for performance reasons because it can prevent boxing if the collection
+        /// contains value types.
+        /// </summary>
+        public Boolean SuppressUntypedNotifications
+        {
+            get { return suppressUntypedNotifications; }
+            set { suppressUntypedNotifications = value; }
+        }
+
+        /// <summary>
         /// Gets a value indicating whether the list is read-only.
         /// </summary>
         public Boolean IsReadOnly
@@ -323,133 +277,109 @@ namespace TwistedLogik.Nucleus.Collections
             get { return false; }
         }
 
-        /// <summary>
-        /// Occurs whenever an operation is performed which modifies the contents of the list or their order.
-        /// </summary>
-        public ObservableListEventHandler<T> Changed;
-
-        /// <summary>
-        /// Occurs when the list is cleared.
-        /// </summary>
-        public ObservableListEventHandler<T> Cleared;
-
-        /// <summary>
-        /// Occurs when an item is added to the list.
-        /// </summary>
-        public ObservableListItemEventHandler<T> ItemAdded;
-
-        /// <summary>
-        /// Occurs when an item is removed from the list.
-        /// </summary>
-        public ObservableListItemEventHandler<T> ItemRemoved;
-
-        /// <summary>
-        /// Occurs when an item in the list raises the <see cref="INotifyPropertyChanged.PropertyChanged"/> event.
-        /// </summary>
-        public ObservableListItemPropertyChangedEventHandler<T> ItemPropertyChanged;
-
-        /// <summary>
-        /// Raises the <see cref="Changed"/> event.
-        /// </summary>
-        protected virtual void OnChanged()
+        /// <inheritdoc/>
+        event CollectionResetEventHandler INotifyCollectionChanged.CollectionReset
         {
-            var temp = Changed;
-            if (temp != null)
+            add { lock (untypedEventSyncObject) { untypedCollectionReset += value; } }
+            remove { lock (untypedEventSyncObject) { untypedCollectionReset -= value; } }
+        }
+
+        /// <inheritdoc/>
+        event CollectionItemAddedEventHandler INotifyCollectionChanged.CollectionItemAdded
+        {
+            add { lock (untypedEventSyncObject) { untypedCollectionItemAdded += value; } }
+            remove { lock (untypedEventSyncObject) { untypedCollectionItemAdded -= value; } }
+        }
+
+        /// <inheritdoc/>
+        event CollectionItemRemovedEventHandler INotifyCollectionChanged.CollectionItemRemoved
+        {
+            add { lock (untypedEventSyncObject) { untypedCollectionItemRemoved += value; } }
+            remove { lock (untypedEventSyncObject) { untypedCollectionItemRemoved -= value; } }
+        }
+
+        /// <inheritdoc/>
+        public event CollectionResetEventHandler<T> CollectionReset;
+
+        /// <inheritdoc/>
+        public event CollectionItemAddedEventHandler<T> CollectionItemAdded;
+
+        /// <inheritdoc/>
+        public event CollectionItemRemovedEventHandler<T> CollectionItemRemoved;
+
+        /// <summary>
+        /// Raises the <see cref="CollectionReset"/> event.
+        /// </summary>
+        protected virtual void OnCollectionReset()
+        {
+            var temp1 = CollectionReset;
+            if (temp1 != null)
             {
-                temp(this);
+                temp1(this);
+            }
+
+            if (suppressUntypedNotifications)
+                return;
+
+            var temp2 = untypedCollectionReset;
+            if (temp2 != null)
+            {
+                temp2(this);
             }
         }
 
         /// <summary>
-        /// Raises the <see cref="Cleared"/> event.
-        /// </summary>
-        protected virtual void OnCleared()
-        {
-            var temp = Cleared;
-            if (temp != null)
-            {
-                temp(this);
-            }
-        }
-
-        /// <summary>
-        /// Raises the <see cref="ItemAdded"/> event.
+        /// Raises the <see cref="CollectionItemAdded"/> event.
         /// </summary>
         /// <param name="item">The item that was added to the list.</param>
-        protected virtual void OnItemAdded(T item)
+        protected virtual void OnCollectionItemAdded(T item)
         {
-            var temp = ItemAdded;
-            if (temp != null)
+            var temp1 = CollectionItemAdded;
+            if (temp1 != null)
             {
-                temp(this, item);
+                temp1(this, item);
+            }
+
+            if (suppressUntypedNotifications)
+                return;
+
+            var temp2 = untypedCollectionItemAdded;
+            if (temp2 != null)
+            {
+                temp2(this, item);
             }
         }
 
         /// <summary>
-        /// Raises the <see cref="ItemRemoved"/> event.
+        /// Raises the <see cref="CollectionItemRemoved"/> event.
         /// </summary>
         /// <param name="item">The item that was added to the list.</param>
-        protected virtual void OnItemRemoved(T item)
+        protected virtual void OnCollectionItemRemoved(T item)
         {
-            var temp = ItemRemoved;
-            if (temp != null)
+            var temp1 = CollectionItemRemoved;
+            if (temp1 != null)
             {
-                temp(this, item);
+                temp1(this, item);
             }
-        }
 
-        /// <summary>
-        /// Raises the <see cref="ItemPropertyChanged"/> event.
-        /// </summary>
-        /// <param name="item">The item that was changed.</param>
-        /// <param name="propertyName">The name of the property that was changed. If all of the object's properties have
-        /// changed, this value can be either <see cref="String.Empty"/> or <c>null</c>.</param>
-        protected virtual void OnItemPropertyChanged(T item, String propertyName)
-        {
-            var temp = ItemPropertyChanged;
-            if (temp != null)
+            if (suppressUntypedNotifications)
+                return;
+
+            var temp2 = untypedCollectionItemRemoved;
+            if (temp2 != null)
             {
-                temp(this, item, propertyName);
-            }
-        }
-
-        /// <summary>
-        /// Handles the <see cref="INotifyPropertyChanged.PropertyChanged"/> event for the list's items.
-        /// </summary>
-        /// <param name="instance">The object instance that changed.</param>
-        /// <param name="propertyName">The name of the property that was changed. If all of the object's properties have
-        /// changed, this value can be either <see cref="String.Empty"/> or <c>null</c>.</param>
-        private void HandleItemPropertyChanged(Object instance, String propertyName)
-        {
-            OnItemPropertyChanged((T)instance, propertyName);
-        }
-
-        /// <summary>
-        /// Hooks into the specified item's <see cref="INotifyPropertyChanged.PropertyChanged"/> event.
-        /// </summary>
-        /// <param name="item">The item for which to add a hook.</param>
-        private void HookPropertyChanged(T item)
-        {
-            if (notifyPropertyChange && item != null)
-            {
-                ((INotifyPropertyChanged)item).PropertyChanged += HandleItemPropertyChanged;
-            }
-        }
-
-        /// <summary>
-        /// Unhooks from the specified item's <see cref="INotifyPropertyChanged.PropertyChanged"/> event.
-        /// </summary>
-        /// <param name="item">The item for which to remove a hook.</param>
-        private void UnhookPropertyChanged(T item)
-        {
-            if (notifyPropertyChange && item != null)
-            {
-                ((INotifyPropertyChanged)item).PropertyChanged -= HandleItemPropertyChanged;
+                temp2(this, item);
             }
         }
 
         // The wrapped list which contains our items.
         private readonly List<T> list;
-        private readonly Boolean notifyPropertyChange;
+
+        // Explicitly implemented events belonging to INotifyCollectionChanged.
+        private readonly Object untypedEventSyncObject = new Object();
+        private CollectionResetEventHandler untypedCollectionReset;
+        private CollectionItemAddedEventHandler untypedCollectionItemAdded;
+        private CollectionItemRemovedEventHandler untypedCollectionItemRemoved;
+        private Boolean suppressUntypedNotifications;
     }
 }
