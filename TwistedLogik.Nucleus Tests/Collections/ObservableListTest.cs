@@ -3,10 +3,10 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TwistedLogik.Nucleus.Collections;
 using TwistedLogik.Nucleus.Testing;
 
-namespace TwistedLogik.Nucleus.Tests.IO
+namespace TwistedLogik.NucleusTests.Collections
 {
     [TestClass]
-    public class ObservableListTest : NucleusTestFramework
+    public partial class ObservableListTest : NucleusTestFramework
     {
         [TestMethod]
         public void ObservableList_RaisesItemAdded()
@@ -37,6 +37,39 @@ namespace TwistedLogik.Nucleus.Tests.IO
             list.Remove(1234);
 
             TheResultingValue(removed).ShouldBe(true);
+        }
+
+        [TestMethod]
+        public void ObservableList_RaisesItemPropertyChanged()
+        {
+            var list   = new ObservableList<ObservableItem>();
+            var item   = new ObservableItem();
+            var raisedA = false;
+            var raisedB = false;
+
+            list.ItemPropertyChanged += (s, i, pn) =>
+            {
+                if (s == list && i == item)
+                {
+                    switch (pn)
+                    {
+                        case "PropertyA":
+                            raisedA = true;
+                            break;
+
+                        case "PropertyB":
+                            raisedB = true;
+                            break;
+                    }
+                }
+            };
+            list.Add(item);
+
+            item.PropertyA = "Hello, world!";
+            item.PropertyB = "Goodbye, world!";
+
+            TheResultingValue(raisedA).ShouldBe(true);
+            TheResultingValue(raisedB).ShouldBe(true);
         }
 
         [TestMethod]

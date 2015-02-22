@@ -40,7 +40,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 viewModelType = Type.GetType(viewModelTypeAttr.Value, false);
                 if (viewModelType == null)
                 {
-                    throw new InvalidOperationException(UltravioletStrings.ViewModelTypeNotFound.Format(viewModelTypeAttr.Value));
+                    throw new InvalidOperationException(PresentationStrings.ViewModelTypeNotFound.Format(viewModelTypeAttr.Value));
                 }
             }
 
@@ -76,7 +76,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public static void LoadUserControl(UserControl userControl, XDocument layout, Type viewModelType, String bindingContext = null)
         {
             if (bindingContext != null && !BindingExpressions.IsBindingExpression(bindingContext))
-                throw new ArgumentException(UltravioletStrings.InvalidBindingContext.Format(bindingContext));
+                throw new ArgumentException(PresentationStrings.InvalidBindingContext.Format(bindingContext));
 
             var contentElement = layout.Root.Elements().SingleOrDefault();
             if (contentElement == null)
@@ -126,7 +126,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             var instance = uv.GetUI().GetPresentationFoundation().InstantiateElementByName(xmlElement.Name.LocalName, id, context.ViewModelType, context.BindingContext);
             if (instance == null)
-                throw new UvmlException(UltravioletStrings.UnrecognizedUIElement.Format(xmlElement.Name.LocalName));
+                throw new UvmlException(PresentationStrings.UnrecognizedUIElement.Format(xmlElement.Name.LocalName));
 
             foreach (var className in classList)
             {
@@ -164,7 +164,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (bindingContextDefined)
             {
                 if (!BindingExpressions.IsBindingExpression(bindingContext))
-                    throw new InvalidOperationException(UltravioletStrings.InvalidBindingContext.Format(bindingContext));
+                    throw new InvalidOperationException(PresentationStrings.InvalidBindingContext.Format(bindingContext));
 
                 context.PushBindingContext(bindingContext);
             }
@@ -227,7 +227,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             var standardProperty = uiElement.GetType().GetProperty(name,  bindingAttr);
             if (standardProperty == null)
-                throw new InvalidOperationException(UltravioletStrings.PropertyDoesNotExist.Format(name, uiElement.GetType()));
+                throw new InvalidOperationException(PresentationStrings.PropertyDoesNotExist.Format(name, uiElement.GetType()));
 
             return standardProperty;
         }
@@ -497,7 +497,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             {
                 var propInfo = FindElementStandardProperty(uiElement, name);
                 if (!propInfo.CanWrite)
-                    throw new InvalidOperationException(UltravioletStrings.PropertyHasNoSetter.Format(name));
+                    throw new InvalidOperationException(PresentationStrings.PropertyHasNoSetter.Format(name));
 
                 var propValue = LoadObjectWithSerializer(propInfo.PropertyType, value, context);
                 propInfo.SetValue(uiElement, propValue, null);
@@ -525,7 +525,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
                 var propInfo = FindElementStandardProperty(uiElement, name);
                 if (!propInfo.CanWrite)
-                    throw new InvalidOperationException(UltravioletStrings.PropertyHasNoSetter.Format(name));
+                    throw new InvalidOperationException(PresentationStrings.PropertyHasNoSetter.Format(name));
 
                 var propValue = ResolveValue(value, propInfo.PropertyType);
                 propInfo.SetValue(uiElement, propValue, null);
@@ -546,7 +546,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             // Deserialize the collection's items from XML.
             var itemElements = value.Elements(itemType.Name).ToList();
             if (itemElements.Count != value.Elements().Count())
-                throw new InvalidOperationException(UltravioletStrings.CollectionContainsInvalidElements.Format(name));
+                throw new InvalidOperationException(PresentationStrings.CollectionContainsInvalidElements.Format(name));
 
             var items = (IList)Activator.CreateInstance(typeof(List<>).MakeGenericType(itemType));
             foreach (var itemElement in itemElements)
@@ -564,7 +564,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                     null, Type.EmptyTypes, null);
 
                 if (clearMethod == null)
-                    throw new InvalidOperationException(UltravioletStrings.CollectionCannotBeCleared.Format(name));
+                    throw new InvalidOperationException(PresentationStrings.CollectionCannotBeCleared.Format(name));
 
                 clearMethod.Invoke(existingValue, null);
             }
@@ -612,7 +612,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 enumType.GetMethod("Add", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance, null, new[] { typeof(Object) }, null);
 
             if (addMethod == null)
-                throw new InvalidOperationException(UltravioletStrings.CollectionHasNoAddMethod.Format(enumType.Name));
+                throw new InvalidOperationException(PresentationStrings.CollectionHasNoAddMethod.Format(enumType.Name));
 
             foreach (var item in items)
                 addMethod.Invoke(collection, new Object[] { item });
@@ -635,7 +635,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             {
                 var dprop = DependencyProperty.FindByName(defaultProperty, uiElement.GetType());
                 if (dprop == null)
-                    throw new InvalidOperationException(UltravioletStrings.InvalidDefaultProperty.Format(defaultProperty, uiElement.GetType()));
+                    throw new InvalidOperationException(PresentationStrings.InvalidDefaultProperty.Format(defaultProperty, uiElement.GetType()));
 
                 var value = String.Join(String.Empty, xmlElement.Nodes().Where(x => x is XText).Select(x => ((XText)x).Value.Trim()));
                 if (!String.IsNullOrEmpty(value))
@@ -672,7 +672,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                     if (xmlChildren.Count > 1)
                     {
                         var id = uiElement.ID ?? uiElement.GetType().Name;
-                        throw new InvalidOperationException(UltravioletStrings.InvalidChildElements.Format(id));
+                        throw new InvalidOperationException(PresentationStrings.InvalidChildElements.Format(id));
                     }
 
                     var contentElement = xmlChildren.SingleOrDefault();
@@ -686,7 +686,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                     if (xmlChildren.Any())
                     {
                         var id = uiElement.ID ?? uiElement.GetType().Name;
-                        throw new InvalidOperationException(UltravioletStrings.InvalidChildElements.Format(id));
+                        throw new InvalidOperationException(PresentationStrings.InvalidChildElements.Format(id));
                     }
                 }
             }
@@ -728,7 +728,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             }
             catch (FormatException e)
             {
-                throw new InvalidOperationException(UltravioletStrings.InvalidElementPropertyValue.Format(value, dprop.Name), e);
+                throw new InvalidOperationException(PresentationStrings.InvalidElementPropertyValue.Format(value, dprop.Name), e);
             }
         }
 
@@ -755,7 +755,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (context.ComponentOwner == null)
             {
                 if (context.ViewModelType == null)
-                    throw new InvalidOperationException(UltravioletStrings.NoViewModel);
+                    throw new InvalidOperationException(PresentationStrings.NoViewModel);
 
                 var expressionType = dprop.PropertyType;
                 var expressionFull = BindingExpressions.Combine(context.BindingContext, expression);
@@ -785,7 +785,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             {
                 var propInfo = FindElementStandardProperty(uiElement, name);
                 if (!propInfo.CanWrite)
-                    throw new InvalidOperationException(UltravioletStrings.PropertyHasNoSetter.Format(name));
+                    throw new InvalidOperationException(PresentationStrings.PropertyHasNoSetter.Format(name));
 
                 propInfo.SetValue(uiElement, value, null);
             }
@@ -808,7 +808,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             {
                 var propInfo = FindElementStandardProperty(uiElement, name);
                 if (!propInfo.CanRead)
-                    throw new InvalidOperationException(UltravioletStrings.PropertyHasNoGetter.Format(name));
+                    throw new InvalidOperationException(PresentationStrings.PropertyHasNoGetter.Format(name));
                 
                 return propInfo.GetValue(uiElement, null);
             }

@@ -224,7 +224,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             set
             {
                 if (value != null && value.Control != this)
-                    throw new ArgumentException(UltravioletStrings.ContentPresenterIsNotAComponent);
+                    throw new ArgumentException(PresentationStrings.ContentPresenterIsNotAComponent);
 
                 contentPresenter = value;
 
@@ -582,7 +582,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         private void LoadComponentRoot()
         {
             if (componentRoot != null)
-                throw new InvalidOperationException(UltravioletStrings.ComponentRootAlreadyLoaded);
+                throw new InvalidOperationException(PresentationStrings.ComponentRootAlreadyLoaded);
 
             var template = Ultraviolet.GetUI().GetPresentationFoundation().ComponentTemplates.Get(this);
             if (template == null)

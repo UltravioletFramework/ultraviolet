@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using TwistedLogik.Nucleus.Data;
 
 namespace TwistedLogik.Nucleus.Collections
 {
@@ -11,7 +12,7 @@ namespace TwistedLogik.Nucleus.Collections
     /// <typeparam name="TKey">The type of the keys in the dictionary.</typeparam>
     /// <typeparam name="TValue">The type of the values in the dictionary.</typeparam>
     /// <param name="dictionary">The dictionary that raised the event.</param>
-    public delegate void ObservableDictionaryEvent<TKey, TValue>(ObservableDictionary<TKey, TValue> dictionary);
+    public delegate void ObservableDictionaryEventHandler<TKey, TValue>(ObservableDictionary<TKey, TValue> dictionary);
 
     /// <summary>
     /// Represents a method that is called when an observable dictionary performs an operation
@@ -22,7 +23,19 @@ namespace TwistedLogik.Nucleus.Collections
     /// <param name="dictionary">The dictionary that raised the event.</param>
     /// <param name="key">The key that is the target of the operation.</param>
     /// <param name="value">The value that is the target of the operation.</param>
-    public delegate void ObservableDictionaryItemEvent<TKey, TValue>(ObservableDictionary<TKey, TValue> dictionary, TKey key, TValue value);
+    public delegate void ObservableDictionaryItemEventHandler<TKey, TValue>(ObservableDictionary<TKey, TValue> dictionary, TKey key, TValue value);
+
+    /// <summary>
+    /// Represents a method that is called when an observable dictionary whose items implement the 
+    /// <see cref="INotifyPropertyChanged"/> interface receives a <see cref="INotifyPropertyChanged.PropertyChanged"/> event.
+    /// </summary>
+    /// <typeparam name="TKey">The type of the keys in the dictionary.</typeparam>
+    /// <typeparam name="TValue">The type of the values in the dictionary.</typeparam>
+    /// <param name="dictionary">The dictionary that raised the event.</param>
+    /// <param name="value">The value of the item that raised the event.</param>
+    /// <param name="propertyName">The name of the property that was changed. If all of the object's properties have
+    /// changed, this value can be either <see cref="String.Empty"/> or <c>null</c>.</param>
+    public delegate void ObservableDictionaryItemPropertyChangedEventHandler<TKey, TValue>(ObservableDictionary<TKey, TValue> dictionary, TValue value, String propertyName);
 
     /// <summary>
     /// Represents a dictionary which raises events when items are added or removed.
@@ -36,7 +49,8 @@ namespace TwistedLogik.Nucleus.Collections
         /// </summary>
         public ObservableDictionary()
         {
-            this.dictionary = new Dictionary<TKey, TValue>();
+            this.dictionary           = new Dictionary<TKey, TValue>();
+            this.notifyPropertyChange = typeof(INotifyPropertyChanged).IsAssignableFrom(typeof(TValue));
         }
 
         /// <summary>
@@ -45,7 +59,8 @@ namespace TwistedLogik.Nucleus.Collections
         /// <param name="capacity">The dictionary's initial capacity.</param>
         public ObservableDictionary(Int32 capacity)
         {
-            this.dictionary = new Dictionary<TKey, TValue>(capacity);
+            this.dictionary           = new Dictionary<TKey, TValue>(capacity);
+            this.notifyPropertyChange = typeof(INotifyPropertyChanged).IsAssignableFrom(typeof(TValue));
         }
 
         /// <summary>
@@ -54,7 +69,8 @@ namespace TwistedLogik.Nucleus.Collections
         /// <param name="comparer">The <see cref="IEqualityComparer{TKey}"/> to use when comparing keys.</param>
         public ObservableDictionary(IEqualityComparer<TKey> comparer)
         {
-            this.dictionary = new Dictionary<TKey, TValue>(comparer);
+            this.dictionary           = new Dictionary<TKey, TValue>(comparer);
+            this.notifyPropertyChange = typeof(INotifyPropertyChanged).IsAssignableFrom(typeof(TValue));
         }
 
         /// <summary>
@@ -65,7 +81,8 @@ namespace TwistedLogik.Nucleus.Collections
         /// <param name="comparer">The <see cref="IEqualityComparer{TKey}"/> to use when comparing keys.</param>
         public ObservableDictionary(Int32 capacity, IEqualityComparer<TKey> comparer)
         {
-            this.dictionary = new Dictionary<TKey, TValue>(capacity, comparer);
+            this.dictionary           = new Dictionary<TKey, TValue>(capacity, comparer);
+            this.notifyPropertyChange = typeof(INotifyPropertyChanged).IsAssignableFrom(typeof(TValue));
         }
 
         /// <summary>
@@ -74,7 +91,8 @@ namespace TwistedLogik.Nucleus.Collections
         /// <param name="dictionary">The dictionary from which to copy items.</param>
         public ObservableDictionary(IDictionary<TKey, TValue> dictionary)
         {
-            this.dictionary = new Dictionary<TKey, TValue>(dictionary);
+            this.dictionary           = new Dictionary<TKey, TValue>(dictionary);
+            this.notifyPropertyChange = typeof(INotifyPropertyChanged).IsAssignableFrom(typeof(TValue));
         }
 
         /// <summary>
@@ -84,7 +102,8 @@ namespace TwistedLogik.Nucleus.Collections
         /// <param name="comparer">The equality comparer to use when comparing keys.</param>
         public ObservableDictionary(IDictionary<TKey, TValue> dictionary, IEqualityComparer<TKey> comparer)
         {
-            this.dictionary = new Dictionary<TKey, TValue>(dictionary, comparer);
+            this.dictionary           = new Dictionary<TKey, TValue>(dictionary, comparer);
+            this.notifyPropertyChange = typeof(INotifyPropertyChanged).IsAssignableFrom(typeof(TValue));
         }
 
         /// <summary>
@@ -96,11 +115,16 @@ namespace TwistedLogik.Nucleus.Collections
         {
             TValue existing;
             if (dictionary.TryGetValue(key, out existing))
+            {
+                UnhookPropertyChanged(existing);
                 OnItemRemoved(key, existing);
+            }
 
             dictionary.Add(key, value);
             OnItemAdded(key, value);
             OnChanged();
+
+            HookPropertyChanged(value);
         }
 
         /// <summary>
@@ -111,12 +135,13 @@ namespace TwistedLogik.Nucleus.Collections
         public Boolean Remove(TKey key)
         {
             TValue existing;
-            dictionary.TryGetValue(key, out existing);
-
-            if (dictionary.Remove(key))
+            if (dictionary.TryGetValue(key, out existing) && dictionary.Remove(key))
             {
+                UnhookPropertyChanged(existing);
+
                 OnItemRemoved(key, existing);
                 OnChanged();
+
                 return true;
             }
             return false;
@@ -127,6 +152,13 @@ namespace TwistedLogik.Nucleus.Collections
         /// </summary>
         public void Clear()
         {
+            if (notifyPropertyChange)
+            {
+                foreach (var kvp in dictionary)
+                {
+                    ((INotifyPropertyChanged)kvp.Value).PropertyChanged -= HandleItemPropertyChanged;
+                }
+            }
             dictionary.Clear();
             OnCleared();
             OnChanged();
@@ -180,8 +212,11 @@ namespace TwistedLogik.Nucleus.Collections
         void ICollection<KeyValuePair<TKey, TValue>>.Add(KeyValuePair<TKey, TValue> item)
         {
             ((ICollection<KeyValuePair<TKey, TValue>>)dictionary).Add(item);
+
             OnItemAdded(item.Key, item.Value);
             OnChanged();
+
+            HookPropertyChanged(item.Value);
         }
 
         /// <summary>
@@ -193,8 +228,11 @@ namespace TwistedLogik.Nucleus.Collections
         {
             if (((ICollection<KeyValuePair<TKey, TValue>>)dictionary).Remove(item))
             {
+                UnhookPropertyChanged(item.Value);
+
                 OnItemRemoved(item.Key, item.Value);
                 OnChanged();
+
                 return true;
             }
             return false;
@@ -249,11 +287,16 @@ namespace TwistedLogik.Nucleus.Collections
             {
                 TValue existing;
                 if (dictionary.TryGetValue(key, out existing))
+                {
+                    UnhookPropertyChanged(existing);
                     OnItemRemoved(key, existing);
+                }
 
                 dictionary[key] = value;
                 OnItemAdded(key, value);
                 OnChanged();
+
+                HookPropertyChanged(value);
             }
         }
 
@@ -292,22 +335,27 @@ namespace TwistedLogik.Nucleus.Collections
         /// <summary>
         /// Occurs whenever an operation is performed which modifies the contents of the dictionary.
         /// </summary>
-        public ObservableDictionaryEvent<TKey, TValue> Changed;
+        public ObservableDictionaryEventHandler<TKey, TValue> Changed;
 
         /// <summary>
         /// Occurs when the dictionary is cleared.
         /// </summary>
-        public ObservableDictionaryEvent<TKey, TValue> Cleared;
+        public ObservableDictionaryEventHandler<TKey, TValue> Cleared;
 
         /// <summary>
         /// Occurs when an item is added to the dictionary.
         /// </summary>
-        public ObservableDictionaryItemEvent<TKey, TValue> ItemAdded;
+        public ObservableDictionaryItemEventHandler<TKey, TValue> ItemAdded;
 
         /// <summary>
         /// Occurs when an item is removed from the dictionary.
         /// </summary>
-        public ObservableDictionaryItemEvent<TKey, TValue> ItemRemoved;
+        public ObservableDictionaryItemEventHandler<TKey, TValue> ItemRemoved;
+
+        /// <summary>
+        /// Occurs when an item in the dictionary raises the <see cref="INotifyPropertyChanged.PropertyChanged"/> event.
+        /// </summary>
+        public ObservableDictionaryItemPropertyChangedEventHandler<TKey, TValue> ItemPropertyChanged;
 
         /// <summary>
         /// Raises the <see cref="Changed"/> event.
@@ -361,7 +409,58 @@ namespace TwistedLogik.Nucleus.Collections
             }
         }
 
+        /// <summary>
+        /// Raises the <see cref="ItemPropertyChanged"/> event.
+        /// </summary>
+        /// <param name="value">The value of the item that was changed.</param>
+        /// <param name="propertyName">The name of the property that was changed. If all of the object's properties have
+        /// changed, this value can be either <see cref="String.Empty"/> or <c>null</c>.</param>
+        protected virtual void OnItemPropertyChanged(TValue value, String propertyName)
+        {
+            var temp = ItemPropertyChanged;
+            if (temp != null)
+            {
+                temp(this, value, propertyName);
+            }
+        }
+
+        /// <summary>
+        /// Handles the <see cref="INotifyPropertyChanged.PropertyChanged"/> event for the list's items.
+        /// </summary>
+        /// <param name="instance">The object instance that changed.</param>
+        /// <param name="propertyName">The name of the property that was changed. If all of the object's properties have
+        /// changed, this value can be either <see cref="String.Empty"/> or <c>null</c>.</param>
+        private void HandleItemPropertyChanged(Object instance, String propertyName)
+        {
+            OnItemPropertyChanged((TValue)instance, propertyName);
+        }
+
+        /// <summary>
+        /// Hooks into the specified item's <see cref="INotifyPropertyChanged.PropertyChanged"/> event.
+        /// </summary>
+        /// <param name="item">The item for which to add a hook.</param>
+        private void HookPropertyChanged(TValue item)
+        {
+            if (notifyPropertyChange && item != null)
+            {
+                ((INotifyPropertyChanged)item).PropertyChanged += HandleItemPropertyChanged;
+            }
+        }
+
+        /// <summary>
+        /// Unhooks from the specified item's <see cref="INotifyPropertyChanged.PropertyChanged"/> event.
+        /// </summary>
+        /// <param name="item">The item for which to remove a hook.</param>
+        private void UnhookPropertyChanged(TValue item)
+        {
+            if (notifyPropertyChange && item != null)
+            {
+                ((INotifyPropertyChanged)item).PropertyChanged -= HandleItemPropertyChanged;
+            }
+        }
+
         // The wrapped dictionary which contains our items.
         private readonly Dictionary<TKey, TValue> dictionary;
+        private readonly Boolean notifyPropertyChange;
     }
 }

@@ -14,7 +14,7 @@ namespace UltravioletSample.UI.Screens
     public class SampleScreen1 : UIScreen
     {
         public SampleScreen1(ContentManager globalContent, UIScreenService uiScreenService)
-            : base("SampleScreen1", Path.Combine("Content", "UI", "Screens", "SampleScreen1"))
+            : base("Content/UI/Screens/SampleScreen1", "SampleScreen1", globalContent)
         {
             Contract.Require(uiScreenService, "uiScreenService");
 
@@ -22,8 +22,8 @@ namespace UltravioletSample.UI.Screens
 
             this.uiScreenService = uiScreenService;
 
-            this.font         = Content.Load<SpriteFont>("SegoeUI");
-            this.blankTexture = globalContent.Load<Texture2D>(GlobalTextureID.Blank);
+            this.font         = LocalContent.Load<SpriteFont>("SegoeUI");
+            this.blankTexture = GlobalContent.Load<Texture2D>(GlobalTextureID.Blank);
             this.textRenderer = new TextRenderer();
         }
 

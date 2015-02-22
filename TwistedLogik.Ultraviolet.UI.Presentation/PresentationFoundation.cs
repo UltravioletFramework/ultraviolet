@@ -333,19 +333,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         private static Type ExtractElementTypeFromLayout(XDocument layout)
         {
             if (!IsValidElementLayout(layout))
-                throw new ArgumentException(UltravioletStrings.InvalidUserControlDefinition);
+                throw new ArgumentException(PresentationStrings.InvalidUserControlDefinition);
 
             var attr = layout.Root.Attribute("Type");
             if (attr == null)
-                throw new InvalidOperationException(UltravioletStrings.UserControlDoesNotDefineType);
+                throw new InvalidOperationException(PresentationStrings.UserControlDoesNotDefineType);
 
             var type = Type.GetType(attr.Value, false);
             if (type == null)
-                throw new InvalidOperationException(UltravioletStrings.InvalidUserControlType.Format(attr.Value));
+                throw new InvalidOperationException(PresentationStrings.InvalidUserControlType.Format(attr.Value));
 
             UIElementAttribute uiElementAttr;
             if (!IsValidElementType(type, out uiElementAttr))
-                throw new InvalidOperationException(UltravioletStrings.InvalidUserControlType.Format(type.Name));
+                throw new InvalidOperationException(PresentationStrings.InvalidUserControlType.Format(type.Name));
 
             return type;
         }
@@ -374,7 +374,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 var ctor = type.GetConstructor(new[] { typeof(UltravioletContext), typeof(String) });
                 
                 if (ctor == null)
-                    throw new InvalidOperationException(UltravioletStrings.UIElementInvalidCtor.Format(elementType));
+                    throw new InvalidOperationException(PresentationStrings.UIElementInvalidCtor.Format(elementType));
 
                 RuntimeHelpers.RunClassConstructor(type.TypeHandle);
 
@@ -398,11 +398,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             UIElementAttribute uiElementAttr;
             if (!IsValidElementType(type, out uiElementAttr))
-                throw new InvalidOperationException(UltravioletStrings.InvalidUIElementType.Format(type.Name));
+                throw new InvalidOperationException(PresentationStrings.InvalidUIElementType.Format(type.Name));
 
             RegisteredElement existingRegistration;
             if (IsElementRegistered(uiElementAttr.Name, out existingRegistration))
-                throw new InvalidOperationException(UltravioletStrings.UnrecognizedUIElement.Format(uiElementAttr.Name));
+                throw new InvalidOperationException(PresentationStrings.UnrecognizedUIElement.Format(uiElementAttr.Name));
 
             var defaultProperty = default(String);
             var defaultPropertyAttr = type.GetCustomAttributes(typeof(DefaultPropertyAttribute), true).Cast<DefaultPropertyAttribute>().SingleOrDefault();
@@ -413,7 +413,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             var ctor = type.GetConstructor(new[] { typeof(UltravioletContext), typeof(String) });
             if (ctor == null)
-                throw new InvalidOperationException(UltravioletStrings.UIElementInvalidCtor.Format(type.Name));
+                throw new InvalidOperationException(PresentationStrings.UIElementInvalidCtor.Format(type.Name));
 
             RuntimeHelpers.RunClassConstructor(type.TypeHandle);
 

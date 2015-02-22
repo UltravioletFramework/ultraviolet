@@ -35,7 +35,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 {
                     return;
                 }
-                throw new InvalidOperationException(UltravioletStrings.ElementWithIDAlreadyExists.Format(element.ID));
+                throw new InvalidOperationException(PresentationStrings.ElementWithIDAlreadyExists.Format(element.ID));
             }
             elementsByID[element.ID] = element;
         }

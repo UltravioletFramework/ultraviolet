@@ -14,15 +14,15 @@ namespace UltravioletSample.UI.Screens
     public class LoadingScreen : UIScreen
     {
         public LoadingScreen(ContentManager globalContent, UIScreenService uiScreenService)
-            : base("LoadingScreen", Path.Combine("Content", "UI", "Screens", "LoadingScreen"))
+            : base("Content/UI/Screens/LoadingScreen", "LoadingScreen", globalContent)
         {
             Contract.Require(uiScreenService, "uiScreenService");
 
             this.uiScreenService = uiScreenService;
             this.textRenderer    = new TextRenderer();
-            this.blankTexture    = globalContent.Load<Texture2D>(GlobalTextureID.Blank);
-            this.font            = globalContent.Load<SpriteFont>(GlobalFontID.SegoeUI);
-            this.spinnerSprite   = Content.Load<Sprite>("Spinner");
+            this.blankTexture    = GlobalContent.Load<Texture2D>(GlobalTextureID.Blank);
+            this.font            = GlobalContent.Load<SpriteFont>(GlobalFontID.SegoeUI);
+            this.spinnerSprite   = LocalContent.Load<Sprite>("Spinner");
             this.loader          = new AsynchronousContentLoader();
 
             this.textRenderer.RegisterIcon("spinner", spinnerSprite[0]);
