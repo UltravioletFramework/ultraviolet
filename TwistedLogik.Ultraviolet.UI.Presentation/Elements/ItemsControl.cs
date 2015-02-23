@@ -74,6 +74,35 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             new DependencyPropertyMetadata(HandleItemStringFormatChanged, null, DependencyPropertyOptions.None));
 
         /// <summary>
+        /// Gets the element which controls the layout of the control's item containers.
+        /// </summary>
+        protected internal Panel ItemsPanelElement
+        {
+            get { return itemsPanelElement; }
+            internal set
+            {
+                if (itemsPanelElement != null)
+                    itemsPanelElement.Children.Clear();
+
+                itemsPanelElement = value;
+
+                if (itemsPanelElement != null)
+                {
+                    foreach (var container in itemContainers)
+                    {
+                        itemsPanelElement.Children.Add(container);
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Creates the control's items panel, which is the panel that controls the layout of the control's item containers.
+        /// </summary>
+        /// <returns>The control's item panel.</returns>
+        protected internal abstract Panel CreateItemsPanel();
+
+        /// <summary>
         /// Creates a new item container element for this control.
         /// </summary>
         /// <returns>A <see cref="UIElement"/> which can be used to contain this control's items.</returns>
@@ -200,7 +229,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             var container = CreateItemContainer();
             AssociateItemContainerWithItem(container, item);
 
-            // TODO: Add container to this control's visual tree
+            if (ItemsPanelElement != null)
+                ItemsPanelElement.Children.Add(container);
 
             itemContainers.AddLast(container);
         }
@@ -214,7 +244,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         {
             AssociateItemContainerWithItem(container, null);
 
-            // TODO: Remove container from this control's visual tree
+            if (ItemsPanelElement != null)
+                ItemsPanelElement.Children.Remove(container);
 
             if (node != null)
                 itemContainers.Remove(node);
@@ -239,6 +270,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
 
         // Property values,
         private readonly ItemCollection items;
+        private Panel itemsPanelElement;
 
         // The control's item containers for its current item collection.
         private readonly PooledLinkedList<UIElement> itemContainers = 

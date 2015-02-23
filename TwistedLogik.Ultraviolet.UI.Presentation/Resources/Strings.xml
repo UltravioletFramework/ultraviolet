@@ -205,4 +205,14 @@
       <Variant>The collection cannot be directly modified because it is currently bound to the value of the ItemsSource property.</Variant>
     </en-US>
   </String>
+  <String Key="ITEM_PRESENTER_NOT_IN_ITEMS_CONTROL">
+    <en-US>
+      <Variant>An ItemPresenter element is not valid outside of the component template for an ItemsControl.</Variant>
+    </en-US>    
+  </String>
+  <String Key="ITEM_PRESENTER_NOT_CREATED_CORRECTLY">
+    <en-US>
+      <Variant>An instance of the {0} type failed to produce a valid item presenter.</Variant>
+    </en-US>    
+  </String>
 </LocalizedStrings>

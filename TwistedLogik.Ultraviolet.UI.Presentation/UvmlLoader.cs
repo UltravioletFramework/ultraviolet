@@ -103,7 +103,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             var uv      = control.Ultraviolet;
             var context = new InstantiationContext(null, control, null);
-            var root    = (Panel)InstantiateAndPopulateElement(uv, null, rootElement, context);
+            var root    = InstantiateAndPopulateElement(uv, null, rootElement, context);
 
             control.ComponentRoot = root;
             control.ContentPresenter = context.ContentPresenter;
@@ -120,13 +120,30 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <returns>The interface element that was instantiated.</returns>
         private static UIElement InstantiateElement(UltravioletContext uv, UIElement parent, XElement xmlElement, InstantiationContext context)
         {
+            var instance  = default(UIElement);            
             var id        = xmlElement.AttributeValueString("ID");
             var classes   = xmlElement.AttributeValueString("Class");
             var classList = (classes == null) ? Enumerable.Empty<String>() : classes.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
 
-            var instance = uv.GetUI().GetPresentationFoundation().InstantiateElementByName(xmlElement.Name.LocalName, id, context.ViewModelType, context.BindingContext);
-            if (instance == null)
-                throw new UvmlException(PresentationStrings.UnrecognizedUIElement.Format(xmlElement.Name.LocalName));
+            var name = xmlElement.Name.LocalName;
+            if (String.Equals("ItemsPanel", name, StringComparison.InvariantCulture))
+            {
+                var itemPresenterControl = context.ComponentOwner as ItemsControl;
+                if (itemPresenterControl == null)
+                    throw new UvmlException(PresentationStrings.ItemPresenterNotInItemsControl);
+
+                instance = itemPresenterControl.CreateItemsPanel();
+                if (instance == null)
+                    throw new InvalidOperationException(PresentationStrings.ItemPresenterNotCreatedCorrectly.Format(context.ComponentOwner.GetType().Name));
+
+                itemPresenterControl.ItemsPanelElement = (Panel)instance;
+            }
+            else
+            {
+                instance = uv.GetUI().GetPresentationFoundation().InstantiateElementByName(name, id, context.ViewModelType, context.BindingContext);
+                if (instance == null)
+                    throw new UvmlException(PresentationStrings.UnrecognizedUIElement.Format(xmlElement.Name.LocalName));
+            }
 
             foreach (var className in classList)
             {

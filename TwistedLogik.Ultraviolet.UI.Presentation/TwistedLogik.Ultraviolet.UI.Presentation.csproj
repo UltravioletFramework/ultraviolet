@@ -290,7 +290,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Elements\Templates\VSlider.xml" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="Elements\Templates\ListBox.xml" />
+  </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\Strings.xml">
       <SubType>Designer</SubType>

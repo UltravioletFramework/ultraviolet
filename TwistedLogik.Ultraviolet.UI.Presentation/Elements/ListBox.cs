@@ -20,6 +20,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <inheritdoc/>
+        protected internal override Panel CreateItemsPanel()
+        {
+            return new StackPanel(Ultraviolet, null);
+        }
+
+        /// <inheritdoc/>
         protected override UIElement CreateItemContainer()
         {
             return new ListBoxItem(Ultraviolet, null);
