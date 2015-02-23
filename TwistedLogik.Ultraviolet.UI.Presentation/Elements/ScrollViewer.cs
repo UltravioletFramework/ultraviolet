@@ -251,31 +251,55 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             scrollViewer.OnVerticalScrollBarVisibilityChanged();
         }
 
+        /// <summary>
+        /// Handles the <see cref="RangeBase.ValueChanged"/> event for the horizontal scroll bar.
+        /// </summary>
+        /// <param name="element">The element that raised the event.</param>
         private void HScroll_ValueChanged(UIElement element)
         {
             InvalidatePosition();
         }
 
+        /// <summary>
+        /// Handles the <see cref="RangeBase.MaximumChanged"/> event for the horizontal scroll bar.
+        /// </summary>
+        /// <param name="element">The element that raised the event.</param>
         private void HScroll_MaximumChanged(UIElement element)
         {
             InvalidatePosition();
         }
 
+        /// <summary>
+        /// Handles the <see cref="RangeBase.VisibilityChanged"/> event for the horizontal scroll bar.
+        /// </summary>
+        /// <param name="element">The element that raised the event.</param>
         private void HScroll_VisibilityChanged(UIElement element)
         {
             ((ScrollBarBase)element).Value = 0;
         }
 
+        /// <summary>
+        /// Handles the <see cref="RangeBase.ValueChanged"/> event for the vertical scroll bar.
+        /// </summary>
+        /// <param name="element">The element that raised the event.</param>
         private void VScroll_ValueChanged(UIElement element)
         {
             InvalidatePosition();
         }
 
+        /// <summary>
+        /// Handles the <see cref="RangeBase.MaximumChanged"/> event for the vertical scroll bar.
+        /// </summary>
+        /// <param name="element">The element that raised the event.</param>
         private void VScroll_MaximumChanged(UIElement element)
         {
             InvalidatePosition();
         }
 
+        /// <summary>
+        /// Handles the <see cref="RangeBase.VisibilityChanged"/> event for the vertical scroll bar.
+        /// </summary>
+        /// <param name="element">The element that raised the event.</param>
         private void VScroll_VisibilityChanged(UIElement element)
         {
             ((ScrollBarBase)element).Value = 0;
