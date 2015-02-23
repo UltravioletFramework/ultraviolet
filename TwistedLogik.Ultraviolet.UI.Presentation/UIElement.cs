@@ -411,8 +411,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             this.mostRecentPosition = position;
 
-            var contentRegionOffset = (Parent == null || IsComponent) ? Point2D.Zero : 
-                Parent.RelativeContentRegion.Location + Parent.ContentOffset;
+            var contentRegionOffset = 
+                ((Parent == null || IsComponent) ? Point2D.Zero : Parent.RelativeContentRegion.Location) +
+                ((Parent == null || Parent == Control) ? Point2D.Zero : Parent.ContentOffset);
 
             var offsetX = mostRecentFinalRect.X + RenderOffset.X + contentRegionOffset.X;
             var offsetY = mostRecentFinalRect.Y + RenderOffset.Y + contentRegionOffset.Y;
