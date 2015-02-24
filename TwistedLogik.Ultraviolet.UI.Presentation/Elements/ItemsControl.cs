@@ -35,10 +35,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <summary>
         /// Gets or sets the collection which is used to generate the control's items.
         /// </summary>
-        public IEnumerable ItemSource
+        public IEnumerable ItemsSource
         {
-            get { return GetValue<IEnumerable>(ItemSourceProperty); }
-            set { SetValue<IEnumerable>(ItemSourceProperty, value); }
+            get { return GetValue<IEnumerable>(ItemsSourceProperty); }
+            set { SetValue<IEnumerable>(ItemsSourceProperty, value); }
         }
 
         /// <summary>
@@ -52,9 +52,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <summary>
-        /// Occurs when the value of the <see cref="ItemSource"/> property changes.
+        /// Occurs when the value of the <see cref="ItemsSource"/> property changes.
         /// </summary>
-        public event UIElementEventHandler ItemSourceChanged;
+        public event UIElementEventHandler ItemsSourceChanged;
 
         /// <summary>
         /// Occurs when the value of the <see cref="ItemStringFormat"/> property changes.
@@ -62,10 +62,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         public event UIElementEventHandler ItemStringFormatChanged;
 
         /// <summary>
-        /// Identifies the <see cref="ItemSource"/> dependency property.
+        /// Identifies the <see cref="ItemsSource"/> dependency property.
         /// </summary>
-        public static readonly DependencyProperty ItemSourceProperty = DependencyProperty.Register("ItemSource", typeof(IEnumerable), typeof(ItemsControl),
-            new DependencyPropertyMetadata(HandleItemSourceChanged, null, DependencyPropertyOptions.None));
+        public static readonly DependencyProperty ItemsSourceProperty = DependencyProperty.Register("ItemsSource", typeof(IEnumerable), typeof(ItemsControl),
+            new DependencyPropertyMetadata(HandleItemsSourceChanged, null, DependencyPropertyOptions.None));
 
         /// <summary>
         /// Identifies the <see cref="ItemStringFormat"/> dependency property.
@@ -131,11 +131,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         protected abstract void AssociateItemContainerWithItem(UIElement container, Object item);
 
         /// <summary>
-        /// Raises the <see cref="ItemSourceChanged"/> event.
+        /// Raises the <see cref="ItemsSourceChanged"/> event.
         /// </summary>
-        protected virtual void OnItemSourceChanged()
+        protected virtual void OnItemsSourceChanged()
         {
-            var temp = ItemSourceChanged;
+            var temp = ItemsSourceChanged;
             if (temp != null)
             {
                 temp(this);
@@ -155,13 +155,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <summary>
-        /// Occurs when the value of the <see cref="ItemSource"/> dependency property changes.
+        /// Occurs when the value of the <see cref="ItemsSource"/> dependency property changes.
         /// </summary>
         /// <param name="dobj">The dependency object that raised the event.</param>
-        private static void HandleItemSourceChanged(DependencyObject dobj)
+        private static void HandleItemsSourceChanged(DependencyObject dobj)
         {
             var itemControl = (ItemsControl)dobj;
-            itemControl.OnItemSourceChanged();
+            itemControl.Items.SetItemsSource(itemControl.ItemsSource);
+            itemControl.OnItemsSourceChanged();
         }
 
         /// <summary>

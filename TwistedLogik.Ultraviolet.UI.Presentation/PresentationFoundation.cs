@@ -508,7 +508,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 if (element.IsStyleValid)
                     continue;
 
-                element.Style(element.MostRecentStylesheet);
+                element.Style(element.View.Stylesheet);
                 element.InvalidateMeasure();
             }
         }

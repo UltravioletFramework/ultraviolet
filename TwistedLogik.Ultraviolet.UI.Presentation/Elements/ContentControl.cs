@@ -152,9 +152,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <inheritdoc/>
         protected override void ReloadContentCore(Boolean recursive)
         {
-            if (recursive && contentElement != null)
+            if (contentElement != null)
             {
-                contentElement.ReloadContent(true);
+                if (recursive)
+                {
+                    contentElement.ReloadContent(true);
+                }
+            }
+            else
+            {
+                UpdateTextParserCache();
             }
             base.ReloadContentCore(recursive);
         }

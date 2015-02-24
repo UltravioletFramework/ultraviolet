@@ -1,35 +1,16 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using TwistedLogik.Nucleus.Collections;
+using System.Linq;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
 {
     partial class ItemCollection : IEnumerable<Object>
     {
         /// <inheritdoc/>
-        public GenericEnumerator<Object> GetEnumerator()
+        public IEnumerator<Object> GetEnumerator()
         {
-            if (IsBoundToItemsSource)
-            {
-                return new GenericEnumerator<Object>(this, (Object state, Int32 index, out Object result) =>
-                {
-                    throw new NotImplementedException();
-                });
-            }
-            else
-            {
-                return new GenericEnumerator<Object>(this, (Object state, Int32 index, out Object result) =>
-                {
-                    throw new NotImplementedException();
-                });
-            }
-        }
-
-        /// <inheritdoc/>
-        IEnumerator<Object> IEnumerable<Object>.GetEnumerator()
-        {
-            return GetEnumerator();
+            return IsBoundToItemsSource ? itemsSource.Cast<Object>().GetEnumerator() : itemsStorage.GetEnumerator();
         }
 
         /// <inheritdoc/>

@@ -258,7 +258,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             if (View != view)
             {
-                ReloadContent(false);
                 InvalidateStyle();
             }
 
@@ -324,6 +323,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             
             ApplyStyles(stylesheet);
             StyleCore(stylesheet);
+            ReloadContent(false);
 
             this.isStyleValid = true;
 
