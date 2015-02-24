@@ -5,9 +5,6 @@
       <ColumnDefinition Width="Auto"/>
       <ColumnDefinition Width="Auto"/>
     </Grid.ColumnDefinitions>
-    <Grid.RowDefinitions>
-      <RowDefinition Height="Auto"/>
-    </Grid.RowDefinitions>
     
     <Image ID="ImgBox" Class="toggle-box" Grid.Column="0" VerticalAlignment="{{VerticalContentAlignment}}"></Image>
     <Image ID="ImgMark" Class="toggle-mark" Grid.Column="0" VerticalAlignment="{{VerticalContentAlignment}}" Visibility="{{MarkVisibility}}"></Image>

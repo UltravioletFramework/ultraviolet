@@ -1,9 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ComponentTemplate>
   <Grid ID="LayoutRoot" Class="slider-component" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-    <Grid.ColumnDefinitions>
-      <ColumnDefinition Width="Auto"/>
-    </Grid.ColumnDefinitions>
     <Grid.RowDefinitions>
       <RowDefinition Height="Auto"/>
       <RowDefinition Height="Auto"/>
