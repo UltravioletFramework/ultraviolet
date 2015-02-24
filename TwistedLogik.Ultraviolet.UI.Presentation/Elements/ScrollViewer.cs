@@ -183,6 +183,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         public static readonly DependencyProperty VerticalScrollBarVisibilityProperty = DependencyProperty.Register("VerticalScrollBarVisibility", typeof(ScrollBarVisibility), typeof(ScrollViewer),
             new DependencyPropertyMetadata(HandleVerticalScrollBarVisibilityChanged, () => ScrollBarVisibility.Visible, DependencyPropertyOptions.AffectsArrange));
 
+        /// <inheritdoc/>
+        protected override Size2D MeasureOverride(Size2D availableSize)
+        {
+            var size = base.MeasureOverride(availableSize);
+            return new Size2D(
+                Math.Min(availableSize.Width, size.Width),
+                Math.Min(availableSize.Height, size.Height));
+        }
+
         /// <summary>
         /// Raises the <see cref="HorizontalScrollBarVisibilityChanged"/> event.
         /// </summary>
@@ -303,6 +312,22 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         private void VScroll_VisibilityChanged(UIElement element)
         {
             ((ScrollBarBase)element).Value = 0;
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the viewer's content can be scrolled horizontally.
+        /// </summary>
+        private Boolean CanScrollHorizontally
+        {
+            get { return HorizontalScrollBarVisibility != ScrollBarVisibility.Disabled; }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the viewer's content can be scrolled vertically.
+        /// </summary>
+        private Boolean CanScrollVertically
+        {
+            get { return VerticalScrollBarVisibility != ScrollBarVisibility.Disabled; }
         }
 
         // Control component references.

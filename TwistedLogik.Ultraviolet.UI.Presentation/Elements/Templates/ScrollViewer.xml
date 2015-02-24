@@ -10,7 +10,9 @@
       <RowDefinition Height="Auto"/>
     </Grid.RowDefinitions>
 
-    <ContentPresenter Grid.Column="0" Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+    <ContentPresenter Grid.Column="0" Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                      UnconstrainedWidth="{{CanScrollHorizontally}}"
+                      UnconstrainedHeight="{{CanScrollVertically}}"/>
 
     <HScrollBar ID="HScroll" Class="scrollview-hscroll" Grid.Column="0" Grid.Row="1" HorizontalAlignment="Stretch" SmallChange="1" LargeChange="{{ViewportWidth}}"
                 IsEnabled="{{ComputedHorizontalScrollBarEnabled}}" ViewportSize="{{ViewportWidth}}"
