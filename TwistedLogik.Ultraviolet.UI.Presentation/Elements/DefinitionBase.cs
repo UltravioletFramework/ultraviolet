@@ -118,9 +118,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <summary>
-        /// Gets the desired dimension of this row or column based on its current parameters.
+        /// Gets the preferred desired dimension of this row or column based on its current parameters.
         /// </summary>
-        internal Double DesiredDimension
+        internal Double PreferredDesiredDimension
         {
             get
             {
@@ -128,6 +128,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
                 {
                     return Math.Max(MeasuredContentDimension, MeasuredDimension);
                 }
+                return MeasuredContentDimension;
+            }
+        }
+
+        /// <summary>
+        /// Gets the minimum desired dimension of this row or column based on its current parameters.
+        /// </summary>
+        internal Double MinimumDesiredDimension
+        {
+            get
+            {
                 return MeasuredContentDimension;
             }
         }

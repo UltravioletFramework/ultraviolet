@@ -229,6 +229,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             PrepareForMeasure(RowDefinitions, infiniteHeight);
             PrepareForMeasure(ColumnDefinitions, infiniteWidth);
 
+            UpdateVirtualCellMetadata();
+
             MeasureVirtualCells(0);
 
             if (CanResolveStarRows())
@@ -263,10 +265,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             var desiredHeight = 0.0;
 
             foreach (var column in ColumnDefinitions)
-                desiredWidth += column.ActualWidth;
+                desiredWidth += column.MinimumDesiredDimension;
 
             foreach (var row in RowDefinitions)
-                desiredHeight += row.ActualHeight;
+                desiredHeight += row.MinimumDesiredDimension;
 
             return new Size2D(desiredWidth, desiredHeight);
         }
@@ -459,8 +461,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <param name="options">The measurement options for this cell.</param>
         private void MeasureVirtualCell(VirtualCellMetadata cell, GridMeasurementOptions options)
         {
-            UpdateVirtualCellMetadata();
-
             var cellWidth  = 0.0;
             var cellHeight = 0.0;
 
@@ -562,7 +562,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
                 var def = definitions[index + i];
 
                 spanContentDimension += def.MeasuredContentDimension;
-                spanDesiredDimension += def.DesiredDimension;
+                spanDesiredDimension += def.PreferredDesiredDimension;
                 spanMaximumDimension += Math.Max(def.MaxDimension, spanContentDimension);
             }
 
@@ -590,7 +590,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
                 {
                     var def             = defsInSpan[i];
                     var defDistribution = undistributed / (span - i);
-                    var defContentSize  = Math.Min(defDistribution, def.DesiredDimension);
+                    var defContentSize  = Math.Min(defDistribution, def.PreferredDesiredDimension);
 
                     def.ExpandContentDimension(defContentSize);
 
@@ -615,7 +615,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
                 for (int i = 0; i < defsInSpan.Count; i++)
                 {
                     var def             = defsInSpan[i];
-                    var defDesiredSize  = def.DesiredDimension;
+                    var defDesiredSize  = def.PreferredDesiredDimension;
                     var defDistribution = defDesiredSize + undistributed / (span - autoInSpan - i);
                     var defContentSize  = Math.Min(defDistribution, def.MaxDimension);
 
@@ -630,7 +630,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
                 for (int i = 0; i < defsInSpan.Count; i++)
                 {
                     var def = defsInSpan[i];
-                    var defDesiredSize = def.DesiredDimension;
+                    var defDesiredSize = def.PreferredDesiredDimension;
                     var defDistribution = defDesiredSize + undistributed / (autoInSpan - i);
                     var defContentSize = Math.Min(defDistribution, def.MaxDimension);
 
@@ -966,7 +966,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
 
             buffer.Sort((def1, def2) =>
             {
-                return def1.DesiredDimension.CompareTo(def2.DesiredDimension);
+                return def1.PreferredDesiredDimension.CompareTo(def2.PreferredDesiredDimension);
             });
 
             return buffer;
