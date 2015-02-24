@@ -68,7 +68,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
                 }
             }
 
-            contentSize = new Size2D(contentWidth, contentHeight);
+            contentSize = new Size2D(
+                Math.Min(availableSize.Width, contentWidth), 
+                Math.Min(availableSize.Height, contentHeight));
+
             return contentSize;
         }
 
