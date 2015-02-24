@@ -182,6 +182,10 @@
     <Compile Include="PresentationFoundation.RegisteredElement.cs" />
     <Compile Include="PresentationStrings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RoutedEvent.cs" />
+    <Compile Include="RoutedEventManager.cs" />
+    <Compile Include="RoutedEventSystem.cs" />
+    <Compile Include="RoutingStrategy.cs" />
     <Compile Include="SourcedAssetID.cs" />
     <Compile Include="SourcedImage.cs" />
     <Compile Include="SourcedResource.cs" />

@@ -80,6 +80,11 @@
       <Variant>Dependency property has already been registered.</Variant>
     </en-US>
   </String>
+  <String Key="ROUTED_EVENT_ALREADY_REGISTERED">
+    <en-US>
+      <Variant>Routed event has already been registered.</Variant>
+    </en-US>
+  </String>
   <String Key="CANNOT_RESOLVE_BINDING_EXPRESSION">
     <en-US>
       <Variant>The binding expression '{0}' cannot be resolved because a method or member which makes up part of the binding path could not be found.</Variant>
