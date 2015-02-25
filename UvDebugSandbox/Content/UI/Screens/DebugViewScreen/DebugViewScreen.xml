@@ -4,22 +4,18 @@
   <View ViewModelType="UvDebugSandbox.UI.Screens.DebugViewModel, UvDebugSandbox">
 
     <ListBox>
-      <Button>Test 1</Button>
-      <Button>Test 2</Button>
-      <Button>Test 3</Button>
-      <Button>Test 1</Button>
-      <Button>Test 2</Button>
-      <Button>Test 3</Button>
-      <Button>Test 1</Button>
-      <Button>Test 2</Button>
-      <Button>Test 3</Button>
-      <Button>Test 1</Button>
-      <Button>Test 2</Button>
-      <Button>Test 3</Button>
-      <Button>Test 1</Button>
-      <Button>Test 2</Button>
-      <Button>Test 3</Button>
+      <ListBoxItem>Lorem ipsum dolor sit amet</ListBoxItem>
+      <ListBoxItem>Hello</ListBoxItem>
+      <ListBoxItem>Hello</ListBoxItem>
+      <ListBoxItem>Hello</ListBoxItem>
+      <ListBoxItem>Hello</ListBoxItem>
+      <ListBoxItem>Hello</ListBoxItem>
+      <ListBoxItem>Hello</ListBoxItem>
+      <ListBoxItem>Hello</ListBoxItem>
+      <ListBoxItem>Hello</ListBoxItem>
+      <ListBoxItem>Hello</ListBoxItem>
+      <ListBoxItem>Hello</ListBoxItem>
     </ListBox>
-      
+
   </View>
 </UIPanelDefinition>

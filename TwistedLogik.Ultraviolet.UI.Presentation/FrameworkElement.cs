@@ -414,12 +414,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var measuredSize   = MeasureOverride(tentativeSize);
             var measuredWidth  = measuredSize.Width;
             var measuredHeight = measuredSize.Height;
-
-            if (!Double.IsPositiveInfinity(availableWidthSansMargin) && HorizontalAlignment == HorizontalAlignment.Stretch && measuredWidth < availableWidthSansMargin)
-                measuredWidth = availableWidthSansMargin;
-
-            if (!Double.IsPositiveInfinity(availableHeightSansMargin) && VerticalAlignment == VerticalAlignment.Stretch && measuredHeight < availableHeightSansMargin)
-                measuredHeight = availableHeightSansMargin;
             
             measuredWidth  = xMargin + Math.Max(minWidth, Math.Min(maxWidth, measuredWidth));
             measuredHeight = yMargin + Math.Max(minHeight, Math.Min(maxHeight, measuredHeight));

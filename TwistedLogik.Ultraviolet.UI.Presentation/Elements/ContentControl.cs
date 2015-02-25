@@ -260,23 +260,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <inheritdoc/>
         protected override Size2D ArrangeContent(Size2D finalSize, ArrangeOptions options)
         {
-            var padding = GetTotalContentPadding();
-
-            var contentSpace = RenderContentRegion.Size;
-
             if (contentElement != null)
             {
-                var contentX = LayoutUtil.PerformHorizontalAlignment(contentSpace, contentElement.DesiredSize, HorizontalContentAlignment);
-                var contentY = LayoutUtil.PerformVerticalAlignment(contentSpace, contentElement.DesiredSize, VerticalContentAlignment);
-
-                var contentPosition = new Point2D(contentX, contentY);
-                var contentRegion   = new RectangleD(contentPosition, contentElement.DesiredSize);
-
-                contentElement.Arrange(contentRegion);
+                contentElement.Arrange(RenderContentRegion);
             }
             else
             {
-                UpdateTextLayoutCache(contentSpace);
+                UpdateTextLayoutCache(RenderContentRegion.Size);
             }
             return finalSize;
         }

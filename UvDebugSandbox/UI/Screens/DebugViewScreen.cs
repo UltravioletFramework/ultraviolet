@@ -3,42 +3,13 @@ using TwistedLogik.Ultraviolet.Content;
 using TwistedLogik.Ultraviolet.UI.Presentation;
 using TwistedLogik.Ultraviolet.UI.Presentation.Elements;
 using TwistedLogik.Ultraviolet.UI;
+using TwistedLogik.Nucleus.Collections;
 
 namespace UvDebugSandbox.UI.Screens
 {
-    public class SomeObject
-    {
-        public SomeObject()
-        {
-            Baz = 11111;
-        }
-
-        public Double Baz
-        {
-            get;
-            set;
-        }
-    }
-
     public class DebugViewModel
     {
-        public DebugViewModel()
-        {
-            FooBar = 34243;
-            SObj = new SomeObject();
-        }
 
-        public SomeObject SObj
-        {
-            get;
-            private set;
-        }
-
-        public Double FooBar
-        {
-            get;
-            set;
-        }
     }
 
     public class DebugViewScreen : UvDebugScreen
