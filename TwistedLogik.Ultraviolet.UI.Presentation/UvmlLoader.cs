@@ -97,13 +97,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="template">The component template that specified the control's component layout.</param>
         public static void LoadComponentRoot(Control control, XDocument template)
         {
+            var uv      = control.Ultraviolet;
+            var context = new InstantiationContext(null, control, null);
+
+            PopulateElementProperties(uv, control, template.Root, context);
+
             var rootElement = template.Root.Elements().SingleOrDefault();
             if (rootElement == null)
                 return;
 
-            var uv      = control.Ultraviolet;
-            var context = new InstantiationContext(null, control, null);
-            var root    = InstantiateAndPopulateElement(uv, null, rootElement, context);
+            var root = InstantiateAndPopulateElement(uv, null, rootElement, context);
 
             control.ComponentRoot = root;
             control.ContentPresenter = context.ContentPresenter;

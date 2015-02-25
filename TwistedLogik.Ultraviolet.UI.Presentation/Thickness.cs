@@ -23,10 +23,20 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Initializes a new instance of the <see cref="Thickness"/> structure.
         /// </summary>
-        /// <param name="left"></param>
-        /// <param name="top"></param>
-        /// <param name="right"></param>
-        /// <param name="bottom"></param>
+        /// <param name="value">The size, in device independent pixels, of the bounding rectangles' four edges.</param>
+        public Thickness(Double value)
+            : this(value, value, value, value)
+        {
+
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Thickness"/> structure.
+        /// </summary>
+        /// <param name="left">The width, in device independent pixels (1/96 of an inch), of the left side of the bounding rectangle.</param>
+        /// <param name="top">The width, in device independent pixels (1/96 of an inch), of the top side of the bounding rectangle.</param>
+        /// <param name="right">The width, in device independent pixels (1/96 of an inch), of the right side of the bounding rectangle.</param>
+        /// <param name="bottom">The width, in device independent pixels (1/96 of an inch), of the bottom side of the bounding rectangle.</param>
         public Thickness(Double left, Double top, Double right, Double bottom)
         {
             this.left   = left;
@@ -231,7 +241,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 if (!Double.TryParse(components[0], style, provider, out value))
                     return false;
 
-                thickness = new Thickness(value, value, value, value);
+                thickness = new Thickness(value);
             }
             else
             {

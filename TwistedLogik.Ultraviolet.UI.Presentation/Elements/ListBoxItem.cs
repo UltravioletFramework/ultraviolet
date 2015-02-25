@@ -16,24 +16,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         public ListBoxItem(UltravioletContext uv, String id)
             : base(uv, id)
         {
-            SetDefaultValue<HorizontalAlignment>(HorizontalAlignmentProperty, HorizontalAlignment.Stretch);
-            SetDefaultValue<Thickness>(MarginProperty, Thickness.Parse("10"));
-        }
 
-        protected override Size2D MeasureOverride(Size2D availableSize)
-        {
-            return base.MeasureOverride(availableSize);
-        }
-
-        protected override Size2D ArrangeOverride(Size2D finalSize, ArrangeOptions options)
-        {
-            return base.ArrangeOverride(finalSize, options);
-        }
-
-        protected override void DrawOverride(UltravioletTime time, DrawingContext dc)
-        {
-            DrawImage(dc, View.Resources.BlankImage, Color.Red, true);
-            base.DrawOverride(time, dc);
         }
     }
 }
