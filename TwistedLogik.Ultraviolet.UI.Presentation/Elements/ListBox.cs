@@ -6,7 +6,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
     /// Represents a list of selectable items.
     /// </summary>
     [UIElement("ListBox", "TwistedLogik.Ultraviolet.UI.Presentation.Elements.Templates.ListBox.xml")]
-    public class ListBox : ItemsControl
+    public class ListBox : Selector
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ListBox"/> class.

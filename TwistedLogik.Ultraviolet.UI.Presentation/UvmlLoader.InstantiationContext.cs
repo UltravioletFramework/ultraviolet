@@ -15,22 +15,26 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             /// <summary>
             /// Initializes a new instance of the <see cref="InstantiationContext"/> class.
             /// </summary>
+            /// <param name="uv">The Ultraviolet context.</param>
             /// <param name="viewModelType">The type of view model to which the view is bound.</param>
-            public InstantiationContext(Type viewModelType)
+            public InstantiationContext(UltravioletContext uv, Type viewModelType)
             {
+                this.uv            = uv;
                 this.viewModelType = viewModelType;
             }
 
             /// <summary>
             /// Initializes a new instance of the <see cref="InstantiationContext"/> class.
             /// </summary>
+            /// <param name="uv">The Ultraviolet context.</param>
             /// <param name="viewModelType">The type of view model to which the view is bound.</param>
             /// <param name="componentOwner">The current user control.</param>
             /// <param name="initialBindingContext">The initial binding context.</param>
-            public InstantiationContext(Type viewModelType, UIElement componentOwner, String initialBindingContext)
+            public InstantiationContext(UltravioletContext uv, Type viewModelType, UIElement componentOwner, String initialBindingContext)
             {
-                this.componentOwner   = componentOwner;
-                this.viewModelType = viewModelType;
+                this.uv             = uv;
+                this.componentOwner = componentOwner;
+                this.viewModelType  = viewModelType;
 
                 if (!String.IsNullOrEmpty(initialBindingContext))
                 {
@@ -57,6 +61,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             {
                 bindingContextStack.Pop();
                 GenerateBindingContext();
+            }
+
+            /// <summary>
+            /// Gets the Ultraviolet context.
+            /// </summary>
+            public UltravioletContext Ultraviolet
+            {
+                get { return uv; }
             }
 
             /// <summary>
@@ -125,6 +137,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             }
 
             // Property values.
+            private readonly UltravioletContext uv;
             private UIElement componentOwner;
             private ContentPresenter componentContentViewer;
             private String bindingContext;

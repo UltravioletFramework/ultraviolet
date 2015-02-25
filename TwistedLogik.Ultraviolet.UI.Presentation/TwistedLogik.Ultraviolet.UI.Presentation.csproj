@@ -117,6 +117,7 @@
     <Compile Include="Elements\ItemsControl.cs" />
     <Compile Include="Elements\ListBoxItem.cs" />
     <Compile Include="Elements\ListBox.cs" />
+    <Compile Include="Elements\Selector.cs" />
     <Compile Include="Elements\VSlider.cs" />
     <Compile Include="Elements\HSlider.cs" />
     <Compile Include="Elements\SliderBase.cs" />

@@ -27,7 +27,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// </summary>
         /// <param name="element">The element to modify.</param>
         /// <param name="row">The index of the row that the element should occupy.</param>
-        public static void SetRow(UIElement element, Int32 row)
+        public static void SetRow(DependencyObject element, Int32 row)
         {
             Contract.Require(element, "element");
 
@@ -39,7 +39,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// </summary>
         /// <param name="element">The element to modify.</param>
         /// <param name="column">The index of the column that the element should occupy.</param>
-        public static void SetColumn(UIElement element, Int32 column)
+        public static void SetColumn(DependencyObject element, Int32 column)
         {
             Contract.Require(element, "element");
 
@@ -51,7 +51,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// </summary>
         /// <param name="element">The element to modify.</param>
         /// <param name="rowSpan">The total number of rows that the specified element spans within its parent grid.</param>
-        public static void SetRowSpan(UIElement element, Int32 rowSpan)
+        public static void SetRowSpan(DependencyObject element, Int32 rowSpan)
         {
             Contract.Require(element, "element");
 
@@ -63,7 +63,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// </summary>
         /// <param name="element">The element to modify.</param>
         /// <param name="columnSpan">The total number of columns that the specified element spans within its parent grid.</param>
-        public static void SetColumnSpan(UIElement element, Int32 columnSpan)
+        public static void SetColumnSpan(DependencyObject element, Int32 columnSpan)
         {
             Contract.Require(element, "element");
 
@@ -75,7 +75,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// </summary>
         /// <param name="element">The element to evaluate.</param>
         /// <returns>The index of the row that the element should occupy.</returns>
-        public static Int32 GetRow(UIElement element)
+        public static Int32 GetRow(DependencyObject element)
         {
             Contract.Require(element, "element");
 
@@ -87,7 +87,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// </summary>
         /// <param name="element">The element to evaluate.</param>
         /// <returns>The index of the column that the element should occupy.</returns>
-        public static Int32 GetColumn(UIElement element)
+        public static Int32 GetColumn(DependencyObject element)
         {
             Contract.Require(element, "element");
 
@@ -99,7 +99,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// </summary>
         /// <param name="element">The element to evaluate.</param>
         /// <returns>The total number of rows that the specified element spans within its parent grid.</returns>
-        public static Int32 GetRowSpan(UIElement element)
+        public static Int32 GetRowSpan(DependencyObject element)
         {
             Contract.Require(element, "element");
 
@@ -111,7 +111,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// </summary>
         /// <param name="element">The element to evaluate.</param>
         /// <returns>The total number of columns that the specified element spans within its parent grid.</returns>
-        public static Int32 GetColumnSpan(UIElement element)
+        public static Int32 GetColumnSpan(DependencyObject element)
         {
             Contract.Require(element, "element");
 
