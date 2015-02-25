@@ -2674,6 +2674,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var current = Parent;
             while (current != null)
             {
+                if (current is ContentControl)
+                    return null;
+
                 if (current.Control != null)
                     return current.Control;
 
