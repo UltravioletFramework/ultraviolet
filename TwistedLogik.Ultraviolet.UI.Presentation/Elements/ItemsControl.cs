@@ -227,8 +227,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <param name="item">The item for which to add an item container.</param>
         private void AddItemContainer(Object item)
         {
-            var container = CreateItemContainer();
-            AssociateItemContainerWithItem(container, item);
+            var element   = item as UIElement;
+            var container = element;
+
+            if (!IsItemContainer(element))
+            {
+                container = CreateItemContainer();
+                AssociateItemContainerWithItem(container, item);
+            }
 
             if (ItemsPanelElement != null)
                 ItemsPanelElement.Children.Add(container);
