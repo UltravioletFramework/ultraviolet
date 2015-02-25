@@ -45,13 +45,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// Identifies the <see cref="UnconstrainedWidth"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty UnconstrainedWidthProperty = DependencyProperty.Register("UnconstrainedWidth", typeof(Boolean), typeof(ContentPresenter),
-            new DependencyPropertyMetadata(null, null, DependencyPropertyOptions.AffectsMeasure));
+            new DependencyPropertyMetadata(HandleUnconstrainedWidthChanged, null, DependencyPropertyOptions.AffectsMeasure));
 
         /// <summary>
         /// Identifies the <see cref="UnconstrainedHeight"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty UnconstrainedHeightProperty = DependencyProperty.Register("UnconstrainedHeight", typeof(Boolean), typeof(ContentPresenter),
-            new DependencyPropertyMetadata(null, null, DependencyPropertyOptions.AffectsMeasure));
+            new DependencyPropertyMetadata(HandleUnconstrainedHeightChanged, null, DependencyPropertyOptions.AffectsMeasure));
 
         /// <inheritdoc/>
         protected override void DrawOverride(UltravioletTime time, DrawingContext dc)
@@ -102,6 +102,26 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
                 Control.OnContentPresenterPosition(AbsolutePosition);
             }
             base.PositionOverride(position);
+        }
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="UnconstrainedWidth"/> dependency property changes.
+        /// </summary>
+        /// <param name="dobj">The object that raised the event.</param>
+        private static void HandleUnconstrainedWidthChanged(DependencyObject dobj)
+        {
+            var presenter = (ContentPresenter)dobj;
+            presenter.InvalidateMeasure();
+        }
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="UnconstrainedHeight"/> dependency property changes.
+        /// </summary>
+        /// <param name="dobj">The object that raised the event.</param>
+        private static void HandleUnconstrainedHeightChanged(DependencyObject dobj)
+        {
+            var presenter = (ContentPresenter)dobj;
+            presenter.InvalidateMeasure();
         }
     }
 }
