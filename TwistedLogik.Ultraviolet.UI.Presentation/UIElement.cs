@@ -629,6 +629,47 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Adds a handler for a routed event to the element.
+        /// </summary>
+        /// <param name="evt">A <see cref="RoutedEvent"/> that identifies the routed event for which to add a handler.</param>
+        /// <param name="handler">A delegate that represents the handler to add to the element for the specified routed event.</param>
+        public void AddHandler(RoutedEvent evt, Delegate handler)
+        {
+            Contract.Require(evt, "evt");
+            Contract.Require(handler, "handler");
+
+            AddHandler(evt, handler, false);
+        }
+
+        /// <summary>
+        /// Adds a handler for a routed event to the element.
+        /// </summary>
+        /// <param name="evt">A <see cref="RoutedEvent"/> that identifies the routed event for which to add a handler.</param>
+        /// <param name="handler">A delegate that represents the handler to add to the element for the specified routed event.</param>
+        /// <param name="handledEventsToo">A value indicating whether the handler should receive events which have already been handled by other handlers.</param>
+        public void AddHandler(RoutedEvent evt, Delegate handler, Boolean handledEventsToo)
+        {
+            Contract.Require(evt, "evt");
+            Contract.Require(handler, "handler");
+
+            // TODO: make use of handledEventsToo
+            routedEventManager.Add(evt, handler);
+        }
+
+        /// <summary>
+        /// Removes a handler for a routed event from the element.
+        /// </summary>
+        /// <param name="evt">A <see cref="RoutedEvent"/> that identifies the routed event for which to remove a handler.</param>
+        /// <param name="handler">A delegate that represents the handler to remove from the element for the specified routed event.</param>
+        public void RemoveHandler(RoutedEvent evt, Delegate handler)
+        {
+            Contract.Require(evt, "evt");
+            Contract.Require(handler, "handler");
+
+            routedEventManager.Remove(evt, handler);
+        }
+
+        /// <summary>
         /// Gets the Ultraviolet context that created this element.
         /// </summary>
         public UltravioletContext Ultraviolet
@@ -1658,6 +1699,27 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
         }
 
+        /// <summary>
+        /// Gets the element's handler for the specified routed event.
+        /// </summary>
+        /// <param name="evt">A <see cref="RoutedEvent"/> that identifies the routed event for which to retrieve a handler.</param>
+        /// <returns>A <see cref="Delegate"/> that represents this element's handler for the specified event, or <c>null</c> if no handler is registered.</returns>
+        protected internal Delegate GetHandler(RoutedEvent evt)
+        {
+            return routedEventManager.Get(evt);
+        }
+
+        /// <summary>
+        /// Gets the element's handler for the specified routed event.
+        /// </summary>
+        /// <typeparam name="T">The type of delegate to retrieve.</typeparam>
+        /// <param name="evt">A <see cref="RoutedEvent"/> that identifies the routed event for which to retrieve a handler.</param>
+        /// <returns>A <see cref="Delegate"/> that represents this element's handler for the specified event, or <c>null</c> if no handler is registered.</returns>
+        protected internal T GetHandler<T>(RoutedEvent evt) where T : class
+        {
+            return routedEventManager.Get<T>(evt);
+        }
+
         /// <inheritdoc/>
         protected internal sealed override Object DependencyDataSource
         {
@@ -1668,6 +1730,27 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         protected internal sealed override DependencyObject DependencyContainer
         {
             get { return Parent; }
+        }
+
+        /// <summary>
+        /// Gets the invocation delegate for the specified routed event.
+        /// </summary>
+        /// <param name="evt">A <see cref="RoutedEvent"/> that identifies the routed event for which to retrieve an invocation delegate.</param>
+        /// <returns>A <see cref="Delegate"/> which will invoke the specified event.</returns>
+        protected static Delegate GetInvocationDelegate(RoutedEvent evt)
+        {
+            return evt.InvocationDelegate;
+        }
+
+        /// <summary>
+        /// Gets the invocation delegate for the specified routed event.
+        /// </summary>
+        /// <typeparam name="T">The type of invocation delegate to retrieve.</typeparam>
+        /// <param name="evt">A <see cref="RoutedEvent"/> that identifies the routed event for which to retrieve an invocation delegate.</param>
+        /// <returns>A delegate of the requested type which will invoke the specified event.</returns>
+        protected static T GetInvocationDelegate<T>(RoutedEvent evt) where T : class
+        {
+            return evt.InvocationDelegate as T;
         }
 
         /// <summary>
@@ -2772,5 +2855,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         // The collection of active storyboard clocks on this element.
         private readonly Dictionary<Storyboard, StoryboardClock> storyboardClocks = 
             new Dictionary<Storyboard, StoryboardClock>();
+
+        // The element's routed event manager.
+        private readonly RoutedEventManager routedEventManager = new RoutedEventManager();
     }
 }

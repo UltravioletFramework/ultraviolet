@@ -64,6 +64,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public static readonly StringResource CollectionCannotBeCleared            = new StringResource(StringDatabase, "COLLECTION_CANNOT_BE_CLEARED");
         public static readonly StringResource ContentPresenterIsNotAComponent      = new StringResource(StringDatabase, "CONTENT_PRESENTER_IS_NOT_A_COMPONENT");
         public static readonly StringResource MeasureMustProduceFiniteDesiredSize  = new StringResource(StringDatabase, "MEASURE_MUST_PRODUCE_FINITE_DESIRED_SIZE");
+        public static readonly StringResource InvalidRoutedEventDelegate           = new StringResource(StringDatabase, "INVALID_ROUTED_EVENT_DELEGATE");
+        public static readonly StringResource InvalidRoutingStrategy               = new StringResource(StringDatabase, "INVALID_ROUTING_STRATEGY");
 #pragma warning restore 1591
     }
 }

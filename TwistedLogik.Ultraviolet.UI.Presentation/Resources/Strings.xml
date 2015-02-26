@@ -205,4 +205,14 @@
       <Variant>The MeasureOverride() method must always produce a finite desired size, even if the constraining size is infinite.</Variant>
     </en-US>
   </String>
+  <String Key="INVALID_ROUTED_EVENT_DELEGATE">
+    <en-US>
+      <Variant>The specified delegate type '{0}' is not valid for routed events. Routed event delegates must take a UIElement as their first parameter and a by-ref Boolean as their final parameter, and must return void.</Variant>
+    </en-US>
+  </String>
+  <String Key="INVALID_ROUTING_STRATEGY">
+    <en-US>
+      <Variant>The specified routing strategy is invalid.</Variant>
+    </en-US>
+  </String>
 </LocalizedStrings>
