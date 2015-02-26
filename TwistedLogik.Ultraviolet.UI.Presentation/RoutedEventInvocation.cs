@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using TwistedLogik.Nucleus;
-using System.Reflection;
 using System.Linq.Expressions;
+using System.Reflection;
+using TwistedLogik.Nucleus;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation
 {
@@ -57,21 +57,39 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <returns>The invocation delegate for the specified routed event.</returns>
         private static Delegate CreateInvocationDelegateForBubbleStrategy(RoutedEvent evt)
         {
+            /* BUBBLE STRATEGY
+             * For a given event delegate type TDelegate, we're constructing a method which basically looks like this:
+             * 
+             * void fn(UIElement element, p1, p2, ..., pN, ref Boolean handled)
+             * {
+             *      handled = false;
+             *      
+             *      var current       = element;
+             *      var eventDelegate = default(TDelegate);
+             *      
+             *      while (ShouldContinueBubbling(element, ref current))
+             *      {
+             *          if (ShouldEventBeRaisedForElement(current, handled))
+             *          {
+             *              eventDelegate = GetRoutedEventHandlerForElement(current, RoutedEventID);
+             *              if (eventDelegate != null)
+             *              {
+             *                  eventDelegate(current, p1, p2, ..., pN, ref handled); 
+             *              }
+             *          }
+             *      }
+             * }
+             */
+
             var evtInvoke = evt.DelegateType.GetMethod("Invoke");
             var evtParams = evtInvoke.GetParameters().ToArray();
 
-            var expParams = new List<ParameterExpression>();
-            foreach (var evtParam in evtParams)
-            {
-                var extParam = Expression.Parameter(evtParam.ParameterType, evtParam.Name);
-                expParams.Add(extParam);
-            }
-
+            var expParams       = evtParams.Select(x => Expression.Parameter(x.ParameterType, x.Name)).ToList();
             var expParamElement = expParams.First();
             var expParamHandled = expParams.Last();
 
             var expParts = new List<Expression>();
-            var expVars = new List<ParameterExpression>();
+            var expVars  = new List<ParameterExpression>();
 
             var expAssignedHandledToFalse = Expression.Assign(expParamHandled, Expression.Constant(false));
             expParts.Add(expAssignedHandledToFalse);
@@ -117,7 +135,48 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <returns>The invocation delegate for the specified routed event.</returns>
         private static Delegate CreateInvocationDelegateForDirectStrategy(RoutedEvent evt)
         {
-            throw new NotImplementedException();
+            /* DIRECT STRATEGY
+             * The simplest strategy; the event is only invoked on the element that raised it. 
+             * Our invocation delegate looks something like this:
+             * 
+             * void fn(UIElement element, p1, p2, ..., pN, ref Boolean handled)
+             * {
+             *      var handled       = false;
+             *      var eventDelegate = GetRoutedEventHandlerForElement(element);
+             *      if (eventDelegate != null)
+             *      {
+             *          eventDelegate(element, p1, p2, ..., pN, ref handled);
+             *      }
+             * }
+             */
+
+            var evtInvoke = evt.DelegateType.GetMethod("Invoke");
+            var evtParams = evtInvoke.GetParameters().ToArray();
+
+            var expParams       = evtParams.Select(x => Expression.Parameter(x.ParameterType, x.Name)).ToList();
+            var expParamElement = expParams.First();
+            var expParamHandled = expParams.Last();
+
+            var expParts = new List<Expression>();
+            var expVars  = new List<ParameterExpression>();
+
+            var expAssignedHandledToFalse = Expression.Assign(expParamHandled, Expression.Constant(false));
+            expParts.Add(expAssignedHandledToFalse);
+
+            var varEventDelegate = Expression.Variable(evt.DelegateType, "eventDelegate");
+            expVars.Add(varEventDelegate);
+
+            var expInvoke = Expression.Block(
+                Expression.Assign(varEventDelegate,
+                    Expression.Convert(Expression.Call(miGetRoutedEventHandlerForElement, expParamElement, Expression.Constant(evt)), evt.DelegateType)),
+                Expression.IfThen(
+                    Expression.NotEqual(varEventDelegate, Expression.Constant(null)),
+                    Expression.Invoke(varEventDelegate, expParams)
+                )
+            );
+            expParts.Add(expInvoke);
+
+            return Expression.Lambda(evt.DelegateType, Expression.Block(expVars, expParts), expParams).Compile();
         }
 
         /// <summary>
@@ -127,6 +186,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <returns>The invocation delegate for the specified routed event.</returns>
         private static Delegate CreateInvocationDelegateForTunnelStrategy(RoutedEvent evt)
         {
+            /* TUNNEL STRATEGY
+             * Basically the opposite of the bubble strategy; we start at the root of the tree and work down.
+             * 
+             * void fn(UIElement element, p1, p2, ..., pN, ref Boolean handled)
+             * {
+             *      TODO
+             * }
+             */
+
             throw new NotImplementedException();
         }
 
