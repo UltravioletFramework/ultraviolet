@@ -207,23 +207,25 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Finds the identifier of the specified dependency property on the specified UI element.
         /// </summary>
+        /// <param name="uv">The Ultraviolet context.</param>
         /// <param name="uiElement">The UI element to search for the dependency property.</param>
         /// <param name="name">The name of the dependency property for which to search.</param>
         /// <returns>The identifier of the specified dependency property, or <c>null</c> if no such property was found.</returns>
         private static DependencyProperty FindElementDependencyProperty(UltravioletContext uv, UIElement uiElement, String name)
         {
             var isAttachedEvent = false;
-            return FindElementDependencyProperty(uiElement, name, out isAttachedEvent);
+            return FindElementDependencyProperty(uv, uiElement, name, out isAttachedEvent);
         }
 
         /// <summary>
         /// Finds the identifier of the specified dependency property on the specified UI element.
         /// </summary>
+        /// <param name="uv">The Ultraviolet context.</param>
         /// <param name="uiElement">The UI element to search for the dependency property.</param>
         /// <param name="name">The name of the dependency property for which to search.</param>
         /// <param name="isAttachedEvent">A value indicating whether the specified property is actually an attached event.</param>
         /// <returns>The identifier of the specified dependency property, or <c>null</c> if no such property was found.</returns>
-        private static DependencyProperty FindElementDependencyProperty(UIElement uiElement, String name, out Boolean isAttachedEvent)
+        private static DependencyProperty FindElementDependencyProperty(UltravioletContext uv, UIElement uiElement, String name, out Boolean isAttachedEvent)
         {
             isAttachedEvent = false;
 
