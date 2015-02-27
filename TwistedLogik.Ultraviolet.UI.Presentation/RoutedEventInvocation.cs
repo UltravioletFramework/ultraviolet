@@ -19,6 +19,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             miShouldEventBeRaisedForElement   = typeof(RoutedEventInvocation).GetMethod("ShouldEventBeRaisedForElement", BindingFlags.NonPublic | BindingFlags.Static);
             miShouldContinueBubbling          = typeof(RoutedEventInvocation).GetMethod("ShouldContinueBubbling", BindingFlags.NonPublic | BindingFlags.Static);
+            miShouldContinueTunnelling        = typeof(RoutedEventInvocation).GetMethod("ShouldContinueTunnelling", BindingFlags.NonPublic | BindingFlags.Static);
             miGetRoutedEventHandlerForElement = typeof(RoutedEventInvocation).GetMethod("GetRoutedEventHandlerForElement", BindingFlags.NonPublic | BindingFlags.Static);
         }
 
@@ -188,14 +189,71 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             /* TUNNEL STRATEGY
              * Basically the opposite of the bubble strategy; we start at the root of the tree and work down.
+             * Note that ShouldContinueTunnelling() builds a stack representing the path to take on the first call.
              * 
              * void fn(UIElement element, p1, p2, ..., pN, ref Boolean handled)
              * {
-             *      TODO
+             *      handled = false;
+             * 
+             *      var current       = default(UIElement);
+             *      var eventDelegate = default(TDelegate);
+             *      
+             *      while (ShouldContinueTunnelling(element, ref current))
+             *      {
+             *          eventDelegate = GetRoutedEventHandlerForElement(current, RoutedEventID);
+             *          if (eventDelegate != null)
+             *          {
+             *              eventDelegate(current, p1, p2, ..., pN, ref handled); 
+             *          }
+             *      }
              * }
              */
 
-            throw new NotImplementedException();
+            var evtInvoke = evt.DelegateType.GetMethod("Invoke");
+            var evtParams = evtInvoke.GetParameters().ToArray();
+
+            var expParams       = evtParams.Select(x => Expression.Parameter(x.ParameterType, x.Name)).ToList();
+            var expParamElement = expParams.First();
+            var expParamHandled = expParams.Last();
+
+            var expParts = new List<Expression>();
+            var expVars  = new List<ParameterExpression>();
+
+            var expAssignedHandledToFalse = Expression.Assign(expParamHandled, Expression.Constant(false));
+            expParts.Add(expAssignedHandledToFalse);
+
+            var varCurrent = Expression.Variable(typeof(UIElement), "current");
+            expVars.Add(varCurrent);
+
+            var varEventDelegate = Expression.Variable(evt.DelegateType, "eventDelegate");
+            expVars.Add(varEventDelegate);
+
+            var innerEventHandlerParams = new List<ParameterExpression>();
+            innerEventHandlerParams.Add(varCurrent);
+            innerEventHandlerParams.AddRange(expParams.Skip(1));
+
+            var expWhileBreak = Expression.Label();
+            var expWhileTunnel = Expression.Loop(
+                Expression.IfThenElse(
+                    Expression.Call(miShouldContinueTunnelling, expParamElement, varCurrent),
+                    Expression.IfThen(
+                        Expression.Call(miShouldEventBeRaisedForElement, varCurrent, expParamHandled),
+                        Expression.Block(
+                            Expression.Assign(varEventDelegate,
+                                Expression.Convert(Expression.Call(miGetRoutedEventHandlerForElement, varCurrent, Expression.Constant(evt)), evt.DelegateType)),
+                            Expression.IfThen(
+                                Expression.NotEqual(varEventDelegate, Expression.Constant(null)),
+                                Expression.Invoke(varEventDelegate, innerEventHandlerParams)
+                            )
+                        )
+                    ),
+                    Expression.Break(expWhileBreak)
+                ),
+                expWhileBreak
+            );
+            expParts.Add(expWhileTunnel);
+
+            return Expression.Lambda(evt.DelegateType, Expression.Block(expVars, expParts), expParams).Compile();
         }
 
         /// <summary>
@@ -263,6 +321,28 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Gets a value indicating whether the event being processed should continue tunnelling down the 
+        /// element hierarchy, and if so, sets the <paramref name="current"/> parameter to
+        /// the next object to be processed.
+        /// </summary>
+        /// <param name="first">The first element to process.</param>
+        /// <param name="current">The element that is currently being processed.</param>
+        /// <returns><c>true</c> if the event should continue tunnelling; otherwise, <c>false</c>.</returns>
+        private static Boolean ShouldContinueTunnelling(UIElement first, ref UIElement current)
+        {
+            if (current == null)
+                PrepareTunnellingStack(first);
+
+            if (tunnellingStack.Count > 0)
+            {
+                var next = tunnellingStack.Pop();
+                current = next;
+                return true;
+            }
+            return false;
+        }
+
+        /// <summary>
         /// Gets the specified routed event handler for an element.
         /// </summary>
         /// <param name="current">The element for which to retrieve the routed event handler.</param>
@@ -273,9 +353,31 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             return current.GetHandler(evt);
         }
 
+        /// <summary>
+        /// Prepares the tunnelling stack to process a tunnelled event.
+        /// </summary>
+        /// <param name="element">The element which raised the event.</param>
+        private static void PrepareTunnellingStack(UIElement element)
+        {
+            if (tunnellingStack == null)
+                tunnellingStack = new Stack<UIElement>();
+
+            tunnellingStack.Clear();
+
+            for (var current = element; current != null; current = current.DependencyContainer as UIElement)
+            {
+                tunnellingStack.Push(current);
+            }
+        }
+
         // Cached method info for methods used by invocation delegates.
         private static readonly MethodInfo miShouldEventBeRaisedForElement;
         private static readonly MethodInfo miShouldContinueBubbling;
+        private static readonly MethodInfo miShouldContinueTunnelling;
         private static readonly MethodInfo miGetRoutedEventHandlerForElement;
+
+        // The stack used to track the tunnelling path for tunnelled events.
+        [ThreadStatic]
+        private static Stack<UIElement> tunnellingStack;
     }
 }
