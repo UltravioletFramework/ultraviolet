@@ -1,6 +1,5 @@
 ﻿using System;
-using System.Linq;
-using System.Linq.Expressions;
+using TwistedLogik.Nucleus;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation
 {
@@ -50,6 +49,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public static RoutedEvent FindByName(String name, Type ownerType)
         {
             return RoutedEventSystem.FindByName(name, ownerType);
+        }
+
+        /// <summary>
+        /// Gets the invocation delegate for the specified routed event.
+        /// </summary>
+        /// <typeparam name="T">The type of invocation delegate to retrieve.</typeparam>
+        /// <param name="evt">A <see cref="RoutedEvent"/> that identifies the routed event for which to retrieve an invocation delegate.</param>
+        /// <returns>A delegate of the requested type which will invoke the specified event.</returns>
+        public static T GetInvocationDelegate<T>(RoutedEvent evt) where T : class
+        {
+            Contract.Require(evt, "evt");
+
+            return evt.InvocationDelegate as T;
         }
 
         /// <summary>

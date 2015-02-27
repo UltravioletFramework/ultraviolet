@@ -223,7 +223,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="uv">The Ultraviolet context.</param>
         /// <param name="uiElement">The UI element to search for the dependency property.</param>
         /// <param name="name">The name of the dependency property for which to search.</param>
-        /// <param name="isAttachedEvent">A value indicating whether the specified property is actually an attached event.</param>
+        /// <param name="isAttachedEvent">A value indicating whether the specified name actually represents an attached event.</param>
         /// <returns>The identifier of the specified dependency property, or <c>null</c> if no such property was found.</returns>
         private static DependencyProperty FindElementDependencyProperty(UltravioletContext uv, UIElement uiElement, String name, out Boolean isAttachedEvent)
         {
@@ -237,12 +237,38 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 if (!uv.GetUI().GetPresentationFoundation().GetElementType(attachedContainer, out attachedContainerType))
                     throw new InvalidOperationException(PresentationStrings.UnrecognizedUIElement.Format(attachedContainer));
 
-                return DependencyProperty.FindByName(attachedProperty, attachedContainerType);
+                return FindDependencyPropertyByName(attachedProperty, attachedContainerType, out isAttachedEvent);
             }
             else
             {
-                return DependencyProperty.FindByName(name, uiElement.GetType());
+                return FindDependencyPropertyByName(name, uiElement.GetType(), out isAttachedEvent);
             }
+        }
+
+        /// <summary>
+        /// Searches the specified container type for a dependency property with the specified name.
+        /// </summary>
+        /// <param name="propertyName">The name of the dependency property to retrieve.</param>
+        /// <param name="propertyContainerType">The type of dependency object to search for a property.</param>
+        /// <param name="isAttachedEvent">A value indicating whether the specified name actually represents an attached event.</param>
+        /// <returns>The identifier of the specified dependency property, or <c>null</c> if no such property was found.</returns>
+        private static DependencyProperty FindDependencyPropertyByName(String propertyName, Type propertyContainerType, out Boolean isAttachedEvent)
+        {
+            isAttachedEvent = false;
+
+            var dprop = DependencyProperty.FindByName(propertyName, propertyContainerType);
+            if (dprop != null)
+            {
+                return dprop;
+            }
+
+            var attachedEvent = RoutedEvent.FindByName(propertyName, propertyContainerType);
+            if (attachedEvent != null)
+            {
+                isAttachedEvent = true;
+            }
+
+            return null;
         }
 
         /// <summary>
@@ -419,21 +445,32 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 if (attrName == "BindingContext")
                     continue;
 
+                var lambda            = default(Delegate);
+                var attachedEvent     = default(RoutedEvent);
+                var attachedContainer = String.Empty;
+                var attachedProperty  = String.Empty;
+
+                var isAttached = IsAttachedPropertyOrEvent(attrName, out attachedContainer, out attachedProperty);
+                if (isAttached)
+                {
+                    Type attachedContainerType;
+                    if (!uv.GetUI().GetPresentationFoundation().GetElementType(attachedContainer, out attachedContainerType))
+                        throw new InvalidOperationException(PresentationStrings.UnrecognizedUIElement.Format(attachedContainer));
+
+                    attachedEvent = RoutedEvent.FindByName(attachedProperty, attachedContainerType);
+                    if (attachedEvent != null)
+                    {
+                        lambda = CreateEventDelegate(uiElement, attachedEvent.DelegateType, attr.Value, context);
+                        uiElement.AddHandler(attachedEvent, lambda);
+                        return;
+                    }
+                }
+
                 var attrEvent = uiElement.GetType().GetEvent(attrName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
                 if (attrEvent == null || String.IsNullOrEmpty(attr.Value))
                     continue;
 
-                Delegate lambda;
-                if (context.ComponentOwner != null)
-                {
-                    lambda = BindingExpressions.CreateElementBoundEventDelegate(context.ComponentOwner, 
-                        attrEvent.EventHandlerType, attr.Value);
-                }
-                else
-                {
-                    lambda = BindingExpressions.CreateViewModelBoundEventDelegate(uiElement, context.ViewModelType, 
-                        attrEvent.EventHandlerType, attr.Value);
-                }
+                lambda = CreateEventDelegate(uiElement, attrEvent.EventHandlerType, attr.Value, context);
                 attrEvent.AddEventHandler(uiElement, lambda);
             }
         }
@@ -554,14 +591,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="context">The current instantiation context.</param>
         private static void PopulateElementProperty(UIElement uiElement, String name, String value, InstantiationContext context)
         {
-            var dprop = FindElementDependencyProperty(context.Ultraviolet, uiElement, name);
+            var isAttachedEvent = false;
+
+            var dprop = FindElementDependencyProperty(context.Ultraviolet, uiElement, name, out isAttachedEvent);
             if (dprop != null)
             {
                 BindOrSetDependencyProperty(uiElement, dprop, value, context);
             }
             else
             {
-                if (IsEvent(uiElement, name))
+                if (IsEvent(uiElement, name) || isAttachedEvent)
                     return;
 
                 var propInfo = FindElementStandardProperty(uiElement, name);
@@ -903,6 +942,26 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         private static Boolean IsBindingExpression(String value)
         {
             return BindingExpressions.IsBindingExpression(value);
+        }
+
+        /// <summary>
+        /// Creates a delegate for binding to an event.
+        /// </summary>
+        /// <param name="uiElement">The element to which the event is being bound.</param>
+        /// <param name="handlerType">The event handler's type.</param>
+        /// <param name="handlerName">The event handler's name within the view model or control.</param>
+        /// <param name="context">The current instantiation context.</param>
+        /// <returns>The specified delegate.</returns>
+        private static Delegate CreateEventDelegate(UIElement uiElement, Type handlerType, String handlerName, InstantiationContext context)
+        {
+            if (context.ComponentOwner != null)
+            {
+                return BindingExpressions.CreateElementBoundEventDelegate(context.ComponentOwner, handlerType, handlerName);
+            }
+            else
+            {
+                return BindingExpressions.CreateViewModelBoundEventDelegate(uiElement, context.ViewModelType, handlerType, handlerName);
+            }
         }
 
         // Reflection information.

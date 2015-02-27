@@ -1755,27 +1755,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
-        /// Gets the invocation delegate for the specified routed event.
-        /// </summary>
-        /// <param name="evt">A <see cref="RoutedEvent"/> that identifies the routed event for which to retrieve an invocation delegate.</param>
-        /// <returns>A <see cref="Delegate"/> which will invoke the specified event.</returns>
-        protected static Delegate GetInvocationDelegate(RoutedEvent evt)
-        {
-            return evt.InvocationDelegate;
-        }
-
-        /// <summary>
-        /// Gets the invocation delegate for the specified routed event.
-        /// </summary>
-        /// <typeparam name="T">The type of invocation delegate to retrieve.</typeparam>
-        /// <param name="evt">A <see cref="RoutedEvent"/> that identifies the routed event for which to retrieve an invocation delegate.</param>
-        /// <returns>A delegate of the requested type which will invoke the specified event.</returns>
-        protected static T GetInvocationDelegate<T>(RoutedEvent evt) where T : class
-        {
-            return evt.InvocationDelegate as T;
-        }
-
-        /// <summary>
         /// Raises the <see cref="Drawing"/> event.
         /// </summary>
         /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Draw(UltravioletTime)"/>.</param>
