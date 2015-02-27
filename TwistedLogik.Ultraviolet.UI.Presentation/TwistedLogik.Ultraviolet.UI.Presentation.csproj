@@ -185,6 +185,7 @@
     <Compile Include="RoutedEvent.cs" />
     <Compile Include="RoutedEventInvocation.cs" />
     <Compile Include="RoutedEventManager.cs" />
+    <Compile Include="RoutedEventHandlerMetadata.cs" />
     <Compile Include="RoutedEventSystem.cs" />
     <Compile Include="RoutingStrategy.cs" />
     <Compile Include="SourcedAssetID.cs" />

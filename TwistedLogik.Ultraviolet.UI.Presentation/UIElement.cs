@@ -652,8 +652,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             Contract.Require(evt, "evt");
             Contract.Require(handler, "handler");
 
-            // TODO: make use of handledEventsToo
-            routedEventManager.Add(evt, handler);
+            routedEventManager.Add(evt, handler, handledEventsToo);
         }
 
         /// <summary>
@@ -1359,6 +1358,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Gets the element's list of event handlers for the specified routed event.
+        /// </summary>
+        /// <param name="evt">A <see cref="RoutedEvent"/> that identifies the routed event for which to retrieve handlers.</param>
+        /// <returns>The element's internal list of event handlers for the specified routed event.</returns>
+        internal List<RoutedEventHandlerMetadata> GetHandlers(RoutedEvent evt)
+        {
+            return routedEventManager.GetHandlers(evt);
+        }
+
+        /// <summary>
         /// Gets the stylesheet that was most recently passed to the <see cref="Style(UvssDocument)"/> method.
         /// </summary>
         internal UvssDocument MostRecentStylesheet
@@ -1697,27 +1706,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         protected internal virtual void RemoveChild(UIElement child)
         {
 
-        }
-
-        /// <summary>
-        /// Gets the element's handler for the specified routed event.
-        /// </summary>
-        /// <param name="evt">A <see cref="RoutedEvent"/> that identifies the routed event for which to retrieve a handler.</param>
-        /// <returns>A <see cref="Delegate"/> that represents this element's handler for the specified event, or <c>null</c> if no handler is registered.</returns>
-        protected internal Delegate GetHandler(RoutedEvent evt)
-        {
-            return routedEventManager.Get(evt);
-        }
-
-        /// <summary>
-        /// Gets the element's handler for the specified routed event.
-        /// </summary>
-        /// <typeparam name="T">The type of delegate to retrieve.</typeparam>
-        /// <param name="evt">A <see cref="RoutedEvent"/> that identifies the routed event for which to retrieve a handler.</param>
-        /// <returns>A <see cref="Delegate"/> that represents this element's handler for the specified event, or <c>null</c> if no handler is registered.</returns>
-        protected internal T GetHandler<T>(RoutedEvent evt) where T : class
-        {
-            return routedEventManager.Get<T>(evt);
         }
 
         /// <inheritdoc/>
