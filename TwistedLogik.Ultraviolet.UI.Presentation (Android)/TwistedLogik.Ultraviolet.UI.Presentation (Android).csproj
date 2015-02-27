@@ -350,6 +350,9 @@
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Elements\WrapPanel.cs">
       <Link>Elements\WrapPanel.cs</Link>
     </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\FooBar.cs">
+      <Link>FooBar.cs</Link>
+    </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\FrameworkElement.cs">
       <Link>FrameworkElement.cs</Link>
     </Compile>

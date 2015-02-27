@@ -179,7 +179,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             return element;
         }
-
+        
         /// <summary>
         /// Finds the identifier of the specified dependency property on the specified UI element.
         /// </summary>
@@ -188,9 +188,24 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <returns>The identifier of the specified dependency property, or <c>null</c> if no such property was found.</returns>
         private static DependencyProperty FindElementDependencyProperty(UIElement uiElement, String name)
         {
+            var isAttachedEvent = false;
+            return FindElementDependencyProperty(uiElement, name, out isAttachedEvent);
+        }
+
+        /// <summary>
+        /// Finds the identifier of the specified dependency property on the specified UI element.
+        /// </summary>
+        /// <param name="uiElement">The UI element to search for the dependency property.</param>
+        /// <param name="name">The name of the dependency property for which to search.</param>
+        /// <param name="isAttachedEvent">A value indicating whether the specified property is actually an attached event.</param>
+        /// <returns>The identifier of the specified dependency property, or <c>null</c> if no such property was found.</returns>
+        private static DependencyProperty FindElementDependencyProperty(UIElement uiElement, String name, out Boolean isAttachedEvent)
+        {
+            isAttachedEvent = false;
+
             var attachedContainer = String.Empty;
             var attachedProperty  = String.Empty;
-            if (IsAttachedProperty(name, out attachedContainer, out attachedProperty))
+            if (IsAttachedPropertyOrEvent(name, out attachedContainer, out attachedProperty))
             {
                 if (uiElement.Parent != null && String.Equals(uiElement.Parent.Name, attachedContainer, StringComparison.InvariantCulture))
                 {
@@ -836,7 +851,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="container">The attached property's container type.</param>
         /// <param name="property">The attached property's property name.</param>
         /// <returns><c>true</c> if the specified attribtue name represents an attached property; otherwise, <c>false</c>.</returns>
-        private static Boolean IsAttachedProperty(String name, out String container, out String property)
+        private static Boolean IsAttachedPropertyOrEvent(String name, out String container, out String property)
         {
             container = null;
             property  = null;
