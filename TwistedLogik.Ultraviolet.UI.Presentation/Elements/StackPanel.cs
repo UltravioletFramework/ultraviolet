@@ -68,7 +68,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
                 }
             }
 
-            contentSize = new Size2D(contentWidth, contentHeight);
+            contentSize = new Size2D(
+                Math.Min(availableSize.Width, contentWidth), 
+                Math.Min(availableSize.Height, contentHeight));
+
             return contentSize;
         }
 
@@ -82,16 +85,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             {
                 foreach (var child in Children)
                 {
-                    child.Arrange(new RectangleD(positionX, positionY, contentSize.Width, child.DesiredSize.Height));
-                    positionY += child.RenderSize.Height;
+                    child.Arrange(new RectangleD(positionX, positionY, finalSize.Width, child.DesiredSize.Height));
+                    positionY += child.DesiredSize.Height;
                 }
             }
             else
             {
                 foreach (var child in Children)
                 {
-                    child.Arrange(new RectangleD(positionX, positionY, child.DesiredSize.Width, contentSize.Height));
-                    positionX += child.RenderSize.Width;
+                    child.Arrange(new RectangleD(positionX, positionY, child.DesiredSize.Width, finalSize.Height));
+                    positionX += child.DesiredSize.Width;
                 }
             }
 

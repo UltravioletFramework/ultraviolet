@@ -101,7 +101,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 }
             }
 
-            if (conversionType == typeof(Object))
+            if (conversionType.IsAssignableFrom(originalType))
                 return value;
 
             return conversionType.IsClass ? null : Activator.CreateInstance(conversionType);

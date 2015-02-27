@@ -43,7 +43,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         static BindingExpressions()
         {
             miReferenceEquals = typeof(Object).GetMethod("ReferenceEquals", new[] { typeof(Object), typeof(Object) });
-            miObjectEquals    = typeof(Object).GetMethod("Equals", new[] { typeof(Object) });
+            miObjectEquals    = typeof(Object).GetMethod("Equals", BindingFlags.Public | BindingFlags.Static, null, new[] { typeof(Object), typeof(Object) }, null);
             miNullableEquals  = typeof(Nullable).GetMethods().Where(x => x.Name == "Equals" && x.IsGenericMethod).Single();
         }
 
@@ -288,6 +288,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
                 if (!comparerRegistry.TryGetValue(type, out typeComparer))
                 {
+                    if (type == typeof(System.Collections.IEnumerable))
+                        Console.WriteLine();
+
                     if (type.IsClass)
                     {
                         typeComparer = GetReferenceComparisonFunction(type);
@@ -409,7 +412,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var arg2   = Expression.Convert(param2, typeof(Object));
 
             var delegateType = typeof(DataBindingComparer<>).MakeGenericType(type);
-            return Expression.Lambda(delegateType, Expression.Call(arg1, miObjectEquals, arg2), param1, param2).Compile();
+            return Expression.Lambda(delegateType, Expression.Call(miObjectEquals, arg1, arg2), param1, param2).Compile();
         }
 
         /// <summary>

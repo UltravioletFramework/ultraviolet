@@ -111,6 +111,13 @@
     <Compile Include="DrawingContext.cs" />
     <Compile Include="DrawingContext.OpacityState.cs" />
     <Compile Include="Elements\Border.cs" />
+    <Compile Include="Elements\ItemCollection.cs" />
+    <Compile Include="Elements\ItemCollection.IList.cs" />
+    <Compile Include="Elements\ItemCollection.IEnumerable.cs" />
+    <Compile Include="Elements\ItemsControl.cs" />
+    <Compile Include="Elements\ListBoxItem.cs" />
+    <Compile Include="Elements\ListBox.cs" />
+    <Compile Include="Elements\Selector.cs" />
     <Compile Include="Elements\VSlider.cs" />
     <Compile Include="Elements\HSlider.cs" />
     <Compile Include="Elements\SliderBase.cs" />
@@ -291,11 +298,16 @@
   <ItemGroup>
     <EmbeddedResource Include="Elements\Templates\VSlider.xml" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="Elements\Templates\ListBox.xml" />
+  </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\Strings.xml">
       <SubType>Designer</SubType>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Elements\Templates\ListBoxItem.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

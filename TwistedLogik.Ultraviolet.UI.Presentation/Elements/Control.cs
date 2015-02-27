@@ -454,7 +454,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <returns></returns>
         protected virtual Size2D MeasureContent(Size2D availableSize)
         {
-            return availableSize;
+            return Size2D.Zero;
         }
 
         /// <summary>

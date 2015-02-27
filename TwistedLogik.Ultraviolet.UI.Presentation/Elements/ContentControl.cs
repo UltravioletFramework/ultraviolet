@@ -152,9 +152,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <inheritdoc/>
         protected override void ReloadContentCore(Boolean recursive)
         {
-            if (recursive && contentElement != null)
+            if (contentElement != null)
             {
-                contentElement.ReloadContent(true);
+                if (recursive)
+                {
+                    contentElement.ReloadContent(true);
+                }
+            }
+            else
+            {
+                UpdateTextParserCache();
             }
             base.ReloadContentCore(recursive);
         }
@@ -253,23 +260,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <inheritdoc/>
         protected override Size2D ArrangeContent(Size2D finalSize, ArrangeOptions options)
         {
-            var padding = GetTotalContentPadding();
-
-            var contentSpace = RenderContentRegion.Size;
-
             if (contentElement != null)
             {
-                var contentX = LayoutUtil.PerformHorizontalAlignment(contentSpace, contentElement.DesiredSize, HorizontalContentAlignment);
-                var contentY = LayoutUtil.PerformVerticalAlignment(contentSpace, contentElement.DesiredSize, VerticalContentAlignment);
-
-                var contentPosition = new Point2D(contentX, contentY);
-                var contentRegion   = new RectangleD(contentPosition, contentElement.DesiredSize);
-
-                contentElement.Arrange(contentRegion);
+                contentElement.Arrange(RenderContentRegion);
             }
             else
             {
-                UpdateTextLayoutCache(contentSpace);
+                UpdateTextLayoutCache(RenderContentRegion.Size);
             }
             return finalSize;
         }
@@ -445,6 +442,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         {
             textParserResult.Clear();
 
+            if (View == null)
+                return;
+
             var content = Content;
             if (content != null && contentElement == null)
             {
@@ -462,6 +462,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         private void UpdateTextLayoutCache(Size2D availableSize)
         {
             textLayoutResult.Clear();
+
+            if (View == null)
+                return;
 
             if (textParserResult.Count > 0 && Font.IsLoaded)
             {

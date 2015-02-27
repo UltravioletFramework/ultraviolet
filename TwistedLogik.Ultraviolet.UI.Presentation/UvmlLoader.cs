@@ -45,7 +45,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             }
 
             var view    = new PresentationFoundationView(uv, viewModelType);
-            var context = new InstantiationContext(viewModelType);
+            var context = new InstantiationContext(uv, viewModelType);
 
             PopulateElement(uv, view.LayoutRoot, xml, context);
 
@@ -83,7 +83,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 return;
 
             var uv      = userControl.Ultraviolet;
-            var context = new InstantiationContext(viewModelType, userControl, bindingContext);
+            var context = new InstantiationContext(uv, viewModelType, userControl, bindingContext);
             var content = InstantiateAndPopulateElement(uv, null, contentElement, context);
 
             userControl.ComponentRoot = content;
@@ -97,13 +97,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="template">The component template that specified the control's component layout.</param>
         public static void LoadComponentRoot(Control control, XDocument template)
         {
+            var uv      = control.Ultraviolet;
+            var context = new InstantiationContext(uv, null, control, null);
+
+            PopulateElementProperties(uv, control, template.Root, context);
+
             var rootElement = template.Root.Elements().SingleOrDefault();
             if (rootElement == null)
                 return;
 
-            var uv      = control.Ultraviolet;
-            var context = new InstantiationContext(null, control, null);
-            var root    = (Panel)InstantiateAndPopulateElement(uv, null, rootElement, context);
+            var root = InstantiateAndPopulateElement(uv, null, rootElement, context);
 
             control.ComponentRoot = root;
             control.ContentPresenter = context.ContentPresenter;
@@ -120,13 +123,30 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <returns>The interface element that was instantiated.</returns>
         private static UIElement InstantiateElement(UltravioletContext uv, UIElement parent, XElement xmlElement, InstantiationContext context)
         {
+            var instance  = default(UIElement);            
             var id        = xmlElement.AttributeValueString("ID");
             var classes   = xmlElement.AttributeValueString("Class");
             var classList = (classes == null) ? Enumerable.Empty<String>() : classes.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
 
-            var instance = uv.GetUI().GetPresentationFoundation().InstantiateElementByName(xmlElement.Name.LocalName, id, context.ViewModelType, context.BindingContext);
-            if (instance == null)
-                throw new UvmlException(PresentationStrings.UnrecognizedUIElement.Format(xmlElement.Name.LocalName));
+            var name = xmlElement.Name.LocalName;
+            if (String.Equals("ItemsPanel", name, StringComparison.InvariantCulture))
+            {
+                var itemPresenterControl = context.ComponentOwner as ItemsControl;
+                if (itemPresenterControl == null)
+                    throw new UvmlException(PresentationStrings.ItemPresenterNotInItemsControl);
+
+                instance = itemPresenterControl.CreateItemsPanel();
+                if (instance == null)
+                    throw new InvalidOperationException(PresentationStrings.ItemPresenterNotCreatedCorrectly.Format(context.ComponentOwner.GetType().Name));
+
+                itemPresenterControl.ItemsPanelElement = (Panel)instance;
+            }
+            else
+            {
+                instance = uv.GetUI().GetPresentationFoundation().InstantiateElementByName(name, id, context.ViewModelType, context.BindingContext);
+                if (instance == null)
+                    throw new UvmlException(PresentationStrings.UnrecognizedUIElement.Format(xmlElement.Name.LocalName));
+            }
 
             foreach (var className in classList)
             {
@@ -136,6 +156,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var panel = parent as Panel;
             if (panel != null)
                 panel.Children.Add(instance);
+
+            var itemsControl = parent as ItemsControl;
+            if (itemsControl != null)
+                itemsControl.Items.Add(instance);
 
             var contentControl = parent as ContentControl;
             if (contentControl != null)
@@ -186,7 +210,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="uiElement">The UI element to search for the dependency property.</param>
         /// <param name="name">The name of the dependency property for which to search.</param>
         /// <returns>The identifier of the specified dependency property, or <c>null</c> if no such property was found.</returns>
-        private static DependencyProperty FindElementDependencyProperty(UIElement uiElement, String name)
+        private static DependencyProperty FindElementDependencyProperty(UltravioletContext uv, UIElement uiElement, String name)
         {
             var isAttachedEvent = false;
             return FindElementDependencyProperty(uiElement, name, out isAttachedEvent);
@@ -207,17 +231,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var attachedProperty  = String.Empty;
             if (IsAttachedPropertyOrEvent(name, out attachedContainer, out attachedProperty))
             {
-                if (uiElement.Parent != null && String.Equals(uiElement.Parent.Name, attachedContainer, StringComparison.InvariantCulture))
-                {
-                    return DependencyProperty.FindByName(attachedProperty, uiElement.Parent.GetType());
-                }
+                Type attachedContainerType;
+                if (!uv.GetUI().GetPresentationFoundation().GetElementType(attachedContainer, out attachedContainerType))
+                    throw new InvalidOperationException(PresentationStrings.UnrecognizedUIElement.Format(attachedContainer));
+
+                return DependencyProperty.FindByName(attachedProperty, attachedContainerType);
             }
             else
             {
                 return DependencyProperty.FindByName(name, uiElement.GetType());
             }
-
-            return null;
         }
 
         /// <summary>
@@ -250,12 +273,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Gets the type of the specified property.
         /// </summary>
+        /// <param name="uv">The Ultraviolet context.</param>
         /// <param name="uiElement">The UI element to search for the specified property.</param>
         /// <param name="name">The name of the property for which to search.</param>
         /// <returns>The type of the specified property.</returns>
-        private static Type FindPropertyType(UIElement uiElement, String name)
+        private static Type FindPropertyType(UltravioletContext uv, UIElement uiElement, String name)
         {
-            var dprop = FindElementDependencyProperty(uiElement, name);
+            var dprop = FindElementDependencyProperty(uv, uiElement, name);
             if (dprop != null)
             {
                 return dprop.PropertyType;
@@ -471,7 +495,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
                 // Special case handling for implementations of IEnumerable<T>: we create the
                 // collection's items from this XML element's children.
-                var propType = FindPropertyType(uiElement, propName);
+                var propType = FindPropertyType(uv, uiElement, propName);
                 var itemType = default(Type);
                 if (IsTypeAnEnumerableCollection(propType, out itemType))
                 {
@@ -502,7 +526,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="context">The current instantiation context.</param>
         private static void PopulateElementPropertyWithSerializer(UIElement uiElement, String name, XElement value, InstantiationContext context)
         {
-            var dprop = FindElementDependencyProperty(uiElement, name);
+            var dprop = FindElementDependencyProperty(context.Ultraviolet, uiElement, name);
             if (dprop != null)
             {
                 var propValue = LoadObjectWithSerializer(dprop.PropertyType, value, context);
@@ -528,7 +552,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="context">The current instantiation context.</param>
         private static void PopulateElementProperty(UIElement uiElement, String name, String value, InstantiationContext context)
         {
-            var dprop = FindElementDependencyProperty(uiElement, name);
+            var dprop = FindElementDependencyProperty(context.Ultraviolet, uiElement, name);
             if (dprop != null)
             {
                 BindOrSetDependencyProperty(uiElement, dprop, value, context);
@@ -572,7 +596,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             // Check if an instance already exists, and if so, try to clear it, then use it
             // as our instance instead of creating a new one.
-            var existingValue = (IEnumerable)GetPropertyValue(uiElement, name);
+            var existingValue = (IEnumerable)GetPropertyValue(context.Ultraviolet, uiElement, name);
             if (existingValue != null)
             {
                 var clearMethod = existingValue.GetType().GetMethod("Clear", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance, 
@@ -605,7 +629,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                     enumInstance = (IEnumerable)ctor.Invoke(new Object[] { items });
                 }
 
-                SetPropertyValue(uiElement, name, enumInstance);
+                SetPropertyValue(context.Ultraviolet, uiElement, name, enumInstance);
             }
             else
             {
@@ -671,8 +695,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             var xmlChildren = xmlElement.Elements().Where(x => !ElementNameRepresentsProperty(x)).ToList();
 
-            var panel = uiElement as Panel;
-            if (panel != null)
+            if (uiElement is Panel || uiElement is ItemsControl)
             {
                 foreach (var child in xmlChildren)
                 {
@@ -786,12 +809,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Sets the value of the specified property.
         /// </summary>
+        /// <param name="uv">The Ultraviolet context.</param>
         /// <param name="uiElement">The UI element on which to set the property value.</param>
         /// <param name="name">The name of the property to set.</param>
         /// <param name="value">The value to set for the specified property.</param>
-        private static void SetPropertyValue(UIElement uiElement, String name, Object value)
+        private static void SetPropertyValue(UltravioletContext uv, UIElement uiElement, String name, Object value)
         {
-            var dprop = FindElementDependencyProperty(uiElement, name);
+            var dprop = FindElementDependencyProperty(uv, uiElement, name);
             if (dprop != null)
             {
                 SetDependencyProperty(uiElement, dprop, value);
@@ -809,12 +833,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Gets the value of the specified property.
         /// </summary>
+        /// <param name="uv">The Ultraviolet context.</param>
         /// <param name="uiElement">The UI element from which to retrieve the property value.</param>
         /// <param name="name">The name of the property to retrieve.</param>
         /// <returns>The value of the specified property.</returns>
-        private static Object GetPropertyValue(UIElement uiElement, String name)
+        private static Object GetPropertyValue(UltravioletContext uv, UIElement uiElement, String name)
         {
-            var dprop = FindElementDependencyProperty(uiElement, name);
+            var dprop = FindElementDependencyProperty(uv, uiElement, name);
             if (dprop != null)
             {
                 return miGetValue.MakeGenericMethod(dprop.PropertyType).Invoke(uiElement, new Object[] { dprop });

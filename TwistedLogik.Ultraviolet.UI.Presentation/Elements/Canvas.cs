@@ -27,7 +27,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// </summary>
         /// <param name="element">The element to evaluate.</param>
         /// <returns>The distance between the left edge of the canvas and the left edge of the specified element.</returns>
-        public static Double GetLeft(UIElement element)
+        public static Double GetLeft(DependencyObject element)
         {
             Contract.Require(element, "element");
 
@@ -39,7 +39,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// </summary>
         /// <param name="element">The element to evaluate.</param>
         /// <returns>The distance between the top edge of the canvas and the top edge of the specified element.</returns>
-        public static Double GetTop(UIElement element)
+        public static Double GetTop(DependencyObject element)
         {
             Contract.Require(element, "element");
 
@@ -51,7 +51,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// </summary>
         /// <param name="element">The element to evaluate.</param>
         /// <returns>The distance between the right edge of the canvas and the right edge of the specified element.</returns>
-        public static Double GetRight(UIElement element)
+        public static Double GetRight(DependencyObject element)
         {
             Contract.Require(element, "element");
 
@@ -63,7 +63,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// </summary>
         /// <param name="element">The element to evaluate.</param>
         /// <returns>The distance between the bottom edge of the canvas and the bottom edge of the specified element.</returns>
-        public static Double GetBottom(UIElement element)
+        public static Double GetBottom(DependencyObject element)
         {
             Contract.Require(element, "element");
 
@@ -75,7 +75,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// </summary>
         /// <param name="element">The element to modify.</param>
         /// <param name="value">The distance between the left edge of the canvas and the left edge of the specified element.</param>
-        public static void SetLeft(UIElement element, Double value)
+        public static void SetLeft(DependencyObject element, Double value)
         {
             Contract.Require(element, "element");
 
@@ -87,7 +87,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// </summary>
         /// <param name="element">The element to modify.</param>
         /// <param name="value">The distance between the top edge of the canvas and the top edge of the specified element.</param>
-        public static void SetTop(UIElement element, Double value)
+        public static void SetTop(DependencyObject element, Double value)
         {
             Contract.Require(element, "element");
 
@@ -99,7 +99,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// </summary>
         /// <param name="element">The element to modify.</param>
         /// <param name="value">The distance between the right edge of the canvas and the right edge of the specified element.</param>
-        public static void SetRight(UIElement element, Double value)
+        public static void SetRight(DependencyObject element, Double value)
         {
             Contract.Require(element, "element");
 
@@ -111,7 +111,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// </summary>
         /// <param name="element">The element to modify.</param>
         /// <param name="value">The distance between the bottom edge of the canvas and the bottom edge of the specified element.</param>
-        public static void SetBottom(UIElement element, Double value)
+        public static void SetBottom(DependencyObject element, Double value)
         {
             Contract.Require(element, "element");
 

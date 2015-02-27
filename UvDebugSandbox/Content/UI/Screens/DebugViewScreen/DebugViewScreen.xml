@@ -3,9 +3,19 @@
   <Stylesheet>DebugViewScreenStyles.uvss</Stylesheet>
   <View ViewModelType="UvDebugSandbox.UI.Screens.DebugViewModel, UvDebugSandbox">
 
-    <StackPanel BindingContext="{{SObj}}">
-      <NumericLabel>{{::FooBar}}</NumericLabel>
-    </StackPanel>
-      
+    <ListBox>
+      <ListBoxItem>Lorem ipsum dolor sit amet</ListBoxItem>
+      <ListBoxItem>Hello</ListBoxItem>
+      <ListBoxItem Selector.IsSelected="true">Hello</ListBoxItem>
+      <ListBoxItem>Hello</ListBoxItem>
+      <ListBoxItem>Hello</ListBoxItem>
+      <ListBoxItem>Hello</ListBoxItem>
+      <ListBoxItem>Hello</ListBoxItem>
+      <ListBoxItem>Hello</ListBoxItem>
+      <ListBoxItem>Hello</ListBoxItem>
+      <ListBoxItem>Hello</ListBoxItem>
+      <ListBoxItem>Hello</ListBoxItem>
+    </ListBox>
+
   </View>
 </UIPanelDefinition>

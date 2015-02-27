@@ -205,6 +205,21 @@
       <Variant>The MeasureOverride() method must always produce a finite desired size, even if the constraining size is infinite.</Variant>
     </en-US>
   </String>
+  <String Key="COLLECTION_IS_BOUND_TO_ITEMS_SOURCE">
+    <en-US>
+      <Variant>The collection cannot be directly modified because it is currently bound to the value of the ItemsSource property.</Variant>
+    </en-US>
+  </String>
+  <String Key="ITEM_PRESENTER_NOT_IN_ITEMS_CONTROL">
+    <en-US>
+      <Variant>An ItemPresenter element is not valid outside of the component template for an ItemsControl.</Variant>
+    </en-US>    
+  </String>
+  <String Key="ITEM_PRESENTER_NOT_CREATED_CORRECTLY">
+    <en-US>
+      <Variant>An instance of the {0} type failed to produce a valid item presenter.</Variant>
+    </en-US>    
+  </String>
   <String Key="INVALID_ROUTED_EVENT_DELEGATE">
     <en-US>
       <Variant>The specified delegate type '{0}' is not valid for routed events. Routed event delegates must take a UIElement as their first parameter and a by-ref Boolean as their final parameter, and must return void.</Variant>
