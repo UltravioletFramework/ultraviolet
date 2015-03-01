@@ -581,7 +581,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <returns>The specified element, or <c>null</c> if no such element is defined.</returns>
         public UIElement GetNavUpElement()
         {
-            return FindNavElement(NavUp) ?? (Parent == null ? null : Parent.GetNavUpElement());
+            var target = FindNavElement(NavUp);
+            if (target == null)
+            {
+                if (Parent != null)
+                {
+                    return Parent.GetNextNavUp(this) ?? Parent.GetNavUpElement();
+                }
+            }
+            return null;
         }
 
         /// <summary>
@@ -591,7 +599,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <returns>The specified element, or <c>null</c> if no such element is defined.</returns>
         public UIElement GetNavDownElement()
         {
-            return FindNavElement(NavDown) ?? (Parent == null ? null : Parent.GetNavDownElement());
+            var target = FindNavElement(NavDown);
+            if (target == null)
+            {
+                if (Parent != null)
+                {
+                    return Parent.GetNextNavDown(this) ?? Parent.GetNavDownElement();
+                }
+            }
+            return null;
         }
 
         /// <summary>
@@ -601,7 +617,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <returns>The specified element, or <c>null</c> if no such element is defined.</returns>
         public UIElement GetNavLeftElement()
         {
-            return FindNavElement(NavLeft) ?? (Parent == null ? null : Parent.GetNavLeftElement());
+            var target = FindNavElement(NavLeft);
+            if (target == null)
+            {
+                if (Parent != null)
+                {
+                    return Parent.GetNextNavLeft(this) ?? Parent.GetNavLeftElement();
+                }
+            }
+            return null;
         }
 
         /// <summary>
@@ -611,7 +635,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <returns>The specified element, or <c>null</c> if no such element is defined.</returns>
         public UIElement GetNavRightElement()
         {
-            return FindNavElement(NavRight) ?? (Parent == null ? null : Parent.GetNavRightElement());
+            var target = FindNavElement(NavRight);
+            if (target == null)
+            {
+                if (Parent != null)
+                {
+                    return Parent.GetNextNavRight(this) ?? Parent.GetNavRightElement();
+                }
+            }
+            return null;
         }
 
         /// <summary>
@@ -2109,7 +2141,51 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             return Bounds.Contains(x, y) ? this : null;
         }
-        
+
+        /// <summary>
+        /// Gets the next element to navigate to when focus is moved "up," assuming
+        /// that focus is currently in the specified child element.
+        /// </summary>
+        /// <param name="current">The child element of this element which currently has focus.</param>
+        /// <returns>The next element to navigate to, or <c>null</c> if this element has no navigation preferences.</returns>
+        protected virtual UIElement GetNextNavUp(UIElement current)
+        {
+            return null;
+        }
+
+        /// <summary>
+        /// Gets the next element to navigate to when focus is moved "down," assuming
+        /// that focus is currently in the specified child element.
+        /// </summary>
+        /// <param name="current">The child element of this element which currently has focus.</param>
+        /// <returns>The next element to navigate to, or <c>null</c> if this element has no navigation preferences.</returns>
+        protected virtual UIElement GetNextNavDown(UIElement current)
+        {
+            return null;
+        }
+
+        /// <summary>
+        /// Gets the next element to navigate to when focus is moved "left," assuming
+        /// that focus is currently in the specified child element.
+        /// </summary>
+        /// <param name="current">The child element of this element which currently has focus.</param>
+        /// <returns>The next element to navigate to, or <c>null</c> if this element has no navigation preferences.</returns>
+        protected virtual UIElement GetNextNavLeft(UIElement current)
+        {
+            return null;
+        }
+
+        /// <summary>
+        /// Gets the next element to navigate to when focus is moved "right," assuming
+        /// that focus is currently in the specified child element.
+        /// </summary>
+        /// <param name="current">The child element of this element which currently has focus.</param>
+        /// <returns>The next element to navigate to, or <c>null</c> if this element has no navigation preferences.</returns>
+        protected virtual UIElement GetNextNavRight(UIElement current)
+        {
+            return null;
+        }
+
         /// <summary>
         /// Loads the specified asset from the global content manager.
         /// </summary>

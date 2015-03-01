@@ -119,6 +119,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <summary>
+        /// Gets the index of the specified element within the collection.
+        /// </summary>
+        /// <param name="element">The element to locate within the collection.</param>
+        /// <returns>The index of the specified element within the collection, or <c>null</c> if the element does not exist within the collection.</returns>
+        public Int32 IndexOf(UIElement element)
+        {
+            return elements.IndexOf(element);
+        }
+
+        /// <summary>
         /// Gets the container that owns this collection.
         /// </summary>
         public Panel Panel

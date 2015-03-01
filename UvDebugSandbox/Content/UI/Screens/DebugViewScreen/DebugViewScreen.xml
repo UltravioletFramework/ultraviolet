@@ -3,6 +3,22 @@
   <Stylesheet>DebugViewScreenStyles.uvss</Stylesheet>
   <View ViewModelType="UvDebugSandbox.UI.Screens.DebugViewModel, UvDebugSandbox">
 
+    <StackPanel Orientation="Horizontal">
+      <Button>Hello</Button>
+      <Button>Hello</Button>
+      <Button>Hello</Button>
+      <Button>Hello</Button>
+      <Button>Hello</Button>
+      <Button>Hello</Button>
+      <Button>Hello</Button>
+      <Button>Hello</Button>
+      <Button>Hello</Button>
+      <Button>Hello</Button>
+      <Button>Hello</Button>
+      <Button>Hello</Button>
+    </StackPanel>
+    
+    <!--
     <ListBox>
       <ListBoxItem>Lorem ipsum dolor sit amet</ListBoxItem>
       <ListBoxItem>Hello</ListBoxItem>
@@ -15,7 +31,7 @@
       <ListBoxItem>Hello</ListBoxItem>
       <ListBoxItem>Hello</ListBoxItem>
       <ListBoxItem>Hello</ListBoxItem>
-    </ListBox>
+    </ListBox>-->
 
   </View>
 </UIPanelDefinition>
