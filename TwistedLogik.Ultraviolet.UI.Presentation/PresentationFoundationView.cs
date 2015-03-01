@@ -104,7 +104,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (elementWithFocus == null)
                 return;
 
-            var target = elementWithFocus.GetNavUpElement();
+            var target = default(UIElement);
+            do
+            {
+                target = (target == null) ? elementWithFocus.GetNavUpElement() : target.GetNavUpElement();
+                if (target != null && !target.Focusable)
+                {
+                    target = target.GetFirstFocusableDescendant(false);
+                }
+            }
+            while (target != null && !LayoutUtil.IsValidForNav(target));
+            
             if (target == null)
                 return;
 
@@ -117,7 +127,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (elementWithFocus == null)
                 return;
 
-            var target = elementWithFocus.GetNavDownElement();
+            var target = default(UIElement);
+            do
+            {
+                target = (target == null) ? elementWithFocus.GetNavDownElement() : target.GetNavDownElement();
+                if (target != null && !target.Focusable)
+                {
+                    target = target.GetFirstFocusableDescendant(false);
+                }
+            }
+            while (target != null && !LayoutUtil.IsValidForNav(target));
+
             if (target == null)
                 return;
 
@@ -130,7 +150,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (elementWithFocus == null)
                 return;
 
-            var target = elementWithFocus.GetNavLeftElement();
+            var target = default(UIElement);
+            do
+            {
+                target = (target == null) ? elementWithFocus.GetNavLeftElement() : target.GetNavLeftElement();
+                if (target != null && !target.Focusable)
+                {
+                    target = target.GetFirstFocusableDescendant(false);
+                }
+            }
+            while (target != null && !LayoutUtil.IsValidForNav(target));
+
             if (target == null)
                 return;
 
@@ -143,7 +173,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (elementWithFocus == null)
                 return;
 
-            var target = elementWithFocus.GetNavRightElement();
+            var target = default(UIElement);
+            do
+            {
+                target = (target == null) ? elementWithFocus.GetNavRightElement() : target.GetNavRightElement();
+                if (target != null && !target.Focusable)
+                {
+                    target = target.GetFirstFocusableDescendant(false);
+                }
+            }
+            while (target != null && !LayoutUtil.IsValidForNav(target));
+
             if (target == null)
                 return;
 

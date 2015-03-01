@@ -589,7 +589,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                     return Parent.GetNextNavUp(this) ?? Parent.GetNavUpElement();
                 }
             }
-            return null;
+            return target;
         }
 
         /// <summary>
@@ -607,7 +607,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                     return Parent.GetNextNavDown(this) ?? Parent.GetNavDownElement();
                 }
             }
-            return null;
+            return target;
         }
 
         /// <summary>
@@ -625,7 +625,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                     return Parent.GetNextNavLeft(this) ?? Parent.GetNavLeftElement();
                 }
             }
-            return null;
+            return target;
         }
 
         /// <summary>
@@ -643,7 +643,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                     return Parent.GetNextNavRight(this) ?? Parent.GetNavRightElement();
                 }
             }
-            return null;
+            return target;
         }
 
         /// <summary>
@@ -2573,14 +2573,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         private void RegisterElement()
         {
+            if (elementRegistrationContext == null)
+                elementRegistrationContext = FindElementRegistry();
+
             if (String.IsNullOrEmpty(id))
                 return;
 
-            elementRegistrationContext = FindElementRegistry();
             if (elementRegistrationContext != null)
-            {
                 elementRegistrationContext.RegisterElement(this);
-            }
         }
 
         /// <summary>
