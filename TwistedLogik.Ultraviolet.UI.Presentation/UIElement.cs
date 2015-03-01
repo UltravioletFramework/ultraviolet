@@ -966,6 +966,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Gets the absolute bounding box of the layout area in which the element was most recently arranged.
+        /// </summary>
+        public RectangleD AbsoluteLayoutBounds
+        {
+            get { return mostRecentFinalRect; }
+        }
+
+        /// <summary>
         /// Gets the element's bounds in element-local space.
         /// </summary>
         public RectangleD Bounds

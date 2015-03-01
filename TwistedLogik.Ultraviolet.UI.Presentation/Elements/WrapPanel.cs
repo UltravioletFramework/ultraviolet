@@ -79,6 +79,138 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             base.PositionContent(position);
         }
 
+        /// <inheritdoc/>
+        protected override UIElement GetNextNavUp(UIElement current)
+        {
+            var ixCurrent = Children.IndexOf(current);
+            if (ixCurrent < 0)
+                return null;
+
+            if (Orientation == Orientation.Vertical)
+            {
+                if (ixCurrent == 0)
+                    return null;
+
+                var candidate = Children[ixCurrent - 1];
+                if (AreInSameColumn(current, candidate))
+                {
+                    return candidate;
+                }
+            }
+            else
+            {
+                var query = new RectangleD(current.AbsoluteLayoutBounds.Left, current.AbsoluteLayoutBounds.Top - 1.0, 1.0, 1.0);
+                for (int i = ixCurrent - 1; i >= 0; i--)
+                {
+                    var child = Children[i];
+                    if (child.AbsoluteLayoutBounds.Intersects(query))
+                    {
+                        return child;
+                    }
+                }
+            }
+            return null;
+        }
+
+        /// <inheritdoc/>
+        protected override UIElement GetNextNavDown(UIElement current)
+        {
+            var ixCurrent = Children.IndexOf(current);
+            if (ixCurrent < 0)
+                return null;
+
+            if (Orientation == Orientation.Vertical)
+            {
+                if (ixCurrent + 1 >= Children.Count)
+                    return null;
+
+                var candidate = Children[ixCurrent + 1];
+                if (AreInSameColumn(current, candidate))
+                {
+                    return candidate;
+                }
+            }
+            else
+            {
+                var query = new RectangleD(current.AbsoluteLayoutBounds.Left, current.AbsoluteLayoutBounds.Bottom, 1.0, 1.0);
+                for (int i = ixCurrent + 1; i < Children.Count; i++)
+                {
+                    var child = Children[i];
+                    if (child.AbsoluteLayoutBounds.Intersects(query))
+                    {
+                        return child;
+                    }
+                }
+            }
+            return null;
+        }
+
+        /// <inheritdoc/>
+        protected override UIElement GetNextNavLeft(UIElement current)
+        {
+            var ixCurrent = Children.IndexOf(current);
+            if (ixCurrent < 0)
+                return null;
+
+            if (Orientation == Orientation.Vertical)
+            {
+                var query = new RectangleD(current.AbsoluteLayoutBounds.Left - 1, current.AbsoluteLayoutBounds.Top, 1.0, 1.0);
+                for (int i = ixCurrent - 1; i >= 0; i--)
+                {
+                    var child = Children[i];
+                    if (child.AbsoluteLayoutBounds.Intersects(query))
+                    {
+                        return child;
+                    }
+                }
+            }
+            else
+            {
+                if (ixCurrent == 0)
+                    return null;
+
+                var candidate = Children[ixCurrent - 1];
+                if (AreInSameRow(current, candidate))
+                {
+                    return candidate;
+                }
+            }
+            return null;
+        }
+
+        /// <inheritdoc/>
+        protected override UIElement GetNextNavRight(UIElement current)
+        {
+            var ixCurrent = Children.IndexOf(current);
+            if (ixCurrent < 0)
+                return null;
+
+            if (Orientation == Orientation.Vertical)
+            {
+                var query = new RectangleD(current.AbsoluteLayoutBounds.Right, current.AbsoluteLayoutBounds.Top, 1.0, 1.0);
+                for (int i = ixCurrent + 1; i < Children.Count; i++)
+                {
+                    var child = Children[i];
+                    if (child.AbsoluteLayoutBounds.Intersects(query))
+                    {
+                        return child;
+                    }
+                }
+            }
+            else
+            {
+                if (ixCurrent + 1 >= Children.Count)
+                    return null;
+
+                var candidate = Children[ixCurrent + 1];
+                if (AreInSameRow(current, candidate))
+                {
+                    return candidate;
+                }
+            }
+            return null;
+        }
+
         /// <summary>
         /// Raises the <see cref="OrientationChanged"/> event.
         /// </summary>
@@ -99,6 +231,28 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         {
             var wrapPanel = (WrapPanel)dobj;
             wrapPanel.OnOrientationChanged();
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the specified elements are in the same layout row of this wrap panel.
+        /// </summary>
+        /// <param name="e1">The first element to compare.</param>
+        /// <param name="e2">The second element to compare.</param>
+        /// <returns><c>true</c> if the specified elements are in the same layout row; otherwise, <c>false</c>.</returns>
+        private static Boolean AreInSameRow(UIElement e1, UIElement e2)
+        {
+            return e1.AbsoluteLayoutBounds.Y == e2.AbsoluteLayoutBounds.Y;
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the specified elements are in the same layout column of this wrap panel.
+        /// </summary>
+        /// <param name="e1">The first element to compare.</param>
+        /// <param name="e2">The second element to compare.</param>
+        /// <returns><c>true</c> if the specified elements are in the same layout column; otherwise, <c>false</c>.</returns>
+        private static Boolean AreInSameColumn(UIElement e1, UIElement e2)
+        {
+            return e1.AbsoluteLayoutBounds.X == e2.AbsoluteLayoutBounds.X;
         }
 
         /// <summary>
