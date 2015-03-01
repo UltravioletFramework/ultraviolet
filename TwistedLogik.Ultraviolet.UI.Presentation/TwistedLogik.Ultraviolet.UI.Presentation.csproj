@@ -170,7 +170,6 @@
     <Compile Include="Elements\UserControl.cs" />
     <Compile Include="Elements\VScrollBar.cs" />
     <Compile Include="Elements\WrapPanel.cs" />
-    <Compile Include="FooBar.cs" />
     <Compile Include="FrameworkElement.cs" />
     <Compile Include="FrameworkResource.cs" />
     <Compile Include="GridLength.cs" />
