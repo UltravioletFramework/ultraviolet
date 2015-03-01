@@ -249,6 +249,7 @@
     <Compile Include="UvmlException.cs" />
     <Compile Include="UvmlLoader.cs" />
     <Compile Include="UvmlLoader.InstantiationContext.cs" />
+    <Compile Include="UvmlLoader.UvmlAttribute.cs" />
     <Compile Include="VerticalAlignment.cs" />
     <Compile Include="Visibility.cs" />
     <Compile Include="VisualState.cs" />
@@ -285,6 +286,7 @@
     <None Include="..\TwistedLogik.Public.snk">
       <Link>TwistedLogik.Public.snk</Link>
     </None>
+    <Compile Include="UvmlLoader.UvmlAttributeType.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Elements\Templates\NumericUpDown.xml" />
