@@ -238,6 +238,110 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             return base.GetElementAtPointCore(x, y, isHitTest);
         }
 
+        /// <inheritdoc/>
+        protected override UIElement GetNextNavUp(UIElement current)
+        {
+            if (current == null)
+                return null;
+
+            var bounds = current.AbsoluteBounds;
+            var query  = new RectangleD(bounds.X, 0, bounds.Width, bounds.Top);
+            var result = default(UIElement);
+
+            foreach (var child in Children)
+            {
+                if (child == current || !LayoutUtil.IsValidForNav(child))
+                    continue;
+
+                if (child.AbsoluteBounds.Y < current.AbsoluteBounds.Y && child.AbsoluteBounds.Intersects(query))
+                {
+                    if (result == null || (child.AbsoluteBounds.Top > result.AbsoluteBounds.Top))
+                    {
+                        result = child;
+                    }
+                }
+            }
+            return result;
+        }
+
+        /// <inheritdoc/>
+        protected override UIElement GetNextNavDown(UIElement current)
+        {
+            if (current == null)
+                return null;
+
+            var bounds = current.AbsoluteBounds;
+            var query  = new RectangleD(bounds.X, bounds.Bottom, bounds.Width, Double.PositiveInfinity);
+            var result = default(UIElement);
+
+            foreach (var child in Children)
+            {
+                if (child == current || !LayoutUtil.IsValidForNav(child))
+                    continue;
+
+                if (child.AbsoluteBounds.Y > current.AbsoluteBounds.Y && child.AbsoluteBounds.Intersects(query))
+                {
+                    if (result == null || (child.AbsoluteBounds.Top < result.AbsoluteBounds.Top))
+                    {
+                        result = child;
+                    }
+                }
+            }
+            return result;
+        }
+
+        /// <inheritdoc/>
+        protected override UIElement GetNextNavLeft(UIElement current)
+        {
+            if (current == null)
+                return null;
+
+            var bounds = current.AbsoluteBounds;
+            var query  = new RectangleD(0, bounds.Top, bounds.Left, bounds.Height);
+            var result = default(UIElement);
+
+            foreach (var child in Children)
+            {
+                if (child == current || !LayoutUtil.IsValidForNav(child))
+                    continue;
+
+                if (child.AbsoluteBounds.X < current.AbsoluteBounds.X && child.AbsoluteBounds.Intersects(query))
+                {
+                    if (result == null || (child.AbsoluteBounds.Left > result.AbsoluteBounds.Left))
+                    {
+                        result = child;
+                    }
+                }
+            }
+            return result;
+        }
+
+        /// <inheritdoc/>
+        protected override UIElement GetNextNavRight(UIElement current)
+        {
+            if (current == null)
+                return null;
+
+            var bounds = current.AbsoluteBounds;
+            var query  = new RectangleD(bounds.Right, bounds.Top, Double.PositiveInfinity, bounds.Height);
+            var result = default(UIElement);
+
+            foreach (var child in Children)
+            {
+                if (child == current || !LayoutUtil.IsValidForNav(child))
+                    continue;
+
+                if (child.AbsoluteBounds.X > current.AbsoluteBounds.X && child.AbsoluteBounds.Intersects(query))
+                {
+                    if (result == null || (child.AbsoluteBounds.Left < result.AbsoluteBounds.Left))
+                    {
+                        result = child;
+                    }
+                }
+            }
+            return result;
+        }
+
         /// <summary>
         /// Gets the child element at the specified device-independent coordinates relative to this element's bounds.
         /// </summary>
