@@ -586,7 +586,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             {
                 if (Parent != null)
                 {
-                    return Parent.GetNextNavUp(this) ?? Parent.GetNavUpElement();
+                    return (Parent.AutoNav ? Parent.GetNextNavUp(this) : null) ?? Parent.GetNavUpElement();
                 }
             }
             return target;
@@ -604,7 +604,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             {
                 if (Parent != null)
                 {
-                    return Parent.GetNextNavDown(this) ?? Parent.GetNavDownElement();
+                    return (Parent.AutoNav ? Parent.GetNextNavDown(this) : null) ?? Parent.GetNavDownElement();
                 }
             }
             return target;
@@ -622,7 +622,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             {
                 if (Parent != null)
                 {
-                    return Parent.GetNextNavLeft(this) ?? Parent.GetNavLeftElement();
+                    return (Parent.AutoNav ? Parent.GetNextNavLeft(this) : null) ?? Parent.GetNavLeftElement();
                 }
             }
             return target;
@@ -640,7 +640,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             {
                 if (Parent != null)
                 {
-                    return Parent.GetNextNavRight(this) ?? Parent.GetNavRightElement();
+                    return (Parent.AutoNav ? Parent.GetNextNavRight(this) : null) ?? Parent.GetNavRightElement();
                 }
             }
             return target;
@@ -845,6 +845,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public Boolean IsPositionValid
         {
             get { return isPositionValid; }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether auto-nav is enabled for this control.
+        /// If enabled, auto-nav will attempt to automatically determine the next nav control in the
+        /// up, down, left, and right directions, even if the values of the <see cref="NavUp"/>, <see cref="NavDown"/>,
+        /// <see cref="NavLeft"/>, and <see cref="NavRight"/> properties have not been set.
+        /// </summary>
+        public Boolean AutoNav
+        {
+            get { return GetValue<Boolean>(AutoNavProperty); }
+            set { SetValue<Boolean>(AutoNavProperty, value); }
         }
 
         /// <summary>
@@ -1222,6 +1234,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public event UIElementMouseButtonEventHandler MouseDoubleClick;
 
         /// <summary>
+        /// Occurs when the value of the <see cref="AutoNav"/> property changes.
+        /// </summary>
+        public event UIElementEventHandler AutoNavChanged;
+
+        /// <summary>
         /// Occurs when the value of the <see cref="IsEnabled"/> property changes.
         /// </summary>
         public event UIElementEventHandler IsEnabledChanged;
@@ -1280,6 +1297,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Occurs when the value of the <see cref="TabIndex"/> property changes.
         /// </summary>
         public event UIElementEventHandler TabIndexChanged;
+
+        /// <summary>
+        /// Identifies the <see cref="AutoNav"/> dependency property.
+        /// </summary>
+        [Styled("autonav")]
+        public static readonly DependencyProperty AutoNavProperty = DependencyProperty.Register("AutoNav", typeof(Boolean), typeof(UIElement),
+            new DependencyPropertyMetadata(HandleAutoNavChanged, () => true, DependencyPropertyOptions.None));
 
         /// <summary>
         /// Identifies the <see cref="IsEnabled"/> dependency property.
@@ -1818,6 +1842,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (temp != null)
             {
                 temp(this, time);
+            }
+        }
+
+        /// <summary>
+        /// Raises the <see cref="AutoNavChanged"/> event.
+        /// </summary>
+        protected virtual void OnAutoNavChanged()
+        {
+            var temp = AutoNavChanged;
+            if (temp != null)
+            {
+                temp(this);
             }
         }
 
@@ -2404,6 +2440,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         protected IUltravioletDisplay Display
         {
             get { return (View == null) ? null : View.Display; }
+        }
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="AutoNav"/> dependency property changes.
+        /// </summary>
+        /// <param name="dobj">The dependency object that raised the event.</param>
+        private static void HandleAutoNavChanged(DependencyObject dobj)
+        {
+            var element = (UIElement)dobj;
+            element.OnAutoNavChanged();
         }
 
         /// <summary>
