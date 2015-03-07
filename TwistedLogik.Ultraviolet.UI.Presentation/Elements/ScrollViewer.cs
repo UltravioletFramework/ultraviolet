@@ -1,4 +1,5 @@
 ﻿using System;
+using TwistedLogik.Ultraviolet.Input;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
 {
@@ -263,6 +264,22 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         {
             var scrollViewer = (ScrollViewer)dobj;
             scrollViewer.OnVerticalScrollBarVisibilityChanged();
+        }
+
+        /// <summary>
+        /// Handles the <see cref="UIElement.MouseWheelScrolled"/> event for the scroll viewer.
+        /// </summary>
+        private void HandleMouseWheelScrolled(UIElement element, MouseDevice device, Double x, Double y, ref Boolean handled)
+        {
+            if (x != 0 && HScroll != null)
+            {
+                HScroll.Value += HScroll.LargeChange * x;
+            }
+            if (y != 0 && VScroll != null)
+            {
+                VScroll.Value += VScroll.LargeChange * -y;
+            }
+            handled = true;
         }
 
         /// <summary>

@@ -715,6 +715,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 mouse.ButtonReleased += mouse_ButtonReleased;
                 mouse.Click          += mouse_Click;
                 mouse.DoubleClick    += mouse_DoubleClick;
+                mouse.WheelScrolled  += mouse_WheelScrolled;
             }
         }
 
@@ -747,6 +748,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 mouse.ButtonReleased -= mouse_ButtonReleased;
                 mouse.Click          -= mouse_Click;
                 mouse.DoubleClick    -= mouse_DoubleClick;
+                mouse.WheelScrolled  -= mouse_WheelScrolled;
             }
         }
 
@@ -954,6 +956,23 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (recipient != null)
             {
                 recipient.OnMouseDoubleClick(device, button);
+            }
+        }
+
+        /// <summary>
+        /// Handles the <see cref="MouseDevice.WheelScrolled"/> event.
+        /// </summary>
+        private void mouse_WheelScrolled(IUltravioletWindow window, MouseDevice device, Int32 x, Int32 y)
+        {
+            if (window != Window)
+                return;
+
+            var recipient = elementWithMouseCapture ?? elementUnderMouse;
+            if (recipient != null)
+            {
+                var dipsX = Display.PixelsToDips(x);
+                var dipsY = Display.PixelsToDips(y);
+                recipient.OnMouseWheelScrolled(device, dipsX, dipsY);
             }
         }
 

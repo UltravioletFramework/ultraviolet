@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<ComponentTemplate>
+<ComponentTemplate MouseWheelScrolled="HandleMouseWheelScrolled">
   <Grid ID="LayoutRoot" Class="scrollview-component" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
     <Grid.ColumnDefinitions>
       <ColumnDefinition Width="*"/>

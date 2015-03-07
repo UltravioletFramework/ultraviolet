@@ -67,7 +67,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
     /// </summary>
     /// <param name="element">The element that raised the event.</param>
     /// <param name="device">The mouse device.</param>
-    public delegate void UIElementMouseEventHandler(UIElement element, MouseDevice device);
+    public delegate void UIElementMouseEventHandler(UIElement element, MouseDevice device, ref Boolean handled);
 
     /// <summary>
     /// Represents the method that is called when a button is pressed or released while an element is under the mouse.
@@ -75,7 +75,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
     /// <param name="element">The element that raised the event.</param>
     /// <param name="device">The mouse device.</param>
     /// <param name="button">The mouse button that was pressed or released.</param>
-    public delegate void UIElementMouseButtonEventHandler(UIElement element, MouseDevice device, MouseButton button);
+    public delegate void UIElementMouseButtonEventHandler(UIElement element, MouseDevice device, MouseButton button, ref Boolean handled);
 
     /// <summary>
     /// Represents the method that is called when the mouse moves over a control.
@@ -88,7 +88,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
     /// current position and the x-coordinate of the mouse's previous position.</param>
     /// <param name="dy">The difference between the y-coordinate of the mouse's 
     /// current position and the y-coordinate of the mouse's previous position.</param>
-    public delegate void UIElementMouseMotionEventHandler(UIElement element, MouseDevice device, Double x, Double y, Double dx, Double dy);
+    public delegate void UIElementMouseMotionEventHandler(UIElement element, MouseDevice device, Double x, Double y, Double dx, Double dy, ref Boolean handled);
+
+    /// <summary>
+    /// Represents the method that is called when the mouse wheel is scrolled over a control.
+    /// </summary>
+    /// <param name="element">The element that raised the event.</param>
+    /// <param name="device">The mouse device.</param>
+    /// <param name="x">The amount that the wheel was scrolled along the x-axis.</param>
+    /// <param name="y">The amount that the wheel was scrolled along the y-axis.</param>
+    /// <param name="handled">A value indicating whether the event has been handled.</param>
+    public delegate void UIElementMouseWheelEventHandler(UIElement element, MouseDevice device, Double x, Double y, ref Boolean handled);
 
     /// <summary>
     /// Represents the method that is called when a UI element raises an event.
@@ -1201,37 +1211,74 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Occurs when the mouse moves over the control.
         /// </summary>
-        public event UIElementMouseMotionEventHandler MouseMotion;
+        public event UIElementMouseMotionEventHandler MouseMotion
+        {
+            add { AddHandler(MouseMotionEvent, value); }
+            remove { RemoveHandler(MouseMotionEvent, value); }
+        }
 
         /// <summary>
         /// Occurs when the mouse cursor enters the element.
         /// </summary>
-        public event UIElementMouseEventHandler MouseEnter;
+        public event UIElementMouseEventHandler MouseEnter
+        {
+            add { AddHandler(MouseEnterEvent, value); }
+            remove { RemoveHandler(MouseEnterEvent, value); }
+        }
 
         /// <summary>
         /// Occurs when the mouse cursor leaves the element.
         /// </summary>
-        public event UIElementMouseEventHandler MouseLeave;
+        public event UIElementMouseEventHandler MouseLeave
+        {
+            add { AddHandler(MouseLeaveEvent, value); }
+            remove { RemoveHandler(MouseLeaveEvent, value); }
+        }
 
         /// <summary>
         /// Occurs when a mouse button is pressed while the cursor is over the element.
         /// </summary>
-        public event UIElementMouseButtonEventHandler MouseButtonPressed;
+        public event UIElementMouseButtonEventHandler MouseButtonPressed
+        {
+            add { AddHandler(MouseButtonPressedEvent, value); }
+            remove { RemoveHandler(MouseButtonPressedEvent, value); }
+        }
 
         /// <summary>
         /// Occurs when a mouse button is released while the cursor is over the element.
         /// </summary>
-        public event UIElementMouseButtonEventHandler MouseButtonReleased;
+        public event UIElementMouseButtonEventHandler MouseButtonReleased
+        {
+            add { AddHandler(MouseButtonReleasedEvent, value); }
+            remove { RemoveHandler(MouseButtonReleasedEvent, value); }
+        }
 
         /// <summary>
         /// Occurs when the mouse is clicked while the cursor is over this element.
         /// </summary>
-        public event UIElementMouseButtonEventHandler MouseClick;
+        public event UIElementMouseButtonEventHandler MouseClick
+        {
+            add { AddHandler(MouseClickEvent, value); }
+            remove { RemoveHandler(MouseClickEvent, value); }
+        }
 
         /// <summary>
         /// Occurs when the mouse is double clicked while the cursor is over this element.
         /// </summary>
-        public event UIElementMouseButtonEventHandler MouseDoubleClick;
+        public event UIElementMouseButtonEventHandler MouseDoubleClick
+        {
+            add { AddHandler(MouseDoubleClickEvent, value); }
+            remove { RemoveHandler(MouseDoubleClickEvent, value); }
+        }
+
+        /// <summary>
+        /// Occurs when the mouse wheel is scrolled while the cursor is over this element.
+        /// </summary>
+        public event UIElementMouseWheelEventHandler MouseWheelScrolled
+        {
+            add { AddHandler(MouseWheelScrolledEvent, value); }
+            remove { RemoveHandler(MouseWheelScrolledEvent, value); }
+        }
 
         /// <summary>
         /// Occurs when the value of the <see cref="AutoNav"/> property changes.
@@ -1375,6 +1422,33 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         public static readonly DependencyProperty TabIndexProperty = DependencyProperty.Register("TabIndex", typeof(Int32), typeof(UIElement),
             new DependencyPropertyMetadata(HandleTabIndexChanged, () => 0, DependencyPropertyOptions.None));
+
+        public static readonly RoutedEvent MouseMotionEvent = RoutedEvent.Register("MouseMotion", RoutingStrategy.Bubble,
+            typeof(UIElementMouseMotionEventHandler), typeof(UIElement));
+
+        public static readonly RoutedEvent MouseEnterEvent = RoutedEvent.Register("MouseEnter", RoutingStrategy.Direct,
+            typeof(UIElementMouseEventHandler), typeof(UIElement));
+
+        public static readonly RoutedEvent MouseLeaveEvent = RoutedEvent.Register("MouseLeave", RoutingStrategy.Direct,
+            typeof(UIElementMouseEventHandler), typeof(UIElement));
+
+        public static readonly RoutedEvent MouseButtonPressedEvent = RoutedEvent.Register("MouseButtonPressed", RoutingStrategy.Bubble,
+            typeof(UIElementMouseButtonEventHandler), typeof(UIElement));
+
+        public static readonly RoutedEvent MouseButtonReleasedEvent = RoutedEvent.Register("MouseButtonReleased", RoutingStrategy.Bubble,
+            typeof(UIElementMouseButtonEventHandler), typeof(UIElement));
+
+        public static readonly RoutedEvent MouseClickEvent = RoutedEvent.Register("MouseClick", RoutingStrategy.Bubble,
+            typeof(UIElementMouseButtonEventHandler), typeof(UIElement));
+
+        public static readonly RoutedEvent MouseDoubleClickEvent = RoutedEvent.Register("MouseDoubleClick", RoutingStrategy.Bubble,
+            typeof(UIElementMouseButtonEventHandler), typeof(UIElement));
+
+        /// <summary>
+        /// Identifies the <see cref="MouseWheelScrolled"/> routed event.
+        /// </summary>
+        public static readonly RoutedEvent MouseWheelScrolledEvent = RoutedEvent.Register("MouseWheelScrolled", RoutingStrategy.Bubble, 
+            typeof(UIElementMouseWheelEventHandler), typeof(UIElement));
 
         /// <summary>
         /// Applies a visual state transition to the element.
@@ -1704,10 +1778,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// current position and the y-coordinate of the mouse's previous position.</param>
         protected internal virtual void OnMouseMotion(MouseDevice device, Double x, Double y, Double dx, Double dy)
         {
-            var temp = MouseMotion;
+            var temp = RoutedEvent.GetInvocationDelegate<UIElementMouseMotionEventHandler>(MouseMotionEvent);
             if (temp != null)
             {
-                temp(this, device, x, y, dx, dy);
+                var handled = false;
+                temp(this, device, x, y, dx, dy, ref handled);
             }
         }
 
@@ -1719,10 +1794,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             IsHovering = true;
 
-            var temp = MouseEnter;
+            var temp = RoutedEvent.GetInvocationDelegate<UIElementMouseEventHandler>(MouseEnterEvent); ;
             if (temp != null)
             {
-                temp(this, device);
+                var handled = false;
+                temp(this, device, ref handled);
             }
         }
 
@@ -1734,10 +1810,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             IsHovering = false;
 
-            var temp = MouseLeave;
+            var temp = RoutedEvent.GetInvocationDelegate<UIElementMouseEventHandler>(MouseLeaveEvent);
             if (temp != null)
             {
-                temp(this, device);
+                var handled = false;
+                temp(this, device, ref handled);
             }
         }
 
@@ -1748,10 +1825,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="button">The mouse button that was pressed or released.</param>
         protected internal virtual void OnMouseButtonPressed(MouseDevice device, MouseButton button)
         {
-            var temp = MouseButtonPressed;
+            var temp = RoutedEvent.GetInvocationDelegate<UIElementMouseButtonEventHandler>(MouseButtonPressedEvent);
             if (temp != null)
             {
-                temp(this, device, button);
+                var handled = false;
+                temp(this, device, button, ref handled);
             }
         }
 
@@ -1762,10 +1840,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="button">The mouse button that was pressed or released.</param>
         protected internal virtual void OnMouseButtonReleased(MouseDevice device, MouseButton button)
         {
-            var temp = MouseButtonReleased;
+            var temp = RoutedEvent.GetInvocationDelegate<UIElementMouseButtonEventHandler>(MouseButtonReleasedEvent);
             if (temp != null)
             {
-                temp(this, device, button);
+                var handled = false;
+                temp(this, device, button, ref handled);
             }
         }
 
@@ -1776,10 +1855,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="button">The mouse button that was pressed or released.</param>
         protected internal virtual void OnMouseClick(MouseDevice device, MouseButton button)
         {
-            var temp = MouseClick;
+            var temp = RoutedEvent.GetInvocationDelegate<UIElementMouseButtonEventHandler>(MouseClickEvent);
             if (temp != null)
             {
-                temp(this, device, button);
+                var handled = false;
+                temp(this, device, button, ref handled);
             }
         }
 
@@ -1790,10 +1870,27 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="button">The mouse button that was pressed or released.</param>
         protected internal virtual void OnMouseDoubleClick(MouseDevice device, MouseButton button)
         {
-            var temp = MouseDoubleClick;
+            var temp = RoutedEvent.GetInvocationDelegate<UIElementMouseButtonEventHandler>(MouseDoubleClickEvent);
             if (temp != null)
             {
-                temp(this, device, button);
+                var handled = false;
+                temp(this, device, button, ref handled);
+            }
+        }
+
+        /// <summary>
+        /// Raises the <see cref="MouseWheelScrolled"/> event.
+        /// </summary>
+        /// <param name="device">The mouse device.</param>
+        /// <param name="x">The amount by which the wheel was scrolled along the x-axis.</param>
+        /// <param name="y">The amount by which the wheel was scrolled along the y-axis.</param>
+        protected internal virtual void OnMouseWheelScrolled(MouseDevice device, Double x, Double y)
+        {
+            var temp = RoutedEvent.GetInvocationDelegate<UIElementMouseWheelEventHandler>(MouseWheelScrolledEvent);
+            if (temp != null)
+            {
+                var handled = false;
+                temp(this, device, x, y, ref handled);
             }
         }
 
