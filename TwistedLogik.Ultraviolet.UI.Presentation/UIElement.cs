@@ -40,7 +40,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
     /// </summary>
     /// <param name="element">The element that raised the event.</param>
     /// <param name="device">The keyboard device.</param>
-    public delegate void UIElementKeyboardEventHandler(UIElement element, KeyboardDevice device);
+    /// <param name="handled">A value indicating whether the event has been handled.</param>
+    public delegate void UIElementKeyboardEventHandler(UIElement element, KeyboardDevice device, ref Boolean handled);
 
     /// <summary>
     /// Represents the method that is called when a keyboard key is pressed while an element has focus.
@@ -52,7 +53,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
     /// <param name="alt">A value indicating whether the Alt modifier is active.</param>
     /// <param name="shift">A value indicating whether the Shift modifier is active.</param>
     /// <param name="repeat">A value indicating whether this is a repeated key press.</param>
-    public delegate void UIElementKeyPressedEventHandler(UIElement element, KeyboardDevice device, Key key, Boolean ctrl, Boolean alt, Boolean shift, Boolean repeat);
+    /// <param name="handled">A value indicating whether the event has been handled.</param>
+    public delegate void UIElementKeyPressedEventHandler(UIElement element, KeyboardDevice device, Key key, Boolean ctrl, Boolean alt, Boolean shift, Boolean repeat, ref Boolean handled);
 
     /// <summary>
     /// Represents the method that is called when a keyboard key is released while an element has focus.
@@ -60,13 +62,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
     /// <param name="element">The element that raised the event.</param>
     /// <param name="device">The <see cref="KeyboardDevice"/> that raised the event.</param>
     /// <param name="key">The <see cref="Key"/> value that represents the key that was pressed.</param>
-    public delegate void UIElementKeyReleasedEventHandler(UIElement element, KeyboardDevice device, Key key);
+    /// <param name="handled">A value indicating whether the event has been handled.</param>
+    public delegate void UIElementKeyReleasedEventHandler(UIElement element, KeyboardDevice device, Key key, ref Boolean handled);
 
     /// <summary>
     /// Represents the method that is called when the mouse cursor enters or leaves a UI element.
     /// </summary>
     /// <param name="element">The element that raised the event.</param>
     /// <param name="device">The mouse device.</param>
+    /// <param name="handled">A value indicating whether the event has been handled.</param>
     public delegate void UIElementMouseEventHandler(UIElement element, MouseDevice device, ref Boolean handled);
 
     /// <summary>
@@ -75,6 +79,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
     /// <param name="element">The element that raised the event.</param>
     /// <param name="device">The mouse device.</param>
     /// <param name="button">The mouse button that was pressed or released.</param>
+    /// <param name="handled">A value indicating whether the event has been handled.</param>
     public delegate void UIElementMouseButtonEventHandler(UIElement element, MouseDevice device, MouseButton button, ref Boolean handled);
 
     /// <summary>
@@ -88,6 +93,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
     /// current position and the x-coordinate of the mouse's previous position.</param>
     /// <param name="dy">The difference between the y-coordinate of the mouse's 
     /// current position and the y-coordinate of the mouse's previous position.</param>
+    /// <param name="handled">A value indicating whether the event has been handled.</param>
     public delegate void UIElementMouseMotionEventHandler(UIElement element, MouseDevice device, Double x, Double y, Double dx, Double dy, ref Boolean handled);
 
     /// <summary>
@@ -105,6 +111,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
     /// </summary>
     /// <param name="element">The element that raised the event.</param>
     public delegate void UIElementEventHandler(UIElement element);
+
+    /// <summary>
+    /// Represents the method that is called when a UI element raises a routed event.
+    /// </summary>
+    /// <param name="element">The element that raised the event.</param>
+    /// <param name="handled">A value indicating whether the event has been handled.</param>
+    public delegate void UIElementRoutedEventHandler(UIElement element, ref Boolean handled);
 
     /// <summary>
     /// Represents the base class for all elements within the Ultraviolet Presentation Foundation.
@@ -1176,37 +1189,65 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Occurs when the element gains input focus.
         /// </summary>
-        public event UIElementEventHandler Focused;
+        public event UIElementRoutedEventHandler Focused
+        {
+            add { AddHandler(FocusedEvent, value); }
+            remove { RemoveHandler(FocusedEvent, value); }
+        }
 
         /// <summary>
         /// Occurs when the element loses input focus.
         /// </summary>
-        public event UIElementEventHandler Blurred;
+        public event UIElementRoutedEventHandler Blurred
+        {
+            add { AddHandler(BlurredEvent, value); }
+            remove { RemoveHandler(BlurredEvent, value); }
+        }
 
         /// <summary>
         /// Occurs when a key is pressed while the element has input focus.
         /// </summary>
-        public event UIElementKeyPressedEventHandler KeyPressed;
+        public event UIElementKeyPressedEventHandler KeyPressed
+        {
+            add { AddHandler(KeyPressedEvent, value); }
+            remove { RemoveHandler(KeyPressedEvent, value); }
+        }
 
         /// <summary>
         /// Occurs when a key is released while the element has input focus.
         /// </summary>
-        public event UIElementKeyReleasedEventHandler KeyReleased;
+        public event UIElementKeyReleasedEventHandler KeyReleased
+        {
+            add { AddHandler(KeyReleasedEvent, value); }
+            remove { RemoveHandler(KeyReleasedEvent, value); }
+        }
 
         /// <summary>
         /// Occurs when the element receives text input from the keyboard.
         /// </summary>
-        public event UIElementKeyboardEventHandler TextInput;
+        public event UIElementKeyboardEventHandler TextInput
+        {
+            add { AddHandler(TextInputEvent, value); }
+            remove { RemoveHandler(TextInputEvent, value); }
+        }
 
         /// <summary>
         /// Occurs when the element gains mouse capture.
         /// </summary>
-        public event UIElementEventHandler GainedMouseCapture;
+        public event UIElementRoutedEventHandler GainedMouseCapture
+        {
+            add { AddHandler(GainedMouseCaptureEvent, value); }
+            remove { RemoveHandler(GainedMouseCaptureEvent, value); }
+        }
 
         /// <summary>
         /// Occurs when the element loses mouse capture.
         /// </summary>
-        public event UIElementEventHandler LostMouseCapture;
+        public event UIElementRoutedEventHandler LostMouseCapture
+        {
+            add { AddHandler(LostMouseCaptureEvent, value); }
+            remove { RemoveHandler(LostMouseCaptureEvent, value); }
+        }
 
         /// <summary>
         /// Occurs when the mouse moves over the control.
@@ -1423,24 +1464,87 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public static readonly DependencyProperty TabIndexProperty = DependencyProperty.Register("TabIndex", typeof(Int32), typeof(UIElement),
             new DependencyPropertyMetadata(HandleTabIndexChanged, () => 0, DependencyPropertyOptions.None));
 
+        /// <summary>
+        /// Identifies the <see cref="Focused"/> routed event.
+        /// </summary>
+        public static readonly RoutedEvent FocusedEvent = RoutedEvent.Register("FocusedEvent", RoutingStrategy.Direct, 
+            typeof(UIElementRoutedEventHandler), typeof(UIElement));
+
+        /// <summary>
+        /// Identifies the <see cref="Blurred"/> routed event.
+        /// </summary>
+        public static readonly RoutedEvent BlurredEvent = RoutedEvent.Register("BlurredEvent", RoutingStrategy.Direct,
+            typeof(UIElementRoutedEventHandler), typeof(UIElement));
+
+        /// <summary>
+        /// Identifies the <see cref="KeyPressed"/> routed event.
+        /// </summary>
+        public static readonly RoutedEvent KeyPressedEvent = RoutedEvent.Register("KeyPressed", RoutingStrategy.Bubble,
+            typeof(UIElementKeyPressedEventHandler), typeof(UIElement));
+        
+        /// <summary>
+        /// Identifies the <see cref="KeyReleased"/> routed event.
+        /// </summary>
+        public static readonly RoutedEvent KeyReleasedEvent = RoutedEvent.Register("KeyReleased", RoutingStrategy.Bubble,
+            typeof(UIElementKeyReleasedEventHandler), typeof(UIElement));
+
+        /// <summary>
+        /// Identifies the <see cref="TextInput"/> routed event.
+        /// </summary>
+        public static readonly RoutedEvent TextInputEvent = RoutedEvent.Register("TextInput", RoutingStrategy.Bubble,
+            typeof(UIElementKeyboardEventHandler), typeof(UIElement));
+
+        /// <summary>
+        /// Identifies the <see cref="GainedMouseCapture"/> routed event.
+        /// </summary>
+        public static readonly RoutedEvent GainedMouseCaptureEvent = RoutedEvent.Register("GainedMouseCapture", RoutingStrategy.Direct,
+            typeof(UIElementRoutedEventHandler), typeof(UIElement));
+
+        /// <summary>
+        /// Identifies the <see cref="LostMouseCapture"/> routed event.
+        /// </summary>
+        public static readonly RoutedEvent LostMouseCaptureEvent = RoutedEvent.Register("LostMouseCapture", RoutingStrategy.Direct,
+            typeof(UIElementRoutedEventHandler), typeof(UIElement));
+
+        /// <summary>
+        /// Identifies the <see cref="MouseMotion"/> routed event.
+        /// </summary>
         public static readonly RoutedEvent MouseMotionEvent = RoutedEvent.Register("MouseMotion", RoutingStrategy.Bubble,
             typeof(UIElementMouseMotionEventHandler), typeof(UIElement));
 
+        /// <summary>
+        /// Identifies the <see cref="MouseEnter"/> routed event.
+        /// </summary>
         public static readonly RoutedEvent MouseEnterEvent = RoutedEvent.Register("MouseEnter", RoutingStrategy.Direct,
             typeof(UIElementMouseEventHandler), typeof(UIElement));
 
+        /// <summary>
+        /// Identifies the <see cref="MouseLeave"/> routed event.
+        /// </summary>
         public static readonly RoutedEvent MouseLeaveEvent = RoutedEvent.Register("MouseLeave", RoutingStrategy.Direct,
             typeof(UIElementMouseEventHandler), typeof(UIElement));
 
+        /// <summary>
+        /// Identifies the <see cref="MouseButtonPressed"/> routed event.
+        /// </summary>
         public static readonly RoutedEvent MouseButtonPressedEvent = RoutedEvent.Register("MouseButtonPressed", RoutingStrategy.Bubble,
             typeof(UIElementMouseButtonEventHandler), typeof(UIElement));
 
+        /// <summary>
+        /// Identifies the <see cref="MouseButtonReleased"/> routed event.
+        /// </summary>
         public static readonly RoutedEvent MouseButtonReleasedEvent = RoutedEvent.Register("MouseButtonReleased", RoutingStrategy.Bubble,
             typeof(UIElementMouseButtonEventHandler), typeof(UIElement));
 
+        /// <summary>
+        /// Identifies the <see cref="MouseClick"/> routed event.
+        /// </summary>
         public static readonly RoutedEvent MouseClickEvent = RoutedEvent.Register("MouseClick", RoutingStrategy.Bubble,
             typeof(UIElementMouseButtonEventHandler), typeof(UIElement));
 
+        /// <summary>
+        /// Identifies the <see cref="MouseDoubleClick"/> routed event.
+        /// </summary>
         public static readonly RoutedEvent MouseDoubleClickEvent = RoutedEvent.Register("MouseDoubleClick", RoutingStrategy.Bubble,
             typeof(UIElementMouseButtonEventHandler), typeof(UIElement));
 
@@ -1678,10 +1782,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         protected internal virtual void OnFocused()
         {
-            var temp = Focused;
+            var temp = RoutedEvent.GetInvocationDelegate<UIElementRoutedEventHandler>(FocusedEvent);
             if (temp != null)
             {
-                temp(this);
+                var handled = false;
+                temp(this, ref handled);
             }
         }
 
@@ -1690,10 +1795,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         protected internal virtual void OnBlurred()
         {
-            var temp = Blurred;
+            var temp = RoutedEvent.GetInvocationDelegate<UIElementRoutedEventHandler>(BlurredEvent);
             if (temp != null)
             {
-                temp(this);
+                var handled = false;
+                temp(this, ref handled);
             }
         }
 
@@ -1708,10 +1814,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="repeat">A value indicating whether this is a repeated key press.</param>
         protected internal virtual void OnKeyPressed(KeyboardDevice device, Key key, Boolean ctrl, Boolean alt, Boolean shift, Boolean repeat)
         {
-            var temp = KeyPressed;
+            var temp = RoutedEvent.GetInvocationDelegate<UIElementKeyPressedEventHandler>(KeyPressedEvent);
             if (temp != null)
             {
-                temp(this, device, key, ctrl, alt, shift, repeat);
+                var handled = false;
+                temp(this, device, key, ctrl, alt, shift, repeat, ref handled);
             }
         }
 
@@ -1722,10 +1829,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="key">The <see cref="Key"/> value that represents the key that was released.</param>
         protected internal virtual void OnKeyReleased(KeyboardDevice device, Key key)
         {
-            var temp = KeyReleased;
+            var temp = RoutedEvent.GetInvocationDelegate<UIElementKeyReleasedEventHandler>(KeyReleasedEvent);
             if (temp != null)
             {
-                temp(this, device, key);
+                var handled = false;
+                temp(this, device, key, ref handled);
             }
         }
 
@@ -1735,10 +1843,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="device">The keyboard device.</param>
         protected internal virtual void OnTextInput(KeyboardDevice device)
         {
-            var temp = TextInput;
+            var temp = RoutedEvent.GetInvocationDelegate<UIElementKeyboardEventHandler>(TextInputEvent);
             if (temp != null)
             {
-                temp(this, device);
+                var handled = false;
+                temp(this, device, ref handled);
             }
         }
 
@@ -1747,10 +1856,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         protected internal virtual void OnGainedMouseCapture()
         {
-            var temp = GainedMouseCapture;
+            var temp = RoutedEvent.GetInvocationDelegate<UIElementRoutedEventHandler>(GainedMouseCaptureEvent);
             if (temp != null)
             {
-                temp(this);
+                var handled = false;
+                temp(this, ref handled);
             }
         }
 
@@ -1759,10 +1869,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         protected internal virtual void OnLostMouseCapture()
         {
-            var temp = LostMouseCapture;
+            var temp = RoutedEvent.GetInvocationDelegate<UIElementRoutedEventHandler>(LostMouseCaptureEvent);
             if (temp != null)
             {
-                temp(this);
+                var handled = false;
+                temp(this, ref handled);
             }
         }
 

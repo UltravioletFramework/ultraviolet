@@ -3,18 +3,21 @@
   <Stylesheet>DebugViewScreenStyles.uvss</Stylesheet>
   <View ViewModelType="UvDebugSandbox.UI.Screens.DebugViewModel, UvDebugSandbox">
 
-    <ListBox>
-      <ListBoxItem>Lorem ipsum dolor sit amet</ListBoxItem>
-      <ListBoxItem>Hello</ListBoxItem>
-      <ListBoxItem Selector.IsSelected="true">Hello</ListBoxItem>
-      <ListBoxItem>Hello</ListBoxItem>
-      <ListBoxItem>Hello</ListBoxItem>
-      <ListBoxItem>Hello</ListBoxItem>
-      <ListBoxItem>Hello</ListBoxItem>
-      <ListBoxItem>Hello</ListBoxItem>
-      <ListBoxItem>Hello</ListBoxItem>
-      <ListBoxItem>Hello</ListBoxItem>
-    </ListBox>
+    <StackPanel>
+      <TextBox Width="300" Height="32"></TextBox>
+      <ListBox>
+        <ListBoxItem>Lorem ipsum dolor sit amet</ListBoxItem>
+        <ListBoxItem>Hello</ListBoxItem>
+        <ListBoxItem Selector.IsSelected="true">Hello</ListBoxItem>
+        <ListBoxItem>Hello</ListBoxItem>
+        <ListBoxItem>Hello</ListBoxItem>
+        <ListBoxItem>Hello</ListBoxItem>
+        <ListBoxItem>Hello</ListBoxItem>
+        <ListBoxItem>Hello</ListBoxItem>
+        <ListBoxItem>Hello</ListBoxItem>
+        <ListBoxItem>Hello</ListBoxItem>
+      </ListBox>
+    </StackPanel>
 
   </View>
 </UIPanelDefinition>
