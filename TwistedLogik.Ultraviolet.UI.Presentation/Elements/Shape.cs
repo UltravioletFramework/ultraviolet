@@ -6,7 +6,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
     /// <summary>
     /// Represents a framework element which renders a geometric shape.
     /// </summary>
-    [UIElement("Shape")]
+    [UvmlKnownType("Shape")]
     public abstract class Shape : FrameworkElement
     {
         /// <summary>

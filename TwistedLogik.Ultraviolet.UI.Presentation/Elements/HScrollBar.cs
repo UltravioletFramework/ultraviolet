@@ -6,7 +6,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
     /// <summary>
     /// Represents a horizontal scroll bar.
     /// </summary>
-    [UIElement("HScrollBar", "TwistedLogik.Ultraviolet.UI.Presentation.Elements.Templates.HScrollBar.xml")]
+    [UvmlKnownType("HScrollBar", "TwistedLogik.Ultraviolet.UI.Presentation.Elements.Templates.HScrollBar.xml")]
     public class HScrollBar : ScrollBarBase
     {
         /// <summary>

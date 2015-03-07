@@ -6,7 +6,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
     /// <summary>
     /// Represents a vertical scroll bar.
     /// </summary>
-    [UIElement("VScrollBar", "TwistedLogik.Ultraviolet.UI.Presentation.Elements.Templates.VScrollBar.xml")]
+    [UvmlKnownType("VScrollBar", "TwistedLogik.Ultraviolet.UI.Presentation.Elements.Templates.VScrollBar.xml")]
     public class VScrollBar : ScrollBarBase
     {
         /// <summary>

@@ -144,7 +144,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             this.id      = id;
             this.classes = new UIElementClassCollection(this);
 
-            var attr = (UIElementAttribute)GetType().GetCustomAttributes(typeof(UIElementAttribute), false).SingleOrDefault();
+            var attr = (UvmlKnownTypeAttribute)GetType().GetCustomAttributes(typeof(UvmlKnownTypeAttribute), false).SingleOrDefault();
             if (attr != null)
             {
                 this.name = attr.Name;

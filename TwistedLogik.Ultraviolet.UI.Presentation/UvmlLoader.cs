@@ -141,8 +141,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
                 if (IsAttachedPropertyOrEvent(xmlAttrName, out attachment, out name))
                 {
-                    if (!uv.GetUI().GetPresentationFoundation().GetElementType(attachment, out attachmentType))
-                        throw new InvalidOperationException(PresentationStrings.UnrecognizedUIElement.Format(attachment));
+                    if (!uv.GetUI().GetPresentationFoundation().GetKnownType(attachment, out attachmentType))
+                        throw new InvalidOperationException(PresentationStrings.UnrecognizedType.Format(attachment));
 
                     examinedType = attachmentType;
                 }
@@ -221,7 +221,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             {
                 instance = uv.GetUI().GetPresentationFoundation().InstantiateElementByName(name, id, context.ViewModelType, context.BindingContext);
                 if (instance == null)
-                    throw new UvmlException(PresentationStrings.UnrecognizedUIElement.Format(xmlElement.Name.LocalName));
+                    throw new UvmlException(PresentationStrings.UnrecognizedType.Format(xmlElement.Name.LocalName));
             }
 
             foreach (var className in classList)
@@ -310,8 +310,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (IsAttachedPropertyOrEvent(name, out attachedContainer, out attachedProperty))
             {
                 Type attachedContainerType;
-                if (!uv.GetUI().GetPresentationFoundation().GetElementType(attachedContainer, out attachedContainerType))
-                    throw new InvalidOperationException(PresentationStrings.UnrecognizedUIElement.Format(attachedContainer));
+                if (!uv.GetUI().GetPresentationFoundation().GetKnownType(attachedContainer, out attachedContainerType))
+                    throw new InvalidOperationException(PresentationStrings.UnrecognizedType.Format(attachedContainer));
 
                 return FindDependencyPropertyByName(attachedProperty, attachedContainerType, out isAttachedEvent);
             }

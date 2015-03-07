@@ -5,7 +5,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
     /// <summary>
     /// Represents an item in a <see cref="ListBox"/> control.
     /// </summary>
-    [UIElement("ListBoxItem", "TwistedLogik.Ultraviolet.UI.Presentation.Elements.Templates.ListBoxItem.xml")]
+    [UvmlKnownType("ListBoxItem", "TwistedLogik.Ultraviolet.UI.Presentation.Elements.Templates.ListBoxItem.xml")]
     public class ListBoxItem : ContentControl
     {
         /// <summary>

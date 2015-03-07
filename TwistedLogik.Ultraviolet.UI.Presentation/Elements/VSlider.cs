@@ -6,7 +6,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
     /// <summary>
     /// Represents a vertical slider.
     /// </summary>
-    [UIElement("VSlider", "TwistedLogik.Ultraviolet.UI.Presentation.Elements.Templates.VSlider.xml")]
+    [UvmlKnownType("VSlider", "TwistedLogik.Ultraviolet.UI.Presentation.Elements.Templates.VSlider.xml")]
     public class VSlider : SliderBase
     {
         /// <summary>

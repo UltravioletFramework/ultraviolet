@@ -6,7 +6,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
     /// <summary>
     /// Represents a control which provides a scrollable view of its content.
     /// </summary>
-    [UIElement("ScrollViewer", "TwistedLogik.Ultraviolet.UI.Presentation.Elements.Templates.ScrollViewer.xml")]
+    [UvmlKnownType("ScrollViewer", "TwistedLogik.Ultraviolet.UI.Presentation.Elements.Templates.ScrollViewer.xml")]
     public class ScrollViewer : ContentControl
     {
         /// <summary>

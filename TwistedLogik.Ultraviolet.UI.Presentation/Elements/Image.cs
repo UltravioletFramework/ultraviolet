@@ -7,7 +7,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
     /// <summary>
     /// Represents a framework element which displays a particular image.
     /// </summary>
-    [UIElement("Image")]
+    [UvmlKnownType("Image")]
     [DefaultProperty("Source")]
     public class Image : FrameworkElement
     {

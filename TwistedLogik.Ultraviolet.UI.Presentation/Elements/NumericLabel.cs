@@ -6,7 +6,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
     /// <summary>
     /// Represents a label that is optimized for displaying numeric values.
     /// </summary>
-    [UIElement("NumericLabel")]
+    [UvmlKnownType("NumericLabel")]
     [DefaultProperty("Value")]
     public class NumericLabel : LabelBase
     {

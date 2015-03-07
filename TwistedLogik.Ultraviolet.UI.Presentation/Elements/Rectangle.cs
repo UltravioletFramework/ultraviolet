@@ -5,7 +5,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
     /// <summary>
     /// Represents a framework element which renders a rectangle.
     /// </summary>
-    [UIElement("Rectangle")]
+    [UvmlKnownType("Rectangle")]
     public class Rectangle : Shape
     {
         /// <summary>

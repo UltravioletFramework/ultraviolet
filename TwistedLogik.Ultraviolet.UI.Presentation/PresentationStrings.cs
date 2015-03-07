@@ -46,7 +46,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public static readonly StringResource BindingIsWriteOnly                   = new StringResource(StringDatabase, "BINDING_IS_WRITE_ONLY");
         public static readonly StringResource UIElementInvalidCtor                 = new StringResource(StringDatabase, "UIELEMENT_INVALID_CTOR");
         public static readonly StringResource ViewModelTypeNotFound                = new StringResource(StringDatabase, "VIEW_MODEL_TYPE_NOT_FOUND");
-        public static readonly StringResource UnrecognizedUIElement                = new StringResource(StringDatabase, "UNRECOGNIZED_UIELEMENT");
+        public static readonly StringResource KnownTypeAlreadyRegistered           = new StringResource(StringDatabase, "KNOWN_TYPE_ALREADY_REGISTERED");
+        public static readonly StringResource UnrecognizedType                     = new StringResource(StringDatabase, "UNRECOGNIZED_TYPE");
         public static readonly StringResource InvalidDefaultProperty               = new StringResource(StringDatabase, "INVALID_DEFAULT_PROPERTY");
         public static readonly StringResource NoViewModel                          = new StringResource(StringDatabase, "NO_VIEW_MODEL");
         public static readonly StringResource ElementWithIDAlreadyExists           = new StringResource(StringDatabase, "ELEMENT_WITH_ID_ALREADY_EXISTS");

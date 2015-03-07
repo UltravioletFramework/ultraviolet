@@ -115,9 +115,14 @@
       <Variant>The specified view model type '{0}' could not be found.</Variant>
     </en-US>
   </String>
-  <String Key="UNRECOGNIZED_UIELEMENT">
+  <String Key="KNOWN_TYPE_ALREADY_REGISTERED">
     <en-US>
-      <Variant>No UI element named '{0}' has been registered with the UI system.</Variant>
+      <Variant>A type named '{0}' has already been registered with the Presentation Foundation.</Variant>
+    </en-US>
+  </String>
+  <String Key="UNRECOGNIZED_TYPE">
+    <en-US>
+      <Variant>No type named '{0}' has been registered with the Presentation Foundation.</Variant>
     </en-US>
   </String>
   <String Key="INVALID_DEFAULT_PROPERTY">

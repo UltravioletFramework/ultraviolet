@@ -8,7 +8,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
     /// <summary>
     /// Represents the base class for standard Ultraviolet Presentation Foundation elements.
     /// </summary>
-    [UIElement("element")]
+    [UvmlKnownType("element")]
     public abstract class FrameworkElement : UIElement
     {
         /// <summary>

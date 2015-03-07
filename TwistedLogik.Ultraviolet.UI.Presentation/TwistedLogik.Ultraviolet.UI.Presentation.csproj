@@ -188,9 +188,10 @@
     <Compile Include="LayoutQueue.EntryComparer.cs" />
     <Compile Include="LayoutUtil.cs" />
     <Compile Include="NamespaceDoc.cs" />
+    <Compile Include="PresentationFoundation.KnownType.cs" />
     <Compile Include="PresentationFoundationFactoryInitializer.cs" />
     <Compile Include="PresentationFoundation.cs" />
-    <Compile Include="PresentationFoundation.RegisteredElement.cs" />
+    <Compile Include="PresentationFoundation.KnownElement.cs" />
     <Compile Include="PresentationStrings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RoutedEvent.cs" />
@@ -243,7 +244,7 @@
     <Compile Include="Thickness.cs" />
     <Compile Include="TypeExtensions.cs" />
     <Compile Include="UIElement.cs" />
-    <Compile Include="UIElementAttribute.cs" />
+    <Compile Include="UvmlKnownTypeAttribute.cs" />
     <Compile Include="UIElementClassCollection.cs" />
     <Compile Include="UIElementClassCollection.IEnumerable.cs" />
     <Compile Include="UIElementRegistry.cs" />

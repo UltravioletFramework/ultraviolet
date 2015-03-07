@@ -7,7 +7,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
     /// other (if <see cref="StackPanel.Orientation"/> is <see cref="F:Orientation.Vertical"/>) or
     /// side-by-side if (see <see cref="StackPanel.Orientation"/> is <see cref="F:Orientation.Horizontal"/>).
     /// </summary>
-    [UIElement("StackPanel", "TwistedLogik.Ultraviolet.UI.Presentation.Elements.Templates.StackPanel.xml")]
+    [UvmlKnownType("StackPanel", "TwistedLogik.Ultraviolet.UI.Presentation.Elements.Templates.StackPanel.xml")]
     public class StackPanel : Panel
     {
         /// <summary>

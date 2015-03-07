@@ -5,7 +5,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
     /// <summary>
     /// Represents an element which is used to indicate the position of child content within a component template.
     /// </summary>
-    [UIElement("ContentPresenter")]
+    [UvmlKnownType("ContentPresenter")]
     public class ContentPresenter : FrameworkElement
     {
         /// <summary>
