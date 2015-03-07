@@ -251,6 +251,9 @@
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Elements\HScrollBar.cs">
       <Link>Elements\HScrollBar.cs</Link>
     </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Elements\HScrollTrack.cs">
+      <Link>Elements\HScrollTrack.cs</Link>
+    </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Elements\HSlider.cs">
       <Link>Elements\HSlider.cs</Link>
     </Compile>
@@ -326,6 +329,12 @@
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Elements\ScrollBarVisibility.cs">
       <Link>Elements\ScrollBarVisibility.cs</Link>
     </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Elements\ScrollContentPresenter.cs">
+      <Link>Elements\ScrollContentPresenter.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Elements\ScrollTrackBase.cs">
+      <Link>Elements\ScrollTrackBase.cs</Link>
+    </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Elements\ScrollViewer.cs">
       <Link>Elements\ScrollViewer.cs</Link>
     </Compile>
@@ -364,6 +373,9 @@
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Elements\VScrollBar.cs">
       <Link>Elements\VScrollBar.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Elements\VScrollTrack.cs">
+      <Link>Elements\VScrollTrack.cs</Link>
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Elements\VSlider.cs">
       <Link>Elements\VSlider.cs</Link>
@@ -622,6 +634,9 @@
     <Content Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Elements\Templates\HScrollBar.xml">
       <Link>Elements\Templates\HScrollBar.xml</Link>
     </Content>
+    <Content Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Elements\Templates\HScrollTrack.xml">
+      <Link>Elements\Templates\HScrollTrack.xml</Link>
+    </Content>
     <Content Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Elements\Templates\HSlider.xml">
       <Link>Elements\Templates\HSlider.xml</Link>
     </Content>
@@ -649,6 +664,9 @@
     <Content Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Elements\Templates\VScrollBar.xml">
       <Link>Elements\Templates\VScrollBar.xml</Link>
     </Content>
+    <Content Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Elements\Templates\VScrollTrack.xml">
+      <Link>Elements\Templates\VScrollTrack.xml</Link>
+    </Content>
     <Content Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Elements\Templates\VSlider.xml">
       <Link>Elements\Templates\VSlider.xml</Link>
     </Content>
@@ -675,7 +693,7 @@
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" ProjectLinkReference="7379d9e1-bb01-4b05-b4f7-5d39b393348f" />
+      <UserProperties ProjectLinkReference="7379d9e1-bb01-4b05-b4f7-5d39b393348f" ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" />
     </VisualStudio>
   </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -306,15 +306,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <inheritdoc/>
         protected override UIElement GetElementAtPointCore(Double x, Double y, Boolean isHitTest)
         {
-            if (contentElement != null && RelativeContentRegion.Contains(x, y))
+            if (ContentPresenter == null)
             {
-                var contentRelX = x - contentElement.RelativeBounds.X;
-                var contentRelY = y - contentElement.RelativeBounds.Y;
-
-                var contentMatch = contentElement.GetElementAtPoint(contentRelX, contentRelY, isHitTest);
-                if (contentMatch != null)
+                if (contentElement != null && RelativeContentRegion.Contains(x, y))
                 {
-                    return contentMatch;
+                    var contentRelX = x - contentElement.RelativeBounds.X;
+                    var contentRelY = y - contentElement.RelativeBounds.Y;
+
+                    var contentMatch = contentElement.GetElementAtPoint(contentRelX, contentRelY, isHitTest);
+                    if (contentMatch != null)
+                    {
+                        return contentMatch;
+                    }
                 }
             }
             return base.GetElementAtPointCore(x, y, isHitTest);

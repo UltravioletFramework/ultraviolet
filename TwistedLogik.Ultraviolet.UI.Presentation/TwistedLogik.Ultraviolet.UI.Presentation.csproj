@@ -111,12 +111,16 @@
     <Compile Include="DrawingContext.cs" />
     <Compile Include="DrawingContext.OpacityState.cs" />
     <Compile Include="Elements\Border.cs" />
+    <Compile Include="Elements\ScrollTrackBase.cs" />
+    <Compile Include="Elements\VScrollTrack.cs" />
+    <Compile Include="Elements\HScrollTrack.cs" />
     <Compile Include="Elements\ItemCollection.cs" />
     <Compile Include="Elements\ItemCollection.IList.cs" />
     <Compile Include="Elements\ItemCollection.IEnumerable.cs" />
     <Compile Include="Elements\ItemsControl.cs" />
     <Compile Include="Elements\ListBoxItem.cs" />
     <Compile Include="Elements\ListBox.cs" />
+    <Compile Include="Elements\ScrollContentPresenter.cs" />
     <Compile Include="Elements\Selector.cs" />
     <Compile Include="Elements\VSlider.cs" />
     <Compile Include="Elements\HSlider.cs" />
@@ -301,6 +305,12 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Elements\Templates\ListBoxItem.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Elements\Templates\HScrollTrack.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Elements\Templates\VScrollTrack.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -6,7 +6,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
     /// Represents an element which is used to indicate the position of child content within a component template.
     /// </summary>
     [UIElement("ContentPresenter")]
-    public sealed class ContentPresenter : FrameworkElement
+    public class ContentPresenter : FrameworkElement
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ContentPresenter"/> class.
@@ -18,40 +18,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         {
 
         }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether the content presenter's content is unconstrained in its width.
-        /// If this property is <c>true</c>, a value of <see cref="Double.PositiveInfinity"/> is passed to the presenter's
-        /// content during the measure phase of layout.
-        /// </summary>
-        public Boolean UnconstrainedWidth
-        {
-            get { return GetValue<Boolean>(UnconstrainedWidthProperty); }
-            set { SetValue<Boolean>(UnconstrainedWidthProperty, value); }
-        }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether the content presenter's content is unconstrained in its height.
-        /// If this property is <c>true</c>, a value of <see cref="Double.PositiveInfinity"/> is passed to the presenter's
-        /// content during the measure phase of layout.
-        /// </summary>
-        public Boolean UnconstrainedHeight
-        {
-            get { return GetValue<Boolean>(UnconstrainedHeightProperty); }
-            set { SetValue<Boolean>(UnconstrainedHeightProperty, value); }
-        }
-
-        /// <summary>
-        /// Identifies the <see cref="UnconstrainedWidth"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty UnconstrainedWidthProperty = DependencyProperty.Register("UnconstrainedWidth", typeof(Boolean), typeof(ContentPresenter),
-            new DependencyPropertyMetadata(HandleUnconstrainedWidthChanged, null, DependencyPropertyOptions.AffectsMeasure));
-
-        /// <summary>
-        /// Identifies the <see cref="UnconstrainedHeight"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty UnconstrainedHeightProperty = DependencyProperty.Register("UnconstrainedHeight", typeof(Boolean), typeof(ContentPresenter),
-            new DependencyPropertyMetadata(HandleUnconstrainedHeightChanged, null, DependencyPropertyOptions.AffectsMeasure));
 
         /// <inheritdoc/>
         protected override void DrawOverride(UltravioletTime time, DrawingContext dc)
@@ -79,10 +45,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             if (Control == null)
                 return Size2D.Zero;
 
-            var contentWidth  = UnconstrainedWidth ? Double.PositiveInfinity : availableSize.Width;
-            var contentHeight = UnconstrainedHeight ? Double.PositiveInfinity : availableSize.Height;
-
-            return Control.OnContentPresenterMeasure(new Size2D(contentWidth, contentHeight));
+            return Control.OnContentPresenterMeasure(availableSize);
         }
 
         /// <inheritdoc/>
@@ -102,26 +65,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
                 Control.OnContentPresenterPosition(AbsolutePosition);
             }
             base.PositionOverride(position);
-        }
-
-        /// <summary>
-        /// Occurs when the value of the <see cref="UnconstrainedWidth"/> dependency property changes.
-        /// </summary>
-        /// <param name="dobj">The object that raised the event.</param>
-        private static void HandleUnconstrainedWidthChanged(DependencyObject dobj)
-        {
-            var presenter = (ContentPresenter)dobj;
-            presenter.InvalidateMeasure();
-        }
-
-        /// <summary>
-        /// Occurs when the value of the <see cref="UnconstrainedHeight"/> dependency property changes.
-        /// </summary>
-        /// <param name="dobj">The object that raised the event.</param>
-        private static void HandleUnconstrainedHeightChanged(DependencyObject dobj)
-        {
-            var presenter = (ContentPresenter)dobj;
-            presenter.InvalidateMeasure();
         }
     }
 }
