@@ -193,6 +193,12 @@
     <Compile Include="PresentationFoundation.RegisteredElement.cs" />
     <Compile Include="PresentationStrings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RoutedEvent.cs" />
+    <Compile Include="RoutedEventInvocation.cs" />
+    <Compile Include="RoutedEventManager.cs" />
+    <Compile Include="RoutedEventHandlerMetadata.cs" />
+    <Compile Include="RoutedEventSystem.cs" />
+    <Compile Include="RoutingStrategy.cs" />
     <Compile Include="SourcedAssetID.cs" />
     <Compile Include="SourcedImage.cs" />
     <Compile Include="SourcedResource.cs" />
@@ -246,6 +252,7 @@
     <Compile Include="UvmlException.cs" />
     <Compile Include="UvmlLoader.cs" />
     <Compile Include="UvmlLoader.InstantiationContext.cs" />
+    <Compile Include="UvmlLoader.UvmlAttribute.cs" />
     <Compile Include="VerticalAlignment.cs" />
     <Compile Include="Visibility.cs" />
     <Compile Include="VisualState.cs" />
@@ -282,6 +289,7 @@
     <None Include="..\TwistedLogik.Public.snk">
       <Link>TwistedLogik.Public.snk</Link>
     </None>
+    <Compile Include="UvmlLoader.UvmlAttributeType.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Elements\Templates\NumericUpDown.xml" />

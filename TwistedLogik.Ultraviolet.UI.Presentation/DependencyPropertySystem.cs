@@ -90,16 +90,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         private static Dictionary<String, DependencyProperty> GetPropertyDomain(Type type)
         {
             Dictionary<String, DependencyProperty> propertyDomain;
-            if (!DependencyPropertyRegistry.TryGetValue(type, out propertyDomain))
+            if (!dependencyPropertyRegistry.TryGetValue(type, out propertyDomain))
             {
                 propertyDomain = new Dictionary<String, DependencyProperty>();
-                DependencyPropertyRegistry[type] = propertyDomain;
+                dependencyPropertyRegistry[type] = propertyDomain;
             }
             return propertyDomain;
         }
 
         // State values.
-        private static readonly Dictionary<Type, Dictionary<String, DependencyProperty>> DependencyPropertyRegistry =
+        private static readonly Dictionary<Type, Dictionary<String, DependencyProperty>> dependencyPropertyRegistry =
             new Dictionary<Type, Dictionary<String, DependencyProperty>>();
         private static Int64 dpid = 1;
     }

@@ -100,7 +100,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var uv      = control.Ultraviolet;
             var context = new InstantiationContext(uv, null, control, null);
 
-            PopulateElementProperties(uv, control, template.Root, context);
+            PopulateElementPropertiesAndEvents(uv, control, template.Root, context);
 
             var rootElement = template.Root.Elements().SingleOrDefault();
             if (rootElement == null)
@@ -111,6 +111,82 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             control.ComponentRoot = root;
             control.ContentPresenter = context.ContentPresenter;
             control.PopulateFieldsFromRegisteredElements();
+        }
+
+        /// <summary>
+        /// Categorizes the UVML attributes defined on the specified XML element and returns a list
+        /// containing a collection of <see cref="UvmlAttribute"/> objects which represent them.
+        /// </summary>
+        /// <param name="uv">The Ultraviolet context.</param>
+        /// <param name="parent">The element which is the element's parent.</param>
+        /// <param name="xmlElement">The XML element that defines the element to instantiate.</param>
+        /// <param name="context">The current instantiation context.</param>
+        /// <returns>A list containing a collection of <see cref="UvmlAttribute"/> objects which represents the categorized attributes.</returns>
+        private static IEnumerable<UvmlAttribute> CategorizeUvmlAttributes(UltravioletContext uv, UIElement uiElement, XElement xmlElement, InstantiationContext context)
+        {
+            var attributes = new List<UvmlAttribute>();
+
+            foreach (var xmlAttr in xmlElement.Attributes())
+            {
+                var xmlAttrName = xmlAttr.Name.LocalName;
+
+                if (IsReservedAttribute(xmlAttrName))
+                    continue;
+
+                var value          = xmlAttr.Value;
+                var name           = default(String);
+                var attachment     = default(String);
+                var attachmentType = default(Type);
+                var examinedType   = uiElement.GetType();
+
+                if (IsAttachedPropertyOrEvent(xmlAttrName, out attachment, out name))
+                {
+                    if (!uv.GetUI().GetPresentationFoundation().GetElementType(attachment, out attachmentType))
+                        throw new InvalidOperationException(PresentationStrings.UnrecognizedUIElement.Format(attachment));
+
+                    examinedType = attachmentType;
+                }
+                else
+                {
+                    name = xmlAttrName;
+                }
+
+                // Check for dependency properties.
+                var dprop = DependencyProperty.FindByName(name, examinedType);
+                if (dprop != null)
+                {
+                    attributes.Add(new UvmlAttribute(UvmlAttributeType.DependencyProperty, attachment, name, value, dprop));
+                    continue;
+                }
+
+                // Check for routed events.
+                var revt = RoutedEvent.FindByName(name, examinedType);
+                if (revt != null)
+                {
+                    attributes.Add(new UvmlAttribute(UvmlAttributeType.RoutedEvent, attachment, name, value, revt));
+                    continue;
+                }
+
+                // Check for Framework properties.
+                var clrprop = examinedType.GetProperty(name, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+                if (clrprop != null)
+                {
+                    attributes.Add(new UvmlAttribute(UvmlAttributeType.FrameworkProperty, attachment, name, value, clrprop));
+                    continue;
+                }
+
+                // Check for Framework events.
+                var clrevt = examinedType.GetEvent(name, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+                if (clrevt != null)
+                {
+                    attributes.Add(new UvmlAttribute(UvmlAttributeType.FrameworkEvent, attachment, name, value, clrevt));
+                    continue;
+                }
+
+                throw new InvalidOperationException(PresentationStrings.EventOrPropertyDoesNotExist.Format(xmlAttrName, examinedType.Name));
+            }
+
+            return attributes;
         }
 
         /// <summary>
@@ -203,29 +279,72 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             return element;
         }
-
+        
         /// <summary>
         /// Finds the identifier of the specified dependency property on the specified UI element.
         /// </summary>
+        /// <param name="uv">The Ultraviolet context.</param>
         /// <param name="uiElement">The UI element to search for the dependency property.</param>
         /// <param name="name">The name of the dependency property for which to search.</param>
         /// <returns>The identifier of the specified dependency property, or <c>null</c> if no such property was found.</returns>
         private static DependencyProperty FindElementDependencyProperty(UltravioletContext uv, UIElement uiElement, String name)
         {
+            var isAttachedEvent = false;
+            return FindElementDependencyProperty(uv, uiElement, name, out isAttachedEvent);
+        }
+
+        /// <summary>
+        /// Finds the identifier of the specified dependency property on the specified UI element.
+        /// </summary>
+        /// <param name="uv">The Ultraviolet context.</param>
+        /// <param name="uiElement">The UI element to search for the dependency property.</param>
+        /// <param name="name">The name of the dependency property for which to search.</param>
+        /// <param name="isAttachedEvent">A value indicating whether the specified name actually represents an attached event.</param>
+        /// <returns>The identifier of the specified dependency property, or <c>null</c> if no such property was found.</returns>
+        private static DependencyProperty FindElementDependencyProperty(UltravioletContext uv, UIElement uiElement, String name, out Boolean isAttachedEvent)
+        {
+            isAttachedEvent = false;
+
             var attachedContainer = String.Empty;
             var attachedProperty  = String.Empty;
-            if (IsAttachedProperty(name, out attachedContainer, out attachedProperty))
+            if (IsAttachedPropertyOrEvent(name, out attachedContainer, out attachedProperty))
             {
                 Type attachedContainerType;
                 if (!uv.GetUI().GetPresentationFoundation().GetElementType(attachedContainer, out attachedContainerType))
                     throw new InvalidOperationException(PresentationStrings.UnrecognizedUIElement.Format(attachedContainer));
 
-                return DependencyProperty.FindByName(attachedProperty, attachedContainerType);
+                return FindDependencyPropertyByName(attachedProperty, attachedContainerType, out isAttachedEvent);
             }
             else
             {
-                return DependencyProperty.FindByName(name, uiElement.GetType());
+                return FindDependencyPropertyByName(name, uiElement.GetType(), out isAttachedEvent);
             }
+        }
+
+        /// <summary>
+        /// Searches the specified container type for a dependency property with the specified name.
+        /// </summary>
+        /// <param name="propertyName">The name of the dependency property to retrieve.</param>
+        /// <param name="propertyContainerType">The type of dependency object to search for a property.</param>
+        /// <param name="isAttachedEvent">A value indicating whether the specified name actually represents an attached event.</param>
+        /// <returns>The identifier of the specified dependency property, or <c>null</c> if no such property was found.</returns>
+        private static DependencyProperty FindDependencyPropertyByName(String propertyName, Type propertyContainerType, out Boolean isAttachedEvent)
+        {
+            isAttachedEvent = false;
+
+            var dprop = DependencyProperty.FindByName(propertyName, propertyContainerType);
+            if (dprop != null)
+            {
+                return dprop;
+            }
+
+            var attachedEvent = RoutedEvent.FindByName(propertyName, propertyContainerType);
+            if (attachedEvent != null)
+            {
+                isAttachedEvent = true;
+            }
+
+            return null;
         }
 
         /// <summary>
@@ -377,82 +496,33 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Populates a UI element's events, properties, and children.
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
-        /// <param name="uiElement">The element whose dependency property values will be populated.</param>
+        /// <param name="uiElement">The element whose properties, events, and children will be populated.</param>
         /// <param name="xmlElement">The XML element that represents the UI element.</param>
         /// <param name="context">The current instantiation context.</param>
         private static void PopulateElement(UltravioletContext uv, UIElement uiElement, XElement xmlElement, InstantiationContext context)
         {
-            PopulateElementProperties(uv, uiElement, xmlElement, context);
-            PopulateElementEvents(uv, uiElement, xmlElement, context);
+            PopulateElementPropertiesAndEvents(uv, uiElement, xmlElement, context);
             PopulateElementChildren(uv, uiElement, xmlElement, context);
         }
-
+        
         /// <summary>
-        /// Populates the specified element's events.
+        /// Populates a UI element's events and properties.
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
-        /// <param name="uiElement">The element whose dependency property values will be populated.</param>
+        /// <param name="uiElement">The element whose properties and events will be populated.</param>
         /// <param name="xmlElement">The XML element that represents the UI element.</param>
         /// <param name="context">The current instantiation context.</param>
-        private static void PopulateElementEvents(UltravioletContext uv, UIElement uiElement, XElement xmlElement, InstantiationContext context)
+        private static void PopulateElementPropertiesAndEvents(UltravioletContext uv, UIElement uiElement, XElement xmlElement, InstantiationContext context)
         {
-            foreach (var attr in xmlElement.Attributes())
+            var attrs = CategorizeUvmlAttributes(uv, uiElement, xmlElement, context);
+
+            foreach (var attr in attrs)
             {
-                var attrName = attr.Name.LocalName;
-                if (attrName == "BindingContext")
-                    continue;
-
-                var attrEvent = uiElement.GetType().GetEvent(attrName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
-                if (attrEvent == null || String.IsNullOrEmpty(attr.Value))
-                    continue;
-
-                Delegate lambda;
-                if (context.ComponentOwner != null)
-                {
-                    lambda = BindingExpressions.CreateElementBoundEventDelegate(context.ComponentOwner, 
-                        attrEvent.EventHandlerType, attr.Value);
-                }
-                else
-                {
-                    lambda = BindingExpressions.CreateViewModelBoundEventDelegate(uiElement, context.ViewModelType, 
-                        attrEvent.EventHandlerType, attr.Value);
-                }
-                attrEvent.AddEventHandler(uiElement, lambda);
+                PopulateElementPropertyOrEventFromAttribute(uiElement, attr, context);
             }
-        }
 
-        /// <summary>
-        /// Populates the specified element's property values.
-        /// </summary>
-        /// <param name="uv">The Ultraviolet context.</param>
-        /// <param name="uiElement">The element whose property values will be populated.</param>
-        /// <param name="xmlElement">The XML element that represents the UI element.</param>
-        /// <param name="context">The current instantiation context.</param>
-        private static void PopulateElementProperties(UltravioletContext uv, UIElement uiElement, XElement xmlElement, InstantiationContext context)
-        {
-            PopulateElementPropertiesFromAttributes(uv, uiElement, xmlElement, context);
             PopulateElementPropertiesFromElements(uv, uiElement, xmlElement, context);
             PopulateElementDefaultProperty(uv, uiElement, xmlElement, context);
-        }
-
-        /// <summary>
-        /// Populates the specified element's property values using the values of the specified
-        /// XML element's attributes.
-        /// </summary>
-        /// <param name="uv">The Ultraviolet context.</param>
-        /// <param name="uiElement">The element whose property values will be populated.</param>
-        /// <param name="xmlElement">The XML element that represents the UI element.</param>
-        /// <param name="context">The current instantiation context.</param>
-        private static void PopulateElementPropertiesFromAttributes(UltravioletContext uv, UIElement uiElement, XElement xmlElement, InstantiationContext context)
-        {
-            foreach (var attr in xmlElement.Attributes())
-            {
-                var attrName = attr.Name.LocalName;
-                if (IsReservedAttribute(attrName))
-                    continue;
-
-                PopulateElementProperty(uiElement, attrName, attr.Value, context);
-            }
         }
 
         /// <summary>
@@ -529,6 +599,48 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Populates a property or event from the specified UVML attribute.
+        /// </summary>
+        /// <param name="uiElement">The element which will be populated by the attribute.</param>
+        /// <param name="attr">The attribute with which to populate the element.</param>
+        /// <param name="context">The current instantiation context.</param>
+        private static void PopulateElementPropertyOrEventFromAttribute(UIElement uiElement, UvmlAttribute attr, InstantiationContext context)
+        {
+            switch (attr.AttributeType)
+            {
+                case UvmlAttributeType.DependencyProperty:
+                    {
+                        BindOrSetDependencyProperty(uiElement, (DependencyProperty)attr.Identifier, attr.Value, context);
+                    }
+                    break;
+                
+                case UvmlAttributeType.RoutedEvent:
+                    {
+                        var eventID      = (RoutedEvent)attr.Identifier;
+                        var eventHandler = CreateEventDelegate(uiElement, eventID.DelegateType, attr.Value, context);
+                        uiElement.AddHandler(eventID, eventHandler);
+                    }
+                    break;
+
+                case UvmlAttributeType.FrameworkProperty:
+                    {
+                        var propInfo  = (PropertyInfo)attr.Identifier;
+                        var propValue = ResolveValue(attr.Value, propInfo.PropertyType);
+                        propInfo.SetValue(uiElement, propValue, null);
+                    }
+                    break;
+
+                case UvmlAttributeType.FrameworkEvent:
+                    {
+                        var eventInfo    = (EventInfo)attr.Identifier;
+                        var eventHandler = CreateEventDelegate(uiElement, eventInfo.EventHandlerType, attr.Value, context);
+                        eventInfo.AddEventHandler(uiElement, eventHandler);
+                    }
+                    break;
+            }
+        }
+
+        /// <summary>
         /// Populates the specified properties of a UI element with the specified value.
         /// </summary>
         /// <param name="uiElement">The element whose property value will be populated.</param>
@@ -537,14 +649,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="context">The current instantiation context.</param>
         private static void PopulateElementProperty(UIElement uiElement, String name, String value, InstantiationContext context)
         {
-            var dprop = FindElementDependencyProperty(context.Ultraviolet, uiElement, name);
+            var isAttachedEvent = false;
+
+            var dprop = FindElementDependencyProperty(context.Ultraviolet, uiElement, name, out isAttachedEvent);
             if (dprop != null)
             {
                 BindOrSetDependencyProperty(uiElement, dprop, value, context);
             }
             else
             {
-                if (IsEvent(uiElement, name))
+                if (IsEvent(uiElement, name) || isAttachedEvent)
                     return;
 
                 var propInfo = FindElementStandardProperty(uiElement, name);
@@ -861,7 +975,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="container">The attached property's container type.</param>
         /// <param name="property">The attached property's property name.</param>
         /// <returns><c>true</c> if the specified attribtue name represents an attached property; otherwise, <c>false</c>.</returns>
-        private static Boolean IsAttachedProperty(String name, out String container, out String property)
+        private static Boolean IsAttachedPropertyOrEvent(String name, out String container, out String property)
         {
             container = null;
             property  = null;
@@ -886,6 +1000,26 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         private static Boolean IsBindingExpression(String value)
         {
             return BindingExpressions.IsBindingExpression(value);
+        }
+
+        /// <summary>
+        /// Creates a delegate for binding to an event.
+        /// </summary>
+        /// <param name="uiElement">The element to which the event is being bound.</param>
+        /// <param name="handlerType">The event handler's type.</param>
+        /// <param name="handlerName">The event handler's name within the view model or control.</param>
+        /// <param name="context">The current instantiation context.</param>
+        /// <returns>The specified delegate.</returns>
+        private static Delegate CreateEventDelegate(UIElement uiElement, Type handlerType, String handlerName, InstantiationContext context)
+        {
+            if (context.ComponentOwner != null)
+            {
+                return BindingExpressions.CreateElementBoundEventDelegate(context.ComponentOwner, handlerType, handlerName);
+            }
+            else
+            {
+                return BindingExpressions.CreateViewModelBoundEventDelegate(uiElement, context.ViewModelType, handlerType, handlerName);
+            }
         }
 
         // Reflection information.

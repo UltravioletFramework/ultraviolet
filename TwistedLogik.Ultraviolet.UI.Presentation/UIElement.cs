@@ -581,7 +581,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <returns>The specified element, or <c>null</c> if no such element is defined.</returns>
         public UIElement GetNavUpElement()
         {
-            return FindNavElement(NavUp) ?? (Parent == null ? null : Parent.GetNavUpElement());
+            var target = FindNavElement(NavUp);
+            if (target == null)
+            {
+                if (Parent != null)
+                {
+                    return (Parent.AutoNav ? Parent.GetNextNavUp(this) : null) ?? Parent.GetNavUpElement();
+                }
+            }
+            return target;
         }
 
         /// <summary>
@@ -591,7 +599,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <returns>The specified element, or <c>null</c> if no such element is defined.</returns>
         public UIElement GetNavDownElement()
         {
-            return FindNavElement(NavDown) ?? (Parent == null ? null : Parent.GetNavDownElement());
+            var target = FindNavElement(NavDown);
+            if (target == null)
+            {
+                if (Parent != null)
+                {
+                    return (Parent.AutoNav ? Parent.GetNextNavDown(this) : null) ?? Parent.GetNavDownElement();
+                }
+            }
+            return target;
         }
 
         /// <summary>
@@ -601,7 +617,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <returns>The specified element, or <c>null</c> if no such element is defined.</returns>
         public UIElement GetNavLeftElement()
         {
-            return FindNavElement(NavLeft) ?? (Parent == null ? null : Parent.GetNavLeftElement());
+            var target = FindNavElement(NavLeft);
+            if (target == null)
+            {
+                if (Parent != null)
+                {
+                    return (Parent.AutoNav ? Parent.GetNextNavLeft(this) : null) ?? Parent.GetNavLeftElement();
+                }
+            }
+            return target;
         }
 
         /// <summary>
@@ -611,7 +635,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <returns>The specified element, or <c>null</c> if no such element is defined.</returns>
         public UIElement GetNavRightElement()
         {
-            return FindNavElement(NavRight) ?? (Parent == null ? null : Parent.GetNavRightElement());
+            var target = FindNavElement(NavRight);
+            if (target == null)
+            {
+                if (Parent != null)
+                {
+                    return (Parent.AutoNav ? Parent.GetNextNavRight(this) : null) ?? Parent.GetNavRightElement();
+                }
+            }
+            return target;
         }
 
         /// <summary>
@@ -660,6 +692,46 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 return this;
             }
             return match;
+        }
+
+        /// <summary>
+        /// Adds a handler for a routed event to the element.
+        /// </summary>
+        /// <param name="evt">A <see cref="RoutedEvent"/> that identifies the routed event for which to add a handler.</param>
+        /// <param name="handler">A delegate that represents the handler to add to the element for the specified routed event.</param>
+        public void AddHandler(RoutedEvent evt, Delegate handler)
+        {
+            Contract.Require(evt, "evt");
+            Contract.Require(handler, "handler");
+
+            AddHandler(evt, handler, false);
+        }
+
+        /// <summary>
+        /// Adds a handler for a routed event to the element.
+        /// </summary>
+        /// <param name="evt">A <see cref="RoutedEvent"/> that identifies the routed event for which to add a handler.</param>
+        /// <param name="handler">A delegate that represents the handler to add to the element for the specified routed event.</param>
+        /// <param name="handledEventsToo">A value indicating whether the handler should receive events which have already been handled by other handlers.</param>
+        public void AddHandler(RoutedEvent evt, Delegate handler, Boolean handledEventsToo)
+        {
+            Contract.Require(evt, "evt");
+            Contract.Require(handler, "handler");
+
+            routedEventManager.Add(evt, handler, handledEventsToo);
+        }
+
+        /// <summary>
+        /// Removes a handler for a routed event from the element.
+        /// </summary>
+        /// <param name="evt">A <see cref="RoutedEvent"/> that identifies the routed event for which to remove a handler.</param>
+        /// <param name="handler">A delegate that represents the handler to remove from the element for the specified routed event.</param>
+        public void RemoveHandler(RoutedEvent evt, Delegate handler)
+        {
+            Contract.Require(evt, "evt");
+            Contract.Require(handler, "handler");
+
+            routedEventManager.Remove(evt, handler);
         }
 
         /// <summary>
@@ -773,6 +845,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public Boolean IsPositionValid
         {
             get { return isPositionValid; }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether auto-nav is enabled for this control.
+        /// If enabled, auto-nav will attempt to automatically determine the next nav control in the
+        /// up, down, left, and right directions, even if the values of the <see cref="NavUp"/>, <see cref="NavDown"/>,
+        /// <see cref="NavLeft"/>, and <see cref="NavRight"/> properties have not been set.
+        /// </summary>
+        public Boolean AutoNav
+        {
+            get { return GetValue<Boolean>(AutoNavProperty); }
+            set { SetValue<Boolean>(AutoNavProperty, value); }
         }
 
         /// <summary>
@@ -891,6 +975,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 }
                 return desiredSize; 
             }
+        }
+
+        /// <summary>
+        /// Gets the absolute bounding box of the layout area in which the element was most recently arranged.
+        /// </summary>
+        public RectangleD AbsoluteLayoutBounds
+        {
+            get { return mostRecentFinalRect; }
         }
 
         /// <summary>
@@ -1142,6 +1234,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public event UIElementMouseButtonEventHandler MouseDoubleClick;
 
         /// <summary>
+        /// Occurs when the value of the <see cref="AutoNav"/> property changes.
+        /// </summary>
+        public event UIElementEventHandler AutoNavChanged;
+
+        /// <summary>
         /// Occurs when the value of the <see cref="IsEnabled"/> property changes.
         /// </summary>
         public event UIElementEventHandler IsEnabledChanged;
@@ -1200,6 +1297,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Occurs when the value of the <see cref="TabIndex"/> property changes.
         /// </summary>
         public event UIElementEventHandler TabIndexChanged;
+
+        /// <summary>
+        /// Identifies the <see cref="AutoNav"/> dependency property.
+        /// </summary>
+        [Styled("autonav")]
+        public static readonly DependencyProperty AutoNavProperty = DependencyProperty.Register("AutoNav", typeof(Boolean), typeof(UIElement),
+            new DependencyPropertyMetadata(HandleAutoNavChanged, () => true, DependencyPropertyOptions.None));
 
         /// <summary>
         /// Identifies the <see cref="IsEnabled"/> dependency property.
@@ -1349,6 +1453,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 storyboardClocks.Remove(storyboard);
                 StoryboardClockPool.Instance.Release(clock);
             }
+        }
+
+        /// <summary>
+        /// Gets the element's list of event handlers for the specified routed event.
+        /// </summary>
+        /// <param name="evt">A <see cref="RoutedEvent"/> that identifies the routed event for which to retrieve handlers.</param>
+        /// <returns>The element's internal list of event handlers for the specified routed event.</returns>
+        internal List<RoutedEventHandlerMetadata> GetHandlers(RoutedEvent evt)
+        {
+            return routedEventManager.GetHandlers(evt);
         }
 
         /// <summary>
@@ -1732,6 +1846,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Raises the <see cref="AutoNavChanged"/> event.
+        /// </summary>
+        protected virtual void OnAutoNavChanged()
+        {
+            var temp = AutoNavChanged;
+            if (temp != null)
+            {
+                temp(this);
+            }
+        }
+
+        /// <summary>
         /// Raises the <see cref="IsEnabledChanged"/> event.
         /// </summary>
         protected virtual void OnIsEnabledChanged()
@@ -2059,7 +2185,51 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             return Bounds.Contains(x, y) ? this : null;
         }
-        
+
+        /// <summary>
+        /// Gets the next element to navigate to when focus is moved "up," assuming
+        /// that focus is currently in the specified child element.
+        /// </summary>
+        /// <param name="current">The child element of this element which currently has focus.</param>
+        /// <returns>The next element to navigate to, or <c>null</c> if this element has no navigation preferences.</returns>
+        protected virtual UIElement GetNextNavUp(UIElement current)
+        {
+            return null;
+        }
+
+        /// <summary>
+        /// Gets the next element to navigate to when focus is moved "down," assuming
+        /// that focus is currently in the specified child element.
+        /// </summary>
+        /// <param name="current">The child element of this element which currently has focus.</param>
+        /// <returns>The next element to navigate to, or <c>null</c> if this element has no navigation preferences.</returns>
+        protected virtual UIElement GetNextNavDown(UIElement current)
+        {
+            return null;
+        }
+
+        /// <summary>
+        /// Gets the next element to navigate to when focus is moved "left," assuming
+        /// that focus is currently in the specified child element.
+        /// </summary>
+        /// <param name="current">The child element of this element which currently has focus.</param>
+        /// <returns>The next element to navigate to, or <c>null</c> if this element has no navigation preferences.</returns>
+        protected virtual UIElement GetNextNavLeft(UIElement current)
+        {
+            return null;
+        }
+
+        /// <summary>
+        /// Gets the next element to navigate to when focus is moved "right," assuming
+        /// that focus is currently in the specified child element.
+        /// </summary>
+        /// <param name="current">The child element of this element which currently has focus.</param>
+        /// <returns>The next element to navigate to, or <c>null</c> if this element has no navigation preferences.</returns>
+        protected virtual UIElement GetNextNavRight(UIElement current)
+        {
+            return null;
+        }
+
         /// <summary>
         /// Loads the specified asset from the global content manager.
         /// </summary>
@@ -2273,6 +2443,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Occurs when the value of the <see cref="AutoNav"/> dependency property changes.
+        /// </summary>
+        /// <param name="dobj">The dependency object that raised the event.</param>
+        private static void HandleAutoNavChanged(DependencyObject dobj)
+        {
+            var element = (UIElement)dobj;
+            element.OnAutoNavChanged();
+        }
+
+        /// <summary>
         /// Occurs when the value of the <see cref="IsEnabled"/> dependency property changes.
         /// </summary>
         /// <param name="dobj">The dependency object that raised the event.</param>
@@ -2439,14 +2619,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         private void RegisterElement()
         {
+            if (elementRegistrationContext == null)
+                elementRegistrationContext = FindElementRegistry();
+
             if (String.IsNullOrEmpty(id))
                 return;
 
-            elementRegistrationContext = FindElementRegistry();
             if (elementRegistrationContext != null)
-            {
                 elementRegistrationContext.RegisterElement(this);
-            }
         }
 
         /// <summary>
@@ -2809,5 +2989,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         // The collection of active storyboard clocks on this element.
         private readonly Dictionary<Storyboard, StoryboardClock> storyboardClocks = 
             new Dictionary<Storyboard, StoryboardClock>();
+
+        // The element's routed event manager.
+        private readonly RoutedEventManager routedEventManager = new RoutedEventManager();
     }
 }

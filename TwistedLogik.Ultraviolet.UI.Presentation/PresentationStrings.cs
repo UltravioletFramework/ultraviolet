@@ -37,8 +37,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public static readonly StringResource PropertyDoesNotExist                 = new StringResource(StringDatabase, "PROPERTY_DOES_NOT_EXIST");
         public static readonly StringResource PropertyHasNoGetter                  = new StringResource(StringDatabase, "PROPERTY_HAS_NO_GETTER");
         public static readonly StringResource PropertyHasNoSetter                  = new StringResource(StringDatabase, "PROPERTY_HAS_NO_SETTER");
-        public static readonly StringResource DependencyPropertyDoesNotExist       = new StringResource(StringDatabase, "DEPENDENCY_PROPERTY_DOES_NOT_EXIST");
         public static readonly StringResource DependencyPropertyAlreadyRegistered  = new StringResource(StringDatabase, "DEPENDENCY_PROPERTY_ALREADY_REGISTERED");
+        public static readonly StringResource RoutedEventAlreadyRegistered         = new StringResource(StringDatabase, "ROUTED_EVENT_ALREADY_REGISTERED");
         public static readonly StringResource CannotResolveBindingExpression       = new StringResource(StringDatabase, "CANNOT_RESOLVE_BINDING_EXPRESSION");
         public static readonly StringResource InvalidBindingExpression             = new StringResource(StringDatabase, "INVALID_BINDING_EXPRESSION");
         public static readonly StringResource InvalidBindingContext                = new StringResource(StringDatabase, "INVALID_BINDING_CONTEXT");
@@ -66,6 +66,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public static readonly StringResource CollectionIsBoundToItemsSource       = new StringResource(StringDatabase, "COLLECTION_IS_BOUND_TO_ITEMS_SOURCE");
         public static readonly StringResource ItemPresenterNotInItemsControl       = new StringResource(StringDatabase, "ITEM_PRESENTER_NOT_IN_ITEMS_CONTROL");
         public static readonly StringResource ItemPresenterNotCreatedCorrectly     = new StringResource(StringDatabase, "ITEM_PRESENTER_NOT_CREATED_CORRECTLY");
+        public static readonly StringResource InvalidRoutedEventDelegate           = new StringResource(StringDatabase, "INVALID_ROUTED_EVENT_DELEGATE");
+        public static readonly StringResource InvalidRoutingStrategy               = new StringResource(StringDatabase, "INVALID_ROUTING_STRATEGY");
+        public static readonly StringResource EventOrPropertyDoesNotExist          = new StringResource(StringDatabase, "EVENT_OR_PROPERTY_DOES_NOT_EXIST");
 #pragma warning restore 1591
     }
 }

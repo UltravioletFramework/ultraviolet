@@ -446,6 +446,24 @@
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Properties\AssemblyInfo.cs">
       <Link>Properties\AssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\RoutedEvent.cs">
+      <Link>RoutedEvent.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\RoutedEventHandlerMetadata.cs">
+      <Link>RoutedEventHandlerMetadata.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\RoutedEventInvocation.cs">
+      <Link>RoutedEventInvocation.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\RoutedEventManager.cs">
+      <Link>RoutedEventManager.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\RoutedEventSystem.cs">
+      <Link>RoutedEventSystem.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\RoutingStrategy.cs">
+      <Link>RoutingStrategy.cs</Link>
+    </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\SourcedAssetID.cs">
       <Link>SourcedAssetID.cs</Link>
     </Compile>
@@ -598,6 +616,12 @@
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\UvmlLoader.InstantiationContext.cs">
       <Link>UvmlLoader.InstantiationContext.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\UvmlLoader.UvmlAttribute.cs">
+      <Link>UvmlLoader.UvmlAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\UvmlLoader.UvmlAttributeType.cs">
+      <Link>UvmlLoader.UvmlAttributeType.cs</Link>
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\VerticalAlignment.cs">
       <Link>VerticalAlignment.cs</Link>
