@@ -147,7 +147,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var attr = (UvmlKnownTypeAttribute)GetType().GetCustomAttributes(typeof(UvmlKnownTypeAttribute), false).SingleOrDefault();
             if (attr != null)
             {
-                this.name = attr.Name;
+                this.name = attr.Name ?? GetType().Name;
             }
         }
 

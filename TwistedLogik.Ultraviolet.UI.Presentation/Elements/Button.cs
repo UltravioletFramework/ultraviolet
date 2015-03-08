@@ -5,7 +5,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
     /// <summary>
     /// Represents a button on a user interface.
     /// </summary>
-    [UvmlKnownType("Button", "TwistedLogik.Ultraviolet.UI.Presentation.Elements.Templates.Button.xml")]
+    [UvmlKnownType(null, "TwistedLogik.Ultraviolet.UI.Presentation.Elements.Templates.Button.xml")]
     public class Button : ButtonBase
     {
         /// <summary>

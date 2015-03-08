@@ -5,7 +5,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
     /// <summary>
     /// Represents the content presenter for a <see cref="ScrollViewer"/>.
     /// </summary>
-    [UvmlKnownType("ScrollContentPresenter")]
+    [UvmlKnownType]
     public class ScrollContentPresenter : ContentPresenter
     {
         /// <summary>

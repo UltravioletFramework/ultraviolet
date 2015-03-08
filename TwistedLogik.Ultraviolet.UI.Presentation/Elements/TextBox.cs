@@ -11,7 +11,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
     /// <summary>
     /// Represents a element used for entering a single line of text.
     /// </summary>
-    [UvmlKnownType("TextBox", "TwistedLogik.Ultraviolet.UI.Presentation.Elements.Templates.TextBox.xml")]
+    [UvmlKnownType(null, "TwistedLogik.Ultraviolet.UI.Presentation.Elements.Templates.TextBox.xml")]
     [DefaultProperty("Text")]
     public partial class TextBox : Control
     {

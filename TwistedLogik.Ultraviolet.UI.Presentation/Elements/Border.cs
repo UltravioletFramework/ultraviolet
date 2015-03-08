@@ -5,7 +5,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
     /// <summary>
     /// Represents a control which renders a border around its content.
     /// </summary>
-    [UvmlKnownType("Border", "TwistedLogik.Ultraviolet.UI.Presentation.Elements.Templates.Border.xml")]
+    [UvmlKnownType(null, "TwistedLogik.Ultraviolet.UI.Presentation.Elements.Templates.Border.xml")]
     public class Border : ContentControl
     {
         /// <summary>

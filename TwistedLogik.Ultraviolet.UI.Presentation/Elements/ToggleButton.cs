@@ -5,7 +5,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
     /// <summary>
     /// Represents a button on a user interface which can be toggled between its states.
     /// </summary>
-    [UvmlKnownType("ToggleButton", "TwistedLogik.Ultraviolet.UI.Presentation.Elements.Templates.ToggleButton.xml")]
+    [UvmlKnownType(null, "TwistedLogik.Ultraviolet.UI.Presentation.Elements.Templates.ToggleButton.xml")]
     public class ToggleButton : ButtonBase
     {
         /// <summary>

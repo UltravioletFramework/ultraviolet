@@ -8,7 +8,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
     /// <summary>
     /// Represents a button that raises its <see cref="ButtonBase.Click"/> event repeatedly while it is pressed.
     /// </summary>
-    [UvmlKnownType("RepeatButton", "TwistedLogik.Ultraviolet.UI.Presentation.Elements.Templates.RepeatButton.xml")]
+    [UvmlKnownType(null, "TwistedLogik.Ultraviolet.UI.Presentation.Elements.Templates.RepeatButton.xml")]
     public class RepeatButton : Button
     {
         /// <summary>

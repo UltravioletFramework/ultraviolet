@@ -6,7 +6,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
     /// <summary>
     /// Represents a text label on a user interface.
     /// </summary>
-    [UvmlKnownType("LabelBase")]
+    [UvmlKnownType]
     public abstract class LabelBase : FrameworkElement
     {
         /// <summary>

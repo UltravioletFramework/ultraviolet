@@ -8,7 +8,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
     /// side-by-side if (see <see cref="StackPanel.Orientation"/> is <see cref="F:Orientation.Horizontal"/>,
     /// wrapping the content if necessary to fit within the available space.
     /// </summary>
-    [UvmlKnownType("WrapPanel", "TwistedLogik.Ultraviolet.UI.Presentation.Elements.Templates.WrapPanel.xml")]
+    [UvmlKnownType(null, "TwistedLogik.Ultraviolet.UI.Presentation.Elements.Templates.WrapPanel.xml")]
     public class WrapPanel : Panel
     {
         /// <summary>

@@ -5,7 +5,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
     /// <summary>
     /// Represents a radio button.
     /// </summary>
-    [UvmlKnownType("RadioButton", "TwistedLogik.Ultraviolet.UI.Presentation.Elements.Templates.RadioButton.xml")]
+    [UvmlKnownType(null, "TwistedLogik.Ultraviolet.UI.Presentation.Elements.Templates.RadioButton.xml")]
     public class RadioButton : ToggleButton
     {
         /// <summary>

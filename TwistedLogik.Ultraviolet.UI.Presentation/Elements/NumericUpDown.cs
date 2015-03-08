@@ -7,7 +7,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
     /// <summary>
     /// Represents a button on a user interface.
     /// </summary>
-    [UvmlKnownType("NumericUpDown", "TwistedLogik.Ultraviolet.UI.Presentation.Elements.Templates.NumericUpDown.xml")]
+    [UvmlKnownType(null, "TwistedLogik.Ultraviolet.UI.Presentation.Elements.Templates.NumericUpDown.xml")]
     public class NumericUpDown : RangeBase
     {
         /// <summary>

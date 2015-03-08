@@ -6,7 +6,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
     /// <summary>
     /// Represents the base class for buttons.
     /// </summary>
-    [UvmlKnownType("ButtonBase")]
+    [UvmlKnownType]
     public abstract class ButtonBase : ContentControl
     {
         /// <summary>

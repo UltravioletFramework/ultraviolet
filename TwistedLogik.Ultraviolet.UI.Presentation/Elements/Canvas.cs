@@ -8,7 +8,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
     /// Represents an element container which positions its children according to their distance from the container's
     /// left, top, right, and bottom edges.
     /// </summary>
-    [UvmlKnownType("Canvas", "TwistedLogik.Ultraviolet.UI.Presentation.Elements.Templates.Canvas.xml")]
+    [UvmlKnownType(null, "TwistedLogik.Ultraviolet.UI.Presentation.Elements.Templates.Canvas.xml")]
     public class Canvas : Panel
     {
         /// <summary>

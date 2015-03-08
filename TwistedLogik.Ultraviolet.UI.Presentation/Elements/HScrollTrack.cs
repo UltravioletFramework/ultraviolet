@@ -6,7 +6,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
     /// <summary>
     /// Represents the track for a horizontal scroll bar.
     /// </summary>
-    [UvmlKnownType("HScrollTrack", "TwistedLogik.Ultraviolet.UI.Presentation.Elements.Templates.HScrollTrack.xml")]
+    [UvmlKnownType(null, "TwistedLogik.Ultraviolet.UI.Presentation.Elements.Templates.HScrollTrack.xml")]
     public class HScrollTrack : ScrollTrackBase
     {
         /// <summary>

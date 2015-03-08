@@ -15,10 +15,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         /// <param name="name">The name of the XML element that represents this class.</param>
         /// <param name="componentTemplate">The manifest resource name of the element's default component template, if it has one.</param>
-        public UvmlKnownTypeAttribute(String name, String componentTemplate = null)
+        public UvmlKnownTypeAttribute(String name = null, String componentTemplate = null)
         {
-            Contract.RequireNotEmpty(name, "name");
-
             this.name              = name;
             this.componentTemplate = componentTemplate;
         }

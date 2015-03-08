@@ -414,9 +414,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (knownTypeAttr == null)
                 throw new InvalidOperationException(PresentationStrings.KnownTypeMissingAttribute.Format(type.Name));
 
+            var knownTypeName = knownTypeAttr.Name ?? type.Name;
+
             KnownType existingRegistration;
-            if (GetKnownTypeRegistration(knownTypeAttr.Name, out existingRegistration))
-                throw new InvalidOperationException(PresentationStrings.KnownTypeAlreadyRegistered.Format(knownTypeAttr.Name));
+            if (GetKnownTypeRegistration(knownTypeName, out existingRegistration))
+                throw new InvalidOperationException(PresentationStrings.KnownTypeAlreadyRegistered.Format(knownTypeName));
 
             RuntimeHelpers.RunClassConstructor(type.TypeHandle);
 
@@ -458,7 +460,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <returns>The <see cref="KnownType"/> registration that was created.</returns>
         private KnownType CreateKnownTypeRegistration(Type type, UvmlKnownTypeAttribute attr)
         {
-            var registration = new KnownType(attr.Name, type);
+            var registration = new KnownType(attr.Name ?? type.Name, type);
             return registration;
         }
 
@@ -483,7 +485,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             RuntimeHelpers.RunClassConstructor(type.TypeHandle);
 
-            var registration = new KnownElement(attr.Name, type, defaultProperty);
+            var registration = new KnownElement(attr.Name ?? type.Name, type, defaultProperty);
             RegisterDefaultComponentTemplate(type, attr);
 
             return registration;
