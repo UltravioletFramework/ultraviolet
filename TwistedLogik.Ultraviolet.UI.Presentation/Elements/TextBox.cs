@@ -778,9 +778,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <param name="text">The text to insert.</param>
         private void ProcessInsertText(String text)
         {
-            var startingCaretPosition = textCaretPosition;
-
             DeleteSelection();
+
+            var startingCaretPosition = textCaretPosition;
 
             var charactersUsed      = (Text == null) ? 0 : Text.Length;
             var charactersAvailable = ((MaxLength == 0) ? Int32.MaxValue : MaxLength) - charactersUsed;
