@@ -3,6 +3,8 @@
   <Stylesheet>DebugViewScreenStyles.uvss</Stylesheet>
   <View ViewModelType="UvDebugSandbox.UI.Screens.DebugViewModel, UvDebugSandbox">
 
+    <Button Width="8" Height="8"></Button>
+    
       <ListBox Width="300" Height="300" Margin="100 100 0 0">
         <ListBoxItem>Lorem ipsum dolor sit amet</ListBoxItem>
         <ListBoxItem>Hello</ListBoxItem>
