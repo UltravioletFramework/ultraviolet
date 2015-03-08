@@ -164,12 +164,28 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (clip != null)
                 dc.PushClipRectangle(clip.Value);
 
-            dc.PushOpacity(Opacity);
+            var shouldDraw = true;
 
-            DrawCore(time, dc);
-            OnDrawing(time, dc);
+            if (clip.HasValue && clip.Value.IsEmpty)
+                shouldDraw = false;
 
-            dc.PopOpacity();
+            var scissor = Ultraviolet.GetGraphics().GetScissorRectangle();
+            if (scissor.HasValue)
+            {
+                var absBounds = Display.DipsToPixels(AbsoluteBounds);
+                if (!absBounds.Intersects(scissor.Value))
+                    shouldDraw = false;
+            }
+
+            if (shouldDraw)
+            {
+                dc.PushOpacity(Opacity);
+
+                DrawCore(time, dc);
+                OnDrawing(time, dc);
+
+                dc.PopOpacity();
+            }
 
             if (clip != null)
                 dc.PopClipRectangle();
