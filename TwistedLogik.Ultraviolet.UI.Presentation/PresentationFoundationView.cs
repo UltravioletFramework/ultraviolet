@@ -247,10 +247,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 return;
 
             if (elementWithFocus != null)
-                Keyboard.RaiseLostKeyboardFocus(elementWithFocus);
+            {
+                var handledLostFocus = false;
+                Keyboard.RaiseLostKeyboardFocus(elementWithFocus, ref handledLostFocus);
+            }
 
             elementWithFocus = element;
-            Keyboard.RaiseGotKeyboardFocus(elementWithFocus);
+
+            var handledGotFocus = false;
+            Keyboard.RaiseGotKeyboardFocus(elementWithFocus, ref handledGotFocus);
         }
 
         /// <summary>
@@ -264,7 +269,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (elementWithFocus != element)
                 return;
 
-            Keyboard.RaiseLostKeyboardFocus(elementWithFocus);
+            var handledLostFocus = false;
+            Keyboard.RaiseLostKeyboardFocus(elementWithFocus, ref handledLostFocus);
+            
             elementWithFocus = null;
         }
 
@@ -841,7 +848,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             if (elementWithFocus != null)
             {
-                Keyboard.RaiseKeyDown(elementWithFocus, device, key, ctrl, alt, shift, repeat);
+                var keyDownHandled = false;
+                Keyboard.RaisePreviewKeyDown(elementWithFocus, device, key, ctrl, alt, shift, repeat, ref keyDownHandled);
+                Keyboard.RaiseKeyDown(elementWithFocus, device, key, ctrl, alt, shift, repeat, ref keyDownHandled);
             }
         }
 
@@ -855,7 +864,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             if (elementWithFocus != null)
             {
-                Keyboard.RaiseKeyUp(elementWithFocus, device, key);
+                var keyUpHandled = false;
+                Keyboard.RaisePreviewKeyUp(elementWithFocus, device, key, ref keyUpHandled);
+                Keyboard.RaiseKeyUp(elementWithFocus, device, key, ref keyUpHandled);
             }
         }
 
@@ -869,7 +880,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             if (elementWithFocus != null)
             {
-                Keyboard.RaiseTextInput(elementWithFocus, device);
+                var textInputHandled = false;
+                Keyboard.RaisePreviewTextInput(elementWithFocus, device, ref textInputHandled);
+                Keyboard.RaiseTextInput(elementWithFocus, device, ref textInputHandled);
             }
         }
 

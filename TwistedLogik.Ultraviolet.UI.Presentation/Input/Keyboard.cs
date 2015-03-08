@@ -64,6 +64,45 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
+        /// Adds a handler for the PreviewTextInput attached event to the specified element.
+        /// </summary>
+        /// <param name="element">The element to which to add the handler.</param>
+        /// <param name="handler">The handler to add to the specified element.</param>
+        public static void AddPreviewTextInputHandler(UIElement element, UIElementKeyboardEventHandler handler)
+        {
+            Contract.Require(element, "element");
+            Contract.Require(handler, "handler");
+
+            element.AddHandler(PreviewTextInputEvent, handler);
+        }
+
+        /// <summary>
+        /// Adds a handler for the PreviewKeyDown attached event to the specified element.
+        /// </summary>
+        /// <param name="element">The element to which to add the handler.</param>
+        /// <param name="handler">The handler to add to the specified element.</param>
+        public static void AddPreviewKeyDownHandler(UIElement element, UIElementKeyDownEventHandler handler)
+        {
+            Contract.Require(element, "element");
+            Contract.Require(handler, "handler");
+
+            element.AddHandler(PreviewKeyDownEvent, handler);
+        }
+
+        /// <summary>
+        /// Adds a handler for the PreviewKeyUp attached event to the specified element.
+        /// </summary>
+        /// <param name="element">The element to which to add the handler.</param>
+        /// <param name="handler">The handler to add to the specified element.</param>
+        public static void AddPreviewKeyUpEventHandler(UIElement element, UIElementKeyEventHandler handler)
+        {
+            Contract.Require(element, "element");
+            Contract.Require(handler, "handler");
+
+            element.RemoveHandler(PreviewKeyUpEvent, handler);
+        }
+
+        /// <summary>
         /// Adds a handler for the TextInput attached event to the specified element.
         /// </summary>
         /// <param name="element">The element to which to add the handler.</param>
@@ -129,6 +168,45 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
+        /// Removes a handler for the PreviewTextInput attached event from the specified element.
+        /// </summary>
+        /// <param name="element">The element from which to remove the handler.</param>
+        /// <param name="handler">The handler to remove from the specified element.</param>
+        public static void RemovePreviewTextInputHandler(UIElement element, UIElementKeyboardEventHandler handler)
+        {
+            Contract.Require(element, "element");
+            Contract.Require(handler, "handler");
+
+            element.RemoveHandler(PreviewTextInputEvent, handler);
+        }
+
+        /// <summary>
+        /// Removes a handler for the PreviewKeyDown attached event from the specified element.
+        /// </summary>
+        /// <param name="element">The element from which to remove the handler.</param>
+        /// <param name="handler">The handler to remove from the specified element.</param>
+        public static void RemovePreviewKeyDownHandler(UIElement element, UIElementKeyDownEventHandler handler)
+        {
+            Contract.Require(element, "element");
+            Contract.Require(handler, "handler");
+
+            element.RemoveHandler(PreviewKeyDownEvent, handler);
+        }
+
+        /// <summary>
+        /// Removes a handler for the PreviewKeyUp attached event from the specified element.
+        /// </summary>
+        /// <param name="element">The element from which to remove the handler.</param>
+        /// <param name="handler">The handler to remove from the specified element.</param>
+        public static void RemovePreviewKeyUpHandler(UIElement element, UIElementKeyEventHandler handler)
+        {
+            Contract.Require(element, "element");
+            Contract.Require(handler, "handler");
+
+            element.RemoveHandler(PreviewKeyUpEvent, handler);
+        }
+
+        /// <summary>
         /// Removes a handler for the TextInput attached event from the specified element.
         /// </summary>
         /// <param name="element">The element from which to remove the handler.</param>
@@ -180,6 +258,24 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
             typeof(UIElementRoutedEventHandler), typeof(Keyboard));
 
         /// <summary>
+        /// Identifies the PreviewTextInput attached event.
+        /// </summary>
+        public static readonly RoutedEvent PreviewTextInputEvent = RoutedEvent.Register("PreviewTextInput", RoutingStrategy.Tunnel,
+            typeof(UIElementKeyboardEventHandler), typeof(Keyboard));
+
+        /// <summary>
+        /// Identifies the PreviewKeyDown attached event.
+        /// </summary>
+        public static readonly RoutedEvent PreviewKeyDownEvent = RoutedEvent.Register("PreviewKeyDown", RoutingStrategy.Tunnel,
+            typeof(UIElementKeyDownEventHandler), typeof(Keyboard));
+
+        /// <summary>
+        /// Identifies the PreviewKeyUp attached event.
+        /// </summary>
+        public static readonly RoutedEvent PreviewKeyUpEvent = RoutedEvent.Register("PreviewKeyUp", RoutingStrategy.Tunnel,
+            typeof(UIElementKeyEventHandler), typeof(Keyboard));
+
+        /// <summary>
         /// Identifies the TextInput attached event.
         /// </summary>
         public static readonly RoutedEvent TextInputEvent = RoutedEvent.Register("TextInput", RoutingStrategy.Bubble,
@@ -200,12 +296,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <summary>
         /// Raises the GotKeyboardFocus attached event for the specified element.
         /// </summary>
-        internal static void RaiseGotKeyboardFocus(UIElement element)
+        internal static void RaiseGotKeyboardFocus(UIElement element, ref Boolean handled)
         {
             var temp = RoutedEvent.GetInvocationDelegate<UIElementRoutedEventHandler>(GotKeyboardFocusEvent);
             if (temp != null)
             {
-                var handled = false;
                 temp(element, ref handled);
             }
         }
@@ -213,25 +308,23 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <summary>
         /// Raises the LostKeyboardFocus attached event for the specified element.
         /// </summary>
-        internal static void RaiseLostKeyboardFocus(UIElement element)
+        internal static void RaiseLostKeyboardFocus(UIElement element, ref Boolean handled)
         {
             var temp = RoutedEvent.GetInvocationDelegate<UIElementRoutedEventHandler>(LostKeyboardFocusEvent);
             if (temp != null)
             {
-                var handled = false;
                 temp(element, ref handled);
             }
         }
 
         /// <summary>
-        /// Raises the TextInput attached event for the specified element.
+        /// Raises the PreviewTextInput attached event for the specified element.
         /// </summary>
-        internal static void RaiseTextInput(UIElement element, KeyboardDevice device)
+        internal static void RaisePreviewTextInput(UIElement element, KeyboardDevice device, ref Boolean handled)
         {
-            var temp = RoutedEvent.GetInvocationDelegate<UIElementKeyboardEventHandler>(TextInputEvent);
+            var temp = RoutedEvent.GetInvocationDelegate<UIElementKeyboardEventHandler>(PreviewTextInputEvent);
             if (temp != null)
             {
-                var handled = false;
                 temp(element, device, ref handled);
             }
         }
@@ -239,13 +332,49 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <summary>
         /// Raises the KeyDown attached event for the specified element.
         /// </summary>
-        internal static void RaiseKeyDown(UIElement element, KeyboardDevice device, Key key, Boolean ctrl, Boolean alt, Boolean shift, Boolean repeat)
+        internal static void RaisePreviewKeyDown(UIElement element, KeyboardDevice device, Key key, Boolean ctrl, Boolean alt, Boolean shift, Boolean repeat, ref Boolean handled)
+        {
+            var temp = RoutedEvent.GetInvocationDelegate<UIElementKeyDownEventHandler>(PreviewKeyDownEvent);
+            if (temp != null)
+            {
+                var modifiers = new KeyModifiers(ctrl, alt, shift, repeat);
+                temp(element, device, key, modifiers, ref handled);
+            }
+        }
+
+        /// <summary>
+        /// Raises the PreviewKeyUp attached event for the specified element.
+        /// </summary>
+        internal static void RaisePreviewKeyUp(UIElement element, KeyboardDevice device, Key key, ref Boolean handled)
+        {
+            var temp = RoutedEvent.GetInvocationDelegate<UIElementKeyEventHandler>(PreviewKeyUpEvent);
+            if (temp != null)
+            {
+                temp(element, device, key, ref handled);
+            }
+        }
+
+        /// <summary>
+        /// Raises the TextInput attached event for the specified element.
+        /// </summary>
+        internal static void RaiseTextInput(UIElement element, KeyboardDevice device, ref Boolean handled)
+        {
+            var temp = RoutedEvent.GetInvocationDelegate<UIElementKeyboardEventHandler>(TextInputEvent);
+            if (temp != null)
+            {
+                temp(element, device, ref handled);
+            }
+        }
+
+        /// <summary>
+        /// Raises the KeyDown attached event for the specified element.
+        /// </summary>
+        internal static void RaiseKeyDown(UIElement element, KeyboardDevice device, Key key, Boolean ctrl, Boolean alt, Boolean shift, Boolean repeat, ref Boolean handled)
         {
             var temp = RoutedEvent.GetInvocationDelegate<UIElementKeyDownEventHandler>(KeyDownEvent);
             if (temp != null)
             {
                 var modifiers = new KeyModifiers(ctrl, alt, shift, repeat);
-                var handled = false;
                 temp(element, device, key, modifiers, ref handled);
             }
         }
@@ -253,12 +382,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <summary>
         /// Raises the KeyUp attached event for the specified element.
         /// </summary>
-        internal static void RaiseKeyUp(UIElement element, KeyboardDevice device, Key key)
+        internal static void RaiseKeyUp(UIElement element, KeyboardDevice device, Key key, ref Boolean handled)
         {
             var temp = RoutedEvent.GetInvocationDelegate<UIElementKeyEventHandler>(KeyUpEvent);
             if (temp != null)
             {
-                var handled = false;
                 temp(element, device, key, ref handled);
             }
         }
