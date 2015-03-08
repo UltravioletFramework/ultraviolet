@@ -39,7 +39,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             {
                 var relY = y - (AbsolutePosition.Y + thumbDragOffset);
                 Value = OffsetToValue(relY, RenderSize.Height, Thumb.RenderSize.Height);
-                handled = true;
             }
         }
 
@@ -49,7 +48,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         private void HandleThumbPreviewMouseDown(UIElement element, MouseDevice device, MouseButton pressed, ref Boolean handled)
         {
             thumbDragOffset = Display.PixelsToDips(device.Y) - element.AbsoluteBounds.Y;
-            handled = true;
         }
 
         /// <summary>
