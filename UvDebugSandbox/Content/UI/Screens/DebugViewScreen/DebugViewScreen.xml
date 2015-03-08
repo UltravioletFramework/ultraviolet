@@ -5,6 +5,7 @@
 
     <StackPanel>
       <TextBox Width="300" Height="32"></TextBox>
+      <NumericUpDown Width="300" Height="32"></NumericUpDown>
       <Button>Test Button</Button>
       <ListBox>
         <ListBoxItem>Lorem ipsum dolor sit amet</ListBoxItem>

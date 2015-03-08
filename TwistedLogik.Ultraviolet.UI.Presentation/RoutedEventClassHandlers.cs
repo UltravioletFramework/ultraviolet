@@ -98,7 +98,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <returns>The <see cref="RoutedEventClassHandlerManager"/> that was created for the specified event and type.</returns>
         private static RoutedEventClassHandlerManager CreateClassHandlerManager(RoutedEvent routedEvent, Type classType)
         {
-            var manager = new RoutedEventClassHandlerManager(classType);
+            var manager = new RoutedEventClassHandlerManager(routedEvent, classType);
 
             Dictionary<Type, RoutedEventClassHandlerManager> existing;
             if (managers.TryGetValue(routedEvent, out existing))

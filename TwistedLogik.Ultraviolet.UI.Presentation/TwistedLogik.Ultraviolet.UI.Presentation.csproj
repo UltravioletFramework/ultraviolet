@@ -181,6 +181,10 @@
     <Compile Include="HorizontalAlignment.cs" />
     <Compile Include="IDependencyBoundValue.cs" />
     <Compile Include="IDependencyPropertyValue.cs" />
+    <Compile Include="Input\Keyboard.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Input\KeyModifiers.cs" />
     <Compile Include="IUltravioletDisplayExtensions.cs" />
     <Compile Include="IUltravioletUIExtensions.cs" />
     <Compile Include="LayoutQueue.cs" />

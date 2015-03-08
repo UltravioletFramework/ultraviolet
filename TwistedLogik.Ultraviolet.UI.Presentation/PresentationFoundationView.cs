@@ -7,6 +7,7 @@ using TwistedLogik.Ultraviolet.Platform;
 using TwistedLogik.Ultraviolet.UI.Presentation.Animations;
 using TwistedLogik.Ultraviolet.UI.Presentation.Elements;
 using TwistedLogik.Ultraviolet.UI.Presentation.Styles;
+using TwistedLogik.Ultraviolet.UI.Presentation.Input;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation
 {
@@ -246,10 +247,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 return;
 
             if (elementWithFocus != null)
-                elementWithFocus.OnBlurred();
+                Keyboard.RaiseLostKeyboardFocus(elementWithFocus);
 
             elementWithFocus = element;
-            elementWithFocus.OnFocused();
+            Keyboard.RaiseGotKeyboardFocus(elementWithFocus);
         }
 
         /// <summary>
@@ -263,7 +264,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (elementWithFocus != element)
                 return;
 
-            elementWithFocus.OnBlurred();
+            Keyboard.RaiseLostKeyboardFocus(elementWithFocus);
             elementWithFocus = null;
         }
 
@@ -829,7 +830,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             if (elementWithFocus != null)
             {
-                elementWithFocus.OnKeyPressed(device, key, ctrl, alt, shift, repeat);
+                Keyboard.RaiseKeyDown(elementWithFocus, device, key, ctrl, alt, shift, repeat);
             }
         }
 
@@ -843,7 +844,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             if (elementWithFocus != null)
             {
-                elementWithFocus.OnKeyReleased(device, key);
+                Keyboard.RaiseKeyUp(elementWithFocus, device, key);
             }
         }
 
@@ -857,7 +858,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             if (elementWithFocus != null)
             {
-                elementWithFocus.OnTextInput(device);
+                Keyboard.RaiseTextInput(elementWithFocus, device);
             }
         }
 

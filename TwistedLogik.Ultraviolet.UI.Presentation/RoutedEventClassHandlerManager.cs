@@ -12,12 +12,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Initializes a new instance of the <see cref="RoutedEventClassHandlerManager"/> class.
         /// </summary>
+        /// <param name="routedEvent">The routed event with which the registry is associated.</param>
         /// <param name="ownerType">The type with which this registry is associated.</param>
-        public RoutedEventClassHandlerManager(Type ownerType)
+        public RoutedEventClassHandlerManager(RoutedEvent routedEvent, Type ownerType)
         {
+            Contract.Require(routedEvent, "routedEvent");
             Contract.Require(ownerType, "type");
 
-            this.ownerType = ownerType;
+            this.routedEvent = routedEvent;
+            this.ownerType   = ownerType;
         }
 
         /// <summary>
@@ -40,6 +43,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             if (classType != this.ownerType && !this.ownerType.IsSubclassOf(classType))
                 throw new ArgumentException(PresentationStrings.ClassTypeMustBeSubclassOfOwnerType.Format(classType.Name, ownerType.Name));
+
+            if (routedEvent.DelegateType != handler.GetType())
+                throw new ArgumentException(PresentationStrings.HandlerTypeMismatch.Format(handler.Method.Name, routedEvent.DelegateType.Name), "handler");
 
             lock (handlers)
             {
@@ -138,6 +144,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
         // Property values.
         private readonly Type ownerType;
+        private readonly RoutedEvent routedEvent;
 
         // State values.
         private Int16 ordinal;

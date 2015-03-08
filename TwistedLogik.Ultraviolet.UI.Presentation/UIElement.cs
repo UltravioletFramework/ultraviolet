@@ -10,6 +10,7 @@ using TwistedLogik.Ultraviolet.Platform;
 using TwistedLogik.Ultraviolet.UI.Presentation.Animations;
 using TwistedLogik.Ultraviolet.UI.Presentation.Elements;
 using TwistedLogik.Ultraviolet.UI.Presentation.Styles;
+using TwistedLogik.Ultraviolet.UI.Presentation.Input;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation
 {
@@ -34,36 +35,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
     /// <param name="element">The element being updated.</param>
     /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Update(UltravioletTime)"/>.</param>
     public delegate void UIElementUpdatingEventHandler(UIElement element, UltravioletTime time);
-
-    /// <summary>
-    /// Represents the method that is called when a UI element receives an event from a keyboard device.
-    /// </summary>
-    /// <param name="element">The element that raised the event.</param>
-    /// <param name="device">The keyboard device.</param>
-    /// <param name="handled">A value indicating whether the event has been handled.</param>
-    public delegate void UIElementKeyboardEventHandler(UIElement element, KeyboardDevice device, ref Boolean handled);
-
-    /// <summary>
-    /// Represents the method that is called when a keyboard key is pressed while an element has focus.
-    /// </summary>
-    /// <param name="element">The element that raised the event.</param>
-    /// <param name="device">The <see cref="KeyboardDevice"/> that raised the event.</param>
-    /// <param name="key">The <see cref="Key"/> value that represents the key that was pressed.</param>
-    /// <param name="ctrl">A value indicating whether the Control modifier is active.</param>
-    /// <param name="alt">A value indicating whether the Alt modifier is active.</param>
-    /// <param name="shift">A value indicating whether the Shift modifier is active.</param>
-    /// <param name="repeat">A value indicating whether this is a repeated key press.</param>
-    /// <param name="handled">A value indicating whether the event has been handled.</param>
-    public delegate void UIElementKeyPressedEventHandler(UIElement element, KeyboardDevice device, Key key, Boolean ctrl, Boolean alt, Boolean shift, Boolean repeat, ref Boolean handled);
-
-    /// <summary>
-    /// Represents the method that is called when a keyboard key is released while an element has focus.
-    /// </summary>
-    /// <param name="element">The element that raised the event.</param>
-    /// <param name="device">The <see cref="KeyboardDevice"/> that raised the event.</param>
-    /// <param name="key">The <see cref="Key"/> value that represents the key that was pressed.</param>
-    /// <param name="handled">A value indicating whether the event has been handled.</param>
-    public delegate void UIElementKeyReleasedEventHandler(UIElement element, KeyboardDevice device, Key key, ref Boolean handled);
 
     /// <summary>
     /// Represents the method that is called when the mouse cursor enters or leaves a UI element.
@@ -129,6 +100,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         static UIElement()
         {
+            RoutedEvent.RegisterClassHandler(typeof(UIElement), Keyboard.GotKeyboardFocusEvent, new UIElementRoutedEventHandler(OnGotKeyboardFocusProxy));
+            RoutedEvent.RegisterClassHandler(typeof(UIElement), Keyboard.LostKeyboardFocusEvent, new UIElementRoutedEventHandler(OnLostKeyboardFocusProxy));
+            RoutedEvent.RegisterClassHandler(typeof(UIElement), Keyboard.KeyDownEvent, new UIElementKeyDownEventHandler(OnKeyDownProxy));
+            RoutedEvent.RegisterClassHandler(typeof(UIElement), Keyboard.KeyUpEvent, new UIElementKeyEventHandler(OnKeyUpProxy));
+            RoutedEvent.RegisterClassHandler(typeof(UIElement), Keyboard.TextInputEvent, new UIElementKeyboardEventHandler(OnTextInputProxy));
         }
 
         /// <summary>
@@ -1187,51 +1163,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public event UIElementUpdatingEventHandler Updating;
 
         /// <summary>
-        /// Occurs when the element gains input focus.
-        /// </summary>
-        public event UIElementRoutedEventHandler Focused
-        {
-            add { AddHandler(FocusedEvent, value); }
-            remove { RemoveHandler(FocusedEvent, value); }
-        }
-
-        /// <summary>
-        /// Occurs when the element loses input focus.
-        /// </summary>
-        public event UIElementRoutedEventHandler Blurred
-        {
-            add { AddHandler(BlurredEvent, value); }
-            remove { RemoveHandler(BlurredEvent, value); }
-        }
-
-        /// <summary>
-        /// Occurs when a key is pressed while the element has input focus.
-        /// </summary>
-        public event UIElementKeyPressedEventHandler KeyPressed
-        {
-            add { AddHandler(KeyPressedEvent, value); }
-            remove { RemoveHandler(KeyPressedEvent, value); }
-        }
-
-        /// <summary>
-        /// Occurs when a key is released while the element has input focus.
-        /// </summary>
-        public event UIElementKeyReleasedEventHandler KeyReleased
-        {
-            add { AddHandler(KeyReleasedEvent, value); }
-            remove { RemoveHandler(KeyReleasedEvent, value); }
-        }
-
-        /// <summary>
-        /// Occurs when the element receives text input from the keyboard.
-        /// </summary>
-        public event UIElementKeyboardEventHandler TextInput
-        {
-            add { AddHandler(TextInputEvent, value); }
-            remove { RemoveHandler(TextInputEvent, value); }
-        }
-
-        /// <summary>
         /// Occurs when the element gains mouse capture.
         /// </summary>
         public event UIElementRoutedEventHandler GainedMouseCapture
@@ -1463,36 +1394,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         public static readonly DependencyProperty TabIndexProperty = DependencyProperty.Register("TabIndex", typeof(Int32), typeof(UIElement),
             new DependencyPropertyMetadata(HandleTabIndexChanged, () => 0, DependencyPropertyOptions.None));
-
-        /// <summary>
-        /// Identifies the <see cref="Focused"/> routed event.
-        /// </summary>
-        public static readonly RoutedEvent FocusedEvent = RoutedEvent.Register("FocusedEvent", RoutingStrategy.Direct, 
-            typeof(UIElementRoutedEventHandler), typeof(UIElement));
-
-        /// <summary>
-        /// Identifies the <see cref="Blurred"/> routed event.
-        /// </summary>
-        public static readonly RoutedEvent BlurredEvent = RoutedEvent.Register("BlurredEvent", RoutingStrategy.Direct,
-            typeof(UIElementRoutedEventHandler), typeof(UIElement));
-
-        /// <summary>
-        /// Identifies the <see cref="KeyPressed"/> routed event.
-        /// </summary>
-        public static readonly RoutedEvent KeyPressedEvent = RoutedEvent.Register("KeyPressed", RoutingStrategy.Bubble,
-            typeof(UIElementKeyPressedEventHandler), typeof(UIElement));
-        
-        /// <summary>
-        /// Identifies the <see cref="KeyReleased"/> routed event.
-        /// </summary>
-        public static readonly RoutedEvent KeyReleasedEvent = RoutedEvent.Register("KeyReleased", RoutingStrategy.Bubble,
-            typeof(UIElementKeyReleasedEventHandler), typeof(UIElement));
-
-        /// <summary>
-        /// Identifies the <see cref="TextInput"/> routed event.
-        /// </summary>
-        public static readonly RoutedEvent TextInputEvent = RoutedEvent.Register("TextInput", RoutingStrategy.Bubble,
-            typeof(UIElementKeyboardEventHandler), typeof(UIElement));
 
         /// <summary>
         /// Identifies the <see cref="GainedMouseCapture"/> routed event.
@@ -1778,77 +1679,54 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
-        /// Raises the <see cref="Focused"/> event.
+        /// Invoked when a <see cref="Keyboard.GotKeyboardFocusEvent"/> attached routed event occurs.
         /// </summary>
-        protected internal virtual void OnFocused()
+        /// <param name="handled">A value indicating whether the event has been handled.</param>
+        protected virtual void OnGotKeyboardFocus(ref Boolean handled)
         {
-            var temp = RoutedEvent.GetInvocationDelegate<UIElementRoutedEventHandler>(FocusedEvent);
-            if (temp != null)
-            {
-                var handled = false;
-                temp(this, ref handled);
-            }
+
         }
 
         /// <summary>
-        /// Raises the <see cref="Blurred"/> event.
+        /// Invoked when a <see cref="Keyboard.LostKeyboardFocusEvent"/> attached routed event occurs.
         /// </summary>
-        protected internal virtual void OnBlurred()
+        /// <param name="handled">A value indicating whether the event has been handled.</param>
+        protected virtual void OnLostKeyboardFocus(ref Boolean handled)
         {
-            var temp = RoutedEvent.GetInvocationDelegate<UIElementRoutedEventHandler>(BlurredEvent);
-            if (temp != null)
-            {
-                var handled = false;
-                temp(this, ref handled);
-            }
+
         }
 
         /// <summary>
-        /// Raises the <see cref="KeyPressed"/> event.
+        /// Invoked when a <see cref="Keyboard.KeyDownEvent"/> attached routed event occurs.
         /// </summary>
-        /// <param name="device">The keyboard device.</param>
+        /// <param name="device">The <see cref="KeyboardDevice"/> that raised the event.</param>
         /// <param name="key">The <see cref="Key"/> value that represents the key that was pressed.</param>
-        /// <param name="ctrl">A value indicating whether the Control modifier is active.</param>
-        /// <param name="alt">A value indicating whether the Alt modifier is active.</param>
-        /// <param name="shift">A value indicating whether the Shift modifier is active.</param>
-        /// <param name="repeat">A value indicating whether this is a repeated key press.</param>
-        protected internal virtual void OnKeyPressed(KeyboardDevice device, Key key, Boolean ctrl, Boolean alt, Boolean shift, Boolean repeat)
+        /// <param name="modifiers">A <see cref="KeyModifiers"/> value indicating which of the key modifiers are currently active.</param>
+        /// <param name="handled">A value indicating whether the event has been handled.</param>
+        protected virtual void OnKeyDown(KeyboardDevice device, Key key, KeyModifiers modifiers, ref Boolean handled)
         {
-            var temp = RoutedEvent.GetInvocationDelegate<UIElementKeyPressedEventHandler>(KeyPressedEvent);
-            if (temp != null)
-            {
-                var handled = false;
-                temp(this, device, key, ctrl, alt, shift, repeat, ref handled);
-            }
+
         }
 
         /// <summary>
-        /// Raises the <see cref="KeyReleased"/> event.
+        /// Invoked when a <see cref="Keyboard.KeyUpEvent"/> attached routed event occurs.
         /// </summary>
-        /// <param name="device">The keyboard device.</param>
-        /// <param name="key">The <see cref="Key"/> value that represents the key that was released.</param>
-        protected internal virtual void OnKeyReleased(KeyboardDevice device, Key key)
+        /// <param name="device">The <see cref="KeyboardDevice"/> that raised the event.</param>
+        /// <param name="key">The <see cref="Key"/> value that represents the key that was pressed.</param>
+        /// <param name="handled">A value indicating whether the event has been handled.</param>
+        protected virtual void OnKeyUp(KeyboardDevice device, Key key, ref Boolean handled)
         {
-            var temp = RoutedEvent.GetInvocationDelegate<UIElementKeyReleasedEventHandler>(KeyReleasedEvent);
-            if (temp != null)
-            {
-                var handled = false;
-                temp(this, device, key, ref handled);
-            }
+
         }
 
         /// <summary>
-        /// Raises the <see cref="TextInput"/> event.
+        /// Invoked when a <see cref="Keyboard.TextInputEvent"/> attached routed event occurs.
         /// </summary>
-        /// <param name="device">The keyboard device.</param>
-        protected internal virtual void OnTextInput(KeyboardDevice device)
+        /// <param name="device">The <see cref="KeyboardDevice"/> that raised the event.</param>
+        /// <param name="handled">A value indicating whether the event has been handled.</param>
+        protected virtual void OnTextInput(KeyboardDevice device, ref Boolean handled)
         {
-            var temp = RoutedEvent.GetInvocationDelegate<UIElementKeyboardEventHandler>(TextInputEvent);
-            if (temp != null)
-            {
-                var handled = false;
-                temp(this, device, ref handled);
-            }
+
         }
 
         /// <summary>
@@ -2768,6 +2646,46 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             var element = (UIElement)dobj;
             element.OnTabIndexChanged();
+        }
+
+        /// <summary>
+        /// Invokes the <see cref="OnGotKeyboardFocus"/> method.
+        /// </summary>
+        private static void OnGotKeyboardFocusProxy(UIElement element, ref Boolean handled)
+        {
+            element.OnGotKeyboardFocus(ref handled);
+        }
+
+        /// <summary>
+        /// Invokes the <see cref="OnLostKeyboardFocus"/> method.
+        /// </summary>
+        private static void OnLostKeyboardFocusProxy(UIElement element, ref Boolean handled)
+        {
+            element.OnLostKeyboardFocus(ref handled);
+        }
+
+        /// <summary>
+        /// Invokes the <see cref="OnKeyDown"/> method.
+        /// </summary>
+        private static void OnKeyDownProxy(UIElement element, KeyboardDevice device, Key key, KeyModifiers modifiers, ref Boolean handled)
+        {
+            element.OnKeyDown(device, key, modifiers, ref handled);
+        }
+
+        /// <summary>
+        /// Invokes the <see cref="OnKeyUp"/> method.
+        /// </summary>
+        private static void OnKeyUpProxy(UIElement element, KeyboardDevice device, Key key, ref Boolean handled)
+        {
+            element.OnKeyUp(device, key, ref handled);
+        }
+
+        /// <summary>
+        /// Invokes the <see cref="OnTextInput"/> method.
+        /// </summary>
+        private static void OnTextInputProxy(UIElement element, KeyboardDevice device, ref Boolean handled)
+        {
+            element.OnTextInput(device, ref handled);
         }
 
         /// <summary>

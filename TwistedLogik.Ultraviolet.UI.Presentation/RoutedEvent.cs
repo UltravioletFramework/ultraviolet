@@ -40,6 +40,29 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Registers a class handler for a routed event.
+        /// </summary>
+        /// <param name="classType">The type of the class that is declaring class handling.</param>
+        /// <param name="routedEvent">A <see cref="RoutedEvent"/> which identifies the event to handle.</param>
+        /// <param name="handler">The delegate that represents the class handler to register.</param>
+        public static void RegisterClassHandler(Type classType, RoutedEvent routedEvent, Delegate handler)
+        {
+            RoutedEventClassHandlers.RegisterClassHandler(classType, routedEvent, handler);
+        }
+
+        /// <summary>
+        /// Registers a class handler for a routed event.
+        /// </summary>
+        /// <param name="classType">The type of the class that is declaring class handling.</param>
+        /// <param name="routedEvent">A <see cref="RoutedEvent"/> which identifies the event to handle.</param>
+        /// <param name="handler">The delegate that represents the class handler to register.</param>
+        /// <param name="handledEventsToo">A value indicating whether to invoke the handler even if it has already been handled.</param>
+        public static void RegisterClassHandler(Type classType, RoutedEvent routedEvent, Delegate handler, Boolean handledEventsToo)
+        {
+            RoutedEventClassHandlers.RegisterClassHandler(classType, routedEvent, handler, handledEventsToo);
+        }
+
+        /// <summary>
         /// Finds the routed event with the specified name.
         /// </summary>
         /// <param name="name">The name of the routed event for which to search.</param>

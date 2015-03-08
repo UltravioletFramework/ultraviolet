@@ -240,4 +240,9 @@
       <Variant>The specified type '{0}' cannot be registered as a UVML known type because it is not annotated with a UvmlKnownTypeAttribute.</Variant>
     </en-US>
   </String>
+  <String Key="HANDLER_TYPE_MISMATCH">
+    <en-US>
+      <Variant>The specified event handler '{0}' is invalid because it is not a delegate of type '{1}'.</Variant>
+    </en-US>
+  </String>
 </LocalizedStrings>

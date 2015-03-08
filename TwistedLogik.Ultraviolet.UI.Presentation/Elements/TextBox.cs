@@ -5,6 +5,7 @@ using System.Text.RegularExpressions;
 using TwistedLogik.Nucleus.Text;
 using TwistedLogik.Ultraviolet.Input;
 using TwistedLogik.Ultraviolet.UI.Presentation.Styles;
+using TwistedLogik.Ultraviolet.UI.Presentation.Input;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
 {
@@ -251,7 +252,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             new DependencyPropertyMetadata(HandleInsertionModeChanged, () => TextBoxInsertionMode.Insert, DependencyPropertyOptions.None));
 
         /// <inheritdoc/>
-        protected internal override void OnKeyPressed(KeyboardDevice device, Key key, Boolean ctrl, Boolean alt, Boolean shift, Boolean repeat)
+        protected override void OnLostKeyboardFocus(ref Boolean handled)
+        {
+            textSelectionLength = 0;
+
+            base.OnLostKeyboardFocus(ref handled);
+        }
+
+        /// <inheritdoc/>
+        protected override void OnKeyDown(KeyboardDevice device, Key key, KeyModifiers modifiers, ref Boolean handled)
         {
             switch (key)
             {
@@ -259,78 +268,83 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
                     InsertionMode = (InsertionMode == TextBoxInsertionMode.Insert) ? 
                         TextBoxInsertionMode.Overwrite :
                         TextBoxInsertionMode.Insert;
+                    handled = true;
                     break;
 
                 case Key.A:
-                    if (ctrl)
+                    if (modifiers.Control)
                     {
                         SelectAll();
+                        handled = true;
                     }
                     break;
 
                 case Key.C:
-                    if (ctrl)
+                    if (modifiers.Control)
                     {
                         Copy();
+                        handled = true;
                     }
                     break;
 
                 case Key.X:
-                    if (ctrl)
+                    if (modifiers.Control)
                     {
                         Cut();
+                        handled = true;
                     }
                     break;
 
                 case Key.V:
-                    if (ctrl)
+                    if (modifiers.Control)
                     {
                         Paste();
+                        handled = true;
                     }
                     break;
 
                 case Key.Left:
-                    MoveBackward(shift);
+                    MoveBackward(modifiers.Shift);
+                    handled = true;
                     break;
 
                 case Key.Right:
-                    MoveForward(shift);
+                    MoveForward(modifiers.Shift);
+                    handled = true;
                     break;
 
                 case Key.Home:
                     MoveHome();
+                    handled = true;
                     break;
 
                 case Key.End:
                     MoveEnd();
+                    handled = true;
                     break;
 
                 case Key.Backspace:
                     ProcessBackspace();
+                    handled = true;
                     break;
 
                 case Key.Delete:
                     ProcessDelete();
+                    handled = true;
                     break;
             }
-            base.OnKeyPressed(device, key, ctrl, alt, shift, repeat);
+
+            base.OnKeyDown(device, key, modifiers, ref handled);
         }
 
         /// <inheritdoc/>
-        protected internal override void OnTextInput(KeyboardDevice device)
+        protected override void OnTextInput(KeyboardDevice device, ref Boolean handled)
         {
             device.GetTextInput(textBuffer);
             ProcessInsertText(textBuffer.ToString());
+            handled = true;
 
-            base.OnTextInput(device);
-        }
-
-        /// <inheritdoc/>
-        protected internal override void OnBlurred()
-        {
-            textSelectionLength = 0;
-
-            base.OnBlurred();
+            base.OnTextInput(device, ref handled);
         }
 
         /// <inheritdoc/>

@@ -2,6 +2,8 @@
 using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
 using TwistedLogik.Ultraviolet.UI.Presentation.Styles;
+using TwistedLogik.Ultraviolet.Input;
+using TwistedLogik.Ultraviolet.UI.Presentation.Input;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation
 {
@@ -471,19 +473,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <inheritdoc/>
-        protected internal override void OnFocused()
+        protected override void OnGotKeyboardFocus(ref Boolean handled)
         {
             VisualStateGroups.GoToState("focus", "focused");
 
-            base.OnFocused();
+            base.OnGotKeyboardFocus(ref handled);
         }
 
         /// <inheritdoc/>
-        protected internal override void OnBlurred()
+        protected override void OnLostKeyboardFocus(ref Boolean handled)
         {
             VisualStateGroups.GoToState("focus", "blurred");
 
-            base.OnBlurred();
+            base.OnLostKeyboardFocus(ref handled);
         }
 
         /// <summary>

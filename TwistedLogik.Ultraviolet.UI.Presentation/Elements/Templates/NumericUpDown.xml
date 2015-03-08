@@ -10,8 +10,7 @@
       <RowDefinition Height="*"/>
     </Grid.RowDefinitions>
   
-    <TextBox ID="Input" Class="updown-input" KeyPressed="InputKeyPressed"
-             Grid.RowSpan="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">{{Value}}</TextBox>
+    <TextBox ID="Input" Class="updown-input" Grid.RowSpan="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">{{Value}}</TextBox>
 
     <RepeatButton ID="UpButton" Class="updown-button updown-button-up" Focusable="false"
                   Grid.Column="1" Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="Increment"></RepeatButton>

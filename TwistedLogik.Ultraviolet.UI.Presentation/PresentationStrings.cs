@@ -70,7 +70,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public static readonly StringResource InvalidRoutingStrategy               = new StringResource(StringDatabase, "INVALID_ROUTING_STRATEGY");
         public static readonly StringResource EventOrPropertyDoesNotExist          = new StringResource(StringDatabase, "EVENT_OR_PROPERTY_DOES_NOT_EXIST");
         public static readonly StringResource ClassTypeMustBeSubclassOfOwnerType   = new StringResource(StringDatabase, "CLASS_TYPE_MUST_BE_SUBCLASS_OF_OWNER_TYPE");
-        public static readonly StringResource KnownTypeMissingAttribute             = new StringResource(StringDatabase, "KNOWN_TYPE_MISSING_ATTRIBUTE");
+        public static readonly StringResource KnownTypeMissingAttribute            = new StringResource(StringDatabase, "KNOWN_TYPE_MISSING_ATTRIBUTE");
+        public static readonly StringResource HandlerTypeMismatch                  = new StringResource(StringDatabase, "HANDLER_TYPE_MISMATCH");
 #pragma warning restore 1591
     }
 }

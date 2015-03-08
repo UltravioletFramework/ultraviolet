@@ -20,6 +20,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             Contract.Require(evt, "evt");
             Contract.Require(handler, "handler");
 
+            if (evt.DelegateType != handler.GetType())
+                throw new ArgumentException(PresentationStrings.HandlerTypeMismatch.Format(handler.GetType().Name, evt.DelegateType.Name), "handler");
+
             lock (routedEventDelegates)
             {
                 List<RoutedEventHandlerMetadata> events;
