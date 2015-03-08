@@ -29,7 +29,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                     routedEventDelegates[evt.ID] = events;
                 }
 
-                var routedEventInfo = new RoutedEventHandlerMetadata(handler, handledEventsToo);
+                var routedEventInfo = new RoutedEventHandlerMetadata(null, handler, 0, 0, handledEventsToo);
                 lock (events)
                 {
                     events.Add(routedEventInfo);
@@ -71,7 +71,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Gets the list of registered event handlers for the specified event.
         /// </summary>
         /// <param name="evt">A <see cref="RoutedEvent"/> value which identifies the event from which to retrieve a handler list.</param>
-        /// <returns></returns>
+        /// <returns>The manager's internal list of handlers for the specified event.</returns>
         internal List<RoutedEventHandlerMetadata> GetHandlers(RoutedEvent evt)
         {
             List<RoutedEventHandlerMetadata> handlers;

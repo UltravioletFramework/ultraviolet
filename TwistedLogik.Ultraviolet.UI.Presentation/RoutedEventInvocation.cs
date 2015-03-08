@@ -403,12 +403,37 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <returns><c>true</c> if a handler was retrieved for the specified index; otherwise, <c>false</c>.</returns>
         private static Boolean GetEventHandler(UIElement element, RoutedEvent evt, ref Int32 index, ref RoutedEventHandlerMetadata handler)
         {
-            var handlers = element.GetHandlers(evt);
-            if (handlers == null || index >= handlers.Count)
+            var indexTemp = index;
+
+            var classHandlers = RoutedEventClassHandlers.GetClassHandlers(element.GetType(), evt);
+            if (classHandlers != null)
             {
-                return false;
+                lock (classHandlers)
+                {
+                    if (indexTemp >= 0 && indexTemp < classHandlers.Count)
+                    {
+                        handler = classHandlers[indexTemp];
+                        index++;
+                        return true;
+                    }
+                    indexTemp -= classHandlers.Count;
+                }
             }
-            handler = handlers[index++];
+
+            var instanceHandlers = element.GetHandlers(evt);
+            if (instanceHandlers == null)
+                return false;
+
+            lock (instanceHandlers)
+            {
+                if (indexTemp >= instanceHandlers.Count)
+                {
+                    return false;
+                }
+                handler = instanceHandlers[indexTemp];
+                index++;
+            }
+
             return true;
         }
 

@@ -10,12 +10,26 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Initializes a new instance of the <see cref="RoutedEventHandlerMetadata"/> structure.
         /// </summary>
+        /// <param name="ownerType">The type with which this event handler is associated.</param>
         /// <param name="handler">The event handler for the routed event.</param>
+        /// <param name="ordinalByType">An ordinal representing the distance between the current type and the type on which the handler is defined.</param>
+        /// <param name="ordinalWithinType">An ordinal representing the relative position of the handler within the list of handlers for its type.</param>
         /// <param name="handledEventsToo">A value indicating whether the handler should receive events which have already been handled by other handlers.</param>
-        public RoutedEventHandlerMetadata(Delegate handler, Boolean handledEventsToo)
+        public RoutedEventHandlerMetadata(Type ownerType, Delegate handler, Int16 ordinalByType, Int16 ordinalWithinType, Boolean handledEventsToo)
         {
-            this.handler          = handler;
-            this.handledEventsToo = handledEventsToo;
+            this.ownerType         = ownerType;
+            this.handler           = handler;
+            this.ordinalByType     = ordinalByType;
+            this.ordinalWithinType = ordinalWithinType;
+            this.handledEventsToo  = handledEventsToo;
+        }
+
+        /// <summary>
+        /// Gets the type with which this event handler is associated.
+        /// </summary>
+        public Type OwnerType
+        {
+            get { return ownerType; }
         }
 
         /// <summary>
@@ -24,6 +38,24 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public Delegate Handler
         {
             get { return handler; }
+        }
+        
+        /// <summary>
+        /// Gets an ordinal representing the distance between the current type and the type on which
+        /// the handler is defined. Used for sorting.
+        /// </summary>
+        public Int16 OrdinalByType
+        {
+            get { return ordinalByType; }
+        }
+
+        /// <summary>
+        /// Gets an ordinal representing the relative position of the handler within
+        /// the list of handlers for its type.
+        /// </summary>
+        public Int16 OrdinalWithinType
+        {
+            get { return ordinalWithinType; }
         }
 
         /// <summary>
@@ -35,7 +67,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         // Property values.
+        private readonly Type ownerType;
         private readonly Delegate handler;
+        private readonly Int16 ordinalByType;
+        private readonly Int16 ordinalWithinType;
         private readonly Boolean handledEventsToo;
     }
 }
