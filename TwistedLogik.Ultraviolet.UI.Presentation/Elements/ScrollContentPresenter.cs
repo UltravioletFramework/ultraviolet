@@ -101,8 +101,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             if (Control == null)
                 return finalSize;
 
-            // TODO: extentWidth/Height is "correct"... but causes content to overflow... ContentControl is screwed up?
-
             var contentFinalSize = new Size2D(
                 CanScrollHorizontally ? extentWidth : finalSize.Width,
                 CanScrollVertically ? extentHeight : finalSize.Height

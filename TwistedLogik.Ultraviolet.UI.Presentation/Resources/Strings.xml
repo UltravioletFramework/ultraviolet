@@ -160,11 +160,6 @@
       <Variant>The specified type '{0}' does not derive from UserControl or does not have a UIElementAttribute.</Variant>
     </en-US>
   </String>
-  <String Key="INVALID_UI_ELEMENT_TYPE">
-    <en-US>
-      <Variant>The name '{0}' does not resolve to a known UI element type.</Variant>
-    </en-US>
-  </String>
   <String Key="INVALID_CHILD_ELEMENTS">
     <en-US>
       <Variant>Element '{0}' has too many child elements.</Variant>
@@ -233,6 +228,16 @@
   <String Key="EVENT_OR_PROPERTY_DOES_NOT_EXIST">
     <en-US>
       <Variant>The event or property '{0}' does not exist on the type '{1}'.</Variant>
+    </en-US>
+  </String>
+  <String Key="CLASS_TYPE_MUST_BE_SUBCLASS_OF_OWNER_TYPE">
+    <en-US>
+      <Variant>The specified class type '{0}' is not valid because it is not a subclass of owner type '{1}'.</Variant>
+    </en-US>
+  </String>
+  <String Key="KNOWN_TYPE_MISSING_ATTRIBUTE">
+    <en-US>
+      <Variant>The specified type '{0}' cannot be registered as a UVML known type because it is not annotated with a UvmlKnownTypeAttribute.</Variant>
     </en-US>
   </String>
 </LocalizedStrings>

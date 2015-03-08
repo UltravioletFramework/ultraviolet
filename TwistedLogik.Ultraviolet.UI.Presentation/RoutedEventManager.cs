@@ -29,7 +29,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                     routedEventDelegates[evt.ID] = events;
                 }
 
-                var routedEventInfo = new RoutedEventHandlerMetadata(null, handler, 0, 0, handledEventsToo);
+                var routedEventInfo = new RoutedEventHandlerMetadata(handler, 0, 0, handledEventsToo);
                 lock (events)
                 {
                     events.Add(routedEventInfo);

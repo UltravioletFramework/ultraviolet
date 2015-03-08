@@ -39,7 +39,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public void AddHandler(Type classType, Delegate handler, Boolean handledEventsToo)
         {
             if (classType != this.ownerType && !this.ownerType.IsSubclassOf(classType))
-                throw new ArgumentException("TODO");
+                throw new ArgumentException(PresentationStrings.ClassTypeMustBeSubclassOfOwnerType.Format(classType.Name, ownerType.Name));
 
             lock (handlers)
             {
@@ -53,9 +53,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                     currentType = currentType.BaseType;
                 }
 
-                var metadata = new RoutedEventHandlerMetadata(classType, handler,
-                    ordinalByType, ordinalWithinType, handledEventsToo);
-
+                var metadata = new RoutedEventHandlerMetadata(handler, ordinalByType, ordinalWithinType, handledEventsToo);
                 handlers.Add(metadata);
 
                 if (!sortSuspended)
@@ -68,28 +66,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Removes a class handler from the manager.
         /// </summary>
+        /// <param name="classType">The type for which the handler is defined; must be a supertype of the manager's owner type.</param>
         /// <param name="handler">A delegate which represents the handler to remove from the specified routed event.</param>
         public void RemoveHandler(Delegate handler)
         {
-            RemoveHandler(ownerType, handler);
-        }
-
-        /// <summary>
-        /// Removes a class handler from the manager.
-        /// </summary>
-        /// <param name="classType">The type for which the handler is defined; must be a supertype of the manager's owner type.</param>
-        /// <param name="handler">A delegate which represents the handler to remove from the specified routed event.</param>
-        public void RemoveHandler(Type classType, Delegate handler)
-        {
-            if (classType != this.ownerType && !classType.IsSubclassOf(this.ownerType))
-                throw new ArgumentException("TODO");
-
             lock (handlers)
             {
                 for (int i = 0; i < handlers.Count; i++)
                 {
                     var current = handlers[i];
-                    if (current.OwnerType == classType && current.Handler == handler)
+                    if (current.Handler == handler)
                     {
                         handlers.RemoveAt(i);
                         break;

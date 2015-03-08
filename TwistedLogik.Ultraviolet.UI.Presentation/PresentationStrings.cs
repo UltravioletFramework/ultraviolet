@@ -55,7 +55,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public static readonly StringResource UserControlDoesNotDefineType         = new StringResource(StringDatabase, "USER_CONTROL_DOES_NOT_DEFINE_TYPE");
         public static readonly StringResource InvalidUserControlDefinition         = new StringResource(StringDatabase, "INVALID_USER_CONTROL_DEFINITION");
         public static readonly StringResource InvalidUserControlType               = new StringResource(StringDatabase, "INVALID_USER_CONTROL_TYPE");
-        public static readonly StringResource InvalidUIElementType                 = new StringResource(StringDatabase, "INVALID_UI_ELEMENT_TYPE");
         public static readonly StringResource InvalidChildElements                 = new StringResource(StringDatabase, "INVALID_CHILD_ELEMENTS");
         public static readonly StringResource InvalidElementPropertyValue          = new StringResource(StringDatabase, "INVALID_ELEMENT_PROPERTY_VALUE");
         public static readonly StringResource ComponentRootAlreadyLoaded           = new StringResource(StringDatabase, "COMPONENT_ROOT_ALREADY_LOADED");
@@ -70,6 +69,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public static readonly StringResource InvalidRoutedEventDelegate           = new StringResource(StringDatabase, "INVALID_ROUTED_EVENT_DELEGATE");
         public static readonly StringResource InvalidRoutingStrategy               = new StringResource(StringDatabase, "INVALID_ROUTING_STRATEGY");
         public static readonly StringResource EventOrPropertyDoesNotExist          = new StringResource(StringDatabase, "EVENT_OR_PROPERTY_DOES_NOT_EXIST");
+        public static readonly StringResource ClassTypeMustBeSubclassOfOwnerType   = new StringResource(StringDatabase, "CLASS_TYPE_MUST_BE_SUBCLASS_OF_OWNER_TYPE");
+        public static readonly StringResource KnownTypeMissingAttribute             = new StringResource(StringDatabase, "KNOWN_TYPE_MISSING_ATTRIBUTE");
 #pragma warning restore 1591
     }
 }

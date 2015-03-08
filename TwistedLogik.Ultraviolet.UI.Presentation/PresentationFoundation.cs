@@ -412,7 +412,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             var knownTypeAttr = (UvmlKnownTypeAttribute)type.GetCustomAttributes(typeof(UvmlKnownTypeAttribute), false).SingleOrDefault();
             if (knownTypeAttr == null)
-                throw new InvalidOperationException("TODO");
+                throw new InvalidOperationException(PresentationStrings.KnownTypeMissingAttribute.Format(type.Name));
 
             KnownType existingRegistration;
             if (GetKnownTypeRegistration(knownTypeAttr.Name, out existingRegistration))
