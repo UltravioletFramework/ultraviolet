@@ -4,8 +4,8 @@ using System.Text;
 using System.Text.RegularExpressions;
 using TwistedLogik.Nucleus.Text;
 using TwistedLogik.Ultraviolet.Input;
-using TwistedLogik.Ultraviolet.UI.Presentation.Styles;
 using TwistedLogik.Ultraviolet.UI.Presentation.Input;
+using TwistedLogik.Ultraviolet.UI.Presentation.Styles;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
 {
@@ -348,15 +348,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <inheritdoc/>
-        protected internal override void OnLostMouseCapture()
+        protected override void OnLostMouseCapture(ref Boolean handled)
         {
             mouseSelectionInProgress = false;
 
-            base.OnLostMouseCapture();
+            base.OnLostMouseCapture(ref handled);
         }
 
         /// <inheritdoc/>
-        protected internal override void OnMouseMotion(MouseDevice device, Double x, Double y, Double dx, Double dy)
+        protected override void OnMouseMove(MouseDevice device, Double x, Double y, Double dx, Double dy, ref Boolean handled)
         {
             if (mouseSelectionInProgress && !String.IsNullOrEmpty(Text))
             {
@@ -386,12 +386,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
                         ScrollToSelectionHead();
                     }
                 }
+                handled = true;
             }
-            base.OnMouseMotion(device, x, y, dx, dy);
+            base.OnMouseMove(device, x, y, dx, dy, ref handled);
         }
 
         /// <inheritdoc/>
-        protected internal override void OnMouseButtonPressed(MouseDevice device, MouseButton button)
+        protected override void OnMouseUp(MouseDevice device, MouseButton button, ref Boolean handled)
         {
             if (button == MouseButton.Left)
             {
@@ -404,28 +405,31 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
 
                 ScrollForwardToCaret();
             }
-            base.OnMouseButtonPressed(device, button);
+            handled = true;
+            base.OnMouseUp(device, button, ref handled);
         }
 
         /// <inheritdoc/>
-        protected internal override void OnMouseButtonReleased(MouseDevice device, MouseButton button)
+        protected override void OnMouseDown(MouseDevice device, MouseButton button, ref Boolean handled)
         {
             if (button == MouseButton.Left)
             {
                 mouseSelectionInProgress = false;
                 View.ReleaseMouse(this);
             }
-            base.OnMouseButtonReleased(device, button);
+            handled = true;
+            base.OnMouseDown(device, button, ref handled);
         }
 
         /// <inheritdoc/>
-        protected internal override void OnMouseDoubleClick(MouseDevice device, MouseButton button)
+        protected override void OnMouseDoubleClick(MouseDevice device, MouseButton button, ref Boolean handled)
         {
             if (button == MouseButton.Left)
             {
                 SelectAll();
             }
-            base.OnMouseDoubleClick(device, button);
+            handled = true;
+            base.OnMouseDoubleClick(device, button, ref handled);
         }
 
         /// <inheritdoc/>

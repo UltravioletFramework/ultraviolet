@@ -30,23 +30,23 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
         
         /// <summary>
-        /// Handles the <see cref="UIElement.MouseMotion"/> event for the Thumb button.
+        /// Handles the <see cref="Mouse.MouseMoveEvent"/> event for the Thumb button.
         /// </summary>
-        private void HandleThumbMouseMotion(UIElement element, MouseDevice device, Double x, Double y, Double dx, Double dy, ref Boolean handled)
+        private void HandleThumbMouseMove(UIElement element, MouseDevice device, Double x, Double y, Double dx, Double dy, ref Boolean handled)
         {
             var button = element as Button;
             if (button != null && button.IsDepressed)
             {
                 var relX = x - (AbsolutePosition.X + thumbDragOffset);
                 Value = OffsetToValue(relX, RenderSize.Width, Thumb.RenderSize.Width);
+                handled = true;
             }
-            handled = true;
         }
 
         /// <summary>
-        /// Handles the <see cref="UIElement.MouseButtonPressed"/> event for the Thumb button.
+        /// Handles the <see cref="Mouse.MouseDownEvent"/> event for the Thumb button.
         /// </summary>
-        private void HandleThumbMouseButtonPressed(UIElement element, MouseDevice device, MouseButton pressed, ref Boolean handled)
+        private void HandleThumbMouseDown(UIElement element, MouseDevice device, MouseButton pressed, ref Boolean handled)
         {
             thumbDragOffset = Display.PixelsToDips(device.X) - element.AbsoluteBounds.X;
             handled = true;

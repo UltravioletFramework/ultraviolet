@@ -222,6 +222,22 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             return child.DesiredSize;
         }
 
+        /// <inheritdoc/>
+        protected override void OnMouseWheel(MouseDevice device, Double x, Double y, ref Boolean handled)
+        {
+            if (x != 0 && HScroll != null)
+            {
+                HScroll.Value += HScroll.LargeChange * x;
+            }
+            if (y != 0 && VScroll != null)
+            {
+                VScroll.Value += VScroll.LargeChange * -y;
+            }
+            handled = true;
+
+            base.OnMouseWheel(device, x, y, ref handled);
+        }
+
         /// <summary>
         /// Raises the <see cref="HorizontalScrollBarVisibilityChanged"/> event.
         /// </summary>
@@ -264,22 +280,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         {
             var scrollViewer = (ScrollViewer)dobj;
             scrollViewer.OnVerticalScrollBarVisibilityChanged();
-        }
-
-        /// <summary>
-        /// Handles the <see cref="UIElement.MouseWheelScrolled"/> event for the scroll viewer.
-        /// </summary>
-        private void HandleMouseWheelScrolled(UIElement element, MouseDevice device, Double x, Double y, ref Boolean handled)
-        {
-            if (x != 0 && HScroll != null)
-            {
-                HScroll.Value += HScroll.LargeChange * x;
-            }
-            if (y != 0 && VScroll != null)
-            {
-                VScroll.Value += VScroll.LargeChange * -y;
-            }
-            handled = true;
         }
 
         /// <summary>

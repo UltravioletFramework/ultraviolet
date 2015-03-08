@@ -181,6 +181,7 @@
     <Compile Include="HorizontalAlignment.cs" />
     <Compile Include="IDependencyBoundValue.cs" />
     <Compile Include="IDependencyPropertyValue.cs" />
+    <Compile Include="Input\Mouse.cs" />
     <Compile Include="Input\Keyboard.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -305,7 +306,9 @@
     <EmbeddedResource Include="Elements\Templates\ScrollViewer.xml" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Elements\Templates\HSlider.xml" />
+    <EmbeddedResource Include="Elements\Templates\HSlider.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Elements\Templates\VSlider.xml" />
@@ -325,7 +328,9 @@
     <EmbeddedResource Include="Elements\Templates\HScrollTrack.xml" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Elements\Templates\VScrollTrack.xml" />
+    <EmbeddedResource Include="Elements\Templates\VScrollTrack.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

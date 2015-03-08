@@ -410,6 +410,9 @@
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Input\KeyModifiers.cs">
       <Link>Input\KeyModifiers.cs</Link>
     </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Input\Mouse.cs">
+      <Link>Input\Mouse.cs</Link>
+    </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\IUltravioletDisplayExtensions.cs">
       <Link>IUltravioletDisplayExtensions.cs</Link>
     </Compile>
@@ -696,6 +699,7 @@
     </Content>
     <Content Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Elements\Templates\ScrollViewer.xml">
       <Link>Elements\Templates\ScrollViewer.xml</Link>
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Elements\Templates\TextBox.xml">
       <Link>Elements\Templates\TextBox.xml</Link>

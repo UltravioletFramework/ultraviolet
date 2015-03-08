@@ -67,9 +67,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             Contract.Require(name, "name");
             Contract.Require(ownerType, "ownerType");
 
-            if (!ownerType.IsSubclassOf(typeof(DependencyObject)))
-                throw new InvalidOperationException(PresentationStrings.IsNotDependencyObject);
-
             var type = ownerType;
             while (type != null)
             {

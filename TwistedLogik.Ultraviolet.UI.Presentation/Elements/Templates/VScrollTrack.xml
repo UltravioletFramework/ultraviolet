@@ -15,7 +15,7 @@
                   Click="HandleDecreaseLarge"/>
 
     <Button ID="Thumb" Class="scroll-thumb scroll-thumb-vertical" Grid.Row="1" HorizontalAlignment="Stretch"
-            MouseButtonPressed="HandleThumbMouseButtonPressed" MouseMotion="HandleThumbMouseMotion"/>
+            Mouse.MouseDown="HandleThumbMouseDown" Mouse.MouseMove="HandleThumbMouseMove"/>
 
     <RepeatButton ID="DownLarge" Class="scroll-repeat scroll-repeat-right" Grid.Row="2" MinHeight="0" Padding="0" Focusable="false"
                   HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Opacity="0"

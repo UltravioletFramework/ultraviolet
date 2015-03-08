@@ -13,7 +13,7 @@
                   VerticalAlignment="Stretch" Click="HandleClickLeftLarge"></RepeatButton>
 
     <Button ID="Thumb" Class="slider-thumb slider-thumb-horizontal" Grid.Column="1" VerticalAlignment="Center"
-            MouseButtonPressed="HandleThumbMouseButtonPressed" MouseMotion="HandleThumbMouseMotion"></Button>
+            Mouse.MouseDown="HandleThumbMouseDown" Mouse.MouseMove="HandleThumbMouseMove"></Button>
 
     <RepeatButton ID="RightLarge" Class="slider-repeat slider-repeat-right" Grid.Column="2" Padding="0" Opacity="0" Focusable="false"
                   HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="HandleClickRightLarge"></RepeatButton>
