@@ -63,8 +63,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
              * 
              * void fn(UIElement element, p1, p2, ..., pN, ref Boolean handled)
              * {
-             *      handled = false;
-             *      
              *      var index   = 0;
              *      var handler = default(RoutedEventHandlerMetadata);
              *      var current = element;
@@ -92,9 +90,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             var expParts = new List<Expression>();
             var expVars  = new List<ParameterExpression>();
-
-            var expAssignedHandledToFalse = Expression.Assign(expParamHandled, Expression.Constant(false));
-            expParts.Add(expAssignedHandledToFalse);
 
             var varIndex = Expression.Variable(typeof(Int32), "index");
             expVars.Add(varIndex);
@@ -151,8 +146,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
              * 
              * void fn(UIElement element, p1, p2, ..., pN, ref Boolean handled)
              * {
-             *      handled = false;
-             * 
              *      var index   = 0;
              *      var handler = default(RoutedEventHandlerMetadata);      
              * 
@@ -175,9 +168,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             var expParts = new List<Expression>();
             var expVars  = new List<ParameterExpression>();
-
-            var expAssignedHandledToFalse = Expression.Assign(expParamHandled, Expression.Constant(false));
-            expParts.Add(expAssignedHandledToFalse);
 
             var varIndex = Expression.Variable(typeof(Int32), "index");
             expVars.Add(varIndex);
@@ -216,8 +206,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
              * 
              * void fn(UIElement element, p1, p2, ..., pN, ref Boolean handled)
              * {
-             *      handled = false;
-             * 
              *      var index    = 0;
              *      var current  = default(UIElement);
              *      var handlers = default(List<RoutedEventHandlerMetadata>);
@@ -245,9 +233,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             var expParts = new List<Expression>();
             var expVars  = new List<ParameterExpression>();
-
-            var expAssignedHandledToFalse = Expression.Assign(expParamHandled, Expression.Constant(false));
-            expParts.Add(expAssignedHandledToFalse);
 
             var varIndex = Expression.Variable(typeof(Int32), "index");
             expVars.Add(varIndex);

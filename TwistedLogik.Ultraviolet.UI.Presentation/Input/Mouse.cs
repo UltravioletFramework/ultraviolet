@@ -52,6 +52,84 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
     public static class Mouse
     {
         /// <summary>
+        /// Adds a handler for the PreviewMouseMove attached event to the specified element.
+        /// </summary>
+        /// <param name="element">The element to which to add the handler.</param>
+        /// <param name="handler">The handler to add to the specified element.</param>
+        public static void AddPreviewMouseMoveHandler(UIElement element, UIElementMouseMoveEventHandler handler)
+        {
+            Contract.Require(element, "element");
+            Contract.Require(handler, "handler");
+
+            element.AddHandler(PreviewMouseMoveEvent, handler);
+        }
+
+        /// <summary>
+        /// Adds a handler for the PreviewMouseDown attached event to the specified element.
+        /// </summary>
+        /// <param name="element">The element to which to add the handler.</param>
+        /// <param name="handler">The handler to add to the specified element.</param>
+        public static void AddPreviewMouseDownHandler(UIElement element, UIElementMouseButtonEventHandler handler)
+        {
+            Contract.Require(element, "element");
+            Contract.Require(handler, "handler");
+
+            element.AddHandler(PreviewMouseDownEvent, handler);
+        }
+
+        /// <summary>
+        /// Adds a handler for the PreviewMouseUp attached event to the specified element.
+        /// </summary>
+        /// <param name="element">The element to which to add the handler.</param>
+        /// <param name="handler">The handler to add to the specified element.</param>
+        public static void AddPreviewMouseUpHandler(UIElement element, UIElementMouseButtonEventHandler handler)
+        {
+            Contract.Require(element, "element");
+            Contract.Require(handler, "handler");
+
+            element.AddHandler(PreviewMouseUpEvent, handler);
+        }
+
+        /// <summary>
+        /// Adds a handler for the PreviewMouseClick attached event to the specified element.
+        /// </summary>
+        /// <param name="element">The element to which to add the handler.</param>
+        /// <param name="handler">The handler to add to the specified element.</param>
+        public static void AddPreviewMouseClickHandler(UIElement element, UIElementMouseButtonEventHandler handler)
+        {
+            Contract.Require(element, "element");
+            Contract.Require(handler, "handler");
+
+            element.AddHandler(PreviewMouseClickEvent, handler);
+        }
+
+        /// <summary>
+        /// Adds a handler for the PreviewMouseDoubleClick attached event to the specified element.
+        /// </summary>
+        /// <param name="element">The element to which to add the handler.</param>
+        /// <param name="handler">The handler to add to the specified element.</param>
+        public static void AddPreviewMouseDoubleClickHandler(UIElement element, UIElementMouseButtonEventHandler handler)
+        {
+            Contract.Require(element, "element");
+            Contract.Require(handler, "handler");
+
+            element.AddHandler(PreviewMouseDoubleClickEvent, handler);
+        }
+
+        /// <summary>
+        /// Adds a handler for the PreviewMouseWheel attached event to the specified element.
+        /// </summary>
+        /// <param name="element">The element to which to add the handler.</param>
+        /// <param name="handler">The handler to add to the specified element.</param>
+        public static void AddPreviewMouseWheelHandler(UIElement element, UIElementMouseWheelEventHandler handler)
+        {
+            Contract.Require(element, "element");
+            Contract.Require(handler, "handler");
+
+            element.AddHandler(PreviewMouseWheelEvent, handler);
+        }
+
+        /// <summary>
         /// Adds a handler for the GotMouseCapture attached event to the specified element.
         /// </summary>
         /// <param name="element">The element to which to add the handler.</param>
@@ -179,6 +257,84 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
             Contract.Require(handler, "handler");
 
             element.AddHandler(MouseWheelEvent, handler);
+        }
+
+        /// <summary>
+        /// Removes a handler for the PreviewMouseMove attached event from the specified element.
+        /// </summary>
+        /// <param name="element">The element from which to remove the handler.</param>
+        /// <param name="handler">The handler to remove from the specified element.</param>
+        public static void RemovePreviewMouseMoveHandler(UIElement element, UIElementMouseMoveEventHandler handler)
+        {
+            Contract.Require(element, "element");
+            Contract.Require(handler, "handler");
+
+            element.RemoveHandler(PreviewMouseMoveEvent, handler);
+        }
+
+        /// <summary>
+        /// Removes a handler for the PreviewMouseDown attached event from the specified element.
+        /// </summary>
+        /// <param name="element">The element from which to remove the handler.</param>
+        /// <param name="handler">The handler to remove from the specified element.</param>
+        public static void RemovePreviewMouseDownHandler(UIElement element, UIElementMouseButtonEventHandler handler)
+        {
+            Contract.Require(element, "element");
+            Contract.Require(handler, "handler");
+
+            element.RemoveHandler(PreviewMouseDownEvent, handler);
+        }
+
+        /// <summary>
+        /// Removes a handler for the PreviewMouseUp attached event from the specified element.
+        /// </summary>
+        /// <param name="element">The element from which to remove the handler.</param>
+        /// <param name="handler">The handler to remove from the specified element.</param>
+        public static void RemovePreviewMouseUpHandler(UIElement element, UIElementMouseButtonEventHandler handler)
+        {
+            Contract.Require(element, "element");
+            Contract.Require(handler, "handler");
+
+            element.RemoveHandler(PreviewMouseUpEvent, handler);
+        }
+
+        /// <summary>
+        /// Removes a handler for the PreviewMouseClick attached event from the specified element.
+        /// </summary>
+        /// <param name="element">The element from which to remove the handler.</param>
+        /// <param name="handler">The handler to remove from the specified element.</param>
+        public static void RemovePreviewMouseClickHandler(UIElement element, UIElementMouseButtonEventHandler handler)
+        {
+            Contract.Require(element, "element");
+            Contract.Require(handler, "handler");
+
+            element.RemoveHandler(PreviewMouseClickEvent, handler);
+        }
+
+        /// <summary>
+        /// Removes a handler for the PreviewMouseDoubleClick attached event from the specified element.
+        /// </summary>
+        /// <param name="element">The element from which to remove the handler.</param>
+        /// <param name="handler">The handler to remove from the specified element.</param>
+        public static void RemovePreviewMouseDoubleClickHandler(UIElement element, UIElementMouseButtonEventHandler handler)
+        {
+            Contract.Require(element, "element");
+            Contract.Require(handler, "handler");
+
+            element.RemoveHandler(PreviewMouseDoubleClickEvent, handler);
+        }
+
+        /// <summary>
+        /// Removes a handler for the PreviewMouseWheel attached event from the specified element.
+        /// </summary>
+        /// <param name="element">The element from which to remove the handler.</param>
+        /// <param name="handler">The handler to remove from the specified element.</param>
+        public static void RemovePreviewMouseWheelHandler(UIElement element, UIElementMouseWheelEventHandler handler)
+        {
+            Contract.Require(element, "element");
+            Contract.Require(handler, "handler");
+
+            element.RemoveHandler(PreviewMouseWheelEvent, handler);
         }
 
         /// <summary>
@@ -324,6 +480,42 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
             typeof(UIElementRoutedEventHandler), typeof(Mouse));
 
         /// <summary>
+        /// Identifies the PreviewMouseMotion routed event.
+        /// </summary>
+        public static readonly RoutedEvent PreviewMouseMoveEvent = RoutedEvent.Register("PreviewMouseMove", RoutingStrategy.Tunnel,
+            typeof(UIElementMouseMoveEventHandler), typeof(Mouse));
+
+        /// <summary>
+        /// Identifies the PreviewMouseDown routed event.
+        /// </summary>
+        public static readonly RoutedEvent PreviewMouseDownEvent = RoutedEvent.Register("PreviewMouseDown", RoutingStrategy.Tunnel,
+            typeof(UIElementMouseButtonEventHandler), typeof(Mouse));
+
+        /// <summary>
+        /// Identifies the PreviewMouseUp routed event.
+        /// </summary>
+        public static readonly RoutedEvent PreviewMouseUpEvent = RoutedEvent.Register("PreviewMouseUp", RoutingStrategy.Tunnel,
+            typeof(UIElementMouseButtonEventHandler), typeof(Mouse));
+
+        /// <summary>
+        /// Identifies the PreviewMouseClick routed event.
+        /// </summary>
+        public static readonly RoutedEvent PreviewMouseClickEvent = RoutedEvent.Register("PreviewMouseClick", RoutingStrategy.Tunnel,
+            typeof(UIElementMouseButtonEventHandler), typeof(Mouse));
+
+        /// <summary>
+        /// Identifies the PreviewMouseDoubleClick routed event.
+        /// </summary>
+        public static readonly RoutedEvent PreviewMouseDoubleClickEvent = RoutedEvent.Register("PreviewMouseDoubleClick", RoutingStrategy.Tunnel,
+            typeof(UIElementMouseButtonEventHandler), typeof(Mouse));
+
+        /// <summary>
+        /// Identifies the PreviewMouseWheel routed event.
+        /// </summary>
+        public static readonly RoutedEvent PreviewMouseWheelEvent = RoutedEvent.Register("PreviewMouseWheel", RoutingStrategy.Tunnel,
+            typeof(UIElementMouseWheelEventHandler), typeof(Mouse));
+
+        /// <summary>
         /// Identifies the MouseMotion routed event.
         /// </summary>
         public static readonly RoutedEvent MouseMoveEvent = RoutedEvent.Register("MouseMove", RoutingStrategy.Bubble,
@@ -374,12 +566,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <summary>
         /// Raises the GotMouseCapture attached event for the specified element.
         /// </summary>
-        internal static void RaiseGotMouseCapture(UIElement element)
+        internal static void RaiseGotMouseCapture(UIElement element, ref Boolean handled)
         {
             var temp = RoutedEvent.GetInvocationDelegate<UIElementRoutedEventHandler>(GotMouseCaptureEvent);
             if (temp != null)
             {
-                var handled = false;
                 temp(element, ref handled);
             }
         }
@@ -387,25 +578,95 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <summary>
         /// Raises the LostMouseCapture attached event for the specified element.
         /// </summary>
-        internal static void RaiseLostMouseCapture(UIElement element)
+        internal static void RaiseLostMouseCapture(UIElement element, ref Boolean handled)
         {
             var temp = RoutedEvent.GetInvocationDelegate<UIElementRoutedEventHandler>(LostMouseCaptureEvent);
             if (temp != null)
             {
-                var handled = false;
                 temp(element, ref handled);
+            }
+        }
+
+        /// <summary>
+        /// Raises the PreviewMouseMove attached event for the specified element.
+        /// </summary>
+        internal static void RaisePreviewMouseMove(UIElement element, MouseDevice device, Double x, Double y, Double dx, Double dy, ref Boolean handled)
+        {
+            var temp = RoutedEvent.GetInvocationDelegate<UIElementMouseMoveEventHandler>(PreviewMouseMoveEvent);
+            if (temp != null)
+            {
+                temp(element, device, x, y, dx, dy, ref handled);
+            }
+        }
+
+        /// <summary>
+        /// Raises the PreviewMouseDown attached event for the specified element.
+        /// </summary>
+        internal static void RaisePreviewMouseDown(UIElement element, MouseDevice device, MouseButton button, ref Boolean handled)
+        {
+            var temp = RoutedEvent.GetInvocationDelegate<UIElementMouseButtonEventHandler>(PreviewMouseDownEvent);
+            if (temp != null)
+            {
+                temp(element, device, button, ref handled);
+            }
+        }
+
+        /// <summary>
+        /// Raises the PreviewMouseUp attached event for the specified element.
+        /// </summary>
+        internal static void RaisePreviewMouseUp(UIElement element, MouseDevice device, MouseButton button, ref Boolean handled)
+        {
+            var temp = RoutedEvent.GetInvocationDelegate<UIElementMouseButtonEventHandler>(PreviewMouseUpEvent);
+            if (temp != null)
+            {
+                temp(element, device, button, ref handled);
+            }
+        }
+
+        /// <summary>
+        /// Raises the PreviewMouseClick attached event for the specified element.
+        /// </summary>
+        internal static void RaisePreviewMouseClick(UIElement element, MouseDevice device, MouseButton button, ref Boolean handled)
+        {
+            var temp = RoutedEvent.GetInvocationDelegate<UIElementMouseButtonEventHandler>(PreviewMouseClickEvent);
+            if (temp != null)
+            {
+                temp(element, device, button, ref handled);
+            }
+        }
+
+        /// <summary>
+        /// Raises the PreviewMouseDoubleClick attached event for the specified element.
+        /// </summary>
+        internal static void RaisePreviewMouseDoubleClick(UIElement element, MouseDevice device, MouseButton button, ref Boolean handled)
+        {
+            var temp = RoutedEvent.GetInvocationDelegate<UIElementMouseButtonEventHandler>(PreviewMouseDoubleClickEvent);
+            if (temp != null)
+            {
+                temp(element, device, button, ref handled);
+            }
+        }
+
+        /// <summary>
+        /// Raises the PreviewMouseWheel attached event for the specified element.
+        /// </summary>
+        internal static void RaisePreviewMouseWheel(UIElement element, MouseDevice device, Double x, Double y, ref Boolean handled)
+        {
+            var temp = RoutedEvent.GetInvocationDelegate<UIElementMouseWheelEventHandler>(PreviewMouseWheelEvent);
+            if (temp != null)
+            {
+                temp(element, device, x, y, ref handled);
             }
         }
 
         /// <summary>
         /// Raises the MouseMove attached event for the specified element.
         /// </summary>
-        internal static void RaiseMouseMove(UIElement element, MouseDevice device, Double x, Double y, Double dx, Double dy)
+        internal static void RaiseMouseMove(UIElement element, MouseDevice device, Double x, Double y, Double dx, Double dy, ref Boolean handled)
         {
             var temp = RoutedEvent.GetInvocationDelegate<UIElementMouseMoveEventHandler>(MouseMoveEvent);
             if (temp != null)
             {
-                var handled = false;
                 temp(element, device, x, y, dx, dy, ref handled);
             }
         }
@@ -413,12 +674,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <summary>
         /// Raises the MouseEnter attached event for the specified element.
         /// </summary>
-        internal static void RaiseMouseEnter(UIElement element, MouseDevice device)
+        internal static void RaiseMouseEnter(UIElement element, MouseDevice device, ref Boolean handled)
         {
             var temp = RoutedEvent.GetInvocationDelegate<UIElementMouseEventHandler>(MouseEnterEvent);
             if (temp != null)
             {
-                var handled = false;
                 temp(element, device, ref handled);
             }
         }
@@ -426,12 +686,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <summary>
         /// Raises the MouseLeave attached event for the specified element.
         /// </summary>
-        internal static void RaiseMouseLeave(UIElement element, MouseDevice device)
+        internal static void RaiseMouseLeave(UIElement element, MouseDevice device, ref Boolean handled)
         {
             var temp = RoutedEvent.GetInvocationDelegate<UIElementMouseEventHandler>(MouseLeaveEvent);
             if (temp != null)
             {
-                var handled = false;
                 temp(element, device, ref handled);
             }
         }
@@ -439,12 +698,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <summary>
         /// Raises the MouseDown attached event for the specified element.
         /// </summary>
-        internal static void RaiseMouseDown(UIElement element, MouseDevice device, MouseButton button)
+        internal static void RaiseMouseDown(UIElement element, MouseDevice device, MouseButton button, ref Boolean handled)
         {
             var temp = RoutedEvent.GetInvocationDelegate<UIElementMouseButtonEventHandler>(MouseDownEvent);
             if (temp != null)
             {
-                var handled = false;
                 temp(element, device, button, ref handled);
             }
         }
@@ -452,12 +710,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <summary>
         /// Raises the MouseUp attached event for the specified element.
         /// </summary>
-        internal static void RaiseMouseUp(UIElement element, MouseDevice device, MouseButton button)
+        internal static void RaiseMouseUp(UIElement element, MouseDevice device, MouseButton button, ref Boolean handled)
         {
             var temp = RoutedEvent.GetInvocationDelegate<UIElementMouseButtonEventHandler>(MouseUpEvent);
             if (temp != null)
             {
-                var handled = false;
                 temp(element, device, button, ref handled);
             }
         }
@@ -465,12 +722,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <summary>
         /// Raises the MouseClick attached event for the specified element.
         /// </summary>
-        internal static void RaiseMouseClick(UIElement element, MouseDevice device, MouseButton button)
+        internal static void RaiseMouseClick(UIElement element, MouseDevice device, MouseButton button, ref Boolean handled)
         {
             var temp = RoutedEvent.GetInvocationDelegate<UIElementMouseButtonEventHandler>(MouseClickEvent);
             if (temp != null)
             {
-                var handled = false;
                 temp(element, device, button, ref handled);
             }
         }
@@ -478,12 +734,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <summary>
         /// Raises the MouseDoubleClick attached event for the specified element.
         /// </summary>
-        internal static void RaiseMouseDoubleClick(UIElement element, MouseDevice device, MouseButton button)
+        internal static void RaiseMouseDoubleClick(UIElement element, MouseDevice device, MouseButton button, ref Boolean handled)
         {
             var temp = RoutedEvent.GetInvocationDelegate<UIElementMouseButtonEventHandler>(MouseDoubleClickEvent);
             if (temp != null)
             {
-                var handled = false;
                 temp(element, device, button, ref handled);
             }
         }
@@ -491,12 +746,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <summary>
         /// Raises the MouseWheel attached event for the specified element.
         /// </summary>
-        internal static void RaiseMouseWheel(UIElement element, MouseDevice device, Double x, Double y)
+        internal static void RaiseMouseWheel(UIElement element, MouseDevice device, Double x, Double y, ref Boolean handled)
         {
             var temp = RoutedEvent.GetInvocationDelegate<UIElementMouseWheelEventHandler>(MouseWheelEvent);
             if (temp != null)
             {
-                var handled = false;
                 temp(element, device, x, y, ref handled);
             }
         }

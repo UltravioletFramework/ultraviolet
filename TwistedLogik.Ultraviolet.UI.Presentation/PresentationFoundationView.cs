@@ -280,10 +280,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 return;
 
             if (elementWithMouseCapture != null)
-                Mouse.RaiseLostMouseCapture(elementWithMouseCapture);
+            {
+                var lostMouseCaptureHandled = false;
+                Mouse.RaiseLostMouseCapture(elementWithMouseCapture, ref lostMouseCaptureHandled);
+            }
 
             elementWithMouseCapture = element;
-            Mouse.RaiseGotMouseCapture(elementWithMouseCapture);
+
+            var gotMouseCaptureHandled = false;
+            Mouse.RaiseGotMouseCapture(elementWithMouseCapture, ref gotMouseCaptureHandled);
         }
 
         /// <summary>
@@ -297,7 +302,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (elementWithMouseCapture != element)
                 return;
 
-            Mouse.RaiseLostMouseCapture(elementWithMouseCapture);
+            var lostMouseCaptureHandled = false;
+            Mouse.RaiseLostMouseCapture(elementWithMouseCapture, ref lostMouseCaptureHandled);
+
             elementWithMouseCapture = null;
         }
 
@@ -811,11 +818,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (elementUnderMouse != elementUnderMousePrev)
             {
                 if (elementUnderMousePrev != null)
-                    Mouse.RaiseMouseLeave(elementUnderMousePrev, mouse);
+                {
+                    var mouseLeaveHandled = false;
+                    Mouse.RaiseMouseLeave(elementUnderMousePrev, mouse, ref mouseLeaveHandled);
+                }
 
                 if (elementUnderMouse != null)
                 {
-                    Mouse.RaiseMouseEnter(elementUnderMouse, mouse);
+                    var mouseEnterHandled = false;
+                    Mouse.RaiseMouseEnter(elementUnderMouse, mouse, ref mouseEnterHandled);
                 }
             }
         }
@@ -878,7 +889,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 var dipsDeltaX = Display.PixelsToDips(dx);
                 var dipsDeltaY = Display.PixelsToDips(dy);
 
-                Mouse.RaiseMouseMove(recipient, device, dipsX, dipsY, dipsDeltaX, dipsDeltaY);
+                var mouseMoveHandled = false;
+                Mouse.RaisePreviewMouseMove(recipient, device, dipsX, dipsY, dipsDeltaX, dipsDeltaY, ref mouseMoveHandled);
+                Mouse.RaiseMouseMove(recipient, device, dipsX, dipsY, dipsDeltaX, dipsDeltaY, ref mouseMoveHandled);
             }
         }
 
@@ -911,7 +924,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             if (recipient != null)
             {
-                Mouse.RaiseMouseDown(recipient, device, button);
+                var mouseDownHandled = false;
+                Mouse.RaisePreviewMouseDown(recipient, device, button, ref mouseDownHandled);
+                Mouse.RaiseMouseDown(recipient, device, button, ref mouseDownHandled);
             }
         }
 
@@ -926,7 +941,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var recipient = elementWithMouseCapture ?? elementUnderMouse;
             if (recipient != null)
             {
-                Mouse.RaiseMouseUp(recipient, device, button);
+                var mouseUpHandled = false;
+                Mouse.RaisePreviewMouseUp(recipient, device, button, ref mouseUpHandled);
+                Mouse.RaiseMouseUp(recipient, device, button, ref mouseUpHandled);
             }
         }
 
@@ -941,7 +958,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var recipient = elementWithMouseCapture ?? elementUnderMouse;
             if (recipient != null)
             {
-                Mouse.RaiseMouseClick(recipient, device, button);
+                var mouseClickHandled = false;
+                Mouse.RaisePreviewMouseClick(recipient, device, button, ref mouseClickHandled);
+                Mouse.RaiseMouseClick(recipient, device, button, ref mouseClickHandled);
             }
         }
 
@@ -956,7 +975,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var recipient = elementWithMouseCapture ?? elementUnderMouse;
             if (recipient != null)
             {
-                Mouse.RaiseMouseDoubleClick(recipient, device, button);
+                var mouseDoubleClickHandled = false;
+                Mouse.RaisePreviewMouseDoubleClick(recipient, device, button, ref mouseDoubleClickHandled);
+                Mouse.RaiseMouseDoubleClick(recipient, device, button, ref mouseDoubleClickHandled);
             }
         }
 
@@ -973,7 +994,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             {
                 var dipsX = Display.PixelsToDips(x);
                 var dipsY = Display.PixelsToDips(y);
-                Mouse.RaiseMouseWheel(recipient, device, dipsX, dipsY);
+
+                var mouseWheelHandled = false;
+                Mouse.RaisePreviewMouseWheel(recipient, device, dipsX, dipsY, ref mouseWheelHandled);
+                Mouse.RaiseMouseWheel(recipient, device, dipsX, dipsY, ref mouseWheelHandled);
             }
         }
 
