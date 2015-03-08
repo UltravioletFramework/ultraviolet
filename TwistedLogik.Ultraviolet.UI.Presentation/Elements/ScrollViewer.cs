@@ -1,5 +1,6 @@
 ﻿using System;
 using TwistedLogik.Ultraviolet.Input;
+using TwistedLogik.Ultraviolet.UI.Presentation.Input;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
 {
@@ -227,15 +228,44 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         {
             if (x != 0 && HScroll != null)
             {
-                HScroll.Value += HScroll.LargeChange * x;
+                HScroll.Value += ScrollDeltaMouseWheel * x;
             }
             if (y != 0 && VScroll != null)
             {
-                VScroll.Value += VScroll.LargeChange * -y;
+                VScroll.Value += ScrollDeltaMouseWheel * -y;
             }
             handled = true;
 
             base.OnMouseWheel(device, x, y, ref handled);
+        }
+
+        /// <inheritdoc/>
+        protected override void OnKeyDown(KeyboardDevice device, Key key, KeyModifiers modifiers, ref Boolean handled)
+        {
+            switch (key)
+            {
+                case Key.Up:
+                    VScroll.Value -= ScrollDeltaKey;
+                    handled = true;
+                    break;
+
+                case Key.Down:
+                    VScroll.Value += ScrollDeltaKey;
+                    handled = true;
+                    break;
+
+                case Key.Left:
+                    HScroll.Value -= ScrollDeltaKey;
+                    handled = true;
+                    break;
+
+                case Key.Right:
+                    HScroll.Value += ScrollDeltaKey;
+                    handled = true;
+                    break;
+            }
+
+            base.OnKeyDown(device, key, modifiers, ref handled);
         }
 
         /// <summary>
@@ -335,6 +365,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         {
             ((ScrollBarBase)element).Value = 0;
         }
+
+        // Scroll deltas for various input events.
+        private const Double ScrollDeltaMouseWheel = 48.0;
+        private const Double ScrollDeltaKey = 16.0;
 
         // Control component references.
         private readonly ScrollContentPresenter Presenter = null;
