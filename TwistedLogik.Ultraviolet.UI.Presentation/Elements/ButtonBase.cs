@@ -86,7 +86,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <inheritdoc/>
-        protected override void OnMouseUp(MouseDevice device, MouseButton button, ref Boolean handled)
+        protected override void OnMouseDown(MouseDevice device, MouseButton button, ref Boolean handled)
         {
             if (button == MouseButton.Left)
             {
@@ -100,11 +100,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
 
                 handled = true;
             }
-            base.OnMouseUp(device, button, ref handled);
+            base.OnMouseDown(device, button, ref handled);
         }
 
         /// <inheritdoc/>
-        protected override void OnMouseDown(MouseDevice device, MouseButton button, ref Boolean handled)
+        protected override void OnMouseUp(MouseDevice device, MouseButton button, ref Boolean handled)
         {
             if (button == MouseButton.Left)
             {
@@ -124,7 +124,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
 
                 handled = true;
             }
-            base.OnMouseDown(device, button, ref handled);
+            base.OnMouseUp(device, button, ref handled);
         }
 
         /// <inheritdoc/>

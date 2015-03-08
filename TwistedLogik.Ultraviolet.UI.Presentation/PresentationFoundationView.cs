@@ -911,7 +911,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             if (recipient != null)
             {
-                Mouse.RaiseMouseUp(recipient, device, button);
+                Mouse.RaiseMouseDown(recipient, device, button);
             }
         }
 
@@ -926,7 +926,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var recipient = elementWithMouseCapture ?? elementUnderMouse;
             if (recipient != null)
             {
-                Mouse.RaiseMouseDown(recipient, device, button);
+                Mouse.RaiseMouseUp(recipient, device, button);
             }
         }
 

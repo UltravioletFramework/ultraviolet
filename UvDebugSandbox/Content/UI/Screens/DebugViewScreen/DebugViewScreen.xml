@@ -6,7 +6,7 @@
     <StackPanel>
       <TextBox Width="300" Height="32"></TextBox>
       <NumericUpDown Width="300" Height="32"></NumericUpDown>
-      <Button>Test Button</Button>
+      <HSlider Width="300"></HSlider>
       <ListBox>
         <ListBoxItem>Lorem ipsum dolor sit amet</ListBoxItem>
         <ListBoxItem>Hello</ListBoxItem>
