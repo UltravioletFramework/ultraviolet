@@ -21,54 +21,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <inheritdoc/>
-        protected override void PositionSliderComponents()
+        protected override Size2D MeasureOverride(Size2D availableSize)
         {
-            var thumbLength = (Thumb == null) ? 0 : Thumb.RenderSize.Width;
-            var thumbOffset = CalculateThumbOffset(thumbLength);
+            UpdateThumbOffset(availableSize);
 
-            if (Thumb != null)
-                Thumb.Width = thumbLength;
-
-            if (LeftLarge != null)
-                LeftLarge.Width = thumbOffset;
-        }
-
-        /// <summary>
-        /// Gets the width of the scroll bar's track in pixels.
-        /// </summary>
-        protected override Double ActualTrackWidth
-        {
-            get { return RenderSize.Width; }
-        }
-
-        /// <summary>
-        /// Gets the height of the scroll bar's track in pixels.
-        /// </summary>
-        protected override Double ActualTrackHeight
-        {
-            get { return RenderSize.Height; }
-        }
-
-        /// <summary>
-        /// Gets the length in pixels of the scroll bar's track.
-        /// </summary>
-        protected override Double ActualTrackLength
-        {
-            get { return RenderSize.Width; }
-        }
-
-        /// <summary>
-        /// Gets the length in pixels of the scroll bar's thumb.
-        /// </summary>
-        protected override Double ActualThumbLength
-        {
-            get
-            {
-                if (LayoutRoot == null || LayoutRoot.ColumnDefinitions.Count < 3)
-                    return 0;
-
-                return LayoutRoot.ColumnDefinitions[1].ActualWidth;
-            }
+            return base.MeasureOverride(availableSize);
         }
 
         /// <summary>
@@ -80,7 +37,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             if (button != null && button.IsDepressed)
             {
                 var relX = x - (AbsolutePosition.X + thumbDragOffset);
-                Value = OffsetToValue(relX);
+                Value = OffsetToValue(relX, RenderSize.Width, Thumb.RenderSize.Width);
             }
         }
 
@@ -108,8 +65,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             IncreaseLarge();
         }
 
+        /// <summary>
+        /// Updates the offset of the slider's thumb.
+        /// </summary>
+        /// <param name="availableSize">The amount of space available to the slider.</param>
+        private void UpdateThumbOffset(Size2D availableSize)
+        {
+            if (Thumb == null || LeftLarge == null)
+                return;
+
+            LeftLarge.Width = CalculateThumbOffset(availableSize.Width, Thumb.RenderSize.Width);
+        }
+        
         // Control component references.
-        private readonly Grid LayoutRoot = null;
         private readonly RepeatButton LeftLarge = null;
         private readonly Button Thumb = null;
 
