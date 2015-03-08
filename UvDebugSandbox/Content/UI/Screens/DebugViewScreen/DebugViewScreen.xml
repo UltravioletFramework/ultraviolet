@@ -14,6 +14,26 @@
         <ListBoxItem>Hello</ListBoxItem>
         <ListBoxItem>Hello</ListBoxItem>
         <ListBoxItem>Hello</ListBoxItem>
+        <ListBoxItem>Lorem ipsum dolor sit amet</ListBoxItem>
+        <ListBoxItem>Hello</ListBoxItem>
+        <ListBoxItem Selector.IsSelected="true">Hello</ListBoxItem>
+        <ListBoxItem>Hello</ListBoxItem>
+        <ListBoxItem>Hello</ListBoxItem>
+        <ListBoxItem>Hello</ListBoxItem>
+        <ListBoxItem>Hello</ListBoxItem>
+        <ListBoxItem>Hello</ListBoxItem>
+        <ListBoxItem>Hello</ListBoxItem>
+        <ListBoxItem>Hello</ListBoxItem>
+        <ListBoxItem>Lorem ipsum dolor sit amet</ListBoxItem>
+        <ListBoxItem>Hello</ListBoxItem>
+        <ListBoxItem Selector.IsSelected="true">Hello</ListBoxItem>
+        <ListBoxItem>Hello</ListBoxItem>
+        <ListBoxItem>Hello</ListBoxItem>
+        <ListBoxItem>Hello</ListBoxItem>
+        <ListBoxItem>Hello</ListBoxItem>
+        <ListBoxItem>Hello</ListBoxItem>
+        <ListBoxItem>Hello</ListBoxItem>
+        <ListBoxItem>Hello</ListBoxItem>
       </ListBox>
 
   </View>
