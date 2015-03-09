@@ -183,6 +183,7 @@
     <Compile Include="LayoutQueue.Entry.cs" />
     <Compile Include="LayoutQueue.EntryComparer.cs" />
     <Compile Include="LayoutUtil.cs" />
+    <Compile Include="LogicalTreeHelper.cs" />
     <Compile Include="NamespaceDoc.cs" />
     <Compile Include="PresentationFoundationFactoryInitializer.cs" />
     <Compile Include="PresentationFoundation.cs" />
@@ -244,12 +245,14 @@
     <Compile Include="UvmlLoader.InstantiationContext.cs" />
     <Compile Include="VerticalAlignment.cs" />
     <Compile Include="Visibility.cs" />
+    <Compile Include="Visual.cs" />
     <Compile Include="VisualState.cs" />
     <Compile Include="VisualStateGroup.cs" />
     <Compile Include="VisualStateGroup.IEnumerable.cs" />
     <Compile Include="VisualStateGroupCollection.cs" />
     <Compile Include="VisualStateGroupCollection.IEnumerable.cs" />
     <Compile Include="VisualStateTransitionKey.cs" />
+    <Compile Include="VisualTreeHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TwistedLogik.Nucleus\TwistedLogik.Nucleus.csproj">

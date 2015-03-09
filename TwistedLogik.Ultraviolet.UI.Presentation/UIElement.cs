@@ -99,7 +99,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
     /// <summary>
     /// Represents the base class for all elements within the Ultraviolet Presentation Foundation.
     /// </summary>
-    public abstract class UIElement : StyledDependencyObject
+    public abstract class UIElement : Visual
     {
         /// <summary>
         /// Initialies the <see cref="UIElement"/> type.
