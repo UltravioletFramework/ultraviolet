@@ -23,6 +23,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <inheritdoc/>
         protected override Size2D MeasureOverride(Size2D availableSize)
         {
+            /* HACK: Revert scroll position if we're given an unbounded width,
+             * otherwise we end up producing an infinite dimension */
+            if (Double.IsPositiveInfinity(availableSize.Width))
+                Value = 0;
+
             UpdateThumbSize(availableSize);
             UpdateThumbOffset(availableSize);
 

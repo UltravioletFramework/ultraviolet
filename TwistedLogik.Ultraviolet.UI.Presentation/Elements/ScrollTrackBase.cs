@@ -182,6 +182,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <returns>The offset of the track's thumb.</returns>
         protected Double CalculateThumbOffset(Double trackSize, Double thumbSize)
         {
+            if (Double.IsPositiveInfinity(trackSize))
+                return 0;
+
             var val = Value;
             var min = Minimum;
             var max = Maximum;

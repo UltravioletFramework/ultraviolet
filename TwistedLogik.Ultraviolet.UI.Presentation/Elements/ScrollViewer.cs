@@ -217,6 +217,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             HScroll.ViewportSize = ViewportWidth;
             VScroll.ViewportSize = ViewportHeight;
 
+            HScroll.IsEnabled = Presenter.CanScrollHorizontally && ScrollableWidth > 0;
+            VScroll.IsEnabled = Presenter.CanScrollVertically && ScrollableHeight > 0;
+
             child.InvalidateMeasure();
             child.Measure(availableSize);
 
