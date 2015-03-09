@@ -33,12 +33,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         {
             if (Parent != null && Checked)
             {
-                var parent   = VisualTreeHelper.GetParent(this);
-                var children = VisualTreeHelper.GetChildrenCount(parent);
+                var parent   = LogicalTreeHelper.GetParent(this);
+                var children = LogicalTreeHelper.GetChildrenCount(parent);
 
                 for (int i = 0; i < children; i++)
                 {
-                    var sibling = VisualTreeHelper.GetChild(parent, i);
+                    var sibling = LogicalTreeHelper.GetChild(parent, i);
                     if (sibling == this)
                         continue;
 
