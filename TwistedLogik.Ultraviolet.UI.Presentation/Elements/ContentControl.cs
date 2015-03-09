@@ -99,7 +99,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <inheritdoc/>
         protected internal override UIElement GetLogicalChild(Int32 childIndex)
         {
-            Contract.EnsureRange(contentElement != null && childIndex == 0, "childIndex");
+            Contract.EnsureRange(childIndex >= 0 && childIndex < (contentElement == null ? 0 : 1) + base.LogicalChildrenCount, "childIndex");
 
             if (contentElement != null)
             {

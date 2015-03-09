@@ -18,7 +18,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         public Panel(UltravioletContext uv, String id)
             : base(uv, id)
         {
-            this.children = new UIElementCollection(this);
+            this.children = new UIElementCollection(this, this);
         }
 
         /// <summary>
@@ -27,23 +27,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         public UIElementCollection Children
         {
             get { return children; }
-        }
-
-        /// <summary>
-        /// Occurs when children are added to or removed from this panel.
-        /// </summary>
-        public event UIElementEventHandler ChildrenChanged;
-
-        /// <summary>
-        /// Raises the <see cref="ChildrenChanged"/> event.
-        /// </summary>
-        protected internal virtual void OnChildrenChanged()
-        {
-            var temp = ChildrenChanged;
-            if (temp != null)
-            {
-                temp(this);
-            }
         }
 
         /// <inheritdoc/>

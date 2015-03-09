@@ -1,14 +1,27 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using TwistedLogik.Nucleus.Collections;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
 {
     partial class UIElementCollection
     {
         /// <inheritdoc/>
-        public List<UIElement>.Enumerator GetEnumerator()
+        public GenericEnumerator<UIElement> GetEnumerator()
         {
-            return elements.GetEnumerator();
+            return new GenericEnumerator<UIElement>(visualChildren,
+                (Object state, Int32 index, out UIElement result) =>
+                {
+                    var vc = (VisualCollection)state;
+                    if (index >= 0 && index < vc.Count)
+                    {
+                        result = (UIElement)vc[index];
+                        return true;
+                    }
+                    result = null;
+                    return false;
+                });
         }
 
         /// <inheritdoc/>

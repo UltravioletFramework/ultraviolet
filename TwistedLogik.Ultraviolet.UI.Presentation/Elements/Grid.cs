@@ -158,13 +158,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         public static readonly DependencyProperty ColumnSpanProperty = DependencyProperty.Register("ColumnSpan", typeof(Int32), typeof(Grid),
             new DependencyPropertyMetadata(null, () => 1, DependencyPropertyOptions.None));
 
-        /// <inheritdoc/>
-        protected internal override void OnChildrenChanged()
-        {
-            UpdateVirtualCellMetadata();
-            base.OnChildrenChanged();
-        }
-
         /// <summary>
         /// Occurs when the grid's column definitions are modified.
         /// </summary>

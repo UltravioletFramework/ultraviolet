@@ -7,148 +7,171 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
     /// <summary>
     /// Represents a collection of interface elements belonging to a panel.
     /// </summary>
-    public sealed partial class UIElementCollection : IEnumerable<UIElement>
+    public partial class UIElementCollection : IList<UIElement>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="UIElementCollection"/> class.
         /// </summary>
-        /// <param name="panel">The <see cref="Panel"/> that owns this collection.</param>
-        public UIElementCollection(Panel panel)
+        /// <param name="visualParent">The visual parent of items in the collection.</param>
+        /// <param name="logicalParent">The logical parent of items in the collection.</param>
+        public UIElementCollection(UIElement visualParent, FrameworkElement logicalParent)
         {
-            Contract.Require(panel, "panel");
+            Contract.Require(visualParent, "visualParent");
 
-            this.panel = panel;
+            this.visualParent   = visualParent;
+            this.visualChildren = new VisualCollection(visualParent);
+            this.logicalParent  = logicalParent;
         }
 
-        /// <summary>
-        /// Removes all elements from the collection.
-        /// </summary>
+        /// <inheritdoc/>
+        public void CopyTo(UIElement[] array, Int32 arrayIndex)
+        {
+            visualChildren.CopyTo(array, arrayIndex);
+        }
+
+        /// <inheritdoc/>
         public void Clear()
         {
-            foreach (var element in elements)
+            foreach (var element in visualChildren)
             {
-                element.Parent = null;
+                RemoveLogicalChild(element);
             }
-            elements.Clear();
-
-            Panel.OnChildrenChanged();
-            Panel.InvalidateMeasure();
+            visualChildren.Clear();
+            visualParent.InvalidateMeasure();
         }
 
-        /// <summary>
-        /// Adds an element to the collection.
-        /// </summary>
-        /// <param name="element">The element to add to the collection.</param>
-        /// <returns><c>true</c> if the element was added to the collection; otherwise, <c>false</c>.</returns>
-        public Boolean Add(UIElement element)
+        /// <inheritdoc/>
+        public void Add(UIElement element)
         {
             Contract.Require(element, "element");
 
-            element.Parent = Panel;
-            elements.Add(element);
-
-            Panel.OnChildrenChanged();
-            Panel.InvalidateMeasure();
-
-            return true;
+            AddLogicalChild(element);
+            visualChildren.Add(element);
+            visualParent.InvalidateMeasure();
         }
 
-        /// <summary>
-        /// Removes an element from the collection.
-        /// </summary>
-        /// <param name="element">The element to remove from the collection.</param>
-        /// <returns><c>true</c> if the element was removed from the collection; otherwise, <c>false</c>.</returns>
-        public Boolean Remove(UIElement element)
+        /// <inheritdoc/>
+        public void Insert(Int32 index, UIElement item)
         {
-            Contract.Require(element, "element");
+            Contract.Require(item, "item");
 
-            if (elements.Remove(element))
+            AddLogicalChild(item);
+            visualChildren.Insert(index, item);
+        }
+
+        /// <inheritdoc/>
+        public void RemoveAt(Int32 index)
+        {
+            var existing = visualChildren[index];
+            RemoveLogicalChild(existing);
+
+            visualChildren.RemoveAt(index);
+        }
+
+        /// <inheritdoc/>
+        public Boolean Remove(UIElement item)
+        {
+            Contract.Require(item, "element");
+
+            if (visualChildren.Remove(item))
             {
-                element.Parent = null;
-
-                Panel.OnChildrenChanged();
-                Panel.InvalidateMeasure();
-
+                AddLogicalChild(item);
+                visualParent.InvalidateMeasure();
                 return true;
             }
             return false;
         }
 
-        /// <summary>
-        /// Gets a value indicating whether the collection contains the specified element.
-        /// </summary>
-        /// <param name="element">The element to evaluate.</param>
-        /// <returns><c>true</c> if the collection contains the specified element; otherwise, <c>false</c>.</returns>
-        public Boolean Contains(UIElement element)
+        /// <inheritdoc/>
+        public Boolean Contains(UIElement item)
         {
-            Contract.Require(element, "element");
+            Contract.Require(item, "item");
 
-            return elements.Contains(element);
+            return visualChildren.Contains(item);
         }
 
-        /// <summary>
-        /// Brings the specified element to the front of the collection.
-        /// </summary>
-        /// <param name="element">The element to bring to the front of the collection.</param>
-        /// <returns><c>true</c> if the element was brought to the front of the collection; otherwise, <c>false</c>.</returns>
-        public Boolean BringToFront(UIElement element)
+        /// <inheritdoc/>
+        public Int32 IndexOf(UIElement item)
         {
-            Contract.Require(element, "element");
+            Contract.Require(item, "item");
 
-            if (elements.Remove(element))
+            return visualChildren.IndexOf(item);
+        }
+
+        /// <inheritdoc/>
+        public UIElement this[Int32 index]
+        {
+            get { return (UIElement)visualChildren[index]; }
+            set
             {
-                elements.Add(element);
-                return true;
+                Contract.Require(value, "value");
+
+                var existing = visualChildren[index];
+                RemoveLogicalChild(existing);
+
+                visualChildren[index] = value;
             }
-            return false;
         }
 
         /// <summary>
-        /// Sends the specified element to the back of the collection.
+        /// Gets the visual parent of items in the collection.
         /// </summary>
-        /// <param name="element">The element to send to the back of the collection.</param>
-        /// <returns><c>true</c> if the element was sent to the back of the collection; otherwise, <c>false</c>.</returns>
-        public Boolean SendToBack(UIElement element)
+        public UIElement VisualParent
         {
-            if (elements.Remove(element))
-            {
-                elements.Insert(0, element);
-                return true;
-            }
-            return false;
+            get { return visualParent; }
         }
 
         /// <summary>
-        /// Gets the container that owns this collection.
+        /// Gets the logical parent of items in the collection.
         /// </summary>
-        public Panel Panel
+        public FrameworkElement LogicalParent
         {
-            get { return panel; }
+            get { return logicalParent; }
         }
 
-        /// <summary>
-        /// Gets the number of elements in the collection.
-        /// </summary>
+        /// <inheritdoc/>
         public Int32 Count
         {
-            get { return elements.Count; }
+            get { return visualChildren.Count; }
+        }
+
+        /// <inheritdoc/>
+        public Boolean IsReadOnly
+        {
+            get { return false; }
         }
 
         /// <summary>
-        /// Gets the element at the specified index within the collection.
+        /// Adds the specified child to the collection's parent.
         /// </summary>
-        /// <param name="ix">The index of the element to retrieve.</param>
-        /// <returns>The element at the specified index within the collection.</returns>
-        public UIElement this[Int32 ix]
+        /// <param name="child">The child to add to the collection's parent.</param>
+        private void AddLogicalChild(Visual child)
         {
-            get { return elements[ix]; }
+            var uiElement = child as UIElement;
+            if (uiElement != null)
+            {
+                uiElement.Parent = logicalParent;
+            }
+        }
+
+        /// <summary>
+        /// Removes the specified child from the collection's parent.
+        /// </summary>
+        /// <param name="child">The child to remove from the collection's parent.</param>
+        private void RemoveLogicalChild(Visual child)
+        {
+            var uiElement = child as UIElement;
+            if (uiElement != null)
+            {
+                uiElement.Parent = null;
+            }
         }
 
         // Property values.
-        private readonly Panel panel;
+        private readonly UIElement visualParent;
+        private readonly FrameworkElement logicalParent;
 
         // State values.
-        private readonly List<UIElement> elements = 
-            new List<UIElement>();
+        private readonly VisualCollection visualChildren;
     }
 }
