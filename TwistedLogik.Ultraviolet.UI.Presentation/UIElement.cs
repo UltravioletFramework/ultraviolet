@@ -493,26 +493,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
-        /// Gets the specified logical child of this element.
-        /// </summary>
-        /// <param name="ix">The index of the logical child to retrieve.</param>
-        /// <returns>The logical child of this element with the specified index.</returns>
-        public virtual UIElement GetLogicalChild(Int32 ix)
-        {
-            throw new ArgumentOutOfRangeException("ix");
-        }
-
-        /// <summary>
-        /// Gets the specified visual child of this element.
-        /// </summary>
-        /// <param name="ix">The index of the visual child to retrieve.</param>
-        /// <returns>The visual child of this element with the specified index.</returns>
-        public virtual UIElement GetVisualChild(Int32 ix)
-        {
-            return GetLogicalChild(ix);
-        }
-
-        /// <summary>
         /// Gets the element at the specified pixel coordinates relative to this element's bounds.
         /// </summary>
         /// <param name="x">The element-relative x-coordinate of the pixel to evaluate.</param>
@@ -1033,22 +1013,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             get { return GetValue<Int32>(TabIndexProperty); }
             set { SetValue<Int32>(TabIndexProperty, value); }
-        }
-
-        /// <summary>
-        /// Gets the number of logical children which belong to this element.
-        /// </summary>
-        public virtual Int32 LogicalChildren
-        {
-            get { return 0; }
-        }
-
-        /// <summary>
-        /// Gets the number of visual children which belong to this element.
-        /// </summary>
-        public virtual Int32 VisualChildren
-        {
-            get { return 0; }
         }
 
         /// <summary>
@@ -2390,11 +2354,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             this.layoutDepth = (Parent == null) ? 0 : Parent.LayoutDepth + 1;
             this.logicalOrder = 0;
 
-            if (Parent != null)
+            var parent = LogicalTreeHelper.GetParent(this);
+            if (parent != null)
             {
-                for (int i = 0; i < Parent.LogicalChildren; i++)
+                var children = LogicalTreeHelper.GetChildrenCount(parent);
+                for (int i = 0; i < children; i++)
                 {
-                    if (Parent.GetLogicalChild(i) == this)
+                    if (LogicalTreeHelper.GetChild(parent, i) == this)
                     {
                         this.logicalOrder = i;
                         break;
@@ -2558,7 +2524,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var currentTabIndex = (currentStop == null ? Int32.MinValue : currentStop.TabIndex);
 
             var match = default(UIElement);
-            for (int i = 0; i < VisualChildren; i++)
+            for (int i = 0; i < VisualChildrenCount; i++)
             {
                 var child = GetVisualChild(i);
                 if (child == currentStop)
@@ -2592,7 +2558,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var currentTabIndex = (currentStop == null ? Int32.MaxValue : currentStop.TabIndex);
 
             var match = default(UIElement);
-            for (int i = VisualChildren - 1; i >= 0; i--)
+            for (int i = VisualChildrenCount - 1; i >= 0; i--)
             {
                 var child = GetVisualChild(i);
                 if (child == currentStop)
@@ -2700,20 +2666,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
-        /// Returns a list containing the element's logical children.
-        /// </summary>
-        /// <returns>A list containing the element's logical children.</returns>
-        private List<UIElement> EnumerateLogicalChildren()
-        {
-            logicalChildEnumerationBuffer.Clear();
-
-            for (int i = 0; i < LogicalChildren; i++)
-                logicalChildEnumerationBuffer.Add(GetLogicalChild(i));
-
-            return logicalChildEnumerationBuffer;
-        }
-
-        /// <summary>
         /// Returns a list containing the element's visual children.
         /// </summary>
         /// <returns>A list containing the element's visual children.</returns>
@@ -2721,7 +2673,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             visualChildEnumerationBuffer.Clear();
 
-            for (int i = 0; i < VisualChildren; i++)
+            for (int i = 0; i < VisualChildrenCount; i++)
                 visualChildEnumerationBuffer.Add(GetVisualChild(i));
 
             return visualChildEnumerationBuffer;
@@ -2768,8 +2720,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         // Buffers which are used to enumerate an element's logical children.
-        [ThreadStatic]
-        private readonly List<UIElement> logicalChildEnumerationBuffer = new List<UIElement>(32);
         [ThreadStatic]
         private readonly List<UIElement> visualChildEnumerationBuffer = new List<UIElement>(32);
 

@@ -1,4 +1,5 @@
 ﻿using System;
+using TwistedLogik.Nucleus;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation
 {
@@ -14,7 +15,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <returns>The parent of <paramref name="dobj"/>.</returns>
         public static DependencyObject GetParent(DependencyObject dobj)
         {
-            throw new NotImplementedException();
+            Contract.Require(dobj, "dobj");
+
+            var visual = dobj as Visual;
+            if (visual == null)
+                throw new ArgumentException(PresentationStrings.NotVisualObject);
+
+            return visual.VisualParent;
         }
 
         /// <summary>
@@ -25,7 +32,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <returns>The specified visual child of <paramref name="dobj"/>.</returns>
         public static DependencyObject GetChild(DependencyObject dobj, Int32 childIndex)
         {
-            throw new NotImplementedException();
+            Contract.Require(dobj, "dobj");
+
+            var visual = dobj as Visual;
+            if (visual == null)
+                throw new ArgumentException(PresentationStrings.NotVisualObject);
+
+            return visual.GetVisualChild(childIndex);
         }
 
         /// <summary>
@@ -35,7 +48,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <returns>The number of visual children belonging to <paramref name="dobj"/>.</returns>
         public static Int32 GetChildrenCount(DependencyObject dobj)
         {
-            throw new NotImplementedException();
+            Contract.Require(dobj, "dobj");
+
+            var visual = dobj as Visual;
+            if (visual == null)
+                throw new ArgumentException(PresentationStrings.NotVisualObject);
+
+            return visual.VisualChildrenCount;
         }
     }
 }

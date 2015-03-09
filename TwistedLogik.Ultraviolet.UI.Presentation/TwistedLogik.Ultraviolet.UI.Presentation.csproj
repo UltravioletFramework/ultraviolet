@@ -246,6 +246,8 @@
     <Compile Include="VerticalAlignment.cs" />
     <Compile Include="Visibility.cs" />
     <Compile Include="Visual.cs" />
+    <Compile Include="VisualCollection.IEnumerable.cs" />
+    <Compile Include="VisualCollection.cs" />
     <Compile Include="VisualState.cs" />
     <Compile Include="VisualStateGroup.cs" />
     <Compile Include="VisualStateGroup.IEnumerable.cs" />

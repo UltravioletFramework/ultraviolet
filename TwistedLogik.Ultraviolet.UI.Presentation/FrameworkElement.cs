@@ -487,6 +487,24 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Gets the specified logical child of this element.
+        /// </summary>
+        /// <param name="childIndex">The index of the logical child to retrieve.</param>
+        /// <returns>The logical child of this element with the specified index.</returns>
+        protected internal virtual UIElement GetLogicalChild(Int32 childIndex)
+        {
+            throw new ArgumentOutOfRangeException("ix");
+        }
+
+        /// <summary>
+        /// Gets the number of logical children which belong to this element.
+        /// </summary>
+        protected internal virtual Int32 LogicalChildrenCount
+        {
+            get { return 0; }
+        }
+
+        /// <summary>
         /// When overridden in a derived class, draws the element using the 
         /// specified <see cref="SpriteBatch"/> for a <see cref="FrameworkElement"/> derived class.
         /// </summary>

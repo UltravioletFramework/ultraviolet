@@ -1,4 +1,5 @@
 ﻿using System;
+using TwistedLogik.Nucleus;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation
 {
@@ -14,7 +15,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <returns>The parent of <paramref name="dobj"/>.</returns>
         public static DependencyObject GetParent(DependencyObject dobj)
         {
-            throw new NotImplementedException();
+            Contract.Require(dobj, "dobj");
+
+            var element = dobj as UIElement;
+            if (element != null)
+            {
+                return element.Parent;
+            }
+
+            return null;
         }
 
         /// <summary>
@@ -25,7 +34,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <returns>The specified logical child of <paramref name="dobj"/>.</returns>
         public static DependencyObject GetChild(DependencyObject dobj, Int32 childIndex)
         {
-            throw new NotImplementedException();
+            Contract.Require(dobj, "dobj");
+
+            var element = dobj as FrameworkElement;
+            if (element != null)
+            {
+                return element.GetLogicalChild(childIndex);
+            }
+
+            throw new ArgumentOutOfRangeException("childIndex");
         }
 
         /// <summary>
@@ -35,7 +52,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <returns>The number of logical children belonging to <paramref name="dobj"/>.</returns>
         public static Int32 GetChildrenCount(DependencyObject dobj)
         {
-            throw new NotImplementedException();
+            Contract.Require(dobj, "dobj");
+
+            var element = dobj as FrameworkElement;
+            if (element != null)
+            {
+                return element.LogicalChildrenCount;
+            }
+
+            return 0;
         }
     }
 }

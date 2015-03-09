@@ -66,6 +66,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public static readonly StringResource CollectionIsBoundToItemsSource       = new StringResource(StringDatabase, "COLLECTION_IS_BOUND_TO_ITEMS_SOURCE");
         public static readonly StringResource ItemPresenterNotInItemsControl       = new StringResource(StringDatabase, "ITEM_PRESENTER_NOT_IN_ITEMS_CONTROL");
         public static readonly StringResource ItemPresenterNotCreatedCorrectly     = new StringResource(StringDatabase, "ITEM_PRESENTER_NOT_CREATED_CORRECTLY");
+        public static readonly StringResource NotVisualObject                      = new StringResource(StringDatabase, "NOT_VISUAL_OBJECT");
 #pragma warning restore 1591
     }
 }

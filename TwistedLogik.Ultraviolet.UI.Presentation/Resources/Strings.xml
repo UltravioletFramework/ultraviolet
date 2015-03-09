@@ -215,4 +215,9 @@
       <Variant>An instance of the {0} type failed to produce a valid item presenter.</Variant>
     </en-US>    
   </String>
+  <String Key="NOT_VISUAL_OBJECT">
+    <en-US>
+      <Variant>The specified object is not a visual object.</Variant>
+    </en-US>
+  </String>
 </LocalizedStrings>

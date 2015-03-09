@@ -21,15 +21,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <inheritdoc/>
-        public override UIElement GetVisualChild(int ix)
-        {
-            if (ComponentRoot == null || ix != 0)
-                throw new ArgumentOutOfRangeException("ix");
-
-            return ComponentRoot;
-        }
-
-        /// <inheritdoc/>
         public override RectangleD DesiredContentRegion
         {
             get { return desiredContentRegion; }
@@ -51,15 +42,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         public override RectangleD AbsoluteContentRegion
         {
             get { return absoluteContentRegion; }
-        }
-
-        /// <inheritdoc/>
-        public override Int32 VisualChildren
-        {
-            get
-            {
-                return ComponentRoot == null ? 0 : 1;
-            }
         }
 
         /// <summary>
@@ -240,6 +222,42 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
                 ComponentRoot = null;
             }
             base.RemoveChild(child);
+        }
+
+        /// <inheritdoc/>
+        protected internal override UIElement GetLogicalChild(Int32 childIndex)
+        {
+            if (ComponentRoot == null || childIndex != 0)
+                throw new ArgumentOutOfRangeException("childIndex");
+
+            return ComponentRoot;
+        }
+
+        /// <inheritdoc/>
+        protected internal override UIElement GetVisualChild(Int32 childIndex)
+        {
+            if (ComponentRoot == null || childIndex != 0)
+                throw new ArgumentOutOfRangeException("childIndex");
+
+            return ComponentRoot;
+        }
+
+        /// <inheritdoc/>
+        protected internal override Int32 LogicalChildrenCount
+        {
+            get
+            {
+                return ComponentRoot == null ? 0 : 1;
+            }
+        }
+
+        /// <inheritdoc/>
+        protected internal override Int32 VisualChildrenCount
+        {
+            get
+            {
+                return ComponentRoot == null ? 0 : 1;
+            }
         }
 
         /// <inheritdoc/>

@@ -599,6 +599,12 @@
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Visual.cs">
       <Link>Visual.cs</Link>
     </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\VisualCollection.cs">
+      <Link>VisualCollection.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\VisualCollection.IEnumerable.cs">
+      <Link>VisualCollection.IEnumerable.cs</Link>
+    </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\VisualState.cs">
       <Link>VisualState.cs</Link>
     </Compile>

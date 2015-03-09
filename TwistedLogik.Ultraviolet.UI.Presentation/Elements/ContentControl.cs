@@ -24,34 +24,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
 
         }
 
-        /// <inheritdoc/>
-        public override UIElement GetLogicalChild(Int32 ix)
-        {
-            Contract.EnsureRange(contentElement != null && ix == 0, "ix");
-
-            return contentElement;
-        }
-
-        /// <inheritdoc/>
-        public override UIElement GetVisualChild(Int32 ix)
-        {
-            if (contentElement != null)
-            {
-                switch (ix)
-                {
-                    case 0:
-                        return base.GetVisualChild(0);
-
-                    case 1:
-                        return GetLogicalChild(0);
-
-                    default:
-                        throw new ArgumentOutOfRangeException("ix");
-                }
-            }
-            return base.GetVisualChild(ix);
-        }
-
         /// <summary>
         /// Gets or sets the control's content.
         /// </summary>
@@ -77,21 +49,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         {
             get { return GetValue<VerticalAlignment>(VerticalContentAlignmentProperty); }
             set { SetValue<VerticalAlignment>(VerticalContentAlignmentProperty, value); }
-        }
-
-        /// <inheritdoc/>
-        public override Int32 LogicalChildren
-        {
-            get { return contentElement == null ? 0 : 1; }
-        }
-
-        /// <inheritdoc/>
-        public override Int32 VisualChildren
-        {
-            get
-            {
-                return base.VisualChildren + LogicalChildren;
-            }
         }
 
         /// <summary>
@@ -137,6 +94,40 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
                 Content = null;
             }
             base.RemoveChild(child);
+        }
+
+        /// <inheritdoc/>
+        protected internal override UIElement GetLogicalChild(Int32 childIndex)
+        {
+            Contract.EnsureRange(contentElement != null && childIndex == 0, "childIndex");
+
+            if (contentElement != null)
+            {
+                if (childIndex == 0)
+                {
+                    return contentElement;
+                }
+                childIndex--;
+            }
+            return base.GetLogicalChild(childIndex);
+        }
+
+        /// <inheritdoc/>
+        protected internal override UIElement GetVisualChild(Int32 childIndex)
+        {
+            return GetLogicalChild(childIndex);
+        }
+
+        /// <inheritdoc/>
+        protected internal override Int32 LogicalChildrenCount
+        {
+            get { return (contentElement == null ? 0 : 1) + base.LogicalChildrenCount; }
+        }
+
+        /// <inheritdoc/>
+        protected internal override Int32 VisualChildrenCount
+        {
+            get { return LogicalChildrenCount; }
         }
 
         /// <inheritdoc/>

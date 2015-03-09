@@ -21,31 +21,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             this.children = new UIElementCollection(this);
         }
 
-        /// <inheritdoc/>
-        public override UIElement GetLogicalChild(Int32 ix)
-        {
-            Contract.EnsureRange(ix >= 0 && ix < children.Count, "ix");
-
-            return children[ix];
-        }
-
-        /// <inheritdoc/>
-        public override UIElement GetVisualChild(Int32 ix)
-        {
-            if (ComponentRoot != null)
-            {
-                if (ContentPresenter != null)
-                {
-                    Contract.EnsureRange(ix == 0, "ix");
-                    return ComponentRoot;
-                }
-                Contract.EnsureRange(ix >= 0 && ix < children.Count + 1, "ix");
-                return (ix == 0) ? ComponentRoot : GetLogicalChild(ix - 1);
-            }
-            Contract.EnsureRange(ix >= 0 && ix < children.Count, "ix");
-            return GetLogicalChild(ix);
-        }
-
         /// <summary>
         /// Gets the panel's collection of children.
         /// </summary>
@@ -54,33 +29,22 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             get { return children; }
         }
 
-        /// <inheritdoc/>
-        public override Int32 LogicalChildren
-        {
-            get { return children.Count; }
-        }
-
-        /// <inheritdoc/>
-        public override Int32 VisualChildren
-        {
-            get
-            {
-                if (ComponentRoot != null)
-                {
-                    if (ContentPresenter != null)
-                    {
-                        return 1;
-                    }
-                    return 1 + children.Count;
-                }
-                return children.Count;
-            }
-        }
-
         /// <summary>
         /// Occurs when children are added to or removed from this panel.
         /// </summary>
         public event UIElementEventHandler ChildrenChanged;
+
+        /// <summary>
+        /// Raises the <see cref="ChildrenChanged"/> event.
+        /// </summary>
+        protected internal virtual void OnChildrenChanged()
+        {
+            var temp = ChildrenChanged;
+            if (temp != null)
+            {
+                temp(this);
+            }
+        }
 
         /// <inheritdoc/>
         protected internal override void RemoveChild(UIElement child)
@@ -92,15 +56,51 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             base.RemoveChild(child);
         }
 
-        /// <summary>
-        /// Raises the <see cref="ChildrenChanged"/> event.
-        /// </summary>
-        protected internal virtual void OnChildrenChanged()
+        /// <inheritdoc/>
+        protected internal override UIElement GetLogicalChild(Int32 childIndex)
         {
-            var temp = ChildrenChanged;
-            if (temp != null)
+            Contract.EnsureRange(childIndex >= 0 && childIndex < children.Count + 1, "childIndex");
+
+            if (ComponentRoot != null)
             {
-                temp(this);
+                if (childIndex == 0)
+                {
+                    return ComponentRoot;
+                }
+                childIndex--;
+            }
+            return children[childIndex];
+        }
+
+        /// <inheritdoc/>
+        protected internal override UIElement GetVisualChild(Int32 childIndex)
+        {
+            return GetVisualChild(childIndex);
+        }
+
+        /// <inheritdoc/>
+        protected internal override Int32 LogicalChildrenCount
+        {
+            get 
+            {
+                if (ComponentRoot != null)
+                {
+                    if (ContentPresenter != null)
+                    {
+                        return 1;
+                    }
+                    return 1 + children.Count;
+                }
+                return children.Count; 
+            }
+        }
+
+        /// <inheritdoc/>
+        protected internal override Int32 VisualChildrenCount
+        {
+            get
+            {
+                return LogicalChildrenCount;
             }
         }
 

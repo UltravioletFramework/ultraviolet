@@ -595,7 +595,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (parent.Focusable && (!tabStop || parent.IsTabStop))
                 return parent;
 
-            for (int i = 0; i < parent.VisualChildren; i++)
+            for (int i = 0; i < parent.VisualChildrenCount; i++)
             {
                 var child = parent.GetVisualChild(i);
                 var match = GetFirstFocusableElementInternal(child, tabStop);
@@ -616,7 +616,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <returns>The last element within this branch of the logical tree which meets the specified criteria.</returns>
         private UIElement GetLastFocusableElementInternal(UIElement parent, Boolean tabStop)
         {
-            for (int i = parent.VisualChildren - 1; i >= 0; i--)
+            for (int i = parent.VisualChildrenCount - 1; i >= 0; i--)
             {
                 var child = parent.GetVisualChild(i);
                 var match = GetLastFocusableElementInternal(child, tabStop);
