@@ -31,22 +31,24 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <inheritdoc/>
         protected override void OnCheckedChanged()
         {
-            if (Parent != null && Checked)
+            if (Checked)
             {
-                var parent   = LogicalTreeHelper.GetParent(this);
-                var children = LogicalTreeHelper.GetChildrenCount(parent);
-
-                for (int i = 0; i < children; i++)
+                var parent = LogicalTreeHelper.GetParent(this);
+                if (parent != null)
                 {
-                    var sibling = LogicalTreeHelper.GetChild(parent, i);
-                    if (sibling == this)
-                        continue;
+                    var children = LogicalTreeHelper.GetChildrenCount(parent);
+                    for (int i = 0; i < children; i++)
+                    {
+                        var sibling = LogicalTreeHelper.GetChild(parent, i);
+                        if (sibling == this)
+                            continue;
 
-                    var radioButton = sibling as RadioButton;
-                    if (radioButton == null)
-                        continue;
+                        var radioButton = sibling as RadioButton;
+                        if (radioButton == null)
+                            continue;
 
-                    radioButton.Checked = false;
+                        radioButton.Checked = false;
+                    }
                 }
             }
             base.OnCheckedChanged();
