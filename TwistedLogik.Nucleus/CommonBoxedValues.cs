@@ -79,6 +79,21 @@ namespace TwistedLogik.Nucleus
             /// The cached box for the value one (1).
             /// </summary>
             public static readonly Object One = (Object)1f;
+
+            /// <summary>
+            /// The cached box for not a number (NaN).
+            /// </summary>
+            public static readonly Object NaN = (Object)System.Single.NaN;
+
+            /// <summary>
+            /// The cached box for positive infinity.
+            /// </summary>
+            public static readonly Object PositiveInfinity = (Object)System.Single.PositiveInfinity;
+
+            /// <summary>
+            /// The cached box for negative infinity.
+            /// </summary>
+            public static readonly Object NegativeInfinity = (Object)System.Single.NegativeInfinity;
         }
 
         /// <summary>
@@ -95,6 +110,21 @@ namespace TwistedLogik.Nucleus
             /// The cached box for the value one (1).
             /// </summary>
             public static readonly Object One = (Object)1.0;
+
+            /// <summary>
+            /// The cached box for not a number (NaN).
+            /// </summary>
+            public static readonly Object NaN = (Object)System.Double.NaN;
+
+            /// <summary>
+            /// The cached box for positive infinity.
+            /// </summary>
+            public static readonly Object PositiveInfinity = (Object)System.Double.PositiveInfinity;
+
+            /// <summary>
+            /// The cached box for negative infinity.
+            /// </summary>
+            public static readonly Object NegativeInfinity = (Object)System.Double.NegativeInfinity;
         }
     }
 }

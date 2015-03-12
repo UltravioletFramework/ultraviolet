@@ -7,13 +7,14 @@
       <ColumnDefinition Width="Auto"/>
     </Grid.ColumnDefinitions>
     
-    <RepeatButton ID="LeftSmall" Class="scroll-button scroll-button-left" Grid.Column="0" VerticalAlignment="Stretch"
-                  Click="HandleClickLeftSmall"></RepeatButton>
+    <RepeatButton ID="LineLeftButton" Class="scroll-button scroll-button-left" Grid.Column="0" VerticalAlignment="Stretch"
+                  Click="HandleClickLineLeft"></RepeatButton>
 
-    <HScrollTrack ID="Track" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
+    <Image ID="TrackBackground" Class="scroll-track scroll-track-horizontal" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+    <Track ID="Track" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Orientation="Horizontal" />
     
-    <RepeatButton ID="RightSmall" Class="scroll-button scroll-button-right" Grid.Column="2" VerticalAlignment="Stretch"
-                  Click="HandleClickRightSmall"></RepeatButton>    
+    <RepeatButton ID="LineRightButton" Class="scroll-button scroll-button-right" Grid.Column="2" VerticalAlignment="Stretch"
+                  Click="HandleClickLineRight"></RepeatButton>    
     
   </Grid>
 </ComponentTemplate>

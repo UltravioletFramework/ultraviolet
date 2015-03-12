@@ -234,6 +234,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             var element   = item as UIElement;
             var container = element;
 
+            // NOTE: visual parent is set when container is added to items panel.
+            element.ChangeLogicalAndVisualParents(this, null);
+
             if (!IsItemContainer(element))
             {
                 container = CreateItemContainer();

@@ -21,124 +21,158 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <inheritdoc/>
+        protected override void CacheLayoutParametersCore()
+        {
+            containingContentControl = Control as ContentControl;
+
+            base.CacheLayoutParametersCore();
+        }
+
+        /// <inheritdoc/>
         protected override void DrawOverride(UltravioletTime time, DrawingContext dc)
         {
-            var owner = Control as ContentControl;
-            if (owner != null)
+            if (ContainingContentControl != null)
             {
-                var text = owner.Content as String;
-                if (text != null)
+                if (textLayoutResult != null && textLayoutResult.Count > 0)
                 {
-                    var positionX = (Single)Display.DipsToPixels(AbsolutePosition.X);
-                    var positionY = (Single)Display.DipsToPixels(AbsolutePosition.Y);
-                    var position = new Vector2(positionX, positionY);
-                    View.Resources.TextRenderer.Draw(dc.SpriteBatch, textLayoutResult, position, FontColor);
-            }
+                    var position = Display.DipsToPixels(AbsolutePosition);
+                    var color    = ContainingContentControl.FontColor;
+
+                    View.Resources.TextRenderer.Draw(dc.SpriteBatch, textLayoutResult, (Vector2)position, color);
+                }
             }
             base.DrawOverride(time, dc);
         }
 
+        /// <inheritdoc/>
         protected override Size2D MeasureOverride(Size2D availableSize)
         {
-            var owner = Control as ContentControl;
-            if (owner == null)
-                return Size2D.Zero;
+            if (ContainingContentControl == null)
+                return availableSize;
 
-            var text = owner.Content as String;
-            if (text != null)
+            var content = ContainingContentControl.Content;
+            var contentText = content as String;
+            if (contentText != null)
             {
                 UpdateTextParserCache();
                 UpdateTextLayoutCache(availableSize);
 
-                var textWidth = Display.PixelsToDips(textLayoutResult.ActualWidth);
+                var textWidth  = Display.PixelsToDips(textLayoutResult.ActualWidth);
                 var textHeight = Display.PixelsToDips(textLayoutResult.ActualHeight);
                 return new Size2D(textWidth, textHeight);
             }
             else
             {
-                textParserResult.Clear();
-                textLayoutResult.Clear();
+                if (textParserResult != null)
+                    textParserResult.Clear();
+
+                if (textLayoutResult != null)
+                    textLayoutResult.Clear();
             }
 
-            var content = owner.Content as UIElement;
-            if (content == null)
-                return Size2D.Zero;
+            var contentElement = content as UIElement;
+            if (contentElement != null)
+            {
+                contentElement.Measure(availableSize);
+                return contentElement.DesiredSize;
+            }
 
-            content.Measure(availableSize);
-            return content.DesiredSize;
+            return Size2D.Zero;
         }
 
+        /// <inheritdoc/>
         protected override Size2D ArrangeOverride(Size2D finalSize, ArrangeOptions options)
         {
-            var owner = Control as ContentControl;
-            if (owner == null)
-                return Size2D.Zero;
+            var container = ContainingContentControl;
+            if (container == null)
+                return finalSize;
 
-            var text = owner.Content as String;
-            if (text != null)
-        {
+            var content = container.Content;
+            var contentText = content as String;
+            if (contentText != null)
+            {
                 UpdateTextLayoutCache(finalSize);
-
-                var textWidth = Display.PixelsToDips(textLayoutResult.ActualWidth);
-                var textHeight = Display.PixelsToDips(textLayoutResult.ActualHeight);
-                return new Size2D(textWidth, textHeight);
+                return finalSize;
             }
 
-            var content = owner.Content as UIElement;
-            if (content == null)
-                return Size2D.Zero;
+            var contentElement = content as UIElement;
+            if (contentElement != null)
+            {
+                var hAlign = container.HorizontalContentAlignment;
+                var vAlign = container.VerticalContentAlignment;
 
-            content.Arrange(new RectangleD(0, 0, finalSize.Width, finalSize.Height), options);
-            return content.RenderSize;
+                var offsetX = LayoutUtil.PerformHorizontalAlignment(finalSize, contentElement.RenderSize, hAlign);
+                var offsetY = LayoutUtil.PerformVerticalAlignment(finalSize, contentElement.RenderSize, vAlign);
+
+                contentElement.Arrange(new RectangleD(offsetX, offsetY, finalSize.Width, finalSize.Height), options);
+                return finalSize;
+            }
+
+            return Size2D.Zero;
         }
 
-        protected internal override UIElement GetLogicalChild(int childIndex)
+        /// <inheritdoc/>
+        protected override RectangleD? ClipCore()
         {
-            var owner = Control as ContentControl;
-            if (owner == null || owner.TreatContentAsLogicalChild)
-                throw new ArgumentOutOfRangeException("childIndex");
-
-            var content = owner.Content as UIElement;
-            if (content == null || childIndex != 0)
-                throw new ArgumentOutOfRangeException("childIndex");
-
-            return content;
+            if (ContainingContentControl != null)
+            {
+                var contentElement = ContainingContentControl.Content as UIElement;
+                if (contentElement != null)
+                {
+                    if (contentElement.RenderSize.Width > RenderSize.Width || 
+                        contentElement.RenderSize.Height > RenderSize.Height)
+                    {
+                        return AbsoluteBounds;
+                    }
+                }
+            }
+            return base.ClipCore();
         }
 
-        protected internal override UIElement GetVisualChild(int childIndex)
+        /// <inheritdoc/>
+        protected internal override UIElement GetLogicalChild(Int32 childIndex)
         {
-            var owner = Control as ContentControl;
-            if (owner == null)
+            if (ContainingContentControl == null || ContainingContentControl.TreatContentAsLogicalChild)
                 throw new ArgumentOutOfRangeException("childIndex");
 
-            var content = owner.Content as UIElement;
-            if (content == null || childIndex != 0)
+            var contentElement = ContainingContentControl.Content as UIElement;
+            if (contentElement == null || childIndex != 0)
                 throw new ArgumentOutOfRangeException("childIndex");
 
-            return content;
+            return contentElement;
         }
 
+        /// <inheritdoc/>
+        protected internal override UIElement GetVisualChild(Int32 childIndex)
+        {
+            if (ContainingContentControl == null)
+                throw new ArgumentOutOfRangeException("childIndex");
+
+            var contentElement = ContainingContentControl.Content as UIElement;
+            if (contentElement == null || childIndex != 0)
+                throw new ArgumentOutOfRangeException("childIndex");
+
+            return contentElement;
+        }
+
+        /// <inheritdoc/>
         protected internal override Int32 LogicalChildrenCount
         {
-            get 
+            get
             {
-                var owner = Control as ContentControl;
-                if (owner == null)
+                if (ContainingContentControl == null || ContainingContentControl.TreatContentAsLogicalChild)
                     return 0;
 
-                return owner.TreatContentAsLogicalChild ? 0 : ((owner.Content is UIElement) ? 1 : 0);
+                return ContainingContentControl.Content is UIElement ? 1 : 0;
             }
         }
 
+        /// <inheritdoc/>
         protected internal override Int32 VisualChildrenCount
         {
             get 
             {
-                var owner = Control as ContentControl;
-                if (owner == null)
-                    return 0;
-
-                return (owner.Content is UIElement) ? 1 : 0;
+                return (ContainingContentControl != null && ContainingContentControl.Content is UIElement) ? 1 : 0;
             }
         }
 
@@ -147,16 +181,20 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// </summary>
         private void UpdateTextParserCache()
         {
-            textParserResult.Clear();
+            if (textParserResult != null)
+                textParserResult.Clear();
 
-            if (View == null)
+            if (View == null || ContainingContentControl == null)
                 return;
 
-            var owner = Control as ContentControl;
-            var content = owner.Content;
+            var content = ContainingContentControl.Content;
+
             var contentElement = content as UIElement;
-            if (content != null && contentElement == null)
+            if (contentElement == null)
             {
+                if (textParserResult == null)
+                    textParserResult = new TextParserResult();
+
                 var contentAsString = content.ToString();
                 View.Resources.TextRenderer.Parse(contentAsString, textParserResult);
             }
@@ -170,26 +208,46 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <param name="availableSize">The amount of space in which the element's text can be laid out.</param>
         private void UpdateTextLayoutCache(Size2D availableSize)
         {
-            textLayoutResult.Clear();
+            if (textLayoutResult != null)
+                textLayoutResult.Clear();
 
             if (View == null)
                 return;
 
-            var owner = Control as ContentControl;
+            var content = ContainingContentControl.Content;
 
-            if (textParserResult.Count > 0 && Font.IsLoaded)
+            var contentElement = content as UIElement;
+            if (contentElement == null)
             {
-                var availableWidth  = (Int32)Display.DipsToPixels(availableSize.Width);
-                var availableHeight = (Int32)Display.DipsToPixels(availableSize.Height);
+                if (textLayoutResult == null)
+                    textLayoutResult = new TextLayoutResult();
 
-                var flags    = LayoutUtil.ConvertAlignmentsToTextFlags(owner.HorizontalContentAlignment, owner.VerticalContentAlignment);
-                var settings = new TextLayoutSettings(Font, availableWidth, availableHeight, flags, FontStyle);
+                var availableSizeInPixels = Display.DipsToPixels(availableSize);
+
+                var hAlign = ContainingContentControl.HorizontalContentAlignment;
+                var vAlign = ContainingContentControl.VerticalContentAlignment;
+
+                var flags    = LayoutUtil.ConvertAlignmentsToTextFlags(hAlign, vAlign);
+                var settings = new TextLayoutSettings(Font, 
+                    (Int32)availableSizeInPixels.Width, 
+                    (Int32)availableSizeInPixels.Height, flags, FontStyle);
                 View.Resources.TextRenderer.CalculateLayout(textParserResult, textLayoutResult, settings);
             }
         }
 
+        /// <summary>
+        /// Gets the <see cref="ContentControl"/> that contains this element.
+        /// </summary>
+        private ContentControl ContainingContentControl
+        {
+            get { return containingContentControl; }
+        }
+
         // Cached parser/layout results for content text.
-        private readonly TextParserResult textParserResult = new TextParserResult();
-        private readonly TextLayoutResult textLayoutResult = new TextLayoutResult();
+        private TextParserResult textParserResult;
+        private TextLayoutResult textLayoutResult;
+
+        // Cached layout parameters
+        private ContentControl containingContentControl;
     }
 }

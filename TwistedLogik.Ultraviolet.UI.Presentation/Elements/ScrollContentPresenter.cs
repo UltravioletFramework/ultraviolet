@@ -19,6 +19,20 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
 
         }
 
+        /// <inheritdoc/>
+        public override Point2D ContentOffset
+        {
+            get
+            {
+                var scrollViewer = Control as ScrollViewer;
+                if (scrollViewer != null)
+                {
+                    return new Point2D(-scrollViewer.HorizontalOffset, -scrollViewer.VerticalOffset);
+                }
+                return Point2D.Zero;
+            }
+        }
+
         /// <summary>
         /// Gets or sets a value indicating whether the presenter's content can scroll horizontally.
         /// </summary>
@@ -80,19 +94,26 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
                 CanScrollVertically ? Double.PositiveInfinity : availableSize.Height
             );
 
-            base.Measure(availableSize);
-
-            var contentSize   = DesiredSize;
+            var contentSize   = base.MeasureOverride(contentAvailableSize);
             var presenterSize = new Size2D(
                 Math.Min(availableSize.Width, contentSize.Width),
                 Math.Min(availableSize.Height, contentSize.Height)
             );
 
+            var extentChanged = (extentWidth != contentSize.Width || extentHeight != contentSize.Height);
+
             extentWidth  = contentSize.Width;
             extentHeight = contentSize.Height;
 
+            var viewportChanged = (viewportWidth != presenterSize.Width || viewportHeight != presenterSize.Height);
+
             viewportWidth  = presenterSize.Width;
             viewportHeight = presenterSize.Height;
+
+            if (Control != null && (extentChanged || viewportChanged))
+            {
+                Control.InvalidateMeasure();
+            }
 
             return presenterSize;
         }
@@ -108,9 +129,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
                 CanScrollVertically ? extentHeight : finalSize.Height
             );
 
-            base.Arrange(new RectangleD(0, 0, finalSize.Width, finalSize.Height), options);
-
-            var contentSize   = RenderSize;
+            var contentSize   = base.ArrangeOverride(contentFinalSize, options);
             var presenterSize = new Size2D(
                 Math.Min(finalSize.Width, contentSize.Width),
                 Math.Min(finalSize.Height, contentSize.Height)

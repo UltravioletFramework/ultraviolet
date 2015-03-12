@@ -26,6 +26,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             RuntimeHelpers.RunClassConstructor(typeof(StoryboardClockPool).TypeHandle);
 
             RegisterCoreTypes();
+
+            this.styleQueue    = new LayoutQueue(InvalidateStyle);
+            this.measureQueue  = new LayoutQueue(InvalidateMeasure);
+            this.arrangeQueue  = new LayoutQueue(InvalidateArrange);
+            this.positionQueue = new LayoutQueue(InvalidatePosition);
         }
 
         /// <summary>
@@ -47,6 +52,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public void Update(UltravioletTime time)
         {
             Contract.EnsureNotDisposed(this, Disposed);
+
+            PerformanceStats.BeginFrame();
 
             ProcessStyleQueue();
             ProcessMeasureQueue();
@@ -308,6 +315,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 return false;
 
             return registeredTypes.Remove(registration.Name);
+        }
+
+        /// <summary>
+        /// Gets the performance statistics which have been collected by the Ultraviolet Presentation Foundation.
+        /// </summary>
+        public PresentationFoundationPerformanceStats PerformanceStats
+        {
+            get { return performanceStats; }
         }
 
         /// <summary>
@@ -665,6 +680,42 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Invalidates the specified element's style.
+        /// </summary>
+        private void InvalidateStyle(UIElement element)
+        {
+            element.InvalidateStyleInternal();
+            PerformanceStats.InvalidateStyleCountLastFrame++;
+        }
+
+        /// <summary>
+        /// Invalidates the specified element's measure.
+        /// </summary>
+        private void InvalidateMeasure(UIElement element)
+        {
+            element.InvalidateMeasureInternal();
+            PerformanceStats.InvalidateMeasureCountLastFrame++;
+        }
+
+        /// <summary>
+        /// Invalidates the specified element's arrangement.
+        /// </summary>
+        private void InvalidateArrange(UIElement element)
+        {
+            element.InvalidateArrangeInternal();
+            PerformanceStats.InvalidateArrangeCountLastFrame++;
+        }
+
+        /// <summary>
+        /// Invalidates the specified element's position.
+        /// </summary>
+        private void InvalidatePosition(UIElement element)
+        {
+            element.InvalidatePositionInternal();
+            PerformanceStats.InvalidatePositionCountLastFrame++;
+        }
+
+        /// <summary>
         /// Registers the specified type's default component template, if it has one.
         /// </summary>
         /// <param name="type">The type that represents the element for which to register a component template.</param>
@@ -686,6 +737,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             }
         }
 
+        // Performance stats.
+        private readonly PresentationFoundationPerformanceStats performanceStats = 
+            new PresentationFoundationPerformanceStats();
+
         // The component template manager.
         private readonly ComponentTemplateManager componentTemplateManager = 
             new ComponentTemplateManager();
@@ -699,9 +754,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             new Dictionary<String, KnownType>(StringComparer.OrdinalIgnoreCase);
 
         // The queues of elements with invalid layouts.
-        private readonly LayoutQueue styleQueue = new LayoutQueue();
-        private readonly LayoutQueue measureQueue = new LayoutQueue();
-        private readonly LayoutQueue arrangeQueue = new LayoutQueue();
-        private readonly LayoutQueue positionQueue = new LayoutQueue();
+        private readonly LayoutQueue styleQueue;
+        private readonly LayoutQueue measureQueue;
+        private readonly LayoutQueue arrangeQueue;
+        private readonly LayoutQueue positionQueue;
     }
 }

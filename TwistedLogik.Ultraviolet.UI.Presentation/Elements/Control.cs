@@ -111,8 +111,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         protected override Size2D MeasureOverride(Size2D availableSize)
         {
             if (componentRoot == null)
-                return Size2D.Zero;
-
+            {
+                var desiredWidth = Double.IsPositiveInfinity(availableSize.Width) ? 0 : availableSize.Width;
+                var desiredHeight = Double.IsPositiveInfinity(availableSize.Height) ? 0 : availableSize.Height;
+                return new Size2D(desiredWidth, desiredHeight);
+            }
             componentRoot.Measure(availableSize);
             return componentRoot.DesiredSize;
         }

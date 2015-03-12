@@ -186,11 +186,19 @@ namespace UvDebugSandbox
         {
             spriteBatch.Begin();
 
+            var upf = Ultraviolet.GetUI().GetPresentationFoundation();
+
             textFormatter.Reset();
             textFormatter.AddArgument(Ultraviolet.GetGraphics().FrameRate);
-            textFormatter.AddArgument(GC.GetTotalMemory(false) / 1024);
-            textFormatter.AddArgument(Environment.Is64BitProcess ? "64-bit" : "32-bit");
-            textFormatter.Format("{0:decimals:2} FPS\nAllocated: {1:decimals:2} kb\n{2}", textBuffer);
+            textFormatter.AddArgument(upf.PerformanceStats.StyleCountLastFrame);
+            textFormatter.AddArgument(upf.PerformanceStats.InvalidateStyleCountLastFrame);
+            textFormatter.AddArgument(upf.PerformanceStats.MeasureCountLastFrame);
+            textFormatter.AddArgument(upf.PerformanceStats.InvalidateMeasureCountLastFrame);
+            textFormatter.AddArgument(upf.PerformanceStats.ArrangeCountLastFrame);
+            textFormatter.AddArgument(upf.PerformanceStats.InvalidateArrangeCountLastFrame);
+            textFormatter.AddArgument(upf.PerformanceStats.PositionCountLastFrame);
+            textFormatter.AddArgument(upf.PerformanceStats.InvalidatePositionCountLastFrame);
+            textFormatter.Format("FPS: {0:decimals:2} FPS\nStyle: {1} / {2}\nMeasure: {3} / {4}\nArrange: {5} / {6}\nPosition: {7} / {8}", textBuffer);
 
             spriteBatch.DrawString(spriteFont, textBuffer, Vector2.One * 8f, Color.White);
 

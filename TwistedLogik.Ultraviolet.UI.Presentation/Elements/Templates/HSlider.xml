@@ -1,22 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ComponentTemplate>
   <Grid ID="LayoutRoot" Class="slider-component" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-    <Grid.ColumnDefinitions>
-      <ColumnDefinition Width="Auto"/>
-      <ColumnDefinition Width="Auto"/>
-      <ColumnDefinition Width="*"/>
-    </Grid.ColumnDefinitions>
 
-    <Image ID="Track" Class="slider-track slider-track-horizontal" Grid.Column="0" Grid.ColumnSpan="3" HorizontalAlignment="Stretch" VerticalAlignment="Center"></Image>
-
-    <RepeatButton ID="LeftLarge" Class="slider-repeat slider-repeat-left" Grid.Column="0" Padding="0" Opacity="0" Width="0" Focusable="false"
-                  VerticalAlignment="Stretch" Click="HandleClickLeftLarge"></RepeatButton>
-
-    <Button ID="Thumb" Class="slider-thumb slider-thumb-horizontal" Grid.Column="1" VerticalAlignment="Center"
-            Mouse.PreviewMouseDown="HandleThumbPreviewMouseDown" Mouse.PreviewMouseMove="HandleThumbPreviewMouseMove"></Button>
-
-    <RepeatButton ID="RightLarge" Class="slider-repeat slider-repeat-right" Grid.Column="2" Padding="0" Opacity="0" Focusable="false"
-                  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="HandleClickRightLarge"></RepeatButton>
-    
+    <Image ID="TrackBackground" Class="slider-track" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
+    <Track ID="Track" HorizontalAlignment="Stretch" VerticalAlignment="Center" Orientation="Horizontal"/>
+        
   </Grid>
 </ComponentTemplate>

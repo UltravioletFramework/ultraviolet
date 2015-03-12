@@ -12,11 +12,11 @@
 
     <ScrollContentPresenter ID="Presenter" Grid.Column="0" Grid.Row="0" />
 
-    <HScrollBar ID="HScroll" Class="scrollview-hscroll" Grid.Column="0" Grid.Row="1" HorizontalAlignment="Stretch" SmallChange="16" LargeChange="{{ViewportWidth}}"
-                MaximumChanged="HScroll_MaximumChanged" ValueChanged="HScroll_ValueChanged" VisibilityChanged="HScroll_VisibilityChanged"/>
+    <HScrollBar ID="HScroll" Class="scrollview-hscroll" Grid.Column="0" Grid.Row="1" HorizontalAlignment="Stretch" 
+                SmallChange="16" LargeChange="{{ViewportWidth}}"/>
 
-    <VScrollBar ID="VScroll" Class="scrollview-vscroll" Grid.Column="1" Grid.Row="0" VerticalAlignment="Stretch" SmallChange="16" LargeChange="{{ViewportHeight}}"
-                MaximumChanged="VScroll_MaximumChanged" ValueChanged="VScroll_ValueChanged" VisibilityChanged="VScroll_VisibilityChanged"/>
+    <VScrollBar ID="VScroll" Class="scrollview-vscroll" Grid.Column="1" Grid.Row="0" VerticalAlignment="Stretch" 
+                SmallChange="16" LargeChange="{{ViewportHeight}}"/>
     
     <Rectangle Class="scrollview-rect" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
     

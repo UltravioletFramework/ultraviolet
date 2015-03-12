@@ -68,11 +68,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
                 }
             }
 
-            contentSize = new Size2D(
-                Math.Min(availableSize.Width, contentWidth), 
-                Math.Min(availableSize.Height, contentHeight));
-
-            return contentSize;
+            return new Size2D(contentWidth, contentHeight);
         }
 
         /// <inheritdoc/>
@@ -178,8 +174,5 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             var stackPanel = (StackPanel)dobj;
             stackPanel.OnOrientationChanged();
         }
-
-        // State values.
-        private Size2D contentSize;
     }
 }

@@ -20,32 +20,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <summary>
-        /// Handles the <see cref="ButtonBase.Click"/> event for the LeftSmall button.
+        /// Handles the <see cref="ButtonBase.Click"/> event for LineLeftButton.
         /// </summary>
-        private void HandleClickLeftSmall(UIElement element)
+        private void HandleClickLineLeft(UIElement element)
         {
             DecreaseSmall();
         }
 
         /// <summary>
-        /// Handles the <see cref="ButtonBase.Click"/> event for the RightSmall button.
+        /// Handles the <see cref="ButtonBase.Click"/> event for LineRightButton.
         /// </summary>
-        private void HandleClickRightSmall(UIElement small)
+        private void HandleClickLineRight(UIElement small)
         {
             IncreaseSmall();
         }
-
-        /// <inheritdoc/>
-        protected override Size2D MeasureOverride(Size2D availableSize)
-        {
-            if (Track != null)
-            {
-                Track.InvalidateMeasure();
-            }
-            return base.MeasureOverride(availableSize);
-        }
-
-        // Component references.
-        private readonly HScrollTrack Track = null;
     }
 }

@@ -80,15 +80,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <inheritdoc/>
-        protected override void DrawOverride(UltravioletTime time, DrawingContext dc)
-        {
-            DrawChildren(time, dc);
-
-            base.DrawOverride(time, dc);
-        }
-
-        /// <inheritdoc/>
-        protected override RectangleD? ClipContentCore()
+        protected override RectangleD? ClipCore()
         {
             foreach (var child in children)
             {
@@ -99,7 +91,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
                 }
             }
             return null;
-        }
+        } 
 
         /// <inheritdoc/>
         protected override UIElement GetElementAtPointCore(Double x, Double y, Boolean isHitTest)
@@ -245,26 +237,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             return null;
         }
         
-        /// <summary>
-        /// Draws the panel's children.
-        /// </summary>
-        /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Draw(UltravioletTime)"/>.</param>
-        /// <param name="dc">The drawing context that describes the render state of the layout.</param>
-        protected virtual void DrawChildren(UltravioletTime time, DrawingContext dc)
-        {
-            var clip = ClipContentRectangle;
-            if (clip != null)
-                dc.PushClipRectangle(clip.Value);
-
-            foreach (var child in children)
-            {
-                child.Draw(time, dc);
-            }
-
-            if (clip != null)
-                dc.PopClipRectangle();
-        }
-
         // Property values.
         private readonly UIElementCollection children;
     }

@@ -1,8 +1,5 @@
 ﻿using System;
 using System.ComponentModel;
-using TwistedLogik.Nucleus;
-using TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text;
-using TwistedLogik.Ultraviolet.UI.Presentation.Animations;
 using TwistedLogik.Ultraviolet.UI.Presentation.Styles;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
@@ -89,7 +86,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <summary>
         /// Identifies the <see cref="Content"/> dependency property.
         /// </summary>
-        public static readonly DependencyProperty ContentProperty = DependencyProperty.Register("Content", typeof(Object), typeof(ContentControl), 
+        public static readonly DependencyProperty ContentProperty = DependencyProperty.Register("Content", typeof(Object), typeof(ContentControl),
             new DependencyPropertyMetadata(HandleContentChanged, null, DependencyPropertyOptions.AffectsMeasure | DependencyPropertyOptions.CoerceObjectToString));
 
         /// <summary>
@@ -98,7 +95,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         internal Boolean TreatContentAsLogicalChild
         {
             get { return treatContentAsLogicalChild; }
-            }
+        }
 
         /// <summary>
         /// Gets the control's content presenter.
@@ -111,7 +108,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
 
         /// <inheritdoc/>
         protected internal override void RemoveLogicalChild(UIElement child)
-                {
+        {
             if (TreatContentAsLogicalChild && Content == child)
             {
                 Content = null;
@@ -125,19 +122,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             if (TreatContentAsLogicalChild && contentElement != null)
             {
                 if (childIndex == 0)
-        {
+                {
                     return contentElement;
-            }
+                }
                 return base.GetLogicalChild(childIndex - 1);
-        }
-            return base.GetLogicalChild(childIndex);
             }
+            return base.GetLogicalChild(childIndex);
+        }
 
         /// <inheritdoc/>
         protected internal override UIElement GetVisualChild(Int32 childIndex)
         {
             return base.GetVisualChild(childIndex);
-            }
+        }
 
         /// <inheritdoc/>
         protected internal override Int32 LogicalChildrenCount
@@ -147,9 +144,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
 
         /// <inheritdoc/>
         protected internal override Int32 VisualChildrenCount
-            {
+        {
             get { return base.VisualChildrenCount; }
-            }
+        }
 
         /// <summary>
         /// Raises the <see cref="HorizontalContentAlignmentChanged"/> event.
@@ -215,20 +212,26 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         {
             var control = (ContentControl)dobj;
 
-            if (control.TreatContentAsLogicalChild)
-            {
             var oldElement = control.contentElement;
-                if (oldElement != null)
-                    oldElement.ChangeLogicalAndVisualParents(null, null);
+            if (oldElement != null)
+            {
+                if (control.TreatContentAsLogicalChild)
+                {
+                    oldElement.ChangeLogicalParent(null);
+                }
+                oldElement.ChangeVisualParent(null);
             }
 
             control.contentElement = control.Content as UIElement;
 
-            if (control.TreatContentAsLogicalChild)
-            {
             var newElement = control.contentElement;
             if (newElement != null)
-                    newElement.ChangeLogicalAndVisualParents(control, control.ContentPresenter);
+            {
+                if (control.TreatContentAsLogicalChild)
+                {
+                    newElement.ChangeLogicalParent(control);
+                }
+                newElement.ChangeVisualParent(control.ContentPresenter);
             }
 
             control.OnContentChanged();

@@ -114,6 +114,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Gets or sets the amount of padding between the edges of the element and its content.
+        /// </summary>
+        public Thickness Padding
+        {
+            get { return GetValue<Thickness>(PaddingProperty); }
+            set { SetValue<Thickness>(PaddingProperty, value); }
+        }
+
+        /// <summary>
         /// Gets or sets the element's horizontal alignment.
         /// </summary>
         public HorizontalAlignment HorizontalAlignment
@@ -180,6 +189,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Occurs when the value of the <see cref="Margin"/> property changes.
         /// </summary>
         public event UIElementEventHandler MarginChanged;
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="Padding"/> property changes.
+        /// </summary>
+        public event UIElementEventHandler PaddingChanged;
 
         /// <summary>
         /// Occurs when the value of the <see cref="HorizontalAlignment"/> property changes.
@@ -260,6 +274,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         [Styled("margin")]
         public static readonly DependencyProperty MarginProperty = DependencyProperty.Register("Margin", typeof(Thickness), typeof(FrameworkElement),
             new DependencyPropertyMetadata(HandleMarginChanged, () => Thickness.Zero, DependencyPropertyOptions.AffectsMeasure));
+
+        /// <summary>
+        /// Identifies the <see cref="Padding"/> dependency property.
+        /// </summary>
+        [Styled("padding")]
+        public static readonly DependencyProperty PaddingProperty = DependencyProperty.Register("Padding", typeof(Thickness), typeof(FrameworkElement),
+            new DependencyPropertyMetadata(HandlePaddingChanged, () => Thickness.Zero, DependencyPropertyOptions.AffectsMeasure));
 
         /// <summary>
         /// Identifies the <see cref="HorizontalAlignment"/> dependency property.
@@ -645,6 +666,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Raises the <see cref="PaddingChanged"/> event.
+        /// </summary>
+        protected virtual void OnPaddingChanged()
+        {
+            var temp = PaddingChanged;
+            if (temp != null)
+            {
+                temp(this);
+            }
+        }
+
+        /// <summary>
         /// Raises the <see cref="HorizontalAlignmentChanged"/> event.
         /// </summary>
         protected virtual void OnHorizontalAlignmentChanged()
@@ -783,6 +816,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             var frameworkElement = (FrameworkElement)dobj;
             frameworkElement.OnMarginChanged();
+        }
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="Padding"/> dependency property changes.
+        /// </summary>
+        /// <param name="dobj">The dependency object that raised the event.</param>
+        private static void HandlePaddingChanged(DependencyObject dobj)
+        {
+            var frameworkElement = (FrameworkElement)dobj;
+            frameworkElement.OnPaddingChanged();
         }
 
         /// <summary>

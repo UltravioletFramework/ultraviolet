@@ -73,6 +73,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public static readonly StringResource KnownTypeMissingAttribute            = new StringResource(StringDatabase, "KNOWN_TYPE_MISSING_ATTRIBUTE");
         public static readonly StringResource HandlerTypeMismatch                  = new StringResource(StringDatabase, "HANDLER_TYPE_MISMATCH");
         public static readonly StringResource NotVisualObject                      = new StringResource(StringDatabase, "NOT_VISUAL_OBJECT");
+        public static readonly StringResource ClipRectangleMustHaveValidDimensions = new StringResource(StringDatabase, "CLIP_RECTANGLE_MUST_HAVE_VALID_DIMENSIONS");
 #pragma warning restore 1591
     }
 }

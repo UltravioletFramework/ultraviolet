@@ -111,9 +111,7 @@
     <Compile Include="DrawingContext.cs" />
     <Compile Include="DrawingContext.OpacityState.cs" />
     <Compile Include="Elements\Border.cs" />
-    <Compile Include="Elements\ScrollTrackBase.cs" />
-    <Compile Include="Elements\VScrollTrack.cs" />
-    <Compile Include="Elements\HScrollTrack.cs" />
+    <Compile Include="Elements\Track.cs" />
     <Compile Include="Elements\IItemContainer.cs" />
     <Compile Include="Elements\ItemCollection.cs" />
     <Compile Include="Elements\ItemCollection.IList.cs" />
@@ -199,6 +197,7 @@
     <Compile Include="PresentationFoundationFactoryInitializer.cs" />
     <Compile Include="PresentationFoundation.cs" />
     <Compile Include="PresentationFoundation.KnownElement.cs" />
+    <Compile Include="PresentationFoundationPerformanceStats.cs" />
     <Compile Include="PresentationStrings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RoutedEvent.cs" />
@@ -331,12 +330,7 @@
     <EmbeddedResource Include="Elements\Templates\ListBoxItem.xml" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Elements\Templates\HScrollTrack.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Elements\Templates\VScrollTrack.xml">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
+    <EmbeddedResource Include="Elements\Templates\ToggleButton.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -21,19 +21,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
 
         }
 
-        /// <inheritdoc/>
-        public override Point2D ContentOffset
-        {
-            get { return new Point2D(-HorizontalOffset, -VerticalOffset); }
-        }
-
         /// <summary>
         /// Gets the width of the content which is being displayed by the scroll viewer.
         /// </summary>
         public Double ExtentWidth
         {
             get { return (Presenter == null) ? 0 : Presenter.ExtentWidth; }
-                }
+        }
 
         /// <summary>
         /// Gets the height of the content which is being displayed by the scroll viewer.
@@ -41,7 +35,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         public Double ExtentHeight
         {
             get { return (Presenter == null) ? 0 : Presenter.ExtentHeight; }
-                }
+        }
 
         /// <summary>
         /// Gets the width of the scroll viewer's scrollable area.
@@ -130,16 +124,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// </summary>
         public static readonly DependencyProperty VerticalScrollBarVisibilityProperty = DependencyProperty.Register("VerticalScrollBarVisibility", typeof(ScrollBarVisibility), typeof(ScrollViewer),
             new DependencyPropertyMetadata(HandleVerticalScrollBarVisibilityChanged, () => ScrollBarVisibility.Visible, DependencyPropertyOptions.AffectsArrange));
-
-        /// <inheritdoc/>
-        protected override RectangleD? ClipContentCore()
-        {
-            if (Presenter != null && (ScrollableHeight > 0 || ScrollableWidth > 0))
-            {
-                return Presenter.AbsoluteBounds;
-            }
-            return null;
-        }
 
         /// <inheritdoc/>
         protected override Size2D MeasureOverride(Size2D availableSize)
@@ -313,60 +297,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         {
             var scrollViewer = (ScrollViewer)dobj;
             scrollViewer.OnVerticalScrollBarVisibilityChanged();
-        }
-
-        /// <summary>
-        /// Handles the <see cref="RangeBase.ValueChanged"/> event for the horizontal scroll bar.
-        /// </summary>
-        /// <param name="element">The element that raised the event.</param>
-        private void HScroll_ValueChanged(UIElement element)
-        {
-            InvalidatePosition();
-        }
-
-        /// <summary>
-        /// Handles the <see cref="RangeBase.MaximumChanged"/> event for the horizontal scroll bar.
-        /// </summary>
-        /// <param name="element">The element that raised the event.</param>
-        private void HScroll_MaximumChanged(UIElement element)
-        {
-            InvalidatePosition();
-        }
-
-        /// <summary>
-        /// Handles the <see cref="RangeBase.VisibilityChanged"/> event for the horizontal scroll bar.
-        /// </summary>
-        /// <param name="element">The element that raised the event.</param>
-        private void HScroll_VisibilityChanged(UIElement element)
-        {
-            ((ScrollBarBase)element).Value = 0;
-        }
-
-        /// <summary>
-        /// Handles the <see cref="RangeBase.ValueChanged"/> event for the vertical scroll bar.
-        /// </summary>
-        /// <param name="element">The element that raised the event.</param>
-        private void VScroll_ValueChanged(UIElement element)
-        {
-            InvalidatePosition();
-        }
-
-        /// <summary>
-        /// Handles the <see cref="RangeBase.MaximumChanged"/> event for the vertical scroll bar.
-        /// </summary>
-        /// <param name="element">The element that raised the event.</param>
-        private void VScroll_MaximumChanged(UIElement element)
-        {
-            InvalidatePosition();
-        }
-
-        /// <summary>
-        /// Handles the <see cref="RangeBase.VisibilityChanged"/> event for the vertical scroll bar.
-        /// </summary>
-        /// <param name="element">The element that raised the event.</param>
-        private void VScroll_VisibilityChanged(UIElement element)
-        {
-            ((ScrollBarBase)element).Value = 0;
         }
 
         // Scroll deltas for various input events.

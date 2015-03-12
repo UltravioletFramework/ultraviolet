@@ -179,12 +179,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             if (shouldDraw)
             {
-            dc.PushOpacity(Opacity);
+                dc.PushOpacity(Opacity);
 
-            DrawCore(time, dc);
-            OnDrawing(time, dc);
+                DrawCore(time, dc);
+                OnDrawing(time, dc);
 
-            dc.PopOpacity();
+                dc.PopOpacity();
             }
 
             if (clip != null)
@@ -304,17 +304,31 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 return;
             }
 
-            this.mostRecentStylesheet = stylesheet; 
-            
-            ApplyStyles(stylesheet);
-            StyleCore(stylesheet);
-            ReloadContent(false);
+            if (isStyleValid && mostRecentStylesheet == stylesheet)
+                return;
+
+            var upf = Ultraviolet.GetUI().GetPresentationFoundation();
+            upf.PerformanceStats.StyleCountLastFrame++;
+
+            this.mostRecentStylesheet = stylesheet;
+
+            isStyling = true;
+            try
+            {
+                ApplyStyles(stylesheet);
+                StyleCore(stylesheet);
+                ReloadContent(false);
+            }
+            finally
+            {
+                isStyling = false;
+            }
 
             this.isStyleValid = true;
 
             InvalidateMeasure();
 
-            Ultraviolet.GetUI().GetPresentationFoundation().StyleQueue.Remove(this);
+            upf.StyleQueue.Remove(this);
         }
 
         /// <summary>
@@ -324,6 +338,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// specified is available for the element's layout.</param>
         public void Measure(Size2D availableSize)
         {
+            Contract.EnsureRange(availableSize.Width >= 0 && availableSize.Height >= 0, "availableSize");
+
             if (View == null)
             {
                 this.isMeasureValid = true;
@@ -333,18 +349,45 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (isMeasureValid && mostRecentAvailableSize.Equals(availableSize))
                 return;
 
+            var upf = Ultraviolet.GetUI().GetPresentationFoundation();
+            upf.PerformanceStats.MeasureCountLastFrame++;
+
             this.mostRecentAvailableSize = availableSize;
 
-            var desiredSize = MeasureCore(availableSize);
+            var desiredSizeChanged = false;
+            var desiredSize        = Size2D.Zero;
+
+            isMeasuring = true;
+            try
+            {
+                desiredSize = MeasureCore(availableSize);
+            }
+            finally
+            {
+                isMeasuring = false;
+            }
+
             if (Double.IsPositiveInfinity(desiredSize.Width) || Double.IsPositiveInfinity(desiredSize.Height))
                 throw new InvalidOperationException(PresentationStrings.MeasureMustProduceFiniteDesiredSize);
+
+            if (!this.desiredSize.Equals(desiredSize))
+                desiredSizeChanged = true;
 
             this.desiredSize    = desiredSize;
             this.isMeasureValid = true;
 
             InvalidateArrange();
 
-            Ultraviolet.GetUI().GetPresentationFoundation().MeasureQueue.Remove(this);
+            upf.MeasureQueue.Remove(this);
+
+            if (desiredSizeChanged)
+            {
+                var parent = VisualTreeHelper.GetParent(this) as UIElement;
+                if (parent != null)
+                {
+                    parent.OnChildDesiredSizeChanged(this);
+                }
+            }
         }
 
         /// <summary>
@@ -355,6 +398,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="options">A set of <see cref="ArrangeOptions"/> values specifying the options for this arrangement.</param>
         public void Arrange(RectangleD finalRect, ArrangeOptions options = ArrangeOptions.None)
         {
+            Contract.EnsureRange(finalRect.Width >= 0 && finalRect.Height >= 0, "finalRect");
+
             if (View == null)
             {
                 this.isArrangeValid = true;
@@ -363,6 +408,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             if (isArrangeValid && mostRecentFinalRect.Equals(finalRect) && ((Int32)mostRecentArrangeOptions).Equals((Int32)options))
                 return;
+
+            var upf = Ultraviolet.GetUI().GetPresentationFoundation();
+            upf.PerformanceStats.ArrangeCountLastFrame++;
 
             this.mostRecentArrangeOptions = options;
             this.mostRecentFinalRect = finalRect;
@@ -373,13 +421,21 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             }
             else
             {
-                this.renderSize = ArrangeCore(finalRect, options);
+                isArranging = true;
+                try
+                {
+                    this.renderSize = ArrangeCore(finalRect, options);
+                }
+                finally
+                {
+                    isArranging = false;
+                }
             }
             this.isArrangeValid = true;
 
             InvalidatePosition();
 
-            Ultraviolet.GetUI().GetPresentationFoundation().ArrangeQueue.Remove(this);
+            upf.ArrangeQueue.Remove(this);
         }
 
         /// <summary>
@@ -393,6 +449,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 this.isPositionValid = true;
                 return;
             }
+
+            if (isPositionValid && mostRecentPosition.Equals(position))
+                return;
+
+            var upf = Ultraviolet.GetUI().GetPresentationFoundation();
+            upf.PerformanceStats.PositionCountLastFrame++;
 
             this.mostRecentPosition = position;
 
@@ -411,7 +473,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             Clip();
 
-            Ultraviolet.GetUI().GetPresentationFoundation().PositionQueue.Remove(this);
+            upf.PositionQueue.Remove(this);
         }
 
         /// <summary>
@@ -419,24 +481,24 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         public void Clip()
         {
-            this.clipRectangle = ClipCore();
-            ClipContent();
+            var clip = ClipCore();
+            if (clip.HasValue)
+            {
+                var clipValue = clip.Value;
+                if (clipValue.Width < 0 || clipValue.Height < 0)
+                {
+                    throw new InvalidOperationException(PresentationStrings.ClipRectangleMustHaveValidDimensions);
+                }
+            }
+            clipRectangle = clip;
         }
 
-        /// <summary>
-        /// Calculates the clipping rectangle for the element's content.
-        /// </summary>
-        public void ClipContent()
-        {
-            this.clipContentRectangle = ClipContentCore();
-        }
-        
         /// <summary>
         /// Invalidates the element's styling state.
         /// </summary>
         public void InvalidateStyle()
         {
-            if (View == null)
+            if (View == null || !IsStyleValid || IsStyling)
                 return;
 
             this.isStyleValid = false;
@@ -448,7 +510,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         public void InvalidateMeasure()
         {
-            if (View == null)
+            if (View == null || !IsMeasureValid || IsMeasuring)
                 return;
 
             this.isMeasureValid = false;
@@ -460,7 +522,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         public void InvalidateArrange()
         {
-            if (View == null)
+            if (View == null || !IsArrangeValid || IsArranging)
                 return;
 
             this.isArrangeValid = false;
@@ -472,7 +534,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         public void InvalidatePosition()
         {
-            if (View == null)
+            if (View == null || !IsPositionValid)
                 return;
 
             this.isPositionValid = false;
@@ -554,7 +616,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 if (Parent != null)
                 {
                     return (Parent.AutoNav ? Parent.GetNextNavUp(this) : null) ?? Parent.GetNavUpElement();
-        }
+                }
             }
             return target;
         }
@@ -572,7 +634,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 if (Parent != null)
                 {
                     return (Parent.AutoNav ? Parent.GetNextNavDown(this) : null) ?? Parent.GetNavDownElement();
-        }
+                }
             }
             return target;
         }
@@ -590,7 +652,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 if (Parent != null)
                 {
                     return (Parent.AutoNav ? Parent.GetNextNavLeft(this) : null) ?? Parent.GetNavLeftElement();
-        }
+                }
             }
             return target;
         }
@@ -608,7 +670,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 if (Parent != null)
                 {
                     return (Parent.AutoNav ? Parent.GetNextNavRight(this) : null) ?? Parent.GetNavRightElement();
-        }
+                }
             }
             return target;
         }
@@ -919,13 +981,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         public Size2D RenderSize
         {
-            get 
+            get
             {
                 if (Visibility == Visibility.Collapsed)
                 {
                     return Size2D.Zero;
                 }
-                return renderSize; 
+                return renderSize;
             }
         }
 
@@ -934,13 +996,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         public Size2D DesiredSize
         {
-            get 
+            get
             {
                 if (Visibility == Visibility.Collapsed)
                 {
                     return Size2D.Zero;
                 }
-                return desiredSize; 
+                return desiredSize;
             }
         }
 
@@ -983,15 +1045,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public RectangleD? ClipRectangle
         {
             get { return clipRectangle; }
-        }
-
-        /// <summary>
-        /// Gets the element's content clipping rectangle. A value of <c>null</c> indicates that
-        /// content clipping is disabled for this element.
-        /// </summary>
-        public RectangleD? ClipContentRectangle
-        {
-            get { return clipContentRectangle; }
         }
 
         /// <summary>
@@ -1307,6 +1360,38 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Invalidates the element's style.
+        /// </summary>
+        internal void InvalidateStyleInternal()
+        {
+            isStyleValid = false;
+        }
+
+        /// <summary>
+        /// Invalidates the element's measure.
+        /// </summary>
+        internal void InvalidateMeasureInternal()
+        {
+            isMeasureValid = false;
+        }
+
+        /// <summary>
+        /// Invalidates the element's arrangement.
+        /// </summary>
+        internal void InvalidateArrangeInternal()
+        {
+            isArrangeValid = false;
+        }
+
+        /// <summary>
+        /// Invalidates the element's position.
+        /// </summary>
+        internal void InvalidatePositionInternal()
+        {
+            isPositionValid = false;
+        }
+
+        /// <summary>
         /// Searches the object for a dependency property which matches the specified name.
         /// </summary>
         /// <param name="name">The name of the dependency property for which to search.</param>
@@ -1434,13 +1519,33 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             get { return layoutDepth; }
         }
 
+        /// <summary>
+        /// Gets a value indicating whether the element is in the process of being styled.
+        /// </summary>
+        internal Boolean IsStyling
+        {
+            get { return isStyling; }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the element is in the process of being measured.
+        /// </summary>
+        internal Boolean IsMeasuring
+        {
+            get { return isMeasuring; }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the element is in the process of being arranged.
+        /// </summary>
+        internal Boolean IsArranging
+        {
+            get { return isArranging; }
+        }
+
         /// <inheritdoc/>
         protected internal sealed override void OnMeasureAffectingPropertyChanged()
         {
-            if (Parent != null)
-            {
-                Parent.InvalidateMeasure();
-            }
             InvalidateMeasure();
             base.OnMeasureAffectingPropertyChanged();
         }
@@ -1521,13 +1626,25 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Called when the desired size of one of the element's children is changed.
+        /// </summary>
+        /// <param name="child">The child element that was resized.</param>
+        protected virtual void OnChildDesiredSizeChanged(UIElement child)
+        {
+            if (IsMeasureValid)
+            {
+                InvalidateMeasure();
+            }
+        }
+
+        /// <summary>
         /// Invoked when a <see cref="Keyboard.GotKeyboardFocusEvent"/> attached routed event occurs.
         /// </summary>
         /// <param name="handled">A value indicating whether the event has been handled.</param>
         protected virtual void OnGotKeyboardFocus(ref Boolean handled)
         {
 
-            }
+        }
 
         /// <summary>
         /// Invoked when a <see cref="Keyboard.LostKeyboardFocusEvent"/> attached routed event occurs.
@@ -1536,7 +1653,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         protected virtual void OnLostKeyboardFocus(ref Boolean handled)
         {
 
-            }
+        }
 
         /// <summary>
         /// Invoked when a <see cref="Keyboard.KeyDownEvent"/> attached routed event occurs.
@@ -1548,7 +1665,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         protected virtual void OnKeyDown(KeyboardDevice device, Key key, KeyModifiers modifiers, ref Boolean handled)
         {
 
-            }
+        }
 
         /// <summary>
         /// Invoked when a <see cref="Keyboard.KeyUpEvent"/> attached routed event occurs.
@@ -1559,7 +1676,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         protected virtual void OnKeyUp(KeyboardDevice device, Key key, ref Boolean handled)
         {
 
-            }
+        }
 
         /// <summary>
         /// Invoked when a <see cref="Keyboard.TextInputEvent"/> attached routed event occurs.
@@ -1567,7 +1684,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="device">The <see cref="KeyboardDevice"/> that raised the event.</param>
         /// <param name="handled">A value indicating whether the event has been handled.</param>
         protected virtual void OnTextInput(KeyboardDevice device, ref Boolean handled)
-            {
+        {
 
         }
 
@@ -1576,7 +1693,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         /// <param name="handled">A value indicating whether the event has been handled.</param>
         protected virtual void OnGotMouseCapture(ref Boolean handled)
-            {
+        {
 
         }
 
@@ -1585,7 +1702,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         /// <param name="handled">A value indicating whether the event has been handled.</param>
         protected virtual void OnLostMouseCapture(ref Boolean handled)
-            {
+        {
 
         }
 
@@ -1601,7 +1718,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// current position and the y-coordinate of the mouse's previous position.</param>
         /// <param name="handled">A value indicating whether the event has been handled.</param>
         protected virtual void OnMouseMove(MouseDevice device, Double x, Double y, Double dx, Double dy, ref Boolean handled)
-            {
+        {
 
         }
 
@@ -1632,7 +1749,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="button">The mouse button that was pressed or released.</param>
         /// <param name="handled">A value indicating whether the event has been handled.</param>
         protected virtual void OnMouseUp(MouseDevice device, MouseButton button, ref Boolean handled)
-            {
+        {
 
         }
 
@@ -1643,7 +1760,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="button">The mouse button that was pressed or released.</param>
         /// <param name="handled">A value indicating whether the event has been handled.</param>
         protected virtual void OnMouseDown(MouseDevice device, MouseButton button, ref Boolean handled)
-            {
+        {
 
         }
 
@@ -1654,7 +1771,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="button">The mouse button that was pressed or released.</param>
         /// <param name="handled">A value indicating whether the event has been handled.</param>
         protected virtual void OnMouseClick(MouseDevice device, MouseButton button, ref Boolean handled)
-            {
+        {
 
         }
 
@@ -1665,9 +1782,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="button">The mouse button that was pressed or released.</param>
         /// <param name="handled">A value indicating whether the event has been handled.</param>
         protected virtual void OnMouseDoubleClick(MouseDevice device, MouseButton button, ref Boolean handled)
-            {
+        {
 
-            }
+        }
 
         /// <summary>
         /// Invoked by the <see cref="Mouse.MouseWheelEvent"/> attached routed event.
@@ -1699,7 +1816,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <inheritdoc/>
         protected internal sealed override DependencyObject DependencyContainer
         {
-            get { return Parent; }
+            get { return VisualTreeHelper.GetParent(this); }
         }
 
         /// <summary>
@@ -2040,7 +2157,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 if (child != null)
                 {
                     child.Animate(storyboard, clock, root);
-        }
+                }
             }
         }
 
@@ -2095,27 +2212,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <returns>The clipping rectangle for this element in absolute screen coordinates, or <c>null</c> to disable clipping.</returns>
         protected virtual RectangleD? ClipCore()
         {
-            var parent = VisualTreeHelper.GetParent(this) as UIElement;
-            if (parent == null)
-                return null;
-
-            var clipOffset = parent.AbsolutePosition;
-            var clip       = mostRecentFinalRect + clipOffset;
-
-            if (clip.Contains(AbsoluteBounds))
-            {
-                return null;
-            }
-
-            return clip;
-        }
-
-        /// <summary>
-        /// When overridden in a derived class, calculates the content clipping rectangle for this element.
-        /// </summary>
-        /// <returns>The content clipping rectangle for this element in absolute screen coordinates, or <c>null</c> to disable clipping.</returns>
-        protected virtual RectangleD? ClipContentCore()
-        {
             return null;
         }
 
@@ -2141,6 +2237,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
                 var childRelativeX = x - child.RelativeBounds.X;
                 var childRelativeY = y - child.RelativeBounds.Y;
+
                 var childMatch = child.GetElementAtPoint(childRelativeX, childRelativeY, isHitTest);
                 if (childMatch != null)
                 {
@@ -2150,7 +2247,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             return this;
         }
-        
+
         /// <summary>
         /// Gets the next element to navigate to when focus is moved "up," assuming
         /// that focus is currently in the specified child element.
@@ -2344,14 +2441,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 var imageAreaPix = (RectangleF)Display.DipsToPixels(imageAreaAbs);
 
                 var origin = new Vector2(
-                    (Int32)(imageAreaPix.Width / 2f), 
+                    (Int32)(imageAreaPix.Width / 2f),
                     (Int32)(imageAreaPix.Height / 2f));
 
                 var position = new Vector2(
                     (Int32)(imageAreaPix.X + (imageAreaPix.Width / 2f)),
                     (Int32)(imageAreaPix.Y + (imageAreaPix.Height / 2f)));
-                
-                dc.SpriteBatch.DrawImage(imageResource, position, (Int32)imageAreaPix.Width, (Int32)imageAreaPix.Height, 
+
+                dc.SpriteBatch.DrawImage(imageResource, position, (Int32)imageAreaPix.Width, (Int32)imageAreaPix.Height,
                     colorPlusOpacity, 0f, origin, SpriteEffects.None, 0f);
             }
         }
@@ -2374,9 +2471,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var imageResource = View.Resources.BlankImage.Resource;
             if (imageResource == null || !imageResource.IsLoaded)
                 return;
-            
+
             var imageAreaRel = area ?? new RectangleD(0, 0, RenderSize.Width, RenderSize.Height);
-            var imageAreaAbs = imageAreaRel + AbsolutePosition;            
+            var imageAreaAbs = imageAreaRel + AbsolutePosition;
             var imageAreaPix = (RectangleF)Display.DipsToPixels(imageAreaAbs);
 
             var origin = new Vector2(
@@ -2387,7 +2484,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 (Int32)(imageAreaPix.X + (imageAreaPix.Width / 2f)),
                 (Int32)(imageAreaPix.Y + (imageAreaPix.Height / 2f)));
 
-            dc.SpriteBatch.DrawImage(imageResource, position, (Int32)imageAreaPix.Width, (Int32)imageAreaPix.Height, 
+            dc.SpriteBatch.DrawImage(imageResource, position, (Int32)imageAreaPix.Width, (Int32)imageAreaPix.Height,
                 colorPlusOpacity, 0f, origin, SpriteEffects.None, 0f);
         }
 
@@ -2725,19 +2822,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             {
                 var visualParent = VisualTreeHelper.GetParent(this) as UIElement;
                 if (visualParent == null)
-                return;
+                    return;
 
-            this.view = null;
+                this.view = null;
 
                 for (var current = visualParent; current != null; current = VisualTreeHelper.GetParent(current) as UIElement)
-            {
-                if (current.View != null)
                 {
-                    this.view = current.View;
-                    break;
+                    if (current.View != null)
+                    {
+                        this.view = current.View;
+                        break;
+                    }
                 }
             }
-        }
         }
 
         /// <summary>
@@ -2765,7 +2862,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             if (elementRegistrationContext != null)
                 elementRegistrationContext.RegisterElement(this);
-            }
+        }
 
         /// <summary>
         /// Removes the element from the current view's element registry.
@@ -3094,7 +3191,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         private RectangleD relativeBounds;
         private RectangleD absoluteBounds;
         private RectangleD? clipRectangle;
-        private RectangleD? clipContentRectangle;
 
         // Layout parameters.
         private UvssDocument mostRecentStylesheet;
@@ -3107,6 +3203,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
         // State values.
         private UIElementRegistry elementRegistrationContext;
+        private Boolean isStyling;
+        private Boolean isMeasuring;
+        private Boolean isArranging;
 
         // The collection of active storyboard clocks on this element.
         private readonly Dictionary<Storyboard, StoryboardClock> storyboardClocks = 

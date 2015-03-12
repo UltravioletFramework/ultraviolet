@@ -177,7 +177,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <inheritdoc/>
-        protected override void DrawChildren(UltravioletTime time, DrawingContext dc)
+        protected override void DrawOverride(UltravioletTime time, DrawingContext dc)
         {
             /* NOTE:
              * By pre-emptively setting the clip region in the Grid itself, we can prevent
@@ -209,8 +209,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
 
             if (clip.HasValue)
                 dc.PopClipRectangle();
-
-            base.DrawChildren(time, dc);
         }
 
         /// <inheritdoc/>
@@ -360,9 +358,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         {
             var position = 0.0;
 
-            x -= AbsolutePosition.X;
-            y -= AbsolutePosition.Y;
-
             for (int i = 0; i < ColumnDefinitions.Count; i++)
             {
                 var width = ColumnDefinitions[i].ActualWidth;
@@ -385,9 +380,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         private Int32 GetRowAtPoint(Double x, Double y)
         {
             var position = 0.0;
-
-            x -= AbsolutePosition.X;
-            y -= AbsolutePosition.Y;
 
             for (int i = 0; i < RowDefinitions.Count; i++)
             {

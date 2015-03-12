@@ -123,28 +123,28 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// </summary>
         [Styled("left")]
         public static readonly DependencyProperty LeftProperty = DependencyProperty.Register("Left", typeof(Double), typeof(Canvas),
-            new DependencyPropertyMetadata(null, () => Double.NaN, DependencyPropertyOptions.AffectsArrange));
+            new DependencyPropertyMetadata(null, () => CommonBoxedValues.Double.NaN, DependencyPropertyOptions.AffectsMeasure));
 
         /// <summary>
         /// Gets or sets a value indicating the distance between the top edge of the canvas and the top edge of the element.
         /// </summary>
         [Styled("top")]
         public static readonly DependencyProperty TopProperty = DependencyProperty.Register("Top", typeof(Double), typeof(Canvas),
-            new DependencyPropertyMetadata(null, () => Double.NaN, DependencyPropertyOptions.AffectsArrange));
+            new DependencyPropertyMetadata(null, () => CommonBoxedValues.Double.NaN, DependencyPropertyOptions.AffectsMeasure));
 
         /// <summary>
         /// Gets or sets a value indicating the distance between the right edge of the canvas and the right edge of the element.
         /// </summary>
         [Styled("right")]
         public static readonly DependencyProperty RightProperty = DependencyProperty.Register("Right", typeof(Double), typeof(Canvas),
-            new DependencyPropertyMetadata(null, () => Double.NaN, DependencyPropertyOptions.AffectsArrange));
+            new DependencyPropertyMetadata(null, () => CommonBoxedValues.Double.NaN, DependencyPropertyOptions.AffectsMeasure));
 
         /// <summary>
         /// Gets or sets a value indicating the distance between the bottom edge of the canvas and the bottom edge of the element.
         /// </summary>
         [Styled("bottom")]
         public static readonly DependencyProperty BottomProperty = DependencyProperty.Register("Bottom", typeof(Double), typeof(Canvas),
-            new DependencyPropertyMetadata(null, () => Double.NaN, DependencyPropertyOptions.AffectsArrange));
+            new DependencyPropertyMetadata(null, () => CommonBoxedValues.Double.NaN, DependencyPropertyOptions.AffectsMeasure));
 
         /// <inheritdoc/>
         protected override Size2D MeasureOverride(Size2D availableSize)
@@ -154,18 +154,29 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
 
             foreach (var child in Children)
             {
-                child.Measure(availableSize);
-
-                if (Double.IsNaN(child.DesiredSize.Width) || Double.IsNaN(child.DesiredSize.Height))
-                    continue;
-
-                var childWidth  = child.DesiredSize.Width;
-                var childHeight = child.DesiredSize.Height;
-
                 var left   = GetLeft(child);
                 var top    = GetTop(child);
                 var right  = GetRight(child);
                 var bottom = GetBottom(child);
+
+                var constraintWidth  = availableSize.Width;
+                var constraintHeight = availableSize.Height;
+
+                /* NOTE: For the purposes of determining desired size, we assume that
+                 * children which stretch - i.e., which have both left & right or
+                 * top & bottom values - are content-sized along the relevant axis.
+                 * Otherwise, the canvas will expand to fill all available space. */
+
+                if (!Double.IsNaN(left) && !Double.IsNaN(right))
+                    constraintWidth = Double.PositiveInfinity;
+
+                if (!Double.IsNaN(top) && !Double.IsNaN(bottom))
+                    constraintHeight = Double.PositiveInfinity;
+
+                child.Measure(new Size2D(constraintWidth, constraintHeight));
+
+                var childWidth  = child.DesiredSize.Width;
+                var childHeight = child.DesiredSize.Height;
 
                 if (!Double.IsNaN(left))
                     childWidth += left;
@@ -212,14 +223,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
                 var childHeight = Math.Min(child.DesiredSize.Height, finalSize.Height - (validTop + validBottom));
                 
                 if (!Double.IsNaN(left) && !Double.IsNaN(right))
-                {
-                    childWidth = finalSize.Width - (left + right);
-                }
+                    childWidth = Math.Max(0, finalSize.Width - (left + right));
 
                 if (!Double.IsNaN(top) && !Double.IsNaN(bottom))
-                {
-                    childHeight = finalSize.Height - (top + bottom);
-                }
+                    childHeight = Math.Max(0, finalSize.Height - (top + bottom));
                 
                 var childX = 0.0;
                 var childY = 0.0;

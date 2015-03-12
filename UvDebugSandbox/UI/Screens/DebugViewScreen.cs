@@ -9,7 +9,30 @@ namespace UvDebugSandbox.UI.Screens
 {
     public class DebugViewModel
     {
+        private PresentationFoundationView view;
 
+        public DebugViewModel(PresentationFoundationView view)
+        {
+            this.view = view;
+        }
+
+        public void PrintVisualTree(UIElement element)
+        {
+            var root = view.LayoutRoot;
+            PrintVisualTreeNode(root, 0);
+        }
+
+        private void PrintVisualTreeNode(DependencyObject dobj, Int32 indentLayer)
+        {
+            var indent = new String(' ', indentLayer * 2);
+            System.Diagnostics.Debug.WriteLine(indent + dobj.GetType().Name);
+
+            var children = VisualTreeHelper.GetChildrenCount(dobj);
+            for (int i = 0; i < children; i++)
+            {
+                PrintVisualTreeNode(VisualTreeHelper.GetChild(dobj, i), indentLayer + 1);
+            }
+        }
     }
 
     public class DebugViewScreen : UvDebugScreen
@@ -24,7 +47,7 @@ namespace UvDebugSandbox.UI.Screens
         {
             if (View != null)
             {
-                View.SetViewModel(new DebugViewModel());
+                View.SetViewModel(new DebugViewModel((PresentationFoundationView)View));
             }
             base.OnViewLoaded();
         }
