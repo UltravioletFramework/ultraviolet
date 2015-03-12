@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Text;
 using TwistedLogik.Ultraviolet.Input;
+using TwistedLogik.Ultraviolet.UI.Presentation.Input;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
 {
     /// <summary>
     /// Represents a button on a user interface.
     /// </summary>
-    [UIElement("NumericUpDown", "TwistedLogik.Ultraviolet.UI.Presentation.Elements.Templates.NumericUpDown.xml")]
+    [UvmlKnownType(null, "TwistedLogik.Ultraviolet.UI.Presentation.Elements.Templates.NumericUpDown.xml")]
     public class NumericUpDown : RangeBase
     {
         /// <summary>
@@ -57,6 +58,25 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             base.OnValueChanged();
         }
 
+        /// <inheritdoc/>
+        protected override void OnKeyDown(KeyboardDevice device, Key key, KeyModifiers modifiers, ref Boolean handled)
+        {
+            switch (key)
+            {
+                case Key.Up:
+                    IncreaseSmall();
+                    handled = true;
+                    break;
+
+                case Key.Down:
+                    DecreaseSmall();
+                    handled = true;
+                    break;
+            }
+
+            base.OnKeyDown(device, key, modifiers, ref handled);
+        }
+
         /// <summary>
         /// Raises the <see cref="DecimalPlacesChanged"/> event.
         /// </summary>
@@ -79,25 +99,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             updown.InvalidatePattern();
             updown.InvalidateFormatString();
             updown.OnDecimalPlacesChanged();
-        }
-
-        /// <summary>
-        /// Handles the <see cref="UIElement.KeyPressed"/> event for the Input component.
-        /// </summary>
-        private void InputKeyPressed(UIElement element, KeyboardDevice device, Key key, Boolean ctrl, Boolean alt, Boolean shift, Boolean repeat)
-        {
-            switch (key)
-            {
-                case Key.Up:
-                    IncreaseSmall();
-                    break;
-
-                case Key.Down:
-                    DecreaseSmall();
-                    break;
-            }
-
-            base.OnKeyPressed(device, key, ctrl, alt, shift, repeat);
         }
 
         /// <summary>

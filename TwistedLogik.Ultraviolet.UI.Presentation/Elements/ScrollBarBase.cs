@@ -38,23 +38,24 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         public static readonly DependencyProperty ViewportSizeProperty = DependencyProperty.Register("ViewportSize", typeof(Double), typeof(ScrollBarBase),
             new DependencyPropertyMetadata(HandleViewportSizeChanged, null, DependencyPropertyOptions.AffectsPosition));
 
-        /// <summary>
-        /// Updates the layout of the scroll bar's components.
-        /// </summary>
-        protected abstract void PositionScrollBarComponents();
+        /// <inheritdoc/>
+        protected override void OnMinimumChanged()
+        {
+            InvalidateMeasure();
+            base.OnMinimumChanged();
+        }
 
         /// <inheritdoc/>
-        protected override void PositionOverride(Point2D position)
+        protected override void OnMaximumChanged()
         {
-            base.PositionOverride(position);
-
-            PositionScrollBarComponents();
+            InvalidateMeasure();
+            base.OnMaximumChanged();
         }
 
         /// <inheritdoc/>
         protected override void OnValueChanged()
         {
-            PositionScrollBarComponents();
+            InvalidateMeasure();
             base.OnValueChanged();
         }
 
@@ -68,141 +69,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             {
                 temp(this);
             }
-        }
-
-        /// <summary>
-        /// Calculates the scroll thumb's offset.
-        /// </summary>
-        /// <param name="thumbLength">The length of the scroll thumb.</param>
-        /// <returns>The scroll thumb's current offset.</returns>
-        protected Double CalculateThumbOffset(Double thumbLength)
-        {
-            var val = Value;
-            var min = Minimum;
-            var max = Maximum;
-
-            if (min == max)
-                return 0;
-
-            var available = ActualTrackLength - thumbLength;
-            var percent   = (val - min) / (max - min);
-            var used      = available * percent;
-
-            return used;
-        }
-
-        /// <summary>
-        /// Updates the length of the scroll bar's thumb.
-        /// </summary>
-        /// <param name="thumbLengthMinimum">The minimum length of the thumb.</param>
-        /// <returns>The calculated thumb length.</returns>
-        protected Double CalculateThumbLength(Double thumbLengthMinimum)
-        {
-            var max = Maximum;
-            var min = Minimum;
-            var vps = ViewportSize;
-
-            if (max - min + vps == 0)
-                return 0;
-
-            var lengthMin   = LayoutUtil.GetValidMeasure(thumbLengthMinimum, 0);
-            var lengthThumb = ((vps / (max - min + vps)) * ActualTrackLength);
-            if (lengthThumb < lengthMin)
-            {
-                lengthThumb = lengthMin;
-            }
-
-            return lengthThumb;
-        }
-
-        /// <summary>
-        /// Converts a range value to a pixel offset into the scroll bar's track.
-        /// </summary>
-        /// <param name="value">The range value to convert.</param>
-        /// <returns>The converted pixel value.</returns>
-        protected Double ValueToOffset(Double value)
-        {
-            var available = ActualTrackLength - ActualThumbLength;
-
-            var min = Minimum;
-            var max = Maximum;
-
-            if (max == min)
-                return 0;
-
-            var percent = (value - min) / (max - min);
-            var used    = available * percent;
-
-            return used;
-        }
-
-        /// <summary>
-        /// Converts a pixel offset into the scroll bar's track to a range value.
-        /// </summary>
-        /// <param name="pixels">The pixel value to convert.</param>
-        /// <returns>The converted range value.</returns>
-        protected Double OffsetToValue(Double pixels)
-        {
-            var available = ActualTrackLength - ActualThumbLength;
-
-            var min = Minimum;
-            var max = Maximum;
-
-            if (max == min)
-                return 0;
-
-            var percent = pixels / available;
-            var value   = (percent * (Maximum - Minimum)) + Minimum;
-
-            return value;
-        }
-
-        /// <summary>
-        /// Gets the offset from the left edge of the control to the left edge of the scroll bar's track.
-        /// </summary>
-        protected abstract Double ActualTrackOffsetX
-        {
-            get;
-        }
-
-        /// <summary>
-        /// Gets the offset from the top edge of the control to the top edge of the scroll bar's track.
-        /// </summary>
-        protected abstract Double ActualTrackOffsetY
-        {
-            get;
-        }
-
-        /// <summary>
-        /// Gets the width of the scroll bar's track.
-        /// </summary>
-        protected abstract Double ActualTrackWidth
-        {
-            get;
-        }
-
-        /// <summary>
-        /// Gets the height of the scroll bar's track.
-        /// </summary>
-        protected abstract Double ActualTrackHeight
-        {
-            get;
-        }
-
-        /// <summary>
-        /// Gets the length of the scroll bar's track.
-        /// </summary>
-        protected abstract Double ActualTrackLength
-        {
-            get;
-        }
-
-        /// <summary>
-        /// Gets the length of the scroll bar's thumb.
-        /// </summary>
-        protected abstract Double ActualThumbLength
-        {
-            get;
         }
 
         /// <summary>

@@ -6,7 +6,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
     /// <summary>
     /// Represents a control that allows the user to select items.
     /// </summary>
-    [UIElement("Selector")]
+    [UvmlKnownType]
     public abstract class Selector : ItemsControl
     {
         /// <summary>

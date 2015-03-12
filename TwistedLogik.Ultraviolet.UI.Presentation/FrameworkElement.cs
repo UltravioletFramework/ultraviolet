@@ -8,7 +8,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
     /// <summary>
     /// Represents the base class for standard Ultraviolet Presentation Foundation elements.
     /// </summary>
-    [UIElement("element")]
+    [UvmlKnownType("element")]
     public abstract class FrameworkElement : UIElement
     {
         /// <summary>
@@ -421,19 +421,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <inheritdoc/>
-        protected internal override void OnFocused()
+        protected override void OnGotKeyboardFocus(ref Boolean handled)
         {
             VisualStateGroups.GoToState("focus", "focused");
 
-            base.OnFocused();
+            base.OnGotKeyboardFocus(ref handled);
         }
 
         /// <inheritdoc/>
-        protected internal override void OnBlurred()
+        protected override void OnLostKeyboardFocus(ref Boolean handled)
         {
             VisualStateGroups.GoToState("focus", "blurred");
 
-            base.OnBlurred();
+            base.OnLostKeyboardFocus(ref handled);
         }
 
         /// <summary>

@@ -251,6 +251,9 @@
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Elements\HScrollBar.cs">
       <Link>Elements\HScrollBar.cs</Link>
     </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Elements\HScrollTrack.cs">
+      <Link>Elements\HScrollTrack.cs</Link>
+    </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Elements\HSlider.cs">
       <Link>Elements\HSlider.cs</Link>
     </Compile>
@@ -329,6 +332,12 @@
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Elements\ScrollBarVisibility.cs">
       <Link>Elements\ScrollBarVisibility.cs</Link>
     </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Elements\ScrollContentPresenter.cs">
+      <Link>Elements\ScrollContentPresenter.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Elements\ScrollTrackBase.cs">
+      <Link>Elements\ScrollTrackBase.cs</Link>
+    </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Elements\ScrollViewer.cs">
       <Link>Elements\ScrollViewer.cs</Link>
     </Compile>
@@ -368,6 +377,9 @@
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Elements\VScrollBar.cs">
       <Link>Elements\VScrollBar.cs</Link>
     </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Elements\VScrollTrack.cs">
+      <Link>Elements\VScrollTrack.cs</Link>
+    </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Elements\VSlider.cs">
       <Link>Elements\VSlider.cs</Link>
     </Compile>
@@ -394,6 +406,15 @@
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\IDependencyPropertyValue.cs">
       <Link>IDependencyPropertyValue.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Input\Keyboard.cs">
+      <Link>Input\Keyboard.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Input\KeyModifiers.cs">
+      <Link>Input\KeyModifiers.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Input\Mouse.cs">
+      <Link>Input\Mouse.cs</Link>
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\IUltravioletDisplayExtensions.cs">
       <Link>IUltravioletDisplayExtensions.cs</Link>
@@ -422,8 +443,11 @@
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\PresentationFoundation.cs">
       <Link>PresentationFoundation.cs</Link>
     </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\PresentationFoundation.RegisteredElement.cs">
-      <Link>PresentationFoundation.RegisteredElement.cs</Link>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\PresentationFoundation.KnownElement.cs">
+      <Link>PresentationFoundation.KnownElement.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\PresentationFoundation.KnownType.cs">
+      <Link>PresentationFoundation.KnownType.cs</Link>
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\PresentationFoundationFactoryInitializer.cs">
       <Link>PresentationFoundationFactoryInitializer.cs</Link>
@@ -439,6 +463,30 @@
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Properties\AssemblyInfo.cs">
       <Link>Properties\AssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\RoutedEvent.cs">
+      <Link>RoutedEvent.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\RoutedEventClassHandlerManager.cs">
+      <Link>RoutedEventClassHandlerManager.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\RoutedEventClassHandlers.cs">
+      <Link>RoutedEventClassHandlers.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\RoutedEventHandlerMetadata.cs">
+      <Link>RoutedEventHandlerMetadata.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\RoutedEventInvocation.cs">
+      <Link>RoutedEventInvocation.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\RoutedEventManager.cs">
+      <Link>RoutedEventManager.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\RoutedEventSystem.cs">
+      <Link>RoutedEventSystem.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\RoutingStrategy.cs">
+      <Link>RoutingStrategy.cs</Link>
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\SourcedAssetID.cs">
       <Link>SourcedAssetID.cs</Link>
@@ -572,9 +620,6 @@
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\UIElement.cs">
       <Link>UIElement.cs</Link>
     </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\UIElementAttribute.cs">
-      <Link>UIElementAttribute.cs</Link>
-    </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\UIElementClassCollection.cs">
       <Link>UIElementClassCollection.cs</Link>
     </Compile>
@@ -587,11 +632,20 @@
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\UvmlException.cs">
       <Link>UvmlException.cs</Link>
     </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\UvmlKnownTypeAttribute.cs">
+      <Link>UvmlKnownTypeAttribute.cs</Link>
+    </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\UvmlLoader.cs">
       <Link>UvmlLoader.cs</Link>
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\UvmlLoader.InstantiationContext.cs">
       <Link>UvmlLoader.InstantiationContext.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\UvmlLoader.UvmlAttribute.cs">
+      <Link>UvmlLoader.UvmlAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\UvmlLoader.UvmlAttributeType.cs">
+      <Link>UvmlLoader.UvmlAttributeType.cs</Link>
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\VerticalAlignment.cs">
       <Link>VerticalAlignment.cs</Link>
@@ -640,6 +694,9 @@
     <Content Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Elements\Templates\HScrollBar.xml">
       <Link>Elements\Templates\HScrollBar.xml</Link>
     </Content>
+    <Content Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Elements\Templates\HScrollTrack.xml">
+      <Link>Elements\Templates\HScrollTrack.xml</Link>
+    </Content>
     <Content Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Elements\Templates\HSlider.xml">
       <Link>Elements\Templates\HSlider.xml</Link>
     </Content>
@@ -660,12 +717,16 @@
     </Content>
     <Content Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Elements\Templates\ScrollViewer.xml">
       <Link>Elements\Templates\ScrollViewer.xml</Link>
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Elements\Templates\TextBox.xml">
       <Link>Elements\Templates\TextBox.xml</Link>
     </Content>
     <Content Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Elements\Templates\VScrollBar.xml">
       <Link>Elements\Templates\VScrollBar.xml</Link>
+    </Content>
+    <Content Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Elements\Templates\VScrollTrack.xml">
+      <Link>Elements\Templates\VScrollTrack.xml</Link>
     </Content>
     <Content Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Elements\Templates\VSlider.xml">
       <Link>Elements\Templates\VSlider.xml</Link>
@@ -693,7 +754,7 @@
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" ProjectLinkReference="7379d9e1-bb01-4b05-b4f7-5d39b393348f" />
+      <UserProperties ProjectLinkReference="7379d9e1-bb01-4b05-b4f7-5d39b393348f" ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" />
     </VisualStudio>
   </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

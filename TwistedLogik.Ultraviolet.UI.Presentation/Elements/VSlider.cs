@@ -6,7 +6,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
     /// <summary>
     /// Represents a vertical slider.
     /// </summary>
-    [UIElement("VSlider", "TwistedLogik.Ultraviolet.UI.Presentation.Elements.Templates.VSlider.xml")]
+    [UvmlKnownType(null, "TwistedLogik.Ultraviolet.UI.Presentation.Elements.Templates.VSlider.xml")]
     public class VSlider : SliderBase
     {
         /// <summary>
@@ -21,73 +21,30 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <inheritdoc/>
-        protected override void PositionSliderComponents()
+        protected override Size2D MeasureOverride(Size2D availableSize)
         {
-            var thumbLength = (Thumb == null) ? 0 : Thumb.RenderSize.Height;
-            var thumbOffset = CalculateThumbOffset(thumbLength);
+            UpdateThumbOffset(availableSize);
 
-            if (Thumb != null)
-                Thumb.Height = thumbLength;
-
-            if (UpLarge != null)
-                UpLarge.Height = thumbOffset;
+            return base.MeasureOverride(availableSize);
         }
 
         /// <summary>
-        /// Gets the width of the scroll bar's track in pixels.
+        /// Handles the <see cref="Mouse.PreviewMouseMove"/> event for the Thumb button.
         /// </summary>
-        protected override Double ActualTrackWidth
-        {
-            get { return RenderSize.Width; }
-        }
-
-        /// <summary>
-        /// Gets the height of the scroll bar's track in pixels.
-        /// </summary>
-        protected override Double ActualTrackHeight
-        {
-            get { return RenderSize.Height; }
-        }
-
-        /// <summary>
-        /// Gets the length in pixels of the scroll bar's track.
-        /// </summary>
-        protected override Double ActualTrackLength
-        {
-            get { return RenderSize.Height; }
-        }
-
-        /// <summary>
-        /// Gets the length in pixels of the scroll bar's thumb.
-        /// </summary>
-        protected override Double ActualThumbLength
-        {
-            get
-            {
-                if (LayoutRoot == null || LayoutRoot.RowDefinitions.Count < 3)
-                    return 0;
-
-                return LayoutRoot.RowDefinitions[1].ActualHeight;
-            }
-        }
-
-        /// <summary>
-        /// Handles the <see cref="UIElement.MouseMotion"/> event for the Thumb button.
-        /// </summary>
-        private void HandleThumbMouseMotion(UIElement element, MouseDevice device, Double x, Double y, Double dx, Double dy)
+        private void HandleThumbPreviewMouseMove(UIElement element, MouseDevice device, Double x, Double y, Double dx, Double dy, ref Boolean handled)
         {
             var button = element as Button;
             if (button != null && button.IsDepressed)
             {
                 var relY = y - (AbsolutePosition.Y + thumbDragOffset);
-                Value = OffsetToValue(relY);
+                Value = OffsetToValue(relY, RenderSize.Height, Thumb.RenderSize.Height);
             }
         }
 
         /// <summary>
-        /// Handles the <see cref="UIElement.MouseButtonPressed"/> event for the Thumb button.
+        /// Handles the <see cref="Mouse.PreviewMouseDown"/> event for the Thumb button.
         /// </summary>
-        private void HandleThumbMouseButtonPressed(UIElement element, MouseDevice device, MouseButton pressed)
+        private void HandleThumbPreviewMouseDown(UIElement element, MouseDevice device, MouseButton pressed, ref Boolean handled)
         {
             thumbDragOffset = Display.PixelsToDips(device.Y) - element.AbsoluteBounds.Y;
         }
@@ -108,8 +65,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             IncreaseLarge();
         }
 
+        /// <summary>
+        /// Updates the offset of the slider's thumb.
+        /// </summary>
+        /// <param name="availableSize">The amount of space available to the slider.</param>
+        private void UpdateThumbOffset(Size2D availableSize)
+        {
+            if (Thumb == null || UpLarge == null)
+                return;
+
+            UpLarge.Height = CalculateThumbOffset(availableSize.Height, Thumb.RenderSize.Height);
+        }
+        
         // Control component references.
-        private readonly Grid LayoutRoot = null;
         private readonly RepeatButton UpLarge = null;
         private readonly Button Thumb = null;
 

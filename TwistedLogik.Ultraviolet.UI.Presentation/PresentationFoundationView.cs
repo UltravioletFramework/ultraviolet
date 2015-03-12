@@ -6,6 +6,7 @@ using TwistedLogik.Ultraviolet.Input;
 using TwistedLogik.Ultraviolet.Platform;
 using TwistedLogik.Ultraviolet.UI.Presentation.Animations;
 using TwistedLogik.Ultraviolet.UI.Presentation.Elements;
+using TwistedLogik.Ultraviolet.UI.Presentation.Input;
 using TwistedLogik.Ultraviolet.UI.Presentation.Styles;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation
@@ -104,7 +105,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (elementWithFocus == null)
                 return;
 
-            var target = elementWithFocus.GetNavUpElement();
+            var target = default(UIElement);
+            do
+            {
+                target = (target == null) ? elementWithFocus.GetNavUpElement() : target.GetNavUpElement();
+                if (target != null && !target.Focusable)
+                {
+                    target = target.GetFirstFocusableDescendant(false);
+                }
+            }
+            while (target != null && !LayoutUtil.IsValidForNav(target));
+            
             if (target == null)
                 return;
 
@@ -117,7 +128,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (elementWithFocus == null)
                 return;
 
-            var target = elementWithFocus.GetNavDownElement();
+            var target = default(UIElement);
+            do
+            {
+                target = (target == null) ? elementWithFocus.GetNavDownElement() : target.GetNavDownElement();
+                if (target != null && !target.Focusable)
+                {
+                    target = target.GetFirstFocusableDescendant(false);
+                }
+            }
+            while (target != null && !LayoutUtil.IsValidForNav(target));
+
             if (target == null)
                 return;
 
@@ -130,7 +151,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (elementWithFocus == null)
                 return;
 
-            var target = elementWithFocus.GetNavLeftElement();
+            var target = default(UIElement);
+            do
+            {
+                target = (target == null) ? elementWithFocus.GetNavLeftElement() : target.GetNavLeftElement();
+                if (target != null && !target.Focusable)
+                {
+                    target = target.GetFirstFocusableDescendant(false);
+                }
+            }
+            while (target != null && !LayoutUtil.IsValidForNav(target));
+
             if (target == null)
                 return;
 
@@ -143,7 +174,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (elementWithFocus == null)
                 return;
 
-            var target = elementWithFocus.GetNavRightElement();
+            var target = default(UIElement);
+            do
+            {
+                target = (target == null) ? elementWithFocus.GetNavRightElement() : target.GetNavRightElement();
+                if (target != null && !target.Focusable)
+                {
+                    target = target.GetFirstFocusableDescendant(false);
+                }
+            }
+            while (target != null && !LayoutUtil.IsValidForNav(target));
+
             if (target == null)
                 return;
 
@@ -206,10 +247,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 return;
 
             if (elementWithFocus != null)
-                elementWithFocus.OnBlurred();
+            {
+                var handledLostFocus = false;
+                Keyboard.RaiseLostKeyboardFocus(elementWithFocus, ref handledLostFocus);
+            }
 
             elementWithFocus = element;
-            elementWithFocus.OnFocused();
+
+            var handledGotFocus = false;
+            Keyboard.RaiseGotKeyboardFocus(elementWithFocus, ref handledGotFocus);
         }
 
         /// <summary>
@@ -223,7 +269,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (elementWithFocus != element)
                 return;
 
-            elementWithFocus.OnBlurred();
+            var handledLostFocus = false;
+            Keyboard.RaiseLostKeyboardFocus(elementWithFocus, ref handledLostFocus);
+            
             elementWithFocus = null;
         }
 
@@ -239,10 +287,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 return;
 
             if (elementWithMouseCapture != null)
-                elementWithMouseCapture.OnLostMouseCapture();
+            {
+                var lostMouseCaptureHandled = false;
+                Mouse.RaiseLostMouseCapture(elementWithMouseCapture, ref lostMouseCaptureHandled);
+            }
 
             elementWithMouseCapture = element;
-            elementWithMouseCapture.OnGainedMouseCapture();
+
+            var gotMouseCaptureHandled = false;
+            Mouse.RaiseGotMouseCapture(elementWithMouseCapture, ref gotMouseCaptureHandled);
         }
 
         /// <summary>
@@ -256,7 +309,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (elementWithMouseCapture != element)
                 return;
 
-            elementWithMouseCapture.OnLostMouseCapture();
+            var lostMouseCaptureHandled = false;
+            Mouse.RaiseLostMouseCapture(elementWithMouseCapture, ref lostMouseCaptureHandled);
+
             elementWithMouseCapture = null;
         }
 
@@ -675,6 +730,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 mouse.ButtonReleased += mouse_ButtonReleased;
                 mouse.Click          += mouse_Click;
                 mouse.DoubleClick    += mouse_DoubleClick;
+                mouse.WheelScrolled  += mouse_WheelScrolled;
             }
         }
 
@@ -707,6 +763,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 mouse.ButtonReleased -= mouse_ButtonReleased;
                 mouse.Click          -= mouse_Click;
                 mouse.DoubleClick    -= mouse_DoubleClick;
+                mouse.WheelScrolled  -= mouse_WheelScrolled;
             }
         }
 
@@ -768,11 +825,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (elementUnderMouse != elementUnderMousePrev)
             {
                 if (elementUnderMousePrev != null)
-                    elementUnderMousePrev.OnMouseLeave(mouse);
+                {
+                    var mouseLeaveHandled = false;
+                    Mouse.RaiseMouseLeave(elementUnderMousePrev, mouse, ref mouseLeaveHandled);
+                }
 
                 if (elementUnderMouse != null)
                 {
-                    elementUnderMouse.OnMouseEnter(mouse);
+                    var mouseEnterHandled = false;
+                    Mouse.RaiseMouseEnter(elementUnderMouse, mouse, ref mouseEnterHandled);
                 }
             }
         }
@@ -787,7 +848,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             if (elementWithFocus != null)
             {
-                elementWithFocus.OnKeyPressed(device, key, ctrl, alt, shift, repeat);
+                var keyDownHandled = false;
+                Keyboard.RaisePreviewKeyDown(elementWithFocus, device, key, ctrl, alt, shift, repeat, ref keyDownHandled);
+                Keyboard.RaiseKeyDown(elementWithFocus, device, key, ctrl, alt, shift, repeat, ref keyDownHandled);
             }
         }
 
@@ -801,7 +864,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             if (elementWithFocus != null)
             {
-                elementWithFocus.OnKeyReleased(device, key);
+                var keyUpHandled = false;
+                Keyboard.RaisePreviewKeyUp(elementWithFocus, device, key, ref keyUpHandled);
+                Keyboard.RaiseKeyUp(elementWithFocus, device, key, ref keyUpHandled);
             }
         }
 
@@ -815,7 +880,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             if (elementWithFocus != null)
             {
-                elementWithFocus.OnTextInput(device);
+                var textInputHandled = false;
+                Keyboard.RaisePreviewTextInput(elementWithFocus, device, ref textInputHandled);
+                Keyboard.RaiseTextInput(elementWithFocus, device, ref textInputHandled);
             }
         }
 
@@ -835,7 +902,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 var dipsDeltaX = Display.PixelsToDips(dx);
                 var dipsDeltaY = Display.PixelsToDips(dy);
 
-                recipient.OnMouseMotion(device, dipsX, dipsY, dipsDeltaX, dipsDeltaY);
+                var mouseMoveHandled = false;
+                Mouse.RaisePreviewMouseMove(recipient, device, dipsX, dipsY, dipsDeltaX, dipsDeltaY, ref mouseMoveHandled);
+                Mouse.RaiseMouseMove(recipient, device, dipsX, dipsY, dipsDeltaX, dipsDeltaY, ref mouseMoveHandled);
             }
         }
 
@@ -868,7 +937,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             if (recipient != null)
             {
-                recipient.OnMouseButtonPressed(device, button);
+                var mouseDownHandled = false;
+                Mouse.RaisePreviewMouseDown(recipient, device, button, ref mouseDownHandled);
+                Mouse.RaiseMouseDown(recipient, device, button, ref mouseDownHandled);
             }
         }
 
@@ -883,7 +954,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var recipient = elementWithMouseCapture ?? elementUnderMouse;
             if (recipient != null)
             {
-                recipient.OnMouseButtonReleased(device, button);
+                var mouseUpHandled = false;
+                Mouse.RaisePreviewMouseUp(recipient, device, button, ref mouseUpHandled);
+                Mouse.RaiseMouseUp(recipient, device, button, ref mouseUpHandled);
             }
         }
 
@@ -898,7 +971,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var recipient = elementWithMouseCapture ?? elementUnderMouse;
             if (recipient != null)
             {
-                recipient.OnMouseClick(device, button);
+                var mouseClickHandled = false;
+                Mouse.RaisePreviewMouseClick(recipient, device, button, ref mouseClickHandled);
+                Mouse.RaiseMouseClick(recipient, device, button, ref mouseClickHandled);
             }
         }
 
@@ -913,7 +988,29 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var recipient = elementWithMouseCapture ?? elementUnderMouse;
             if (recipient != null)
             {
-                recipient.OnMouseDoubleClick(device, button);
+                var mouseDoubleClickHandled = false;
+                Mouse.RaisePreviewMouseDoubleClick(recipient, device, button, ref mouseDoubleClickHandled);
+                Mouse.RaiseMouseDoubleClick(recipient, device, button, ref mouseDoubleClickHandled);
+            }
+        }
+
+        /// <summary>
+        /// Handles the <see cref="MouseDevice.WheelScrolled"/> event.
+        /// </summary>
+        private void mouse_WheelScrolled(IUltravioletWindow window, MouseDevice device, Int32 x, Int32 y)
+        {
+            if (window != Window)
+                return;
+
+            var recipient = elementWithMouseCapture ?? elementUnderMouse;
+            if (recipient != null)
+            {
+                var dipsX = Display.PixelsToDips(x);
+                var dipsY = Display.PixelsToDips(y);
+
+                var mouseWheelHandled = false;
+                Mouse.RaisePreviewMouseWheel(recipient, device, dipsX, dipsY, ref mouseWheelHandled);
+                Mouse.RaiseMouseWheel(recipient, device, dipsX, dipsY, ref mouseWheelHandled);
             }
         }
 

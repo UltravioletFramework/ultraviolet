@@ -111,6 +111,9 @@
     <Compile Include="DrawingContext.cs" />
     <Compile Include="DrawingContext.OpacityState.cs" />
     <Compile Include="Elements\Border.cs" />
+    <Compile Include="Elements\ScrollTrackBase.cs" />
+    <Compile Include="Elements\VScrollTrack.cs" />
+    <Compile Include="Elements\HScrollTrack.cs" />
     <Compile Include="Elements\IItemContainer.cs" />
     <Compile Include="Elements\ItemCollection.cs" />
     <Compile Include="Elements\ItemCollection.IList.cs" />
@@ -118,6 +121,7 @@
     <Compile Include="Elements\ItemsControl.cs" />
     <Compile Include="Elements\ListBoxItem.cs" />
     <Compile Include="Elements\ListBox.cs" />
+    <Compile Include="Elements\ScrollContentPresenter.cs" />
     <Compile Include="Elements\Selector.cs" />
     <Compile Include="Elements\VSlider.cs" />
     <Compile Include="Elements\HSlider.cs" />
@@ -178,6 +182,11 @@
     <Compile Include="HorizontalAlignment.cs" />
     <Compile Include="IDependencyBoundValue.cs" />
     <Compile Include="IDependencyPropertyValue.cs" />
+    <Compile Include="Input\Mouse.cs" />
+    <Compile Include="Input\Keyboard.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Input\KeyModifiers.cs" />
     <Compile Include="IUltravioletDisplayExtensions.cs" />
     <Compile Include="IUltravioletUIExtensions.cs" />
     <Compile Include="LayoutQueue.cs" />
@@ -186,11 +195,20 @@
     <Compile Include="LayoutUtil.cs" />
     <Compile Include="LogicalTreeHelper.cs" />
     <Compile Include="NamespaceDoc.cs" />
+    <Compile Include="PresentationFoundation.KnownType.cs" />
     <Compile Include="PresentationFoundationFactoryInitializer.cs" />
     <Compile Include="PresentationFoundation.cs" />
-    <Compile Include="PresentationFoundation.RegisteredElement.cs" />
+    <Compile Include="PresentationFoundation.KnownElement.cs" />
     <Compile Include="PresentationStrings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RoutedEvent.cs" />
+    <Compile Include="RoutedEventClassHandlers.cs" />
+    <Compile Include="RoutedEventInvocation.cs" />
+    <Compile Include="RoutedEventClassHandlerManager.cs" />
+    <Compile Include="RoutedEventManager.cs" />
+    <Compile Include="RoutedEventHandlerMetadata.cs" />
+    <Compile Include="RoutedEventSystem.cs" />
+    <Compile Include="RoutingStrategy.cs" />
     <Compile Include="SourcedAssetID.cs" />
     <Compile Include="SourcedImage.cs" />
     <Compile Include="SourcedResource.cs" />
@@ -235,7 +253,7 @@
     <Compile Include="Thickness.cs" />
     <Compile Include="TypeExtensions.cs" />
     <Compile Include="UIElement.cs" />
-    <Compile Include="UIElementAttribute.cs" />
+    <Compile Include="UvmlKnownTypeAttribute.cs" />
     <Compile Include="UIElementClassCollection.cs" />
     <Compile Include="UIElementClassCollection.IEnumerable.cs" />
     <Compile Include="UIElementRegistry.cs" />
@@ -244,6 +262,7 @@
     <Compile Include="UvmlException.cs" />
     <Compile Include="UvmlLoader.cs" />
     <Compile Include="UvmlLoader.InstantiationContext.cs" />
+    <Compile Include="UvmlLoader.UvmlAttribute.cs" />
     <Compile Include="VerticalAlignment.cs" />
     <Compile Include="Visibility.cs" />
     <Compile Include="Visual.cs" />
@@ -284,6 +303,7 @@
     <None Include="..\TwistedLogik.Public.snk">
       <Link>TwistedLogik.Public.snk</Link>
     </None>
+    <Compile Include="UvmlLoader.UvmlAttributeType.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Elements\Templates\NumericUpDown.xml" />
@@ -292,7 +312,9 @@
     <EmbeddedResource Include="Elements\Templates\ScrollViewer.xml" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Elements\Templates\HSlider.xml" />
+    <EmbeddedResource Include="Elements\Templates\HSlider.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Elements\Templates\VSlider.xml" />
@@ -307,6 +329,14 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Elements\Templates\ListBoxItem.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Elements\Templates\HScrollTrack.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Elements\Templates\VScrollTrack.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

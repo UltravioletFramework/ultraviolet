@@ -1,11 +1,13 @@
 ﻿using System;
+using TwistedLogik.Ultraviolet.Input;
+using TwistedLogik.Ultraviolet.UI.Presentation.Input;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
 {
     /// <summary>
     /// Represents a control which provides a scrollable view of its content.
     /// </summary>
-    [UIElement("ScrollViewer", "TwistedLogik.Ultraviolet.UI.Presentation.Elements.Templates.ScrollViewer.xml")]
+    [UvmlKnownType(null, "TwistedLogik.Ultraviolet.UI.Presentation.Elements.Templates.ScrollViewer.xml")]
     public class ScrollViewer : ContentControl
     {
         /// <summary>
@@ -30,32 +32,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// </summary>
         public Double ExtentWidth
         {
-            get 
-            {
-                var element = Content as UIElement;
-                if (element != null)
-                {
-                    return element.RenderSize.Width;
+            get { return (Presenter == null) ? 0 : Presenter.ExtentWidth; }
                 }
-                return 0;
-            }
-        }
 
         /// <summary>
         /// Gets the height of the content which is being displayed by the scroll viewer.
         /// </summary>
         public Double ExtentHeight
         {
-            get
-            {
-                var element = Content as UIElement;
-                if (element != null)
-                {
-                    return element.RenderSize.Height;
+            get { return (Presenter == null) ? 0 : Presenter.ExtentHeight; }
                 }
-                return 0;
-            }
-        }
 
         /// <summary>
         /// Gets the width of the scroll viewer's scrollable area.
@@ -78,7 +64,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// </summary>
         public Double ViewportWidth
         {
-            get { return Bounds.Width; }
+            get { return (Presenter == null) ? 0 : Presenter.ViewportWidth; }
         }
 
         /// <summary>
@@ -86,7 +72,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// </summary>
         public Double ViewportHeight
         {
-            get { return Bounds.Height; }
+            get { return (Presenter == null) ? 0 : Presenter.ViewportHeight; }
         }
 
         /// <summary>
@@ -124,44 +110,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <summary>
-        /// Gets a value indicating whether the scroll viewer's horizontal scroll bar is visible.
-        /// </summary>
-        public Visibility ComputedHorizontalScrollBarVisibility
-        {
-            get 
-            {
-                switch (HorizontalScrollBarVisibility)
-                {
-                    case ScrollBarVisibility.Auto:
-                        return ExtentWidth > ViewportWidth ? Visibility.Visible : Visibility.Collapsed;
-
-                    case ScrollBarVisibility.Hidden:
-                        return Visibility.Collapsed;
-                }
-                return Visibility.Visible; 
-            }
-        }
-
-        /// <summary>
-        /// Gets a value indicating whether the scroll viewer's vertical scroll bar is visible.
-        /// </summary>
-        public Visibility ComputedVerticalScrollBarVisibility
-        {
-            get 
-            {
-                switch (VerticalScrollBarVisibility)
-                {
-                    case ScrollBarVisibility.Auto:
-                        return ExtentHeight > ViewportHeight ? Visibility.Visible : Visibility.Collapsed;
-
-                    case ScrollBarVisibility.Hidden:
-                        return Visibility.Collapsed;
-                }
-                return Visibility.Visible;
-            }
-        }
-
-        /// <summary>
         /// Occurs when the value of the <see cref="HorizontalScrollBarVisibility"/> property changes.
         /// </summary>
         public event UIElementEventHandler HorizontalScrollBarVisibilityChanged;
@@ -184,12 +132,143 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             new DependencyPropertyMetadata(HandleVerticalScrollBarVisibilityChanged, () => ScrollBarVisibility.Visible, DependencyPropertyOptions.AffectsArrange));
 
         /// <inheritdoc/>
+        protected override RectangleD? ClipContentCore()
+        {
+            if (Presenter != null && (ScrollableHeight > 0 || ScrollableWidth > 0))
+            {
+                return Presenter.AbsoluteBounds;
+            }
+            return null;
+        }
+
+        /// <inheritdoc/>
         protected override Size2D MeasureOverride(Size2D availableSize)
         {
-            var size = base.MeasureOverride(availableSize);
-            return new Size2D(
-                Math.Min(availableSize.Width, size.Width),
-                Math.Min(availableSize.Height, size.Height));
+            if (Presenter == null || HScroll == null || VScroll == null)
+                return Size2D.Zero;
+
+            var child = GetVisualChild(0);
+
+            var hVisibility = HorizontalScrollBarVisibility;
+            var vVisibility = VerticalScrollBarVisibility;
+
+            HScroll.Visibility = (hVisibility == ScrollBarVisibility.Visible) ? Visibility.Visible : Visibility.Collapsed;
+            VScroll.Visibility = (vVisibility == ScrollBarVisibility.Visible) ? Visibility.Visible : Visibility.Collapsed;
+
+            var hAuto = (hVisibility == ScrollBarVisibility.Auto);
+            var vAuto = (vVisibility == ScrollBarVisibility.Auto);
+
+            var hNoScroll = (hVisibility == ScrollBarVisibility.Disabled);
+            var vNoScroll = (vVisibility == ScrollBarVisibility.Disabled);
+
+            Presenter.CanScrollHorizontally = (hVisibility != ScrollBarVisibility.Disabled);
+            Presenter.CanScrollVertically   = (vVisibility != ScrollBarVisibility.Disabled);
+
+            child.Measure(availableSize);
+
+            if (hAuto || vAuto)
+            {
+                var hAutoVisible = hAuto && Presenter.ExtentWidth > Presenter.ViewportWidth;
+                if (hAutoVisible)
+                {
+                    HScroll.Visibility = Visibility.Visible;
+                }
+
+                var vAutoVisible = vAuto && Presenter.ExtentHeight > Presenter.ViewportHeight;
+                if (vAutoVisible)
+                {
+                    VScroll.Visibility = Visibility.Visible;
+                }
+
+                if (hAutoVisible || vAutoVisible)
+                {
+                    child.InvalidateMeasure();
+                    child.Measure(availableSize);
+                }
+
+                if (hAuto && vAuto && (hAutoVisible != vAutoVisible))
+                {
+                    hAutoVisible = !hAutoVisible && Presenter.ExtentWidth > Presenter.ViewportWidth;
+                    if (hAutoVisible)
+                    {
+                        HScroll.Visibility = Visibility.Visible;
+                    }
+
+                    vAutoVisible = !vAutoVisible && Presenter.ExtentHeight > Presenter.ViewportHeight;
+                    if (vAutoVisible)
+                    {
+                        VScroll.Visibility = Visibility.Visible;
+                    }
+
+                    if (hAutoVisible || vAutoVisible)
+                    {
+                        child.InvalidateMeasure();
+                        child.Measure(availableSize);
+                    }
+                }
+            }
+
+            HScroll.Minimum = 0;
+            VScroll.Minimum = 0;
+
+            HScroll.Maximum = ScrollableWidth;
+            VScroll.Maximum = ScrollableHeight;
+
+            HScroll.ViewportSize = ViewportWidth;
+            VScroll.ViewportSize = ViewportHeight;
+
+            HScroll.IsEnabled = Presenter.CanScrollHorizontally && ScrollableWidth > 0;
+            VScroll.IsEnabled = Presenter.CanScrollVertically && ScrollableHeight > 0;
+
+            child.InvalidateMeasure();
+            child.Measure(availableSize);
+
+            return child.DesiredSize;
+        }
+
+        /// <inheritdoc/>
+        protected override void OnMouseWheel(MouseDevice device, Double x, Double y, ref Boolean handled)
+        {
+            if (x != 0 && HScroll != null)
+            {
+                HScroll.Value += ScrollDeltaMouseWheel * x;
+            }
+            if (y != 0 && VScroll != null)
+            {
+                VScroll.Value += ScrollDeltaMouseWheel * -y;
+            }
+            handled = true;
+
+            base.OnMouseWheel(device, x, y, ref handled);
+        }
+
+        /// <inheritdoc/>
+        protected override void OnKeyDown(KeyboardDevice device, Key key, KeyModifiers modifiers, ref Boolean handled)
+        {
+            switch (key)
+            {
+                case Key.Up:
+                    VScroll.Value -= ScrollDeltaKey;
+                    handled = true;
+                    break;
+
+                case Key.Down:
+                    VScroll.Value += ScrollDeltaKey;
+                    handled = true;
+                    break;
+
+                case Key.Left:
+                    HScroll.Value -= ScrollDeltaKey;
+                    handled = true;
+                    break;
+
+                case Key.Right:
+                    HScroll.Value += ScrollDeltaKey;
+                    handled = true;
+                    break;
+            }
+
+            base.OnKeyDown(device, key, modifiers, ref handled);
         }
 
         /// <summary>
@@ -213,30 +292,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             if (temp != null)
             {
                 temp(this);
-            }
-        }
-
-        /// <summary>
-        /// Gets a value indicating whether the scroll viewer's vertical scroll bar is enabled.
-        /// </summary>
-        protected Boolean ComputedVerticalScrollBarEnabled
-        {
-            get 
-            { 
-                return ComputedVerticalScrollBarVisibility == Visibility.Visible &&
-                    VerticalScrollBarVisibility != ScrollBarVisibility.Disabled; 
-            }
-        }
-
-        /// <summary>
-        /// Gets a value indicating whether the scroll viewer's horizontal scroll bar is enabled.
-        /// </summary>
-        protected Boolean ComputedHorizontalScrollBarEnabled
-        {
-            get
-            {
-                return ComputedHorizontalScrollBarVisibility == Visibility.Visible &&
-                    HorizontalScrollBarVisibility != ScrollBarVisibility.Disabled; 
             }
         }
 
@@ -314,23 +369,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             ((ScrollBarBase)element).Value = 0;
         }
 
-        /// <summary>
-        /// Gets a value indicating whether the viewer's content can be scrolled horizontally.
-        /// </summary>
-        private Boolean CanScrollHorizontally
-        {
-            get { return HorizontalScrollBarVisibility != ScrollBarVisibility.Disabled; }
-        }
-
-        /// <summary>
-        /// Gets a value indicating whether the viewer's content can be scrolled vertically.
-        /// </summary>
-        private Boolean CanScrollVertically
-        {
-            get { return VerticalScrollBarVisibility != ScrollBarVisibility.Disabled; }
-        }
+        // Scroll deltas for various input events.
+        private const Double ScrollDeltaMouseWheel = 48.0;
+        private const Double ScrollDeltaKey = 16.0;
 
         // Control component references.
+        private readonly ScrollContentPresenter Presenter = null;
         private readonly HScrollBar HScroll = null;
         private readonly VScrollBar VScroll = null;
     }

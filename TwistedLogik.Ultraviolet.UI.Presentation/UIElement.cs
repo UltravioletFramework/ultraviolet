@@ -9,6 +9,7 @@ using TwistedLogik.Ultraviolet.Input;
 using TwistedLogik.Ultraviolet.Platform;
 using TwistedLogik.Ultraviolet.UI.Presentation.Animations;
 using TwistedLogik.Ultraviolet.UI.Presentation.Elements;
+using TwistedLogik.Ultraviolet.UI.Presentation.Input;
 using TwistedLogik.Ultraviolet.UI.Presentation.Styles;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation
@@ -36,65 +37,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
     public delegate void UIElementUpdatingEventHandler(UIElement element, UltravioletTime time);
 
     /// <summary>
-    /// Represents the method that is called when a UI element receives an event from a keyboard device.
-    /// </summary>
-    /// <param name="element">The element that raised the event.</param>
-    /// <param name="device">The keyboard device.</param>
-    public delegate void UIElementKeyboardEventHandler(UIElement element, KeyboardDevice device);
-
-    /// <summary>
-    /// Represents the method that is called when a keyboard key is pressed while an element has focus.
-    /// </summary>
-    /// <param name="element">The element that raised the event.</param>
-    /// <param name="device">The <see cref="KeyboardDevice"/> that raised the event.</param>
-    /// <param name="key">The <see cref="Key"/> value that represents the key that was pressed.</param>
-    /// <param name="ctrl">A value indicating whether the Control modifier is active.</param>
-    /// <param name="alt">A value indicating whether the Alt modifier is active.</param>
-    /// <param name="shift">A value indicating whether the Shift modifier is active.</param>
-    /// <param name="repeat">A value indicating whether this is a repeated key press.</param>
-    public delegate void UIElementKeyPressedEventHandler(UIElement element, KeyboardDevice device, Key key, Boolean ctrl, Boolean alt, Boolean shift, Boolean repeat);
-
-    /// <summary>
-    /// Represents the method that is called when a keyboard key is released while an element has focus.
-    /// </summary>
-    /// <param name="element">The element that raised the event.</param>
-    /// <param name="device">The <see cref="KeyboardDevice"/> that raised the event.</param>
-    /// <param name="key">The <see cref="Key"/> value that represents the key that was pressed.</param>
-    public delegate void UIElementKeyReleasedEventHandler(UIElement element, KeyboardDevice device, Key key);
-
-    /// <summary>
-    /// Represents the method that is called when the mouse cursor enters or leaves a UI element.
-    /// </summary>
-    /// <param name="element">The element that raised the event.</param>
-    /// <param name="device">The mouse device.</param>
-    public delegate void UIElementMouseEventHandler(UIElement element, MouseDevice device);
-
-    /// <summary>
-    /// Represents the method that is called when a button is pressed or released while an element is under the mouse.
-    /// </summary>
-    /// <param name="element">The element that raised the event.</param>
-    /// <param name="device">The mouse device.</param>
-    /// <param name="button">The mouse button that was pressed or released.</param>
-    public delegate void UIElementMouseButtonEventHandler(UIElement element, MouseDevice device, MouseButton button);
-
-    /// <summary>
-    /// Represents the method that is called when the mouse moves over a control.
-    /// </summary>
-    /// <param name="element">The element that raised the event.</param>
-    /// <param name="device">The mouse device.</param>
-    /// <param name="x">The x-coordinate of the cursor in device-independent screen coordinates.</param>
-    /// <param name="y">The y-coordinate of the cursor in device-independent screen coordinates.</param>
-    /// <param name="dx">The difference between the x-coordinate of the mouse's 
-    /// current position and the x-coordinate of the mouse's previous position.</param>
-    /// <param name="dy">The difference between the y-coordinate of the mouse's 
-    /// current position and the y-coordinate of the mouse's previous position.</param>
-    public delegate void UIElementMouseMotionEventHandler(UIElement element, MouseDevice device, Double x, Double y, Double dx, Double dy);
-
-    /// <summary>
     /// Represents the method that is called when a UI element raises an event.
     /// </summary>
     /// <param name="element">The element that raised the event.</param>
     public delegate void UIElementEventHandler(UIElement element);
+
+    /// <summary>
+    /// Represents the method that is called when a UI element raises a routed event.
+    /// </summary>
+    /// <param name="element">The element that raised the event.</param>
+    /// <param name="handled">A value indicating whether the event has been handled.</param>
+    public delegate void UIElementRoutedEventHandler(UIElement element, ref Boolean handled);
 
     /// <summary>
     /// Represents the base class for all elements within the Ultraviolet Presentation Foundation.
@@ -106,6 +59,22 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         static UIElement()
         {
+            RoutedEvent.RegisterClassHandler(typeof(UIElement), Keyboard.GotKeyboardFocusEvent, new UIElementRoutedEventHandler(OnGotKeyboardFocusProxy));
+            RoutedEvent.RegisterClassHandler(typeof(UIElement), Keyboard.LostKeyboardFocusEvent, new UIElementRoutedEventHandler(OnLostKeyboardFocusProxy));
+            RoutedEvent.RegisterClassHandler(typeof(UIElement), Keyboard.KeyDownEvent, new UIElementKeyDownEventHandler(OnKeyDownProxy));
+            RoutedEvent.RegisterClassHandler(typeof(UIElement), Keyboard.KeyUpEvent, new UIElementKeyEventHandler(OnKeyUpProxy));
+            RoutedEvent.RegisterClassHandler(typeof(UIElement), Keyboard.TextInputEvent, new UIElementKeyboardEventHandler(OnTextInputProxy));
+
+            RoutedEvent.RegisterClassHandler(typeof(UIElement), Mouse.GotMouseCaptureEvent, new UIElementRoutedEventHandler(OnGotMouseCaptureProxy));
+            RoutedEvent.RegisterClassHandler(typeof(UIElement), Mouse.LostMouseCaptureEvent, new UIElementRoutedEventHandler(OnLostMouseCaptureProxy));
+            RoutedEvent.RegisterClassHandler(typeof(UIElement), Mouse.MouseMoveEvent, new UIElementMouseMoveEventHandler(OnMouseMoveProxy));
+            RoutedEvent.RegisterClassHandler(typeof(UIElement), Mouse.MouseEnterEvent, new UIElementMouseEventHandler(OnMouseEnterProxy));
+            RoutedEvent.RegisterClassHandler(typeof(UIElement), Mouse.MouseLeaveEvent, new UIElementMouseEventHandler(OnMouseLeaveProxy));
+            RoutedEvent.RegisterClassHandler(typeof(UIElement), Mouse.MouseDownEvent, new UIElementMouseButtonEventHandler(OnMouseDownProxy));
+            RoutedEvent.RegisterClassHandler(typeof(UIElement), Mouse.MouseUpEvent, new UIElementMouseButtonEventHandler(OnMouseUpProxy));
+            RoutedEvent.RegisterClassHandler(typeof(UIElement), Mouse.MouseClickEvent, new UIElementMouseButtonEventHandler(OnMouseClickProxy));
+            RoutedEvent.RegisterClassHandler(typeof(UIElement), Mouse.MouseDoubleClickEvent, new UIElementMouseButtonEventHandler(OnMouseDoubleClickProxy));
+            RoutedEvent.RegisterClassHandler(typeof(UIElement), Mouse.MouseWheelEvent, new UIElementMouseWheelEventHandler(OnMouseWheelProxy));
         }
 
         /// <summary>
@@ -121,10 +90,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             this.id      = id;
             this.classes = new UIElementClassCollection(this);
 
-            var attr = (UIElementAttribute)GetType().GetCustomAttributes(typeof(UIElementAttribute), false).SingleOrDefault();
+            var attr = (UvmlKnownTypeAttribute)GetType().GetCustomAttributes(typeof(UvmlKnownTypeAttribute), false).SingleOrDefault();
             if (attr != null)
             {
-                this.name = attr.Name;
+                this.name = attr.Name ?? GetType().Name;
             }
         }
 
@@ -195,12 +164,28 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (clip != null)
                 dc.PushClipRectangle(clip.Value);
 
+            var shouldDraw = true;
+
+            if (clip.HasValue && clip.Value.IsEmpty)
+                shouldDraw = false;
+
+            var scissor = Ultraviolet.GetGraphics().GetScissorRectangle();
+            if (scissor.HasValue)
+            {
+                var absBounds = Display.DipsToPixels(AbsoluteBounds);
+                if (!absBounds.Intersects(scissor.Value))
+                    shouldDraw = false;
+            }
+
+            if (shouldDraw)
+            {
             dc.PushOpacity(Opacity);
 
             DrawCore(time, dc);
             OnDrawing(time, dc);
 
             dc.PopOpacity();
+            }
 
             if (clip != null)
                 dc.PopClipRectangle();
@@ -563,7 +548,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <returns>The specified element, or <c>null</c> if no such element is defined.</returns>
         public UIElement GetNavUpElement()
         {
-            return FindNavElement(NavUp) ?? (Parent == null ? null : Parent.GetNavUpElement());
+            var target = FindNavElement(NavUp);
+            if (target == null)
+            {
+                if (Parent != null)
+                {
+                    return (Parent.AutoNav ? Parent.GetNextNavUp(this) : null) ?? Parent.GetNavUpElement();
+        }
+            }
+            return target;
         }
 
         /// <summary>
@@ -573,7 +566,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <returns>The specified element, or <c>null</c> if no such element is defined.</returns>
         public UIElement GetNavDownElement()
         {
-            return FindNavElement(NavDown) ?? (Parent == null ? null : Parent.GetNavDownElement());
+            var target = FindNavElement(NavDown);
+            if (target == null)
+            {
+                if (Parent != null)
+                {
+                    return (Parent.AutoNav ? Parent.GetNextNavDown(this) : null) ?? Parent.GetNavDownElement();
+        }
+            }
+            return target;
         }
 
         /// <summary>
@@ -583,7 +584,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <returns>The specified element, or <c>null</c> if no such element is defined.</returns>
         public UIElement GetNavLeftElement()
         {
-            return FindNavElement(NavLeft) ?? (Parent == null ? null : Parent.GetNavLeftElement());
+            var target = FindNavElement(NavLeft);
+            if (target == null)
+            {
+                if (Parent != null)
+                {
+                    return (Parent.AutoNav ? Parent.GetNextNavLeft(this) : null) ?? Parent.GetNavLeftElement();
+        }
+            }
+            return target;
         }
 
         /// <summary>
@@ -593,7 +602,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <returns>The specified element, or <c>null</c> if no such element is defined.</returns>
         public UIElement GetNavRightElement()
         {
-            return FindNavElement(NavRight) ?? (Parent == null ? null : Parent.GetNavRightElement());
+            var target = FindNavElement(NavRight);
+            if (target == null)
+            {
+                if (Parent != null)
+                {
+                    return (Parent.AutoNav ? Parent.GetNextNavRight(this) : null) ?? Parent.GetNavRightElement();
+        }
+            }
+            return target;
         }
 
         /// <summary>
@@ -642,6 +659,46 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 return this;
             }
             return match;
+        }
+
+        /// <summary>
+        /// Adds a handler for a routed event to the element.
+        /// </summary>
+        /// <param name="evt">A <see cref="RoutedEvent"/> that identifies the routed event for which to add a handler.</param>
+        /// <param name="handler">A delegate that represents the handler to add to the element for the specified routed event.</param>
+        public void AddHandler(RoutedEvent evt, Delegate handler)
+        {
+            Contract.Require(evt, "evt");
+            Contract.Require(handler, "handler");
+
+            AddHandler(evt, handler, false);
+        }
+
+        /// <summary>
+        /// Adds a handler for a routed event to the element.
+        /// </summary>
+        /// <param name="evt">A <see cref="RoutedEvent"/> that identifies the routed event for which to add a handler.</param>
+        /// <param name="handler">A delegate that represents the handler to add to the element for the specified routed event.</param>
+        /// <param name="handledEventsToo">A value indicating whether the handler should receive events which have already been handled by other handlers.</param>
+        public void AddHandler(RoutedEvent evt, Delegate handler, Boolean handledEventsToo)
+        {
+            Contract.Require(evt, "evt");
+            Contract.Require(handler, "handler");
+
+            routedEventManager.Add(evt, handler, handledEventsToo);
+        }
+
+        /// <summary>
+        /// Removes a handler for a routed event from the element.
+        /// </summary>
+        /// <param name="evt">A <see cref="RoutedEvent"/> that identifies the routed event for which to remove a handler.</param>
+        /// <param name="handler">A delegate that represents the handler to remove from the element for the specified routed event.</param>
+        public void RemoveHandler(RoutedEvent evt, Delegate handler)
+        {
+            Contract.Require(evt, "evt");
+            Contract.Require(handler, "handler");
+
+            routedEventManager.Remove(evt, handler);
         }
 
         /// <summary>
@@ -755,6 +812,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public Boolean IsPositionValid
         {
             get { return isPositionValid; }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether auto-nav is enabled for this control.
+        /// If enabled, auto-nav will attempt to automatically determine the next nav control in the
+        /// up, down, left, and right directions, even if the values of the <see cref="NavUp"/>, <see cref="NavDown"/>,
+        /// <see cref="NavLeft"/>, and <see cref="NavRight"/> properties have not been set.
+        /// </summary>
+        public Boolean AutoNav
+        {
+            get { return GetValue<Boolean>(AutoNavProperty); }
+            set { SetValue<Boolean>(AutoNavProperty, value); }
         }
 
         /// <summary>
@@ -873,6 +942,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 }
                 return desiredSize; 
             }
+        }
+
+        /// <summary>
+        /// Gets the absolute bounding box of the layout area in which the element was most recently arranged.
+        /// </summary>
+        public RectangleD AbsoluteLayoutBounds
+        {
+            get { return mostRecentFinalRect; }
         }
 
         /// <summary>
@@ -1006,74 +1083,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public event UIElementUpdatingEventHandler Updating;
 
         /// <summary>
-        /// Occurs when the element gains input focus.
+        /// Occurs when the value of the <see cref="AutoNav"/> property changes.
         /// </summary>
-        public event UIElementEventHandler Focused;
-
-        /// <summary>
-        /// Occurs when the element loses input focus.
-        /// </summary>
-        public event UIElementEventHandler Blurred;
-
-        /// <summary>
-        /// Occurs when a key is pressed while the element has input focus.
-        /// </summary>
-        public event UIElementKeyPressedEventHandler KeyPressed;
-
-        /// <summary>
-        /// Occurs when a key is released while the element has input focus.
-        /// </summary>
-        public event UIElementKeyReleasedEventHandler KeyReleased;
-
-        /// <summary>
-        /// Occurs when the element receives text input from the keyboard.
-        /// </summary>
-        public event UIElementKeyboardEventHandler TextInput;
-
-        /// <summary>
-        /// Occurs when the element gains mouse capture.
-        /// </summary>
-        public event UIElementEventHandler GainedMouseCapture;
-
-        /// <summary>
-        /// Occurs when the element loses mouse capture.
-        /// </summary>
-        public event UIElementEventHandler LostMouseCapture;
-
-        /// <summary>
-        /// Occurs when the mouse moves over the control.
-        /// </summary>
-        public event UIElementMouseMotionEventHandler MouseMotion;
-
-        /// <summary>
-        /// Occurs when the mouse cursor enters the element.
-        /// </summary>
-        public event UIElementMouseEventHandler MouseEnter;
-
-        /// <summary>
-        /// Occurs when the mouse cursor leaves the element.
-        /// </summary>
-        public event UIElementMouseEventHandler MouseLeave;
-
-        /// <summary>
-        /// Occurs when a mouse button is pressed while the cursor is over the element.
-        /// </summary>
-        public event UIElementMouseButtonEventHandler MouseButtonPressed;
-
-        /// <summary>
-        /// Occurs when a mouse button is released while the cursor is over the element.
-        /// </summary>
-        public event UIElementMouseButtonEventHandler MouseButtonReleased;
-
-        /// <summary>
-        /// Occurs when the mouse is clicked while the cursor is over this element.
-        /// </summary>
-        public event UIElementMouseButtonEventHandler MouseClick;
-
-        /// <summary>
-        /// Occurs when the mouse is double clicked while the cursor is over this element.
-        /// </summary>
-        public event UIElementMouseButtonEventHandler MouseDoubleClick;
+        public event UIElementEventHandler AutoNavChanged;
 
         /// <summary>
         /// Occurs when the value of the <see cref="IsEnabled"/> property changes.
@@ -1134,6 +1146,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Occurs when the value of the <see cref="TabIndex"/> property changes.
         /// </summary>
         public event UIElementEventHandler TabIndexChanged;
+
+        /// <summary>
+        /// Identifies the <see cref="AutoNav"/> dependency property.
+        /// </summary>
+        [Styled("autonav")]
+        public static readonly DependencyProperty AutoNavProperty = DependencyProperty.Register("AutoNav", typeof(Boolean), typeof(UIElement),
+            new DependencyPropertyMetadata(HandleAutoNavChanged, () => true, DependencyPropertyOptions.None));
 
         /// <summary>
         /// Identifies the <see cref="IsEnabled"/> dependency property.
@@ -1358,6 +1377,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Gets the element's list of event handlers for the specified routed event.
+        /// </summary>
+        /// <param name="evt">A <see cref="RoutedEvent"/> that identifies the routed event for which to retrieve handlers.</param>
+        /// <returns>The element's internal list of event handlers for the specified routed event.</returns>
+        internal List<RoutedEventHandlerMetadata> GetHandlers(RoutedEvent evt)
+        {
+            return routedEventManager.GetHandlers(evt);
+        }
+
+        /// <summary>
         /// Gets the stylesheet that was most recently passed to the <see cref="Style(UvssDocument)"/> method.
         /// </summary>
         internal UvssDocument MostRecentStylesheet
@@ -1492,100 +1521,76 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
-        /// Raises the <see cref="Focused"/> event.
+        /// Invoked when a <see cref="Keyboard.GotKeyboardFocusEvent"/> attached routed event occurs.
         /// </summary>
-        protected internal virtual void OnFocused()
+        /// <param name="handled">A value indicating whether the event has been handled.</param>
+        protected virtual void OnGotKeyboardFocus(ref Boolean handled)
         {
-            var temp = Focused;
-            if (temp != null)
-            {
-                temp(this);
+
             }
-        }
 
         /// <summary>
-        /// Raises the <see cref="Blurred"/> event.
+        /// Invoked when a <see cref="Keyboard.LostKeyboardFocusEvent"/> attached routed event occurs.
         /// </summary>
-        protected internal virtual void OnBlurred()
+        /// <param name="handled">A value indicating whether the event has been handled.</param>
+        protected virtual void OnLostKeyboardFocus(ref Boolean handled)
         {
-            var temp = Blurred;
-            if (temp != null)
-            {
-                temp(this);
+
             }
-        }
 
         /// <summary>
-        /// Raises the <see cref="KeyPressed"/> event.
+        /// Invoked when a <see cref="Keyboard.KeyDownEvent"/> attached routed event occurs.
         /// </summary>
-        /// <param name="device">The keyboard device.</param>
+        /// <param name="device">The <see cref="KeyboardDevice"/> that raised the event.</param>
         /// <param name="key">The <see cref="Key"/> value that represents the key that was pressed.</param>
-        /// <param name="ctrl">A value indicating whether the Control modifier is active.</param>
-        /// <param name="alt">A value indicating whether the Alt modifier is active.</param>
-        /// <param name="shift">A value indicating whether the Shift modifier is active.</param>
-        /// <param name="repeat">A value indicating whether this is a repeated key press.</param>
-        protected internal virtual void OnKeyPressed(KeyboardDevice device, Key key, Boolean ctrl, Boolean alt, Boolean shift, Boolean repeat)
+        /// <param name="modifiers">A <see cref="KeyModifiers"/> value indicating which of the key modifiers are currently active.</param>
+        /// <param name="handled">A value indicating whether the event has been handled.</param>
+        protected virtual void OnKeyDown(KeyboardDevice device, Key key, KeyModifiers modifiers, ref Boolean handled)
         {
-            var temp = KeyPressed;
-            if (temp != null)
-            {
-                temp(this, device, key, ctrl, alt, shift, repeat);
+
             }
-        }
 
         /// <summary>
-        /// Raises the <see cref="KeyReleased"/> event.
+        /// Invoked when a <see cref="Keyboard.KeyUpEvent"/> attached routed event occurs.
         /// </summary>
-        /// <param name="device">The keyboard device.</param>
-        /// <param name="key">The <see cref="Key"/> value that represents the key that was released.</param>
-        protected internal virtual void OnKeyReleased(KeyboardDevice device, Key key)
+        /// <param name="device">The <see cref="KeyboardDevice"/> that raised the event.</param>
+        /// <param name="key">The <see cref="Key"/> value that represents the key that was pressed.</param>
+        /// <param name="handled">A value indicating whether the event has been handled.</param>
+        protected virtual void OnKeyUp(KeyboardDevice device, Key key, ref Boolean handled)
         {
-            var temp = KeyReleased;
-            if (temp != null)
-            {
-                temp(this, device, key);
+
             }
-        }
 
         /// <summary>
-        /// Raises the <see cref="TextInput"/> event.
+        /// Invoked when a <see cref="Keyboard.TextInputEvent"/> attached routed event occurs.
         /// </summary>
-        /// <param name="device">The keyboard device.</param>
-        protected internal virtual void OnTextInput(KeyboardDevice device)
-        {
-            var temp = TextInput;
-            if (temp != null)
+        /// <param name="device">The <see cref="KeyboardDevice"/> that raised the event.</param>
+        /// <param name="handled">A value indicating whether the event has been handled.</param>
+        protected virtual void OnTextInput(KeyboardDevice device, ref Boolean handled)
             {
-                temp(this, device);
-            }
+
         }
 
         /// <summary>
-        /// Raises the <see cref="GainedMouseCapture"/> event.
+        /// Invoked by the <see cref="Mouse.GotMouseCaptureEvent"/> attached routed event.
         /// </summary>
-        protected internal virtual void OnGainedMouseCapture()
-        {
-            var temp = GainedMouseCapture;
-            if (temp != null)
+        /// <param name="handled">A value indicating whether the event has been handled.</param>
+        protected virtual void OnGotMouseCapture(ref Boolean handled)
             {
-                temp(this);
-            }
+
         }
 
         /// <summary>
-        /// Raises the <see cref="LostMouseCapture"/> event.
+        /// Invoked by the <see cref="Mouse.LostMouseCaptureEvent"/> attached routed event.
         /// </summary>
-        protected internal virtual void OnLostMouseCapture()
-        {
-            var temp = LostMouseCapture;
-            if (temp != null)
+        /// <param name="handled">A value indicating whether the event has been handled.</param>
+        protected virtual void OnLostMouseCapture(ref Boolean handled)
             {
-                temp(this);
-            }
+
         }
 
         /// <summary>
-        /// Raises the <see cref="MouseMotion"/> event.
+        /// Invoked by the <see cref="Mouse.MouseMoveEvent"/> attached routed event.
         /// </summary>
         /// <param name="device">The mouse device.</param>
         /// <param name="x">The x-coordinate of the cursor in device-independent screen coordinates.</param>
@@ -1594,99 +1599,86 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// current position and the x-coordinate of the mouse's previous position.</param>
         /// <param name="dy">The difference between the y-coordinate of the mouse's 
         /// current position and the y-coordinate of the mouse's previous position.</param>
-        protected internal virtual void OnMouseMotion(MouseDevice device, Double x, Double y, Double dx, Double dy)
-        {
-            var temp = MouseMotion;
-            if (temp != null)
+        /// <param name="handled">A value indicating whether the event has been handled.</param>
+        protected virtual void OnMouseMove(MouseDevice device, Double x, Double y, Double dx, Double dy, ref Boolean handled)
             {
-                temp(this, device, x, y, dx, dy);
-            }
+
         }
 
         /// <summary>
-        /// Raises the <see cref="MouseEnter"/> event.
+        /// Invoked by the <see cref="Mouse.MouseEnterEvent"/> attached routed event.
         /// </summary>
         /// <param name="device">The mouse device.</param>
-        protected internal virtual void OnMouseEnter(MouseDevice device)
+        /// <param name="handled">A value indicating whether the event has been handled.</param>
+        protected virtual void OnMouseEnter(MouseDevice device, ref Boolean handled)
         {
-            IsHovering = true;
 
-            var temp = MouseEnter;
-            if (temp != null)
-            {
-                temp(this, device);
-            }
         }
 
         /// <summary>
-        /// Raises the <see cref="MouseLeave"/> event.
+        /// Invoked by the <see cref="Mouse.MouseLeaveEvent"/> attached routed event.
         /// </summary>
         /// <param name="device">The mouse device.</param>
-        protected internal virtual void OnMouseLeave(MouseDevice device)
+        /// <param name="handled">A value indicating whether the event has been handled.</param>
+        protected virtual void OnMouseLeave(MouseDevice device, ref Boolean handled)
         {
-            IsHovering = false;
 
-            var temp = MouseLeave;
-            if (temp != null)
-            {
-                temp(this, device);
-            }
         }
 
         /// <summary>
-        /// Raises the <see cref="MouseButtonPressed"/> event.
+        /// Invoked by the <see cref="Mouse.MouseUpEvent"/> attached routed event.
         /// </summary>
         /// <param name="device">The mouse device.</param>
         /// <param name="button">The mouse button that was pressed or released.</param>
-        protected internal virtual void OnMouseButtonPressed(MouseDevice device, MouseButton button)
-        {
-            var temp = MouseButtonPressed;
-            if (temp != null)
+        /// <param name="handled">A value indicating whether the event has been handled.</param>
+        protected virtual void OnMouseUp(MouseDevice device, MouseButton button, ref Boolean handled)
             {
-                temp(this, device, button);
-            }
+
         }
 
         /// <summary>
-        /// Raises the <see cref="MouseButtonReleased"/> event.
+        /// Invoked by the <see cref="Mouse.MouseDownEvent"/> attached routed event.
         /// </summary>
         /// <param name="device">The mouse device.</param>
         /// <param name="button">The mouse button that was pressed or released.</param>
-        protected internal virtual void OnMouseButtonReleased(MouseDevice device, MouseButton button)
-        {
-            var temp = MouseButtonReleased;
-            if (temp != null)
+        /// <param name="handled">A value indicating whether the event has been handled.</param>
+        protected virtual void OnMouseDown(MouseDevice device, MouseButton button, ref Boolean handled)
             {
-                temp(this, device, button);
-            }
+
         }
 
         /// <summary>
-        /// Raises the <see cref="MouseClick"/> event.
+        /// Invoked by the <see cref="Mouse.MouseClickEvent"/> attached routed event.
         /// </summary>
         /// <param name="device">The mouse device.</param>
         /// <param name="button">The mouse button that was pressed or released.</param>
-        protected internal virtual void OnMouseClick(MouseDevice device, MouseButton button)
-        {
-            var temp = MouseClick;
-            if (temp != null)
+        /// <param name="handled">A value indicating whether the event has been handled.</param>
+        protected virtual void OnMouseClick(MouseDevice device, MouseButton button, ref Boolean handled)
             {
-                temp(this, device, button);
-            }
+
         }
 
         /// <summary>
-        /// Raises the <see cref="MouseDoubleClick"/> event.
+        /// Invoked by the <see cref="Mouse.MouseDoubleClickEvent"/> attached routed event.
         /// </summary>
         /// <param name="device">The mouse device.</param>
         /// <param name="button">The mouse button that was pressed or released.</param>
-        protected internal virtual void OnMouseDoubleClick(MouseDevice device, MouseButton button)
-        {
-            var temp = MouseDoubleClick;
-            if (temp != null)
+        /// <param name="handled">A value indicating whether the event has been handled.</param>
+        protected virtual void OnMouseDoubleClick(MouseDevice device, MouseButton button, ref Boolean handled)
             {
-                temp(this, device, button);
+
             }
+
+        /// <summary>
+        /// Invoked by the <see cref="Mouse.MouseWheelEvent"/> attached routed event.
+        /// </summary>
+        /// <param name="device">The mouse device.</param>
+        /// <param name="x">The amount that the wheel was scrolled along the x-axis.</param>
+        /// <param name="y">The amount that the wheel was scrolled along the y-axis.</param>
+        /// <param name="handled">A value indicating whether the event has been handled.</param>
+        protected virtual void OnMouseWheel(MouseDevice device, Double x, Double y, ref Boolean handled)
+        {
+
         }
 
         /// <summary>
@@ -1734,6 +1726,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (temp != null)
             {
                 temp(this, time);
+            }
+        }
+
+        /// <summary>
+        /// Raises the <see cref="AutoNavChanged"/> event.
+        /// </summary>
+        protected virtual void OnAutoNavChanged()
+        {
+            var temp = AutoNavChanged;
+            if (temp != null)
+            {
+                temp(this);
             }
         }
 
@@ -2036,7 +2040,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 if (child != null)
                 {
                     child.Animate(storyboard, clock, root);
-                }
+        }
             }
         }
 
@@ -2147,6 +2151,50 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             return this;
         }
         
+        /// <summary>
+        /// Gets the next element to navigate to when focus is moved "up," assuming
+        /// that focus is currently in the specified child element.
+        /// </summary>
+        /// <param name="current">The child element of this element which currently has focus.</param>
+        /// <returns>The next element to navigate to, or <c>null</c> if this element has no navigation preferences.</returns>
+        protected virtual UIElement GetNextNavUp(UIElement current)
+        {
+            return null;
+        }
+
+        /// <summary>
+        /// Gets the next element to navigate to when focus is moved "down," assuming
+        /// that focus is currently in the specified child element.
+        /// </summary>
+        /// <param name="current">The child element of this element which currently has focus.</param>
+        /// <returns>The next element to navigate to, or <c>null</c> if this element has no navigation preferences.</returns>
+        protected virtual UIElement GetNextNavDown(UIElement current)
+        {
+            return null;
+        }
+
+        /// <summary>
+        /// Gets the next element to navigate to when focus is moved "left," assuming
+        /// that focus is currently in the specified child element.
+        /// </summary>
+        /// <param name="current">The child element of this element which currently has focus.</param>
+        /// <returns>The next element to navigate to, or <c>null</c> if this element has no navigation preferences.</returns>
+        protected virtual UIElement GetNextNavLeft(UIElement current)
+        {
+            return null;
+        }
+
+        /// <summary>
+        /// Gets the next element to navigate to when focus is moved "right," assuming
+        /// that focus is currently in the specified child element.
+        /// </summary>
+        /// <param name="current">The child element of this element which currently has focus.</param>
+        /// <returns>The next element to navigate to, or <c>null</c> if this element has no navigation preferences.</returns>
+        protected virtual UIElement GetNextNavRight(UIElement current)
+        {
+            return null;
+        }
+
         /// <summary>
         /// Loads the specified asset from the global content manager.
         /// </summary>
@@ -2360,6 +2408,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Occurs when the value of the <see cref="AutoNav"/> dependency property changes.
+        /// </summary>
+        /// <param name="dobj">The dependency object that raised the event.</param>
+        private static void HandleAutoNavChanged(DependencyObject dobj)
+        {
+            var element = (UIElement)dobj;
+            element.OnAutoNavChanged();
+        }
+
+        /// <summary>
         /// Occurs when the value of the <see cref="IsEnabled"/> dependency property changes.
         /// </summary>
         /// <param name="dobj">The dependency object that raised the event.</param>
@@ -2470,6 +2528,158 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Invokes the <see cref="OnGotKeyboardFocus"/> method.
+        /// </summary>
+        private static void OnGotKeyboardFocusProxy(UIElement element, ref Boolean handled)
+        {
+            element.OnGotKeyboardFocus(ref handled);
+        }
+
+        /// <summary>
+        /// Invokes the <see cref="OnLostKeyboardFocus"/> method.
+        /// </summary>
+        private static void OnLostKeyboardFocusProxy(UIElement element, ref Boolean handled)
+        {
+            element.OnLostKeyboardFocus(ref handled);
+        }
+
+        /// <summary>
+        /// Invokes the <see cref="OnKeyDown"/> method.
+        /// </summary>
+        private static void OnKeyDownProxy(UIElement element, KeyboardDevice device, Key key, KeyModifiers modifiers, ref Boolean handled)
+        {
+            element.OnKeyDown(device, key, modifiers, ref handled);
+        }
+
+        /// <summary>
+        /// Invokes the <see cref="OnKeyUp"/> method.
+        /// </summary>
+        private static void OnKeyUpProxy(UIElement element, KeyboardDevice device, Key key, ref Boolean handled)
+        {
+            element.OnKeyUp(device, key, ref handled);
+        }
+
+        /// <summary>
+        /// Invokes the <see cref="OnTextInput"/> method.
+        /// </summary>
+        private static void OnTextInputProxy(UIElement element, KeyboardDevice device, ref Boolean handled)
+        {
+            element.OnTextInput(device, ref handled);
+        }
+
+        /// <summary>
+        /// Invokes the <see cref="OnGotMouseCapture"/> method.
+        /// </summary>
+        /// <param name="handled">A value indicating whether the event has been handled.</param>
+        private static void OnGotMouseCaptureProxy(UIElement element, ref Boolean handled)
+        {
+            element.OnGotMouseCapture(ref handled);
+        }
+
+        /// <summary>
+        /// Invokes the <see cref="OnLostMouseCapture"/> method.
+        /// </summary>
+        /// <param name="handled">A value indicating whether the event has been handled.</param>
+        private static void OnLostMouseCaptureProxy(UIElement element, ref Boolean handled)
+        {
+            element.OnLostMouseCapture(ref handled);
+        }
+
+        /// <summary>
+        /// Invokes the <see cref="OnMouseMove"/> method.
+        /// </summary>
+        /// <param name="device">The mouse device.</param>
+        /// <param name="x">The x-coordinate of the cursor in device-independent screen coordinates.</param>
+        /// <param name="y">The y-coordinate of the cursor in device-independent screen coordinates.</param>
+        /// <param name="dx">The difference between the x-coordinate of the mouse's 
+        /// current position and the x-coordinate of the mouse's previous position.</param>
+        /// <param name="dy">The difference between the y-coordinate of the mouse's 
+        /// current position and the y-coordinate of the mouse's previous position.</param>
+        /// <param name="handled">A value indicating whether the event has been handled.</param>
+        private static void OnMouseMoveProxy(UIElement element, MouseDevice device, Double x, Double y, Double dx, Double dy, ref Boolean handled)
+        {
+            element.OnMouseMove(device, x, y, dx, dy, ref handled);
+        }
+
+        /// <summary>
+        /// Invokes the <see cref="OnMouseEnter"/> method.
+        /// </summary>
+        /// <param name="device">The mouse device.</param>
+        /// <param name="handled">A value indicating whether the event has been handled.</param>
+        private static void OnMouseEnterProxy(UIElement element, MouseDevice device, ref Boolean handled)
+        {
+            element.IsHovering = true;
+            element.OnMouseEnter(device, ref handled);
+        }
+
+        /// <summary>
+        /// Invokes the <see cref="OnMouseLeave"/> method.
+        /// </summary>
+        /// <param name="device">The mouse device.</param>
+        /// <param name="handled">A value indicating whether the event has been handled.</param>
+        private static void OnMouseLeaveProxy(UIElement element, MouseDevice device, ref Boolean handled)
+        {
+            element.IsHovering = false;
+            element.OnMouseLeave(device, ref handled);
+        }
+
+        /// <summary>
+        /// Invokes the <see cref="OnMouseDown"/> method.
+        /// </summary>
+        /// <param name="device">The mouse device.</param>
+        /// <param name="button">The mouse button that was pressed.</param>
+        /// <param name="handled">A value indicating whether the event has been handled.</param>
+        private static void OnMouseDownProxy(UIElement element, MouseDevice device, MouseButton button, ref Boolean handled)
+        {
+            element.OnMouseDown(device, button, ref handled);
+        }
+
+        /// <summary>
+        /// Invokes the <see cref="OnMouseUp"/> method.
+        /// </summary>
+        /// <param name="device">The mouse device.</param>
+        /// <param name="button">The mouse button that was released.</param>
+        /// <param name="handled">A value indicating whether the event has been handled.</param>
+        private static void OnMouseUpProxy(UIElement element, MouseDevice device, MouseButton button, ref Boolean handled)
+        {
+            element.OnMouseUp(device, button, ref handled);
+        }
+
+        /// <summary>
+        /// Invokes the <see cref="OnMouseClick"/> method.
+        /// </summary>
+        /// <param name="device">The mouse device.</param>
+        /// <param name="button">The mouse button that was clicked.</param>
+        /// <param name="handled">A value indicating whether the event has been handled.</param>
+        private static void OnMouseClickProxy(UIElement element, MouseDevice device, MouseButton button, ref Boolean handled)
+        {
+            element.OnMouseClick(device, button, ref handled);
+        }
+
+        /// <summary>
+        /// Invokes the <see cref="OnMouseDoubleClick"/> method.
+        /// </summary>
+        /// <param name="device">The mouse device.</param>
+        /// <param name="button">The mouse button that was clicked.</param>
+        /// <param name="handled">A value indicating whether the event has been handled.</param>
+        private static void OnMouseDoubleClickProxy(UIElement element, MouseDevice device, MouseButton button, ref Boolean handled)
+        {
+            element.OnMouseDoubleClick(device, button, ref handled);
+        }
+
+        /// <summary>
+        /// Invokes the <see cref="OnMouseWheel"/> method.
+        /// </summary>
+        /// <param name="device">The mouse device.</param>
+        /// <param name="x">The amount that the wheel was scrolled along the x-axis.</param>
+        /// <param name="y">The amount that the wheel was scrolled along the y-axis.</param>
+        /// <param name="handled">A value indicating whether the event has been handled.</param>
+        private static void OnMouseWheelProxy(UIElement element, MouseDevice device, Double x, Double y, ref Boolean handled)
+        {
+            element.OnMouseWheel(device, x, y, ref handled);
+        }
+
+        /// <summary>
         /// Updates the value of the <see cref="LayoutDepth"/> property.
         /// </summary>
         private void CacheLayoutDepth()
@@ -2515,19 +2725,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             {
                 var visualParent = VisualTreeHelper.GetParent(this) as UIElement;
                 if (visualParent == null)
-                    return;
+                return;
 
-                this.view = null;
+            this.view = null;
 
                 for (var current = visualParent; current != null; current = VisualTreeHelper.GetParent(current) as UIElement)
+            {
+                if (current.View != null)
                 {
-                    if (current.View != null)
-                    {
-                        this.view = current.View;
-                        break;
-                    }
+                    this.view = current.View;
+                    break;
                 }
             }
+        }
         }
 
         /// <summary>
@@ -2547,15 +2757,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         private void RegisterElement()
         {
+            if (elementRegistrationContext == null)
+                elementRegistrationContext = FindElementRegistry();
+
             if (String.IsNullOrEmpty(id))
                 return;
 
-            elementRegistrationContext = FindElementRegistry();
             if (elementRegistrationContext != null)
-            {
                 elementRegistrationContext.RegisterElement(this);
             }
-        }
 
         /// <summary>
         /// Removes the element from the current view's element registry.
@@ -2901,5 +3111,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         // The collection of active storyboard clocks on this element.
         private readonly Dictionary<Storyboard, StoryboardClock> storyboardClocks = 
             new Dictionary<Storyboard, StoryboardClock>();
+
+        // The element's routed event manager.
+        private readonly RoutedEventManager routedEventManager = new RoutedEventManager();
     }
 }

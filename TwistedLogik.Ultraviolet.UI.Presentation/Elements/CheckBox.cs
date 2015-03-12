@@ -5,7 +5,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
     /// <summary>
     /// Represents a check box.
     /// </summary>
-    [UIElement("CheckBox", "TwistedLogik.Ultraviolet.UI.Presentation.Elements.Templates.CheckBox.xml")]
+    [UvmlKnownType(null, "TwistedLogik.Ultraviolet.UI.Presentation.Elements.Templates.CheckBox.xml")]
     public class CheckBox : ToggleButton
     {
         /// <summary>

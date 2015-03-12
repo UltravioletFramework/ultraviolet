@@ -5,7 +5,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
     /// <summary>
     /// Represents a list of selectable items.
     /// </summary>
-    [UIElement("ListBox", "TwistedLogik.Ultraviolet.UI.Presentation.Elements.Templates.ListBox.xml")]
+    [UvmlKnownType(null, "TwistedLogik.Ultraviolet.UI.Presentation.Elements.Templates.ListBox.xml")]
     public class ListBox : Selector
     {
         /// <summary>

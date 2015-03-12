@@ -1,5 +1,4 @@
 ﻿using System;
-using TwistedLogik.Nucleus;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation
 {
@@ -8,17 +7,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
     /// a name which can be used to instantiate it via XML.
     /// </summary>
     [AttributeUsage(AttributeTargets.Class, Inherited = false)]
-    public sealed class UIElementAttribute : Attribute
+    public sealed class UvmlKnownTypeAttribute : Attribute
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="UIElementAttribute"/> class.
+        /// Initializes a new instance of the <see cref="UvmlKnownTypeAttribute"/> class.
         /// </summary>
         /// <param name="name">The name of the XML element that represents this class.</param>
         /// <param name="componentTemplate">The manifest resource name of the element's default component template, if it has one.</param>
-        public UIElementAttribute(String name, String componentTemplate = null)
+        public UvmlKnownTypeAttribute(String name = null, String componentTemplate = null)
         {
-            Contract.RequireNotEmpty(name, "name");
-
             this.name              = name;
             this.componentTemplate = componentTemplate;
         }

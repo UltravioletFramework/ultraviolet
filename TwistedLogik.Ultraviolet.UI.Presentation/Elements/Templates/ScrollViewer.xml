@@ -10,19 +10,14 @@
       <RowDefinition Height="Auto"/>
     </Grid.RowDefinitions>
 
-    <ContentPresenter Grid.Column="0" Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-                      UnconstrainedHeight="{{CanScrollVertically}}"/>
+    <ScrollContentPresenter ID="Presenter" Grid.Column="0" Grid.Row="0" />
 
-    <HScrollBar ID="HScroll" Class="scrollview-hscroll" Grid.Column="0" Grid.Row="1" HorizontalAlignment="Stretch" SmallChange="1" LargeChange="{{ViewportWidth}}"
-                IsEnabled="{{ComputedHorizontalScrollBarEnabled}}" ViewportSize="{{ViewportWidth}}"
-                Minimum="0" Maximum="{{ScrollableWidth}}" MaximumChanged="HScroll_MaximumChanged" ValueChanged="HScroll_ValueChanged"
-                Visibility="Visible" VisibilityChanged="HScroll_VisibilityChanged"/>
+    <HScrollBar ID="HScroll" Class="scrollview-hscroll" Grid.Column="0" Grid.Row="1" HorizontalAlignment="Stretch" SmallChange="16" LargeChange="{{ViewportWidth}}"
+                MaximumChanged="HScroll_MaximumChanged" ValueChanged="HScroll_ValueChanged" VisibilityChanged="HScroll_VisibilityChanged"/>
+
+    <VScrollBar ID="VScroll" Class="scrollview-vscroll" Grid.Column="1" Grid.Row="0" VerticalAlignment="Stretch" SmallChange="16" LargeChange="{{ViewportHeight}}"
+                MaximumChanged="VScroll_MaximumChanged" ValueChanged="VScroll_ValueChanged" VisibilityChanged="VScroll_VisibilityChanged"/>
     
-    <VScrollBar ID="VScroll" Class="scrollview-vscroll" Grid.Column="1" Grid.Row="0" VerticalAlignment="Stretch" SmallChange="1" LargeChange="{{ViewportHeight}}"
-                IsEnabled="{{ComputedVerticalScrollBarEnabled}}" ViewportSize="{{ViewportHeight}}" 
-                Minimum="0" Maximum="{{ScrollableHeight}}" MaximumChanged="VScroll_MaximumChanged" ValueChanged="VScroll_ValueChanged"
-                Visibility="Visible" VisibilityChanged="VScroll_VisibilityChanged"/>
-
     <Rectangle Class="scrollview-rect" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
     
   </Grid>

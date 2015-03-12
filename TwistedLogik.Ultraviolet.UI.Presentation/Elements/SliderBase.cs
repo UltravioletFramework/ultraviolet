@@ -18,55 +18,37 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
 
         }
 
-        /// <summary>
-        /// Updates the layout of the slider's components.
-        /// </summary>
-        protected abstract void PositionSliderComponents();
+        /// <inheritdoc/>
+        protected override void OnMinimumChanged()
+        {
+            InvalidateMeasure();
+            base.OnMinimumChanged();
+        }
 
         /// <inheritdoc/>
-        protected override void PositionOverride(Point2D position)
+        protected override void OnMaximumChanged()
         {
-            base.PositionOverride(position);
-
-            PositionSliderComponents();
+            InvalidateMeasure();
+            base.OnMaximumChanged();
         }
 
         /// <inheritdoc/>
         protected override void OnValueChanged()
         {
-            PositionSliderComponents();
+            InvalidateMeasure();
             base.OnValueChanged();
         }
 
         /// <summary>
-        /// Calculates the scroll thumb's offset.
-        /// </summary>
-        /// <param name="thumbLength">The length of the scroll thumb.</param>
-        /// <returns>The scroll thumb's current offset.</returns>
-        protected Double CalculateThumbOffset(Double thumbLength)
-        {
-            var val = Value;
-            var min = Minimum;
-            var max = Maximum;
-
-            if (min == max)
-                return 0;
-
-            var available = ActualTrackLength - thumbLength;
-            var percent   = (val - min) / (max - min);
-            var used      = available * percent;
-
-            return used;
-        }
-
-        /// <summary>
-        /// Converts a range value to a pixel offset into the scroll bar's track.
+        /// Converts a range value to a pixel offset into the scroll bar's slider.
         /// </summary>
         /// <param name="value">The range value to convert.</param>
+        /// <param name="thumbSize">The size of the slider.</param>
+        /// <param name="sliderSize">The size of the thumb.</param>
         /// <returns>The converted pixel value.</returns>
-        protected Double ValueToOffset(Double value)
+        protected Double ValueToOffset(Double value, Double sliderSize, Double thumbSize)
         {
-            var available = ActualTrackLength - ActualThumbLength;
+            var available = sliderSize - thumbSize;
 
             var min = Minimum;
             var max = Maximum;
@@ -81,13 +63,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <summary>
-        /// Converts a pixel offset into the scroll bar's track to a range value.
+        /// Converts a pixel offset into the scroll bar's slider to a range value.
         /// </summary>
         /// <param name="pixels">The pixel value to convert.</param>
+        /// <param name="thumbSize">The size of the slider.</param>
+        /// <param name="sliderSize">The size of the thumb.</param>
         /// <returns>The converted range value.</returns>
-        protected Double OffsetToValue(Double pixels)
+        protected Double OffsetToValue(Double pixels, Double sliderSize, Double thumbSize)
         {
-            var available = ActualTrackLength - ActualThumbLength;
+            var available = sliderSize - thumbSize;
 
             var min = Minimum;
             var max = Maximum;
@@ -100,37 +84,29 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
 
             return value;
         }
-
+        
         /// <summary>
-        /// Gets the width of the scroll bar's track.
+        /// Calculates the offset of the slider's thumb.
         /// </summary>
-        protected abstract Double ActualTrackWidth
+        /// <param name="sliderSize">The size of the slider.</param>
+        /// <param name="thumbSize">The size of the thumb.</param>
+        /// <returns>The offset of the slider's thumb.</returns>
+        protected Double CalculateThumbOffset(Double sliderSize, Double thumbSize)
         {
-            get;
-        }
+            var val = Value;
+            var min = Minimum;
+            var max = Maximum;
 
-        /// <summary>
-        /// Gets the height of the scroll bar's track.
-        /// </summary>
-        protected abstract Double ActualTrackHeight
-        {
-            get;
-        }
+            if (min == max)
+            {
+                return 0;
+            }
 
-        /// <summary>
-        /// Gets the length of the scroll bar's track.
-        /// </summary>
-        protected abstract Double ActualTrackLength
-        {
-            get;
-        }
+            var available = sliderSize - thumbSize;
+            var percent   = (val - min) / (max - min);
+            var used      = available * percent;
 
-        /// <summary>
-        /// Gets the length of the scroll bar's thumb.
-        /// </summary>
-        protected abstract Double ActualThumbLength
-        {
-            get;
+            return Math.Floor(used);
         }
     }
 }

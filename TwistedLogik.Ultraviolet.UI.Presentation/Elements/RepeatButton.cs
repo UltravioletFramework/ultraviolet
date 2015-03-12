@@ -8,7 +8,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
     /// <summary>
     /// Represents a button that raises its <see cref="ButtonBase.Click"/> event repeatedly while it is pressed.
     /// </summary>
-    [UIElement("RepeatButton", "TwistedLogik.Ultraviolet.UI.Presentation.Elements.Templates.RepeatButton.xml")]
+    [UvmlKnownType(null, "TwistedLogik.Ultraviolet.UI.Presentation.Elements.Templates.RepeatButton.xml")]
     public class RepeatButton : Button
     {
         /// <summary>
@@ -81,23 +81,24 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <inheritdoc/>
-        protected internal override void OnLostMouseCapture()
+        protected override void OnLostMouseCapture(ref Boolean handled)
         {
             repeating   = false;
             repeatTimer = 0;
 
-            base.OnLostMouseCapture();
+            base.OnLostMouseCapture(ref handled);
         }
 
         /// <inheritdoc/>
-        protected internal override void OnMouseButtonReleased(MouseDevice device, MouseButton button)
+        protected override void OnMouseDown(MouseDevice device, MouseButton button, ref Boolean handled)
         {
             if (button == MouseButton.Left)
             {
                 repeating   = false;
                 repeatTimer = 0;
+                handled     = true;
             }
-            base.OnMouseButtonReleased(device, button);
+            base.OnMouseDown(device, button, ref handled);
         }
 
         /// <summary>

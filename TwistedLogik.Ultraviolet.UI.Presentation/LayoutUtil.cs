@@ -10,6 +10,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
     public static class LayoutUtil
     {
         /// <summary>
+        /// Gets a value indicating whether the specified element can be navigated to in its current state.
+        /// </summary>
+        /// <param name="element">The element to evaluate.</param>
+        /// <returns><c>true</c> if the specified element is valid for navigation; otherwise, <c>false</c>.</returns>
+        public static Boolean IsValidForNav(UIElement element)
+        {
+            Contract.Require(element, "element");
+
+            return element.Visibility == Visibility.Visible && element.IsEnabled && element.Focusable;
+        }
+
+        /// <summary>
         /// Gets a value indicating whether the specified element is currently being drawn.
         /// </summary>
         /// <param name="element">The element to evaluate.</param>

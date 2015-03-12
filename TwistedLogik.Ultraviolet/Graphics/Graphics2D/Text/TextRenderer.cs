@@ -252,9 +252,23 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
 
             var alpha = color.A / (float)Byte.MaxValue;
 
+            var scissor         = spriteBatch.Ultraviolet.GetGraphics().GetScissorRectangle();
+            var scissorRect     = scissor.GetValueOrDefault();
+            var scissorClipping = scissor.HasValue;
+
             foreach (var token in input)
             {
                 var tokenBounds = token.Bounds;
+
+                if (scissorClipping)
+                {
+                    if (position.Y + tokenBounds.Bottom < scissorRect.Top || position.Y + tokenBounds.Top > scissorRect.Bottom ||
+                        position.X + tokenBounds.Right < scissorRect.Left || position.X + tokenBounds.Left > scissorRect.Right)
+                    {
+                        continue;
+                    }
+                }
+
                 if (token.Icon != null)
                 {
                     var iconInfo  = token.Icon.Value;

@@ -198,7 +198,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
                 Contract.EnsureRange(value >= 0, "value");
 
                 left = value;
-                UpdateMinimumSize();
+                UpdateMinimumRecommendedSize();
             }
         }
 
@@ -213,7 +213,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
                 Contract.EnsureRange(value >= 0, "value");
 
                 top = value;
-                UpdateMinimumSize();
+                UpdateMinimumRecommendedSize();
             }
         }
 
@@ -228,7 +228,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
                 Contract.EnsureRange(value >= 0, "value");
 
                 right = value;
-                UpdateMinimumSize();
+                UpdateMinimumRecommendedSize();
             }
         }
 
@@ -243,7 +243,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
                 Contract.EnsureRange(value >= 0, "value");
 
                 bottom = value;
-                UpdateMinimumSize();
+                UpdateMinimumRecommendedSize();
             }
         }
 
@@ -252,48 +252,65 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         {
             effects |= SpriteEffects.OriginRelativeToDestination;
 
-            if (MinimumSize.Width > 0 && width < MinimumSize.Width)
-                width = MinimumSize.Width;
+            var srcLeft   = this.Left;
+            var srcTop    = this.Top;
+            var srcRight  = this.Right;
+            var srcBottom = this.Bottom;
 
-            if (MinimumSize.Height > 0 && height < MinimumSize.Height)
-                height = MinimumSize.Height;
+            var dstLeft   = srcLeft;
+            var dstTop    = srcTop;
+            var dstRight  = srcRight;
+            var dstBottom = srcBottom;
 
-            var srcStretchableWidth  = this.TextureRegion.Width - (this.Left + this.Right);
-            var srcStretchableHeight = this.TextureRegion.Height - (this.Top + this.Bottom);
+            if (width < MinimumRecommendedSize.Width)
+            {
+                var scale = width / (float)MinimumRecommendedSize.Width;
+                dstLeft   = (Int32)Math.Floor(dstLeft * scale);
+                dstRight  = (Int32)Math.Ceiling(dstRight * scale);
+            }
+            if (height < MinimumRecommendedSize.Height)
+            {
+                var scale = height / (float)MinimumRecommendedSize.Height;
+                dstTop    = (Int32)Math.Floor(dstTop * scale);
+                dstBottom = (Int32)Math.Ceiling(dstBottom * scale);
+            }
 
-            var dstStretchableWidth  = width - (this.Left + this.Right);
-            var dstStretchableHeight = height - (this.Top + this.Bottom);
+            var srcStretchableWidth  = this.TextureRegion.Width - (srcLeft + srcRight);
+            var srcStretchableHeight = this.TextureRegion.Height - (srcTop + srcBottom);
+
+            var dstStretchableWidth  = width - (dstLeft + dstRight);
+            var dstStretchableHeight = height - (dstTop + dstBottom);
 
             // Center
-            var centerSource   = new Rectangle(this.TextureRegion.Left + this.Left, this.TextureRegion.Top + this.Top, srcStretchableWidth, srcStretchableHeight);
+            var centerSource   = new Rectangle(this.TextureRegion.Left + srcLeft, this.TextureRegion.Top + srcTop, srcStretchableWidth, srcStretchableHeight);
             var centerRegion   = new RectangleF(position.X, position.Y, dstStretchableWidth, dstStretchableHeight);
-            var centerPosition = new Vector2(this.Left, this.Top);
+            var centerPosition = new Vector2(dstLeft, dstTop);
             if (this.TileCenter)
             {
                 TileImageSegment(spriteBatch, this.Texture, centerPosition, centerRegion, centerSource, color, rotation, origin, effects, layerDepth, data);
             }
             else
             {
-                var centerOrigin   = origin - centerPosition;
+                var centerOrigin = origin - centerPosition;
                 spriteBatch.Draw(this.Texture, centerRegion, centerSource, color, rotation, centerOrigin, effects, layerDepth, data);
             }
 
             // Edges
-            var leftSource = new Rectangle(this.TextureRegion.Left, this.TextureRegion.Top + this.Top, this.Left, srcStretchableHeight);
-            var leftRegion = new RectangleF(position.X, position.Y, this.Left, dstStretchableHeight);
-            var leftPosition = new Vector2(0, this.Top);
+            var leftSource = new Rectangle(this.TextureRegion.Left, this.TextureRegion.Top + srcTop, srcLeft, srcStretchableHeight);
+            var leftRegion = new RectangleF(position.X, position.Y, dstLeft, dstStretchableHeight);
+            var leftPosition = new Vector2(0, dstTop);
 
-            var rightSource = new Rectangle(this.TextureRegion.Right - this.Right, this.TextureRegion.Top + this.Top, this.Right, srcStretchableHeight);
-            var rightRegion = new RectangleF(position.X, position.Y, this.Right, dstStretchableHeight);
-            var rightPosition = new Vector2(width - this.Right, this.Top);
+            var rightSource = new Rectangle(this.TextureRegion.Right - srcRight, this.TextureRegion.Top + srcTop, srcRight, srcStretchableHeight);
+            var rightRegion = new RectangleF(position.X, position.Y, dstRight, dstStretchableHeight);
+            var rightPosition = new Vector2(width - dstRight, dstTop);
 
-            var topSource = new Rectangle(this.TextureRegion.Left + this.Left, this.TextureRegion.Top, srcStretchableWidth, this.Top);
-            var topRegion = new RectangleF(position.X, position.Y, dstStretchableWidth, this.Top);
-            var topPosition = new Vector2(this.Left, 0);
+            var topSource = new Rectangle(this.TextureRegion.Left + srcLeft, this.TextureRegion.Top, srcStretchableWidth, srcTop);
+            var topRegion = new RectangleF(position.X, position.Y, dstStretchableWidth, dstTop);
+            var topPosition = new Vector2(dstLeft, 0);
 
-            var bottomSource = new Rectangle(this.TextureRegion.Left + this.Left, this.TextureRegion.Bottom - this.Bottom, srcStretchableWidth, this.Bottom);
-            var bottomRegion = new RectangleF(position.X, position.Y, dstStretchableWidth, this.Bottom);
-            var bottomPosition = new Vector2(this.Left, height - this.Bottom);
+            var bottomSource = new Rectangle(this.TextureRegion.Left + srcLeft, this.TextureRegion.Bottom - srcBottom, srcStretchableWidth, srcBottom);
+            var bottomRegion = new RectangleF(position.X, position.Y, dstStretchableWidth, dstBottom);
+            var bottomPosition = new Vector2(dstLeft, height - dstBottom);
 
             if (this.TileEdges)
             {
@@ -315,37 +332,37 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
             }
 
             // Corners
-            var cornerTLRegion   = new RectangleF(position.X, position.Y, this.Left, this.Top);
+            var cornerTLRegion   = new RectangleF(position.X, position.Y, dstLeft, dstTop);
             var cornerTLPosition = new Vector2(0, 0);
             var cornerTLOrigin   = origin - cornerTLPosition;
-            var cornerTLSource   = new Rectangle(this.TextureRegion.Left, this.TextureRegion.Top, this.Left, this.Top);
+            var cornerTLSource   = new Rectangle(this.TextureRegion.Left, this.TextureRegion.Top, srcLeft, srcTop);
             spriteBatch.Draw(this.Texture, cornerTLRegion, cornerTLSource, color, rotation, cornerTLOrigin, effects, layerDepth, data);
 
-            var cornerTRRegion   = new RectangleF(position.X, position.Y, this.Right, this.Top);
-            var cornerTRPosition = new Vector2(width - this.Right, 0);
+            var cornerTRRegion   = new RectangleF(position.X, position.Y, dstRight, dstTop);
+            var cornerTRPosition = new Vector2(width - dstRight, 0);
             var cornerTROrigin   = origin - cornerTRPosition;
-            var cornerTRSource   = new Rectangle(this.TextureRegion.Right - this.Right, this.TextureRegion.Top, this.Right, this.Top);
+            var cornerTRSource   = new Rectangle(this.TextureRegion.Right - srcRight, this.TextureRegion.Top, srcRight, srcTop);
             spriteBatch.Draw(this.Texture, cornerTRRegion, cornerTRSource, color, rotation, cornerTROrigin, effects, layerDepth, data);
 
-            var cornerBLRegion   = new RectangleF(position.X, position.Y, this.Left, this.Bottom);
-            var cornerBLPosition = new Vector2(0, height - this.Bottom);
+            var cornerBLRegion   = new RectangleF(position.X, position.Y, dstLeft, dstBottom);
+            var cornerBLPosition = new Vector2(0, height - dstBottom);
             var cornerBLOrigin   = origin - cornerBLPosition;
-            var cornerBLSource   = new Rectangle(this.TextureRegion.Left, this.TextureRegion.Bottom - this.Bottom, this.Left, this.Bottom);
+            var cornerBLSource   = new Rectangle(this.TextureRegion.Left, this.TextureRegion.Bottom - srcBottom, srcLeft, srcBottom);
             spriteBatch.Draw(this.Texture, cornerBLRegion, cornerBLSource, color, rotation, cornerBLOrigin, effects, layerDepth, data);
 
-            var cornerBRRegion   = new RectangleF(position.X, position.Y, this.Right, this.Bottom);
-            var cornerBRPosition = new Vector2(width - this.Right, height - this.Bottom);
+            var cornerBRRegion   = new RectangleF(position.X, position.Y, dstRight, dstBottom);
+            var cornerBRPosition = new Vector2(width - dstRight, height - dstBottom);
             var cornerBROrigin   = origin - cornerBRPosition;
-            var cornerBRSource   = new Rectangle(this.TextureRegion.Right - this.Right, this.TextureRegion.Bottom - this.Bottom, this.Left, this.Bottom);
+            var cornerBRSource   = new Rectangle(this.TextureRegion.Right - srcRight, this.TextureRegion.Bottom - srcBottom, srcLeft, srcBottom);
             spriteBatch.Draw(this.Texture, cornerBRRegion, cornerBRSource, color, rotation, cornerBROrigin, effects, layerDepth, data);
         }
 
         /// <summary>
-        /// Updates the value of the <see cref="TextureImage.MinimumSize"/> property.
+        /// Updates the value of the <see cref="TextureImage.MinimumRecommendedSize"/> property.
         /// </summary>
-        private void UpdateMinimumSize()
+        private void UpdateMinimumRecommendedSize()
         {
-            MinimumSize = new Size2(left + right, top + bottom);
+            MinimumRecommendedSize = new Size2(left + right, top + bottom);
         }
 
         // Property values.

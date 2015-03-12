@@ -7,7 +7,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
     /// <summary>
     /// Represents a UI element which displays progress towards some goal.
     /// </summary>
-    [UIElement("ProgressBar", "TwistedLogik.Ultraviolet.UI.Presentation.Elements.Templates.ProgressBar.xml")]
+    [UvmlKnownType(null, "TwistedLogik.Ultraviolet.UI.Presentation.Elements.Templates.ProgressBar.xml")]
     [DefaultProperty("Value")]
     public class ProgressBar : RangeBase
     {

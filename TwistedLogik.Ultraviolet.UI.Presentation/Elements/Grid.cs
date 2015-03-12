@@ -7,7 +7,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
     /// <summary>
     /// Represents a grid of columns and columns which can contain child elements in each cell.
     /// </summary>
-    [UIElement("Grid", "TwistedLogik.Ultraviolet.UI.Presentation.Elements.Templates.Grid.xml")]
+    [UvmlKnownType(null, "TwistedLogik.Ultraviolet.UI.Presentation.Elements.Templates.Grid.xml")]
     public partial class Grid : Panel
     {
         /// <summary>

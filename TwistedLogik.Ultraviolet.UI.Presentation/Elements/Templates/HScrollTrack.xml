@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ComponentTemplate>
+  <Grid ID="LayoutRoot" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="Auto"/>
+      <ColumnDefinition Width="Auto"/>
+      <ColumnDefinition Width="*"/>
+    </Grid.ColumnDefinitions>
+
+    <Image ID="Track" Class="scroll-track scroll-track-horizontal" Grid.Column="0" Grid.ColumnSpan="3" 
+           HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+
+    <RepeatButton ID="LeftLarge" Class="scroll-repeat scroll-repeat-left" Grid.Column="0" MinWidth="0" Padding="0" Focusable="false" 
+                  HorizontalAlignment="Left" VerticalAlignment="Stretch" Opacity="0"
+                  Click="HandleDecreaseLarge"/>
+
+    <Button ID="Thumb" Class="scroll-thumb scroll-thumb-horizontal" Grid.Column="1" VerticalAlignment="Stretch"
+            Mouse.PreviewMouseDown="HandleThumbPreviewMouseDown" Mouse.PreviewMouseMove="HandleThumbPreviewMouseMove"/>
+
+    <RepeatButton ID="RightLarge" Class="scroll-repeat scroll-repeat-right" Grid.Column="2" MinWidth="0" Padding="0" Focusable="false" 
+                  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Opacity="0"
+                  Click="HandleIncreaseLarge"/>                  
+    
+  </Grid>
+</ComponentTemplate>

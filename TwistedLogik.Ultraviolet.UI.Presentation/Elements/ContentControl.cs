@@ -98,7 +98,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         internal Boolean TreatContentAsLogicalChild
         {
             get { return treatContentAsLogicalChild; }
-        }
+            }
 
         /// <summary>
         /// Gets the control's content presenter.
@@ -111,7 +111,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
 
         /// <inheritdoc/>
         protected internal override void RemoveLogicalChild(UIElement child)
-        {
+                {
             if (TreatContentAsLogicalChild && Content == child)
             {
                 Content = null;
@@ -125,19 +125,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             if (TreatContentAsLogicalChild && contentElement != null)
             {
                 if (childIndex == 0)
-                {
+        {
                     return contentElement;
-                }
-                return base.GetLogicalChild(childIndex - 1);
             }
-            return base.GetLogicalChild(childIndex);
+                return base.GetLogicalChild(childIndex - 1);
         }
+            return base.GetLogicalChild(childIndex);
+            }
 
         /// <inheritdoc/>
         protected internal override UIElement GetVisualChild(Int32 childIndex)
         {
             return base.GetVisualChild(childIndex);
-        }
+            }
 
         /// <inheritdoc/>
         protected internal override Int32 LogicalChildrenCount
@@ -147,9 +147,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
 
         /// <inheritdoc/>
         protected internal override Int32 VisualChildrenCount
-        {
+            {
             get { return base.VisualChildrenCount; }
-        }
+            }
 
         /// <summary>
         /// Raises the <see cref="HorizontalContentAlignmentChanged"/> event.
@@ -217,7 +217,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
 
             if (control.TreatContentAsLogicalChild)
             {
-                var oldElement = control.contentElement;
+            var oldElement = control.contentElement;
                 if (oldElement != null)
                     oldElement.ChangeLogicalAndVisualParents(null, null);
             }
@@ -226,8 +226,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
 
             if (control.TreatContentAsLogicalChild)
             {
-                var newElement = control.contentElement;
-                if (newElement != null)
+            var newElement = control.contentElement;
+            if (newElement != null)
                     newElement.ChangeLogicalAndVisualParents(control, control.ContentPresenter);
             }
 

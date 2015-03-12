@@ -6,7 +6,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
     /// <summary>
     /// Represents the base class for buttons.
     /// </summary>
-    [UIElement("ButtonBase")]
+    [UvmlKnownType]
     public abstract class ButtonBase : ContentControl
     {
         /// <summary>
@@ -79,14 +79,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             new DependencyPropertyMetadata(HandleClickModeChanged, () => ClickMode.Release, DependencyPropertyOptions.None));
 
         /// <inheritdoc/>
-        protected internal override void OnLostMouseCapture()
+        protected override void OnLostMouseCapture(ref Boolean handled)
         {
             IsDepressed = false;
-            base.OnLostMouseCapture();
+            base.OnLostMouseCapture(ref handled);
         }
 
         /// <inheritdoc/>
-        protected internal override void OnMouseButtonPressed(MouseDevice device, MouseButton button)
+        protected override void OnMouseDown(MouseDevice device, MouseButton button, ref Boolean handled)
         {
             if (button == MouseButton.Left)
             {
@@ -97,12 +97,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
                 {
                     OnClick();
                 }
+
+                handled = true;
             }
-            base.OnMouseButtonPressed(device, button);
+            base.OnMouseDown(device, button, ref handled);
         }
 
         /// <inheritdoc/>
-        protected internal override void OnMouseButtonReleased(MouseDevice device, MouseButton button)
+        protected override void OnMouseUp(MouseDevice device, MouseButton button, ref Boolean handled)
         {
             if (button == MouseButton.Left)
             {
@@ -119,28 +121,30 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
                         OnClick();
                     }
                 }
+
+                handled = true;
             }
-            base.OnMouseButtonReleased(device, button);
+            base.OnMouseUp(device, button, ref handled);
         }
 
         /// <inheritdoc/>
-        protected internal override void OnMouseEnter(MouseDevice device)
+        protected override void OnMouseEnter(MouseDevice device, ref Boolean handled)
         {
             if (ClickMode == ClickMode.Hover)
             {
                 OnClick();
             }
-            base.OnMouseEnter(device);
+            base.OnMouseEnter(device, ref handled);
         }
 
         /// <inheritdoc/>
-        protected internal override void OnMouseLeave(MouseDevice device)
+        protected override void OnMouseLeave(MouseDevice device, ref Boolean handled)
         {
             if (View.ElementWithMouseCapture != this)
             {
                 IsDepressed = false;
             }
-            base.OnMouseLeave(device);
+            base.OnMouseLeave(device, ref handled);
         }
 
         /// <inheritdoc/>

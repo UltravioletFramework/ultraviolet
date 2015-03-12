@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections;
-using TwistedLogik.Nucleus.Collections;
 using System.Collections.Generic;
+using TwistedLogik.Nucleus.Collections;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
 {

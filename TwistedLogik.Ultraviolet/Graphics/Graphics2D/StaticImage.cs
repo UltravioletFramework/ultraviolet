@@ -144,12 +144,6 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         {
             effects |= SpriteEffects.OriginRelativeToDestination;
 
-            if (MinimumSize.Width > 0 && width < MinimumSize.Width)
-                width = MinimumSize.Width;
-
-            if (MinimumSize.Height > 0 && height < MinimumSize.Height)
-                height = MinimumSize.Height;
-
             var srcRect = TextureRegion;
             var dstRect = new Rectangle((Int32)position.X, (Int32)position.Y, width, height);
             spriteBatch.Draw(Texture, dstRect, srcRect, color, rotation, origin, effects, layerDepth, data);

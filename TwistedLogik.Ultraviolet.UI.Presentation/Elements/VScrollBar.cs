@@ -1,12 +1,11 @@
 ﻿using System;
-using TwistedLogik.Ultraviolet.Input;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
 {
     /// <summary>
     /// Represents a vertical scroll bar.
     /// </summary>
-    [UIElement("VScrollBar", "TwistedLogik.Ultraviolet.UI.Presentation.Elements.Templates.VScrollBar.xml")]
+    [UvmlKnownType(null, "TwistedLogik.Ultraviolet.UI.Presentation.Elements.Templates.VScrollBar.xml")]
     public class VScrollBar : ScrollBarBase
     {
         /// <summary>
@@ -20,126 +19,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
 
         }
 
-        /// <inheritdoc/>
-        protected override void PositionScrollBarComponents()
-        {
-            var thumbLengthMin = (Thumb == null) ? 0 : Thumb.MinHeight;
-            var thumbLength    = CalculateThumbLength(thumbLengthMin);
-            var thumbOffset    = CalculateThumbOffset(thumbLength);
-
-            if (Thumb != null)
-                Thumb.Height = thumbLength;
-
-            if (UpLarge != null)
-                UpLarge.Height = thumbOffset;
-        }
-
-        /// <summary>
-        /// Gets the offset in pixels from the left edge of the control to the left edge of the scroll bar's track.
-        /// </summary>
-        protected override Double ActualTrackOffsetX
-        {
-            get 
-            { 
-                return 0; 
-            }
-        }
-
-        /// <summary>
-        /// Gets the offset in pixels from the top edge of the control to the top edge of the scroll bar's track.
-        /// </summary>
-        protected override Double ActualTrackOffsetY
-        {
-            get
-            {
-                if (LayoutRoot == null || LayoutRoot.RowDefinitions.Count < 5)
-                    return 0;
-
-                return LayoutRoot.RowDefinitions[0].ActualHeight; 
-            }
-        }
-
-        /// <summary>
-        /// Gets the width of the scroll bar's track in pixels.
-        /// </summary>
-        protected override Double ActualTrackWidth
-        {
-            get { return RenderSize.Width; }
-        }
-
-        /// <summary>
-        /// Gets the height of the scroll bar's track in pixels.
-        /// </summary>
-        protected override Double ActualTrackHeight
-        {
-            get { return ActualTrackLength; }
-        }
-
-        /// <summary>
-        /// Gets the length in pixels of the scroll bar's track.
-        /// </summary>
-        protected override Double ActualTrackLength
-        {
-            get 
-            {
-                if (LayoutRoot == null || LayoutRoot.RowDefinitions.Count < 5)
-                    return 0;
-
-                return RenderSize.Height - (
-                    LayoutRoot.RowDefinitions[0].ActualHeight + 
-                    LayoutRoot.RowDefinitions[4].ActualHeight);
-            }
-        }
-
-        /// <summary>
-        /// Gets the length in pixels of the scroll bar's thumb.
-        /// </summary>
-        protected override Double ActualThumbLength
-        {
-            get
-            {
-                if (LayoutRoot == null || LayoutRoot.RowDefinitions.Count < 5)
-                    return 0;
-
-                return LayoutRoot.RowDefinitions[2].ActualHeight;
-            }
-        }
-
-        /// <summary>
-        /// Handles the <see cref="UIElement.MouseMotion"/> event for the Thumb button.
-        /// </summary>
-        private void HandleThumbMouseMotion(UIElement element, MouseDevice device, Double x, Double y, Double dx, Double dy)
-        {
-            var button = element as Button;
-            if (button != null && button.IsDepressed)
-            {
-                var relY = y - (AbsolutePosition.Y + ActualTrackOffsetY + thumbDragOffset);
-                Value = OffsetToValue(relY); 
-            }
-        }
-
-        /// <summary>
-        /// Handles the <see cref="UIElement.MouseButtonPressed"/> event for the Thumb button.
-        /// </summary>
-        private void HandleThumbMouseButtonPressed(UIElement element, MouseDevice device, MouseButton pressed)
-        {
-            thumbDragOffset = Display.PixelsToDips(device.Y) - element.AbsolutePosition.Y;
-        }
-
         /// <summary>
         /// Handles the <see cref="ButtonBase.Click"/> event for the UpSmall button.
         /// </summary>
         private void HandleClickUpSmall(UIElement element)
         {
             DecreaseSmall();
-        }
-
-        /// <summary>
-        /// Handles the <see cref="ButtonBase.Click"/> event for the UpLarge button.
-        /// </summary>
-        private void HandleClickUpLarge(UIElement element)
-        {
-            DecreaseLarge();
         }
 
         /// <summary>
@@ -150,20 +35,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             IncreaseSmall();
         }
 
-        /// <summary>
-        /// Handles the <see cref="ButtonBase.Click"/> event for the DownLarge button.
-        /// </summary>
-        private void HandleClickDownLarge(UIElement small)
+        /// <inheritdoc/>
+        protected override Size2D MeasureOverride(Size2D availableSize)
         {
-            IncreaseLarge();
+            if (Track != null)
+            {
+                Track.InvalidateMeasure();
+            }
+            return base.MeasureOverride(availableSize);
         }
 
-        // Control component references.
-        private readonly Grid LayoutRoot = null;
-        private readonly RepeatButton UpLarge = null;
-        private readonly Button Thumb = null;
-
-        // State values.
-        private Double thumbDragOffset;
+        // Component references.
+        private readonly VScrollTrack Track = null;
     }
 }

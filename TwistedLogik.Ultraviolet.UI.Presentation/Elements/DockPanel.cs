@@ -7,7 +7,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
     /// <summary>
     /// Represents a panel which allows its children to dock to one of its four edges.
     /// </summary>
-    [UIElement("DockPanel", "TwistedLogik.Ultraviolet.UI.Presentation.Elements.Templates.DockPanel.xml")]
+    [UvmlKnownType(null, "TwistedLogik.Ultraviolet.UI.Presentation.Elements.Templates.DockPanel.xml")]
     public class DockPanel : Panel
     {
         /// <summary>
