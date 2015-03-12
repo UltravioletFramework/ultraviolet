@@ -9,6 +9,39 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
     public static class LogicalTreeHelper
     {
         /// <summary>
+        /// Performs an action for each of the specified object's logical children.
+        /// </summary>
+        /// <param name="dobj">The parent object.</param>
+        /// <param name="state">A state value to pass to the performed action.</param>
+        /// <param name="action">The action to perform on each of the specified object's logical children.</param>
+        public static void ForEachChild(DependencyObject dobj, Object state, Action<DependencyObject, Object> action)
+        {
+            ForEachChild<DependencyObject>(dobj, state, action);
+        }
+
+        /// <summary>
+        /// Performs an action for each of the specified object's logical children which are of the specified type.
+        /// </summary>
+        /// <param name="dobj">The parent object.</param>
+        /// <param name="state">A state value to pass to the performed action.</param>
+        /// <param name="action">The action to perform on each of the specified object's logical children.</param>
+        public static void ForEachChild<T>(DependencyObject dobj, Object state, Action<T, Object> action) where T : class
+        {
+            Contract.Require(dobj, "dobj");
+            Contract.Require(action, "action");
+
+            var children = GetChildrenCount(dobj);
+            for (int i = 0; i < children; i++)
+            {
+                var child = GetChild(dobj, i) as T;
+                if (child != null)
+                {
+                    action(child, state);
+                }
+            }
+        }
+
+        /// <summary>
         /// Gets the parent of the specified logical object.
         /// </summary>
         /// <param name="dobj">The object for which to retrieve a parent.</param>

@@ -88,107 +88,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <inheritdoc/>
-        protected override void UpdateOverride(UltravioletTime time)
-        {
-            foreach (var child in children)
-            {
-                child.Update(time);
-            }
-            base.UpdateOverride(time);
-        }
-
-        /// <inheritdoc/>
-        protected override void InitializeDependencyPropertiesCore(Boolean recursive)
-        {
-            if (recursive)
-            {
-                foreach (var child in children)
-                    child.InitializeDependencyProperties(recursive);
-            }
-            base.InitializeDependencyPropertiesCore(recursive);
-        }
-
-        /// <inheritdoc/>
-        protected override void ReloadContentCore(Boolean recursive)
-        {
-            if (recursive)
-            {
-                foreach (var child in children)
-                    child.ReloadContent(recursive);
-            }
-            base.ReloadContentCore(recursive);
-        }
-
-        /// <inheritdoc/>
-        protected override void ClearAnimationsCore(Boolean recursive)
-        {
-            if (recursive)
-            {
-                foreach (var child in children)
-                    child.ClearAnimations(recursive);
-            }
-            base.ClearAnimationsCore(recursive);
-        }
-
-        /// <inheritdoc/>
-        protected override void ClearLocalValuesCore(Boolean recursive)
-        {
-            if (recursive)
-            {
-                foreach (var child in children)
-                    child.ClearLocalValues(recursive);
-            }
-            base.ClearLocalValuesCore(recursive);
-        }
-
-        /// <inheritdoc/>
-        protected override void ClearStyledValuesCore(Boolean recursive)
-        {
-            if (recursive)
-            {
-                foreach (var child in children)
-                    child.ClearStyledValues(recursive);
-            }
-            base.ClearStyledValuesCore(recursive);
-        }
-
-        /// <inheritdoc/>
-        protected override void CleanupCore()
-        {
-            foreach (var child in children)
-                child.Cleanup();
-
-            base.CleanupCore();
-        }
-
-        /// <inheritdoc/>
-        protected override void CacheLayoutParametersCore()
-        {
-            foreach (var child in children)
-                child.CacheLayoutParameters();
-
-            base.CacheLayoutParametersCore();
-        }
-
-        /// <inheritdoc/>
-        protected override void AnimateCore(Storyboard storyboard, StoryboardClock clock, UIElement root)
-        {
-            foreach (var child in children)
-                child.Animate(storyboard, clock, root);
-
-            base.AnimateCore(storyboard, clock, root);
-        }
-
-        /// <inheritdoc/>
-        protected override void StyleOverride(UvssDocument stylesheet)
-        {
-            foreach (var child in children)
-                child.Style(stylesheet);
-
-            base.StyleOverride(stylesheet);
-        }
-
-        /// <inheritdoc/>
         protected override RectangleD? ClipContentCore()
         {
             foreach (var child in children)
@@ -205,12 +104,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <inheritdoc/>
         protected override UIElement GetElementAtPointCore(Double x, Double y, Boolean isHitTest)
         {
+            if (!Bounds.Contains(x, y))
+                return null;
+
             var childMatch = GetChildAtPoint(x, y, isHitTest);
             if (childMatch != null)
             {
                 return childMatch;
             }
-            return base.GetElementAtPointCore(x, y, isHitTest);
+
+            return this;
         }
 
         /// <summary>

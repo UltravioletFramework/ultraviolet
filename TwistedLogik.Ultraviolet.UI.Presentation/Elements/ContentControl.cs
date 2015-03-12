@@ -231,59 +231,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
                     newElement.ChangeLogicalAndVisualParents(control, control.ContentPresenter);
             }
 
-            control.UpdateTextParserCache();
             control.OnContentChanged();
-        }
-
-        /// <summary>
-        /// Updates the cache which contains the element's parsed text.
-        /// </summary>
-        private void UpdateTextParserCache()
-        {
-            textParserResult.Clear();
-
-            if (View == null)
-                return;
-
-            var content = Content;
-            if (content != null && contentElement == null)
-            {
-                var contentAsString = content.ToString();
-                View.Resources.TextRenderer.Parse(contentAsString, textParserResult);
-            }
-
-            InvalidateArrange();
-        }
-
-        /// <summary>
-        /// Updates the cache which contains the element's laid-out text.
-        /// </summary>
-        /// <param name="availableSize">The amount of space in which the element's text can be laid out.</param>
-        private void UpdateTextLayoutCache(Size2D availableSize)
-        {
-            textLayoutResult.Clear();
-
-            if (View == null)
-                return;
-
-            if (textParserResult.Count > 0 && Font.IsLoaded)
-            {
-                var availableWidth  = (Int32)Display.DipsToPixels(availableSize.Width);
-                var availableHeight = (Int32)Display.DipsToPixels(availableSize.Height);
-
-                var flags    = LayoutUtil.ConvertAlignmentsToTextFlags(HorizontalContentAlignment, VerticalContentAlignment);                
-                var settings = new TextLayoutSettings(Font, availableWidth, availableHeight, flags, FontStyle);
-                View.Resources.TextRenderer.CalculateLayout(textParserResult, textLayoutResult, settings);
-            }
         }
 
         // State values.
         private UIElement contentElement;
         private ContentPresenter contentPresenter;
         private Boolean treatContentAsLogicalChild = true;
-
-        // Cached parser/layout results for content text.
-        private readonly TextParserResult textParserResult = new TextParserResult();
-        private readonly TextLayoutResult textLayoutResult = new TextLayoutResult();
     }
 }

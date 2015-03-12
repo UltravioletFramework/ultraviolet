@@ -3,9 +3,7 @@
   <Stylesheet>DebugViewScreenStyles.uvss</Stylesheet>
   <View ViewModelType="UvDebugSandbox.UI.Screens.DebugViewModel, UvDebugSandbox">
 
-    <Button Width="200" Height="48">
-      <ProgressBar Width="100" Height="32" Value="40"></ProgressBar>
-    </Button>
+    <Button Width="200" Height="48">Hello world</Button>
 
   </View>
 </UIPanelDefinition>

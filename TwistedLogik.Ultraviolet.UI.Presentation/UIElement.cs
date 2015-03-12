@@ -262,20 +262,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             }
 
             CacheLayoutParametersCore();
-
-            for (int i = 0; i < LogicalTreeHelper.GetChildrenCount(this); i++)
-            {
-                var uiElement = LogicalTreeHelper.GetChild(this, i) as UIElement;
-                if (uiElement != null)
-                    uiElement.CacheLayoutParameters();
-            }
-
-            for (int i = 0; i < VisualTreeHelper.GetChildrenCount(this); i++)
-            {
-                var uiElement = VisualTreeHelper.GetChild(this, i) as UIElement;
-                if (uiElement != null)
-                    uiElement.CacheLayoutParameters();
-            }
         }
 
         /// <summary>
@@ -718,7 +704,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 if (parent != value)
                 {
                     parent = value;
-                    OnLogicalParentChanged();
+                    OnLogicalParentChangedInternal();
                 }
             }
         }
@@ -1230,6 +1216,34 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Called when something occurs which requires the element to invalidate its cached
+        /// layout information, such as the visual or logical parent changing.
+        /// </summary>
+        internal virtual void OnLayoutCacheInvalidatedInternal()
+        {
+            CacheLayoutParameters();
+            InvalidateStyle();
+
+            OnLayoutCacheInvalidated();
+        }
+
+        /// <summary>
+        /// Invokes the <see cref="OnLogicalParentChanged()"/> method.
+        /// </summary>
+        internal virtual void OnLogicalParentChangedInternal()
+        {
+            OnLayoutCacheInvalidatedInternal();
+            OnLogicalParentChanged();
+        }
+
+        /// <inheritdoc/>
+        internal override void OnVisualParentChangedInternal()
+        {
+            OnLayoutCacheInvalidatedInternal();
+            base.OnVisualParentChangedInternal();
+        }
+
+        /// <summary>
         /// Changes the element's logical and visual parents.
         /// </summary>
         /// <param name="logicalParent">The element's new logical parent.</param>
@@ -1724,6 +1738,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Occurs when something happens which requires the element to invalidate any
+        /// cached layout information, such as changing the element's visual or logical parent.
+        /// </summary>
+        protected virtual void OnLayoutCacheInvalidated()
+        {
+
+        }
+
+        /// <summary>
         /// Occurs when the element's logical parent is changed.
         /// </summary>
         protected virtual void OnLogicalParentChanged()
@@ -1904,6 +1927,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         protected virtual void InitializeDependencyPropertiesCore(Boolean recursive)
         {
             ((DependencyObject)this).InitializeDependencyProperties();
+
+            VisualTreeHelper.ForEachChild<UIElement>(this, CommonBoxedValues.Boolean.FromValue(recursive), (child, state) =>
+            {
+                child.InitializeDependencyProperties((Boolean)state);
+            });
         }
 
         /// <summary>
@@ -1912,15 +1940,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         protected virtual void ReloadContentCore(Boolean recursive)
         {
-            var children = VisualTreeHelper.GetChildrenCount(this);
-            for (int i = 0; i < children; i++)
+            VisualTreeHelper.ForEachChild<UIElement>(this, CommonBoxedValues.Boolean.FromValue(recursive), (child, state) =>
             {
-                var child = VisualTreeHelper.GetChild(this, i) as UIElement;
-                if (child != null)
-                {
-                    child.ReloadContent(recursive);
-                }
-            }
+                child.ReloadContent((Boolean)state);
+            });
         }
 
         /// <summary>
@@ -1932,6 +1955,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         protected virtual void ClearAnimationsCore(Boolean recursive)
         {
             ((DependencyObject)this).ClearAnimations();
+
+            VisualTreeHelper.ForEachChild<UIElement>(this, CommonBoxedValues.Boolean.FromValue(recursive), (child, state) =>
+            {
+                child.ClearAnimations((Boolean)state);
+            });
         }
 
         /// <summary>
@@ -1944,6 +1972,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         protected virtual void ClearLocalValuesCore(Boolean recursive)
         {
             ((DependencyObject)this).ClearLocalValues();
+
+            VisualTreeHelper.ForEachChild<UIElement>(this, CommonBoxedValues.Boolean.FromValue(recursive), (child, state) =>
+            {
+                child.ClearLocalValues((Boolean)state);
+            });
         }
 
         /// <summary>
@@ -1956,6 +1989,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         protected virtual void ClearStyledValuesCore(Boolean recursive)
         {
             ((DependencyObject)this).ClearStyledValues();
+
+            VisualTreeHelper.ForEachChild<UIElement>(this, CommonBoxedValues.Boolean.FromValue(recursive), (child, state) =>
+            {
+                child.ClearStyledValues((Boolean)state);
+            });
         }
 
         /// <summary>
@@ -1964,7 +2002,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         protected virtual void CleanupCore()
         {
-
+            VisualTreeHelper.ForEachChild<UIElement>(this, null, (child, state) =>
+            {
+                child.Cleanup();
+            });
         }
 
         /// <summary>
@@ -1974,14 +2015,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         protected virtual void CacheLayoutParametersCore()
         {
-
-        }
-
-        protected override void OnVisualParentChanged()
-        {
-            CacheLayoutParameters();
-            InvalidateStyle();
-            base.OnVisualParentChanged();
+            VisualTreeHelper.ForEachChild<UIElement>(this, null, (child, state) =>
+            {
+                child.CacheLayoutParameters();
+            });
         }
 
         /// <summary>
@@ -1992,7 +2029,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="root">The root element to which the storyboard is being applied.</param>
         protected virtual void AnimateCore(Storyboard storyboard, StoryboardClock clock, UIElement root)
         {
-
+            var children = VisualTreeHelper.GetChildrenCount(this);
+            for (int i = 0; i < children; i++)
+            {
+                var child = VisualTreeHelper.GetChild(this, i) as UIElement;
+                if (child != null)
+                {
+                    child.Animate(storyboard, clock, root);
+                }
+            }
         }
 
         /// <summary>
@@ -2002,7 +2047,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="stylesheet">The stylesheet to apply to this element and its children.</param>
         protected virtual void StyleCore(UvssDocument stylesheet)
         {
-
+            VisualTreeHelper.ForEachChild<UIElement>(this, stylesheet, (child, state) =>
+            {
+                child.Style((UvssDocument)state);
+            });
         }
 
         /// <summary>
@@ -2077,7 +2125,26 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <returns>The element at the specified coordinates, or <c>null</c> if no such element exists.</returns>
         protected virtual UIElement GetElementAtPointCore(Double x, Double y, Boolean isHitTest)
         {
-            return Bounds.Contains(x, y) ? this : null;
+            if (!Bounds.Contains(x, y))
+                return null;
+
+            var children = VisualTreeHelper.GetChildrenCount(this);
+            for (int i = children - 1; i >= 0; i--)
+            {
+                var child = VisualTreeHelper.GetChild(this, i) as UIElement;
+                if (child == null)
+                    continue;
+
+                var childRelativeX = x - child.RelativeBounds.X;
+                var childRelativeY = y - child.RelativeBounds.Y;
+                var childMatch = child.GetElementAtPoint(childRelativeX, childRelativeY, isHitTest);
+                if (childMatch != null)
+                {
+                    return childMatch;
+                }
+            }
+
+            return this;
         }
         
         /// <summary>

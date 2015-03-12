@@ -341,14 +341,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <inheritdoc/>
-        protected sealed override void StyleCore(UvssDocument stylesheet)
-        {
-            StyleOverride(stylesheet);
-
-            base.StyleCore(stylesheet);
-        }
-
-        /// <inheritdoc/>
         protected sealed override Size2D MeasureCore(Size2D availableSize)
         {
             var margin = this.Margin;
@@ -488,34 +480,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Update(UltravioletTime)"/>.</param>
         protected virtual void UpdateOverride(UltravioletTime time)
         {
-            var children = VisualTreeHelper.GetChildrenCount(this);
-            for (int i = 0; i < children; i++)
+            VisualTreeHelper.ForEachChild<UIElement>(this, time, (child, state) =>
             {
-                var child = VisualTreeHelper.GetChild(this, i) as UIElement;
-                if (child != null)
-                {
-                    child.Update(time);
-                }
-            }
-        }
-
-        /// <summary>
-        /// When overridden in a derived class, applies the specified stylesheet
-        /// to this element and to any child elements for 
-        /// a <see cref="FrameworkElement"/> derived class.
-        /// </summary>
-        /// <param name="stylesheet">The stylesheet to apply to this element and its children.</param>
-        protected virtual void StyleOverride(UvssDocument stylesheet)
-        {
-            var children = VisualTreeHelper.GetChildrenCount(this);
-            for (int i = 0; i < children; i++)
-            {
-                var child = VisualTreeHelper.GetChild(this, i) as UIElement;
-                if (child != null)
-                {
-                    child.Style(stylesheet);
-                }
-            }
+                child.Update((UltravioletTime)state);
+            });
         }
 
         /// <summary>
@@ -550,15 +518,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="position">The position of the element's parent element in absolute screen space.</param>
         protected virtual void PositionOverride(Point2D position)
         {
-            var children = VisualTreeHelper.GetChildrenCount(this);
-            for (int i = 0; i < children; i++)
+            VisualTreeHelper.ForEachChild<UIElement>(this, this, (child, state) =>
             {
-                var child = VisualTreeHelper.GetChild(this, i) as UIElement;
-                if (child != null)
-                {
-                    child.Position(AbsolutePosition);
-                }
-            }
+                child.Position(((UIElement)state).AbsolutePosition);
+            });
         }
 
         /// <summary>

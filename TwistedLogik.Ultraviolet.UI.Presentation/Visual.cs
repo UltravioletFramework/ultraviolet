@@ -10,14 +10,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
     public abstract class Visual : StyledDependencyObject
     {
         /// <summary>
-        /// Determines whether the specified point falls within this visual object and, if so,
-        /// returns the topmost visual object which contains the point, which may be a descendant of this object.
+        /// Invokes the <see cref="OnVisualParentChanged()"/> method.
         /// </summary>
-        /// <param name="pt">The point to evaluate.</param>
-        /// <returns>The visual object which contains the point, or <c>null</c> if no descendant of this object contains the point.</returns>
-        public Visual HitTest(Point2D pt)
+        internal virtual void OnVisualParentChangedInternal()
         {
-            throw new NotImplementedException();
+            OnVisualParentChanged();
         }
 
         /// <summary>
@@ -42,7 +39,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (child.visualParent != this)
             {
                 child.visualParent = this;
-                child.OnVisualParentChanged();
+                child.OnVisualParentChangedInternal();
             }
         }
 
@@ -57,7 +54,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (child.visualParent == this)
             {
                 child.visualParent = null;
-                child.OnVisualParentChanged();
+                child.OnVisualParentChangedInternal();
             }
         }
 
@@ -77,17 +74,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         protected internal virtual Int32 VisualChildrenCount
         {
             get { return 0; }
-        }
-
-        /// <summary>
-        /// When overridden in a derived class, determines whether the specified point falls within this visual object and, if so,
-        /// returns the topmost visual object which contains the point, which may be a descendant of this object.
-        /// </summary>
-        /// <param name="pt">The point to evaluate.</param>
-        /// <returns>The visual object which contains the point, or <c>null</c> if no descendant of this object contains the point.</returns>
-        protected virtual Visual HitTestCore(Point2D pt)
-        {
-            throw new NotImplementedException();
         }
 
         /// <summary>

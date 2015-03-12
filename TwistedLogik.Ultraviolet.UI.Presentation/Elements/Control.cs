@@ -106,97 +106,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
                 return ComponentRoot == null ? 0 : 1;
             }
         }
-
-        /// <inheritdoc/>
-        protected override void InitializeDependencyPropertiesCore(Boolean recursive)
-        {
-            if (componentRoot != null)
-            {
-                componentRoot.InitializeDependencyProperties(true);
-            }
-            base.InitializeDependencyPropertiesCore(recursive);
-        }
-
-        /// <inheritdoc/>
-        protected override void ReloadContentCore(Boolean recursive)
-        {
-            if (componentRoot != null)
-            {
-                componentRoot.ReloadContent(true);
-            }
-            base.ReloadContentCore(recursive);
-        }
-
-        /// <inheritdoc/>
-        protected override void ClearAnimationsCore(Boolean recursive)
-        {
-            if (componentRoot != null)
-            {
-                componentRoot.ClearAnimations(true);
-            }
-            base.ClearAnimationsCore(recursive);
-        }
-
-        /// <inheritdoc/>
-        protected override void ClearLocalValuesCore(Boolean recursive)
-        {
-            if (componentRoot != null)
-            {
-                componentRoot.ClearLocalValues(true);
-            }
-            base.ClearLocalValuesCore(recursive);
-        }
-
-        /// <inheritdoc/>
-        protected override void ClearStyledValuesCore(Boolean recursive)
-        {
-            if (componentRoot != null)
-            {
-                componentRoot.ClearStyledValues(true);
-            }
-            base.ClearStyledValuesCore(recursive);
-        }
-
-        /// <inheritdoc/>
-        protected override void CleanupCore()
-        {
-            if (componentRoot != null)
-            {
-                componentRoot.Cleanup();
-            }
-            base.CleanupCore();
-        }
-
-        /// <inheritdoc/>
-        protected override void CacheLayoutParametersCore()
-        {
-            if (componentRoot != null)
-            {
-                componentRoot.CacheLayoutParameters();
-            }
-            base.CacheLayoutParametersCore();
-        }
         
-        /// <inheritdoc/>
-        protected override void AnimateCore(Storyboard storyboard, StoryboardClock clock, UIElement root)
-        {
-            if (componentRoot != null)
-            {
-                componentRoot.Animate(storyboard, clock, root);
-            }
-            base.AnimateCore(storyboard, clock, root);
-        }
-
-        /// <inheritdoc/>
-        protected override void StyleOverride(UvssDocument stylesheet)
-        {
-            if (componentRoot != null)
-            {
-                componentRoot.Style(stylesheet);
-            }
-            base.StyleOverride(stylesheet);
-        }
-
         /// <inheritdoc/>
         protected override Size2D MeasureOverride(Size2D availableSize)
         {
@@ -211,28 +121,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         protected override Size2D ArrangeOverride(Size2D finalSize, ArrangeOptions options)
         {
             if (componentRoot == null)
-                return finalSize;
-
+            {
+                var finalWidth = Double.IsPositiveInfinity(finalSize.Width) ? 0 : finalSize.Width;
+                var finalHeight = Double.IsPositiveInfinity(finalSize.Height) ? 0 : finalSize.Height;
+                return new Size2D(finalWidth, finalHeight);
+            }
             var finalRect = new RectangleD(Point2D.Zero, finalSize);
             componentRoot.Arrange(finalRect, options);
             return componentRoot.RenderSize;
-        }
-
-        /// <inheritdoc/>
-        protected override UIElement GetElementAtPointCore(Double x, Double y, Boolean isHitTest)
-        {
-            if (componentRoot != null)
-            {
-                var componentRelX = x - componentRoot.RelativeBounds.X;
-                var componentRelY = y - componentRoot.RelativeBounds.Y;
-
-                var componentMatch = componentRoot.GetElementAtPoint(componentRelX, componentRelY, isHitTest);
-                if (componentMatch != null)
-                {
-                    return componentMatch;
-                }
-            }
-            return base.GetElementAtPointCore(x, y, isHitTest);
         }
 
         /// <summary>

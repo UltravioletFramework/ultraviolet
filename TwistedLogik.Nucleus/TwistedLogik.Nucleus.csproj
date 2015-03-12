@@ -165,6 +165,7 @@
     <Compile Include="Collections\PooledObjectScope.cs" />
     <Compile Include="Collections\ExpandingPoolRegistry.cs" />
     <Compile Include="Collections\PriorityQueue.cs" />
+    <Compile Include="CommonBoxedValues.cs" />
     <Compile Include="Data\IGloballyIdentified.cs" />
     <Compile Include="Data\INotifyPropertyChanged.cs" />
     <Compile Include="Data\NamespaceDoc.cs" />
