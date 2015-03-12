@@ -111,6 +111,7 @@
     <Compile Include="DrawingContext.cs" />
     <Compile Include="DrawingContext.OpacityState.cs" />
     <Compile Include="Elements\Border.cs" />
+    <Compile Include="Elements\IItemContainer.cs" />
     <Compile Include="Elements\ItemCollection.cs" />
     <Compile Include="Elements\ItemCollection.IList.cs" />
     <Compile Include="Elements\ItemCollection.IEnumerable.cs" />

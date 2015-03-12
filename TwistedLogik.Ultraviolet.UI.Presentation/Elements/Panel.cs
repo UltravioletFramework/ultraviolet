@@ -30,13 +30,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <inheritdoc/>
-        protected internal override void RemoveChild(UIElement child)
+        protected internal override void RemoveLogicalChild(UIElement child)
         {
             if (child != null)
             {
                 children.Remove(child);
             }
-            base.RemoveChild(child);
+            base.RemoveLogicalChild(child);
         }
 
         /// <inheritdoc/>
@@ -58,7 +58,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <inheritdoc/>
         protected internal override UIElement GetVisualChild(Int32 childIndex)
         {
-            return GetVisualChild(childIndex);
+            return GetLogicalChild(childIndex);
         }
 
         /// <inheritdoc/>

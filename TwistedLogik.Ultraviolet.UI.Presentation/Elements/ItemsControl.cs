@@ -82,12 +82,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             internal set
             {
                 if (itemsPanelElement != null)
+                {
                     itemsPanelElement.Children.Clear();
+                    itemsPanelElement.Parent = null;
+                }
 
                 itemsPanelElement = value;
 
                 if (itemsPanelElement != null)
                 {
+                    itemsPanelElement.Parent = this;
                     foreach (var container in itemContainers)
                     {
                         itemsPanelElement.Children.Add(container);
@@ -152,6 +156,41 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             {
                 temp(this);
             }
+        }
+
+        protected override Size2D MeasureOverride(Size2D availableSize)
+        {
+            itemsPanelElement.Measure(availableSize);
+
+            return itemsPanelElement.DesiredSize;
+        }
+
+        protected override Size2D ArrangeOverride(Size2D finalSize, ArrangeOptions options)
+        {
+            itemsPanelElement.Arrange(new RectangleD(0, 0, finalSize.Width, finalSize.Height), options);
+
+            return itemsPanelElement.RenderSize;
+        }
+
+        protected override void UpdateOverride(UltravioletTime time)
+        {
+            itemsPanelElement.Update(time);
+
+            base.UpdateOverride(time);
+        }
+
+        protected override void DrawOverride(UltravioletTime time, DrawingContext dc)
+        {
+            itemsPanelElement.Draw(time, dc);
+
+            base.DrawOverride(time, dc);
+        }
+
+        protected override void PositionOverride(Point2D position)
+        {
+            itemsPanelElement.Position(position);
+
+            base.PositionOverride(position);
         }
 
         /// <summary>
@@ -233,6 +272,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             if (!IsItemContainer(element))
             {
                 container = CreateItemContainer();
+                PrepareContainerForItemOverride(container, item);
                 AssociateItemContainerWithItem(container, item);
             }
 

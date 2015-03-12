@@ -103,59 +103,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <summary>
-        /// Called when the control's content presenter (if it has one) is drawn.
-        /// </summary>
-        /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Draw(UltravioletTime)"/>.</param>
-        /// <param name="dc">The drawing context that describes the render state of the layout.</param>
-        internal void OnContentPresenterDraw(UltravioletTime time, DrawingContext dc)
-        {
-            DrawContent(time, dc);
-        }
-
-        /// <summary>
-        /// Called when the control's content presenter (if it has one) is updated.
-        /// </summary>
-        /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Update(UltravioletTime)"/>.</param>
-        internal void OnContentPresenterUpdate(UltravioletTime time)
-        {
-            UpdateContent(time);
-        }
-
-        /// <summary>
-        /// Called when the control's content presenter (if it has one) is measured.
-        /// </summary>
-        /// <param name="availableSize">The size of the area which the element's parent has 
-        /// specified is available for the element's layout.</param>
-        /// <returns>The desired size of the control's content.</returns>
-        internal Size2D OnContentPresenterMeasure(Size2D availableSize)
-        {
-            CacheDesiredContentRegion(availableSize);
-            return MeasureContent(availableSize);
-        }
-
-        /// <summary>
-        /// Called when the control's content presenter (if it has one) is arranged.
-        /// </summary>
-        /// <param name="finalSize">The element's final size.</param>
-        /// <param name="options">A set of <see cref="ArrangeOptions"/> values specifying the options for this arrangement.</param>
-        /// <returns>The amount of space that was actually used by the control's content.</returns>
-        internal Size2D OnContentPresenterArrange(Size2D finalSize, ArrangeOptions options)
-        {
-            CacheRenderContentRegion(finalSize);
-            return ArrangeContent(finalSize, options);
-        }
-
-        /// <summary>
-        /// Called when the control's content presenter (if it has one) is positioned.
-        /// </summary>
-        /// <param name="position">The position of the element's parent element in absolute screen space.</param>
-        internal void OnContentPresenterPosition(Point2D position)
-        {
-            CacheRelativeAndAbsoluteContentRegion();
-            PositionContent(position);
-        }
-
-        /// <summary>
         /// Populates any fields of this object which represent references
         /// to components in the current component tree.
         /// </summary>
@@ -185,7 +132,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
                     return;
 
                 if (componentRoot != null && componentRoot.Parent != null)
-                    componentRoot.Parent.RemoveChild(componentRoot);
+                    componentRoot.Parent.RemoveLogicalChild(componentRoot);
 
                 componentRoot = value;
 
@@ -215,13 +162,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <inheritdoc/>
-        protected internal override void RemoveChild(UIElement child)
+        protected internal override void RemoveLogicalChild(UIElement child)
         {
             if (child == ComponentRoot)
             {
                 ComponentRoot = null;
             }
-            base.RemoveChild(child);
+            base.RemoveLogicalChild(child);
         }
 
         /// <inheritdoc/>
@@ -504,6 +451,20 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             if (temp != null)
             {
                 temp(this);
+            }
+        }
+
+        /// <summary>
+        /// Prepares the specified element to display the specified item.
+        /// </summary>
+        /// <param name="element">The element used to display the specified item.</param>
+        /// <param name="item">The item being displayed by the specified element.</param>
+        protected virtual void PrepareContainerForItemOverride(DependencyObject element, Object item)
+        {
+            var container = element as IItemContainer;
+            if (container != null)
+            {
+                container.PrepareItemContainer(item);
             }
         }
 

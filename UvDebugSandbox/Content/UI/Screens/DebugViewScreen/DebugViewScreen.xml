@@ -3,23 +3,9 @@
   <Stylesheet>DebugViewScreenStyles.uvss</Stylesheet>
   <View ViewModelType="UvDebugSandbox.UI.Screens.DebugViewModel, UvDebugSandbox">
 
-    <ListBox>
-      <RadioButton>A</RadioButton>
-      <RadioButton>B</RadioButton>
-      <RadioButton>C</RadioButton>
-      <RadioButton>D</RadioButton>
-      <ListBoxItem>Lorem ipsum dolor sit amet</ListBoxItem>
-      <ListBoxItem>Hello</ListBoxItem>
-      <ListBoxItem Selector.IsSelected="true">Hello</ListBoxItem>
-      <ListBoxItem>Hello</ListBoxItem>
-      <ListBoxItem>Hello</ListBoxItem>
-      <ListBoxItem>Hello</ListBoxItem>
-      <ListBoxItem>Hello</ListBoxItem>
-      <ListBoxItem>Hello</ListBoxItem>
-      <ListBoxItem>Hello</ListBoxItem>
-      <ListBoxItem>Hello</ListBoxItem>
-      <ListBoxItem>Hello</ListBoxItem>
-    </ListBox>
+    <Button Width="200" Height="48">
+      <ProgressBar Width="100" Height="32"></ProgressBar>
+    </Button>
 
   </View>
 </UIPanelDefinition>

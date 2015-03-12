@@ -11,7 +11,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
     /// Represents a control which displays a single item of content.
     /// </summary>
     [DefaultProperty("Content")]
-    public abstract class ContentControl : Control
+    public abstract class ContentControl : Control, IItemContainer
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ContentControl"/> class.
@@ -22,6 +22,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             : base(uv, id)
         {
 
+        }
+
+        /// <inheritdoc/>
+        void IItemContainer.PrepareItemContainer(Object item)
+        {
+            treatContentAsLogicalChild = false;
         }
 
         /// <summary>
@@ -87,27 +93,25 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             new DependencyPropertyMetadata(HandleContentChanged, null, DependencyPropertyOptions.AffectsMeasure | DependencyPropertyOptions.CoerceObjectToString));
 
         /// <inheritdoc/>
-        protected internal override void RemoveChild(UIElement child)
+        protected internal override void RemoveLogicalChild(UIElement child)
         {
-            if (Content == child)
+            if (TreatContentAsLogicalChild && Content == child)
             {
                 Content = null;
             }
-            base.RemoveChild(child);
+            base.RemoveLogicalChild(child);
         }
 
         /// <inheritdoc/>
         protected internal override UIElement GetLogicalChild(Int32 childIndex)
         {
-            Contract.EnsureRange(childIndex >= 0 && childIndex < (contentElement == null ? 0 : 1) + base.LogicalChildrenCount, "childIndex");
-
-            if (contentElement != null)
+            if (TreatContentAsLogicalChild && contentElement != null)
             {
                 if (childIndex == 0)
                 {
                     return contentElement;
                 }
-                childIndex--;
+                return base.GetLogicalChild(childIndex - 1);
             }
             return base.GetLogicalChild(childIndex);
         }
@@ -115,19 +119,27 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <inheritdoc/>
         protected internal override UIElement GetVisualChild(Int32 childIndex)
         {
-            return GetLogicalChild(childIndex);
+            if (contentElement != null)
+            {
+                if (childIndex == 0)
+                {
+                    return contentElement;
+                }
+                return base.GetVisualChild(childIndex - 1);
+            }
+            return base.GetVisualChild(childIndex);
         }
 
         /// <inheritdoc/>
         protected internal override Int32 LogicalChildrenCount
         {
-            get { return (contentElement == null ? 0 : 1) + base.LogicalChildrenCount; }
+            get { return (TreatContentAsLogicalChild && contentElement != null ? 1 : 0) + base.LogicalChildrenCount; }
         }
 
         /// <inheritdoc/>
         protected internal override Int32 VisualChildrenCount
         {
-            get { return LogicalChildrenCount; }
+            get { return (contentElement == null ? 0 : 1) + base.VisualChildrenCount; }
         }
 
         /// <inheritdoc/>
@@ -413,16 +425,24 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
 
             var oldElement = control.contentElement;
             if (oldElement != null && oldElement.Parent != null)
-                oldElement.Parent.RemoveChild(oldElement);
+                oldElement.Parent.RemoveLogicalChild(oldElement);
+
+            if (oldElement != null && oldElement.VisualParent != null)
+                oldElement.VisualParent.RemoveVisualChild(oldElement);
 
             control.contentElement = control.Content as UIElement;
 
-            var newElement = control.contentElement;
-            if (newElement != null)
-                newElement.Parent = control;
+            if (control.TreatContentAsLogicalChild)
+            {
+                var newElement = control.contentElement;
+                if (newElement != null)
+                    newElement.Parent = control;
+            }
+
+            if (control.contentElement != null)
+                control.AddVisualChild(control.contentElement);
 
             control.UpdateTextParserCache();
-
             control.OnContentChanged();
         }
 
@@ -468,8 +488,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             }
         }
 
+        /// <summary>
+        /// Gets a value indicating whether the content control treats its content as a logical child.
+        /// </summary>
+        private Boolean TreatContentAsLogicalChild
+        {
+            get { return treatContentAsLogicalChild; }
+        }
+
         // State values.
         private UIElement contentElement;
+        private Boolean treatContentAsLogicalChild = true;
 
         // Cached parser/layout results for content text.
         private readonly TextParserResult textParserResult = new TextParserResult();

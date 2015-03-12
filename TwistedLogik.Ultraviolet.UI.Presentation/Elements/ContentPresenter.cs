@@ -53,57 +53,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         public static readonly DependencyProperty UnconstrainedHeightProperty = DependencyProperty.Register("UnconstrainedHeight", typeof(Boolean), typeof(ContentPresenter),
             new DependencyPropertyMetadata(HandleUnconstrainedHeightChanged, null, DependencyPropertyOptions.AffectsMeasure));
 
-        /// <inheritdoc/>
-        protected override void DrawOverride(UltravioletTime time, DrawingContext dc)
-        {
-            if (Control != null)
-            {
-                Control.OnContentPresenterDraw(time, dc);
-            }
-            base.DrawOverride(time, dc);
-        }
-
-        /// <inheritdoc/>
-        protected override void UpdateOverride(UltravioletTime time)
-        {
-            if (Control != null)
-            {
-                Control.OnContentPresenterUpdate(time);
-            }
-            base.UpdateOverride(time);
-        }
-
-        /// <inheritdoc/>
-        protected override Size2D MeasureOverride(Size2D availableSize)
-        {
-            if (Control == null)
-                return Size2D.Zero;
-
-            var contentWidth  = UnconstrainedWidth ? Double.PositiveInfinity : availableSize.Width;
-            var contentHeight = UnconstrainedHeight ? Double.PositiveInfinity : availableSize.Height;
-
-            return Control.OnContentPresenterMeasure(new Size2D(contentWidth, contentHeight));
-        }
-
-        /// <inheritdoc/>
-        protected override Size2D ArrangeOverride(Size2D finalSize, ArrangeOptions options)
-        {
-            if (Control == null)
-                return Size2D.Zero;
-
-            return Control.OnContentPresenterArrange(finalSize, options);
-        }
-
-        /// <inheritdoc/>
-        protected override void PositionOverride(Point2D position)
-        {
-            if (Control != null)
-            {
-                Control.OnContentPresenterPosition(AbsolutePosition);
-            }
-            base.PositionOverride(position);
-        }
-
         /// <summary>
         /// Occurs when the value of the <see cref="UnconstrainedWidth"/> dependency property changes.
         /// </summary>

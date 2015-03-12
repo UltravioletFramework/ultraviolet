@@ -39,7 +39,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (child.visualParent != null)
                 throw new InvalidOperationException("TODO");
 
-            child.visualParent = this;
+            if (child.visualParent != this)
+            {
+                child.visualParent = this;
+                child.OnVisualParentChanged();
+            }
         }
 
         /// <summary>
@@ -53,6 +57,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (child.visualParent == this)
             {
                 child.visualParent = null;
+                child.OnVisualParentChanged();
             }
         }
 
@@ -83,6 +88,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         protected virtual Visual HitTestCore(Point2D pt)
         {
             throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Occurs when the object's visual parent is changed.
+        /// </summary>
+        protected virtual void OnVisualParentChanged()
+        {
+
         }
 
         // State values.

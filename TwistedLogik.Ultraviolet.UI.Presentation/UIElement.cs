@@ -262,6 +262,20 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             }
 
             CacheLayoutParametersCore();
+
+            for (int i = 0; i < LogicalTreeHelper.GetChildrenCount(this); i++)
+            {
+                var uiElement = LogicalTreeHelper.GetChild(this, i) as UIElement;
+                if (uiElement != null)
+                    uiElement.CacheLayoutParameters();
+            }
+
+            for (int i = 0; i < VisualTreeHelper.GetChildrenCount(this); i++)
+            {
+                var uiElement = VisualTreeHelper.GetChild(this, i) as UIElement;
+                if (uiElement != null)
+                    uiElement.CacheLayoutParameters();
+            }
         }
 
         /// <summary>
@@ -452,6 +466,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         public void InvalidateStyle()
         {
+            if (View == null)
+                return;
+
             this.isStyleValid = false;
             uv.GetUI().GetPresentationFoundation().StyleQueue.Enqueue(this);
         }
@@ -702,7 +719,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 if (parent != value)
                 {
                     parent = value;
-                    CacheLayoutParameters();
+                    OnLogicalParentChanged();
                 }
             }
         }
@@ -1651,7 +1668,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Removes the specified child element from this element.
         /// </summary>
         /// <param name="child">The child element to remove from this element.</param>
-        protected internal virtual void RemoveChild(UIElement child)
+        protected internal virtual void RemoveLogicalChild(UIElement child)
         {
 
         }
@@ -1693,6 +1710,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             {
                 temp(this, time);
             }
+        }
+
+        /// <summary>
+        /// Occurs when the element's logical parent is changed.
+        /// </summary>
+        protected virtual void OnLogicalParentChanged()
+        {
+            CacheLayoutParameters();
         }
 
         /// <summary>
@@ -1930,6 +1955,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         protected virtual void CacheLayoutParametersCore()
         {
 
+        }
+
+        protected override void OnVisualParentChanged()
+        {
+            CacheLayoutParameters();
+            base.OnVisualParentChanged();
         }
 
         /// <summary>
@@ -2374,16 +2405,35 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         private void CacheView()
         {
-            if (Parent == null)
-                return;
-
-            this.view = null;
-            for (var current = Parent; current != null; current = current.Parent)
+            var logicalParent = LogicalTreeHelper.GetParent(this) as UIElement;
+            if (logicalParent != null)
             {
-                if (current.View != null)
+                this.view = null;
+
+                for (var current = logicalParent; current != null; current = LogicalTreeHelper.GetParent(current) as UIElement)
                 {
-                    this.view = current.View;
-                    break;
+                    if (current.View != null)
+                    {
+                        this.view = current.View;
+                        break;
+                    }
+                }
+            }
+            else
+            {
+                var visualParent = VisualTreeHelper.GetParent(this) as UIElement;
+                if (visualParent == null)
+                    return;
+
+                this.view = null;
+
+                for (var current = visualParent; current != null; current = VisualTreeHelper.GetParent(current) as UIElement)
+                {
+                    if (current.View != null)
+                    {
+                        this.view = current.View;
+                        break;
+                    }
                 }
             }
         }
