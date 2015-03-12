@@ -108,8 +108,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             var root = InstantiateAndPopulateElement(uv, null, rootElement, context);
 
+            var contentControl = control as ContentControl;
+            if (contentControl != null)
+            {
+                if (context.ContentPresenter == null)
+                {
+                    throw new InvalidOperationException("TODO");
+                }
+                contentControl.ContentPresenter = context.ContentPresenter;
+            }
+
             control.ComponentRoot = root;
-            control.ContentPresenter = context.ContentPresenter;
             control.PopulateFieldsFromRegisteredElements();
         }
 
@@ -701,7 +710,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                     var contentElement = xmlChildren.SingleOrDefault();
                     if (contentElement != null)
                     {
-                        InstantiateAndPopulateElement(uv, uiElement, contentElement, context);
+                        if (contentControl.ContentPresenter == null)
+                        {
+                            throw new InvalidOperationException("TODO");
+                        }
+                        contentControl.Content = InstantiateAndPopulateElement(uv, null, contentElement, context);
                     }
                 }
                 else

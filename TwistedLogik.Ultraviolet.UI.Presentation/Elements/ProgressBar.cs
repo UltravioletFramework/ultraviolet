@@ -187,8 +187,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             var percentFilled = (Value - Minimum) / range;
             if (percentFilled > 0)
             {
-                var area = new RectangleD(RenderContentRegion.X, RenderContentRegion.Y, 
-                    RenderContentRegion.Width * percentFilled, RenderContentRegion.Height);
+                var area = new RectangleD(Bounds.X, Bounds.Y,
+                    Bounds.Width * percentFilled, Bounds.Height);
 
                 DrawImage(dc, FillImage, area, FillColor);
             }

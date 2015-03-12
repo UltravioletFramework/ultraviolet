@@ -425,9 +425,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             this.mostRecentPosition = position;
 
-            var contentRegionOffset = 
-                ((Parent == null || IsComponent) ? Point2D.Zero : Parent.RelativeContentRegion.Location) +
-                ((Parent == null || Parent == Control) ? Point2D.Zero : Parent.ContentOffset);
+            var parent = VisualTreeHelper.GetParent(this) as UIElement;
+            var contentRegionOffset = (parent == null || parent == Control) ? Point2D.Zero : parent.ContentOffset;
 
             var offsetX = mostRecentFinalRect.X + RenderOffset.X + contentRegionOffset.X;
             var offsetY = mostRecentFinalRect.Y + RenderOffset.Y + contentRegionOffset.Y;
@@ -933,38 +932,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
-        /// Gets the element's desired content region as of the last call to <see cref="Measure(Size2D)"/>.
-        /// </summary>
-        public virtual RectangleD DesiredContentRegion
-        {
-            get { return new RectangleD(Point2D.Zero, DesiredSize); }
-        }
-
-        /// <summary>
-        /// Gets the element's final rendered content region as of the last call to <see cref="Arrange(RectangleD, ArrangeOptions)"/>.
-        /// </summary>
-        public virtual RectangleD RenderContentRegion
-        {
-            get { return new RectangleD(Point2D.Zero, RenderSize); }
-        }
-
-        /// <summary>
-        /// Gets the element's final rendered content region in element-relative space as of the last call to <see cref="Position(Point2D)"/>.
-        /// </summary>
-        public virtual RectangleD RelativeContentRegion
-        {
-            get { return RelativeBounds; }
-        }
-
-        /// <summary>
-        /// Gets the element's final rendered content region in absolute screen space as of the last call to <see cref="Position(Point2D)"/>.
-        /// </summary>
-        public virtual RectangleD AbsoluteContentRegion
-        {
-            get { return AbsoluteBounds; }
-        }
-
-        /// <summary>
         /// Gets the offset applied to the region's content. This is usually used to scroll the 
         /// element's content within its content region.
         /// </summary>
@@ -1260,6 +1227,50 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         internal virtual void ApplyStyledVisualStateTransition(UvssStyle style)
         {
 
+        }
+
+        /// <summary>
+        /// Changes the element's logical and visual parents.
+        /// </summary>
+        /// <param name="logicalParent">The element's new logical parent.</param>
+        /// <param name="visualParent">The element's new visual parent.</param>
+        internal void ChangeLogicalAndVisualParents(UIElement logicalParent, Visual visualParent)
+        {
+            if (this.Parent != null)
+                this.Parent = null;
+
+            this.Parent = logicalParent;
+
+            if (this.VisualParent != null)
+                this.VisualParent.RemoveVisualChild(this);
+
+            if (visualParent != null)
+                visualParent.AddVisualChild(this);
+        }
+
+        /// <summary>
+        /// Changes the element's logical parent.
+        /// </summary>
+        /// <param name="logicalParent">The element's new logical parent.</param>
+        internal void ChangeLogicalParent(UIElement logicalParent)
+        {
+            if (this.Parent != null)
+                this.Parent = null;
+
+            this.Parent = logicalParent;
+        }
+
+        /// <summary>
+        /// Changes the element's visual parent.
+        /// </summary>
+        /// <param name="visualParent">The element's new visual parent.</param>
+        internal void ChangeVisualParent(Visual visualParent)
+        {
+            if (this.VisualParent != null)
+                this.VisualParent.RemoveVisualChild(this);
+
+            if (visualParent != null)
+                visualParent.AddVisualChild(this);
         }
 
         /// <summary>
@@ -1718,6 +1729,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         protected virtual void OnLogicalParentChanged()
         {
             CacheLayoutParameters();
+            InvalidateStyle();
         }
 
         /// <summary>
@@ -1900,7 +1912,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         protected virtual void ReloadContentCore(Boolean recursive)
         {
-
+            var children = VisualTreeHelper.GetChildrenCount(this);
+            for (int i = 0; i < children; i++)
+            {
+                var child = VisualTreeHelper.GetChild(this, i) as UIElement;
+                if (child != null)
+                {
+                    child.ReloadContent(recursive);
+                }
+            }
         }
 
         /// <summary>
@@ -1960,6 +1980,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         protected override void OnVisualParentChanged()
         {
             CacheLayoutParameters();
+            InvalidateStyle();
             base.OnVisualParentChanged();
         }
 
@@ -2022,7 +2043,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <returns>The clipping rectangle for this element in absolute screen coordinates, or <c>null</c> to disable clipping.</returns>
         protected virtual RectangleD? ClipCore()
         {
-            var clipOffset = (Parent == null ? Point2D.Zero : IsComponent ? Parent.AbsolutePosition : Parent.AbsoluteContentRegion.Location);
+            var parent = VisualTreeHelper.GetParent(this) as UIElement;
+            if (parent == null)
+                return null;
+
+            var clipOffset = parent.AbsolutePosition;
             var clip       = mostRecentFinalRect + clipOffset;
 
             if (clip.Contains(AbsoluteBounds))

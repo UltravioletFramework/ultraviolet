@@ -53,6 +53,84 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         public static readonly DependencyProperty UnconstrainedHeightProperty = DependencyProperty.Register("UnconstrainedHeight", typeof(Boolean), typeof(ContentPresenter),
             new DependencyPropertyMetadata(HandleUnconstrainedHeightChanged, null, DependencyPropertyOptions.AffectsMeasure));
 
+        protected override Size2D MeasureOverride(Size2D availableSize)
+        {
+            var owner = Control as ContentControl;
+            if (owner == null)
+                return Size2D.Zero;
+
+            var content = owner.Content as UIElement;
+            if (content == null)
+                return Size2D.Zero;
+
+            content.Measure(availableSize);
+            return content.DesiredSize;
+        }
+
+        protected override Size2D ArrangeOverride(Size2D finalSize, ArrangeOptions options)
+        {
+            var owner = Control as ContentControl;
+            if (owner == null)
+                return Size2D.Zero;
+
+            var content = owner.Content as UIElement;
+            if (content == null)
+                return Size2D.Zero;
+
+            content.Arrange(new RectangleD(0, 0, finalSize.Width, finalSize.Height), options);
+            return content.RenderSize;
+        }
+
+        protected internal override UIElement GetLogicalChild(int childIndex)
+        {
+            var owner = Control as ContentControl;
+            if (owner == null || owner.TreatContentAsLogicalChild)
+                throw new ArgumentOutOfRangeException("childIndex");
+
+            var content = owner.Content as UIElement;
+            if (content == null || childIndex != 0)
+                throw new ArgumentOutOfRangeException("childIndex");
+
+            return content;
+        }
+
+        protected internal override UIElement GetVisualChild(int childIndex)
+        {
+            var owner = Control as ContentControl;
+            if (owner == null)
+                throw new ArgumentOutOfRangeException("childIndex");
+
+            var content = owner.Content as UIElement;
+            if (content == null || childIndex != 0)
+                throw new ArgumentOutOfRangeException("childIndex");
+
+            return content;
+        }
+
+        protected internal override Int32 LogicalChildrenCount
+        {
+            get 
+            {
+                var owner = Control as ContentControl;
+                if (owner == null)
+                    return 0;
+
+                return owner.TreatContentAsLogicalChild ? 0 : ((owner.Content is UIElement) ? 1 : 0);
+            }
+        }
+
+        protected internal override Int32 VisualChildrenCount
+        {
+            get 
+            {
+                var owner = Control as ContentControl;
+                if (owner == null)
+                    return 0;
+
+                return (owner.Content is UIElement) ? 1 : 0;
+            }
+        }
+
         /// <summary>
         /// Occurs when the value of the <see cref="UnconstrainedWidth"/> dependency property changes.
         /// </summary>

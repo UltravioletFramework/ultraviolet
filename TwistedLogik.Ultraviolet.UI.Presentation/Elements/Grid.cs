@@ -214,7 +214,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <inheritdoc/>
-        protected override Size2D MeasureContent(Size2D availableSize)
+        protected override Size2D MeasureOverride(Size2D availableSize)
         {
             var infiniteHeight = Double.IsPositiveInfinity(availableSize.Height);
             var infiniteWidth  = Double.IsPositiveInfinity(availableSize.Width);
@@ -267,7 +267,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <inheritdoc/>
-        protected override Size2D ArrangeContent(Size2D finalSize, ArrangeOptions options)
+        protected override Size2D ArrangeOverride(Size2D finalSize, ArrangeOptions options)
         {
             FinalizeDimension(ColumnDefinitions, finalSize.Width);
             FinalizeDimension(RowDefinitions, finalSize.Height);
@@ -287,15 +287,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             }
 
             return finalSize;
-        }
-
-        /// <inheritdoc/>
-        protected override void PositionContent(Point2D position)
-        {
-            foreach (var child in Children)
-                child.Position(position);
-
-            base.PositionContent(position);
         }
 
         /// <inheritdoc/>
@@ -369,8 +360,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         {
             var position = 0.0;
 
-            x -= RenderContentRegion.X;
-            y -= RenderContentRegion.Y;
+            x -= AbsolutePosition.X;
+            y -= AbsolutePosition.Y;
 
             for (int i = 0; i < ColumnDefinitions.Count; i++)
             {
@@ -395,8 +386,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         {
             var position = 0.0;
 
-            x -= RenderContentRegion.X;
-            y -= RenderContentRegion.Y;
+            x -= AbsolutePosition.X;
+            y -= AbsolutePosition.Y;
 
             for (int i = 0; i < RowDefinitions.Count; i++)
             {

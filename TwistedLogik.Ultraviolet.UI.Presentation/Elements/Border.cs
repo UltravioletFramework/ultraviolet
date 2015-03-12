@@ -60,12 +60,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             new DependencyPropertyMetadata(HandleBorderColorChanged, () => Color.Black, DependencyPropertyOptions.None));
 
         /// <inheritdoc/>
-        protected override Thickness GetTotalContentPadding()
-        {
-            return base.GetTotalContentPadding() + BorderThickness;
-        }
-
-        /// <inheritdoc/>
         protected override void DrawOverride(UltravioletTime time, DrawingContext dc)
         {
             var borderColor     = BorderColor;

@@ -66,15 +66,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         {
             get 
             {
-                if (ComponentRoot != null)
-                {
-                    if (ContentPresenter != null)
-                    {
-                        return 1;
-                    }
-                    return 1 + children.Count;
-                }
-                return children.Count; 
+                return base.LogicalChildrenCount + children.Count;
             }
         }
 
@@ -83,7 +75,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         {
             get
             {
-                return LogicalChildrenCount;
+                return base.VisualChildrenCount + children.Count;
             }
         }
 
@@ -204,7 +196,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
                 if (child.RelativeBounds.Left < 0 || child.RelativeBounds.Top < 0 ||
                     child.RelativeBounds.Right > RenderSize.Width || child.RelativeBounds.Bottom > RenderSize.Height)
                 {
-                    return AbsoluteContentRegion;
+                    return AbsoluteBounds;
                 }
             }
             return null;

@@ -144,14 +144,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <inheritdoc/>
-        protected override void UpdateOverride(UltravioletTime time)
-        {
-            UpdateContent(time);
-
-            base.UpdateOverride(time);
-        }
-
-        /// <inheritdoc/>
         protected override void OnIsEnabledChanged()
         {
             base.OnIsEnabledChanged();

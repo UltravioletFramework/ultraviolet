@@ -275,44 +275,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public static readonly DependencyProperty VerticalAlignmentProperty = DependencyProperty.Register("VerticalAlignment", typeof(VerticalAlignment), typeof(FrameworkElement),
             new DependencyPropertyMetadata(HandleVerticalAlignmentChanged, () => VerticalAlignment.Top, DependencyPropertyOptions.AffectsArrange));
 
-        /// <summary>
-        /// Called immediately prior to <see cref="FrameworkElement.DrawOverride(UltravioletTime, DrawingContext)"/>.
-        /// </summary>
-        /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Draw(UltravioletTime)"/>.</param>
-        /// <param name="dc">The drawing context that describes the render state of the layout.</param>
-        internal virtual void PreDrawOverride(UltravioletTime time, DrawingContext dc)
-        {
-
-        }
-
-        /// <summary>
-        /// Called immediately prior to <see cref="FrameworkElement.UpdateOverride(UltravioletTime)"/>.
-        /// </summary>
-        /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Update(UltravioletTime)"/>.</param>
-        internal virtual void PreUpdateOverride(UltravioletTime time)
-        {
-
-        }
-
-        /// <summary>
-        /// Called immediately after <see cref="FrameworkElement.DrawOverride(UltravioletTime, DrawingContext)"/>
-        /// </summary>
-        /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Draw(UltravioletTime)"/>.</param>
-        /// <param name="dc">The drawing context that describes the render state of the layout.</param>
-        internal virtual void PostDrawOverride(UltravioletTime time, DrawingContext dc)
-        {
-
-        }
-
-        /// <summary>
-        /// Called immediately after <see cref="FrameworkElement.UpdateOverride(UltravioletTime)"/>.
-        /// </summary>
-        /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Update(UltravioletTime)"/>.</param>
-        internal virtual void PostUpdateOverride(UltravioletTime time)
-        {
-
-        }
-
         /// <inheritdoc/>
         internal override void ApplyStyledVisualStateTransition(UvssStyle style)
         {
@@ -361,17 +323,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (!LayoutUtil.IsDrawn(this))
                 return;
 
-            PreDrawOverride(time, dc);
             DrawOverride(time, dc);
-            PostDrawOverride(time, dc);
         }
 
         /// <inheritdoc/>
         protected sealed override void UpdateCore(UltravioletTime time)
         {
-            PreUpdateOverride(time);
             UpdateOverride(time);
-            PostUpdateOverride(time);
         }
 
         /// <inheritdoc/>
@@ -512,7 +470,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="dc">The drawing context that describes the render state of the layout.</param>
         protected virtual void DrawOverride(UltravioletTime time, DrawingContext dc)
         {
-
+            var children = VisualTreeHelper.GetChildrenCount(this);
+            for (int i = 0; i < children; i++)
+            {
+                var child = VisualTreeHelper.GetChild(this, i) as UIElement;
+                if (child != null)
+                {
+                    child.Draw(time, dc);
+                }
+            }
         }
 
         /// <summary>
@@ -522,7 +488,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Update(UltravioletTime)"/>.</param>
         protected virtual void UpdateOverride(UltravioletTime time)
         {
-
+            var children = VisualTreeHelper.GetChildrenCount(this);
+            for (int i = 0; i < children; i++)
+            {
+                var child = VisualTreeHelper.GetChild(this, i) as UIElement;
+                if (child != null)
+                {
+                    child.Update(time);
+                }
+            }
         }
 
         /// <summary>
@@ -533,7 +507,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="stylesheet">The stylesheet to apply to this element and its children.</param>
         protected virtual void StyleOverride(UvssDocument stylesheet)
         {
-
+            var children = VisualTreeHelper.GetChildrenCount(this);
+            for (int i = 0; i < children; i++)
+            {
+                var child = VisualTreeHelper.GetChild(this, i) as UIElement;
+                if (child != null)
+                {
+                    child.Style(stylesheet);
+                }
+            }
         }
 
         /// <summary>
@@ -568,7 +550,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="position">The position of the element's parent element in absolute screen space.</param>
         protected virtual void PositionOverride(Point2D position)
         {
-
+            var children = VisualTreeHelper.GetChildrenCount(this);
+            for (int i = 0; i < children; i++)
+            {
+                var child = VisualTreeHelper.GetChild(this, i) as UIElement;
+                if (child != null)
+                {
+                    child.Position(AbsolutePosition);
+                }
+            }
         }
 
         /// <summary>

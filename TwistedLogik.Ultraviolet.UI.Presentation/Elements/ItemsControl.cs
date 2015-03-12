@@ -158,41 +158,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             }
         }
 
-        protected override Size2D MeasureOverride(Size2D availableSize)
-        {
-            itemsPanelElement.Measure(availableSize);
-
-            return itemsPanelElement.DesiredSize;
-        }
-
-        protected override Size2D ArrangeOverride(Size2D finalSize, ArrangeOptions options)
-        {
-            itemsPanelElement.Arrange(new RectangleD(0, 0, finalSize.Width, finalSize.Height), options);
-
-            return itemsPanelElement.RenderSize;
-        }
-
-        protected override void UpdateOverride(UltravioletTime time)
-        {
-            itemsPanelElement.Update(time);
-
-            base.UpdateOverride(time);
-        }
-
-        protected override void DrawOverride(UltravioletTime time, DrawingContext dc)
-        {
-            itemsPanelElement.Draw(time, dc);
-
-            base.DrawOverride(time, dc);
-        }
-
-        protected override void PositionOverride(Point2D position)
-        {
-            itemsPanelElement.Position(position);
-
-            base.PositionOverride(position);
-        }
-
         /// <summary>
         /// Occurs when the value of the <see cref="ItemsSource"/> dependency property changes.
         /// </summary>

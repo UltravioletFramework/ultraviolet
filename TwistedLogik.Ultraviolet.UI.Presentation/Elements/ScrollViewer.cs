@@ -78,7 +78,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// </summary>
         public Double ViewportWidth
         {
-            get { return RelativeContentRegion.Width; }
+            get { return Bounds.Width; }
         }
 
         /// <summary>
@@ -86,7 +86,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// </summary>
         public Double ViewportHeight
         {
-            get { return RelativeContentRegion.Height; }
+            get { return Bounds.Height; }
         }
 
         /// <summary>

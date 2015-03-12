@@ -92,6 +92,23 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         public static readonly DependencyProperty ContentProperty = DependencyProperty.Register("Content", typeof(Object), typeof(ContentControl), 
             new DependencyPropertyMetadata(HandleContentChanged, null, DependencyPropertyOptions.AffectsMeasure | DependencyPropertyOptions.CoerceObjectToString));
 
+        /// <summary>
+        /// Gets a value indicating whether the content control treats its content as a logical child.
+        /// </summary>
+        internal Boolean TreatContentAsLogicalChild
+        {
+            get { return treatContentAsLogicalChild; }
+        }
+
+        /// <summary>
+        /// Gets the control's content presenter.
+        /// </summary>
+        internal ContentPresenter ContentPresenter
+        {
+            get { return contentPresenter; }
+            set { contentPresenter = value; }
+        }
+
         /// <inheritdoc/>
         protected internal override void RemoveLogicalChild(UIElement child)
         {
@@ -119,14 +136,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <inheritdoc/>
         protected internal override UIElement GetVisualChild(Int32 childIndex)
         {
-            if (contentElement != null)
-            {
-                if (childIndex == 0)
-                {
-                    return contentElement;
-                }
-                return base.GetVisualChild(childIndex - 1);
-            }
             return base.GetVisualChild(childIndex);
         }
 
@@ -139,224 +148,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <inheritdoc/>
         protected internal override Int32 VisualChildrenCount
         {
-            get { return (contentElement == null ? 0 : 1) + base.VisualChildrenCount; }
-        }
-
-        /// <inheritdoc/>
-        protected override void InitializeDependencyPropertiesCore(Boolean recursive)
-        {
-            if (recursive && contentElement != null)
-            {
-                contentElement.InitializeDependencyProperties(true);
-            }
-            base.InitializeDependencyPropertiesCore(recursive);
-        }
-
-        /// <inheritdoc/>
-        protected override void ReloadContentCore(Boolean recursive)
-        {
-            if (contentElement != null)
-            {
-                if (recursive)
-                {
-                    contentElement.ReloadContent(true);
-                }
-            }
-            else
-            {
-                UpdateTextParserCache();
-            }
-            base.ReloadContentCore(recursive);
-        }
-
-        /// <inheritdoc/>
-        protected override void ClearAnimationsCore(Boolean recursive)
-        {
-            if (recursive && contentElement != null)
-            {
-                contentElement.ClearAnimations(true);
-            }
-            base.ClearAnimationsCore(recursive);
-        }
-
-        /// <inheritdoc/>
-        protected override void ClearLocalValuesCore(Boolean recursive)
-        {
-            if (recursive && contentElement != null)
-            {
-                contentElement.ClearLocalValues(true);
-            }
-            base.ClearLocalValuesCore(recursive);
-        }
-
-        /// <inheritdoc/>
-        protected override void ClearStyledValuesCore(Boolean recursive)
-        {
-            if (recursive && contentElement != null)
-            {
-                contentElement.ClearStyledValues(true);
-            }
-            base.ClearStyledValuesCore(recursive);
-        }
-
-        /// <inheritdoc/>
-        protected override void CleanupCore()
-        {
-            if (contentElement != null)
-            {
-                contentElement.Cleanup();
-            }
-            base.CleanupCore();
-        }
-
-        /// <inheritdoc/>
-        protected override void CacheLayoutParametersCore()
-        {
-            if (contentElement != null)
-            {
-                contentElement.CacheLayoutParameters();
-            }
-            base.CacheLayoutParametersCore();
-        }
-
-        /// <inheritdoc/>
-        protected override void AnimateCore(Storyboard storyboard, StoryboardClock clock, UIElement root)
-        {
-            if (contentElement != null)
-            {
-                contentElement.Animate(storyboard, clock, root);
-            }
-            base.AnimateCore(storyboard, clock, root);
-        }
-
-        /// <inheritdoc/>        
-        protected override void StyleOverride(UvssDocument stylesheet)
-        {
-            if (contentElement != null)
-            {
-                contentElement.Style(stylesheet);
-            }
-            base.StyleOverride(stylesheet);
-        }
-
-        /// <inheritdoc/>
-        protected override Size2D MeasureContent(Size2D availableSize)
-        {
-            if (contentElement != null)
-            {
-                var desiredContentSize = new Size2D(DesiredContentRegion.Width, DesiredContentRegion.Height);
-                contentElement.Measure(desiredContentSize);
-                return GetTotalContentPadding() + contentElement.DesiredSize;
-            }
-            else
-            {
-                UpdateTextLayoutCache(availableSize);
-
-                var dipsWidth  = Display.PixelsToDips(textLayoutResult.ActualWidth);
-                var dipsHeight = Display.PixelsToDips(textLayoutResult.ActualHeight);
-                var dipsSize   = new Size2D(dipsWidth, dipsHeight);
-
-                return GetTotalContentPadding() + dipsSize;
-            }
-        }
-
-        /// <inheritdoc/>
-        protected override Size2D ArrangeContent(Size2D finalSize, ArrangeOptions options)
-        {
-            if (contentElement != null)
-            {
-                contentElement.Arrange(RenderContentRegion);
-            }
-            else
-            {
-                UpdateTextLayoutCache(RenderContentRegion.Size);
-            }
-            return finalSize;
-        }
-
-        /// <inheritdoc/>
-        protected override void PositionContent(Point2D position)
-        {
-            if (contentElement != null)
-            {
-                contentElement.Position(AbsolutePosition);
-            }
-        }
-
-        /// <inheritdoc/>
-        protected override RectangleD? ClipContentCore()
-        {
-            if (contentElement != null)
-            {
-                if (contentElement.RelativeBounds.Left < 0 || contentElement.RelativeBounds.Y < 0 ||
-                    contentElement.RelativeBounds.Right > RenderContentRegion.Width ||
-                    contentElement.RelativeBounds.Bottom > RenderContentRegion.Height)
-                {
-                    return AbsoluteContentRegion;
-                }
-            }
-            else
-            {
-                if (textLayoutResult.ActualWidth > RenderContentRegion.Width || 
-                    textLayoutResult.ActualHeight > RenderContentRegion.Height)
-                {
-                    return AbsoluteContentRegion;
-                }
-            }
-            return null;
-        }
-
-        /// <inheritdoc/>
-        protected override UIElement GetElementAtPointCore(Double x, Double y, Boolean isHitTest)
-        {
-            if (contentElement != null && RelativeContentRegion.Contains(x, y))
-            {
-                var contentRelX = x - contentElement.RelativeBounds.X;
-                var contentRelY = y - contentElement.RelativeBounds.Y;
-
-                var contentMatch = contentElement.GetElementAtPoint(contentRelX, contentRelY, isHitTest);
-                if (contentMatch != null)
-                {
-                    return contentMatch;
-                }
-            }
-            return base.GetElementAtPointCore(x, y, isHitTest);
-        }
-
-        /// <inheritdoc/>
-        protected override void DrawContent(UltravioletTime time, DrawingContext dc)
-        {
-            if (Content != null)
-            {
-                var clip = ClipContentRectangle;
-                if (clip != null)
-                    dc.PushClipRectangle(clip.Value);
-
-                if (contentElement != null)
-                {
-                    contentElement.Draw(time, dc);
-                }
-                else
-                {
-                    if (Content != null && Font.IsLoaded)
-                    {
-                        var position = (Vector2)Display.DipsToPixels(AbsoluteContentRegion.Location);
-                        View.Resources.TextRenderer.Draw(dc.SpriteBatch, textLayoutResult, position, FontColor * dc.Opacity);
-                    }
-                }
-
-                if (clip != null)
-                    dc.PopClipRectangle();
-            }
-        }
-
-        /// <inheritdoc/>
-        protected override void UpdateContent(UltravioletTime time)
-        {
-            if (contentElement != null)
-            {
-                contentElement.Update(time);
-            }
+            get { return base.VisualChildrenCount; }
         }
 
         /// <summary>
@@ -423,12 +215,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         {
             var control = (ContentControl)dobj;
 
-            var oldElement = control.contentElement;
-            if (oldElement != null && oldElement.Parent != null)
-                oldElement.Parent.RemoveLogicalChild(oldElement);
-
-            if (oldElement != null && oldElement.VisualParent != null)
-                oldElement.VisualParent.RemoveVisualChild(oldElement);
+            if (control.TreatContentAsLogicalChild)
+            {
+                var oldElement = control.contentElement;
+                if (oldElement != null)
+                    oldElement.ChangeLogicalAndVisualParents(null, null);
+            }
 
             control.contentElement = control.Content as UIElement;
 
@@ -436,11 +228,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             {
                 var newElement = control.contentElement;
                 if (newElement != null)
-                    newElement.Parent = control;
+                    newElement.ChangeLogicalAndVisualParents(control, control.ContentPresenter);
             }
-
-            if (control.contentElement != null)
-                control.AddVisualChild(control.contentElement);
 
             control.UpdateTextParserCache();
             control.OnContentChanged();
@@ -488,16 +277,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             }
         }
 
-        /// <summary>
-        /// Gets a value indicating whether the content control treats its content as a logical child.
-        /// </summary>
-        private Boolean TreatContentAsLogicalChild
-        {
-            get { return treatContentAsLogicalChild; }
-        }
-
         // State values.
         private UIElement contentElement;
+        private ContentPresenter contentPresenter;
         private Boolean treatContentAsLogicalChild = true;
 
         // Cached parser/layout results for content text.
