@@ -1,5 +1,4 @@
 ﻿using System;
-using TwistedLogik.Ultraviolet.Input;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
 {

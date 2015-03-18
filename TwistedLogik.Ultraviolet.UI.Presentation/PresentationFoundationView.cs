@@ -328,73 +328,76 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
-        /// Gets the element at the specified pixel coordinates relative to screen space.
+        /// Performs a hit test against the view at the specified point in screen space.
         /// </summary>
-        /// <param name="x">The screen-relative x-coordinate of the pixel to evaluate.</param>
-        /// <param name="y">The screen-relative y-coordinate of the pixel to evaluate.</param>
-        /// <param name="isHitTest">A value indicating whether this test should respect the value of the <see cref="UIElement.IsHitTestVisible"/> property.</param>
-        /// <returns>The element at the specified pixel coordinates, or <c>null</c> if no such element exists.</returns>
-        public UIElement GetElementAtScreenPixel(Int32 x, Int32 y, Boolean isHitTest)
+        /// <param name="x">The x-coordinate in screen space to evaluate.</param>
+        /// <param name="y">The y-coordinate in screen space to evaluate.</param>
+        /// <returns>The topmost <see cref="UIElement"/> in the view which contains the specified point, or <c>null</c>.</returns>
+        public UIElement HitTestScreenPixel(Int32 x, Int32 y)
         {
-            return LayoutRoot.GetElementAtPixel(x - Area.X, y - Area.Y, isHitTest);
+            var dipsX = Display.PixelsToDips(x - Area.X);
+            var dipsY = Display.PixelsToDips(y - Area.Y);
+
+            return LayoutRoot.HitTest(new Point2D(dipsX, dipsY)) as UIElement;
         }
 
         /// <summary>
-        /// Gets the element at the specified pixel coordinates relative to screen space.
+        /// Performs a hit test against the view at the specified point in screen space.
         /// </summary>
-        /// <param name="pt">The screen-relative coordinates of the pixel to evaluate.</param>
-        /// <param name="isHitTest">A value indicating whether this test should respect the value of the <see cref="UIElement.IsHitTestVisible"/> property.</param>
-        /// <returns>The element at the specified pixel coordinates, or <c>null</c> if no such element exists.</returns>
-        public UIElement GetElementAtScreenPixel(Point2 pt, Boolean isHitTest)
+        /// <param name="point">The point in screen space to evaluate.</param>
+        /// <returns>The topmost <see cref="UIElement"/> in the view which contains the specified point, or <c>null</c>.</returns>
+        public UIElement HitTestScreenPixel(Point2 point)
         {
-            return GetElementAtScreenPixel(pt.X, pt.Y, isHitTest);
+            var dipsPoint = Display.PixelsToDips(point - Area.Location);
+
+            return LayoutRoot.HitTest(dipsPoint) as UIElement;
         }
 
         /// <summary>
-        /// Gets the element at the specified pixel coordinates relative to this view's bounds.
+        /// Performs a hit test against the view at the specified point in view-relative screen space.
         /// </summary>
-        /// <param name="x">The view-relative x-coordinate of the pixel to evaluate.</param>
-        /// <param name="y">The view-relative y-coordinate of the pixel to evaluate.</param>
-        /// <param name="isHitTest">A value indicating whether this test should respect the value of the <see cref="UIElement.IsHitTestVisible"/> property.</param>
-        /// <returns>The element at the specified pixel coordinates, or <c>null</c> if no such element exists.</returns>
-        public UIElement GetElementAtPixel(Int32 x, Int32 y, Boolean isHitTest)
+        /// <param name="x">The x-coordinate in view-relative screen space to evaluate.</param>
+        /// <param name="y">The y-coordinate in view-relative screen space to evaluate.</param>
+        /// <returns>The topmost <see cref="UIElement"/> in the view which contains the specified point, or <c>null</c>.</returns>
+        public UIElement HitTestPixel(Int32 x, Int32 y)
         {
-            return LayoutRoot.GetElementAtPixel(x, y, isHitTest);
+            var dipsX = Display.PixelsToDips(x);
+            var dipsY = Display.PixelsToDips(y);
+
+            return LayoutRoot.HitTest(new Point2D(dipsX, dipsY)) as UIElement;
         }
 
         /// <summary>
-        /// Gets the element at the specified pixel coordinates relative to this view's bounds.
+        /// Performs a hit test against the view at the specified point in view-relative screen space.
         /// </summary>
-        /// <param name="pt">The view-relative coordinates of the pixel to evaluate.</param>
-        /// <param name="isHitTest">A value indicating whether this test should respect the value of the <see cref="UIElement.IsHitTestVisible"/> property.</param>
-        /// <returns>The element at the specified pixel coordinates, or <c>null</c> if no such element exists.</returns>
-        public UIElement GetElementAtPixel(Point2 pt, Boolean isHitTest)
+        /// <param name="point">The point in view-relative screen space to evaluate.</param>
+        /// <returns>The topmost <see cref="UIElement"/> in the view which contains the specified point, or <c>null</c>.</returns>
+        public UIElement HitTestPixel(Point2 point)
         {
-            return LayoutRoot.GetElementAtPixel(pt, isHitTest);
+            var dipsPoint = Display.PixelsToDips(point - Area.Location);
+
+            return LayoutRoot.HitTest(dipsPoint) as UIElement;
         }
 
         /// <summary>
-        /// Gets the element at the specified device-independent coordinates relative to this view's bounds.
+        /// Performs a hit test against the view at the specified point in device-independent view space.
         /// </summary>
-        /// <param name="x">The view-relative x-coordinate of the point to evaluate.</param>
-        /// <param name="y">The view-relative y-coordinate of the point to evaluate.</param>
-        /// <param name="isHitTest">A value indicating whether this test should respect the value of the <see cref="UIElement.IsHitTestVisible"/> property.</param>
-        /// <returns>The element at the specified coordinates, or <c>null</c> if no such element exists.</returns>
-        public UIElement GetElementAtPoint(Double x, Double y, Boolean isHitTest)
+        /// <param name="x">The x-coordinate in device-independent view space to evaluate.</param>
+        /// <param name="y">The y-coordinate in device-independent view space to evaluate.</param>
+        /// <returns>The topmost <see cref="UIElement"/> in the view which contains the specified point, or <c>null</c>.</returns>
+        public UIElement HitTest(Double x, Double y)
         {
-            return LayoutRoot.GetElementAtPoint(x, y, isHitTest);
+            return LayoutRoot.HitTest(new Point2D(x, y)) as UIElement;
         }
 
         /// <summary>
-        /// Gets the element at the specified device-independent coordinates relative to this view's bounds.
+        /// Performs a hit test against the view at the specified point in device-independent view space.
         /// </summary>
-        /// <param name="pt">The view-relative coordinates of the point to evaluate.</param>
-        /// <param name="isHitTest">A value indicating whether this test should respect the
-        /// value of the <see cref="UIElement.IsHitTestVisible"/> property.</param>
-        /// <returns>The element at the specified coordinates, or <c>null</c> if no such element exists.</returns>
-        public UIElement GetElementAtPoint(Point2D pt, Boolean isHitTest)
+        /// <param name="point">The point in device-independent view space to evaluate.</param>
+        /// <returns>The topmost <see cref="UIElement"/> in the view which contains the specified point, or <c>null</c>.</returns>
+        public UIElement HitTest(Point2D point)
         {
-            return LayoutRoot.GetElementAtPoint(pt, isHitTest);
+            return LayoutRoot.HitTest(point) as UIElement;
         }
 
         /// <summary>
@@ -811,7 +814,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 var mouseView = mouse.Window == Window ? this : null;
 
                 elementUnderMousePrev = elementUnderMouse;
-                elementUnderMouse     = (mouseView == null) ? null : mouseView.GetElementAtScreenPixel((Point2)mousePos, true);
+                elementUnderMouse     = (mouseView == null) ? null : mouseView.HitTestScreenPixel((Point2)mousePos);
             }
 
             if (elementUnderMouse != null && !elementUnderMouse.IsHitTestVisible)

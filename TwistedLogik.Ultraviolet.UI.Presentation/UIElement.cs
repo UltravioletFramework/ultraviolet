@@ -533,68 +533,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
-        /// Gets the element at the specified pixel coordinates relative to this element's bounds.
-        /// </summary>
-        /// <param name="x">The element-relative x-coordinate of the pixel to evaluate.</param>
-        /// <param name="y">The element-relative y-coordinate of the pixel to evaluate.</param>
-        /// <param name="isHitTest">A value indicating whether this test should respect the value of the <see cref="IsHitTestVisible"/> property.</param>
-        /// <returns>The element at the specified pixel coordinates, or <c>null</c> if no such element exists.</returns>
-        public UIElement GetElementAtPixel(Int32 x, Int32 y, Boolean isHitTest)
-        {
-            var dipsX = Display.PixelsToDips(x);
-            var dipsY = Display.PixelsToDips(y);
-
-            return GetElementAtPoint(dipsX, dipsY, isHitTest);
-        }
-
-        /// <summary>
-        /// Gets the element at the specified pixel coordinates relative to this element's bounds.
-        /// </summary>
-        /// <param name="pt">The relative coordinates of the pixel to evaluate.</param>
-        /// <param name="isHitTest">A value indicating whether this test should respect the value of the <see cref="IsHitTestVisible"/> property.</param>
-        /// <returns>The element at the specified pixel coordinates, or <c>null</c> if no such element exists.</returns>
-        public UIElement GetElementAtPixel(Point2 pt, Boolean isHitTest)
-        {
-            return GetElementAtPixel(pt.X, pt.Y, isHitTest);
-        }
-
-        /// <summary>
-        /// Gets the element at the specified device-independent coordinates relative to this element's bounds.
-        /// </summary>
-        /// <param name="x">The element-relative x-coordinate of the point to evaluate.</param>
-        /// <param name="y">The element-relative y-coordinate of the point to evaluate.</param>
-        /// <param name="isHitTest">A value indicating whether this test should respect the value of the <see cref="IsHitTestVisible"/> property.</param>
-        /// <returns>The element at the specified coordinates, or <c>null</c> if no such element exists.</returns>
-        public UIElement GetElementAtPoint(Double x, Double y, Boolean isHitTest)
-        {
-            if (!Bounds.Contains(x, y))
-                return null;
-
-            if (!IsEnabled)
-                return null;
-
-            if (isHitTest && !IsHitTestVisible)
-                return null;
-
-            if (Visibility != Visibility.Visible)
-                return null;
-
-            return GetElementAtPointCore(x, y, isHitTest);
-        }
-
-        /// <summary>
-        /// Gets the element at the specified device-independent coordinates relative to this element's bounds.
-        /// </summary>
-        /// <param name="pt">The relative coordinates of the point to evaluate.</param>
-        /// <param name="isHitTest">A value indicating whether this test should respect the
-        /// value of the <see cref="IsHitTestVisible"/> property.</param>
-        /// <returns>The element at the specified coordinates, or <c>null</c> if no such element exists.</returns>
-        public UIElement GetElementAtPoint(Point2D pt, Boolean isHitTest)
-        {
-            return GetElementAtPoint(pt.X, pt.Y, isHitTest);
-        }
-
-        /// <summary>
         /// Gets the element which is navigated to when focus is moved "up," usually by pressing 
         /// up on the directional pad of a game controller.
         /// </summary>
@@ -1981,6 +1919,29 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             }
         }
 
+        /// <inheritdoc/>
+        protected override Visual HitTestCore(Point2D point)
+        {
+            if (!IsHitTestVisible || !Bounds.Contains(point))
+                return null;
+
+            var children = VisualTreeHelper.GetChildrenCount(this);
+            for (int i = children - 1; i >= 0; i--)
+            {
+                var child = VisualTreeHelper.GetChild(this, i) as UIElement;
+                if (child == null)
+                    continue;
+
+                var childMatch = child.HitTest(point - child.RelativeBounds.Location);
+                if (childMatch != null)
+                {
+                    return childMatch;
+                }
+            }
+
+            return this;
+        }
+
         /// <summary>
         /// When overridden in a derived class, draws the element using the specified <see cref="SpriteBatch"/>.
         /// </summary>
@@ -2187,39 +2148,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         protected virtual RectangleD? ClipCore()
         {
             return null;
-        }
-
-        /// <summary>
-        /// When overridden in a derived class, gets the element at the specified device-independent 
-        /// coordinates relative to this element's bounds.
-        /// </summary>
-        /// <param name="x">The element-relative x-coordinate of the point to evaluate.</param>
-        /// <param name="y">The element-relative y-coordinate of the point to evaluate.</param>
-        /// <param name="isHitTest">A value indicating whether this test should respect the value of the <see cref="IsHitTestVisible"/> property.</param>
-        /// <returns>The element at the specified coordinates, or <c>null</c> if no such element exists.</returns>
-        protected virtual UIElement GetElementAtPointCore(Double x, Double y, Boolean isHitTest)
-        {
-            if (!Bounds.Contains(x, y))
-                return null;
-
-            var children = VisualTreeHelper.GetChildrenCount(this);
-            for (int i = children - 1; i >= 0; i--)
-            {
-                var child = VisualTreeHelper.GetChild(this, i) as UIElement;
-                if (child == null)
-                    continue;
-
-                var childRelativeX = x - child.RelativeBounds.X;
-                var childRelativeY = y - child.RelativeBounds.Y;
-
-                var childMatch = child.GetElementAtPoint(childRelativeX, childRelativeY, isHitTest);
-                if (childMatch != null)
-                {
-                    return childMatch;
-                }
-            }
-
-            return this;
         }
 
         /// <summary>

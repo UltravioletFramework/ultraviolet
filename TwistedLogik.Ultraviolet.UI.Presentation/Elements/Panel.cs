@@ -1,7 +1,5 @@
 ﻿using System;
 using TwistedLogik.Nucleus;
-using TwistedLogik.Ultraviolet.UI.Presentation.Animations;
-using TwistedLogik.Ultraviolet.UI.Presentation.Styles;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
 {
@@ -80,6 +78,42 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <inheritdoc/>
+        protected override Visual HitTestCore(Point2D point)
+        {
+            if (!IsHitTestVisible || !Bounds.Contains(point))
+                return null;
+
+            var childMatch = HitTestChildren(point);
+            if (childMatch != null)
+            {
+                return childMatch;
+            }
+
+            return this;
+        }
+
+        /// <summary>
+        /// Performs a hit test against the panel's children and returns the topmost
+        /// child which contains the specified point.
+        /// </summary>
+        /// <param name="point">The point in element space to evaluate.</param>
+        /// <returns>The topmost <see cref="Visual"/> child which contains the specified point, or <c>null</c>.</returns>
+        protected virtual Visual HitTestChildren(Point2D point)
+        {
+            for (int i = children.Count - 1; i >= 0; i--)
+            {
+                var child = children[i];
+
+                var childMatch = child.HitTest(point - child.RelativeBounds.Location);
+                if (childMatch != null)
+                {
+                    return childMatch;
+                }
+            }
+            return null;
+        }
+
+        /// <inheritdoc/>
         protected override RectangleD? ClipCore()
         {
             foreach (var child in children)
@@ -91,21 +125,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
                 }
             }
             return null;
-        } 
-
-        /// <inheritdoc/>
-        protected override UIElement GetElementAtPointCore(Double x, Double y, Boolean isHitTest)
-        {
-            if (!Bounds.Contains(x, y))
-                return null;
-
-            var childMatch = GetChildAtPoint(x, y, isHitTest);
-            if (childMatch != null)
-            {
-                return childMatch;
-            }
-
-            return this;
         }
 
         /// <inheritdoc/>
@@ -210,31 +229,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
                 }
             }
             return result;
-        }
-
-        /// <summary>
-        /// Gets the child element at the specified device-independent coordinates relative to this element's bounds.
-        /// </summary>
-        /// <param name="x">The element-relative x-coordinate of the point to evaluate.</param>
-        /// <param name="y">The element-relative y-coordinate of the point to evaluate.</param>
-        /// <param name="isHitTest">A value indicating whether this test should respect the value of the <see cref="UIElement.IsHitTestVisible"/> property.</param>
-        /// <returns>The child element at the specified coordinates, or <c>null</c> if no such element exists.</returns>
-        protected virtual UIElement GetChildAtPoint(Double x, Double y, Boolean isHitTest)
-        {
-            for (int i = children.Count - 1; i >= 0; i--)
-            {
-                var child = children[i];
-
-                var childRelX = x - child.RelativeBounds.X;
-                var childRelY = y - child.RelativeBounds.Y;
-
-                var childMatch = child.GetElementAtPoint(childRelX, childRelY, isHitTest);
-                if (childMatch != null)
-                {
-                    return childMatch;
-                }
-            }
-            return null;
         }
         
         // Property values.

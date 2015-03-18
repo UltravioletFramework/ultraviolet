@@ -288,10 +288,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <inheritdoc/>
-        protected override UIElement GetChildAtPoint(Double x, Double y, Boolean isHitTest)
+        protected override Visual HitTestChildren(Point2D point)
         {
-            var col  = GetColumnAtPoint(x, y);
-            var row  = GetRowAtPoint(x, y);
+            var col = GetColumnAtPoint(point);
+            var row = GetRowAtPoint(point);
 
             for (int i = Children.Count - 1; i >= 0; i--)
             {
@@ -309,10 +309,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
                 if (row < childRow || row >= childRow + childRowSpan)
                     continue;
 
-                var childRelX = x - child.RelativeBounds.X;
-                var childRelY = y - child.RelativeBounds.Y;
-
-                var childMatch = child.GetElementAtPoint(childRelX, childRelY, isHitTest);
+                var childMatch = child.HitTest(point - child.RelativeBounds.Location);
                 if (childMatch != null)
                 {
                     return childMatch;
@@ -351,17 +348,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <summary>
         /// Gets the index of the row at the specified column in element space.
         /// </summary>
-        /// <param name="x">The x-coordinate in element space to evaluate.</param>
-        /// <param name="y">The y-coordinate in element space to evaluate.</param>
+        /// <param name="point">The point in element space to evaluate.</param>
         /// <returns>The index of the column at the specified point in element space.</returns>
-        private Int32 GetColumnAtPoint(Double x, Double y)
+        private Int32 GetColumnAtPoint(Point2D point)
         {
             var position = 0.0;
 
             for (int i = 0; i < ColumnDefinitions.Count; i++)
             {
                 var width = ColumnDefinitions[i].ActualWidth;
-                if (x >= position && x < position + width)
+                if (point.X >= position && point.X < position + width)
                 {
                     return i;
                 }
@@ -374,17 +370,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <summary>
         /// Gets the index of the row at the specified point in element space.
         /// </summary>
-        /// <param name="x">The x-coordinate in element space to evaluate.</param>
-        /// <param name="y">The y-coordinate in element space to evaluate.</param>
+        /// <param name="point">The point in element space to evaluate.</param>
         /// <returns>The index of the row at the specified point in element space.</returns>
-        private Int32 GetRowAtPoint(Double x, Double y)
+        private Int32 GetRowAtPoint(Point2D point)
         {
             var position = 0.0;
 
             for (int i = 0; i < RowDefinitions.Count; i++)
             {
                 var height = RowDefinitions[i].ActualHeight;
-                if (y >= position && y < position + height)
+                if (point.Y >= position && point.Y < position + height)
                 {
                     return i;
                 }

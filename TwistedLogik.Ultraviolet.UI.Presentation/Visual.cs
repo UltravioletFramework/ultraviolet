@@ -10,6 +10,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
     public abstract class Visual : StyledDependencyObject
     {
         /// <summary>
+        /// Performs a hit test against this and returns the topmost descendant
+        /// which contains the specified point.
+        /// </summary>
+        /// <param name="point">The point to evaluate.</param>
+        /// <returns>The topmost <see cref="Visual"/> which contains the specified point, or <c>null</c>.</returns>
+        public Visual HitTest(Point2D point)
+        {
+            return HitTestCore(point);
+        }
+
+        /// <summary>
         /// Invokes the <see cref="OnVisualParentChanged()"/> method.
         /// </summary>
         internal virtual void OnVisualParentChangedInternal()
@@ -82,6 +93,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         protected virtual void OnVisualParentChanged()
         {
 
+        }
+
+        /// <summary>
+        /// When overridden in a derived class, performs a hit test against this and returns the topmost descendant
+        /// which contains the specified point.
+        /// </summary>
+        /// <param name="point">The point to evaluate.</param>
+        /// <returns>The topmost <see cref="Visual"/> which contains the specified point, or <c>null</c>.</returns>
+        protected virtual Visual HitTestCore(Point2D point)
+        {
+            return null;
         }
 
         // State values.

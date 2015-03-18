@@ -9,6 +9,20 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
     public static class VisualTreeHelper
     {
         /// <summary>
+        /// Performs a hit test against the specified visual and returns the topmost descendant
+        /// which contains the specified point.
+        /// </summary>
+        /// <param name="reference">The visual on which to perform a hit test.</param>
+        /// <param name="point">The point to evaluate.</param>
+        /// <returns>The topmost <see cref="Visual"/> which contains the specified point, or <c>null</c>.</returns>
+        public static Visual HitTest(Visual reference, Point2D point)
+        {
+            Contract.Require(reference, "reference");
+
+            return reference.HitTest(point);
+        }
+
+        /// <summary>
         /// Performs an action for each of the specified object's visual children.
         /// </summary>
         /// <param name="dobj">The parent object.</param>
