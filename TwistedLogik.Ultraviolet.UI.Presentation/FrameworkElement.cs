@@ -442,11 +442,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <inheritdoc/>
-        protected override void PositionChildrenCore()
+        protected sealed override void PositionChildrenCore()
         {
             PositionChildrenOverride();
-
-            base.PositionChildrenCore();
         }
 
         /// <inheritdoc/>
@@ -555,7 +553,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         protected virtual void PositionChildrenOverride()
         {
-
+            VisualTreeHelper.ForEachChild<UIElement>(this, this, (child, state) =>
+            {
+                child.Position();
+                child.PositionChildren();
+            });
         }
 
         /// <summary>
