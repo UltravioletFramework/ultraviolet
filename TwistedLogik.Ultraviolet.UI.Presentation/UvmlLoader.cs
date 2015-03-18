@@ -113,7 +113,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             {
                 if (context.ContentPresenter == null)
                 {
-                    throw new InvalidOperationException("TODO");
+                    throw new InvalidOperationException(PresentationStrings.ContentControlRequiresPresenter.Format(control.GetType().Name));
                 }
                 contentControl.ContentPresenter = context.ContentPresenter;
             }
@@ -209,12 +209,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         private static UIElement InstantiateElement(UltravioletContext uv, UIElement parent, XElement xmlElement, InstantiationContext context)
         {
             var instance  = default(UIElement);            
-            var id        = xmlElement.AttributeValueString("ID");
+            var name      = xmlElement.AttributeValueString("Name");
             var classes   = xmlElement.AttributeValueString("Class");
             var classList = (classes == null) ? Enumerable.Empty<String>() : classes.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
 
-            var name = xmlElement.Name.LocalName;
-            if (String.Equals("ItemsPanel", name, StringComparison.InvariantCulture))
+            var typeName = xmlElement.Name.LocalName;
+            if (String.Equals("ItemsPanel", typeName, StringComparison.InvariantCulture))
             {
                 var itemPresenterControl = context.ComponentOwner as ItemsControl;
                 if (itemPresenterControl == null)
@@ -228,7 +228,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             }
             else
             {
-                instance = uv.GetUI().GetPresentationFoundation().InstantiateElementByName(name, id, context.ViewModelType, context.BindingContext);
+                instance = uv.GetUI().GetPresentationFoundation().InstantiateElementByName(typeName, name, context.ViewModelType, context.BindingContext);
                 if (instance == null)
                     throw new UvmlException(PresentationStrings.UnrecognizedType.Format(xmlElement.Name.LocalName));
             }
@@ -428,13 +428,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Gets a value indicating whether the specified attribute name is reserved by the UVML loader.
         /// </summary>
-        /// <param name="name">The name to evaluate.</param>
+        /// <param name="attributeName">The attribute name to evaluate.</param>
         /// <returns><c>true</c> if the specified attribute name is reserved; otherwise, <c>false</c>.</returns>
-        private static Boolean IsReservedAttribute(String name)
+        private static Boolean IsReservedAttribute(String attributeName)
         {
-            switch (name)
+            switch (attributeName)
             {
-                case "ID":
+                case "Name":
                 case "Class":
                 case "ViewModelType":
                 case "BindingContext":
@@ -553,7 +553,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 var propDelimIndex = elementName.IndexOf('.');
                 var propOwnerName  = elementName.Substring(0, propDelimIndex);
                 var propName       = elementName.Substring(propDelimIndex + 1);
-                var isAttached     = !String.Equals(propOwnerName, uiElement.Name, StringComparison.InvariantCulture);
+                var isAttached     = !String.Equals(propOwnerName, uiElement.TypeName, StringComparison.InvariantCulture);
                 if (isAttached)
                     propName = elementName;
 
@@ -817,7 +817,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 {
                     if (xmlChildren.Count > 1)
                     {
-                        var id = uiElement.ID ?? uiElement.GetType().Name;
+                        var id = uiElement.Name ?? uiElement.GetType().Name;
                         throw new InvalidOperationException(PresentationStrings.InvalidChildElements.Format(id));
                     }
 
@@ -835,7 +835,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 {
                     if (xmlChildren.Any())
                     {
-                        var id = uiElement.ID ?? uiElement.GetType().Name;
+                        var id = uiElement.Name ?? uiElement.GetType().Name;
                         throw new InvalidOperationException(PresentationStrings.InvalidChildElements.Format(id));
                     }
                 }

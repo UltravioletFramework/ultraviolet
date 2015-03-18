@@ -63,24 +63,24 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Attempts to create an instance of the element with the specified name.
         /// </summary>
         /// <typeparam name="TViewModel">The type of view model to which the element will be bound.</typeparam>
-        /// <param name="name">The name of the element to instantiate.</param>
-        /// <param name="id">The ID with which to create the element.</param>
+        /// <param name="typeName">The name of the element to instantiate.</param>
+        /// <param name="name">The ID with which to create the element.</param>
         /// <param name="bindingContext">The binding context to apply to the element which is instantiated.</param>
         /// <returns>The element that was created, or <c>null</c> if the element could not be created.</returns>
-        public UIElement InstantiateElementByName<TViewModel>(String name, String id, String bindingContext = null)
+        public UIElement InstantiateElementByName<TViewModel>(String typeName, String name, String bindingContext = null)
         {
-            return InstantiateElementByName(name, id, typeof(TViewModel), bindingContext);
+            return InstantiateElementByName(typeName, name, typeof(TViewModel), bindingContext);
         }
 
         /// <summary>
         /// Attempts to create an instance of the element with the specified name.
         /// </summary>
-        /// <param name="name">The name of the element to instantiate.</param>
-        /// <param name="id">The ID with which to create the element.</param>
+        /// <param name="typeName">The name of the element to instantiate.</param>
+        /// <param name="name">The ID with which to create the element.</param>
         /// <param name="viewModelType">The type of view model to which the element will be bound.</param>
         /// <param name="bindingContext">The binding context to apply to the element which is instantiated.</param>
         /// <returns>The element that was created, or <c>null</c> if the element could not be created.</returns>
-        public UIElement InstantiateElementByName(String name, String id, Type viewModelType, String bindingContext = null)
+        public UIElement InstantiateElementByName(String typeName, String name, Type viewModelType, String bindingContext = null)
         {
             Contract.EnsureNotDisposed(this, Disposed);
 
@@ -88,14 +88,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 throw new ArgumentException("bindingContext");
 
             KnownElement registration;
-            if (!GetKnownElementRegistration(name, out registration))
+            if (!GetKnownElementRegistration(typeName, out registration))
                 return null;
 
             var ctor = registration.Type.GetConstructor(new[] { typeof(UltravioletContext), typeof(String) });
             if (ctor == null)
                 throw new InvalidOperationException(UltravioletStrings.NoValidConstructor.Format(registration.Type));
 
-            var instance = (UIElement)ctor.Invoke(new Object[] { Ultraviolet, id });
+            var instance = (UIElement)ctor.Invoke(new Object[] { Ultraviolet, name });
 
             if (registration.Layout != null)
             {

@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ComponentTemplate>
-  <Grid ID="LayoutRoot" Class="updown-component" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+  <Grid Name="LayoutRoot" Class="updown-component" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
     <Grid.ColumnDefinitions>
       <ColumnDefinition Width="*"/>
       <ColumnDefinition Width="Auto"/>
@@ -10,11 +10,11 @@
       <RowDefinition Height="*"/>
     </Grid.RowDefinitions>
   
-    <TextBox ID="Input" Class="updown-input" Grid.RowSpan="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">{{Value}}</TextBox>
+    <TextBox Name="Input" Class="updown-input" Grid.RowSpan="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">{{Value}}</TextBox>
 
-    <RepeatButton ID="UpButton" Class="updown-button updown-button-up" Focusable="false"
+    <RepeatButton Name="UpButton" Class="updown-button updown-button-up" Focusable="false"
                   Grid.Column="1" Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="Increment"></RepeatButton>
-    <RepeatButton ID="DownButton" Class="updown-button updown-button-down" Focusable="false"
+    <RepeatButton Name="DownButton" Class="updown-button updown-button-down" Focusable="false"
                   Grid.Column="1" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="Decrement"></RepeatButton>
 
   </Grid>

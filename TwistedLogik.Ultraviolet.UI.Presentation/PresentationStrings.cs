@@ -50,7 +50,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public static readonly StringResource UnrecognizedType                     = new StringResource(StringDatabase, "UNRECOGNIZED_TYPE");
         public static readonly StringResource InvalidDefaultProperty               = new StringResource(StringDatabase, "INVALID_DEFAULT_PROPERTY");
         public static readonly StringResource NoViewModel                          = new StringResource(StringDatabase, "NO_VIEW_MODEL");
-        public static readonly StringResource ElementWithIDAlreadyExists           = new StringResource(StringDatabase, "ELEMENT_WITH_ID_ALREADY_EXISTS");
+        public static readonly StringResource ElementWithNameAlreadyExists         = new StringResource(StringDatabase, "ELEMENT_WITH_NAME_ALREADY_EXISTS");
         public static readonly StringResource AmbiguousDependencyProperty          = new StringResource(StringDatabase, "AMBIGUOUS_DEPENDENCY_PROPERTY");
         public static readonly StringResource UserControlDoesNotDefineType         = new StringResource(StringDatabase, "USER_CONTROL_DOES_NOT_DEFINE_TYPE");
         public static readonly StringResource InvalidUserControlDefinition         = new StringResource(StringDatabase, "INVALID_USER_CONTROL_DEFINITION");
@@ -74,6 +74,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public static readonly StringResource HandlerTypeMismatch                  = new StringResource(StringDatabase, "HANDLER_TYPE_MISMATCH");
         public static readonly StringResource NotVisualObject                      = new StringResource(StringDatabase, "NOT_VISUAL_OBJECT");
         public static readonly StringResource ClipRectangleMustHaveValidDimensions = new StringResource(StringDatabase, "CLIP_RECTANGLE_MUST_HAVE_VALID_DIMENSIONS");
+        public static readonly StringResource ContentControlRequiresPresenter      = new StringResource(StringDatabase, "CONTENT_CONTROL_REQUIRES_PRESENTER");
 #pragma warning restore 1591
     }
 }

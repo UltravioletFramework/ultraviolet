@@ -17,7 +17,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         public void Clear()
         {
-            elementsByID.Clear();
+            elementsByName.Clear();
         }
 
         /// <summary>
@@ -26,19 +26,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="element">The element to add to the registry.</param>
         public void RegisterElement(UIElement element)
         {
-            if (String.IsNullOrEmpty(element.ID))
+            if (String.IsNullOrEmpty(element.Name))
                 return;
 
             UIElement existing;
-            if (elementsByID.TryGetValue(element.ID, out existing))
+            if (elementsByName.TryGetValue(element.Name, out existing))
             {
                 if (existing == element)
                 {
                     return;
                 }
-                throw new InvalidOperationException(PresentationStrings.ElementWithIDAlreadyExists.Format(element.ID));
+                throw new InvalidOperationException(PresentationStrings.ElementWithNameAlreadyExists.Format(element.Name));
             }
-            elementsByID[element.ID] = element;
+            elementsByName[element.Name] = element;
         }
 
         /// <summary>
@@ -47,21 +47,21 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="element">The element to remove from the registry.</param>
         public void UnregisterElement(UIElement element)
         {
-            if (String.IsNullOrEmpty(element.ID))
+            if (String.IsNullOrEmpty(element.Name))
                 return;
 
-            elementsByID.Remove(element.ID);
+            elementsByName.Remove(element.Name);
         }
 
         /// <summary>
-        /// Gets the registered element with the specified identifier.
+        /// Gets the registered element with the specified identifying name.
         /// </summary>
-        /// <param name="id">The identifier of the element to retrieve.</param>
-        /// <returns>The element with the specified identifier, or <c>null</c> if no such element exists within the registry.</returns>
-        public UIElement GetElementByID(String id)
+        /// <param name="name">The identifying name of the element to retrieve.</param>
+        /// <returns>The element with the specified identifying name, or <c>null</c> if no such element exists within the registry.</returns>
+        public UIElement GetElementByName(String name)
         {
             UIElement element;
-            elementsByID.TryGetValue(id, out element);
+            elementsByName.TryGetValue(name, out element);
             return element;
         }
 
@@ -87,7 +87,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
                 var fields = type.GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance).ToDictionary(x => x.Name);
 
-                foreach (var kvp in elementsByID)
+                foreach (var kvp in elementsByName)
                 {
                     FieldInfo field;
                     if (!fields.TryGetValue(kvp.Key, out field))
@@ -104,7 +104,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         // The registry of elements for each known context.
-        private readonly Dictionary<String, UIElement> elementsByID = 
+        private readonly Dictionary<String, UIElement> elementsByName = 
             new Dictionary<String, UIElement>();
     }
 }

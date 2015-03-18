@@ -127,13 +127,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
 
             if (part.HasID)
             {
-                if (element.IsComponent || !String.Equals(element.ID, part.ID, StringComparison.OrdinalIgnoreCase))
+                if (element.IsComponent || !String.Equals(element.Name, part.ID, StringComparison.OrdinalIgnoreCase))
                     return false;
             }
 
             if (part.HasElement)
             {
-                if (!String.Equals(element.Name, part.Element, StringComparison.OrdinalIgnoreCase))
+                if (!String.Equals(element.TypeName, part.Element, StringComparison.OrdinalIgnoreCase))
                     return false;
             }
 

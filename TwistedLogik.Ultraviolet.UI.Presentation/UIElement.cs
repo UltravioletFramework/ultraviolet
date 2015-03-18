@@ -81,19 +81,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Initializes a new instance of the <see cref="UIElement"/> class.
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
-        /// <param name="id">The unique identifier of this element within its layout.</param>
-        public UIElement(UltravioletContext uv, String id)
+        /// <param name="name">The element's identifying name.</param>
+        public UIElement(UltravioletContext uv, String name)
         {
             Contract.Require(uv, "uv");
 
             this.uv      = uv;
-            this.id      = id;
+            this.name    = name;
             this.classes = new UIElementClassCollection(this);
 
             var attr = (UvmlKnownTypeAttribute)GetType().GetCustomAttributes(typeof(UvmlKnownTypeAttribute), false).SingleOrDefault();
             if (attr != null)
             {
-                this.name = attr.Name ?? GetType().Name;
+                this.typeName = attr.Name ?? GetType().Name;
             }
         }
 
@@ -709,19 +709,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
-        /// Gets the element's unique identifier within its layout.
-        /// </summary>
-        public String ID
-        {
-            get { return id; }
-        }
-
-        /// <summary>
-        /// Gets the name that identifies this element type within the Presentation Foundation.
+        /// Gets the element's identifying name.
         /// </summary>
         public String Name
         {
             get { return name; }
+        }
+
+        /// <summary>
+        /// Gets the name of this element's type within UVML markup.
+        /// </summary>
+        public String TypeName
+        {
+            get { return typeName; }
         }
 
         /// <summary>
@@ -1315,7 +1315,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             if (name.IsAttachedProperty)
             {
-                if (Parent != null && String.Equals(Parent.Name, name.Container, StringComparison.OrdinalIgnoreCase))
+                if (Parent != null && String.Equals(Parent.TypeName, name.Container, StringComparison.OrdinalIgnoreCase))
                 {
                     return DependencyProperty.FindByName(name.Name, Parent.GetType());
                 }
@@ -2775,7 +2775,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (elementRegistrationContext == null)
                 elementRegistrationContext = FindElementRegistry();
 
-            if (String.IsNullOrEmpty(id))
+            if (String.IsNullOrEmpty(name))
                 return;
 
             if (elementRegistrationContext != null)
@@ -2787,7 +2787,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         private void UnregisterElement()
         {
-            if (String.IsNullOrEmpty(id))
+            if (String.IsNullOrEmpty(name))
                 return;
 
             if (elementRegistrationContext != null)
@@ -2813,17 +2813,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Gets the specified element within the current navigation context.
         /// </summary>
-        /// <param name="id">The identifier of the element to retrieve.</param>
-        /// <returns>The element with the specified identifier, or <c>null</c> if no such element exists.</returns>
-        private UIElement FindNavElement(String id)
+        /// <param name="name">The identifying name of the element to retrieve.</param>
+        /// <returns>The element with the specified name, or <c>null</c> if no such element exists.</returns>
+        private UIElement FindNavElement(String name)
         {
             if (elementRegistrationContext == null)
                 return null;
 
-            if (String.IsNullOrEmpty(id))
+            if (String.IsNullOrEmpty(name))
                 return null;
 
-            var element = elementRegistrationContext.GetElementByID(id);
+            var element = elementRegistrationContext.GetElementByName(name);
             if (element == null || element.Focusable)
                 return element;
 
@@ -3105,8 +3105,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         // Property values.
         private readonly UltravioletContext uv;
         private readonly UIElementClassCollection classes;
-        private readonly String id;
         private readonly String name;
+        private readonly String typeName;
         private PresentationFoundationView view;
         private UIElement parent;
         private Control control = null;

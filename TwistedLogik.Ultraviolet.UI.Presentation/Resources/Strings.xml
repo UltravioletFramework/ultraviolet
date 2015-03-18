@@ -135,9 +135,9 @@
       <Variant>An element tried to bind a dependency property, but no view model is defined for the element's view.</Variant>
     </en-US>
   </String>
-  <String Key="ELEMENT_WITH_ID_ALREADY_EXISTS">
+  <String Key="ELEMENT_WITH_NAME_ALREADY_EXISTS">
     <en-US>
-      <Variant>An element with ID '{0}' already exists within the layout.</Variant>
+      <Variant>An element with name '{0}' already exists within the layout.</Variant>
     </en-US>
   </String>
   <String Key="AMBIGUOUS_DEPENDENCY_PROPERTY">
@@ -253,6 +253,11 @@
   <String Key="CLIP_RECTANGLE_MUST_HAVE_VALID_DIMENSIONS">
     <en-US>
       <Variant>The specified clip rectangle does not have valid dimensions.</Variant>
+    </en-US>
+  </String>
+  <String Key="CONTENT_CONTROL_REQUIRES_PRESENTER">
+    <en-US>
+      <Variant>Cannot load content control '{0}' because it has not defined a ContentPresenter as part of its component template.</Variant>
     </en-US>
   </String>
 </LocalizedStrings>

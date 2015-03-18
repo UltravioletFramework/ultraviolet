@@ -316,15 +316,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
-        /// Gets the element within the view which has the specified identifier.
+        /// Gets the element within the view which has the specified identifying name.
         /// </summary>
-        /// <param name="id">The identifier of the element to retrieve.</param>
-        /// <returns>The element with the specified identifier, or <c>null</c> if no such element exists.</returns>
-        public UIElement GetElementByID(String id)
+        /// <param name="name">The identifying name of the element to retrieve.</param>
+        /// <returns>The element with the specified identifying name, or <c>null</c> if no such element exists.</returns>
+        public UIElement GetElementByName(String name)
         {
-            Contract.RequireNotEmpty(id, "id");
+            Contract.RequireNotEmpty(name, "id");
 
-            return elementRegistry.GetElementByID(id);
+            return elementRegistry.GetElementByName(name);
         }
 
         /// <summary>

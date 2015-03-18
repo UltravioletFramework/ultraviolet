@@ -6,8 +6,8 @@
       <ColumnDefinition Width="*"/>
     </Grid.ColumnDefinitions>
 
-    <Image ID="ImgBox" Class="toggle-box" Grid.Column="0" VerticalAlignment="{{VerticalContentAlignment}}"></Image>
-    <Image ID="ImgMark" Class="toggle-mark" Grid.Column="0" VerticalAlignment="{{VerticalContentAlignment}}" Visibility="{{MarkVisibility}}"></Image>
+    <Image Name="ImgBox" Class="toggle-box" Grid.Column="0" VerticalAlignment="{{VerticalContentAlignment}}"></Image>
+    <Image Name="ImgMark" Class="toggle-mark" Grid.Column="0" VerticalAlignment="{{VerticalContentAlignment}}" Visibility="{{MarkVisibility}}"></Image>
     <ContentPresenter Class="toggle-content" Grid.Column="1" VerticalAlignment="Stretch"></ContentPresenter>
   
   </Grid>
