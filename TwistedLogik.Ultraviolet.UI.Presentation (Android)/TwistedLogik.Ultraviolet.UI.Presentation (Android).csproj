@@ -146,6 +146,198 @@
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\ComponentTemplateManager.cs">
       <Link>ComponentTemplateManager.cs</Link>
     </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\Border.cs">
+      <Link>Controls\Border.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\Button.cs">
+      <Link>Controls\Button.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\ButtonBase.cs">
+      <Link>Controls\ButtonBase.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\Canvas.cs">
+      <Link>Controls\Canvas.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\CheckBox.cs">
+      <Link>Controls\CheckBox.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\ClickMode.cs">
+      <Link>Controls\ClickMode.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\ColumnDefinition.cs">
+      <Link>Controls\ColumnDefinition.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\ColumnDefinitionCollection.cs">
+      <Link>Controls\ColumnDefinitionCollection.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\ColumnDefinitionCollection.IEnumerable.cs">
+      <Link>Controls\ColumnDefinitionCollection.IEnumerable.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\ContentControl.cs">
+      <Link>Controls\ContentControl.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\ContentPresenter.cs">
+      <Link>Controls\ContentPresenter.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\Control.cs">
+      <Link>Controls\Control.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\DefinitionBase.cs">
+      <Link>Controls\DefinitionBase.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\DefinitionBaseCollection.cs">
+      <Link>Controls\DefinitionBaseCollection.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\Dock.cs">
+      <Link>Controls\Dock.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\DockPanel.cs">
+      <Link>Controls\DockPanel.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\Grid.cs">
+      <Link>Controls\Grid.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\Grid.GridMeasurementOptions.cs">
+      <Link>Controls\Grid.GridMeasurementOptions.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\Grid.VirtualCellMetadata.cs">
+      <Link>Controls\Grid.VirtualCellMetadata.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\HScrollBar.cs">
+      <Link>Controls\HScrollBar.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\HSlider.cs">
+      <Link>Controls\HSlider.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\IItemContainer.cs">
+      <Link>Controls\IItemContainer.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\Image.cs">
+      <Link>Controls\Image.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\ItemCollection.cs">
+      <Link>Controls\ItemCollection.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\ItemCollection.IEnumerable.cs">
+      <Link>Controls\ItemCollection.IEnumerable.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\ItemCollection.IList.cs">
+      <Link>Controls\ItemCollection.IList.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\ItemsControl.cs">
+      <Link>Controls\ItemsControl.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\Label.cs">
+      <Link>Controls\Label.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\LabelBase.cs">
+      <Link>Controls\LabelBase.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\ListBox.cs">
+      <Link>Controls\ListBox.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\ListBoxItem.cs">
+      <Link>Controls\ListBoxItem.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\NamespaceDoc.cs">
+      <Link>Controls\NamespaceDoc.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\NumericLabel.cs">
+      <Link>Controls\NumericLabel.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\NumericUpDown.cs">
+      <Link>Controls\NumericUpDown.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\Orientation.cs">
+      <Link>Controls\Orientation.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\Panel.cs">
+      <Link>Controls\Panel.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\Primitives\NamespaceDoc.cs">
+      <Link>Controls\Primitives\NamespaceDoc.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\Primitives\Track.cs">
+      <Link>Controls\Primitives\Track.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\ProgressBar.cs">
+      <Link>Controls\ProgressBar.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\RadioButton.cs">
+      <Link>Controls\RadioButton.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\RangeBase.cs">
+      <Link>Controls\RangeBase.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\Rectangle.cs">
+      <Link>Controls\Rectangle.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\RepeatButton.cs">
+      <Link>Controls\RepeatButton.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\RowDefinition.cs">
+      <Link>Controls\RowDefinition.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\RowDefinitionCollection.cs">
+      <Link>Controls\RowDefinitionCollection.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\RowDefinitionCollection.IEnumerable.cs">
+      <Link>Controls\RowDefinitionCollection.IEnumerable.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\ScrollBarBase.cs">
+      <Link>Controls\ScrollBarBase.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\ScrollBarVisibility.cs">
+      <Link>Controls\ScrollBarVisibility.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\ScrollContentPresenter.cs">
+      <Link>Controls\ScrollContentPresenter.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\ScrollViewer.cs">
+      <Link>Controls\ScrollViewer.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\Selector.cs">
+      <Link>Controls\Selector.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\Shape.cs">
+      <Link>Controls\Shape.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\SliderBase.cs">
+      <Link>Controls\SliderBase.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\StackPanel.cs">
+      <Link>Controls\StackPanel.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\TextBox.cs">
+      <Link>Controls\TextBox.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\TextBox.OffsetPosition.cs">
+      <Link>Controls\TextBox.OffsetPosition.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\TextBoxInsertionMode.cs">
+      <Link>Controls\TextBoxInsertionMode.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\ToggleButton.cs">
+      <Link>Controls\ToggleButton.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\UIElementCollection.cs">
+      <Link>Controls\UIElementCollection.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\UIElementCollection.IEnumerable.cs">
+      <Link>Controls\UIElementCollection.IEnumerable.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\UserControl.cs">
+      <Link>Controls\UserControl.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\VScrollBar.cs">
+      <Link>Controls\VScrollBar.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\VSlider.cs">
+      <Link>Controls\VSlider.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\WrapPanel.cs">
+      <Link>Controls\WrapPanel.cs</Link>
+    </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\DataBindingGetterBuilder.cs">
       <Link>DataBindingGetterBuilder.cs</Link>
     </Compile>
@@ -190,195 +382,6 @@
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\DrawingContext.OpacityState.cs">
       <Link>DrawingContext.OpacityState.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Elements\Border.cs">
-      <Link>Elements\Border.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Elements\Button.cs">
-      <Link>Elements\Button.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Elements\ButtonBase.cs">
-      <Link>Elements\ButtonBase.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Elements\Canvas.cs">
-      <Link>Elements\Canvas.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Elements\CheckBox.cs">
-      <Link>Elements\CheckBox.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Elements\ClickMode.cs">
-      <Link>Elements\ClickMode.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Elements\ColumnDefinition.cs">
-      <Link>Elements\ColumnDefinition.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Elements\ColumnDefinitionCollection.cs">
-      <Link>Elements\ColumnDefinitionCollection.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Elements\ColumnDefinitionCollection.IEnumerable.cs">
-      <Link>Elements\ColumnDefinitionCollection.IEnumerable.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Elements\ContentControl.cs">
-      <Link>Elements\ContentControl.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Elements\ContentPresenter.cs">
-      <Link>Elements\ContentPresenter.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Elements\Control.cs">
-      <Link>Elements\Control.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Elements\DefinitionBase.cs">
-      <Link>Elements\DefinitionBase.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Elements\DefinitionBaseCollection.cs">
-      <Link>Elements\DefinitionBaseCollection.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Elements\Dock.cs">
-      <Link>Elements\Dock.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Elements\DockPanel.cs">
-      <Link>Elements\DockPanel.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Elements\Grid.cs">
-      <Link>Elements\Grid.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Elements\Grid.GridMeasurementOptions.cs">
-      <Link>Elements\Grid.GridMeasurementOptions.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Elements\Grid.VirtualCellMetadata.cs">
-      <Link>Elements\Grid.VirtualCellMetadata.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Elements\HScrollBar.cs">
-      <Link>Elements\HScrollBar.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Elements\HSlider.cs">
-      <Link>Elements\HSlider.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Elements\IItemContainer.cs">
-      <Link>Elements\IItemContainer.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Elements\Image.cs">
-      <Link>Elements\Image.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Elements\ItemCollection.cs">
-      <Link>Elements\ItemCollection.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Elements\ItemCollection.IEnumerable.cs">
-      <Link>Elements\ItemCollection.IEnumerable.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Elements\ItemCollection.IList.cs">
-      <Link>Elements\ItemCollection.IList.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Elements\ItemsControl.cs">
-      <Link>Elements\ItemsControl.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Elements\Label.cs">
-      <Link>Elements\Label.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Elements\LabelBase.cs">
-      <Link>Elements\LabelBase.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Elements\ListBox.cs">
-      <Link>Elements\ListBox.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Elements\ListBoxItem.cs">
-      <Link>Elements\ListBoxItem.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Elements\NamespaceDoc.cs">
-      <Link>Elements\NamespaceDoc.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Elements\NumericLabel.cs">
-      <Link>Elements\NumericLabel.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Elements\NumericUpDown.cs">
-      <Link>Elements\NumericUpDown.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Elements\Orientation.cs">
-      <Link>Elements\Orientation.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Elements\Panel.cs">
-      <Link>Elements\Panel.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Elements\ProgressBar.cs">
-      <Link>Elements\ProgressBar.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Elements\RadioButton.cs">
-      <Link>Elements\RadioButton.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Elements\RangeBase.cs">
-      <Link>Elements\RangeBase.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Elements\Rectangle.cs">
-      <Link>Elements\Rectangle.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Elements\RepeatButton.cs">
-      <Link>Elements\RepeatButton.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Elements\RowDefinition.cs">
-      <Link>Elements\RowDefinition.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Elements\RowDefinitionCollection.cs">
-      <Link>Elements\RowDefinitionCollection.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Elements\RowDefinitionCollection.IEnumerable.cs">
-      <Link>Elements\RowDefinitionCollection.IEnumerable.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Elements\ScrollBarBase.cs">
-      <Link>Elements\ScrollBarBase.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Elements\ScrollBarVisibility.cs">
-      <Link>Elements\ScrollBarVisibility.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Elements\ScrollContentPresenter.cs">
-      <Link>Elements\ScrollContentPresenter.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Elements\ScrollViewer.cs">
-      <Link>Elements\ScrollViewer.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Elements\Selector.cs">
-      <Link>Elements\Selector.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Elements\Shape.cs">
-      <Link>Elements\Shape.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Elements\SliderBase.cs">
-      <Link>Elements\SliderBase.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Elements\StackPanel.cs">
-      <Link>Elements\StackPanel.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Elements\TextBox.cs">
-      <Link>Elements\TextBox.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Elements\TextBox.OffsetPosition.cs">
-      <Link>Elements\TextBox.OffsetPosition.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Elements\TextBoxInsertionMode.cs">
-      <Link>Elements\TextBoxInsertionMode.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Elements\ToggleButton.cs">
-      <Link>Elements\ToggleButton.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Elements\Track.cs">
-      <Link>Elements\Track.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Elements\UIElementCollection.cs">
-      <Link>Elements\UIElementCollection.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Elements\UIElementCollection.IEnumerable.cs">
-      <Link>Elements\UIElementCollection.IEnumerable.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Elements\UserControl.cs">
-      <Link>Elements\UserControl.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Elements\VScrollBar.cs">
-      <Link>Elements\VScrollBar.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Elements\VSlider.cs">
-      <Link>Elements\VSlider.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Elements\WrapPanel.cs">
-      <Link>Elements\WrapPanel.cs</Link>
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\FrameworkElement.cs">
       <Link>FrameworkElement.cs</Link>
@@ -682,48 +685,47 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Elements\Templates\Button.xml">
-      <Link>Elements\Templates\Button.xml</Link>
+    <Content Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\Templates\Button.xml">
+      <Link>Controls\Templates\Button.xml</Link>
     </Content>
-    <Content Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Elements\Templates\CheckBox.xml">
-      <Link>Elements\Templates\CheckBox.xml</Link>
+    <Content Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\Templates\CheckBox.xml">
+      <Link>Controls\Templates\CheckBox.xml</Link>
     </Content>
-    <Content Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Elements\Templates\HScrollBar.xml">
-      <Link>Elements\Templates\HScrollBar.xml</Link>
+    <Content Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\Templates\HScrollBar.xml">
+      <Link>Controls\Templates\HScrollBar.xml</Link>
     </Content>
-    <Content Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Elements\Templates\HSlider.xml">
-      <Link>Elements\Templates\HSlider.xml</Link>
+    <Content Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\Templates\HSlider.xml">
+      <Link>Controls\Templates\HSlider.xml</Link>
     </Content>
-    <Content Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Elements\Templates\ListBox.xml">
-      <Link>Elements\Templates\ListBox.xml</Link>
+    <Content Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\Templates\ListBox.xml">
+      <Link>Controls\Templates\ListBox.xml</Link>
     </Content>
-    <Content Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Elements\Templates\ListBoxItem.xml">
-      <Link>Elements\Templates\ListBoxItem.xml</Link>
+    <Content Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\Templates\ListBoxItem.xml">
+      <Link>Controls\Templates\ListBoxItem.xml</Link>
     </Content>
-    <Content Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Elements\Templates\NumericUpDown.xml">
-      <Link>Elements\Templates\NumericUpDown.xml</Link>
+    <Content Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\Templates\NumericUpDown.xml">
+      <Link>Controls\Templates\NumericUpDown.xml</Link>
     </Content>
-    <Content Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Elements\Templates\RadioButton.xml">
-      <Link>Elements\Templates\RadioButton.xml</Link>
+    <Content Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\Templates\RadioButton.xml">
+      <Link>Controls\Templates\RadioButton.xml</Link>
     </Content>
-    <Content Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Elements\Templates\RepeatButton.xml">
-      <Link>Elements\Templates\RepeatButton.xml</Link>
+    <Content Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\Templates\RepeatButton.xml">
+      <Link>Controls\Templates\RepeatButton.xml</Link>
     </Content>
-    <Content Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Elements\Templates\ScrollViewer.xml">
-      <Link>Elements\Templates\ScrollViewer.xml</Link>
-      <SubType>Designer</SubType>
+    <Content Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\Templates\ScrollViewer.xml">
+      <Link>Controls\Templates\ScrollViewer.xml</Link>
     </Content>
-    <Content Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Elements\Templates\TextBox.xml">
-      <Link>Elements\Templates\TextBox.xml</Link>
+    <Content Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\Templates\TextBox.xml">
+      <Link>Controls\Templates\TextBox.xml</Link>
     </Content>
-    <Content Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Elements\Templates\ToggleButton.xml">
-      <Link>Elements\Templates\ToggleButton.xml</Link>
+    <Content Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\Templates\ToggleButton.xml">
+      <Link>Controls\Templates\ToggleButton.xml</Link>
     </Content>
-    <Content Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Elements\Templates\VScrollBar.xml">
-      <Link>Elements\Templates\VScrollBar.xml</Link>
+    <Content Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\Templates\VScrollBar.xml">
+      <Link>Controls\Templates\VScrollBar.xml</Link>
     </Content>
-    <Content Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Elements\Templates\VSlider.xml">
-      <Link>Elements\Templates\VSlider.xml</Link>
+    <Content Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\Templates\VSlider.xml">
+      <Link>Controls\Templates\VSlider.xml</Link>
     </Content>
     <Content Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Resources\Strings.xml">
       <Link>Resources\Strings.xml</Link>
@@ -748,7 +750,7 @@
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties ProjectLinkReference="7379d9e1-bb01-4b05-b4f7-5d39b393348f" ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" />
+      <UserProperties ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" ProjectLinkReference="7379d9e1-bb01-4b05-b4f7-5d39b393348f" />
     </VisualStudio>
   </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

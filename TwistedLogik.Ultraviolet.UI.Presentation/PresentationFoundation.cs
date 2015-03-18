@@ -6,7 +6,7 @@ using System.Runtime.CompilerServices;
 using System.Xml.Linq;
 using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet.UI.Presentation.Animations;
-using TwistedLogik.Ultraviolet.UI.Presentation.Elements;
+using TwistedLogik.Ultraviolet.UI.Presentation.Controls;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation
 {
