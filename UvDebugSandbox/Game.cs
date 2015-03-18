@@ -197,8 +197,7 @@ namespace UvDebugSandbox
             textFormatter.AddArgument(upf.PerformanceStats.ArrangeCountLastFrame);
             textFormatter.AddArgument(upf.PerformanceStats.InvalidateArrangeCountLastFrame);
             textFormatter.AddArgument(upf.PerformanceStats.PositionCountLastFrame);
-            textFormatter.AddArgument(upf.PerformanceStats.InvalidatePositionCountLastFrame);
-            textFormatter.Format("FPS: {0:decimals:2} FPS\nStyle: {1} / {2}\nMeasure: {3} / {4}\nArrange: {5} / {6}\nPosition: {7} / {8}", textBuffer);
+            textFormatter.Format("FPS: {0:decimals:2} FPS\nStyle: {1} / {2}\nMeasure: {3} / {4}\nArrange: {5} / {6}\nPosition: {7}", textBuffer);
 
             spriteBatch.DrawString(spriteFont, textBuffer, Vector2.One * 8f, Color.White);
 

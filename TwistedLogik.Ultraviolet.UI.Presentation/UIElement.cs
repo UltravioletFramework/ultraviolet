@@ -382,11 +382,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             if (desiredSizeChanged)
             {
-                var parent = VisualTreeHelper.GetParent(this) as UIElement;
-                if (parent != null)
-                {
-                    parent.OnChildDesiredSizeChanged(this);
-                }
+                IndicateDesiredSizeChanged();
             }
         }
 
@@ -433,32 +429,25 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             }
             this.isArrangeValid = true;
 
-            InvalidatePosition();
+            PositionElementAndPotentiallyChildren();
 
             upf.ArrangeQueue.Remove(this);
         }
 
         /// <summary>
-        /// Positions the element in absolute screen space.
+        /// Updates the element's position in absolute screen space.
         /// </summary>
-        /// <param name="position">The position of the element's parent element in absolute screen space.</param>
-        public void Position(Point2D position)
+        public void Position()
         {
             if (View == null)
-            {
-                this.isPositionValid = true;
-                return;
-            }
-
-            if (isPositionValid && mostRecentPosition.Equals(position))
                 return;
 
             var upf = Ultraviolet.GetUI().GetPresentationFoundation();
             upf.PerformanceStats.PositionCountLastFrame++;
 
-            this.mostRecentPosition = position;
+            var parent         = VisualTreeHelper.GetParent(this) as UIElement;
+            var parentPosition = (parent == null) ? Point2D.Zero : parent.AbsolutePosition;
 
-            var parent = VisualTreeHelper.GetParent(this) as UIElement;
             var contentRegionOffset = (parent == null || parent == Control) ? Point2D.Zero : parent.ContentOffset;
 
             var offsetX = mostRecentFinalRect.X + RenderOffset.X + contentRegionOffset.X;
@@ -466,14 +455,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var offset  = new Point2D(offsetX, offsetY);
 
             this.relativeBounds = new RectangleD(offset.X, offset.Y, RenderSize.Width, RenderSize.Height);
-            this.absoluteBounds = new RectangleD(position.X + offset.X, position.Y + offset.Y, RenderSize.Width, RenderSize.Height);
+            this.absoluteBounds = new RectangleD(parentPosition.X + offset.X, parentPosition.Y + offset.Y, RenderSize.Width, RenderSize.Height);
 
-            PositionCore(position);
-            this.isPositionValid = true;
+            PositionCore();
 
             Clip();
+        }
 
-            upf.PositionQueue.Remove(this);
+        /// <summary>
+        /// Updates the positions of the element's visual children in absolute screen space.
+        /// </summary>
+        public void PositionChildren()
+        {
+            PositionChildrenCore();
         }
 
         /// <summary>
@@ -502,7 +496,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 return;
 
             this.isStyleValid = false;
-            uv.GetUI().GetPresentationFoundation().StyleQueue.Enqueue(this);
+
+            var upf = uv.GetUI().GetPresentationFoundation();
+            upf.PerformanceStats.InvalidateStyleCountLastFrame++;
+            upf.StyleQueue.Enqueue(this);
         }
 
         /// <summary>
@@ -514,7 +511,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 return;
 
             this.isMeasureValid = false;
-            uv.GetUI().GetPresentationFoundation().MeasureQueue.Enqueue(this);
+
+            var upf = uv.GetUI().GetPresentationFoundation();
+            upf.PerformanceStats.InvalidateMeasureCountLastFrame++;
+            upf.MeasureQueue.Enqueue(this);
         }
 
         /// <summary>
@@ -526,19 +526,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 return;
 
             this.isArrangeValid = false;
-            uv.GetUI().GetPresentationFoundation().ArrangeQueue.Enqueue(this);
-        }
 
-        /// <summary>
-        /// Invalidates the element's position state.
-        /// </summary>
-        public void InvalidatePosition()
-        {
-            if (View == null || !IsPositionValid)
-                return;
-
-            this.isPositionValid = false;
-            uv.GetUI().GetPresentationFoundation().PositionQueue.Enqueue(this);
+            var upf = uv.GetUI().GetPresentationFoundation();
+            upf.PerformanceStats.InvalidateArrangeCountLastFrame++;
+            upf.ArrangeQueue.Enqueue(this);
         }
 
         /// <summary>
@@ -866,14 +857,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public Boolean IsMeasureValid
         {
             get { return isMeasureValid; }
-        }
-
-        /// <summary>
-        /// Gets a value indicating whether the element's position state is valid.
-        /// </summary>
-        public Boolean IsPositionValid
-        {
-            get { return isPositionValid; }
         }
 
         /// <summary>
@@ -1224,6 +1207,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Identifies the <see cref="IsTabStop"/> dependency property.
         /// </summary>
+        [Styled("tab-stop")]
         public static readonly DependencyProperty IsTabStopProperty = DependencyProperty.Register("IsTabStop", typeof(Boolean), typeof(UIElement),
             new DependencyPropertyMetadata(HandleIsTabStopChanged, () => true, DependencyPropertyOptions.None));
 
@@ -1239,7 +1223,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         [Styled("visibility")]
         public static readonly DependencyProperty VisibilityProperty = DependencyProperty.Register("Visibility", typeof(Visibility), typeof(UIElement),
-            new DependencyPropertyMetadata(HandleVisibilityChanged, () => Visibility.Visible, DependencyPropertyOptions.AffectsMeasure));
+            new DependencyPropertyMetadata(HandleVisibilityChanged, () => Visibility.Visible, DependencyPropertyOptions.None));
 
         /// <summary>
         /// Identifies the <see cref="Opacity"/> dependency property.
@@ -1384,14 +1368,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
-        /// Invalidates the element's position.
-        /// </summary>
-        internal void InvalidatePositionInternal()
-        {
-            isPositionValid = false;
-        }
-
-        /// <summary>
         /// Searches the object for a dependency property which matches the specified name.
         /// </summary>
         /// <param name="name">The name of the dependency property for which to search.</param>
@@ -1504,14 +1480,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
-        /// Gets the position that was most recently passed to the <see cref="Position(Point2D)"/> method.
-        /// </summary>
-        internal Point2D MostRecentPosition
-        {
-            get { return mostRecentPosition; }
-        }
-
-        /// <summary>
         /// Gets the element's depth within the layout tree.
         /// </summary>
         internal Int32 LayoutDepth
@@ -1555,13 +1523,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             InvalidateArrange();
             base.OnMeasureAffectingPropertyChanged();
-        }
-
-        /// <inheritdoc/>
-        protected internal sealed override void OnPositionAffectingPropertyChanged()
-        {
-            InvalidatePosition();
-            base.OnPositionAffectingPropertyChanged();
         }
 
         /// <summary>
@@ -2198,12 +2159,25 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
-        /// When overridden in a derived class, positions the element in absolute screen space.
+        /// When overridden in a derived class, updates the element's position 
+        /// in absolute screen space.
         /// </summary>
-        /// <param name="position">The position of the element's parent element in absolute screen space.</param>
-        protected virtual void PositionCore(Point2D position)
+        protected virtual void PositionCore()
         {
 
+        }
+
+        /// <summary>
+        /// When overridden in a derived class, updates the positions of the element's 
+        /// visual children in absolute screen space.
+        /// </summary>
+        protected virtual void PositionChildrenCore()
+        {
+            VisualTreeHelper.ForEachChild<UIElement>(this, this, (child, state) =>
+            {
+                child.Position();
+                child.PositionChildren();
+            });
         }
 
         /// <summary>
@@ -2562,6 +2536,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             var element = (UIElement)dobj;
             element.OnVisibilityChanged();
+            element.IndicateDesiredSizeChanged();
         }
 
         /// <summary>
@@ -2774,6 +2749,21 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         private static void OnMouseWheelProxy(UIElement element, MouseDevice device, Double x, Double y, ref Boolean handled)
         {
             element.OnMouseWheel(device, x, y, ref handled);
+        }
+
+        /// <summary>
+        /// Updates the element's position and, if that position changes, the positions of the element's children.
+        /// </summary>
+        private void PositionElementAndPotentiallyChildren()
+        {
+            var oldAbsolutePosition = AbsolutePosition;
+
+            Position();
+
+            if (!oldAbsolutePosition.Equals(AbsolutePosition))
+            {
+                PositionChildren();
+            }
         }
 
         /// <summary>
@@ -3115,6 +3105,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Informs the element's parent that its desired size has changed.
+        /// </summary>
+        private void IndicateDesiredSizeChanged()
+        {
+            var parent = VisualTreeHelper.GetParent(this) as UIElement;
+            if (parent != null)
+            {
+                parent.OnChildDesiredSizeChanged(this);
+            }
+        }
+
+        /// <summary>
         /// Returns a list containing the element's visual children.
         /// </summary>
         /// <returns>A list containing the element's visual children.</returns>
@@ -3183,7 +3185,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         private Boolean isStyleValid;
         private Boolean isMeasureValid;
         private Boolean isArrangeValid;
-        private Boolean isPositionValid;
         private Boolean isHovering;
         private Point2D renderOffset;
         private Size2D renderSize;
@@ -3197,7 +3198,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         private ArrangeOptions mostRecentArrangeOptions;
         private RectangleD mostRecentFinalRect;
         private Size2D mostRecentAvailableSize;
-        private Point2D mostRecentPosition;
         private Int32 layoutDepth;
         private Int32 logicalOrder;
 

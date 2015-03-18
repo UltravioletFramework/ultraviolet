@@ -36,7 +36,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// Identifies the <see cref="ViewportSize"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty ViewportSizeProperty = DependencyProperty.Register("ViewportSize", typeof(Double), typeof(ScrollBarBase),
-            new DependencyPropertyMetadata(HandleViewportSizeChanged, null, DependencyPropertyOptions.AffectsPosition));
+            new DependencyPropertyMetadata(HandleViewportSizeChanged, null, DependencyPropertyOptions.AffectsMeasure));
 
         /// <inheritdoc/>
         protected override void OnMinimumChanged()

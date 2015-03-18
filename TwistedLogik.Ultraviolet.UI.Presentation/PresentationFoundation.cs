@@ -30,7 +30,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             this.styleQueue    = new LayoutQueue(InvalidateStyle);
             this.measureQueue  = new LayoutQueue(InvalidateMeasure);
             this.arrangeQueue  = new LayoutQueue(InvalidateArrange);
-            this.positionQueue = new LayoutQueue(InvalidatePosition);
         }
 
         /// <summary>
@@ -58,7 +57,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             ProcessStyleQueue();
             ProcessMeasureQueue();
             ProcessArrangeQueue();
-            ProcessPositionQueue();
         }
 
         /// <summary>
@@ -355,14 +353,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         internal LayoutQueue ArrangeQueue
         {
             get { return arrangeQueue; }
-        }
-
-        /// <summary>
-        /// Gets the queue of elements with invalid position states.
-        /// </summary>
-        internal LayoutQueue PositionQueue
-        {
-            get { return positionQueue; }
         }
 
         /// <summary>
@@ -665,27 +655,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
-        /// Processes the queue of elements with invalid position states.
-        /// </summary>
-        private void ProcessPositionQueue()
-        {
-            while (positionQueue.Count > 0)
-            {
-                var element = positionQueue.Dequeue();
-                if (element.IsPositionValid)
-                    continue;
-
-                element.Position(element.MostRecentPosition);
-            }
-        }
-
-        /// <summary>
         /// Invalidates the specified element's style.
         /// </summary>
         private void InvalidateStyle(UIElement element)
         {
-            element.InvalidateStyleInternal();
-            PerformanceStats.InvalidateStyleCountLastFrame++;
+            if (element.IsStyleValid)
+            {
+                element.InvalidateStyleInternal();
+                PerformanceStats.InvalidateStyleCountLastFrame++;
+            }
         }
 
         /// <summary>
@@ -693,8 +671,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         private void InvalidateMeasure(UIElement element)
         {
-            element.InvalidateMeasureInternal();
-            PerformanceStats.InvalidateMeasureCountLastFrame++;
+            if (element.IsMeasureValid)
+            {
+                element.InvalidateMeasureInternal();
+                PerformanceStats.InvalidateMeasureCountLastFrame++;
+            }
         }
 
         /// <summary>
@@ -702,17 +683,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         private void InvalidateArrange(UIElement element)
         {
-            element.InvalidateArrangeInternal();
-            PerformanceStats.InvalidateArrangeCountLastFrame++;
-        }
-
-        /// <summary>
-        /// Invalidates the specified element's position.
-        /// </summary>
-        private void InvalidatePosition(UIElement element)
-        {
-            element.InvalidatePositionInternal();
-            PerformanceStats.InvalidatePositionCountLastFrame++;
+            if (element.IsArrangeValid)
+            {
+                element.InvalidateArrangeInternal();
+                PerformanceStats.InvalidateArrangeCountLastFrame++;
+            }
         }
 
         /// <summary>
@@ -757,6 +732,5 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         private readonly LayoutQueue styleQueue;
         private readonly LayoutQueue measureQueue;
         private readonly LayoutQueue arrangeQueue;
-        private readonly LayoutQueue positionQueue;
     }
 }

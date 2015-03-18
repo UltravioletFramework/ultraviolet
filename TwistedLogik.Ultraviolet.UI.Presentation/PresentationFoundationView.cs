@@ -634,7 +634,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             layoutRoot.Measure(dipsArea.Size);
             layoutRoot.Arrange(dipsArea);
-            layoutRoot.Position(dipsArea.Location);
 
             base.OnViewSizeChanged();
         }

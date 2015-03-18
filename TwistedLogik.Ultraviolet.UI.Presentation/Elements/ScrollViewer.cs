@@ -299,6 +299,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             scrollViewer.OnVerticalScrollBarVisibilityChanged();
         }
 
+        /// <summary>
+        /// Handles the <see cref="RangeControl.ValueChanged"/> event for the scroll viewer's scroll bars.
+        /// </summary>
+        private void HandleScrollValueChanged(UIElement element)
+        {
+            Presenter.PositionChildren();
+        }
+
         // Scroll deltas for various input events.
         private const Double ScrollDeltaMouseWheel = 48.0;
         private const Double ScrollDeltaKey = 16.0;

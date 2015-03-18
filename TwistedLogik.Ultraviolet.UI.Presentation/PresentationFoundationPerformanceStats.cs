@@ -38,15 +38,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
-        /// Gets the number of <see cref="UIElement.InvalidatePosition()"/> calls made in the last frame.
-        /// </summary>
-        public Int32 InvalidatePositionCountLastFrame
-        {
-            get;
-            internal set;
-        }
-
-        /// <summary>
         /// Gets the number of <see cref="UIElement.Style()"/> calls that were actually handled in the last frame.
         /// </summary>
         public Int32 StyleCountLastFrame
@@ -90,7 +81,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             InvalidateStyleCountLastFrame    = 0;
             InvalidateMeasureCountLastFrame  = 0;
             InvalidateArrangeCountLastFrame  = 0;
-            InvalidatePositionCountLastFrame = 0;
 
             StyleCountLastFrame    = 0;
             MeasureCountLastFrame  = 0;

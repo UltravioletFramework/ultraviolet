@@ -434,11 +434,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <inheritdoc/>
-        protected sealed override void PositionCore(Point2D position)
+        protected sealed override void PositionCore()
         {
-            PositionOverride(position);
+            PositionOverride();
 
-            base.PositionCore(position);
+            base.PositionCore();
+        }
+
+        /// <inheritdoc/>
+        protected override void PositionChildrenCore()
+        {
+            PositionChildrenOverride();
+
+            base.PositionChildrenCore();
         }
 
         /// <inheritdoc/>
@@ -533,16 +541,21 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
-        /// When overridden in a derived class, positions the element in absolute screen space for 
-        /// a <see cref="FrameworkElement"/> derived class.
+        /// When overridden in a derived class, updates the position of the element in absolute 
+        /// screen space for a <see cref="FrameworkElement"/> derived class.
         /// </summary>
-        /// <param name="position">The position of the element's parent element in absolute screen space.</param>
-        protected virtual void PositionOverride(Point2D position)
+        protected virtual void PositionOverride()
         {
-            VisualTreeHelper.ForEachChild<UIElement>(this, this, (child, state) =>
-            {
-                child.Position(((UIElement)state).AbsolutePosition);
-            });
+
+        }
+
+        /// <summary>
+        /// When overridden in a derived class, updates the positions of the element's visual children
+        /// in absolute screen space for a <see cref="FrameworkElement"/> derived class.
+        /// </summary>
+        protected virtual void PositionChildrenOverride()
+        {
+
         }
 
         /// <summary>

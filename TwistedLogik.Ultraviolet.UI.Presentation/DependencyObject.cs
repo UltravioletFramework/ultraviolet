@@ -339,14 +339,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
-        /// Occurs when a dependency property which potentially affects the object's positioning state is changed.
-        /// </summary>
-        protected internal virtual void OnPositionAffectingPropertyChanged()
-        {
-
-        }
-
-        /// <summary>
         /// Gets the dependency object's containing object.
         /// </summary>
         protected internal abstract DependencyObject DependencyContainer
