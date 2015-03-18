@@ -55,7 +55,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// <inheritdoc/>
         protected override void OnValueChanged()
         {
-            InvalidateMeasure();
+            if (Track != null)
+            {
+                Track.InvalidateArrange();
+            }
             base.OnValueChanged();
         }
 
@@ -80,5 +83,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             var scrollbar = (ScrollBarBase)dobj;
             scrollbar.OnViewportSizeChanged();
         }
+
+        // Component references.
+        private readonly Track Track = null;
     }
 }

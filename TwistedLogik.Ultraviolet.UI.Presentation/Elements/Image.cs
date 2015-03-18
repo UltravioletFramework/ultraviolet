@@ -55,7 +55,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         /// </summary>
         [Styled("source-image")]
         public static readonly DependencyProperty SourceProperty = DependencyProperty.Register("Source", typeof(SourcedImage), typeof(Image),
-            new DependencyPropertyMetadata(HandleSourceChanged, null, DependencyPropertyOptions.AffectsMeasure));
+            new DependencyPropertyMetadata(HandleSourceChanged, null, DependencyPropertyOptions.None));
 
         /// <summary>
         /// Identifies the <see cref="SourceColor"/> property.

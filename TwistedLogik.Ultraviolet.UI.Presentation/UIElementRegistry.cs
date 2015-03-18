@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using TwistedLogik.Ultraviolet.UI.Presentation.Elements;
 using TwistedLogik.Nucleus;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation
@@ -73,18 +74,32 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             Contract.Require(obj, "obj");
 
-            var fields = obj.GetType().GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance).ToDictionary(x => x.Name);
+            var type = obj.GetType();
 
-            foreach (var kvp in elementsByID)
+            while (type != null)
             {
-                FieldInfo field;
-                if (!fields.TryGetValue(kvp.Key, out field))
-                    continue;
+                if (type == typeof(UIElement) || 
+                    type == typeof(FrameworkElement) ||
+                    type == typeof(Control))
+                {
+                    break;
+                }
 
-                if (!field.FieldType.IsAssignableFrom(kvp.Value.GetType()))
-                    continue;
+                var fields = type.GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance).ToDictionary(x => x.Name);
 
-                field.SetValue(obj, kvp.Value);
+                foreach (var kvp in elementsByID)
+                {
+                    FieldInfo field;
+                    if (!fields.TryGetValue(kvp.Key, out field))
+                        continue;
+
+                    if (!field.FieldType.IsAssignableFrom(kvp.Value.GetType()))
+                        continue;
+
+                    field.SetValue(obj, kvp.Value);
+                }
+
+                type = type.BaseType;
             }
         }
 
