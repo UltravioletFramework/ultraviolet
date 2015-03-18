@@ -31,6 +31,11 @@ button, repeatbutton
 	transition (common, pressed): button-to-pressed;
 }
 
+button contentpresenter, repeatbutton contentpresenter
+{
+	content-offset: 0 0;
+}
+
 	  button .button-background, 
 repeatbutton .button-background,
 togglebutton .button-background
@@ -51,10 +56,6 @@ togglebutton .button-focus
 {
 	target button
 	{
-		animation padding
-		{
-			keyframe 0 { }
-		}
 		animation font-color
 		{
 			keyframe 100 { }
@@ -71,15 +72,18 @@ togglebutton .button-focus
 			keyframe 250 { }
 		}
 	}
+	target contentpresenter (*)
+	{	
+		animation content-offset
+		{
+			keyframe 0 { }
+		}
+	}
 }
 @button-to-hover
 {
 	target button
 	{
-		animation padding
-		{
-			keyframe 0 { }
-		}
 		animation font-color
 		{
 			keyframe 100 { #ff004080 }
@@ -96,15 +100,18 @@ togglebutton .button-focus
 			keyframe 250 { #ffff0000 }
 		}	
 	}
+	target contentpresenter (*)
+	{
+		animation content-offset
+		{
+			keyframe 0 { }
+		}
+	}
 }
 @button-to-pressed
 {
 	target button
 	{
-		animation padding
-		{
-			keyframe 0 { 8 12 8 8 }
-		}
 		animation font-color
 		{
 			keyframe 100 { #ff004080 }
@@ -116,6 +123,13 @@ togglebutton .button-focus
 		{
 			keyframe 0 { #Global:Textures:DebugUI 1 639 190 49 6 8 6 4 }
 		}	
+	}
+	target contentpresenter (*)
+	{	
+		animation content-offset
+		{
+			keyframe 0 { 0 4 }
+		}
 	}
 }
 @button-to-focused
@@ -189,13 +203,6 @@ togglebutton
 }
 @togglebutton-to-unchecked
 {
-	target togglebutton
-	{
-		animation padding
-		{
-			keyframe 0 { }
-		}
-	}
 	target image (.button-background)
 	{
 		animation source-image
@@ -203,22 +210,29 @@ togglebutton
 			keyframe 0 { }
 		}	
 	}
+	target contentpresenter (*)
+	{
+		animation content-offset
+		{
+			keyframe 0 { }
+		}
+	}
 }
 @togglebutton-to-checked
 {
-	target togglebutton
-	{
-		animation padding
-		{
-			keyframe 0 { 8 12 8 8 }
-		}
-	}
 	target image (.button-background)
 	{
 		animation source-image
 		{
 			keyframe 0 { #Global:Textures:DebugUI 1 639 190 49 6 8 6 4 }
 		}	
+	}
+	target contentpresenter (*)
+	{
+		animation content-offset
+		{
+			keyframe 0 { 0 4 }
+		}
 	}
 }
 

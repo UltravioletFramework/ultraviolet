@@ -1,5 +1,6 @@
 ﻿using System;
 using TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text;
+using TwistedLogik.Ultraviolet.UI.Presentation.Styles;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
 {
@@ -21,6 +22,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
         }
 
         /// <inheritdoc/>
+        public override Point2D ContentOffset
+        {
+            get { return GetValue<Point2D>(ContentOffsetProperty); }
+        }
+
+        /// <summary>
+        /// Identifies the <see cref="ContentOffset"/> dependency property.
+        /// </summary>
+        [Styled("content-offset")]
+        public static readonly DependencyProperty ContentOffsetProperty = DependencyProperty.Register("ContentOffset", typeof(Point2D), typeof(ContentPresenter),
+            new DependencyPropertyMetadata(HandleContentOffsetChanged, () => Point2D.Zero, DependencyPropertyOptions.None));
+
+        /// <inheritdoc/>
         protected override void CacheLayoutParametersCore()
         {
             containingContentControl = Control as ContentControl;
@@ -35,7 +49,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             {
                 if (textLayoutResult != null && textLayoutResult.Count > 0)
                 {
-                    var position = Display.DipsToPixels(AbsolutePosition);
+                    var position = Display.DipsToPixels(AbsolutePosition + ContentOffset);
                     var color    = ContainingContentControl.FontColor;
 
                     View.Resources.TextRenderer.Draw(dc.SpriteBatch, textLayoutResult, (Vector2)position, color);
@@ -174,6 +188,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             {
                 return (ContainingContentControl != null && ContainingContentControl.Content is UIElement) ? 1 : 0;
             }
+        }
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="ContentOffset"/> dependency property changes.
+        /// </summary>
+        /// <param name="dobj">The dependency object that raised the event.</param>
+        private static void HandleContentOffsetChanged(DependencyObject dobj)
+        {
+            var presenter = (ContentPresenter)dobj;
+            presenter.Position();
+            presenter.PositionChildren();
         }
 
         /// <summary>
