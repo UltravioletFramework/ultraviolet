@@ -5,18 +5,18 @@ using TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text;
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 {
     /// <summary>
-    /// Represents a text label on a user interface.
+    /// Represents a lightweight control for displaying text.
     /// </summary>
     [UvmlKnownType]
     [DefaultProperty("Text")]
-    public class Label : LabelBase
+    public class TextBlock : TextBlockBase
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="Label"/> class.
+        /// Initializes a new instance of the <see cref="TextBlock"/> class.
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
         /// <param name="id">The element's unique identifier within its view.</param>
-        public Label(UltravioletContext uv, String id)
+        public TextBlock(UltravioletContext uv, String id)
             : base(uv, id)
         {
 
@@ -39,7 +39,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Identifies the <see cref="Text"/> dependency property.
         /// </summary>
-        public static readonly DependencyProperty TextProperty = DependencyProperty.Register("Text", typeof(String), typeof(Label),
+        public static readonly DependencyProperty TextProperty = DependencyProperty.Register("Text", typeof(String), typeof(TextBlock),
             new DependencyPropertyMetadata(HandleTextChanged, null, DependencyPropertyOptions.AffectsMeasure));
 
         /// <summary>
@@ -90,7 +90,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <param name="dobj">The dependency object that raised the event.</param>
         private static void HandleTextChanged(DependencyObject dobj)
         {
-            var label = (Label)dobj;
+            var label = (TextBlock)dobj;
             label.UpdateTextParserResult();
             label.OnTextChanged();
         }

@@ -227,12 +227,6 @@
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\ItemsControl.cs">
       <Link>Controls\ItemsControl.cs</Link>
     </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\Label.cs">
-      <Link>Controls\Label.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\LabelBase.cs">
-      <Link>Controls\LabelBase.cs</Link>
-    </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\ListBox.cs">
       <Link>Controls\ListBox.cs</Link>
     </Compile>
@@ -242,8 +236,8 @@
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\NamespaceDoc.cs">
       <Link>Controls\NamespaceDoc.cs</Link>
     </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\NumericLabel.cs">
-      <Link>Controls\NumericLabel.cs</Link>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\NumericTextBlock.cs">
+      <Link>Controls\NumericTextBlock.cs</Link>
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\NumericUpDown.cs">
       <Link>Controls\NumericUpDown.cs</Link>
@@ -307,6 +301,12 @@
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\StackPanel.cs">
       <Link>Controls\StackPanel.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\TextBlock.cs">
+      <Link>Controls\TextBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\TextBlockBase.cs">
+      <Link>Controls\TextBlockBase.cs</Link>
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\TextBox.cs">
       <Link>Controls\TextBox.cs</Link>

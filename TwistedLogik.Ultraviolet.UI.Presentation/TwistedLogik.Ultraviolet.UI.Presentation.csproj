@@ -147,10 +147,10 @@
     <Compile Include="Controls\Grid.cs" />
     <Compile Include="Controls\HScrollBar.cs" />
     <Compile Include="Controls\Image.cs" />
-    <Compile Include="Controls\Label.cs" />
-    <Compile Include="Controls\LabelBase.cs" />
+    <Compile Include="Controls\TextBlock.cs" />
+    <Compile Include="Controls\TextBlockBase.cs" />
     <Compile Include="Controls\NamespaceDoc.cs" />
-    <Compile Include="Controls\NumericLabel.cs" />
+    <Compile Include="Controls\NumericTextBlock.cs" />
     <Compile Include="Controls\Orientation.cs" />
     <Compile Include="Controls\Panel.cs" />
     <Compile Include="Controls\ProgressBar.cs" />

@@ -4,18 +4,18 @@ using System.ComponentModel;
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 {
     /// <summary>
-    /// Represents a label that is optimized for displaying numeric values.
+    /// Represents a text block that is optimized for displaying numeric values.
     /// </summary>
     [UvmlKnownType]
     [DefaultProperty("Value")]
-    public class NumericLabel : LabelBase
+    public class NumericTextBlock : TextBlockBase
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="NumericLabel"/> class.
+        /// Initializes a new instance of the <see cref="NumericTextBlock"/> class.
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
         /// <param name="id">The element's unique identifier within its view.</param>
-        public NumericLabel(UltravioletContext uv, String id)
+        public NumericTextBlock(UltravioletContext uv, String id)
             : base(uv, id)
         {
 
@@ -52,13 +52,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Identifies the <see cref="Value"/> dependency property.
         /// </summary>
-        public static readonly DependencyProperty ValueProperty = DependencyProperty.Register("Value", typeof(Double), typeof(NumericLabel),
+        public static readonly DependencyProperty ValueProperty = DependencyProperty.Register("Value", typeof(Double), typeof(NumericTextBlock),
             new DependencyPropertyMetadata(HandleValueChanged, null, DependencyPropertyOptions.AffectsMeasure));
 
         /// <summary>
         /// Identifies the <see cref="Format"/> dependency property.
         /// </summary>
-        public static readonly DependencyProperty FormatProperty = DependencyProperty.Register("Format", typeof(String), typeof(NumericLabel),
+        public static readonly DependencyProperty FormatProperty = DependencyProperty.Register("Format", typeof(String), typeof(NumericTextBlock),
             new DependencyPropertyMetadata(HandleFormatChanged, null, DependencyPropertyOptions.AffectsArrange));
 
         /// <summary>
@@ -130,7 +130,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <param name="dobj">The dependency object that raised the event.</param>
         private static void HandleValueChanged(DependencyObject dobj)
         {
-            var label = (NumericLabel)dobj;
+            var label = (NumericTextBlock)dobj;
             label.OnValueChanged();
         }
 
@@ -140,7 +140,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <param name="dobj">The dependency object that raised the event.</param>
         private static void HandleFormatChanged(DependencyObject dobj)
         {
-            var label = (NumericLabel)dobj;
+            var label = (NumericTextBlock)dobj;
             label.OnFormatChanged();
         }
     }

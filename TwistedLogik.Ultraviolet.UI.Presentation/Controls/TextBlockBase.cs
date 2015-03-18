@@ -4,17 +4,17 @@ using TwistedLogik.Ultraviolet.UI.Presentation.Styles;
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 {
     /// <summary>
-    /// Represents a text label on a user interface.
+    /// Represents the base class for text blocks.
     /// </summary>
     [UvmlKnownType]
-    public abstract class LabelBase : FrameworkElement
+    public abstract class TextBlockBase : FrameworkElement
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="LabelBase"/> class.
+        /// Initializes a new instance of the <see cref="TextBlockBase"/> class.
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
         /// <param name="id">The element's unique identifier within its view.</param>
-        public LabelBase(UltravioletContext uv, String id)
+        public TextBlockBase(UltravioletContext uv, String id)
             : base(uv, id)
         {
 
@@ -52,14 +52,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// Identifies the <see cref="HorizontalContentAlignment"/> dependency property.
         /// </summary>
         [Styled("content-halign")]
-        public static readonly DependencyProperty HorizontalContentAlignmentProperty = DependencyProperty.Register("HorizontalContentAlignment", typeof(HorizontalAlignment), typeof(LabelBase),
+        public static readonly DependencyProperty HorizontalContentAlignmentProperty = DependencyProperty.Register("HorizontalContentAlignment", typeof(HorizontalAlignment), typeof(TextBlockBase),
             new DependencyPropertyMetadata(HandleHorizontalContentAlignmentChanged, () => HorizontalAlignment.Left, DependencyPropertyOptions.AffectsArrange));
 
         /// <summary>
         /// Identifies the <see cref="VerticalContentAlignment"/> dependency property.
         /// </summary>
         [Styled("content-valign")]
-        public static readonly DependencyProperty VerticalContentAlignmentProperty = DependencyProperty.Register("VerticalContentAlignment", typeof(VerticalAlignment), typeof(LabelBase),
+        public static readonly DependencyProperty VerticalContentAlignmentProperty = DependencyProperty.Register("VerticalContentAlignment", typeof(VerticalAlignment), typeof(TextBlockBase),
             new DependencyPropertyMetadata(HandleVerticalContentAlignmentChanged, () => VerticalAlignment.Top, DependencyPropertyOptions.AffectsArrange));
 
         /// <summary>
@@ -92,7 +92,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <param name="dobj">The dependency object that raised the event.</param>
         private static void HandleHorizontalContentAlignmentChanged(DependencyObject dobj)
         {
-            var label = (LabelBase)dobj;
+            var label = (TextBlockBase)dobj;
             label.OnHorizontalContentAlignmentChanged();
         }
 
@@ -102,7 +102,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <param name="dobj">The dependency object that raised the event.</param>
         private static void HandleVerticalContentAlignmentChanged(DependencyObject dobj)
         {
-            var label = (LabelBase)dobj;
+            var label = (TextBlockBase)dobj;
             label.OnVerticalContentAlignmentChanged();
         }
     }
