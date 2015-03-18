@@ -307,6 +307,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Elements
             Presenter.PositionChildren();
         }
 
+        /// <summary>
+        /// Handles the <see cref="RangeControl.MaximumChanged"/> event for the scroll viewer's scroll bars.
+        /// </summary>
+        private void HandleScrollMaximumChanged(UIElement element)
+        {
+            Presenter.PositionChildren();
+        }
+
         // Scroll deltas for various input events.
         private const Double ScrollDeltaMouseWheel = 48.0;
         private const Double ScrollDeltaKey = 16.0;
