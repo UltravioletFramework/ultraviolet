@@ -404,6 +404,9 @@
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\IDependencyPropertyValue.cs">
       <Link>IDependencyPropertyValue.cs</Link>
     </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\IInputElement.cs">
+      <Link>IInputElement.cs</Link>
+    </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Input\Keyboard.cs">
       <Link>Input\Keyboard.cs</Link>
     </Compile>

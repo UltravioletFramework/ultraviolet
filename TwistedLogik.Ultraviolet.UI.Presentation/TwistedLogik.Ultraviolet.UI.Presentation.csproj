@@ -181,6 +181,7 @@
     <Compile Include="HorizontalAlignment.cs" />
     <Compile Include="IDependencyBoundValue.cs" />
     <Compile Include="IDependencyPropertyValue.cs" />
+    <Compile Include="IInputElement.cs" />
     <Compile Include="Input\ModifierKeys.cs" />
     <Compile Include="Input\Mouse.MouseState.cs" />
     <Compile Include="Input\Keyboard.KeyboardState.cs" />
