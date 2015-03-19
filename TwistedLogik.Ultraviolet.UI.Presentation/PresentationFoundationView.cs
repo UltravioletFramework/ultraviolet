@@ -248,11 +248,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             if (elementWithFocus != null)
             {
-                var handledLostFocus = false;
-                Keyboard.RaiseLostKeyboardFocus(elementWithFocus, ref handledLostFocus);
+                BlurElement(elementWithFocus);
             }
 
             elementWithFocus = element;
+
+            SetIsKeyboardFocusWithin(elementWithFocus, true);
 
             var handledGotFocus = false;
             Keyboard.RaiseGotKeyboardFocus(elementWithFocus, ref handledGotFocus);
@@ -269,10 +270,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (elementWithFocus != element)
                 return;
 
-            var handledLostFocus = false;
-            Keyboard.RaiseLostKeyboardFocus(elementWithFocus, ref handledLostFocus);
-            
+            var elementWithFocusOld = elementWithFocus;
             elementWithFocus = null;
+
+            SetIsKeyboardFocusWithin(elementWithFocusOld, false);
+
+            var handledLostFocus = false;
+            Keyboard.RaiseLostKeyboardFocus(elementWithFocusOld, ref handledLostFocus);
         }
 
         /// <summary>
@@ -837,6 +841,21 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                     var mouseEnterHandled = false;
                     Mouse.RaiseMouseEnter(elementUnderMouse, mouse, ref mouseEnterHandled);
                 }
+            }
+        }
+
+        /// <summary>
+        /// Sets the value of the <see cref="IInputElement.IsKeyboardFocusWithin"/> property on the specified element
+        /// and all of its ancestors to the specified value.
+        /// </summary>
+        /// <param name="element">The element on which to set the property value.</param>
+        /// <param name="value">The value to set on the element and its ancestors.</param>
+        private void SetIsKeyboardFocusWithin(UIElement element, Boolean value)
+        {
+            while (element != null)
+            {
+                element.IsKeyboardFocusWithin = value;
+                element = VisualTreeHelper.GetParent(element) as UIElement;
             }
         }
 

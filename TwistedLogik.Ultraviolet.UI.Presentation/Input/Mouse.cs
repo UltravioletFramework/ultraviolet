@@ -52,6 +52,25 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
     public static partial class Mouse
     {
         /// <summary>
+        /// Gets the position of the mouse relative to the specified element.
+        /// </summary>
+        /// <param name="relativeTo">The element for which to retrieve relative mouse coordinates.</param>
+        /// <returns>The position of the mouse relative to the specified element.</returns>
+        public static Point2D GetPosition(IInputElement relativeTo)
+        {
+            var uiElement = relativeTo as UIElement;
+            if (uiElement != null && uiElement.View != null)
+            {
+                var device = PrimaryDevice;
+                var dipPos = uiElement.View.Display.PixelsToDips((Point2D)device.Position);
+                var relPos = dipPos - uiElement.AbsolutePosition;
+
+                return relPos;
+            }
+            return Point2D.Zero;
+        }
+
+        /// <summary>
         /// Adds a handler for the PreviewMouseMove attached event to the specified element.
         /// </summary>
         /// <param name="element">The element to which to add the handler.</param>

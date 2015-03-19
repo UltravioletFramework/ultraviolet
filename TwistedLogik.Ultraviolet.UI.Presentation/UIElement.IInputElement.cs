@@ -9,31 +9,39 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <inheritdoc/>
         public Boolean IsKeyboardFocused
         {
-            get { throw new NotImplementedException(); }
+            get { return (View == null) ? false : View.ElementWithFocus == this; }
         }
 
         /// <inheritdoc/>
         public Boolean IsKeyboardFocusWithin
         {
-            get { throw new NotImplementedException(); }
+            get;
+            internal set;
         }
 
         /// <inheritdoc/>
         public Boolean IsMouseCaptured
         {
-            get { throw new NotImplementedException(); } 
+            get
+            {
+                return (View == null) ? false : View.ElementWithMouseCapture == this;
+            }
         }
 
         /// <inheritdoc/>
         public Boolean IsMouseOver
         {
-            get { throw new NotImplementedException(); }
+            get
+            {
+                var position = Mouse.GetPosition(this);
+                return Bounds.Contains(position);
+            }
         }
 
         /// <inheritdoc/>
         public Boolean IsMouseDirectlyOver
         {
-            get { throw new NotImplementedException(); }
+            get { return (View == null) ? false : View.ElementUnderMouse == this; }
         }
 
         /// <inheritdoc/>

@@ -3,11 +3,13 @@
   <Stylesheet>DebugViewScreenStyles.uvss</Stylesheet>
   <View ViewModelType="UvDebugSandbox.UI.Screens.DebugViewModel, UvDebugSandbox">
 
+    
     <ListBox Width="200" Margin="100">
       <Button>The quick brown fox</Button>
       <Button>jumps over the lazy dog</Button>
       <Button>The quick brown fox</Button>
       <Button>jumps over the lazy dog</Button>
+      <TextBox></TextBox>
       <Button>The quick brown fox</Button>
       <Button>jumps over the lazy dog</Button>
       <Button>The quick brown fox</Button>
