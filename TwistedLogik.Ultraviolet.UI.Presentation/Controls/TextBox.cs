@@ -260,7 +260,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <inheritdoc/>
-        protected override void OnKeyDown(KeyboardDevice device, Key key, KeyModifiers modifiers, ref Boolean handled)
+        protected override void OnKeyDown(KeyboardDevice device, Key key, ModifierKeys modifiers, ref Boolean handled)
         {
             switch (key)
             {
@@ -272,7 +272,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                     break;
 
                 case Key.A:
-                    if (modifiers.Control)
+                    if ((modifiers & ModifierKeys.Control) == ModifierKeys.Control)
                     {
                         SelectAll();
                         handled = true;
@@ -280,7 +280,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                     break;
 
                 case Key.C:
-                    if (modifiers.Control)
+                    if ((modifiers & ModifierKeys.Control) == ModifierKeys.Control)
                     {
                         Copy();
                         handled = true;
@@ -288,7 +288,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                     break;
 
                 case Key.X:
-                    if (modifiers.Control)
+                    if ((modifiers & ModifierKeys.Control) == ModifierKeys.Control)
                     {
                         Cut();
                         handled = true;
@@ -296,7 +296,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                     break;
 
                 case Key.V:
-                    if (modifiers.Control)
+                    if ((modifiers & ModifierKeys.Control) == ModifierKeys.Control)
                     {
                         Paste();
                         handled = true;
@@ -304,12 +304,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                     break;
 
                 case Key.Left:
-                    MoveBackward(modifiers.Shift);
+                    MoveBackward((modifiers & ModifierKeys.Shift) == ModifierKeys.Shift);
                     handled = true;
                     break;
 
                 case Key.Right:
-                    MoveForward(modifiers.Shift);
+                    MoveForward((modifiers & ModifierKeys.Shift) == ModifierKeys.Shift);
                     handled = true;
                     break;
 

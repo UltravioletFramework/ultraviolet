@@ -1557,9 +1557,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         /// <param name="device">The <see cref="KeyboardDevice"/> that raised the event.</param>
         /// <param name="key">The <see cref="Key"/> value that represents the key that was pressed.</param>
-        /// <param name="modifiers">A <see cref="KeyModifiers"/> value indicating which of the key modifiers are currently active.</param>
+        /// <param name="modifiers">A <see cref="ModifierKeys"/> value indicating which of the key modifiers are currently active.</param>
         /// <param name="handled">A value indicating whether the event has been handled.</param>
-        protected virtual void OnKeyDown(KeyboardDevice device, Key key, KeyModifiers modifiers, ref Boolean handled)
+        protected virtual void OnKeyDown(KeyboardDevice device, Key key, ModifierKeys modifiers, ref Boolean handled)
         {
 
         }
@@ -2544,7 +2544,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Invokes the <see cref="OnKeyDown"/> method.
         /// </summary>
-        private static void OnKeyDownProxy(UIElement element, KeyboardDevice device, Key key, KeyModifiers modifiers, ref Boolean handled)
+        private static void OnKeyDownProxy(UIElement element, KeyboardDevice device, Key key, ModifierKeys modifiers, ref Boolean handled)
         {
             element.OnKeyDown(device, key, modifiers, ref handled);
         }

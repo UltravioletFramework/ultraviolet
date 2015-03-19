@@ -407,14 +407,23 @@
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Input\Keyboard.cs">
       <Link>Input\Keyboard.cs</Link>
     </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Input\Keyboard.KeyboardState.cs">
+      <Link>Input\Keyboard.KeyboardState.cs</Link>
+    </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Input\KeyboardNavigation.cs">
       <Link>Input\KeyboardNavigation.cs</Link>
     </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Input\KeyModifiers.cs">
-      <Link>Input\KeyModifiers.cs</Link>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Input\ModifierKeys.cs">
+      <Link>Input\ModifierKeys.cs</Link>
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Input\Mouse.cs">
       <Link>Input\Mouse.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Input\Mouse.MouseState.cs">
+      <Link>Input\Mouse.MouseState.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Input\MouseButtonState.cs">
+      <Link>Input\MouseButtonState.cs</Link>
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\IUltravioletDisplayExtensions.cs">
       <Link>IUltravioletDisplayExtensions.cs</Link>

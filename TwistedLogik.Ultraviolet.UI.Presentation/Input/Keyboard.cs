@@ -18,9 +18,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
     /// <param name="element">The element that raised the event.</param>
     /// <param name="device">The <see cref="KeyboardDevice"/> that raised the event.</param>
     /// <param name="key">The <see cref="Key"/> value that represents the key that was pressed.</param>
-    /// <param name="modifiers">A <see cref="KeyModifiers"/> value indicating which of the key modifiers are currently active.</param>
+    /// <param name="modifiers">A <see cref="ModifierKeys"/> value indicating which of the key modifiers are currently active.</param>
     /// <param name="handled">A value indicating whether the event has been handled.</param>
-    public delegate void UIElementKeyDownEventHandler(UIElement element, KeyboardDevice device, Key key, KeyModifiers modifiers, ref Boolean handled);
+    public delegate void UIElementKeyDownEventHandler(UIElement element, KeyboardDevice device, Key key, ModifierKeys modifiers, ref Boolean handled);
 
     /// <summary>
     /// Represents the method that is called when a keyboard key is released while an element has focus.
@@ -35,7 +35,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
     /// Represents the keyboard device.
     /// </summary>
     [UvmlKnownType]
-    public static class Keyboard
+    public static partial class Keyboard
     {
         /// <summary>
         /// Adds a handler for the GotKeyboardFocus attached event to the specified element.
@@ -246,6 +246,29 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
+        /// Gets the primary keyboard input device.
+        /// </summary>
+        public static KeyboardDevice PrimaryDevice
+        {
+            get { return keyboardState.Value.PrimaryDevice; }
+        }
+
+        /// <summary>
+        /// Gets the set of <see cref="ModifierKeys"/> that are currently pressed.
+        /// </summary>
+        public static ModifierKeys Modifiers
+        {
+            get
+            {
+                var device = keyboardState.Value.PrimaryDevice;
+                var alt    = device.IsAltDown;
+                var ctrl   = device.IsControlDown;
+                var shift  = device.IsShiftDown;
+                return CreateModifierKeys(alt, ctrl, shift, false);
+            }
+        }
+
+        /// <summary>
         /// Identifies the GotKeyboardFocus attached event.
         /// </summary>
         public static readonly RoutedEvent GotKeyboardFocusEvent = RoutedEvent.Register("GotKeyboardFocus", RoutingStrategy.Bubble,
@@ -337,8 +360,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
             var temp = RoutedEvent.GetInvocationDelegate<UIElementKeyDownEventHandler>(PreviewKeyDownEvent);
             if (temp != null)
             {
-                var modifiers = new KeyModifiers(ctrl, alt, shift, repeat);
-                temp(element, device, key, modifiers, ref handled);
+                var modifiers = CreateModifierKeys(ctrl, alt, shift, repeat);
+                temp(element, device, key, Keyboard.Modifiers, ref handled);
             }
         }
 
@@ -374,7 +397,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
             var temp = RoutedEvent.GetInvocationDelegate<UIElementKeyDownEventHandler>(KeyDownEvent);
             if (temp != null)
             {
-                var modifiers = new KeyModifiers(ctrl, alt, shift, repeat);
+                var modifiers = CreateModifierKeys(ctrl, alt, shift, repeat);
                 temp(element, device, key, modifiers, ref handled);
             }
         }
@@ -390,5 +413,34 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
                 temp(element, device, key, ref handled);
             }
         }
+
+        /// <summary>
+        /// Creates a <see cref="ModifierKeys"/> value that corresponds to the specified modifier key states.
+        /// </summary>
+        private static ModifierKeys CreateModifierKeys(Boolean alt, Boolean ctrl, Boolean shift, Boolean repeat)
+        {
+            var modifiers = ModifierKeys.None;
+            if (alt)
+            {
+                modifiers |= ModifierKeys.Alt;
+            }
+            if (ctrl)
+            {
+                modifiers |= ModifierKeys.Control;
+            }
+            if (shift)
+            {
+                modifiers |= ModifierKeys.Shift;
+            }
+            if (repeat)
+            {
+                modifiers |= ModifierKeys.Repeat;
+            }
+            return modifiers;
+        }
+
+        // Represents the device state of the current Ultraviolet context.
+        private static readonly UltravioletSingleton<KeyboardState> keyboardState = 
+            new UltravioletSingleton<KeyboardState>((uv) => new KeyboardState(uv));
     }
 }

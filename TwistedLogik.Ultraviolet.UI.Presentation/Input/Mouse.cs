@@ -49,7 +49,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
     /// Represents the mouse device.
     /// </summary>
     [UvmlKnownType]
-    public static class Mouse
+    public static partial class Mouse
     {
         /// <summary>
         /// Adds a handler for the PreviewMouseMove attached event to the specified element.
@@ -564,6 +564,54 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
             typeof(UIElementMouseWheelEventHandler), typeof(Mouse));
 
         /// <summary>
+        /// Gets the primary mouse input device.
+        /// </summary>
+        public static MouseDevice PrimaryDevice
+        {
+            get { return mouseState.Value.PrimaryDevice; }
+        }
+
+        /// <summary>
+        /// Gets the state of the mouse's left button.
+        /// </summary>
+        public static MouseButtonState LeftButton
+        {
+            get { return PrimaryDevice.IsButtonDown(MouseButton.Left) ? MouseButtonState.Pressed : MouseButtonState.Released; }
+        }
+
+        /// <summary>
+        /// Gets the state of the mouse's middle button.
+        /// </summary>
+        public static MouseButtonState MiddleButton
+        {
+            get { return PrimaryDevice.IsButtonDown(MouseButton.Middle) ? MouseButtonState.Pressed : MouseButtonState.Released; }
+        }
+
+        /// <summary>
+        /// Gets the state of the mouse's right button.
+        /// </summary>
+        public static MouseButtonState RightButton
+        {
+            get { return PrimaryDevice.IsButtonDown(MouseButton.Right) ? MouseButtonState.Pressed : MouseButtonState.Released; }
+        }
+
+        /// <summary>
+        /// Gets the state of the mouse's first extended button.
+        /// </summary>
+        public static MouseButtonState XButton1
+        {
+            get { return PrimaryDevice.IsButtonDown(MouseButton.XButton1) ? MouseButtonState.Pressed : MouseButtonState.Released; }
+        }
+
+        /// <summary>
+        /// Gets the state of the mouse's second extended button.
+        /// </summary>
+        public static MouseButtonState XButton2
+        {
+            get { return PrimaryDevice.IsButtonDown(MouseButton.XButton2) ? MouseButtonState.Pressed : MouseButtonState.Released; }
+        }
+
+        /// <summary>
         /// Raises the GotMouseCapture attached event for the specified element.
         /// </summary>
         internal static void RaiseGotMouseCapture(UIElement element, ref Boolean handled)
@@ -754,5 +802,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
                 temp(element, device, x, y, ref handled);
             }
         }
+
+        // Represents the device state of the current Ultraviolet context.
+        private static readonly UltravioletSingleton<MouseState> mouseState = 
+            new UltravioletSingleton<MouseState>((uv) => new MouseState(uv));
     }
 }
