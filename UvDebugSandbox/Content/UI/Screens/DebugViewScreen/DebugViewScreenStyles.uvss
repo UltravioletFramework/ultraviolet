@@ -321,6 +321,9 @@ textbox
 {
 	padding: 8;
 
+	width: 100;
+	height: 36;
+
 	caret-image: #Global:Textures:DebugUI 230 590 14 14;
 	caret-color: #ff0000ff;
 	selection-image: #Global:Textures:DebugUI 230 590 14 14;

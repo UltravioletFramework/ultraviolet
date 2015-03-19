@@ -62,7 +62,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         protected override Size2D MeasureOverride(Size2D availableSize)
         {
             if (ContainingContentControl == null)
-                return availableSize;
+                return Size2D.Zero;
 
             var content = ContainingContentControl.Content;
             var contentText = content as String;
