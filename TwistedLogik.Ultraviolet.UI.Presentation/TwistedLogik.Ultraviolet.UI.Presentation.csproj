@@ -257,6 +257,7 @@
     <Compile Include="Styles\UvssStyleKey.cs" />
     <Compile Include="Thickness.cs" />
     <Compile Include="TypeExtensions.cs" />
+    <Compile Include="UIElement.IInputElement.cs" />
     <Compile Include="UIElement.cs" />
     <Compile Include="UvmlKnownTypeAttribute.cs" />
     <Compile Include="UIElementClassCollection.cs" />

@@ -635,6 +635,9 @@
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\UIElement.cs">
       <Link>UIElement.cs</Link>
     </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\UIElement.IInputElement.cs">
+      <Link>UIElement.IInputElement.cs</Link>
+    </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\UIElementClassCollection.cs">
       <Link>UIElementClassCollection.cs</Link>
     </Compile>
