@@ -47,6 +47,16 @@ namespace TwistedLogik.Nucleus
             /// The cached box for the value one (1).
             /// </summary>
             public static readonly Object One = (Object)1;
+
+            /// <summary>
+            /// The cached box for Int32.MinValue.
+            /// </summary>
+            public static readonly Object MinValue = (Object)System.Int32.MinValue;
+
+            /// <summary>
+            /// The cached box for Int32.MaxValue.
+            /// </summary>
+            public static readonly Object MaxValue = (Object)System.Int32.MaxValue;
         }
 
         /// <summary>
@@ -63,6 +73,16 @@ namespace TwistedLogik.Nucleus
             /// The cached box for the value one (1).
             /// </summary>
             public static readonly Object One = (Object)1u;
+
+            /// <summary>
+            /// The cached box for Int64.MinValue.
+            /// </summary>
+            public static readonly Object MinValue = (Object)System.Int64.MinValue;
+
+            /// <summary>
+            /// The cached box for Int64.MaxValue.
+            /// </summary>
+            public static readonly Object MaxValue = (Object)System.Int64.MaxValue;
         }
 
         /// <summary>
@@ -94,6 +114,16 @@ namespace TwistedLogik.Nucleus
             /// The cached box for negative infinity.
             /// </summary>
             public static readonly Object NegativeInfinity = (Object)System.Single.NegativeInfinity;
+
+            /// <summary>
+            /// The cached box for Single.MinValue.
+            /// </summary>
+            public static readonly Object MinValue = (Object)System.Single.MinValue;
+
+            /// <summary>
+            /// The cached box for Single.MaxValue.
+            /// </summary>
+            public static readonly Object MaxValue = (Object)System.Single.MaxValue;
         }
 
         /// <summary>
@@ -125,6 +155,16 @@ namespace TwistedLogik.Nucleus
             /// The cached box for negative infinity.
             /// </summary>
             public static readonly Object NegativeInfinity = (Object)System.Double.NegativeInfinity;
+
+            /// <summary>
+            /// The cached box for Double.MinValue.
+            /// </summary>
+            public static readonly Object MinValue = (Object)System.Double.MinValue;
+
+            /// <summary>
+            /// The cached box for Double.MaxValue.
+            /// </summary>
+            public static readonly Object MaxValue = (Object)System.Double.MaxValue;
         }
     }
 }

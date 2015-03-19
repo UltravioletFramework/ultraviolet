@@ -1146,9 +1146,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Identifies the <see cref="IsTabStop"/> dependency property.
         /// </summary>
         [Styled("tab-stop")]
-        public static readonly DependencyProperty IsTabStopProperty = DependencyProperty.Register("IsTabStop", typeof(Boolean), typeof(UIElement),
-            new DependencyPropertyMetadata(HandleIsTabStopChanged, () => true, DependencyPropertyOptions.None));
-
+        public static readonly DependencyProperty IsTabStopProperty = KeyboardNavigation.IsTabStopProperty.AddOwner(typeof(UIElement));
+        
         /// <summary>
         /// Identifies the <see cref="Focusable"/> dependency property.
         /// </summary>
@@ -1197,9 +1196,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Identifies the <see cref="TabIndex"/> dependency property.
         /// </summary>
-        public static readonly DependencyProperty TabIndexProperty = DependencyProperty.Register("TabIndex", typeof(Int32), typeof(UIElement),
-            new DependencyPropertyMetadata(HandleTabIndexChanged, () => 0, DependencyPropertyOptions.None));
-
+        public static readonly DependencyProperty TabIndexProperty = KeyboardNavigation.TabIndexProperty.AddOwner(typeof(UIElement));
+        
         /// <summary>
         /// Applies a visual state transition to the element.
         /// </summary>

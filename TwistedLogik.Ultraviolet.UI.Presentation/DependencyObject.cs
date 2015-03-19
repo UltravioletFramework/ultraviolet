@@ -13,7 +13,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Immediately digests the specified dependency property, but only if it is currently data bound.
         /// </summary>
-        /// <param name="dp">A <see cref="DependencyProperty"/> value which identifies the dependency property to digest.</param>
+        /// <param name="dp">A <see cref="DependencyProperty"/> instance which identifies the dependency property to digest.</param>
         public void DigestImmediatelyIfDataBound(DependencyProperty dp)
         {
             Contract.Require(dp, "dp");
@@ -28,7 +28,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Immediately digests the specified dependency property.
         /// </summary>
-        /// <param name="dp">A <see cref="DependencyProperty"/> value which identifies the dependency property to digest.</param>
+        /// <param name="dp">A <see cref="DependencyProperty"/> instance which identifies the dependency property to digest.</param>
         public void DigestImmediately(DependencyProperty dp)
         {
             Contract.Require(dp, "dp");

@@ -1,4 +1,5 @@
 ﻿using System;
+using TwistedLogik.Nucleus;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation
 {
@@ -47,6 +48,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public static DependencyProperty FindByName(String name, Type ownerType)
         {
             return DependencyPropertySystem.FindByName(name, ownerType);
+        }
+
+        /// <summary>
+        /// Adds a new owning type to this dependency property.
+        /// </summary>
+        /// <param name="ownerType">The owner type to add to this dependency property.</param>
+        /// <returns>A reference to this dependency property instance.</returns>
+        public DependencyProperty AddOwner(Type ownerType)
+        {
+            Contract.Require(ownerType, "ownerType");
+
+            DependencyPropertySystem.AddOwner(this, ownerType);
+            return this;
         }
 
         /// <summary>

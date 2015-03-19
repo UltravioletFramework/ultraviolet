@@ -32,6 +32,24 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Adds an additional owning type to the specified dependency property.
+        /// </summary>
+        /// <param name="dp">A <see cref="DependencyProperty"/> instance which identifies the dependency property to update.</param>
+        /// <param name="ownerType">The type to add as an owner for the specified dependency property.</param>
+        public static void AddOwner(DependencyProperty dp, Type ownerType)
+        {
+            Contract.Require(ownerType, "ownerType");
+            Contract.Require(dp, "dp");
+
+            var propertyDomain = GetPropertyDomain(ownerType);
+            if (propertyDomain.ContainsKey(dp.Name))
+            {
+                throw new ArgumentException(PresentationStrings.DependencyPropertyAlreadyRegistered);
+            }
+            propertyDomain[dp.Name] = dp;
+        }
+
+        /// <summary>
         /// Registers a new dependency property.
         /// </summary>
         /// <param name="name">The dependency property's name.</param>
