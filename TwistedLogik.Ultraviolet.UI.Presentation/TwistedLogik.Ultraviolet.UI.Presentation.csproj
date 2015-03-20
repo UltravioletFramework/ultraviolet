@@ -182,6 +182,7 @@
     <Compile Include="IDependencyBoundValue.cs" />
     <Compile Include="IDependencyPropertyValue.cs" />
     <Compile Include="IInputElement.cs" />
+    <Compile Include="Input\FocusNavigationDirection.cs" />
     <Compile Include="Input\IInputElementHelper.cs" />
     <Compile Include="Input\ModifierKeys.cs" />
     <Compile Include="Input\Mouse.MouseState.cs" />

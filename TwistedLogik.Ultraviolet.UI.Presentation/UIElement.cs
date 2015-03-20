@@ -5,7 +5,6 @@ using System.Linq;
 using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet.Content;
 using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
-using TwistedLogik.Ultraviolet.Input;
 using TwistedLogik.Ultraviolet.Platform;
 using TwistedLogik.Ultraviolet.UI.Presentation.Animations;
 using TwistedLogik.Ultraviolet.UI.Presentation.Controls;
@@ -505,126 +504,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
-        /// Gets the element which is navigated to when focus is moved "up," usually by pressing 
-        /// up on the directional pad of a game controller.
-        /// </summary>
-        /// <returns>The specified element, or <c>null</c> if no such element is defined.</returns>
-        public UIElement GetNavUpElement()
-        {
-            var target = FindNavElement(NavUp);
-            if (target == null)
-            {
-                if (Parent != null)
-                {
-                    return (Parent.AutoNav ? Parent.GetNextNavUp(this) : null) ?? Parent.GetNavUpElement();
-                }
-            }
-            return target;
-        }
-
-        /// <summary>
-        /// Gets the element which is navigated to when focus is moved "down," usually by pressing 
-        /// down on the directional pad of a game controller.
-        /// </summary>
-        /// <returns>The specified element, or <c>null</c> if no such element is defined.</returns>
-        public UIElement GetNavDownElement()
-        {
-            var target = FindNavElement(NavDown);
-            if (target == null)
-            {
-                if (Parent != null)
-                {
-                    return (Parent.AutoNav ? Parent.GetNextNavDown(this) : null) ?? Parent.GetNavDownElement();
-                }
-            }
-            return target;
-        }
-
-        /// <summary>
-        /// Gets the element which is navigated to when focus is moved "left," usually by pressing 
-        /// left on the directional pad of a game controller.
-        /// </summary>
-        /// <returns>The specified element, or <c>null</c> if no such element is defined.</returns>
-        public UIElement GetNavLeftElement()
-        {
-            var target = FindNavElement(NavLeft);
-            if (target == null)
-            {
-                if (Parent != null)
-                {
-                    return (Parent.AutoNav ? Parent.GetNextNavLeft(this) : null) ?? Parent.GetNavLeftElement();
-                }
-            }
-            return target;
-        }
-
-        /// <summary>
-        /// Gets the element which is navigated to when focus is moved "right," usually by pressing 
-        /// right on the directional pad of a game controller.
-        /// </summary>
-        /// <returns>The specified element, or <c>null</c> if no such element is defined.</returns>
-        public UIElement GetNavRightElement()
-        {
-            var target = FindNavElement(NavRight);
-            if (target == null)
-            {
-                if (Parent != null)
-                {
-                    return (Parent.AutoNav ? Parent.GetNextNavRight(this) : null) ?? Parent.GetNavRightElement();
-                }
-            }
-            return target;
-        }
-
-        /// <summary>
-        /// Gets the element which is navigated to when focus is moved to the next tab stop.
-        /// </summary>
-        /// <returns>The specified element, or <c>null</c> if no such element is defined.</returns>
-        public UIElement GetNextTabStop()
-        {
-            return GetNextTabStopInternal();
-        }
-
-        /// <summary>
-        /// Gets the element which is navigated to when focus is moved to the previous tab stop.
-        /// </summary>
-        /// <returns>The specified element, or <c>null</c> if no such element is defined.</returns>
-        public UIElement GetPreviousTabStop()
-        {
-            return GetPreviousTabStopInternal();
-        }
-
-        /// <summary>
-        /// Gets the first focusable element in the part of the logical tree which is rooted in this element.
-        /// </summary>
-        /// <param name="tabStop">A value indicating whether the matching element must also be a tab stop.</param>
-        /// <returns>The first focusable element, or <c>null</c> if no such element exists.</returns>
-        public UIElement GetFirstFocusableDescendant(Boolean tabStop)
-        {
-            var match = GetFirstFocusableDescendantInternal(this, tabStop);
-            if (match == null && Focusable && (!tabStop || IsTabStop))
-            {
-                return this;
-            }
-            return match;
-        }
-
-        /// <summary>
-        /// Gets the last focusable element in the part of the logical tree which is rooted in this element.
-        /// </summary>
-        /// <param name="tabStop">A value indicating whether the element must also be a tab stop.</param>
-        /// <returns>The last focusable element, or <c>null</c> if no such element exists.</returns>
-        public UIElement GetLastFocusableDescendant(Boolean tabStop)
-        {
-            var match = GetLastFocusableDescendantInternal(this, tabStop);
-            if (match == null && Focusable && (!tabStop || IsTabStop))
-            {
-                return this;
-            }
-            return match;
-        }
-
-        /// <summary>
         /// Adds a handler for a routed event to the element.
         /// </summary>
         /// <param name="evt">A <see cref="RoutedEvent"/> that identifies the routed event for which to add a handler.</param>
@@ -662,6 +541,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             Contract.Require(handler, "handler");
 
             routedEventManager.Remove(evt, handler);
+        }
+
+        /// <summary>
+        /// Moves focus in the specified direction.
+        /// </summary>
+        /// <param name="direction">A <see cref="FocusNavigationDirection"/> value that specifies which direction to move focus.</param>
+        /// <returns><c>true</c> if focus was moved; otherwise, <c>false</c>.</returns>
+        public virtual Boolean MoveFocus(FocusNavigationDirection direction)
+        {
+            return false;
         }
 
         /// <summary>
@@ -770,18 +659,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether auto-nav is enabled for this control.
-        /// If enabled, auto-nav will attempt to automatically determine the next nav control in the
-        /// up, down, left, and right directions, even if the values of the <see cref="NavUp"/>, <see cref="NavDown"/>,
-        /// <see cref="NavLeft"/>, and <see cref="NavRight"/> properties have not been set.
-        /// </summary>
-        public Boolean AutoNav
-        {
-            get { return GetValue<Boolean>(AutoNavProperty); }
-            set { SetValue<Boolean>(AutoNavProperty, value); }
-        }
-
-        /// <summary>
         /// Gets or sets a value indicating whether the element is enabled.
         /// </summary>
         public Boolean IsEnabled
@@ -821,15 +698,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             get { return GetValue<Boolean>(IsHitTestVisibleProperty); }
             set { SetValue<Boolean>(IsHitTestVisibleProperty, value); }
-        }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether this element participates in tab navigation.
-        /// </summary>
-        public Boolean IsTabStop
-        {
-            get { return GetValue<Boolean>(IsTabStopProperty); }
-            set { SetValue<Boolean>(IsTabStopProperty, value); }
         }
 
         /// <summary>
@@ -959,56 +827,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
-        /// Gets or sets the identifier of the element which is navigated to when focus is
-        /// moved "up," usually by pressing up on the directional pad of a game controller.
-        /// </summary>
-        public String NavUp
-        {
-            get { return GetValue<String>(NavUpProperty); }
-            set { SetValue<String>(NavUpProperty, value); }
-        }
-
-        /// <summary>
-        /// Gets or sets the identifier of the element which is navigated to when focus is
-        /// moved "down," usually by pressing down on the directional pad of a game controller.
-        /// </summary>
-        public String NavDown
-        {
-            get { return GetValue<String>(NavDownProperty); }
-            set { SetValue<String>(NavDownProperty, value); }
-        }
-
-        /// <summary>
-        /// Gets or sets the identifier of the element which is navigated to when focus is
-        /// moved "left," usually by pressing down on the directional pad of a game controller.
-        /// </summary>
-        public String NavLeft
-        {
-            get { return GetValue<String>(NavLeftProperty); }
-            set { SetValue<String>(NavLeftProperty, value); }
-        }
-
-        /// <summary>
-        /// Gets or sets the identifier of the element which is navigated to when focus is
-        /// moved "right," usually by pressing down on the directional pad of a game controller.
-        /// </summary>
-        public String NavRight
-        {
-            get { return GetValue<String>(NavRightProperty); }
-            set { SetValue<String>(NavRightProperty, value); }
-        }
-
-        /// <summary>
-        /// Gets a value which indicates the element's relative position within the tab order
-        /// of its parent element.
-        /// </summary>
-        public Int32 TabIndex
-        {
-            get { return GetValue<Int32>(TabIndexProperty); }
-            set { SetValue<Int32>(TabIndexProperty, value); }
-        }
-
-        /// <summary>
         /// Occurs when a class is added to the element.
         /// </summary>
         public event UIElementClassEventHandler ClassAdded;
@@ -1029,11 +847,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public event UIElementUpdatingEventHandler Updating;
 
         /// <summary>
-        /// Occurs when the value of the <see cref="AutoNav"/> property changes.
-        /// </summary>
-        public event UpfEventHandler AutoNavChanged;
-
-        /// <summary>
         /// Occurs when the value of the <see cref="IsEnabled"/> property changes.
         /// </summary>
         public event UpfEventHandler IsEnabledChanged;
@@ -1047,11 +860,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Occurs when the value of the <see cref="IsHitTestVisible"/> property changes.
         /// </summary>
         public event UpfEventHandler IsHitTestVisibleChanged;
-
-        /// <summary>
-        /// Occurs when the value of the <see cref="IsTabStop"/> property changes.
-        /// </summary>
-        public event UpfEventHandler IsTabStopChanged;
 
         /// <summary>
         /// Occurs when the value of the <see cref="Focusable"/> dependency property changes.
@@ -1069,38 +877,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public event UpfEventHandler OpacityChanged;
 
         /// <summary>
-        /// Occurs when the value of the <see cref="NavUp"/> property changes.
-        /// </summary>
-        public event UpfEventHandler NavUpChanged;
-
-        /// <summary>
-        /// Occurs when the value of the <see cref="NavDown"/> property changes.
-        /// </summary>
-        public event UpfEventHandler NavDownChanged;
-
-        /// <summary>
-        /// Occurs when the value of the <see cref="NavLeft"/> property changes.
-        /// </summary>
-        public event UpfEventHandler NavLeftChanged;
-
-        /// <summary>
-        /// Occurs when the value of the <see cref="NavRight"/> property changes.
-        /// </summary>
-        public event UpfEventHandler NavRightChanged;
-
-        /// <summary>
-        /// Occurs when the value of the <see cref="TabIndex"/> property changes.
-        /// </summary>
-        public event UpfEventHandler TabIndexChanged;
-
-        /// <summary>
-        /// Identifies the <see cref="AutoNav"/> dependency property.
-        /// </summary>
-        [Styled("autonav")]
-        public static readonly DependencyProperty AutoNavProperty = DependencyProperty.Register("AutoNav", typeof(Boolean), typeof(UIElement),
-            new DependencyPropertyMetadata(HandleAutoNavChanged, () => true, DependencyPropertyOptions.None));
-
-        /// <summary>
         /// Identifies the <see cref="IsEnabled"/> dependency property.
         /// </summary>
         [Styled("enabled")]
@@ -1113,12 +889,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         [Styled("hit-test-visible")]
         public static readonly DependencyProperty IsHitTestVisibleProperty = DependencyProperty.Register("IsHitTestVisible", typeof(Boolean), typeof(UIElement),
             new DependencyPropertyMetadata(HandleIsHitTestVisibleChanged, () => true, DependencyPropertyOptions.None));
-
-        /// <summary>
-        /// Identifies the <see cref="IsTabStop"/> dependency property.
-        /// </summary>
-        [Styled("tab-stop")]
-        public static readonly DependencyProperty IsTabStopProperty = KeyboardNavigation.IsTabStopProperty.AddOwner(typeof(UIElement));
         
         /// <summary>
         /// Identifies the <see cref="Focusable"/> dependency property.
@@ -1140,35 +910,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         [Styled("opacity")]
         public static readonly DependencyProperty OpacityProperty = DependencyProperty.Register("Opacity", typeof(Single), typeof(UIElement),
             new DependencyPropertyMetadata(HandleOpacityChanged, () => 1.0f, DependencyPropertyOptions.None));
-
-        /// <summary>
-        /// Identifies the <see cref="NavUp"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty NavUpProperty = DependencyProperty.Register("NavUp", typeof(String), typeof(UIElement),
-            new DependencyPropertyMetadata(HandleNavUpChanged, () => null, DependencyPropertyOptions.None));
-
-        /// <summary>
-        /// Identifies the <see cref="NavDown"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty NavDownProperty = DependencyProperty.Register("NavDown", typeof(String), typeof(UIElement),
-            new DependencyPropertyMetadata(HandleNavDownChanged, () => null, DependencyPropertyOptions.None));
-
-        /// <summary>
-        /// Identifies the <see cref="NavLeft"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty NavLeftProperty = DependencyProperty.Register("NavLeft", typeof(String), typeof(UIElement),
-            new DependencyPropertyMetadata(HandleNavLeftChanged, () => null, DependencyPropertyOptions.None));
-
-        /// <summary>
-        /// Identifies the <see cref="NavRight"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty NavRightProperty = DependencyProperty.Register("NavRight", typeof(String), typeof(UIElement),
-            new DependencyPropertyMetadata(HandleNavRightChanged, () => null, DependencyPropertyOptions.None));
-
-        /// <summary>
-        /// Identifies the <see cref="TabIndex"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty TabIndexProperty = KeyboardNavigation.TabIndexProperty.AddOwner(typeof(UIElement));
         
         /// <summary>
         /// Applies a visual state transition to the element.
@@ -1555,18 +1296,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
-        /// Raises the <see cref="AutoNavChanged"/> event.
-        /// </summary>
-        protected virtual void OnAutoNavChanged()
-        {
-            var temp = AutoNavChanged;
-            if (temp != null)
-            {
-                temp(this);
-            }
-        }
-
-        /// <summary>
         /// Occurs when something happens which requires the element to invalidate any
         /// cached layout information, such as changing the element's visual or logical parent.
         /// </summary>
@@ -1621,18 +1350,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
-        /// Raises the <see cref="IsTabStopChanged"/> event.
-        /// </summary>
-        protected virtual void OnIsTabStopChanged()
-        {
-            var temp = IsTabStopChanged;
-            if (temp != null)
-            {
-                temp(this);
-            }
-        }
-
-        /// <summary>
         /// Raises the <see cref="FocusableChanged"/> event.
         /// </summary>
         protected virtual void OnFocusableChanged()
@@ -1662,66 +1379,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         protected virtual void OnOpacityChanged()
         {
             var temp = OpacityChanged;
-            if (temp != null)
-            {
-                temp(this);
-            }
-        }
-
-        /// <summary>
-        /// Raises the <see cref="NavUpChanged"/> event.
-        /// </summary>
-        protected virtual void OnNavUpChanged()
-        {
-            var temp = NavUpChanged;
-            if (temp != null)
-            {
-                temp(this);
-            }
-        }
-
-        /// <summary>
-        /// Raises the <see cref="NavDownChanged"/> event.
-        /// </summary>
-        protected virtual void OnNavDownChanged()
-        {
-            var temp = NavDownChanged;
-            if (temp != null)
-            {
-                temp(this);
-            }
-        }
-
-        /// <summary>
-        /// Raises the <see cref="NavLeftChanged"/> event.
-        /// </summary>
-        protected virtual void OnNavLeftChanged()
-        {
-            var temp = NavLeftChanged;
-            if (temp != null)
-            {
-                temp(this);
-            }
-        }
-
-        /// <summary>
-        /// Raises the <see cref="NavRightChanged"/> event.
-        /// </summary>
-        protected virtual void OnNavRightChanged()
-        {
-            var temp = NavRightChanged;
-            if (temp != null)
-            {
-                temp(this);
-            }
-        }
-
-        /// <summary>
-        /// Raises the <see cref="TabIndexChanged"/> event.
-        /// </summary>
-        protected virtual void OnTabIndexChanged()
-        {
-            var temp = TabIndexChanged;
             if (temp != null)
             {
                 temp(this);
@@ -1960,50 +1617,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
-        /// Gets the next element to navigate to when focus is moved "up," assuming
-        /// that focus is currently in the specified child element.
-        /// </summary>
-        /// <param name="current">The child element of this element which currently has focus.</param>
-        /// <returns>The next element to navigate to, or <c>null</c> if this element has no navigation preferences.</returns>
-        protected virtual UIElement GetNextNavUp(UIElement current)
-        {
-            return null;
-        }
-
-        /// <summary>
-        /// Gets the next element to navigate to when focus is moved "down," assuming
-        /// that focus is currently in the specified child element.
-        /// </summary>
-        /// <param name="current">The child element of this element which currently has focus.</param>
-        /// <returns>The next element to navigate to, or <c>null</c> if this element has no navigation preferences.</returns>
-        protected virtual UIElement GetNextNavDown(UIElement current)
-        {
-            return null;
-        }
-
-        /// <summary>
-        /// Gets the next element to navigate to when focus is moved "left," assuming
-        /// that focus is currently in the specified child element.
-        /// </summary>
-        /// <param name="current">The child element of this element which currently has focus.</param>
-        /// <returns>The next element to navigate to, or <c>null</c> if this element has no navigation preferences.</returns>
-        protected virtual UIElement GetNextNavLeft(UIElement current)
-        {
-            return null;
-        }
-
-        /// <summary>
-        /// Gets the next element to navigate to when focus is moved "right," assuming
-        /// that focus is currently in the specified child element.
-        /// </summary>
-        /// <param name="current">The child element of this element which currently has focus.</param>
-        /// <returns>The next element to navigate to, or <c>null</c> if this element has no navigation preferences.</returns>
-        protected virtual UIElement GetNextNavRight(UIElement current)
-        {
-            return null;
-        }
-
-        /// <summary>
         /// Loads the specified asset from the global content manager.
         /// </summary>
         /// <typeparam name="TOutput">The type of object being loaded.</typeparam>
@@ -2216,16 +1829,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
-        /// Occurs when the value of the <see cref="AutoNav"/> dependency property changes.
-        /// </summary>
-        /// <param name="dobj">The dependency object that raised the event.</param>
-        private static void HandleAutoNavChanged(DependencyObject dobj)
-        {
-            var element = (UIElement)dobj;
-            element.OnAutoNavChanged();
-        }
-
-        /// <summary>
         /// Occurs when the value of the <see cref="IsEnabled"/> dependency property changes.
         /// </summary>
         /// <param name="dobj">The dependency object that raised the event.</param>
@@ -2243,16 +1846,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             var element = (UIElement)dobj;
             element.OnIsHitTestVisibleChanged();
-        }
-
-        /// <summary>
-        /// Occurs when the value of the <see cref="IsTabStop"/> dependency property changes.
-        /// </summary>
-        /// <param name="dobj">The dependency object that raised the event.</param>
-        private static void HandleIsTabStopChanged(DependencyObject dobj)
-        {
-            var element = (UIElement)dobj;
-            element.OnIsTabStopChanged();
         }
 
         /// <summary>
@@ -2284,56 +1877,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             var element = (UIElement)dobj;
             element.OnOpacityChanged();
-        }
-
-        /// <summary>
-        /// Occurs when the value of the <see cref="NavUp"/> dependency property changes.
-        /// </summary>
-        /// <param name="dobj">The dependency object that raised the event.</param>
-        private static void HandleNavUpChanged(DependencyObject dobj)
-        {
-            var element = (UIElement)dobj;
-            element.OnNavUpChanged();
-        }
-
-        /// <summary>
-        /// Occurs when the value of the <see cref="NavDown"/> dependency property changes.
-        /// </summary>
-        /// <param name="dobj">The dependency object that raised the event.</param>
-        private static void HandleNavDownChanged(DependencyObject dobj)
-        {
-            var element = (UIElement)dobj;
-            element.OnNavDownChanged();
-        }
-
-        /// <summary>
-        /// Occurs when the value of the <see cref="NavLeft"/> dependency property changes.
-        /// </summary>
-        /// <param name="dobj">The dependency object that raised the event.</param>
-        private static void HandleNavLeftChanged(DependencyObject dobj)
-        {
-            var element = (UIElement)dobj;
-            element.OnNavLeftChanged();
-        }
-
-        /// <summary>
-        /// Occurs when the value of the <see cref="NavRight"/> dependency property changes.
-        /// </summary>
-        /// <param name="dobj">The dependency object that raised the event.</param>
-        private static void HandleNavRightChanged(DependencyObject dobj)
-        {
-            var element = (UIElement)dobj;
-            element.OnNavRightChanged();
-        }
-
-        /// <summary>
-        /// Occurs when the value of the <see cref="TabIndex"/> dependency property changes.
-        /// </summary>
-        /// <param name="dobj">The dependency object that raised the event.</param>
-        private static void HandleTabIndexChanged(DependencyObject dobj)
-        {
-            var element = (UIElement)dobj;
-            element.OnTabIndexChanged();
         }
 
         /// <summary>
@@ -2468,190 +2011,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
-        /// Gets the specified element within the current navigation context.
-        /// </summary>
-        /// <param name="name">The identifying name of the element to retrieve.</param>
-        /// <returns>The element with the specified name, or <c>null</c> if no such element exists.</returns>
-        private UIElement FindNavElement(String name)
-        {
-            if (elementRegistrationContext == null)
-                return null;
-
-            if (String.IsNullOrEmpty(name))
-                return null;
-
-            var element = elementRegistrationContext.GetElementByName(name);
-            if (element == null || element.Focusable)
-                return element;
-
-            return element.GetFirstFocusableDescendant(false);
-        }
-
-        /// <summary>
-        /// Gets the element which is navigated to when focus is moved to the next tab stop.
-        /// </summary>
-        /// <param name="current">The currently focused element, if any.</param>
-        /// <returns>The specified element, or <c>null</c> if no such element is defined.</returns>
-        private UIElement GetNextTabStopInternal(UIElement current = null)
-        {
-            // Find the first matching child element.
-            var childMatch = this.GetNextTabStopWithinTree(current);
-            if (childMatch != null)
-                return childMatch;
-
-            // Find the next matching sibling.
-            if (Parent != null)
-            {
-                var siblingMatch = Parent.GetNextTabStopWithinTree(this);
-                if (siblingMatch != null)
-                    return siblingMatch;
-
-                // Find our parent's next sibling.
-                return Parent.GetNextTabStopInternal(this);
-            }
-
-            return null;
-        }
-
-        /// <summary>
-        /// Gets the element which is navigated to when focus is moved to the previous tab stop.
-        /// </summary>
-        /// <returns>The specified element, or <c>null</c> if no such element is defined.</returns>
-        private UIElement GetPreviousTabStopInternal()
-        {
-            if (Parent != null)
-            {
-                // Find our previous sibling in the tab order.
-                var siblingMatch = Parent.GetPreviousTabStopWithinTree(this);
-                if (siblingMatch != null)
-                    return siblingMatch.GetLastFocusableDescendant(true);
-
-                // If we have no qualifying siblings, return our parent.
-                if (Parent.Focusable && Parent.IsTabStop)
-                    return Parent;
-
-                // If our parent doesn't qualify, let it figure it out!
-                return Parent.GetPreviousTabStopInternal();
-            }
-
-            return null;
-        }
-
-        /// <summary>
-        /// Gets the next tab stop within the part of the visual tree that is rooted in the current element.
-        /// </summary>
-        /// <param name="currentStop">The current tab stop.</param>
-        /// <returns>The specified tab stop, or <c>null</c> if no such element exists.</returns>
-        private UIElement GetNextTabStopWithinTree(UIElement currentStop)
-        {
-            var currentFound    = false;
-            var currentTabIndex = (currentStop == null ? Int32.MinValue : currentStop.TabIndex);
-
-            var match = default(UIElement);
-            for (int i = 0; i < VisualChildrenCount; i++)
-            {
-                var child = GetVisualChild(i);
-                if (child == currentStop)
-                {
-                    currentFound = true;
-                    continue;
-                }
-
-                var matchingDescendant = child.GetFirstFocusableDescendant(true);
-                if (matchingDescendant != null)
-                {
-                    if (currentFound && matchingDescendant.TabIndex == currentTabIndex)
-                        return matchingDescendant;
-
-                    if (matchingDescendant.TabIndex > currentTabIndex && (match == null || match.TabIndex > matchingDescendant.TabIndex))
-                        match = matchingDescendant;
-                }
-            }
-
-            return match;
-        }
-
-        /// <summary>
-        /// Gets the previous tab stop within the part of the visual tree that is rooted in the current element.
-        /// </summary>
-        /// <param name="currentStop">The current tab stop.</param>
-        /// <returns>The specified tab stop, or <c>null</c> if no such element exists.</returns>
-        private UIElement GetPreviousTabStopWithinTree(UIElement currentStop)
-        {
-            var currentFound    = false;
-            var currentTabIndex = (currentStop == null ? Int32.MaxValue : currentStop.TabIndex);
-
-            var match = default(UIElement);
-            for (int i = VisualChildrenCount - 1; i >= 0; i--)
-            {
-                var child = GetVisualChild(i);
-                if (child == currentStop)
-                {
-                    currentFound = true;
-                    continue;
-                }
-
-                if (currentFound && child.TabIndex == currentTabIndex)
-                {
-                    var matchingDescendant = child.GetLastFocusableDescendant(true);
-                    if (matchingDescendant != null)
-                        return matchingDescendant;
-                }
-
-                if (child.TabIndex < currentTabIndex && (match == null || match.TabIndex < child.TabIndex))
-                    match = child;
-            }
-
-            return (match == null) ? null : match.GetLastFocusableDescendant(true); ;
-        }
-
-        /// <summary>
-        /// Recurses through the logical tree to find the first descendant of the specified element
-        /// which is focusable (and potentially, a tab stop).
-        /// </summary>
-        /// <param name="parent">The parent element which is being examined.</param>
-        /// <param name="tabStop">A value indicating whether a matching element must be a tab stop.</param>
-        /// <returns>The first element within this branch of the logical tree which meets the specified criteria.</returns>
-        private UIElement GetFirstFocusableDescendantInternal(UIElement parent, Boolean tabStop)
-        {
-            var children = EnumerateVisualChildrenInTabOrder();
-            foreach (var child in children)
-            {
-                var candidate = child.GetFirstFocusableDescendant(tabStop);
-                if (candidate != null)
-                {
-                    children.Clear();
-                    return candidate;
-                }
-            }
-            children.Clear();
-            return null;
-        }
-
-        /// <summary>
-        /// Recurses through the logical tree to find the last descendant of the specified element
-        /// which is focusable (and potentially, a tab stop).
-        /// </summary>
-        /// <param name="parent">The parent element which is being examined.</param>
-        /// <param name="tabStop">A value indicating whether a matching element must be a tab stop.</param>
-        /// <returns>The last element within this branch of the logical tree which meets the specified criteria.</returns>
-        private UIElement GetLastFocusableDescendantInternal(UIElement parent, Boolean tabStop)
-        {
-            var children = EnumerateVisualChildrenInReverseTabOrder();
-            foreach (var child in children)
-            {
-                var candidate = child.GetLastFocusableDescendant(tabStop);
-                if (candidate != null)
-                {
-                    children.Clear();
-                    return candidate;
-                }
-            }
-            children.Clear();
-            return null;
-        }
-
-        /// <summary>
         /// Searches the element hierarchy for the control that owns
         /// this element, if this element is a component.
         /// </summary>
@@ -2700,64 +2059,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 parent.OnChildDesiredSizeChanged(this);
             }
         }
-
-        /// <summary>
-        /// Returns a list containing the element's visual children.
-        /// </summary>
-        /// <returns>A list containing the element's visual children.</returns>
-        private List<UIElement> EnumerateVisualChildren()
-        {
-            visualChildEnumerationBuffer.Clear();
-
-            for (int i = 0; i < VisualChildrenCount; i++)
-                visualChildEnumerationBuffer.Add(GetVisualChild(i));
-
-            return visualChildEnumerationBuffer;
-        }
-
-        /// <summary>
-        /// Returns a list containing the element's visual children in tab order.
-        /// </summary>
-        /// <returns>A list containing the element's visual children in tab order.</returns>
-        private List<UIElement> EnumerateVisualChildrenInTabOrder()
-        {
-            var buffer = EnumerateVisualChildren();
-
-            buffer.Sort((element1, element2) =>
-            {
-                if (element1.TabIndex == element2.TabIndex)
-                {
-                    return element1.logicalOrder.CompareTo(element2.logicalOrder);
-                }
-                return element1.TabIndex.CompareTo(element2.TabIndex);
-            });
-
-            return buffer;
-        }
-
-        /// <summary>
-        /// Returns a list containing the element's visual children in reverse tab order.
-        /// </summary>
-        /// <returns>A list containing the element's visual children in reverse tab order.</returns>
-        private List<UIElement> EnumerateVisualChildrenInReverseTabOrder()
-        {
-            var buffer = EnumerateVisualChildren();
-
-            buffer.Sort((element1, element2) =>
-            {
-                if (element1.TabIndex == element2.TabIndex)
-                {
-                    return -element1.logicalOrder.CompareTo(element2.logicalOrder);
-                }
-                return -element1.TabIndex.CompareTo(element2.TabIndex);
-            });
-
-            return buffer;
-        }
-
-        // Buffers which are used to enumerate an element's logical children.
-        [ThreadStatic]
-        private readonly List<UIElement> visualChildEnumerationBuffer = new List<UIElement>(32);
 
         // Property values.
         private readonly UltravioletContext uv;

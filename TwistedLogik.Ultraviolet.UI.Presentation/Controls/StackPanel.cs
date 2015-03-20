@@ -97,62 +97,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             return finalSize;
         }
 
-        /// <inheritdoc/>
-        protected override UIElement GetNextNavUp(UIElement current)
-        {  
-            if (Orientation == Orientation.Vertical)
-            {
-                var ixCurrent = Children.IndexOf(current);
-                if (ixCurrent > 0)
-                {
-                    return Children[ixCurrent - 1];
-                }
-            }
-            return null;
-        }
-
-        /// <inheritdoc/>
-        protected override UIElement GetNextNavDown(UIElement current)
-        {
-            if (Orientation == Orientation.Vertical)
-            {
-                var ixCurrent = Children.IndexOf(current);
-                if (ixCurrent + 1 < Children.Count)
-                {
-                    return Children[ixCurrent + 1];
-                }
-            }
-            return null;
-        }
-
-        /// <inheritdoc/>
-        protected override UIElement GetNextNavLeft(UIElement current)
-        {
-            if (Orientation == Orientation.Horizontal)
-            {
-                var ixCurrent = Children.IndexOf(current);
-                if (ixCurrent > 0)
-                {
-                    return Children[ixCurrent - 1];
-                }
-            }
-            return null;
-        }
-
-        /// <inheritdoc/>
-        protected override UIElement GetNextNavRight(UIElement current)
-        {
-            if (Orientation == Orientation.Horizontal)
-            {
-                var ixCurrent = Children.IndexOf(current);
-                if (ixCurrent + 1 < Children.Count)
-                {
-                    return Children[ixCurrent + 1];
-                }
-            }
-            return null;
-        }
-
         /// <summary>
         /// Raises the <see cref="OrientationChanged"/> event.
         /// </summary>

@@ -102,37 +102,37 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <inheritdoc/>
         public override void NavigateUp()
         {
-            throw new NotImplementedException();
+            MoveFocus(FocusNavigationDirection.Up);
         }
 
         /// <inheritdoc/>
         public override void NavigateDown()
         {
-            throw new NotImplementedException();
+            MoveFocus(FocusNavigationDirection.Down);
         }
 
         /// <inheritdoc/>
         public override void NavigateLeft()
         {
-            throw new NotImplementedException();
+            MoveFocus(FocusNavigationDirection.Left);
         }
 
         /// <inheritdoc/>
         public override void NavigateRight()
         {
-            throw new NotImplementedException();
+            MoveFocus(FocusNavigationDirection.Right);
         }
 
         /// <inheritdoc/>
         public override void NavigatePreviousTabStop()
         {
-            throw new NotImplementedException();
+            MoveFocus(FocusNavigationDirection.Previous);
         }
 
         /// <inheritdoc/>
         public override void NavigateNextTabStop()
         {
-            throw new NotImplementedException();
+            MoveFocus(FocusNavigationDirection.Next);
         }
 
         /// <summary>
@@ -157,6 +157,20 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public void InvalidateArrange()
         {
             layoutRoot.InvalidateArrange();
+        }
+
+        /// <summary>
+        /// Moves focus in the specified direction.
+        /// </summary>
+        /// <param name="direction">A <see cref="FocusNavigationDirection"/> value that specifies which direction to move focus.</param>
+        /// <returns><c>true</c> if focus was moved; otherwise, <c>false</c>.</returns>
+        public Boolean MoveFocus(FocusNavigationDirection direction)
+        {
+            var uiElement = elementWithFocus as UIElement;
+            if (uiElement == null)
+                return false;
+
+            return uiElement.MoveFocus(direction);
         }
 
         /// <summary>
@@ -599,7 +613,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <returns>The first element within this branch of the logical tree which meets the specified criteria.</returns>
         private UIElement GetFirstFocusableElementInternal(UIElement parent, Boolean tabStop)
         {
-            if (parent.Focusable && (!tabStop || parent.IsTabStop))
+            if (parent.Focusable && (!tabStop || IsTabStop(parent)))
                 return parent;
 
             for (int i = 0; i < parent.VisualChildrenCount; i++)
@@ -633,7 +647,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 }
             }
 
-            if (parent.Focusable && (!tabStop || parent.IsTabStop))
+            if (parent.Focusable && (!tabStop || IsTabStop(parent)))
                 return parent;
 
             return null;
@@ -810,6 +824,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 return false;
 
             return uiElement.IsHitTestVisible && uiElement.IsEnabled;
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the specified object is a tab stop.
+        /// </summary>
+        /// <param name="dobj">The dependency object to evaluate.</param>
+        /// <returns><c>true</c> if the specified object is a tab stop; otherwise, <c>false</c>.</returns>
+        private Boolean IsTabStop(DependencyObject dobj)
+        {
+            return dobj.GetValue<Boolean>(KeyboardNavigation.IsTabStopProperty);
         }
 
         /// <summary>
