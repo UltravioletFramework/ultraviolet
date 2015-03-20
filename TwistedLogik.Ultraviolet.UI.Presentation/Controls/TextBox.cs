@@ -251,6 +251,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         public static readonly DependencyProperty InsertionModeProperty = DependencyProperty.Register("InsertionMode", typeof(TextBoxInsertionMode), typeof(TextBox),
             new DependencyPropertyMetadata(HandleInsertionModeChanged, () => TextBoxInsertionMode.Insert, DependencyPropertyOptions.None));
 
+        /// <summary>
+        /// Invalidates the clipping region used for the text box's text.
+        /// </summary>
+        internal void InvalidateTextClip()
+        {
+            this.textClip = CalculateTextClip();
+        }
+
         /// <inheritdoc/>
         protected override void OnLostKeyboardFocus(ref Boolean handled)
         {

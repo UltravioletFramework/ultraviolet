@@ -36,5 +36,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 
             return size;
         }
+
+        /// <inheritdoc/>
+        protected override void PositionOverride()
+        {
+            base.PositionOverride();
+
+            var textBox = Control as TextBox;
+            if (textBox != null)
+                textBox.InvalidateTextClip();
+        }
     }
 }
