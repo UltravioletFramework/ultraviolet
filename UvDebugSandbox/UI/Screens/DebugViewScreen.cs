@@ -33,6 +33,9 @@ namespace UvDebugSandbox.UI.Screens
                 PrintVisualTreeNode(VisualTreeHelper.GetChild(dobj, i), indentLayer + 1);
             }
         }
+
+        public String Username { get; set; }
+        public String Password { get; set; }
     }
 
     public class DebugViewScreen : UvDebugScreen

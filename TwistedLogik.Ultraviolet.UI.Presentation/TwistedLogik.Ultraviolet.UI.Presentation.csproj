@@ -96,6 +96,7 @@
     <Compile Include="BoundEventBuilder.cs" />
     <Compile Include="ComponentTemplateManager.cs" />
     <Compile Include="Controls\Primitives\NamespaceDoc.cs" />
+    <Compile Include="Controls\TextBoxContentPresenter.cs" />
     <Compile Include="DataBindingGetterBuilder.cs" />
     <Compile Include="DataBindingSetterBuilder.cs" />
     <Compile Include="DependencyBoundValue.cs" />

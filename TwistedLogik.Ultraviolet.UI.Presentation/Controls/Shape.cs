@@ -13,9 +13,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// Initializes a new instance of the <see cref="Shape"/> class.
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
-        /// <param name="id">The unique identifier of this element within its layout.</param>
-        public Shape(UltravioletContext uv, String id)
-            : base(uv, id)
+        /// <param name="name">The element's identifying name within its namescope.</param>
+        public Shape(UltravioletContext uv, String name)
+            : base(uv, name)
         {
 
         }

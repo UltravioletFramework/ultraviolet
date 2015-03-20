@@ -14,9 +14,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// Initializes a new instance of the <see cref="ContentPresenter"/> class.
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
-        /// <param name="id">The element's unique identifier within its view.</param>
-        public ContentPresenter(UltravioletContext uv, String id)
-            : base(uv, id)
+        /// <param name="name">The element's identifying name within its namescope.</param>
+        public ContentPresenter(UltravioletContext uv, String name)
+            : base(uv, name)
         {
 
         }

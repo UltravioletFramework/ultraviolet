@@ -20,7 +20,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// Initializes a new instance of the <see cref="TextBox"/> class.
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
-        /// <param name="id">The element's unique identifier within its view.</param>
+        /// <param name="name">The element's identifying name within its namescope.</param>
         public TextBox(UltravioletContext uv, String id)
             : base(uv, id)
         {
