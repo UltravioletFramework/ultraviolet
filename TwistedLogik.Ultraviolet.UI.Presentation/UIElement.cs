@@ -546,9 +546,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         /// <param name="direction">A <see cref="FocusNavigationDirection"/> value that specifies which direction to move focus.</param>
         /// <returns><c>true</c> if focus was moved; otherwise, <c>false</c>.</returns>
-        public virtual Boolean MoveFocus(FocusNavigationDirection direction)
+        public Boolean MoveFocus(FocusNavigationDirection direction)
         {
-            return false;
+            return KeyboardNavigation.MoveFocus(this, direction);
         }
 
         /// <summary>
