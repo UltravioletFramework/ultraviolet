@@ -234,6 +234,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 newElement.ChangeVisualParent(control.ContentPresenter);
             }
 
+            if (control.contentPresenter != null)
+                control.contentPresenter.InvalidateMeasure();
+
             control.OnContentChanged();
         }
 
