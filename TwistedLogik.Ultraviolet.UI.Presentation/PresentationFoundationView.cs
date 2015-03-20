@@ -969,7 +969,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 {
                     BlurElement(elementWithFocus);
                 }
-                if (recipient.Focusable)
+
+                if (recipient != null && recipient.Focusable)
                 {
                     FocusElement(recipient);
                 }
