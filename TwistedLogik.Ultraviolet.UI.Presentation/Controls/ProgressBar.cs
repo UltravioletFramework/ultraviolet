@@ -79,32 +79,32 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Occurs when the value of the <see cref="BarImage"/> property changes.
         /// </summary>
-        public event UIElementEventHandler BarImageChanged;
+        public event UpfEventHandler BarImageChanged;
 
         /// <summary>
         /// Occurs when the value of the <see cref="BarColor"/> property changes.
         /// </summary>
-        public event UIElementEventHandler BarColorChanged;
+        public event UpfEventHandler BarColorChanged;
 
         /// <summary>
         /// Occurs when the value of the <see cref="FillImage"/> property changes.
         /// </summary>
-        public event UIElementEventHandler FillImageChanged;
+        public event UpfEventHandler FillImageChanged;
 
         /// <summary>
         /// Occurs when the value of the <see cref="FillColor"/> property changes.
         /// </summary>
-        public event UIElementEventHandler FillColorChanged;
+        public event UpfEventHandler FillColorChanged;
 
         /// <summary>
         /// Occurs when the value of the <see cref="OverlayImage"/> property changes.
         /// </summary>
-        public event UIElementEventHandler OverlayImageChanged;
+        public event UpfEventHandler OverlayImageChanged;
 
         /// <summary>
         /// Occurs when the value of the <see cref="OverlayColor"/> property changes.
         /// </summary>
-        public event UIElementEventHandler OverlayColorChanged;
+        public event UpfEventHandler OverlayColorChanged;
 
         /// <summary>
         /// Identifies the <see cref="BarImage"/> dependency property.

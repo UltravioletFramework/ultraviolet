@@ -341,9 +341,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <summary>
         /// Handles the <see cref="ButtonBase.Click"/> event for the decrease button.
         /// </summary>
-        private void HandleDecreaseButtonClick(UIElement element)
+        private void HandleDecreaseButtonClick(DependencyObject element)
         {
-
             var scrollbar = Control as RangeBase;
             if (scrollbar != null)
             {
@@ -354,7 +353,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <summary>
         /// Handles the <see cref="ButtonBase.Click"/> event for the increase button.
         /// </summary>
-        private void HandleIncreaseButtonClick(UIElement element)
+        private void HandleIncreaseButtonClick(DependencyObject element)
         {
             var scrollbar = Control as RangeBase;
             if (scrollbar != null)
@@ -366,7 +365,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <summary>
         /// Handles the <see cref="Mouse.PreviewMouseMove"/> event for the Thumb button.
         /// </summary>
-        private void HandleThumbPreviewMouseMove(UIElement element, MouseDevice device, Double x, Double y, Double dx, Double dy, ref Boolean handled)
+        private void HandleThumbPreviewMouseMove(DependencyObject element, MouseDevice device, Double x, Double y, Double dx, Double dy, ref Boolean handled)
         {
             var button = element as Button;
             if (button != null && button.IsDepressed)
@@ -387,15 +386,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <summary>
         /// Handles the <see cref="Mouse.PreviewMouseDown"/> event for the Thumb button.
         /// </summary>
-        private void HandleThumbPreviewMouseDown(UIElement element, MouseDevice device, MouseButton pressed, ref Boolean handled)
+        private void HandleThumbPreviewMouseDown(DependencyObject element, MouseDevice device, MouseButton pressed, ref Boolean handled)
         {
+            var uiElement = (UIElement)element;
+
             if (Orientation == Orientation.Vertical)
             {
-                thumbDragOffset = Display.PixelsToDips(device.Y) - element.AbsoluteBounds.Y;
+                thumbDragOffset = Display.PixelsToDips(device.Y) - uiElement.AbsoluteBounds.Y;
             }
             else
             {
-                thumbDragOffset = Display.PixelsToDips(device.X) - element.AbsoluteBounds.X;
+                thumbDragOffset = Display.PixelsToDips(device.X) - uiElement.AbsoluteBounds.X;
             }
         }
 

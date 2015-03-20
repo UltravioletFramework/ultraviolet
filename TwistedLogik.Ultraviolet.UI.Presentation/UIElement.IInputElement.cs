@@ -45,154 +45,154 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <inheritdoc/>
-        public event UIElementRoutedEventHandler GotKeyboardFocus
+        public event UpfRoutedEventHandler GotKeyboardFocus
         {
             add { AddHandler(Keyboard.GotKeyboardFocusEvent, value); }
             remove { RemoveHandler(Keyboard.GotKeyboardFocusEvent, value); }
         }
 
         /// <inheritdoc/>
-        public event UIElementRoutedEventHandler LostKeyboardFocus
+        public event UpfRoutedEventHandler LostKeyboardFocus
         {
             add { AddHandler(Keyboard.LostKeyboardFocusEvent, value); }
             remove { RemoveHandler(Keyboard.LostKeyboardFocusEvent, value); }
         }
 
         /// <inheritdoc/>
-        public event UIElementKeyboardEventHandler PreviewTextInput
+        public event UpfKeyboardEventHandler PreviewTextInput
         {
             add { AddHandler(Keyboard.PreviewTextInputEvent, value); }
             remove { RemoveHandler(Keyboard.PreviewTextInputEvent, value); }
         }
 
         /// <inheritdoc/>
-        public event UIElementKeyDownEventHandler PreviewKeyDown
+        public event UpfKeyDownEventHandler PreviewKeyDown
         {
             add { AddHandler(Keyboard.PreviewKeyDownEvent, value); }
             remove { RemoveHandler(Keyboard.PreviewKeyDownEvent, value); }
         }
 
         /// <inheritdoc/>
-        public event UIElementKeyEventHandler PreviewKeyUp
+        public event UpfKeyEventHandler PreviewKeyUp
         {
             add { AddHandler(Keyboard.PreviewKeyUpEvent, value); }
             remove { RemoveHandler(Keyboard.PreviewKeyUpEvent, value); }
         }
 
         /// <inheritdoc/>
-        public event UIElementKeyboardEventHandler TextInput
+        public event UpfKeyboardEventHandler TextInput
         {
             add { AddHandler(Keyboard.TextInputEvent, value); }
             remove { RemoveHandler(Keyboard.TextInputEvent, value); }
         }
 
         /// <inheritdoc/>
-        public event UIElementKeyDownEventHandler KeyDown
+        public event UpfKeyDownEventHandler KeyDown
         {
             add { AddHandler(Keyboard.KeyDownEvent, value); }
             remove { RemoveHandler(Keyboard.KeyDownEvent, value); }
         }
 
         /// <inheritdoc/>
-        public event UIElementKeyEventHandler KeyUp
+        public event UpfKeyEventHandler KeyUp
         {
             add { AddHandler(Keyboard.KeyUpEvent, value); }
             remove { RemoveHandler(Keyboard.KeyUpEvent, value); }
         }
 
         /// <inheritdoc/>
-        public event UIElementMouseEventHandler GotMouseCapture
+        public event UpfMouseEventHandler GotMouseCapture
         {
             add { AddHandler(Mouse.GotMouseCaptureEvent, value); }
             remove { RemoveHandler(Mouse.GotMouseCaptureEvent, value); }
         }
 
         /// <inheritdoc/>
-        public event UIElementRoutedEventHandler LostMouseCapture
+        public event UpfRoutedEventHandler LostMouseCapture
         {
             add { AddHandler(Mouse.LostMouseCaptureEvent, value); }
             remove { RemoveHandler(Mouse.LostMouseCaptureEvent, value); }
         }
 
         /// <inheritdoc/>
-        public event UIElementMouseMoveEventHandler PreviewMouseMoveEvent
+        public event UpfMouseMoveEventHandler PreviewMouseMoveEvent
         {
             add { AddHandler(Mouse.PreviewMouseMoveEvent, value); }
             remove { RemoveHandler(Mouse.PreviewMouseMoveEvent, value); }
         }
 
         /// <inheritdoc/>
-        public event UIElementMouseButtonEventHandler PreviewMouseDownEvent
+        public event UpfMouseButtonEventHandler PreviewMouseDownEvent
         {
             add { AddHandler(Mouse.PreviewMouseDownEvent, value); }
             remove { RemoveHandler(Mouse.PreviewMouseDownEvent, value); }
         }
 
         /// <inheritdoc/>
-        public event UIElementMouseButtonEventHandler PreviewMouseUpEvent
+        public event UpfMouseButtonEventHandler PreviewMouseUpEvent
         {
             add { AddHandler(Mouse.PreviewMouseUpEvent, value); }
             remove { RemoveHandler(Mouse.PreviewMouseUpEvent, value); }
         }
 
         /// <inheritdoc/>
-        public event UIElementMouseButtonEventHandler PreviewMouseClickEvent
+        public event UpfMouseButtonEventHandler PreviewMouseClickEvent
         {
             add { AddHandler(Mouse.PreviewMouseClickEvent, value); }
             remove { RemoveHandler(Mouse.PreviewMouseClickEvent, value); }
         }
 
         /// <inheritdoc/>
-        public event UIElementMouseButtonEventHandler PreviewMouseDoubleClickEvent
+        public event UpfMouseButtonEventHandler PreviewMouseDoubleClickEvent
         {
             add { AddHandler(Mouse.PreviewMouseDoubleClickEvent, value); }
             remove { RemoveHandler(Mouse.PreviewMouseDoubleClickEvent, value); }
         }
 
         /// <inheritdoc/>
-        public event UIElementMouseWheelEventHandler PreviewMouseWheelEvent
+        public event UpfMouseWheelEventHandler PreviewMouseWheelEvent
         {
             add { AddHandler(Mouse.PreviewMouseWheelEvent, value); }
             remove { RemoveHandler(Mouse.PreviewMouseWheelEvent, value); }
         }
 
         /// <inheritdoc/>
-        public event UIElementMouseMoveEventHandler MouseMoveEvent
+        public event UpfMouseMoveEventHandler MouseMoveEvent
         {
             add { AddHandler(Mouse.MouseMoveEvent, value); }
             remove { RemoveHandler(Mouse.MouseMoveEvent, value); }
         }
 
         /// <inheritdoc/>
-        public event UIElementMouseButtonEventHandler MouseDownEvent
+        public event UpfMouseButtonEventHandler MouseDownEvent
         {
             add { AddHandler(Mouse.MouseDownEvent, value); }
             remove { RemoveHandler(Mouse.MouseDownEvent, value); }
         }
 
         /// <inheritdoc/>
-        public event UIElementMouseButtonEventHandler MouseUpEvent
+        public event UpfMouseButtonEventHandler MouseUpEvent
         {
             add { AddHandler(Mouse.MouseUpEvent, value); }
             remove { RemoveHandler(Mouse.MouseUpEvent, value); }
         }
 
         /// <inheritdoc/>
-        public event UIElementMouseButtonEventHandler MouseClickEvent
+        public event UpfMouseButtonEventHandler MouseClickEvent
         {
             add { AddHandler(Mouse.MouseClickEvent, value); }
             remove { RemoveHandler(Mouse.MouseClickEvent, value); }
         }
 
         /// <inheritdoc/>
-        public event UIElementMouseButtonEventHandler MouseDoubleClickEvent
+        public event UpfMouseButtonEventHandler MouseDoubleClickEvent
         {
             add { AddHandler(Mouse.MouseDoubleClickEvent, value); }
             remove { RemoveHandler(Mouse.MouseDoubleClickEvent, value); }
         }
 
         /// <inheritdoc/>
-        public event UIElementMouseWheelEventHandler MouseWheelEvent
+        public event UpfMouseWheelEventHandler MouseWheelEvent
         {
             add { AddHandler(Mouse.MouseWheelEvent, value); }
             remove { RemoveHandler(Mouse.MouseWheelEvent, value); }
@@ -364,80 +364,80 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         private static void RegisterInputClassHandlers()
         {
-            RoutedEvent.RegisterClassHandler(typeof(UIElement), Keyboard.GotKeyboardFocusEvent, new UIElementRoutedEventHandler(OnGotKeyboardFocusProxy));
-            RoutedEvent.RegisterClassHandler(typeof(UIElement), Keyboard.LostKeyboardFocusEvent, new UIElementRoutedEventHandler(OnLostKeyboardFocusProxy));
-            RoutedEvent.RegisterClassHandler(typeof(UIElement), Keyboard.KeyDownEvent, new UIElementKeyDownEventHandler(OnKeyDownProxy));
-            RoutedEvent.RegisterClassHandler(typeof(UIElement), Keyboard.KeyUpEvent, new UIElementKeyEventHandler(OnKeyUpProxy));
-            RoutedEvent.RegisterClassHandler(typeof(UIElement), Keyboard.TextInputEvent, new UIElementKeyboardEventHandler(OnTextInputProxy));
+            RoutedEvent.RegisterClassHandler(typeof(UIElement), Keyboard.GotKeyboardFocusEvent, new UpfRoutedEventHandler(OnGotKeyboardFocusProxy));
+            RoutedEvent.RegisterClassHandler(typeof(UIElement), Keyboard.LostKeyboardFocusEvent, new UpfRoutedEventHandler(OnLostKeyboardFocusProxy));
+            RoutedEvent.RegisterClassHandler(typeof(UIElement), Keyboard.KeyDownEvent, new UpfKeyDownEventHandler(OnKeyDownProxy));
+            RoutedEvent.RegisterClassHandler(typeof(UIElement), Keyboard.KeyUpEvent, new UpfKeyEventHandler(OnKeyUpProxy));
+            RoutedEvent.RegisterClassHandler(typeof(UIElement), Keyboard.TextInputEvent, new UpfKeyboardEventHandler(OnTextInputProxy));
 
-            RoutedEvent.RegisterClassHandler(typeof(UIElement), Mouse.GotMouseCaptureEvent, new UIElementRoutedEventHandler(OnGotMouseCaptureProxy));
-            RoutedEvent.RegisterClassHandler(typeof(UIElement), Mouse.LostMouseCaptureEvent, new UIElementRoutedEventHandler(OnLostMouseCaptureProxy));
-            RoutedEvent.RegisterClassHandler(typeof(UIElement), Mouse.MouseMoveEvent, new UIElementMouseMoveEventHandler(OnMouseMoveProxy));
-            RoutedEvent.RegisterClassHandler(typeof(UIElement), Mouse.MouseEnterEvent, new UIElementMouseEventHandler(OnMouseEnterProxy));
-            RoutedEvent.RegisterClassHandler(typeof(UIElement), Mouse.MouseLeaveEvent, new UIElementMouseEventHandler(OnMouseLeaveProxy));
-            RoutedEvent.RegisterClassHandler(typeof(UIElement), Mouse.MouseDownEvent, new UIElementMouseButtonEventHandler(OnMouseDownProxy));
-            RoutedEvent.RegisterClassHandler(typeof(UIElement), Mouse.MouseUpEvent, new UIElementMouseButtonEventHandler(OnMouseUpProxy));
-            RoutedEvent.RegisterClassHandler(typeof(UIElement), Mouse.MouseClickEvent, new UIElementMouseButtonEventHandler(OnMouseClickProxy));
-            RoutedEvent.RegisterClassHandler(typeof(UIElement), Mouse.MouseDoubleClickEvent, new UIElementMouseButtonEventHandler(OnMouseDoubleClickProxy));
-            RoutedEvent.RegisterClassHandler(typeof(UIElement), Mouse.MouseWheelEvent, new UIElementMouseWheelEventHandler(OnMouseWheelProxy));
+            RoutedEvent.RegisterClassHandler(typeof(UIElement), Mouse.GotMouseCaptureEvent, new UpfRoutedEventHandler(OnGotMouseCaptureProxy));
+            RoutedEvent.RegisterClassHandler(typeof(UIElement), Mouse.LostMouseCaptureEvent, new UpfRoutedEventHandler(OnLostMouseCaptureProxy));
+            RoutedEvent.RegisterClassHandler(typeof(UIElement), Mouse.MouseMoveEvent, new UpfMouseMoveEventHandler(OnMouseMoveProxy));
+            RoutedEvent.RegisterClassHandler(typeof(UIElement), Mouse.MouseEnterEvent, new UpfMouseEventHandler(OnMouseEnterProxy));
+            RoutedEvent.RegisterClassHandler(typeof(UIElement), Mouse.MouseLeaveEvent, new UpfMouseEventHandler(OnMouseLeaveProxy));
+            RoutedEvent.RegisterClassHandler(typeof(UIElement), Mouse.MouseDownEvent, new UpfMouseButtonEventHandler(OnMouseDownProxy));
+            RoutedEvent.RegisterClassHandler(typeof(UIElement), Mouse.MouseUpEvent, new UpfMouseButtonEventHandler(OnMouseUpProxy));
+            RoutedEvent.RegisterClassHandler(typeof(UIElement), Mouse.MouseClickEvent, new UpfMouseButtonEventHandler(OnMouseClickProxy));
+            RoutedEvent.RegisterClassHandler(typeof(UIElement), Mouse.MouseDoubleClickEvent, new UpfMouseButtonEventHandler(OnMouseDoubleClickProxy));
+            RoutedEvent.RegisterClassHandler(typeof(UIElement), Mouse.MouseWheelEvent, new UpfMouseWheelEventHandler(OnMouseWheelProxy));
         }
 
         /// <summary>
         /// Invokes the <see cref="OnGotKeyboardFocus"/> method.
         /// </summary>
-        private static void OnGotKeyboardFocusProxy(UIElement element, ref Boolean handled)
+        private static void OnGotKeyboardFocusProxy(DependencyObject element, ref Boolean handled)
         {
-            element.OnGotKeyboardFocus(ref handled);
+            ((UIElement)element).OnGotKeyboardFocus(ref handled);
         }
 
         /// <summary>
         /// Invokes the <see cref="OnLostKeyboardFocus"/> method.
         /// </summary>
-        private static void OnLostKeyboardFocusProxy(UIElement element, ref Boolean handled)
+        private static void OnLostKeyboardFocusProxy(DependencyObject element, ref Boolean handled)
         {
-            element.OnLostKeyboardFocus(ref handled);
+            ((UIElement)element).OnLostKeyboardFocus(ref handled);
         }
 
         /// <summary>
         /// Invokes the <see cref="OnKeyDown"/> method.
         /// </summary>
-        private static void OnKeyDownProxy(UIElement element, KeyboardDevice device, Key key, ModifierKeys modifiers, ref Boolean handled)
+        private static void OnKeyDownProxy(DependencyObject element, KeyboardDevice device, Key key, ModifierKeys modifiers, ref Boolean handled)
         {
-            element.OnKeyDown(device, key, modifiers, ref handled);
+            ((UIElement)element).OnKeyDown(device, key, modifiers, ref handled);
         }
 
         /// <summary>
         /// Invokes the <see cref="OnKeyUp"/> method.
         /// </summary>
-        private static void OnKeyUpProxy(UIElement element, KeyboardDevice device, Key key, ref Boolean handled)
+        private static void OnKeyUpProxy(DependencyObject element, KeyboardDevice device, Key key, ref Boolean handled)
         {
-            element.OnKeyUp(device, key, ref handled);
+            ((UIElement)element).OnKeyUp(device, key, ref handled);
         }
 
         /// <summary>
         /// Invokes the <see cref="OnTextInput"/> method.
         /// </summary>
-        private static void OnTextInputProxy(UIElement element, KeyboardDevice device, ref Boolean handled)
+        private static void OnTextInputProxy(DependencyObject element, KeyboardDevice device, ref Boolean handled)
         {
-            element.OnTextInput(device, ref handled);
+            ((UIElement)element).OnTextInput(device, ref handled);
         }
 
         /// <summary>
         /// Invokes the <see cref="OnGotMouseCapture"/> method.
         /// </summary>
         /// <param name="handled">A value indicating whether the event has been handled.</param>
-        private static void OnGotMouseCaptureProxy(UIElement element, ref Boolean handled)
+        private static void OnGotMouseCaptureProxy(DependencyObject element, ref Boolean handled)
         {
-            element.OnGotMouseCapture(ref handled);
+            ((UIElement)element).OnGotMouseCapture(ref handled);
         }
 
         /// <summary>
         /// Invokes the <see cref="OnLostMouseCapture"/> method.
         /// </summary>
         /// <param name="handled">A value indicating whether the event has been handled.</param>
-        private static void OnLostMouseCaptureProxy(UIElement element, ref Boolean handled)
+        private static void OnLostMouseCaptureProxy(DependencyObject element, ref Boolean handled)
         {
-            element.OnLostMouseCapture(ref handled);
+            ((UIElement)element).OnLostMouseCapture(ref handled);
         }
 
         /// <summary>
@@ -451,9 +451,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="dy">The difference between the y-coordinate of the mouse's 
         /// current position and the y-coordinate of the mouse's previous position.</param>
         /// <param name="handled">A value indicating whether the event has been handled.</param>
-        private static void OnMouseMoveProxy(UIElement element, MouseDevice device, Double x, Double y, Double dx, Double dy, ref Boolean handled)
+        private static void OnMouseMoveProxy(DependencyObject element, MouseDevice device, Double x, Double y, Double dx, Double dy, ref Boolean handled)
         {
-            element.OnMouseMove(device, x, y, dx, dy, ref handled);
+            ((UIElement)element).OnMouseMove(device, x, y, dx, dy, ref handled);
         }
 
         /// <summary>
@@ -461,10 +461,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         /// <param name="device">The mouse device.</param>
         /// <param name="handled">A value indicating whether the event has been handled.</param>
-        private static void OnMouseEnterProxy(UIElement element, MouseDevice device, ref Boolean handled)
+        private static void OnMouseEnterProxy(DependencyObject element, MouseDevice device, ref Boolean handled)
         {
-            element.IsHovering = true;
-            element.OnMouseEnter(device, ref handled);
+            var uiElement = ((UIElement)element);
+            uiElement.IsHovering = true;
+            uiElement.OnMouseEnter(device, ref handled);
         }
 
         /// <summary>
@@ -472,10 +473,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         /// <param name="device">The mouse device.</param>
         /// <param name="handled">A value indicating whether the event has been handled.</param>
-        private static void OnMouseLeaveProxy(UIElement element, MouseDevice device, ref Boolean handled)
+        private static void OnMouseLeaveProxy(DependencyObject element, MouseDevice device, ref Boolean handled)
         {
-            element.IsHovering = false;
-            element.OnMouseLeave(device, ref handled);
+            var uiElement = ((UIElement)element);
+            uiElement.IsHovering = false;
+            uiElement.OnMouseLeave(device, ref handled);
         }
 
         /// <summary>
@@ -484,9 +486,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="device">The mouse device.</param>
         /// <param name="button">The mouse button that was pressed.</param>
         /// <param name="handled">A value indicating whether the event has been handled.</param>
-        private static void OnMouseDownProxy(UIElement element, MouseDevice device, MouseButton button, ref Boolean handled)
+        private static void OnMouseDownProxy(DependencyObject element, MouseDevice device, MouseButton button, ref Boolean handled)
         {
-            element.OnMouseDown(device, button, ref handled);
+            ((UIElement)element).OnMouseDown(device, button, ref handled);
         }
 
         /// <summary>
@@ -495,9 +497,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="device">The mouse device.</param>
         /// <param name="button">The mouse button that was released.</param>
         /// <param name="handled">A value indicating whether the event has been handled.</param>
-        private static void OnMouseUpProxy(UIElement element, MouseDevice device, MouseButton button, ref Boolean handled)
+        private static void OnMouseUpProxy(DependencyObject element, MouseDevice device, MouseButton button, ref Boolean handled)
         {
-            element.OnMouseUp(device, button, ref handled);
+            ((UIElement)element).OnMouseUp(device, button, ref handled);
         }
 
         /// <summary>
@@ -506,9 +508,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="device">The mouse device.</param>
         /// <param name="button">The mouse button that was clicked.</param>
         /// <param name="handled">A value indicating whether the event has been handled.</param>
-        private static void OnMouseClickProxy(UIElement element, MouseDevice device, MouseButton button, ref Boolean handled)
+        private static void OnMouseClickProxy(DependencyObject element, MouseDevice device, MouseButton button, ref Boolean handled)
         {
-            element.OnMouseClick(device, button, ref handled);
+            ((UIElement)element).OnMouseClick(device, button, ref handled);
         }
 
         /// <summary>
@@ -517,9 +519,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="device">The mouse device.</param>
         /// <param name="button">The mouse button that was clicked.</param>
         /// <param name="handled">A value indicating whether the event has been handled.</param>
-        private static void OnMouseDoubleClickProxy(UIElement element, MouseDevice device, MouseButton button, ref Boolean handled)
+        private static void OnMouseDoubleClickProxy(DependencyObject element, MouseDevice device, MouseButton button, ref Boolean handled)
         {
-            element.OnMouseDoubleClick(device, button, ref handled);
+            ((UIElement)element).OnMouseDoubleClick(device, button, ref handled);
         }
 
         /// <summary>
@@ -529,9 +531,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="x">The amount that the wheel was scrolled along the x-axis.</param>
         /// <param name="y">The amount that the wheel was scrolled along the y-axis.</param>
         /// <param name="handled">A value indicating whether the event has been handled.</param>
-        private static void OnMouseWheelProxy(UIElement element, MouseDevice device, Double x, Double y, ref Boolean handled)
+        private static void OnMouseWheelProxy(DependencyObject element, MouseDevice device, Double x, Double y, ref Boolean handled)
         {
-            element.OnMouseWheel(device, x, y, ref handled);
+            ((UIElement)element).OnMouseWheel(device, x, y, ref handled);
         }
     }
 }

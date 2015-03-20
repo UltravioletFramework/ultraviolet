@@ -50,27 +50,27 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Occurs when the value of the <see cref="IsDepressed"/> property changes.
         /// </summary>
-        public event UIElementEventHandler IsDepressedChanged;
+        public event UpfEventHandler IsDepressedChanged;
 
         /// <summary>
         /// Occurs when the button is clicked.
         /// </summary>
-        public event UIElementEventHandler Click;
+        public event UpfEventHandler Click;
 
         /// <summary>
         /// Occurs when the button is pressed.
         /// </summary>
-        public event UIElementEventHandler ButtonPressed;
+        public event UpfEventHandler ButtonPressed;
 
         /// <summary>
         /// Occurs when the button is released.
         /// </summary>
-        public event UIElementEventHandler ButtonReleased;
+        public event UpfEventHandler ButtonReleased;
 
         /// <summary>
         /// Occurs when the value of the <see cref="ClickMode"/> property changes.
         /// </summary>
-        public event UIElementEventHandler ClickModeChanged;
+        public event UpfEventHandler ClickModeChanged;
 
         /// <summary>
         /// Identifies the <see cref="ClickMode"/> dependency property.

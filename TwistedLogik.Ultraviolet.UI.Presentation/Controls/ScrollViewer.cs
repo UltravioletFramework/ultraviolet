@@ -106,12 +106,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Occurs when the value of the <see cref="HorizontalScrollBarVisibility"/> property changes.
         /// </summary>
-        public event UIElementEventHandler HorizontalScrollBarVisibilityChanged;
+        public event UpfEventHandler HorizontalScrollBarVisibilityChanged;
 
         /// <summary>
         /// Occurs when the value of the <see cref="VerticalScrollBarVisibility"/> property changes.
         /// </summary>
-        public event UIElementEventHandler VerticalScrollBarVisibilityChanged;
+        public event UpfEventHandler VerticalScrollBarVisibilityChanged;
 
         /// <summary>
         /// Identifies the <see cref="HorizontalScrollBarVisibility"/> dependency property.
@@ -302,7 +302,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Handles the <see cref="RangeControl.ValueChanged"/> event for the scroll viewer's scroll bars.
         /// </summary>
-        private void HandleScrollValueChanged(UIElement element)
+        private void HandleScrollValueChanged(DependencyObject element)
         {
             Presenter.PositionChildren();
         }
@@ -310,7 +310,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Handles the <see cref="RangeControl.MaximumChanged"/> event for the scroll viewer's scroll bars.
         /// </summary>
-        private void HandleScrollMaximumChanged(UIElement element)
+        private void HandleScrollMaximumChanged(DependencyObject element)
         {
             Presenter.PositionChildren();
         }

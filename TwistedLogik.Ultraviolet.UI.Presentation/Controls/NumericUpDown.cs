@@ -45,7 +45,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Occurs when the value of the <see cref="DecimalPlaces"/> property changes.
         /// </summary>
-        public event UIElementEventHandler DecimalPlacesChanged;
+        public event UpfEventHandler DecimalPlacesChanged;
 
         /// <inheritdoc/>
         protected override void OnValueChanged()

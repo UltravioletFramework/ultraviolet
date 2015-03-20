@@ -31,7 +31,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Occurs when the value of the <see cref="Checked"/> property changes.
         /// </summary>
-        public event UIElementEventHandler CheckedChanged;
+        public event UpfEventHandler CheckedChanged;
 
         /// <summary>
         /// Identifies the Checked dependency property.

@@ -57,17 +57,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Occurs when the value of the <see cref="HorizontalContentAlignment"/> property changes.
         /// </summary>
-        public event UIElementEventHandler HorizontalContentAlignmentChanged;
+        public event UpfEventHandler HorizontalContentAlignmentChanged;
 
         /// <summary>
         /// Occurs when the value of the <see cref="VerticalContentAlignment"/> property changes.
         /// </summary>
-        public event UIElementEventHandler VerticalContentAlignmentChanged;
+        public event UpfEventHandler VerticalContentAlignmentChanged;
 
         /// <summary>
         /// Occurs when the value of the <see cref="Content"/> property changes.
         /// </summary>
-        public event UIElementEventHandler ContentChanged;
+        public event UpfEventHandler ContentChanged;
 
         /// <summary>
         /// Identifies the <see cref="HorizontalContentAlignment"/> dependency property.

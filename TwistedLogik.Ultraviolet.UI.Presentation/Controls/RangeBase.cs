@@ -118,27 +118,27 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Occurs when the value of the <see cref="Value"/> property changes.
         /// </summary>
-        public event UIElementEventHandler ValueChanged;
+        public event UpfEventHandler ValueChanged;
 
         /// <summary>
         /// Occurs when the value of the <see cref="Minimum"/> property changes.
         /// </summary>
-        public event UIElementEventHandler MinimumChanged;
+        public event UpfEventHandler MinimumChanged;
 
         /// <summary>
         /// Occurs when the value of the <see cref="Maximum"/> property changes.
         /// </summary>
-        public event UIElementEventHandler MaximumChanged;
+        public event UpfEventHandler MaximumChanged;
 
         /// <summary>
         /// Occurs when the value of the <see cref="SmallChange"/> property changes.
         /// </summary>
-        public event UIElementEventHandler SmallChangeChanged;
+        public event UpfEventHandler SmallChangeChanged;
 
         /// <summary>
         /// Occurs when the value of the <see cref="LargeChange"/> property changes.
         /// </summary>
-        public event UIElementEventHandler LargeChangeChanged;
+        public event UpfEventHandler LargeChangeChanged;
 
         /// <summary>
         /// Identifies the <see cref="Value"/> dependency property.

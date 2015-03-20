@@ -57,7 +57,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Occurs when the value of the <see cref="LastChildFill"/> property changes.
         /// </summary>
-        public event UIElementEventHandler LastChildFillChanged;
+        public event UpfEventHandler LastChildFillChanged;
 
         /// <summary>
         /// Identifies the Dock attached property.

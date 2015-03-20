@@ -143,67 +143,67 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Occurs when the value of the <see cref="Font"/> property changes.
         /// </summary>
-        public event UIElementEventHandler FontChanged;
+        public event UpfEventHandler FontChanged;
 
         /// <summary>
         /// Occurs when the value of the <see cref="FontColor"/> property changes.
         /// </summary>
-        public event UIElementEventHandler FontColorChanged;
+        public event UpfEventHandler FontColorChanged;
 
         /// <summary>
         /// Occurs when the value of the <see cref="FontStyle"/> property changes.
         /// </summary>
-        public event UIElementEventHandler FontStyleChanged;
+        public event UpfEventHandler FontStyleChanged;
 
         /// <summary>
         /// Occurs when the value of the <see cref="Width"/> property changes.
         /// </summary>
-        public event UIElementEventHandler WidthChanged;
+        public event UpfEventHandler WidthChanged;
 
         /// <summary>
         /// Occurs when the value of the <see cref="MinWidth"/> property changes.
         /// </summary>
-        public event UIElementEventHandler MinWidthChanged;
+        public event UpfEventHandler MinWidthChanged;
 
         /// <summary>
         /// Occurs when the value of the <see cref="MaxWidth"/> property changes.
         /// </summary>
-        public event UIElementEventHandler MaxWidthChanged;
+        public event UpfEventHandler MaxWidthChanged;
 
         /// <summary>
         /// Occurs when the value of the <see cref="Height"/> property changes.
         /// </summary>
-        public event UIElementEventHandler HeightChanged;
+        public event UpfEventHandler HeightChanged;
 
         /// <summary>
         /// Occurs when the value of the <see cref="MinHeight"/> property changes.
         /// </summary>
-        public event UIElementEventHandler MinHeightChanged;
+        public event UpfEventHandler MinHeightChanged;
 
         /// <summary>
         /// Occurs when the value of the <see cref="MaxHeight"/> property changes.
         /// </summary>
-        public event UIElementEventHandler MaxHeightChanged;
+        public event UpfEventHandler MaxHeightChanged;
 
         /// <summary>
         /// Occurs when the value of the <see cref="Margin"/> property changes.
         /// </summary>
-        public event UIElementEventHandler MarginChanged;
+        public event UpfEventHandler MarginChanged;
 
         /// <summary>
         /// Occurs when the value of the <see cref="Padding"/> property changes.
         /// </summary>
-        public event UIElementEventHandler PaddingChanged;
+        public event UpfEventHandler PaddingChanged;
 
         /// <summary>
         /// Occurs when the value of the <see cref="HorizontalAlignment"/> property changes.
         /// </summary>
-        public event UIElementEventHandler HorizontalAlignmentChanged;
+        public event UpfEventHandler HorizontalAlignmentChanged;
 
         /// <summary>
         /// Occurs when the value of the <see cref="VerticalAlignment"/> property changes.
         /// </summary>
-        public event UIElementEventHandler VerticalAlignmentChanged;
+        public event UpfEventHandler VerticalAlignmentChanged;
 
         /// <summary>
         /// Identifies the <see cref="Font"/> dependency property.

@@ -53,12 +53,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Occurs when the value of the <see cref="Delay"/> property changes.
         /// </summary>
-        public event UIElementEventHandler DelayChanged;
+        public event UpfEventHandler DelayChanged;
 
         /// <summary>
         /// Occurs when the value of the <see cref="Interval"/> property changes.
         /// </summary>
-        public event UIElementEventHandler IntervalChanged;
+        public event UpfEventHandler IntervalChanged;
 
         /// <summary>
         /// Identifies the <see cref="Delay"/> dependency property.

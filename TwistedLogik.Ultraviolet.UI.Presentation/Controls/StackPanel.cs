@@ -33,7 +33,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Occurs when the value of the <see cref="Orientation"/> property changes.
         /// </summary>
-        public event UIElementEventHandler OrientationChanged;
+        public event UpfEventHandler OrientationChanged;
 
         /// <summary>
         /// Identifies the <see cref="Orientation"/> dependency property.

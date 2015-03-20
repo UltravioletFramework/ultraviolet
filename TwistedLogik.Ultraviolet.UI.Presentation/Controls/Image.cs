@@ -43,12 +43,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Occurs when the value of the <see cref="Source"/> property changes.
         /// </summary>
-        public event UIElementEventHandler SourceChanged;
+        public event UpfEventHandler SourceChanged;
 
         /// <summary>
         /// Occurs when the value of the <see cref="SourceColor"/> property changes.
         /// </summary>
-        public event UIElementEventHandler SourceColorChanged;
+        public event UpfEventHandler SourceColorChanged;
 
         /// <summary>
         /// Identifies the <see cref="Source"/> property.

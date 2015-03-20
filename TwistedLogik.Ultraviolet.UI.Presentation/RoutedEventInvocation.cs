@@ -61,7 +61,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             /* BUBBLE STRATEGY
              * For a given event delegate type TDelegate, we're constructing a method which basically looks like this:
              * 
-             * void fn(UIElement element, p1, p2, ..., pN, ref Boolean handled)
+             * void fn(DependencyObject element, p1, p2, ..., pN, ref Boolean handled)
              * {
              *      var index   = 0;
              *      var handler = default(RoutedEventHandlerMetadata);
@@ -97,7 +97,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var varHandler = Expression.Variable(typeof(RoutedEventHandlerMetadata), "handlers");
             expVars.Add(varHandler);
 
-            var varCurrent = Expression.Variable(typeof(UIElement), "current");
+            var varCurrent = Expression.Variable(typeof(DependencyObject), "current");
             expVars.Add(varCurrent);
 
             var innerEventHandlerParams = new List<ParameterExpression>();
@@ -144,7 +144,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
              * The simplest strategy; the event is only invoked on the element that raised it. 
              * Our invocation delegate looks something like this:
              * 
-             * void fn(UIElement element, p1, p2, ..., pN, ref Boolean handled)
+             * void fn(DependencyObject element, p1, p2, ..., pN, ref Boolean handled)
              * {
              *      var index   = 0;
              *      var handler = default(RoutedEventHandlerMetadata);      
@@ -204,10 +204,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
              * Basically the opposite of the bubble strategy; we start at the root of the tree and work down.
              * Note that ShouldContinueTunnelling() builds a stack representing the path to take on the first call.
              * 
-             * void fn(UIElement element, p1, p2, ..., pN, ref Boolean handled)
+             * void fn(DependencyObject element, p1, p2, ..., pN, ref Boolean handled)
              * {
              *      var index    = 0;
-             *      var current  = default(UIElement);
+             *      var current  = default(DependencyObject);
              *      var handlers = default(List<RoutedEventHandlerMetadata>);
              *      
              *      while (ShouldContinueTunnelling(element, ref current))
@@ -240,7 +240,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var varHandler = Expression.Variable(typeof(RoutedEventHandlerMetadata), "handler");
             expVars.Add(varHandler);
 
-            var varCurrent = Expression.Variable(typeof(UIElement), "current");
+            var varCurrent = Expression.Variable(typeof(DependencyObject), "current");
             expVars.Add(varCurrent);
 
             var innerEventHandlerParams = new List<ParameterExpression>();
@@ -296,7 +296,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var paramLast  = parameters.Last();
 
             return
-                typeof(UIElement).IsAssignableFrom(paramFirst.ParameterType) &&
+                typeof(DependencyObject).IsAssignableFrom(paramFirst.ParameterType) &&
                 paramLast.ParameterType == typeof(Boolean).MakeByRefType() &&
                 invoke.ReturnType == typeof(void);
         }
@@ -320,7 +320,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="first">The first element to process.</param>
         /// <param name="current">The element that is currently being processed.</param>
         /// <returns><c>true</c> if the event should continue bubbling; otherwise, <c>false</c>.</returns>
-        private static Boolean ShouldContinueBubbling(UIElement first, ref UIElement current)
+        private static Boolean ShouldContinueBubbling(DependencyObject first, ref DependencyObject current)
         {
             if (current == null)
             {
@@ -334,7 +334,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                     current = null;
                     return false;
                 }
-                current = current.DependencyContainer as UIElement;
+                current = current.DependencyContainer;
                 return true;
             }
         }
@@ -347,7 +347,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="first">The first element to process.</param>
         /// <param name="current">The element that is currently being processed.</param>
         /// <returns><c>true</c> if the event should continue tunnelling; otherwise, <c>false</c>.</returns>
-        private static Boolean ShouldContinueTunnelling(UIElement first, ref UIElement current)
+        private static Boolean ShouldContinueTunnelling(DependencyObject first, ref DependencyObject current)
         {
             if (current == null)
                 PrepareTunnellingStack(first);
@@ -365,14 +365,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Prepares the tunnelling stack to process a tunnelled event.
         /// </summary>
         /// <param name="element">The element which raised the event.</param>
-        private static void PrepareTunnellingStack(UIElement element)
+        private static void PrepareTunnellingStack(DependencyObject element)
         {
             if (tunnellingStack == null)
-                tunnellingStack = new Stack<UIElement>();
+                tunnellingStack = new Stack<DependencyObject>();
 
             tunnellingStack.Clear();
 
-            for (var current = element; current != null; current = current.DependencyContainer as UIElement)
+            for (var current = element; current != null; current = current.DependencyContainer)
             {
                 tunnellingStack.Push(current);
             }
@@ -386,7 +386,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="index">The index of the handler to invoke; this value is incremented by one when this method returns.</param>
         /// <param name="handler">The metadata for the handler that corresponds to the specified index within the handler list.</param>
         /// <returns><c>true</c> if a handler was retrieved for the specified index; otherwise, <c>false</c>.</returns>
-        private static Boolean GetEventHandler(UIElement element, RoutedEvent evt, ref Int32 index, ref RoutedEventHandlerMetadata handler)
+        private static Boolean GetEventHandler(DependencyObject element, RoutedEvent evt, ref Int32 index, ref RoutedEventHandlerMetadata handler)
         {
             var indexTemp = index;
 
@@ -405,21 +405,29 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 }
             }
 
-            var instanceHandlers = element.GetHandlers(evt);
-            if (instanceHandlers == null)
-                return false;
-
-            lock (instanceHandlers)
+            var uiElement = element as UIElement;
+            if (uiElement != null)
             {
-                if (indexTemp >= instanceHandlers.Count)
-                {
+                var instanceHandlers = uiElement.GetHandlers(evt);
+                if (instanceHandlers == null)
                     return false;
-                }
-                handler = instanceHandlers[indexTemp];
-                index++;
-            }
 
-            return true;
+                lock (instanceHandlers)
+                {
+                    if (indexTemp >= instanceHandlers.Count)
+                    {
+                        return false;
+                    }
+                    handler = instanceHandlers[indexTemp];
+                    index++;
+                }
+
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
         // Cached method info for methods used by invocation delegates.
@@ -430,6 +438,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
         // The stack used to track the tunnelling path for tunnelled events.
         [ThreadStatic]
-        private static Stack<UIElement> tunnellingStack;
+        private static Stack<DependencyObject> tunnellingStack;
     }
 }

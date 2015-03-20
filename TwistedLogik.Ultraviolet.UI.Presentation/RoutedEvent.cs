@@ -4,6 +4,19 @@ using TwistedLogik.Nucleus;
 namespace TwistedLogik.Ultraviolet.UI.Presentation
 {
     /// <summary>
+    /// Represents the method that is called when an interface element raises an event.
+    /// </summary>
+    /// <param name="element">The element that raised the event.</param>
+    public delegate void UpfEventHandler(DependencyObject element);
+
+    /// <summary>
+    /// Represents the method that is called when an interface element raises a routed event.
+    /// </summary>
+    /// <param name="element">The element that raised the event.</param>
+    /// <param name="handled">A value indicating whether the event has been handled.</param>
+    public delegate void UpfRoutedEventHandler(DependencyObject element, ref Boolean handled);
+
+    /// <summary>
     /// Represents the identifier of a routed event.
     /// </summary>
     public sealed class RoutedEvent

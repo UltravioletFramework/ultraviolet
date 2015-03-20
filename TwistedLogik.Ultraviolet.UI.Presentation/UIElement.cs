@@ -37,19 +37,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
     public delegate void UIElementUpdatingEventHandler(UIElement element, UltravioletTime time);
 
     /// <summary>
-    /// Represents the method that is called when a UI element raises an event.
-    /// </summary>
-    /// <param name="element">The element that raised the event.</param>
-    public delegate void UIElementEventHandler(UIElement element);
-
-    /// <summary>
-    /// Represents the method that is called when a UI element raises a routed event.
-    /// </summary>
-    /// <param name="element">The element that raised the event.</param>
-    /// <param name="handled">A value indicating whether the event has been handled.</param>
-    public delegate void UIElementRoutedEventHandler(UIElement element, ref Boolean handled);
-
-    /// <summary>
     /// Represents the base class for all elements within the Ultraviolet Presentation Foundation.
     /// </summary>
     public abstract partial class UIElement : Visual
@@ -1044,67 +1031,67 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Occurs when the value of the <see cref="AutoNav"/> property changes.
         /// </summary>
-        public event UIElementEventHandler AutoNavChanged;
+        public event UpfEventHandler AutoNavChanged;
 
         /// <summary>
         /// Occurs when the value of the <see cref="IsEnabled"/> property changes.
         /// </summary>
-        public event UIElementEventHandler IsEnabledChanged;
+        public event UpfEventHandler IsEnabledChanged;
 
         /// <summary>
         /// Occurs when the value of the <see cref="IsHovering"/> property changes.
         /// </summary>
-        public event UIElementEventHandler IsHoveringChanged;
+        public event UpfEventHandler IsHoveringChanged;
 
         /// <summary>
         /// Occurs when the value of the <see cref="IsHitTestVisible"/> property changes.
         /// </summary>
-        public event UIElementEventHandler IsHitTestVisibleChanged;
+        public event UpfEventHandler IsHitTestVisibleChanged;
 
         /// <summary>
         /// Occurs when the value of the <see cref="IsTabStop"/> property changes.
         /// </summary>
-        public event UIElementEventHandler IsTabStopChanged;
+        public event UpfEventHandler IsTabStopChanged;
 
         /// <summary>
         /// Occurs when the value of the <see cref="Focusable"/> dependency property changes.
         /// </summary>
-        public event UIElementEventHandler FocusableChanged;
+        public event UpfEventHandler FocusableChanged;
 
         /// <summary>
         /// Occurs when the value of the <see cref="Visibility"/> property changes.
         /// </summary>
-        public event UIElementEventHandler VisibilityChanged;
+        public event UpfEventHandler VisibilityChanged;
 
         /// <summary>
         /// Occurs when the value of the <see cref="Opacity"/> property changes.
         /// </summary>
-        public event UIElementEventHandler OpacityChanged;
+        public event UpfEventHandler OpacityChanged;
 
         /// <summary>
         /// Occurs when the value of the <see cref="NavUp"/> property changes.
         /// </summary>
-        public event UIElementEventHandler NavUpChanged;
+        public event UpfEventHandler NavUpChanged;
 
         /// <summary>
         /// Occurs when the value of the <see cref="NavDown"/> property changes.
         /// </summary>
-        public event UIElementEventHandler NavDownChanged;
+        public event UpfEventHandler NavDownChanged;
 
         /// <summary>
         /// Occurs when the value of the <see cref="NavLeft"/> property changes.
         /// </summary>
-        public event UIElementEventHandler NavLeftChanged;
+        public event UpfEventHandler NavLeftChanged;
 
         /// <summary>
         /// Occurs when the value of the <see cref="NavRight"/> property changes.
         /// </summary>
-        public event UIElementEventHandler NavRightChanged;
+        public event UpfEventHandler NavRightChanged;
 
         /// <summary>
         /// Occurs when the value of the <see cref="TabIndex"/> property changes.
         /// </summary>
-        public event UIElementEventHandler TabIndexChanged;
+        public event UpfEventHandler TabIndexChanged;
 
         /// <summary>
         /// Identifies the <see cref="AutoNav"/> dependency property.

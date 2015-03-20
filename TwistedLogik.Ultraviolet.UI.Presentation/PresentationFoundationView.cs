@@ -102,113 +102,37 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <inheritdoc/>
         public override void NavigateUp()
         {
-            if (elementWithFocus == null)
-                return;
-
-            var target = default(UIElement);
-            do
-            {
-                target = (target == null) ? elementWithFocus.GetNavUpElement() : target.GetNavUpElement();
-                if (target != null && !target.Focusable)
-                {
-                    target = target.GetFirstFocusableDescendant(false);
-                }
-            }
-            while (target != null && !LayoutUtil.IsValidForNav(target));
-            
-            if (target == null)
-                return;
-
-            FocusElement(target);
+            throw new NotImplementedException();
         }
 
         /// <inheritdoc/>
         public override void NavigateDown()
         {
-            if (elementWithFocus == null)
-                return;
-
-            var target = default(UIElement);
-            do
-            {
-                target = (target == null) ? elementWithFocus.GetNavDownElement() : target.GetNavDownElement();
-                if (target != null && !target.Focusable)
-                {
-                    target = target.GetFirstFocusableDescendant(false);
-                }
-            }
-            while (target != null && !LayoutUtil.IsValidForNav(target));
-
-            if (target == null)
-                return;
-
-            FocusElement(target);
+            throw new NotImplementedException();
         }
 
         /// <inheritdoc/>
         public override void NavigateLeft()
         {
-            if (elementWithFocus == null)
-                return;
-
-            var target = default(UIElement);
-            do
-            {
-                target = (target == null) ? elementWithFocus.GetNavLeftElement() : target.GetNavLeftElement();
-                if (target != null && !target.Focusable)
-                {
-                    target = target.GetFirstFocusableDescendant(false);
-                }
-            }
-            while (target != null && !LayoutUtil.IsValidForNav(target));
-
-            if (target == null)
-                return;
-
-            FocusElement(target);
+            throw new NotImplementedException();
         }
 
         /// <inheritdoc/>
         public override void NavigateRight()
         {
-            if (elementWithFocus == null)
-                return;
-
-            var target = default(UIElement);
-            do
-            {
-                target = (target == null) ? elementWithFocus.GetNavRightElement() : target.GetNavRightElement();
-                if (target != null && !target.Focusable)
-                {
-                    target = target.GetFirstFocusableDescendant(false);
-                }
-            }
-            while (target != null && !LayoutUtil.IsValidForNav(target));
-
-            if (target == null)
-                return;
-
-            FocusElement(target);
+            throw new NotImplementedException();
         }
 
         /// <inheritdoc/>
         public override void NavigatePreviousTabStop()
         {
-            var target = (elementWithFocus == null) ? GetLastFocusableElement(true) : elementWithFocus.GetPreviousTabStop() ?? GetLastFocusableElement(true);
-            if (target == null)
-                return;
-
-            FocusElement(target);
+            throw new NotImplementedException();
         }
 
         /// <inheritdoc/>
         public override void NavigateNextTabStop()
         {
-            var target = (elementWithFocus == null) ? GetFirstFocusableElement(true) : elementWithFocus.GetNextTabStop() ?? GetFirstFocusableElement(true);
-            if (target == null)
-                return;
-
-            FocusElement(target);
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -239,7 +163,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Grants input focus within this view to the specified element.
         /// </summary>
         /// <param name="element">The element to which to grant input focus.</param>
-        public void FocusElement(UIElement element)
+        public void FocusElement(IInputElement element)
         {
             Contract.Require(element, "element");
 
@@ -255,15 +179,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             SetIsKeyboardFocusWithin(elementWithFocus, true);
 
-            var handledGotFocus = false;
-            Keyboard.RaiseGotKeyboardFocus(elementWithFocus, ref handledGotFocus);
+            var dobj = elementWithFocus as DependencyObject;
+            if (dobj != null)
+            {
+                var handledGotFocus = false;
+                Keyboard.RaiseGotKeyboardFocus(dobj, ref handledGotFocus);
+            }
         }
 
         /// <summary>
         /// Removes input focus within this view from the specified element.
         /// </summary>
         /// <param name="element">The element from which to remove input focus.</param>
-        public void BlurElement(UIElement element)
+        public void BlurElement(IInputElement element)
         {
             Contract.Require(element, "element");
 
@@ -275,46 +203,64 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             SetIsKeyboardFocusWithin(elementWithFocusOld, false);
 
-            var handledLostFocus = false;
-            Keyboard.RaiseLostKeyboardFocus(elementWithFocusOld, ref handledLostFocus);
+            var dobj = elementWithFocusOld as DependencyObject;
+            if (dobj != null)
+            {
+                var handledLostFocus = false;
+                Keyboard.RaiseLostKeyboardFocus(dobj, ref handledLostFocus);
+            }
         }
 
         /// <summary>
         /// Assigns mouse capture to the specified element.
         /// </summary>
         /// <param name="element">The element to which to assign mouse capture.</param>
-        public void CaptureMouse(UIElement element)
+        public void CaptureMouse(IInputElement element)
         {
             Contract.Require(element, "element");
 
             if (elementWithMouseCapture == element)
                 return;
 
+            DependencyObject dobj;
+
             if (elementWithMouseCapture != null)
             {
-                var lostMouseCaptureHandled = false;
-                Mouse.RaiseLostMouseCapture(elementWithMouseCapture, ref lostMouseCaptureHandled);
+                dobj = elementWithMouseCapture as DependencyObject;
+                if (dobj != null)
+                {
+                    var lostMouseCaptureHandled = false;
+                    Mouse.RaiseLostMouseCapture(dobj, ref lostMouseCaptureHandled);
+                }
             }
 
             elementWithMouseCapture = element;
 
-            var gotMouseCaptureHandled = false;
-            Mouse.RaiseGotMouseCapture(elementWithMouseCapture, ref gotMouseCaptureHandled);
+            dobj = elementWithMouseCapture as DependencyObject;
+            if (dobj != null)
+            {
+                var gotMouseCaptureHandled = false;
+                Mouse.RaiseGotMouseCapture(dobj, ref gotMouseCaptureHandled);
+            }
         }
 
         /// <summary>
         /// Releases the mouse from the element that is currently capturing it.
         /// </summary>
         /// <param name="element">The element that is attempting to release mouse capture.</param>
-        public void ReleaseMouse(UIElement element)
+        public void ReleaseMouse(IInputElement element)
         {
             Contract.Require(element, "element");
 
             if (elementWithMouseCapture != element)
                 return;
 
-            var lostMouseCaptureHandled = false;
-            Mouse.RaiseLostMouseCapture(elementWithMouseCapture, ref lostMouseCaptureHandled);
+            var dobj = elementWithMouseCapture as DependencyObject;
+            if (dobj != null)
+            {
+                var lostMouseCaptureHandled = false;
+                Mouse.RaiseLostMouseCapture(dobj, ref lostMouseCaptureHandled);
+            }
 
             elementWithMouseCapture = null;
         }
@@ -336,25 +282,25 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         /// <param name="x">The x-coordinate in screen space to evaluate.</param>
         /// <param name="y">The y-coordinate in screen space to evaluate.</param>
-        /// <returns>The topmost <see cref="UIElement"/> in the view which contains the specified point, or <c>null</c>.</returns>
-        public UIElement HitTestScreenPixel(Int32 x, Int32 y)
+        /// <returns>The topmost <see cref="Visual"/> in the view which contains the specified point, or <c>null</c>.</returns>
+        public Visual HitTestScreenPixel(Int32 x, Int32 y)
         {
             var dipsX = Display.PixelsToDips(x - Area.X);
             var dipsY = Display.PixelsToDips(y - Area.Y);
 
-            return LayoutRoot.HitTest(new Point2D(dipsX, dipsY)) as UIElement;
+            return LayoutRoot.HitTest(new Point2D(dipsX, dipsY));
         }
 
         /// <summary>
         /// Performs a hit test against the view at the specified point in screen space.
         /// </summary>
         /// <param name="point">The point in screen space to evaluate.</param>
-        /// <returns>The topmost <see cref="UIElement"/> in the view which contains the specified point, or <c>null</c>.</returns>
-        public UIElement HitTestScreenPixel(Point2 point)
+        /// <returns>The topmost <see cref="Visual"/> in the view which contains the specified point, or <c>null</c>.</returns>
+        public Visual HitTestScreenPixel(Point2 point)
         {
             var dipsPoint = Display.PixelsToDips(point - Area.Location);
 
-            return LayoutRoot.HitTest(dipsPoint) as UIElement;
+            return LayoutRoot.HitTest(dipsPoint);
         }
 
         /// <summary>
@@ -362,25 +308,25 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         /// <param name="x">The x-coordinate in view-relative screen space to evaluate.</param>
         /// <param name="y">The y-coordinate in view-relative screen space to evaluate.</param>
-        /// <returns>The topmost <see cref="UIElement"/> in the view which contains the specified point, or <c>null</c>.</returns>
-        public UIElement HitTestPixel(Int32 x, Int32 y)
+        /// <returns>The topmost <see cref="Visual"/> in the view which contains the specified point, or <c>null</c>.</returns>
+        public Visual HitTestPixel(Int32 x, Int32 y)
         {
             var dipsX = Display.PixelsToDips(x);
             var dipsY = Display.PixelsToDips(y);
 
-            return LayoutRoot.HitTest(new Point2D(dipsX, dipsY)) as UIElement;
+            return LayoutRoot.HitTest(new Point2D(dipsX, dipsY));
         }
 
         /// <summary>
         /// Performs a hit test against the view at the specified point in view-relative screen space.
         /// </summary>
         /// <param name="point">The point in view-relative screen space to evaluate.</param>
-        /// <returns>The topmost <see cref="UIElement"/> in the view which contains the specified point, or <c>null</c>.</returns>
-        public UIElement HitTestPixel(Point2 point)
+        /// <returns>The topmost <see cref="Visual"/> in the view which contains the specified point, or <c>null</c>.</returns>
+        public Visual HitTestPixel(Point2 point)
         {
             var dipsPoint = Display.PixelsToDips(point - Area.Location);
 
-            return LayoutRoot.HitTest(dipsPoint) as UIElement;
+            return LayoutRoot.HitTest(dipsPoint);
         }
 
         /// <summary>
@@ -388,20 +334,20 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         /// <param name="x">The x-coordinate in device-independent view space to evaluate.</param>
         /// <param name="y">The y-coordinate in device-independent view space to evaluate.</param>
-        /// <returns>The topmost <see cref="UIElement"/> in the view which contains the specified point, or <c>null</c>.</returns>
-        public UIElement HitTest(Double x, Double y)
+        /// <returns>The topmost <see cref="Visual"/> in the view which contains the specified point, or <c>null</c>.</returns>
+        public Visual HitTest(Double x, Double y)
         {
-            return LayoutRoot.HitTest(new Point2D(x, y)) as UIElement;
+            return LayoutRoot.HitTest(new Point2D(x, y));
         }
 
         /// <summary>
         /// Performs a hit test against the view at the specified point in device-independent view space.
         /// </summary>
         /// <param name="point">The point in device-independent view space to evaluate.</param>
-        /// <returns>The topmost <see cref="UIElement"/> in the view which contains the specified point, or <c>null</c>.</returns>
-        public UIElement HitTest(Point2D point)
+        /// <returns>The topmost <see cref="Visual"/> in the view which contains the specified point, or <c>null</c>.</returns>
+        public Visual HitTest(Point2D point)
         {
-            return LayoutRoot.HitTest(point) as UIElement;
+            return LayoutRoot.HitTest(point);
         }
 
         /// <summary>
@@ -566,7 +512,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Gets the element that is currently under the mouse cursor.
         /// </summary>
-        public UIElement ElementUnderMouse
+        public IInputElement ElementUnderMouse
         {
             get { return elementUnderMouse; }
         }
@@ -574,7 +520,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Gets the element that currently has focus.
         /// </summary>
-        public UIElement ElementWithFocus
+        public IInputElement ElementWithFocus
         {
             get { return elementWithFocus; }
         }
@@ -582,7 +528,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Gets the element that currently has mouse capture.
         /// </summary>
-        public UIElement ElementWithMouseCapture
+        public IInputElement ElementWithMouseCapture
         {
             get { return elementWithMouseCapture; }
         }
@@ -818,13 +764,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 var mouseView = mouse.Window == Window ? this : null;
 
                 elementUnderMousePrev = elementUnderMouse;
-                elementUnderMouse     = (mouseView == null) ? null : mouseView.HitTestScreenPixel((Point2)mousePos);
+                elementUnderMouse     = (mouseView == null) ? null : mouseView.HitTestScreenPixel((Point2)mousePos) as UIElement;
             }
 
-            if (elementUnderMouse != null && !elementUnderMouse.IsHitTestVisible)
-                elementUnderMousePrev = elementUnderMouse;
+            if (elementUnderMouse != null && !IsElementValidForInput(elementUnderMouse))
+                elementUnderMouse = null;
 
-            if (elementWithMouseCapture != null && !elementWithMouseCapture.IsHitTestVisible)
+            if (elementWithMouseCapture != null && !IsElementValidForInput(elementWithMouseCapture))
                 ReleaseMouse(elementWithMouseCapture);
 
             // Handle mouse motion events
@@ -832,16 +778,38 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             {
                 if (elementUnderMousePrev != null)
                 {
-                    var mouseLeaveHandled = false;
-                    Mouse.RaiseMouseLeave(elementUnderMousePrev, mouse, ref mouseLeaveHandled);
+                    var dobj = elementUnderMousePrev as DependencyObject;
+                    if (dobj != null)
+                    {
+                        var mouseLeaveHandled = false;
+                        Mouse.RaiseMouseLeave(dobj, mouse, ref mouseLeaveHandled);
+                    }
                 }
 
                 if (elementUnderMouse != null)
                 {
-                    var mouseEnterHandled = false;
-                    Mouse.RaiseMouseEnter(elementUnderMouse, mouse, ref mouseEnterHandled);
+                    var dobj = elementUnderMouse as DependencyObject;
+                    if (dobj != null)
+                    {
+                        var mouseEnterHandled = false;
+                        Mouse.RaiseMouseEnter(dobj, mouse, ref mouseEnterHandled);
+                    }
                 }
             }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the specified element is valid for receiving input.
+        /// </summary>
+        /// <param name="element">The element to evaluate.</param>
+        /// <returns><c>true</c> if the specified element is valid for input; otherwise, <c>false</c>.</returns>
+        private Boolean IsElementValidForInput(IInputElement element)
+        {
+            var uiElement = element as UIElement;
+            if (uiElement == null)
+                return false;
+
+            return uiElement.IsHitTestVisible && uiElement.IsEnabled;
         }
 
         /// <summary>
@@ -850,12 +818,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         /// <param name="element">The element on which to set the property value.</param>
         /// <param name="value">The value to set on the element and its ancestors.</param>
-        private void SetIsKeyboardFocusWithin(UIElement element, Boolean value)
+        private void SetIsKeyboardFocusWithin(IInputElement element, Boolean value)
         {
-            while (element != null)
+            var visual = element as Visual;
+
+            while (visual != null)
             {
-                element.IsKeyboardFocusWithin = value;
-                element = VisualTreeHelper.GetParent(element) as UIElement;
+                var uiElement = visual as UIElement;
+                if (uiElement != null)
+                {
+                    uiElement.IsKeyboardFocusWithin = value;
+                }
+
+                visual = VisualTreeHelper.GetParent(visual) as Visual;
             }
         }
 
@@ -870,8 +845,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (elementWithFocus != null)
             {
                 var keyDownHandled = false;
-                Keyboard.RaisePreviewKeyDown(elementWithFocus, device, key, ctrl, alt, shift, repeat, ref keyDownHandled);
-                Keyboard.RaiseKeyDown(elementWithFocus, device, key, ctrl, alt, shift, repeat, ref keyDownHandled);
+
+                var dobj = elementWithFocus as DependencyObject;
+                if (dobj != null)
+                {
+                    Keyboard.RaisePreviewKeyDown(dobj, device, key, ctrl, alt, shift, repeat, ref keyDownHandled);
+                    Keyboard.RaiseKeyDown(dobj, device, key, ctrl, alt, shift, repeat, ref keyDownHandled);
+                }
             }
         }
 
@@ -886,8 +866,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (elementWithFocus != null)
             {
                 var keyUpHandled = false;
-                Keyboard.RaisePreviewKeyUp(elementWithFocus, device, key, ref keyUpHandled);
-                Keyboard.RaiseKeyUp(elementWithFocus, device, key, ref keyUpHandled);
+
+                var dobj = elementWithFocus as DependencyObject;
+                if (dobj != null)
+                {
+                    Keyboard.RaisePreviewKeyUp(dobj, device, key, ref keyUpHandled);
+                    Keyboard.RaiseKeyUp(dobj, device, key, ref keyUpHandled);
+                }
             }
         }
 
@@ -902,8 +887,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (elementWithFocus != null)
             {
                 var textInputHandled = false;
-                Keyboard.RaisePreviewTextInput(elementWithFocus, device, ref textInputHandled);
-                Keyboard.RaiseTextInput(elementWithFocus, device, ref textInputHandled);
+
+                var dobj = elementWithFocus as DependencyObject;
+                if (dobj != null)
+                {
+                    Keyboard.RaisePreviewTextInput(dobj, device, ref textInputHandled);
+                    Keyboard.RaiseTextInput(dobj, device, ref textInputHandled);
+                }
             }
         }
 
@@ -924,8 +914,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 var dipsDeltaY = Display.PixelsToDips(dy);
 
                 var mouseMoveHandled = false;
-                Mouse.RaisePreviewMouseMove(recipient, device, dipsX, dipsY, dipsDeltaX, dipsDeltaY, ref mouseMoveHandled);
-                Mouse.RaiseMouseMove(recipient, device, dipsX, dipsY, dipsDeltaX, dipsDeltaY, ref mouseMoveHandled);
+
+                var dobj = recipient as DependencyObject;
+                if (dobj != null)
+                {
+                    Mouse.RaisePreviewMouseMove(dobj, device, dipsX, dipsY, dipsDeltaX, dipsDeltaY, ref mouseMoveHandled);
+                    Mouse.RaiseMouseMove(dobj, device, dipsX, dipsY, dipsDeltaX, dipsDeltaY, ref mouseMoveHandled);
+                }
             }
         }
 
@@ -959,8 +954,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (recipient != null)
             {
                 var mouseDownHandled = false;
-                Mouse.RaisePreviewMouseDown(recipient, device, button, ref mouseDownHandled);
-                Mouse.RaiseMouseDown(recipient, device, button, ref mouseDownHandled);
+
+                var dobj = recipient as DependencyObject;
+                if (dobj != null)
+                {
+                    Mouse.RaisePreviewMouseDown(dobj, device, button, ref mouseDownHandled);
+                    Mouse.RaiseMouseDown(dobj, device, button, ref mouseDownHandled);
+                }
             }
         }
 
@@ -976,8 +976,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (recipient != null)
             {
                 var mouseUpHandled = false;
-                Mouse.RaisePreviewMouseUp(recipient, device, button, ref mouseUpHandled);
-                Mouse.RaiseMouseUp(recipient, device, button, ref mouseUpHandled);
+
+                var dobj = recipient as DependencyObject;
+                if (dobj != null)
+                {
+                    Mouse.RaisePreviewMouseUp(dobj, device, button, ref mouseUpHandled);
+                    Mouse.RaiseMouseUp(dobj, device, button, ref mouseUpHandled);
+                }
             }
         }
 
@@ -993,8 +998,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (recipient != null)
             {
                 var mouseClickHandled = false;
-                Mouse.RaisePreviewMouseClick(recipient, device, button, ref mouseClickHandled);
-                Mouse.RaiseMouseClick(recipient, device, button, ref mouseClickHandled);
+
+                var dobj = recipient as DependencyObject;
+                if (dobj != null)
+                {
+                    Mouse.RaisePreviewMouseClick(dobj, device, button, ref mouseClickHandled);
+                    Mouse.RaiseMouseClick(dobj, device, button, ref mouseClickHandled);
+                }
             }
         }
 
@@ -1010,8 +1020,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (recipient != null)
             {
                 var mouseDoubleClickHandled = false;
-                Mouse.RaisePreviewMouseDoubleClick(recipient, device, button, ref mouseDoubleClickHandled);
-                Mouse.RaiseMouseDoubleClick(recipient, device, button, ref mouseDoubleClickHandled);
+
+                var dobj = recipient as DependencyObject;
+                if (dobj != null)
+                {
+                    Mouse.RaisePreviewMouseDoubleClick(dobj, device, button, ref mouseDoubleClickHandled);
+                    Mouse.RaiseMouseDoubleClick(dobj, device, button, ref mouseDoubleClickHandled);
+                }
             }
         }
 
@@ -1030,8 +1045,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 var dipsY = Display.PixelsToDips(y);
 
                 var mouseWheelHandled = false;
-                Mouse.RaisePreviewMouseWheel(recipient, device, dipsX, dipsY, ref mouseWheelHandled);
-                Mouse.RaiseMouseWheel(recipient, device, dipsX, dipsY, ref mouseWheelHandled);
+
+                var dobj = recipient as DependencyObject;
+                if (dobj != null)
+                {
+                    Mouse.RaisePreviewMouseWheel(dobj, device, dipsX, dipsY, ref mouseWheelHandled);
+                    Mouse.RaiseMouseWheel(dobj, device, dipsX, dipsY, ref mouseWheelHandled);
+                }
             }
         }
 
@@ -1043,9 +1063,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
         // State values.
         private readonly DrawingContext drawingContext;
-        private UIElement elementUnderMousePrev;
-        private UIElement elementUnderMouse;
-        private UIElement elementWithMouseCapture;
-        private UIElement elementWithFocus;
+        private IInputElement elementUnderMousePrev;
+        private IInputElement elementUnderMouse;
+        private IInputElement elementWithMouseCapture;
+        private IInputElement elementWithFocus;
     }
 }

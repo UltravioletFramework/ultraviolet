@@ -60,111 +60,111 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Occurs when the element gains keyboard focus.
         /// </summary>
-        event UIElementRoutedEventHandler GotKeyboardFocus;
+        event UpfRoutedEventHandler GotKeyboardFocus;
 
         /// <summary>
         /// Occurs when the element loses keyboard focus.
         /// </summary>
-        event UIElementRoutedEventHandler LostKeyboardFocus;
+        event UpfRoutedEventHandler LostKeyboardFocus;
 
         /// <summary>
         /// Occurs when the element receives text input from the keyboard.
         /// </summary>
-        event UIElementKeyboardEventHandler PreviewTextInput;
+        event UpfKeyboardEventHandler PreviewTextInput;
 
         /// <summary>
         /// Occurs when a key is pressed while the element has focus.
         /// </summary>
-        event UIElementKeyDownEventHandler PreviewKeyDown;
+        event UpfKeyDownEventHandler PreviewKeyDown;
 
         /// <summary>
         /// Occurs when a key is released while the element has focus.
         /// </summary>
-        event UIElementKeyEventHandler PreviewKeyUp;
+        event UpfKeyEventHandler PreviewKeyUp;
 
         /// <summary>
         /// Occurs when the element receives text input from the keyboard.
         /// </summary>
-        event UIElementKeyboardEventHandler TextInput;
+        event UpfKeyboardEventHandler TextInput;
 
         /// <summary>
         /// Occurs when a key is pressed while the element has focus.
         /// </summary>
-        event UIElementKeyDownEventHandler KeyDown;
+        event UpfKeyDownEventHandler KeyDown;
 
         /// <summary>
         /// Occurs when a key is released while the element has focus.
         /// </summary>
-        event UIElementKeyEventHandler KeyUp;
+        event UpfKeyEventHandler KeyUp;
 
         /// <summary>
         /// Occurs when the element gains mouse capture.
         /// </summary>
-        event UIElementMouseEventHandler GotMouseCapture;
+        event UpfMouseEventHandler GotMouseCapture;
 
         /// <summary>
         /// Occurs when the element loses mouse capture.
         /// </summary>
-        event UIElementRoutedEventHandler LostMouseCapture;
+        event UpfRoutedEventHandler LostMouseCapture;
 
         /// <summary>
         /// Occurs when the mouse cursor moves over the element.
         /// </summary>
-        event UIElementMouseMoveEventHandler PreviewMouseMoveEvent;
+        event UpfMouseMoveEventHandler PreviewMouseMoveEvent;
 
         /// <summary>
         /// Occurs when a mouse button is pressed while the cursor is over the element.
         /// </summary>
-        event UIElementMouseButtonEventHandler PreviewMouseDownEvent;
+        event UpfMouseButtonEventHandler PreviewMouseDownEvent;
 
         /// <summary>
         /// Occurs when a mouse button is released while the cursor is over the element.
         /// </summary>
-        event UIElementMouseButtonEventHandler PreviewMouseUpEvent;
+        event UpfMouseButtonEventHandler PreviewMouseUpEvent;
 
         /// <summary>
         /// Occurs when a mouse button is clicked while the cursor is over the element.
         /// </summary>
-        event UIElementMouseButtonEventHandler PreviewMouseClickEvent;
+        event UpfMouseButtonEventHandler PreviewMouseClickEvent;
 
         /// <summary>
         /// Occurs when a mouse button is double clicked while the cursor is over the element.
         /// </summary>
-        event UIElementMouseButtonEventHandler PreviewMouseDoubleClickEvent;
+        event UpfMouseButtonEventHandler PreviewMouseDoubleClickEvent;
 
         /// <summary>
         /// Occurs when the mouse wheel is scrolled while the cursor is over the element.
         /// </summary>
-        event UIElementMouseWheelEventHandler PreviewMouseWheelEvent;
+        event UpfMouseWheelEventHandler PreviewMouseWheelEvent;
 
         /// <summary>
         /// Occurs when the mouse cursor moves over the element.
         /// </summary>
-        event UIElementMouseMoveEventHandler MouseMoveEvent;
+        event UpfMouseMoveEventHandler MouseMoveEvent;
 
         /// <summary>
         /// Occurs when a mouse button is pressed while the cursor is over the element.
         /// </summary>
-        event UIElementMouseButtonEventHandler MouseDownEvent;
+        event UpfMouseButtonEventHandler MouseDownEvent;
 
         /// <summary>
         /// Occurs when a mouse button is released while the cursor is over the element.
         /// </summary>
-        event UIElementMouseButtonEventHandler MouseUpEvent;
+        event UpfMouseButtonEventHandler MouseUpEvent;
 
         /// <summary>
         /// Occurs when a mouse button is clicked while the cursor is over the element.
         /// </summary>
-        event UIElementMouseButtonEventHandler MouseClickEvent;
+        event UpfMouseButtonEventHandler MouseClickEvent;
 
         /// <summary>
         /// Occurs when a mouse button is double clicked while the cursor is over the element.
         /// </summary>
-        event UIElementMouseButtonEventHandler MouseDoubleClickEvent;
+        event UpfMouseButtonEventHandler MouseDoubleClickEvent;
 
         /// <summary>
         /// Occurs when the mouse wheel is scrolled while the cursor is over the element.
         /// </summary>
-        event UIElementMouseWheelEventHandler MouseWheelEvent;
+        event UpfMouseWheelEventHandler MouseWheelEvent;
     }
 }

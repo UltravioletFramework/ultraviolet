@@ -42,12 +42,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Occurs when the value of the <see cref="Value"/> property changes.
         /// </summary>
-        public event UIElementEventHandler ValueChanged;
+        public event UpfEventHandler ValueChanged;
 
         /// <summary>
         /// Occurs when the value of the <see cref="Format"/> property changes.
         /// </summary>
-        public event UIElementEventHandler FormatChanged;
+        public event UpfEventHandler FormatChanged;
 
         /// <summary>
         /// Identifies the <see cref="Value"/> dependency property.

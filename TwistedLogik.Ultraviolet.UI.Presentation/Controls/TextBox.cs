@@ -150,47 +150,47 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Occurs when the value of the <see cref="Text"/> property changes.
         /// </summary>
-        public event UIElementEventHandler TextChanged;
+        public event UpfEventHandler TextChanged;
 
         /// <summary>
         /// Occurs when the value of the <see cref="Pattern"/> property changes.
         /// </summary>
-        public event UIElementEventHandler PatternChanged;
+        public event UpfEventHandler PatternChanged;
 
         /// <summary>
         /// Occurs when the value of the <see cref="MaxLength"/> property changes.
         /// </summary>
-        public event UIElementEventHandler MaxLengthChanged;
+        public event UpfEventHandler MaxLengthChanged;
 
         /// <summary>
         /// Occurs when the value of the <see cref="CaretThickness"/> property changes.
         /// </summary>
-        public event UIElementEventHandler CaretThicknessChanged;
+        public event UpfEventHandler CaretThicknessChanged;
 
         /// <summary>
         /// Occurs when the value of the <see cref="CaretImage"/> property changes.
         /// </summary>
-        public event UIElementEventHandler CaretImageChanged;
+        public event UpfEventHandler CaretImageChanged;
 
         /// <summary>
         /// Occurs when the value of the <see cref="CaretColor"/> property changes.
         /// </summary>
-        public event UIElementEventHandler CaretColorChanged;
+        public event UpfEventHandler CaretColorChanged;
 
         /// <summary>
         /// Occurs when the value of the <see cref="SelectionImage"/> property changes.
         /// </summary>
-        public event UIElementEventHandler SelectionImageChanged;
+        public event UpfEventHandler SelectionImageChanged;
 
         /// <summary>
         /// Occurs when the value of the <see cref="SelectionColor"/> property changes.
         /// </summary>
-        public event UIElementEventHandler SelectionColorChanged;
+        public event UpfEventHandler SelectionColorChanged;
 
         /// <summary>
         /// Occurs when the value of the <see cref="InsertionMode"/> property changes.
         /// </summary>
-        public event UIElementEventHandler InsertionModeChanged;
+        public event UpfEventHandler InsertionModeChanged;
 
         /// <summary>
         /// Identifies the <see cref="Text"/> dependency property.

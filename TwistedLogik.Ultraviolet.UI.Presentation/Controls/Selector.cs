@@ -66,12 +66,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Occurs when the value of the <see cref="SelectedIndex"/> property changes.
         /// </summary>
-        public event UIElementEventHandler SelectedIndexChanged;
+        public event UpfEventHandler SelectedIndexChanged;
 
         /// <summary>
         /// Occurs when the value of the <see cref="SelectedItem"/> property changes.
         /// </summary>
-        public event UIElementEventHandler SelectedItemChanged;
+        public event UpfEventHandler SelectedItemChanged;
 
         /// <summary>
         /// Identifies the <see cref="SelectedIndex"/> dependency property.

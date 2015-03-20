@@ -40,12 +40,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Occurs when the value of the <see cref="BorderThickness"/> property changes.
         /// </summary>
-        public event UIElementEventHandler BorderThicknessChanged;
+        public event UpfEventHandler BorderThicknessChanged;
 
         /// <summary>
         /// Occurs when the value of the <see cref="BorderColor"/> property changes.
         /// </summary>
-        public event UIElementEventHandler BorderColorChanged;
+        public event UpfEventHandler BorderColorChanged;
 
         /// <summary>
         /// Identifies the <see cref="BorderThickness"/> dependency property.

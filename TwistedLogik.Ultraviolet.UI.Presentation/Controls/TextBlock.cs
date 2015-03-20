@@ -34,7 +34,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Occurs when the value of the <see cref="Text"/> property changes.
         /// </summary>
-        public event UIElementEventHandler TextChanged;
+        public event UpfEventHandler TextChanged;
 
         /// <summary>
         /// Identifies the <see cref="Text"/> dependency property.

@@ -54,12 +54,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Occurs when the value of the <see cref="ItemsSource"/> property changes.
         /// </summary>
-        public event UIElementEventHandler ItemsSourceChanged;
+        public event UpfEventHandler ItemsSourceChanged;
 
         /// <summary>
         /// Occurs when the value of the <see cref="ItemStringFormat"/> property changes.
         /// </summary>
-        public event UIElementEventHandler ItemStringFormatChanged;
+        public event UpfEventHandler ItemStringFormatChanged;
 
         /// <summary>
         /// Identifies the <see cref="ItemsSource"/> dependency property.

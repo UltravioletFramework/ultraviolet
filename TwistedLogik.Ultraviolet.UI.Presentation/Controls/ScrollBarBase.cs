@@ -31,7 +31,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Occurs when the value of the <see cref="ViewportSize"/> property changes.
         /// </summary>
-        public event UIElementEventHandler ViewportSizeChanged;
+        public event UpfEventHandler ViewportSizeChanged;
 
         /// <summary>
         /// Identifies the <see cref="ViewportSize"/> dependency property.

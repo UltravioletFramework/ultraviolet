@@ -32,7 +32,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Occurs when the value of the <see cref="FillColor"/> property changes.
         /// </summary>
-        public event UIElementEventHandler FillColorChanged;
+        public event UpfEventHandler FillColorChanged;
 
         /// <summary>
         /// Identifies the <see cref="FillColor"/> dependency property.

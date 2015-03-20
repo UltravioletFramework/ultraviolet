@@ -10,7 +10,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
     /// <param name="element">The element that raised the event.</param>
     /// <param name="device">The keyboard device.</param>
     /// <param name="handled">A value indicating whether the event has been handled.</param>
-    public delegate void UIElementKeyboardEventHandler(UIElement element, KeyboardDevice device, ref Boolean handled);
+    public delegate void UpfKeyboardEventHandler(DependencyObject element, KeyboardDevice device, ref Boolean handled);
 
     /// <summary>
     /// Represents the method that is called when a keyboard key is pressed while an element has focus.
@@ -20,7 +20,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
     /// <param name="key">The <see cref="Key"/> value that represents the key that was pressed.</param>
     /// <param name="modifiers">A <see cref="ModifierKeys"/> value indicating which of the key modifiers are currently active.</param>
     /// <param name="handled">A value indicating whether the event has been handled.</param>
-    public delegate void UIElementKeyDownEventHandler(UIElement element, KeyboardDevice device, Key key, ModifierKeys modifiers, ref Boolean handled);
+    public delegate void UpfKeyDownEventHandler(DependencyObject element, KeyboardDevice device, Key key, ModifierKeys modifiers, ref Boolean handled);
 
     /// <summary>
     /// Represents the method that is called when a keyboard key is released while an element has focus.
@@ -29,7 +29,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
     /// <param name="device">The <see cref="KeyboardDevice"/> that raised the event.</param>
     /// <param name="key">The <see cref="Key"/> value that represents the key that was pressed.</param>
     /// <param name="handled">A value indicating whether the event has been handled.</param>
-    public delegate void UIElementKeyEventHandler(UIElement element, KeyboardDevice device, Key key, ref Boolean handled);
+    public delegate void UpfKeyEventHandler(DependencyObject element, KeyboardDevice device, Key key, ref Boolean handled);
 
     /// <summary>
     /// Represents the keyboard device.
@@ -38,16 +38,29 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
     public static partial class Keyboard
     {
         /// <summary>
+        /// Gets the element which has keyboard focus within the specified view.
+        /// </summary>
+        /// <param name="view">The view to evaluate.</param>
+        /// <returns>The element which has keyboard focus within the specified view, or <c>null</c>
+        /// if no element currently has focus.</returns>
+        public static IInputElement GetFocusedElement(PresentationFoundationView view)
+        {
+            Contract.Require(view, "view");
+
+            return view.ElementWithFocus;
+        }
+
+        /// <summary>
         /// Adds a handler for the GotKeyboardFocus attached event to the specified element.
         /// </summary>
         /// <param name="element">The element to which to add the handler.</param>
         /// <param name="handler">The handler to add to the specified element.</param>
-        public static void AddGotKeyboardFocusHandler(UIElement element, UIElementRoutedEventHandler handler)
+        public static void AddGotKeyboardFocusHandler(DependencyObject element, UpfRoutedEventHandler handler)
         {
             Contract.Require(element, "element");
             Contract.Require(handler, "handler");
 
-            element.AddHandler(GotKeyboardFocusEvent, handler);
+            IInputElementHelper.AddHandler(element, GotKeyboardFocusEvent, handler);
         }
 
         /// <summary>
@@ -55,12 +68,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// </summary>
         /// <param name="element">The element to which to add the handler.</param>
         /// <param name="handler">The handler to add to the specified element.</param>
-        public static void AddLostKeyboardFocusHandler(UIElement element, UIElementRoutedEventHandler handler)
+        public static void AddLostKeyboardFocusHandler(DependencyObject element, UpfRoutedEventHandler handler)
         {
             Contract.Require(element, "element");
             Contract.Require(handler, "handler");
 
-            element.AddHandler(LostKeyboardFocusEvent, handler);
+            IInputElementHelper.AddHandler(element, LostKeyboardFocusEvent, handler);
         }
 
         /// <summary>
@@ -68,12 +81,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// </summary>
         /// <param name="element">The element to which to add the handler.</param>
         /// <param name="handler">The handler to add to the specified element.</param>
-        public static void AddPreviewTextInputHandler(UIElement element, UIElementKeyboardEventHandler handler)
+        public static void AddPreviewTextInputHandler(DependencyObject element, UpfKeyboardEventHandler handler)
         {
             Contract.Require(element, "element");
             Contract.Require(handler, "handler");
 
-            element.AddHandler(PreviewTextInputEvent, handler);
+            IInputElementHelper.AddHandler(element, PreviewTextInputEvent, handler);
         }
 
         /// <summary>
@@ -81,12 +94,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// </summary>
         /// <param name="element">The element to which to add the handler.</param>
         /// <param name="handler">The handler to add to the specified element.</param>
-        public static void AddPreviewKeyDownHandler(UIElement element, UIElementKeyDownEventHandler handler)
+        public static void AddPreviewKeyDownHandler(DependencyObject element, UpfKeyDownEventHandler handler)
         {
             Contract.Require(element, "element");
             Contract.Require(handler, "handler");
 
-            element.AddHandler(PreviewKeyDownEvent, handler);
+            IInputElementHelper.AddHandler(element, PreviewKeyDownEvent, handler);
         }
 
         /// <summary>
@@ -94,12 +107,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// </summary>
         /// <param name="element">The element to which to add the handler.</param>
         /// <param name="handler">The handler to add to the specified element.</param>
-        public static void AddPreviewKeyUpEventHandler(UIElement element, UIElementKeyEventHandler handler)
+        public static void AddPreviewKeyUpEventHandler(DependencyObject element, UpfKeyEventHandler handler)
         {
             Contract.Require(element, "element");
             Contract.Require(handler, "handler");
 
-            element.RemoveHandler(PreviewKeyUpEvent, handler);
+            IInputElementHelper.AddHandler(element, PreviewKeyUpEvent, handler);
         }
 
         /// <summary>
@@ -107,12 +120,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// </summary>
         /// <param name="element">The element to which to add the handler.</param>
         /// <param name="handler">The handler to add to the specified element.</param>
-        public static void AddTextInputHandler(UIElement element, UIElementKeyboardEventHandler handler)
+        public static void AddTextInputHandler(DependencyObject element, UpfKeyboardEventHandler handler)
         {
             Contract.Require(element, "element");
             Contract.Require(handler, "handler");
 
-            element.AddHandler(TextInputEvent, handler);
+            IInputElementHelper.AddHandler(element, TextInputEvent, handler);
         }
 
         /// <summary>
@@ -120,12 +133,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// </summary>
         /// <param name="element">The element to which to add the handler.</param>
         /// <param name="handler">The handler to add to the specified element.</param>
-        public static void AddKeyDownHandler(UIElement element, UIElementKeyDownEventHandler handler)
+        public static void AddKeyDownHandler(DependencyObject element, UpfKeyDownEventHandler handler)
         {
             Contract.Require(element, "element");
             Contract.Require(handler, "handler");
 
-            element.AddHandler(KeyDownEvent, handler);
+            IInputElementHelper.AddHandler(element, KeyDownEvent, handler);
         }
 
         /// <summary>
@@ -133,12 +146,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// </summary>
         /// <param name="element">The element to which to add the handler.</param>
         /// <param name="handler">The handler to add to the specified element.</param>
-        public static void AddKeyUpEventHandler(UIElement element, UIElementKeyEventHandler handler)
+        public static void AddKeyUpEventHandler(DependencyObject element, UpfKeyEventHandler handler)
         {
             Contract.Require(element, "element");
             Contract.Require(handler, "handler");
 
-            element.RemoveHandler(KeyUpEvent, handler);
+            IInputElementHelper.AddHandler(element, KeyUpEvent, handler);
         }
 
         /// <summary>
@@ -146,12 +159,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// </summary>
         /// <param name="element">The element from which to remove the handler.</param>
         /// <param name="handler">The handler to remove from the specified element.</param>
-        public static void RemoveGotKeyboardFocusHandler(UIElement element, UIElementRoutedEventHandler handler)
+        public static void RemoveGotKeyboardFocusHandler(DependencyObject element, UpfRoutedEventHandler handler)
         {
             Contract.Require(element, "element");
             Contract.Require(handler, "handler");
 
-            element.RemoveHandler(GotKeyboardFocusEvent, handler);
+            IInputElementHelper.RemoveHandler(element, GotKeyboardFocusEvent, handler);
         }
 
         /// <summary>
@@ -159,12 +172,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// </summary>
         /// <param name="element">The element from which to remove the handler.</param>
         /// <param name="handler">The handler to remove from the specified element.</param>
-        public static void RemoveLostKeyboardFocusHandler(UIElement element, UIElementRoutedEventHandler handler)
+        public static void RemoveLostKeyboardFocusHandler(DependencyObject element, UpfRoutedEventHandler handler)
         {
             Contract.Require(element, "element");
             Contract.Require(handler, "handler");
 
-            element.RemoveHandler(LostKeyboardFocusEvent, handler);
+            IInputElementHelper.RemoveHandler(element, LostKeyboardFocusEvent, handler);
         }
 
         /// <summary>
@@ -172,12 +185,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// </summary>
         /// <param name="element">The element from which to remove the handler.</param>
         /// <param name="handler">The handler to remove from the specified element.</param>
-        public static void RemovePreviewTextInputHandler(UIElement element, UIElementKeyboardEventHandler handler)
+        public static void RemovePreviewTextInputHandler(DependencyObject element, UpfKeyboardEventHandler handler)
         {
             Contract.Require(element, "element");
             Contract.Require(handler, "handler");
 
-            element.RemoveHandler(PreviewTextInputEvent, handler);
+            IInputElementHelper.RemoveHandler(element, PreviewTextInputEvent, handler);
         }
 
         /// <summary>
@@ -185,12 +198,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// </summary>
         /// <param name="element">The element from which to remove the handler.</param>
         /// <param name="handler">The handler to remove from the specified element.</param>
-        public static void RemovePreviewKeyDownHandler(UIElement element, UIElementKeyDownEventHandler handler)
+        public static void RemovePreviewKeyDownHandler(DependencyObject element, UpfKeyDownEventHandler handler)
         {
             Contract.Require(element, "element");
             Contract.Require(handler, "handler");
 
-            element.RemoveHandler(PreviewKeyDownEvent, handler);
+            IInputElementHelper.RemoveHandler(element, PreviewKeyDownEvent, handler);
         }
 
         /// <summary>
@@ -198,12 +211,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// </summary>
         /// <param name="element">The element from which to remove the handler.</param>
         /// <param name="handler">The handler to remove from the specified element.</param>
-        public static void RemovePreviewKeyUpHandler(UIElement element, UIElementKeyEventHandler handler)
+        public static void RemovePreviewKeyUpHandler(DependencyObject element, UpfKeyEventHandler handler)
         {
             Contract.Require(element, "element");
             Contract.Require(handler, "handler");
 
-            element.RemoveHandler(PreviewKeyUpEvent, handler);
+            IInputElementHelper.RemoveHandler(element, PreviewKeyUpEvent, handler);
         }
 
         /// <summary>
@@ -211,12 +224,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// </summary>
         /// <param name="element">The element from which to remove the handler.</param>
         /// <param name="handler">The handler to remove from the specified element.</param>
-        public static void RemoveTextInputHandler(UIElement element, UIElementKeyboardEventHandler handler)
+        public static void RemoveTextInputHandler(DependencyObject element, UpfKeyboardEventHandler handler)
         {
             Contract.Require(element, "element");
             Contract.Require(handler, "handler");
 
-            element.RemoveHandler(TextInputEvent, handler);
+            IInputElementHelper.RemoveHandler(element, TextInputEvent, handler);
         }
 
         /// <summary>
@@ -224,12 +237,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// </summary>
         /// <param name="element">The element from which to remove the handler.</param>
         /// <param name="handler">The handler to remove from the specified element.</param>
-        public static void RemoveKeyDownHandler(UIElement element, UIElementKeyDownEventHandler handler)
+        public static void RemoveKeyDownHandler(DependencyObject element, UpfKeyDownEventHandler handler)
         {
             Contract.Require(element, "element");
             Contract.Require(handler, "handler");
 
-            element.RemoveHandler(KeyDownEvent, handler);
+            IInputElementHelper.RemoveHandler(element, KeyDownEvent, handler);
         }
 
         /// <summary>
@@ -237,12 +250,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// </summary>
         /// <param name="element">The element from which to remove the handler.</param>
         /// <param name="handler">The handler to remove from the specified element.</param>
-        public static void RemoveKeyUpHandler(UIElement element, UIElementKeyEventHandler handler)
+        public static void RemoveKeyUpHandler(DependencyObject element, UpfKeyEventHandler handler)
         {
             Contract.Require(element, "element");
             Contract.Require(handler, "handler");
 
-            element.RemoveHandler(KeyUpEvent, handler);
+            IInputElementHelper.RemoveHandler(element, KeyUpEvent, handler);
         }
 
         /// <summary>
@@ -272,56 +285,56 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// Identifies the GotKeyboardFocus attached event.
         /// </summary>
         public static readonly RoutedEvent GotKeyboardFocusEvent = RoutedEvent.Register("GotKeyboardFocus", RoutingStrategy.Bubble,
-            typeof(UIElementRoutedEventHandler), typeof(Keyboard));
+            typeof(UpfRoutedEventHandler), typeof(Keyboard));
 
         /// <summary>
         /// Identifies the LostKeyboardFocus attached event.
         /// </summary>
         public static readonly RoutedEvent LostKeyboardFocusEvent = RoutedEvent.Register("LostKeyboardFocus", RoutingStrategy.Bubble,
-            typeof(UIElementRoutedEventHandler), typeof(Keyboard));
+            typeof(UpfRoutedEventHandler), typeof(Keyboard));
 
         /// <summary>
         /// Identifies the PreviewTextInput attached event.
         /// </summary>
         public static readonly RoutedEvent PreviewTextInputEvent = RoutedEvent.Register("PreviewTextInput", RoutingStrategy.Tunnel,
-            typeof(UIElementKeyboardEventHandler), typeof(Keyboard));
+            typeof(UpfKeyboardEventHandler), typeof(Keyboard));
 
         /// <summary>
         /// Identifies the PreviewKeyDown attached event.
         /// </summary>
         public static readonly RoutedEvent PreviewKeyDownEvent = RoutedEvent.Register("PreviewKeyDown", RoutingStrategy.Tunnel,
-            typeof(UIElementKeyDownEventHandler), typeof(Keyboard));
+            typeof(UpfKeyDownEventHandler), typeof(Keyboard));
 
         /// <summary>
         /// Identifies the PreviewKeyUp attached event.
         /// </summary>
         public static readonly RoutedEvent PreviewKeyUpEvent = RoutedEvent.Register("PreviewKeyUp", RoutingStrategy.Tunnel,
-            typeof(UIElementKeyEventHandler), typeof(Keyboard));
+            typeof(UpfKeyEventHandler), typeof(Keyboard));
 
         /// <summary>
         /// Identifies the TextInput attached event.
         /// </summary>
         public static readonly RoutedEvent TextInputEvent = RoutedEvent.Register("TextInput", RoutingStrategy.Bubble,
-            typeof(UIElementKeyboardEventHandler), typeof(Keyboard));
+            typeof(UpfKeyboardEventHandler), typeof(Keyboard));
 
         /// <summary>
         /// Identifies the KeyDown attached event.
         /// </summary>
         public static readonly RoutedEvent KeyDownEvent = RoutedEvent.Register("KeyDown", RoutingStrategy.Bubble,
-            typeof(UIElementKeyDownEventHandler), typeof(Keyboard));
+            typeof(UpfKeyDownEventHandler), typeof(Keyboard));
 
         /// <summary>
         /// Identifies the KeyUp attached event.
         /// </summary>
         public static readonly RoutedEvent KeyUpEvent = RoutedEvent.Register("KeyUp", RoutingStrategy.Bubble,
-            typeof(UIElementKeyEventHandler), typeof(Keyboard));
+            typeof(UpfKeyEventHandler), typeof(Keyboard));
 
         /// <summary>
         /// Raises the GotKeyboardFocus attached event for the specified element.
         /// </summary>
-        internal static void RaiseGotKeyboardFocus(UIElement element, ref Boolean handled)
+        internal static void RaiseGotKeyboardFocus(DependencyObject element, ref Boolean handled)
         {
-            var temp = RoutedEvent.GetInvocationDelegate<UIElementRoutedEventHandler>(GotKeyboardFocusEvent);
+            var temp = RoutedEvent.GetInvocationDelegate<UpfRoutedEventHandler>(GotKeyboardFocusEvent);
             if (temp != null)
             {
                 temp(element, ref handled);
@@ -331,9 +344,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <summary>
         /// Raises the LostKeyboardFocus attached event for the specified element.
         /// </summary>
-        internal static void RaiseLostKeyboardFocus(UIElement element, ref Boolean handled)
+        internal static void RaiseLostKeyboardFocus(DependencyObject element, ref Boolean handled)
         {
-            var temp = RoutedEvent.GetInvocationDelegate<UIElementRoutedEventHandler>(LostKeyboardFocusEvent);
+            var temp = RoutedEvent.GetInvocationDelegate<UpfRoutedEventHandler>(LostKeyboardFocusEvent);
             if (temp != null)
             {
                 temp(element, ref handled);
@@ -343,9 +356,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <summary>
         /// Raises the PreviewTextInput attached event for the specified element.
         /// </summary>
-        internal static void RaisePreviewTextInput(UIElement element, KeyboardDevice device, ref Boolean handled)
+        internal static void RaisePreviewTextInput(DependencyObject element, KeyboardDevice device, ref Boolean handled)
         {
-            var temp = RoutedEvent.GetInvocationDelegate<UIElementKeyboardEventHandler>(PreviewTextInputEvent);
+            var temp = RoutedEvent.GetInvocationDelegate<UpfKeyboardEventHandler>(PreviewTextInputEvent);
             if (temp != null)
             {
                 temp(element, device, ref handled);
@@ -355,12 +368,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <summary>
         /// Raises the KeyDown attached event for the specified element.
         /// </summary>
-        internal static void RaisePreviewKeyDown(UIElement element, KeyboardDevice device, Key key, Boolean ctrl, Boolean alt, Boolean shift, Boolean repeat, ref Boolean handled)
+        internal static void RaisePreviewKeyDown(DependencyObject element, KeyboardDevice device, Key key, Boolean ctrl, Boolean alt, Boolean shift, Boolean repeat, ref Boolean handled)
         {
-            var temp = RoutedEvent.GetInvocationDelegate<UIElementKeyDownEventHandler>(PreviewKeyDownEvent);
+            var temp = RoutedEvent.GetInvocationDelegate<UpfKeyDownEventHandler>(PreviewKeyDownEvent);
             if (temp != null)
             {
-                var modifiers = CreateModifierKeys(ctrl, alt, shift, repeat);
+                var modifiers = CreateModifierKeys(alt, ctrl, shift, repeat);
                 temp(element, device, key, Keyboard.Modifiers, ref handled);
             }
         }
@@ -368,9 +381,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <summary>
         /// Raises the PreviewKeyUp attached event for the specified element.
         /// </summary>
-        internal static void RaisePreviewKeyUp(UIElement element, KeyboardDevice device, Key key, ref Boolean handled)
+        internal static void RaisePreviewKeyUp(DependencyObject element, KeyboardDevice device, Key key, ref Boolean handled)
         {
-            var temp = RoutedEvent.GetInvocationDelegate<UIElementKeyEventHandler>(PreviewKeyUpEvent);
+            var temp = RoutedEvent.GetInvocationDelegate<UpfKeyEventHandler>(PreviewKeyUpEvent);
             if (temp != null)
             {
                 temp(element, device, key, ref handled);
@@ -380,9 +393,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <summary>
         /// Raises the TextInput attached event for the specified element.
         /// </summary>
-        internal static void RaiseTextInput(UIElement element, KeyboardDevice device, ref Boolean handled)
+        internal static void RaiseTextInput(DependencyObject element, KeyboardDevice device, ref Boolean handled)
         {
-            var temp = RoutedEvent.GetInvocationDelegate<UIElementKeyboardEventHandler>(TextInputEvent);
+            var temp = RoutedEvent.GetInvocationDelegate<UpfKeyboardEventHandler>(TextInputEvent);
             if (temp != null)
             {
                 temp(element, device, ref handled);
@@ -392,12 +405,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <summary>
         /// Raises the KeyDown attached event for the specified element.
         /// </summary>
-        internal static void RaiseKeyDown(UIElement element, KeyboardDevice device, Key key, Boolean ctrl, Boolean alt, Boolean shift, Boolean repeat, ref Boolean handled)
+        internal static void RaiseKeyDown(DependencyObject element, KeyboardDevice device, Key key, Boolean ctrl, Boolean alt, Boolean shift, Boolean repeat, ref Boolean handled)
         {
-            var temp = RoutedEvent.GetInvocationDelegate<UIElementKeyDownEventHandler>(KeyDownEvent);
+            var temp = RoutedEvent.GetInvocationDelegate<UpfKeyDownEventHandler>(KeyDownEvent);
             if (temp != null)
             {
-                var modifiers = CreateModifierKeys(ctrl, alt, shift, repeat);
+                var modifiers = CreateModifierKeys(alt, ctrl, shift, repeat);
                 temp(element, device, key, modifiers, ref handled);
             }
         }
@@ -405,9 +418,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <summary>
         /// Raises the KeyUp attached event for the specified element.
         /// </summary>
-        internal static void RaiseKeyUp(UIElement element, KeyboardDevice device, Key key, ref Boolean handled)
+        internal static void RaiseKeyUp(DependencyObject element, KeyboardDevice device, Key key, ref Boolean handled)
         {
-            var temp = RoutedEvent.GetInvocationDelegate<UIElementKeyEventHandler>(KeyUpEvent);
+            var temp = RoutedEvent.GetInvocationDelegate<UpfKeyEventHandler>(KeyUpEvent);
             if (temp != null)
             {
                 temp(element, device, key, ref handled);
