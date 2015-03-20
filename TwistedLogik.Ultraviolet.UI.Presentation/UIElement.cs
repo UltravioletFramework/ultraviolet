@@ -52,19 +52,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Initializes a new instance of the <see cref="UIElement"/> class.
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
-        /// <param name="name">The element's identifying name.</param>
-        public UIElement(UltravioletContext uv, String name)
+        public UIElement(UltravioletContext uv)
         {
             Contract.Require(uv, "uv");
 
             this.uv      = uv;
-            this.name    = name;
             this.classes = new UIElementClassCollection(this);
 
             var attr = (UvmlKnownTypeAttribute)GetType().GetCustomAttributes(typeof(UvmlKnownTypeAttribute), false).SingleOrDefault();
             if (attr != null)
             {
-                this.typeName = attr.Name ?? GetType().Name;
+                this.uvmlName = attr.Name ?? GetType().Name;
             }
         }
 
@@ -570,19 +568,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
-        /// Gets the element's identifying name.
-        /// </summary>
-        public String Name
-        {
-            get { return name; }
-        }
-
-        /// <summary>
         /// Gets the name of this element's type within UVML markup.
         /// </summary>
-        public String TypeName
+        public String UvmlName
         {
-            get { return typeName; }
+            get { return uvmlName; }
         }
 
         /// <summary>
@@ -949,6 +939,24 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Registers the element with the specified namescope.
+        /// </summary>
+        /// <param name="namescope">The namescope with which to register the element.</param>
+        internal virtual void RegisterElementWithNamescope(Namescope namescope)
+        {
+
+        }
+
+        /// <summary>
+        /// Unregisters the element from the specified namescope.
+        /// </summary>
+        /// <param name="namescope">The namescope from which to unregister the element.</param>
+        internal virtual void UnregisterElementFromNamescope(Namescope namescope)
+        {
+
+        }
+
+        /// <summary>
         /// Changes the element's logical and visual parents.
         /// </summary>
         /// <param name="logicalParent">The element's new logical parent.</param>
@@ -1026,7 +1034,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             if (name.IsAttachedProperty)
             {
-                if (Parent != null && String.Equals(Parent.TypeName, name.Container, StringComparison.OrdinalIgnoreCase))
+                if (Parent != null && String.Equals(Parent.UvmlName, name.Container, StringComparison.OrdinalIgnoreCase))
                 {
                     return DependencyProperty.FindByName(name.Name, Parent.GetType());
                 }
@@ -1960,54 +1968,32 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         private void CacheControl()
         {
-            UnregisterElement();
+            if (namescope != null)
+            {
+                UnregisterElementFromNamescope(namescope);
+                namescope = null;
+            }
 
             this.control = FindControl();
 
-            RegisterElement();
-        }
+            if (namescope == null)
+                namescope = FindNamescope();
 
-        /// <summary>
-        /// Adds the element to the current view's element registry.
-        /// </summary>
-        private void RegisterElement()
-        {
-            if (elementRegistrationContext == null)
-                elementRegistrationContext = FindElementRegistry();
-
-            if (String.IsNullOrEmpty(name))
-                return;
-
-            if (elementRegistrationContext != null)
-                elementRegistrationContext.RegisterElement(this);
-        }
-
-        /// <summary>
-        /// Removes the element from the current view's element registry.
-        /// </summary>
-        private void UnregisterElement()
-        {
-            if (String.IsNullOrEmpty(name))
-                return;
-
-            if (elementRegistrationContext != null)
-            {
-                elementRegistrationContext.UnregisterElement(this);
-                elementRegistrationContext = null;
-            }
+            if (namescope != null)
+                RegisterElementWithNamescope(namescope);
         }
 
         /// <summary>
         /// Finds the element registration context for this element.
         /// </summary>
         /// <returns>The element registration context for this element.</returns>
-        private UIElementRegistry FindElementRegistry()
+        private Namescope FindNamescope()
         {
             if (Control != null)
             {
-                return Control.ComponentRegistry;
+                return Control.ComponentNamescope;
             }
-            return (view == null) ? null : view.ElementRegistry;
+            return (view == null) ? null : view.Namescope;
         }
 
         /// <summary>
@@ -2063,8 +2049,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         // Property values.
         private readonly UltravioletContext uv;
         private readonly UIElementClassCollection classes;
-        private readonly String name;
-        private readonly String typeName;
+        private readonly String uvmlName;
         private PresentationFoundationView view;
         private UIElement parent;
         private Control control = null;
@@ -2088,7 +2073,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         private Int32 logicalOrder;
 
         // State values.
-        private UIElementRegistry elementRegistrationContext;
+        private Namescope namescope;
         private Boolean isStyling;
         private Boolean isMeasuring;
         private Boolean isArranging;

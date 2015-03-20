@@ -15,12 +15,22 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Initializes a new instance of the <see cref="FrameworkElement"/> class.
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
-        /// <param name="id">The unique identifier of this element within its layout.</param>
-        public FrameworkElement(UltravioletContext uv, String id)
-            : base(uv, id)
+        /// <param name="name">The unique identifier of this element within its layout.</param>
+        public FrameworkElement(UltravioletContext uv, String name)
+            : base(uv)
         {
+            this.name = name;
+
             this.visualStateGroups = new VisualStateGroupCollection(this);
             this.visualStateGroups.Create("focus", VSGFocus);
+        }
+
+        /// <summary>
+        /// Gets the element's identifying name.
+        /// </summary>
+        public String Name
+        {
+            get { return name; }
         }
 
         /// <summary>
@@ -336,6 +346,28 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                     VisualStateGroups.SetVisualStateTransition(group, from, to, storyboard);
                 }
             }
+        }
+
+        /// <inheritdoc/>
+        internal override void RegisterElementWithNamescope(Namescope namescope)
+        {
+            if (String.IsNullOrEmpty(Name))
+                return;
+
+            namescope.RegisterElement(this);
+
+            base.RegisterElementWithNamescope(namescope);
+        }
+
+        /// <inheritdoc/>
+        internal override void UnregisterElementFromNamescope(Namescope namescope)
+        {
+            if (String.IsNullOrEmpty(Name))
+                return;
+
+            namescope.UnregisterElement(this);
+
+            base.UnregisterElementFromNamescope(namescope);
         }
 
         /// <inheritdoc/>
@@ -867,6 +899,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         private static readonly String[] VSGFocus = new[] { "blurred", "focused" };
 
         // Property values.
+        private readonly String name;
         private readonly VisualStateGroupCollection visualStateGroups;
     }
 }

@@ -553,7 +553,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 var propDelimIndex = elementName.IndexOf('.');
                 var propOwnerName  = elementName.Substring(0, propDelimIndex);
                 var propName       = elementName.Substring(propDelimIndex + 1);
-                var isAttached     = !String.Equals(propOwnerName, uiElement.TypeName, StringComparison.InvariantCulture);
+                var isAttached     = !String.Equals(propOwnerName, uiElement.UvmlName, StringComparison.InvariantCulture);
                 if (isAttached)
                     propName = elementName;
 
@@ -803,6 +803,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             var xmlChildren = xmlElement.Elements().Where(x => !ElementNameRepresentsProperty(x)).ToList();
 
+            var uiElementDebugID = (uiElement is FrameworkElement) ? ((FrameworkElement)uiElement).Name : uiElement.GetType().Name;
+
             if (uiElement is Panel || uiElement is ItemsControl)
             {
                 foreach (var child in xmlChildren)
@@ -817,8 +819,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 {
                     if (xmlChildren.Count > 1)
                     {
-                        var id = uiElement.Name ?? uiElement.GetType().Name;
-                        throw new InvalidOperationException(PresentationStrings.InvalidChildElements.Format(id));
+                        throw new InvalidOperationException(PresentationStrings.InvalidChildElements.Format(uiElementDebugID));
                     }
 
                     var contentElement = xmlChildren.SingleOrDefault();
@@ -835,8 +836,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 {
                     if (xmlChildren.Any())
                     {
-                        var id = uiElement.Name ?? uiElement.GetType().Name;
-                        throw new InvalidOperationException(PresentationStrings.InvalidChildElements.Format(id));
+                        throw new InvalidOperationException(PresentationStrings.InvalidChildElements.Format(uiElementDebugID));
                     }
                 }
             }

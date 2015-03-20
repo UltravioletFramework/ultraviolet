@@ -183,10 +183,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
-        /// Gets the control's component registry, which is used to associate
-        /// component elements with their unique identifiers within the context of this control.
+        /// Gets the namescope for the control's component definition.
         /// </summary>
-        internal UIElementRegistry ComponentRegistry
+        internal Namescope ComponentNamescope
         {
             get { return componentRegistry; }
         }
@@ -474,6 +473,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         private UIElement componentRoot;
 
         // The registry of components belonging to this control.
-        private readonly UIElementRegistry componentRegistry = new UIElementRegistry();
+        private readonly Namescope componentRegistry = new Namescope();
     }
 }

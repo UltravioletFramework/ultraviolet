@@ -264,7 +264,7 @@
     <Compile Include="UvmlKnownTypeAttribute.cs" />
     <Compile Include="UIElementClassCollection.cs" />
     <Compile Include="UIElementClassCollection.IEnumerable.cs" />
-    <Compile Include="UIElementRegistry.cs" />
+    <Compile Include="Namescope.cs" />
     <Compile Include="PresentationFoundationView.cs" />
     <Compile Include="PresentationFoundationViewResources.cs" />
     <Compile Include="UvmlException.cs" />

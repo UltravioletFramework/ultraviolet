@@ -24,7 +24,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public PresentationFoundationView(UltravioletContext uv, Type viewModelType)
             : base(uv, viewModelType)
         {
-            this.elementRegistry = new UIElementRegistry();
+            this.namescope = new Namescope();
             this.resources       = new PresentationFoundationViewResources(this);
             this.drawingContext  = new DrawingContext(this);
 
@@ -288,7 +288,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             Contract.RequireNotEmpty(name, "id");
 
-            return elementRegistry.GetElementByName(name);
+            return namescope.GetElementByName(name);
         }
 
         /// <summary>
@@ -556,11 +556,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
         
         /// <summary>
-        /// Gets the view's element registry.
+        /// Gets the namescope for the view layout.
         /// </summary>
-        internal UIElementRegistry ElementRegistry
+        internal Namescope Namescope
         {
-            get { return elementRegistry; }
+            get { return namescope; }
         } 
 
         /// <inheritdoc/>
@@ -589,7 +589,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             layoutRoot.CacheLayoutParameters();
 
             if (ViewModel != null)
-                elementRegistry.PopulateFieldsFromRegisteredElements(ViewModel);
+                namescope.PopulateFieldsFromRegisteredElements(ViewModel);
 
             base.OnViewModelChanged();
         }
@@ -1080,7 +1080,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         // Property values.
-        private readonly UIElementRegistry elementRegistry;
+        private readonly Namescope namescope;
         private readonly PresentationFoundationViewResources resources;
         private UvssDocument stylesheet;
         private Grid layoutRoot;

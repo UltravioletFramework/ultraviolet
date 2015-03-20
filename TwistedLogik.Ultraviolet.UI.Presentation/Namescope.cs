@@ -8,9 +8,10 @@ using TwistedLogik.Ultraviolet.UI.Presentation.Controls;
 namespace TwistedLogik.Ultraviolet.UI.Presentation
 {
     /// <summary>
-    /// 
+    /// Represents the namescope for an interface element. A namescope represents a region in UVML within
+    /// which element names must be unique; this usually means a view layout or a control definition.
     /// </summary>
-    internal sealed class UIElementRegistry
+    public sealed class Namescope
     {
         /// <summary>
         /// Clears the element registry.
@@ -24,12 +25,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Adds an element to the registry.
         /// </summary>
         /// <param name="element">The element to add to the registry.</param>
-        public void RegisterElement(UIElement element)
+        public void RegisterElement(FrameworkElement element)
         {
             if (String.IsNullOrEmpty(element.Name))
                 return;
 
-            UIElement existing;
+            FrameworkElement existing;
             if (elementsByName.TryGetValue(element.Name, out existing))
             {
                 if (existing == element)
@@ -45,7 +46,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Removes an element from the registry.
         /// </summary>
         /// <param name="element">The element to remove from the registry.</param>
-        public void UnregisterElement(UIElement element)
+        public void UnregisterElement(FrameworkElement element)
         {
             if (String.IsNullOrEmpty(element.Name))
                 return;
@@ -58,9 +59,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         /// <param name="name">The identifying name of the element to retrieve.</param>
         /// <returns>The element with the specified identifying name, or <c>null</c> if no such element exists within the registry.</returns>
-        public UIElement GetElementByName(String name)
+        public FrameworkElement GetElementByName(String name)
         {
-            UIElement element;
+            FrameworkElement element;
             elementsByName.TryGetValue(name, out element);
             return element;
         }
@@ -104,7 +105,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         // The registry of elements for each known context.
-        private readonly Dictionary<String, UIElement> elementsByName = 
-            new Dictionary<String, UIElement>();
+        private readonly Dictionary<String, FrameworkElement> elementsByName = 
+            new Dictionary<String, FrameworkElement>();
     }
 }
