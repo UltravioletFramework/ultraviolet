@@ -1,9 +1,10 @@
 ﻿using System;
 using TwistedLogik.Ultraviolet.Content;
-using TwistedLogik.Ultraviolet.UI.Presentation;
 using TwistedLogik.Ultraviolet.UI.Presentation.Controls;
 using TwistedLogik.Ultraviolet.UI;
 using TwistedLogik.Nucleus.Collections;
+using TwistedLogik.Ultraviolet.UI.Presentation;
+using TwistedLogik.Ultraviolet;
 
 namespace UvDebugSandbox.UI.Screens
 {
@@ -13,6 +14,7 @@ namespace UvDebugSandbox.UI.Screens
 
         public DebugViewModel(PresentationFoundationView view)
         {
+            Enable = true;
             this.view = view;
         }
 
@@ -36,6 +38,18 @@ namespace UvDebugSandbox.UI.Screens
 
         public String Username { get; set; }
         public String Password { get; set; }
+
+        public Boolean Enable { get; set; }
+
+        public Double SomeValue
+        {
+            get { return DateTime.UtcNow.Second; }
+        }
+
+        public void HandleValueChanged(DependencyObject dobj)
+        {
+            System.Diagnostics.Debug.WriteLine(DateTime.UtcNow.TimeOfDay + " value changed");
+        }
     }
 
     public class DebugViewScreen : UvDebugScreen

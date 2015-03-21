@@ -871,21 +871,21 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         [Styled("enabled")]
         public static readonly DependencyProperty IsEnabledProperty = DependencyProperty.Register("IsEnabled", typeof(Boolean), typeof(UIElement),
-            new DependencyPropertyMetadata(HandleIsEnabledChanged, () => true, DependencyPropertyOptions.None));
+            new DependencyPropertyMetadata(HandleIsEnabledChanged, () => CommonBoxedValues.Boolean.True, new CoerceValueCallback<Boolean>(CoerceIsEnabled), DependencyPropertyOptions.None));
 
         /// <summary>
         /// Identifies the <see cref="IsHitTestVisible"/> dependency property.
         /// </summary>
         [Styled("hit-test-visible")]
         public static readonly DependencyProperty IsHitTestVisibleProperty = DependencyProperty.Register("IsHitTestVisible", typeof(Boolean), typeof(UIElement),
-            new DependencyPropertyMetadata(HandleIsHitTestVisibleChanged, () => true, DependencyPropertyOptions.None));
+            new DependencyPropertyMetadata(HandleIsHitTestVisibleChanged, () => CommonBoxedValues.Boolean.True, DependencyPropertyOptions.None));
         
         /// <summary>
         /// Identifies the <see cref="Focusable"/> dependency property.
         /// </summary>
         [Styled("focusable")]
         public static readonly DependencyProperty FocusableProperty = DependencyProperty.Register("Focusable", typeof(Boolean), typeof(UIElement),
-            new DependencyPropertyMetadata(HandleFocusableChanged, () => false, DependencyPropertyOptions.None));
+            new DependencyPropertyMetadata(HandleFocusableChanged, () => CommonBoxedValues.Boolean.False, DependencyPropertyOptions.None));
 
         /// <summary>
         /// Identifies the <see cref="Visibility"/> dependency property.
@@ -899,7 +899,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         [Styled("opacity")]
         public static readonly DependencyProperty OpacityProperty = DependencyProperty.Register("Opacity", typeof(Single), typeof(UIElement),
-            new DependencyPropertyMetadata(HandleOpacityChanged, () => 1.0f, DependencyPropertyOptions.None));
+            new DependencyPropertyMetadata(HandleOpacityChanged, () => CommonBoxedValues.Single.One, DependencyPropertyOptions.None));
         
         /// <summary>
         /// Applies a visual state transition to the element.
@@ -1837,6 +1837,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Gets a value that determines whether the element is enabled.
+        /// </summary>
+        protected virtual Boolean IsEnabledCore
+        {
+            get { return true; }
+        }
+
+        /// <summary>
         /// Occurs when the value of the <see cref="IsEnabled"/> dependency property changes.
         /// </summary>
         /// <param name="dobj">The dependency object that raised the event.</param>
@@ -1844,6 +1852,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             var element = (UIElement)dobj;
             element.OnIsEnabledChanged();
+
+            VisualTreeHelper.ForEachChild<UIElement>(element, null, (child, state) =>
+            {
+                child.CoerceValue(IsEnabledProperty);
+            });
         }
 
         /// <summary>
@@ -1885,6 +1898,24 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             var element = (UIElement)dobj;
             element.OnOpacityChanged();
+        }
+
+        /// <summary>
+        /// Coerces the value of <see cref="IsEnabled"/> to ensure that elements cannot be disabled
+        /// if their parents are disabled.
+        /// </summary>
+        private static Boolean CoerceIsEnabled(DependencyObject dobj, Boolean value)
+        {
+            if (value)
+            {
+                var parent = VisualTreeHelper.GetParent(dobj);
+                if (parent == null || parent.GetValue<Boolean>(IsEnabledProperty))
+                {
+                    var uiElement = (UIElement)dobj;
+                    return uiElement.IsEnabledCore;
+                }
+            }
+            return false;
         }
 
         /// <summary>

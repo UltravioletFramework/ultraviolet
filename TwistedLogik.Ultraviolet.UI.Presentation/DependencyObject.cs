@@ -185,6 +185,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Recalculates the coerced value of the specified dependency property.
+        /// </summary>
+        /// <param name="dp">A <see cref="DependencyProperty"/> instance that identifies the dependency property to coerce.</param>
+        public void CoerceValue(DependencyProperty dp)
+        {
+            Contract.Require(dp, "dp");
+
+            var wrapper = GetDependencyPropertyValue(dp, dp.PropertyType);
+            wrapper.CoerceValue();
+        }
+
+        /// <summary>
         /// Gets the value typed value of the specified dependency property.
         /// </summary>
         /// <typeparam name="T">The type of value contained by the dependency property.</typeparam>

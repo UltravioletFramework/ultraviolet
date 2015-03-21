@@ -101,7 +101,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         private static void ThrowExpectedValue(UvssParserState state, UvssLexerToken token, String expected)
         {
             var lineNumber = token.Line;
-            throw new UvssException(PresentationStrings.StylesheetSyntaxExpectedValue.Format(lineNumber, expected));
+            throw new UvssException(PresentationStrings.StylesheetSyntaxExpectedValue.Format(lineNumber, token.Value, expected));
         }
 
         /// <summary>

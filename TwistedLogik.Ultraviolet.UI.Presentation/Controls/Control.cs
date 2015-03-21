@@ -1,6 +1,6 @@
 ﻿using System;
-using TwistedLogik.Ultraviolet.UI.Presentation.Styles;
 using TwistedLogik.Ultraviolet.UI.Presentation.Input;
+using TwistedLogik.Ultraviolet.UI.Presentation.Styles;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 {

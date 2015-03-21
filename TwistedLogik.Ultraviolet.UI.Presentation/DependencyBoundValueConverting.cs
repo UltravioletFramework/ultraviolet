@@ -95,7 +95,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var converter = TypeDescriptor.GetConverter(conversionType);
             if (converter != null && converter.CanConvertFrom(originalType))
             {
-                if (converter.IsValid(value))
+                /* HACK: converter.IsValid() will throw an exception for null/empty strings
+                 * in some circumstances. It's handled in System.dll but ultimately a pointless
+                 * inefficiency, so we prevent that here. */
+                var assumeInvalid = false;
+                if (originalType == typeof(String) && conversionType.IsNumericType())
+                {
+                    if (String.IsNullOrEmpty((String)value))
+                        assumeInvalid = true;
+                }
+
+                if (!assumeInvalid && converter.IsValid(value))
                 {
                     return converter.ConvertFrom(value);
                 }

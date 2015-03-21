@@ -39,6 +39,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         void Unbind();
 
         /// <summary>
+        /// Recalculates the property's coerced value.
+        /// </summary>
+        void CoerceValue();
+
+        /// <summary>
         /// Removes the property's current animation, if it has one.
         /// </summary>
         void ClearAnimation();
@@ -123,6 +128,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Gets a value indicating whether the value is being animated.
         /// </summary>
         Boolean IsAnimated
+        {
+            get;
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the dependency property is being coerced.
+        /// </summary>
+        Boolean IsCoerced
         {
             get;
         }

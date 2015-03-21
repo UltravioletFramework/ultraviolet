@@ -104,7 +104,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Called when the ButtonUp component is clicked.
         /// </summary>
-        private void Increment(UIElement element)
+        private void Increment(DependencyObject element)
         {
             IncreaseSmall();
         }
@@ -112,7 +112,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Called when the ButtonDown component is clicked.
         /// </summary>
-        private void Decrement(UIElement element)
+        private void Decrement(DependencyObject element)
         {
             DecreaseSmall();
         }

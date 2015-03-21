@@ -31,6 +31,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 if (property.Metadata.DefaultCallback != null)
                 {
                     this.defaultValue = (T)property.Metadata.DefaultCallback();
+                    if (IsCoerced)
+                    {
+                        this.coercedValue = property.Metadata.CoerceValue<T>(owner, this.defaultValue);
+                        this.defaultValue = this.coercedValue;
+                    }
                 }
 
                 UpdateRequiresDigest(GetValue());
@@ -45,12 +50,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             /// <inheritdoc/>
             public void Digest(UltravioletTime time)
             {
-                if (IsAnimated)
-                {
-                    UpdateAnimation(time);
-                }
-
-                CheckForChanges();
+                CheckForChanges(time);
             }
 
             /// <inheritdoc/>
@@ -145,6 +145,22 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             }
 
             /// <inheritdoc/>
+            public void CoerceValue()
+            {
+                if (!IsCoerced)
+                    return;
+
+                var oldCoercedValue = coercedValue;
+                coercedValue = property.Metadata.CoerceValue<T>(owner, GetValueInternal(true, false));
+
+                if (!comparer(coercedValue, oldCoercedValue))
+                {
+                    property.Metadata.HandleChanged(owner);
+                    previousValue = coercedValue;
+                }
+            }
+
+            /// <inheritdoc/>
             public void ClearAnimation()
             {
                 var oldValue = GetValue();
@@ -202,7 +218,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 }
                 if (IsDataBound)
                 {
-                    cachedBoundValue.Set(value);
+                    if (cachedBoundValue.IsWritable)
+                    {
+                        if (IsCoerced)
+                        {
+                            coercedValue = property.Metadata.CoerceValue<T>(owner, value);
+                            value = coercedValue;
+                        }
+                        cachedBoundValue.Set(value);
+                    }
                 }
                 else
                 {
@@ -229,6 +253,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 {
                     var oldValue = GetValue();
 
+                    value = UpdateCoercedValue(value);
+
                     localValue = value;
                     hasLocalValue = true;
 
@@ -246,6 +272,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 {
                     var oldValue = GetValue();
 
+                    value = UpdateCoercedValue(value);
+
                     styledValue = value;
                     hasStyledValue = true;
                     UpdateRequiresDigest(oldValue);
@@ -261,6 +289,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 set 
                 {
                     var oldValue = GetValue();
+
+                    value = UpdateCoercedValue(value);
 
                     defaultValue = value;
                     UpdateRequiresDigest(oldValue);
@@ -309,6 +339,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             public Boolean IsAnimated
             {
                 get { return animationClock != null; }
+            }
+
+            /// <inheritdoc/>
+            public Boolean IsCoerced
+            {
+                get { return property.Metadata.CoerceValueCallback != null; }
             }
 
             /// <inheritdoc/>
@@ -389,10 +425,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             /// Checks to determine whether the property's underlying value has changed,
             /// and if so, handles it appropriately.
             /// </summary>
-            private void CheckForChanges()
+            private void CheckForChanges(UltravioletTime time = null)
             {
-                var value   = default(T);
-                var changed = false;
+                var original = GetValue();
+
+                if (IsAnimated && time != null)
+                {
+                    UpdateAnimation(time);
+                }
+
+                var value    = default(T);
+                var changed  = false;
 
                 if (cachedBoundValue != null)
                 {
@@ -404,13 +447,20 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 }
                 else
                 {
-                    value   = GetValue();
-                    changed = !comparer(value, previousValue);
+                    value    = GetValue();
+                    changed  = !comparer(value, previousValue);
                 }
 
                 if (changed)
                 {
-                    Property.Metadata.HandleChanged(Owner);
+                    if (IsCoerced)
+                    {
+                        coercedValue = property.Metadata.CoerceValue<T>(owner, value);
+                        changed = !comparer(coercedValue, original);
+                    }
+
+                    if (changed)
+                        Property.Metadata.HandleChanged(Owner);
                 }
                 previousValue = value;
             }
@@ -534,6 +584,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                     var factor = (float)((animationClock.ElapsedTime.TotalMilliseconds - time1) / duration);
                     animatedValue = animation.InterpolateValues(value1, value2, easing, factor);
                 }
+
+                if (IsCoerced)
+                {
+                    animatedValue = UpdateCoercedValue(animatedValue);
+                }
             }
 
             /// <summary>
@@ -546,7 +601,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 var valueStart        = animatedHandOffValue;
                 var valueEnd          = animatedTargetValue;
                 var valueInterpolated = Tweening.Tween(valueStart, valueEnd, animationEasing, factor);
-                
+
+                if (IsCoerced)
+                {
+                    valueInterpolated = property.Metadata.CoerceValue<T>(owner, valueInterpolated);
+                }
+
                 animatedValue = valueInterpolated;
             }
 
@@ -571,9 +631,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             /// Gets the dependency property's calculated value.
             /// </summary>
             /// <param name="includeAnimation">A value indicating whether to consider values from animation.</param>
+            /// <param name="includeCoerced">A value indicating whether to consider coerced values.</param>
             /// <returns>The dependency property's calculated value.</returns>
-            private T GetValueInternal(Boolean includeAnimation)
+            private T GetValueInternal(Boolean includeAnimation, Boolean includeCoerced = true)
             {
+                if (IsCoerced && includeCoerced)
+                {
+                    return coercedValue;
+                }
                 if (includeAnimation && IsAnimated)
                 {
                     return animatedValue;
@@ -597,6 +662,21 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 return defaultValue;
             }
 
+            /// <summary>
+            /// Updates the property's coerced value, if this property uses coercion.
+            /// </summary>
+            /// <param name="value">The value that should be coerced.</param>
+            /// <returns>The coerced value.</returns>
+            private T UpdateCoercedValue(T value)
+            {
+                if (IsCoerced)
+                {
+                    coercedValue = property.Metadata.CoerceValue<T>(owner, value);
+                    return coercedValue;
+                }
+                return value;
+            }
+
             // Property values.
             private readonly DependencyObject owner;
             private readonly DependencyProperty property;
@@ -608,6 +688,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             private T styledValue;
             private T defaultValue;
             private T previousValue;
+            private T coercedValue;
 
             // State values.
             private readonly DataBindingComparer<T> comparer;

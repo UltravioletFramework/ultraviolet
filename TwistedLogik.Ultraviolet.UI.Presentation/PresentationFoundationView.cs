@@ -501,7 +501,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             if (Stylesheet != null)
             {
-                Stylesheet.InstantiateStoryboardByName(LayoutRoot.Ultraviolet, name);
+                return Stylesheet.InstantiateStoryboardByName(LayoutRoot.Ultraviolet, name);
             }
 
             return null;

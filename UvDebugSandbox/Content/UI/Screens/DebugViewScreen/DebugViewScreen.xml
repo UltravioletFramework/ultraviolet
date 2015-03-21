@@ -3,7 +3,9 @@
   <Stylesheet>DebugViewScreenStyles.uvss</Stylesheet>
   <View ViewModelType="UvDebugSandbox.UI.Screens.DebugViewModel, UvDebugSandbox">
 
-    <Grid Width="400" VerticalAlignment="Center" HorizontalAlignment="Center">
+    <ToggleButton Checked="{{Enable}}">Enabled</ToggleButton>
+    
+    <Grid IsEnabled="{{Enable}}" Width="400" VerticalAlignment="Center" HorizontalAlignment="Center">
       <Grid.ColumnDefinitions>
         <ColumnDefinition Width="Auto"/>
         <ColumnDefinition Width="*"/>
@@ -17,10 +19,10 @@
       </Grid.RowDefinitions>
 
       <TextBlock Grid.Column="0" Grid.Row="0" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0 0 0 8">Username:</TextBlock>
-      <TextBox Grid.Column="1" Grid.Row="0" HorizontalAlignment="Stretch" Margin="8 0 0 8">{{Username}}</TextBox>
+      <TextBox Grid.Column="1" Grid.Row="0" HorizontalAlignment="Stretch" Margin="8 0 0 8">{{SomeValue}}</TextBox>
 
       <TextBlock Grid.Column="0" Grid.Row="1" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0 0 0 8">Password:</TextBlock>
-      <TextBox Grid.Column="1" Grid.Row="1" HorizontalAlignment="Stretch" Margin="8 0 0 8">{{Password}}</TextBox>
+      <NumericUpDown Minimum="10" Maximum="50" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Stretch" ValueChanged="HandleValueChanged" Margin="8 0 0 8">{{SomeValue}}</NumericUpDown>
 
       <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Grid.ColumnSpan="2" Grid.Row="2">
         <Button Margin="10 0 0 0" Width="150">Cancel</Button>

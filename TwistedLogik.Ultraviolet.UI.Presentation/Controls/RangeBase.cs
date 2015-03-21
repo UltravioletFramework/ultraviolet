@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using TwistedLogik.Ultraviolet.UI.Presentation.Styles;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 {
@@ -57,16 +58,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         public Double Value
         {
-            get
-            {
-                var value = GetValue<Double>(ValueProperty);
-                return ClampValue(value);
-            }
-            set 
-            {
-                var clamped = ClampValue(value);
-                SetValue<Double>(ValueProperty, clamped); 
-            }
+            get { return GetValue<Double>(ValueProperty); }
+            set { SetValue<Double>(ValueProperty, value); }
         }
 
         /// <summary>
@@ -83,16 +76,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         public Double Maximum
         {
-            get
-            {
-                var max = GetValue<Double>(MaximumProperty);
-                return ClampMaximum(max);
-            }
-            set
-            {
-                var clamped = ClampMaximum(value);
-                SetValue<Double>(MaximumProperty, clamped);
-            }
+            get { return GetValue<Double>(MaximumProperty); }
+            set { SetValue<Double>(MaximumProperty, value); }
         }
 
         /// <summary>
@@ -143,30 +128,35 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Identifies the <see cref="Value"/> dependency property.
         /// </summary>
+        [Styled("value")]
         public static readonly DependencyProperty ValueProperty = DependencyProperty.Register("Value", typeof(Double), typeof(RangeBase),
-            new DependencyPropertyMetadata(HandleValueChanged, () => 0.0, DependencyPropertyOptions.None));
+            new DependencyPropertyMetadata(HandleValueChanged, () => 0.0, new CoerceValueCallback<Double>(CoerceValue), DependencyPropertyOptions.None));
 
         /// <summary>
         /// Identifies the <see cref="Minimum"/> dependency property.
         /// </summary>
+        [Styled("minimum")]
         public static readonly DependencyProperty MinimumProperty = DependencyProperty.Register("Minimum", typeof(Double), typeof(RangeBase),
             new DependencyPropertyMetadata(HandleMinimumChanged, () => 0.0, DependencyPropertyOptions.None));
 
         /// <summary>
         /// Identifies the <see cref="Maximum"/> dependency property.
         /// </summary>
+        [Styled("maximum")]
         public static readonly DependencyProperty MaximumProperty = DependencyProperty.Register("Maximum", typeof(Double), typeof(RangeBase),
             new DependencyPropertyMetadata(HandleMaximumChanged, () => 1.0, DependencyPropertyOptions.None));
 
         /// <summary>
         /// Identifies the <see cref="SmallChange"/> dependency property.
         /// </summary>
+        [Styled("small-change")]
         public static readonly DependencyProperty SmallChangeProperty = DependencyProperty.Register("SmallChange", typeof(Double), typeof(RangeBase),
             new DependencyPropertyMetadata(HandleSmallChangeChanged, () => 0.1, DependencyPropertyOptions.None));
 
         /// <summary>
         /// Identifies the <see cref="LargeChange"/> dependency property.
         /// </summary>
+        [Styled("large-change")]
         public static readonly DependencyProperty LargeChangeProperty = DependencyProperty.Register("LargeChange", typeof(Double), typeof(RangeBase),
             new DependencyPropertyMetadata(HandleLargeChangeChanged, () => 1.0, DependencyPropertyOptions.None));
 
@@ -247,6 +237,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         private static void HandleMinimumChanged(DependencyObject dobj)
         {
             var range = (RangeBase)dobj;
+            range.CoerceValue(ValueProperty);
+            range.CoerceValue(MaximumProperty);
             range.OnMinimumChanged();
         }
 
@@ -257,6 +249,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         private static void HandleMaximumChanged(DependencyObject dobj)
         {
             var range = (RangeBase)dobj;
+            range.CoerceValue(ValueProperty);
             range.OnMaximumChanged();
         }
 
@@ -281,17 +274,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
-        /// Clamps the specified value to the element's range.
+        /// Coerces the <see cref="Value"/> property so that it remains within
+        /// the range specified by <see cref="Minimum"/> and <see cref="Maximum"/>.
         /// </summary>
-        /// <param name="value">The value to clamp.</param>
-        /// <returns>The clamped value.</returns>
-        private Double ClampValue(Double value)
+        private static Double CoerceValue(DependencyObject dobj, Double value)
         {
-            var min = Minimum;
+            var rangeBase = (RangeBase)dobj;
+            
+            var min = rangeBase.Minimum;
             if (min > value)
                 return min;
-
-            var max = Maximum;
+            
+            var max = rangeBase.Maximum;
             if (max < value)
                 return max;
 
@@ -299,17 +293,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
-        /// Clamps the specified maximum value so that it is always at least as big as the element's minimum value.
+        /// Coerces the <see cref="Maximum"/> property so that it remains larger
+        /// than the <see cref="Minimum"/> property.
         /// </summary>
-        /// <param name="maximum">The value to clamp.</param>
-        /// <returns>The clamped value.</returns>
-        private Double ClampMaximum(Double maximum)
+        private static Double CoerceMaximum(DependencyObject dobj, Double value)
         {
-            var min = Minimum;
-            if (min > maximum)
+            var rangeBase = (RangeBase)dobj;
+
+            var min = rangeBase.Minimum;
+            if (min > value)
                 return min;
 
-            return maximum;
+            return value;
         }
     }
 }
