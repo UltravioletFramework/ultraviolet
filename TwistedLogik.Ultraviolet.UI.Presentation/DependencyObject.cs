@@ -197,6 +197,20 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Invalidates the cached display value for the specified dependency property. This will cause
+        /// the interface to display the property's actual value, rather than the value most recently
+        /// entered by the user (which may be different if coercion is involved).
+        /// </summary>
+        /// <param name="dp">A <see cref="DependencyProperty"/> instance which identifies the dependency property to invalidate.</param>
+        public void InvalidateDisplayCache(DependencyProperty dp)
+        {
+            Contract.Require(dp, "dp");
+
+            var wrapper = GetDependencyPropertyValue(dp, dp.PropertyType);
+            wrapper.InvalidateDisplayCache();
+        }
+
+        /// <summary>
         /// Gets the value typed value of the specified dependency property.
         /// </summary>
         /// <typeparam name="T">The type of value contained by the dependency property.</typeparam>

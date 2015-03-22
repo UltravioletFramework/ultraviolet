@@ -59,6 +59,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <inheritdoc/>
+        protected override void OnLostKeyboardFocus(ref bool handled)
+        {
+            if (Input != null)
+            {
+                Input.InvalidateDisplayCache(TextBox.TextProperty);
+            }
+            base.OnLostKeyboardFocus(ref handled);
+        }
+
+        /// <inheritdoc/>
         protected override void OnKeyDown(KeyboardDevice device, Key key, ModifierKeys modifiers, ref Boolean handled)
         {
             switch (key)

@@ -161,6 +161,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             }
 
             /// <inheritdoc/>
+            public void InvalidateDisplayCache()
+            {
+                if (cachedBoundValue == null)
+                    return;
+
+                cachedBoundValue.InvalidateDisplayCache();
+            }
+
+            /// <inheritdoc/>
             public void ClearAnimation()
             {
                 var oldValue = GetValue();

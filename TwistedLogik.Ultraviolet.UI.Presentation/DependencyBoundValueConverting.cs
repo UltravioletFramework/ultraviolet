@@ -51,6 +51,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <inheritdoc/>
+        public override void InvalidateDisplayCache()
+        {
+            cachedInputValue = cachedConvertedValue;
+        }
+
+        /// <inheritdoc/>
         public void Set(TDependency value)
         {
             var converted = (TBound)ConvertValue(value, typeof(TDependency), typeof(TBound));
