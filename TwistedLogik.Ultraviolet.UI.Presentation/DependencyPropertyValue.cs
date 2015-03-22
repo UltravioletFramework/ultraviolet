@@ -28,9 +28,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 this.isReferenceType = typeof(T).IsClass;
                 this.isValueType     = typeof(T).IsValueType;
 
-                if (property.Metadata.DefaultCallback != null)
+                if (property.Metadata.DefaultValue != null)
                 {
-                    this.defaultValue = (T)property.Metadata.DefaultCallback();
+                    this.defaultValue = (T)property.Metadata.DefaultValue;
                     if (IsCoerced)
                     {
                         this.coercedValue = property.Metadata.CoerceValue<T>(owner, this.defaultValue);

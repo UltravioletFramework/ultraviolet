@@ -1,4 +1,5 @@
 ﻿using System;
+using TwistedLogik.Nucleus;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 {
@@ -61,19 +62,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// Identifies the <see cref="Height"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty HeightProperty = DependencyProperty.Register("Height", typeof(GridLength), typeof(RowDefinition),
-            new DependencyPropertyMetadata(HandleHeightChanged, () => new GridLength(1.0), DependencyPropertyOptions.None));
-
+            new PropertyMetadata(PresentationBoxedValues.GridLength.One, HandleHeightChanged));
+        
         /// <summary>
         /// Identifies the <see cref="MinHeight"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty MinHeightProperty = DependencyProperty.Register("MinHeight", typeof(Double), typeof(RowDefinition),
-            new DependencyPropertyMetadata(HandleMinHeightChanged, () => 0.0, DependencyPropertyOptions.None));
+            new PropertyMetadata(HandleMinHeightChanged));
 
         /// <summary>
         /// Identifies the <see cref="MaxHeight"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty MaxHeightProperty = DependencyProperty.Register("MaxHeight", typeof(Double), typeof(RowDefinition),
-            new DependencyPropertyMetadata(HandleMaxHeightChanged, () => Double.PositiveInfinity, DependencyPropertyOptions.None));
+            new PropertyMetadata(CommonBoxedValues.Double.PositiveInfinity, HandleMaxHeightChanged));
 
         /// <inheritdoc/>
         internal override GridLength Dimension

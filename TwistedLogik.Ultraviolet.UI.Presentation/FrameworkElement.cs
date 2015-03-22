@@ -220,91 +220,91 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         [Styled("font")]
         public static readonly DependencyProperty FontProperty = DependencyProperty.Register("Font", typeof(SourcedResource<SpriteFont>), typeof(FrameworkElement),
-            new DependencyPropertyMetadata(HandleFontChanged, null, DependencyPropertyOptions.AffectsMeasure));
+            new PropertyMetadata(null, PropertyMetadataOptions.AffectsMeasure, HandleFontChanged));
 
         /// <summary>
         /// Identifies the <see cref="FontColor"/> dependency property.
         /// </summary>
         [Styled("font-color")]
         public static readonly DependencyProperty FontColorProperty = DependencyProperty.Register("FontColor", typeof(Color), typeof(FrameworkElement),
-            new DependencyPropertyMetadata(HandleFontColorChanged, () => Color.Black, DependencyPropertyOptions.None));
+            new PropertyMetadata(UltravioletBoxedValues.Color.Black, HandleFontColorChanged));
 
         /// <summary>
         /// Identifies the <see cref="FontStyle"/> dependency property.
         /// </summary>
         [Styled("font-style")]
         public static readonly DependencyProperty FontStyleProperty = DependencyProperty.Register("FontStyle", typeof(SpriteFontStyle), typeof(FrameworkElement),
-           new DependencyPropertyMetadata(HandleFontStyleChanged, () => SpriteFontStyle.Regular, DependencyPropertyOptions.AffectsArrange));
+           new PropertyMetadata(UltravioletBoxedValues.SpriteFontStyle.Regular, PropertyMetadataOptions.AffectsMeasure, HandleFontStyleChanged));
 
         /// <summary>
         /// Identifies the <see cref="Width"/> dependency property.
         /// </summary>
         [Styled("width")]
         public static readonly DependencyProperty WidthProperty = DependencyProperty.Register("Width", typeof(Double), typeof(FrameworkElement),
-            new DependencyPropertyMetadata(HandleWidthChanged, () => Double.NaN, DependencyPropertyOptions.AffectsMeasure));
-
+            new PropertyMetadata(CommonBoxedValues.Double.NaN, PropertyMetadataOptions.AffectsMeasure, HandleWidthChanged));
+        
         /// <summary>
         /// Identifies the <see cref="MinWidth"/> dependency property.
         /// </summary>
         [Styled("min-width")]
         public static readonly DependencyProperty MinWidthProperty = DependencyProperty.Register("MinWidth", typeof(Double), typeof(FrameworkElement),
-            new DependencyPropertyMetadata(HandleMinWidthChanged, () => 0.0, DependencyPropertyOptions.AffectsMeasure));
+            new PropertyMetadata(null, PropertyMetadataOptions.AffectsMeasure, HandleMinWidthChanged));
 
         /// <summary>
         /// Identifies the <see cref="MaxWidth"/> dependency property.
         /// </summary>
         [Styled("max-width")]
         public static readonly DependencyProperty MaxWidthProperty = DependencyProperty.Register("MaxWidth", typeof(Double), typeof(FrameworkElement),
-            new DependencyPropertyMetadata(HandleMaxWidthChanged, () => Double.PositiveInfinity, DependencyPropertyOptions.AffectsMeasure));
+            new PropertyMetadata(CommonBoxedValues.Double.PositiveInfinity, PropertyMetadataOptions.AffectsMeasure, HandleMaxWidthChanged));
 
         /// <summary>
         /// Identifies the <see cref="Height"/> dependency property.
         /// </summary>
         [Styled("height")]
         public static readonly DependencyProperty HeightProperty = DependencyProperty.Register("Height", typeof(Double), typeof(FrameworkElement),
-            new DependencyPropertyMetadata(HandleHeightChanged, () => Double.NaN, DependencyPropertyOptions.AffectsMeasure));
+            new PropertyMetadata(CommonBoxedValues.Double.NaN, PropertyMetadataOptions.AffectsMeasure, HandleHeightChanged));
 
         /// <summary>
         /// Identifies the <see cref="MinHeight"/> dependency property.
         /// </summary>
         [Styled("min-height")]
         public static readonly DependencyProperty MinHeightProperty = DependencyProperty.Register("MinHeight", typeof(Double), typeof(FrameworkElement),
-            new DependencyPropertyMetadata(HandleMinHeightChanged, () => 0.0, DependencyPropertyOptions.AffectsMeasure));
+            new PropertyMetadata(null, PropertyMetadataOptions.AffectsMeasure, HandleMinHeightChanged));
 
         /// <summary>
         /// Identifies the <see cref="MaxHeight"/> dependency property.
         /// </summary>
         [Styled("max-height")]
         public static readonly DependencyProperty MaxHeightProperty = DependencyProperty.Register("MaxHeight", typeof(Double), typeof(FrameworkElement),
-            new DependencyPropertyMetadata(HandleMaxHeightChanged, () => Double.PositiveInfinity, DependencyPropertyOptions.AffectsMeasure));
+            new PropertyMetadata(CommonBoxedValues.Double.PositiveInfinity, PropertyMetadataOptions.AffectsMeasure, HandleMaxHeightChanged));
 
         /// <summary>
         /// Identifies the <see cref="Margin"/> dependency property.
         /// </summary>
         [Styled("margin")]
         public static readonly DependencyProperty MarginProperty = DependencyProperty.Register("Margin", typeof(Thickness), typeof(FrameworkElement),
-            new DependencyPropertyMetadata(HandleMarginChanged, () => Thickness.Zero, DependencyPropertyOptions.AffectsMeasure));
+            new PropertyMetadata(null, PropertyMetadataOptions.AffectsMeasure, HandleMarginChanged));
 
         /// <summary>
         /// Identifies the <see cref="Padding"/> dependency property.
         /// </summary>
         [Styled("padding")]
         public static readonly DependencyProperty PaddingProperty = DependencyProperty.Register("Padding", typeof(Thickness), typeof(FrameworkElement),
-            new DependencyPropertyMetadata(HandlePaddingChanged, () => Thickness.Zero, DependencyPropertyOptions.AffectsMeasure));
+            new PropertyMetadata(null, PropertyMetadataOptions.AffectsMeasure, HandlePaddingChanged));
 
         /// <summary>
         /// Identifies the <see cref="HorizontalAlignment"/> dependency property.
         /// </summary>
         [Styled("halign")]
         public static readonly DependencyProperty HorizontalAlignmentProperty = DependencyProperty.Register("HorizontalAlignment", typeof(HorizontalAlignment), typeof(FrameworkElement),
-            new DependencyPropertyMetadata(HandleHorizontalAlignmentChanged, () => HorizontalAlignment.Left, DependencyPropertyOptions.AffectsArrange));
-
+            new PropertyMetadata(PresentationBoxedValues.HorizontalAlignment.Left, PropertyMetadataOptions.AffectsArrange, HandleHorizontalAlignmentChanged));
+        
         /// <summary>
         /// Identifies the <see cref="VerticalAlignment"/> dependency property.
         /// </summary>
         [Styled("valign")]
         public static readonly DependencyProperty VerticalAlignmentProperty = DependencyProperty.Register("VerticalAlignment", typeof(VerticalAlignment), typeof(FrameworkElement),
-            new DependencyPropertyMetadata(HandleVerticalAlignmentChanged, () => VerticalAlignment.Top, DependencyPropertyOptions.AffectsArrange));
+            new PropertyMetadata(PresentationBoxedValues.VerticalAlignment.Top, PropertyMetadataOptions.AffectsArrange, HandleVerticalAlignmentChanged));
 
         /// <inheritdoc/>
         internal override void ApplyStyledVisualStateTransition(UvssStyle style)

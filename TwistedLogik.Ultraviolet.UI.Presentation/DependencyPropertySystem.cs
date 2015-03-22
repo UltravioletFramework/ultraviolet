@@ -57,7 +57,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="ownerType">The dependency property's owner type.</param>
         /// <param name="metadata">The dependency property's metadata.</param>
         /// <returns>A <see cref="DependencyProperty"/> instance which represents the registered dependency property.</returns>
-        public static DependencyProperty Register(String name, Type propertyType, Type ownerType, DependencyPropertyMetadata metadata = null)
+        public static DependencyProperty Register(String name, Type propertyType, Type ownerType, PropertyMetadata metadata = null)
         {
             Contract.Require(name, "name");
             Contract.Require(propertyType, "propertyType");

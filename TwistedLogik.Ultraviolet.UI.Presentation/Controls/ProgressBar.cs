@@ -111,42 +111,42 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         [Styled("bar-image")]
         public static readonly DependencyProperty BarImageProperty = DependencyProperty.Register("BarImage", typeof(SourcedImage), typeof(ProgressBar),
-            new DependencyPropertyMetadata(HandleBarImageChanged, null, DependencyPropertyOptions.None));
+            new PropertyMetadata(HandleBarImageChanged));
 
         /// <summary>
         /// Identifies the <see cref="BarColor"/> dependency property.
         /// </summary>
         [Styled("bar-color")]
         public static readonly DependencyProperty BarColorProperty = DependencyProperty.Register("BarColor", typeof(Color), typeof(ProgressBar),
-            new DependencyPropertyMetadata(HandleBarColorChanged, () => Color.White, DependencyPropertyOptions.None));
+            new PropertyMetadata(UltravioletBoxedValues.Color.White, HandleBarColorChanged));
 
         /// <summary>
         /// Identifies the <see cref="FillImage"/> dependency property.
         /// </summary>
         [Styled("fill-image")]
         public static readonly DependencyProperty FillImageProperty = DependencyProperty.Register("FillImage", typeof(SourcedImage), typeof(ProgressBar),
-            new DependencyPropertyMetadata(HandleFillImageChanged, null, DependencyPropertyOptions.None));
+            new PropertyMetadata(HandleFillImageChanged));
 
         /// <summary>
         /// Identifies the <see cref="FillColor"/> dependency property.
         /// </summary>
         [Styled("fill-color")]
         public static readonly DependencyProperty FillColorProperty = DependencyProperty.Register("FillColor", typeof(Color), typeof(ProgressBar),
-            new DependencyPropertyMetadata(HandleFillColorChanged, () => Color.Lime, DependencyPropertyOptions.None));
+            new PropertyMetadata(Color.Lime, HandleFillColorChanged));
 
         /// <summary>
         /// Identifies the <see cref="OverlayImage"/> dependency property.
         /// </summary>
         [Styled("overlay-image")]
         public static readonly DependencyProperty OverlayImageProperty = DependencyProperty.Register("OverlayImage", typeof(SourcedImage), typeof(ProgressBar),
-            new DependencyPropertyMetadata(HandleOverlayImageChanged, null, DependencyPropertyOptions.None));
+            new PropertyMetadata(HandleOverlayImageChanged));
 
         /// <summary>
         /// Identifies the <see cref="OverlayColor"/> dependency property.
         /// </summary>
         [Styled("overlay-color")]
         public static readonly DependencyProperty OverlayColorProperty = DependencyProperty.Register("OverlayColor", typeof(Color), typeof(ProgressBar),
-            new DependencyPropertyMetadata(HandleOverlayColorChanged, () => Color.White, DependencyPropertyOptions.None));
+            new PropertyMetadata(UltravioletBoxedValues.Color.White, HandleOverlayColorChanged));
 
         /// <inheritdoc/>
         protected override void ReloadContentCore(Boolean recursive)

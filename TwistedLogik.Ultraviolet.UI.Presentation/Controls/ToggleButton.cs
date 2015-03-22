@@ -1,4 +1,5 @@
 ﻿using System;
+using TwistedLogik.Nucleus;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 {
@@ -37,7 +38,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// Identifies the Checked dependency property.
         /// </summary>
         public static readonly DependencyProperty CheckedProperty = DependencyProperty.Register("Checked", typeof(Boolean), typeof(ToggleButton),
-            new DependencyPropertyMetadata(HandleCheckedChanged, () => false, DependencyPropertyOptions.None));
+            new PropertyMetadata(CommonBoxedValues.Boolean.False, HandleCheckedChanged));
 
         /// <summary>
         /// Raises the <see cref="CheckedChanged"/> event.

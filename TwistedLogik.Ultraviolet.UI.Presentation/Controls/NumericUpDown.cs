@@ -40,7 +40,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// Identifies the <see cref="DecimalPlaces"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty DecimalPlacesProperty = DependencyProperty.Register("DecimalPlaces", typeof(Int32), typeof(NumericUpDown),
-            new DependencyPropertyMetadata(HandleDecimalPlacesChanged, () => 0, DependencyPropertyOptions.None));
+            new PropertyMetadata(HandleDecimalPlacesChanged));
 
         /// <summary>
         /// Occurs when the value of the <see cref="DecimalPlaces"/> property changes.

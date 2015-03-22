@@ -77,19 +77,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// Identifies the <see cref="SelectedIndex"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty SelectedIndexProperty = DependencyProperty.Register("SelectedIndex", typeof(Int32), typeof(Selector),
-            new DependencyPropertyMetadata(HandleSelectedIndexChanged, null, DependencyPropertyOptions.None));
+            new PropertyMetadata(HandleSelectedIndexChanged));
 
         /// <summary>
         /// Identifies the <see cref="SelectedItem"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty SelectedItemProperty = DependencyProperty.Register("SelectedItem", typeof(Object), typeof(Selector),
-            new DependencyPropertyMetadata(HandleSelectedItemChanged, null, DependencyPropertyOptions.None));
+            new PropertyMetadata(HandleSelectedItemChanged));
 
         /// <summary>
         /// Identifies the IsSelected attached property.
         /// </summary>
         public static readonly DependencyProperty IsSelectedProperty = DependencyProperty.Register("IsSelected", typeof(Boolean), typeof(Selector), 
-            new DependencyPropertyMetadata(null, null, DependencyPropertyOptions.None));
+            new PropertyMetadata());
 
         /// <summary>
         /// Raises the <see cref="SelectedIndexChanged"/> event.

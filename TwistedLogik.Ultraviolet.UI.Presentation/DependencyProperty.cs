@@ -16,13 +16,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="propertyType">The dependency property's value type.</param>
         /// <param name="ownerType">The dependency property's owner type.</param>
         /// <param name="metadata">The dependency property's metadata.</param>
-        internal DependencyProperty(Int64 id, String name, Type propertyType, Type ownerType, DependencyPropertyMetadata metadata)
+        internal DependencyProperty(Int64 id, String name, Type propertyType, Type ownerType, PropertyMetadata metadata)
         {
             this.id           = id;
             this.name         = name;
             this.propertyType = propertyType;
             this.ownerType    = ownerType;
-            this.metadata     = metadata ?? DependencyPropertyMetadata.Empty;
+            this.metadata     = metadata ?? PropertyMetadata.Empty;
         }
 
         /// <summary>
@@ -33,7 +33,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="ownerType">The dependency property's owner type.</param>
         /// <param name="metadata">The dependency property's metadata.</param>
         /// <returns>A <see cref="DependencyProperty"/> instance which represents the registered dependency property.</returns>
-        public static DependencyProperty Register(String name, Type propertyType, Type ownerType, DependencyPropertyMetadata metadata = null)
+        public static DependencyProperty Register(String name, Type propertyType, Type ownerType, PropertyMetadata metadata = null)
         {
             return DependencyPropertySystem.Register(name, propertyType, ownerType, metadata);
         }
@@ -98,7 +98,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Gets the dependency property's metadata.
         /// </summary>
-        internal DependencyPropertyMetadata Metadata
+        internal PropertyMetadata Metadata
         {
             get { return metadata; }
         }
@@ -108,6 +108,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         private readonly String name;
         private readonly Type propertyType;
         private readonly Type ownerType;
-        private readonly DependencyPropertyMetadata metadata;
+        private readonly PropertyMetadata metadata;
     }
 }

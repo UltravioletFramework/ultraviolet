@@ -1,4 +1,5 @@
 ﻿using System;
+using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet.UI.Presentation.Input;
 using TwistedLogik.Ultraviolet.UI.Presentation.Styles;
 
@@ -131,35 +132,35 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         [Styled("autonav")]
         public static readonly DependencyProperty AutoNavProperty = DependencyProperty.Register("AutoNav", typeof(Boolean), typeof(Control),
-            new DependencyPropertyMetadata(HandleAutoNavChanged, () => true, DependencyPropertyOptions.None));
+            new PropertyMetadata(CommonBoxedValues.Boolean.True, HandleAutoNavChanged));
 
         /// <summary>
         /// Identifies the <see cref="NavUp"/> dependency property.
         /// </summary>
         [Styled("nav-up")]
         public static readonly DependencyProperty NavUpProperty = DependencyProperty.Register("NavUp", typeof(String), typeof(Control),
-            new DependencyPropertyMetadata(HandleNavUpChanged, () => null, DependencyPropertyOptions.None));
+            new PropertyMetadata(HandleNavUpChanged));
 
         /// <summary>
         /// Identifies the <see cref="NavDown"/> dependency property.
         /// </summary>
         [Styled("nav-down")]
         public static readonly DependencyProperty NavDownProperty = DependencyProperty.Register("NavDown", typeof(String), typeof(Control),
-            new DependencyPropertyMetadata(HandleNavDownChanged, () => null, DependencyPropertyOptions.None));
+            new PropertyMetadata(HandleNavDownChanged));
 
         /// <summary>
         /// Identifies the <see cref="NavLeft"/> dependency property.
         /// </summary>
         [Styled("nav-left")]
         public static readonly DependencyProperty NavLeftProperty = DependencyProperty.Register("NavLeft", typeof(String), typeof(Control),
-            new DependencyPropertyMetadata(HandleNavLeftChanged, () => null, DependencyPropertyOptions.None));
+            new PropertyMetadata(HandleNavLeftChanged));
 
         /// <summary>
         /// Identifies the <see cref="NavRight"/> dependency property.
         /// </summary>
         [Styled("nav-right")]
         public static readonly DependencyProperty NavRightProperty = DependencyProperty.Register("NavRight", typeof(String), typeof(Control),
-            new DependencyPropertyMetadata(HandleNavRightChanged, () => null, DependencyPropertyOptions.None));
+            new PropertyMetadata(HandleNavRightChanged));
 
         /// <summary>
         /// Identifies the <see cref="TabIndex"/> dependency property.

@@ -65,13 +65,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// Identifies the <see cref="ItemsSource"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty ItemsSourceProperty = DependencyProperty.Register("ItemsSource", typeof(IEnumerable), typeof(ItemsControl),
-            new DependencyPropertyMetadata(HandleItemsSourceChanged, null, DependencyPropertyOptions.None));
+            new PropertyMetadata(HandleItemsSourceChanged));
 
         /// <summary>
         /// Identifies the <see cref="ItemStringFormat"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty ItemStringFormatProperty = DependencyProperty.Register("ItemStringFormat", typeof(String), typeof(ItemsControl),
-            new DependencyPropertyMetadata(HandleItemStringFormatChanged, null, DependencyPropertyOptions.None));
+            new PropertyMetadata(HandleItemStringFormatChanged));
 
         /// <summary>
         /// Gets the element which controls the layout of the control's item containers.

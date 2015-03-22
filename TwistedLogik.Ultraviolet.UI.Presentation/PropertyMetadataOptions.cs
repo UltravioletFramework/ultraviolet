@@ -6,7 +6,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
     /// Represents the options that can be applied to a dependency property.
     /// </summary>
     [Flags]
-    public enum DependencyPropertyOptions
+    public enum PropertyMetadataOptions
     {
         /// <summary>
         /// No special options.

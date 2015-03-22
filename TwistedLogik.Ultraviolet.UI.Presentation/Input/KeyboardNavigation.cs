@@ -55,13 +55,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// Identifies the TabIndex dependency property.
         /// </summary>
         public static readonly DependencyProperty TabIndexProperty = DependencyProperty.Register("TabIndex", typeof(Int32), typeof(KeyboardNavigation),
-            new DependencyPropertyMetadata(null, () => CommonBoxedValues.Int32.MaxValue, DependencyPropertyOptions.None));
+            new PropertyMetadata(CommonBoxedValues.Int32.MaxValue));
 
         /// <summary>
         /// Identifies the IsTabStop dependency property.
         /// </summary>
         public static readonly DependencyProperty IsTabStopProperty = DependencyProperty.Register("IsTabStop", typeof(Boolean), typeof(KeyboardNavigation),
-            new DependencyPropertyMetadata(null, () => CommonBoxedValues.Boolean.True, DependencyPropertyOptions.None));
+            new PropertyMetadata(CommonBoxedValues.Boolean.True));
 
         /// <summary>
         /// Moves focus to the next tab stop after the specified element.

@@ -1,4 +1,5 @@
 ﻿using System;
+using TwistedLogik.Nucleus;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 {
@@ -61,20 +62,20 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// Identifies the <see cref="Width"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty WidthProperty = DependencyProperty.Register("Width", typeof(GridLength), typeof(ColumnDefinition),
-            new DependencyPropertyMetadata(HandleWidthChanged, () => new GridLength(1.0), DependencyPropertyOptions.None));
+            new PropertyMetadata(PresentationBoxedValues.GridLength.One, HandleWidthChanged));
 
         /// <summary>
         /// Identifies the <see cref="MinWidth"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty MinWidthProperty = DependencyProperty.Register("MinWidth", typeof(Double), typeof(ColumnDefinition),
-            new DependencyPropertyMetadata(HandleMinWidthChanged, () => 0.0, DependencyPropertyOptions.None));
+            new PropertyMetadata(HandleMinWidthChanged));
 
         /// <summary>
         /// Identifies the <see cref="MaxWidth"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty MaxWidthProperty = DependencyProperty.Register("MaxWidth", typeof(Double), typeof(ColumnDefinition),
-            new DependencyPropertyMetadata(HandleMaxWidthChanged, () => Double.PositiveInfinity, DependencyPropertyOptions.None));
-
+            new PropertyMetadata(CommonBoxedValues.Double.PositiveInfinity, HandleMaxWidthChanged));
+        
         /// <inheritdoc/>
         internal override GridLength Dimension
         {

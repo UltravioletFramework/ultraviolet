@@ -196,60 +196,60 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// Identifies the <see cref="Text"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty TextProperty = DependencyProperty.Register("Text", typeof(String), typeof(TextBox),
-            new DependencyPropertyMetadata(HandleTextChanged, null, DependencyPropertyOptions.None));
+            new PropertyMetadata(HandleTextChanged));
 
         /// <summary>
         /// Identifies the <see cref="Pattern"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty PatternProperty = DependencyProperty.Register("Pattern", typeof(String), typeof(TextBox),
-            new DependencyPropertyMetadata(HandlePatternChanged, null, DependencyPropertyOptions.None));
+            new PropertyMetadata(HandlePatternChanged));
 
         /// <summary>
         /// Identifies the <see cref="MaxLength"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty MaxLengthProperty = DependencyProperty.Register("MaxLength", typeof(Int32), typeof(TextBox),
-            new DependencyPropertyMetadata(HandleMaxLengthChanged, () => 0, DependencyPropertyOptions.None));
+            new PropertyMetadata(HandleMaxLengthChanged));
 
         /// <summary>
         /// Identifies the <see cref="CaretThickness"/> dependency property.
         /// </summary>
         [Styled("caret-thickness")]
         public static readonly DependencyProperty CaretThicknessProperty = DependencyProperty.Register("CaretThickness", typeof(Double), typeof(TextBox),
-            new DependencyPropertyMetadata(HandleCaretThicknessChanged, () => 4.0, DependencyPropertyOptions.None));
+            new PropertyMetadata(4.0, HandleCaretThicknessChanged));
 
         /// <summary>
         /// Identifies the <see cref="CaretImage"/> dependency property.
         /// </summary>
         [Styled("caret-image")]
         public static readonly DependencyProperty CaretImageProperty = DependencyProperty.Register("CaretImage", typeof(SourcedImage), typeof(TextBox),
-            new DependencyPropertyMetadata(HandleCaretImageChanged, null, DependencyPropertyOptions.None));
+            new PropertyMetadata(HandleCaretImageChanged));
 
         /// <summary>
         /// Identifies the <see cref="CaretColor"/> dependency property.
         /// </summary>
         [Styled("caret-color")]
         public static readonly DependencyProperty CaretColorProperty = DependencyProperty.Register("CaretColor", typeof(Color), typeof(TextBox),
-            new DependencyPropertyMetadata(HandleCaretColorChanged, () => Color.Blue * 0.4f, DependencyPropertyOptions.None));
+            new PropertyMetadata(Color.Blue * 0.4f, HandleCaretColorChanged));
 
         /// <summary>
         /// Identifies the <see cref="SelectionImage"/> dependency property.
         /// </summary>
         [Styled("selection-image")]
         public static readonly DependencyProperty SelectionImageProperty = DependencyProperty.Register("SelectionImage", typeof(SourcedImage), typeof(TextBox),
-            new DependencyPropertyMetadata(HandleSelectionImageChanged, null, DependencyPropertyOptions.None));
+            new PropertyMetadata(HandleSelectionImageChanged));
 
         /// <summary>
         /// Identifies the <see cref="SelectionColor"/> dependency property.
         /// </summary>
         [Styled("selection-color")]
         public static readonly DependencyProperty SelectionColorProperty = DependencyProperty.Register("SelectionColor", typeof(Color), typeof(TextBox),
-            new DependencyPropertyMetadata(HandleSelectionColorChanged, () => Color.Blue * 0.4f, DependencyPropertyOptions.None));
+            new PropertyMetadata(Color.Blue * 0.4f, HandleSelectionColorChanged));
 
         /// <summary>
         /// Identifies the <see cref="InsertionMode"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty InsertionModeProperty = DependencyProperty.Register("InsertionMode", typeof(TextBoxInsertionMode), typeof(TextBox),
-            new DependencyPropertyMetadata(HandleInsertionModeChanged, () => TextBoxInsertionMode.Insert, DependencyPropertyOptions.None));
+            new PropertyMetadata(TextBoxInsertionMode.Insert, HandleInsertionModeChanged));
 
         /// <summary>
         /// Invalidates the clipping region used for the text box's text.

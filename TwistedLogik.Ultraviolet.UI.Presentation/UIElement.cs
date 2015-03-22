@@ -871,35 +871,35 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         [Styled("enabled")]
         public static readonly DependencyProperty IsEnabledProperty = DependencyProperty.Register("IsEnabled", typeof(Boolean), typeof(UIElement),
-            new DependencyPropertyMetadata(HandleIsEnabledChanged, () => CommonBoxedValues.Boolean.True, new CoerceValueCallback<Boolean>(CoerceIsEnabled), DependencyPropertyOptions.None));
+            new PropertyMetadata(CommonBoxedValues.Boolean.True, HandleIsEnabledChanged, new CoerceValueCallback<Boolean>(CoerceIsEnabled)));
 
         /// <summary>
         /// Identifies the <see cref="IsHitTestVisible"/> dependency property.
         /// </summary>
         [Styled("hit-test-visible")]
         public static readonly DependencyProperty IsHitTestVisibleProperty = DependencyProperty.Register("IsHitTestVisible", typeof(Boolean), typeof(UIElement),
-            new DependencyPropertyMetadata(HandleIsHitTestVisibleChanged, () => CommonBoxedValues.Boolean.True, DependencyPropertyOptions.None));
+            new PropertyMetadata(CommonBoxedValues.Boolean.True, HandleIsHitTestVisibleChanged));
         
         /// <summary>
         /// Identifies the <see cref="Focusable"/> dependency property.
         /// </summary>
         [Styled("focusable")]
         public static readonly DependencyProperty FocusableProperty = DependencyProperty.Register("Focusable", typeof(Boolean), typeof(UIElement),
-            new DependencyPropertyMetadata(HandleFocusableChanged, () => CommonBoxedValues.Boolean.False, DependencyPropertyOptions.None));
+            new PropertyMetadata(CommonBoxedValues.Boolean.False, HandleFocusableChanged));
 
         /// <summary>
         /// Identifies the <see cref="Visibility"/> dependency property.
         /// </summary>
         [Styled("visibility")]
         public static readonly DependencyProperty VisibilityProperty = DependencyProperty.Register("Visibility", typeof(Visibility), typeof(UIElement),
-            new DependencyPropertyMetadata(HandleVisibilityChanged, () => Visibility.Visible, DependencyPropertyOptions.None));
+            new PropertyMetadata(PresentationBoxedValues.Visibility.Visible, HandleVisibilityChanged));
 
         /// <summary>
         /// Identifies the <see cref="Opacity"/> dependency property.
         /// </summary>
         [Styled("opacity")]
         public static readonly DependencyProperty OpacityProperty = DependencyProperty.Register("Opacity", typeof(Single), typeof(UIElement),
-            new DependencyPropertyMetadata(HandleOpacityChanged, () => CommonBoxedValues.Single.One, DependencyPropertyOptions.None));
+            new PropertyMetadata(CommonBoxedValues.Single.One, HandleOpacityChanged));
         
         /// <summary>
         /// Applies a visual state transition to the element.

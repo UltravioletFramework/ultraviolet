@@ -333,6 +333,7 @@
     <Compile Include="Point2D.cs" />
     <Compile Include="Point2F.cs" />
     <Compile Include="Point2.cs" />
+    <Compile Include="UltravioletBoxedValues.cs" />
     <Compile Include="Radians.cs" />
     <Compile Include="Rectangle.cs" />
     <Compile Include="RectangleD.cs" />

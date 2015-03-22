@@ -104,9 +104,9 @@
     <Compile Include="DependencyBoundValueNonConverting.cs" />
     <Compile Include="DependencyObject.cs" />
     <Compile Include="DependencyProperty.cs" />
-    <Compile Include="DependencyPropertyMetadata.cs" />
+    <Compile Include="PropertyMetadata.cs" />
     <Compile Include="DependencyPropertyName.cs" />
-    <Compile Include="DependencyPropertyOptions.cs" />
+    <Compile Include="PropertyMetadataOptions.cs" />
     <Compile Include="DependencyPropertySystem.cs" />
     <Compile Include="DependencyPropertyValue.cs" />
     <Compile Include="DrawingContext.ClipState.cs" />
@@ -262,6 +262,7 @@
     <Compile Include="TypeExtensions.cs" />
     <Compile Include="UIElement.IInputElement.cs" />
     <Compile Include="UIElement.cs" />
+    <Compile Include="PresentationBoxedValues.cs" />
     <Compile Include="UvmlKnownTypeAttribute.cs" />
     <Compile Include="UIElementClassCollection.cs" />
     <Compile Include="UIElementClassCollection.IEnumerable.cs" />

@@ -39,7 +39,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// Identifies the <see cref="Orientation"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty OrientationProperty = DependencyProperty.Register("Orientation", typeof(Orientation), typeof(StackPanel),
-            new DependencyPropertyMetadata(HandleOrientationChanged, () => Orientation.Vertical, DependencyPropertyOptions.AffectsMeasure));
+            new PropertyMetadata(PresentationBoxedValues.Orientation.Vertical, PropertyMetadataOptions.AffectsMeasure, HandleOrientationChanged));
 
         /// <inheritdoc/>
         protected override Size2D MeasureOverride(Size2D availableSize)

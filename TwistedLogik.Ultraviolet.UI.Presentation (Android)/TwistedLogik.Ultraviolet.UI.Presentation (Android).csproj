@@ -362,14 +362,8 @@
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\DependencyProperty.cs">
       <Link>DependencyProperty.cs</Link>
     </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\DependencyPropertyMetadata.cs">
-      <Link>DependencyPropertyMetadata.cs</Link>
-    </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\DependencyPropertyName.cs">
       <Link>DependencyPropertyName.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\DependencyPropertyOptions.cs">
-      <Link>DependencyPropertyOptions.cs</Link>
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\DependencyPropertySystem.cs">
       <Link>DependencyPropertySystem.cs</Link>
@@ -464,6 +458,9 @@
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\NamespaceDoc.cs">
       <Link>NamespaceDoc.cs</Link>
     </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\PresentationBoxedValues.cs">
+      <Link>PresentationBoxedValues.cs</Link>
+    </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\PresentationFoundation.cs">
       <Link>PresentationFoundation.cs</Link>
     </Compile>
@@ -490,6 +487,12 @@
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Properties\AssemblyInfo.cs">
       <Link>Properties\AssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\PropertyMetadata.cs">
+      <Link>PropertyMetadata.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\PropertyMetadataOptions.cs">
+      <Link>PropertyMetadataOptions.cs</Link>
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\RoutedEvent.cs">
       <Link>RoutedEvent.cs</Link>
@@ -777,7 +780,7 @@
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties ProjectLinkReference="7379d9e1-bb01-4b05-b4f7-5d39b393348f" ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" />
+      <UserProperties ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" ProjectLinkReference="7379d9e1-bb01-4b05-b4f7-5d39b393348f" />
     </VisualStudio>
   </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -117,13 +117,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// Identifies the <see cref="HorizontalScrollBarVisibility"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty HorizontalScrollBarVisibilityProperty = DependencyProperty.Register("HorizontalScrollBarVisibility", typeof(ScrollBarVisibility), typeof(ScrollViewer),
-            new DependencyPropertyMetadata(HandleHorizontalScrollBarVisibilityChanged, () => ScrollBarVisibility.Disabled, DependencyPropertyOptions.AffectsArrange));
+            new PropertyMetadata(PresentationBoxedValues.ScrollBarVisibility.Disabled, PropertyMetadataOptions.AffectsArrange, HandleHorizontalScrollBarVisibilityChanged));
 
         /// <summary>
         /// Identifies the <see cref="VerticalScrollBarVisibility"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty VerticalScrollBarVisibilityProperty = DependencyProperty.Register("VerticalScrollBarVisibility", typeof(ScrollBarVisibility), typeof(ScrollViewer),
-            new DependencyPropertyMetadata(HandleVerticalScrollBarVisibilityChanged, () => ScrollBarVisibility.Visible, DependencyPropertyOptions.AffectsArrange));
+            new PropertyMetadata(PresentationBoxedValues.ScrollBarVisibility.Visible, PropertyMetadataOptions.AffectsArrange, HandleVerticalScrollBarVisibilityChanged));
 
         /// <inheritdoc/>
         protected override Size2D MeasureOverride(Size2D availableSize)

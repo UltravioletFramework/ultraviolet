@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet.UI.Presentation.Styles;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
@@ -130,35 +131,35 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         [Styled("value")]
         public static readonly DependencyProperty ValueProperty = DependencyProperty.Register("Value", typeof(Double), typeof(RangeBase),
-            new DependencyPropertyMetadata(HandleValueChanged, () => 0.0, new CoerceValueCallback<Double>(CoerceValue), DependencyPropertyOptions.None));
+            new PropertyMetadata(HandleValueChanged, new CoerceValueCallback<Double>(CoerceValue)));
 
         /// <summary>
         /// Identifies the <see cref="Minimum"/> dependency property.
         /// </summary>
         [Styled("minimum")]
         public static readonly DependencyProperty MinimumProperty = DependencyProperty.Register("Minimum", typeof(Double), typeof(RangeBase),
-            new DependencyPropertyMetadata(HandleMinimumChanged, () => 0.0, DependencyPropertyOptions.None));
+            new PropertyMetadata(HandleMinimumChanged));
 
         /// <summary>
         /// Identifies the <see cref="Maximum"/> dependency property.
         /// </summary>
         [Styled("maximum")]
         public static readonly DependencyProperty MaximumProperty = DependencyProperty.Register("Maximum", typeof(Double), typeof(RangeBase),
-            new DependencyPropertyMetadata(HandleMaximumChanged, () => 1.0, DependencyPropertyOptions.None));
+            new PropertyMetadata(CommonBoxedValues.Double.One, HandleMaximumChanged));
 
         /// <summary>
         /// Identifies the <see cref="SmallChange"/> dependency property.
         /// </summary>
         [Styled("small-change")]
         public static readonly DependencyProperty SmallChangeProperty = DependencyProperty.Register("SmallChange", typeof(Double), typeof(RangeBase),
-            new DependencyPropertyMetadata(HandleSmallChangeChanged, () => 0.1, DependencyPropertyOptions.None));
+            new PropertyMetadata(0.1, HandleSmallChangeChanged));
 
         /// <summary>
         /// Identifies the <see cref="LargeChange"/> dependency property.
         /// </summary>
         [Styled("large-change")]
         public static readonly DependencyProperty LargeChangeProperty = DependencyProperty.Register("LargeChange", typeof(Double), typeof(RangeBase),
-            new DependencyPropertyMetadata(HandleLargeChangeChanged, () => 1.0, DependencyPropertyOptions.None));
+            new PropertyMetadata(CommonBoxedValues.Double.One, HandleLargeChangeChanged));
 
         /// <summary>
         /// Raises the <see cref="ValueChanged"/> event.

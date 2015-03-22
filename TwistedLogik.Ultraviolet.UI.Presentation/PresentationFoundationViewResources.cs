@@ -62,8 +62,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         [Styled("blank-image")]
         internal static readonly DependencyProperty BlankImageProperty = DependencyProperty.Register("BlankImage", typeof(SourcedImage), typeof(PresentationFoundationViewResources),
-            new DependencyPropertyMetadata(HandleBlankImagePropertyChanged, null, DependencyPropertyOptions.None));
-
+            new PropertyMetadata(HandleBlankImagePropertyChanged));
+        
         /// <summary>
         /// Reloads the view's resources.
         /// </summary>

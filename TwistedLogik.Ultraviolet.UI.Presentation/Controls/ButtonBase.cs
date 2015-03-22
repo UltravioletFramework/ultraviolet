@@ -76,7 +76,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// Identifies the <see cref="ClickMode"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty ClickModeProperty = DependencyProperty.Register("ClickMode", typeof(ClickMode), typeof(ButtonBase),
-            new DependencyPropertyMetadata(HandleClickModeChanged, () => ClickMode.Release, DependencyPropertyOptions.None));
+            new PropertyMetadata(PresentationBoxedValues.ClickMode.Release, HandleClickModeChanged));
 
         /// <inheritdoc/>
         protected override void OnLostMouseCapture(ref Boolean handled)

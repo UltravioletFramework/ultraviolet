@@ -32,7 +32,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         [Styled("content-offset")]
         public static readonly DependencyProperty ContentOffsetProperty = DependencyProperty.Register("ContentOffset", typeof(Point2D), typeof(ContentPresenter),
-            new DependencyPropertyMetadata(HandleContentOffsetChanged, () => Point2D.Zero, DependencyPropertyOptions.None));
+            new PropertyMetadata(HandleContentOffsetChanged));
 
         /// <inheritdoc/>
         protected override void CacheLayoutParametersCore()
