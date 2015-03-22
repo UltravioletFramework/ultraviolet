@@ -312,39 +312,36 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Removes the specified dependency property's current animation, if it has one.
         /// </summary>
-        /// <typeparam name="T">The type of value contained by the dependency property.</typeparam>
         /// <param name="dp">A <see cref="DependencyProperty"/> instance which identifies the dependency property to clear.</param>
-        public void ClearAnimation<T>(DependencyProperty dp)
+        public void ClearAnimation(DependencyProperty dp)
         {
             Contract.Require(dp, "dp");
 
-            var wrapper = GetDependencyPropertyValue<T>(dp);
+            var wrapper = GetDependencyPropertyValue(dp, dp.PropertyType);
             wrapper.ClearAnimation();
         }
 
         /// <summary>
         /// Clears the local value associated with the specified dependency property.
         /// </summary>
-        /// <typeparam name="T">The type of value contained by the dependency property.</typeparam>
         /// <param name="dp">A <see cref="DependencyProperty"/> instance which identifies the dependency property to clear.</param>
-        public void ClearLocalValue<T>(DependencyProperty dp)
+        public void ClearLocalValue(DependencyProperty dp)
         {
             Contract.Require(dp, "dp");
 
-            var wrapper = GetDependencyPropertyValue<T>(dp);
+            var wrapper = GetDependencyPropertyValue(dp, dp.PropertyType);
             wrapper.ClearLocalValue();
         }
 
         /// <summary>
         /// Clears the styled value associated with the specified 
         /// </summary>
-        /// <typeparam name="T">The type of value contained by the dependency property.</typeparam>
         /// <param name="dp">A <see cref="DependencyProperty"/> instance which identifies the dependency property to clear.</param>
-        public void ClearStyledValue<T>(DependencyProperty dp)
+        public void ClearStyledValue(DependencyProperty dp)
         {
             Contract.Require(dp, "dp");
 
-            var wrapper = GetDependencyPropertyValue<T>(dp);
+            var wrapper = GetDependencyPropertyValue(dp, dp.PropertyType);
             wrapper.ClearStyledValue();
         }
 
