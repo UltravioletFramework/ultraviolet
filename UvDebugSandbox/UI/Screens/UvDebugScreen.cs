@@ -35,40 +35,6 @@ namespace UvDebugSandbox.UI.Screens
             get { return uiScreenService; }
         }
 
-        /// <inheritdoc/>
-        protected override void OnUpdating(UltravioletTime time)
-        {
-            if (View != null)
-            {
-                var actions = Ultraviolet.GetInput().GetActions();
-                if (actions.NavigateUp.IsPressed(false))
-                {
-                    View.NavigateUp();
-                }
-                if (actions.NavigateDown.IsPressed(false))
-                {
-                    View.NavigateDown();
-                }
-                if (actions.NavigateLeft.IsPressed(false))
-                {
-                    View.NavigateLeft();
-                }
-                if (actions.NavigateRight.IsPressed(false))
-                {
-                    View.NavigateRight();
-                }
-                if (actions.NavigateNextTabStop.IsPressed(false))
-                {
-                    View.NavigateNextTabStop();
-                }
-                if (actions.NavigatePreviousTabStop.IsPressed(false))
-                {
-                    View.NavigatePreviousTabStop();
-                }
-            }
-            base.OnUpdating(time);
-        }
-
         // Property values.
         private readonly UIScreenService uiScreenService;
     }

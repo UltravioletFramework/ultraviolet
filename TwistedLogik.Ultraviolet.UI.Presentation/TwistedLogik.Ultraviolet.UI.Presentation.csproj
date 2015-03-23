@@ -188,7 +188,6 @@
     <Compile Include="Input\ModifierKeys.cs" />
     <Compile Include="Input\Mouse.MouseState.cs" />
     <Compile Include="Input\Keyboard.KeyboardState.cs" />
-    <Compile Include="Input\KeyboardNavigation.cs" />
     <Compile Include="Input\Mouse.cs" />
     <Compile Include="Input\Keyboard.cs">
       <SubType>Code</SubType>

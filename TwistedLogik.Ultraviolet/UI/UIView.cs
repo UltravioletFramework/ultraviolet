@@ -72,36 +72,6 @@ namespace TwistedLogik.Ultraviolet.UI
         public abstract void Update(UltravioletTime time);
 
         /// <summary>
-        /// Moves focus up.
-        /// </summary>
-        public abstract void NavigateUp();
-
-        /// <summary>
-        /// Moves focus down.
-        /// </summary>
-        public abstract void NavigateDown();
-
-        /// <summary>
-        /// Moves focus to the left.
-        /// </summary>
-        public abstract void NavigateLeft();
-
-        /// <summary>
-        /// Moves focus to the right.
-        /// </summary>
-        public abstract void NavigateRight();
-
-        /// <summary>
-        /// Moves focus to the previous tab stop.
-        /// </summary>
-        public abstract void NavigatePreviousTabStop();
-
-        /// <summary>
-        /// Moves focus to the next tab stop.
-        /// </summary>
-        public abstract void NavigateNextTabStop();
-
-        /// <summary>
         /// Grants focus to the view.
         /// </summary>
         public void Focus()

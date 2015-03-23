@@ -99,42 +99,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             layoutRoot.Update(time);
         }
 
-        /// <inheritdoc/>
-        public override void NavigateUp()
-        {
-            MoveFocus(FocusNavigationDirection.Up);
-        }
-
-        /// <inheritdoc/>
-        public override void NavigateDown()
-        {
-            MoveFocus(FocusNavigationDirection.Down);
-        }
-
-        /// <inheritdoc/>
-        public override void NavigateLeft()
-        {
-            MoveFocus(FocusNavigationDirection.Left);
-        }
-
-        /// <inheritdoc/>
-        public override void NavigateRight()
-        {
-            MoveFocus(FocusNavigationDirection.Right);
-        }
-
-        /// <inheritdoc/>
-        public override void NavigatePreviousTabStop()
-        {
-            MoveFocus(FocusNavigationDirection.Previous);
-        }
-
-        /// <inheritdoc/>
-        public override void NavigateNextTabStop()
-        {
-            MoveFocus(FocusNavigationDirection.Next);
-        }
-
         /// <summary>
         /// Invalidates the styling state of the view's layout root.
         /// </summary>
@@ -157,20 +121,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public void InvalidateArrange()
         {
             layoutRoot.InvalidateArrange();
-        }
-
-        /// <summary>
-        /// Moves focus in the specified direction.
-        /// </summary>
-        /// <param name="direction">A <see cref="FocusNavigationDirection"/> value that specifies which direction to move focus.</param>
-        /// <returns><c>true</c> if focus was moved; otherwise, <c>false</c>.</returns>
-        public Boolean MoveFocus(FocusNavigationDirection direction)
-        {
-            var uiElement = elementWithFocus as UIElement;
-            if (uiElement == null)
-                return false;
-
-            return uiElement.MoveFocus(direction);
         }
 
         /// <summary>
@@ -362,26 +312,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public Visual HitTest(Point2D point)
         {
             return LayoutRoot.HitTest(point);
-        }
-
-        /// <summary>
-        /// Gets the first focusable element in the view.
-        /// </summary>
-        /// <param name="tabStop">A value indicating whether the element must also be a tab stop.</param>
-        /// <returns>The first focusable element in the view, or <c>null</c> if no such element exists.</returns>
-        public UIElement GetFirstFocusableElement(Boolean tabStop)
-        {
-            return GetFirstFocusableElementInternal(LayoutRoot, tabStop);
-        }
-
-        /// <summary>
-        /// Gets the last focusable element in the view.
-        /// </summary>
-        /// <param name="tabStop">A value indicating whether the element must also be a tab stop.</param>
-        /// <returns>The last focusable element in the view, or <c>null</c> if no such element exists.</returns>
-        public UIElement GetLastFocusableElement(Boolean tabStop)
-        {
-            return GetLastFocusableElementInternal(LayoutRoot, tabStop);
         }
 
         /// <summary>
@@ -606,54 +536,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
-        /// Recurses through the logical tree to find the first element which is focusable (and potentially, a tab stop).
-        /// </summary>
-        /// <param name="parent">The parent element which is being examined.</param>
-        /// <param name="tabStop">A value indicating whether a matching element must be a tab stop.</param>
-        /// <returns>The first element within this branch of the logical tree which meets the specified criteria.</returns>
-        private UIElement GetFirstFocusableElementInternal(UIElement parent, Boolean tabStop)
-        {
-            if (parent.Focusable && (!tabStop || IsTabStop(parent)))
-                return parent;
-
-            for (int i = 0; i < parent.VisualChildrenCount; i++)
-            {
-                var child = parent.GetVisualChild(i);
-                var match = GetFirstFocusableElementInternal(child, tabStop);
-                if (match != null)
-                {
-                    return match;
-                }
-            }
-
-            return null;
-        }
-
-        /// <summary>
-        /// Recurses through the logical tree to find the last element which is focusable (and potentially, a tab stop).
-        /// </summary>
-        /// <param name="parent">The parent element which is being examined.</param>
-        /// <param name="tabStop">A value indicating whether a matching element must be a tab stop.</param>
-        /// <returns>The last element within this branch of the logical tree which meets the specified criteria.</returns>
-        private UIElement GetLastFocusableElementInternal(UIElement parent, Boolean tabStop)
-        {
-            for (int i = parent.VisualChildrenCount - 1; i >= 0; i--)
-            {
-                var child = parent.GetVisualChild(i);
-                var match = GetLastFocusableElementInternal(child, tabStop);
-                if (match != null)
-                {
-                    return match;
-                }
-            }
-
-            if (parent.Focusable && (!tabStop || IsTabStop(parent)))
-                return parent;
-
-            return null;
-        }
-
-        /// <summary>
         /// Loads the view's global resources from the specified stylesheet.
         /// </summary>
         /// <param name="stylesheet">The stylesheet from which to load global resources.</param>
@@ -824,16 +706,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 return false;
 
             return uiElement.IsHitTestVisible && uiElement.IsEnabled;
-        }
-
-        /// <summary>
-        /// Gets a value indicating whether the specified object is a tab stop.
-        /// </summary>
-        /// <param name="dobj">The dependency object to evaluate.</param>
-        /// <returns><c>true</c> if the specified object is a tab stop; otherwise, <c>false</c>.</returns>
-        private Boolean IsTabStop(DependencyObject dobj)
-        {
-            return dobj.GetValue<Boolean>(KeyboardNavigation.IsTabStopProperty);
         }
 
         /// <summary>
