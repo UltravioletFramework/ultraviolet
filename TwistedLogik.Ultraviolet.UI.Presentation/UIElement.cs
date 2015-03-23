@@ -1760,7 +1760,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             {
                 var imageAreaRel = area ?? new RectangleD(0, 0, RenderSize.Width, RenderSize.Height);
                 var imageAreaAbs = imageAreaRel + AbsolutePosition;
-                var imageAreaPix = (RectangleF)Display.DipsToPixels(imageAreaAbs);
+                var imageAreaPix = (Rectangle)Display.DipsToPixels(imageAreaAbs);
 
                 var origin = new Vector2(
                     (Int32)(imageAreaPix.Width / 2f),
