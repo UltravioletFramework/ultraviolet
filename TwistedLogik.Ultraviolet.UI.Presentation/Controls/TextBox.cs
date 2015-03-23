@@ -819,7 +819,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                     return;
 
                 Text = textTemp;
-                textCaretPosition = startingCaretPosition + textLength;
+                textCaretPosition = Math.Min(Text.Length, startingCaretPosition + textLength);
             }
 
             ScrollForwardToCaret();
