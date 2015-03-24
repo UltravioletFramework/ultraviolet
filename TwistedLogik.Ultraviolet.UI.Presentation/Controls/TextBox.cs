@@ -201,12 +201,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Identifies the <see cref="Pattern"/> dependency property.
         /// </summary>
+        [Styled("pattern")]
         public static readonly DependencyProperty PatternProperty = DependencyProperty.Register("Pattern", typeof(String), typeof(TextBox),
             new PropertyMetadata(HandlePatternChanged));
 
         /// <summary>
         /// Identifies the <see cref="MaxLength"/> dependency property.
         /// </summary>
+        [Styled("max-length")]
         public static readonly DependencyProperty MaxLengthProperty = DependencyProperty.Register("MaxLength", typeof(Int32), typeof(TextBox),
             new PropertyMetadata(HandleMaxLengthChanged));
 
@@ -248,6 +250,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Identifies the <see cref="InsertionMode"/> dependency property.
         /// </summary>
+        [Styled("insertion-mode")]
         public static readonly DependencyProperty InsertionModeProperty = DependencyProperty.Register("InsertionMode", typeof(TextBoxInsertionMode), typeof(TextBox),
             new PropertyMetadata(TextBoxInsertionMode.Insert, HandleInsertionModeChanged));
 
