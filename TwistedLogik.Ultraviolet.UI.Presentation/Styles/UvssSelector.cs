@@ -97,7 +97,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
 
             var firstSelectorPart = parts[parts.Count - 1];
 
-            if (!ElementMatchesSelectorPart(element, firstSelectorPart))
+            if (!ElementMatchesSelectorPart(root, element, firstSelectorPart))
                 return false;
 
             var current   = element;
@@ -117,10 +117,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// <summary>
         /// Gets a value indicating whether the specified UI element matches the specified selector part.
         /// </summary>
+        /// <param name="root">The root element being animated.</param>
         /// <param name="element">The UI element to evaluate.</param>
         /// <param name="part">The selector part to evaluate.</param>
         /// <returns><c>true</c> if the element matches the selector part; otherwise, <c>false</c>.</returns>
-        private static Boolean ElementMatchesSelectorPart(UIElement element, UvssSelectorPart part)
+        private static Boolean ElementMatchesSelectorPart(UIElement root, UIElement element, UvssSelectorPart part)
         {
             if (element.Parent == null && String.Equals(part.Element, "document", StringComparison.OrdinalIgnoreCase))
                 return true;
@@ -136,6 +137,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
                 else
                 {
                     return false;
+                }
+            }
+
+            if (part.PseudoClass != null)
+            {
+                if (String.Equals(part.PseudoClass, "storyboard-root", StringComparison.OrdinalIgnoreCase))
+                {
+                    if (element != root)
+                        return false;
                 }
             }
 
@@ -177,7 +187,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
                 if (current == null)
                     break;
 
-                if (ElementMatchesSelectorPart(current, part))
+                if (ElementMatchesSelectorPart(root, current, part))
                 {
                     element = current;
                     return true;

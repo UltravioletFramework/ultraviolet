@@ -256,7 +256,6 @@
     <Compile Include="Styles\UvssStyleArgumentsCollection.IEnumerable.cs" />
     <Compile Include="Styles\UvssStyleCollection.cs" />
     <Compile Include="Styles\UvssStyleCollection.IEnumerable.cs" />
-    <Compile Include="Styles\UvssStyleKey.cs" />
     <Compile Include="Thickness.cs" />
     <Compile Include="TypeExtensions.cs" />
     <Compile Include="UIElement.IInputElement.cs" />

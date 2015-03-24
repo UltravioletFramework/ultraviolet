@@ -732,17 +732,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
                     continue;
                 }
 
-                if (token.TokenType == UvssLexerTokenType.PseudoClass)
-                {
-                    if (!allowPseudoClass || !String.IsNullOrEmpty(pseudoClass))
-                        ThrowUnexpectedToken(state, token);
-
-                    state.Advance();
-
-                    pseudoClass = token.Value;
-                    continue;
-                }
-
                 if (token.TokenType == UvssLexerTokenType.Identifier || token.TokenType == UvssLexerTokenType.UniversalSelector)
                 {
                     if (!String.IsNullOrEmpty(pseudoClass))
@@ -782,6 +771,24 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
                     valid = true;
                     classes.Add(token.Value);
                     continue;
+                }
+
+                if (token.TokenType == UvssLexerTokenType.Colon)
+                {
+                    if (!valid)
+                        ThrowUnexpectedToken(state, token);
+
+                    state.Advance();
+
+                    var identifier = state.TryConsume();
+                    if (identifier == null)
+                        ThrowUnexpectedEOF(state);
+
+                    if (identifier.Value.TokenType != UvssLexerTokenType.Identifier)
+                        ThrowExpectedToken(state, identifier.Value, UvssLexerTokenType.Identifier);
+
+                    pseudoClass = identifier.Value.Value;
+                    break;
                 }
 
                 ThrowUnexpectedToken(state, token);
