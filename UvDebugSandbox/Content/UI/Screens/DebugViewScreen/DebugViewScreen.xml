@@ -3,23 +3,16 @@
   <Stylesheet>DebugViewScreenStyles.uvss</Stylesheet>
   <View ViewModelType="UvDebugSandbox.UI.Screens.DebugViewModel, UvDebugSandbox">
 
-    <Button Name="Bar" HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Right" VerticalContentAlignment="Bottom">
-      <Button Name="Foo">
-        <Button Name="Baz">
-          Nested Nested Button
-        </Button>
-      </Button>
-    </Button>
-
-    <StackPanel>
-      <HSlider Width="100"></HSlider>
-      <VSlider Height="100"></VSlider>
-      <CheckBox>Hello</CheckBox>
-      <RadioButton>World</RadioButton>
-      <RadioButton>Goodbye</RadioButton>
-      <ToggleButton>Toggle</ToggleButton>
-      <TextBox Width="100"></TextBox>
-    </StackPanel>
+    <ListBox Margin="50" Width="200">
+      <ListBoxItem>Hello</ListBoxItem>
+      <ListBoxItem>Hello</ListBoxItem>
+      <ListBoxItem>Hello</ListBoxItem>
+      <ListBoxItem>Hello</ListBoxItem>
+      <ListBoxItem>Hello</ListBoxItem>
+      <ListBoxItem>Hello</ListBoxItem>
+      <ListBoxItem>Hello</ListBoxItem>
+      <ListBoxItem>Hello</ListBoxItem>
+    </ListBox>
     
   </View>
 </UIPanelDefinition>

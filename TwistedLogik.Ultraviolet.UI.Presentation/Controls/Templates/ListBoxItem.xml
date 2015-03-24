@@ -1,4 +1,15 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ComponentTemplate HorizontalAlignment="Stretch">
-  <ContentPresenter HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+  <Canvas HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+    <Rectangle IsHitTestVisible="false" Opacity="{{HighlightOpacity}}" FillColor="#ff0000ff"
+      Canvas.Left="0"
+      Canvas.Top="0"
+      Canvas.Right="0"
+      Canvas.Bottom ="0"/>
+    <ContentPresenter 
+      Canvas.Left="8"
+      Canvas.Top="8"
+      Canvas.Right="8"
+      Canvas.Bottom="8"/>
+  </Canvas>
 </ComponentTemplate>

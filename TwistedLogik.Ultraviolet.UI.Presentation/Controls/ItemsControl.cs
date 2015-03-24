@@ -25,6 +25,31 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
+        /// Gets the <see cref="ItemsControl"/> which is logically the owner of the specified item container.
+        /// </summary>
+        /// <param name="container">The item container to evaluate.</param>
+        /// <returns>The <see cref="ItemsControl"/> which is logically the owner 
+        /// of <paramref name="container"/>, or <c>null</c> if there is no such control.</returns>
+        public static ItemsControl ItemsControlFromItemContainer(DependencyObject container)
+        {
+            var uiElement = container as UIElement;
+            if (uiElement == null)
+                return null;
+
+            var parent = LogicalTreeHelper.GetParent(uiElement);
+            while (parent != null)
+            {
+                var itemsControl = parent as ItemsControl;
+                if (itemsControl != null && itemsControl.IsItemContainer(uiElement))
+                    return itemsControl;
+
+                parent = LogicalTreeHelper.GetParent(parent);
+            }
+
+            return null;
+        }
+
+        /// <summary>
         /// Gets the collection that contains the control's items.
         /// </summary>
         public ItemCollection Items

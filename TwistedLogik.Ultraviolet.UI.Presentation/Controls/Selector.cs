@@ -10,6 +10,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
     public abstract class Selector : ItemsControl
     {
         /// <summary>
+        /// Initializes the <see cref="Selector"/> type.
+        /// </summary>
+        static Selector()
+        {
+            RoutedEvent.RegisterClassHandler(typeof(Selector), SelectedEvent, new UpfRoutedEventHandler(HandleSelected));
+            RoutedEvent.RegisterClassHandler(typeof(Selector), UnselectedEvent, new UpfRoutedEventHandler(HandleUnselected));
+        }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="Selector"/> class.
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
@@ -45,6 +54,58 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
+        /// Gets a value indicating whether the selected element contains keyboard focus.
+        /// </summary>
+        /// <param name="element">The element to evaluate.</param>
+        /// <returns><c>true</c> if the specified element is selected; otherwise, <c>false</c>.</returns>
+        public Boolean GetIsSelectionActive(DependencyObject element)
+        {
+            Contract.Require(element, "element");
+
+            return element.GetValue<Boolean>(IsSelectionActiveProperty);
+        }
+
+        /// <summary>
+        /// Adds a handler for the <see cref="SelectedEvent"/> attached event to the specified element.
+        /// </summary>
+        /// <param name="element">The element to which to add the event handler.</param>
+        /// <param name="handler">The event handler to add to the element.</param>
+        public void AddSelectedHandler(DependencyObject element, UpfRoutedEventHandler handler)
+        {
+            UIElementHelper.AddHandler(element, SelectedEvent, handler);
+        }
+
+        /// <summary>
+        /// Adds a handler for the <see cref="UnselectedEvent"/> attached event to the specified element.
+        /// </summary>
+        /// <param name="element">The element to which to add the event handler.</param>
+        /// <param name="handler">The event handler to add to the element.</param>
+        public void AddUnselectedHandler(DependencyObject element, UpfRoutedEventHandler handler)
+        {
+            UIElementHelper.AddHandler(element, UnselectedEvent, handler);
+        }
+
+        /// <summary>
+        /// Removes a handler for the <see cref="SelectedEvent"/> attached event from the specified element.
+        /// </summary>
+        /// <param name="element">The element from which to remove the event handler.</param>
+        /// <param name="handler">The event handler to remove from the element.</param>
+        public void RemoveSelectedHandler(DependencyObject element, UpfRoutedEventHandler handler)
+        {
+            UIElementHelper.RemoveHandler(element, SelectedEvent, handler);
+        }
+
+        /// <summary>
+        /// Removes a handler for the <see cref="UnselectedEvent"/> attached event from the specified element.
+        /// </summary>
+        /// <param name="element">The element from which to remove the event handler.</param>
+        /// <param name="handler">The event handler to remove from the element.</param>
+        public void RemoveUnselectedHandler(DependencyObject element, UpfRoutedEventHandler handler)
+        {
+            UIElementHelper.RemoveHandler(element, UnselectedEvent, handler);
+        }
+
+        /// <summary>
         /// Gets or sets the index of the first item in the current selection. If nothing is currently
         /// selected, this property will return negative one (-1).
         /// </summary>
@@ -64,26 +125,25 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
-        /// Occurs when the value of the <see cref="SelectedIndex"/> property changes.
+        /// Occurs when the selector's selection is changed.
         /// </summary>
-        public event UpfEventHandler SelectedIndexChanged;
-
-        /// <summary>
-        /// Occurs when the value of the <see cref="SelectedItem"/> property changes.
-        /// </summary>
-        public event UpfEventHandler SelectedItemChanged;
+        public event UpfRoutedEventHandler SelectionChanged
+        {
+            add { AddHandler(SelectionChangedEvent, value); }
+            remove { RemoveHandler(SelectionChangedEvent, value); }
+        }
 
         /// <summary>
         /// Identifies the <see cref="SelectedIndex"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty SelectedIndexProperty = DependencyProperty.Register("SelectedIndex", typeof(Int32), typeof(Selector),
-            new PropertyMetadata(HandleSelectedIndexChanged));
+            new PropertyMetadata());
 
         /// <summary>
         /// Identifies the <see cref="SelectedItem"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty SelectedItemProperty = DependencyProperty.Register("SelectedItem", typeof(Object), typeof(Selector),
-            new PropertyMetadata(HandleSelectedItemChanged));
+            new PropertyMetadata());
 
         /// <summary>
         /// Identifies the IsSelected attached property.
@@ -92,47 +152,63 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             new PropertyMetadata());
 
         /// <summary>
-        /// Raises the <see cref="SelectedIndexChanged"/> event.
+        /// Identifies the IsSelectionActive attached property.
         /// </summary>
-        protected virtual void OnSelectedIndexChanged()
+        public static readonly DependencyProperty IsSelectionActiveProperty = DependencyProperty.Register("IsSelectionActive", typeof(Boolean), typeof(Selector),
+            new PropertyMetadata());
+
+        /// <summary>
+        /// Identifies the <see cref="SelectionChanged"/> routed event.
+        /// </summary>
+        public static readonly RoutedEvent SelectionChangedEvent = RoutedEvent.Register("SelectionChanged", RoutingStrategy.Bubble,
+            typeof(UpfRoutedEventHandler), typeof(Selector));
+
+        /// <summary>
+        /// Identifies the Selected attached event.
+        /// </summary>
+        public static readonly RoutedEvent SelectedEvent = RoutedEvent.Register("Selected", RoutingStrategy.Bubble, 
+            typeof(UpfRoutedEventHandler), typeof(Selector));
+
+        /// <summary>
+        /// Identifies the Unselected attached event.
+        /// </summary>
+        public static readonly RoutedEvent UnselectedEvent = RoutedEvent.Register("Unselected", RoutingStrategy.Bubble,
+            typeof(UpfRoutedEventHandler), typeof(Selector));
+
+        /// <summary>
+        /// Raises the <see cref="SelectionChanged"/> event.
+        /// </summary>
+        protected virtual void OnSelectionChanged()
         {
-            var temp = SelectedIndexChanged;
-            if (temp != null)
-            {
-                temp(this);
-            }
+
         }
 
         /// <summary>
-        /// Raises the <see cref="SelectedItemChanged"/> event.
+        /// Represents the <see cref="Selector"/> class' class handler for the <see cref="SelectedEvent"/> routed event.
         /// </summary>
-        protected virtual void OnSelectedItemChanged()
+        private static void HandleSelected(DependencyObject dobj, ref RoutedEventData data)
         {
-            var temp = SelectedItemChanged;
-            if (temp != null)
-            {
-                temp(this);
-            }
+            // TODO: Update selector
         }
 
         /// <summary>
-        /// Occurs when the value of the <see cref="SelectedIndex"/> dependency property changes.
+        /// Represents the <see cref="Selector"/> class' class handler for the <see cref="UnselectedEvent"/> routed event.
         /// </summary>
-        /// <param name="dobj">The object that raised the event.</param>
-        private static void HandleSelectedIndexChanged(DependencyObject dobj)
+        private static void HandleUnselected(DependencyObject dobj, ref RoutedEventData data)
         {
-            var selector = (Selector)dobj;
-            selector.OnSelectedIndexChanged();
+            // TODO: Update selector
         }
 
         /// <summary>
-        /// Occurs when the value of the <see cref="SelectedItem"/> dependency property changes.
+        /// Occurs when the value of the <see cref="SelectionChanged"/> dependency property changes.
         /// </summary>
-        /// <param name="dobj">The object that raised the event.</param>
-        private static void HandleSelectedItemChanged(DependencyObject dobj)
+        /// <param name="dobj">The dependency object that raised the event.</param>
+        private static void HandleSelectionChanged(DependencyObject dobj)
         {
-            var selector = (Selector)dobj;
-            selector.OnSelectedItemChanged();
+            var evtDelegate = RoutedEvent.GetInvocationDelegate<UpfRoutedEventHandler>(SelectionChangedEvent);
+            var evtData     = new RoutedEventData(dobj);
+
+            evtDelegate(dobj, ref evtData);
         }
     }
 }

@@ -260,6 +260,11 @@
       <Variant>Cannot load content control '{0}' because it has not defined a ContentPresenter as part of its component template.</Variant>
     </en-US>
   </String>
+  <String Key="NOT_UIELEMENT">
+    <en-US>
+      <variant>The specified object is not an interface element.</variant>
+    </en-US>
+  </String>
   <String Key="NOT_AN_INPUT_ELEMENT">
     <en-US>
       <Variant>The specified object is not an input element.</Variant>

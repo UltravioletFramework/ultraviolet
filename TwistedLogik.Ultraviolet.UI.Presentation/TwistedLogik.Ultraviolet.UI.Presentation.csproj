@@ -262,6 +262,7 @@
     <Compile Include="UIElement.IInputElement.cs" />
     <Compile Include="UIElement.cs" />
     <Compile Include="PresentationBoxedValues.cs" />
+    <Compile Include="UIElementHelper.cs" />
     <Compile Include="UvmlKnownTypeAttribute.cs" />
     <Compile Include="UIElementClassCollection.cs" />
     <Compile Include="UIElementClassCollection.IEnumerable.cs" />

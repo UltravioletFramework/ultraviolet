@@ -75,6 +75,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public static readonly StringResource NotVisualObject                      = new StringResource(StringDatabase, "NOT_VISUAL_OBJECT");
         public static readonly StringResource ClipRectangleMustHaveValidDimensions = new StringResource(StringDatabase, "CLIP_RECTANGLE_MUST_HAVE_VALID_DIMENSIONS");
         public static readonly StringResource ContentControlRequiresPresenter      = new StringResource(StringDatabase, "CONTENT_CONTROL_REQUIRES_PRESENTER");
+        public static readonly StringResource NotUIElement                         = new StringResource(StringDatabase, "NOT_UIELEMENT");
         public static readonly StringResource NotAnInputElement                    = new StringResource(StringDatabase, "NOT_AN_INPUT_ELEMENT");
 #pragma warning restore 1591
     }

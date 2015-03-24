@@ -1,4 +1,6 @@
 ﻿using System;
+using TwistedLogik.Nucleus;
+using TwistedLogik.Ultraviolet.Input;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 {
@@ -17,6 +19,67 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             : base(uv, name)
         {
 
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the list box item is currently selected.
+        /// </summary>
+        public Boolean IsSelected
+        {
+            get { return GetValue<Boolean>(IsSelectedProperty); }
+            set { SetValue<Boolean>(IsSelectedProperty, value); }
+        }
+
+        /// <summary>
+        /// Identifies the <see cref="IsSelected"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty IsSelectedProperty = Selector.IsSelectedProperty.AddOwner(typeof(ListBoxItem),
+            new PropertyMetadata(CommonBoxedValues.Boolean.False, PropertyMetadataOptions.None, HandleIsSelectedChanged));
+
+        /// <inheritdoc/>
+        protected override void OnMouseDown(MouseDevice device, MouseButton button, ref RoutedEventData data)
+        {
+            if (button == MouseButton.Left)
+            {
+                var list = ItemsControl.ItemsControlFromItemContainer(this) as ListBox;
+                if (list != null)
+                {
+                    // TODO: Inform the parent list and let it figure this out
+                    IsSelected = !IsSelected;
+                }
+            }
+            base.OnMouseDown(device, button, ref data);
+        }
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="IsSelected"/> dependency property changes.
+        /// </summary>
+        /// <param name="dobj">The dependency object that raised the event.</param>
+        private static void HandleIsSelectedChanged(DependencyObject dobj)
+        {
+            var item = (ListBoxItem)dobj;
+            if (item.IsSelected)
+            {
+                var evtDelegate = RoutedEvent.GetInvocationDelegate<UpfRoutedEventHandler>(Selector.SelectedEvent);
+                var evtData     = new RoutedEventData(dobj);
+
+                evtDelegate(dobj, ref evtData);
+            }
+            else
+            {
+                var evtDelegate = RoutedEvent.GetInvocationDelegate<UpfRoutedEventHandler>(Selector.UnselectedEvent);
+                var evtData     = new RoutedEventData(dobj);
+
+                evtDelegate(dobj, ref evtData);
+            }
+        }
+
+        /// <summary>
+        /// Gets the opacity of the list box item's selection highlight.
+        /// </summary>
+        private Double HighlightOpacity
+        {
+            get { return IsSelected ? 1 : 0; }
         }
     }
 }
