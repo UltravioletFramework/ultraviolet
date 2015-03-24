@@ -1,4 +1,5 @@
 ﻿using System;
+using TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 {
@@ -35,7 +36,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <inheritdoc/>
         protected override void OnValueChanged()
         {
-            InvalidateMeasure();
+            if (Track != null)
+            {
+                Track.InvalidateArrange();
+            }
             base.OnValueChanged();
         }
 
@@ -108,5 +112,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 
             return Math.Floor(used);
         }
+
+        // Component references.
+        private readonly Track Track = null;
     }
 }
