@@ -64,7 +64,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         protected override void OnButtonPressed()
         {
             ToggleChecked();
+
+            View.CaptureMouse(this);
             base.OnButtonPressed();
+        }
+
+        /// <inheritdoc/>
+        protected override void OnButtonReleased()
+        {
+            View.ReleaseMouse(this);
+            base.OnButtonReleased();
         }
 
         /// <summary>

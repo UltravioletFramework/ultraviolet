@@ -79,6 +79,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             new PropertyMetadata(PresentationBoxedValues.ClickMode.Release, HandleClickModeChanged));
 
         /// <inheritdoc/>
+        protected override void OnIsMouseOverChanged()
+        {
+            UpdateCommonState();
+            base.OnIsMouseOverChanged();
+        }
+
+        /// <inheritdoc/>
         protected override void OnLostMouseCapture(ref Boolean handled)
         {
             IsDepressed = false;
@@ -90,6 +97,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         {
             if (button == MouseButton.Left)
             {
+                View.FocusElement(this);
+
                 IsDepressed = true;
                 OnButtonPressed();
 
@@ -151,14 +160,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         protected override void OnIsEnabledChanged()
         {
             base.OnIsEnabledChanged();
-
-            UpdateCommonState();
-        }
-
-        /// <inheritdoc/>
-        protected override void OnIsHoveringChanged()
-        {
-            base.OnIsHoveringChanged();
 
             UpdateCommonState();
         }
@@ -248,7 +249,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 }
                 else
                 {
-                    if (IsHovering)
+                    if (IsMouseOver)
                     {
                         VisualStateGroups.GoToState("common", "hover");
                     }

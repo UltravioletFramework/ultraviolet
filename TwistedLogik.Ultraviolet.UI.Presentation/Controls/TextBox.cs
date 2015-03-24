@@ -406,6 +406,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             {
                 mouseSelectionInProgress = true;
 
+                View.FocusElement(this);
                 View.CaptureMouse(this);
 
                 textCaretPosition   = CalculateIndexFromCursor(device);

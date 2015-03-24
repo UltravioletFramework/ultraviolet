@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ComponentTemplate>
-  <Grid Class="radiobutton-component" IsHitTestVisible="false">
+  <Grid Class="radiobutton-component" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
     <Grid.ColumnDefinitions>
       <ColumnDefinition Width="Auto"/>
       <ColumnDefinition Width="*"/>

@@ -110,61 +110,61 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Occurs when the mouse cursor moves over the element.
         /// </summary>
-        event UpfMouseMoveEventHandler PreviewMouseMoveEvent;
+        event UpfMouseMoveEventHandler PreviewMouseMove;
 
         /// <summary>
         /// Occurs when a mouse button is pressed while the cursor is over the element.
         /// </summary>
-        event UpfMouseButtonEventHandler PreviewMouseDownEvent;
+        event UpfMouseButtonEventHandler PreviewMouseDown;
 
         /// <summary>
         /// Occurs when a mouse button is released while the cursor is over the element.
         /// </summary>
-        event UpfMouseButtonEventHandler PreviewMouseUpEvent;
+        event UpfMouseButtonEventHandler PreviewMouseUp;
 
         /// <summary>
         /// Occurs when a mouse button is clicked while the cursor is over the element.
         /// </summary>
-        event UpfMouseButtonEventHandler PreviewMouseClickEvent;
+        event UpfMouseButtonEventHandler PreviewMouseClick;
 
         /// <summary>
         /// Occurs when a mouse button is double clicked while the cursor is over the element.
         /// </summary>
-        event UpfMouseButtonEventHandler PreviewMouseDoubleClickEvent;
+        event UpfMouseButtonEventHandler PreviewMouseDoubleClick;
 
         /// <summary>
         /// Occurs when the mouse wheel is scrolled while the cursor is over the element.
         /// </summary>
-        event UpfMouseWheelEventHandler PreviewMouseWheelEvent;
+        event UpfMouseWheelEventHandler PreviewMouseWheel;
 
         /// <summary>
         /// Occurs when the mouse cursor moves over the element.
         /// </summary>
-        event UpfMouseMoveEventHandler MouseMoveEvent;
+        event UpfMouseMoveEventHandler MouseMove;
 
         /// <summary>
         /// Occurs when a mouse button is pressed while the cursor is over the element.
         /// </summary>
-        event UpfMouseButtonEventHandler MouseDownEvent;
+        event UpfMouseButtonEventHandler MouseDown;
 
         /// <summary>
         /// Occurs when a mouse button is released while the cursor is over the element.
         /// </summary>
-        event UpfMouseButtonEventHandler MouseUpEvent;
+        event UpfMouseButtonEventHandler MouseUp;
 
         /// <summary>
         /// Occurs when a mouse button is clicked while the cursor is over the element.
         /// </summary>
-        event UpfMouseButtonEventHandler MouseClickEvent;
+        event UpfMouseButtonEventHandler MouseClick;
 
         /// <summary>
         /// Occurs when a mouse button is double clicked while the cursor is over the element.
         /// </summary>
-        event UpfMouseButtonEventHandler MouseDoubleClickEvent;
+        event UpfMouseButtonEventHandler MouseDoubleClick;
 
         /// <summary>
         /// Occurs when the mouse wheel is scrolled while the cursor is over the element.
         /// </summary>
-        event UpfMouseWheelEventHandler MouseWheelEvent;
+        event UpfMouseWheelEventHandler MouseWheel;
     }
 }

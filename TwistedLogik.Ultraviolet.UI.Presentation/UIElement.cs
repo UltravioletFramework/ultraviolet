@@ -656,22 +656,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
-        /// Gets a value indicating whether the mouse cursor is currently hovering over this element.
-        /// </summary>
-        public Boolean IsHovering
-        {
-            get { return isHovering; }
-            private set
-            {
-                if (isHovering != value)
-                {
-                    isHovering = value;
-                    OnIsHoveringChanged();
-                }
-            }
-        }
-
-        /// <summary>
         /// Gets or sets a value indicating whether the element is visible to hit tests.
         /// </summary>
         public Boolean IsHitTestVisible
@@ -832,11 +816,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public event UpfEventHandler IsEnabledChanged;
 
         /// <summary>
-        /// Occurs when the value of the <see cref="IsHovering"/> property changes.
-        /// </summary>
-        public event UpfEventHandler IsHoveringChanged;
-
-        /// <summary>
         /// Occurs when the value of the <see cref="IsHitTestVisible"/> property changes.
         /// </summary>
         public event UpfEventHandler IsHitTestVisibleChanged;
@@ -882,7 +861,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         [Styled("visibility")]
         public static readonly DependencyProperty VisibilityProperty = DependencyProperty.Register("Visibility", typeof(Visibility), typeof(UIElement),
-            new PropertyMetadata(PresentationBoxedValues.Visibility.Visible, HandleVisibilityChanged));
+            new PropertyMetadata(PresentationBoxedValues.Visibility.Visible, PropertyMetadataOptions.AffectsArrange, HandleVisibilityChanged));
 
         /// <summary>
         /// Identifies the <see cref="Opacity"/> dependency property.
@@ -1317,18 +1296,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         protected virtual void OnIsEnabledChanged()
         {
             var temp = IsEnabledChanged;
-            if (temp != null)
-            {
-                temp(this);
-            }
-        }
-
-        /// <summary>
-        /// Raises the <see cref="IsHoveringChanged"/> event.
-        /// </summary>
-        protected virtual void OnIsHoveringChanged()
-        {
-            var temp = IsHoveringChanged;
             if (temp != null)
             {
                 temp(this);
@@ -2077,7 +2044,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         private Boolean isStyleValid;
         private Boolean isMeasureValid;
         private Boolean isArrangeValid;
-        private Boolean isHovering;
         private Point2D renderOffset;
         private Size2D renderSize;
         private Size2D desiredSize;

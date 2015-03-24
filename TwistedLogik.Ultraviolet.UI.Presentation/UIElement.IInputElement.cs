@@ -31,17 +31,29 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <inheritdoc/>
         public Boolean IsMouseOver
         {
-            get
+            get { return isMouseOver; }
+            internal set
             {
-                var position = Mouse.GetPosition(this);
-                return Bounds.Contains(position);
+                if (isMouseOver != value)
+                {
+                    isMouseOver = value;
+                    OnIsMouseOverChanged();
+                }
             }
         }
 
         /// <inheritdoc/>
         public Boolean IsMouseDirectlyOver
         {
-            get { return (View == null) ? false : View.ElementUnderMouse == this; }
+            get { return isMouseDirectlyOver; }
+            internal set
+            {
+                if (isMouseDirectlyOver != value)
+                {
+                    isMouseDirectlyOver = value;
+                    OnIsMouseDirectlyOverChanged();
+                }
+            }
         }
 
         /// <inheritdoc/>
@@ -115,88 +127,98 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <inheritdoc/>
-        public event UpfMouseMoveEventHandler PreviewMouseMoveEvent
+        public event UpfMouseMoveEventHandler PreviewMouseMove
         {
             add { AddHandler(Mouse.PreviewMouseMoveEvent, value); }
             remove { RemoveHandler(Mouse.PreviewMouseMoveEvent, value); }
         }
 
         /// <inheritdoc/>
-        public event UpfMouseButtonEventHandler PreviewMouseDownEvent
+        public event UpfMouseButtonEventHandler PreviewMouseDown
         {
             add { AddHandler(Mouse.PreviewMouseDownEvent, value); }
             remove { RemoveHandler(Mouse.PreviewMouseDownEvent, value); }
         }
 
         /// <inheritdoc/>
-        public event UpfMouseButtonEventHandler PreviewMouseUpEvent
+        public event UpfMouseButtonEventHandler PreviewMouseUp
         {
             add { AddHandler(Mouse.PreviewMouseUpEvent, value); }
             remove { RemoveHandler(Mouse.PreviewMouseUpEvent, value); }
         }
 
         /// <inheritdoc/>
-        public event UpfMouseButtonEventHandler PreviewMouseClickEvent
+        public event UpfMouseButtonEventHandler PreviewMouseClick
         {
             add { AddHandler(Mouse.PreviewMouseClickEvent, value); }
             remove { RemoveHandler(Mouse.PreviewMouseClickEvent, value); }
         }
 
         /// <inheritdoc/>
-        public event UpfMouseButtonEventHandler PreviewMouseDoubleClickEvent
+        public event UpfMouseButtonEventHandler PreviewMouseDoubleClick
         {
             add { AddHandler(Mouse.PreviewMouseDoubleClickEvent, value); }
             remove { RemoveHandler(Mouse.PreviewMouseDoubleClickEvent, value); }
         }
 
         /// <inheritdoc/>
-        public event UpfMouseWheelEventHandler PreviewMouseWheelEvent
+        public event UpfMouseWheelEventHandler PreviewMouseWheel
         {
             add { AddHandler(Mouse.PreviewMouseWheelEvent, value); }
             remove { RemoveHandler(Mouse.PreviewMouseWheelEvent, value); }
         }
 
         /// <inheritdoc/>
-        public event UpfMouseMoveEventHandler MouseMoveEvent
+        public event UpfMouseMoveEventHandler MouseMove
         {
             add { AddHandler(Mouse.MouseMoveEvent, value); }
             remove { RemoveHandler(Mouse.MouseMoveEvent, value); }
         }
 
         /// <inheritdoc/>
-        public event UpfMouseButtonEventHandler MouseDownEvent
+        public event UpfMouseButtonEventHandler MouseDown
         {
             add { AddHandler(Mouse.MouseDownEvent, value); }
             remove { RemoveHandler(Mouse.MouseDownEvent, value); }
         }
 
         /// <inheritdoc/>
-        public event UpfMouseButtonEventHandler MouseUpEvent
+        public event UpfMouseButtonEventHandler MouseUp
         {
             add { AddHandler(Mouse.MouseUpEvent, value); }
             remove { RemoveHandler(Mouse.MouseUpEvent, value); }
         }
 
         /// <inheritdoc/>
-        public event UpfMouseButtonEventHandler MouseClickEvent
+        public event UpfMouseButtonEventHandler MouseClick
         {
             add { AddHandler(Mouse.MouseClickEvent, value); }
             remove { RemoveHandler(Mouse.MouseClickEvent, value); }
         }
 
         /// <inheritdoc/>
-        public event UpfMouseButtonEventHandler MouseDoubleClickEvent
+        public event UpfMouseButtonEventHandler MouseDoubleClick
         {
             add { AddHandler(Mouse.MouseDoubleClickEvent, value); }
             remove { RemoveHandler(Mouse.MouseDoubleClickEvent, value); }
         }
 
         /// <inheritdoc/>
-        public event UpfMouseWheelEventHandler MouseWheelEvent
+        public event UpfMouseWheelEventHandler MouseWheel
         {
             add { AddHandler(Mouse.MouseWheelEvent, value); }
             remove { RemoveHandler(Mouse.MouseWheelEvent, value); }
         }
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="IsMouseOver"/> property changes.
+        /// </summary>
+        public event UpfEventHandler IsMouseOverChanged;
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="IsMouseDirectlyOver"/> property changes.
+        /// </summary>
+        public event UpfEventHandler IsMouseDirectlyOverChanged;
 
         /// <summary>
         /// Invoked when a <see cref="Keyboard.GotKeyboardFocusEvent"/> attached routed event occurs.
@@ -360,6 +382,30 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Occurs when the value of the <see cref="IsMouseOver"/> property changes.
+        /// </summary>
+        protected virtual void OnIsMouseOverChanged()
+        {
+            var temp = IsMouseOverChanged;
+            if (temp != null)
+            {
+                temp(this);
+            }
+        }
+
+        /// <summary>
+        /// Raises the <see cref="IsMouseDirectlyOver"/> event.
+        /// </summary>
+        protected virtual void OnIsMouseDirectlyOverChanged()
+        {
+            var temp = IsMouseDirectlyOverChanged;
+            if (temp != null)
+            {
+                temp(this);
+            }
+        }
+
+        /// <summary>
         /// Registers class handlers for this type's input events.
         /// </summary>
         private static void RegisterInputClassHandlers()
@@ -464,7 +510,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         private static void OnMouseEnterProxy(DependencyObject element, MouseDevice device, ref Boolean handled)
         {
             var uiElement = ((UIElement)element);
-            uiElement.IsHovering = true;
             uiElement.OnMouseEnter(device, ref handled);
         }
 
@@ -476,7 +521,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         private static void OnMouseLeaveProxy(DependencyObject element, MouseDevice device, ref Boolean handled)
         {
             var uiElement = ((UIElement)element);
-            uiElement.IsHovering = false;
             uiElement.OnMouseLeave(device, ref handled);
         }
 
@@ -535,5 +579,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             ((UIElement)element).OnMouseWheel(device, x, y, ref handled);
         }
+
+        // Property values.
+        private Boolean isMouseOver;
+        private Boolean isMouseDirectlyOver;
     }
 }

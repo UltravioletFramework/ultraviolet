@@ -4,16 +4,6 @@
 	font-color: #ff000000;
 }
 
-.red .button-background
-{
-	source-color: #ffff0000;
-}
-
-.blue .button-background
-{
-	source-color: #ff0000ff;
-}
-
 view
 {
 	blank-image: #Global:Textures:DebugUI 230 590 14 14;
@@ -31,14 +21,15 @@ button, repeatbutton
 	transition (common, pressed): button-to-pressed;
 }
 
-button contentpresenter, repeatbutton contentpresenter
+      button > canvas > contentpresenter, 
+repeatbutton > canvas > contentpresenter
 {
 	content-offset: 0 0;
 }
 
-	  button .button-background, 
-repeatbutton .button-background,
-togglebutton .button-background
+	  button > canvas > .button-background, 
+repeatbutton > canvas > .button-background,
+togglebutton > canvas > .button-background
 {
 	source-image: #Global:Textures:DebugUI 1 589 190 49 6 4 6 8;
 }
@@ -54,14 +45,14 @@ togglebutton .button-focus
 
 @button-to-normal
 {
-	target button
+	target button (*:storyboard-root)
 	{
 		animation font-color
 		{
 			keyframe 100 { }
 		}
 	}
-	target image (.button-background)
+	target image (*:storyboard-root > canvas > .button-background)
 	{
 		animation source-image
 		{
@@ -72,7 +63,7 @@ togglebutton .button-focus
 			keyframe 250 { }
 		}
 	}
-	target contentpresenter (*)
+	target contentpresenter (*:storyboard-root > canvas > contentpresenter)
 	{	
 		animation content-offset
 		{
@@ -82,14 +73,14 @@ togglebutton .button-focus
 }
 @button-to-hover
 {
-	target button
+	target button (*:storyboard-root)
 	{
 		animation font-color
 		{
 			keyframe 100 { #ff004080 }
 		}
 	}
-	target image (.button-background)
+	target image (*:storyboard-root > canvas > .button-background)
 	{
 		animation source-image
 		{
@@ -100,7 +91,7 @@ togglebutton .button-focus
 			keyframe 250 { #ffff0000 }
 		}	
 	}
-	target contentpresenter (*)
+	target contentpresenter (*:storyboard-root > canvas > contentpresenter)
 	{
 		animation content-offset
 		{
@@ -110,21 +101,21 @@ togglebutton .button-focus
 }
 @button-to-pressed
 {
-	target button
+	target button (*:storyboard-root)
 	{
 		animation font-color
 		{
 			keyframe 100 { #ff004080 }
 		}
 	}
-	target image (.button-background)
+	target image (*:storyboard-root > canvas > .button-background)
 	{
 		animation source-image
 		{
 			keyframe 0 { #Global:Textures:DebugUI 1 639 190 49 6 8 6 4 }
 		}	
 	}
-	target contentpresenter (*)
+	target contentpresenter (*:storyboard-root > canvas > contentpresenter)
 	{	
 		animation content-offset
 		{
@@ -134,7 +125,7 @@ togglebutton .button-focus
 }
 @button-to-focused
 {
-	target (.button-focus)
+	target (*:storyboard-root > canvas > .button-focus)
 	{
 		animation opacity
 		{
@@ -144,7 +135,7 @@ togglebutton .button-focus
 }
 @button-to-blurred
 {
-	target (.button-focus)
+	target (*:storyboard-root > canvas > .button-focus)
 	{
 		animation opacity
 		{
@@ -169,14 +160,14 @@ togglebutton
 
 @togglebutton-to-normal
 {
-	target togglebutton
+	target togglebutton (*:storyboard-root)
 	{
 		animation font-color
 		{
 			keyframe 100 { }
 		}
 	}
-	target image (.button-background)
+	target image (*:storyboard-root > canvas > .button-background)
 	{
 		animation source-color
 		{
@@ -186,14 +177,14 @@ togglebutton
 }
 @togglebutton-to-hover
 {
-	target togglebutton
+	target togglebutton (*:storyboard-root)
 	{
 		animation font-color
 		{
 			keyframe 100 { #ff004080 }
 		}
 	}
-	target image (.button-background)
+	target image (*:storyboard-root > canvas > .button-background)
 	{
 		animation source-color
 		{
@@ -203,14 +194,14 @@ togglebutton
 }
 @togglebutton-to-unchecked
 {
-	target image (.button-background)
+	target image (*:storyboard-root > canvas > .button-background)
 	{
 		animation source-image
 		{
 			keyframe 0 { }
 		}	
 	}
-	target contentpresenter (*)
+	target contentpresenter (*:storyboard-root > canvas > contentpresenter)
 	{
 		animation content-offset
 		{
@@ -220,14 +211,14 @@ togglebutton
 }
 @togglebutton-to-checked
 {
-	target image (.button-background)
+	target image (*:storyboard-root > canvas > .button-background)
 	{
 		animation source-image
 		{
 			keyframe 0 { #Global:Textures:DebugUI 1 639 190 49 6 8 6 4 }
 		}	
 	}
-	target contentpresenter (*)
+	target contentpresenter (*:storyboard-root > canvas > contentpresenter)
 	{
 		animation content-offset
 		{

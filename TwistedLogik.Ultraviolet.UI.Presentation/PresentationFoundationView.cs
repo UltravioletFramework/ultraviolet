@@ -140,7 +140,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             }
 
             elementWithFocus = element;
-
+            
             SetIsKeyboardFocusWithin(elementWithFocus, true);
 
             var dobj = elementWithFocus as DependencyObject;
@@ -186,26 +186,21 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (elementWithMouseCapture == element)
                 return;
 
-            DependencyObject dobj;
-
             if (elementWithMouseCapture != null)
             {
-                dobj = elementWithMouseCapture as DependencyObject;
-                if (dobj != null)
-                {
-                    var lostMouseCaptureHandled = false;
-                    Mouse.RaiseLostMouseCapture(dobj, ref lostMouseCaptureHandled);
-                }
+                ReleaseMouse(elementWithMouseCapture);
             }
 
             elementWithMouseCapture = element;
 
-            dobj = elementWithMouseCapture as DependencyObject;
+            var dobj = elementWithMouseCapture as DependencyObject;
             if (dobj != null)
             {
                 var gotMouseCaptureHandled = false;
                 Mouse.RaiseGotMouseCapture(dobj, ref gotMouseCaptureHandled);
             }
+
+            UpdateIsMouseOver(elementWithMouseCapture as UIElement);
         }
 
         /// <summary>
@@ -225,6 +220,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 var lostMouseCaptureHandled = false;
                 Mouse.RaiseLostMouseCapture(dobj, ref lostMouseCaptureHandled);
             }
+
+            UpdateIsMouseOver(elementWithMouseCapture as UIElement);
 
             elementWithMouseCapture = null;
         }
@@ -647,6 +644,32 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Updates the value of the <see cref="UIElement.IsMouseOver"/> property for ancestors
+        /// of the specified element.
+        /// </summary>
+        /// <param name="root">The element to update.</param>
+        private void UpdateIsMouseOver(UIElement root)
+        {
+            if (root == null)
+                return;
+
+            var mouse    = Ultraviolet.GetInput().GetMouse();
+            var mousePos = Display.PixelsToDips(mouse.Position);
+
+            var current = root as DependencyObject;
+            while (current != null)
+            {
+                var uiElement = current as UIElement;
+                if (uiElement != null)
+                {
+                    var bounds = uiElement.AbsoluteBounds;
+                    uiElement.IsMouseOver = bounds.Contains(mousePos);
+                }
+                current = VisualTreeHelper.GetParent(current);
+            }
+        }
+
+        /// <summary>
         /// Determines which element is currently under the mouse cursor.
         /// </summary>
         private void UpdateElementUnderMouse()
@@ -672,8 +695,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             // Handle mouse motion events
             if (elementUnderMouse != elementUnderMousePrev)
             {
+                UpdateIsMouseOver(elementUnderMousePrev as UIElement);
+
                 if (elementUnderMousePrev != null)
                 {
+                    var uiElement = elementUnderMousePrev as UIElement;
+                    if (uiElement != null)
+                        uiElement.IsMouseDirectlyOver = false;
+
                     var dobj = elementUnderMousePrev as DependencyObject;
                     if (dobj != null)
                     {
@@ -684,6 +713,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
                 if (elementUnderMouse != null)
                 {
+                    var uiElement = elementUnderMouse as UIElement;
+                    if (uiElement != null)
+                        uiElement.IsMouseDirectlyOver = true;
+
                     var dobj = elementUnderMouse as DependencyObject;
                     if (dobj != null)
                     {
@@ -691,6 +724,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                         Mouse.RaiseMouseEnter(dobj, mouse, ref mouseEnterHandled);
                     }
                 }
+
+                UpdateIsMouseOver(elementUnderMouse as UIElement);
             }
         }
 
