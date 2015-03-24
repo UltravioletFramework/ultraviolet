@@ -14,7 +14,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
     /// </summary>
     /// <param name="element">The element that raised the event.</param>
     /// <param name="handled">A value indicating whether the event has been handled.</param>
-    public delegate void UpfRoutedEventHandler(DependencyObject element, ref Boolean handled);
+    public delegate void UpfRoutedEventHandler(DependencyObject element, ref RoutedEventData data);
 
     /// <summary>
     /// Represents the identifier of a routed event.

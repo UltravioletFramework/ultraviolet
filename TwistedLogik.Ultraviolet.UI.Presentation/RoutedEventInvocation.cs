@@ -61,7 +61,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             /* BUBBLE STRATEGY
              * For a given event delegate type TDelegate, we're constructing a method which basically looks like this:
              * 
-             * void fn(DependencyObject element, p1, p2, ..., pN, ref Boolean handled)
+             * void fn(DependencyObject element, p1, p2, ..., pN, ref RoutedEventData data)
              * {
              *      var index   = 0;
              *      var handler = default(RoutedEventHandlerMetadata);
@@ -72,9 +72,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
              *          index = 0;
              *          while (GetEventHandler(current, RoutedEventID, index, out handler))
              *          {
-             *              if (ShouldEventBeRaisedForElement(current, handled, handler.HandledEventsToo))
+             *              if (ShouldEventBeRaisedForElement(ref data, handler.HandledEventsToo))
              *              {
-             *                  handler.Handler(current, p1, p2, ..., pN, ref handled);
+             *                  handler.Handler(current, p1, p2, ..., pN, ref data);
              *              }
              *          }
              *      }
@@ -86,7 +86,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             var expParams       = evtParams.Select(x => Expression.Parameter(x.ParameterType, x.Name)).ToList();
             var expParamElement = expParams.First();
-            var expParamHandled = expParams.Last();
+            var expParamData    = expParams.Last();
 
             var expParts = new List<Expression>();
             var expVars  = new List<ParameterExpression>();
@@ -116,7 +116,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                             Expression.IfThenElse(
                                 Expression.Call(miGetEventHandler, varCurrent, Expression.Constant(evt), varIndex, varHandler),
                                 Expression.IfThen(
-                                    Expression.Call(miShouldEventBeRaisedForElement, expParamHandled, Expression.Property(varHandler, "HandledEventsToo")),
+                                    Expression.Call(miShouldEventBeRaisedForElement, expParamData, Expression.Property(varHandler, "HandledEventsToo")),
                                     Expression.Invoke(Expression.Convert(Expression.Property(varHandler, "Handler"), evt.DelegateType), innerEventHandlerParams)
                                 ),
                                 Expression.Break(expWhileBubbleBreakInner)
@@ -144,16 +144,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
              * The simplest strategy; the event is only invoked on the element that raised it. 
              * Our invocation delegate looks something like this:
              * 
-             * void fn(DependencyObject element, p1, p2, ..., pN, ref Boolean handled)
+             * void fn(DependencyObject element, p1, p2, ..., pN, ref RoutedEventData data)
              * {
              *      var index   = 0;
              *      var handler = default(RoutedEventHandlerMetadata);      
              * 
              *      while (GetEventHandler(current, RoutedEventID, index, out handler))
              *      {
-             *          if (ShouldEventBeRaisedForElement(element, handled, handlerInfo.HandledEventsToo))
+             *          if (ShouldEventBeRaisedForElement(ref data, handlerInfo.HandledEventsToo))
              *          {
-             *              handler.Handler(element, p1, p2, ..., pN, ref handled);
+             *              handler.Handler(element, p1, p2, ..., pN, ref data);
              *          }
              *      }
              * }
@@ -204,7 +204,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
              * Basically the opposite of the bubble strategy; we start at the root of the tree and work down.
              * Note that ShouldContinueTunnelling() builds a stack representing the path to take on the first call.
              * 
-             * void fn(DependencyObject element, p1, p2, ..., pN, ref Boolean handled)
+             * void fn(DependencyObject element, p1, p2, ..., pN, ref RoutedEventData data)
              * {
              *      var index    = 0;
              *      var current  = default(DependencyObject);
@@ -215,9 +215,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
              *          index = 0;
              *          while (GetEventHandler(current, RoutedEventID, index, out handler))
              *          {
-             *              if (ShouldEventBeRaisedForElement(current, handled, handler.HandledEventsToo))
+             *              if (ShouldEventBeRaisedForElement(ref data, handler.HandledEventsToo))
              *              {
-             *                  handler.Handler(current, p1, p2, ..., pN, ref handled);
+             *                  handler.Handler(current, p1, p2, ..., pN, ref data);
              *              }
              *          }
              *      }
@@ -229,7 +229,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             var expParams       = evtParams.Select(x => Expression.Parameter(x.ParameterType, x.Name)).ToList();
             var expParamElement = expParams.First();
-            var expParamHandled = expParams.Last();
+            var expParamData    = expParams.Last();
 
             var expParts = new List<Expression>();
             var expVars  = new List<ParameterExpression>();
@@ -259,7 +259,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                             Expression.IfThenElse(
                                 Expression.Call(miGetEventHandler, varCurrent, Expression.Constant(evt), varIndex, varHandler),
                                 Expression.IfThen(
-                                    Expression.Call(miShouldEventBeRaisedForElement, expParamHandled, Expression.Property(varHandler, "HandledEventsToo")),
+                                    Expression.Call(miShouldEventBeRaisedForElement, expParamData, Expression.Property(varHandler, "HandledEventsToo")),
                                     Expression.Invoke(Expression.Convert(Expression.Property(varHandler, "Handler"), evt.DelegateType), innerEventHandlerParams)
                                 ),
                                 Expression.Break(expWhileTunnelBreakInner)
@@ -297,19 +297,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             return
                 typeof(DependencyObject).IsAssignableFrom(paramFirst.ParameterType) &&
-                paramLast.ParameterType == typeof(Boolean).MakeByRefType() &&
+                paramLast.ParameterType == typeof(RoutedEventData).MakeByRefType() &&
                 invoke.ReturnType == typeof(void);
         }
 
         /// <summary>
         /// Gets a value indicating whether the specified element should receive the event being processed.
         /// </summary>
-        /// <param name="handled">A value indicating whether the event has been handled.</param>
+        /// <param name="data">The routed event data for the current event.</param>
         /// <param name="handledEventsToo">A value indicating whether the current event handler wants to receive handled events.</param>
         /// <returns><c>true</c> if the event should be raised for this object; otherwise, <c>false</c>.</returns>
-        private static Boolean ShouldEventBeRaisedForElement(Boolean handled, Boolean handledEventsToo)
+        private static Boolean ShouldEventBeRaisedForElement(ref RoutedEventData data, Boolean handledEventsToo)
         {
-            return !handled || handledEventsToo;
+            return !data.Handled || handledEventsToo;
         }
 
         /// <summary>

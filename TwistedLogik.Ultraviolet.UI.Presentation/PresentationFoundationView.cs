@@ -146,8 +146,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var dobj = elementWithFocus as DependencyObject;
             if (dobj != null)
             {
-                var handledGotFocus = false;
-                Keyboard.RaiseGotKeyboardFocus(dobj, ref handledGotFocus);
+                var gotFocusData = new RoutedEventData(dobj);
+                Keyboard.RaiseGotKeyboardFocus(dobj, ref gotFocusData);
             }
         }
 
@@ -170,8 +170,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var dobj = elementWithFocusOld as DependencyObject;
             if (dobj != null)
             {
-                var handledLostFocus = false;
-                Keyboard.RaiseLostKeyboardFocus(dobj, ref handledLostFocus);
+                var lostFocusData = new RoutedEventData(dobj);
+                Keyboard.RaiseLostKeyboardFocus(dobj, ref lostFocusData);
             }
         }
 
@@ -196,8 +196,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var dobj = elementWithMouseCapture as DependencyObject;
             if (dobj != null)
             {
-                var gotMouseCaptureHandled = false;
-                Mouse.RaiseGotMouseCapture(dobj, ref gotMouseCaptureHandled);
+                var gotMouseCaptureData = new RoutedEventData(dobj);
+                Mouse.RaiseGotMouseCapture(dobj, ref gotMouseCaptureData);
             }
 
             UpdateIsMouseOver(elementWithMouseCapture as UIElement);
@@ -217,8 +217,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var dobj = elementWithMouseCapture as DependencyObject;
             if (dobj != null)
             {
-                var lostMouseCaptureHandled = false;
-                Mouse.RaiseLostMouseCapture(dobj, ref lostMouseCaptureHandled);
+                var lostMouseCaptureData = new RoutedEventData(dobj);
+                Mouse.RaiseLostMouseCapture(dobj, ref lostMouseCaptureData);
             }
 
             UpdateIsMouseOver(elementWithMouseCapture as UIElement);
@@ -706,8 +706,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                     var dobj = elementUnderMousePrev as DependencyObject;
                     if (dobj != null)
                     {
-                        var mouseLeaveHandled = false;
-                        Mouse.RaiseMouseLeave(dobj, mouse, ref mouseLeaveHandled);
+                        var mouseLeaveData = new RoutedEventData(dobj);
+                        Mouse.RaiseMouseLeave(dobj, mouse, ref mouseLeaveData);
                     }
                 }
 
@@ -720,8 +720,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                     var dobj = elementUnderMouse as DependencyObject;
                     if (dobj != null)
                     {
-                        var mouseEnterHandled = false;
-                        Mouse.RaiseMouseEnter(dobj, mouse, ref mouseEnterHandled);
+                        var mouseEnterData = new RoutedEventData(dobj);
+                        Mouse.RaiseMouseEnter(dobj, mouse, ref mouseEnterData);
                     }
                 }
 
@@ -775,13 +775,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             if (elementWithFocus != null)
             {
-                var keyDownHandled = false;
-
                 var dobj = elementWithFocus as DependencyObject;
                 if (dobj != null)
                 {
-                    Keyboard.RaisePreviewKeyDown(dobj, device, key, ctrl, alt, shift, repeat, ref keyDownHandled);
-                    Keyboard.RaiseKeyDown(dobj, device, key, ctrl, alt, shift, repeat, ref keyDownHandled);
+                    var keyDownData = new RoutedEventData(dobj);
+                    Keyboard.RaisePreviewKeyDown(dobj, device, key, ctrl, alt, shift, repeat, ref keyDownData);
+                    Keyboard.RaiseKeyDown(dobj, device, key, ctrl, alt, shift, repeat, ref keyDownData);
                 }
             }
         }
@@ -796,13 +795,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             if (elementWithFocus != null)
             {
-                var keyUpHandled = false;
-
                 var dobj = elementWithFocus as DependencyObject;
                 if (dobj != null)
                 {
-                    Keyboard.RaisePreviewKeyUp(dobj, device, key, ref keyUpHandled);
-                    Keyboard.RaiseKeyUp(dobj, device, key, ref keyUpHandled);
+                    var keyUpData = new RoutedEventData(dobj);
+                    Keyboard.RaisePreviewKeyUp(dobj, device, key, ref keyUpData);
+                    Keyboard.RaiseKeyUp(dobj, device, key, ref keyUpData);
                 }
             }
         }
@@ -817,13 +815,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             if (elementWithFocus != null)
             {
-                var textInputHandled = false;
-
                 var dobj = elementWithFocus as DependencyObject;
                 if (dobj != null)
                 {
-                    Keyboard.RaisePreviewTextInput(dobj, device, ref textInputHandled);
-                    Keyboard.RaiseTextInput(dobj, device, ref textInputHandled);
+                    var textInputData = new RoutedEventData(dobj);
+                    Keyboard.RaisePreviewTextInput(dobj, device, ref textInputData);
+                    Keyboard.RaiseTextInput(dobj, device, ref textInputData);
                 }
             }
         }
@@ -844,13 +841,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 var dipsDeltaX = Display.PixelsToDips(dx);
                 var dipsDeltaY = Display.PixelsToDips(dy);
 
-                var mouseMoveHandled = false;
-
                 var dobj = recipient as DependencyObject;
                 if (dobj != null)
                 {
-                    Mouse.RaisePreviewMouseMove(dobj, device, dipsX, dipsY, dipsDeltaX, dipsDeltaY, ref mouseMoveHandled);
-                    Mouse.RaiseMouseMove(dobj, device, dipsX, dipsY, dipsDeltaX, dipsDeltaY, ref mouseMoveHandled);
+                    var mouseMoveData = new RoutedEventData(dobj);
+                    Mouse.RaisePreviewMouseMove(dobj, device, dipsX, dipsY, dipsDeltaX, dipsDeltaY, ref mouseMoveData);
+                    Mouse.RaiseMouseMove(dobj, device, dipsX, dipsY, dipsDeltaX, dipsDeltaY, ref mouseMoveData);
                 }
             }
         }
@@ -885,13 +881,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             if (recipient != null)
             {
-                var mouseDownHandled = false;
-
                 var dobj = recipient as DependencyObject;
                 if (dobj != null)
                 {
-                    Mouse.RaisePreviewMouseDown(dobj, device, button, ref mouseDownHandled);
-                    Mouse.RaiseMouseDown(dobj, device, button, ref mouseDownHandled);
+                    var mouseDownData = new RoutedEventData(dobj);
+                    Mouse.RaisePreviewMouseDown(dobj, device, button, ref mouseDownData);
+                    Mouse.RaiseMouseDown(dobj, device, button, ref mouseDownData);
                 }
             }
         }
@@ -907,13 +902,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var recipient = elementWithMouseCapture ?? elementUnderMouse;
             if (recipient != null)
             {
-                var mouseUpHandled = false;
-
                 var dobj = recipient as DependencyObject;
                 if (dobj != null)
                 {
-                    Mouse.RaisePreviewMouseUp(dobj, device, button, ref mouseUpHandled);
-                    Mouse.RaiseMouseUp(dobj, device, button, ref mouseUpHandled);
+                    var mouseUpData = new RoutedEventData(dobj);
+                    Mouse.RaisePreviewMouseUp(dobj, device, button, ref mouseUpData);
+                    Mouse.RaiseMouseUp(dobj, device, button, ref mouseUpData);
                 }
             }
         }
@@ -929,13 +923,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var recipient = elementWithMouseCapture ?? elementUnderMouse;
             if (recipient != null)
             {
-                var mouseClickHandled = false;
-
                 var dobj = recipient as DependencyObject;
                 if (dobj != null)
                 {
-                    Mouse.RaisePreviewMouseClick(dobj, device, button, ref mouseClickHandled);
-                    Mouse.RaiseMouseClick(dobj, device, button, ref mouseClickHandled);
+                    var mouseClickData = new RoutedEventData(dobj);
+                    Mouse.RaisePreviewMouseClick(dobj, device, button, ref mouseClickData);
+                    Mouse.RaiseMouseClick(dobj, device, button, ref mouseClickData);
                 }
             }
         }
@@ -951,13 +944,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var recipient = elementWithMouseCapture ?? elementUnderMouse;
             if (recipient != null)
             {
-                var mouseDoubleClickHandled = false;
-
                 var dobj = recipient as DependencyObject;
                 if (dobj != null)
                 {
-                    Mouse.RaisePreviewMouseDoubleClick(dobj, device, button, ref mouseDoubleClickHandled);
-                    Mouse.RaiseMouseDoubleClick(dobj, device, button, ref mouseDoubleClickHandled);
+                    var mouseDoubleClickData = new RoutedEventData(dobj);
+                    Mouse.RaisePreviewMouseDoubleClick(dobj, device, button, ref mouseDoubleClickData);
+                    Mouse.RaiseMouseDoubleClick(dobj, device, button, ref mouseDoubleClickData);
                 }
             }
         }
@@ -976,13 +968,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 var dipsX = Display.PixelsToDips(x);
                 var dipsY = Display.PixelsToDips(y);
 
-                var mouseWheelHandled = false;
-
                 var dobj = recipient as DependencyObject;
                 if (dobj != null)
                 {
-                    Mouse.RaisePreviewMouseWheel(dobj, device, dipsX, dipsY, ref mouseWheelHandled);
-                    Mouse.RaiseMouseWheel(dobj, device, dipsX, dipsY, ref mouseWheelHandled);
+                    var mouseWheelData = new RoutedEventData(dobj);
+                    Mouse.RaisePreviewMouseWheel(dobj, device, dipsX, dipsY, ref mouseWheelData);
+                    Mouse.RaiseMouseWheel(dobj, device, dipsX, dipsY, ref mouseWheelData);
                 }
             }
         }

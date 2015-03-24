@@ -260,15 +260,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <inheritdoc/>
-        protected override void OnLostKeyboardFocus(ref Boolean handled)
+        protected override void OnLostKeyboardFocus(ref RoutedEventData data)
         {
             textSelectionLength = 0;
 
-            base.OnLostKeyboardFocus(ref handled);
+            base.OnLostKeyboardFocus(ref data);
         }
 
         /// <inheritdoc/>
-        protected override void OnKeyDown(KeyboardDevice device, Key key, ModifierKeys modifiers, ref Boolean handled)
+        protected override void OnKeyDown(KeyboardDevice device, Key key, ModifierKeys modifiers, ref RoutedEventData data)
         {
             switch (key)
             {
@@ -276,14 +276,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                     InsertionMode = (InsertionMode == TextBoxInsertionMode.Insert) ? 
                         TextBoxInsertionMode.Overwrite :
                         TextBoxInsertionMode.Insert;
-                    handled = true;
+                    data.Handled = true;
                     break;
 
                 case Key.A:
                     if ((modifiers & ModifierKeys.Control) == ModifierKeys.Control)
                     {
                         SelectAll();
-                        handled = true;
+                        data.Handled = true;
                     }
                     break;
 
@@ -291,7 +291,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                     if ((modifiers & ModifierKeys.Control) == ModifierKeys.Control)
                     {
                         Copy();
-                        handled = true;
+                        data.Handled = true;
                     }
                     break;
 
@@ -299,7 +299,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                     if ((modifiers & ModifierKeys.Control) == ModifierKeys.Control)
                     {
                         Cut();
-                        handled = true;
+                        data.Handled = true;
                     }
                     break;
 
@@ -307,64 +307,64 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                     if ((modifiers & ModifierKeys.Control) == ModifierKeys.Control)
                     {
                         Paste();
-                        handled = true;
+                        data.Handled = true;
                     }
                     break;
 
                 case Key.Left:
                     MoveBackward((modifiers & ModifierKeys.Shift) == ModifierKeys.Shift);
-                    handled = true;
+                    data.Handled = true;
                     break;
 
                 case Key.Right:
                     MoveForward((modifiers & ModifierKeys.Shift) == ModifierKeys.Shift);
-                    handled = true;
+                    data.Handled = true;
                     break;
 
                 case Key.Home:
                     MoveHome();
-                    handled = true;
+                    data.Handled = true;
                     break;
 
                 case Key.End:
                     MoveEnd();
-                    handled = true;
+                    data.Handled = true;
                     break;
 
                 case Key.Backspace:
                     ProcessBackspace();
-                    handled = true;
+                    data.Handled = true;
                     break;
 
                 case Key.Delete:
                     ProcessDelete();
-                    handled = true;
+                    data.Handled = true;
                     break;
             }
 
-            base.OnKeyDown(device, key, modifiers, ref handled);
+            base.OnKeyDown(device, key, modifiers, ref data);
         }
 
         /// <inheritdoc/>
-        protected override void OnTextInput(KeyboardDevice device, ref Boolean handled)
+        protected override void OnTextInput(KeyboardDevice device, ref RoutedEventData data)
         {
             device.GetTextInput(textBuffer);
             ProcessInsertText(textBuffer.ToString());
-            handled = true;
+            data.Handled = true;
 
-            base.OnTextInput(device, ref handled);
+            base.OnTextInput(device, ref data);
         }
 
         /// <inheritdoc/>
-        protected override void OnLostMouseCapture(ref Boolean handled)
+        protected override void OnLostMouseCapture(ref RoutedEventData data)
         {
             mouseSelectionInProgress = false;
 
-            base.OnLostMouseCapture(ref handled);
+            base.OnLostMouseCapture(ref data);
         }
 
         /// <inheritdoc/>
-        protected override void OnMouseMove(MouseDevice device, Double x, Double y, Double dx, Double dy, ref Boolean handled)
+        protected override void OnMouseMove(MouseDevice device, Double x, Double y, Double dx, Double dy, ref RoutedEventData data)
         {
             if (mouseSelectionInProgress && !String.IsNullOrEmpty(Text))
             {
@@ -394,13 +394,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                         ScrollToSelectionHead();
                     }
                 }
-                handled = true;
+                data.Handled = true;
             }
-            base.OnMouseMove(device, x, y, dx, dy, ref handled);
+            base.OnMouseMove(device, x, y, dx, dy, ref data);
         }
 
         /// <inheritdoc/>
-        protected override void OnMouseDown(MouseDevice device, MouseButton button, ref Boolean handled)
+        protected override void OnMouseDown(MouseDevice device, MouseButton button, ref RoutedEventData data)
         {
             if (button == MouseButton.Left)
             {
@@ -414,31 +414,31 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 
                 ScrollForwardToCaret();
             }
-            handled = true;
-            base.OnMouseDown(device, button, ref handled);
+            data.Handled = true;
+            base.OnMouseDown(device, button, ref data);
         }
 
         /// <inheritdoc/>
-        protected override void OnMouseUp(MouseDevice device, MouseButton button, ref Boolean handled)
+        protected override void OnMouseUp(MouseDevice device, MouseButton button, ref RoutedEventData data)
         {
             if (button == MouseButton.Left)
             {
                 mouseSelectionInProgress = false;
                 View.ReleaseMouse(this);
             }
-            handled = true;
-            base.OnMouseUp(device, button, ref handled);
+            data.Handled = true;
+            base.OnMouseUp(device, button, ref data);
         }
 
         /// <inheritdoc/>
-        protected override void OnMouseDoubleClick(MouseDevice device, MouseButton button, ref Boolean handled)
+        protected override void OnMouseDoubleClick(MouseDevice device, MouseButton button, ref RoutedEventData data)
         {
             if (button == MouseButton.Left)
             {
                 SelectAll();
             }
-            handled = true;
-            base.OnMouseDoubleClick(device, button, ref handled);
+            data.Handled = true;
+            base.OnMouseDoubleClick(device, button, ref data);
         }
 
         /// <inheritdoc/>

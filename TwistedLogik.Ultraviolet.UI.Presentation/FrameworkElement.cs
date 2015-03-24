@@ -480,19 +480,23 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <inheritdoc/>
-        protected override void OnGotKeyboardFocus(ref Boolean handled)
+        protected override void OnGotKeyboardFocus(ref RoutedEventData data)
         {
-            VisualStateGroups.GoToState("focus", "focused");
-
-            base.OnGotKeyboardFocus(ref handled);
+            if (data.OriginalSource == this)
+            {
+                VisualStateGroups.GoToState("focus", "focused");
+            }
+            base.OnGotKeyboardFocus(ref data);
         }
 
         /// <inheritdoc/>
-        protected override void OnLostKeyboardFocus(ref Boolean handled)
+        protected override void OnLostKeyboardFocus(ref RoutedEventData data)
         {
-            VisualStateGroups.GoToState("focus", "blurred");
-
-            base.OnLostKeyboardFocus(ref handled);
+            if (data.OriginalSource == this)
+            {
+                VisualStateGroups.GoToState("focus", "blurred");
+            }
+            base.OnLostKeyboardFocus(ref data);
         }
 
         /// <summary>

@@ -59,32 +59,32 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <inheritdoc/>
-        protected override void OnLostKeyboardFocus(ref bool handled)
+        protected override void OnLostKeyboardFocus(ref RoutedEventData data)
         {
             if (Input != null)
             {
                 Input.InvalidateDisplayCache(TextBox.TextProperty);
             }
-            base.OnLostKeyboardFocus(ref handled);
+            base.OnLostKeyboardFocus(ref data);
         }
 
         /// <inheritdoc/>
-        protected override void OnKeyDown(KeyboardDevice device, Key key, ModifierKeys modifiers, ref Boolean handled)
+        protected override void OnKeyDown(KeyboardDevice device, Key key, ModifierKeys modifiers, ref RoutedEventData data)
         {
             switch (key)
             {
                 case Key.Up:
                     IncreaseSmall();
-                    handled = true;
+                    data.Handled = true;
                     break;
 
                 case Key.Down:
                     DecreaseSmall();
-                    handled = true;
+                    data.Handled = true;
                     break;
             }
 
-            base.OnKeyDown(device, key, modifiers, ref handled);
+            base.OnKeyDown(device, key, modifiers, ref data);
         }
 
         /// <summary>

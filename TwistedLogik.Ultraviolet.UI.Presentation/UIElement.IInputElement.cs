@@ -224,7 +224,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Invoked when a <see cref="Keyboard.GotKeyboardFocusEvent"/> attached routed event occurs.
         /// </summary>
         /// <param name="handled">A value indicating whether the event has been handled.</param>
-        protected virtual void OnGotKeyboardFocus(ref Boolean handled)
+        protected virtual void OnGotKeyboardFocus(ref RoutedEventData data)
         {
 
         }
@@ -233,7 +233,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Invoked when a <see cref="Keyboard.LostKeyboardFocusEvent"/> attached routed event occurs.
         /// </summary>
         /// <param name="handled">A value indicating whether the event has been handled.</param>
-        protected virtual void OnLostKeyboardFocus(ref Boolean handled)
+        protected virtual void OnLostKeyboardFocus(ref RoutedEventData data)
         {
 
         }
@@ -245,7 +245,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="key">The <see cref="Key"/> value that represents the key that was pressed.</param>
         /// <param name="modifiers">A <see cref="ModifierKeys"/> value indicating which of the key modifiers are currently active.</param>
         /// <param name="handled">A value indicating whether the event has been handled.</param>
-        protected virtual void OnKeyDown(KeyboardDevice device, Key key, ModifierKeys modifiers, ref Boolean handled)
+        protected virtual void OnKeyDown(KeyboardDevice device, Key key, ModifierKeys modifiers, ref RoutedEventData data)
         {
 
         }
@@ -256,7 +256,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="device">The <see cref="KeyboardDevice"/> that raised the event.</param>
         /// <param name="key">The <see cref="Key"/> value that represents the key that was pressed.</param>
         /// <param name="handled">A value indicating whether the event has been handled.</param>
-        protected virtual void OnKeyUp(KeyboardDevice device, Key key, ref Boolean handled)
+        protected virtual void OnKeyUp(KeyboardDevice device, Key key, ref RoutedEventData data)
         {
 
         }
@@ -266,7 +266,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         /// <param name="device">The <see cref="KeyboardDevice"/> that raised the event.</param>
         /// <param name="handled">A value indicating whether the event has been handled.</param>
-        protected virtual void OnTextInput(KeyboardDevice device, ref Boolean handled)
+        protected virtual void OnTextInput(KeyboardDevice device, ref RoutedEventData data)
         {
 
         }
@@ -275,7 +275,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Invoked by the <see cref="Mouse.GotMouseCaptureEvent"/> attached routed event.
         /// </summary>
         /// <param name="handled">A value indicating whether the event has been handled.</param>
-        protected virtual void OnGotMouseCapture(ref Boolean handled)
+        protected virtual void OnGotMouseCapture(ref RoutedEventData data)
         {
 
         }
@@ -284,7 +284,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Invoked by the <see cref="Mouse.LostMouseCaptureEvent"/> attached routed event.
         /// </summary>
         /// <param name="handled">A value indicating whether the event has been handled.</param>
-        protected virtual void OnLostMouseCapture(ref Boolean handled)
+        protected virtual void OnLostMouseCapture(ref RoutedEventData data)
         {
 
         }
@@ -300,7 +300,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="dy">The difference between the y-coordinate of the mouse's 
         /// current position and the y-coordinate of the mouse's previous position.</param>
         /// <param name="handled">A value indicating whether the event has been handled.</param>
-        protected virtual void OnMouseMove(MouseDevice device, Double x, Double y, Double dx, Double dy, ref Boolean handled)
+        protected virtual void OnMouseMove(MouseDevice device, Double x, Double y, Double dx, Double dy, ref RoutedEventData data)
         {
 
         }
@@ -310,7 +310,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         /// <param name="device">The mouse device.</param>
         /// <param name="handled">A value indicating whether the event has been handled.</param>
-        protected virtual void OnMouseEnter(MouseDevice device, ref Boolean handled)
+        protected virtual void OnMouseEnter(MouseDevice device, ref RoutedEventData data)
         {
 
         }
@@ -320,7 +320,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         /// <param name="device">The mouse device.</param>
         /// <param name="handled">A value indicating whether the event has been handled.</param>
-        protected virtual void OnMouseLeave(MouseDevice device, ref Boolean handled)
+        protected virtual void OnMouseLeave(MouseDevice device, ref RoutedEventData data)
         {
 
         }
@@ -331,7 +331,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="device">The mouse device.</param>
         /// <param name="button">The mouse button that was pressed or released.</param>
         /// <param name="handled">A value indicating whether the event has been handled.</param>
-        protected virtual void OnMouseUp(MouseDevice device, MouseButton button, ref Boolean handled)
+        protected virtual void OnMouseUp(MouseDevice device, MouseButton button, ref RoutedEventData data)
         {
 
         }
@@ -342,7 +342,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="device">The mouse device.</param>
         /// <param name="button">The mouse button that was pressed or released.</param>
         /// <param name="handled">A value indicating whether the event has been handled.</param>
-        protected virtual void OnMouseDown(MouseDevice device, MouseButton button, ref Boolean handled)
+        protected virtual void OnMouseDown(MouseDevice device, MouseButton button, ref RoutedEventData data)
         {
 
         }
@@ -353,7 +353,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="device">The mouse device.</param>
         /// <param name="button">The mouse button that was pressed or released.</param>
         /// <param name="handled">A value indicating whether the event has been handled.</param>
-        protected virtual void OnMouseClick(MouseDevice device, MouseButton button, ref Boolean handled)
+        protected virtual void OnMouseClick(MouseDevice device, MouseButton button, ref RoutedEventData data)
         {
 
         }
@@ -364,7 +364,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="device">The mouse device.</param>
         /// <param name="button">The mouse button that was pressed or released.</param>
         /// <param name="handled">A value indicating whether the event has been handled.</param>
-        protected virtual void OnMouseDoubleClick(MouseDevice device, MouseButton button, ref Boolean handled)
+        protected virtual void OnMouseDoubleClick(MouseDevice device, MouseButton button, ref RoutedEventData data)
         {
 
         }
@@ -376,7 +376,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="x">The amount that the wheel was scrolled along the x-axis.</param>
         /// <param name="y">The amount that the wheel was scrolled along the y-axis.</param>
         /// <param name="handled">A value indicating whether the event has been handled.</param>
-        protected virtual void OnMouseWheel(MouseDevice device, Double x, Double y, ref Boolean handled)
+        protected virtual void OnMouseWheel(MouseDevice device, Double x, Double y, ref RoutedEventData data)
         {
 
         }
@@ -431,59 +431,59 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Invokes the <see cref="OnGotKeyboardFocus"/> method.
         /// </summary>
-        private static void OnGotKeyboardFocusProxy(DependencyObject element, ref Boolean handled)
+        private static void OnGotKeyboardFocusProxy(DependencyObject element, ref RoutedEventData data)
         {
-            ((UIElement)element).OnGotKeyboardFocus(ref handled);
+            ((UIElement)element).OnGotKeyboardFocus(ref data);
         }
 
         /// <summary>
         /// Invokes the <see cref="OnLostKeyboardFocus"/> method.
         /// </summary>
-        private static void OnLostKeyboardFocusProxy(DependencyObject element, ref Boolean handled)
+        private static void OnLostKeyboardFocusProxy(DependencyObject element, ref RoutedEventData data)
         {
-            ((UIElement)element).OnLostKeyboardFocus(ref handled);
+            ((UIElement)element).OnLostKeyboardFocus(ref data);
         }
 
         /// <summary>
         /// Invokes the <see cref="OnKeyDown"/> method.
         /// </summary>
-        private static void OnKeyDownProxy(DependencyObject element, KeyboardDevice device, Key key, ModifierKeys modifiers, ref Boolean handled)
+        private static void OnKeyDownProxy(DependencyObject element, KeyboardDevice device, Key key, ModifierKeys modifiers, ref RoutedEventData data)
         {
-            ((UIElement)element).OnKeyDown(device, key, modifiers, ref handled);
+            ((UIElement)element).OnKeyDown(device, key, modifiers, ref data);
         }
 
         /// <summary>
         /// Invokes the <see cref="OnKeyUp"/> method.
         /// </summary>
-        private static void OnKeyUpProxy(DependencyObject element, KeyboardDevice device, Key key, ref Boolean handled)
+        private static void OnKeyUpProxy(DependencyObject element, KeyboardDevice device, Key key, ref RoutedEventData data)
         {
-            ((UIElement)element).OnKeyUp(device, key, ref handled);
+            ((UIElement)element).OnKeyUp(device, key, ref data);
         }
 
         /// <summary>
         /// Invokes the <see cref="OnTextInput"/> method.
         /// </summary>
-        private static void OnTextInputProxy(DependencyObject element, KeyboardDevice device, ref Boolean handled)
+        private static void OnTextInputProxy(DependencyObject element, KeyboardDevice device, ref RoutedEventData data)
         {
-            ((UIElement)element).OnTextInput(device, ref handled);
+            ((UIElement)element).OnTextInput(device, ref data);
         }
 
         /// <summary>
         /// Invokes the <see cref="OnGotMouseCapture"/> method.
         /// </summary>
         /// <param name="handled">A value indicating whether the event has been handled.</param>
-        private static void OnGotMouseCaptureProxy(DependencyObject element, ref Boolean handled)
+        private static void OnGotMouseCaptureProxy(DependencyObject element, ref RoutedEventData data)
         {
-            ((UIElement)element).OnGotMouseCapture(ref handled);
+            ((UIElement)element).OnGotMouseCapture(ref data);
         }
 
         /// <summary>
         /// Invokes the <see cref="OnLostMouseCapture"/> method.
         /// </summary>
         /// <param name="handled">A value indicating whether the event has been handled.</param>
-        private static void OnLostMouseCaptureProxy(DependencyObject element, ref Boolean handled)
+        private static void OnLostMouseCaptureProxy(DependencyObject element, ref RoutedEventData data)
         {
-            ((UIElement)element).OnLostMouseCapture(ref handled);
+            ((UIElement)element).OnLostMouseCapture(ref data);
         }
 
         /// <summary>
@@ -497,9 +497,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="dy">The difference between the y-coordinate of the mouse's 
         /// current position and the y-coordinate of the mouse's previous position.</param>
         /// <param name="handled">A value indicating whether the event has been handled.</param>
-        private static void OnMouseMoveProxy(DependencyObject element, MouseDevice device, Double x, Double y, Double dx, Double dy, ref Boolean handled)
+        private static void OnMouseMoveProxy(DependencyObject element, MouseDevice device, Double x, Double y, Double dx, Double dy, ref RoutedEventData data)
         {
-            ((UIElement)element).OnMouseMove(device, x, y, dx, dy, ref handled);
+            ((UIElement)element).OnMouseMove(device, x, y, dx, dy, ref data);
         }
 
         /// <summary>
@@ -507,10 +507,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         /// <param name="device">The mouse device.</param>
         /// <param name="handled">A value indicating whether the event has been handled.</param>
-        private static void OnMouseEnterProxy(DependencyObject element, MouseDevice device, ref Boolean handled)
+        private static void OnMouseEnterProxy(DependencyObject element, MouseDevice device, ref RoutedEventData data)
         {
             var uiElement = ((UIElement)element);
-            uiElement.OnMouseEnter(device, ref handled);
+            uiElement.OnMouseEnter(device, ref data);
         }
 
         /// <summary>
@@ -518,10 +518,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         /// <param name="device">The mouse device.</param>
         /// <param name="handled">A value indicating whether the event has been handled.</param>
-        private static void OnMouseLeaveProxy(DependencyObject element, MouseDevice device, ref Boolean handled)
+        private static void OnMouseLeaveProxy(DependencyObject element, MouseDevice device, ref RoutedEventData data)
         {
             var uiElement = ((UIElement)element);
-            uiElement.OnMouseLeave(device, ref handled);
+            uiElement.OnMouseLeave(device, ref data);
         }
 
         /// <summary>
@@ -530,9 +530,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="device">The mouse device.</param>
         /// <param name="button">The mouse button that was pressed.</param>
         /// <param name="handled">A value indicating whether the event has been handled.</param>
-        private static void OnMouseDownProxy(DependencyObject element, MouseDevice device, MouseButton button, ref Boolean handled)
+        private static void OnMouseDownProxy(DependencyObject element, MouseDevice device, MouseButton button, ref RoutedEventData data)
         {
-            ((UIElement)element).OnMouseDown(device, button, ref handled);
+            ((UIElement)element).OnMouseDown(device, button, ref data);
         }
 
         /// <summary>
@@ -541,9 +541,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="device">The mouse device.</param>
         /// <param name="button">The mouse button that was released.</param>
         /// <param name="handled">A value indicating whether the event has been handled.</param>
-        private static void OnMouseUpProxy(DependencyObject element, MouseDevice device, MouseButton button, ref Boolean handled)
+        private static void OnMouseUpProxy(DependencyObject element, MouseDevice device, MouseButton button, ref RoutedEventData data)
         {
-            ((UIElement)element).OnMouseUp(device, button, ref handled);
+            ((UIElement)element).OnMouseUp(device, button, ref data);
         }
 
         /// <summary>
@@ -552,9 +552,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="device">The mouse device.</param>
         /// <param name="button">The mouse button that was clicked.</param>
         /// <param name="handled">A value indicating whether the event has been handled.</param>
-        private static void OnMouseClickProxy(DependencyObject element, MouseDevice device, MouseButton button, ref Boolean handled)
+        private static void OnMouseClickProxy(DependencyObject element, MouseDevice device, MouseButton button, ref RoutedEventData data)
         {
-            ((UIElement)element).OnMouseClick(device, button, ref handled);
+            ((UIElement)element).OnMouseClick(device, button, ref data);
         }
 
         /// <summary>
@@ -563,9 +563,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="device">The mouse device.</param>
         /// <param name="button">The mouse button that was clicked.</param>
         /// <param name="handled">A value indicating whether the event has been handled.</param>
-        private static void OnMouseDoubleClickProxy(DependencyObject element, MouseDevice device, MouseButton button, ref Boolean handled)
+        private static void OnMouseDoubleClickProxy(DependencyObject element, MouseDevice device, MouseButton button, ref RoutedEventData data)
         {
-            ((UIElement)element).OnMouseDoubleClick(device, button, ref handled);
+            ((UIElement)element).OnMouseDoubleClick(device, button, ref data);
         }
 
         /// <summary>
@@ -575,9 +575,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="x">The amount that the wheel was scrolled along the x-axis.</param>
         /// <param name="y">The amount that the wheel was scrolled along the y-axis.</param>
         /// <param name="handled">A value indicating whether the event has been handled.</param>
-        private static void OnMouseWheelProxy(DependencyObject element, MouseDevice device, Double x, Double y, ref Boolean handled)
+        private static void OnMouseWheelProxy(DependencyObject element, MouseDevice device, Double x, Double y, ref RoutedEventData data)
         {
-            ((UIElement)element).OnMouseWheel(device, x, y, ref handled);
+            ((UIElement)element).OnMouseWheel(device, x, y, ref data);
         }
 
         // Property values.

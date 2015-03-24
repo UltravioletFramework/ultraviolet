@@ -365,7 +365,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <summary>
         /// Handles the <see cref="Mouse.PreviewMouseMove"/> event for the Thumb button.
         /// </summary>
-        private void HandleThumbPreviewMouseMove(DependencyObject element, MouseDevice device, Double x, Double y, Double dx, Double dy, ref Boolean handled)
+        private void HandleThumbPreviewMouseMove(DependencyObject element, MouseDevice device, Double x, Double y, Double dx, Double dy, ref RoutedEventData data)
         {
             var button = element as Button;
             if (button != null && button.IsDepressed)
@@ -386,7 +386,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <summary>
         /// Handles the <see cref="Mouse.PreviewMouseDown"/> event for the Thumb button.
         /// </summary>
-        private void HandleThumbPreviewMouseDown(DependencyObject element, MouseDevice device, MouseButton pressed, ref Boolean handled)
+        private void HandleThumbPreviewMouseDown(DependencyObject element, MouseDevice device, MouseButton pressed, ref RoutedEventData data)
         {
             var uiElement = (UIElement)element;
 

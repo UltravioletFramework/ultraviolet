@@ -10,7 +10,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
     /// <param name="element">The element that raised the event.</param>
     /// <param name="device">The mouse device.</param>
     /// <param name="handled">A value indicating whether the event has been handled.</param>
-    public delegate void UpfMouseEventHandler(DependencyObject element, MouseDevice device, ref Boolean handled);
+    public delegate void UpfMouseEventHandler(DependencyObject element, MouseDevice device, ref RoutedEventData data);
 
     /// <summary>
     /// Represents the method that is called when a button is pressed or released while an interface element is under the mouse.
@@ -19,7 +19,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
     /// <param name="device">The mouse device.</param>
     /// <param name="button">The mouse button that was pressed or released.</param>
     /// <param name="handled">A value indicating whether the event has been handled.</param>
-    public delegate void UpfMouseButtonEventHandler(DependencyObject element, MouseDevice device, MouseButton button, ref Boolean handled);
+    public delegate void UpfMouseButtonEventHandler(DependencyObject element, MouseDevice device, MouseButton button, ref RoutedEventData data);
 
     /// <summary>
     /// Represents the method that is called when the mouse moves over an interface element.
@@ -33,7 +33,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
     /// <param name="dy">The difference between the y-coordinate of the mouse's 
     /// current position and the y-coordinate of the mouse's previous position.</param>
     /// <param name="handled">A value indicating whether the event has been handled.</param>
-    public delegate void UpfMouseMoveEventHandler(DependencyObject element, MouseDevice device, Double x, Double y, Double dx, Double dy, ref Boolean handled);
+    public delegate void UpfMouseMoveEventHandler(DependencyObject element, MouseDevice device, Double x, Double y, Double dx, Double dy, ref RoutedEventData data);
 
     /// <summary>
     /// Represents the method that is called when the mouse wheel is scrolled over an interface element.
@@ -43,7 +43,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
     /// <param name="x">The amount that the wheel was scrolled along the x-axis.</param>
     /// <param name="y">The amount that the wheel was scrolled along the y-axis.</param>
     /// <param name="handled">A value indicating whether the event has been handled.</param>
-    public delegate void UpfMouseWheelEventHandler(DependencyObject element, MouseDevice device, Double x, Double y, ref Boolean handled);
+    public delegate void UpfMouseWheelEventHandler(DependencyObject element, MouseDevice device, Double x, Double y, ref RoutedEventData data);
 
     /// <summary>
     /// Represents the mouse device.
@@ -659,192 +659,192 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <summary>
         /// Raises the GotMouseCapture attached event for the specified element.
         /// </summary>
-        internal static void RaiseGotMouseCapture(DependencyObject element, ref Boolean handled)
+        internal static void RaiseGotMouseCapture(DependencyObject element, ref RoutedEventData data)
         {
             var temp = RoutedEvent.GetInvocationDelegate<UpfRoutedEventHandler>(GotMouseCaptureEvent);
             if (temp != null)
             {
-                temp(element, ref handled);
+                temp(element, ref data);
             }
         }
 
         /// <summary>
         /// Raises the LostMouseCapture attached event for the specified element.
         /// </summary>
-        internal static void RaiseLostMouseCapture(DependencyObject element, ref Boolean handled)
+        internal static void RaiseLostMouseCapture(DependencyObject element, ref RoutedEventData data)
         {
             var temp = RoutedEvent.GetInvocationDelegate<UpfRoutedEventHandler>(LostMouseCaptureEvent);
             if (temp != null)
             {
-                temp(element, ref handled);
+                temp(element, ref data);
             }
         }
 
         /// <summary>
         /// Raises the PreviewMouseMove attached event for the specified element.
         /// </summary>
-        internal static void RaisePreviewMouseMove(DependencyObject element, MouseDevice device, Double x, Double y, Double dx, Double dy, ref Boolean handled)
+        internal static void RaisePreviewMouseMove(DependencyObject element, MouseDevice device, Double x, Double y, Double dx, Double dy, ref RoutedEventData data)
         {
             var temp = RoutedEvent.GetInvocationDelegate<UpfMouseMoveEventHandler>(PreviewMouseMoveEvent);
             if (temp != null)
             {
-                temp(element, device, x, y, dx, dy, ref handled);
+                temp(element, device, x, y, dx, dy, ref data);
             }
         }
 
         /// <summary>
         /// Raises the PreviewMouseDown attached event for the specified element.
         /// </summary>
-        internal static void RaisePreviewMouseDown(DependencyObject element, MouseDevice device, MouseButton button, ref Boolean handled)
+        internal static void RaisePreviewMouseDown(DependencyObject element, MouseDevice device, MouseButton button, ref RoutedEventData data)
         {
             var temp = RoutedEvent.GetInvocationDelegate<UpfMouseButtonEventHandler>(PreviewMouseDownEvent);
             if (temp != null)
             {
-                temp(element, device, button, ref handled);
+                temp(element, device, button, ref data);
             }
         }
 
         /// <summary>
         /// Raises the PreviewMouseUp attached event for the specified element.
         /// </summary>
-        internal static void RaisePreviewMouseUp(DependencyObject element, MouseDevice device, MouseButton button, ref Boolean handled)
+        internal static void RaisePreviewMouseUp(DependencyObject element, MouseDevice device, MouseButton button, ref RoutedEventData data)
         {
             var temp = RoutedEvent.GetInvocationDelegate<UpfMouseButtonEventHandler>(PreviewMouseUpEvent);
             if (temp != null)
             {
-                temp(element, device, button, ref handled);
+                temp(element, device, button, ref data);
             }
         }
 
         /// <summary>
         /// Raises the PreviewMouseClick attached event for the specified element.
         /// </summary>
-        internal static void RaisePreviewMouseClick(DependencyObject element, MouseDevice device, MouseButton button, ref Boolean handled)
+        internal static void RaisePreviewMouseClick(DependencyObject element, MouseDevice device, MouseButton button, ref RoutedEventData data)
         {
             var temp = RoutedEvent.GetInvocationDelegate<UpfMouseButtonEventHandler>(PreviewMouseClickEvent);
             if (temp != null)
             {
-                temp(element, device, button, ref handled);
+                temp(element, device, button, ref data);
             }
         }
 
         /// <summary>
         /// Raises the PreviewMouseDoubleClick attached event for the specified element.
         /// </summary>
-        internal static void RaisePreviewMouseDoubleClick(DependencyObject element, MouseDevice device, MouseButton button, ref Boolean handled)
+        internal static void RaisePreviewMouseDoubleClick(DependencyObject element, MouseDevice device, MouseButton button, ref RoutedEventData data)
         {
             var temp = RoutedEvent.GetInvocationDelegate<UpfMouseButtonEventHandler>(PreviewMouseDoubleClickEvent);
             if (temp != null)
             {
-                temp(element, device, button, ref handled);
+                temp(element, device, button, ref data);
             }
         }
 
         /// <summary>
         /// Raises the PreviewMouseWheel attached event for the specified element.
         /// </summary>
-        internal static void RaisePreviewMouseWheel(DependencyObject element, MouseDevice device, Double x, Double y, ref Boolean handled)
+        internal static void RaisePreviewMouseWheel(DependencyObject element, MouseDevice device, Double x, Double y, ref RoutedEventData data)
         {
             var temp = RoutedEvent.GetInvocationDelegate<UpfMouseWheelEventHandler>(PreviewMouseWheelEvent);
             if (temp != null)
             {
-                temp(element, device, x, y, ref handled);
+                temp(element, device, x, y, ref data);
             }
         }
 
         /// <summary>
         /// Raises the MouseMove attached event for the specified element.
         /// </summary>
-        internal static void RaiseMouseMove(DependencyObject element, MouseDevice device, Double x, Double y, Double dx, Double dy, ref Boolean handled)
+        internal static void RaiseMouseMove(DependencyObject element, MouseDevice device, Double x, Double y, Double dx, Double dy, ref RoutedEventData data)
         {
             var temp = RoutedEvent.GetInvocationDelegate<UpfMouseMoveEventHandler>(MouseMoveEvent);
             if (temp != null)
             {
-                temp(element, device, x, y, dx, dy, ref handled);
+                temp(element, device, x, y, dx, dy, ref data);
             }
         }
 
         /// <summary>
         /// Raises the MouseEnter attached event for the specified element.
         /// </summary>
-        internal static void RaiseMouseEnter(DependencyObject element, MouseDevice device, ref Boolean handled)
+        internal static void RaiseMouseEnter(DependencyObject element, MouseDevice device, ref RoutedEventData data)
         {
             var temp = RoutedEvent.GetInvocationDelegate<UpfMouseEventHandler>(MouseEnterEvent);
             if (temp != null)
             {
-                temp(element, device, ref handled);
+                temp(element, device, ref data);
             }
         }
 
         /// <summary>
         /// Raises the MouseLeave attached event for the specified element.
         /// </summary>
-        internal static void RaiseMouseLeave(DependencyObject element, MouseDevice device, ref Boolean handled)
+        internal static void RaiseMouseLeave(DependencyObject element, MouseDevice device, ref RoutedEventData data)
         {
             var temp = RoutedEvent.GetInvocationDelegate<UpfMouseEventHandler>(MouseLeaveEvent);
             if (temp != null)
             {
-                temp(element, device, ref handled);
+                temp(element, device, ref data);
             }
         }
 
         /// <summary>
         /// Raises the MouseDown attached event for the specified element.
         /// </summary>
-        internal static void RaiseMouseDown(DependencyObject element, MouseDevice device, MouseButton button, ref Boolean handled)
+        internal static void RaiseMouseDown(DependencyObject element, MouseDevice device, MouseButton button, ref RoutedEventData data)
         {
             var temp = RoutedEvent.GetInvocationDelegate<UpfMouseButtonEventHandler>(MouseDownEvent);
             if (temp != null)
             {
-                temp(element, device, button, ref handled);
+                temp(element, device, button, ref data);
             }
         }
 
         /// <summary>
         /// Raises the MouseUp attached event for the specified element.
         /// </summary>
-        internal static void RaiseMouseUp(DependencyObject element, MouseDevice device, MouseButton button, ref Boolean handled)
+        internal static void RaiseMouseUp(DependencyObject element, MouseDevice device, MouseButton button, ref RoutedEventData data)
         {
             var temp = RoutedEvent.GetInvocationDelegate<UpfMouseButtonEventHandler>(MouseUpEvent);
             if (temp != null)
             {
-                temp(element, device, button, ref handled);
+                temp(element, device, button, ref data);
             }
         }
 
         /// <summary>
         /// Raises the MouseClick attached event for the specified element.
         /// </summary>
-        internal static void RaiseMouseClick(DependencyObject element, MouseDevice device, MouseButton button, ref Boolean handled)
+        internal static void RaiseMouseClick(DependencyObject element, MouseDevice device, MouseButton button, ref RoutedEventData data)
         {
             var temp = RoutedEvent.GetInvocationDelegate<UpfMouseButtonEventHandler>(MouseClickEvent);
             if (temp != null)
             {
-                temp(element, device, button, ref handled);
+                temp(element, device, button, ref data);
             }
         }
 
         /// <summary>
         /// Raises the MouseDoubleClick attached event for the specified element.
         /// </summary>
-        internal static void RaiseMouseDoubleClick(DependencyObject element, MouseDevice device, MouseButton button, ref Boolean handled)
+        internal static void RaiseMouseDoubleClick(DependencyObject element, MouseDevice device, MouseButton button, ref RoutedEventData data)
         {
             var temp = RoutedEvent.GetInvocationDelegate<UpfMouseButtonEventHandler>(MouseDoubleClickEvent);
             if (temp != null)
             {
-                temp(element, device, button, ref handled);
+                temp(element, device, button, ref data);
             }
         }
 
         /// <summary>
         /// Raises the MouseWheel attached event for the specified element.
         /// </summary>
-        internal static void RaiseMouseWheel(DependencyObject element, MouseDevice device, Double x, Double y, ref Boolean handled)
+        internal static void RaiseMouseWheel(DependencyObject element, MouseDevice device, Double x, Double y, ref RoutedEventData data)
         {
             var temp = RoutedEvent.GetInvocationDelegate<UpfMouseWheelEventHandler>(MouseWheelEvent);
             if (temp != null)
             {
-                temp(element, device, x, y, ref handled);
+                temp(element, device, x, y, ref data);
             }
         }
 

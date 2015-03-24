@@ -211,7 +211,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <inheritdoc/>
-        protected override void OnMouseWheel(MouseDevice device, Double x, Double y, ref Boolean handled)
+        protected override void OnMouseWheel(MouseDevice device, Double x, Double y, ref RoutedEventData data)
         {
             if (x != 0 && HScroll != null)
             {
@@ -221,38 +221,38 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             {
                 VScroll.Value += ScrollDeltaMouseWheel * -y;
             }
-            handled = true;
+            data.Handled = true;
 
-            base.OnMouseWheel(device, x, y, ref handled);
+            base.OnMouseWheel(device, x, y, ref data);
         }
 
         /// <inheritdoc/>
-        protected override void OnKeyDown(KeyboardDevice device, Key key, ModifierKeys modifiers, ref Boolean handled)
+        protected override void OnKeyDown(KeyboardDevice device, Key key, ModifierKeys modifiers, ref RoutedEventData data)
         {
             switch (key)
             {
                 case Key.Up:
                     VScroll.Value -= ScrollDeltaKey;
-                    handled = true;
+                    data.Handled = true;
                     break;
 
                 case Key.Down:
                     VScroll.Value += ScrollDeltaKey;
-                    handled = true;
+                    data.Handled = true;
                     break;
 
                 case Key.Left:
                     HScroll.Value -= ScrollDeltaKey;
-                    handled = true;
+                    data.Handled = true;
                     break;
 
                 case Key.Right:
                     HScroll.Value += ScrollDeltaKey;
-                    handled = true;
+                    data.Handled = true;
                     break;
             }
 
-            base.OnKeyDown(device, key, modifiers, ref handled);
+            base.OnKeyDown(device, key, modifiers, ref data);
         }
 
         /// <summary>

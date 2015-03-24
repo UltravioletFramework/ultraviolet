@@ -86,14 +86,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <inheritdoc/>
-        protected override void OnLostMouseCapture(ref Boolean handled)
+        protected override void OnLostMouseCapture(ref RoutedEventData data)
         {
             IsDepressed = false;
-            base.OnLostMouseCapture(ref handled);
+            base.OnLostMouseCapture(ref data);
         }
 
         /// <inheritdoc/>
-        protected override void OnMouseDown(MouseDevice device, MouseButton button, ref Boolean handled)
+        protected override void OnMouseDown(MouseDevice device, MouseButton button, ref RoutedEventData data)
         {
             if (button == MouseButton.Left)
             {
@@ -107,13 +107,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                     OnClick();
                 }
 
-                handled = true;
+                data.Handled = true;
             }
-            base.OnMouseDown(device, button, ref handled);
+            base.OnMouseDown(device, button, ref data);
         }
 
         /// <inheritdoc/>
-        protected override void OnMouseUp(MouseDevice device, MouseButton button, ref Boolean handled)
+        protected override void OnMouseUp(MouseDevice device, MouseButton button, ref RoutedEventData data)
         {
             if (button == MouseButton.Left)
             {
@@ -131,29 +131,29 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                     }
                 }
 
-                handled = true;
+                data.Handled = true;
             }
-            base.OnMouseUp(device, button, ref handled);
+            base.OnMouseUp(device, button, ref data);
         }
 
         /// <inheritdoc/>
-        protected override void OnMouseEnter(MouseDevice device, ref Boolean handled)
+        protected override void OnMouseEnter(MouseDevice device, ref RoutedEventData data)
         {
             if (ClickMode == ClickMode.Hover)
             {
                 OnClick();
             }
-            base.OnMouseEnter(device, ref handled);
+            base.OnMouseEnter(device, ref data);
         }
 
         /// <inheritdoc/>
-        protected override void OnMouseLeave(MouseDevice device, ref Boolean handled)
+        protected override void OnMouseLeave(MouseDevice device, ref RoutedEventData data)
         {
             if (View.ElementWithMouseCapture != this)
             {
                 IsDepressed = false;
             }
-            base.OnMouseLeave(device, ref handled);
+            base.OnMouseLeave(device, ref data);
         }
 
         /// <inheritdoc/>

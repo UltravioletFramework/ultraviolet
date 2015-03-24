@@ -10,7 +10,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
     /// <param name="element">The element that raised the event.</param>
     /// <param name="device">The keyboard device.</param>
     /// <param name="handled">A value indicating whether the event has been handled.</param>
-    public delegate void UpfKeyboardEventHandler(DependencyObject element, KeyboardDevice device, ref Boolean handled);
+    public delegate void UpfKeyboardEventHandler(DependencyObject element, KeyboardDevice device, ref RoutedEventData data);
 
     /// <summary>
     /// Represents the method that is called when a keyboard key is pressed while an element has focus.
@@ -20,7 +20,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
     /// <param name="key">The <see cref="Key"/> value that represents the key that was pressed.</param>
     /// <param name="modifiers">A <see cref="ModifierKeys"/> value indicating which of the key modifiers are currently active.</param>
     /// <param name="handled">A value indicating whether the event has been handled.</param>
-    public delegate void UpfKeyDownEventHandler(DependencyObject element, KeyboardDevice device, Key key, ModifierKeys modifiers, ref Boolean handled);
+    public delegate void UpfKeyDownEventHandler(DependencyObject element, KeyboardDevice device, Key key, ModifierKeys modifiers, ref RoutedEventData data);
 
     /// <summary>
     /// Represents the method that is called when a keyboard key is released while an element has focus.
@@ -29,7 +29,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
     /// <param name="device">The <see cref="KeyboardDevice"/> that raised the event.</param>
     /// <param name="key">The <see cref="Key"/> value that represents the key that was pressed.</param>
     /// <param name="handled">A value indicating whether the event has been handled.</param>
-    public delegate void UpfKeyEventHandler(DependencyObject element, KeyboardDevice device, Key key, ref Boolean handled);
+    public delegate void UpfKeyEventHandler(DependencyObject element, KeyboardDevice device, Key key, ref RoutedEventData data);
 
     /// <summary>
     /// Represents the keyboard device.
@@ -332,98 +332,98 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <summary>
         /// Raises the GotKeyboardFocus attached event for the specified element.
         /// </summary>
-        internal static void RaiseGotKeyboardFocus(DependencyObject element, ref Boolean handled)
+        internal static void RaiseGotKeyboardFocus(DependencyObject element, ref RoutedEventData data)
         {
             var temp = RoutedEvent.GetInvocationDelegate<UpfRoutedEventHandler>(GotKeyboardFocusEvent);
             if (temp != null)
             {
-                temp(element, ref handled);
+                temp(element, ref data);
             }
         }
 
         /// <summary>
         /// Raises the LostKeyboardFocus attached event for the specified element.
         /// </summary>
-        internal static void RaiseLostKeyboardFocus(DependencyObject element, ref Boolean handled)
+        internal static void RaiseLostKeyboardFocus(DependencyObject element, ref RoutedEventData data)
         {
             var temp = RoutedEvent.GetInvocationDelegate<UpfRoutedEventHandler>(LostKeyboardFocusEvent);
             if (temp != null)
             {
-                temp(element, ref handled);
+                temp(element, ref data);
             }
         }
 
         /// <summary>
         /// Raises the PreviewTextInput attached event for the specified element.
         /// </summary>
-        internal static void RaisePreviewTextInput(DependencyObject element, KeyboardDevice device, ref Boolean handled)
+        internal static void RaisePreviewTextInput(DependencyObject element, KeyboardDevice device, ref RoutedEventData data)
         {
             var temp = RoutedEvent.GetInvocationDelegate<UpfKeyboardEventHandler>(PreviewTextInputEvent);
             if (temp != null)
             {
-                temp(element, device, ref handled);
+                temp(element, device, ref data);
             }
         }
 
         /// <summary>
         /// Raises the KeyDown attached event for the specified element.
         /// </summary>
-        internal static void RaisePreviewKeyDown(DependencyObject element, KeyboardDevice device, Key key, Boolean ctrl, Boolean alt, Boolean shift, Boolean repeat, ref Boolean handled)
+        internal static void RaisePreviewKeyDown(DependencyObject element, KeyboardDevice device, Key key, Boolean ctrl, Boolean alt, Boolean shift, Boolean repeat, ref RoutedEventData data)
         {
             var temp = RoutedEvent.GetInvocationDelegate<UpfKeyDownEventHandler>(PreviewKeyDownEvent);
             if (temp != null)
             {
                 var modifiers = CreateModifierKeys(alt, ctrl, shift, repeat);
-                temp(element, device, key, Keyboard.Modifiers, ref handled);
+                temp(element, device, key, Keyboard.Modifiers, ref data);
             }
         }
 
         /// <summary>
         /// Raises the PreviewKeyUp attached event for the specified element.
         /// </summary>
-        internal static void RaisePreviewKeyUp(DependencyObject element, KeyboardDevice device, Key key, ref Boolean handled)
+        internal static void RaisePreviewKeyUp(DependencyObject element, KeyboardDevice device, Key key, ref RoutedEventData data)
         {
             var temp = RoutedEvent.GetInvocationDelegate<UpfKeyEventHandler>(PreviewKeyUpEvent);
             if (temp != null)
             {
-                temp(element, device, key, ref handled);
+                temp(element, device, key, ref data);
             }
         }
 
         /// <summary>
         /// Raises the TextInput attached event for the specified element.
         /// </summary>
-        internal static void RaiseTextInput(DependencyObject element, KeyboardDevice device, ref Boolean handled)
+        internal static void RaiseTextInput(DependencyObject element, KeyboardDevice device, ref RoutedEventData data)
         {
             var temp = RoutedEvent.GetInvocationDelegate<UpfKeyboardEventHandler>(TextInputEvent);
             if (temp != null)
             {
-                temp(element, device, ref handled);
+                temp(element, device, ref data);
             }
         }
 
         /// <summary>
         /// Raises the KeyDown attached event for the specified element.
         /// </summary>
-        internal static void RaiseKeyDown(DependencyObject element, KeyboardDevice device, Key key, Boolean ctrl, Boolean alt, Boolean shift, Boolean repeat, ref Boolean handled)
+        internal static void RaiseKeyDown(DependencyObject element, KeyboardDevice device, Key key, Boolean ctrl, Boolean alt, Boolean shift, Boolean repeat, ref RoutedEventData data)
         {
             var temp = RoutedEvent.GetInvocationDelegate<UpfKeyDownEventHandler>(KeyDownEvent);
             if (temp != null)
             {
                 var modifiers = CreateModifierKeys(alt, ctrl, shift, repeat);
-                temp(element, device, key, modifiers, ref handled);
+                temp(element, device, key, modifiers, ref data);
             }
         }
 
         /// <summary>
         /// Raises the KeyUp attached event for the specified element.
         /// </summary>
-        internal static void RaiseKeyUp(DependencyObject element, KeyboardDevice device, Key key, ref Boolean handled)
+        internal static void RaiseKeyUp(DependencyObject element, KeyboardDevice device, Key key, ref RoutedEventData data)
         {
             var temp = RoutedEvent.GetInvocationDelegate<UpfKeyEventHandler>(KeyUpEvent);
             if (temp != null)
             {
-                temp(element, device, key, ref handled);
+                temp(element, device, key, ref data);
             }
         }
 
