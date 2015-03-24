@@ -25,8 +25,21 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Initializes a new instance of the <see cref="PropertyMetadata"/> class.
         /// </summary>
+        /// <param name="flags">A collection of <see cref="PropertyMetadataOptions"/> values specifying the dependency property's options.</param>
+        /// <param name="propertyChangedCallback">A delegate which is invoked when the dependency property's value changes.</param>
+        /// <param name="coerceValueCallback">A delegate which is invoked to coerce the dependency property's value.</param>
+        private PropertyMetadata(PropertyMetadataOptions flags, PropertyChangedCallback propertyChangedCallback, Delegate coerceValueCallback)
+        {
+            this.flags                   = flags;
+            this.propertyChangedCallback = propertyChangedCallback;
+            this.coerceValueCallback     = coerceValueCallback;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PropertyMetadata"/> class.
+        /// </summary>
         public PropertyMetadata()
-            : this(null, PropertyMetadataOptions.None, null, null)
+            : this(PropertyMetadataOptions.None, null, null)
         {
 
         }
@@ -45,7 +58,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         /// <param name="propertyChangedCallback">A delegate which is invoked when the dependency property's value changes.</param>
         public PropertyMetadata(PropertyChangedCallback propertyChangedCallback)
-            : this(null, PropertyMetadataOptions.None, propertyChangedCallback, null)
+            : this(PropertyMetadataOptions.None, propertyChangedCallback, null)
         {
 
         }
@@ -78,7 +91,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="propertyChangedCallback">A delegate which is invoked when the dependency property's value changes.</param>
         /// <param name="coerceValueCallback">A delegate which is invoked to coerce the dependency property's value.</param>
         public PropertyMetadata(PropertyChangedCallback propertyChangedCallback, Delegate coerceValueCallback)
-            : this(null, PropertyMetadataOptions.None, propertyChangedCallback, coerceValueCallback)
+            : this(PropertyMetadataOptions.None, propertyChangedCallback, coerceValueCallback)
         {
 
         }
@@ -115,11 +128,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="propertyChangedCallback">A delegate which is invoked when the dependency property's value changes.</param>
         /// <param name="coerceValueCallback">A delegate which is invoked to coerce the dependency property's value.</param>
         public PropertyMetadata(Object defaultValue, PropertyMetadataOptions flags, PropertyChangedCallback propertyChangedCallback, Delegate coerceValueCallback)
+            : this(flags, propertyChangedCallback, coerceValueCallback)
         {
-            this.defaultValue            = defaultValue;
-            this.flags                   = flags;
-            this.propertyChangedCallback = propertyChangedCallback;
-            this.coerceValueCallback     = coerceValueCallback;
+            DefaultValue = defaultValue;
         }
 
         /// <summary>
@@ -171,6 +182,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         internal Object DefaultValue
         {
             get { return defaultValue; }
+            private set
+            {
+                defaultValue    = value;
+                hasDefaultValue = true;
+            }
         }
 
         /// <summary>
@@ -195,6 +211,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         internal Delegate CoerceValueCallback
         {
             get { return coerceValueCallback; }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether this metadata specified a default value.
+        /// </summary>
+        internal Boolean HasDefaultValue
+        {
+            get { return hasDefaultValue; }
         }
 
         /// <summary>
@@ -239,10 +263,46 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             get { return ((flags & PropertyMetadataOptions.CoerceObjectToString) == PropertyMetadataOptions.CoerceObjectToString); }
         }
 
+        /// <summary>
+        /// Merges this metadata with the specified base metadata.
+        /// </summary>
+        /// <param name="baseMetadata">The base metadata to merge with this metadata.</param>
+        /// <param name="dp">The dependency property to which this metadata belongs.</param>
+        protected internal virtual void Merge(PropertyMetadata baseMetadata, DependencyProperty dp)
+        {
+            flags = flags | baseMetadata.flags;
+
+            if (!hasDefaultValue)
+            {
+                defaultValue = baseMetadata.defaultValue;
+            }
+
+            if (baseMetadata.propertyChangedCallback != null)
+            {
+                if (propertyChangedCallback != null)
+                {
+                    propertyChangedCallback = (PropertyChangedCallback)Delegate.Combine(
+                        propertyChangedCallback, baseMetadata.propertyChangedCallback);
+                }
+                else
+                {
+                    propertyChangedCallback = baseMetadata.propertyChangedCallback;
+                }
+            }
+
+            if (coerceValueCallback == null)
+            {
+                coerceValueCallback = baseMetadata.coerceValueCallback;
+            }
+        }
+
         // Property values.
-        private readonly Object defaultValue;
-        private readonly PropertyMetadataOptions flags;
-        private readonly PropertyChangedCallback propertyChangedCallback;
-        private readonly Delegate coerceValueCallback;
+        private Object defaultValue;
+        private PropertyMetadataOptions flags;
+        private PropertyChangedCallback propertyChangedCallback;
+        private Delegate coerceValueCallback;
+
+        // State values.
+        private Boolean hasDefaultValue;
     }
 }

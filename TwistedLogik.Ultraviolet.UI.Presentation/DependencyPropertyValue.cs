@@ -25,15 +25,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 this.property = property;
                 this.comparer = (DataBindingComparer<T>)BindingExpressions.GetComparisonFunction(typeof(T));
 
+                this.metadata        = property.GetMetadataForOwner(owner.GetType());
                 this.isReferenceType = typeof(T).IsClass;
                 this.isValueType     = typeof(T).IsValueType;
 
-                if (property.Metadata.DefaultValue != null)
+                if (metadata.HasDefaultValue)
                 {
-                    this.defaultValue = (T)property.Metadata.DefaultValue;
+                    this.defaultValue = (T)(metadata.DefaultValue ?? default(T));
                     if (IsCoerced)
                     {
-                        this.coercedValue = property.Metadata.CoerceValue<T>(owner, this.defaultValue);
+                        this.coercedValue = metadata.CoerceValue<T>(owner, this.defaultValue);
                         this.defaultValue = this.coercedValue;
                     }
                 }
@@ -151,11 +152,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                     return;
 
                 var oldCoercedValue = coercedValue;
-                coercedValue = property.Metadata.CoerceValue<T>(owner, GetValueInternal(true, false));
+                coercedValue = metadata.CoerceValue<T>(owner, GetValueInternal(true, false));
 
                 if (!comparer(coercedValue, oldCoercedValue))
                 {
-                    property.Metadata.HandleChanged(owner);
+                    metadata.HandleChanged(owner);
                     previousValue = coercedValue;
                 }
             }
@@ -231,7 +232,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                     {
                         if (IsCoerced)
                         {
-                            coercedValue = property.Metadata.CoerceValue<T>(owner, value);
+                            coercedValue = metadata.CoerceValue<T>(owner, value);
                             value = coercedValue;
                         }
                         cachedBoundValue.Set(value);
@@ -353,7 +354,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             /// <inheritdoc/>
             public Boolean IsCoerced
             {
-                get { return property.Metadata.CoerceValueCallback != null; }
+                get { return metadata.CoerceValueCallback != null; }
             }
 
             /// <inheritdoc/>
@@ -464,12 +465,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 {
                     if (IsCoerced)
                     {
-                        coercedValue = property.Metadata.CoerceValue<T>(owner, value);
+                        coercedValue = metadata.CoerceValue<T>(owner, value);
                         changed = !comparer(coercedValue, original);
                     }
 
                     if (changed)
-                        Property.Metadata.HandleChanged(Owner);
+                        metadata.HandleChanged(Owner);
                 }
                 previousValue = value;
             }
@@ -484,7 +485,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 var expressionType = BindingExpressions.GetExpressionType(dataSourceType, expression);
                 if (expressionType != null && TypesRequireSpecialConversion(expressionType, typeof(T)))
                 {
-                    var coerce          = typeof(T) == typeof(Object) && property.Metadata.CoerceObjectToString;
+                    var coerce          = typeof(T) == typeof(Object) && metadata.CoerceObjectToString;
                     var valueType       = typeof(DependencyBoundValueConverting<,>).MakeGenericType(typeof(T), expressionType);
                     var valueInstance   = (IDependencyBoundValue<T>)Activator.CreateInstance(valueType, this, expressionType, dataSourceType, expression, coerce);
 
@@ -506,8 +507,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             /// <param name="oldValue">The property's value before the change which prompted this update.</param>
             private void UpdateRequiresDigest(T oldValue)
             {
-                var requiresDigestNew = IsDataBound || IsAnimated ||
-                    (Property.Metadata.IsInherited && !hasLocalValue && !hasStyledValue);
+                var requiresDigestNew = IsDataBound || IsAnimated || 
+                    (metadata.IsInherited && !hasLocalValue && !hasStyledValue);
 
                 if (requiresDigestNew != requiresDigest)
                 {
@@ -518,10 +519,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 var changed = !comparer(oldValue, GetValue());
                 if (changed && !requiresDigestNew)
                 {
-                    if (Property.Metadata != null)
-                    {
-                        Property.Metadata.HandleChanged(Owner);
-                    }
+                    metadata.HandleChanged(Owner);
                 }
             }
             
@@ -613,7 +611,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
                 if (IsCoerced)
                 {
-                    valueInterpolated = property.Metadata.CoerceValue<T>(owner, valueInterpolated);
+                    valueInterpolated = metadata.CoerceValue<T>(owner, valueInterpolated);
                 }
 
                 animatedValue = valueInterpolated;
@@ -664,7 +662,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 {
                     return styledValue;
                 }
-                if (Property.Metadata.IsInherited && Owner.DependencyContainer != null)
+                if (metadata.IsInherited && Owner.DependencyContainer != null)
                 {
                     return Owner.DependencyContainer.GetValue<T>(Property);
                 }
@@ -680,7 +678,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             {
                 if (IsCoerced)
                 {
-                    coercedValue = property.Metadata.CoerceValue<T>(owner, value);
+                    coercedValue = metadata.CoerceValue<T>(owner, value);
                     return coercedValue;
                 }
                 return value;
@@ -689,6 +687,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             // Property values.
             private readonly DependencyObject owner;
             private readonly DependencyProperty property;
+            private readonly PropertyMetadata metadata;
             private readonly Boolean isReferenceType;
             private readonly Boolean isValueType;
             private Boolean hasLocalValue;
