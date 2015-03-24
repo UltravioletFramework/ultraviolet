@@ -104,6 +104,7 @@
     <Compile Include="DependencyBoundValueNonConverting.cs" />
     <Compile Include="DependencyObject.cs" />
     <Compile Include="DependencyProperty.cs" />
+    <Compile Include="EventManager.cs" />
     <Compile Include="PropertyMetadata.cs" />
     <Compile Include="DependencyPropertyName.cs" />
     <Compile Include="PropertyMetadataOptions.cs" />

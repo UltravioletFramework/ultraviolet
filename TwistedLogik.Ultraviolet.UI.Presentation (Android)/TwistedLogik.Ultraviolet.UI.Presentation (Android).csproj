@@ -380,6 +380,9 @@
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\DrawingContext.OpacityState.cs">
       <Link>DrawingContext.OpacityState.cs</Link>
     </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\EventManager.cs">
+      <Link>EventManager.cs</Link>
+    </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\FrameworkElement.cs">
       <Link>FrameworkElement.cs</Link>
     </Compile>

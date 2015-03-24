@@ -284,49 +284,49 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <summary>
         /// Identifies the GotKeyboardFocus attached event.
         /// </summary>
-        public static readonly RoutedEvent GotKeyboardFocusEvent = RoutedEvent.Register("GotKeyboardFocus", RoutingStrategy.Bubble,
+        public static readonly RoutedEvent GotKeyboardFocusEvent = EventManager.RegisterRoutedEvent("GotKeyboardFocus", RoutingStrategy.Bubble,
             typeof(UpfRoutedEventHandler), typeof(Keyboard));
 
         /// <summary>
         /// Identifies the LostKeyboardFocus attached event.
         /// </summary>
-        public static readonly RoutedEvent LostKeyboardFocusEvent = RoutedEvent.Register("LostKeyboardFocus", RoutingStrategy.Bubble,
+        public static readonly RoutedEvent LostKeyboardFocusEvent = EventManager.RegisterRoutedEvent("LostKeyboardFocus", RoutingStrategy.Bubble,
             typeof(UpfRoutedEventHandler), typeof(Keyboard));
 
         /// <summary>
         /// Identifies the PreviewTextInput attached event.
         /// </summary>
-        public static readonly RoutedEvent PreviewTextInputEvent = RoutedEvent.Register("PreviewTextInput", RoutingStrategy.Tunnel,
+        public static readonly RoutedEvent PreviewTextInputEvent = EventManager.RegisterRoutedEvent("PreviewTextInput", RoutingStrategy.Tunnel,
             typeof(UpfKeyboardEventHandler), typeof(Keyboard));
 
         /// <summary>
         /// Identifies the PreviewKeyDown attached event.
         /// </summary>
-        public static readonly RoutedEvent PreviewKeyDownEvent = RoutedEvent.Register("PreviewKeyDown", RoutingStrategy.Tunnel,
+        public static readonly RoutedEvent PreviewKeyDownEvent = EventManager.RegisterRoutedEvent("PreviewKeyDown", RoutingStrategy.Tunnel,
             typeof(UpfKeyDownEventHandler), typeof(Keyboard));
 
         /// <summary>
         /// Identifies the PreviewKeyUp attached event.
         /// </summary>
-        public static readonly RoutedEvent PreviewKeyUpEvent = RoutedEvent.Register("PreviewKeyUp", RoutingStrategy.Tunnel,
+        public static readonly RoutedEvent PreviewKeyUpEvent = EventManager.RegisterRoutedEvent("PreviewKeyUp", RoutingStrategy.Tunnel,
             typeof(UpfKeyEventHandler), typeof(Keyboard));
 
         /// <summary>
         /// Identifies the TextInput attached event.
         /// </summary>
-        public static readonly RoutedEvent TextInputEvent = RoutedEvent.Register("TextInput", RoutingStrategy.Bubble,
+        public static readonly RoutedEvent TextInputEvent = EventManager.RegisterRoutedEvent("TextInput", RoutingStrategy.Bubble,
             typeof(UpfKeyboardEventHandler), typeof(Keyboard));
 
         /// <summary>
         /// Identifies the KeyDown attached event.
         /// </summary>
-        public static readonly RoutedEvent KeyDownEvent = RoutedEvent.Register("KeyDown", RoutingStrategy.Bubble,
+        public static readonly RoutedEvent KeyDownEvent = EventManager.RegisterRoutedEvent("KeyDown", RoutingStrategy.Bubble,
             typeof(UpfKeyDownEventHandler), typeof(Keyboard));
 
         /// <summary>
         /// Identifies the KeyUp attached event.
         /// </summary>
-        public static readonly RoutedEvent KeyUpEvent = RoutedEvent.Register("KeyUp", RoutingStrategy.Bubble,
+        public static readonly RoutedEvent KeyUpEvent = EventManager.RegisterRoutedEvent("KeyUp", RoutingStrategy.Bubble,
             typeof(UpfKeyEventHandler), typeof(Keyboard));
 
         /// <summary>
@@ -334,7 +334,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// </summary>
         internal static void RaiseGotKeyboardFocus(DependencyObject element, ref RoutedEventData data)
         {
-            var temp = RoutedEvent.GetInvocationDelegate<UpfRoutedEventHandler>(GotKeyboardFocusEvent);
+            var temp = EventManager.GetInvocationDelegate<UpfRoutedEventHandler>(GotKeyboardFocusEvent);
             if (temp != null)
             {
                 temp(element, ref data);
@@ -346,7 +346,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// </summary>
         internal static void RaiseLostKeyboardFocus(DependencyObject element, ref RoutedEventData data)
         {
-            var temp = RoutedEvent.GetInvocationDelegate<UpfRoutedEventHandler>(LostKeyboardFocusEvent);
+            var temp = EventManager.GetInvocationDelegate<UpfRoutedEventHandler>(LostKeyboardFocusEvent);
             if (temp != null)
             {
                 temp(element, ref data);
@@ -358,7 +358,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// </summary>
         internal static void RaisePreviewTextInput(DependencyObject element, KeyboardDevice device, ref RoutedEventData data)
         {
-            var temp = RoutedEvent.GetInvocationDelegate<UpfKeyboardEventHandler>(PreviewTextInputEvent);
+            var temp = EventManager.GetInvocationDelegate<UpfKeyboardEventHandler>(PreviewTextInputEvent);
             if (temp != null)
             {
                 temp(element, device, ref data);
@@ -370,7 +370,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// </summary>
         internal static void RaisePreviewKeyDown(DependencyObject element, KeyboardDevice device, Key key, Boolean ctrl, Boolean alt, Boolean shift, Boolean repeat, ref RoutedEventData data)
         {
-            var temp = RoutedEvent.GetInvocationDelegate<UpfKeyDownEventHandler>(PreviewKeyDownEvent);
+            var temp = EventManager.GetInvocationDelegate<UpfKeyDownEventHandler>(PreviewKeyDownEvent);
             if (temp != null)
             {
                 var modifiers = CreateModifierKeys(alt, ctrl, shift, repeat);
@@ -383,7 +383,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// </summary>
         internal static void RaisePreviewKeyUp(DependencyObject element, KeyboardDevice device, Key key, ref RoutedEventData data)
         {
-            var temp = RoutedEvent.GetInvocationDelegate<UpfKeyEventHandler>(PreviewKeyUpEvent);
+            var temp = EventManager.GetInvocationDelegate<UpfKeyEventHandler>(PreviewKeyUpEvent);
             if (temp != null)
             {
                 temp(element, device, key, ref data);
@@ -395,7 +395,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// </summary>
         internal static void RaiseTextInput(DependencyObject element, KeyboardDevice device, ref RoutedEventData data)
         {
-            var temp = RoutedEvent.GetInvocationDelegate<UpfKeyboardEventHandler>(TextInputEvent);
+            var temp = EventManager.GetInvocationDelegate<UpfKeyboardEventHandler>(TextInputEvent);
             if (temp != null)
             {
                 temp(element, device, ref data);
@@ -407,7 +407,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// </summary>
         internal static void RaiseKeyDown(DependencyObject element, KeyboardDevice device, Key key, Boolean ctrl, Boolean alt, Boolean shift, Boolean repeat, ref RoutedEventData data)
         {
-            var temp = RoutedEvent.GetInvocationDelegate<UpfKeyDownEventHandler>(KeyDownEvent);
+            var temp = EventManager.GetInvocationDelegate<UpfKeyDownEventHandler>(KeyDownEvent);
             if (temp != null)
             {
                 var modifiers = CreateModifierKeys(alt, ctrl, shift, repeat);
@@ -420,7 +420,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// </summary>
         internal static void RaiseKeyUp(DependencyObject element, KeyboardDevice device, Key key, ref RoutedEventData data)
         {
-            var temp = RoutedEvent.GetInvocationDelegate<UpfKeyEventHandler>(KeyUpEvent);
+            var temp = EventManager.GetInvocationDelegate<UpfKeyEventHandler>(KeyUpEvent);
             if (temp != null)
             {
                 temp(element, device, key, ref data);

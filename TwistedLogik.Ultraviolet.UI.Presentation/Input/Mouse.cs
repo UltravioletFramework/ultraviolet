@@ -515,97 +515,97 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <summary>
         /// Identifies the GotMouseCapture routed event.
         /// </summary>
-        public static readonly RoutedEvent GotMouseCaptureEvent = RoutedEvent.Register("GotMouseCapture", RoutingStrategy.Direct,
+        public static readonly RoutedEvent GotMouseCaptureEvent = EventManager.RegisterRoutedEvent("GotMouseCapture", RoutingStrategy.Direct,
             typeof(UpfRoutedEventHandler), typeof(Mouse));
 
         /// <summary>
         /// Identifies the LostMouseCapture routed event.
         /// </summary>
-        public static readonly RoutedEvent LostMouseCaptureEvent = RoutedEvent.Register("LostMouseCapture", RoutingStrategy.Direct,
+        public static readonly RoutedEvent LostMouseCaptureEvent = EventManager.RegisterRoutedEvent("LostMouseCapture", RoutingStrategy.Direct,
             typeof(UpfRoutedEventHandler), typeof(Mouse));
 
         /// <summary>
         /// Identifies the PreviewMouseMotion routed event.
         /// </summary>
-        public static readonly RoutedEvent PreviewMouseMoveEvent = RoutedEvent.Register("PreviewMouseMove", RoutingStrategy.Tunnel,
+        public static readonly RoutedEvent PreviewMouseMoveEvent = EventManager.RegisterRoutedEvent("PreviewMouseMove", RoutingStrategy.Tunnel,
             typeof(UpfMouseMoveEventHandler), typeof(Mouse));
 
         /// <summary>
         /// Identifies the PreviewMouseDown routed event.
         /// </summary>
-        public static readonly RoutedEvent PreviewMouseDownEvent = RoutedEvent.Register("PreviewMouseDown", RoutingStrategy.Tunnel,
+        public static readonly RoutedEvent PreviewMouseDownEvent = EventManager.RegisterRoutedEvent("PreviewMouseDown", RoutingStrategy.Tunnel,
             typeof(UpfMouseButtonEventHandler), typeof(Mouse));
 
         /// <summary>
         /// Identifies the PreviewMouseUp routed event.
         /// </summary>
-        public static readonly RoutedEvent PreviewMouseUpEvent = RoutedEvent.Register("PreviewMouseUp", RoutingStrategy.Tunnel,
+        public static readonly RoutedEvent PreviewMouseUpEvent = EventManager.RegisterRoutedEvent("PreviewMouseUp", RoutingStrategy.Tunnel,
             typeof(UpfMouseButtonEventHandler), typeof(Mouse));
 
         /// <summary>
         /// Identifies the PreviewMouseClick routed event.
         /// </summary>
-        public static readonly RoutedEvent PreviewMouseClickEvent = RoutedEvent.Register("PreviewMouseClick", RoutingStrategy.Tunnel,
+        public static readonly RoutedEvent PreviewMouseClickEvent = EventManager.RegisterRoutedEvent("PreviewMouseClick", RoutingStrategy.Tunnel,
             typeof(UpfMouseButtonEventHandler), typeof(Mouse));
 
         /// <summary>
         /// Identifies the PreviewMouseDoubleClick routed event.
         /// </summary>
-        public static readonly RoutedEvent PreviewMouseDoubleClickEvent = RoutedEvent.Register("PreviewMouseDoubleClick", RoutingStrategy.Tunnel,
+        public static readonly RoutedEvent PreviewMouseDoubleClickEvent = EventManager.RegisterRoutedEvent("PreviewMouseDoubleClick", RoutingStrategy.Tunnel,
             typeof(UpfMouseButtonEventHandler), typeof(Mouse));
 
         /// <summary>
         /// Identifies the PreviewMouseWheel routed event.
         /// </summary>
-        public static readonly RoutedEvent PreviewMouseWheelEvent = RoutedEvent.Register("PreviewMouseWheel", RoutingStrategy.Tunnel,
+        public static readonly RoutedEvent PreviewMouseWheelEvent = EventManager.RegisterRoutedEvent("PreviewMouseWheel", RoutingStrategy.Tunnel,
             typeof(UpfMouseWheelEventHandler), typeof(Mouse));
 
         /// <summary>
         /// Identifies the MouseMotion routed event.
         /// </summary>
-        public static readonly RoutedEvent MouseMoveEvent = RoutedEvent.Register("MouseMove", RoutingStrategy.Bubble,
+        public static readonly RoutedEvent MouseMoveEvent = EventManager.RegisterRoutedEvent("MouseMove", RoutingStrategy.Bubble,
             typeof(UpfMouseMoveEventHandler), typeof(Mouse));
 
         /// <summary>
         /// Identifies the MouseEnter routed event.
         /// </summary>
-        public static readonly RoutedEvent MouseEnterEvent = RoutedEvent.Register("MouseEnter", RoutingStrategy.Direct,
+        public static readonly RoutedEvent MouseEnterEvent = EventManager.RegisterRoutedEvent("MouseEnter", RoutingStrategy.Direct,
             typeof(UpfMouseEventHandler), typeof(Mouse));
 
         /// <summary>
         /// Identifies the MouseLeave routed event.
         /// </summary>
-        public static readonly RoutedEvent MouseLeaveEvent = RoutedEvent.Register("MouseLeave", RoutingStrategy.Direct,
+        public static readonly RoutedEvent MouseLeaveEvent = EventManager.RegisterRoutedEvent("MouseLeave", RoutingStrategy.Direct,
             typeof(UpfMouseEventHandler), typeof(Mouse));
 
         /// <summary>
         /// Identifies the MouseDown routed event.
         /// </summary>
-        public static readonly RoutedEvent MouseDownEvent = RoutedEvent.Register("MouseDown", RoutingStrategy.Bubble,
+        public static readonly RoutedEvent MouseDownEvent = EventManager.RegisterRoutedEvent("MouseDown", RoutingStrategy.Bubble,
             typeof(UpfMouseButtonEventHandler), typeof(Mouse));
 
         /// <summary>
         /// Identifies the MouseUp routed event.
         /// </summary>
-        public static readonly RoutedEvent MouseUpEvent = RoutedEvent.Register("MouseUp", RoutingStrategy.Bubble,
+        public static readonly RoutedEvent MouseUpEvent = EventManager.RegisterRoutedEvent("MouseUp", RoutingStrategy.Bubble,
             typeof(UpfMouseButtonEventHandler), typeof(Mouse));
 
         /// <summary>
         /// Identifies the MouseClick routed event.
         /// </summary>
-        public static readonly RoutedEvent MouseClickEvent = RoutedEvent.Register("MouseClick", RoutingStrategy.Bubble,
+        public static readonly RoutedEvent MouseClickEvent = EventManager.RegisterRoutedEvent("MouseClick", RoutingStrategy.Bubble,
             typeof(UpfMouseButtonEventHandler), typeof(Mouse));
 
         /// <summary>
         /// Identifies the MouseDoubleClick routed event.
         /// </summary>
-        public static readonly RoutedEvent MouseDoubleClickEvent = RoutedEvent.Register("MouseDoubleClick", RoutingStrategy.Bubble,
+        public static readonly RoutedEvent MouseDoubleClickEvent = EventManager.RegisterRoutedEvent("MouseDoubleClick", RoutingStrategy.Bubble,
             typeof(UpfMouseButtonEventHandler), typeof(Mouse));
 
         /// <summary>
         /// Identifies the MouseWheel routed event.
         /// </summary>
-        public static readonly RoutedEvent MouseWheelEvent = RoutedEvent.Register("MouseWheel", RoutingStrategy.Bubble,
+        public static readonly RoutedEvent MouseWheelEvent = EventManager.RegisterRoutedEvent("MouseWheel", RoutingStrategy.Bubble,
             typeof(UpfMouseWheelEventHandler), typeof(Mouse));
 
         /// <summary>
@@ -661,7 +661,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// </summary>
         internal static void RaiseGotMouseCapture(DependencyObject element, ref RoutedEventData data)
         {
-            var temp = RoutedEvent.GetInvocationDelegate<UpfRoutedEventHandler>(GotMouseCaptureEvent);
+            var temp = EventManager.GetInvocationDelegate<UpfRoutedEventHandler>(GotMouseCaptureEvent);
             if (temp != null)
             {
                 temp(element, ref data);
@@ -673,7 +673,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// </summary>
         internal static void RaiseLostMouseCapture(DependencyObject element, ref RoutedEventData data)
         {
-            var temp = RoutedEvent.GetInvocationDelegate<UpfRoutedEventHandler>(LostMouseCaptureEvent);
+            var temp = EventManager.GetInvocationDelegate<UpfRoutedEventHandler>(LostMouseCaptureEvent);
             if (temp != null)
             {
                 temp(element, ref data);
@@ -685,7 +685,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// </summary>
         internal static void RaisePreviewMouseMove(DependencyObject element, MouseDevice device, Double x, Double y, Double dx, Double dy, ref RoutedEventData data)
         {
-            var temp = RoutedEvent.GetInvocationDelegate<UpfMouseMoveEventHandler>(PreviewMouseMoveEvent);
+            var temp = EventManager.GetInvocationDelegate<UpfMouseMoveEventHandler>(PreviewMouseMoveEvent);
             if (temp != null)
             {
                 temp(element, device, x, y, dx, dy, ref data);
@@ -697,7 +697,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// </summary>
         internal static void RaisePreviewMouseDown(DependencyObject element, MouseDevice device, MouseButton button, ref RoutedEventData data)
         {
-            var temp = RoutedEvent.GetInvocationDelegate<UpfMouseButtonEventHandler>(PreviewMouseDownEvent);
+            var temp = EventManager.GetInvocationDelegate<UpfMouseButtonEventHandler>(PreviewMouseDownEvent);
             if (temp != null)
             {
                 temp(element, device, button, ref data);
@@ -709,7 +709,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// </summary>
         internal static void RaisePreviewMouseUp(DependencyObject element, MouseDevice device, MouseButton button, ref RoutedEventData data)
         {
-            var temp = RoutedEvent.GetInvocationDelegate<UpfMouseButtonEventHandler>(PreviewMouseUpEvent);
+            var temp = EventManager.GetInvocationDelegate<UpfMouseButtonEventHandler>(PreviewMouseUpEvent);
             if (temp != null)
             {
                 temp(element, device, button, ref data);
@@ -721,7 +721,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// </summary>
         internal static void RaisePreviewMouseClick(DependencyObject element, MouseDevice device, MouseButton button, ref RoutedEventData data)
         {
-            var temp = RoutedEvent.GetInvocationDelegate<UpfMouseButtonEventHandler>(PreviewMouseClickEvent);
+            var temp = EventManager.GetInvocationDelegate<UpfMouseButtonEventHandler>(PreviewMouseClickEvent);
             if (temp != null)
             {
                 temp(element, device, button, ref data);
@@ -733,7 +733,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// </summary>
         internal static void RaisePreviewMouseDoubleClick(DependencyObject element, MouseDevice device, MouseButton button, ref RoutedEventData data)
         {
-            var temp = RoutedEvent.GetInvocationDelegate<UpfMouseButtonEventHandler>(PreviewMouseDoubleClickEvent);
+            var temp = EventManager.GetInvocationDelegate<UpfMouseButtonEventHandler>(PreviewMouseDoubleClickEvent);
             if (temp != null)
             {
                 temp(element, device, button, ref data);
@@ -745,7 +745,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// </summary>
         internal static void RaisePreviewMouseWheel(DependencyObject element, MouseDevice device, Double x, Double y, ref RoutedEventData data)
         {
-            var temp = RoutedEvent.GetInvocationDelegate<UpfMouseWheelEventHandler>(PreviewMouseWheelEvent);
+            var temp = EventManager.GetInvocationDelegate<UpfMouseWheelEventHandler>(PreviewMouseWheelEvent);
             if (temp != null)
             {
                 temp(element, device, x, y, ref data);
@@ -757,7 +757,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// </summary>
         internal static void RaiseMouseMove(DependencyObject element, MouseDevice device, Double x, Double y, Double dx, Double dy, ref RoutedEventData data)
         {
-            var temp = RoutedEvent.GetInvocationDelegate<UpfMouseMoveEventHandler>(MouseMoveEvent);
+            var temp = EventManager.GetInvocationDelegate<UpfMouseMoveEventHandler>(MouseMoveEvent);
             if (temp != null)
             {
                 temp(element, device, x, y, dx, dy, ref data);
@@ -769,7 +769,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// </summary>
         internal static void RaiseMouseEnter(DependencyObject element, MouseDevice device, ref RoutedEventData data)
         {
-            var temp = RoutedEvent.GetInvocationDelegate<UpfMouseEventHandler>(MouseEnterEvent);
+            var temp = EventManager.GetInvocationDelegate<UpfMouseEventHandler>(MouseEnterEvent);
             if (temp != null)
             {
                 temp(element, device, ref data);
@@ -781,7 +781,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// </summary>
         internal static void RaiseMouseLeave(DependencyObject element, MouseDevice device, ref RoutedEventData data)
         {
-            var temp = RoutedEvent.GetInvocationDelegate<UpfMouseEventHandler>(MouseLeaveEvent);
+            var temp = EventManager.GetInvocationDelegate<UpfMouseEventHandler>(MouseLeaveEvent);
             if (temp != null)
             {
                 temp(element, device, ref data);
@@ -793,7 +793,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// </summary>
         internal static void RaiseMouseDown(DependencyObject element, MouseDevice device, MouseButton button, ref RoutedEventData data)
         {
-            var temp = RoutedEvent.GetInvocationDelegate<UpfMouseButtonEventHandler>(MouseDownEvent);
+            var temp = EventManager.GetInvocationDelegate<UpfMouseButtonEventHandler>(MouseDownEvent);
             if (temp != null)
             {
                 temp(element, device, button, ref data);
@@ -805,7 +805,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// </summary>
         internal static void RaiseMouseUp(DependencyObject element, MouseDevice device, MouseButton button, ref RoutedEventData data)
         {
-            var temp = RoutedEvent.GetInvocationDelegate<UpfMouseButtonEventHandler>(MouseUpEvent);
+            var temp = EventManager.GetInvocationDelegate<UpfMouseButtonEventHandler>(MouseUpEvent);
             if (temp != null)
             {
                 temp(element, device, button, ref data);
@@ -817,7 +817,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// </summary>
         internal static void RaiseMouseClick(DependencyObject element, MouseDevice device, MouseButton button, ref RoutedEventData data)
         {
-            var temp = RoutedEvent.GetInvocationDelegate<UpfMouseButtonEventHandler>(MouseClickEvent);
+            var temp = EventManager.GetInvocationDelegate<UpfMouseButtonEventHandler>(MouseClickEvent);
             if (temp != null)
             {
                 temp(element, device, button, ref data);
@@ -829,7 +829,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// </summary>
         internal static void RaiseMouseDoubleClick(DependencyObject element, MouseDevice device, MouseButton button, ref RoutedEventData data)
         {
-            var temp = RoutedEvent.GetInvocationDelegate<UpfMouseButtonEventHandler>(MouseDoubleClickEvent);
+            var temp = EventManager.GetInvocationDelegate<UpfMouseButtonEventHandler>(MouseDoubleClickEvent);
             if (temp != null)
             {
                 temp(element, device, button, ref data);
@@ -841,7 +841,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// </summary>
         internal static void RaiseMouseWheel(DependencyObject element, MouseDevice device, Double x, Double y, ref RoutedEventData data)
         {
-            var temp = RoutedEvent.GetInvocationDelegate<UpfMouseWheelEventHandler>(MouseWheelEvent);
+            var temp = EventManager.GetInvocationDelegate<UpfMouseWheelEventHandler>(MouseWheelEvent);
             if (temp != null)
             {
                 temp(element, device, x, y, ref data);

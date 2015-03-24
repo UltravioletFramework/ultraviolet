@@ -169,7 +169,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 }
 
                 // Check for routed events.
-                var revt = RoutedEvent.FindByName(name, examinedType);
+                var revt = EventManager.FindByName(name, examinedType);
                 if (revt != null)
                 {
                     attributes.Add(new UvmlAttribute(UvmlAttributeType.RoutedEvent, attachment, name, value, revt));
@@ -347,7 +347,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 return dprop;
             }
 
-            var attachedEvent = RoutedEvent.FindByName(propertyName, propertyContainerType);
+            var attachedEvent = EventManager.FindByName(propertyName, propertyContainerType);
             if (attachedEvent != null)
             {
                 isAttachedEvent = true;
