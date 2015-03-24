@@ -7,6 +7,6 @@
                       Canvas.Top="{{Padding.Top}}" 
                       Canvas.Right="{{Padding.Right}}" 
                       Canvas.Bottom="{{Padding.Bottom}}"/>
-    <!--<Image Class="textbox-focus" IsHitTestVisible="false" Canvas.Left="0" Canvas.Right="0" Canvas.Top="0" Canvas.Bottom="0"/>-->
+    <Image Class="textbox-focus" IsHitTestVisible="false" Canvas.Left="0" Canvas.Right="0" Canvas.Top="0" Canvas.Bottom="0"/>
   </Canvas>
 </ComponentTemplate>
