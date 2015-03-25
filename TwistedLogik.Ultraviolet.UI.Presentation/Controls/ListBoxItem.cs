@@ -44,8 +44,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 var list = ItemsControl.ItemsControlFromItemContainer(this) as ListBox;
                 if (list != null)
                 {
-                    // TODO: Inform the parent list and let it figure this out
-                    IsSelected = !IsSelected;
+                    list.HandleItemClicked(this);
                 }
             }
             base.OnMouseDown(device, button, ref data);
@@ -60,14 +59,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             var item = (ListBoxItem)dobj;
             if (item.IsSelected)
             {
-                var evtDelegate = RoutedEvent.GetInvocationDelegate<UpfRoutedEventHandler>(Selector.SelectedEvent);
+                var evtDelegate = EventManager.GetInvocationDelegate<UpfRoutedEventHandler>(Selector.SelectedEvent);
                 var evtData     = new RoutedEventData(dobj);
 
                 evtDelegate(dobj, ref evtData);
             }
             else
             {
-                var evtDelegate = RoutedEvent.GetInvocationDelegate<UpfRoutedEventHandler>(Selector.UnselectedEvent);
+                var evtDelegate = EventManager.GetInvocationDelegate<UpfRoutedEventHandler>(Selector.UnselectedEvent);
                 var evtData     = new RoutedEventData(dobj);
 
                 evtDelegate(dobj, ref evtData);

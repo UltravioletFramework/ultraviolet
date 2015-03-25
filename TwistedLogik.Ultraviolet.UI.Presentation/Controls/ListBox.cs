@@ -1,4 +1,5 @@
 ﻿using System;
+using TwistedLogik.Ultraviolet.UI.Presentation.Input;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 {
@@ -16,7 +17,68 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         public ListBox(UltravioletContext uv, String name)
             : base(uv, name)
         {
+            SetValue<ListBoxSelectedItems>(SelectedItemsPropertyKey, selectedItems);
+        }
 
+        /// <summary>
+        /// Gets or sets the list box's selection mode.
+        /// </summary>
+        public SelectionMode SelectionMode
+        {
+            get { return GetValue<SelectionMode>(SelectionModeProperty); }
+            set { SetValue<SelectionMode>(SelectionModeProperty, value); }
+        }
+
+        /// <summary>
+        /// Gets the list box's collection of selected items.
+        /// </summary>
+        public ListBoxSelectedItems SelectedItems
+        {
+            get { return GetValue<ListBoxSelectedItems>(SelectedItemsProperty); }
+        }
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="SelectionMode"/> property changes.
+        /// </summary>
+        public event UpfEventHandler SelectionModeChanged;
+
+        /// <summary>
+        /// Identifies the <see cref="SelectionMode"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty SelectionModeProperty = DependencyProperty.Register("SelectionMode", typeof(SelectionMode), typeof(ListBox),
+            new PropertyMetadata(SelectionMode.Single, HandleSelectionModeChanged));
+
+        /// <summary>
+        /// The private access key for the <see cref="SelectedItems"/> read-only dependency property.
+        /// </summary>
+        private static readonly DependencyPropertyKey SelectedItemsPropertyKey = DependencyProperty.RegisterReadOnly("SelectedItems", typeof(ListBoxSelectedItems), typeof(ListBox),
+            new PropertyMetadata());
+
+        /// <summary>
+        /// Identifies the <see cref="SelectedItems"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty SelectedItemsProperty = SelectedItemsPropertyKey.DependencyProperty;
+
+        /// <summary>
+        /// Called to inform the list box that one of its items was clicked.
+        /// </summary>
+        /// <param name="container">The item container that was clicked.</param>
+        internal void HandleItemClicked(ListBoxItem container)
+        {
+            var item = ItemContainerGenerator.ItemFromContainer(container);
+            if (item == null)
+                return;
+
+            switch (SelectionMode)
+            {
+                case SelectionMode.Single:
+                    HandleItemClickedSingle(item);
+                    break;
+
+                case SelectionMode.Multiple:
+                    HandleItemClickedMultiple(item);
+                    break;
+            }
         }
 
         /// <inheritdoc/>
@@ -26,19 +88,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <inheritdoc/>
-        protected override UIElement CreateItemContainer()
+        protected override DependencyObject GetContainerForItemOverride()
         {
             return new ListBoxItem(Ultraviolet, null);
         }
 
         /// <inheritdoc/>
-        protected override Boolean IsItemContainer(UIElement element)
+        protected override Boolean IsItemContainer(DependencyObject element)
         {
             return element is ListBoxItem;
         }
 
         /// <inheritdoc/>
-        protected override Boolean IsItemContainerForItem(UIElement container, Object item)
+        protected override Boolean IsItemContainerForItem(DependencyObject container, Object item)
         {
             var lbi = container as ListBoxItem;
             if (lbi == null)
@@ -48,13 +110,105 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <inheritdoc/>
-        protected override void AssociateItemContainerWithItem(UIElement container, Object item)
+        protected override void OnSelectedItemAdded(Object item)
         {
-            var lbi = container as ListBoxItem;
-            if (lbi == null)
+            selectedItems.Add(item);
+            base.OnSelectedItemAdded(item);
+        }
+
+        /// <inheritdoc/>
+        protected override void OnSelectedItemRemoved(Object item)
+        {
+            selectedItems.Remove(item);
+            base.OnSelectedItemRemoved(item);
+        }
+
+        /// <inheritdoc/>
+        protected override void OnSelectedItemsChanged()
+        {
+            selectedItems.Clear();
+            foreach (var item in Items)
+            {
+                var container = ItemContainerGenerator.ContainerFromItem(item);
+                if (container != null && GetIsSelected(container))
+                {
+                    selectedItems.Add(container);
+                }
+            }
+
+            base.OnSelectedItemsChanged();
+        }
+
+        /// <summary>
+        /// Raises the <see cref="SelectionModeChanged"/> event.
+        /// </summary>
+        protected virtual void OnSelectionModeChanged()
+        {
+            var temp = SelectionModeChanged;
+            if (temp != null)
+            {
+                temp(this);
+            }
+        }
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="SelectionMode"/> dependency property changes.
+        /// </summary>
+        /// <param name="dobj">The dependency object that raised the event.</param>
+        private static void HandleSelectionModeChanged(DependencyObject dobj)
+        {
+            var listBox = (ListBox)dobj;
+            listBox.OnSelectionModeChanged();
+        }
+
+        /// <summary>
+        /// Handles clicking on an item when the list box is in single selection mode.
+        /// </summary>
+        /// <param name="item">The item that was clicked.</param>
+        private void HandleItemClickedSingle(Object item)
+        {
+            if ((Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
+            {
+                UnselectItem(item);
+            }
+            else
+            {
+                var dobj = item as DependencyObject;
+                if (dobj == null || !GetIsSelected(dobj))
+                {
+                    BeginChangeSelection(); 
+                    
+                    UnselectAllItems();
+                    SelectItem(item);
+
+                    EndChangeSelection();
+                }
+            }
+        }
+
+        /// <summary>
+        /// Handles clicking on an item when the list box is in multiple selection mode.
+        /// </summary>
+        /// <param name="item">The item that was clicked.</param>
+        private void HandleItemClickedMultiple(Object item)
+        {
+            var dobj = item as DependencyObject;
+            if (dobj == null)
                 return;
 
-            lbi.Content = item;
+            var selected = GetIsSelected(dobj);
+            if (selected)
+            {
+                UnselectItem(item);
+            }
+            else
+            {
+                SelectItem(item);
+            }
         }
+
+        // Property values.
+        private readonly ListBoxSelectedItems selectedItems = 
+            new ListBoxSelectedItems();
     }
 }

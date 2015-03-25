@@ -25,6 +25,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         void IItemContainer.PrepareItemContainer(Object item)
         {
             treatContentAsLogicalChild = false;
+            Content = item;
         }
 
         /// <summary>

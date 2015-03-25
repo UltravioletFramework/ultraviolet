@@ -63,14 +63,28 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             Contract.Require(propertyType, "propertyType");
             Contract.Require(ownerType, "ownerType");
 
-            var propertyDomain = GetPropertyDomain(ownerType);
-            if (propertyDomain.ContainsKey(name))
-            {
-                throw new ArgumentException(PresentationStrings.DependencyPropertyAlreadyRegistered);
-            }
             var dp = new DependencyProperty(dpid++, name, propertyType, ownerType, metadata);
-            propertyDomain[name] = dp;
+            RegisterInternal(dp);
             return dp;
+        }
+
+        /// <summary>
+        /// Registers a new read-only dependency property.
+        /// </summary>
+        /// <param name="name">The dependency property's name.</param>
+        /// <param name="propertyType">The dependency property's value type.</param>
+        /// <param name="ownerType">The dependency property's owner type.</param>
+        /// <param name="metadata">The dependency property's metadata.</param>
+        /// <returns>A <see cref="DependencyPropertyKey"/> instance which provides access to the read-only dependency property.</returns>
+        public static DependencyPropertyKey RegisterReadOnly(String name, Type propertyType, Type ownerType, PropertyMetadata metadata = null)
+        {
+            Contract.Require(name, "name");
+            Contract.Require(propertyType, "propertyType");
+            Contract.Require(ownerType, "ownerType");
+
+            var dp = new DependencyProperty(dpid++, name, propertyType, ownerType, metadata, isReadOnly: true);
+            RegisterInternal(dp);
+            return new DependencyPropertyKey(dp);
         }
 
         /// <summary>
@@ -95,6 +109,20 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 type = type.BaseType;
             }
             return null;
+        }
+
+        /// <summary>
+        /// Registers the specified dependency property.
+        /// </summary>
+        /// <param name="dp">The dependency property to register.</param>
+        private static void RegisterInternal(DependencyProperty dp)
+        {
+            var propertyDomain = GetPropertyDomain(dp.OwnerType);
+            if (propertyDomain.ContainsKey(dp.Name))
+            {
+                throw new ArgumentException(PresentationStrings.DependencyPropertyAlreadyRegistered);
+            }
+            propertyDomain[dp.Name] = dp;
         }
 
         /// <summary>

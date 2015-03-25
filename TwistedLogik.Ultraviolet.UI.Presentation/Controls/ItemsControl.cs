@@ -18,6 +18,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         public ItemsControl(UltravioletContext uv, String name)
             : base(uv, name)
         {
+            this.itemContainerGenerator = new ItemContainerGenerator(this);
+
             this.items = new ItemCollection(this);
             this.items.CollectionReset += ItemsCollectionReset;
             this.items.CollectionItemAdded += ItemsCollectionItemAdded;
@@ -47,6 +49,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             }
 
             return null;
+        }
+
+        /// <summary>
+        /// Gets the <see cref="ItemContainerGenerator"/> for this control.
+        /// </summary>
+        public ItemContainerGenerator ItemContainerGenerator
+        {
+            get { return itemContainerGenerator; }
         }
 
         /// <summary>
@@ -99,6 +109,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             new PropertyMetadata(HandleItemStringFormatChanged));
 
         /// <summary>
+        /// Gets the control's list of item containers.
+        /// </summary>
+        internal List<DependencyObject> ItemContainers
+        {
+            get { return itemContainers; }
+        }
+
+        /// <summary>
         /// Gets the element which controls the layout of the control's item containers.
         /// </summary>
         protected internal Panel ItemsPanelElement
@@ -119,7 +137,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                     itemsPanelElement.Parent = this;
                     foreach (var container in itemContainers)
                     {
-                        itemsPanelElement.Children.Add(container);
+                        var uiElement = container as UIElement;
+                        if (uiElement != null)
+                        {
+                            itemsPanelElement.Children.Add(uiElement);
+                        }
                     }
                 }
             }
@@ -132,17 +154,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         protected internal abstract Panel CreateItemsPanel();
 
         /// <summary>
-        /// Creates a new item container element for this control.
+        /// Creates an item container which can be used to display an item for this control.
         /// </summary>
-        /// <returns>A <see cref="UIElement"/> which can be used to contain this control's items.</returns>
-        protected abstract UIElement CreateItemContainer();
+        /// <returns>The item container that was created.</returns>
+        protected abstract DependencyObject GetContainerForItemOverride();
 
         /// <summary>
         /// Gets a value indicating whether the specified element is an item container for this control.
         /// </summary>
         /// <param name="element">The <see cref="UIElement"/> to evaluate.</param>
         /// <returns><c>true</c> if the specified element is an item container for this control; otherwise, <c>false</c>.</returns>
-        protected abstract Boolean IsItemContainer(UIElement element);
+        protected abstract Boolean IsItemContainer(DependencyObject element);
 
         /// <summary>
         /// Gets a value indicating whether the specified element is the container for the specified item.
@@ -150,14 +172,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <param name="container">The <see cref="UIElement"/> to evaluate.</param>
         /// <param name="item">The item to evaluate.</param>
         /// <returns><c>true</c> if the specified element is the container for the specified item; otherwise, <c>false</c>.</returns>
-        protected abstract Boolean IsItemContainerForItem(UIElement container, Object item);
-
-        /// <summary>
-        /// Associates an item container with the specified item.
-        /// </summary>
-        /// <param name="container">The item container element to associate with an item.</param>
-        /// <param name="item">The item to associate with the specified item container.</param>
-        protected abstract void AssociateItemContainerWithItem(UIElement container, Object item);
+        protected abstract Boolean IsItemContainerForItem(DependencyObject container, Object item);
 
         /// <summary>
         /// Raises the <see cref="ItemsSourceChanged"/> event.
@@ -210,15 +225,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <param name="collection">The collection that raised the event.</param>
         private void ItemsCollectionReset(INotifyCollectionChanged collection)
         {
-            var current = itemContainers.First;
-            var next    = current;
-            
-            while (current != null)
+            foreach (var item in itemContainers)
             {
-                next = current.Next;
-                RemoveItemContainer(current.Value, current);
-                current = next;
+                RemoveItemContainer(item, true);
             }
+
+            itemContainers.Clear();
 
             foreach (var item in Items)
             {
@@ -256,41 +268,72 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <param name="item">The item for which to add an item container.</param>
         private void AddItemContainer(Object item)
         {
-            var element   = item as UIElement;
-            var container = element;
+            var uiElement = item as UIElement;
+            if (uiElement == null)
+                return;
+
+            var container = (DependencyObject)uiElement;
 
             // NOTE: visual parent is set when container is added to items panel.
-            element.ChangeLogicalAndVisualParents(this, null);
+            uiElement.ChangeLogicalAndVisualParents(this, null);
 
-            if (!IsItemContainer(element))
+            if (!IsItemContainer(uiElement))
             {
-                container = CreateItemContainer();
+                container = GetContainerForItemOverride();
                 PrepareContainerForItemOverride(container, item);
-                AssociateItemContainerWithItem(container, item);
             }
+            itemContainerGenerator.AssociateContainerWithItem(container, item);
 
             if (ItemsPanelElement != null)
-                ItemsPanelElement.Children.Add(container);
+            {
+                var containerElement = container as UIElement;
+                if (containerElement != null)
+                {
+                    ItemsPanelElement.Children.Add(containerElement);
+                }
+            }
 
-            itemContainers.AddLast(container);
+            itemContainers.Add(container);
         }
 
         /// <summary>
         /// Removes an item container from this control.
         /// </summary>
         /// <param name="container">The item container to remove from the control.</param>
-        /// <param name="node">Optionally, the linked list node that contains the item container.</param>
-        private void RemoveItemContainer(UIElement container, LinkedListNode<UIElement> node = null)
+        /// <param name="preserveInCollection">A value used to indicate whether to keep the removed item in the containers list.</param>
+        private void RemoveItemContainer(DependencyObject container, Boolean preserveInCollection = false)
         {
-            AssociateItemContainerWithItem(container, null);
+            if (!IsItemContainer(container))
+            {
+                PrepareContainerForItemOverride(container, null);
+            }
+            itemContainerGenerator.AssociateContainerWithItem(container, null);
 
             if (ItemsPanelElement != null)
-                ItemsPanelElement.Children.Remove(container);
+            {
+                var uiElement = container as UIElement;
+                if (uiElement != null)
+                {
+                    ItemsPanelElement.Children.Remove(uiElement);
+                }
+            }
 
-            if (node != null)
-                itemContainers.Remove(node);
-            else
+            if (!preserveInCollection)
                 itemContainers.Remove(container);
+        }
+
+        /// <summary>
+        /// Prepares the specified element to display the specified item.
+        /// </summary>
+        /// <param name="element">The element used to display the specified item.</param>
+        /// <param name="item">The item being displayed by the specified element.</param>
+        private void PrepareContainerForItemOverride(DependencyObject element, Object item)
+        {
+            var container = element as IItemContainer;
+            if (container != null)
+            {
+                container.PrepareItemContainer(item);
+            }
         }
 
         /// <summary>
@@ -298,7 +341,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         /// <param name="item">The item for which to find a container.</param>
         /// <returns>The item container for the specified item, or <c>null</c> if no such container exists in this control.</returns>
-        private UIElement FindItemContainerForItem(Object item)
+        private DependencyObject FindItemContainerForItem(Object item)
         {
             foreach (var container in itemContainers)
             {
@@ -311,9 +354,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         // Property values,
         private readonly ItemCollection items;
         private Panel itemsPanelElement;
+        private ItemContainerGenerator itemContainerGenerator;
 
         // The control's item containers for its current item collection.
-        private readonly PooledLinkedList<UIElement> itemContainers = 
-            new PooledLinkedList<UIElement>(8);
+        private readonly List<DependencyObject> itemContainers = 
+            new List<DependencyObject>(8);
     }
 }

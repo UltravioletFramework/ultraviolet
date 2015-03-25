@@ -75,7 +75,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             foreach (var kvp in dependencyPropertyValues)
             {
-                kvp.Value.ClearAnimation();
+                if (!kvp.Value.Property.IsReadOnly)
+                {
+                    kvp.Value.ClearAnimation();
+                }
             }
         }
 
@@ -86,7 +89,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             foreach (var kvp in dependencyPropertyValues)
             {
-                kvp.Value.ClearLocalValue();
+                if (!kvp.Value.Property.IsReadOnly)
+                {
+                    kvp.Value.ClearLocalValue();
+                }
             }
         }
 
@@ -97,7 +103,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             foreach (var kvp in dependencyPropertyValues)
             {
-                kvp.Value.ClearStyledValue();
+                if (!kvp.Value.Property.IsReadOnly)
+                {
+                    kvp.Value.ClearStyledValue();
+                }
             }
         }
 
@@ -110,6 +119,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public void Animate(DependencyProperty dp, AnimationBase animation, Clock clock)
         {
             Contract.Require(dp, "dp");
+
+            if (dp.IsReadOnly)
+                throw new InvalidOperationException(PresentationStrings.DependencyPropertyIsReadOnly.Format(dp.Name));
 
             if (animation != null)
                 Contract.Require(clock, "clock");
@@ -131,6 +143,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             Contract.Require(dp, "dp");
             Contract.Require(clock, "clock");
 
+            if (dp.IsReadOnly)
+                throw new InvalidOperationException(PresentationStrings.DependencyPropertyIsReadOnly.Format(dp.Name));
+
             if (!typeof(T).Equals(dp.PropertyType))
                 throw new InvalidCastException();
 
@@ -151,6 +166,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             Contract.Require(dp, "dp");
 
+            if (dp.IsReadOnly)
+                throw new InvalidOperationException(PresentationStrings.DependencyPropertyIsReadOnly.Format(dp.Name));
+
             if (!typeof(T).Equals(dp.PropertyType))
                 throw new InvalidCastException();
 
@@ -168,6 +186,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             Contract.Require(dp, "dp");
 
+            if (dp.IsReadOnly)
+                throw new InvalidOperationException(PresentationStrings.DependencyPropertyIsReadOnly.Format(dp.Name));
+
             var wrapper = GetDependencyPropertyValue(dp, dp.PropertyType);
             wrapper.Bind(dataSourceType, expression);
         }
@@ -179,6 +200,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public void UnbindValue(DependencyProperty dp)
         {
             Contract.Require(dp, "dp");
+
+            if (dp.IsReadOnly)
+                throw new InvalidOperationException(PresentationStrings.DependencyPropertyIsReadOnly.Format(dp.Name));
 
             var wrapper = GetDependencyPropertyValue(dp, dp.PropertyType);
             wrapper.Unbind();
@@ -237,6 +261,28 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             Contract.Require(dp, "dp");
 
+            if (dp.IsReadOnly)
+                throw new InvalidOperationException(PresentationStrings.DependencyPropertyIsReadOnly.Format(dp.Name));
+
+            if (!typeof(T).Equals(dp.PropertyType))
+                throw new InvalidCastException();
+
+            var wrapper = GetDependencyPropertyValue<T>(dp);
+            wrapper.SetValue(value);
+        }
+
+        /// <summary>
+        /// Sets the value of the specified read-only dependency property.
+        /// </summary>
+        /// <typeparam name="T">The type of value contained by the dependency property.</typeparam>
+        /// <param name="key">A <see cref="DependencyPropertyKey"/> instance which provides access to the read-only dependency property for which to set a value.</param>
+        /// <param name="value">The value to set on the specified dependency property.</param>
+        public void SetValue<T>(DependencyPropertyKey key, T value)
+        {
+            Contract.Require(key, "dp");
+
+            var dp = key.DependencyProperty;
+
             if (!typeof(T).Equals(dp.PropertyType))
                 throw new InvalidCastException();
 
@@ -253,6 +299,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public void SetDefaultValue<T>(DependencyProperty dp, T value)
         {
             Contract.Require(dp, "dp");
+
+            if (dp.IsReadOnly)
+                throw new InvalidOperationException(PresentationStrings.DependencyPropertyIsReadOnly.Format(dp.Name));
 
             if (!typeof(T).Equals(dp.PropertyType))
                 throw new InvalidCastException();
@@ -271,6 +320,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             Contract.Require(dp, "dp");
 
+            if (dp.IsReadOnly)
+                throw new InvalidOperationException(PresentationStrings.DependencyPropertyIsReadOnly.Format(dp.Name));
+
             if (!typeof(T).Equals(dp.PropertyType))
                 throw new InvalidCastException();
 
@@ -287,6 +339,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public void SetStyledValue<T>(DependencyProperty dp, T value)
         {
             Contract.Require(dp, "dp");
+
+            if (dp.IsReadOnly)
+                throw new InvalidOperationException(PresentationStrings.DependencyPropertyIsReadOnly.Format(dp.Name));
 
             if (!typeof(T).Equals(dp.PropertyType))
                 throw new InvalidCastException();
@@ -305,6 +360,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             Contract.Require(dp, "dp");
 
+            if (dp.IsReadOnly)
+                throw new InvalidOperationException(PresentationStrings.DependencyPropertyIsReadOnly.Format(dp.Name));
+
             var val = GetDependencyPropertyValue(dp, dp.PropertyType);
             val.SetFormatString(formatString);
         }
@@ -316,6 +374,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public void ClearAnimation(DependencyProperty dp)
         {
             Contract.Require(dp, "dp");
+
+            if (dp.IsReadOnly)
+                throw new InvalidOperationException(PresentationStrings.DependencyPropertyIsReadOnly.Format(dp.Name));
 
             var wrapper = GetDependencyPropertyValue(dp, dp.PropertyType);
             wrapper.ClearAnimation();
@@ -329,6 +390,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             Contract.Require(dp, "dp");
 
+            if (dp.IsReadOnly)
+                throw new InvalidOperationException(PresentationStrings.DependencyPropertyIsReadOnly.Format(dp.Name));
+
             var wrapper = GetDependencyPropertyValue(dp, dp.PropertyType);
             wrapper.ClearLocalValue();
         }
@@ -340,6 +404,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public void ClearStyledValue(DependencyProperty dp)
         {
             Contract.Require(dp, "dp");
+
+            if (dp.IsReadOnly)
+                throw new InvalidOperationException(PresentationStrings.DependencyPropertyIsReadOnly.Format(dp.Name));
 
             var wrapper = GetDependencyPropertyValue(dp, dp.PropertyType);
             wrapper.ClearStyledValue();

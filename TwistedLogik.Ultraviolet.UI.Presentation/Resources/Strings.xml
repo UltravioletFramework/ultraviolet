@@ -75,6 +75,11 @@
       <Variant>Dependency property has already been registered.</Variant>
     </en-US>
   </String>
+  <String Key="DEPENDENCY_PROPERTY_IS_READ_ONLY">
+    <en-US>
+      <Variant>Dependency property '{0}' is read-only.</Variant>
+    </en-US>
+  </String>
   <String Key="ROUTED_EVENT_ALREADY_REGISTERED">
     <en-US>
       <Variant>Routed event has already been registered.</Variant>

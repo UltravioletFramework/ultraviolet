@@ -95,7 +95,11 @@
     <Compile Include="BindingExpressions.cs" />
     <Compile Include="BoundEventBuilder.cs" />
     <Compile Include="ComponentTemplateManager.cs" />
+    <Compile Include="Controls\ItemContainerGenerator.cs" />
     <Compile Include="Controls\Primitives\NamespaceDoc.cs" />
+    <Compile Include="Controls\SelectionMode.cs" />
+    <Compile Include="Controls\Selector.SelectionCollection.cs" />
+    <Compile Include="Controls\Selector.SelectionMetadata.cs" />
     <Compile Include="Controls\TextBoxContentPresenter.cs" />
     <Compile Include="DataBindingGetterBuilder.cs" />
     <Compile Include="DataBindingSetterBuilder.cs" />
@@ -104,6 +108,8 @@
     <Compile Include="DependencyBoundValueNonConverting.cs" />
     <Compile Include="DependencyObject.cs" />
     <Compile Include="DependencyProperty.cs" />
+    <Compile Include="DependencyPropertyKey.cs" />
+    <Compile Include="Controls\ListBoxSelectedItems.cs" />
     <Compile Include="EventManager.cs" />
     <Compile Include="PropertyMetadata.cs" />
     <Compile Include="DependencyPropertyName.cs" />

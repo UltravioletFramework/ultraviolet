@@ -1,5 +1,6 @@
 ﻿using System;
 using TwistedLogik.Nucleus;
+using TwistedLogik.Nucleus.Collections;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 {
@@ -7,15 +8,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
     /// Represents a control that allows the user to select items.
     /// </summary>
     [UvmlKnownType]
-    public abstract class Selector : ItemsControl
+    public abstract partial class Selector : ItemsControl
     {
         /// <summary>
         /// Initializes the <see cref="Selector"/> type.
         /// </summary>
         static Selector()
         {
-            RoutedEvent.RegisterClassHandler(typeof(Selector), SelectedEvent, new UpfRoutedEventHandler(HandleSelected));
-            RoutedEvent.RegisterClassHandler(typeof(Selector), UnselectedEvent, new UpfRoutedEventHandler(HandleUnselected));
+            EventManager.RegisterClassHandler(typeof(Selector), SelectedEvent, new UpfRoutedEventHandler(HandleSelected));
+            EventManager.RegisterClassHandler(typeof(Selector), UnselectedEvent, new UpfRoutedEventHandler(HandleUnselected));
         }
 
         /// <summary>
@@ -26,7 +27,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         public Selector(UltravioletContext uv, String name)
             : base(uv, name)
         {
+            this.selection = new SelectionCollection(this);
 
+            this.selection.CollectionItemAdded   += selection_CollectionItemAdded;
+            this.selection.CollectionItemRemoved += selection_CollectionItemRemoved;
+            this.selection.CollectionReset       += selection_CollectionReset;
         }
 
         /// <summary>
@@ -34,7 +39,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         /// <param name="element">The element to modify.</param>
         /// <param name="isSelected">A value indicating whether the specified element is selected.</param>
-        public void SetIsSelected(DependencyObject element, Boolean isSelected)
+        public static void SetIsSelected(DependencyObject element, Boolean isSelected)
         {
             Contract.Require(element, "element");
 
@@ -46,7 +51,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         /// <param name="element">The element to evaluate.</param>
         /// <returns><c>true</c> if the specified element is selected; otherwise, <c>false</c>.</returns>
-        public Boolean GetIsSelected(DependencyObject element)
+        public static Boolean GetIsSelected(DependencyObject element)
         {
             Contract.Require(element, "element");
 
@@ -58,7 +63,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         /// <param name="element">The element to evaluate.</param>
         /// <returns><c>true</c> if the specified element is selected; otherwise, <c>false</c>.</returns>
-        public Boolean GetIsSelectionActive(DependencyObject element)
+        public static Boolean GetIsSelectionActive(DependencyObject element)
         {
             Contract.Require(element, "element");
 
@@ -70,7 +75,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         /// <param name="element">The element to which to add the event handler.</param>
         /// <param name="handler">The event handler to add to the element.</param>
-        public void AddSelectedHandler(DependencyObject element, UpfRoutedEventHandler handler)
+        public static void AddSelectedHandler(DependencyObject element, UpfRoutedEventHandler handler)
         {
             UIElementHelper.AddHandler(element, SelectedEvent, handler);
         }
@@ -80,7 +85,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         /// <param name="element">The element to which to add the event handler.</param>
         /// <param name="handler">The event handler to add to the element.</param>
-        public void AddUnselectedHandler(DependencyObject element, UpfRoutedEventHandler handler)
+        public static void AddUnselectedHandler(DependencyObject element, UpfRoutedEventHandler handler)
         {
             UIElementHelper.AddHandler(element, UnselectedEvent, handler);
         }
@@ -90,7 +95,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         /// <param name="element">The element from which to remove the event handler.</param>
         /// <param name="handler">The event handler to remove from the element.</param>
-        public void RemoveSelectedHandler(DependencyObject element, UpfRoutedEventHandler handler)
+        public static void RemoveSelectedHandler(DependencyObject element, UpfRoutedEventHandler handler)
         {
             UIElementHelper.RemoveHandler(element, SelectedEvent, handler);
         }
@@ -100,7 +105,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         /// <param name="element">The element from which to remove the event handler.</param>
         /// <param name="handler">The event handler to remove from the element.</param>
-        public void RemoveUnselectedHandler(DependencyObject element, UpfRoutedEventHandler handler)
+        public static void RemoveUnselectedHandler(DependencyObject element, UpfRoutedEventHandler handler)
         {
             UIElementHelper.RemoveHandler(element, UnselectedEvent, handler);
         }
@@ -137,7 +142,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// Identifies the <see cref="SelectedIndex"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty SelectedIndexProperty = DependencyProperty.Register("SelectedIndex", typeof(Int32), typeof(Selector),
-            new PropertyMetadata());
+            new PropertyMetadata(CommonBoxedValues.Int32.NegativeOne, HandleSelectedIndexChanged));
 
         /// <summary>
         /// Identifies the <see cref="SelectedItem"/> dependency property.
@@ -160,19 +165,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Identifies the <see cref="SelectionChanged"/> routed event.
         /// </summary>
-        public static readonly RoutedEvent SelectionChangedEvent = RoutedEvent.Register("SelectionChanged", RoutingStrategy.Bubble,
+        public static readonly RoutedEvent SelectionChangedEvent = EventManager.RegisterRoutedEvent("SelectionChanged", RoutingStrategy.Bubble,
             typeof(UpfRoutedEventHandler), typeof(Selector));
 
         /// <summary>
         /// Identifies the Selected attached event.
         /// </summary>
-        public static readonly RoutedEvent SelectedEvent = RoutedEvent.Register("Selected", RoutingStrategy.Bubble, 
+        public static readonly RoutedEvent SelectedEvent = EventManager.RegisterRoutedEvent("Selected", RoutingStrategy.Bubble, 
             typeof(UpfRoutedEventHandler), typeof(Selector));
 
         /// <summary>
         /// Identifies the Unselected attached event.
         /// </summary>
-        public static readonly RoutedEvent UnselectedEvent = RoutedEvent.Register("Unselected", RoutingStrategy.Bubble,
+        public static readonly RoutedEvent UnselectedEvent = EventManager.RegisterRoutedEvent("Unselected", RoutingStrategy.Bubble,
             typeof(UpfRoutedEventHandler), typeof(Selector));
 
         /// <summary>
@@ -184,11 +189,170 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
+        /// Occurs when an item is added to the list of selected items.
+        /// </summary>
+        /// <param name="item">The item that was selected.</param>
+        protected virtual void OnSelectedItemAdded(Object item)
+        {
+
+        }
+
+        /// <summary>
+        /// Occurs when an item is removed from the list of selected items.
+        /// </summary>
+        /// <param name="item">The item that was unselected.</param>
+        protected virtual void OnSelectedItemRemoved(Object item)
+        {
+
+        }
+
+        /// <summary>
+        /// Occurs when the list of selected items is significantly changed.
+        /// </summary>
+        protected virtual void OnSelectedItemsChanged()
+        {
+
+        }
+
+        /// <summary>
+        /// Unselects all of the control's items.
+        /// </summary>
+        protected void UnselectAllItems()
+        {
+            if (selection.Count == 0)
+                return;
+
+            BeginChangeSelection();
+
+            foreach (var item in Items)
+            {
+                var container = ItemContainerGenerator.ContainerFromItem(item);
+                if (container != null)
+                {
+                    SetIsSelected(container, false);
+                }
+            }
+
+            EndChangeSelection();
+        }
+
+        /// <summary>
+        /// Unselects a single one of the control's items.
+        /// </summary>
+        /// <param name="item">The item to unselect.</param>
+        protected void UnselectItem(Object item)
+        {
+            Contract.Require(item, "item");
+
+            var container = ItemContainerGenerator.ContainerFromItem(item);
+            if (container == null)
+                return;
+
+            SetIsSelected(container, false);
+        }
+
+        /// <summary>
+        /// Selects all of the control's items.
+        /// </summary>
+        protected void SelectAllItems()
+        {
+            if (selection.Count == Items.Count)
+                return;
+
+            BeginChangeSelection();
+
+            foreach (var item in Items)
+            {
+                var container = ItemContainerGenerator.ContainerFromItem(item);
+                if (container != null)
+                {
+                    SetIsSelected(container, true);
+                }
+            }
+
+            EndChangeSelection();
+        }
+
+        /// <summary>
+        /// Selects the specified item and unselects any other items.
+        /// </summary>
+        /// <param name="dobj">The item to select.</param>
+        protected void SelectItem(Object item)
+        {
+            Contract.Require(item, "item");
+
+            var container = ItemContainerGenerator.ContainerFromItem(item);
+            if (container == null)
+                return;
+
+            if (selection.SelectedItem == item)
+                return;
+
+            SetIsSelected(container, true);
+        }
+
+        /// <summary>
+        /// Indicates that several changes are about to made to the control's selection, and that 
+        /// only a single SelectionChange event should be raised.
+        /// </summary>
+        protected void BeginChangeSelection()
+        {
+            suspendSelectionChangedLevel++;
+        }
+
+        /// <summary>
+        /// Indicates that the control is done changing its collection and raises a SelectionChange event.
+        /// </summary>
+        protected void EndChangeSelection()
+        {
+            if (suspendSelectionChangedLevel == 0)
+                throw new InvalidOperationException();
+
+            if (--suspendSelectionChangedLevel == 0)
+            {
+                RaiseSelectedItemsChanged();
+                UpdateSelectionPropertiesAndRaiseSelectionChanged();
+            }
+        }
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="SelectedIndex"/> dependency property changes.
+        /// </summary>
+        private static void HandleSelectedIndexChanged(DependencyObject dobj)
+        {
+            var selector = (Selector)dobj;
+
+            var index     = selector.SelectedIndex;
+            var container = selector.ItemContainerGenerator.ContainerFromIndex(index);
+            if (container == null)
+                return;
+
+            var item = selector.ItemContainerGenerator.ItemFromContainer(container);
+            if (item == null)
+                return;
+
+            if (GetIsSelected(container))
+                return;
+
+            selector.BeginChangeSelection();
+
+            selector.UnselectAllItems();
+            selector.SelectItem(item);
+
+            selector.EndChangeSelection();
+        }
+
+        /// <summary>
         /// Represents the <see cref="Selector"/> class' class handler for the <see cref="SelectedEvent"/> routed event.
         /// </summary>
         private static void HandleSelected(DependencyObject dobj, ref RoutedEventData data)
         {
-            // TODO: Update selector
+            var selector = (Selector)dobj;
+            var container = data.OriginalSource as DependencyObject;
+            if (container != null)
+            {
+                selector.selection.Add(container);
+            }
         }
 
         /// <summary>
@@ -196,7 +360,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         private static void HandleUnselected(DependencyObject dobj, ref RoutedEventData data)
         {
-            // TODO: Update selector
+            var selector = (Selector)dobj;
+            var container = data.OriginalSource as DependencyObject;
+            if (container != null)
+            {
+                selector.selection.Remove(container);
+            }
         }
 
         /// <summary>
@@ -205,10 +374,112 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <param name="dobj">The dependency object that raised the event.</param>
         private static void HandleSelectionChanged(DependencyObject dobj)
         {
-            var evtDelegate = RoutedEvent.GetInvocationDelegate<UpfRoutedEventHandler>(SelectionChangedEvent);
+            var evtDelegate = EventManager.GetInvocationDelegate<UpfRoutedEventHandler>(SelectionChangedEvent);
             var evtData     = new RoutedEventData(dobj);
 
             evtDelegate(dobj, ref evtData);
         }
+
+        /// <summary>
+        /// Raises the SelectionChanged event.
+        /// </summary>
+        private void RaiseSelectionChanged()
+        {
+            if (suspendSelectionChangedLevel > 0)
+                return;
+
+            var evtDelegate = EventManager.GetInvocationDelegate<UpfRoutedEventHandler>(SelectionChangedEvent);
+            var evtData     = new RoutedEventData(this);
+            evtDelegate(this, ref evtData);
+        }
+
+        /// <summary>
+        /// Calls the <see cref="OnSelectedItemAdded"/> method.
+        /// </summary>
+        /// <param name="item">The item that was added to the selection.</param>
+        private void RaiseSelectedItemAdded(Object item)
+        {
+            if (suspendSelectionChangedLevel > 0)
+                return;
+
+            OnSelectedItemAdded(item);
+        }
+
+        /// <summary>
+        /// Calls the <see cref="OnSelectedItemRemoved"/> method.
+        /// </summary>
+        /// <param name="item">The item that was removed from the selection.</param>
+        private void RaiseSelectedItemRemoved(Object item)
+        {
+            if (suspendSelectionChangedLevel > 0)
+                return;
+
+            OnSelectedItemRemoved(item);
+        }
+
+        /// <summary>
+        /// Calls the <see cref="OnSelectedItemsChanged"/> method.
+        /// </summary>
+        private void RaiseSelectedItemsChanged()
+        {
+            if (suspendSelectionChangedLevel > 0)
+                return;
+
+            OnSelectedItemsChanged();
+        }
+
+        /// <summary>
+        /// Updates the selector's selection properties.
+        /// </summary>
+        private void UpdateSelectionProperties()
+        {
+            if (suspendSelectionChangedLevel > 0)
+                return;
+
+            SelectedIndex = selection.SelectedIndex;
+            SelectedItem  = selection.SelectedItem;
+        }
+
+        /// <summary>
+        /// Updates the selector's selection properties and immediately raises a SelectionChanged event.
+        /// </summary>
+        private void UpdateSelectionPropertiesAndRaiseSelectionChanged()
+        {
+            UpdateSelectionProperties();
+            RaiseSelectionChanged();
+        }
+
+        /// <summary>
+        /// Handles the selection collection's <see cref="INotifyCollectionChanged.CollectionItemAdded"/> event.
+        /// </summary>
+        private void selection_CollectionItemAdded(INotifyCollectionChanged collection, Object item)
+        {
+            RaiseSelectedItemAdded(item);
+            UpdateSelectionPropertiesAndRaiseSelectionChanged();
+        }
+
+        /// <summary>
+        /// Handles the selection collection's <see cref="INotifyCollectionChanged.CollectionItemRemoved"/> event.
+        /// </summary>
+        private void selection_CollectionItemRemoved(INotifyCollectionChanged collection, Object item)
+        {
+            RaiseSelectedItemRemoved(item);
+            UpdateSelectionPropertiesAndRaiseSelectionChanged();
+        }
+        
+        /// <summary>
+        /// Handles the selection collection's <see cref="INotifyCollectionChanged.CollectionReset"/> event.
+        /// </summary>
+        private void selection_CollectionReset(INotifyCollectionChanged collection)
+        {
+            RaiseSelectedItemsChanged();
+            UpdateSelectionPropertiesAndRaiseSelectionChanged();
+        }
+
+        // State values.
+        private Int32 suspendSelectionChangedLevel;
+
+        // The collection of selected items.
+        private readonly SelectionCollection selection;
     }
 }

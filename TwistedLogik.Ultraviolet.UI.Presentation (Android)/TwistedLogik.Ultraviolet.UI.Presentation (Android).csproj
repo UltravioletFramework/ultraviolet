@@ -224,6 +224,9 @@
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\ItemCollection.IList.cs">
       <Link>Controls\ItemCollection.IList.cs</Link>
     </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\ItemContainerGenerator.cs">
+      <Link>Controls\ItemContainerGenerator.cs</Link>
+    </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\ItemsControl.cs">
       <Link>Controls\ItemsControl.cs</Link>
     </Compile>
@@ -232,6 +235,9 @@
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\ListBoxItem.cs">
       <Link>Controls\ListBoxItem.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\ListBoxSelectedItems.cs">
+      <Link>Controls\ListBoxSelectedItems.cs</Link>
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\NamespaceDoc.cs">
       <Link>Controls\NamespaceDoc.cs</Link>
@@ -290,8 +296,17 @@
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\ScrollViewer.cs">
       <Link>Controls\ScrollViewer.cs</Link>
     </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\SelectionMode.cs">
+      <Link>Controls\SelectionMode.cs</Link>
+    </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\Selector.cs">
       <Link>Controls\Selector.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\Selector.SelectionCollection.cs">
+      <Link>Controls\Selector.SelectionCollection.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\Selector.SelectionMetadata.cs">
+      <Link>Controls\Selector.SelectionMetadata.cs</Link>
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\Shape.cs">
       <Link>Controls\Shape.cs</Link>
@@ -361,6 +376,9 @@
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\DependencyProperty.cs">
       <Link>DependencyProperty.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\DependencyPropertyKey.cs">
+      <Link>DependencyPropertyKey.cs</Link>
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\DependencyPropertyName.cs">
       <Link>DependencyPropertyName.cs</Link>

@@ -17,13 +17,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="propertyType">The dependency property's value type.</param>
         /// <param name="ownerType">The dependency property's owner type.</param>
         /// <param name="metadata">The dependency property's metadata.</param>
-        internal DependencyProperty(Int64 id, String name, Type propertyType, Type ownerType, PropertyMetadata metadata)
+        /// <param name="isReadOnly">A value indicating whether this is a read-only dependency property.</param>
+        internal DependencyProperty(Int64 id, String name, Type propertyType, Type ownerType, PropertyMetadata metadata, Boolean isReadOnly = false)
         {
             this.id              = id;
             this.name            = name;
             this.propertyType    = propertyType;
             this.ownerType       = ownerType;
             this.defaultMetadata = metadata ?? PropertyMetadata.Empty;
+            this.isReadOnly      = isReadOnly;
         }
 
         /// <summary>
@@ -37,6 +39,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public static DependencyProperty Register(String name, Type propertyType, Type ownerType, PropertyMetadata metadata = null)
         {
             return DependencyPropertySystem.Register(name, propertyType, ownerType, metadata);
+        }
+
+        /// <summary>
+        /// Registers a new read-only dependency property.
+        /// </summary>
+        /// <param name="name">The dependency property's name.</param>
+        /// <param name="propertyType">The dependency property's value type.</param>
+        /// <param name="ownerType">The dependency property's owner type.</param>
+        /// <param name="metadata">The dependency property's metadata.</param>
+        /// <returns>A <see cref="DependencyPropertyKey"/> instance which provides access to the read-only dependency property.</returns>
+        public static DependencyPropertyKey RegisterReadOnly(String name, Type propertyType, Type ownerType, PropertyMetadata metadata = null)
+        {
+            return DependencyPropertySystem.RegisterReadOnly(name, propertyType, ownerType, metadata);
         }
 
         /// <summary>
@@ -170,12 +185,21 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             get { return ownerType; }
         }
 
+        /// <summary>
+        /// Gets a value indicating whether this is a read-only dependency property.
+        /// </summary>
+        internal Boolean IsReadOnly
+        {
+            get { return isReadOnly; }
+        }
+
         // Property values.
         private readonly Int64 id;
         private readonly String name;
         private readonly Type propertyType;
         private readonly Type ownerType;
         private readonly PropertyMetadata defaultMetadata;
+        private readonly Boolean isReadOnly;
         private readonly Dictionary<Type, PropertyMetadata> metadataOverrides = 
             new Dictionary<Type, PropertyMetadata>();
     }

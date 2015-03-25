@@ -46,9 +46,43 @@ namespace UvDebugSandbox.UI.Screens
             get { return DateTime.UtcNow.Second; }
         }
 
+        public Int32 Index
+        {
+            get;
+            set;
+        }
+
+        public String Name
+        {
+            get 
+            {
+                var selected = foo.SelectedItem;
+                if (selected == null)
+                    return null;
+
+                return ((FrameworkElement)selected).Name;
+            }
+        }
+
+        private readonly ListBox foo = null;
+
         public void HandleValueChanged(DependencyObject dobj)
         {
             System.Diagnostics.Debug.WriteLine(DateTime.UtcNow.TimeOfDay + " value changed");
+        }
+
+        public void HandleSelectionChanged(DependencyObject dobj, ref RoutedEventData data)
+        {
+            System.Diagnostics.Debug.WriteLine("selection changed:");
+            System.Diagnostics.Debug.Write("   ");
+
+            var lbox = (ListBox)dobj;
+            foreach (var item in lbox.SelectedItems)
+            {
+                System.Diagnostics.Debug.Write(((FrameworkElement)item).Name + " ");
+            }
+
+            System.Diagnostics.Debug.WriteLine("");
         }
     }
 

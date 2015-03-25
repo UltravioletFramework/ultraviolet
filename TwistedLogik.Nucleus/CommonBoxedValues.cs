@@ -49,6 +49,11 @@ namespace TwistedLogik.Nucleus
             public static readonly Object One = (Object)1;
 
             /// <summary>
+            /// The cached box for the value negative one (-1).
+            /// </summary>
+            public static readonly Object NegativeOne = (Object)(-1);
+
+            /// <summary>
             /// The cached box for Int32.MinValue.
             /// </summary>
             public static readonly Object MinValue = (Object)System.Int32.MinValue;
@@ -67,12 +72,17 @@ namespace TwistedLogik.Nucleus
             /// <summary>
             /// The cached box for the value zero (0).
             /// </summary>
-            public static readonly Object Zero = (Object)0u;
+            public static readonly Object Zero = (Object)0L;
 
             /// <summary>
             /// The cached box for the value one (1).
             /// </summary>
-            public static readonly Object One = (Object)1u;
+            public static readonly Object One = (Object)1L;
+
+            /// <summary>
+            /// The cached box for the value negative one (-1).
+            /// </summary>
+            public static readonly Object NegativeOne = (Object)(-1L);
 
             /// <summary>
             /// The cached box for Int64.MinValue.
@@ -99,6 +109,11 @@ namespace TwistedLogik.Nucleus
             /// The cached box for the value one (1).
             /// </summary>
             public static readonly Object One = (Object)1f;
+
+            /// <summary>
+            /// The cached box for the value negative one (-1).
+            /// </summary>
+            public static readonly Object NegativeOne = (Object)(-1f);
 
             /// <summary>
             /// The cached box for not a number (NaN).
@@ -140,6 +155,11 @@ namespace TwistedLogik.Nucleus
             /// The cached box for the value one (1).
             /// </summary>
             public static readonly Object One = (Object)1.0;
+
+            /// <summary>
+            /// The cached box for the value negative one (-1).
+            /// </summary>
+            public static readonly Object NegativeOne = (Object)(-1.0);
 
             /// <summary>
             /// The cached box for not a number (NaN).

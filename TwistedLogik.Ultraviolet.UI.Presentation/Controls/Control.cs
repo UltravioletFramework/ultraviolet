@@ -132,20 +132,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
-        /// Prepares the specified element to display the specified item.
-        /// </summary>
-        /// <param name="element">The element used to display the specified item.</param>
-        /// <param name="item">The item being displayed by the specified element.</param>
-        protected virtual void PrepareContainerForItemOverride(DependencyObject element, Object item)
-        {
-            var container = element as IItemContainer;
-            if (container != null)
-            {
-                container.PrepareItemContainer(item);
-            }
-        }
-
-        /// <summary>
         /// Loads the control's component root from the control's associated template.
         /// </summary>
         private void LoadComponentRoot()
