@@ -1,6 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ComponentTemplate>
-  <ScrollViewer HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Visible">
+  <ScrollViewer HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
+                HorizontalContentAlignment="Stretch" VerticalContentAlignment="Top"
+                HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
     <ItemsPanel HorizontalAlignment="Stretch"/>
   </ScrollViewer>
 </ComponentTemplate>

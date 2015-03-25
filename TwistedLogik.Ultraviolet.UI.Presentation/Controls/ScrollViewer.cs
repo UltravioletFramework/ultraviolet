@@ -74,7 +74,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         public Double HorizontalOffset
         {
-            get { return HScroll == null ? 0 : HScroll.Value; }
+            get { return HScroll == null || !HScroll.IsEnabled ? 0 : HScroll.Value; }
         }
 
         /// <summary>
@@ -82,7 +82,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         public Double VerticalOffset
         {
-            get { return VScroll == null ? 0 : VScroll.Value; }
+            get { return VScroll == null || !VScroll.IsEnabled ? 0 : VScroll.Value; }
         }
 
         /// <summary>

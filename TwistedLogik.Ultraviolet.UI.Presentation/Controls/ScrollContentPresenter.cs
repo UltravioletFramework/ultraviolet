@@ -89,15 +89,22 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             if (Control == null)
                 return availableSize;
 
+            var hCanScroll = CanScrollHorizontally;
+            var vCanScroll = CanScrollVertically;
+
             var contentAvailableSize = new Size2D(
-                CanScrollHorizontally ? Double.PositiveInfinity : availableSize.Width,
-                CanScrollVertically ? Double.PositiveInfinity : availableSize.Height
+                hCanScroll ? Double.PositiveInfinity : availableSize.Width,
+                vCanScroll ? Double.PositiveInfinity : availableSize.Height
             );
 
-            var contentSize   = base.MeasureOverride(contentAvailableSize);
-            var presenterSize = new Size2D(
-                Math.Min(availableSize.Width, contentSize.Width),
-                Math.Min(availableSize.Height, contentSize.Height)
+            var contentSize = base.MeasureOverride(contentAvailableSize);
+
+            var hSizeToContent = hCanScroll || Double.IsPositiveInfinity(availableSize.Width);
+            var vSizeToContent = vCanScroll || Double.IsPositiveInfinity(availableSize.Height);
+
+            var presenterSize = new Size2D(                
+                hCanScroll ? Math.Min(availableSize.Width, contentSize.Width) : availableSize.Width,
+                vCanScroll ? Math.Min(availableSize.Height, contentSize.Height) : availableSize.Height
             );
 
             var extentChanged = (extentWidth != contentSize.Width || extentHeight != contentSize.Height);

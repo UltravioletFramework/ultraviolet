@@ -3,7 +3,7 @@
   <Stylesheet>DebugViewScreenStyles.uvss</Stylesheet>
   <View ViewModelType="UvDebugSandbox.UI.Screens.DebugViewModel, UvDebugSandbox">
 
-    <ListBox Margin="50" Width="200">
+    <ListBox Margin="50" Width="200" Height="200">
       <ListBoxItem>Hello</ListBoxItem>
       <ListBoxItem>Hello</ListBoxItem>
       <ListBoxItem>Hello</ListBoxItem>

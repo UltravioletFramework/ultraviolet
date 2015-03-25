@@ -115,11 +115,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 var hAlign = container.HorizontalContentAlignment;
                 var vAlign = container.VerticalContentAlignment;
 
-                var offsetX = LayoutUtil.PerformHorizontalAlignment(finalSize, contentElement.DesiredSize, hAlign);
-                var offsetY = LayoutUtil.PerformVerticalAlignment(finalSize, contentElement.DesiredSize, vAlign);
+                var desiredWidth  = (hAlign == HorizontalAlignment.Stretch) ? finalSize.Width : contentElement.DesiredSize.Width;
+                var desiredHeight = (vAlign == VerticalAlignment.Stretch) ? finalSize.Height : contentElement.DesiredSize.Height;
+                var desiredSize   = new Size2D(desiredWidth, desiredHeight);
 
-                contentElement.Arrange(new RectangleD(offsetX, offsetY, 
-                    contentElement.DesiredSize.Width, contentElement.DesiredSize.Height), options);
+                var offsetX = LayoutUtil.PerformHorizontalAlignment(finalSize, desiredSize, hAlign);
+                var offsetY = LayoutUtil.PerformVerticalAlignment(finalSize, desiredSize, vAlign);
+
+                contentElement.Arrange(new RectangleD(offsetX, offsetY, desiredWidth, desiredHeight), options);
 
                 return finalSize;
             }
