@@ -230,11 +230,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 {
                     if (cachedBoundValue.IsWritable)
                     {
-                        if (IsCoerced)
-                        {
-                            coercedValue = metadata.CoerceValue<T>(owner, value);
-                            value = coercedValue;
-                        }
                         cachedBoundValue.Set(value);
                     }
                 }
