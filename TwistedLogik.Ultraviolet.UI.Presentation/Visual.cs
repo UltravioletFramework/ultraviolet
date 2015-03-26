@@ -45,7 +45,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             Contract.Require(child, "child");
 
             if (child.visualParent != null)
-                throw new InvalidOperationException("TODO");
+                throw new InvalidOperationException(PresentationStrings.VisualAlreadyHasAParent);
 
             if (child.visualParent != this)
             {

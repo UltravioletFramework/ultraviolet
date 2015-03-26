@@ -78,6 +78,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public static readonly StringResource ContentControlRequiresPresenter      = new StringResource(StringDatabase, "CONTENT_CONTROL_REQUIRES_PRESENTER");
         public static readonly StringResource NotUIElement                         = new StringResource(StringDatabase, "NOT_UIELEMENT");
         public static readonly StringResource NotAnInputElement                    = new StringResource(StringDatabase, "NOT_AN_INPUT_ELEMENT");
+        public static readonly StringResource VisualAlreadyHasAParent              = new StringResource(StringDatabase, "VISUAL_ALREADY_HAS_A_PARENT");
 #pragma warning restore 1591
     }
 }

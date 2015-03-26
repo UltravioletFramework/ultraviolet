@@ -827,7 +827,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                     {
                         if (contentControl.ContentPresenter == null)
                         {
-                            throw new InvalidOperationException("TODO");
+                            throw new InvalidOperationException(PresentationStrings.ContentControlRequiresPresenter.Format(contentControl.GetType().Name));
                         }
                         contentControl.Content = InstantiateAndPopulateElement(uv, null, contentElement, context);
                     }

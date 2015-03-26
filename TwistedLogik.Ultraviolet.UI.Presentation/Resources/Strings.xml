@@ -275,4 +275,9 @@
       <Variant>The specified object is not an input element.</Variant>
     </en-US>
   </String>
+  <String Key="VISUAL_ALREADY_HAS_A_PARENT">
+    <en-US>
+      <Variant>The specified Visual already has a parent.</Variant>
+    </en-US>
+  </String>
 </LocalizedStrings>
