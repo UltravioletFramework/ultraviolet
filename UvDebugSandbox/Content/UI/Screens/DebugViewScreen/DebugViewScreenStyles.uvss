@@ -462,3 +462,19 @@ vslider .slider-track
 	source-image: #Global:Textures:DebugUI 26 839 10 24 9 9 vertical;
 	width: 10;
 }
+
+.listbox-border
+{
+	border-thickness: 1;
+	border-color: #ff000000;
+}
+
+.listbox-background
+{
+	fill-color: #ffffffff;
+}
+
+.listboxitem-highlight
+{
+	fill-color: #ff0000ff;
+}

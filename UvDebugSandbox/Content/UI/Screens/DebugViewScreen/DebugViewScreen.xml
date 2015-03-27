@@ -3,20 +3,16 @@
   <Stylesheet>DebugViewScreenStyles.uvss</Stylesheet>
   <View ViewModelType="UvDebugSandbox.UI.Screens.DebugViewModel, UvDebugSandbox">
 
-    <StackPanel Margin="50">      
-      <ListBox Name="foo" Width="200" Height="200" SelectedIndex="{{Index}}" SelectionChanged="HandleSelectionChanged">
-        <ListBoxItem Name="A">Hello</ListBoxItem>
-        <ListBoxItem Name="B">Hello</ListBoxItem>
-        <ListBoxItem Name="C">Hello</ListBoxItem>
-        <ListBoxItem Name="D">Hello</ListBoxItem>
-        <ListBoxItem Name="E">Hello</ListBoxItem>
-        <ListBoxItem Name="F">Hello</ListBoxItem>
-        <ListBoxItem Name="G">Hello</ListBoxItem>
-        <ListBoxItem Name="H">Hello</ListBoxItem>
-      </ListBox>
-      <HSlider SmallChange="1" LargeChange="1" Maximum="8" Width="200">{{Index}}</HSlider>
-      <TextBlock>{{Name}}</TextBlock>
-    </StackPanel>
+    <ListBox Margin="50" Name="foo" Width="200" Height="200" SelectedIndex="{{Index}}" SelectionChanged="HandleSelectionChanged">
+      <ListBoxItem Name="A">Hello</ListBoxItem>
+      <ListBoxItem Name="B">Hello</ListBoxItem>
+      <ListBoxItem Name="C">Hello</ListBoxItem>
+      <ListBoxItem Name="D">Hello</ListBoxItem>
+      <ListBoxItem Name="E">Hello</ListBoxItem>
+      <ListBoxItem Name="F">Hello</ListBoxItem>
+      <ListBoxItem Name="G">Hello</ListBoxItem>
+      <ListBoxItem Name="H">Hello</ListBoxItem>
+    </ListBox>
 
   </View>
 </UIPanelDefinition>

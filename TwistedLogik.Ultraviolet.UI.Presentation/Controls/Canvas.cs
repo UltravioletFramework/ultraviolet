@@ -167,11 +167,27 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                  * top & bottom values - are content-sized along the relevant axis.
                  * Otherwise, the canvas will expand to fill all available space. */
 
-                if (!Double.IsNaN(left) && !Double.IsNaN(right))
+                if (Double.IsPositiveInfinity(availableSize.Width) && !Double.IsNaN(left) && !Double.IsNaN(right))
                     constraintWidth = Double.PositiveInfinity;
 
-                if (!Double.IsNaN(top) && !Double.IsNaN(bottom))
+                if (Double.IsPositiveInfinity(availableSize.Height) && !Double.IsNaN(top) && !Double.IsNaN(bottom))
                     constraintHeight = Double.PositiveInfinity;
+
+                if (!Double.IsPositiveInfinity(constraintWidth))
+                {
+                    if (!Double.IsNaN(left))
+                        constraintWidth -= left;
+                    if (!Double.IsNaN(right))
+                        constraintWidth -= right;
+                }
+
+                if (!Double.IsPositiveInfinity(constraintHeight))
+                {
+                    if (!Double.IsNaN(top))
+                        constraintHeight -= top;
+                    if (!Double.IsNaN(bottom))
+                        constraintHeight -= bottom;
+                }
 
                 child.Measure(new Size2D(constraintWidth, constraintHeight));
 
