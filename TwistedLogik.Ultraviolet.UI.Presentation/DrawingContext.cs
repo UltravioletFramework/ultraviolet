@@ -59,6 +59,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="clipRectangle">The clipping region to push onto the render state stack.</param>
         public void PushClipRectangle(RectangleD clipRectangle)
         {
+            Contract.EnsureRange(clipRectangle.Width >= 0 && clipRectangle.Height >= 0, "clipRectangle");
+
             var cumulativeClipRectangle = clipRectangle;
 
             var currentClipRectangle = ClipRectangle;

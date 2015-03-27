@@ -6,7 +6,7 @@ using System.Runtime.CompilerServices;
 using System.Xml.Linq;
 using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet.UI.Presentation.Animations;
-using TwistedLogik.Ultraviolet.UI.Presentation.Elements;
+using TwistedLogik.Ultraviolet.UI.Presentation.Controls;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation
 {
@@ -25,7 +25,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             RuntimeHelpers.RunClassConstructor(typeof(SimpleClockPool).TypeHandle);
             RuntimeHelpers.RunClassConstructor(typeof(StoryboardClockPool).TypeHandle);
 
-            RegisterCoreElements();
+            RegisterCoreTypes();
+
+            this.styleQueue    = new LayoutQueue(InvalidateStyle);
+            this.measureQueue  = new LayoutQueue(InvalidateMeasure);
+            this.arrangeQueue  = new LayoutQueue(InvalidateArrange);
         }
 
         /// <summary>
@@ -48,49 +52,57 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             Contract.EnsureNotDisposed(this, Disposed);
 
+            PerformanceStats.BeginFrame();
+
             ProcessStyleQueue();
             ProcessMeasureQueue();
             ProcessArrangeQueue();
-            ProcessPositionQueue();
         }
 
         /// <summary>
         /// Attempts to create an instance of the element with the specified name.
         /// </summary>
         /// <typeparam name="TViewModel">The type of view model to which the element will be bound.</typeparam>
-        /// <param name="name">The name of the element to instantiate.</param>
-        /// <param name="id">The ID with which to create the element.</param>
+        /// <param name="typeName">The name of the element to instantiate.</param>
+        /// <param name="name">The ID with which to create the element.</param>
         /// <param name="bindingContext">The binding context to apply to the element which is instantiated.</param>
         /// <returns>The element that was created, or <c>null</c> if the element could not be created.</returns>
-        public UIElement InstantiateElementByName<TViewModel>(String name, String id, String bindingContext = null)
+        public UIElement InstantiateElementByName<TViewModel>(String typeName, String name, String bindingContext = null)
         {
-            return InstantiateElementByName(name, id, typeof(TViewModel), bindingContext);
+            return InstantiateElementByName(typeName, name, typeof(TViewModel), bindingContext);
         }
 
         /// <summary>
         /// Attempts to create an instance of the element with the specified name.
         /// </summary>
-        /// <param name="name">The name of the element to instantiate.</param>
-        /// <param name="id">The ID with which to create the element.</param>
+        /// <param name="typeName">The name of the element to instantiate.</param>
+        /// <param name="name">The ID with which to create the element.</param>
         /// <param name="viewModelType">The type of view model to which the element will be bound.</param>
         /// <param name="bindingContext">The binding context to apply to the element which is instantiated.</param>
         /// <returns>The element that was created, or <c>null</c> if the element could not be created.</returns>
-        public UIElement InstantiateElementByName(String name, String id, Type viewModelType, String bindingContext = null)
+        public UIElement InstantiateElementByName(String typeName, String name, Type viewModelType, String bindingContext = null)
         {
             Contract.EnsureNotDisposed(this, Disposed);
 
             if (bindingContext != null && !BindingExpressions.IsBindingExpression(bindingContext))
                 throw new ArgumentException("bindingContext");
 
-            RegisteredElement registration;
-            if (!IsElementRegistered(name, out registration))
+            KnownElement registration;
+            if (!GetKnownElementRegistration(typeName, out registration))
                 return null;
 
-            var ctor = registration.Type.GetConstructor(new[] { typeof(UltravioletContext), typeof(String) });
+            var isFrameworkElement = typeof(FrameworkElement).IsAssignableFrom(registration.Type);
+
+            var ctor = isFrameworkElement ?                
+                registration.Type.GetConstructor(new[] { typeof(UltravioletContext), typeof(String) }) :
+                registration.Type.GetConstructor(new[] { typeof(UltravioletContext) });
+
             if (ctor == null)
                 throw new InvalidOperationException(UltravioletStrings.NoValidConstructor.Format(registration.Type));
 
-            var instance = (UIElement)ctor.Invoke(new Object[] { Ultraviolet, id });
+            var instance = (UIElement)ctor.Invoke(isFrameworkElement ? 
+                new Object[] { Ultraviolet, name } : 
+                new Object[] { Ultraviolet });
 
             if (registration.Layout != null)
             {
@@ -110,11 +122,47 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             Contract.RequireNotEmpty(name, "name");
             Contract.EnsureNotDisposed(this, Disposed);
 
-            RegisteredElement registration;
-            if (!IsElementRegistered(name, out registration))
+            KnownElement registration;
+            if (!GetKnownElementRegistration(name, out registration))
                 return false;
 
             return registration.Layout != null;
+        }
+
+        /// <summary>
+        /// Gets the known type with the specified name.
+        /// </summary>
+        /// <param name="name">The name of the known type to retrieve.</param>
+        /// <param name="type">The type associated with the specified name.</param>
+        /// <returns><c>true</c> if the specified known type was retrieved; otherwise, <c>false</c>.</returns>
+        public Boolean GetKnownType(String name, out Type type)
+        {
+            return GetKnownType(name, true, out type);
+        }
+
+        /// <summary>
+        /// Gets the known type with the specified name.
+        /// </summary>
+        /// <param name="name">The name of the known type to retrieve.</param>
+        /// <param name="isCaseSensitive">A value indicating whether the resolution of the type name is case-sensitive.</param>
+        /// <param name="type">The type associated with the specified name.</param>
+        /// <returns><c>true</c> if the specified known type was retrieved; otherwise, <c>false</c>.</returns>
+        public Boolean GetKnownType(String name, Boolean isCaseSensitive, out Type type)
+        {
+            Contract.RequireNotEmpty(name, "name");
+            Contract.EnsureNotDisposed(this, Disposed);
+
+            type = null;
+
+            KnownType registration;
+            if (!GetKnownTypeRegistration(name, out registration))
+                return false;
+
+            if (isCaseSensitive && !String.Equals(name, registration.Name, StringComparison.Ordinal))
+                return false;
+
+            type = registration.Type;
+            return true;
         }
 
         /// <summary>
@@ -123,9 +171,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="name">The name of the element for which to retrieve the associated type.</param>
         /// <param name="type">The type associated with the specified element.</param>
         /// <returns><c>true</c> if the specified element type was retrieved; otherwise, <c>false</c>.</returns>
-        public Boolean GetElementType(String name, out Type type)
+        public Boolean GetKnownElement(String name, out Type type)
         {
-            return GetElementType(name, true, out type);
+            return GetKnownElement(name, true, out type);
         }
 
         /// <summary>
@@ -135,15 +183,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="isCaseSensitive">A value indicating whether the resolution of the element name is case-sensitive.</param>
         /// <param name="type">The type associated with the specified element.</param>
         /// <returns><c>true</c> if the specified element type was retrieved; otherwise, <c>false</c>.</returns>
-        public Boolean GetElementType(String name, Boolean isCaseSensitive, out Type type)
+        public Boolean GetKnownElement(String name, Boolean isCaseSensitive, out Type type)
         {
             Contract.RequireNotEmpty(name, "name");
             Contract.EnsureNotDisposed(this, Disposed);
 
             type = null;
 
-            RegisteredElement registration;
-            if (!IsElementRegistered(name, out registration))
+            KnownElement registration;
+            if (!GetKnownElementRegistration(name, out registration))
                 return false;
 
             if (isCaseSensitive && !String.Equals(name, registration.Name, StringComparison.Ordinal))
@@ -166,8 +214,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             property = null;
 
-            RegisteredElement registration;
-            if (!IsElementRegistered(name, out registration))
+            KnownElement registration;
+            if (!GetKnownElementRegistration(name, out registration))
                 return false;
 
             property = registration.DefaultProperty;
@@ -187,8 +235,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             property = null;
 
-            RegisteredElement registration;
-            if (!IsElementRegistered(type, out registration))
+            KnownElement registration;
+            if (!GetKnownElementRegistration(type, out registration))
                 return false;
 
             property = registration.DefaultProperty;
@@ -204,7 +252,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             Contract.Require(type, "type");
             Contract.EnsureNotDisposed(this, Disposed);
 
-            RegisterElementInternal(type, null);
+            RegisterElementInternal(registeredTypes, type, null);
         }
 
         /// <summary>
@@ -218,7 +266,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             var type = ExtractElementTypeFromLayout(layout);
 
-            RegisterElementInternal(type, layout);
+            RegisterElementInternal(registeredTypes, type, layout);
         }
 
         /// <summary>
@@ -226,16 +274,33 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         /// <param name="type">The type that implements the custom element.</param>
         /// <returns><c>true</c> if the custom element was unregistered; otherwise, <c>false</c>.</returns>
-        public Boolean UnregisterElement(Type type)
+        public Boolean UnregisterKnownType(Type type)
         {
             Contract.Require(type, "type");
             Contract.EnsureNotDisposed(this, Disposed);
 
-            RegisteredElement registration;
-            if (!IsElementRegistered(type, out registration))
+            KnownType registration;
+            if (!GetKnownTypeRegistration(type, out registration))
                 return false;
 
-            return registeredElements.Remove(registration.Name);
+            return registeredTypes.Remove(registration.Name);
+        }
+
+        /// <summary>
+        /// Unregisters a custom element.
+        /// </summary>
+        /// <param name="type">The element type to unregister.</param>
+        /// <returns><c>true</c> if the custom element was unregistered; otherwise, <c>false</c>.</returns>
+        public Boolean UnregisterKnownElement(Type type)
+        {
+            Contract.Require(type, "type");
+            Contract.EnsureNotDisposed(this, Disposed);
+
+            KnownElement registration;
+            if (!GetKnownElementRegistration(type, out registration))
+                return false;
+
+            return registeredTypes.Remove(registration.Name);
         }
 
         /// <summary>
@@ -243,18 +308,26 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         /// <param name="layout">The XML document that defines the custom element's layout.</param>
         /// <returns><c>true</c> if the custom element was unregistered; otherwise, <c>false</c>.</returns>
-        public Boolean UnregisterElement(XDocument layout)
+        public Boolean UnregisterKnownElement(XDocument layout)
         {
             Contract.Require(layout, "layout");
             Contract.EnsureNotDisposed(this, Disposed);
 
             var type = ExtractElementTypeFromLayout(layout);
 
-            RegisteredElement registration;
-            if (!IsElementRegistered(type, out registration))
+            KnownElement registration;
+            if (!GetKnownElementRegistration(type, out registration))
                 return false;
 
-            return registeredElements.Remove(registration.Name);
+            return registeredTypes.Remove(registration.Name);
+        }
+
+        /// <summary>
+        /// Gets the performance statistics which have been collected by the Ultraviolet Presentation Foundation.
+        /// </summary>
+        public PresentationFoundationPerformanceStats PerformanceStats
+        {
+            get { return performanceStats; }
         }
 
         /// <summary>
@@ -290,14 +363,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
-        /// Gets the queue of elements with invalid position states.
-        /// </summary>
-        internal LayoutQueue PositionQueue
-        {
-            get { return positionQueue; }
-        }
-
-        /// <summary>
         /// Gets a value indicating whether the specified XML document is a valid element layout.
         /// </summary>
         /// <param name="layout">The XML document that defines the custom element's layout.</param>
@@ -311,16 +376,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Gets a value indicating whether the specified type is a valid element type.
         /// </summary>
         /// <param name="type">The type to evaluate.</param>
-        /// <param name="attr">The element's <see cref="UIElementAttribute"/> instance.</param>
+        /// <param name="attr">The element's <see cref="UvmlKnownTypeAttribute"/> instance.</param>
         /// <returns><c>true</c> if the specified type is a valid element type; otherwise, <c>false</c>.</returns>
-        private static Boolean IsValidElementType(Type type, out UIElementAttribute attr)
+        private static Boolean IsValidElementType(Type type, out UvmlKnownTypeAttribute attr)
         {
             attr = null;
 
             if (!typeof(UIElement).IsAssignableFrom(type))
                 return false;
 
-            attr = type.GetCustomAttributes(typeof(UIElementAttribute), false).Cast<UIElementAttribute>().SingleOrDefault();
+            attr = type.GetCustomAttributes(typeof(UvmlKnownTypeAttribute), false).Cast<UvmlKnownTypeAttribute>().SingleOrDefault();
 
             return attr != null;
         }
@@ -343,7 +408,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (type == null)
                 throw new InvalidOperationException(PresentationStrings.InvalidUserControlType.Format(attr.Value));
 
-            UIElementAttribute uiElementAttr;
+            UvmlKnownTypeAttribute uiElementAttr;
             if (!IsValidElementType(type, out uiElementAttr))
                 throw new InvalidOperationException(PresentationStrings.InvalidUserControlType.Format(type.Name));
 
@@ -351,61 +416,76 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
-        /// Registers the Presentation Foundation's core elements.
-        /// </summary>
-        private void RegisterCoreElements()
-        {
-            var elementTypes = from t in typeof(UIElement).Assembly.GetTypes()
-                               let attr = t.GetCustomAttributes(typeof(UIElementAttribute), false).SingleOrDefault()
-                               where
-                                attr != null
-                               select new { ElementType = t, ElementAttribute = (UIElementAttribute)attr };
-
-            foreach (var elementType in elementTypes)
-            {
-                var defaultPropertyAttr  = (DefaultPropertyAttribute)elementType.ElementType.GetCustomAttributes(typeof(DefaultPropertyAttribute), true).SingleOrDefault();
-                var defaultProperty      = default(String);
-                if (defaultPropertyAttr != null)
-                {
-                    defaultProperty = defaultPropertyAttr.Name;
-                }
-
-                var type = elementType.ElementType;
-                var ctor = type.GetConstructor(new[] { typeof(UltravioletContext), typeof(String) });
-                
-                if (ctor == null)
-                    throw new InvalidOperationException(PresentationStrings.UIElementInvalidCtor.Format(elementType));
-
-                RuntimeHelpers.RunClassConstructor(type.TypeHandle);
-
-                var registration = new RegisteredElement(
-                    elementType.ElementAttribute.Name,
-                    elementType.ElementType,
-                    defaultProperty);
-
-                RegisterDefaultComponentTemplate(type, elementType.ElementAttribute);
-
-                coreElements[elementType.ElementAttribute.Name] = registration;
-            }
-        }
-
-        /// <summary>
         /// Registers a custom element type with the Presentation Foundation.
         /// </summary>
         /// <param name="type">The type that implements the custom element.</param>
         /// <param name="layout">The XML document that defines the custom element's layout.</param>
-        private void RegisterElementInternal(Type type, XDocument layout)
+        private void RegisterElementInternal(Dictionary<String, KnownType> registry, Type type, XDocument layout)
         {
-            UIElementAttribute uiElementAttr;
-            if (!IsValidElementType(type, out uiElementAttr))
-                throw new InvalidOperationException(PresentationStrings.InvalidUIElementType.Format(type.Name));
+            var knownTypeAttr = (UvmlKnownTypeAttribute)type.GetCustomAttributes(typeof(UvmlKnownTypeAttribute), false).SingleOrDefault();
+            if (knownTypeAttr == null)
+                throw new InvalidOperationException(PresentationStrings.KnownTypeMissingAttribute.Format(type.Name));
 
-            RegisteredElement existingRegistration;
-            if (IsElementRegistered(uiElementAttr.Name, out existingRegistration))
-                throw new InvalidOperationException(PresentationStrings.UnrecognizedUIElement.Format(uiElementAttr.Name));
+            var knownTypeName = knownTypeAttr.Name ?? type.Name;
 
-            var defaultProperty = default(String);
-            var defaultPropertyAttr = type.GetCustomAttributes(typeof(DefaultPropertyAttribute), true).Cast<DefaultPropertyAttribute>().SingleOrDefault();
+            KnownType existingRegistration;
+            if (GetKnownTypeRegistration(knownTypeName, out existingRegistration))
+                throw new InvalidOperationException(PresentationStrings.KnownTypeAlreadyRegistered.Format(knownTypeName));
+
+            RuntimeHelpers.RunClassConstructor(type.TypeHandle);
+
+            KnownType registration;
+            if (typeof(UIElement).IsAssignableFrom(type))
+            {
+                registration = CreateKnownElementRegistration(type, knownTypeAttr);
+            }
+            else
+            {
+                registration = CreateKnownTypeRegistration(type, knownTypeAttr);
+            }
+            
+            registry[registration.Name] = registration;
+        }
+
+        /// <summary>
+        /// Registers any known types which are defined in the Presentation Foundation's core assembly.
+        /// </summary>
+        private void RegisterCoreTypes()
+        {
+            var knownTypes = from t in typeof(UIElement).Assembly.GetTypes()
+                             let attr = t.GetCustomAttributes(typeof(UvmlKnownTypeAttribute), false).SingleOrDefault()
+                             where
+                              attr != null
+                             select t;
+
+            foreach (var knownType in knownTypes)
+            {
+                RegisterElementInternal(coreTypes, knownType, null);
+            }
+        }
+
+        /// <summary>
+        /// Creates a known type registration for the specified type.
+        /// </summary>
+        /// <param name="type">The type for which to create a registration.</param>
+        /// <param name="attr">The attribute that marks the type as a known type.</param>
+        /// <returns>The <see cref="KnownType"/> registration that was created.</returns>
+        private KnownType CreateKnownTypeRegistration(Type type, UvmlKnownTypeAttribute attr)
+        {
+            var registration = new KnownType(attr.Name ?? type.Name, type);
+            return registration;
+        }
+
+        /// <summary>
+        /// Creates a known element registration for the specified type.
+        /// </summary>
+        /// <param name="type">The type for which to create a registration.</param>
+        /// <param name="attr">The attribute that marks the type as a known type.</param>
+        /// <returns>The <see cref="KnownType"/> registration that was created.</returns>
+        private KnownType CreateKnownElementRegistration(Type type, UvmlKnownTypeAttribute attr)
+        {
+            var defaultPropertyAttr  = (DefaultPropertyAttribute)type.GetCustomAttributes(typeof(DefaultPropertyAttribute), true).SingleOrDefault();
+            var defaultProperty      = default(String);
             if (defaultPropertyAttr != null)
             {
                 defaultProperty = defaultPropertyAttr.Name;
@@ -417,23 +497,24 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             RuntimeHelpers.RunClassConstructor(type.TypeHandle);
 
-            RegisterDefaultComponentTemplate(type, uiElementAttr);
+            var registration = new KnownElement(attr.Name ?? type.Name, type, defaultProperty);
+            RegisterDefaultComponentTemplate(type, attr);
 
-            registeredElements[uiElementAttr.Name] = new RegisteredElement(uiElementAttr.Name, type, defaultProperty, layout);
+            return registration;
         }
 
         /// <summary>
-        /// Gets a value indicating whether the specified custom element is registered.
+        /// Gets the registration for the specified known type.
         /// </summary>
-        /// <param name="name">The name of the custom element.</param>
-        /// <param name="registration">The element registration.</param>
-        /// <returns><c>true</c> if the specified element is registered; otherwise, <c>false</c>.</returns>
-        private Boolean IsElementRegistered(String name, out RegisteredElement registration)
+        /// <param name="name">The name of the known type for which to retrieve a registration.</param>
+        /// <param name="registration">The registration for the known type with the specified name.</param>
+        /// <returns><c>true</c> if a known type with the specified name exists; otherwise, <c>false.</c></returns>
+        private Boolean GetKnownTypeRegistration(String name, out KnownType registration)
         {
-            if (coreElements.TryGetValue(name, out registration))
+            if (coreTypes.TryGetValue(name, out registration))
                 return true;
 
-            if (registeredElements.TryGetValue(name, out registration))
+            if (registeredTypes.TryGetValue(name, out registration))
                 return true;
 
             registration = null;
@@ -441,14 +522,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
-        /// Gets a value indicating whether the specified custom element is registered.
+        /// Gets the registration for the specified known type.
         /// </summary>
-        /// <param name="type">The type that implements the custom element.</param>
-        /// <param name="registration">The element registration.</param>
-        /// <returns><c>true</c> if the specified element is registered; otherwise, <c>false</c>.</returns>
-        private Boolean IsElementRegistered(Type type, out RegisteredElement registration)
+        /// <param name="type">The CLR type of the known type for which to retrieve a registration.</param>
+        /// <param name="registration">The registration for the known element associated with the specified CLR type.</param>
+        /// <returns><c>true</c> if a known type associated with the specified CLR type exists; otherwise, <c>false.</c></returns>
+        private Boolean GetKnownTypeRegistration(Type type, out KnownType registration)
         {
-            foreach (var value in coreElements.Values)
+            foreach (var value in coreTypes.Values)
             {
                 if (value.Type == type)
                 {
@@ -456,7 +537,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                     return true;
                 }
             }
-            foreach (var value in registeredElements.Values)
+            foreach (var value in registeredTypes.Values)
             {
                 if (value.Type == type)
                 {
@@ -469,27 +550,63 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
-        /// Gets a value indicating whether the specified custom element is registered.
+        /// Gets the registration for the specified known element.
         /// </summary>
-        /// <param name="layout">The XML document that defines the custom element's layout.</param>
-        /// <param name="registration">The element registration.</param>
-        /// <returns><c>true</c> if the specified element is registered; otherwise, <c>false</c>.</returns>
-        private Boolean IsElementRegistered(XDocument layout, out RegisteredElement registration)
+        /// <param name="name">The name of the known element for which to retrieve a registration.</param>
+        /// <param name="registration">The registration for the known element with the specified name.</param>
+        /// <returns><c>true</c> if a known element with the specified name exists; otherwise, <c>false.</c></returns>
+        private Boolean GetKnownElementRegistration(String name, out KnownElement registration)
+        {
+            KnownType typeRegistration;
+            if (GetKnownTypeRegistration(name, out typeRegistration) && typeRegistration is KnownElement)
+            {
+                registration = (KnownElement)typeRegistration;
+                return true;
+            }
+            registration = null;
+            return false;
+        }
+
+        /// <summary>
+        /// Gets the registration for the specified known element.
+        /// </summary>
+        /// <param name="type">The CLR type of the known element for which to retrieve a registration.</param>
+        /// <param name="registration">The registration for the known element associated with the specified CLR type.</param>
+        /// <returns><c>true</c> if a known element associated with the specified CLR type exists; otherwise, <c>false.</c></returns>
+        private Boolean GetKnownElementRegistration(Type type, out KnownElement registration)
+        {
+            KnownType typeRegistration;
+            if (GetKnownTypeRegistration(type, out typeRegistration) && typeRegistration is KnownElement)
+            {
+                registration = (KnownElement)typeRegistration;
+                return true;
+            }
+            registration = null;
+            return false;
+        }
+
+        /// <summary>
+        /// Gets the registration for the specified known element.
+        /// </summary>
+        /// <param name="layout">The layout document of the known element for which to retrieve a registration.</param>
+        /// <param name="registration">The registration for the known element with the specified layout.</param>
+        /// <returns><c>true</c> if a known element associated with the specified layout exists; otherwise, <c>false</c>.</returns>
+        private Boolean GetKnownElementRegistration(XDocument layout, out KnownElement registration)
         {
             var type = ExtractElementTypeFromLayout(layout);
-            foreach (var value in coreElements.Values)
+            foreach (var value in coreTypes.Values)
             {
-                if (value.Type == type)
+                if (value.Type == type && value is KnownElement)
                 {
-                    registration = value;
+                    registration = (KnownElement)value;
                     return true;
                 }
             }
-            foreach (var value in registeredElements.Values)
+            foreach (var value in registeredTypes.Values)
             {
-                if (value.Type == type)
+                if (value.Type == type && value is KnownElement)
                 {
-                    registration = value;
+                    registration = (KnownElement)value;
                     return true;
                 }
             }
@@ -545,17 +662,38 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
-        /// Processes the queue of elements with invalid position states.
+        /// Invalidates the specified element's style.
         /// </summary>
-        private void ProcessPositionQueue()
+        private void InvalidateStyle(UIElement element)
         {
-            while (positionQueue.Count > 0)
+            if (element.IsStyleValid)
             {
-                var element = positionQueue.Dequeue();
-                if (element.IsPositionValid)
-                    continue;
+                element.InvalidateStyleInternal();
+                PerformanceStats.InvalidateStyleCountLastFrame++;
+            }
+        }
 
-                element.Position(element.MostRecentPosition);
+        /// <summary>
+        /// Invalidates the specified element's measure.
+        /// </summary>
+        private void InvalidateMeasure(UIElement element)
+        {
+            if (element.IsMeasureValid)
+            {
+                element.InvalidateMeasureInternal();
+                PerformanceStats.InvalidateMeasureCountLastFrame++;
+            }
+        }
+
+        /// <summary>
+        /// Invalidates the specified element's arrangement.
+        /// </summary>
+        private void InvalidateArrange(UIElement element)
+        {
+            if (element.IsArrangeValid)
+            {
+                element.InvalidateArrangeInternal();
+                PerformanceStats.InvalidateArrangeCountLastFrame++;
             }
         }
 
@@ -563,8 +701,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Registers the specified type's default component template, if it has one.
         /// </summary>
         /// <param name="type">The type that represents the element for which to register a component template.</param>
-        /// <param name="uiElementAttr">The <see cref="UIElementAttribute"/> instance which is associated with the element type.</param>
-        private void RegisterDefaultComponentTemplate(Type type, UIElementAttribute uiElementAttr)
+        /// <param name="uiElementAttr">The <see cref="UvmlKnownTypeAttribute"/> instance which is associated with the element type.</param>
+        private void RegisterDefaultComponentTemplate(Type type, UvmlKnownTypeAttribute uiElementAttr)
         {
             if (String.IsNullOrEmpty(uiElementAttr.ComponentTemplate))
                 return;
@@ -581,22 +719,25 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             }
         }
 
+        // Performance stats.
+        private readonly PresentationFoundationPerformanceStats performanceStats = 
+            new PresentationFoundationPerformanceStats();
+
         // The component template manager.
         private readonly ComponentTemplateManager componentTemplateManager = 
             new ComponentTemplateManager();
 
-        // The core element registry.
-        private readonly Dictionary<String, RegisteredElement> coreElements = 
-            new Dictionary<String, RegisteredElement>(StringComparer.OrdinalIgnoreCase);
+        // The core type registry.
+        private readonly Dictionary<String, KnownType> coreTypes = 
+            new Dictionary<String, KnownType>(StringComparer.OrdinalIgnoreCase);
 
-        // The custom element registry.
-        private readonly Dictionary<String, RegisteredElement> registeredElements = 
-            new Dictionary<String, RegisteredElement>(StringComparer.OrdinalIgnoreCase);
+        // The custom type registry.
+        private readonly Dictionary<String, KnownType> registeredTypes = 
+            new Dictionary<String, KnownType>(StringComparer.OrdinalIgnoreCase);
 
         // The queues of elements with invalid layouts.
-        private readonly LayoutQueue styleQueue = new LayoutQueue();
-        private readonly LayoutQueue measureQueue = new LayoutQueue();
-        private readonly LayoutQueue arrangeQueue = new LayoutQueue();
-        private readonly LayoutQueue positionQueue = new LayoutQueue();
+        private readonly LayoutQueue styleQueue;
+        private readonly LayoutQueue measureQueue;
+        private readonly LayoutQueue arrangeQueue;
     }
 }

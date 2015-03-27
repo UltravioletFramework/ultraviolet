@@ -13,7 +13,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Immediately digests the specified dependency property, but only if it is currently data bound.
         /// </summary>
-        /// <param name="dp">A <see cref="DependencyProperty"/> value which identifies the dependency property to digest.</param>
+        /// <param name="dp">A <see cref="DependencyProperty"/> instance which identifies the dependency property to digest.</param>
         public void DigestImmediatelyIfDataBound(DependencyProperty dp)
         {
             Contract.Require(dp, "dp");
@@ -28,7 +28,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Immediately digests the specified dependency property.
         /// </summary>
-        /// <param name="dp">A <see cref="DependencyProperty"/> value which identifies the dependency property to digest.</param>
+        /// <param name="dp">A <see cref="DependencyProperty"/> instance which identifies the dependency property to digest.</param>
         public void DigestImmediately(DependencyProperty dp)
         {
             Contract.Require(dp, "dp");
@@ -75,7 +75,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             foreach (var kvp in dependencyPropertyValues)
             {
-                kvp.Value.ClearAnimation();
+                if (!kvp.Value.Property.IsReadOnly)
+                {
+                    kvp.Value.ClearAnimation();
+                }
             }
         }
 
@@ -86,7 +89,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             foreach (var kvp in dependencyPropertyValues)
             {
-                kvp.Value.ClearLocalValue();
+                if (!kvp.Value.Property.IsReadOnly)
+                {
+                    kvp.Value.ClearLocalValue();
+                }
             }
         }
 
@@ -97,7 +103,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             foreach (var kvp in dependencyPropertyValues)
             {
-                kvp.Value.ClearStyledValue();
+                if (!kvp.Value.Property.IsReadOnly)
+                {
+                    kvp.Value.ClearStyledValue();
+                }
             }
         }
 
@@ -110,6 +119,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public void Animate(DependencyProperty dp, AnimationBase animation, Clock clock)
         {
             Contract.Require(dp, "dp");
+
+            if (dp.IsReadOnly)
+                throw new InvalidOperationException(PresentationStrings.DependencyPropertyIsReadOnly.Format(dp.Name));
 
             if (animation != null)
                 Contract.Require(clock, "clock");
@@ -131,6 +143,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             Contract.Require(dp, "dp");
             Contract.Require(clock, "clock");
 
+            if (dp.IsReadOnly)
+                throw new InvalidOperationException(PresentationStrings.DependencyPropertyIsReadOnly.Format(dp.Name));
+
             if (!typeof(T).Equals(dp.PropertyType))
                 throw new InvalidCastException();
 
@@ -151,6 +166,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             Contract.Require(dp, "dp");
 
+            if (dp.IsReadOnly)
+                throw new InvalidOperationException(PresentationStrings.DependencyPropertyIsReadOnly.Format(dp.Name));
+
             if (!typeof(T).Equals(dp.PropertyType))
                 throw new InvalidCastException();
 
@@ -168,6 +186,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             Contract.Require(dp, "dp");
 
+            if (dp.IsReadOnly)
+                throw new InvalidOperationException(PresentationStrings.DependencyPropertyIsReadOnly.Format(dp.Name));
+
             var wrapper = GetDependencyPropertyValue(dp, dp.PropertyType);
             wrapper.Bind(dataSourceType, expression);
         }
@@ -180,8 +201,37 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             Contract.Require(dp, "dp");
 
+            if (dp.IsReadOnly)
+                throw new InvalidOperationException(PresentationStrings.DependencyPropertyIsReadOnly.Format(dp.Name));
+
             var wrapper = GetDependencyPropertyValue(dp, dp.PropertyType);
             wrapper.Unbind();
+        }
+
+        /// <summary>
+        /// Recalculates the coerced value of the specified dependency property.
+        /// </summary>
+        /// <param name="dp">A <see cref="DependencyProperty"/> instance that identifies the dependency property to coerce.</param>
+        public void CoerceValue(DependencyProperty dp)
+        {
+            Contract.Require(dp, "dp");
+
+            var wrapper = GetDependencyPropertyValue(dp, dp.PropertyType);
+            wrapper.CoerceValue();
+        }
+
+        /// <summary>
+        /// Invalidates the cached display value for the specified dependency property. This will cause
+        /// the interface to display the property's actual value, rather than the value most recently
+        /// entered by the user (which may be different if coercion is involved).
+        /// </summary>
+        /// <param name="dp">A <see cref="DependencyProperty"/> instance which identifies the dependency property to invalidate.</param>
+        public void InvalidateDisplayCache(DependencyProperty dp)
+        {
+            Contract.Require(dp, "dp");
+
+            var wrapper = GetDependencyPropertyValue(dp, dp.PropertyType);
+            wrapper.InvalidateDisplayCache();
         }
 
         /// <summary>
@@ -211,6 +261,28 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             Contract.Require(dp, "dp");
 
+            if (dp.IsReadOnly)
+                throw new InvalidOperationException(PresentationStrings.DependencyPropertyIsReadOnly.Format(dp.Name));
+
+            if (!typeof(T).Equals(dp.PropertyType))
+                throw new InvalidCastException();
+
+            var wrapper = GetDependencyPropertyValue<T>(dp);
+            wrapper.SetValue(value);
+        }
+
+        /// <summary>
+        /// Sets the value of the specified read-only dependency property.
+        /// </summary>
+        /// <typeparam name="T">The type of value contained by the dependency property.</typeparam>
+        /// <param name="key">A <see cref="DependencyPropertyKey"/> instance which provides access to the read-only dependency property for which to set a value.</param>
+        /// <param name="value">The value to set on the specified dependency property.</param>
+        public void SetValue<T>(DependencyPropertyKey key, T value)
+        {
+            Contract.Require(key, "dp");
+
+            var dp = key.DependencyProperty;
+
             if (!typeof(T).Equals(dp.PropertyType))
                 throw new InvalidCastException();
 
@@ -227,6 +299,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public void SetDefaultValue<T>(DependencyProperty dp, T value)
         {
             Contract.Require(dp, "dp");
+
+            if (dp.IsReadOnly)
+                throw new InvalidOperationException(PresentationStrings.DependencyPropertyIsReadOnly.Format(dp.Name));
 
             if (!typeof(T).Equals(dp.PropertyType))
                 throw new InvalidCastException();
@@ -245,6 +320,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             Contract.Require(dp, "dp");
 
+            if (dp.IsReadOnly)
+                throw new InvalidOperationException(PresentationStrings.DependencyPropertyIsReadOnly.Format(dp.Name));
+
             if (!typeof(T).Equals(dp.PropertyType))
                 throw new InvalidCastException();
 
@@ -261,6 +339,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public void SetStyledValue<T>(DependencyProperty dp, T value)
         {
             Contract.Require(dp, "dp");
+
+            if (dp.IsReadOnly)
+                throw new InvalidOperationException(PresentationStrings.DependencyPropertyIsReadOnly.Format(dp.Name));
 
             if (!typeof(T).Equals(dp.PropertyType))
                 throw new InvalidCastException();
@@ -279,6 +360,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             Contract.Require(dp, "dp");
 
+            if (dp.IsReadOnly)
+                throw new InvalidOperationException(PresentationStrings.DependencyPropertyIsReadOnly.Format(dp.Name));
+
             var val = GetDependencyPropertyValue(dp, dp.PropertyType);
             val.SetFormatString(formatString);
         }
@@ -286,39 +370,45 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Removes the specified dependency property's current animation, if it has one.
         /// </summary>
-        /// <typeparam name="T">The type of value contained by the dependency property.</typeparam>
         /// <param name="dp">A <see cref="DependencyProperty"/> instance which identifies the dependency property to clear.</param>
-        public void ClearAnimation<T>(DependencyProperty dp)
+        public void ClearAnimation(DependencyProperty dp)
         {
             Contract.Require(dp, "dp");
 
-            var wrapper = GetDependencyPropertyValue<T>(dp);
+            if (dp.IsReadOnly)
+                throw new InvalidOperationException(PresentationStrings.DependencyPropertyIsReadOnly.Format(dp.Name));
+
+            var wrapper = GetDependencyPropertyValue(dp, dp.PropertyType);
             wrapper.ClearAnimation();
         }
 
         /// <summary>
         /// Clears the local value associated with the specified dependency property.
         /// </summary>
-        /// <typeparam name="T">The type of value contained by the dependency property.</typeparam>
         /// <param name="dp">A <see cref="DependencyProperty"/> instance which identifies the dependency property to clear.</param>
-        public void ClearLocalValue<T>(DependencyProperty dp)
+        public void ClearLocalValue(DependencyProperty dp)
         {
             Contract.Require(dp, "dp");
 
-            var wrapper = GetDependencyPropertyValue<T>(dp);
+            if (dp.IsReadOnly)
+                throw new InvalidOperationException(PresentationStrings.DependencyPropertyIsReadOnly.Format(dp.Name));
+
+            var wrapper = GetDependencyPropertyValue(dp, dp.PropertyType);
             wrapper.ClearLocalValue();
         }
 
         /// <summary>
         /// Clears the styled value associated with the specified 
         /// </summary>
-        /// <typeparam name="T">The type of value contained by the dependency property.</typeparam>
         /// <param name="dp">A <see cref="DependencyProperty"/> instance which identifies the dependency property to clear.</param>
-        public void ClearStyledValue<T>(DependencyProperty dp)
+        public void ClearStyledValue(DependencyProperty dp)
         {
             Contract.Require(dp, "dp");
 
-            var wrapper = GetDependencyPropertyValue<T>(dp);
+            if (dp.IsReadOnly)
+                throw new InvalidOperationException(PresentationStrings.DependencyPropertyIsReadOnly.Format(dp.Name));
+
+            var wrapper = GetDependencyPropertyValue(dp, dp.PropertyType);
             wrapper.ClearStyledValue();
         }
 
@@ -334,14 +424,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Occurs when a dependency property which potentially affects the object's arrangement state is changed.
         /// </summary>
         protected internal virtual void OnArrangeAffectingPropertyChanged()
-        {
-
-        }
-
-        /// <summary>
-        /// Occurs when a dependency property which potentially affects the object's positioning state is changed.
-        /// </summary>
-        protected internal virtual void OnPositionAffectingPropertyChanged()
         {
 
         }

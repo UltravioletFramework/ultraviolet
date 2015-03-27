@@ -38,6 +38,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public static readonly StringResource PropertyHasNoGetter                  = new StringResource(StringDatabase, "PROPERTY_HAS_NO_GETTER");
         public static readonly StringResource PropertyHasNoSetter                  = new StringResource(StringDatabase, "PROPERTY_HAS_NO_SETTER");
         public static readonly StringResource DependencyPropertyAlreadyRegistered  = new StringResource(StringDatabase, "DEPENDENCY_PROPERTY_ALREADY_REGISTERED");
+        public static readonly StringResource DependencyPropertyIsReadOnly         = new StringResource(StringDatabase, "DEPENDENCY_PROPERTY_IS_READ_ONLY");
         public static readonly StringResource RoutedEventAlreadyRegistered         = new StringResource(StringDatabase, "ROUTED_EVENT_ALREADY_REGISTERED");
         public static readonly StringResource CannotResolveBindingExpression       = new StringResource(StringDatabase, "CANNOT_RESOLVE_BINDING_EXPRESSION");
         public static readonly StringResource InvalidBindingExpression             = new StringResource(StringDatabase, "INVALID_BINDING_EXPRESSION");
@@ -46,15 +47,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public static readonly StringResource BindingIsWriteOnly                   = new StringResource(StringDatabase, "BINDING_IS_WRITE_ONLY");
         public static readonly StringResource UIElementInvalidCtor                 = new StringResource(StringDatabase, "UIELEMENT_INVALID_CTOR");
         public static readonly StringResource ViewModelTypeNotFound                = new StringResource(StringDatabase, "VIEW_MODEL_TYPE_NOT_FOUND");
-        public static readonly StringResource UnrecognizedUIElement                = new StringResource(StringDatabase, "UNRECOGNIZED_UIELEMENT");
+        public static readonly StringResource KnownTypeAlreadyRegistered           = new StringResource(StringDatabase, "KNOWN_TYPE_ALREADY_REGISTERED");
+        public static readonly StringResource UnrecognizedType                     = new StringResource(StringDatabase, "UNRECOGNIZED_TYPE");
         public static readonly StringResource InvalidDefaultProperty               = new StringResource(StringDatabase, "INVALID_DEFAULT_PROPERTY");
         public static readonly StringResource NoViewModel                          = new StringResource(StringDatabase, "NO_VIEW_MODEL");
-        public static readonly StringResource ElementWithIDAlreadyExists           = new StringResource(StringDatabase, "ELEMENT_WITH_ID_ALREADY_EXISTS");
+        public static readonly StringResource ElementWithNameAlreadyExists         = new StringResource(StringDatabase, "ELEMENT_WITH_NAME_ALREADY_EXISTS");
         public static readonly StringResource AmbiguousDependencyProperty          = new StringResource(StringDatabase, "AMBIGUOUS_DEPENDENCY_PROPERTY");
         public static readonly StringResource UserControlDoesNotDefineType         = new StringResource(StringDatabase, "USER_CONTROL_DOES_NOT_DEFINE_TYPE");
         public static readonly StringResource InvalidUserControlDefinition         = new StringResource(StringDatabase, "INVALID_USER_CONTROL_DEFINITION");
         public static readonly StringResource InvalidUserControlType               = new StringResource(StringDatabase, "INVALID_USER_CONTROL_TYPE");
-        public static readonly StringResource InvalidUIElementType                 = new StringResource(StringDatabase, "INVALID_UI_ELEMENT_TYPE");
         public static readonly StringResource InvalidChildElements                 = new StringResource(StringDatabase, "INVALID_CHILD_ELEMENTS");
         public static readonly StringResource InvalidElementPropertyValue          = new StringResource(StringDatabase, "INVALID_ELEMENT_PROPERTY_VALUE");
         public static readonly StringResource ComponentRootAlreadyLoaded           = new StringResource(StringDatabase, "COMPONENT_ROOT_ALREADY_LOADED");
@@ -69,6 +70,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public static readonly StringResource InvalidRoutedEventDelegate           = new StringResource(StringDatabase, "INVALID_ROUTED_EVENT_DELEGATE");
         public static readonly StringResource InvalidRoutingStrategy               = new StringResource(StringDatabase, "INVALID_ROUTING_STRATEGY");
         public static readonly StringResource EventOrPropertyDoesNotExist          = new StringResource(StringDatabase, "EVENT_OR_PROPERTY_DOES_NOT_EXIST");
+        public static readonly StringResource ClassTypeMustBeSubclassOfOwnerType   = new StringResource(StringDatabase, "CLASS_TYPE_MUST_BE_SUBCLASS_OF_OWNER_TYPE");
+        public static readonly StringResource KnownTypeMissingAttribute            = new StringResource(StringDatabase, "KNOWN_TYPE_MISSING_ATTRIBUTE");
+        public static readonly StringResource HandlerTypeMismatch                  = new StringResource(StringDatabase, "HANDLER_TYPE_MISMATCH");
+        public static readonly StringResource NotVisualObject                      = new StringResource(StringDatabase, "NOT_VISUAL_OBJECT");
+        public static readonly StringResource ClipRectangleMustHaveValidDimensions = new StringResource(StringDatabase, "CLIP_RECTANGLE_MUST_HAVE_VALID_DIMENSIONS");
+        public static readonly StringResource ContentControlRequiresPresenter      = new StringResource(StringDatabase, "CONTENT_CONTROL_REQUIRES_PRESENTER");
+        public static readonly StringResource NotUIElement                         = new StringResource(StringDatabase, "NOT_UIELEMENT");
+        public static readonly StringResource NotAnInputElement                    = new StringResource(StringDatabase, "NOT_AN_INPUT_ELEMENT");
+        public static readonly StringResource VisualAlreadyHasAParent              = new StringResource(StringDatabase, "VISUAL_ALREADY_HAS_A_PARENT");
 #pragma warning restore 1591
     }
 }

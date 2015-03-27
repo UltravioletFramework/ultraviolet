@@ -75,6 +75,11 @@
       <Variant>Dependency property has already been registered.</Variant>
     </en-US>
   </String>
+  <String Key="DEPENDENCY_PROPERTY_IS_READ_ONLY">
+    <en-US>
+      <Variant>Dependency property '{0}' is read-only.</Variant>
+    </en-US>
+  </String>
   <String Key="ROUTED_EVENT_ALREADY_REGISTERED">
     <en-US>
       <Variant>Routed event has already been registered.</Variant>
@@ -115,9 +120,14 @@
       <Variant>The specified view model type '{0}' could not be found.</Variant>
     </en-US>
   </String>
-  <String Key="UNRECOGNIZED_UIELEMENT">
+  <String Key="KNOWN_TYPE_ALREADY_REGISTERED">
     <en-US>
-      <Variant>No UI element named '{0}' has been registered with the UI system.</Variant>
+      <Variant>A type named '{0}' has already been registered with the Presentation Foundation.</Variant>
+    </en-US>
+  </String>
+  <String Key="UNRECOGNIZED_TYPE">
+    <en-US>
+      <Variant>No type named '{0}' has been registered with the Presentation Foundation.</Variant>
     </en-US>
   </String>
   <String Key="INVALID_DEFAULT_PROPERTY">
@@ -130,9 +140,9 @@
       <Variant>An element tried to bind a dependency property, but no view model is defined for the element's view.</Variant>
     </en-US>
   </String>
-  <String Key="ELEMENT_WITH_ID_ALREADY_EXISTS">
+  <String Key="ELEMENT_WITH_NAME_ALREADY_EXISTS">
     <en-US>
-      <Variant>An element with ID '{0}' already exists within the layout.</Variant>
+      <Variant>An element with name '{0}' already exists within the layout.</Variant>
     </en-US>
   </String>
   <String Key="AMBIGUOUS_DEPENDENCY_PROPERTY">
@@ -153,11 +163,6 @@
   <String Key="INVALID_USER_CONTROL_TYPE">
     <en-US>
       <Variant>The specified type '{0}' does not derive from UserControl or does not have a UIElementAttribute.</Variant>
-    </en-US>
-  </String>
-  <String Key="INVALID_UI_ELEMENT_TYPE">
-    <en-US>
-      <Variant>The name '{0}' does not resolve to a known UI element type.</Variant>
     </en-US>
   </String>
   <String Key="INVALID_CHILD_ELEMENTS">
@@ -217,7 +222,7 @@
   </String>
   <String Key="INVALID_ROUTED_EVENT_DELEGATE">
     <en-US>
-      <Variant>The specified delegate type '{0}' is not valid for routed events. Routed event delegates must take a UIElement as their first parameter and a by-ref Boolean as their final parameter, and must return void.</Variant>
+      <Variant>The specified delegate type '{0}' is not valid for routed events. Routed event delegates must take a DependencyObject as their first parameter and a by-ref RoutedEventData as their final parameter, and must return void.</Variant>
     </en-US>
   </String>
   <String Key="INVALID_ROUTING_STRATEGY">
@@ -228,6 +233,51 @@
   <String Key="EVENT_OR_PROPERTY_DOES_NOT_EXIST">
     <en-US>
       <Variant>The event or property '{0}' does not exist on the type '{1}'.</Variant>
+    </en-US>
+  </String>
+  <String Key="CLASS_TYPE_MUST_BE_SUBCLASS_OF_OWNER_TYPE">
+    <en-US>
+      <Variant>The specified class type '{0}' is not valid because it is not a subclass of owner type '{1}'.</Variant>
+    </en-US>
+  </String>
+  <String Key="KNOWN_TYPE_MISSING_ATTRIBUTE">
+    <en-US>
+      <Variant>The specified type '{0}' cannot be registered as a UVML known type because it is not annotated with a UvmlKnownTypeAttribute.</Variant>
+    </en-US>
+  </String>
+  <String Key="HANDLER_TYPE_MISMATCH">
+    <en-US>
+      <Variant>The specified event handler '{0}' is invalid because it is not a delegate of type '{1}'.</Variant>
+    </en-US>
+  </String>
+  <String Key="NOT_VISUAL_OBJECT">
+    <en-US>
+      <Variant>The specified object is not a visual object.</Variant>
+    </en-US>
+  </String>
+  <String Key="CLIP_RECTANGLE_MUST_HAVE_VALID_DIMENSIONS">
+    <en-US>
+      <Variant>The specified clip rectangle does not have valid dimensions.</Variant>
+    </en-US>
+  </String>
+  <String Key="CONTENT_CONTROL_REQUIRES_PRESENTER">
+    <en-US>
+      <Variant>Cannot load content control '{0}' because it has not defined a ContentPresenter as part of its component template.</Variant>
+    </en-US>
+  </String>
+  <String Key="NOT_UIELEMENT">
+    <en-US>
+      <variant>The specified object is not an interface element.</variant>
+    </en-US>
+  </String>
+  <String Key="NOT_AN_INPUT_ELEMENT">
+    <en-US>
+      <Variant>The specified object is not an input element.</Variant>
+    </en-US>
+  </String>
+  <String Key="VISUAL_ALREADY_HAS_A_PARENT">
+    <en-US>
+      <Variant>The specified Visual already has a parent.</Variant>
     </en-US>
   </String>
 </LocalizedStrings>

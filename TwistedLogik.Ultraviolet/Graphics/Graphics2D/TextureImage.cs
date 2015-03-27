@@ -67,12 +67,13 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         }
 
         /// <summary>
-        /// Gets the image's minimum size.
+        /// Gets the image's minimum recommended size. Texture images may be drawn at sizes smaller than that specified
+        /// by this property, but doing so will degrade their graphical quality.
         /// </summary>
-        public Size2 MinimumSize
+        public Size2 MinimumRecommendedSize
         {
-            get { return minimumSize; }
-            protected set { minimumSize = value; }
+            get { return minimumRecommendedSize; }
+            protected set { minimumRecommendedSize = value; }
         }
 
         /// <summary>
@@ -175,7 +176,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         // Property values.
         private Texture2D texture;
         private AssetID textureID;
-        private Size2 minimumSize;
+        private Size2 minimumRecommendedSize;
         private Rectangle textureRegion;
     }
 }

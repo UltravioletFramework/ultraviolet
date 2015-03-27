@@ -8,19 +8,29 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
     /// <summary>
     /// Represents the base class for standard Ultraviolet Presentation Foundation elements.
     /// </summary>
-    [UIElement("element")]
+    [UvmlKnownType("element")]
     public abstract class FrameworkElement : UIElement
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="FrameworkElement"/> class.
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
-        /// <param name="id">The unique identifier of this element within its layout.</param>
-        public FrameworkElement(UltravioletContext uv, String id)
-            : base(uv, id)
+        /// <param name="name">The unique identifier of this element within its layout.</param>
+        public FrameworkElement(UltravioletContext uv, String name)
+            : base(uv)
         {
+            this.name = name;
+
             this.visualStateGroups = new VisualStateGroupCollection(this);
             this.visualStateGroups.Create("focus", VSGFocus);
+        }
+
+        /// <summary>
+        /// Gets the element's identifying name.
+        /// </summary>
+        public String Name
+        {
+            get { return name; }
         }
 
         /// <summary>
@@ -114,6 +124,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Gets or sets the amount of padding between the edges of the element and its content.
+        /// </summary>
+        public Thickness Padding
+        {
+            get { return GetValue<Thickness>(PaddingProperty); }
+            set { SetValue<Thickness>(PaddingProperty, value); }
+        }
+
+        /// <summary>
         /// Gets or sets the element's horizontal alignment.
         /// </summary>
         public HorizontalAlignment HorizontalAlignment
@@ -134,184 +153,158 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Occurs when the value of the <see cref="Font"/> property changes.
         /// </summary>
-        public event UIElementEventHandler FontChanged;
+        public event UpfEventHandler FontChanged;
 
         /// <summary>
         /// Occurs when the value of the <see cref="FontColor"/> property changes.
         /// </summary>
-        public event UIElementEventHandler FontColorChanged;
+        public event UpfEventHandler FontColorChanged;
 
         /// <summary>
         /// Occurs when the value of the <see cref="FontStyle"/> property changes.
         /// </summary>
-        public event UIElementEventHandler FontStyleChanged;
+        public event UpfEventHandler FontStyleChanged;
 
         /// <summary>
         /// Occurs when the value of the <see cref="Width"/> property changes.
         /// </summary>
-        public event UIElementEventHandler WidthChanged;
+        public event UpfEventHandler WidthChanged;
 
         /// <summary>
         /// Occurs when the value of the <see cref="MinWidth"/> property changes.
         /// </summary>
-        public event UIElementEventHandler MinWidthChanged;
+        public event UpfEventHandler MinWidthChanged;
 
         /// <summary>
         /// Occurs when the value of the <see cref="MaxWidth"/> property changes.
         /// </summary>
-        public event UIElementEventHandler MaxWidthChanged;
+        public event UpfEventHandler MaxWidthChanged;
 
         /// <summary>
         /// Occurs when the value of the <see cref="Height"/> property changes.
         /// </summary>
-        public event UIElementEventHandler HeightChanged;
+        public event UpfEventHandler HeightChanged;
 
         /// <summary>
         /// Occurs when the value of the <see cref="MinHeight"/> property changes.
         /// </summary>
-        public event UIElementEventHandler MinHeightChanged;
+        public event UpfEventHandler MinHeightChanged;
 
         /// <summary>
         /// Occurs when the value of the <see cref="MaxHeight"/> property changes.
         /// </summary>
-        public event UIElementEventHandler MaxHeightChanged;
+        public event UpfEventHandler MaxHeightChanged;
 
         /// <summary>
         /// Occurs when the value of the <see cref="Margin"/> property changes.
         /// </summary>
-        public event UIElementEventHandler MarginChanged;
+        public event UpfEventHandler MarginChanged;
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="Padding"/> property changes.
+        /// </summary>
+        public event UpfEventHandler PaddingChanged;
 
         /// <summary>
         /// Occurs when the value of the <see cref="HorizontalAlignment"/> property changes.
         /// </summary>
-        public event UIElementEventHandler HorizontalAlignmentChanged;
+        public event UpfEventHandler HorizontalAlignmentChanged;
 
         /// <summary>
         /// Occurs when the value of the <see cref="VerticalAlignment"/> property changes.
         /// </summary>
-        public event UIElementEventHandler VerticalAlignmentChanged;
+        public event UpfEventHandler VerticalAlignmentChanged;
 
         /// <summary>
         /// Identifies the <see cref="Font"/> dependency property.
         /// </summary>
         [Styled("font")]
         public static readonly DependencyProperty FontProperty = DependencyProperty.Register("Font", typeof(SourcedResource<SpriteFont>), typeof(FrameworkElement),
-            new DependencyPropertyMetadata(HandleFontChanged, null, DependencyPropertyOptions.AffectsMeasure));
+            new PropertyMetadata(null, PropertyMetadataOptions.AffectsMeasure, HandleFontChanged));
 
         /// <summary>
         /// Identifies the <see cref="FontColor"/> dependency property.
         /// </summary>
         [Styled("font-color")]
         public static readonly DependencyProperty FontColorProperty = DependencyProperty.Register("FontColor", typeof(Color), typeof(FrameworkElement),
-            new DependencyPropertyMetadata(HandleFontColorChanged, () => Color.Black, DependencyPropertyOptions.None));
+            new PropertyMetadata(UltravioletBoxedValues.Color.Black, HandleFontColorChanged));
 
         /// <summary>
         /// Identifies the <see cref="FontStyle"/> dependency property.
         /// </summary>
         [Styled("font-style")]
         public static readonly DependencyProperty FontStyleProperty = DependencyProperty.Register("FontStyle", typeof(SpriteFontStyle), typeof(FrameworkElement),
-           new DependencyPropertyMetadata(HandleFontStyleChanged, () => SpriteFontStyle.Regular, DependencyPropertyOptions.AffectsArrange));
+           new PropertyMetadata(UltravioletBoxedValues.SpriteFontStyle.Regular, PropertyMetadataOptions.AffectsMeasure, HandleFontStyleChanged));
 
         /// <summary>
         /// Identifies the <see cref="Width"/> dependency property.
         /// </summary>
         [Styled("width")]
         public static readonly DependencyProperty WidthProperty = DependencyProperty.Register("Width", typeof(Double), typeof(FrameworkElement),
-            new DependencyPropertyMetadata(HandleWidthChanged, () => Double.NaN, DependencyPropertyOptions.AffectsMeasure));
-
+            new PropertyMetadata(CommonBoxedValues.Double.NaN, PropertyMetadataOptions.AffectsMeasure, HandleWidthChanged));
+        
         /// <summary>
         /// Identifies the <see cref="MinWidth"/> dependency property.
         /// </summary>
         [Styled("min-width")]
         public static readonly DependencyProperty MinWidthProperty = DependencyProperty.Register("MinWidth", typeof(Double), typeof(FrameworkElement),
-            new DependencyPropertyMetadata(HandleMinWidthChanged, () => 0.0, DependencyPropertyOptions.AffectsMeasure));
+            new PropertyMetadata(null, PropertyMetadataOptions.AffectsMeasure, HandleMinWidthChanged));
 
         /// <summary>
         /// Identifies the <see cref="MaxWidth"/> dependency property.
         /// </summary>
         [Styled("max-width")]
         public static readonly DependencyProperty MaxWidthProperty = DependencyProperty.Register("MaxWidth", typeof(Double), typeof(FrameworkElement),
-            new DependencyPropertyMetadata(HandleMaxWidthChanged, () => Double.PositiveInfinity, DependencyPropertyOptions.AffectsMeasure));
+            new PropertyMetadata(CommonBoxedValues.Double.PositiveInfinity, PropertyMetadataOptions.AffectsMeasure, HandleMaxWidthChanged));
 
         /// <summary>
         /// Identifies the <see cref="Height"/> dependency property.
         /// </summary>
         [Styled("height")]
         public static readonly DependencyProperty HeightProperty = DependencyProperty.Register("Height", typeof(Double), typeof(FrameworkElement),
-            new DependencyPropertyMetadata(HandleHeightChanged, () => Double.NaN, DependencyPropertyOptions.AffectsMeasure));
+            new PropertyMetadata(CommonBoxedValues.Double.NaN, PropertyMetadataOptions.AffectsMeasure, HandleHeightChanged));
 
         /// <summary>
         /// Identifies the <see cref="MinHeight"/> dependency property.
         /// </summary>
         [Styled("min-height")]
         public static readonly DependencyProperty MinHeightProperty = DependencyProperty.Register("MinHeight", typeof(Double), typeof(FrameworkElement),
-            new DependencyPropertyMetadata(HandleMinHeightChanged, () => 0.0, DependencyPropertyOptions.AffectsMeasure));
+            new PropertyMetadata(null, PropertyMetadataOptions.AffectsMeasure, HandleMinHeightChanged));
 
         /// <summary>
         /// Identifies the <see cref="MaxHeight"/> dependency property.
         /// </summary>
         [Styled("max-height")]
         public static readonly DependencyProperty MaxHeightProperty = DependencyProperty.Register("MaxHeight", typeof(Double), typeof(FrameworkElement),
-            new DependencyPropertyMetadata(HandleMaxHeightChanged, () => Double.PositiveInfinity, DependencyPropertyOptions.AffectsMeasure));
+            new PropertyMetadata(CommonBoxedValues.Double.PositiveInfinity, PropertyMetadataOptions.AffectsMeasure, HandleMaxHeightChanged));
 
         /// <summary>
         /// Identifies the <see cref="Margin"/> dependency property.
         /// </summary>
         [Styled("margin")]
         public static readonly DependencyProperty MarginProperty = DependencyProperty.Register("Margin", typeof(Thickness), typeof(FrameworkElement),
-            new DependencyPropertyMetadata(HandleMarginChanged, () => Thickness.Zero, DependencyPropertyOptions.AffectsMeasure));
+            new PropertyMetadata(null, PropertyMetadataOptions.AffectsMeasure, HandleMarginChanged));
+
+        /// <summary>
+        /// Identifies the <see cref="Padding"/> dependency property.
+        /// </summary>
+        [Styled("padding")]
+        public static readonly DependencyProperty PaddingProperty = DependencyProperty.Register("Padding", typeof(Thickness), typeof(FrameworkElement),
+            new PropertyMetadata(null, PropertyMetadataOptions.AffectsMeasure, HandlePaddingChanged));
 
         /// <summary>
         /// Identifies the <see cref="HorizontalAlignment"/> dependency property.
         /// </summary>
         [Styled("halign")]
         public static readonly DependencyProperty HorizontalAlignmentProperty = DependencyProperty.Register("HorizontalAlignment", typeof(HorizontalAlignment), typeof(FrameworkElement),
-            new DependencyPropertyMetadata(HandleHorizontalAlignmentChanged, () => HorizontalAlignment.Left, DependencyPropertyOptions.AffectsArrange));
-
+            new PropertyMetadata(PresentationBoxedValues.HorizontalAlignment.Left, PropertyMetadataOptions.AffectsArrange, HandleHorizontalAlignmentChanged));
+        
         /// <summary>
         /// Identifies the <see cref="VerticalAlignment"/> dependency property.
         /// </summary>
         [Styled("valign")]
         public static readonly DependencyProperty VerticalAlignmentProperty = DependencyProperty.Register("VerticalAlignment", typeof(VerticalAlignment), typeof(FrameworkElement),
-            new DependencyPropertyMetadata(HandleVerticalAlignmentChanged, () => VerticalAlignment.Top, DependencyPropertyOptions.AffectsArrange));
-
-        /// <summary>
-        /// Called immediately prior to <see cref="FrameworkElement.DrawOverride(UltravioletTime, DrawingContext)"/>.
-        /// </summary>
-        /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Draw(UltravioletTime)"/>.</param>
-        /// <param name="dc">The drawing context that describes the render state of the layout.</param>
-        internal virtual void PreDrawOverride(UltravioletTime time, DrawingContext dc)
-        {
-
-        }
-
-        /// <summary>
-        /// Called immediately prior to <see cref="FrameworkElement.UpdateOverride(UltravioletTime)"/>.
-        /// </summary>
-        /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Update(UltravioletTime)"/>.</param>
-        internal virtual void PreUpdateOverride(UltravioletTime time)
-        {
-
-        }
-
-        /// <summary>
-        /// Called immediately after <see cref="FrameworkElement.DrawOverride(UltravioletTime, DrawingContext)"/>
-        /// </summary>
-        /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Draw(UltravioletTime)"/>.</param>
-        /// <param name="dc">The drawing context that describes the render state of the layout.</param>
-        internal virtual void PostDrawOverride(UltravioletTime time, DrawingContext dc)
-        {
-
-        }
-
-        /// <summary>
-        /// Called immediately after <see cref="FrameworkElement.UpdateOverride(UltravioletTime)"/>.
-        /// </summary>
-        /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Update(UltravioletTime)"/>.</param>
-        internal virtual void PostUpdateOverride(UltravioletTime time)
-        {
-
-        }
+            new PropertyMetadata(PresentationBoxedValues.VerticalAlignment.Top, PropertyMetadataOptions.AffectsArrange, HandleVerticalAlignmentChanged));
 
         /// <inheritdoc/>
         internal override void ApplyStyledVisualStateTransition(UvssStyle style)
@@ -356,22 +349,40 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <inheritdoc/>
+        internal override void RegisterElementWithNamescope(Namescope namescope)
+        {
+            if (String.IsNullOrEmpty(Name))
+                return;
+
+            namescope.RegisterElement(this);
+
+            base.RegisterElementWithNamescope(namescope);
+        }
+
+        /// <inheritdoc/>
+        internal override void UnregisterElementFromNamescope(Namescope namescope)
+        {
+            if (String.IsNullOrEmpty(Name))
+                return;
+
+            namescope.UnregisterElement(this);
+
+            base.UnregisterElementFromNamescope(namescope);
+        }
+
+        /// <inheritdoc/>
         protected sealed override void DrawCore(UltravioletTime time, DrawingContext dc)
         {
             if (!LayoutUtil.IsDrawn(this))
                 return;
 
-            PreDrawOverride(time, dc);
             DrawOverride(time, dc);
-            PostDrawOverride(time, dc);
         }
 
         /// <inheritdoc/>
         protected sealed override void UpdateCore(UltravioletTime time)
         {
-            PreUpdateOverride(time);
             UpdateOverride(time);
-            PostUpdateOverride(time);
         }
 
         /// <inheritdoc/>
@@ -380,14 +391,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             ReloadFont();
 
             base.ReloadContentCore(recursive);
-        }
-
-        /// <inheritdoc/>
-        protected sealed override void StyleCore(UvssDocument stylesheet)
-        {
-            StyleOverride(stylesheet);
-
-            base.StyleCore(stylesheet);
         }
 
         /// <inheritdoc/>
@@ -463,27 +466,55 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <inheritdoc/>
-        protected sealed override void PositionCore(Point2D position)
+        protected sealed override void PositionCore()
         {
-            PositionOverride(position);
+            PositionOverride();
 
-            base.PositionCore(position);
+            base.PositionCore();
         }
 
         /// <inheritdoc/>
-        protected internal override void OnFocused()
+        protected sealed override void PositionChildrenCore()
         {
-            VisualStateGroups.GoToState("focus", "focused");
-
-            base.OnFocused();
+            PositionChildrenOverride();
         }
 
         /// <inheritdoc/>
-        protected internal override void OnBlurred()
+        protected override void OnGotKeyboardFocus(ref RoutedEventData data)
         {
-            VisualStateGroups.GoToState("focus", "blurred");
+            if (data.OriginalSource == this)
+            {
+                VisualStateGroups.GoToState("focus", "focused");
+            }
+            base.OnGotKeyboardFocus(ref data);
+        }
 
-            base.OnBlurred();
+        /// <inheritdoc/>
+        protected override void OnLostKeyboardFocus(ref RoutedEventData data)
+        {
+            if (data.OriginalSource == this)
+            {
+                VisualStateGroups.GoToState("focus", "blurred");
+            }
+            base.OnLostKeyboardFocus(ref data);
+        }
+
+        /// <summary>
+        /// Gets the specified logical child of this element.
+        /// </summary>
+        /// <param name="childIndex">The index of the logical child to retrieve.</param>
+        /// <returns>The logical child of this element with the specified index.</returns>
+        protected internal virtual UIElement GetLogicalChild(Int32 childIndex)
+        {
+            throw new ArgumentOutOfRangeException("ix");
+        }
+
+        /// <summary>
+        /// Gets the number of logical children which belong to this element.
+        /// </summary>
+        protected internal virtual Int32 LogicalChildrenCount
+        {
+            get { return 0; }
         }
 
         /// <summary>
@@ -494,7 +525,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="dc">The drawing context that describes the render state of the layout.</param>
         protected virtual void DrawOverride(UltravioletTime time, DrawingContext dc)
         {
-
+            var children = VisualTreeHelper.GetChildrenCount(this);
+            for (int i = 0; i < children; i++)
+            {
+                var child = VisualTreeHelper.GetChild(this, i) as UIElement;
+                if (child != null)
+                {
+                    child.Draw(time, dc);
+                }
+            }
         }
 
         /// <summary>
@@ -504,18 +543,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Update(UltravioletTime)"/>.</param>
         protected virtual void UpdateOverride(UltravioletTime time)
         {
-
-        }
-
-        /// <summary>
-        /// When overridden in a derived class, applies the specified stylesheet
-        /// to this element and to any child elements for 
-        /// a <see cref="FrameworkElement"/> derived class.
-        /// </summary>
-        /// <param name="stylesheet">The stylesheet to apply to this element and its children.</param>
-        protected virtual void StyleOverride(UvssDocument stylesheet)
-        {
-
+            VisualTreeHelper.ForEachChild<UIElement>(this, time, (child, state) =>
+            {
+                child.Update((UltravioletTime)state);
+            });
         }
 
         /// <summary>
@@ -544,13 +575,25 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
-        /// When overridden in a derived class, positions the element in absolute screen space for 
-        /// a <see cref="FrameworkElement"/> derived class.
+        /// When overridden in a derived class, updates the position of the element in absolute 
+        /// screen space for a <see cref="FrameworkElement"/> derived class.
         /// </summary>
-        /// <param name="position">The position of the element's parent element in absolute screen space.</param>
-        protected virtual void PositionOverride(Point2D position)
+        protected virtual void PositionOverride()
         {
 
+        }
+
+        /// <summary>
+        /// When overridden in a derived class, updates the positions of the element's visual children
+        /// in absolute screen space for a <see cref="FrameworkElement"/> derived class.
+        /// </summary>
+        protected virtual void PositionChildrenOverride()
+        {
+            VisualTreeHelper.ForEachChild<UIElement>(this, this, (child, state) =>
+            {
+                child.Position();
+                child.PositionChildren();
+            });
         }
 
         /// <summary>
@@ -667,6 +710,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         protected virtual void OnMarginChanged()
         {
             var temp = MarginChanged;
+            if (temp != null)
+            {
+                temp(this);
+            }
+        }
+
+        /// <summary>
+        /// Raises the <see cref="PaddingChanged"/> event.
+        /// </summary>
+        protected virtual void OnPaddingChanged()
+        {
+            var temp = PaddingChanged;
             if (temp != null)
             {
                 temp(this);
@@ -815,6 +870,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Occurs when the value of the <see cref="Padding"/> dependency property changes.
+        /// </summary>
+        /// <param name="dobj">The dependency object that raised the event.</param>
+        private static void HandlePaddingChanged(DependencyObject dobj)
+        {
+            var frameworkElement = (FrameworkElement)dobj;
+            frameworkElement.OnPaddingChanged();
+        }
+
+        /// <summary>
         /// Occurs when the value of the <see cref="HorizontalAlignment"/> dependency property changes.
         /// </summary>
         /// <param name="dobj">The dependency object that raised the event.</param>
@@ -838,6 +903,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         private static readonly String[] VSGFocus = new[] { "blurred", "focused" };
 
         // Property values.
+        private readonly String name;
         private readonly VisualStateGroupCollection visualStateGroups;
     }
 }

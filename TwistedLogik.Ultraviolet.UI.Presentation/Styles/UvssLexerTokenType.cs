@@ -72,11 +72,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         StyleQualifier,
 
         /// <summary>
-        /// Represents a pseudo-class like :hover.
-        /// </summary>
-        PseudoClass,
-
-        /// <summary>
         /// Represents the child selector (>).
         /// </summary>
         ChildSelector,

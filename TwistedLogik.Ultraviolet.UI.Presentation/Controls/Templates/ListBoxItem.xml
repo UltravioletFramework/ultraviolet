@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ComponentTemplate HorizontalAlignment="Stretch">
+  <Canvas Class="listboxitem-component" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+    <Rectangle Class="listboxitem-highlight" IsHitTestVisible="false" Opacity="{{HighlightOpacity}}"
+      Canvas.Left="0"
+      Canvas.Top="0"
+      Canvas.Right="0"
+      Canvas.Bottom ="0"/>
+    <ContentPresenter 
+      Canvas.Left="8"
+      Canvas.Top="8"
+      Canvas.Right="8"
+      Canvas.Bottom="8"/>
+  </Canvas>
+</ComponentTemplate>

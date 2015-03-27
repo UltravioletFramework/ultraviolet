@@ -1,7 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
-<ComponentTemplate>
-  <Canvas Class="button-component" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" IsHitTestVisible="false">
-    <Image Class="button-background" Canvas.Left="0" Canvas.Top="0" Canvas.Right="0" Canvas.Bottom="0"></Image>
-    <Image Class="button-focus" Canvas.Left="0" Canvas.Top="0" Canvas.Right="0" Canvas.Bottom="0"></Image>
-  </Canvas>
-</ComponentTemplate>

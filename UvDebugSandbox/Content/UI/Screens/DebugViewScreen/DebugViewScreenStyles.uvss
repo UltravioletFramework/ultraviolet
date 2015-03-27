@@ -4,16 +4,6 @@
 	font-color: #ff000000;
 }
 
-.red .button-background
-{
-	source-color: #ffff0000;
-}
-
-.blue .button-background
-{
-	source-color: #ff0000ff;
-}
-
 view
 {
 	blank-image: #Global:Textures:DebugUI 230 590 14 14;
@@ -31,14 +21,22 @@ button, repeatbutton
 	transition (common, pressed): button-to-pressed;
 }
 
-	  button .button-background, 
-repeatbutton .button-background
+      button > canvas > contentpresenter, 
+repeatbutton > canvas > contentpresenter
+{
+	content-offset: 0 0;
+}
+
+	  button > canvas > .button-background, 
+repeatbutton > canvas > .button-background,
+togglebutton > canvas > .button-background
 {
 	source-image: #Global:Textures:DebugUI 1 589 190 49 6 4 6 8;
 }
 
 	  button .button-focus, 
-repeatbutton .button-focus
+repeatbutton .button-focus,
+togglebutton .button-focus
 {
 	source-image: #Global:Textures:DebugUI 1 789 190 49 8 8 8 8;
 	source-color: #ff0080ff;
@@ -47,18 +45,14 @@ repeatbutton .button-focus
 
 @button-to-normal
 {
-	target button
+	target button (*:storyboard-root)
 	{
-		animation padding
-		{
-			keyframe 0 { }
-		}
 		animation font-color
 		{
 			keyframe 100 { }
 		}
 	}
-	target image (.button-background)
+	target image (*:storyboard-root > canvas > .button-background)
 	{
 		animation source-image
 		{
@@ -69,21 +63,24 @@ repeatbutton .button-focus
 			keyframe 250 { }
 		}
 	}
-}
-@button-to-hover
-{
-	target button
-	{
-		animation padding
+	target contentpresenter (*:storyboard-root > canvas > contentpresenter)
+	{	
+		animation content-offset
 		{
 			keyframe 0 { }
 		}
+	}
+}
+@button-to-hover
+{
+	target button (*:storyboard-root)
+	{
 		animation font-color
 		{
 			keyframe 100 { #ff004080 }
 		}
 	}
-	target image (.button-background)
+	target image (*:storyboard-root > canvas > .button-background)
 	{
 		animation source-image
 		{
@@ -94,31 +91,41 @@ repeatbutton .button-focus
 			keyframe 250 { #ffff0000 }
 		}	
 	}
+	target contentpresenter (*:storyboard-root > canvas > contentpresenter)
+	{
+		animation content-offset
+		{
+			keyframe 0 { }
+		}
+	}
 }
 @button-to-pressed
 {
-	target button
+	target button (*:storyboard-root)
 	{
-		animation padding
-		{
-			keyframe 0 { 8 12 8 8 }
-		}
 		animation font-color
 		{
 			keyframe 100 { #ff004080 }
 		}
 	}
-	target image (.button-background)
+	target image (*:storyboard-root > canvas > .button-background)
 	{
 		animation source-image
 		{
 			keyframe 0 { #Global:Textures:DebugUI 1 639 190 49 6 8 6 4 }
 		}	
 	}
+	target contentpresenter (*:storyboard-root > canvas > contentpresenter)
+	{	
+		animation content-offset
+		{
+			keyframe 0 { 0 4 }
+		}
+	}
 }
 @button-to-focused
 {
-	target (.button-focus)
+	target (*:storyboard-root > canvas > .button-focus)
 	{
 		animation opacity
 		{
@@ -126,14 +133,96 @@ repeatbutton .button-focus
 		}
 	}
 }
-
 @button-to-blurred
 {
-	target (.button-focus)
+	target (*:storyboard-root > canvas > .button-focus)
 	{
 		animation opacity
 		{
 			keyframe 100 { }
+		}
+	}
+}
+
+togglebutton
+{
+	padding: 8 8 8 12;
+	
+	transition (focus, blurred): button-to-blurred;
+	transition (focus, focused): button-to-focused;
+	
+	transition (common, normal): togglebutton-to-normal;
+	transition (common, hover): togglebutton-to-hover;
+
+	transition (checkstate, checked): togglebutton-to-checked;
+	transition (checkstate, unchecked): togglebutton-to-unchecked;
+}
+
+@togglebutton-to-normal
+{
+	target togglebutton (*:storyboard-root)
+	{
+		animation font-color
+		{
+			keyframe 100 { }
+		}
+	}
+	target image (*:storyboard-root > canvas > .button-background)
+	{
+		animation source-color
+		{
+			keyframe 250 { }
+		}	
+	}
+}
+@togglebutton-to-hover
+{
+	target togglebutton (*:storyboard-root)
+	{
+		animation font-color
+		{
+			keyframe 100 { #ff004080 }
+		}
+	}
+	target image (*:storyboard-root > canvas > .button-background)
+	{
+		animation source-color
+		{
+			keyframe 250 { #ffff0000 }
+		}	
+	}
+}
+@togglebutton-to-unchecked
+{
+	target image (*:storyboard-root > canvas > .button-background)
+	{
+		animation source-image
+		{
+			keyframe 0 { }
+		}	
+	}
+	target contentpresenter (*:storyboard-root > canvas > contentpresenter)
+	{
+		animation content-offset
+		{
+			keyframe 0 { }
+		}
+	}
+}
+@togglebutton-to-checked
+{
+	target image (*:storyboard-root > canvas > .button-background)
+	{
+		animation source-image
+		{
+			keyframe 0 { #Global:Textures:DebugUI 1 639 190 49 6 8 6 4 }
+		}	
+	}
+	target contentpresenter (*:storyboard-root > canvas > contentpresenter)
+	{
+		animation content-offset
+		{
+			keyframe 0 { 0 4 }
 		}
 	}
 }
@@ -222,6 +311,7 @@ radiobutton, checkbox
 textbox
 {
 	padding: 8;
+
 	caret-image: #Global:Textures:DebugUI 230 590 14 14;
 	caret-color: #ff0000ff;
 	selection-image: #Global:Textures:DebugUI 230 590 14 14;
@@ -332,43 +422,59 @@ vslider
 	height: 64;
 }
 
-.slider-track-horizontal
+hslider .track-thumb
 {
-	source-image: #Global:Textures:DebugUI 1 839 24 10 9 9;
-	height: 10;
+	width: 28;
+	height: 42;
 }
 
-.slider-track-vertical
+vslider .track-thumb
 {
-	source-image: #Global:Textures:DebugUI 26 839 10 24 9 9 vertical;
-	width: 10;
+	width: 39;
+	height: 31;
 }
 
-.slider-thumb
+hslider .track-thumb .button-background
+{
+	source-image: #Global:Textures:DebugUI 192 820 28 42;
+}
+
+vslider .track-thumb .button-background
+{
+	source-image: #Global:Textures:DebugUI 37 839 39 31;
+}
+
+hslider .track-thumb, vslider .track-thumb
 {
 	transition (focus, blurred): null;
 	transition (focus, focused): null;
 	transition (common, pressed): null;
 }
 
-.slider-thumb-horizontal
+hslider .slider-track
 {
-	width: 28;
-	height: 42;
+	source-image: #Global:Textures:DebugUI 1 839 24 10 9 9;
+	height: 10;
 }
 
-.slider-thumb-vertical
+vslider .slider-track
 {
-	width: 39;
-	height: 31;
+	source-image: #Global:Textures:DebugUI 26 839 10 24 9 9 vertical;
+	width: 10;
 }
 
-.slider-thumb-horizontal .button-background
+.listbox-border
 {
-	source-image: #Global:Textures:DebugUI 192 820 28 42;
+	border-thickness: 1;
+	border-color: #ff000000;
 }
 
-.slider-thumb-vertical .button-background
+.listbox-background
 {
-	source-image: #Global:Textures:DebugUI 37 839 39 31;
+	fill-color: #ffffffff;
+}
+
+.listboxitem-highlight
+{
+	fill-color: #ff0000ff;
 }

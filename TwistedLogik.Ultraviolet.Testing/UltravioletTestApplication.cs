@@ -3,6 +3,9 @@ using System.Drawing;
 using TwistedLogik.Ultraviolet.Content;
 using TwistedLogik.Ultraviolet.Graphics;
 using TwistedLogik.Ultraviolet.OpenGL;
+using TwistedLogik.Ultraviolet.Input;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Diagnostics;
 
 namespace TwistedLogik.Ultraviolet.Testing
 {
@@ -14,31 +17,25 @@ namespace TwistedLogik.Ultraviolet.Testing
         /// <summary>
         /// Initializes a new instance of the UltravioletTestApplication class.
         /// </summary>
+        /// <param name="rtsAttribute">The <see cref="RenderToScreenAttribute"/> attached to the current test class.</param>
         /// <param name="headless">A value indicating whether to create a headless context.</param>
-        public UltravioletTestApplication(Boolean headless = false)
+        public UltravioletTestApplication(RenderToScreenAttribute rtsAttribute, Boolean headless = false)
             : base("TwistedLogik", "Ultraviolet Unit Tests")
         {
             PreserveApplicationSettings = false;
 
+            this.rtsAttribute = rtsAttribute;
             this.headless = headless;
         }
 
-        /// <summary>
-        /// Specifies the application's audio subsystem assembly.
-        /// </summary>
-        /// <param name="audioSubsystem">The fully-qualified name of the application's audio subsystem assembly.</param>
-        /// <returns>The Ultraviolet test application.</returns>
+        /// <inheritdoc/>
         public IUltravioletTestApplication WithAudioSubsystem(String audioSubsystem)
         {
             this.audioSubsystem = audioSubsystem;
             return this;
         }
 
-        /// <summary>
-        /// Specifies the application's initialization code.
-        /// </summary>
-        /// <param name="initializer">An action which will initialize the application.</param>
-        /// <returns>The Ultraviolet test application.</returns>
+        /// <inheritdoc/>
         public IUltravioletTestApplication WithInitialization(Action<UltravioletContext> initializer)
         {
             if (this.initializer != null)
@@ -48,11 +45,7 @@ namespace TwistedLogik.Ultraviolet.Testing
             return this;
         }
 
-        /// <summary>
-        /// Specifies the application's content loading code.
-        /// </summary>
-        /// <param name="loader">An action which will load the unit test's required content.</param>
-        /// <returns>The Ultraviolet test application.</returns>
+        /// <inheritdoc/>
         public IUltravioletTestApplication WithContent(Action<ContentManager> loader)
         {
             if (this.content != null)
@@ -62,46 +55,45 @@ namespace TwistedLogik.Ultraviolet.Testing
             return this;
         }
 
-        /// <summary>
-        /// Renders a scene and outputs the resulting image.
-        /// </summary>
-        /// <param name="renderer">An action which will render the desired scene.</param>
-        /// <returns>A bitmap containing the result of rendering the specified scene.</returns>
+        /// <inheritdoc/>
         public Bitmap Render(Action<UltravioletContext> renderer)
         {
             if (headless)
                 throw new InvalidOperationException("Cannot render a headless window.");
 
-            this.shouldExit = () => true;
+            if (rtsAttribute != null)
+            {
+                this.shouldExit = () => Ultraviolet.GetInput().GetKeyboard().IsKeyPressed(Key.Escape);
+            }
+            else
+            {
+                this.shouldExit = () => true;
+            }
+
             this.renderer = renderer;
             this.Run();
+
+            if (rtsAttribute != null)
+                Assert.Inconclusive("Test was rendered to the screen for visual debugging.");
 
             return bmp;
         }
 
-        /// <summary>
-        /// Runs the application until the specified predicate is true.
-        /// </summary>
-        /// <param name="predicate">The predicate that evaluates when the application should exit.</param>
+        /// <inheritdoc/>
         public void RunUntil(Func<Boolean> predicate)
         {
             this.shouldExit = predicate;
             this.Run();
         }
 
-        /// <summary>
-        /// Runs the application until the specified period of time has elapsed.
-        /// </summary>
-        /// <param name="time">The amount of time for which to run the application.</param>
+        /// <inheritdoc/>
         public void RunFor(TimeSpan time)
         {
             var target = DateTime.UtcNow + time;
             RunUntil(() => DateTime.UtcNow >= target);
         }
 
-        /// <summary>
-        /// Runs a single frame of the application.
-        /// </summary>
+        /// <inheritdoc/>
         public void RunForOneFrame()
         {
             RunFor(TimeSpan.Zero);
@@ -137,6 +129,13 @@ namespace TwistedLogik.Ultraviolet.Testing
                 initializer(Ultraviolet);
             }
 
+            if (rtsAttribute != null && rtsAttribute.LaunchDebugger)
+            {
+                if (Debugger.Launch() && Debugger.IsAttached)
+                {
+                    Debugger.Break();
+                }
+            }
             base.OnInitialized();
         }
 
@@ -182,7 +181,10 @@ namespace TwistedLogik.Ultraviolet.Testing
         /// <param name="time">Time elapsed since the last call to Draw.</param>
         protected override void OnDrawing(UltravioletTime time)
         {
-            Ultraviolet.GetGraphics().SetRenderTarget(rtarget);
+            if (rtsAttribute == null)
+            {
+                Ultraviolet.GetGraphics().SetRenderTarget(rtarget);
+            }
             Ultraviolet.GetGraphics().Clear(Color.Black);
 
             if (renderer != null)
@@ -190,10 +192,11 @@ namespace TwistedLogik.Ultraviolet.Testing
                 renderer(Ultraviolet);
             }
 
-            Ultraviolet.GetGraphics().SetRenderTarget(null);
-
-            bmp = ConvertRenderTargetToBitmap(rtarget);
-
+            if (rtsAttribute == null)
+            {
+                Ultraviolet.GetGraphics().SetRenderTarget(null);
+                bmp = ConvertRenderTargetToBitmap(rtarget);
+            }
             base.OnDrawing(time);
         }
 
@@ -221,6 +224,7 @@ namespace TwistedLogik.Ultraviolet.Testing
         }
 
         // State values.
+        private readonly RenderToScreenAttribute rtsAttribute;
         private readonly Boolean headless;
         private String audioSubsystem;
         private Func<Boolean> shouldExit;

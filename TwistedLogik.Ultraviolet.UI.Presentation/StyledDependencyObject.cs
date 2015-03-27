@@ -125,11 +125,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             {
                 while (currentType != null && typeof(StyledDependencyObject).IsAssignableFrom(currentType))
                 {
-                    Dictionary<UvssStyleKey, StyleSetter> styleSettersForCurrentType;
+                    Dictionary<String, StyleSetter> styleSettersForCurrentType;
                     if (styleSetters.TryGetValue(currentType, out styleSettersForCurrentType))
                     {
                         StyleSetter setter;
-                        if (styleSettersForCurrentType.TryGetValue(new UvssStyleKey(name, pseudoClass), out setter))
+                        if (styleSettersForCurrentType.TryGetValue(name, out setter))
                         {
                             return setter;
                         }
@@ -175,11 +175,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             while (currentType != null && typeof(StyledDependencyObject).IsAssignableFrom(currentType))
             {
-                Dictionary<UvssStyleKey, StyleSetter> styleSettersForCurrentType;
+                Dictionary<String, StyleSetter> styleSettersForCurrentType;
                 Dictionary<String, DependencyProperty> styledPropertiesForCurrentType;
                 if (!styleSetters.TryGetValue(currentType, out styleSettersForCurrentType))
                 {
-                    styleSettersForCurrentType     = new Dictionary<UvssStyleKey, StyleSetter>();
+                    styleSettersForCurrentType     = new Dictionary<String, StyleSetter>();
                     styledPropertiesForCurrentType = new Dictionary<String, DependencyProperty>();
 
                     var styledDependencyProperties = 
@@ -207,8 +207,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
                         var lambda = Expression.Lambda<StyleSetter>(expCallMethod, expParameterDObj, expParameterStyle, expParameterFmtProv).Compile();
 
-                        var styleKey = new UvssStyleKey(prop.Attribute.Name, prop.Attribute.PseudoClass);
-                        styleSettersForCurrentType[styleKey] = lambda;
+                        styleSettersForCurrentType[prop.Attribute.Name] = lambda;
                         styledPropertiesForCurrentType[prop.Attribute.Name] = dp;
                     }
 
@@ -225,7 +224,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         private static readonly MethodInfo miSetStyledValue;
         private static readonly Dictionary<Type, Dictionary<String, DependencyProperty>> styledProperties = 
             new Dictionary<Type, Dictionary<String, DependencyProperty>>();
-        private static readonly Dictionary<Type, Dictionary<UvssStyleKey, StyleSetter>> styleSetters = 
-            new Dictionary<Type, Dictionary<UvssStyleKey, StyleSetter>>();
+        private static readonly Dictionary<Type, Dictionary<String, StyleSetter>> styleSetters = 
+            new Dictionary<Type, Dictionary<String, StyleSetter>>();
     }
 }

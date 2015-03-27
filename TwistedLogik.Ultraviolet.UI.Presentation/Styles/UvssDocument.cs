@@ -170,7 +170,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
                 {
                     const Int32 ImportantStylePriority = 1000000000;
 
-                    var styleKey      = new UvssStyleKey(style.QualifiedName, selector.PseudoClass);
+                    var styleKey      = style.QualifiedName;
                     var stylePriority = selector.Priority + (style.IsImportant ? ImportantStylePriority : 0);
 
                     PrioritizedStyleData existingStyleData;
@@ -203,7 +203,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
             if (styleIsForContainer)
             {
                 var styleMatchesContainer = element.Parent != null && 
-                    String.Equals(element.Parent.Name, style.Container, StringComparison.OrdinalIgnoreCase);
+                    String.Equals(element.Parent.UvmlName, style.Container, StringComparison.OrdinalIgnoreCase);
 
                 if (styleMatchesContainer)
                 {
@@ -216,8 +216,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         }
 
         // State values.
-        private static readonly Dictionary<UvssStyleKey, PrioritizedStyleData> styleAggregator = 
-            new Dictionary<UvssStyleKey, PrioritizedStyleData>();
+        private static readonly Dictionary<String, PrioritizedStyleData> styleAggregator = 
+            new Dictionary<String, PrioritizedStyleData>();
         private static readonly UvssLexer lexer   = new UvssLexer();
         private static readonly UvssParser parser = new UvssParser();
 

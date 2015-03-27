@@ -183,9 +183,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         private static Type ResolveElementType(UltravioletContext uv, String name)
         {
             Type type;
-            if (!uv.GetUI().GetPresentationFoundation().GetElementType(name, false, out type))
+            if (!uv.GetUI().GetPresentationFoundation().GetKnownElement(name, false, out type))
             {
-                throw new InvalidOperationException(PresentationStrings.UnrecognizedUIElement.Format(name));
+                throw new InvalidOperationException(PresentationStrings.UnrecognizedType.Format(name));
             }
             return type;
         }

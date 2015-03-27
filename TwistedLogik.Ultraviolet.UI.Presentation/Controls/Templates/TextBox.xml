@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ComponentTemplate>
+  <Canvas Class="textbox-component" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+    <Image Class="textbox-background" Canvas.Left="0" Canvas.Right="0" Canvas.Top="0" Canvas.Bottom="0"/>
+    <TextBoxContentPresenter Name="presenter" Class="textbox-content" Updating="PresenterUpdate" Drawing="PresenterDraw"
+                      Canvas.Left="{{Padding.Left}}" 
+                      Canvas.Top="{{Padding.Top}}" 
+                      Canvas.Right="{{Padding.Right}}" 
+                      Canvas.Bottom="{{Padding.Bottom}}"/>
+    <Image Class="textbox-focus" IsHitTestVisible="false" Canvas.Left="0" Canvas.Right="0" Canvas.Top="0" Canvas.Bottom="0"/>
+  </Canvas>
+</ComponentTemplate>

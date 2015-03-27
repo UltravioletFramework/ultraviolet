@@ -40,11 +40,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
                         if (ConsumeStyleQualifier(input, output, line, ref ix))
                             continue;
                     }
-                    else
-                    {
-                        if (ConsumePseudoClass(input, output, line, ref ix))
-                            continue;
-                    }
                 }
                 if (ConsumeChildSelector(input, output, line, ref ix))
                     continue;
@@ -316,42 +311,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// Evaluates whether the specified character is valid in a StyleQualifier token.
         /// </summary>
         private static Boolean IsValidInStyleQualifier(Char c)
-        {
-            return Char.IsLetterOrDigit(c) || c == '_' || c == '-';
-        }
-
-        /// <summary>
-        /// Attempts to consume a PseudoClass token.
-        /// </summary>
-        private static Boolean ConsumePseudoClass(String input, IList<UvssLexerToken> output, Int32 line, ref Int32 ix)
-        {
-            if (!IsValidStartPseudoClass(input[ix]))
-                return false;
-
-            var start  = ix++;
-            var length = 1;
-
-            while (ix < input.Length && IsValidInPseudoClass(input[ix])) { ix++; length++; }
-
-            var value = input.Substring(start, length);
-            var token = new UvssLexerToken(UvssLexerTokenType.PseudoClass, start, length, line, value);
-            output.Add(token);
-
-            return true;
-        }
-
-        /// <summary>
-        /// Evaluates whether the specified character is valid at the start of a PseudoClass token.
-        /// </summary>
-        private static Boolean IsValidStartPseudoClass(Char c)
-        {
-            return c == ':';
-        }
-
-        /// <summary>
-        /// Evaluates whether the specified character is valid in a PseudoClass token.
-        /// </summary>
-        private static Boolean IsValidInPseudoClass(Char c)
         {
             return Char.IsLetterOrDigit(c) || c == '_' || c == '-';
         }

@@ -209,15 +209,12 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
         /// <inheritdoc/>
         public RectangleD DipsToPixels(RectangleD dips)
         {
-            var left   = DipsToPixels(dips.Left);
-            var top    = DipsToPixels(dips.Top);
-            var right  = DipsToPixels(dips.Right);
-            var bottom = DipsToPixels(dips.Bottom);
+            var x      = DipsToPixels(dips.Left);
+            var y      = DipsToPixels(dips.Top);
+            var width  = DipsToPixels(dips.Width);
+            var height = DipsToPixels(dips.Height);
 
-            var width  = right - left;
-            var height = bottom - top;
-
-            return new RectangleD(left, top, width, height);
+            return new RectangleD(x, y, width, height);
         }
 
         /// <inheritdoc/>

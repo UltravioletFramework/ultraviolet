@@ -27,6 +27,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         TDependency GetFresh();
 
         /// <summary>
+        /// Invalidates the cached display value for the dependency property. This will cause
+        /// the interface to display the property's actual value, rather than the value most recently
+        /// entered by the user (which may be different if coercion is involved).
+        /// </summary>
+        void InvalidateDisplayCache();
+
+        /// <summary>
         /// Sets the format string used to convert the bound value to a string.
         /// </summary>
         /// <param name="formatString">The format string used to convert the bound value to a string.</param>

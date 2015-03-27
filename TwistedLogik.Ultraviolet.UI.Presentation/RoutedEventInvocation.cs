@@ -61,10 +61,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             /* BUBBLE STRATEGY
              * For a given event delegate type TDelegate, we're constructing a method which basically looks like this:
              * 
-             * void fn(UIElement element, p1, p2, ..., pN, ref Boolean handled)
+             * void fn(DependencyObject element, p1, p2, ..., pN, ref RoutedEventData data)
              * {
-             *      handled = false;
-             *      
              *      var index   = 0;
              *      var handler = default(RoutedEventHandlerMetadata);
              *      var current = element;
@@ -74,9 +72,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
              *          index = 0;
              *          while (GetEventHandler(current, RoutedEventID, index, out handler))
              *          {
-             *              if (ShouldEventBeRaisedForElement(current, handled, handler.HandledEventsToo))
+             *              if (ShouldEventBeRaisedForElement(ref data, handler.HandledEventsToo))
              *              {
-             *                  handler.Handler(current, p1, p2, ..., pN, ref handled);
+             *                  handler.Handler(current, p1, p2, ..., pN, ref data);
              *              }
              *          }
              *      }
@@ -88,13 +86,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             var expParams       = evtParams.Select(x => Expression.Parameter(x.ParameterType, x.Name)).ToList();
             var expParamElement = expParams.First();
-            var expParamHandled = expParams.Last();
+            var expParamData    = expParams.Last();
 
             var expParts = new List<Expression>();
             var expVars  = new List<ParameterExpression>();
-
-            var expAssignedHandledToFalse = Expression.Assign(expParamHandled, Expression.Constant(false));
-            expParts.Add(expAssignedHandledToFalse);
 
             var varIndex = Expression.Variable(typeof(Int32), "index");
             expVars.Add(varIndex);
@@ -102,7 +97,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var varHandler = Expression.Variable(typeof(RoutedEventHandlerMetadata), "handlers");
             expVars.Add(varHandler);
 
-            var varCurrent = Expression.Variable(typeof(UIElement), "current");
+            var varCurrent = Expression.Variable(typeof(DependencyObject), "current");
             expVars.Add(varCurrent);
 
             var innerEventHandlerParams = new List<ParameterExpression>();
@@ -121,7 +116,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                             Expression.IfThenElse(
                                 Expression.Call(miGetEventHandler, varCurrent, Expression.Constant(evt), varIndex, varHandler),
                                 Expression.IfThen(
-                                    Expression.Call(miShouldEventBeRaisedForElement, expParamHandled, Expression.Property(varHandler, "HandledEventsToo")),
+                                    Expression.Call(miShouldEventBeRaisedForElement, expParamData, Expression.Property(varHandler, "HandledEventsToo")),
                                     Expression.Invoke(Expression.Convert(Expression.Property(varHandler, "Handler"), evt.DelegateType), innerEventHandlerParams)
                                 ),
                                 Expression.Break(expWhileBubbleBreakInner)
@@ -149,18 +144,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
              * The simplest strategy; the event is only invoked on the element that raised it. 
              * Our invocation delegate looks something like this:
              * 
-             * void fn(UIElement element, p1, p2, ..., pN, ref Boolean handled)
+             * void fn(DependencyObject element, p1, p2, ..., pN, ref RoutedEventData data)
              * {
-             *      handled = false;
-             * 
              *      var index   = 0;
              *      var handler = default(RoutedEventHandlerMetadata);      
              * 
              *      while (GetEventHandler(current, RoutedEventID, index, out handler))
              *      {
-             *          if (ShouldEventBeRaisedForElement(element, handled, handlerInfo.HandledEventsToo))
+             *          if (ShouldEventBeRaisedForElement(ref data, handlerInfo.HandledEventsToo))
              *          {
-             *              handler.Handler(element, p1, p2, ..., pN, ref handled);
+             *              handler.Handler(element, p1, p2, ..., pN, ref data);
              *          }
              *      }
              * }
@@ -175,9 +168,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             var expParts = new List<Expression>();
             var expVars  = new List<ParameterExpression>();
-
-            var expAssignedHandledToFalse = Expression.Assign(expParamHandled, Expression.Constant(false));
-            expParts.Add(expAssignedHandledToFalse);
 
             var varIndex = Expression.Variable(typeof(Int32), "index");
             expVars.Add(varIndex);
@@ -214,12 +204,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
              * Basically the opposite of the bubble strategy; we start at the root of the tree and work down.
              * Note that ShouldContinueTunnelling() builds a stack representing the path to take on the first call.
              * 
-             * void fn(UIElement element, p1, p2, ..., pN, ref Boolean handled)
+             * void fn(DependencyObject element, p1, p2, ..., pN, ref RoutedEventData data)
              * {
-             *      handled = false;
-             * 
              *      var index    = 0;
-             *      var current  = default(UIElement);
+             *      var current  = default(DependencyObject);
              *      var handlers = default(List<RoutedEventHandlerMetadata>);
              *      
              *      while (ShouldContinueTunnelling(element, ref current))
@@ -227,9 +215,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
              *          index = 0;
              *          while (GetEventHandler(current, RoutedEventID, index, out handler))
              *          {
-             *              if (ShouldEventBeRaisedForElement(current, handled, handler.HandledEventsToo))
+             *              if (ShouldEventBeRaisedForElement(ref data, handler.HandledEventsToo))
              *              {
-             *                  handler.Handler(current, p1, p2, ..., pN, ref handled);
+             *                  handler.Handler(current, p1, p2, ..., pN, ref data);
              *              }
              *          }
              *      }
@@ -241,13 +229,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             var expParams       = evtParams.Select(x => Expression.Parameter(x.ParameterType, x.Name)).ToList();
             var expParamElement = expParams.First();
-            var expParamHandled = expParams.Last();
+            var expParamData    = expParams.Last();
 
             var expParts = new List<Expression>();
             var expVars  = new List<ParameterExpression>();
-
-            var expAssignedHandledToFalse = Expression.Assign(expParamHandled, Expression.Constant(false));
-            expParts.Add(expAssignedHandledToFalse);
 
             var varIndex = Expression.Variable(typeof(Int32), "index");
             expVars.Add(varIndex);
@@ -255,7 +240,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var varHandler = Expression.Variable(typeof(RoutedEventHandlerMetadata), "handler");
             expVars.Add(varHandler);
 
-            var varCurrent = Expression.Variable(typeof(UIElement), "current");
+            var varCurrent = Expression.Variable(typeof(DependencyObject), "current");
             expVars.Add(varCurrent);
 
             var innerEventHandlerParams = new List<ParameterExpression>();
@@ -274,7 +259,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                             Expression.IfThenElse(
                                 Expression.Call(miGetEventHandler, varCurrent, Expression.Constant(evt), varIndex, varHandler),
                                 Expression.IfThen(
-                                    Expression.Call(miShouldEventBeRaisedForElement, expParamHandled, Expression.Property(varHandler, "HandledEventsToo")),
+                                    Expression.Call(miShouldEventBeRaisedForElement, expParamData, Expression.Property(varHandler, "HandledEventsToo")),
                                     Expression.Invoke(Expression.Convert(Expression.Property(varHandler, "Handler"), evt.DelegateType), innerEventHandlerParams)
                                 ),
                                 Expression.Break(expWhileTunnelBreakInner)
@@ -311,20 +296,20 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var paramLast  = parameters.Last();
 
             return
-                typeof(UIElement).IsAssignableFrom(paramFirst.ParameterType) &&
-                paramLast.ParameterType == typeof(Boolean).MakeByRefType() &&
+                typeof(DependencyObject).IsAssignableFrom(paramFirst.ParameterType) &&
+                paramLast.ParameterType == typeof(RoutedEventData).MakeByRefType() &&
                 invoke.ReturnType == typeof(void);
         }
 
         /// <summary>
         /// Gets a value indicating whether the specified element should receive the event being processed.
         /// </summary>
-        /// <param name="handled">A value indicating whether the event has been handled.</param>
+        /// <param name="data">The routed event data for the current event.</param>
         /// <param name="handledEventsToo">A value indicating whether the current event handler wants to receive handled events.</param>
         /// <returns><c>true</c> if the event should be raised for this object; otherwise, <c>false</c>.</returns>
-        private static Boolean ShouldEventBeRaisedForElement(Boolean handled, Boolean handledEventsToo)
+        private static Boolean ShouldEventBeRaisedForElement(ref RoutedEventData data, Boolean handledEventsToo)
         {
-            return !handled || handledEventsToo;
+            return !data.Handled || handledEventsToo;
         }
 
         /// <summary>
@@ -335,7 +320,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="first">The first element to process.</param>
         /// <param name="current">The element that is currently being processed.</param>
         /// <returns><c>true</c> if the event should continue bubbling; otherwise, <c>false</c>.</returns>
-        private static Boolean ShouldContinueBubbling(UIElement first, ref UIElement current)
+        private static Boolean ShouldContinueBubbling(DependencyObject first, ref DependencyObject current)
         {
             if (current == null)
             {
@@ -349,7 +334,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                     current = null;
                     return false;
                 }
-                current = current.DependencyContainer as UIElement;
+                current = current.DependencyContainer;
                 return true;
             }
         }
@@ -362,7 +347,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="first">The first element to process.</param>
         /// <param name="current">The element that is currently being processed.</param>
         /// <returns><c>true</c> if the event should continue tunnelling; otherwise, <c>false</c>.</returns>
-        private static Boolean ShouldContinueTunnelling(UIElement first, ref UIElement current)
+        private static Boolean ShouldContinueTunnelling(DependencyObject first, ref DependencyObject current)
         {
             if (current == null)
                 PrepareTunnellingStack(first);
@@ -380,14 +365,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Prepares the tunnelling stack to process a tunnelled event.
         /// </summary>
         /// <param name="element">The element which raised the event.</param>
-        private static void PrepareTunnellingStack(UIElement element)
+        private static void PrepareTunnellingStack(DependencyObject element)
         {
             if (tunnellingStack == null)
-                tunnellingStack = new Stack<UIElement>();
+                tunnellingStack = new Stack<DependencyObject>();
 
             tunnellingStack.Clear();
 
-            for (var current = element; current != null; current = current.DependencyContainer as UIElement)
+            for (var current = element; current != null; current = current.DependencyContainer)
             {
                 tunnellingStack.Push(current);
             }
@@ -401,15 +386,48 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="index">The index of the handler to invoke; this value is incremented by one when this method returns.</param>
         /// <param name="handler">The metadata for the handler that corresponds to the specified index within the handler list.</param>
         /// <returns><c>true</c> if a handler was retrieved for the specified index; otherwise, <c>false</c>.</returns>
-        private static Boolean GetEventHandler(UIElement element, RoutedEvent evt, ref Int32 index, ref RoutedEventHandlerMetadata handler)
+        private static Boolean GetEventHandler(DependencyObject element, RoutedEvent evt, ref Int32 index, ref RoutedEventHandlerMetadata handler)
         {
-            var handlers = element.GetHandlers(evt);
-            if (handlers == null || index >= handlers.Count)
+            var indexTemp = index;
+
+            var classHandlers = RoutedEventClassHandlers.GetClassHandlers(element.GetType(), evt);
+            if (classHandlers != null)
+            {
+                lock (classHandlers)
+                {
+                    if (indexTemp >= 0 && indexTemp < classHandlers.Count)
+                    {
+                        handler = classHandlers[indexTemp];
+                        index++;
+                        return true;
+                    }
+                    indexTemp -= classHandlers.Count;
+                }
+            }
+
+            var uiElement = element as UIElement;
+            if (uiElement != null)
+            {
+                var instanceHandlers = uiElement.GetHandlers(evt);
+                if (instanceHandlers == null)
+                    return false;
+
+                lock (instanceHandlers)
+                {
+                    if (indexTemp >= instanceHandlers.Count)
+                    {
+                        return false;
+                    }
+                    handler = instanceHandlers[indexTemp];
+                    index++;
+                }
+
+                return true;
+            }
+            else
             {
                 return false;
             }
-            handler = handlers[index++];
-            return true;
         }
 
         // Cached method info for methods used by invocation delegates.
@@ -420,6 +438,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
         // The stack used to track the tunnelling path for tunnelled events.
         [ThreadStatic]
-        private static Stack<UIElement> tunnellingStack;
+        private static Stack<DependencyObject> tunnellingStack;
     }
 }

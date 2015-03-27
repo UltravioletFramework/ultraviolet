@@ -192,7 +192,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
                 Contract.EnsureRange(value >= 0, "value");
 
                 left = value;
-                UpdateMinimumSize();
+                UpdateMinimumRecommendedSize();
             }
         }
 
@@ -207,7 +207,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
                 Contract.EnsureRange(value >= 0, "value");
 
                 right = value;
-                UpdateMinimumSize();
+                UpdateMinimumRecommendedSize();
             }
         }
 
@@ -220,7 +220,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
             set 
             { 
                 vertical = value;
-                UpdateMinimumSize();
+                UpdateMinimumRecommendedSize();
             }
         }
 
@@ -228,12 +228,6 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         internal override void Draw<VertexType, SpriteData>(SpriteBatchBase<VertexType, SpriteData> spriteBatch, Vector2 position, Int32 width, Int32 height, Color color, Single rotation, Vector2 origin, SpriteEffects effects, Single layerDepth, SpriteData data)
         {
             effects |= SpriteEffects.OriginRelativeToDestination;
-
-            if (MinimumSize.Width > 0 && width < MinimumSize.Width)
-                width = MinimumSize.Width;
-
-            if (MinimumSize.Height > 0 && height < MinimumSize.Height)
-                height = MinimumSize.Height;
 
             if (vertical)
             {
@@ -252,19 +246,28 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
             where VertexType : struct, IVertexType
             where SpriteData : struct
         {
-            var top    = this.Left;
-            var bottom = this.Right;
+            var srcTop    = this.Left;
+            var srcBottom = this.Right;
+            var dstTop    = srcTop;
+            var dstBottom = srcBottom;
+
+            if (height < MinimumRecommendedSize.Height)
+            {
+                var scale = height / (float)MinimumRecommendedSize.Height;
+                dstTop    = (Int32)Math.Floor(dstTop * scale);
+                dstBottom = (Int32)Math.Ceiling(dstBottom * scale);
+            }
 
             var srcStretchableWidth  = this.TextureRegion.Width;
-            var srcStretchableHeight = this.TextureRegion.Height - (top + bottom);
+            var srcStretchableHeight = this.TextureRegion.Height - (srcTop + srcBottom);
 
             var dstStretchableWidth  = width;
-            var dstStretchableHeight = height - (top + bottom);
+            var dstStretchableHeight = height - (dstTop + dstBottom);
 
             // Center
-            var centerSource   = new Rectangle(this.TextureRegion.Left, this.TextureRegion.Top + top, srcStretchableWidth, srcStretchableHeight);
+            var centerSource   = new Rectangle(this.TextureRegion.Left, this.TextureRegion.Top + srcTop, srcStretchableWidth, srcStretchableHeight);
             var centerRegion   = new RectangleF(position.X, position.Y, dstStretchableWidth, dstStretchableHeight);
-            var centerPosition = new Vector2(0, top);
+            var centerPosition = new Vector2(0, dstTop);
             if (this.TileCenter)
             {
                 TileImageSegment(spriteBatch, this.Texture, centerPosition, centerRegion, centerSource, color, rotation, origin, effects, layerDepth, data);
@@ -276,13 +279,13 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
             }
 
             // Edges
-            var topSource   = new Rectangle(this.TextureRegion.Left, this.TextureRegion.Top, srcStretchableWidth, top);
-            var topRegion   = new RectangleF(position.X, position.Y, dstStretchableWidth, top);
+            var topSource   = new Rectangle(this.TextureRegion.Left, this.TextureRegion.Top, srcStretchableWidth, srcTop);
+            var topRegion   = new RectangleF(position.X, position.Y, dstStretchableWidth, dstTop);
             var topPosition = new Vector2(0, 0);
 
-            var bottomSource   = new Rectangle(this.TextureRegion.Left, this.TextureRegion.Bottom - bottom, srcStretchableWidth, bottom);
-            var bottomRegion   = new RectangleF(position.X, position.Y, dstStretchableWidth, bottom);
-            var bottomPosition = new Vector2(0, height - bottom);
+            var bottomSource   = new Rectangle(this.TextureRegion.Left, this.TextureRegion.Bottom - srcBottom, srcStretchableWidth, srcBottom);
+            var bottomRegion   = new RectangleF(position.X, position.Y, dstStretchableWidth, dstBottom);
+            var bottomPosition = new Vector2(0, height - dstBottom);
 
             if (this.TileEdges)
             {
@@ -305,19 +308,28 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
             where VertexType : struct, IVertexType
             where SpriteData : struct
         {
-            var left  = this.Left;
-            var right = this.Right;
+            var srcLeft  = this.Left;
+            var srcRight = this.Right;
+            var dstLeft  = srcLeft;
+            var dstRight = srcRight;
 
-            var srcStretchableWidth  = this.TextureRegion.Width - (left + right);
+            if (width < MinimumRecommendedSize.Width)
+            {
+                var scale = width / (float)MinimumRecommendedSize.Width;
+                dstLeft   = (Int32)Math.Floor(dstLeft * scale);
+                dstRight  = (Int32)Math.Ceiling(dstRight * scale);
+            }
+
+            var srcStretchableWidth  = this.TextureRegion.Width - (srcLeft + srcRight);
             var srcStretchableHeight = this.TextureRegion.Height;
 
-            var dstStretchableWidth  = width - (left + right);
+            var dstStretchableWidth  = width - (dstLeft + dstRight);
             var dstStretchableHeight = height;
 
             // Center
-            var centerSource   = new Rectangle(this.TextureRegion.Left + left, this.TextureRegion.Top, srcStretchableWidth, srcStretchableHeight);
+            var centerSource   = new Rectangle(this.TextureRegion.Left + srcLeft, this.TextureRegion.Top, srcStretchableWidth, srcStretchableHeight);
             var centerRegion   = new RectangleF(position.X, position.Y, dstStretchableWidth, dstStretchableHeight);
-            var centerPosition = new Vector2(left, 0);
+            var centerPosition = new Vector2(dstLeft, 0);
             if (this.TileCenter)
             {
                 TileImageSegment(spriteBatch, this.Texture, centerPosition, centerRegion, centerSource, color, rotation, origin, effects, layerDepth, data);
@@ -329,13 +341,13 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
             }
 
             // Edges
-            var leftSource   = new Rectangle(this.TextureRegion.Left, this.TextureRegion.Top, left, srcStretchableHeight);
-            var leftRegion   = new RectangleF(position.X, position.Y, left, dstStretchableHeight);
+            var leftSource   = new Rectangle(this.TextureRegion.Left, this.TextureRegion.Top, srcLeft, srcStretchableHeight);
+            var leftRegion   = new RectangleF(position.X, position.Y, dstLeft, dstStretchableHeight);
             var leftPosition = new Vector2(0, 0);
 
-            var rightSource   = new Rectangle(this.TextureRegion.Right - right, this.TextureRegion.Top, right, srcStretchableHeight);
-            var rightRegion   = new RectangleF(position.X, position.Y, right, dstStretchableHeight);
-            var rightPosition = new Vector2(width - right, 0);
+            var rightSource   = new Rectangle(this.TextureRegion.Right - srcRight, this.TextureRegion.Top, srcRight, srcStretchableHeight);
+            var rightRegion   = new RectangleF(position.X, position.Y, dstRight, dstStretchableHeight);
+            var rightPosition = new Vector2(width - dstRight, 0);
 
             if (this.TileEdges)
             {
@@ -374,17 +386,17 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         }
 
         /// <summary>
-        /// Updates the value of the <see cref="TextureImage.MinimumSize"/> property.
+        /// Updates the value of the <see cref="TextureImage.MinimumRecommendedSize"/> property.
         /// </summary>
-        private void UpdateMinimumSize()
+        private void UpdateMinimumRecommendedSize()
         {
             if (vertical)
             {
-                MinimumSize = new Size2(0, left + right);
+                MinimumRecommendedSize = new Size2(0, left + right);
             }
             else
             {
-                MinimumSize = new Size2(left + right, 0);
+                MinimumRecommendedSize = new Size2(left + right, 0);
             }
         }
 

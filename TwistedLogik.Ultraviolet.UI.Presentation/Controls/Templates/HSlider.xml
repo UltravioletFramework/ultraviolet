@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ComponentTemplate>
+  <Grid Name="LayoutRoot" Class="slider-component" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+
+    <Image Name="TrackBackground" Class="slider-track" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
+    <Track Name="Track" HorizontalAlignment="Stretch" VerticalAlignment="Center" Orientation="Horizontal"/>
+        
+  </Grid>
+</ComponentTemplate>

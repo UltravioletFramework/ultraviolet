@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ComponentTemplate LargeChange="10" SmallChange="1">
+  <Grid Name="LayoutRoot" Class="scroll-component" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto"/>
+      <RowDefinition Height="*"/>
+      <RowDefinition Height="Auto"/>
+    </Grid.RowDefinitions>
+
+    <RepeatButton Name="LineUpButton" Class="scroll-button scroll-button-up" Grid.Row="0" HorizontalAlignment="Stretch"
+                  Click="HandleClickLineUp"></RepeatButton>
+
+    <Image Name="TrackBackground" Class="scroll-track scroll-track-vertical" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+    <Track Name="Track" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Orientation="Vertical" />
+    
+    <RepeatButton Name="LineDownButton" Class="scroll-button scroll-button-down" Grid.Row="2" HorizontalAlignment="Stretch"
+                  Click="HandleClickLineDown"></RepeatButton>    
+
+  </Grid>
+</ComponentTemplate>

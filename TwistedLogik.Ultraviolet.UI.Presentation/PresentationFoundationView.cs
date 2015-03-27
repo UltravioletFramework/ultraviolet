@@ -5,7 +5,8 @@ using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
 using TwistedLogik.Ultraviolet.Input;
 using TwistedLogik.Ultraviolet.Platform;
 using TwistedLogik.Ultraviolet.UI.Presentation.Animations;
-using TwistedLogik.Ultraviolet.UI.Presentation.Elements;
+using TwistedLogik.Ultraviolet.UI.Presentation.Controls;
+using TwistedLogik.Ultraviolet.UI.Presentation.Input;
 using TwistedLogik.Ultraviolet.UI.Presentation.Styles;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation
@@ -23,7 +24,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public PresentationFoundationView(UltravioletContext uv, Type viewModelType)
             : base(uv, viewModelType)
         {
-            this.elementRegistry = new UIElementRegistry();
+            this.namescope = new Namescope();
             this.resources       = new PresentationFoundationViewResources(this);
             this.drawingContext  = new DrawingContext(this);
 
@@ -98,118 +99,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             layoutRoot.Update(time);
         }
 
-        /// <inheritdoc/>
-        public override void NavigateUp()
-        {
-            if (elementWithFocus == null)
-                return;
-
-            var target = default(UIElement);
-            do
-            {
-                target = (target == null) ? elementWithFocus.GetNavUpElement() : target.GetNavUpElement();
-                if (target != null && !target.Focusable)
-                {
-                    target = target.GetFirstFocusableDescendant(false);
-                }
-            }
-            while (target != null && !LayoutUtil.IsValidForNav(target));
-            
-            if (target == null)
-                return;
-
-            FocusElement(target);
-        }
-
-        /// <inheritdoc/>
-        public override void NavigateDown()
-        {
-            if (elementWithFocus == null)
-                return;
-
-            var target = default(UIElement);
-            do
-            {
-                target = (target == null) ? elementWithFocus.GetNavDownElement() : target.GetNavDownElement();
-                if (target != null && !target.Focusable)
-                {
-                    target = target.GetFirstFocusableDescendant(false);
-                }
-            }
-            while (target != null && !LayoutUtil.IsValidForNav(target));
-
-            if (target == null)
-                return;
-
-            FocusElement(target);
-        }
-
-        /// <inheritdoc/>
-        public override void NavigateLeft()
-        {
-            if (elementWithFocus == null)
-                return;
-
-            var target = default(UIElement);
-            do
-            {
-                target = (target == null) ? elementWithFocus.GetNavLeftElement() : target.GetNavLeftElement();
-                if (target != null && !target.Focusable)
-                {
-                    target = target.GetFirstFocusableDescendant(false);
-                }
-            }
-            while (target != null && !LayoutUtil.IsValidForNav(target));
-
-            if (target == null)
-                return;
-
-            FocusElement(target);
-        }
-
-        /// <inheritdoc/>
-        public override void NavigateRight()
-        {
-            if (elementWithFocus == null)
-                return;
-
-            var target = default(UIElement);
-            do
-            {
-                target = (target == null) ? elementWithFocus.GetNavRightElement() : target.GetNavRightElement();
-                if (target != null && !target.Focusable)
-                {
-                    target = target.GetFirstFocusableDescendant(false);
-                }
-            }
-            while (target != null && !LayoutUtil.IsValidForNav(target));
-
-            if (target == null)
-                return;
-
-            FocusElement(target);
-        }
-
-        /// <inheritdoc/>
-        public override void NavigatePreviousTabStop()
-        {
-            var target = (elementWithFocus == null) ? GetLastFocusableElement(true) : elementWithFocus.GetPreviousTabStop() ?? GetLastFocusableElement(true);
-            if (target == null)
-                return;
-
-            FocusElement(target);
-        }
-
-        /// <inheritdoc/>
-        public override void NavigateNextTabStop()
-        {
-            var target = (elementWithFocus == null) ? GetFirstFocusableElement(true) : elementWithFocus.GetNextTabStop() ?? GetFirstFocusableElement(true);
-            if (target == null)
-                return;
-
-            FocusElement(target);
-        }
-
         /// <summary>
         /// Invalidates the styling state of the view's layout root.
         /// </summary>
@@ -238,7 +127,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Grants input focus within this view to the specified element.
         /// </summary>
         /// <param name="element">The element to which to grant input focus.</param>
-        public void FocusElement(UIElement element)
+        public void FocusElement(IInputElement element)
         {
             Contract.Require(element, "element");
 
@@ -246,32 +135,51 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 return;
 
             if (elementWithFocus != null)
-                elementWithFocus.OnBlurred();
+            {
+                BlurElement(elementWithFocus);
+            }
 
             elementWithFocus = element;
-            elementWithFocus.OnFocused();
+            
+            SetIsKeyboardFocusWithin(elementWithFocus, true);
+
+            var dobj = elementWithFocus as DependencyObject;
+            if (dobj != null)
+            {
+                var gotFocusData = new RoutedEventData(dobj);
+                Keyboard.RaiseGotKeyboardFocus(dobj, ref gotFocusData);
+            }
         }
 
         /// <summary>
         /// Removes input focus within this view from the specified element.
         /// </summary>
         /// <param name="element">The element from which to remove input focus.</param>
-        public void BlurElement(UIElement element)
+        public void BlurElement(IInputElement element)
         {
             Contract.Require(element, "element");
 
             if (elementWithFocus != element)
                 return;
 
-            elementWithFocus.OnBlurred();
+            var elementWithFocusOld = elementWithFocus;
             elementWithFocus = null;
+
+            SetIsKeyboardFocusWithin(elementWithFocusOld, false);
+
+            var dobj = elementWithFocusOld as DependencyObject;
+            if (dobj != null)
+            {
+                var lostFocusData = new RoutedEventData(dobj);
+                Keyboard.RaiseLostKeyboardFocus(dobj, ref lostFocusData);
+            }
         }
 
         /// <summary>
         /// Assigns mouse capture to the specified element.
         /// </summary>
         /// <param name="element">The element to which to assign mouse capture.</param>
-        public void CaptureMouse(UIElement element)
+        public void CaptureMouse(IInputElement element)
         {
             Contract.Require(element, "element");
 
@@ -279,127 +187,128 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 return;
 
             if (elementWithMouseCapture != null)
-                elementWithMouseCapture.OnLostMouseCapture();
+            {
+                ReleaseMouse(elementWithMouseCapture);
+            }
 
             elementWithMouseCapture = element;
-            elementWithMouseCapture.OnGainedMouseCapture();
+
+            var dobj = elementWithMouseCapture as DependencyObject;
+            if (dobj != null)
+            {
+                var gotMouseCaptureData = new RoutedEventData(dobj);
+                Mouse.RaiseGotMouseCapture(dobj, ref gotMouseCaptureData);
+            }
+
+            UpdateIsMouseOver(elementWithMouseCapture as UIElement);
         }
 
         /// <summary>
         /// Releases the mouse from the element that is currently capturing it.
         /// </summary>
         /// <param name="element">The element that is attempting to release mouse capture.</param>
-        public void ReleaseMouse(UIElement element)
+        public void ReleaseMouse(IInputElement element)
         {
             Contract.Require(element, "element");
 
             if (elementWithMouseCapture != element)
                 return;
 
-            elementWithMouseCapture.OnLostMouseCapture();
+            var dobj = elementWithMouseCapture as DependencyObject;
+            if (dobj != null)
+            {
+                var lostMouseCaptureData = new RoutedEventData(dobj);
+                Mouse.RaiseLostMouseCapture(dobj, ref lostMouseCaptureData);
+            }
+
+            UpdateIsMouseOver(elementWithMouseCapture as UIElement);
+
             elementWithMouseCapture = null;
         }
 
         /// <summary>
-        /// Gets the element within the view which has the specified identifier.
+        /// Gets the element within the view which has the specified identifying name.
         /// </summary>
-        /// <param name="id">The identifier of the element to retrieve.</param>
-        /// <returns>The element with the specified identifier, or <c>null</c> if no such element exists.</returns>
-        public UIElement GetElementByID(String id)
+        /// <param name="name">The identifying name of the element to retrieve.</param>
+        /// <returns>The element with the specified identifying name, or <c>null</c> if no such element exists.</returns>
+        public UIElement GetElementByName(String name)
         {
-            Contract.RequireNotEmpty(id, "id");
+            Contract.RequireNotEmpty(name, "id");
 
-            return elementRegistry.GetElementByID(id);
+            return namescope.GetElementByName(name);
         }
 
         /// <summary>
-        /// Gets the element at the specified pixel coordinates relative to screen space.
+        /// Performs a hit test against the view at the specified point in screen space.
         /// </summary>
-        /// <param name="x">The screen-relative x-coordinate of the pixel to evaluate.</param>
-        /// <param name="y">The screen-relative y-coordinate of the pixel to evaluate.</param>
-        /// <param name="isHitTest">A value indicating whether this test should respect the value of the <see cref="UIElement.IsHitTestVisible"/> property.</param>
-        /// <returns>The element at the specified pixel coordinates, or <c>null</c> if no such element exists.</returns>
-        public UIElement GetElementAtScreenPixel(Int32 x, Int32 y, Boolean isHitTest)
+        /// <param name="x">The x-coordinate in screen space to evaluate.</param>
+        /// <param name="y">The y-coordinate in screen space to evaluate.</param>
+        /// <returns>The topmost <see cref="Visual"/> in the view which contains the specified point, or <c>null</c>.</returns>
+        public Visual HitTestScreenPixel(Int32 x, Int32 y)
         {
-            return LayoutRoot.GetElementAtPixel(x - Area.X, y - Area.Y, isHitTest);
+            var dipsX = Display.PixelsToDips(x - Area.X);
+            var dipsY = Display.PixelsToDips(y - Area.Y);
+
+            return LayoutRoot.HitTest(new Point2D(dipsX, dipsY));
         }
 
         /// <summary>
-        /// Gets the element at the specified pixel coordinates relative to screen space.
+        /// Performs a hit test against the view at the specified point in screen space.
         /// </summary>
-        /// <param name="pt">The screen-relative coordinates of the pixel to evaluate.</param>
-        /// <param name="isHitTest">A value indicating whether this test should respect the value of the <see cref="UIElement.IsHitTestVisible"/> property.</param>
-        /// <returns>The element at the specified pixel coordinates, or <c>null</c> if no such element exists.</returns>
-        public UIElement GetElementAtScreenPixel(Point2 pt, Boolean isHitTest)
+        /// <param name="point">The point in screen space to evaluate.</param>
+        /// <returns>The topmost <see cref="Visual"/> in the view which contains the specified point, or <c>null</c>.</returns>
+        public Visual HitTestScreenPixel(Point2 point)
         {
-            return GetElementAtScreenPixel(pt.X, pt.Y, isHitTest);
+            var dipsPoint = Display.PixelsToDips(point - Area.Location);
+
+            return LayoutRoot.HitTest(dipsPoint);
         }
 
         /// <summary>
-        /// Gets the element at the specified pixel coordinates relative to this view's bounds.
+        /// Performs a hit test against the view at the specified point in view-relative screen space.
         /// </summary>
-        /// <param name="x">The view-relative x-coordinate of the pixel to evaluate.</param>
-        /// <param name="y">The view-relative y-coordinate of the pixel to evaluate.</param>
-        /// <param name="isHitTest">A value indicating whether this test should respect the value of the <see cref="UIElement.IsHitTestVisible"/> property.</param>
-        /// <returns>The element at the specified pixel coordinates, or <c>null</c> if no such element exists.</returns>
-        public UIElement GetElementAtPixel(Int32 x, Int32 y, Boolean isHitTest)
+        /// <param name="x">The x-coordinate in view-relative screen space to evaluate.</param>
+        /// <param name="y">The y-coordinate in view-relative screen space to evaluate.</param>
+        /// <returns>The topmost <see cref="Visual"/> in the view which contains the specified point, or <c>null</c>.</returns>
+        public Visual HitTestPixel(Int32 x, Int32 y)
         {
-            return LayoutRoot.GetElementAtPixel(x, y, isHitTest);
+            var dipsX = Display.PixelsToDips(x);
+            var dipsY = Display.PixelsToDips(y);
+
+            return LayoutRoot.HitTest(new Point2D(dipsX, dipsY));
         }
 
         /// <summary>
-        /// Gets the element at the specified pixel coordinates relative to this view's bounds.
+        /// Performs a hit test against the view at the specified point in view-relative screen space.
         /// </summary>
-        /// <param name="pt">The view-relative coordinates of the pixel to evaluate.</param>
-        /// <param name="isHitTest">A value indicating whether this test should respect the value of the <see cref="UIElement.IsHitTestVisible"/> property.</param>
-        /// <returns>The element at the specified pixel coordinates, or <c>null</c> if no such element exists.</returns>
-        public UIElement GetElementAtPixel(Point2 pt, Boolean isHitTest)
+        /// <param name="point">The point in view-relative screen space to evaluate.</param>
+        /// <returns>The topmost <see cref="Visual"/> in the view which contains the specified point, or <c>null</c>.</returns>
+        public Visual HitTestPixel(Point2 point)
         {
-            return LayoutRoot.GetElementAtPixel(pt, isHitTest);
+            var dipsPoint = Display.PixelsToDips(point - Area.Location);
+
+            return LayoutRoot.HitTest(dipsPoint);
         }
 
         /// <summary>
-        /// Gets the element at the specified device-independent coordinates relative to this view's bounds.
+        /// Performs a hit test against the view at the specified point in device-independent view space.
         /// </summary>
-        /// <param name="x">The view-relative x-coordinate of the point to evaluate.</param>
-        /// <param name="y">The view-relative y-coordinate of the point to evaluate.</param>
-        /// <param name="isHitTest">A value indicating whether this test should respect the value of the <see cref="UIElement.IsHitTestVisible"/> property.</param>
-        /// <returns>The element at the specified coordinates, or <c>null</c> if no such element exists.</returns>
-        public UIElement GetElementAtPoint(Double x, Double y, Boolean isHitTest)
+        /// <param name="x">The x-coordinate in device-independent view space to evaluate.</param>
+        /// <param name="y">The y-coordinate in device-independent view space to evaluate.</param>
+        /// <returns>The topmost <see cref="Visual"/> in the view which contains the specified point, or <c>null</c>.</returns>
+        public Visual HitTest(Double x, Double y)
         {
-            return LayoutRoot.GetElementAtPoint(x, y, isHitTest);
+            return LayoutRoot.HitTest(new Point2D(x, y));
         }
 
         /// <summary>
-        /// Gets the element at the specified device-independent coordinates relative to this view's bounds.
+        /// Performs a hit test against the view at the specified point in device-independent view space.
         /// </summary>
-        /// <param name="pt">The view-relative coordinates of the point to evaluate.</param>
-        /// <param name="isHitTest">A value indicating whether this test should respect the
-        /// value of the <see cref="UIElement.IsHitTestVisible"/> property.</param>
-        /// <returns>The element at the specified coordinates, or <c>null</c> if no such element exists.</returns>
-        public UIElement GetElementAtPoint(Point2D pt, Boolean isHitTest)
+        /// <param name="point">The point in device-independent view space to evaluate.</param>
+        /// <returns>The topmost <see cref="Visual"/> in the view which contains the specified point, or <c>null</c>.</returns>
+        public Visual HitTest(Point2D point)
         {
-            return LayoutRoot.GetElementAtPoint(pt, isHitTest);
-        }
-
-        /// <summary>
-        /// Gets the first focusable element in the view.
-        /// </summary>
-        /// <param name="tabStop">A value indicating whether the element must also be a tab stop.</param>
-        /// <returns>The first focusable element in the view, or <c>null</c> if no such element exists.</returns>
-        public UIElement GetFirstFocusableElement(Boolean tabStop)
-        {
-            return GetFirstFocusableElementInternal(LayoutRoot, tabStop);
-        }
-
-        /// <summary>
-        /// Gets the last focusable element in the view.
-        /// </summary>
-        /// <param name="tabStop">A value indicating whether the element must also be a tab stop.</param>
-        /// <returns>The last focusable element in the view, or <c>null</c> if no such element exists.</returns>
-        public UIElement GetLastFocusableElement(Boolean tabStop)
-        {
-            return GetLastFocusableElementInternal(LayoutRoot, tabStop);
+            return LayoutRoot.HitTest(point);
         }
 
         /// <summary>
@@ -519,7 +428,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             if (Stylesheet != null)
             {
-                Stylesheet.InstantiateStoryboardByName(LayoutRoot.Ultraviolet, name);
+                return Stylesheet.InstantiateStoryboardByName(LayoutRoot.Ultraviolet, name);
             }
 
             return null;
@@ -544,7 +453,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Gets the element that is currently under the mouse cursor.
         /// </summary>
-        public UIElement ElementUnderMouse
+        public IInputElement ElementUnderMouse
         {
             get { return elementUnderMouse; }
         }
@@ -552,7 +461,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Gets the element that currently has focus.
         /// </summary>
-        public UIElement ElementWithFocus
+        public IInputElement ElementWithFocus
         {
             get { return elementWithFocus; }
         }
@@ -560,7 +469,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Gets the element that currently has mouse capture.
         /// </summary>
-        public UIElement ElementWithMouseCapture
+        public IInputElement ElementWithMouseCapture
         {
             get { return elementWithMouseCapture; }
         }
@@ -574,11 +483,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
         
         /// <summary>
-        /// Gets the view's element registry.
+        /// Gets the namescope for the view layout.
         /// </summary>
-        internal UIElementRegistry ElementRegistry
+        internal Namescope Namescope
         {
-            get { return elementRegistry; }
+            get { return namescope; }
         } 
 
         /// <inheritdoc/>
@@ -607,7 +516,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             layoutRoot.CacheLayoutParameters();
 
             if (ViewModel != null)
-                elementRegistry.PopulateFieldsFromRegisteredElements(ViewModel);
+                namescope.PopulateFieldsFromRegisteredElements(ViewModel);
 
             base.OnViewModelChanged();
         }
@@ -619,57 +528,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             layoutRoot.Measure(dipsArea.Size);
             layoutRoot.Arrange(dipsArea);
-            layoutRoot.Position(dipsArea.Location);
 
             base.OnViewSizeChanged();
-        }
-
-        /// <summary>
-        /// Recurses through the logical tree to find the first element which is focusable (and potentially, a tab stop).
-        /// </summary>
-        /// <param name="parent">The parent element which is being examined.</param>
-        /// <param name="tabStop">A value indicating whether a matching element must be a tab stop.</param>
-        /// <returns>The first element within this branch of the logical tree which meets the specified criteria.</returns>
-        private UIElement GetFirstFocusableElementInternal(UIElement parent, Boolean tabStop)
-        {
-            if (parent.Focusable && (!tabStop || parent.IsTabStop))
-                return parent;
-
-            for (int i = 0; i < parent.VisualChildren; i++)
-            {
-                var child = parent.GetVisualChild(i);
-                var match = GetFirstFocusableElementInternal(child, tabStop);
-                if (match != null)
-                {
-                    return match;
-                }
-            }
-
-            return null;
-        }
-
-        /// <summary>
-        /// Recurses through the logical tree to find the last element which is focusable (and potentially, a tab stop).
-        /// </summary>
-        /// <param name="parent">The parent element which is being examined.</param>
-        /// <param name="tabStop">A value indicating whether a matching element must be a tab stop.</param>
-        /// <returns>The last element within this branch of the logical tree which meets the specified criteria.</returns>
-        private UIElement GetLastFocusableElementInternal(UIElement parent, Boolean tabStop)
-        {
-            for (int i = parent.VisualChildren - 1; i >= 0; i--)
-            {
-                var child = parent.GetVisualChild(i);
-                var match = GetLastFocusableElementInternal(child, tabStop);
-                if (match != null)
-                {
-                    return match;
-                }
-            }
-
-            if (parent.Focusable && (!tabStop || parent.IsTabStop))
-                return parent;
-
-            return null;
         }
 
         /// <summary>
@@ -715,6 +575,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 mouse.ButtonReleased += mouse_ButtonReleased;
                 mouse.Click          += mouse_Click;
                 mouse.DoubleClick    += mouse_DoubleClick;
+                mouse.WheelScrolled  += mouse_WheelScrolled;
             }
         }
 
@@ -747,6 +608,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 mouse.ButtonReleased -= mouse_ButtonReleased;
                 mouse.Click          -= mouse_Click;
                 mouse.DoubleClick    -= mouse_DoubleClick;
+                mouse.WheelScrolled  -= mouse_WheelScrolled;
             }
         }
 
@@ -782,6 +644,32 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Updates the value of the <see cref="UIElement.IsMouseOver"/> property for ancestors
+        /// of the specified element.
+        /// </summary>
+        /// <param name="root">The element to update.</param>
+        private void UpdateIsMouseOver(UIElement root)
+        {
+            if (root == null)
+                return;
+
+            var mouse    = Ultraviolet.GetInput().GetMouse();
+            var mousePos = Display.PixelsToDips(mouse.Position);
+
+            var current = root as DependencyObject;
+            while (current != null)
+            {
+                var uiElement = current as UIElement;
+                if (uiElement != null)
+                {
+                    var bounds = uiElement.AbsoluteBounds;
+                    uiElement.IsMouseOver = bounds.Contains(mousePos);
+                }
+                current = VisualTreeHelper.GetParent(current);
+            }
+        }
+
+        /// <summary>
         /// Determines which element is currently under the mouse cursor.
         /// </summary>
         private void UpdateElementUnderMouse()
@@ -795,25 +683,85 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 var mouseView = mouse.Window == Window ? this : null;
 
                 elementUnderMousePrev = elementUnderMouse;
-                elementUnderMouse     = (mouseView == null) ? null : mouseView.GetElementAtScreenPixel((Point2)mousePos, true);
+                elementUnderMouse     = (mouseView == null) ? null : mouseView.HitTestScreenPixel((Point2)mousePos) as UIElement;
             }
 
-            if (elementUnderMouse != null && !elementUnderMouse.IsHitTestVisible)
-                elementUnderMousePrev = elementUnderMouse;
+            if (elementUnderMouse != null && !IsElementValidForInput(elementUnderMouse))
+                elementUnderMouse = null;
 
-            if (elementWithMouseCapture != null && !elementWithMouseCapture.IsHitTestVisible)
+            if (elementWithMouseCapture != null && !IsElementValidForInput(elementWithMouseCapture))
                 ReleaseMouse(elementWithMouseCapture);
 
             // Handle mouse motion events
             if (elementUnderMouse != elementUnderMousePrev)
             {
+                UpdateIsMouseOver(elementUnderMousePrev as UIElement);
+
                 if (elementUnderMousePrev != null)
-                    elementUnderMousePrev.OnMouseLeave(mouse);
+                {
+                    var uiElement = elementUnderMousePrev as UIElement;
+                    if (uiElement != null)
+                        uiElement.IsMouseDirectlyOver = false;
+
+                    var dobj = elementUnderMousePrev as DependencyObject;
+                    if (dobj != null)
+                    {
+                        var mouseLeaveData = new RoutedEventData(dobj);
+                        Mouse.RaiseMouseLeave(dobj, mouse, ref mouseLeaveData);
+                    }
+                }
 
                 if (elementUnderMouse != null)
                 {
-                    elementUnderMouse.OnMouseEnter(mouse);
+                    var uiElement = elementUnderMouse as UIElement;
+                    if (uiElement != null)
+                        uiElement.IsMouseDirectlyOver = true;
+
+                    var dobj = elementUnderMouse as DependencyObject;
+                    if (dobj != null)
+                    {
+                        var mouseEnterData = new RoutedEventData(dobj);
+                        Mouse.RaiseMouseEnter(dobj, mouse, ref mouseEnterData);
+                    }
                 }
+
+                UpdateIsMouseOver(elementUnderMouse as UIElement);
+            }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the specified element is valid for receiving input.
+        /// </summary>
+        /// <param name="element">The element to evaluate.</param>
+        /// <returns><c>true</c> if the specified element is valid for input; otherwise, <c>false</c>.</returns>
+        private Boolean IsElementValidForInput(IInputElement element)
+        {
+            var uiElement = element as UIElement;
+            if (uiElement == null)
+                return false;
+
+            return uiElement.IsHitTestVisible && uiElement.IsEnabled;
+        }
+
+        /// <summary>
+        /// Sets the value of the <see cref="IInputElement.IsKeyboardFocusWithin"/> property on the specified element
+        /// and all of its ancestors to the specified value.
+        /// </summary>
+        /// <param name="element">The element on which to set the property value.</param>
+        /// <param name="value">The value to set on the element and its ancestors.</param>
+        private void SetIsKeyboardFocusWithin(IInputElement element, Boolean value)
+        {
+            var visual = element as Visual;
+
+            while (visual != null)
+            {
+                var uiElement = visual as UIElement;
+                if (uiElement != null)
+                {
+                    uiElement.IsKeyboardFocusWithin = value;
+                }
+
+                visual = VisualTreeHelper.GetParent(visual) as Visual;
             }
         }
 
@@ -827,7 +775,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             if (elementWithFocus != null)
             {
-                elementWithFocus.OnKeyPressed(device, key, ctrl, alt, shift, repeat);
+                var dobj = elementWithFocus as DependencyObject;
+                if (dobj != null)
+                {
+                    var keyDownData = new RoutedEventData(dobj);
+                    Keyboard.RaisePreviewKeyDown(dobj, device, key, ctrl, alt, shift, repeat, ref keyDownData);
+                    Keyboard.RaiseKeyDown(dobj, device, key, ctrl, alt, shift, repeat, ref keyDownData);
+                }
             }
         }
 
@@ -841,7 +795,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             if (elementWithFocus != null)
             {
-                elementWithFocus.OnKeyReleased(device, key);
+                var dobj = elementWithFocus as DependencyObject;
+                if (dobj != null)
+                {
+                    var keyUpData = new RoutedEventData(dobj);
+                    Keyboard.RaisePreviewKeyUp(dobj, device, key, ref keyUpData);
+                    Keyboard.RaiseKeyUp(dobj, device, key, ref keyUpData);
+                }
             }
         }
 
@@ -855,7 +815,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             if (elementWithFocus != null)
             {
-                elementWithFocus.OnTextInput(device);
+                var dobj = elementWithFocus as DependencyObject;
+                if (dobj != null)
+                {
+                    var textInputData = new RoutedEventData(dobj);
+                    Keyboard.RaisePreviewTextInput(dobj, device, ref textInputData);
+                    Keyboard.RaiseTextInput(dobj, device, ref textInputData);
+                }
             }
         }
 
@@ -875,7 +841,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 var dipsDeltaX = Display.PixelsToDips(dx);
                 var dipsDeltaY = Display.PixelsToDips(dy);
 
-                recipient.OnMouseMotion(device, dipsX, dipsY, dipsDeltaX, dipsDeltaY);
+                var dobj = recipient as DependencyObject;
+                if (dobj != null)
+                {
+                    var mouseMoveData = new RoutedEventData(dobj);
+                    Mouse.RaisePreviewMouseMove(dobj, device, dipsX, dipsY, dipsDeltaX, dipsDeltaY, ref mouseMoveData);
+                    Mouse.RaiseMouseMove(dobj, device, dipsX, dipsY, dipsDeltaX, dipsDeltaY, ref mouseMoveData);
+                }
             }
         }
 
@@ -900,7 +872,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 {
                     BlurElement(elementWithFocus);
                 }
-                if (recipient.Focusable)
+
+                if (recipient != null && recipient.Focusable)
                 {
                     FocusElement(recipient);
                 }
@@ -908,7 +881,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             if (recipient != null)
             {
-                recipient.OnMouseButtonPressed(device, button);
+                var dobj = recipient as DependencyObject;
+                if (dobj != null)
+                {
+                    var mouseDownData = new RoutedEventData(dobj);
+                    Mouse.RaisePreviewMouseDown(dobj, device, button, ref mouseDownData);
+                    Mouse.RaiseMouseDown(dobj, device, button, ref mouseDownData);
+                }
             }
         }
 
@@ -923,7 +902,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var recipient = elementWithMouseCapture ?? elementUnderMouse;
             if (recipient != null)
             {
-                recipient.OnMouseButtonReleased(device, button);
+                var dobj = recipient as DependencyObject;
+                if (dobj != null)
+                {
+                    var mouseUpData = new RoutedEventData(dobj);
+                    Mouse.RaisePreviewMouseUp(dobj, device, button, ref mouseUpData);
+                    Mouse.RaiseMouseUp(dobj, device, button, ref mouseUpData);
+                }
             }
         }
 
@@ -938,7 +923,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var recipient = elementWithMouseCapture ?? elementUnderMouse;
             if (recipient != null)
             {
-                recipient.OnMouseClick(device, button);
+                var dobj = recipient as DependencyObject;
+                if (dobj != null)
+                {
+                    var mouseClickData = new RoutedEventData(dobj);
+                    Mouse.RaisePreviewMouseClick(dobj, device, button, ref mouseClickData);
+                    Mouse.RaiseMouseClick(dobj, device, button, ref mouseClickData);
+                }
             }
         }
 
@@ -953,21 +944,51 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var recipient = elementWithMouseCapture ?? elementUnderMouse;
             if (recipient != null)
             {
-                recipient.OnMouseDoubleClick(device, button);
+                var dobj = recipient as DependencyObject;
+                if (dobj != null)
+                {
+                    var mouseDoubleClickData = new RoutedEventData(dobj);
+                    Mouse.RaisePreviewMouseDoubleClick(dobj, device, button, ref mouseDoubleClickData);
+                    Mouse.RaiseMouseDoubleClick(dobj, device, button, ref mouseDoubleClickData);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Handles the <see cref="MouseDevice.WheelScrolled"/> event.
+        /// </summary>
+        private void mouse_WheelScrolled(IUltravioletWindow window, MouseDevice device, Int32 x, Int32 y)
+        {
+            if (window != Window)
+                return;
+
+            var recipient = elementWithMouseCapture ?? elementUnderMouse;
+            if (recipient != null)
+            {
+                var dipsX = Display.PixelsToDips(x);
+                var dipsY = Display.PixelsToDips(y);
+
+                var dobj = recipient as DependencyObject;
+                if (dobj != null)
+                {
+                    var mouseWheelData = new RoutedEventData(dobj);
+                    Mouse.RaisePreviewMouseWheel(dobj, device, dipsX, dipsY, ref mouseWheelData);
+                    Mouse.RaiseMouseWheel(dobj, device, dipsX, dipsY, ref mouseWheelData);
+                }
             }
         }
 
         // Property values.
-        private readonly UIElementRegistry elementRegistry;
+        private readonly Namescope namescope;
         private readonly PresentationFoundationViewResources resources;
         private UvssDocument stylesheet;
         private Grid layoutRoot;
 
         // State values.
         private readonly DrawingContext drawingContext;
-        private UIElement elementUnderMousePrev;
-        private UIElement elementUnderMouse;
-        private UIElement elementWithMouseCapture;
-        private UIElement elementWithFocus;
+        private IInputElement elementUnderMousePrev;
+        private IInputElement elementUnderMouse;
+        private IInputElement elementWithMouseCapture;
+        private IInputElement elementWithFocus;
     }
 }

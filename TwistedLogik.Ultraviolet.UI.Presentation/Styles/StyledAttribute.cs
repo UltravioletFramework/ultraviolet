@@ -13,13 +13,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// Initializes a new instance of the <see cref="StyledAttribute"/> class.
         /// </summary>
         /// <param name="name">The name of the property when specified on a stylesheet.</param>
-        /// <param name="pseudoClass">The attribute's associated pseudo-class.</param>
-        public StyledAttribute(String name, String pseudoClass = null)
+        public StyledAttribute(String name)
         {
             Contract.RequireNotEmpty(name, "name");
 
-            this.name        = name;
-            this.pseudoClass = pseudoClass;
+            this.name = name;
         }
 
         /// <summary>
@@ -30,16 +28,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
             get { return name; }
         }
 
-        /// <summary>
-        /// Gets the attribute's associated pseudo-class.
-        /// </summary>
-        public String PseudoClass
-        {
-            get { return pseudoClass; }
-        }
-
         // Property values.
         private readonly String name;
-        private readonly String pseudoClass;
     }
 }

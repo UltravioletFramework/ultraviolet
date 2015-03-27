@@ -24,6 +24,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             this.forceUpdate     = true;
         }
 
+        /// <inheritdoc/>
+        public virtual void InvalidateDisplayCache()
+        {
+
+        }
+
         /// <summary>
         /// Modifies the format string used to convert the bound value to a string, if applicable.
         /// </summary>

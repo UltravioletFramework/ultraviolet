@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ComponentTemplate>
+  <Grid Class="checkbox-component" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="Auto"/>
+      <ColumnDefinition Width="*"/>
+    </Grid.ColumnDefinitions>
+    
+    <Image Name="ImgBox" Class="toggle-box" Grid.Column="0" VerticalAlignment="{{VerticalContentAlignment}}"></Image>
+    <Image Name="ImgMark" Class="toggle-mark" Grid.Column="0" VerticalAlignment="{{VerticalContentAlignment}}" Visibility="{{MarkVisibility}}"></Image>
+    <ContentPresenter Class="toggle-content" Grid.Column="1" Margin="8 0 0 0" VerticalAlignment="Stretch"></ContentPresenter>
+
+  </Grid>
+</ComponentTemplate>

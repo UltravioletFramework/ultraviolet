@@ -10,6 +10,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
     internal partial class LayoutQueue
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="LayoutQueue"/> class.
+        /// </summary>
+        /// <param name="invalidate">An action which invalidates the element state associated with this queue.</param>
+        public LayoutQueue(Action<UIElement> invalidate)
+        {
+            Contract.Require(invalidate, "invalidate");
+
+            this.invalidate = invalidate;
+        }
+
+        /// <summary>
         /// Adds an element to the queue.
         /// </summary>
         /// <param name="element">The element to add to the queue.</param>
@@ -17,11 +28,30 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             Contract.Require(element, "element");
 
-            var entry = new Entry(element.LayoutDepth, element);
-            if (queue.ContainsKey(entry))
-                return;
+            var current = element;
+            var parent  = element;
 
-            queue.Add(entry, element);
+            while (current != null)
+            {
+                invalidate(current);
+
+                parent = VisualTreeHelper.GetParent(current) as UIElement;
+                if (parent == null)
+                {
+                    var entry = new Entry(current.LayoutDepth, current);
+                    if (queue.ContainsKey(entry))
+                        return;
+
+                    queue.Add(entry, current);
+                }
+                else
+                {
+                    var entry = new Entry(current.LayoutDepth, current);
+                    queue.Remove(entry);
+                }
+
+                current = parent;
+            }
         }
 
         /// <summary>
@@ -64,6 +94,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             get { return queue.Count; }
         }
+
+        /* An action which invalidates any elements along the path between
+        /* an element which is added to the queue and its visual parent. */
+        private readonly Action<UIElement> invalidate;
 
         // The sorted list which represents our queue's storage.
         private readonly SortedList<Entry, UIElement> queue = 

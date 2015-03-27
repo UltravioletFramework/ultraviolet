@@ -288,9 +288,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
                 if (!comparerRegistry.TryGetValue(type, out typeComparer))
                 {
-                    if (type == typeof(System.Collections.IEnumerable))
-                        Console.WriteLine();
-
                     if (type.IsClass)
                     {
                         typeComparer = GetReferenceComparisonFunction(type);

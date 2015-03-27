@@ -39,6 +39,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         void Unbind();
 
         /// <summary>
+        /// Recalculates the property's coerced value.
+        /// </summary>
+        void CoerceValue();
+
+        /// <summary>
+        /// Invalidates the cached display value for the dependency property. This will cause
+        /// the interface to display the property's actual value, rather than the value most recently
+        /// entered by the user (which may be different if coercion is involved).
+        /// </summary>
+        void InvalidateDisplayCache();
+
+        /// <summary>
         /// Removes the property's current animation, if it has one.
         /// </summary>
         void ClearAnimation();
@@ -123,6 +135,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Gets a value indicating whether the value is being animated.
         /// </summary>
         Boolean IsAnimated
+        {
+            get;
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the dependency property is being coerced.
+        /// </summary>
+        Boolean IsCoerced
         {
             get;
         }
