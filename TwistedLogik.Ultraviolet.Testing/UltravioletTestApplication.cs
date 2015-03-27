@@ -1,11 +1,11 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Drawing;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TwistedLogik.Ultraviolet.Content;
 using TwistedLogik.Ultraviolet.Graphics;
-using TwistedLogik.Ultraviolet.OpenGL;
 using TwistedLogik.Ultraviolet.Input;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Diagnostics;
+using TwistedLogik.Ultraviolet.OpenGL;
 
 namespace TwistedLogik.Ultraviolet.Testing
 {

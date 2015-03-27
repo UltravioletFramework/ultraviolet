@@ -1,9 +1,9 @@
 ﻿using System;
-using System.Linq;
+using System.Diagnostics;
 using System.Drawing;
+using System.Linq;
 using System.Reflection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Diagnostics;
 
 namespace TwistedLogik.Ultraviolet.Testing
 {

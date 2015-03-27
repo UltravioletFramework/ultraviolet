@@ -1,6 +1,6 @@
-﻿using TwistedLogik.Nucleus;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using TwistedLogik.Nucleus;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 {
