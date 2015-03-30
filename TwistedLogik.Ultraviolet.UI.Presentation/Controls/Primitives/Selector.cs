@@ -157,10 +157,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             new PropertyMetadata());
 
         /// <summary>
+        /// The private access key for the <see cref="IsSelectionActive"/> read-only dependency property.
+        /// </summary>
+        private static readonly DependencyPropertyKey IsSelectionActivePropertyKey = DependencyProperty.RegisterReadOnly("IsSelectionActive", typeof(Boolean), typeof(Selector),
+            new PropertyMetadata());
+
+        /// <summary>
         /// Identifies the IsSelectionActive attached property.
         /// </summary>
-        public static readonly DependencyProperty IsSelectionActiveProperty = DependencyProperty.Register("IsSelectionActive", typeof(Boolean), typeof(Selector),
-            new PropertyMetadata());
+        public static readonly DependencyProperty IsSelectionActiveProperty = IsSelectionActivePropertyKey.DependencyProperty;
 
         /// <summary>
         /// Identifies the <see cref="SelectionChanged"/> routed event.
@@ -212,6 +217,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         protected virtual void OnSelectedItemsChanged()
         {
 
+        }
+
+        /// <inheritdoc/>
+        protected override void OnIsKeyboardFocusWithinChanged()
+        {
+            SetValue<Boolean>(IsSelectionActivePropertyKey, IsKeyboardFocusWithin);
+
+            base.OnIsKeyboardFocusWithinChanged();
         }
 
         /// <summary>

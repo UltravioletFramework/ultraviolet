@@ -200,7 +200,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 Mouse.RaiseGotMouseCapture(dobj, ref gotMouseCaptureData);
             }
 
-            UpdateIsMouseOver(elementWithMouseCapture as UIElement);
+            var uiElement = elementWithMouseCapture as UIElement;
+            if (uiElement != null)
+            {
+                uiElement.IsMouseCaptured = true;
+                UpdateIsMouseOver(uiElement);
+            }
         }
 
         /// <summary>
@@ -221,8 +226,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 Mouse.RaiseLostMouseCapture(dobj, ref lostMouseCaptureData);
             }
 
-            UpdateIsMouseOver(elementWithMouseCapture as UIElement);
-
+            var uiElement = elementWithMouseCapture as UIElement;
+            if (uiElement != null)
+            {
+                uiElement.IsMouseCaptured = false;
+                UpdateIsMouseOver(uiElement);
+            }
+            
             elementWithMouseCapture = null;
         }
 
@@ -752,6 +762,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         private void SetIsKeyboardFocusWithin(IInputElement element, Boolean value)
         {
             var visual = element as Visual;
+
+            var focused = element as UIElement;
+            if (focused != null)
+                focused.IsKeyboardFocused = value;
 
             while (visual != null)
             {

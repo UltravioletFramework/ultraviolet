@@ -9,52 +9,117 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <inheritdoc/>
         public Boolean IsKeyboardFocused
         {
-            get { return (View == null) ? false : View.ElementWithFocus == this; }
+            get { return GetValue<Boolean>(IsKeyboardFocusedProperty); }
+            internal set { SetValue<Boolean>(IsKeyboardFocusedPropertyKey, value); }
         }
 
         /// <inheritdoc/>
         public Boolean IsKeyboardFocusWithin
         {
-            get;
-            internal set;
+            get { return GetValue<Boolean>(IsKeyboardFocusWithinProperty); }
+            internal set { SetValue<Boolean>(IsKeyboardFocusWithinPropertyKey, value); }
         }
 
         /// <inheritdoc/>
         public Boolean IsMouseCaptured
         {
-            get
-            {
-                return (View == null) ? false : View.ElementWithMouseCapture == this;
-            }
+            get { return GetValue<Boolean>(IsMouseCapturedProperty); }
+            internal set { SetValue<Boolean>(IsMouseCapturedPropertyKey, value); }
         }
 
         /// <inheritdoc/>
         public Boolean IsMouseOver
         {
-            get { return isMouseOver; }
-            internal set
-            {
-                if (isMouseOver != value)
-                {
-                    isMouseOver = value;
-                    OnIsMouseOverChanged();
-                }
-            }
+            get { return GetValue<Boolean>(IsMouseOverProperty); }
+            internal set { SetValue<Boolean>(IsMouseOverPropertyKey, value); }
         }
 
         /// <inheritdoc/>
         public Boolean IsMouseDirectlyOver
         {
-            get { return isMouseDirectlyOver; }
-            internal set
-            {
-                if (isMouseDirectlyOver != value)
-                {
-                    isMouseDirectlyOver = value;
-                    OnIsMouseDirectlyOverChanged();
-                }
-            }
+            get { return GetValue<Boolean>(IsMouseDirectlyOverProperty); }
+            internal set { SetValue<Boolean>(IsMouseDirectlyOverPropertyKey, value); }
         }
+
+        /// <summary>
+        /// The private access key for the <see cref="IsKeyboardFocused"/> read-only dependency property.
+        /// </summary>
+        private static readonly DependencyPropertyKey IsKeyboardFocusedPropertyKey = DependencyProperty.RegisterReadOnly("IsKeyboardFocused", typeof(Boolean), typeof(UIElement),
+            new PropertyMetadata(HandleIsKeyboardFocusedChanged));
+
+        /// <summary>
+        /// Identifies the <see cref="IsKeyboardFocused"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty IsKeyboardFocusedProperty = IsKeyboardFocusedPropertyKey.DependencyProperty;
+
+        /// <summary>
+        /// The private access key for the <see cref="IsKeyboardFocusWithin"/> read-only dependency property.
+        /// </summary>
+        private static readonly DependencyPropertyKey IsKeyboardFocusWithinPropertyKey = DependencyProperty.RegisterReadOnly("IsKeyboardFocusWithin", typeof(Boolean), typeof(UIElement),
+            new PropertyMetadata(HandleIsKeyboardFocusWithinChanged));
+
+        /// <summary>
+        /// Identifies the <see cref="IsKeyboardFocusWithin"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty IsKeyboardFocusWithinProperty = IsKeyboardFocusWithinPropertyKey.DependencyProperty;
+
+        /// <summary>
+        /// The private access key for the <see cref="IsMouseCaptured"/> read-only dependency property.
+        /// </summary>
+        private static readonly DependencyPropertyKey IsMouseCapturedPropertyKey = DependencyProperty.RegisterReadOnly("IsMouseCaptured", typeof(Boolean), typeof(UIElement),
+            new PropertyMetadata(HandleIsMouseCapturedChanged));
+
+        /// <summary>
+        /// Identifies the <see cref="IsMouseCaptured"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty IsMouseCapturedProperty = IsMouseCapturedPropertyKey.DependencyProperty;
+
+        /// <summary>
+        /// The private access key for the <see cref="IsMouseOver"/> read-only dependency property.
+        /// </summary>
+        private static readonly DependencyPropertyKey IsMouseOverPropertyKey = DependencyProperty.RegisterReadOnly("IsMouseOver", typeof(Boolean), typeof(UIElement),
+            new PropertyMetadata(HandleIsMouseOverChanged));
+
+        /// <summary>
+        /// Identifies the <see cref="IsMouseOver"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty IsMouseOverProperty = IsMouseOverPropertyKey.DependencyProperty;
+
+        /// <summary>
+        /// The private access key for the <see cref="IsMouseDirectlyOver"/> read-only dependency property.
+        /// </summary>
+        private static readonly DependencyPropertyKey IsMouseDirectlyOverPropertyKey = DependencyProperty.RegisterReadOnly("IsMouseDirectlyOver", typeof(Boolean), typeof(UIElement),
+            new PropertyMetadata(HandleIsMouseDirectlyOverChanged));
+
+        /// <summary>
+        /// Identifies the <see cref="IsMouseDirectlyOver"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty IsMouseDirectlyOverProperty = IsMouseDirectlyOverPropertyKey.DependencyProperty;
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="IsKeyboardFocused"/> property changes.
+        /// </summary>
+        public event UpfEventHandler IsKeyboardFocusedChanged;
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="IsKeyboardFocusWithin"/> property changes.
+        /// </summary>
+        public event UpfEventHandler IsKeyboardFocusWithinChanged;
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="IsMouseCapturedChanged"/> property changes.
+        /// </summary>
+        public event UpfEventHandler IsMouseCapturedChanged;
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="IsMouseOver"/> property changes.
+        /// </summary>
+        public event UpfEventHandler IsMouseOverChanged;
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="IsMouseDirectlyOver"/> property changes.
+        /// </summary>
+        public event UpfEventHandler IsMouseDirectlyOverChanged;
 
         /// <inheritdoc/>
         public event UpfRoutedEventHandler GotKeyboardFocus
@@ -211,14 +276,64 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
-        /// Occurs when the value of the <see cref="IsMouseOver"/> property changes.
+        /// Raises the <see cref="IsKeyboardFocusedChanged"/> event.
         /// </summary>
-        public event UpfEventHandler IsMouseOverChanged;
+        protected virtual void OnIsKeyboardFocusedChanged()
+        {
+            var temp = IsKeyboardFocusedChanged;
+            if (temp != null)
+            {
+                temp(this);
+            }
+        }
 
         /// <summary>
-        /// Occurs when the value of the <see cref="IsMouseDirectlyOver"/> property changes.
+        /// Raises the <see cref="IsKeyboardFocusWithinChanged"/> event.
         /// </summary>
-        public event UpfEventHandler IsMouseDirectlyOverChanged;
+        protected virtual void OnIsKeyboardFocusWithinChanged()
+        {
+            var temp = IsKeyboardFocusWithinChanged;
+            if (temp != null)
+            {
+                temp(this);
+            }
+        }
+
+        /// <summary>
+        /// Raises the <see cref="IsMouseCapturedChanged"/> event.
+        /// </summary>
+        protected virtual void OnIsMouseCapturedChanged()
+        {
+            var temp = IsMouseCapturedChanged;
+            if (temp != null)
+            {
+                temp(this);
+            }
+        }
+
+        /// <summary>
+        /// Raises the <see cref="IsMouseOverChanged"/> event.
+        /// </summary>
+        protected virtual void OnIsMouseOverChanged()
+        {
+            var temp = IsMouseOverChanged;
+            if (temp != null)
+            {
+                temp(this);
+            }
+        }
+
+        /// <summary>
+        /// Raises the <see cref="IsMouseDirectlyOverChanged"/> event.
+        /// </summary>
+        protected virtual void OnIsMouseDirectlyOverChanged()
+        {
+            var temp = IsMouseDirectlyOverChanged;
+            if (temp != null)
+            {
+                temp(this);
+            }
+        }
 
         /// <summary>
         /// Invoked when a <see cref="Keyboard.GotKeyboardFocusEvent"/> attached routed event occurs.
@@ -379,30 +494,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         protected virtual void OnMouseWheel(MouseDevice device, Double x, Double y, ref RoutedEventData data)
         {
 
-        }
-
-        /// <summary>
-        /// Occurs when the value of the <see cref="IsMouseOver"/> property changes.
-        /// </summary>
-        protected virtual void OnIsMouseOverChanged()
-        {
-            var temp = IsMouseOverChanged;
-            if (temp != null)
-            {
-                temp(this);
-            }
-        }
-
-        /// <summary>
-        /// Raises the <see cref="IsMouseDirectlyOver"/> event.
-        /// </summary>
-        protected virtual void OnIsMouseDirectlyOverChanged()
-        {
-            var temp = IsMouseDirectlyOverChanged;
-            if (temp != null)
-            {
-                temp(this);
-            }
         }
 
         /// <summary>
@@ -580,8 +671,49 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             ((UIElement)element).OnMouseWheel(device, x, y, ref data);
         }
 
-        // Property values.
-        private Boolean isMouseOver;
-        private Boolean isMouseDirectlyOver;
+        /// <summary>
+        /// Occurs when the value of the <see cref="IsKeyboardFocused"/> dependency property changes.
+        /// </summary>
+        /// <param name="dobj">The dependency object that raised the event.</param>
+        private static void HandleIsKeyboardFocusedChanged(DependencyObject dobj)
+        {
+            ((UIElement)dobj).OnIsKeyboardFocusedChanged();
+        }
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="IsKeyboardFocusWithin"/> dependency property changes.
+        /// </summary>
+        /// <param name="dobj">The dependency object that raised the event.</param>
+        private static void HandleIsKeyboardFocusWithinChanged(DependencyObject dobj)
+        {
+            ((UIElement)dobj).OnIsKeyboardFocusWithinChanged();
+        }
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="IsMouseCaptured"/> dependency property changes.
+        /// </summary>
+        /// <param name="dobj">The dependency object that raised the event.</param>
+        private static void HandleIsMouseCapturedChanged(DependencyObject dobj)
+        {
+            ((UIElement)dobj).OnIsMouseCapturedChanged();
+        }
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="IsMouseOver"/> dependency property changes.
+        /// </summary>
+        /// <param name="dobj">The dependency object that raised the event.</param>
+        private static void HandleIsMouseOverChanged(DependencyObject dobj)
+        {
+            ((UIElement)dobj).OnIsMouseOverChanged();
+        }
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="IsMouseDirectlyOver"/> dependency property changes.
+        /// </summary>
+        /// <param name="dobj">The dependency object that raised the event.</param>
+        private static void HandleIsMouseDirectlyOverChanged(DependencyObject dobj)
+        {
+            ((UIElement)dobj).OnIsMouseDirectlyOverChanged();
+        }
     }
 }
