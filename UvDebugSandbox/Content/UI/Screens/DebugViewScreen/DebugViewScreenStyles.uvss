@@ -372,12 +372,12 @@ textbox
 	min-height: 20;
 }
 
-.scroll-track-horizontal
+.scroll-track-bg-horizontal
 {
 	source-image: #Global:Textures:DebugUI 192 791 28 28 3 3 3 3;
 }
 
-.scroll-track-vertical
+.scroll-track-bg-vertical
 {
 	source-image: #Global:Textures:DebugUI 192 791 28 28 3 3 3 3;
 }
@@ -451,13 +451,13 @@ hslider .track-thumb, vslider .track-thumb
 	transition (common, pressed): null;
 }
 
-hslider .slider-track
+hslider .slider-track-bg
 {
 	source-image: #Global:Textures:DebugUI 1 839 24 10 9 9;
 	height: 10;
 }
 
-vslider .slider-track
+vslider .slider-track-bg
 {
 	source-image: #Global:Textures:DebugUI 26 839 10 24 9 9 vertical;
 	width: 10;

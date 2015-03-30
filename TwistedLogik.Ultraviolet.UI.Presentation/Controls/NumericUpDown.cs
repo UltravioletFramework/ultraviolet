@@ -51,10 +51,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <inheritdoc/>
         protected override void OnValueChanged()
         {
-            if (Input != null)
+            if (PART_Input != null)
             {
-                Input.DigestImmediately(TextBox.TextProperty);
-                Input.MoveEnd();
+                PART_Input.DigestImmediately(TextBox.TextProperty);
+                PART_Input.MoveEnd();
             }
             base.OnValueChanged();
         }
@@ -62,9 +62,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <inheritdoc/>
         protected override void OnLostKeyboardFocus(ref RoutedEventData data)
         {
-            if (Input != null)
+            if (PART_Input != null)
             {
-                Input.InvalidateDisplayCache(TextBox.TextProperty);
+                PART_Input.InvalidateDisplayCache(TextBox.TextProperty);
             }
             base.OnLostKeyboardFocus(ref data);
         }
@@ -133,7 +133,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         private void InvalidatePattern()
         {
-            if (Input == null)
+            if (PART_Input == null)
                 return;
 
             var allowNegative = Minimum < 0;
@@ -149,7 +149,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             if (allowDecimals)
                 sb.Append("(\\.[0-9]{0," + DecimalPlaces + ")?");
 
-            Input.Pattern = sb.ToString();
+            PART_Input.Pattern = sb.ToString();
         }
 
         /// <summary>
@@ -157,14 +157,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         private void InvalidateFormatString()
         {
-            if (Input == null)
+            if (PART_Input == null)
                 return;
 
-            Input.SetFormatString(TextBox.TextProperty, DecimalPlaces > 0 ? 
+            PART_Input.SetFormatString(TextBox.TextProperty, DecimalPlaces > 0 ? 
                 "0." + new String('0', DecimalPlaces) : "0");
         }
 
         // Component references.
-        private readonly TextBox Input = null;
+        private readonly TextBox PART_Input = null;
     }
 }

@@ -23,14 +23,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <inheritdoc/>
         protected override Size2D MeasureOverride(Size2D availableSize)
         {
-            if (Track != null)
+            if (PART_Track != null)
             {
-                Track.InvalidateMeasure();
+                PART_Track.InvalidateMeasure();
             }
             return base.MeasureOverride(availableSize);
         }
 
         // Component references.
-        private readonly Track Track = null;
+        private readonly Track PART_Track = null;
     }
 }

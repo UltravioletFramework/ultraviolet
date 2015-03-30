@@ -2,7 +2,7 @@
 using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
+namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
 {
     /// <summary>
     /// Represents the base class for scroll bars.
@@ -57,9 +57,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <inheritdoc/>
         protected override void OnValueChanged()
         {
-            if (Track != null)
+            if (PART_Track != null)
             {
-                Track.InvalidateArrange();
+                PART_Track.InvalidateArrange();
             }
             base.OnValueChanged();
         }
@@ -87,6 +87,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         // Component references.
-        private readonly Track Track = null;
+        private readonly Track PART_Track = null;
     }
 }

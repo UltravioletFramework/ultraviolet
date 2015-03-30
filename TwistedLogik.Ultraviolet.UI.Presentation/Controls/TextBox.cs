@@ -1290,10 +1290,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         {
             get
             {
-                if (presenter == null)
+                if (PART_ContentPresenter == null)
                     return RectangleD.Empty;
 
-                return presenter.AbsoluteBounds;
+                return PART_ContentPresenter.AbsoluteBounds;
             }
         }
 
@@ -1304,11 +1304,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         {
             get
             {
-                if (presenter == null)
+                if (PART_ContentPresenter == null)
                     return RectangleD.Empty;
 
-                var offset = presenter.AbsolutePosition - AbsolutePosition;
-                return presenter.Bounds + offset;
+                var offset = PART_ContentPresenter.AbsolutePosition - AbsolutePosition;
+                return PART_ContentPresenter.Bounds + offset;
             }
         }
 
@@ -1323,6 +1323,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         private RectangleD? textClip;
 
         // Component references.
-        private readonly ContentPresenter presenter = null;
+        private readonly ContentPresenter PART_ContentPresenter = null;
     }
 }

@@ -132,7 +132,7 @@
     <Compile Include="Controls\Primitives\Selector.cs" />
     <Compile Include="Controls\VSlider.cs" />
     <Compile Include="Controls\HSlider.cs" />
-    <Compile Include="Controls\SliderBase.cs" />
+    <Compile Include="Controls\Primitives\SliderBase.cs" />
     <Compile Include="Controls\ScrollViewer.cs" />
     <Compile Include="Controls\NumericUpDown.cs" />
     <Compile Include="Controls\Button.cs" />
@@ -169,7 +169,7 @@
     <Compile Include="Controls\RowDefinition.cs" />
     <Compile Include="Controls\RowDefinitionCollection.cs" />
     <Compile Include="Controls\RowDefinitionCollection.IEnumerable.cs" />
-    <Compile Include="Controls\ScrollBarBase.cs" />
+    <Compile Include="Controls\Primitives\ScrollBarBase.cs" />
     <Compile Include="Controls\ScrollBarVisibility.cs" />
     <Compile Include="Controls\Shape.cs" />
     <Compile Include="Controls\StackPanel.cs" />

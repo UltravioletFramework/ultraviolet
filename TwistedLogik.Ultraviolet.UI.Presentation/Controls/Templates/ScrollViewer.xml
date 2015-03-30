@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ComponentTemplate>
-  <Grid Name="LayoutRoot" Class="scrollview-component" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+  <Grid Class="scrollview-component" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
     <Grid.ColumnDefinitions>
       <ColumnDefinition Width="*"/>
       <ColumnDefinition Width="Auto"/>
@@ -10,12 +10,12 @@
       <RowDefinition Height="Auto"/>
     </Grid.RowDefinitions>
 
-    <ScrollContentPresenter Name="Presenter" Grid.Column="0" Grid.Row="0" />
+    <ScrollContentPresenter Name="PART_ContentPresenter" Grid.Column="0" Grid.Row="0" />
 
-    <HScrollBar Name="HScroll" Class="scrollview-hscroll" Grid.Column="0" Grid.Row="1" HorizontalAlignment="Stretch" 
+    <HScrollBar Name="PART_HScroll" Class="scrollview-hscroll" Grid.Column="0" Grid.Row="1" HorizontalAlignment="Stretch" 
                 SmallChange="16" LargeChange="{{ViewportWidth}}" ValueChanged="HandleScrollValueChanged" MaximumChanged="HandleScrollMaximumChanged"/>
 
-    <VScrollBar Name="VScroll" Class="scrollview-vscroll" Grid.Column="1" Grid.Row="0" VerticalAlignment="Stretch" 
+    <VScrollBar Name="PART_VScroll" Class="scrollview-vscroll" Grid.Column="1" Grid.Row="0" VerticalAlignment="Stretch" 
                 SmallChange="16" LargeChange="{{ViewportHeight}}" ValueChanged="HandleScrollValueChanged" MaximumChanged="HandleScrollMaximumChanged"/>
     
     <Rectangle Class="scrollview-rect" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>

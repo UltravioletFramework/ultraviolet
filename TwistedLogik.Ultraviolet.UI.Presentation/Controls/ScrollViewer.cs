@@ -26,7 +26,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         public Double ExtentWidth
         {
-            get { return (Presenter == null) ? 0 : Presenter.ExtentWidth; }
+            get { return (PART_ContentPresenter == null) ? 0 : PART_ContentPresenter.ExtentWidth; }
         }
 
         /// <summary>
@@ -34,7 +34,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         public Double ExtentHeight
         {
-            get { return (Presenter == null) ? 0 : Presenter.ExtentHeight; }
+            get { return (PART_ContentPresenter == null) ? 0 : PART_ContentPresenter.ExtentHeight; }
         }
 
         /// <summary>
@@ -58,7 +58,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         public Double ViewportWidth
         {
-            get { return (Presenter == null) ? 0 : Presenter.ViewportWidth; }
+            get { return (PART_ContentPresenter == null) ? 0 : PART_ContentPresenter.ViewportWidth; }
         }
 
         /// <summary>
@@ -66,7 +66,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         public Double ViewportHeight
         {
-            get { return (Presenter == null) ? 0 : Presenter.ViewportHeight; }
+            get { return (PART_ContentPresenter == null) ? 0 : PART_ContentPresenter.ViewportHeight; }
         }
 
         /// <summary>
@@ -74,7 +74,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         public Double HorizontalOffset
         {
-            get { return HScroll == null || !HScroll.IsEnabled ? 0 : HScroll.Value; }
+            get { return PART_HScroll == null || !PART_HScroll.IsEnabled ? 0 : PART_HScroll.Value; }
         }
 
         /// <summary>
@@ -82,7 +82,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         public Double VerticalOffset
         {
-            get { return VScroll == null || !VScroll.IsEnabled ? 0 : VScroll.Value; }
+            get { return PART_VScroll == null || !PART_VScroll.IsEnabled ? 0 : PART_VScroll.Value; }
         }
 
         /// <summary>
@@ -128,7 +128,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <inheritdoc/>
         protected override Size2D MeasureOverride(Size2D availableSize)
         {
-            if (Presenter == null || HScroll == null || VScroll == null)
+            if (PART_ContentPresenter == null || PART_HScroll == null || PART_VScroll == null)
                 return Size2D.Zero;
 
             var child = GetVisualChild(0);
@@ -136,8 +136,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             var hVisibility = HorizontalScrollBarVisibility;
             var vVisibility = VerticalScrollBarVisibility;
 
-            HScroll.Visibility = (hVisibility == ScrollBarVisibility.Visible) ? Visibility.Visible : Visibility.Collapsed;
-            VScroll.Visibility = (vVisibility == ScrollBarVisibility.Visible) ? Visibility.Visible : Visibility.Collapsed;
+            PART_HScroll.Visibility = (hVisibility == ScrollBarVisibility.Visible) ? Visibility.Visible : Visibility.Collapsed;
+            PART_VScroll.Visibility = (vVisibility == ScrollBarVisibility.Visible) ? Visibility.Visible : Visibility.Collapsed;
 
             var hAuto = (hVisibility == ScrollBarVisibility.Auto);
             var vAuto = (vVisibility == ScrollBarVisibility.Auto);
@@ -145,23 +145,23 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             var hNoScroll = (hVisibility == ScrollBarVisibility.Disabled);
             var vNoScroll = (vVisibility == ScrollBarVisibility.Disabled);
 
-            Presenter.CanScrollHorizontally = (hVisibility != ScrollBarVisibility.Disabled);
-            Presenter.CanScrollVertically   = (vVisibility != ScrollBarVisibility.Disabled);
+            PART_ContentPresenter.CanScrollHorizontally = (hVisibility != ScrollBarVisibility.Disabled);
+            PART_ContentPresenter.CanScrollVertically   = (vVisibility != ScrollBarVisibility.Disabled);
 
             child.Measure(availableSize);
 
             if (hAuto || vAuto)
             {
-                var hAutoVisible = hAuto && Presenter.ExtentWidth > Presenter.ViewportWidth;
+                var hAutoVisible = hAuto && PART_ContentPresenter.ExtentWidth > PART_ContentPresenter.ViewportWidth;
                 if (hAutoVisible)
                 {
-                    HScroll.Visibility = Visibility.Visible;
+                    PART_HScroll.Visibility = Visibility.Visible;
                 }
 
-                var vAutoVisible = vAuto && Presenter.ExtentHeight > Presenter.ViewportHeight;
+                var vAutoVisible = vAuto && PART_ContentPresenter.ExtentHeight > PART_ContentPresenter.ViewportHeight;
                 if (vAutoVisible)
                 {
-                    VScroll.Visibility = Visibility.Visible;
+                    PART_VScroll.Visibility = Visibility.Visible;
                 }
 
                 if (hAutoVisible || vAutoVisible)
@@ -172,16 +172,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 
                 if (hAuto && vAuto && (hAutoVisible != vAutoVisible))
                 {
-                    hAutoVisible = !hAutoVisible && Presenter.ExtentWidth > Presenter.ViewportWidth;
+                    hAutoVisible = !hAutoVisible && PART_ContentPresenter.ExtentWidth > PART_ContentPresenter.ViewportWidth;
                     if (hAutoVisible)
                     {
-                        HScroll.Visibility = Visibility.Visible;
+                        PART_HScroll.Visibility = Visibility.Visible;
                     }
 
-                    vAutoVisible = !vAutoVisible && Presenter.ExtentHeight > Presenter.ViewportHeight;
+                    vAutoVisible = !vAutoVisible && PART_ContentPresenter.ExtentHeight > PART_ContentPresenter.ViewportHeight;
                     if (vAutoVisible)
                     {
-                        VScroll.Visibility = Visibility.Visible;
+                        PART_VScroll.Visibility = Visibility.Visible;
                     }
 
                     if (hAutoVisible || vAutoVisible)
@@ -192,17 +192,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 }
             }
 
-            HScroll.Minimum = 0;
-            VScroll.Minimum = 0;
+            PART_HScroll.Minimum = 0;
+            PART_VScroll.Minimum = 0;
 
-            HScroll.Maximum = ScrollableWidth;
-            VScroll.Maximum = ScrollableHeight;
+            PART_HScroll.Maximum = ScrollableWidth;
+            PART_VScroll.Maximum = ScrollableHeight;
 
-            HScroll.ViewportSize = ViewportWidth;
-            VScroll.ViewportSize = ViewportHeight;
+            PART_HScroll.ViewportSize = ViewportWidth;
+            PART_VScroll.ViewportSize = ViewportHeight;
 
-            HScroll.IsEnabled = Presenter.CanScrollHorizontally && ScrollableWidth > 0;
-            VScroll.IsEnabled = Presenter.CanScrollVertically && ScrollableHeight > 0;
+            PART_HScroll.IsEnabled = PART_ContentPresenter.CanScrollHorizontally && ScrollableWidth > 0;
+            PART_VScroll.IsEnabled = PART_ContentPresenter.CanScrollVertically && ScrollableHeight > 0;
 
             child.InvalidateMeasure();
             child.Measure(availableSize);
@@ -213,13 +213,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <inheritdoc/>
         protected override void OnMouseWheel(MouseDevice device, Double x, Double y, ref RoutedEventData data)
         {
-            if (x != 0 && HScroll != null)
+            if (x != 0 && PART_HScroll != null)
             {
-                HScroll.Value += ScrollDeltaMouseWheel * x;
+                PART_HScroll.Value += ScrollDeltaMouseWheel * x;
             }
-            if (y != 0 && VScroll != null)
+            if (y != 0 && PART_VScroll != null)
             {
-                VScroll.Value += ScrollDeltaMouseWheel * -y;
+                PART_VScroll.Value += ScrollDeltaMouseWheel * -y;
             }
             data.Handled = true;
 
@@ -232,22 +232,22 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             switch (key)
             {
                 case Key.Up:
-                    VScroll.Value -= ScrollDeltaKey;
+                    PART_VScroll.Value -= ScrollDeltaKey;
                     data.Handled = true;
                     break;
 
                 case Key.Down:
-                    VScroll.Value += ScrollDeltaKey;
+                    PART_VScroll.Value += ScrollDeltaKey;
                     data.Handled = true;
                     break;
 
                 case Key.Left:
-                    HScroll.Value -= ScrollDeltaKey;
+                    PART_HScroll.Value -= ScrollDeltaKey;
                     data.Handled = true;
                     break;
 
                 case Key.Right:
-                    HScroll.Value += ScrollDeltaKey;
+                    PART_HScroll.Value += ScrollDeltaKey;
                     data.Handled = true;
                     break;
             }
@@ -304,7 +304,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         private void HandleScrollValueChanged(DependencyObject element)
         {
-            Presenter.PositionChildren();
+            PART_ContentPresenter.PositionChildren();
         }
 
         /// <summary>
@@ -312,7 +312,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         private void HandleScrollMaximumChanged(DependencyObject element)
         {
-            Presenter.PositionChildren();
+            PART_ContentPresenter.PositionChildren();
         }
 
         // Scroll deltas for various input events.
@@ -320,8 +320,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         private const Double ScrollDeltaKey = 16.0;
 
         // Control component references.
-        private readonly ScrollContentPresenter Presenter = null;
-        private readonly HScrollBar HScroll = null;
-        private readonly VScrollBar VScroll = null;
+        private readonly ScrollContentPresenter PART_ContentPresenter = null;
+        private readonly HScrollBar PART_HScroll = null;
+        private readonly VScrollBar PART_VScroll = null;
     }
 }

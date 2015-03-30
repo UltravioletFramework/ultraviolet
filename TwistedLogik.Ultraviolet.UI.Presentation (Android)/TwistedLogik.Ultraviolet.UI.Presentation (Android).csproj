@@ -260,6 +260,9 @@
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\Primitives\RangeBase.cs">
       <Link>Controls\Primitives\RangeBase.cs</Link>
     </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\Primitives\ScrollBarBase.cs">
+      <Link>Controls\Primitives\ScrollBarBase.cs</Link>
+    </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\Primitives\Selector.cs">
       <Link>Controls\Primitives\Selector.cs</Link>
     </Compile>
@@ -268,6 +271,9 @@
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\Primitives\Selector.SelectionMetadata.cs">
       <Link>Controls\Primitives\Selector.SelectionMetadata.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\Primitives\SliderBase.cs">
+      <Link>Controls\Primitives\SliderBase.cs</Link>
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\Primitives\TextBlockBase.cs">
       <Link>Controls\Primitives\TextBlockBase.cs</Link>
@@ -296,9 +302,6 @@
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\RowDefinitionCollection.IEnumerable.cs">
       <Link>Controls\RowDefinitionCollection.IEnumerable.cs</Link>
     </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\ScrollBarBase.cs">
-      <Link>Controls\ScrollBarBase.cs</Link>
-    </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\ScrollBarVisibility.cs">
       <Link>Controls\ScrollBarVisibility.cs</Link>
     </Compile>
@@ -313,9 +316,6 @@
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\Shape.cs">
       <Link>Controls\Shape.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\SliderBase.cs">
-      <Link>Controls\SliderBase.cs</Link>
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\StackPanel.cs">
       <Link>Controls\StackPanel.cs</Link>
@@ -804,7 +804,7 @@
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" ProjectLinkReference="7379d9e1-bb01-4b05-b4f7-5d39b393348f" />
+      <UserProperties ProjectLinkReference="7379d9e1-bb01-4b05-b4f7-5d39b393348f" ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" />
     </VisualStudio>
   </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -1,7 +1,7 @@
 ﻿using System;
 using TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
+namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
 {
     /// <summary>
     /// Represents the base class for sliders.

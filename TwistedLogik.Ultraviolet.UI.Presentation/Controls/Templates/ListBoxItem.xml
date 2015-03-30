@@ -6,7 +6,7 @@
       Canvas.Top="0"
       Canvas.Right="0"
       Canvas.Bottom ="0"/>
-    <ContentPresenter 
+    <ContentPresenter Class="listboxitem-content"
       Canvas.Left="8"
       Canvas.Top="8"
       Canvas.Right="8"
