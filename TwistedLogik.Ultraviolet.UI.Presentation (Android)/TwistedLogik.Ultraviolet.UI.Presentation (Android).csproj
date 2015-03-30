@@ -152,9 +152,6 @@
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\Button.cs">
       <Link>Controls\Button.cs</Link>
     </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\ButtonBase.cs">
-      <Link>Controls\ButtonBase.cs</Link>
-    </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\Canvas.cs">
       <Link>Controls\Canvas.cs</Link>
     </Compile>
@@ -254,8 +251,26 @@
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\Panel.cs">
       <Link>Controls\Panel.cs</Link>
     </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\Primitives\ButtonBase.cs">
+      <Link>Controls\Primitives\ButtonBase.cs</Link>
+    </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\Primitives\NamespaceDoc.cs">
       <Link>Controls\Primitives\NamespaceDoc.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\Primitives\RangeBase.cs">
+      <Link>Controls\Primitives\RangeBase.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\Primitives\Selector.cs">
+      <Link>Controls\Primitives\Selector.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\Primitives\Selector.SelectionCollection.cs">
+      <Link>Controls\Primitives\Selector.SelectionCollection.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\Primitives\Selector.SelectionMetadata.cs">
+      <Link>Controls\Primitives\Selector.SelectionMetadata.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\Primitives\TextBlockBase.cs">
+      <Link>Controls\Primitives\TextBlockBase.cs</Link>
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\Primitives\Track.cs">
       <Link>Controls\Primitives\Track.cs</Link>
@@ -265,9 +280,6 @@
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\RadioButton.cs">
       <Link>Controls\RadioButton.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\RangeBase.cs">
-      <Link>Controls\RangeBase.cs</Link>
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\Rectangle.cs">
       <Link>Controls\Rectangle.cs</Link>
@@ -299,15 +311,6 @@
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\SelectionMode.cs">
       <Link>Controls\SelectionMode.cs</Link>
     </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\Selector.cs">
-      <Link>Controls\Selector.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\Selector.SelectionCollection.cs">
-      <Link>Controls\Selector.SelectionCollection.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\Selector.SelectionMetadata.cs">
-      <Link>Controls\Selector.SelectionMetadata.cs</Link>
-    </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\Shape.cs">
       <Link>Controls\Shape.cs</Link>
     </Compile>
@@ -319,9 +322,6 @@
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\TextBlock.cs">
       <Link>Controls\TextBlock.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\TextBlockBase.cs">
-      <Link>Controls\TextBlockBase.cs</Link>
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\TextBox.cs">
       <Link>Controls\TextBox.cs</Link>
@@ -804,7 +804,7 @@
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties ProjectLinkReference="7379d9e1-bb01-4b05-b4f7-5d39b393348f" ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" />
+      <UserProperties ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" ProjectLinkReference="7379d9e1-bb01-4b05-b4f7-5d39b393348f" />
     </VisualStudio>
   </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

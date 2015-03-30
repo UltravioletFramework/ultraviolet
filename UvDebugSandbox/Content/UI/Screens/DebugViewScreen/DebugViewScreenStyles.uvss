@@ -1,7 +1,7 @@
 ﻿*
 {
-	font: #Global:Fonts:DebugUI;
-	font-color: #ff000000;
+	font: #Global:Fonts:SegoeUI;
+	font-color: #ffffffff;
 }
 
 view

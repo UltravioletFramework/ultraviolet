@@ -2,7 +2,7 @@
 using TwistedLogik.Nucleus;
 using TwistedLogik.Nucleus.Collections;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
+namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
 {
     partial class Selector
     {

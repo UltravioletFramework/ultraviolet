@@ -3,16 +3,28 @@
   <Stylesheet>DebugViewScreenStyles.uvss</Stylesheet>
   <View ViewModelType="UvDebugSandbox.UI.Screens.DebugViewModel, UvDebugSandbox">
 
-    <ListBox Margin="50" Name="foo" Width="200" Height="200" SelectedIndex="{{Index}}" SelectionChanged="HandleSelectionChanged">
-      <ListBoxItem Name="A">Hello</ListBoxItem>
-      <ListBoxItem Name="B">Hello</ListBoxItem>
-      <ListBoxItem Name="C">Hello</ListBoxItem>
-      <ListBoxItem Name="D">Hello</ListBoxItem>
-      <ListBoxItem Name="E">Hello</ListBoxItem>
-      <ListBoxItem Name="F">Hello</ListBoxItem>
-      <ListBoxItem Name="G">Hello</ListBoxItem>
-      <ListBoxItem Name="H">Hello</ListBoxItem>
-    </ListBox>
+    <DockPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+      <Grid HorizontalAlignment="Stretch" DockPanel.Dock="Top">
+        <Rectangle HorizontalAlignment="Stretch" VerticalAlignment="Stretch" FillColor="#ffe0e0e0"/>
+        <TextBlock Margin="8 8 0 8" Height="48" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">HEADER TEXT GOES HERE</TextBlock>
+      </Grid>
+      <Grid HorizontalAlignment="Stretch" DockPanel.Dock="Bottom">
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="Auto"/>
+          <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Rectangle Grid.ColumnSpan="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" FillColor="#ffe0e0e0"/>
+        <StackPanel Grid.Column="0" Orientation="Horizontal">
+          <ToggleButton Margin="8 8 0 8" Width="48" Height="48">A</ToggleButton>
+          <ToggleButton Margin="8 8 0 8" Width="48" Height="48">B</ToggleButton>
+          <ToggleButton Margin="8 8 0 8" Width="48" Height="48">C</ToggleButton>
+          <TextBlock Margin="8 8 0 8" Height="48" VerticalContentAlignment="Center">Some status text goes here</TextBlock>
+        </StackPanel>
+        <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
+          <Button Margin="0 8 8 8" Height="48">Exit Game</Button>
+        </StackPanel>
+      </Grid>
+    </DockPanel>
 
   </View>
 </UIPanelDefinition>
