@@ -11,8 +11,8 @@ namespace TwistedLogik.Ultraviolet.Testing
     /// Represents a unit test framework which hosts an instance of the Ultraviolet Framework.
     /// This framework is intended primarily for unit tests which test rendering.
     /// </summary>
-    [DeploymentItem(@"Dependencies\SDL2\x86\", "x86")]
-    [DeploymentItem(@"Dependencies\BASS\x86\", "x86")]
+    [DeploymentItem(@"..\..\..\Dependencies\SDL2\x86\", "x86")]
+    [DeploymentItem(@"..\..\..\Dependencies\BASS\x86\", "x86")]
     [DeploymentItem(@"Resources\", "Resources")]
     [DeploymentItem(@"Content\", "Content")]
     [DeploymentItem(@"TwistedLogik.Ultraviolet.BASS.dll")]

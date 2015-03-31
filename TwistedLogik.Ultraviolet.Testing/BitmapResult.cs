@@ -42,7 +42,7 @@ namespace TwistedLogik.Ultraviolet.Testing
             var expected = (Bitmap)Bitmap.FromFile(filename);
             if (expected.Width != bitmap.Width || expected.Height != bitmap.Height)
             {
-                Assert.Fail("Images do not match");
+                Assert.Fail("Images do not match due to differing dimensions");
             }
 
             var mismatchesFound    = 0;
@@ -70,19 +70,19 @@ namespace TwistedLogik.Ultraviolet.Testing
                     }
                 }
 
+                var filenameNoExtension = Path.GetFileNameWithoutExtension(filename);
+
+                var filenameExpected = Path.ChangeExtension(filenameNoExtension + "_Expected", "png");
+                expected.Save(filenameExpected);
+
+                var filenameActual = Path.ChangeExtension(filenameNoExtension + "_Actual", "png");
+                bitmap.Save(filenameActual, ImageFormat.Png);
+
+                var filenameDiff = Path.ChangeExtension(filenameNoExtension + "_Diff", "png");
+                diff.Save(filenameDiff, ImageFormat.Png);
+
                 if (mismatchesFound >= mismatchesRequired)
                 {
-                    var filenameNoExtension = Path.GetFileNameWithoutExtension(filename);
-
-                    var filenameExpected = Path.ChangeExtension(filenameNoExtension + "_Expected", "png");
-                    expected.Save(filenameExpected);
-
-                    var filenameActual = Path.ChangeExtension(filenameNoExtension + "_Actual", "png");
-                    bitmap.Save(filenameActual, ImageFormat.Png);
-
-                    var filenameDiff = Path.ChangeExtension(filenameNoExtension + "_Diff", "png");
-                    diff.Save(filenameDiff, ImageFormat.Png);
-
                     Assert.Fail("Images do not match");
                 }
             }
