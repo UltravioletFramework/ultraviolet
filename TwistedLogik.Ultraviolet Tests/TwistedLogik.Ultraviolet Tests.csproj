@@ -183,104 +183,76 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\Ultraviolet Framework Samples\UltravioletSample7\Content\Songs\Deep Haze.ogg">
-      <Link>Dependencies\Content\Songs\Deep Haze.ogg</Link>
+    <None Include="Content\Fonts\SegoeUI.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Dependencies\Content\Fonts\SegoeUI.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Dependencies\Content\Fonts\SegoeUITexture.png">
+    <None Include="Content\Fonts\SegoeUITexture.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\Expected\Graphics\Graphics2D\SpriteBatch_CanRenderSimpleStrings.png">
+    <None Include="Content\Songs\Deep Haze.ogg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\Expected\Graphics\Graphics2D\SpriteBatch_CanRenderSimpleStrings.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CanRenderColoredStrings.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CanAlignTextWithinAnArea.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Expected\Graphics\UltravioletGraphics_CanRenderAColoredTriangle.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Dependencies\Content\Textures\Triangle.png">
+    <None Include="Content\Textures\Triangle.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Expected\Graphics\UltravioletGraphics_CanRenderATexturedTriangle.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CanRenderStyledStrings.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Dependencies\Content\Tables\TestTextTable.xml">
+    <None Include="Content\Tables\TestTextTable.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Expected\Graphics\Graphics2D\Text\TextTable_RendersFromViewModel.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Dependencies\Content\Fonts\Garamond.xml">
+    <None Include="Content\Fonts\Garamond.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Dependencies\Content\Fonts\GaramondTexture.png">
+    <None Include="Content\Fonts\GaramondTexture.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CorrectlyAlignsKernedTextAcrossTokenBoundaries.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\Dependencies\BASS\x64\win32nt\bass.dll">
-      <Link>Dependencies\x64\win32nt\bass.dll</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="..\Dependencies\BASS\x64\win32nt\bass_fx.dll">
-      <Link>Dependencies\x64\win32nt\bass_fx.dll</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="..\Dependencies\BASS\x86\win32nt\bass.dll">
-      <Link>Dependencies\x86\win32nt\bass.dll</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="..\Dependencies\BASS\x86\win32nt\bass_fx.dll">
-      <Link>Dependencies\x86\win32nt\bass_fx.dll</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="..\Dependencies\SDL2\x64\win32nt\SDL2.dll">
-      <Link>Dependencies\x64\win32nt\SDL2.dll</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="..\Dependencies\SDL2\x86\win32nt\SDL2.dll">
-      <Link>Dependencies\x86\win32nt\SDL2.dll</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="..\Ultraviolet Framework Samples\UltravioletSample8\Content\SoundEffects\grenade.wav">
-      <Link>Dependencies\Content\SoundEffects\grenade.wav</Link>
+    <None Include="Content\SoundEffects\grenade.wav">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

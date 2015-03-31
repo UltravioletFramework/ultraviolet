@@ -74,7 +74,7 @@ namespace TwistedLogik.Nucleus
             var handle = NativeMethods.LoadLibraryEx(path, IntPtr.Zero, 0);
             if (handle == IntPtr.Zero)
             {
-                throw new DllNotFoundException(name);
+                throw new DllNotFoundException(String.Format("{0} ({1})", name, path));
             }
         }
 

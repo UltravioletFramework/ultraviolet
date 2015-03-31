@@ -6,13 +6,10 @@ using TwistedLogik.Ultraviolet.Testing;
 namespace TwistedLogik.Ultraviolet.Tests.Graphics
 {
     [TestClass]
-    [DeploymentItem(@"Resources")]
-    [DeploymentItem(@"Dependencies")]
     public class UltravioletGraphicsTests : UltravioletApplicationTestFramework
     {
         [TestMethod]
         [TestCategory("Rendering")]
-        [DeploymentItem(@"Expected\Graphics\UltravioletGraphics_CanRenderAColoredTriangle.png")]
         public void UltravioletGraphics_CanRenderAColoredTriangle()
         {
             var effect         = default(BasicEffect);
@@ -56,12 +53,11 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics
                     }
                 });
 
-            TheResultingImage(result).ShouldMatch(@"Expected\Graphics\UltravioletGraphics_CanRenderAColoredTriangle.png");
+            TheResultingImage(result).ShouldMatch(@"Resources\Expected\Graphics\UltravioletGraphics_CanRenderAColoredTriangle.png");
         }
         
         [TestMethod]
         [TestCategory("Rendering")]
-        [DeploymentItem(@"Expected\Graphics\UltravioletGraphics_CanRenderATexturedTriangle.png")]
         public void UltravioletGraphics_CanRenderATexturedTriangle()
         {
             var effect         = default(BasicEffect);
@@ -110,7 +106,7 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics
                     }
                 });
 
-            TheResultingImage(result).ShouldMatch(@"Expected\Graphics\UltravioletGraphics_CanRenderATexturedTriangle.png");
+            TheResultingImage(result).ShouldMatch(@"Resources\Expected\Graphics\UltravioletGraphics_CanRenderATexturedTriangle.png");
         }
     }
 }

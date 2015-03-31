@@ -6,8 +6,6 @@ using TwistedLogik.Ultraviolet.Testing;
 namespace TwistedLogik.Ultraviolet.Tests.Audio
 {
     [TestClass]
-    [DeploymentItem(@"Resources")]
-    [DeploymentItem(@"Dependencies")]
     public class BASS_SongPlayerTests : UltravioletApplicationTestFramework
     {
         [TestMethod]
