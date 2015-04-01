@@ -46,13 +46,6 @@ table td {
     padding: 0;
 }
 
-table thead tr:nth-child(1) {
-    color: #fff;
-    background-color: #7100b5;
-    font-weight: normal;
-    font-family: Consolas;
-}
-
 table thead tr:nth-child(1) td {
     padding: 8px;
 }
@@ -65,13 +58,38 @@ table thead tr:nth-child(2) td {
     padding: 8px;
 }
 
-table {
+.test.passed table thead tr:nth-child(1) {
+    color: #fff;
+    background-color: #7100b5;
+    font-weight: normal;
+    font-family: Consolas;
+}
+
+.test.passed table {
+    border-top: 1px solid #7100b5;
     border-bottom: 1px solid #7100b5;
 }
 
-table td {
+.test.passed table td {
     border-left: 1px solid #7100b5;
     border-right: 1px solid #7100b5;
+}
+
+.test.failed table thead tr:nth-child(1) {
+    color: #fff;
+    background-color: #d72929;
+    font-weight: normal;
+    font-family: Consolas;
+}
+
+.test.failed table {
+    border-top: 1px solid #751515;
+    border-bottom: 1px solid #751515;
+}
+
+.test.failed table td {
+    border-left: 1px solid #751515;
+    border-right: 1px solid #751515;
 }
 
 .expected {
@@ -95,4 +113,26 @@ table td {
     font-size: 0.75em;
     font-style: italic;
     padding-bottom: 16px;
+}
+
+.testcount {
+    text-align: center;
+    width: 400px;
+    padding: 16px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 0;
+    margin-bottom: 8px;
+}
+
+.testcount.passed {
+    color: #fff;
+    background-color: #379f3c;
+    border: 1px solid #0f5b13;
+}
+
+.testcount.failed {
+    color: #fff;
+    background-color: #d72929;
+    border: 1px solid #751515;
 }

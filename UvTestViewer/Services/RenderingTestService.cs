@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
 using System.Linq;
+using System.Xml.Linq;
 using UvTestViewer.Models;
 
 namespace UvTestViewer.Services
@@ -32,7 +33,9 @@ namespace UvTestViewer.Services
                                group filename by testname into g
                                select g;
 
-            var outputdir = Path.Combine("TestResults", id.ToString());
+            var outputdir = Path.Combine("/TestResults", id.ToString());
+
+            var failedTests = GetFailedTests(directory);
 
             var tests = new List<RenderingTest>();
             foreach (var imageGroup in imagesByTest)
@@ -45,6 +48,8 @@ namespace UvTestViewer.Services
                     GetRelativeUrlOfImage(outputdir, testExpected),
                     GetRelativeUrlOfImage(outputdir, testActual),
                     GetRelativeUrlOfImage(outputdir, testDiff));
+
+                test.Failed = failedTests.Contains(imageGroup.Key);
 
                 tests.Add(test);
             }
@@ -124,6 +129,44 @@ namespace UvTestViewer.Services
                 return filenameNoExt.Substring(0, filenameNoExt.Length - "_Diff".Length);
 
             return null;
+        }
+
+        /// <summary>
+        /// Gets a set containing the name of any failing tests.
+        /// </summary>
+        /// <param name="dir">The directory that contains the test run.</param>
+        /// <returns>A <see cref="HashSet{String}"/> containing the names of any failing tests.</returns>
+        private static HashSet<String> GetFailedTests(DirectoryInfo dir)
+        {
+            var cacheFilename = Path.Combine(dir.FullName, "ResultCache.txt");
+            try
+            {
+                var cacheText = File.ReadAllLines(cacheFilename);
+                return new HashSet<String>(cacheText);
+            }
+            catch (IOException) { }
+
+            try
+            {
+                var resultFilename = Path.Combine(dir.FullName, "Result.trx");
+                var resultXml      = XDocument.Load(resultFilename);
+                var resultNodes    = resultXml.Descendants("UnitTestResult");
+
+                var names = from r in resultNodes
+                            let testName = (String)r.Attribute("testName")
+                            let outcome  = (String)r.Attribute("outcome")
+                            where 
+                                outcome == "Failed"
+                            select testName;
+
+                File.WriteAllLines(cacheFilename, names);
+
+                return new HashSet<String>(names);
+            }
+            catch (IOException)
+            {
+                return new HashSet<String>();
+            }
         }
     }
 }

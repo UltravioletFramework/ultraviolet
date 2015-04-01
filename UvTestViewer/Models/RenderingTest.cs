@@ -57,5 +57,14 @@ namespace UvTestViewer.Models
             get;
             private set;
         }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the test failed.
+        /// </summary>
+        public Boolean Failed
+        {
+            get;
+            set;
+        }
     }
 }
