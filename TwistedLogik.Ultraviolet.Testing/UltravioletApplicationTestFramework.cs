@@ -19,11 +19,6 @@ namespace TwistedLogik.Ultraviolet.Testing
     public abstract class UltravioletApplicationTestFramework : UltravioletTestFramework
     {
         /// <summary>
-        /// Gets or sets the current test context.
-        /// </summary>
-        public TestContext TestContext { get; set; }
-
-        /// <summary>
         /// Cleans up after running an Ultraviolet Application test.
         /// </summary>
         [TestCleanup]
@@ -97,7 +92,7 @@ namespace TwistedLogik.Ultraviolet.Testing
         /// <returns>The wrapped value.</returns>
         protected BitmapResult TheResultingImage(Bitmap bitmap)
         {
-            return new BitmapResult(TestContext, bitmap);
+            return new BitmapResult(bitmap);
         }
 
         /// <summary>
