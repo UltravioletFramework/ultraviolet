@@ -40,6 +40,15 @@ namespace TwistedLogik.Ultraviolet.Testing
         public void ShouldMatch(String filename)
         {
             var expected = (Bitmap)Bitmap.FromFile(filename);
+
+            var filenameNoExtension = Path.GetFileNameWithoutExtension(filename);
+
+            var filenameExpected = Path.ChangeExtension(filenameNoExtension + "_Expected", "png");
+            expected.Save(filenameExpected);
+
+            var filenameActual = Path.ChangeExtension(filenameNoExtension + "_Actual", "png");
+            bitmap.Save(filenameActual, ImageFormat.Png);
+
             if (expected.Width != bitmap.Width || expected.Height != bitmap.Height)
             {
                 Assert.Fail("Images do not match due to differing dimensions");
@@ -69,14 +78,6 @@ namespace TwistedLogik.Ultraviolet.Testing
                         diff.SetPixel(x, y, System.Drawing.Color.FromArgb(255, diffR, diffG, diffB));
                     }
                 }
-
-                var filenameNoExtension = Path.GetFileNameWithoutExtension(filename);
-
-                var filenameExpected = Path.ChangeExtension(filenameNoExtension + "_Expected", "png");
-                expected.Save(filenameExpected);
-
-                var filenameActual = Path.ChangeExtension(filenameNoExtension + "_Actual", "png");
-                bitmap.Save(filenameActual, ImageFormat.Png);
 
                 var filenameDiff = Path.ChangeExtension(filenameNoExtension + "_Diff", "png");
                 diff.Save(filenameDiff, ImageFormat.Png);

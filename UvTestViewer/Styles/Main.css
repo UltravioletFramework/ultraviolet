@@ -1,0 +1,98 @@
+﻿body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background-color: #e1d6eb;
+    margin: 0;
+    padding: 0;
+}
+
+.testrun-container {
+    text-align: center;
+}
+
+.testrun {
+    display: inline-block;
+}
+
+.testrun-header {
+    width: 100%;
+    color: #fff;
+    background-color: #7100b5;
+    margin-bottom: 16px;
+    padding: 8px;
+    text-align: center;
+}
+
+.testrun-header h1 {
+    margin: 0;
+}
+
+.testrun-header h2 {
+    margin: 0;
+    font-size: 1em;
+    font-style: italic;
+    font-weight: normal;
+}
+
+table {
+    border-collapse: collapse;
+    background-color: #fff;
+}
+
+table {
+    margin: 8px;
+}
+
+table td {
+    padding: 0;
+}
+
+table thead tr:nth-child(1) {
+    color: #fff;
+    background-color: #7100b5;
+    font-weight: normal;
+    font-family: Consolas;
+}
+
+table thead tr:nth-child(1) td {
+    padding: 8px;
+}
+
+table thead tr:nth-child(2) {
+    font-style: italic;
+}
+
+table thead tr:nth-child(2) td {
+    padding: 8px;
+}
+
+table {
+    border-bottom: 1px solid #7100b5;
+}
+
+table td {
+    border-left: 1px solid #7100b5;
+    border-right: 1px solid #7100b5;
+}
+
+.expected {
+    padding-left: 4px;
+    padding-right: 4px;
+}
+
+.actual {
+    padding-left: 4px;
+    padding-right: 4px;
+}
+
+.diff {
+    padding-left: 4px;
+    padding-right: 4px;
+}
+
+.testrun-footer {
+    width: 100%;
+    text-align: center;
+    font-size: 0.75em;
+    font-style: italic;
+    padding-bottom: 16px;
+}

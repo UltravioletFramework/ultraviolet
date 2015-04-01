@@ -124,6 +124,9 @@ namespace TwistedLogik.Ultraviolet.Testing
         /// </summary>
         protected override void OnInitialized()
         {
+            if (!headless)
+                Ultraviolet.GetPlatform().Windows.GetPrimary().ClientSize = new Size2(480, 360);
+
             if (initializer != null)
             {
                 initializer(Ultraviolet);
