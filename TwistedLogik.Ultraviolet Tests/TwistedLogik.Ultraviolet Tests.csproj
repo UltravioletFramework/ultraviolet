@@ -244,7 +244,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Resources\Expected\Graphics\UltravioletGraphics_CanRenderAColoredTriangle.png" />
+    <None Include="Resources\Expected\Graphics\UltravioletGraphics_CanRenderAColoredTriangle.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
