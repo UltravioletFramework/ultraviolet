@@ -1,0 +1,48 @@
+﻿@model UvTestViewer.Models.RenderingTestOverview
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Ultraviolet Rendering Tests</title>
+    <link rel="stylesheet" type="text/css" href="@Url.Content("~/Styles/Main.css")" />
+</head>
+<body>
+    <div class="testrun-header">
+        <h1>Ultraviolet Rendering Tests</h1>
+        <h2>Test run #@Model.TestRunID processed at @Model.TimeProcessed</h2>
+    </div>
+    <div class="testrun-container">
+        <div class="testrun"> 
+            @foreach (var test in Model.Tests)
+            {
+                <div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <td colspan="3">@test.Name</td>
+                            </tr>
+                            <tr>
+                                <td>Expected</td>
+                                <td>Actual</td>
+                                <td>Diff</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><img class="expected" src="@test.Expected"/></td>
+                                <td><img class="actual" src="@test.Actual"/></td>
+                                <td><img class="diff" src="@test.Diff"/></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            }
+        </div>
+    </div>
+    <div class="testrun-footer">
+        <p>UvTestRunner is part of the <a href="http://uv.twistedlogik.net">Ultraviolet Framework</a>.</p>
+    </div>
+</body>
+</html>
