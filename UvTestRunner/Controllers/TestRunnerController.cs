@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Web.Http;
 using UvTestRunner.Services;
+using UvTestRunner.Models;
 
 namespace UvTestRunner.Controllers
 {
@@ -11,7 +12,7 @@ namespace UvTestRunner.Controllers
         [Route("api/uvtest")]
         public IHttpActionResult Post()
         {
-            return Ok(new { TestID = testRunnerService.Run() });
+            return Ok(new TestRunCreationResponse() { TestRunID = testRunnerService.Run() });
         }
 
         [Route("api/uvtest/{id}")]
@@ -21,7 +22,7 @@ namespace UvTestRunner.Controllers
             if (run == null)
                 return NotFound();
 
-            return Ok(new { TestID = id, TestStatus = run.Status });
+            return Ok(new TestRunStatusResponse() { TestRunID = id, TestRunStatus = testRunnerService.GetTestRunStatus(id) });
         }
     }
 }

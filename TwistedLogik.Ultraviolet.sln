@@ -70,6 +70,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UvTestRunner", "UvTestRunne
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UvTestViewer", "UvTestViewer\UvTestViewer.csproj", "{2E5B7535-40A0-4685-8E50-28E7B9A79E03}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UvTestRunnerClient", "UvTestRunnerClient\UvTestRunnerClient.csproj", "{B8AE9615-2077-4A1F-A71F-D36B4BAAF4B5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -273,6 +275,12 @@ Global
 		{2E5B7535-40A0-4685-8E50-28E7B9A79E03}.Production|Any CPU.Build.0 = Release|Any CPU
 		{2E5B7535-40A0-4685-8E50-28E7B9A79E03}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2E5B7535-40A0-4685-8E50-28E7B9A79E03}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B8AE9615-2077-4A1F-A71F-D36B4BAAF4B5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B8AE9615-2077-4A1F-A71F-D36B4BAAF4B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B8AE9615-2077-4A1F-A71F-D36B4BAAF4B5}.Production|Any CPU.ActiveCfg = Release|Any CPU
+		{B8AE9615-2077-4A1F-A71F-D36B4BAAF4B5}.Production|Any CPU.Build.0 = Release|Any CPU
+		{B8AE9615-2077-4A1F-A71F-D36B4BAAF4B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B8AE9615-2077-4A1F-A71F-D36B4BAAF4B5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
