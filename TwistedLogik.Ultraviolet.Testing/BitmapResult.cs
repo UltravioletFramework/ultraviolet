@@ -15,8 +15,9 @@ namespace TwistedLogik.Ultraviolet.Testing
         /// Initializes a new instance of the BitmapResult class.
         /// </summary>
         /// <param name="bitmap">The bitmap being examined.</param>
-        internal BitmapResult(Bitmap bitmap)
+        internal BitmapResult(TestContext context, Bitmap bitmap)
         {
+            this.testContext = context;
             this.bitmap = bitmap;
         }
 
@@ -46,8 +47,12 @@ namespace TwistedLogik.Ultraviolet.Testing
             var filenameExpected = Path.ChangeExtension(filenameNoExtension + "_Expected", "png");
             expected.Save(filenameExpected);
 
+            testContext.AddResultFile(filenameExpected);
+
             var filenameActual = Path.ChangeExtension(filenameNoExtension + "_Actual", "png");
             bitmap.Save(filenameActual, ImageFormat.Png);
+
+            testContext.AddResultFile(filenameActual);
 
             if (expected.Width != bitmap.Width || expected.Height != bitmap.Height)
             {
@@ -82,6 +87,8 @@ namespace TwistedLogik.Ultraviolet.Testing
                 var filenameDiff = Path.ChangeExtension(filenameNoExtension + "_Diff", "png");
                 diff.Save(filenameDiff, ImageFormat.Png);
 
+                testContext.AddResultFile(filenameDiff);
+
                 if (mismatchesFound >= mismatchesRequired)
                 {
                     Assert.Fail("Images do not match");
@@ -98,6 +105,7 @@ namespace TwistedLogik.Ultraviolet.Testing
         }
 
         // State values.
+        private readonly TestContext testContext;
         private readonly Bitmap bitmap;
         private Single threshold = 0.01f;
     }
