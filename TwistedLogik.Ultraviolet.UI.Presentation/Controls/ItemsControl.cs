@@ -147,6 +147,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             }
         }
 
+        /// <inheritdoc/>
+        protected internal override Int32 LogicalChildrenCount
+        {
+            get { return itemContainers.Count; }
+        }
+
+        /// <inheritdoc/>
+        protected internal override UIElement GetLogicalChild(Int32 childIndex)
+        {
+            var container = itemContainers[childIndex];
+            return (UIElement)ItemContainerGenerator.ItemFromContainer(container);
+        }
+
         /// <summary>
         /// Creates the control's items panel, which is the panel that controls the layout of the control's item containers.
         /// </summary>

@@ -27,13 +27,14 @@
     </DockPanel>
 
     <ListBox Margin="50" Width="200" Height="200">
+      <ListBoxItem>Hello!</ListBoxItem>
       <Button>A</Button>
       <Button>The quick brown fox jumped</Button>
       <Button>over the lazy dog</Button>
-      <Button>A</Button>
-      <Button>A</Button>
-      <Button>A</Button>
-      <Button>A</Button>
+      <CheckBox>A</CheckBox>
+      <RadioButton>A</RadioButton>
+      <RadioButton>A</RadioButton>
+      <RadioButton>A</RadioButton>
       <Button>A</Button>
     </ListBox>
 

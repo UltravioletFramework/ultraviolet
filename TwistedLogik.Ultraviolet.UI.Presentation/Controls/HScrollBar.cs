@@ -23,7 +23,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Handles the <see cref="ButtonBase.Click"/> event for LineLeftButton.
         /// </summary>
-        private void HandleClickLineLeft(DependencyObject element)
+        private void HandleClickLineLeft(DependencyObject element, ref RoutedEventData data)
         {
             DecreaseSmall();
         }
@@ -31,7 +31,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Handles the <see cref="ButtonBase.Click"/> event for LineRightButton.
         /// </summary>
-        private void HandleClickLineRight(DependencyObject element)
+        private void HandleClickLineRight(DependencyObject element, ref RoutedEventData data)
         {
             IncreaseSmall();
         }

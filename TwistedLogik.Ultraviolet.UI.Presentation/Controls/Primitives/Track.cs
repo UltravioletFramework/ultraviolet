@@ -341,7 +341,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <summary>
         /// Handles the <see cref="ButtonBase.Click"/> event for the decrease button.
         /// </summary>
-        private void HandleDecreaseButtonClick(DependencyObject element)
+        private void HandleDecreaseButtonClick(DependencyObject element, ref RoutedEventData data)
         {
             var owner = Control as RangeBase;
             if (owner != null)
@@ -353,7 +353,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <summary>
         /// Handles the <see cref="ButtonBase.Click"/> event for the increase button.
         /// </summary>
-        private void HandleIncreaseButtonClick(DependencyObject element)
+        private void HandleIncreaseButtonClick(DependencyObject element, ref RoutedEventData data)
         {
             var owner = Control as RangeBase;
             if (owner != null)
@@ -368,7 +368,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         private void HandleThumbPreviewMouseMove(DependencyObject element, MouseDevice device, Double x, Double y, Double dx, Double dy, ref RoutedEventData data)
         {
             var button = element as Button;
-            if (button != null && button.IsDepressed)
+            if (button != null && button.IsPressed)
             {
                 if (Orientation == Orientation.Vertical)
                 {

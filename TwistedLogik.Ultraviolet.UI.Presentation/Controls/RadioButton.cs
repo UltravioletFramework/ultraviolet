@@ -20,38 +20,36 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <inheritdoc/>
-        protected override void ToggleChecked()
+        protected override void OnToggle()
         {
-            if (!Checked)
+            if (!IsChecked)
             {
-                Checked = true;
+                IsChecked = true;
             }
         }
 
         /// <inheritdoc/>
-        protected override void OnCheckedChanged()
+        protected override void OnChecked()
         {
-            if (Checked)
+            var parent = LogicalTreeHelper.GetParent(this);
+            if (parent != null)
             {
-                var parent = LogicalTreeHelper.GetParent(this);
-                if (parent != null)
+                var children = LogicalTreeHelper.GetChildrenCount(parent);
+                for (int i = 0; i < children; i++)
                 {
-                    var children = LogicalTreeHelper.GetChildrenCount(parent);
-                    for (int i = 0; i < children; i++)
-                    {
-                        var sibling = LogicalTreeHelper.GetChild(parent, i);
-                        if (sibling == this)
-                            continue;
+                    var sibling = LogicalTreeHelper.GetChild(parent, i);
+                    if (sibling == this)
+                        continue;
 
-                        var radioButton = sibling as RadioButton;
-                        if (radioButton == null)
-                            continue;
+                    var radioButton = sibling as RadioButton;
+                    if (radioButton == null)
+                        continue;
 
-                        radioButton.Checked = false;
-                    }
+                    radioButton.IsChecked = false;
                 }
             }
-            base.OnCheckedChanged();
+
+            base.OnChecked();
         }
 
         /// <summary>
@@ -60,7 +58,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         private Visibility MarkVisibility
         {
-            get { return Checked ? Visibility.Visible : Visibility.Collapsed; }
+            get 
+            {
+                var isChecked = IsChecked;
+                return isChecked || (!isChecked && IsPressed) ? Visibility.Visible : Visibility.Collapsed; 
+            }
         }
     }
 }

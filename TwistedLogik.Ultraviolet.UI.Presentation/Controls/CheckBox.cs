@@ -25,7 +25,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         private Visibility MarkVisibility
         {
-            get { return Checked ? Visibility.Visible : Visibility.Collapsed; }
+            get
+            {
+                var isChecked = IsChecked;
+                return isChecked || (!isChecked && IsPressed) ? Visibility.Visible : Visibility.Collapsed; 
+            }
         }
     }
 }

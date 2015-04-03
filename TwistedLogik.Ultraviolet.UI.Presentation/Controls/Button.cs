@@ -20,19 +20,5 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             SetDefaultValue<HorizontalAlignment>(HorizontalContentAlignmentProperty, HorizontalAlignment.Center);
             SetDefaultValue<VerticalAlignment>(VerticalContentAlignmentProperty, VerticalAlignment.Center);
         }
-
-        /// <inheritdoc/>
-        protected override void OnButtonPressed()
-        {
-            View.CaptureMouse(this);
-            base.OnButtonPressed();
-        }
-
-        /// <inheritdoc/>
-        protected override void OnButtonReleased()
-        {
-            View.ReleaseMouse(this);
-            base.OnButtonReleased();
-        }
     }
 }

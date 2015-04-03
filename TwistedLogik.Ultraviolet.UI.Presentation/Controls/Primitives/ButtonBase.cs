@@ -1,4 +1,5 @@
 ﻿using System;
+using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet.Input;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
@@ -23,19 +24,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         }
 
         /// <summary>
-        /// Gets a value indicating whether the button is in the "depressed" state.
+        /// Gets a value indicating whether the button is being pressed.
         /// </summary>
-        public Boolean IsDepressed
+        public Boolean IsPressed
         {
-            get { return depressed; }
-            private set
-            {
-                if (depressed != value)
-                {
-                    depressed = value;
-                    OnIsDepressedChanged();
-                }
-            }
+            get { return GetValue<Boolean>(IsPressedProperty); }
+            protected set { SetValue<Boolean>(IsPressedPropertyKey, value); }
         }
 
         /// <summary>
@@ -48,35 +42,36 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         }
 
         /// <summary>
-        /// Occurs when the value of the <see cref="IsDepressed"/> property changes.
-        /// </summary>
-        public event UpfEventHandler IsDepressedChanged;
-
-        /// <summary>
         /// Occurs when the button is clicked.
         /// </summary>
-        public event UpfEventHandler Click;
+        public event UpfRoutedEventHandler Click
+        {
+            add { AddHandler(ClickEvent, value); }
+            remove { RemoveHandler(ClickEvent, value); }
+        }
 
         /// <summary>
-        /// Occurs when the button is pressed.
+        /// The private access key for the <see cref="IsPressed"/> read-only dependency property.
         /// </summary>
-        public event UpfEventHandler ButtonPressed;
+        public static readonly DependencyPropertyKey IsPressedPropertyKey = DependencyProperty.RegisterReadOnly("IsPressed", typeof(Boolean), typeof(ButtonBase),
+            new PropertyMetadata(CommonBoxedValues.Boolean.False, HandleIsPressedChanged));
 
         /// <summary>
-        /// Occurs when the button is released.
+        /// Identifies the <see cref="IsPressed"/> dependency property.
         /// </summary>
-        public event UpfEventHandler ButtonReleased;
-
-        /// <summary>
-        /// Occurs when the value of the <see cref="ClickMode"/> property changes.
-        /// </summary>
-        public event UpfEventHandler ClickModeChanged;
+        public static readonly DependencyProperty IsPressedProperty = IsPressedPropertyKey.DependencyProperty;
 
         /// <summary>
         /// Identifies the <see cref="ClickMode"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty ClickModeProperty = DependencyProperty.Register("ClickMode", typeof(ClickMode), typeof(ButtonBase),
-            new PropertyMetadata(PresentationBoxedValues.ClickMode.Release, HandleClickModeChanged));
+            new PropertyMetadata(PresentationBoxedValues.ClickMode.Release));
+
+        /// <summary>
+        /// Identifies the <see cref="Click"/> routed event.
+        /// </summary>
+        public static readonly RoutedEvent ClickEvent = EventManager.RegisterRoutedEvent("Click", RoutingStrategy.Bubble, 
+            typeof(UpfRoutedEventHandler), typeof(ButtonBase));
 
         /// <inheritdoc/>
         protected override void OnIsMouseOverChanged()
@@ -88,8 +83,21 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <inheritdoc/>
         protected override void OnLostMouseCapture(ref RoutedEventData data)
         {
-            IsDepressed = false;
+            IsPressed = false;
             base.OnLostMouseCapture(ref data);
+        }
+
+        /// <inheritdoc/>
+        protected override void OnMouseMove(MouseDevice device, Double x, Double y, Double dx, Double dy, ref RoutedEventData data)
+        {
+            if (ClickMode != ClickMode.Hover)
+            {
+                if (IsMouseCaptured && device.IsButtonDown(MouseButton.Left))
+                {
+                    IsPressed = AbsoluteBounds.Contains(x, y);
+                }
+            }
+            base.OnMouseMove(device, x, y, dx, dy, ref data);
         }
 
         /// <inheritdoc/>
@@ -98,9 +106,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             if (button == MouseButton.Left)
             {
                 View.FocusElement(this);
+                View.CaptureMouse(this);
 
-                IsDepressed = true;
-                OnButtonPressed();
+                IsPressed = true;
 
                 if (ClickMode == ClickMode.Press)
                 {
@@ -117,10 +125,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         {
             if (button == MouseButton.Left)
             {
-                var clicked = IsDepressed;
+                var clicked = IsPressed;
 
-                IsDepressed = false;
-                OnButtonReleased();
+                View.ReleaseMouse(this);
+
+                IsPressed = false;
 
                 if (clicked && ClickMode == ClickMode.Release)
                 {
@@ -147,33 +156,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         }
 
         /// <inheritdoc/>
-        protected override void OnMouseLeave(MouseDevice device, ref RoutedEventData data)
-        {
-            if (View.ElementWithMouseCapture != this)
-            {
-                IsDepressed = false;
-            }
-            base.OnMouseLeave(device, ref data);
-        }
-
-        /// <inheritdoc/>
         protected override void OnIsEnabledChanged()
         {
             base.OnIsEnabledChanged();
-
-            UpdateCommonState();
-        }
-
-        /// <summary>
-        /// Raises the <see cref="IsDepressedChanged"/> event.
-        /// </summary>
-        protected virtual void OnIsDepressedChanged()
-        {
-            var temp = IsDepressedChanged;
-            if (temp != null)
-            {
-                temp(this);
-            }
 
             UpdateCommonState();
         }
@@ -183,57 +168,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// </summary>
         protected virtual void OnClick()
         {
-            var temp = Click;
-            if (temp != null)
-            {
-                temp(this);
-            }
+            var evtData     = new RoutedEventData(this);
+            var evtDelegate = EventManager.GetInvocationDelegate<UpfRoutedEventHandler>(ClickEvent);
+            evtDelegate(this, ref evtData);
         }
 
         /// <summary>
-        /// Raises the <see cref="ButtonPressed"/> event.
+        /// Occurs when the value of the <see cref="IsPressed"/> dependency property changes.
         /// </summary>
-        protected virtual void OnButtonPressed()
+        /// <param name="dobj">The object that raised the event.</param>
+        private static void HandleIsPressedChanged(DependencyObject dobj)
         {
-            var temp = ButtonPressed;
-            if (temp != null)
-            {
-                temp(this);
-            }
-        }
-
-        /// <summary>
-        /// Raises the <see cref="ButtonReleased"/> event.
-        /// </summary>
-        protected virtual void OnButtonReleased()
-        {
-            var temp = ButtonReleased;
-            if (temp != null)
-            {
-                temp(this);
-            }
-        }
-
-        /// <summary>
-        /// Raises the <see cref="ClickModeChanged"/> property.
-        /// </summary>
-        protected virtual void OnClickModeChanged()
-        {
-            var temp = ClickModeChanged;
-            if (temp != null)
-            {
-                temp(this);
-            }
-        }
-
-        /// <summary>
-        /// Occurs when the value of the <see cref="ClickMode"/> dependency property changes.
-        /// </summary>
-        /// <param name="dobj">The dependency object that raised the event.</param>
-        private static void HandleClickModeChanged(DependencyObject dobj)
-        {
-            var button = (ButtonBase)dobj;
-            button.OnClickModeChanged();
+            var buttonBase = (ButtonBase)dobj;
+            buttonBase.UpdateCommonState();
         }
 
         /// <summary>
@@ -243,7 +190,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         {
             if (IsEnabled)
             {
-                if (IsDepressed)
+                if (IsPressed)
                 {
                     VisualStateGroups.GoToState("common", "pressed");
                 }
@@ -264,8 +211,5 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
                 VisualStateGroups.GoToState("common", "disabled");
             }
         }
-
-        // Property values.
-        private Boolean depressed;
     }
 }

@@ -27,67 +27,100 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Gets a value indicating whether the button is checked.
         /// </summary>
-        public Boolean Checked
+        public Boolean IsChecked
         {
-            get { return GetValue<Boolean>(CheckedProperty); }
-            set { SetValue<Boolean>(CheckedProperty, value); }
+            get { return GetValue<Boolean>(IsCheckedProperty); }
+            set { SetValue<Boolean>(IsCheckedProperty, value); }
         }
 
         /// <summary>
-        /// Occurs when the value of the <see cref="Checked"/> property changes.
+        /// Occurs when the toggle button is checked.
         /// </summary>
-        public event UpfEventHandler CheckedChanged;
+        public event UpfRoutedEventHandler Checked
+        {
+            add { AddHandler(CheckedEvent, value); }
+            remove { RemoveHandler(CheckedEvent, value); }
+        }
+
+        /// <summary>
+        /// Occurs when the toggle button is unchecked.
+        /// </summary>
+        public event UpfRoutedEventHandler Unchecked
+        {
+            add { AddHandler(UncheckedEvent, value); }
+            remove { RemoveHandler(UncheckedEvent, value); }
+        }
 
         /// <summary>
         /// Identifies the Checked dependency property.
         /// </summary>
-        public static readonly DependencyProperty CheckedProperty = DependencyProperty.Register("Checked", typeof(Boolean), typeof(ToggleButton),
-            new PropertyMetadata(CommonBoxedValues.Boolean.False, HandleCheckedChanged));
+        public static readonly DependencyProperty IsCheckedProperty = DependencyProperty.Register("IsChecked", typeof(Boolean), typeof(ToggleButton),
+            new PropertyMetadata(CommonBoxedValues.Boolean.False, HandleIsCheckedChanged));
 
         /// <summary>
-        /// Raises the <see cref="CheckedChanged"/> event.
+        /// Identifies the <see cref="Checked"/> routed event.
         /// </summary>
-        protected virtual void OnCheckedChanged()
-        {
-            var temp = CheckedChanged;
-            if (temp != null)
-            {
-                temp(this);
-            }
-        }
+        public static readonly RoutedEvent CheckedEvent = EventManager.RegisterRoutedEvent("Checked", RoutingStrategy.Bubble, 
+            typeof(UpfRoutedEventHandler), typeof(ToggleButton));
 
         /// <summary>
-        /// Toggles the value of the <see cref="Checked"/> property.
+        /// Identifies the <see cref="Unchecked"/> routed event.
         /// </summary>
-        protected virtual void ToggleChecked()
-        {
-            Checked = !Checked;
-        }
+        public static readonly RoutedEvent UncheckedEvent = EventManager.RegisterRoutedEvent("Unchecked", RoutingStrategy.Bubble, 
+            typeof(UpfRoutedEventHandler), typeof(ToggleButton));
 
         /// <inheritdoc/>
-        protected override void OnButtonPressed()
+        protected override void OnClick()
         {
-            ToggleChecked();
-
-            View.CaptureMouse(this);
-            base.OnButtonPressed();
-        }
-
-        /// <inheritdoc/>
-        protected override void OnButtonReleased()
-        {
-            View.ReleaseMouse(this);
-            base.OnButtonReleased();
+            OnToggle();
+            base.OnClick();
         }
 
         /// <summary>
-        /// Occurs when the value of the <see cref="Checked"/> dependency property changes.
+        /// Toggles the value of the <see cref="IsChecked"/> property.
+        /// </summary>
+        protected virtual void OnToggle()
+        {
+            IsChecked = !IsChecked;
+        }
+
+        /// <summary>
+        /// Raises the <see cref="Checked"/> event.
+        /// </summary>
+        protected virtual void OnChecked()
+        {
+            var evtData     = new RoutedEventData(this);
+            var evtDelegate = EventManager.GetInvocationDelegate<UpfRoutedEventHandler>(CheckedEvent);
+            evtDelegate(this, ref evtData);
+        }
+
+        /// <summary>
+        /// Raises the <see cref="Unchecked"/> event.
+        /// </summary>
+        protected virtual void OnUnchecked()
+        {
+            var evtData     = new RoutedEventData(this);
+            var evtDelegate = EventManager.GetInvocationDelegate<UpfRoutedEventHandler>(UncheckedEvent);
+            evtDelegate(this, ref evtData);
+        }
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="IsChecked"/> dependency property changes.
         /// </summary>
         /// <param name="dobj">The object that raised the event.</param>
-        private static void HandleCheckedChanged(DependencyObject dobj)
+        private static void HandleIsCheckedChanged(DependencyObject dobj)
         {
             var element = (ToggleButton)dobj;
-            element.OnCheckedChanged();
+
+            if (element.IsChecked)
+            {
+                element.OnChecked();
+            }
+            else
+            {
+                element.OnUnchecked();
+            }
+
             element.UpdateCheckState();
         }
 
@@ -96,7 +129,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         private void UpdateCheckState()
         {
-            if (Checked)
+            if (IsChecked)
             {
                 VisualStateGroups.GoToState("checkstate", "checked");
             }

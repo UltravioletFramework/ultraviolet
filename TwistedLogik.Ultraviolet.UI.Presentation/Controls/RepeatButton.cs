@@ -190,7 +190,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Draw(UltravioletTime)"/>.</param>
         private void UpdateRepetitions(UltravioletTime time)
         {
-            if (!IsDepressed)
+            if (!IsPressed)
                 return;
 
             var input = Ultraviolet.GetInput();
