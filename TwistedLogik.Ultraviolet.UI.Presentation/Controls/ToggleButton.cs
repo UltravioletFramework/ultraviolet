@@ -19,6 +19,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             : base(uv, id)
         {
             VisualStateGroups.Create("checkstate", new[] { "unchecked", "checked" });
+
+            SetDefaultValue<HorizontalAlignment>(HorizontalContentAlignmentProperty, HorizontalAlignment.Center);
+            SetDefaultValue<VerticalAlignment>(VerticalContentAlignmentProperty, VerticalAlignment.Center);
         }
 
         /// <summary>
