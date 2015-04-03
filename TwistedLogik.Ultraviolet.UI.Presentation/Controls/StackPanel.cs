@@ -31,15 +31,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
-        /// Occurs when the value of the <see cref="Orientation"/> property changes.
-        /// </summary>
-        public event UpfEventHandler OrientationChanged;
-
-        /// <summary>
         /// Identifies the <see cref="Orientation"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty OrientationProperty = DependencyProperty.Register("Orientation", typeof(Orientation), typeof(StackPanel),
-            new PropertyMetadata(PresentationBoxedValues.Orientation.Vertical, PropertyMetadataOptions.AffectsMeasure, HandleOrientationChanged));
+            new PropertyMetadata(PresentationBoxedValues.Orientation.Vertical, PropertyMetadataOptions.AffectsMeasure));
 
         /// <inheritdoc/>
         protected override Size2D MeasureOverride(Size2D availableSize)
@@ -95,28 +90,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             }
 
             return finalSize;
-        }
-
-        /// <summary>
-        /// Raises the <see cref="OrientationChanged"/> event.
-        /// </summary>
-        protected virtual void OnOrientationChanged()
-        {
-            var temp = OrientationChanged;
-            if (temp != null)
-            {
-                temp(this);
-            }
-        }
-
-        /// <summary>
-        /// Occurs when the value of the <see cref="Orientation"/> dependency property changes.
-        /// </summary>
-        /// <param name="dobj">The dependency object that raised the event.</param>
-        private static void HandleOrientationChanged(DependencyObject dobj)
-        {
-            var stackPanel = (StackPanel)dobj;
-            stackPanel.OnOrientationChanged();
         }
     }
 }

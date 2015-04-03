@@ -177,51 +177,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
-        /// Occurs when the value of the <see cref="Text"/> property changes.
-        /// </summary>
-        public event UpfEventHandler TextChanged;
-
-        /// <summary>
-        /// Occurs when the value of the <see cref="Pattern"/> property changes.
-        /// </summary>
-        public event UpfEventHandler PatternChanged;
-
-        /// <summary>
-        /// Occurs when the value of the <see cref="MaxLength"/> property changes.
-        /// </summary>
-        public event UpfEventHandler MaxLengthChanged;
-
-        /// <summary>
-        /// Occurs when the value of the <see cref="CaretThickness"/> property changes.
-        /// </summary>
-        public event UpfEventHandler CaretThicknessChanged;
-
-        /// <summary>
-        /// Occurs when the value of the <see cref="CaretImage"/> property changes.
-        /// </summary>
-        public event UpfEventHandler CaretImageChanged;
-
-        /// <summary>
-        /// Occurs when the value of the <see cref="CaretColor"/> property changes.
-        /// </summary>
-        public event UpfEventHandler CaretColorChanged;
-
-        /// <summary>
-        /// Occurs when the value of the <see cref="SelectionImage"/> property changes.
-        /// </summary>
-        public event UpfEventHandler SelectionImageChanged;
-
-        /// <summary>
-        /// Occurs when the value of the <see cref="SelectionColor"/> property changes.
-        /// </summary>
-        public event UpfEventHandler SelectionColorChanged;
-
-        /// <summary>
-        /// Occurs when the value of the <see cref="InsertionMode"/> property changes.
-        /// </summary>
-        public event UpfEventHandler InsertionModeChanged;
-
-        /// <summary>
         /// Identifies the <see cref="Text"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty TextProperty = DependencyProperty.Register("Text", typeof(String), typeof(TextBox),
@@ -239,14 +194,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         [Styled("max-length")]
         public static readonly DependencyProperty MaxLengthProperty = DependencyProperty.Register("MaxLength", typeof(Int32), typeof(TextBox),
-            new PropertyMetadata(HandleMaxLengthChanged));
+            new PropertyMetadata());
 
         /// <summary>
         /// Identifies the <see cref="CaretThickness"/> dependency property.
         /// </summary>
         [Styled("caret-thickness")]
         public static readonly DependencyProperty CaretThicknessProperty = DependencyProperty.Register("CaretThickness", typeof(Double), typeof(TextBox),
-            new PropertyMetadata(4.0, HandleCaretThicknessChanged));
+            new PropertyMetadata(4.0));
 
         /// <summary>
         /// Identifies the <see cref="CaretImage"/> dependency property.
@@ -260,7 +215,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         [Styled("caret-color")]
         public static readonly DependencyProperty CaretColorProperty = DependencyProperty.Register("CaretColor", typeof(Color), typeof(TextBox),
-            new PropertyMetadata(Color.Blue * 0.4f, HandleCaretColorChanged));
+            new PropertyMetadata(Color.Blue * 0.4f));
 
         /// <summary>
         /// Identifies the <see cref="SelectionImage"/> dependency property.
@@ -274,14 +229,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         [Styled("selection-color")]
         public static readonly DependencyProperty SelectionColorProperty = DependencyProperty.Register("SelectionColor", typeof(Color), typeof(TextBox),
-            new PropertyMetadata(Color.Blue * 0.4f, HandleSelectionColorChanged));
+            new PropertyMetadata(Color.Blue * 0.4f));
 
         /// <summary>
         /// Identifies the <see cref="InsertionMode"/> dependency property.
         /// </summary>
         [Styled("insertion-mode")]
         public static readonly DependencyProperty InsertionModeProperty = DependencyProperty.Register("InsertionMode", typeof(TextBoxInsertionMode), typeof(TextBox),
-            new PropertyMetadata(TextBoxInsertionMode.Insert, HandleInsertionModeChanged));
+            new PropertyMetadata(TextBoxInsertionMode.Insert));
 
         /// <summary>
         /// Identifies the <see cref="Font"/> dependency property.
@@ -502,114 +457,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
         
         /// <summary>
-        /// Raises the <see cref="TextChanged"/> event.
-        /// </summary>
-        protected virtual void OnTextChanged()
-        {
-            var temp = TextChanged;
-            if (temp != null)
-            {
-                temp(this);
-            }
-        }
-
-        /// <summary>
-        /// Raises the <see cref="PatternChanged"/> event.
-        /// </summary>
-        protected virtual void OnPatternChanged()
-        {
-            var temp = PatternChanged;
-            if (temp != null)
-            {
-                temp(this);
-            }
-        }
-
-        /// <summary>
-        /// Raises the <see cref="MaxLengthChanged"/> event.
-        /// </summary>
-        protected virtual void OnMaxLengthChanged()
-        {
-            var temp = MaxLengthChanged;
-            if (temp != null)
-            {
-                temp(this);
-            }
-        }
-
-        /// <summary>
-        /// Raises the <see cref="CaretImageChanged"/> event.
-        /// </summary>
-        protected virtual void OnCaretImageChanged()
-        {
-            var temp = CaretImageChanged;
-            if (temp != null)
-            {
-                temp(this);
-            }
-        }
-
-        /// <summary>
-        /// Raises the <see cref="CaretThicknessChanged"/> event.
-        /// </summary>
-        protected virtual void OnCaretThicknessChanged()
-        {
-            var temp = CaretThicknessChanged;
-            if (temp != null)
-            {
-                temp(this);
-            }
-        }
-
-        /// <summary>
-        /// Raises the <see cref="CaretColorChanged"/> event.
-        /// </summary>
-        protected virtual void OnCaretColorChanged()
-        {
-            var temp = CaretColorChanged;
-            if (temp != null)
-            {
-                temp(this);
-            }
-        }
-
-        /// <summary>
-        /// Raises the <see cref="SelectionImageChanged"/> event.
-        /// </summary>
-        protected virtual void OnSelectionImageChanged()
-        {
-            var temp = SelectionImageChanged;
-            if (temp != null)
-            {
-                temp(this);
-            }
-        }
-
-        /// <summary>
-        /// Raises the <see cref="SelectionColorChanged"/> event.
-        /// </summary>
-        protected virtual void OnSelectionColorChanged()
-        {
-            var temp = SelectionColorChanged;
-            if (temp != null)
-            {
-                temp(this);
-            }
-        }
-
-        /// <summary>
-        /// Raises the <see cref="InsertionModeChanged"/> event.
-        /// </summary>
-        protected virtual void OnInsertionModeChanged()
-        {
-            var temp = InsertionModeChanged;
-            if (temp != null)
-            {
-                temp(this);
-            }
-        }
-
-        /// <summary>
         /// Draws the element's text.
         /// </summary>
         /// <param name="dc">The drawing context that describes the render state of the layout.</param>
@@ -729,7 +576,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         private static void HandleTextChanged(DependencyObject dobj)
         {
             var textbox = (TextBox)dobj;
-            textbox.OnTextChanged();
 
             textbox.textCaretPosition   = Math.Min(textbox.textCaretPosition, (textbox.Text == null) ? 0 : textbox.Text.Length);
             textbox.textSelectionLength = 0;
@@ -746,17 +592,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             var textbox = (TextBox)dobj;
             var pattern = textbox.Pattern;
             textbox.patternRegex = String.IsNullOrEmpty(pattern) ? null : new Regex("^" + pattern + "$", RegexOptions.Singleline);
-            textbox.OnPatternChanged();
-        }
-
-        /// <summary>
-        /// Occurs when the value of the <see cref="MaxLength"/> dependency property changes.
-        /// </summary>
-        /// <param name="dobj">The object that raised the event.</param>
-        private static void HandleMaxLengthChanged(DependencyObject dobj)
-        {
-            var textbox = (TextBox)dobj;
-            textbox.OnMaxLengthChanged();
         }
 
         /// <summary>
@@ -767,27 +602,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         {
             var textbox = (TextBox)dobj;
             textbox.ReloadCaretImage();
-            textbox.OnCaretImageChanged();
-        }
-
-        /// <summary>
-        /// Occurs when the value of the <see cref="CaretColor"/> dependency property changes.
-        /// </summary>
-        /// <param name="dobj">The object that raised the event.</param>
-        private static void HandleCaretColorChanged(DependencyObject dobj)
-        {
-            var textbox = (TextBox)dobj;
-            textbox.OnCaretColorChanged();
-        }
-
-        /// <summary>
-        /// Occurs when the value of the <see cref="CaretThickness"/> dependency property changes.
-        /// </summary>
-        /// <param name="dobj">The object that raised the event.</param>
-        private static void HandleCaretThicknessChanged(DependencyObject dobj)
-        {
-            var textbox = (TextBox)dobj;
-            textbox.OnCaretThicknessChanged();
         }
 
         /// <summary>
@@ -798,27 +612,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         {
             var textbox = (TextBox)dobj;
             textbox.ReloadSelectionImage();
-            textbox.OnSelectionImageChanged();
-        }
-
-        /// <summary>
-        /// Occurs when the value of the <see cref="SelectionColor"/> dependency property changes.
-        /// </summary>
-        /// <param name="dobj">The object that raised the event.</param>
-        private static void HandleSelectionColorChanged(DependencyObject dobj)
-        {
-            var textbox = (TextBox)dobj;
-            textbox.OnSelectionColorChanged();
-        }
-
-        /// <summary>
-        /// Occurs when the value of the <see cref="InsertionMode"/> dependency property changes.
-        /// </summary>
-        /// <param name="dobj">The object that raised the event.</param>
-        private static void HandleInsertionModeChanged(DependencyObject dobj)
-        {
-            var textbox = (TextBox)dobj;
-            textbox.OnInsertionModeChanged();
         }
 
         /// <summary>
@@ -827,7 +620,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <param name="dobj">The dependency object that raised the event.</param>
         private static void HandleFontChanged(DependencyObject dobj)
         {
-            ((TextBox)dobj).ReloadFont();
+            var textbox = (TextBox)dobj;
+            textbox.ReloadFont();
         }
 
         /// <summary>

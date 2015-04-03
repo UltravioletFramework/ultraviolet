@@ -33,27 +33,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
-        /// Occurs when the value of the <see cref="Text"/> property changes.
-        /// </summary>
-        public event UpfEventHandler TextChanged;
-
-        /// <summary>
         /// Identifies the <see cref="Text"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty TextProperty = DependencyProperty.Register("Text", typeof(String), typeof(TextBlock),
             new PropertyMetadata(null, PropertyMetadataOptions.AffectsMeasure, HandleTextChanged));
-
-        /// <summary>
-        /// Raises the <see cref="TextChanged"/> event.
-        /// </summary>
-        protected virtual void OnTextChanged()
-        {
-            var temp = TextChanged;
-            if (temp != null)
-            {
-                temp(this);
-            }
-        }
 
         /// <inheritdoc/>
         protected override void DrawOverride(UltravioletTime time, DrawingContext dc)
@@ -93,7 +76,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         {
             var label = (TextBlock)dobj;
             label.UpdateTextParserResult();
-            label.OnTextChanged();
         }
 
         /// <summary>
