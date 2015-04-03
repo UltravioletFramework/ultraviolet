@@ -22,7 +22,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <inheritdoc/>
         protected override void OnToggle()
         {
-            if (!IsChecked)
+            if (!IsChecked.GetValueOrDefault())
             {
                 IsChecked = true;
             }
@@ -60,7 +60,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         {
             get 
             {
-                var isChecked = IsChecked;
+                var isChecked = IsChecked.GetValueOrDefault(true);
                 return isChecked || (!isChecked && IsPressed) ? Visibility.Visible : Visibility.Collapsed; 
             }
         }

@@ -27,7 +27,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         {
             get
             {
-                var isChecked = IsChecked;
+                var isChecked = IsChecked.GetValueOrDefault(true);
                 return isChecked || (!isChecked && IsPressed) ? Visibility.Visible : Visibility.Collapsed; 
             }
         }

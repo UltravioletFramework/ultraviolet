@@ -18,19 +18,28 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         public ToggleButton(UltravioletContext uv, String id)
             : base(uv, id)
         {
-            VisualStateGroups.Create("checkstate", new[] { "unchecked", "checked" });
+            VisualStateGroups.Create("checkstate", new[] { "unchecked", "checked", "indeterminate" });
 
             SetDefaultValue<HorizontalAlignment>(HorizontalContentAlignmentProperty, HorizontalAlignment.Center);
             SetDefaultValue<VerticalAlignment>(VerticalContentAlignmentProperty, VerticalAlignment.Center);
         }
 
         /// <summary>
-        /// Gets a value indicating whether the button is checked.
+        /// Gets or sets a value indicating whether the button is checked.
         /// </summary>
-        public Boolean IsChecked
+        public Boolean? IsChecked
         {
-            get { return GetValue<Boolean>(IsCheckedProperty); }
-            set { SetValue<Boolean>(IsCheckedProperty, value); }
+            get { return GetValue<Boolean?>(IsCheckedProperty); }
+            set { SetValue<Boolean?>(IsCheckedProperty, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the control supports three states.
+        /// </summary>
+        public Boolean IsThreeState
+        {
+            get { return GetValue<Boolean>(IsThreeStateProperty); }
+            set { SetValue<Boolean>(IsThreeStateProperty, value); }
         }
 
         /// <summary>
@@ -52,10 +61,25 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
-        /// Identifies the Checked dependency property.
+        /// Occures when the toggle button is neither checked nor unchecked.
         /// </summary>
-        public static readonly DependencyProperty IsCheckedProperty = DependencyProperty.Register("IsChecked", typeof(Boolean), typeof(ToggleButton),
+        public event UpfRoutedEventHandler Indeterminate
+        {
+            add { AddHandler(IndeterminateEvent, value); }
+            remove { RemoveHandler(IndeterminateEvent, value); }
+        }
+
+        /// <summary>
+        /// Identifies the <see cref="IsChecked"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty IsCheckedProperty = DependencyProperty.Register("IsChecked", typeof(Boolean?), typeof(ToggleButton),
             new PropertyMetadata(CommonBoxedValues.Boolean.False, HandleIsCheckedChanged));
+
+        /// <summary>
+        /// Identifies the <see cref="IsThreeState"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty IsThreeStateProperty = DependencyProperty.Register("IsThreeState", typeof(Boolean), typeof(ToggleButton),
+            new PropertyMetadata(CommonBoxedValues.Boolean.False));
 
         /// <summary>
         /// Identifies the <see cref="Checked"/> routed event.
@@ -67,6 +91,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// Identifies the <see cref="Unchecked"/> routed event.
         /// </summary>
         public static readonly RoutedEvent UncheckedEvent = EventManager.RegisterRoutedEvent("Unchecked", RoutingStrategy.Bubble, 
+            typeof(UpfRoutedEventHandler), typeof(ToggleButton));
+
+        /// <summary>
+        /// Identifies the <see cref="Indeterminate"/> routed event.
+        /// </summary>
+        public static readonly RoutedEvent IndeterminateEvent = EventManager.RegisterRoutedEvent("Indeterminate", RoutingStrategy.Bubble,
             typeof(UpfRoutedEventHandler), typeof(ToggleButton));
 
         /// <inheritdoc/>
@@ -81,7 +111,29 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         protected virtual void OnToggle()
         {
-            IsChecked = !IsChecked;
+            var isChecked = IsChecked;
+            if (IsThreeState)
+            {
+                if (isChecked.HasValue)
+                {
+                    if (isChecked.Value)
+                    {
+                        IsChecked = null;
+                    }
+                    else
+                    {
+                        IsChecked = true;
+                    }
+                }
+                else
+                {
+                    IsChecked = true;
+                }
+            }
+            else
+            {
+                IsChecked = !isChecked.GetValueOrDefault();
+            }
         }
 
         /// <summary>
@@ -105,6 +157,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
+        /// Raises the <see cref="Indeterminate"/> event.
+        /// </summary>
+        protected virtual void OnIndeterminate()
+        {
+            var evtData     = new RoutedEventData(this);
+            var evtDelegate = EventManager.GetInvocationDelegate<UpfRoutedEventHandler>(IndeterminateEvent);
+            evtDelegate(this, ref evtData);
+        }
+
+        /// <summary>
         /// Occurs when the value of the <see cref="IsChecked"/> dependency property changes.
         /// </summary>
         /// <param name="dobj">The object that raised the event.</param>
@@ -112,15 +174,22 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         {
             var element = (ToggleButton)dobj;
 
-            if (element.IsChecked)
+            var isChecked = element.IsChecked;
+            if (isChecked.HasValue)
             {
-                element.OnChecked();
+                if (isChecked.Value)
+                {
+                    element.OnChecked();
+                }
+                else
+                {
+                    element.OnUnchecked();
+                }
             }
             else
             {
-                element.OnUnchecked();
+                element.OnIndeterminate();
             }
-
             element.UpdateCheckState();
         }
 
@@ -129,13 +198,21 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         private void UpdateCheckState()
         {
-            if (IsChecked)
+            var isChecked = IsChecked;
+            if (isChecked.HasValue)
             {
-                VisualStateGroups.GoToState("checkstate", "checked");
+                if (isChecked.Value)
+                {
+                    VisualStateGroups.GoToState("checkstate", "checked");
+                }
+                else
+                {
+                    VisualStateGroups.GoToState("checkstate", "unchecked");
+                }
             }
             else
             {
-                VisualStateGroups.GoToState("checkstate", "unchecked");
+                VisualStateGroups.GoToState("checkstate", "indeterminate");
             }
         }
     }
