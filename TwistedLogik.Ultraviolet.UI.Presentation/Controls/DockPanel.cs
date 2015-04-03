@@ -81,7 +81,24 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 var availableSizeForChild = new Size2D(
                     availableSize.Width - (sizeLeft + sizeRight),
                     availableSize.Height - (sizeTop + sizeBottom));
+
                 child.Measure(availableSizeForChild);
+
+                switch (GetDock(child))
+                {
+                    case Dock.Left:
+                        sizeTop += child.DesiredSize.Width;
+                        break;
+                    case Dock.Top:
+                        sizeTop += child.DesiredSize.Height;
+                        break;
+                    case Dock.Right:
+                        sizeRight += child.DesiredSize.Width;
+                        break;
+                    case Dock.Bottom:
+                        sizeBottom += child.DesiredSize.Height;
+                        break;
+                }
             }
 
             return new Size2D(sizeLeft + sizeRight, sizeTop + sizeBottom);
