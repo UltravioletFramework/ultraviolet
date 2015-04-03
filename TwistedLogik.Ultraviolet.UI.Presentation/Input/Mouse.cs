@@ -52,6 +52,25 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
     public static partial class Mouse
     {
         /// <summary>
+        /// Captures the mouse within the specified input element.
+        /// </summary>
+        /// <param name="view">The view for which to set mouse capture.</param>
+        /// <param name="element">The element to capture the mouse.</param>
+        public static void Capture(PresentationFoundationView view, IInputElement element)
+        {
+            Contract.Require(view, "view");
+
+            if (element != null)
+            {
+                view.CaptureMouse(element);
+            }
+            else
+            {
+                view.ReleaseMouse();
+            }
+        }
+
+        /// <summary>
         /// Gets the position of the mouse relative to the specified element.
         /// </summary>
         /// <param name="relativeTo">The element for which to retrieve relative mouse coordinates.</param>

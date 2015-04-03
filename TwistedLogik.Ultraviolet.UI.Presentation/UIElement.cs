@@ -541,6 +541,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Sets focus on this element.
+        /// </summary>
+        /// <returns><c>true</c> if focus was successfully moved to this element; otherwise, <c>false</c>.</returns>
+        public Boolean Focus()
+        {
+            if (View == null)
+                return false;
+
+            View.FocusElement(this);
+            return true;
+        }
+
+        /// <summary>
         /// Gets the Ultraviolet context that created this element.
         /// </summary>
         public UltravioletContext Ultraviolet

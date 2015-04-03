@@ -188,7 +188,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             if (elementWithMouseCapture != null)
             {
-                ReleaseMouse(elementWithMouseCapture);
+                ReleaseMouse();
             }
 
             elementWithMouseCapture = element;
@@ -212,11 +212,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Releases the mouse from the element that is currently capturing it.
         /// </summary>
         /// <param name="element">The element that is attempting to release mouse capture.</param>
-        public void ReleaseMouse(IInputElement element)
+        public void ReleaseMouse()
         {
-            Contract.Require(element, "element");
-
-            if (elementWithMouseCapture != element)
+            if (elementWithMouseCapture == null)
                 return;
 
             var dobj = elementWithMouseCapture as DependencyObject;
@@ -700,7 +698,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 elementUnderMouse = null;
 
             if (elementWithMouseCapture != null && !IsElementValidForInput(elementWithMouseCapture))
-                ReleaseMouse(elementWithMouseCapture);
+                ReleaseMouse();
 
             // Handle mouse motion events
             if (elementUnderMouse != elementUnderMousePrev)
