@@ -104,27 +104,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <summary>
         /// Occurs when the value of the <see cref="Value"/> property changes.
         /// </summary>
-        public event UpfEventHandler ValueChanged;
-
-        /// <summary>
-        /// Occurs when the value of the <see cref="Minimum"/> property changes.
-        /// </summary>
-        public event UpfEventHandler MinimumChanged;
-
-        /// <summary>
-        /// Occurs when the value of the <see cref="Maximum"/> property changes.
-        /// </summary>
-        public event UpfEventHandler MaximumChanged;
-
-        /// <summary>
-        /// Occurs when the value of the <see cref="SmallChange"/> property changes.
-        /// </summary>
-        public event UpfEventHandler SmallChangeChanged;
-
-        /// <summary>
-        /// Occurs when the value of the <see cref="LargeChange"/> property changes.
-        /// </summary>
-        public event UpfEventHandler LargeChangeChanged;
+        public event UpfRoutedEventHandler ValueChanged
+        {
+            add { AddHandler(ValueChangedEvent, value); }
+            remove { RemoveHandler(ValueChangedEvent, value); }
+        }
 
         /// <summary>
         /// Identifies the <see cref="Value"/> dependency property.
@@ -152,73 +136,45 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// </summary>
         [Styled("small-change")]
         public static readonly DependencyProperty SmallChangeProperty = DependencyProperty.Register("SmallChange", typeof(Double), typeof(RangeBase),
-            new PropertyMetadata(0.1, HandleSmallChangeChanged));
+            new PropertyMetadata(0.1));
 
         /// <summary>
         /// Identifies the <see cref="LargeChange"/> dependency property.
         /// </summary>
         [Styled("large-change")]
         public static readonly DependencyProperty LargeChangeProperty = DependencyProperty.Register("LargeChange", typeof(Double), typeof(RangeBase),
-            new PropertyMetadata(CommonBoxedValues.Double.One, HandleLargeChangeChanged));
+            new PropertyMetadata(CommonBoxedValues.Double.One));
+
+        /// <summary>
+        /// Identifies the <see cref="ValueChanged"/> routed event.
+        /// </summary>
+        public static readonly RoutedEvent ValueChangedEvent = EventManager.RegisterRoutedEvent("ValueChanged", RoutingStrategy.Bubble, 
+            typeof(UpfRoutedEventHandler), typeof(RangeBase));
 
         /// <summary>
         /// Raises the <see cref="ValueChanged"/> event.
         /// </summary>
         protected virtual void OnValueChanged()
         {
-            var temp = ValueChanged;
-            if (temp != null)
-            {
-                temp(this);
-            }
+            var evtData = new RoutedEventData(this);
+            var evtDelegate = EventManager.GetInvocationDelegate<UpfRoutedEventHandler>(ValueChangedEvent);
+            evtDelegate(this, ref evtData);
         }
 
         /// <summary>
-        /// Raises the <see cref="MinimumChanged"/> event.
+        /// Called when the value of the <see cref="Maximum"/> property changes.
         /// </summary>
         protected virtual void OnMinimumChanged()
         {
-            var temp = MinimumChanged;
-            if (temp != null)
-            {
-                temp(this);
-            }
+
         }
 
         /// <summary>
-        /// Raises the <see cref="MaximumChanged"/> event.
+        /// Called when the value of the <see cref="Minimum"/> property changes.
         /// </summary>
         protected virtual void OnMaximumChanged()
         {
-            var temp = MaximumChanged;
-            if (temp != null)
-            {
-                temp(this);
-            }
-        }
 
-        /// <summary>
-        /// Raises the <see cref="SmallChangeChanged"/> event.
-        /// </summary>
-        protected virtual void OnSmallChangeChanged()
-        {
-            var temp = SmallChangeChanged;
-            if (temp != null)
-            {
-                temp(this);
-            }
-        }
-
-        /// <summary>
-        /// Raises the <see cref="LargeChangeChanged"/> event.
-        /// </summary>
-        protected virtual void OnLargeChangeChanged()
-        {
-            var temp = LargeChangeChanged;
-            if (temp != null)
-            {
-                temp(this);
-            }
         }
 
         /// <summary>
@@ -252,26 +208,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             var range = (RangeBase)dobj;
             range.CoerceValue(ValueProperty);
             range.OnMaximumChanged();
-        }
-
-        /// <summary>
-        /// Occurs when the value of the <see cref="SmallChange"/> dependency property changes.
-        /// </summary>
-        /// <param name="dobj">The object that raised the event.</param>
-        private static void HandleSmallChangeChanged(DependencyObject dobj)
-        {
-            var range = (RangeBase)dobj;
-            range.OnSmallChangeChanged();
-        }
-
-        /// <summary>
-        /// Occurs when the value of the <see cref="LargeChange"/> dependency property changes.
-        /// </summary>
-        /// <param name="dobj">The object that raised the event.</param>
-        private static void HandleLargeChangeChanged(DependencyObject dobj)
-        {
-            var range = (RangeBase)dobj;
-            range.OnLargeChangeChanged();
         }
 
         /// <summary>

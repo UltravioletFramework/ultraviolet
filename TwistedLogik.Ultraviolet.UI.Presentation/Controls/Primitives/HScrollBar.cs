@@ -1,12 +1,11 @@
 ﻿using System;
-using TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
+namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
 {
     /// <summary>
     /// Represents a horizontal scroll bar.
     /// </summary>
-    [UvmlKnownType(null, "TwistedLogik.Ultraviolet.UI.Presentation.Controls.Templates.HScrollBar.xml")]
+    [UvmlKnownType(null, "TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives.Templates.HScrollBar.xml")]
     public class HScrollBar : ScrollBarBase
     {
         /// <summary>
@@ -26,6 +25,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         private void HandleClickLineLeft(DependencyObject element, ref RoutedEventData data)
         {
             DecreaseSmall();
+            RaiseScrollEvent(ScrollEventType.SmallDecrement);
         }
 
         /// <summary>
@@ -34,6 +34,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         private void HandleClickLineRight(DependencyObject element, ref RoutedEventData data)
         {
             IncreaseSmall();
+            RaiseScrollEvent(ScrollEventType.LargeDecrement);
         }
     }
 }

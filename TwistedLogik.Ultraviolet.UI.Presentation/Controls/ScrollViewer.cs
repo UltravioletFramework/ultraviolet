@@ -1,5 +1,6 @@
 ﻿using System;
 using TwistedLogik.Ultraviolet.Input;
+using TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives;
 using TwistedLogik.Ultraviolet.UI.Presentation.Input;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
@@ -211,6 +212,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <inheritdoc/>
+        protected override void PositionOverride()
+        {
+            PART_ContentPresenter.PositionChildren();
+
+            base.PositionOverride();
+        }
+
+        /// <inheritdoc/>
         protected override void OnMouseWheel(MouseDevice device, Double x, Double y, ref RoutedEventData data)
         {
             if (x != 0 && PART_HScroll != null)
@@ -302,15 +311,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Handles the <see cref="RangeControl.ValueChanged"/> event for the scroll viewer's scroll bars.
         /// </summary>
-        private void HandleScrollValueChanged(DependencyObject element)
-        {
-            PART_ContentPresenter.PositionChildren();
-        }
-
-        /// <summary>
-        /// Handles the <see cref="RangeControl.MaximumChanged"/> event for the scroll viewer's scroll bars.
-        /// </summary>
-        private void HandleScrollMaximumChanged(DependencyObject element)
+        private void HandleScrollValueChanged(DependencyObject element, ref RoutedEventData data)
         {
             PART_ContentPresenter.PositionChildren();
         }

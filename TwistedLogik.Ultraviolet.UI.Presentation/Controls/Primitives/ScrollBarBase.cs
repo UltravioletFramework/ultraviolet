@@ -1,9 +1,16 @@
 ﻿using System;
 using TwistedLogik.Nucleus;
-using TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
 {
+    /// <summary>
+    /// Represents the method that handles a <see cref="ScrollBarBase.Scroll"/> event.
+    /// </summary>
+    /// <param name="element">The element that raised the event.</param>
+    /// <param name="type">The scroll event type.</param>
+    /// <param name="data">The routed event data.</param>
+    public delegate void UpfScrollEventHandler(DependencyObject element, ScrollEventType type, ref RoutedEventData data);
+
     /// <summary>
     /// Represents the base class for scroll bars.
     /// </summary>
@@ -21,6 +28,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         }
 
         /// <summary>
+        /// Gets the scroll bar's <see cref="Track"/> component.
+        /// </summary>
+        public Track Track
+        {
+            get { return PART_Track; }
+        }
+
+        /// <summary>
         /// Gets or sets the amount of scrollable content that is currently visible.
         /// </summary>
         public Double ViewportSize
@@ -30,15 +45,26 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         }
 
         /// <summary>
-        /// Occurs when the value of the <see cref="ViewportSize"/> property changes.
+        /// Occurs when the scroll bar's content is scrolled as a result of the user moving the thumb.
         /// </summary>
-        public event UpfEventHandler ViewportSizeChanged;
+        /// <remarks>This event is not raised when the scroll bar's value is changed programatically.</remarks>
+        public event UpfScrollEventHandler Scroll
+        {
+            add { AddHandler(ScrollEvent, value); }
+            remove { RemoveHandler(ScrollEvent, value); }
+        }
 
         /// <summary>
         /// Identifies the <see cref="ViewportSize"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty ViewportSizeProperty = DependencyProperty.Register("ViewportSize", typeof(Double), typeof(ScrollBarBase),
-            new PropertyMetadata(CommonBoxedValues.Double.Zero, PropertyMetadataOptions.AffectsMeasure, HandleViewportSizeChanged));
+            new PropertyMetadata(CommonBoxedValues.Double.Zero, PropertyMetadataOptions.AffectsMeasure));
+
+        /// <summary>
+        /// Identifies the <see cref="Scroll"/> routed event.
+        /// </summary>
+        public static readonly RoutedEvent ScrollEvent = EventManager.RegisterRoutedEvent("Scroll", RoutingStrategy.Bubble,
+            typeof(UpfScrollEventHandler), typeof(ScrollBarBase));
 
         /// <inheritdoc/>
         protected override void OnMinimumChanged()
@@ -65,25 +91,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         }
 
         /// <summary>
-        /// Raises the <see cref="ViewportSize"/> event.
+        /// Raises the <see cref="Scroll"/> event.
         /// </summary>
-        protected virtual void OnViewportSizeChanged()
+        /// <param name="type">The scroll event type.</param>
+        protected internal void RaiseScrollEvent(ScrollEventType type)
         {
-            var temp = ViewportSizeChanged;
-            if (temp != null)
-            {
-                temp(this);
-            }
-        }
-
-        /// <summary>
-        /// Occurs when the value of the <see cref="ViewportSize"/> dependency property changes.
-        /// </summary>
-        /// <param name="dobj">The object that raised the event.</param>
-        private static void HandleViewportSizeChanged(DependencyObject dobj)
-        {
-            var scrollbar = (ScrollBarBase)dobj;
-            scrollbar.OnViewportSizeChanged();
+            System.Diagnostics.Debug.WriteLine("Raising " + type);
+            var evtData     = new RoutedEventData(this);
+            var evtDelegate = EventManager.GetInvocationDelegate<UpfScrollEventHandler>(ScrollEvent);
+            evtDelegate(this, type, ref evtData);
         }
 
         // Component references.

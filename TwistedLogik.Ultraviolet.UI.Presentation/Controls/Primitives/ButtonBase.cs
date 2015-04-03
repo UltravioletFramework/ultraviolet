@@ -53,7 +53,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <summary>
         /// The private access key for the <see cref="IsPressed"/> read-only dependency property.
         /// </summary>
-        public static readonly DependencyPropertyKey IsPressedPropertyKey = DependencyProperty.RegisterReadOnly("IsPressed", typeof(Boolean), typeof(ButtonBase),
+        private static readonly DependencyPropertyKey IsPressedPropertyKey = DependencyProperty.RegisterReadOnly("IsPressed", typeof(Boolean), typeof(ButtonBase),
             new PropertyMetadata(CommonBoxedValues.Boolean.False, HandleIsPressedChanged));
 
         /// <summary>

@@ -205,7 +205,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// </summary>
         /// <param name="element">The element to which to add the handler.</param>
         /// <param name="handler">The handler to add to the specified element.</param>
-        public static void AddMouseMoveHandler(DependencyObject element, MouseMoveEventHandler handler)
+        public static void AddMouseMoveHandler(DependencyObject element, UpfMouseMoveEventHandler handler)
         {
             Contract.Require(element, "element");
             Contract.Require(handler, "handler");

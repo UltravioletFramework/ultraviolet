@@ -48,6 +48,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
 
             Mouse.AddPreviewMouseMoveHandler(this.Thumb, HandleThumbPreviewMouseMove);
             Mouse.AddPreviewMouseDownHandler(this.Thumb, HandleThumbPreviewMouseDown);
+            Mouse.AddPreviewMouseUpHandler(this.Thumb, HandleThumbPreviewMouseUp);
         }
 
         /// <summary>
@@ -347,6 +348,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             if (owner != null)
             {
                 owner.DecreaseLarge();
+
+                var scrollbar = owner as ScrollBarBase;
+                if (scrollbar != null)
+                {
+                    scrollbar.RaiseScrollEvent(ScrollEventType.LargeDecrement);
+                }
             }
         }
 
@@ -359,6 +366,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             if (owner != null)
             {
                 owner.IncreaseLarge();
+
+                var scrollbar = owner as ScrollBarBase;
+                if (scrollbar != null)
+                {
+                    scrollbar.RaiseScrollEvent(ScrollEventType.LargeIncrement);
+                }
             }
         }
 
@@ -370,6 +383,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             var button = element as Button;
             if (button != null && button.IsPressed)
             {
+                var oldValue = Value;
                 if (Orientation == Orientation.Vertical)
                 {
                     var relY = y - (AbsolutePosition.Y + thumbDragOffset);
@@ -379,6 +393,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
                 {
                     var relX = x - (AbsolutePosition.X + thumbDragOffset);
                     Value = OffsetToValue(relX, RenderSize.Width, Thumb.RenderSize.Width);
+                }
+
+                if (Value != oldValue)
+                {
+                    var scrollbar = Control as ScrollBarBase;
+                    if (scrollbar != null)
+                    {
+                        scrollbar.RaiseScrollEvent(ScrollEventType.ThumbTrack);
+                    }
                 }
             }
         }
@@ -392,12 +415,31 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
 
             if (Orientation == Orientation.Vertical)
             {
+                thumbDragging   = true;
                 thumbDragOffset = Display.PixelsToDips(device.Y) - uiElement.AbsoluteBounds.Y;
             }
             else
             {
+                thumbDragging   = true;
                 thumbDragOffset = Display.PixelsToDips(device.X) - uiElement.AbsoluteBounds.X;
             }
+        }
+        
+        /// <summary>
+        /// Handles the <see cref="Mouse.PreviewMouseUp"/> event for the Thumb button.
+        /// </summary>
+        private void HandleThumbPreviewMouseUp(DependencyObject element, MouseDevice device, MouseButton pressed, ref RoutedEventData data)
+        {
+            if (!thumbDragging)
+                return;
+
+            var scrollbar = Control as ScrollBarBase;
+            if (scrollbar != null)
+            {
+                scrollbar.RaiseScrollEvent(ScrollEventType.EndScroll);
+            }
+
+            thumbDragging = false;
         }
 
         // Component element references.
@@ -406,6 +448,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         private readonly RepeatButton IncreaseButton = null;
 
         // State values.
+        private Boolean thumbDragging;
         private Double thumbDragOffset;
     }
 }

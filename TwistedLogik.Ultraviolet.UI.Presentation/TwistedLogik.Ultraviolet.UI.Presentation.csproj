@@ -97,6 +97,7 @@
     <Compile Include="ComponentTemplateManager.cs" />
     <Compile Include="Controls\ItemContainerGenerator.cs" />
     <Compile Include="Controls\Primitives\NamespaceDoc.cs" />
+    <Compile Include="Controls\Primitives\ScrollEventType.cs" />
     <Compile Include="Controls\SelectionMode.cs" />
     <Compile Include="Controls\Primitives\Selector.SelectionCollection.cs" />
     <Compile Include="Controls\Primitives\Selector.SelectionMetadata.cs" />
@@ -153,7 +154,7 @@
     <Compile Include="Controls\Grid.GridMeasurementOptions.cs" />
     <Compile Include="Controls\Grid.VirtualCellMetadata.cs" />
     <Compile Include="Controls\Grid.cs" />
-    <Compile Include="Controls\HScrollBar.cs" />
+    <Compile Include="Controls\Primitives\HScrollBar.cs" />
     <Compile Include="Controls\Image.cs" />
     <Compile Include="Controls\TextBlock.cs" />
     <Compile Include="Controls\Primitives\TextBlockBase.cs" />
@@ -180,7 +181,7 @@
     <Compile Include="Controls\UIElementCollection.cs" />
     <Compile Include="Controls\UIElementCollection.IEnumerable.cs" />
     <Compile Include="Controls\UserControl.cs" />
-    <Compile Include="Controls\VScrollBar.cs" />
+    <Compile Include="Controls\Primitives\VScrollBar.cs" />
     <Compile Include="Controls\WrapPanel.cs" />
     <Compile Include="FrameworkElement.cs" />
     <Compile Include="FrameworkResource.cs" />
@@ -306,15 +307,11 @@
   <ItemGroup>
     <EmbeddedResource Include="Controls\Templates\Button.xml" />
     <EmbeddedResource Include="Controls\Templates\CheckBox.xml" />
-    <EmbeddedResource Include="Controls\Templates\HScrollBar.xml" />
     <EmbeddedResource Include="Controls\Templates\RadioButton.xml">
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\Templates\RepeatButton.xml" />
     <EmbeddedResource Include="Controls\Templates\TextBox.xml" />
-    <EmbeddedResource Include="Controls\Templates\VScrollBar.xml">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\TwistedLogik.Public.snk">
@@ -352,6 +349,14 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Controls\Templates\Border.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Controls\Primitives\Templates\HScrollBar.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Controls\Primitives\Templates\VScrollBar.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
