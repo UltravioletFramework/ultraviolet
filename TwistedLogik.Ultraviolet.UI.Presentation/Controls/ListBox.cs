@@ -39,15 +39,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
-        /// Occurs when the value of the <see cref="SelectionMode"/> property changes.
-        /// </summary>
-        public event UpfEventHandler SelectionModeChanged;
-
-        /// <summary>
         /// Identifies the <see cref="SelectionMode"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty SelectionModeProperty = DependencyProperty.Register("SelectionMode", typeof(SelectionMode), typeof(ListBox),
-            new PropertyMetadata(SelectionMode.Single, HandleSelectionModeChanged));
+            new PropertyMetadata(SelectionMode.Single));
 
         /// <summary>
         /// The private access key for the <see cref="SelectedItems"/> read-only dependency property.
@@ -138,28 +133,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             }
 
             base.OnSelectedItemsChanged();
-        }
-
-        /// <summary>
-        /// Raises the <see cref="SelectionModeChanged"/> event.
-        /// </summary>
-        protected virtual void OnSelectionModeChanged()
-        {
-            var temp = SelectionModeChanged;
-            if (temp != null)
-            {
-                temp(this);
-            }
-        }
-
-        /// <summary>
-        /// Occurs when the value of the <see cref="SelectionMode"/> dependency property changes.
-        /// </summary>
-        /// <param name="dobj">The dependency object that raised the event.</param>
-        private static void HandleSelectionModeChanged(DependencyObject dobj)
-        {
-            var listBox = (ListBox)dobj;
-            listBox.OnSelectionModeChanged();
         }
 
         /// <summary>

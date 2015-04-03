@@ -1,6 +1,5 @@
 ﻿using System;
 using System.ComponentModel;
-using TwistedLogik.Ultraviolet.UI.Presentation.Styles;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 {
@@ -38,57 +37,29 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
-        /// Gets or sets the horizontal alignment of the control's content.
+        /// Gets a value indicating whether the control has any content.
         /// </summary>
-        public HorizontalAlignment HorizontalContentAlignment
+        public Boolean HasContent
         {
-            get { return GetValue<HorizontalAlignment>(HorizontalContentAlignmentProperty); }
-            set { SetValue<HorizontalAlignment>(HorizontalContentAlignmentProperty, value); }
+            get { return GetValue<Boolean>(HasContentProperty); }
         }
-
-        /// <summary>
-        /// Gets or sets the vertical alignment of the control's content.
-        /// </summary>
-        public VerticalAlignment VerticalContentAlignment
-        {
-            get { return GetValue<VerticalAlignment>(VerticalContentAlignmentProperty); }
-            set { SetValue<VerticalAlignment>(VerticalContentAlignmentProperty, value); }
-        }
-
-        /// <summary>
-        /// Occurs when the value of the <see cref="HorizontalContentAlignment"/> property changes.
-        /// </summary>
-        public event UpfEventHandler HorizontalContentAlignmentChanged;
-
-        /// <summary>
-        /// Occurs when the value of the <see cref="VerticalContentAlignment"/> property changes.
-        /// </summary>
-        public event UpfEventHandler VerticalContentAlignmentChanged;
-
-        /// <summary>
-        /// Occurs when the value of the <see cref="Content"/> property changes.
-        /// </summary>
-        public event UpfEventHandler ContentChanged;
-
-        /// <summary>
-        /// Identifies the <see cref="HorizontalContentAlignment"/> dependency property.
-        /// </summary>
-        [Styled("content-halign")]
-        public static readonly DependencyProperty HorizontalContentAlignmentProperty = DependencyProperty.Register("HorizontalContentAlignment", typeof(HorizontalAlignment), typeof(ContentControl),
-            new PropertyMetadata(PresentationBoxedValues.HorizontalAlignment.Left, PropertyMetadataOptions.AffectsArrange, HandleHorizontalContentAlignmentChanged));
-        
-        /// <summary>
-        /// Identifies the <see cref="VerticalContentAlignment"/> dependency property.
-        /// </summary>
-        [Styled("content-valign")]
-        public static readonly DependencyProperty VerticalContentAlignmentProperty = DependencyProperty.Register("VerticalContentAlignment", typeof(VerticalAlignment), typeof(ContentControl),
-            new PropertyMetadata(PresentationBoxedValues.VerticalAlignment.Top, PropertyMetadataOptions.AffectsArrange, HandleVerticalContentAlignmentChanged));
 
         /// <summary>
         /// Identifies the <see cref="Content"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty ContentProperty = DependencyProperty.Register("Content", typeof(Object), typeof(ContentControl),
             new PropertyMetadata(null, PropertyMetadataOptions.AffectsMeasure | PropertyMetadataOptions.CoerceObjectToString, HandleContentChanged));
+
+        /// <summary>
+        /// The private access key for the <see cref="HasContent"/> read-only dependency property.
+        /// </summary>
+        private static readonly DependencyPropertyKey HasContentPropertyKey = DependencyProperty.RegisterReadOnly("HasContent", typeof(Boolean), typeof(ContentControl),
+            new PropertyMetadata());
+
+        /// <summary>
+        /// Identifies the <see cref="HasContent"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty HasContentProperty = HasContentPropertyKey.DependencyProperty;
 
         /// <summary>
         /// Gets a value indicating whether the content control treats its content as a logical child.
@@ -150,59 +121,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
-        /// Raises the <see cref="HorizontalContentAlignmentChanged"/> event.
-        /// </summary>
-        protected virtual void OnHorizontalContentAlignmentChanged()
-        {
-            var temp = HorizontalContentAlignmentChanged;
-            if (temp != null)
-            {
-                temp(this);
-            }
-        }
-
-        /// <summary>
-        /// Raises the <see cref="VerticalContentAlignmentChanged"/> event.
-        /// </summary>
-        protected virtual void OnVerticalContentAlignmentChanged()
-        {
-            var temp = VerticalContentAlignmentChanged;
-            if (temp != null)
-            {
-                temp(this);
-            }
-        }
-
-        /// <summary>
         /// Raises the <see cref="ContentChanged"/> event.
         /// </summary>
         protected virtual void OnContentChanged()
         {
-            var temp = ContentChanged;
-            if (temp != null)
-            {
-                temp(this);
-            }
-        }
 
-        /// <summary>
-        /// Occurs when the value of the <see cref="HorizontalContentAlignment"/> dependency property changes.
-        /// </summary>
-        /// <param name="dobj">The dependency object that raised the event.</param>
-        private static void HandleHorizontalContentAlignmentChanged(DependencyObject dobj)
-        {
-            var control = (ContentControl)dobj;
-            control.OnHorizontalContentAlignmentChanged();
-        }
-
-        /// <summary>
-        /// Occurs when the value of the <see cref="VerticalContentAlignment"/> dependency property changes.
-        /// </summary>
-        /// <param name="dobj">The dependency object that raised the event.</param>
-        private static void HandleVerticalContentAlignmentChanged(DependencyObject dobj)
-        {
-            var control = (ContentControl)dobj;
-            control.OnVerticalContentAlignmentChanged();
         }
 
         /// <summary>
@@ -224,6 +147,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             }
 
             control.contentElement = control.Content as UIElement;
+            control.SetValue<Boolean>(HasContentPropertyKey, control.Content != null);
 
             var newElement = control.contentElement;
             if (newElement != null)

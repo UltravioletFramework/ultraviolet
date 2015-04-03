@@ -105,26 +105,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
-        /// Occurs when the value of the <see cref="HorizontalScrollBarVisibility"/> property changes.
-        /// </summary>
-        public event UpfEventHandler HorizontalScrollBarVisibilityChanged;
-
-        /// <summary>
-        /// Occurs when the value of the <see cref="VerticalScrollBarVisibility"/> property changes.
-        /// </summary>
-        public event UpfEventHandler VerticalScrollBarVisibilityChanged;
-
-        /// <summary>
         /// Identifies the <see cref="HorizontalScrollBarVisibility"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty HorizontalScrollBarVisibilityProperty = DependencyProperty.Register("HorizontalScrollBarVisibility", typeof(ScrollBarVisibility), typeof(ScrollViewer),
-            new PropertyMetadata(PresentationBoxedValues.ScrollBarVisibility.Disabled, PropertyMetadataOptions.AffectsArrange, HandleHorizontalScrollBarVisibilityChanged));
+            new PropertyMetadata(PresentationBoxedValues.ScrollBarVisibility.Disabled, PropertyMetadataOptions.AffectsArrange));
 
         /// <summary>
         /// Identifies the <see cref="VerticalScrollBarVisibility"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty VerticalScrollBarVisibilityProperty = DependencyProperty.Register("VerticalScrollBarVisibility", typeof(ScrollBarVisibility), typeof(ScrollViewer),
-            new PropertyMetadata(PresentationBoxedValues.ScrollBarVisibility.Visible, PropertyMetadataOptions.AffectsArrange, HandleVerticalScrollBarVisibilityChanged));
+            new PropertyMetadata(PresentationBoxedValues.ScrollBarVisibility.Visible, PropertyMetadataOptions.AffectsArrange));
 
         /// <inheritdoc/>
         protected override Size2D MeasureOverride(Size2D availableSize)
@@ -262,50 +252,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             }
 
             base.OnKeyDown(device, key, modifiers, ref data);
-        }
-
-        /// <summary>
-        /// Raises the <see cref="HorizontalScrollBarVisibilityChanged"/> event.
-        /// </summary>
-        protected virtual void OnHorizontalScrollBarVisibilityChanged()
-        {
-            var temp = HorizontalScrollBarVisibilityChanged;
-            if (temp != null)
-            {
-                temp(this);
-            }
-        }
-
-        /// <summary>
-        /// Raises the <see cref="VerticalScrollBarVisibilityChanged"/> event.
-        /// </summary>
-        protected virtual void OnVerticalScrollBarVisibilityChanged()
-        {
-            var temp = VerticalScrollBarVisibilityChanged;
-            if (temp != null)
-            {
-                temp(this);
-            }
-        }
-
-        /// <summary>
-        /// Occurs when the value of the <see cref="HorizontalScrollBarVisibility"/> dependency property changes.
-        /// </summary>
-        /// <param name="dobj">The object that raised the event.</param>
-        private static void HandleHorizontalScrollBarVisibilityChanged(DependencyObject dobj)
-        {
-            var scrollViewer = (ScrollViewer)dobj;
-            scrollViewer.OnHorizontalScrollBarVisibilityChanged();
-        }
-
-        /// <summary>
-        /// Occurs when the value of the <see cref="VerticalScrollBarVisibility"/> dependency property changes.
-        /// </summary>
-        /// <param name="dobj">The object that raised the event.</param>
-        private static void HandleVerticalScrollBarVisibilityChanged(DependencyObject dobj)
-        {
-            var scrollViewer = (ScrollViewer)dobj;
-            scrollViewer.OnVerticalScrollBarVisibilityChanged();
         }
 
         /// <summary>

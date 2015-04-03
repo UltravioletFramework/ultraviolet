@@ -87,14 +87,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
-        /// Occurs when the value of the <see cref="ItemsSource"/> property changes.
+        /// Gets a value indicating whether the control has any items.
         /// </summary>
-        public event UpfEventHandler ItemsSourceChanged;
-
-        /// <summary>
-        /// Occurs when the value of the <see cref="ItemStringFormat"/> property changes.
-        /// </summary>
-        public event UpfEventHandler ItemStringFormatChanged;
+        public Boolean HasItems
+        {
+            get { return GetValue<Boolean>(HasItemsProperty); }
+        }
 
         /// <summary>
         /// Identifies the <see cref="ItemsSource"/> dependency property.
@@ -106,7 +104,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// Identifies the <see cref="ItemStringFormat"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty ItemStringFormatProperty = DependencyProperty.Register("ItemStringFormat", typeof(String), typeof(ItemsControl),
-            new PropertyMetadata(HandleItemStringFormatChanged));
+            new PropertyMetadata());
+
+        /// <summary>
+        /// The private access key for the <see cref="HasItems"/> read-only dependency property.
+        /// </summary>
+        private static readonly DependencyPropertyKey HasItemsPropertyKey = DependencyProperty.RegisterReadOnly("HasItems", typeof(Boolean), typeof(ItemsControl),
+            new PropertyMetadata());
+
+        /// <summary>
+        /// Identifies the <see cref="HasItems"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty HasItemsProperty = HasItemsPropertyKey.DependencyProperty;
 
         /// <summary>
         /// Gets the control's list of item containers.
@@ -188,30 +197,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         protected abstract Boolean IsItemContainerForItem(DependencyObject container, Object item);
 
         /// <summary>
-        /// Raises the <see cref="ItemsSourceChanged"/> event.
-        /// </summary>
-        protected virtual void OnItemsSourceChanged()
-        {
-            var temp = ItemsSourceChanged;
-            if (temp != null)
-            {
-                temp(this);
-            }
-        }
-
-        /// <summary>
-        /// Raises the <see cref="ItemStringFormatChanged"/> event.
-        /// </summary>
-        protected virtual void OnItemStringFormatChanged()
-        {
-            var temp = ItemStringFormatChanged;
-            if (temp != null)
-            {
-                temp(this);
-            }
-        }
-
-        /// <summary>
         /// Occurs when the value of the <see cref="ItemsSource"/> dependency property changes.
         /// </summary>
         /// <param name="dobj">The dependency object that raised the event.</param>
@@ -219,17 +204,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         {
             var itemControl = (ItemsControl)dobj;
             itemControl.Items.SetItemsSource(itemControl.ItemsSource);
-            itemControl.OnItemsSourceChanged();
-        }
-
-        /// <summary>
-        /// Occurs when the value of the <see cref="ItemStringFormat"/> dependency property changes.
-        /// </summary>
-        /// <param name="dobj">The dependency object that raised the event.</param>
-        private static void HandleItemStringFormatChanged(DependencyObject dobj)
-        {
-            var itemControl = (ItemsControl)dobj;
-            itemControl.OnItemStringFormatChanged();
         }
 
         /// <summary>
@@ -307,6 +281,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             }
 
             itemContainers.Add(container);
+
+            SetValue<Boolean>(HasItemsPropertyKey, true);
         }
 
         /// <summary>
@@ -333,6 +309,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 
             if (!preserveInCollection)
                 itemContainers.Remove(container);
+
+            SetValue<Boolean>(HasItemsPropertyKey, itemContainers.Count > 0);
         }
 
         /// <summary>

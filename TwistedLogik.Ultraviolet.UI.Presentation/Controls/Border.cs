@@ -39,28 +39,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
-        /// Occurs when the value of the <see cref="BorderThickness"/> property changes.
-        /// </summary>
-        public event UpfEventHandler BorderThicknessChanged;
-
-        /// <summary>
-        /// Occurs when the value of the <see cref="BorderColor"/> property changes.
-        /// </summary>
-        public event UpfEventHandler BorderColorChanged;
-
-        /// <summary>
         /// Identifies the <see cref="BorderThickness"/> dependency property.
         /// </summary>
         [Styled("border-thickness")]
         public static readonly DependencyProperty BorderThicknessProperty = DependencyProperty.Register("BorderThickness", typeof(Thickness), typeof(Border),
-            new PropertyMetadata(PresentationBoxedValues.Thickness.One, PropertyMetadataOptions.AffectsMeasure, HandleBorderThicknessChanged));
+            new PropertyMetadata(PresentationBoxedValues.Thickness.One, PropertyMetadataOptions.AffectsMeasure));
 
         /// <summary>
         /// Identifies the <see cref="BorderColor"/> dependency property.
         /// </summary>
         [Styled("border-color")]
         public static readonly DependencyProperty BorderColorProperty = DependencyProperty.Register("BorderColor", typeof(Color), typeof(Border),
-            new PropertyMetadata(UltravioletBoxedValues.Color.Black, HandleBorderColorChanged));
+            new PropertyMetadata(UltravioletBoxedValues.Color.Black));
         
         /// <inheritdoc/>
         protected override void DrawOverride(UltravioletTime time, DrawingContext dc)
@@ -89,50 +79,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             DrawBlank(dc, bottomArea, borderColor);
 
             base.DrawOverride(time, dc);
-        }
-
-        /// <summary>
-        /// Raises the <see cref="BorderThicknessChanged"/> event.
-        /// </summary>
-        protected virtual void OnBorderThicknessChanged()
-        {
-            var temp = BorderThicknessChanged;
-            if (temp != null)
-            {
-                temp(this);
-            }
-        }
-
-        /// <summary>
-        /// Raises the <see cref="BorderColorChanged"/> event.
-        /// </summary>
-        protected virtual void OnBorderColorChanged()
-        {
-            var temp = BorderColorChanged;
-            if (temp != null)
-            {
-                temp(this);
-            }
-        }
-
-        /// <summary>
-        /// Occurs when the value of the <see cref="BorderThickness"/> dependency property changes.
-        /// </summary>
-        /// <param name="dobj">The dependency object that raised the event.</param>
-        private static void HandleBorderThicknessChanged(DependencyObject dobj)
-        {
-            var border = (Border)dobj;
-            border.OnBorderThicknessChanged();
-        }
-
-        /// <summary>
-        /// Occurs when the value of the <see cref="BorderColor"/> dependency property changes.
-        /// </summary>
-        /// <param name="dobj">The dependency object that raised the event.</param>
-        private static void HandleBorderColorChanged(DependencyObject dobj)
-        {
-            var border = (Border)dobj;
-            border.OnBorderColorChanged();
         }
     }
 }

@@ -55,11 +55,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
-        /// Occurs when the value of the <see cref="LastChildFill"/> property changes.
-        /// </summary>
-        public event UpfEventHandler LastChildFillChanged;
-
-        /// <summary>
         /// Identifies the Dock attached property.
         /// </summary>
         [Styled("dock")]
@@ -71,7 +66,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         [Styled("last-child-fill")]
         public static readonly DependencyProperty LastChildFillProperty = DependencyProperty.Register("LastChildFill", typeof(Boolean), typeof(DockPanel),
-            new PropertyMetadata(CommonBoxedValues.Boolean.False, PropertyMetadataOptions.AffectsArrange, HandleLastChildFillChanged));
+            new PropertyMetadata(CommonBoxedValues.Boolean.False, PropertyMetadataOptions.AffectsArrange));
 
         /// <inheritdoc/>
         protected override Size2D MeasureOverride(Size2D availableSize)
@@ -150,28 +145,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             }
 
             return finalSize;
-        }
-
-        /// <summary>
-        /// Raises the <see cref="LastChildFillChanged"/> event.
-        /// </summary>
-        protected virtual void OnLastChildFillChanged()
-        {
-            var temp = LastChildFillChanged;
-            if (temp != null)
-            {
-                temp(this);
-            }
-        }
-
-        /// <summary>
-        /// Occurs when the value of the <see cref="LastChildFill"/> dependency property changes.
-        /// </summary>
-        /// <param name="dobj">The dependency object that raised the event.</param>
-        private static void HandleLastChildFillChanged(DependencyObject dobj)
-        {
-            var panel = (DockPanel)dobj;
-            panel.OnLastChildFillChanged();
         }
     }
 }

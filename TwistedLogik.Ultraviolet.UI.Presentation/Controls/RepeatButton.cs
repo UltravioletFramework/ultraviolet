@@ -51,26 +51,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
-        /// Occurs when the value of the <see cref="Delay"/> property changes.
-        /// </summary>
-        public event UpfEventHandler DelayChanged;
-
-        /// <summary>
-        /// Occurs when the value of the <see cref="Interval"/> property changes.
-        /// </summary>
-        public event UpfEventHandler IntervalChanged;
-
-        /// <summary>
         /// Identifies the <see cref="Delay"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty DelayProperty = DependencyProperty.Register("Delay", typeof(Double), typeof(RepeatButton),
-            new PropertyMetadata(GetDefaultDelay(), HandleDelayChanged));
+            new PropertyMetadata(GetDefaultDelay()));
         
         /// <summary>
         /// Identifies the <see cref="Interval"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty IntervalProperty = DependencyProperty.Register("Interval", typeof(Double), typeof(RepeatButton),
-            new PropertyMetadata(GetDefaultInterval(), HandleIntervalChanged));
+            new PropertyMetadata(GetDefaultInterval()));
 
         /// <inheritdoc/>
         protected override void OnUpdating(UltravioletTime time)
@@ -100,30 +90,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 data.Handled = true;
             }
             base.OnMouseDown(device, button, ref data);
-        }
-
-        /// <summary>
-        /// Raises the <see cref="DelayChanged"/> event.
-        /// </summary>
-        protected virtual void OnDelayChanged()
-        {
-            var temp = DelayChanged;
-            if (temp != null)
-            {
-                temp(this);
-            }
-        }
-
-        /// <summary>
-        /// Raises the <see cref="IntervalChanged"/> event.
-        /// </summary>
-        protected virtual void OnIntervalChanged()
-        {
-            var temp = IntervalChanged;
-            if (temp != null)
-            {
-                temp(this);
-            }
         }
 
         /// <summary>
@@ -162,26 +128,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 return 33.0 + ((31 - speed) * (367.0 / 31));
             }
             return 33.0;
-        }
-
-        /// <summary>
-        /// Occurs when the value of the <see cref="Delay"/> dependency property changes.
-        /// </summary>
-        /// <param name="dobj">The object that raised the event.</param>
-        private static void HandleDelayChanged(DependencyObject dobj)
-        {
-            var button = (RepeatButton)dobj;
-            button.OnDelayChanged();
-        }
-
-        /// <summary>
-        /// Occurs when the value of the <see cref="Interval"/> dependency property changes.
-        /// </summary>
-        /// <param name="dobj">The object that raised the event.</param>
-        private static void HandleIntervalChanged(DependencyObject dobj)
-        {
-            var button = (RepeatButton)dobj;
-            button.OnIntervalChanged();
         }
 
         /// <summary>

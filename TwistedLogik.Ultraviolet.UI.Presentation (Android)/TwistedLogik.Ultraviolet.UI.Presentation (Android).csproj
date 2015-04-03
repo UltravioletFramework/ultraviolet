@@ -662,6 +662,9 @@
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Styles\UvssStyleCollection.IEnumerable.cs">
       <Link>Styles\UvssStyleCollection.IEnumerable.cs</Link>
     </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\TextAlignment.cs">
+      <Link>TextAlignment.cs</Link>
+    </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Thickness.cs">
       <Link>Thickness.cs</Link>
     </Compile>

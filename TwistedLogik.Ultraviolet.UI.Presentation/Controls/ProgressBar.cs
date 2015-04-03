@@ -78,36 +78,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
-        /// Occurs when the value of the <see cref="BarImage"/> property changes.
-        /// </summary>
-        public event UpfEventHandler BarImageChanged;
-
-        /// <summary>
-        /// Occurs when the value of the <see cref="BarColor"/> property changes.
-        /// </summary>
-        public event UpfEventHandler BarColorChanged;
-
-        /// <summary>
-        /// Occurs when the value of the <see cref="FillImage"/> property changes.
-        /// </summary>
-        public event UpfEventHandler FillImageChanged;
-
-        /// <summary>
-        /// Occurs when the value of the <see cref="FillColor"/> property changes.
-        /// </summary>
-        public event UpfEventHandler FillColorChanged;
-
-        /// <summary>
-        /// Occurs when the value of the <see cref="OverlayImage"/> property changes.
-        /// </summary>
-        public event UpfEventHandler OverlayImageChanged;
-
-        /// <summary>
-        /// Occurs when the value of the <see cref="OverlayColor"/> property changes.
-        /// </summary>
-        public event UpfEventHandler OverlayColorChanged;
-
-        /// <summary>
         /// Identifies the <see cref="BarImage"/> dependency property.
         /// </summary>
         [Styled("bar-image")]
@@ -119,7 +89,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         [Styled("bar-color")]
         public static readonly DependencyProperty BarColorProperty = DependencyProperty.Register("BarColor", typeof(Color), typeof(ProgressBar),
-            new PropertyMetadata(UltravioletBoxedValues.Color.White, HandleBarColorChanged));
+            new PropertyMetadata(UltravioletBoxedValues.Color.White));
 
         /// <summary>
         /// Identifies the <see cref="FillImage"/> dependency property.
@@ -133,7 +103,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         [Styled("fill-color")]
         public static readonly DependencyProperty FillColorProperty = DependencyProperty.Register("FillColor", typeof(Color), typeof(ProgressBar),
-            new PropertyMetadata(Color.Lime, HandleFillColorChanged));
+            new PropertyMetadata(Color.Lime));
 
         /// <summary>
         /// Identifies the <see cref="OverlayImage"/> dependency property.
@@ -147,7 +117,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         [Styled("overlay-color")]
         public static readonly DependencyProperty OverlayColorProperty = DependencyProperty.Register("OverlayColor", typeof(Color), typeof(ProgressBar),
-            new PropertyMetadata(UltravioletBoxedValues.Color.White, HandleOverlayColorChanged));
+            new PropertyMetadata(UltravioletBoxedValues.Color.White));
 
         /// <inheritdoc/>
         protected override void ReloadContentCore(Boolean recursive)
@@ -205,78 +175,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
-        /// Raises the <see cref="BarImageChanged"/> event.
-        /// </summary>
-        protected virtual void OnBarImageChanged()
-        {
-            var temp = BarImageChanged;
-            if (temp != null)
-            {
-                temp(this);
-            }
-        }
-
-        /// <summary>
-        /// Raises the <see cref="BarColorChanged"/> event.
-        /// </summary>
-        protected virtual void OnBarColorChanged()
-        {
-            var temp = BarColorChanged;
-            if (temp != null)
-            {
-                temp(this);
-            }
-        }
-
-        /// <summary>
-        /// Raises the <see cref="FillImageChanged"/> event.
-        /// </summary>
-        protected virtual void OnFillImageChanged()
-        {
-            var temp = FillImageChanged;
-            if (temp != null)
-            {
-                temp(this);
-            }
-        }
-
-        /// <summary>
-        /// Raises the <see cref="FillColorChanged"/> event.
-        /// </summary>
-        protected virtual void OnFillColorChanged()
-        {
-            var temp = FillColorChanged;
-            if (temp != null)
-            {
-                temp(this);
-            }
-        }
-
-        /// <summary>
-        /// Raises the <see cref="OverlayImageChanged"/> event.
-        /// </summary>
-        protected virtual void OnOverlayImageChanged()
-        {
-            var temp = OverlayImageChanged;
-            if (temp != null)
-            {
-                temp(this);
-            }
-        }
-
-        /// <summary>
-        /// Raises the <see cref="OverlayColorChanged"/> event.
-        /// </summary>
-        protected virtual void OnOverlayColorChanged()
-        {
-            var temp = OverlayColorChanged;
-            if (temp != null)
-            {
-                temp(this);
-            }
-        }
-
-        /// <summary>
         /// Reloads the progress bar's background image.
         /// </summary>
         protected void ReloadBarImage()
@@ -308,17 +206,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         {
             var element = (ProgressBar)dobj;
             element.ReloadBarImage();
-            element.OnBarImageChanged();
-        }
-
-        /// <summary>
-        /// Occurs when the value of the <see cref="BarColor"/> dependency property changes.
-        /// </summary>
-        /// <param name="dobj">The object that raised the event.</param>
-        private static void HandleBarColorChanged(DependencyObject dobj)
-        {
-            var element = (ProgressBar)dobj;
-            element.OnBarColorChanged();
         }
 
         /// <summary>
@@ -329,17 +216,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         {
             var element = (ProgressBar)dobj;
             element.ReloadFillImage();
-            element.OnFillImageChanged();
-        }
-
-        /// <summary>
-        /// Occurs when the value of the <see cref="FillColor"/> dependency property changes.
-        /// </summary>
-        /// <param name="dobj">The object that raised the event.</param>
-        private static void HandleFillColorChanged(DependencyObject dobj)
-        {
-            var element = (ProgressBar)dobj;
-            element.OnFillColorChanged();
         }
 
         /// <summary>
@@ -350,17 +226,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         {
             var element = (ProgressBar)dobj;
             element.ReloadOverlayImage();
-            element.OnOverlayImageChanged();
-        }
-
-        /// <summary>
-        /// Occurs when the value of the <see cref="OverlayColor"/> dependency property changes.
-        /// </summary>
-        /// <param name="dobj">The object that raised the event.</param>
-        private static void HandleOverlayColorChanged(DependencyObject dobj)
-        {
-            var element = (ProgressBar)dobj;
-            element.OnOverlayColorChanged();
         }
     }
 }

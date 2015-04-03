@@ -1,4 +1,5 @@
 ﻿using System;
+using TwistedLogik.Ultraviolet.UI.Presentation.Styles;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 {
@@ -17,6 +18,38 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         {
             LoadComponentRoot();
         }
+
+        /// <summary>
+        /// Gets or sets the horizontal alignment of the control's content.
+        /// </summary>
+        public HorizontalAlignment HorizontalContentAlignment
+        {
+            get { return GetValue<HorizontalAlignment>(HorizontalContentAlignmentProperty); }
+            set { SetValue<HorizontalAlignment>(HorizontalContentAlignmentProperty, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets the vertical alignment of the control's content.
+        /// </summary>
+        public VerticalAlignment VerticalContentAlignment
+        {
+            get { return GetValue<VerticalAlignment>(VerticalContentAlignmentProperty); }
+            set { SetValue<VerticalAlignment>(VerticalContentAlignmentProperty, value); }
+        }
+
+        /// <summary>
+        /// Identifies the <see cref="HorizontalContentAlignment"/> dependency property.
+        /// </summary>
+        [Styled("content-halign")]
+        public static readonly DependencyProperty HorizontalContentAlignmentProperty = DependencyProperty.Register("HorizontalContentAlignment", typeof(HorizontalAlignment), typeof(ContentControl),
+            new PropertyMetadata(PresentationBoxedValues.HorizontalAlignment.Left, PropertyMetadataOptions.AffectsArrange));
+
+        /// <summary>
+        /// Identifies the <see cref="VerticalContentAlignment"/> dependency property.
+        /// </summary>
+        [Styled("content-valign")]
+        public static readonly DependencyProperty VerticalContentAlignmentProperty = DependencyProperty.Register("VerticalContentAlignment", typeof(VerticalAlignment), typeof(ContentControl),
+            new PropertyMetadata(PresentationBoxedValues.VerticalAlignment.Top, PropertyMetadataOptions.AffectsArrange));
 
         /// <summary>
         /// Populates any fields of this object which represent references

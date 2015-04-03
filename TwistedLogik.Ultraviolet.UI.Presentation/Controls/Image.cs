@@ -41,16 +41,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
-        /// Occurs when the value of the <see cref="Source"/> property changes.
-        /// </summary>
-        public event UpfEventHandler SourceChanged;
-
-        /// <summary>
-        /// Occurs when the value of the <see cref="SourceColor"/> property changes.
-        /// </summary>
-        public event UpfEventHandler SourceColorChanged;
-
-        /// <summary>
         /// Identifies the <see cref="Source"/> property.
         /// </summary>
         [Styled("source-image")]
@@ -62,7 +52,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         [Styled("source-color")]
         public static readonly DependencyProperty SourceColorProperty = DependencyProperty.Register("SourceColor", typeof(Color), typeof(Image),
-            new PropertyMetadata(UltravioletBoxedValues.Color.White, HandleSourceColorChanged));
+            new PropertyMetadata(UltravioletBoxedValues.Color.White));
 
         /// <inheritdoc/>
         protected override void ReloadContentCore(Boolean recursive)
@@ -77,30 +67,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         {
             DrawImage(dc, Source, SourceColor);
             base.DrawOverride(time, dc);
-        }
-
-        /// <summary>
-        /// Raises the <see cref="SourceChanged"/> event.
-        /// </summary>
-        protected virtual void OnSourceChanged()
-        {
-            var temp = SourceChanged;
-            if (temp != null)
-            {
-                temp(this);
-            }
-        }
-
-        /// <summary>
-        /// Raises the <see cref="SourceColorChanged"/> event.
-        /// </summary>
-        protected virtual void OnSourceColorChanged()
-        {
-            var temp = SourceColorChanged;
-            if (temp != null)
-            {
-                temp(this);
-            }
         }
 
         /// <summary>
@@ -119,17 +85,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         {
             var image = (Image)dobj;
             image.ReloadSource();
-            image.OnSourceChanged();
-        }
-
-        /// <summary>
-        /// Occurs when the value of the <see cref="SourceColor"/> dependency property changes.
-        /// </summary>
-        /// <param name="dobj">The dependency object that raised the event.</param>
-        private static void HandleSourceColorChanged(DependencyObject dobj)
-        {
-            var image = (Image)dobj;
-            image.OnSourceColorChanged();
         }
     }
 }

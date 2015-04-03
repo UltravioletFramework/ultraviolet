@@ -41,50 +41,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
-        /// Occurs when the value of the <see cref="Value"/> property changes.
-        /// </summary>
-        public event UpfEventHandler ValueChanged;
-
-        /// <summary>
-        /// Occurs when the value of the <see cref="Format"/> property changes.
-        /// </summary>
-        public event UpfEventHandler FormatChanged;
-
-        /// <summary>
         /// Identifies the <see cref="Value"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty ValueProperty = DependencyProperty.Register("Value", typeof(Double), typeof(NumericTextBlock),
-            new PropertyMetadata(null, PropertyMetadataOptions.AffectsMeasure, HandleValueChanged));
+            new PropertyMetadata(null, PropertyMetadataOptions.AffectsMeasure));
         
         /// <summary>
         /// Identifies the <see cref="Format"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty FormatProperty = DependencyProperty.Register("Format", typeof(String), typeof(NumericTextBlock),
-            new PropertyMetadata(null, PropertyMetadataOptions.AffectsMeasure, HandleFormatChanged));
-
-        /// <summary>
-        /// Raises the <see cref="ValueChanged"/> event.
-        /// </summary>
-        protected virtual void OnValueChanged()
-        {
-            var temp = ValueChanged;
-            if (temp != null)
-            {
-                temp(this);
-            }
-        }
-
-        /// <summary>
-        /// Raises the <see cref="FormatChanged"/> event.
-        /// </summary>
-        protected virtual void OnFormatChanged()
-        {
-            var temp = FormatChanged;
-            if (temp != null)
-            {
-                temp(this);
-            }
-        }
+            new PropertyMetadata(null, PropertyMetadataOptions.AffectsMeasure));
 
         /// <inheritdoc/>
         protected override void DrawOverride(UltravioletTime time, DrawingContext dc)
@@ -123,26 +89,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         protected override Size2D ArrangeOverride(Size2D finalSize, ArrangeOptions options)
         {
             return finalSize;
-        }
-
-        /// <summary>
-        /// Occurs when the value of the <see cref="Value"/> dependency property changes.
-        /// </summary>
-        /// <param name="dobj">The dependency object that raised the event.</param>
-        private static void HandleValueChanged(DependencyObject dobj)
-        {
-            var label = (NumericTextBlock)dobj;
-            label.OnValueChanged();
-        }
-
-        /// <summary>
-        /// Occurs when the value of the <see cref="Format"/> dependency property changes.
-        /// </summary>
-        /// <param name="dobj">The dependency object that raised the event.</param>
-        private static void HandleFormatChanged(DependencyObject dobj)
-        {
-            var label = (NumericTextBlock)dobj;
-            label.OnFormatChanged();
         }
     }
 }

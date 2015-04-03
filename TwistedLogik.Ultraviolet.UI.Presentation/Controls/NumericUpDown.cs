@@ -43,11 +43,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         public static readonly DependencyProperty DecimalPlacesProperty = DependencyProperty.Register("DecimalPlaces", typeof(Int32), typeof(NumericUpDown),
             new PropertyMetadata(HandleDecimalPlacesChanged));
 
-        /// <summary>
-        /// Occurs when the value of the <see cref="DecimalPlaces"/> property changes.
-        /// </summary>
-        public event UpfEventHandler DecimalPlacesChanged;
-
         /// <inheritdoc/>
         protected override void OnValueChanged()
         {
@@ -89,18 +84,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
-        /// Raises the <see cref="DecimalPlacesChanged"/> event.
-        /// </summary>
-        protected virtual void OnDecimalPlacesChanged()
-        {
-            var temp = DecimalPlacesChanged;
-            if (temp != null)
-            {
-                temp(this);
-            }
-        }
-
-        /// <summary>
         /// Occurs when the value of the <see cref="DecimalPlaces"/> dependency property changes.
         /// </summary>
         /// <param name="dobj">The dependency object that raised the event.</param>
@@ -109,7 +92,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             var updown = (NumericUpDown)dobj;
             updown.InvalidatePattern();
             updown.InvalidateFormatString();
-            updown.OnDecimalPlacesChanged();
         }
 
         /// <summary>
