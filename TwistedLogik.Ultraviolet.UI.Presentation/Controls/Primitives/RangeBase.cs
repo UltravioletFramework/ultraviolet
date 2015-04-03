@@ -115,35 +115,35 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// </summary>
         [Styled("value")]
         public static readonly DependencyProperty ValueProperty = DependencyProperty.Register("Value", typeof(Double), typeof(RangeBase),
-            new PropertyMetadata(HandleValueChanged, new CoerceValueCallback<Double>(CoerceValue)));
+            new PropertyMetadata<Double>(HandleValueChanged, CoerceValue));
 
         /// <summary>
         /// Identifies the <see cref="Minimum"/> dependency property.
         /// </summary>
         [Styled("minimum")]
         public static readonly DependencyProperty MinimumProperty = DependencyProperty.Register("Minimum", typeof(Double), typeof(RangeBase),
-            new PropertyMetadata(HandleMinimumChanged));
+            new PropertyMetadata<Double>(HandleMinimumChanged));
 
         /// <summary>
         /// Identifies the <see cref="Maximum"/> dependency property.
         /// </summary>
         [Styled("maximum")]
         public static readonly DependencyProperty MaximumProperty = DependencyProperty.Register("Maximum", typeof(Double), typeof(RangeBase),
-            new PropertyMetadata(CommonBoxedValues.Double.One, HandleMaximumChanged));
+            new PropertyMetadata<Double>(CommonBoxedValues.Double.One, HandleMaximumChanged));
 
         /// <summary>
         /// Identifies the <see cref="SmallChange"/> dependency property.
         /// </summary>
         [Styled("small-change")]
         public static readonly DependencyProperty SmallChangeProperty = DependencyProperty.Register("SmallChange", typeof(Double), typeof(RangeBase),
-            new PropertyMetadata(0.1));
+            new PropertyMetadata<Double>(0.1));
 
         /// <summary>
         /// Identifies the <see cref="LargeChange"/> dependency property.
         /// </summary>
         [Styled("large-change")]
         public static readonly DependencyProperty LargeChangeProperty = DependencyProperty.Register("LargeChange", typeof(Double), typeof(RangeBase),
-            new PropertyMetadata(CommonBoxedValues.Double.One));
+            new PropertyMetadata<Double>(CommonBoxedValues.Double.One));
 
         /// <summary>
         /// Identifies the <see cref="ValueChanged"/> routed event.
@@ -180,8 +180,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <summary>
         /// Occurs when the value of the <see cref="Value"/> dependency property changes.
         /// </summary>
-        /// <param name="dobj">The object that raised the event.</param>
-        private static void HandleValueChanged(DependencyObject dobj)
+        private static void HandleValueChanged(DependencyObject dobj, Double oldValue, Double newValue)
         {
             var range = (RangeBase)dobj;
             range.OnValueChanged();
@@ -190,8 +189,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <summary>
         /// Occurs when the value of the <see cref="Minimum"/> dependency property changes.
         /// </summary>
-        /// <param name="dobj">The object that raised the event.</param>
-        private static void HandleMinimumChanged(DependencyObject dobj)
+        private static void HandleMinimumChanged(DependencyObject dobj, Double oldValue, Double newValue)
         {
             var range = (RangeBase)dobj;
             range.CoerceValue(ValueProperty);
@@ -202,8 +200,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <summary>
         /// Occurs when the value of the <see cref="Maximum"/> dependency property changes.
         /// </summary>
-        /// <param name="dobj">The object that raised the event.</param>
-        private static void HandleMaximumChanged(DependencyObject dobj)
+        private static void HandleMaximumChanged(DependencyObject dobj, Double oldValue, Double newValue)
         {
             var range = (RangeBase)dobj;
             range.CoerceValue(ValueProperty);

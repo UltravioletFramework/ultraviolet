@@ -81,7 +81,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// Identifies the <see cref="Font"/> dependency property.
         /// </summary>
         [Styled("font")]
-        public static readonly DependencyProperty FontProperty = TextElement.FontProperty.AddOwner(typeof(TextBlockBase), new PropertyMetadata(HandleFontChanged));
+        public static readonly DependencyProperty FontProperty = TextElement.FontProperty.AddOwner(typeof(TextBlockBase), 
+            new PropertyMetadata<SourcedResource<SpriteFont>>(HandleFontChanged));
 
         /// <summary>
         /// Identifies the <see cref="FontColor"/> dependency property.
@@ -100,14 +101,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// </summary>
         [Styled("content-halign")]
         public static readonly DependencyProperty HorizontalContentAlignmentProperty = DependencyProperty.Register("HorizontalContentAlignment", typeof(HorizontalAlignment), typeof(TextBlockBase),
-            new PropertyMetadata(PresentationBoxedValues.HorizontalAlignment.Left, PropertyMetadataOptions.AffectsArrange, HandleHorizontalContentAlignmentChanged));
+            new PropertyMetadata<HorizontalAlignment>(PresentationBoxedValues.HorizontalAlignment.Left, PropertyMetadataOptions.AffectsArrange, HandleHorizontalContentAlignmentChanged));
 
         /// <summary>
         /// Identifies the <see cref="VerticalContentAlignment"/> dependency property.
         /// </summary>
         [Styled("content-valign")]
         public static readonly DependencyProperty VerticalContentAlignmentProperty = DependencyProperty.Register("VerticalContentAlignment", typeof(VerticalAlignment), typeof(TextBlockBase),
-            new PropertyMetadata(PresentationBoxedValues.VerticalAlignment.Top, PropertyMetadataOptions.AffectsArrange, HandleVerticalContentAlignmentChanged));
+            new PropertyMetadata<VerticalAlignment>(PresentationBoxedValues.VerticalAlignment.Top, PropertyMetadataOptions.AffectsArrange, HandleVerticalContentAlignmentChanged));
 
         /// <inheritdoc/>
         protected override void ReloadContentCore(Boolean recursive)
@@ -150,10 +151,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         }
 
         /// <summary>
+        /// Occurs when the value of the <see cref="Font"/> dependency property changes.
+        /// </summary>
+        private static void HandleFontChanged(DependencyObject dobj, SourcedResource<SpriteFont> oldValue, SourcedResource<SpriteFont> newValue)
+        {
+            ((TextBlockBase)dobj).ReloadFont();
+        }
+
+        /// <summary>
         /// Occurs when the value of the <see cref="HorizontalContentAlignment"/> dependency property changes.
         /// </summary>
-        /// <param name="dobj">The dependency object that raised the event.</param>
-        private static void HandleHorizontalContentAlignmentChanged(DependencyObject dobj)
+        private static void HandleHorizontalContentAlignmentChanged(DependencyObject dobj, HorizontalAlignment oldValue, HorizontalAlignment newValue)
         {
             var label = (TextBlockBase)dobj;
             label.OnHorizontalContentAlignmentChanged();
@@ -162,20 +170,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <summary>
         /// Occurs when the value of the <see cref="VerticalContentAlignment"/> dependency property changes.
         /// </summary>
-        /// <param name="dobj">The dependency object that raised the event.</param>
-        private static void HandleVerticalContentAlignmentChanged(DependencyObject dobj)
+        private static void HandleVerticalContentAlignmentChanged(DependencyObject dobj, VerticalAlignment oldValue, VerticalAlignment newValue)
         {
             var label = (TextBlockBase)dobj;
             label.OnVerticalContentAlignmentChanged();
-        }
-
-        /// <summary>
-        /// Occurs when the value of the <see cref="Font"/> dependency property changes.
-        /// </summary>
-        /// <param name="dobj">The dependency object that raised the event.</param>
-        private static void HandleFontChanged(DependencyObject dobj)
-        {
-            ((TextBlockBase)dobj).ReloadFont();
         }
     }
 }

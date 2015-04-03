@@ -98,19 +98,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// Identifies the <see cref="ItemsSource"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty ItemsSourceProperty = DependencyProperty.Register("ItemsSource", typeof(IEnumerable), typeof(ItemsControl),
-            new PropertyMetadata(HandleItemsSourceChanged));
+            new PropertyMetadata<IEnumerable>(HandleItemsSourceChanged));
 
         /// <summary>
         /// Identifies the <see cref="ItemStringFormat"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty ItemStringFormatProperty = DependencyProperty.Register("ItemStringFormat", typeof(String), typeof(ItemsControl),
-            new PropertyMetadata());
+            new PropertyMetadata<String>());
 
         /// <summary>
         /// The private access key for the <see cref="HasItems"/> read-only dependency property.
         /// </summary>
         private static readonly DependencyPropertyKey HasItemsPropertyKey = DependencyProperty.RegisterReadOnly("HasItems", typeof(Boolean), typeof(ItemsControl),
-            new PropertyMetadata());
+            new PropertyMetadata<Boolean>());
 
         /// <summary>
         /// Identifies the <see cref="HasItems"/> dependency property.
@@ -199,8 +199,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Occurs when the value of the <see cref="ItemsSource"/> dependency property changes.
         /// </summary>
-        /// <param name="dobj">The dependency object that raised the event.</param>
-        private static void HandleItemsSourceChanged(DependencyObject dobj)
+        private static void HandleItemsSourceChanged(DependencyObject dobj, IEnumerable oldValue, IEnumerable newValue)
         {
             var itemControl = (ItemsControl)dobj;
             itemControl.Items.SetItemsSource(itemControl.ItemsSource);

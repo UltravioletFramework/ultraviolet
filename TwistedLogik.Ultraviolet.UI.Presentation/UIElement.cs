@@ -854,7 +854,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// The private access key for the <see cref="IsVisible"/> read-only dependency property.
         /// </summary>
         private static readonly DependencyPropertyKey IsVisiblePropertyKey = DependencyProperty.RegisterReadOnly("IsVisible", typeof(Boolean), typeof(UIElement),
-            new PropertyMetadata(HandleIsVisibleChanged));
+            new PropertyMetadata<Boolean>(HandleIsVisibleChanged));
 
         /// <summary>
         /// Identifies the <see cref="IsVisible"/> dependency property.
@@ -866,35 +866,35 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         [Styled("enabled")]
         public static readonly DependencyProperty IsEnabledProperty = DependencyProperty.Register("IsEnabled", typeof(Boolean), typeof(UIElement),
-            new PropertyMetadata(CommonBoxedValues.Boolean.True, HandleIsEnabledChanged, new CoerceValueCallback<Boolean>(CoerceIsEnabled)));
+            new PropertyMetadata<Boolean>(CommonBoxedValues.Boolean.True, HandleIsEnabledChanged, CoerceIsEnabled));
 
         /// <summary>
         /// Identifies the <see cref="IsHitTestVisible"/> dependency property.
         /// </summary>
         [Styled("hit-test-visible")]
         public static readonly DependencyProperty IsHitTestVisibleProperty = DependencyProperty.Register("IsHitTestVisible", typeof(Boolean), typeof(UIElement),
-            new PropertyMetadata(CommonBoxedValues.Boolean.True, HandleIsHitTestVisibleChanged));
+            new PropertyMetadata<Boolean>(CommonBoxedValues.Boolean.True, HandleIsHitTestVisibleChanged));
         
         /// <summary>
         /// Identifies the <see cref="Focusable"/> dependency property.
         /// </summary>
         [Styled("focusable")]
         public static readonly DependencyProperty FocusableProperty = DependencyProperty.Register("Focusable", typeof(Boolean), typeof(UIElement),
-            new PropertyMetadata(CommonBoxedValues.Boolean.False, HandleFocusableChanged));
+            new PropertyMetadata<Boolean>(CommonBoxedValues.Boolean.False, HandleFocusableChanged));
 
         /// <summary>
         /// Identifies the <see cref="Visibility"/> dependency property.
         /// </summary>
         [Styled("visibility")]
         public static readonly DependencyProperty VisibilityProperty = DependencyProperty.Register("Visibility", typeof(Visibility), typeof(UIElement),
-            new PropertyMetadata(PresentationBoxedValues.Visibility.Visible, PropertyMetadataOptions.AffectsArrange, HandleVisibilityChanged));
+            new PropertyMetadata<Visibility>(PresentationBoxedValues.Visibility.Visible, PropertyMetadataOptions.AffectsArrange, HandleVisibilityChanged));
 
         /// <summary>
         /// Identifies the <see cref="Opacity"/> dependency property.
         /// </summary>
         [Styled("opacity")]
         public static readonly DependencyProperty OpacityProperty = DependencyProperty.Register("Opacity", typeof(Single), typeof(UIElement),
-            new PropertyMetadata(CommonBoxedValues.Single.One));
+            new PropertyMetadata<Single>(CommonBoxedValues.Single.One));
         
         /// <summary>
         /// Applies a visual state transition to the element.
@@ -1770,8 +1770,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Occurs when the value of the <see cref="IsVisible"/> dependency property changes.
         /// </summary>
-        /// <param name="dobj">The dependency object that raised the event.</param>
-        private static void HandleIsVisibleChanged(DependencyObject dobj)
+        private static void HandleIsVisibleChanged(DependencyObject dobj, Boolean oldValue, Boolean newValue)
         {
             var element = (UIElement)dobj;
             element.OnIsVisibleChanged();
@@ -1780,8 +1779,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Occurs when the value of the <see cref="IsEnabled"/> dependency property changes.
         /// </summary>
-        /// <param name="dobj">The dependency object that raised the event.</param>
-        private static void HandleIsEnabledChanged(DependencyObject dobj)
+        private static void HandleIsEnabledChanged(DependencyObject dobj, Boolean oldValue, Boolean newValue)
         {
             var element = (UIElement)dobj;
             element.OnIsEnabledChanged();
@@ -1795,8 +1793,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Occurs when the value of the <see cref="IsHitTestVisible"/> dependency property changes.
         /// </summary>
-        /// <param name="dobj">The dependency object that raised the event.</param>
-        private static void HandleIsHitTestVisibleChanged(DependencyObject dobj)
+        private static void HandleIsHitTestVisibleChanged(DependencyObject dobj, Boolean oldValue, Boolean newValue)
         {
             var element = (UIElement)dobj;
             element.OnIsHitTestVisibleChanged();
@@ -1805,8 +1802,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Occurs when the value of the <see cref="Focusable"/> dependency property changes.
         /// </summary>
-        /// <param name="dobj">The dependency object that raised the event.</param>
-        private static void HandleFocusableChanged(DependencyObject dobj)
+        private static void HandleFocusableChanged(DependencyObject dobj, Boolean oldValue, Boolean newValue)
         {
             var element = (UIElement)dobj;
             element.OnFocusableChanged();
@@ -1815,18 +1811,20 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Occurs when the value of the <see cref="Visibility"/> dependency property changes.
         /// </summary>
-        /// <param name="dobj">The dependency object that raised the event.</param>
-        private static void HandleVisibilityChanged(DependencyObject dobj)
+        private static void HandleVisibilityChanged(DependencyObject dobj, Visibility oldValue, Visibility newValue)
         {
             var element = (UIElement)dobj;
 
-            var isNowVisible = element.IsVisible;
-            if (isNowVisible != element.isVisibleCache)
+            if ((oldValue == Visibility.Hidden || oldValue == Visibility.Collapsed))
             {
-                element.isVisibleCache = isNowVisible;
-                element.SetValue<Boolean>(IsVisiblePropertyKey, isNowVisible);
+                element.SetValue<Boolean>(IsVisiblePropertyKey, true);
+                element.IndicateDesiredSizeChanged();
             }
-            element.IndicateDesiredSizeChanged();
+            else if (oldValue == Visibility.Visible)
+            {
+                element.SetValue<Boolean>(IsVisiblePropertyKey, false);
+                element.IndicateDesiredSizeChanged();
+            }
         }
 
         /// <summary>
@@ -2084,7 +2082,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         private Boolean isStyling;
         private Boolean isMeasuring;
         private Boolean isArranging;
-        private Boolean isVisibleCache = true;
 
         // The collection of active storyboard clocks on this element.
         private readonly Dictionary<Storyboard, StoryboardClock> storyboardClocks = 

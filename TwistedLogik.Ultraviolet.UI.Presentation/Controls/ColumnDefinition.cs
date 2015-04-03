@@ -62,19 +62,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// Identifies the <see cref="Width"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty WidthProperty = DependencyProperty.Register("Width", typeof(GridLength), typeof(ColumnDefinition),
-            new PropertyMetadata(PresentationBoxedValues.GridLength.One, HandleWidthChanged));
+            new PropertyMetadata<GridLength>(PresentationBoxedValues.GridLength.One, HandleWidthChanged));
 
         /// <summary>
         /// Identifies the <see cref="MinWidth"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty MinWidthProperty = DependencyProperty.Register("MinWidth", typeof(Double), typeof(ColumnDefinition),
-            new PropertyMetadata(HandleMinWidthChanged));
+            new PropertyMetadata<Double>(HandleMinWidthChanged));
 
         /// <summary>
         /// Identifies the <see cref="MaxWidth"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty MaxWidthProperty = DependencyProperty.Register("MaxWidth", typeof(Double), typeof(ColumnDefinition),
-            new PropertyMetadata(CommonBoxedValues.Double.PositiveInfinity, HandleMaxWidthChanged));
+            new PropertyMetadata<Double>(CommonBoxedValues.Double.PositiveInfinity, HandleMaxWidthChanged));
         
         /// <inheritdoc/>
         internal override GridLength Dimension
@@ -160,8 +160,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Occurs when the value of the <see cref="Width"/> dependency property changes.
         /// </summary>
-        /// <param name="dobj">The object that raised the event.</param>
-        private static void HandleWidthChanged(DependencyObject dobj)
+        private static void HandleWidthChanged(DependencyObject dobj, GridLength oldValue, GridLength newValue)
         {
             var definition = (ColumnDefinition)dobj;
             definition.OnWidthChanged();
@@ -171,8 +170,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Occurs when the value of the <see cref="MinWidth"/> dependency property changes.
         /// </summary>
-        /// <param name="dobj">The object that raised the event.</param>
-        private static void HandleMinWidthChanged(DependencyObject dobj)
+        private static void HandleMinWidthChanged(DependencyObject dobj, Double oldValue, Double newValue)
         {
             var definition = (ColumnDefinition)dobj;
             definition.OnMinWidthChanged();
@@ -182,8 +180,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Occurs when the value of the <see cref="MaxWidth"/> dependency property changes.
         /// </summary>
-        /// <param name="dobj">The object that raised the event.</param>
-        private static void HandleMaxWidthChanged(DependencyObject dobj)
+        private static void HandleMaxWidthChanged(DependencyObject dobj, Double oldValue, Double newValue)
         {
             var definition = (ColumnDefinition)dobj;
             definition.OnMaxWidthChanged();

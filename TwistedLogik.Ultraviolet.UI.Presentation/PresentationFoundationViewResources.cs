@@ -62,7 +62,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         [Styled("blank-image")]
         internal static readonly DependencyProperty BlankImageProperty = DependencyProperty.Register("BlankImage", typeof(SourcedImage), typeof(PresentationFoundationViewResources),
-            new PropertyMetadata(HandleBlankImagePropertyChanged));
+            new PropertyMetadata<SourcedImage>(HandleBlankImagePropertyChanged));
         
         /// <summary>
         /// Reloads the view's resources.
@@ -115,8 +115,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Occurs when the value of the <see cref="BlankImageProperty"/> dependency property changes.
         /// </summary>
-        /// <param name="dobj">The dependency object that raised the event.</param>
-        private static void HandleBlankImagePropertyChanged(DependencyObject dobj)
+        private static void HandleBlankImagePropertyChanged(DependencyObject dobj, SourcedImage oldValue, SourcedImage newValue)
         {
             var resources = (PresentationFoundationViewResources)dobj;
             resources.ReloadBlankImage();

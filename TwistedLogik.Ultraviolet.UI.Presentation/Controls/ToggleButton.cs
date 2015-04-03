@@ -73,13 +73,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// Identifies the <see cref="IsChecked"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty IsCheckedProperty = DependencyProperty.Register("IsChecked", typeof(Boolean?), typeof(ToggleButton),
-            new PropertyMetadata(CommonBoxedValues.Boolean.False, HandleIsCheckedChanged));
+            new PropertyMetadata<Boolean>(CommonBoxedValues.Boolean.False, HandleIsCheckedChanged));
 
         /// <summary>
         /// Identifies the <see cref="IsThreeState"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty IsThreeStateProperty = DependencyProperty.Register("IsThreeState", typeof(Boolean), typeof(ToggleButton),
-            new PropertyMetadata(CommonBoxedValues.Boolean.False));
+            new PropertyMetadata<Boolean>(CommonBoxedValues.Boolean.False));
 
         /// <summary>
         /// Identifies the <see cref="Checked"/> routed event.
@@ -169,8 +169,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Occurs when the value of the <see cref="IsChecked"/> dependency property changes.
         /// </summary>
-        /// <param name="dobj">The object that raised the event.</param>
-        private static void HandleIsCheckedChanged(DependencyObject dobj)
+        private static void HandleIsCheckedChanged(DependencyObject dobj, Boolean oldValue, Boolean newValue)
         {
             var element = (ToggleButton)dobj;
 

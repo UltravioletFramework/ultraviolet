@@ -43,14 +43,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         [Styled("border-thickness")]
         public static readonly DependencyProperty BorderThicknessProperty = DependencyProperty.Register("BorderThickness", typeof(Thickness), typeof(Border),
-            new PropertyMetadata(PresentationBoxedValues.Thickness.One, PropertyMetadataOptions.AffectsMeasure));
+            new PropertyMetadata<Thickness>(PresentationBoxedValues.Thickness.One, PropertyMetadataOptions.AffectsMeasure));
 
         /// <summary>
         /// Identifies the <see cref="BorderColor"/> dependency property.
         /// </summary>
         [Styled("border-color")]
         public static readonly DependencyProperty BorderColorProperty = DependencyProperty.Register("BorderColor", typeof(Color), typeof(Border),
-            new PropertyMetadata(UltravioletBoxedValues.Color.Black));
+            new PropertyMetadata<Color>(UltravioletBoxedValues.Color.Black));
         
         /// <inheritdoc/>
         protected override void DrawOverride(UltravioletTime time, DrawingContext dc)

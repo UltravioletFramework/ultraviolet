@@ -24,7 +24,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             this.name            = name;
             this.propertyType    = propertyType;
             this.ownerType       = ownerType;
-            this.defaultMetadata = metadata ?? PropertyMetadata.Empty;
+            this.defaultMetadata = metadata ?? (PropertyMetadata)typeof(PropertyMetadata<>).MakeGenericType(propertyType).GetField("Empty").GetValue(null);
             this.isReadOnly      = isReadOnly;
         }
 

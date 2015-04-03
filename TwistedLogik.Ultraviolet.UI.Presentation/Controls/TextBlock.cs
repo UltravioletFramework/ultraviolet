@@ -36,7 +36,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// Identifies the <see cref="Text"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty TextProperty = DependencyProperty.Register("Text", typeof(String), typeof(TextBlock),
-            new PropertyMetadata(null, PropertyMetadataOptions.AffectsMeasure, HandleTextChanged));
+            new PropertyMetadata<String>(null, PropertyMetadataOptions.AffectsMeasure, HandleTextChanged));
 
         /// <inheritdoc/>
         protected override void DrawOverride(UltravioletTime time, DrawingContext dc)
@@ -71,8 +71,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Occurs when the value of the <see cref="Text"/> dependency property changes.
         /// </summary>
-        /// <param name="dobj">The dependency object that raised the event.</param>
-        private static void HandleTextChanged(DependencyObject dobj)
+        private static void HandleTextChanged(DependencyObject dobj, String oldValue, String newValue)
         {
             var label = (TextBlock)dobj;
             label.UpdateTextParserResult();

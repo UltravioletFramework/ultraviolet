@@ -138,25 +138,25 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// Identifies the Row attached property.
         /// </summary>
         public static readonly DependencyProperty RowProperty = DependencyProperty.Register("Row", typeof(Int32), typeof(Grid),
-            new PropertyMetadata(null, PropertyMetadataOptions.AffectsMeasure, HandleRowChanged));
+            new PropertyMetadata<Int32>(null, PropertyMetadataOptions.AffectsMeasure, HandleRowChanged));
 
         /// <summary>
         /// Identifies the Column attached property.
         /// </summary>
         public static readonly DependencyProperty ColumnProperty = DependencyProperty.Register("Column", typeof(Int32), typeof(Grid),
-            new PropertyMetadata(null, PropertyMetadataOptions.AffectsMeasure, HandleColumnChanged));
+            new PropertyMetadata<Int32>(null, PropertyMetadataOptions.AffectsMeasure, HandleColumnChanged));
 
         /// <summary>
         /// Identifies the <see cref="RowSpan"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty RowSpanProperty = DependencyProperty.Register("RowSpan", typeof(Int32), typeof(Grid),
-            new PropertyMetadata(CommonBoxedValues.Int32.One));
+            new PropertyMetadata<Int32>(CommonBoxedValues.Int32.One));
 
         /// <summary>
         /// Identifies the <see cref="ColumnSpan"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty ColumnSpanProperty = DependencyProperty.Register("ColumnSpan", typeof(Int32), typeof(Grid),
-            new PropertyMetadata(CommonBoxedValues.Int32.One));
+            new PropertyMetadata<Int32>(CommonBoxedValues.Int32.One));
 
         /// <summary>
         /// Occurs when the grid's column definitions are modified.
@@ -322,8 +322,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Occurs when the value of the Row attached property changes.
         /// </summary>
-        /// <param name="dobj">The object that raised the event.</param>
-        private static void HandleRowChanged(DependencyObject dobj)
+        private static void HandleRowChanged(DependencyObject dobj, Int32 oldValue, Int32 newValue)
         {
             var element = (UIElement)dobj;
 
@@ -335,8 +334,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Occurs when the value of the Column attached property changes.
         /// </summary>
-        /// <param name="dobj">The object that raised the event.</param>
-        private static void HandleColumnChanged(DependencyObject dobj)
+        private static void HandleColumnChanged(DependencyObject dobj, Int32 oldValue, Int32 newValue)
         {
             var element = (UIElement)dobj;
 

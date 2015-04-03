@@ -62,19 +62,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// Identifies the <see cref="Height"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty HeightProperty = DependencyProperty.Register("Height", typeof(GridLength), typeof(RowDefinition),
-            new PropertyMetadata(PresentationBoxedValues.GridLength.One, HandleHeightChanged));
+            new PropertyMetadata<GridLength>(PresentationBoxedValues.GridLength.One, HandleHeightChanged));
         
         /// <summary>
         /// Identifies the <see cref="MinHeight"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty MinHeightProperty = DependencyProperty.Register("MinHeight", typeof(Double), typeof(RowDefinition),
-            new PropertyMetadata(HandleMinHeightChanged));
+            new PropertyMetadata<Double>(HandleMinHeightChanged));
 
         /// <summary>
         /// Identifies the <see cref="MaxHeight"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty MaxHeightProperty = DependencyProperty.Register("MaxHeight", typeof(Double), typeof(RowDefinition),
-            new PropertyMetadata(CommonBoxedValues.Double.PositiveInfinity, HandleMaxHeightChanged));
+            new PropertyMetadata<Double>(CommonBoxedValues.Double.PositiveInfinity, HandleMaxHeightChanged));
 
         /// <inheritdoc/>
         internal override GridLength Dimension
@@ -160,8 +160,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Occurs when the value of the <see cref="Height"/> dependency property changes.
         /// </summary>
-        /// <param name="dobj">The object that raised the event.</param>
-        private static void HandleHeightChanged(DependencyObject dobj)
+        private static void HandleHeightChanged(DependencyObject dobj, GridLength oldValue, GridLength newValue)
         {
             var definition = (RowDefinition)dobj;
             definition.OnHeightChanged();
@@ -171,8 +170,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Occurs when the value of the <see cref="MinHeight"/> dependency property changes.
         /// </summary>
-        /// <param name="dobj">The object that raised the event.</param>
-        private static void HandleMinHeightChanged(DependencyObject dobj)
+        private static void HandleMinHeightChanged(DependencyObject dobj, Double oldValue, Double newValue)
         {
             var definition = (RowDefinition)dobj;
             definition.OnMinHeightChanged();
@@ -182,8 +180,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Occurs when the value of the <see cref="MaxHeight"/> dependency property changes.
         /// </summary>
-        /// <param name="dobj">The object that raised the event.</param>
-        private static void HandleMaxHeightChanged(DependencyObject dobj)
+        private static void HandleMaxHeightChanged(DependencyObject dobj, Double oldValue, Double newValue)
         {
             var definition = (RowDefinition)dobj;
             definition.OnMaxHeightChanged();

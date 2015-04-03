@@ -78,13 +78,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// Identifies the <see cref="Content"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty ContentProperty = DependencyProperty.Register("Content", typeof(Object), typeof(ContentControl),
-            new PropertyMetadata(null, PropertyMetadataOptions.AffectsMeasure | PropertyMetadataOptions.CoerceObjectToString, HandleContentChanged));
+            new PropertyMetadata<Object>(null, PropertyMetadataOptions.AffectsMeasure | PropertyMetadataOptions.CoerceObjectToString, HandleContentChanged));
 
         /// <summary>
         /// The private access key for the <see cref="HasContent"/> read-only dependency property.
         /// </summary>
         private static readonly DependencyPropertyKey HasContentPropertyKey = DependencyProperty.RegisterReadOnly("HasContent", typeof(Boolean), typeof(ContentControl),
-            new PropertyMetadata());
+            new PropertyMetadata<Boolean>());
 
         /// <summary>
         /// Identifies the <see cref="HasContent"/> dependency property.
@@ -95,7 +95,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// Identifies the <see cref="Font"/> dependency property.
         /// </summary>
         [Styled("font")]
-        public static readonly DependencyProperty FontProperty = TextElement.FontProperty.AddOwner(typeof(ContentControl), new PropertyMetadata(HandleFontChanged));
+        public static readonly DependencyProperty FontProperty = TextElement.FontProperty.AddOwner(typeof(ContentControl), 
+            new PropertyMetadata<SourcedResource<SpriteFont>>(HandleFontChanged));
 
         /// <summary>
         /// Identifies the <see cref="FontColor"/> dependency property.
@@ -195,8 +196,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Occurs when the value of the <see cref="Content"/> dependency property changes.
         /// </summary>
-        /// <param name="dobj">The dependency object that raised the event.</param>
-        private static void HandleContentChanged(DependencyObject dobj)
+        private static void HandleContentChanged(DependencyObject dobj, Object oldValue, Object newValue)
         {
             var control = (ContentControl)dobj;
 
@@ -232,8 +232,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Occurs when the value of the <see cref="Font"/> dependency property changes.
         /// </summary>
-        /// <param name="dobj">The dependency object that raised the event.</param>
-        private static void HandleFontChanged(DependencyObject dobj)
+        private static void HandleFontChanged(DependencyObject dobj, SourcedResource<SpriteFont> oldValue, SourcedResource<SpriteFont> newValue)
         {
             ((ContentControl)dobj).ReloadFont();
         }

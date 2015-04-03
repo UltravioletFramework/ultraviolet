@@ -16,7 +16,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// </summary>
         static ButtonBase()
         {
-            IsEnabledProperty.OverrideMetadata(typeof(ButtonBase), new PropertyMetadata(HandleIsEnabledChanged));
+            IsEnabledProperty.OverrideMetadata(typeof(ButtonBase), new PropertyMetadata<Boolean>(HandleIsEnabledChanged));
         }
 
         /// <summary>
@@ -63,7 +63,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// The private access key for the <see cref="IsPressed"/> read-only dependency property.
         /// </summary>
         private static readonly DependencyPropertyKey IsPressedPropertyKey = DependencyProperty.RegisterReadOnly("IsPressed", typeof(Boolean), typeof(ButtonBase),
-            new PropertyMetadata(CommonBoxedValues.Boolean.False, HandleIsPressedChanged));
+            new PropertyMetadata<Boolean>(CommonBoxedValues.Boolean.False, HandleIsPressedChanged));
 
         /// <summary>
         /// Identifies the <see cref="IsPressed"/> dependency property.
@@ -74,7 +74,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// Identifies the <see cref="ClickMode"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty ClickModeProperty = DependencyProperty.Register("ClickMode", typeof(ClickMode), typeof(ButtonBase),
-            new PropertyMetadata(PresentationBoxedValues.ClickMode.Release));
+            new PropertyMetadata<ClickMode>(PresentationBoxedValues.ClickMode.Release));
 
         /// <summary>
         /// Identifies the <see cref="Click"/> routed event.
@@ -177,8 +177,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <summary>
         /// Occurs when the value of the <see cref="IsEnabledChanged"/> dependency property changes.
         /// </summary>
-        /// <param name="dobj">The object that raised the event.</param>
-        private static void HandleIsEnabledChanged(DependencyObject dobj)
+        private static void HandleIsEnabledChanged(DependencyObject dobj, Boolean oldValue, Boolean newValue)
         {
             var buttonBase = (ButtonBase)dobj;
             buttonBase.UpdateCommonState();
@@ -187,8 +186,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <summary>
         /// Occurs when the value of the <see cref="IsPressed"/> dependency property changes.
         /// </summary>
-        /// <param name="dobj">The object that raised the event.</param>
-        private static void HandleIsPressedChanged(DependencyObject dobj)
+        private static void HandleIsPressedChanged(DependencyObject dobj, Boolean oldValue, Boolean newValue)
         {
             var buttonBase = (ButtonBase)dobj;
             buttonBase.UpdateCommonState();

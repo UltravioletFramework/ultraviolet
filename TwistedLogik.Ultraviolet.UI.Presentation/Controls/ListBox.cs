@@ -42,13 +42,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// Identifies the <see cref="SelectionMode"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty SelectionModeProperty = DependencyProperty.Register("SelectionMode", typeof(SelectionMode), typeof(ListBox),
-            new PropertyMetadata(SelectionMode.Single));
+            new PropertyMetadata<SelectionMode>(SelectionMode.Single));
 
         /// <summary>
         /// The private access key for the <see cref="SelectedItems"/> read-only dependency property.
         /// </summary>
         private static readonly DependencyPropertyKey SelectedItemsPropertyKey = DependencyProperty.RegisterReadOnly("SelectedItems", typeof(ListBoxSelectedItems), typeof(ListBox),
-            new PropertyMetadata());
+            new PropertyMetadata<ListBoxSelectedItems>());
 
         /// <summary>
         /// Identifies the <see cref="SelectedItems"/> dependency property.

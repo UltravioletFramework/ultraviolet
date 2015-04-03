@@ -82,42 +82,42 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         [Styled("bar-image")]
         public static readonly DependencyProperty BarImageProperty = DependencyProperty.Register("BarImage", typeof(SourcedImage), typeof(ProgressBar),
-            new PropertyMetadata(HandleBarImageChanged));
+            new PropertyMetadata<SourcedImage>(HandleBarImageChanged));
 
         /// <summary>
         /// Identifies the <see cref="BarColor"/> dependency property.
         /// </summary>
         [Styled("bar-color")]
         public static readonly DependencyProperty BarColorProperty = DependencyProperty.Register("BarColor", typeof(Color), typeof(ProgressBar),
-            new PropertyMetadata(UltravioletBoxedValues.Color.White));
+            new PropertyMetadata<Color>(UltravioletBoxedValues.Color.White));
 
         /// <summary>
         /// Identifies the <see cref="FillImage"/> dependency property.
         /// </summary>
         [Styled("fill-image")]
         public static readonly DependencyProperty FillImageProperty = DependencyProperty.Register("FillImage", typeof(SourcedImage), typeof(ProgressBar),
-            new PropertyMetadata(HandleFillImageChanged));
+            new PropertyMetadata<SourcedImage>(HandleFillImageChanged));
 
         /// <summary>
         /// Identifies the <see cref="FillColor"/> dependency property.
         /// </summary>
         [Styled("fill-color")]
         public static readonly DependencyProperty FillColorProperty = DependencyProperty.Register("FillColor", typeof(Color), typeof(ProgressBar),
-            new PropertyMetadata(Color.Lime));
+            new PropertyMetadata<Color>(Color.Lime));
 
         /// <summary>
         /// Identifies the <see cref="OverlayImage"/> dependency property.
         /// </summary>
         [Styled("overlay-image")]
         public static readonly DependencyProperty OverlayImageProperty = DependencyProperty.Register("OverlayImage", typeof(SourcedImage), typeof(ProgressBar),
-            new PropertyMetadata(HandleOverlayImageChanged));
+            new PropertyMetadata<SourcedImage>(HandleOverlayImageChanged));
 
         /// <summary>
         /// Identifies the <see cref="OverlayColor"/> dependency property.
         /// </summary>
         [Styled("overlay-color")]
         public static readonly DependencyProperty OverlayColorProperty = DependencyProperty.Register("OverlayColor", typeof(Color), typeof(ProgressBar),
-            new PropertyMetadata(UltravioletBoxedValues.Color.White));
+            new PropertyMetadata<Color>(UltravioletBoxedValues.Color.White));
 
         /// <inheritdoc/>
         protected override void ReloadContentCore(Boolean recursive)
@@ -201,8 +201,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Occurs when the value of the <see cref="BarImage"/> dependency property changes.
         /// </summary>
-        /// <param name="dobj">The object that raised the event.</param>
-        private static void HandleBarImageChanged(DependencyObject dobj)
+        private static void HandleBarImageChanged(DependencyObject dobj, SourcedImage oldValue, SourcedImage newValue)
         {
             var element = (ProgressBar)dobj;
             element.ReloadBarImage();
@@ -211,8 +210,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Occurs when the value of the <see cref="FillImage"/> dependency property changes.
         /// </summary>
-        /// <param name="dobj">The object that raised the event.</param>
-        private static void HandleFillImageChanged(DependencyObject dobj)
+        private static void HandleFillImageChanged(DependencyObject dobj, SourcedImage oldValue, SourcedImage newValue)
         {
             var element = (ProgressBar)dobj;
             element.ReloadFillImage();
@@ -221,8 +219,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Occurs when the value of the <see cref="OverlayImage"/> dependency property changes.
         /// </summary>
-        /// <param name="dobj">The object that raised the event.</param>
-        private static void HandleOverlayImageChanged(DependencyObject dobj)
+        private static void HandleOverlayImageChanged(DependencyObject dobj, SourcedImage oldValue, SourcedImage newValue)
         {
             var element = (ProgressBar)dobj;
             element.ReloadOverlayImage();

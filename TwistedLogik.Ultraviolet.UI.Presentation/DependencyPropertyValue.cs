@@ -156,7 +156,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
                 if (!comparer(coercedValue, oldCoercedValue))
                 {
-                    metadata.HandleChanged(owner);
+                    metadata.HandleChanged<T>(owner, property, oldCoercedValue, coercedValue);
                     previousValue = coercedValue;
                 }
             }
@@ -458,14 +458,20 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
                 if (changed)
                 {
+                    var oldValue = original;
+                    var newValue = value;
+
                     if (IsCoerced)
                     {
                         coercedValue = metadata.CoerceValue<T>(owner, value);
-                        changed = !comparer(coercedValue, original);
+                        changed      = !comparer(coercedValue, original);
+                        newValue     = coercedValue;
                     }
 
                     if (changed)
-                        metadata.HandleChanged(Owner);
+                    {
+                        metadata.HandleChanged<T>(Owner, property, oldValue, newValue);
+                    }
                 }
                 previousValue = value;
             }
@@ -511,10 +517,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                     requiresDigest = requiresDigestNew;
                 }
 
-                var changed = !comparer(oldValue, GetValue());
+                var newValue = GetValue();
+                var changed  = !comparer(oldValue, newValue);
+
                 if (changed && !requiresDigestNew)
                 {
-                    metadata.HandleChanged(Owner);
+                    metadata.HandleChanged<T>(Owner, property, oldValue, newValue);
                 }
             }
             

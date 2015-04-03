@@ -412,6 +412,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             wrapper.ClearStyledValue();
         }
 
+        protected internal virtual void OnPropertyChanged<T>(DependencyProperty property, T oldValue, T newValue)
+        {
+
+        }
+
         /// <summary>
         /// Occurs when a dependency property which potentially affects the object's measurement state is changed.
         /// </summary>

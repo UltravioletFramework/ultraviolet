@@ -116,6 +116,7 @@
     <Compile Include="ITextHost.cs" />
     <Compile Include="PropertyMetadata.cs" />
     <Compile Include="DependencyPropertyName.cs" />
+    <Compile Include="PropertyMetadataOfT.cs" />
     <Compile Include="PropertyMetadataOptions.cs" />
     <Compile Include="DependencyPropertySystem.cs" />
     <Compile Include="DependencyPropertyValue.cs" />

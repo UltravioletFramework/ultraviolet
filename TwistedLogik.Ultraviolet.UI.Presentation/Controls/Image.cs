@@ -45,14 +45,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         [Styled("source-image")]
         public static readonly DependencyProperty SourceProperty = DependencyProperty.Register("Source", typeof(SourcedImage), typeof(Image),
-            new PropertyMetadata(HandleSourceChanged));
+            new PropertyMetadata<SourcedImage>(HandleSourceChanged));
         
         /// <summary>
         /// Identifies the <see cref="SourceColor"/> property.
         /// </summary>
         [Styled("source-color")]
         public static readonly DependencyProperty SourceColorProperty = DependencyProperty.Register("SourceColor", typeof(Color), typeof(Image),
-            new PropertyMetadata(UltravioletBoxedValues.Color.White));
+            new PropertyMetadata<Color>(UltravioletBoxedValues.Color.White));
 
         /// <inheritdoc/>
         protected override void ReloadContentCore(Boolean recursive)
@@ -80,8 +80,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Occurs when the value of the <see cref="Source"/> dependency property changes.
         /// </summary>
-        /// <param name="dobj">The dependency object that raised the event.</param>
-        private static void HandleSourceChanged(DependencyObject dobj)
+        private static void HandleSourceChanged(DependencyObject dobj, SourcedImage oldValue, SourcedImage newValue)
         {
             var image = (Image)dobj;
             image.ReloadSource();

@@ -45,7 +45,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// The private access key for the <see cref="IsKeyboardFocused"/> read-only dependency property.
         /// </summary>
         private static readonly DependencyPropertyKey IsKeyboardFocusedPropertyKey = DependencyProperty.RegisterReadOnly("IsKeyboardFocused", typeof(Boolean), typeof(UIElement),
-            new PropertyMetadata(HandleIsKeyboardFocusedChanged));
+            new PropertyMetadata<Boolean>(HandleIsKeyboardFocusedChanged));
 
         /// <summary>
         /// Identifies the <see cref="IsKeyboardFocused"/> dependency property.
@@ -56,7 +56,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// The private access key for the <see cref="IsKeyboardFocusWithin"/> read-only dependency property.
         /// </summary>
         private static readonly DependencyPropertyKey IsKeyboardFocusWithinPropertyKey = DependencyProperty.RegisterReadOnly("IsKeyboardFocusWithin", typeof(Boolean), typeof(UIElement),
-            new PropertyMetadata(HandleIsKeyboardFocusWithinChanged));
+            new PropertyMetadata<Boolean>(HandleIsKeyboardFocusWithinChanged));
 
         /// <summary>
         /// Identifies the <see cref="IsKeyboardFocusWithin"/> dependency property.
@@ -67,7 +67,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// The private access key for the <see cref="IsMouseCaptured"/> read-only dependency property.
         /// </summary>
         private static readonly DependencyPropertyKey IsMouseCapturedPropertyKey = DependencyProperty.RegisterReadOnly("IsMouseCaptured", typeof(Boolean), typeof(UIElement),
-            new PropertyMetadata(HandleIsMouseCapturedChanged));
+            new PropertyMetadata<Boolean>(HandleIsMouseCapturedChanged));
 
         /// <summary>
         /// Identifies the <see cref="IsMouseCaptured"/> dependency property.
@@ -78,7 +78,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// The private access key for the <see cref="IsMouseOver"/> read-only dependency property.
         /// </summary>
         private static readonly DependencyPropertyKey IsMouseOverPropertyKey = DependencyProperty.RegisterReadOnly("IsMouseOver", typeof(Boolean), typeof(UIElement),
-            new PropertyMetadata(HandleIsMouseOverChanged));
+            new PropertyMetadata<Boolean>(HandleIsMouseOverChanged));
 
         /// <summary>
         /// Identifies the <see cref="IsMouseOver"/> dependency property.
@@ -89,7 +89,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// The private access key for the <see cref="IsMouseDirectlyOver"/> read-only dependency property.
         /// </summary>
         private static readonly DependencyPropertyKey IsMouseDirectlyOverPropertyKey = DependencyProperty.RegisterReadOnly("IsMouseDirectlyOver", typeof(Boolean), typeof(UIElement),
-            new PropertyMetadata(HandleIsMouseDirectlyOverChanged));
+            new PropertyMetadata<Boolean>(HandleIsMouseDirectlyOverChanged));
 
         /// <summary>
         /// Identifies the <see cref="IsMouseDirectlyOver"/> dependency property.
@@ -674,8 +674,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Occurs when the value of the <see cref="IsKeyboardFocused"/> dependency property changes.
         /// </summary>
-        /// <param name="dobj">The dependency object that raised the event.</param>
-        private static void HandleIsKeyboardFocusedChanged(DependencyObject dobj)
+        private static void HandleIsKeyboardFocusedChanged(DependencyObject dobj, Boolean oldValue, Boolean newValue)
         {
             ((UIElement)dobj).OnIsKeyboardFocusedChanged();
         }
@@ -683,8 +682,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Occurs when the value of the <see cref="IsKeyboardFocusWithin"/> dependency property changes.
         /// </summary>
-        /// <param name="dobj">The dependency object that raised the event.</param>
-        private static void HandleIsKeyboardFocusWithinChanged(DependencyObject dobj)
+        private static void HandleIsKeyboardFocusWithinChanged(DependencyObject dobj, Boolean oldValue, Boolean newValue)
         {
             ((UIElement)dobj).OnIsKeyboardFocusWithinChanged();
         }
@@ -692,8 +690,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Occurs when the value of the <see cref="IsMouseCaptured"/> dependency property changes.
         /// </summary>
-        /// <param name="dobj">The dependency object that raised the event.</param>
-        private static void HandleIsMouseCapturedChanged(DependencyObject dobj)
+        private static void HandleIsMouseCapturedChanged(DependencyObject dobj, Boolean oldValue, Boolean newValue)
         {
             ((UIElement)dobj).OnIsMouseCapturedChanged();
         }
@@ -701,8 +698,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Occurs when the value of the <see cref="IsMouseOver"/> dependency property changes.
         /// </summary>
-        /// <param name="dobj">The dependency object that raised the event.</param>
-        private static void HandleIsMouseOverChanged(DependencyObject dobj)
+        private static void HandleIsMouseOverChanged(DependencyObject dobj, Boolean oldValue, Boolean newValue)
         {
             ((UIElement)dobj).OnIsMouseOverChanged();
         }
@@ -710,8 +706,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Occurs when the value of the <see cref="IsMouseDirectlyOver"/> dependency property changes.
         /// </summary>
-        /// <param name="dobj">The dependency object that raised the event.</param>
-        private static void HandleIsMouseDirectlyOverChanged(DependencyObject dobj)
+        private static void HandleIsMouseDirectlyOverChanged(DependencyObject dobj, Boolean oldValue, Boolean newValue)
         {
             ((UIElement)dobj).OnIsMouseDirectlyOverChanged();
         }

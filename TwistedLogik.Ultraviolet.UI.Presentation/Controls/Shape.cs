@@ -34,6 +34,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         [Styled("fill-color")]
         public static readonly DependencyProperty FillColorProperty = DependencyProperty.Register("FillColor", typeof(Color), typeof(Shape),
-            new PropertyMetadata(UltravioletBoxedValues.Color.White));        
+            new PropertyMetadata<Color>(UltravioletBoxedValues.Color.White));        
     }
 }

@@ -6,7 +6,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
     /// Represents the method that is invoked when a dependency property's value changes.
     /// </summary>
     /// <param name="dependencyObject">The dependency object that raised the event.</param>
-    public delegate void PropertyChangedCallback(DependencyObject dependencyObject);
+    public delegate void PropertyChangedCallback<T>(DependencyObject dependencyObject, T oldValue, T newValue);
 
     /// <summary>
     /// Represents the method that is invoked to coerce the value of a dependency property.
@@ -20,7 +20,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
     /// <summary>
     /// Represents the metadata for a dependency property.
     /// </summary>
-    public class PropertyMetadata
+    public abstract class PropertyMetadata
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="PropertyMetadata"/> class.
@@ -28,7 +28,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="flags">A collection of <see cref="PropertyMetadataOptions"/> values specifying the dependency property's options.</param>
         /// <param name="propertyChangedCallback">A delegate which is invoked when the dependency property's value changes.</param>
         /// <param name="coerceValueCallback">A delegate which is invoked to coerce the dependency property's value.</param>
-        private PropertyMetadata(PropertyMetadataOptions flags, PropertyChangedCallback propertyChangedCallback, Delegate coerceValueCallback)
+        private PropertyMetadata(PropertyMetadataOptions flags, Delegate propertyChangedCallback, Delegate coerceValueCallback)
         {
             this.flags                   = flags;
             this.propertyChangedCallback = propertyChangedCallback;
@@ -57,7 +57,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Initializes a new instance of the <see cref="PropertyMetadata"/> class.
         /// </summary>
         /// <param name="propertyChangedCallback">A delegate which is invoked when the dependency property's value changes.</param>
-        public PropertyMetadata(PropertyChangedCallback propertyChangedCallback)
+        public PropertyMetadata(Delegate propertyChangedCallback)
             : this(PropertyMetadataOptions.None, propertyChangedCallback, null)
         {
 
@@ -79,7 +79,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         /// <param name="defaultValue">The dependency property's default value.</param>
         /// <param name="propertyChangedCallback">A delegate which is invoked when the dependency property's value changes.</param>
-        public PropertyMetadata(Object defaultValue, PropertyChangedCallback propertyChangedCallback)
+        public PropertyMetadata(Object defaultValue, Delegate propertyChangedCallback)
             : this(defaultValue, PropertyMetadataOptions.None, propertyChangedCallback, null)
         {
 
@@ -90,7 +90,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         /// <param name="propertyChangedCallback">A delegate which is invoked when the dependency property's value changes.</param>
         /// <param name="coerceValueCallback">A delegate which is invoked to coerce the dependency property's value.</param>
-        public PropertyMetadata(PropertyChangedCallback propertyChangedCallback, Delegate coerceValueCallback)
+        public PropertyMetadata(Delegate propertyChangedCallback, Delegate coerceValueCallback)
             : this(PropertyMetadataOptions.None, propertyChangedCallback, coerceValueCallback)
         {
 
@@ -102,7 +102,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="defaultValue">The dependency property's default value.</param>
         /// <param name="flags">A collection of <see cref="PropertyMetadataOptions"/> values specifying the dependency property's options.</param>
         /// <param name="propertyChangedCallback">A delegate which is invoked when the dependency property's value changes.</param>
-        public PropertyMetadata(Object defaultValue, PropertyMetadataOptions flags, PropertyChangedCallback propertyChangedCallback)
+        public PropertyMetadata(Object defaultValue, PropertyMetadataOptions flags, Delegate propertyChangedCallback)
             : this(defaultValue, flags, propertyChangedCallback, null)
         {
 
@@ -114,7 +114,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="defaultValue">The dependency property's default value.</param>
         /// <param name="propertyChangedCallback">A delegate which is invoked when the dependency property's value changes.</param>
         /// <param name="coerceValueCallback">A delegate which is invoked to coerce the dependency property's value.</param>
-        public PropertyMetadata(Object defaultValue, PropertyChangedCallback propertyChangedCallback, Delegate coerceValueCallback)
+        public PropertyMetadata(Object defaultValue, Delegate propertyChangedCallback, Delegate coerceValueCallback)
             : this(defaultValue, PropertyMetadataOptions.None, propertyChangedCallback, coerceValueCallback)
         {
 
@@ -127,16 +127,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="flags">A collection of <see cref="PropertyMetadataOptions"/> values specifying the dependency property's options.</param>
         /// <param name="propertyChangedCallback">A delegate which is invoked when the dependency property's value changes.</param>
         /// <param name="coerceValueCallback">A delegate which is invoked to coerce the dependency property's value.</param>
-        public PropertyMetadata(Object defaultValue, PropertyMetadataOptions flags, PropertyChangedCallback propertyChangedCallback, Delegate coerceValueCallback)
+        public PropertyMetadata(Object defaultValue, PropertyMetadataOptions flags, Delegate propertyChangedCallback, Delegate coerceValueCallback)
             : this(flags, propertyChangedCallback, coerceValueCallback)
         {
             DefaultValue = defaultValue;
         }
-
-        /// <summary>
-        /// Represents an empty dependency property metadata object.
-        /// </summary>
-        public static readonly PropertyMetadata Empty = new PropertyMetadata(null, PropertyMetadataOptions.None);
 
         /// <summary>
         /// Coerces the specified value by invoking the coercion callback associated with this property.
@@ -158,11 +153,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Indicates that the value of the dependency property has changed for the specified object.
         /// </summary>
         /// <param name="dobj">The dependency object for which the dependency property value has changed.</param>
-        internal void HandleChanged(DependencyObject dobj)
+        /// <param name="dp">The dependency property which was changed.</param>
+        /// <param name="oldValue">The dependency property's old value.</param>
+        /// <param name="newValue">The dependency property's new value.</param>
+        internal void HandleChanged<T>(DependencyObject dobj, DependencyProperty dp, T oldValue, T newValue)
         {
+            dobj.OnPropertyChanged<T>(dp, oldValue, newValue);
+
             if (ChangedCallback != null)
             {
-                ChangedCallback(dobj);
+                ((PropertyChangedCallback<T>)ChangedCallback)(dobj, oldValue, newValue);
             }
 
             if (IsMeasureAffecting)
@@ -200,7 +200,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Gets the callback that is invoked when the property's value changes.
         /// </summary>
-        internal PropertyChangedCallback ChangedCallback
+        internal Delegate ChangedCallback
         {
             get { return propertyChangedCallback; }
         }
@@ -282,8 +282,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             {
                 if (propertyChangedCallback != null)
                 {
-                    propertyChangedCallback = (PropertyChangedCallback)Delegate.Combine(
-                        propertyChangedCallback, baseMetadata.propertyChangedCallback);
+                    propertyChangedCallback = Delegate.Combine(propertyChangedCallback, baseMetadata.propertyChangedCallback);
                 }
                 else
                 {
@@ -300,7 +299,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         // Property values.
         private Object defaultValue;
         private PropertyMetadataOptions flags;
-        private PropertyChangedCallback propertyChangedCallback;
+        private Delegate propertyChangedCallback;
         private Delegate coerceValueCallback;
 
         // State values.

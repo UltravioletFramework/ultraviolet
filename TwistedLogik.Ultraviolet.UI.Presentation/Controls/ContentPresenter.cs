@@ -32,7 +32,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         [Styled("content-offset")]
         public static readonly DependencyProperty ContentOffsetProperty = DependencyProperty.Register("ContentOffset", typeof(Point2D), typeof(ContentPresenter),
-            new PropertyMetadata(HandleContentOffsetChanged));
+            new PropertyMetadata<Point2D>(HandleContentOffsetChanged));
 
         /// <inheritdoc/>
         protected override void CacheLayoutParametersCore()
@@ -198,8 +198,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Occurs when the value of the <see cref="ContentOffset"/> dependency property changes.
         /// </summary>
-        /// <param name="dobj">The dependency object that raised the event.</param>
-        private static void HandleContentOffsetChanged(DependencyObject dobj)
+        private static void HandleContentOffsetChanged(DependencyObject dobj, Point2D oldValue, Point2D newValue)
         {
             var presenter = (ContentPresenter)dobj;
             presenter.Position();

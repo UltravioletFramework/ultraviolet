@@ -180,69 +180,70 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// Identifies the <see cref="Text"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty TextProperty = DependencyProperty.Register("Text", typeof(String), typeof(TextBox),
-            new PropertyMetadata(HandleTextChanged));
+            new PropertyMetadata<String>(HandleTextChanged));
 
         /// <summary>
         /// Identifies the <see cref="Pattern"/> dependency property.
         /// </summary>
         [Styled("pattern")]
         public static readonly DependencyProperty PatternProperty = DependencyProperty.Register("Pattern", typeof(String), typeof(TextBox),
-            new PropertyMetadata(HandlePatternChanged));
+            new PropertyMetadata<String>(HandlePatternChanged));
 
         /// <summary>
         /// Identifies the <see cref="MaxLength"/> dependency property.
         /// </summary>
         [Styled("max-length")]
         public static readonly DependencyProperty MaxLengthProperty = DependencyProperty.Register("MaxLength", typeof(Int32), typeof(TextBox),
-            new PropertyMetadata());
+            new PropertyMetadata<Int32>());
 
         /// <summary>
         /// Identifies the <see cref="CaretThickness"/> dependency property.
         /// </summary>
         [Styled("caret-thickness")]
         public static readonly DependencyProperty CaretThicknessProperty = DependencyProperty.Register("CaretThickness", typeof(Double), typeof(TextBox),
-            new PropertyMetadata(4.0));
+            new PropertyMetadata<Double>(4.0));
 
         /// <summary>
         /// Identifies the <see cref="CaretImage"/> dependency property.
         /// </summary>
         [Styled("caret-image")]
         public static readonly DependencyProperty CaretImageProperty = DependencyProperty.Register("CaretImage", typeof(SourcedImage), typeof(TextBox),
-            new PropertyMetadata(HandleCaretImageChanged));
+            new PropertyMetadata<SourcedImage>(HandleCaretImageChanged));
 
         /// <summary>
         /// Identifies the <see cref="CaretColor"/> dependency property.
         /// </summary>
         [Styled("caret-color")]
         public static readonly DependencyProperty CaretColorProperty = DependencyProperty.Register("CaretColor", typeof(Color), typeof(TextBox),
-            new PropertyMetadata(Color.Blue * 0.4f));
+            new PropertyMetadata<Color>(Color.Blue * 0.4f));
 
         /// <summary>
         /// Identifies the <see cref="SelectionImage"/> dependency property.
         /// </summary>
         [Styled("selection-image")]
         public static readonly DependencyProperty SelectionImageProperty = DependencyProperty.Register("SelectionImage", typeof(SourcedImage), typeof(TextBox),
-            new PropertyMetadata(HandleSelectionImageChanged));
+            new PropertyMetadata<SourcedImage>(HandleSelectionImageChanged));
 
         /// <summary>
         /// Identifies the <see cref="SelectionColor"/> dependency property.
         /// </summary>
         [Styled("selection-color")]
         public static readonly DependencyProperty SelectionColorProperty = DependencyProperty.Register("SelectionColor", typeof(Color), typeof(TextBox),
-            new PropertyMetadata(Color.Blue * 0.4f));
+            new PropertyMetadata<Color>(Color.Blue * 0.4f));
 
         /// <summary>
         /// Identifies the <see cref="InsertionMode"/> dependency property.
         /// </summary>
         [Styled("insertion-mode")]
         public static readonly DependencyProperty InsertionModeProperty = DependencyProperty.Register("InsertionMode", typeof(TextBoxInsertionMode), typeof(TextBox),
-            new PropertyMetadata(TextBoxInsertionMode.Insert));
+            new PropertyMetadata<TextBoxInsertionMode>(TextBoxInsertionMode.Insert));
 
         /// <summary>
         /// Identifies the <see cref="Font"/> dependency property.
         /// </summary>
         [Styled("font")]
-        public static readonly DependencyProperty FontProperty = TextElement.FontProperty.AddOwner(typeof(TextBox), new PropertyMetadata(HandleFontChanged));
+        public static readonly DependencyProperty FontProperty = TextElement.FontProperty.AddOwner(typeof(TextBox), 
+            new PropertyMetadata<SourcedResource<SpriteFont>>(HandleFontChanged));
 
         /// <summary>
         /// Identifies the <see cref="FontColor"/> dependency property.
@@ -572,8 +573,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Occurs when the value of the <see cref="Text"/> dependency property changes.
         /// </summary>
-        /// <param name="dobj">The object that raised the event.</param>
-        private static void HandleTextChanged(DependencyObject dobj)
+        private static void HandleTextChanged(DependencyObject dobj, String oldValue, String newValue)
         {
             var textbox = (TextBox)dobj;
 
@@ -586,8 +586,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Occurs when the value of the <see cref="Pattern"/> dependency property changes.
         /// </summary>
-        /// <param name="dobj">The object that raised the event.</param>
-        private static void HandlePatternChanged(DependencyObject dobj)
+        private static void HandlePatternChanged(DependencyObject dobj, String oldValue, String newValue)
         {
             var textbox = (TextBox)dobj;
             var pattern = textbox.Pattern;
@@ -597,8 +596,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Occurs when the value of the <see cref="CaretImage"/> dependency property changes.
         /// </summary>
-        /// <param name="dobj">The object that raised the event.</param>
-        private static void HandleCaretImageChanged(DependencyObject dobj)
+        private static void HandleCaretImageChanged(DependencyObject dobj, SourcedImage oldValue, SourcedImage newValue)
         {
             var textbox = (TextBox)dobj;
             textbox.ReloadCaretImage();
@@ -607,8 +605,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Occurs when the value of the <see cref="SelectionImage"/> dependency property changes.
         /// </summary>
-        /// <param name="dobj">The object that raised the event.</param>
-        private static void HandleSelectionImageChanged(DependencyObject dobj)
+        private static void HandleSelectionImageChanged(DependencyObject dobj, SourcedImage oldValue, SourcedImage newValue)
         {
             var textbox = (TextBox)dobj;
             textbox.ReloadSelectionImage();
@@ -617,8 +614,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Occurs when the value of the <see cref="Font"/> dependency property changes.
         /// </summary>
-        /// <param name="dobj">The dependency object that raised the event.</param>
-        private static void HandleFontChanged(DependencyObject dobj)
+        private static void HandleFontChanged(DependencyObject dobj, SourcedResource<SpriteFont> oldValue, SourcedResource<SpriteFont> newValue)
         {
             var textbox = (TextBox)dobj;
             textbox.ReloadFont();

@@ -142,25 +142,25 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// Identifies the <see cref="SelectedIndex"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty SelectedIndexProperty = DependencyProperty.Register("SelectedIndex", typeof(Int32), typeof(Selector),
-            new PropertyMetadata(CommonBoxedValues.Int32.NegativeOne, HandleSelectedIndexChanged));
+            new PropertyMetadata<Int32>(CommonBoxedValues.Int32.NegativeOne, HandleSelectedIndexChanged));
 
         /// <summary>
         /// Identifies the <see cref="SelectedItem"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty SelectedItemProperty = DependencyProperty.Register("SelectedItem", typeof(Object), typeof(Selector),
-            new PropertyMetadata());
+            new PropertyMetadata<Object>());
 
         /// <summary>
         /// Identifies the IsSelected attached property.
         /// </summary>
         public static readonly DependencyProperty IsSelectedProperty = DependencyProperty.Register("IsSelected", typeof(Boolean), typeof(Selector), 
-            new PropertyMetadata());
+            new PropertyMetadata<Boolean>());
 
         /// <summary>
         /// The private access key for the <see cref="IsSelectionActive"/> read-only dependency property.
         /// </summary>
         private static readonly DependencyPropertyKey IsSelectionActivePropertyKey = DependencyProperty.RegisterReadOnly("IsSelectionActive", typeof(Boolean), typeof(Selector),
-            new PropertyMetadata());
+            new PropertyMetadata<Boolean>());
 
         /// <summary>
         /// Identifies the IsSelectionActive attached property.
@@ -331,7 +331,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <summary>
         /// Occurs when the value of the <see cref="SelectedIndex"/> dependency property changes.
         /// </summary>
-        private static void HandleSelectedIndexChanged(DependencyObject dobj)
+        private static void HandleSelectedIndexChanged(DependencyObject dobj, Int32 oldValue, Int32 newValue)
         {
             var selector = (Selector)dobj;
 
