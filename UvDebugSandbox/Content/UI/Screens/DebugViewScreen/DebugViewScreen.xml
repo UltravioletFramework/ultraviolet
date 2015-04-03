@@ -21,7 +21,7 @@
           <TextBlock Margin="8 8 0 8" Height="48" VerticalContentAlignment="Center">Some status text goes here</TextBlock>
         </StackPanel>
         <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
-          <Button Margin="0 8 8 8" Height="48">Exit Game</Button>
+          <Button Margin="0 8 8 8" Height="48" Click="HandleExit">Exit Game</Button>
         </StackPanel>
       </Grid>
       <ListBox DockPanel.Dock="Left" Width="200" VerticalAlignment="Stretch">

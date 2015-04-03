@@ -275,6 +275,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (!hasDefaultValue)
             {
                 defaultValue = baseMetadata.defaultValue;
+                hasDefaultValue = true;
             }
 
             if (baseMetadata.propertyChangedCallback != null)

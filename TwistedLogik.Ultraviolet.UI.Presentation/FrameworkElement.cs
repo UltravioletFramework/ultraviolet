@@ -124,124 +124,74 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
-        /// Occurs when the value of the <see cref="Width"/> property changes.
-        /// </summary>
-        public event UpfEventHandler WidthChanged;
-
-        /// <summary>
-        /// Occurs when the value of the <see cref="MinWidth"/> property changes.
-        /// </summary>
-        public event UpfEventHandler MinWidthChanged;
-
-        /// <summary>
-        /// Occurs when the value of the <see cref="MaxWidth"/> property changes.
-        /// </summary>
-        public event UpfEventHandler MaxWidthChanged;
-
-        /// <summary>
-        /// Occurs when the value of the <see cref="Height"/> property changes.
-        /// </summary>
-        public event UpfEventHandler HeightChanged;
-
-        /// <summary>
-        /// Occurs when the value of the <see cref="MinHeight"/> property changes.
-        /// </summary>
-        public event UpfEventHandler MinHeightChanged;
-
-        /// <summary>
-        /// Occurs when the value of the <see cref="MaxHeight"/> property changes.
-        /// </summary>
-        public event UpfEventHandler MaxHeightChanged;
-
-        /// <summary>
-        /// Occurs when the value of the <see cref="Margin"/> property changes.
-        /// </summary>
-        public event UpfEventHandler MarginChanged;
-
-        /// <summary>
-        /// Occurs when the value of the <see cref="Padding"/> property changes.
-        /// </summary>
-        public event UpfEventHandler PaddingChanged;
-
-        /// <summary>
-        /// Occurs when the value of the <see cref="HorizontalAlignment"/> property changes.
-        /// </summary>
-        public event UpfEventHandler HorizontalAlignmentChanged;
-
-        /// <summary>
-        /// Occurs when the value of the <see cref="VerticalAlignment"/> property changes.
-        /// </summary>
-        public event UpfEventHandler VerticalAlignmentChanged;
-
-        /// <summary>
         /// Identifies the <see cref="Width"/> dependency property.
         /// </summary>
         [Styled("width")]
         public static readonly DependencyProperty WidthProperty = DependencyProperty.Register("Width", typeof(Double), typeof(FrameworkElement),
-            new PropertyMetadata(CommonBoxedValues.Double.NaN, PropertyMetadataOptions.AffectsMeasure, HandleWidthChanged));
+            new PropertyMetadata(CommonBoxedValues.Double.NaN, PropertyMetadataOptions.AffectsMeasure));
         
         /// <summary>
         /// Identifies the <see cref="MinWidth"/> dependency property.
         /// </summary>
         [Styled("min-width")]
         public static readonly DependencyProperty MinWidthProperty = DependencyProperty.Register("MinWidth", typeof(Double), typeof(FrameworkElement),
-            new PropertyMetadata(null, PropertyMetadataOptions.AffectsMeasure, HandleMinWidthChanged));
+            new PropertyMetadata(null, PropertyMetadataOptions.AffectsMeasure));
 
         /// <summary>
         /// Identifies the <see cref="MaxWidth"/> dependency property.
         /// </summary>
         [Styled("max-width")]
         public static readonly DependencyProperty MaxWidthProperty = DependencyProperty.Register("MaxWidth", typeof(Double), typeof(FrameworkElement),
-            new PropertyMetadata(CommonBoxedValues.Double.PositiveInfinity, PropertyMetadataOptions.AffectsMeasure, HandleMaxWidthChanged));
+            new PropertyMetadata(CommonBoxedValues.Double.PositiveInfinity, PropertyMetadataOptions.AffectsMeasure));
 
         /// <summary>
         /// Identifies the <see cref="Height"/> dependency property.
         /// </summary>
         [Styled("height")]
         public static readonly DependencyProperty HeightProperty = DependencyProperty.Register("Height", typeof(Double), typeof(FrameworkElement),
-            new PropertyMetadata(CommonBoxedValues.Double.NaN, PropertyMetadataOptions.AffectsMeasure, HandleHeightChanged));
+            new PropertyMetadata(CommonBoxedValues.Double.NaN, PropertyMetadataOptions.AffectsMeasure));
 
         /// <summary>
         /// Identifies the <see cref="MinHeight"/> dependency property.
         /// </summary>
         [Styled("min-height")]
         public static readonly DependencyProperty MinHeightProperty = DependencyProperty.Register("MinHeight", typeof(Double), typeof(FrameworkElement),
-            new PropertyMetadata(null, PropertyMetadataOptions.AffectsMeasure, HandleMinHeightChanged));
+            new PropertyMetadata(null, PropertyMetadataOptions.AffectsMeasure));
 
         /// <summary>
         /// Identifies the <see cref="MaxHeight"/> dependency property.
         /// </summary>
         [Styled("max-height")]
         public static readonly DependencyProperty MaxHeightProperty = DependencyProperty.Register("MaxHeight", typeof(Double), typeof(FrameworkElement),
-            new PropertyMetadata(CommonBoxedValues.Double.PositiveInfinity, PropertyMetadataOptions.AffectsMeasure, HandleMaxHeightChanged));
+            new PropertyMetadata(CommonBoxedValues.Double.PositiveInfinity, PropertyMetadataOptions.AffectsMeasure));
 
         /// <summary>
         /// Identifies the <see cref="Margin"/> dependency property.
         /// </summary>
         [Styled("margin")]
         public static readonly DependencyProperty MarginProperty = DependencyProperty.Register("Margin", typeof(Thickness), typeof(FrameworkElement),
-            new PropertyMetadata(null, PropertyMetadataOptions.AffectsMeasure, HandleMarginChanged));
+            new PropertyMetadata(null, PropertyMetadataOptions.AffectsMeasure));
 
         /// <summary>
         /// Identifies the <see cref="Padding"/> dependency property.
         /// </summary>
         [Styled("padding")]
         public static readonly DependencyProperty PaddingProperty = DependencyProperty.Register("Padding", typeof(Thickness), typeof(FrameworkElement),
-            new PropertyMetadata(null, PropertyMetadataOptions.AffectsMeasure, HandlePaddingChanged));
+            new PropertyMetadata(null, PropertyMetadataOptions.AffectsMeasure));
 
         /// <summary>
         /// Identifies the <see cref="HorizontalAlignment"/> dependency property.
         /// </summary>
         [Styled("halign")]
         public static readonly DependencyProperty HorizontalAlignmentProperty = DependencyProperty.Register("HorizontalAlignment", typeof(HorizontalAlignment), typeof(FrameworkElement),
-            new PropertyMetadata(PresentationBoxedValues.HorizontalAlignment.Left, PropertyMetadataOptions.AffectsArrange, HandleHorizontalAlignmentChanged));
+            new PropertyMetadata(PresentationBoxedValues.HorizontalAlignment.Left, PropertyMetadataOptions.AffectsArrange));
         
         /// <summary>
         /// Identifies the <see cref="VerticalAlignment"/> dependency property.
         /// </summary>
         [Styled("valign")]
         public static readonly DependencyProperty VerticalAlignmentProperty = DependencyProperty.Register("VerticalAlignment", typeof(VerticalAlignment), typeof(FrameworkElement),
-            new PropertyMetadata(PresentationBoxedValues.VerticalAlignment.Top, PropertyMetadataOptions.AffectsArrange, HandleVerticalAlignmentChanged));
+            new PropertyMetadata(PresentationBoxedValues.VerticalAlignment.Top, PropertyMetadataOptions.AffectsArrange));
 
         /// <inheritdoc/>
         internal override void ApplyStyledVisualStateTransition(UvssStyle style)
@@ -526,231 +476,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
-        /// Raises the <see cref="WidthChanged"/> event.
-        /// </summary>
-        protected virtual void OnWidthChanged()
-        {
-            var temp = WidthChanged;
-            if (temp != null)
-            {
-                temp(this);
-            }
-        }
-
-        /// <summary>
-        /// Raises the <see cref="MinWidthChanged"/> event.
-        /// </summary>
-        protected virtual void OnMinWidthChanged()
-        {
-            var temp = MinWidthChanged;
-            if (temp != null)
-            {
-                temp(this);
-            }
-        }
-
-        /// <summary>
-        /// Raises the <see cref="MaxWidthChanged"/> event.
-        /// </summary>
-        protected virtual void OnMaxWidthChanged()
-        {
-            var temp = MaxWidthChanged;
-            if (temp != null)
-            {
-                temp(this);
-            }
-        }
-
-        /// <summary>
-        /// Raises the <see cref="HeightChanged"/> event.
-        /// </summary>
-        protected virtual void OnHeightChanged()
-        {
-            var temp = HeightChanged;
-            if (temp != null)
-            {
-                temp(this);
-            }
-        }
-
-        /// <summary>
-        /// Raises the <see cref="MinHeightChanged"/> event.
-        /// </summary>
-        protected virtual void OnMinHeightChanged()
-        {
-            var temp = MinHeightChanged;
-            if (temp != null)
-            {
-                temp(this);
-            }
-        }
-
-        /// <summary>
-        /// Raises the <see cref="MaxHeightChanged"/> event.
-        /// </summary>
-        protected virtual void OnMaxHeightChanged()
-        {
-            var temp = MaxHeightChanged;
-            if (temp != null)
-            {
-                temp(this);
-            }
-        }
-
-        /// <summary>
-        /// Raises the <see cref="MarginChanged"/> event.
-        /// </summary>
-        protected virtual void OnMarginChanged()
-        {
-            var temp = MarginChanged;
-            if (temp != null)
-            {
-                temp(this);
-            }
-        }
-
-        /// <summary>
-        /// Raises the <see cref="PaddingChanged"/> event.
-        /// </summary>
-        protected virtual void OnPaddingChanged()
-        {
-            var temp = PaddingChanged;
-            if (temp != null)
-            {
-                temp(this);
-            }
-        }
-
-        /// <summary>
-        /// Raises the <see cref="HorizontalAlignmentChanged"/> event.
-        /// </summary>
-        protected virtual void OnHorizontalAlignmentChanged()
-        {
-            var temp = HorizontalAlignmentChanged;
-            if (temp != null)
-            {
-                temp(this);
-            }
-        }
-
-        /// <summary>
-        /// Raises the <see cref="VerticalAlignmentChanged"/> event.
-        /// </summary>
-        protected virtual void OnVerticalAlignmentChanged()
-        {
-            var temp = VerticalAlignmentChanged;
-            if (temp != null)
-            {
-                temp(this);
-            }
-        }
-
-        /// <summary>
         /// Gets the element's collection of visual state groups.
         /// </summary>
         protected VisualStateGroupCollection VisualStateGroups
         {
             get { return visualStateGroups; }
-        }
-
-        /// <summary>
-        /// Occurs when the value of the <see cref="Width"/> dependency property changes.
-        /// </summary>
-        /// <param name="dobj">The dependency object that raised the event.</param>
-        private static void HandleWidthChanged(DependencyObject dobj)
-        {
-            var frameworkElement = (FrameworkElement)dobj;
-            frameworkElement.OnWidthChanged();
-        }
-
-        /// <summary>
-        /// Occurs when the value of the <see cref="MinWidth"/> dependency property changes.
-        /// </summary>
-        /// <param name="dobj">The dependency object that raised the event.</param>
-        private static void HandleMinWidthChanged(DependencyObject dobj)
-        {
-            var frameworkElement = (FrameworkElement)dobj;
-            frameworkElement.OnMinWidthChanged();
-        }
-
-        /// <summary>
-        /// Occurs when the value of the <see cref="MaxWidth"/> dependency property changes.
-        /// </summary>
-        /// <param name="dobj">The dependency object that raised the event.</param>
-        private static void HandleMaxWidthChanged(DependencyObject dobj)
-        {
-            var frameworkElement = (FrameworkElement)dobj;
-            frameworkElement.OnMaxWidthChanged();
-        }
-
-        /// <summary>
-        /// Occurs when the value of the <see cref="Height"/> dependency property changes.
-        /// </summary>
-        /// <param name="dobj">The dependency object that raised the event.</param>
-        private static void HandleHeightChanged(DependencyObject dobj)
-        {
-            var frameworkElement = (FrameworkElement)dobj;
-            frameworkElement.OnHeightChanged();
-        }
-
-        /// <summary>
-        /// Occurs when the value of the <see cref="MinHeight"/> dependency property changes.
-        /// </summary>
-        /// <param name="dobj">The dependency object that raised the event.</param>
-        private static void HandleMinHeightChanged(DependencyObject dobj)
-        {
-            var frameworkElement = (FrameworkElement)dobj;
-            frameworkElement.OnMinHeightChanged();
-        }
-
-        /// <summary>
-        /// Occurs when the value of the <see cref="MaxHeight"/> dependency property changes.
-        /// </summary>
-        /// <param name="dobj">The dependency object that raised the event.</param>
-        private static void HandleMaxHeightChanged(DependencyObject dobj)
-        {
-            var frameworkElement = (FrameworkElement)dobj;
-            frameworkElement.OnMaxHeightChanged();
-        }
-
-        /// <summary>
-        /// Occurs when the value of the <see cref="Margin"/> dependency property changes.
-        /// </summary>
-        /// <param name="dobj">The dependency object that raised the event.</param>
-        private static void HandleMarginChanged(DependencyObject dobj)
-        {
-            var frameworkElement = (FrameworkElement)dobj;
-            frameworkElement.OnMarginChanged();
-        }
-
-        /// <summary>
-        /// Occurs when the value of the <see cref="Padding"/> dependency property changes.
-        /// </summary>
-        /// <param name="dobj">The dependency object that raised the event.</param>
-        private static void HandlePaddingChanged(DependencyObject dobj)
-        {
-            var frameworkElement = (FrameworkElement)dobj;
-            frameworkElement.OnPaddingChanged();
-        }
-
-        /// <summary>
-        /// Occurs when the value of the <see cref="HorizontalAlignment"/> dependency property changes.
-        /// </summary>
-        /// <param name="dobj">The dependency object that raised the event.</param>
-        private static void HandleHorizontalAlignmentChanged(DependencyObject dobj)
-        {
-            var frameworkElement = (FrameworkElement)dobj;
-            frameworkElement.OnHorizontalAlignmentChanged();
-        }
-
-        /// <summary>
-        /// Occurs when the value of the <see cref="VerticalAlignment"/> dependency property changes.
-        /// </summary>
-        /// <param name="dobj">The dependency object that raised the event.</param>
-        private static void HandleVerticalAlignmentChanged(DependencyObject dobj)
-        {
-            var frameworkElement = (FrameworkElement)dobj;
-            frameworkElement.OnVerticalAlignmentChanged();
         }
 
         // Standard visual state groups.

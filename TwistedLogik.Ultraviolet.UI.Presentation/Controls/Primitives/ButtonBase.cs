@@ -12,6 +12,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
     public abstract class ButtonBase : ContentControl
     {
         /// <summary>
+        /// Initializes the <see cref="ButtonBase"/> type.
+        /// </summary>
+        static ButtonBase()
+        {
+            IsEnabledProperty.OverrideMetadata(typeof(ButtonBase), new PropertyMetadata(HandleIsEnabledChanged));
+        }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="ButtonBase"/> class.
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
@@ -156,14 +164,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             base.OnMouseEnter(device, ref data);
         }
 
-        /// <inheritdoc/>
-        protected override void OnIsEnabledChanged()
-        {
-            base.OnIsEnabledChanged();
-
-            UpdateCommonState();
-        }
-
         /// <summary>
         /// Raises the <see cref="Click"/> event.
         /// </summary>
@@ -172,6 +172,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             var evtData     = new RoutedEventData(this);
             var evtDelegate = EventManager.GetInvocationDelegate<UpfRoutedEventHandler>(ClickEvent);
             evtDelegate(this, ref evtData);
+        }
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="IsEnabledChanged"/> dependency property changes.
+        /// </summary>
+        /// <param name="dobj">The object that raised the event.</param>
+        private static void HandleIsEnabledChanged(DependencyObject dobj)
+        {
+            var buttonBase = (ButtonBase)dobj;
+            buttonBase.UpdateCommonState();
         }
 
         /// <summary>

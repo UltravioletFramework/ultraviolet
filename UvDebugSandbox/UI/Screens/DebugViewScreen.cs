@@ -81,6 +81,11 @@ namespace UvDebugSandbox.UI.Screens
 
             System.Diagnostics.Debug.WriteLine("");
         }
+
+        public void HandleExit(DependencyObject dobj, ref RoutedEventData data)
+        {
+            view.Ultraviolet.Host.Exit();
+        }
     }
 
     public class DebugViewScreen : UvDebugScreen
