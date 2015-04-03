@@ -24,19 +24,19 @@
           <Button Margin="0 8 8 8" Height="48" Click="HandleExit">Exit Game</Button>
         </StackPanel>
       </Grid>
+      <ListBox DockPanel.Dock="Left" VerticalAlignment="Stretch">
+        <ListBoxItem>Hello!</ListBoxItem>
+        <Button>A</Button>
+        <Button>The quick brown fox jumped</Button>
+        <Button>over the lazy dog</Button>
+        <CheckBox>A</CheckBox>
+        <RadioButton>A</RadioButton>
+        <RadioButton>A</RadioButton>
+        <RadioButton>A</RadioButton>
+        <Button>A</Button>
+        <TextBox Width="300">Hello!</TextBox>
+      </ListBox>
     </DockPanel>
-    <ListBox DockPanel.Dock="Left" VerticalAlignment="Stretch">
-      <ListBoxItem>Hello!</ListBoxItem>
-      <Button>A</Button>
-      <Button>The quick brown fox jumped</Button>
-      <Button>over the lazy dog</Button>
-      <CheckBox>A</CheckBox>
-      <RadioButton>A</RadioButton>
-      <RadioButton>A</RadioButton>
-      <RadioButton>A</RadioButton>
-      <Button>A</Button>
-      <TextBox Width="300">Hello!</TextBox>
-    </ListBox>
 
   </View>
 </UIPanelDefinition>
