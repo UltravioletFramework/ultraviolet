@@ -244,7 +244,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             if (View == null)
                 return;
 
-            var content = ContainingContentControl.Content;
+            var container = ContainingContentControl;
+            var content   = container.Content;
 
             var contentElement = content as UIElement;
             if (contentElement == null)
@@ -254,13 +255,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 
                 var availableSizeInPixels = Display.DipsToPixels(availableSize);
 
-                var hAlign = ContainingContentControl.HorizontalContentAlignment;
-                var vAlign = ContainingContentControl.VerticalContentAlignment;
+                var hAlign = container.HorizontalContentAlignment;
+                var vAlign = container.VerticalContentAlignment;
 
                 var flags    = LayoutUtil.ConvertAlignmentsToTextFlags(hAlign, vAlign);
-                var settings = new TextLayoutSettings(Font, 
-                    (Int32)availableSizeInPixels.Width, 
-                    (Int32)availableSizeInPixels.Height, flags, FontStyle);
+                var settings = new TextLayoutSettings(container.Font, 
+                    (Int32)availableSizeInPixels.Width,
+                    (Int32)availableSizeInPixels.Height, flags, container.FontStyle);
                 View.Resources.TextRenderer.CalculateLayout(textParserResult, textLayoutResult, settings);
             }
         }
@@ -268,7 +269,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Gets the <see cref="ContentControl"/> that contains this element.
         /// </summary>
-        private ContentControl ContainingContentControl
+        protected ContentControl ContainingContentControl
         {
             get { return containingContentControl; }
         }

@@ -3,7 +3,9 @@ using System.ComponentModel;
 using System.Text;
 using System.Text.RegularExpressions;
 using TwistedLogik.Nucleus.Text;
+using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
 using TwistedLogik.Ultraviolet.Input;
+using TwistedLogik.Ultraviolet.UI.Presentation.Documents;
 using TwistedLogik.Ultraviolet.UI.Presentation.Input;
 using TwistedLogik.Ultraviolet.UI.Presentation.Styles;
 
@@ -14,7 +16,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
     /// </summary>
     [UvmlKnownType(null, "TwistedLogik.Ultraviolet.UI.Presentation.Controls.Templates.TextBox.xml")]
     [DefaultProperty("Text")]
-    public partial class TextBox : Control
+    public partial class TextBox : Control, ITextHost
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="TextBox"/> class.
@@ -148,6 +150,33 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
+        /// Gets or sets the font used to draw the control's text.
+        /// </summary>
+        public SourcedResource<SpriteFont> Font
+        {
+            get { return GetValue<SourcedResource<SpriteFont>>(FontProperty); }
+            set { SetValue<SourcedResource<SpriteFont>>(FontProperty, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets the color used to draw the control's text.
+        /// </summary>
+        public Color FontColor
+        {
+            get { return GetValue<Color>(FontColorProperty); }
+            set { SetValue<Color>(FontColorProperty, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets the font style which is used to draw the control's text.
+        /// </summary>
+        public SpriteFontStyle FontStyle
+        {
+            get { return GetValue<SpriteFontStyle>(FontStyleProperty); }
+            set { SetValue<SpriteFontStyle>(FontStyleProperty, value); }
+        }
+
+        /// <summary>
         /// Occurs when the value of the <see cref="Text"/> property changes.
         /// </summary>
         public event UpfEventHandler TextChanged;
@@ -253,6 +282,24 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         [Styled("insertion-mode")]
         public static readonly DependencyProperty InsertionModeProperty = DependencyProperty.Register("InsertionMode", typeof(TextBoxInsertionMode), typeof(TextBox),
             new PropertyMetadata(TextBoxInsertionMode.Insert, HandleInsertionModeChanged));
+
+        /// <summary>
+        /// Identifies the <see cref="Font"/> dependency property.
+        /// </summary>
+        [Styled("font")]
+        public static readonly DependencyProperty FontProperty = TextElement.FontProperty.AddOwner(typeof(TextBox), new PropertyMetadata(HandleFontChanged));
+
+        /// <summary>
+        /// Identifies the <see cref="FontColor"/> dependency property.
+        /// </summary>
+        [Styled("font-color")]
+        public static readonly DependencyProperty FontColorProperty = TextElement.FontColorProperty.AddOwner(typeof(TextBox));
+
+        /// <summary>
+        /// Identifies the <see cref="FontStyle"/> dependency property.
+        /// </summary>
+        [Styled("font-style")]
+        public static readonly DependencyProperty FontStyleProperty = TextElement.FontStyleProperty.AddOwner(typeof(TextBox));
 
         /// <summary>
         /// Invalidates the clipping region used for the text box's text.
@@ -449,6 +496,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         {
             ReloadCaretImage();
             ReloadSelectionImage();
+            ReloadFont();
 
             base.ReloadContentCore(recursive);
         }
@@ -651,7 +699,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
-        /// Reloads the caret image.
+        /// Reloads the <see cref="CaretImage"/> resource.
         /// </summary>
         protected void ReloadCaretImage()
         {
@@ -659,11 +707,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
-        /// Reloads the selection highlight image.
+        /// Reloads the <see cref="SelectionImage"/> resource.
         /// </summary>
         protected void ReloadSelectionImage()
         {
             LoadImage(SelectionImage);
+        }
+
+        /// <summary>
+        /// Reloads the <see cref="Font"/> resource.
+        /// </summary>
+        protected void ReloadFont()
+        {
+            LoadResource(Font);
         }
 
         /// <summary>
@@ -763,6 +819,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         {
             var textbox = (TextBox)dobj;
             textbox.OnInsertionModeChanged();
+        }
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="Font"/> dependency property changes.
+        /// </summary>
+        /// <param name="dobj">The dependency object that raised the event.</param>
+        private static void HandleFontChanged(DependencyObject dobj)
+        {
+            ((TextBox)dobj).ReloadFont();
         }
 
         /// <summary>

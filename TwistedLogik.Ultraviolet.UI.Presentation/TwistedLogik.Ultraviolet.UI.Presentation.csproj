@@ -111,7 +111,9 @@
     <Compile Include="DependencyProperty.cs" />
     <Compile Include="DependencyPropertyKey.cs" />
     <Compile Include="Controls\ListBoxSelectedItems.cs" />
+    <Compile Include="Documents\TextElement.cs" />
     <Compile Include="EventManager.cs" />
+    <Compile Include="ITextHost.cs" />
     <Compile Include="PropertyMetadata.cs" />
     <Compile Include="DependencyPropertyName.cs" />
     <Compile Include="PropertyMetadataOptions.cs" />
@@ -265,6 +267,7 @@
     <Compile Include="Styles\UvssStyleArgumentsCollection.IEnumerable.cs" />
     <Compile Include="Styles\UvssStyleCollection.cs" />
     <Compile Include="Styles\UvssStyleCollection.IEnumerable.cs" />
+    <Compile Include="TextHost.cs" />
     <Compile Include="Thickness.cs" />
     <Compile Include="TypeExtensions.cs" />
     <Compile Include="UIElement.IInputElement.cs" />

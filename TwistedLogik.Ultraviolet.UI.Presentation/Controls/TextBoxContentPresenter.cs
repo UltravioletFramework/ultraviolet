@@ -22,19 +22,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <inheritdoc/>
         protected override Size2D MeasureOverride(Size2D availableSize)
         {
-            var size = base.MeasureOverride(availableSize);
+            var container = ContainingTextBox;
+            if (container == null)
+                return Size2D.Zero;
 
-            var font = Control.Font;
+            var font = container.Font;
             if (font != null && font.IsLoaded)
             {
-                var fontResource = font.Resource.Value.Regular;
+                var fontResource = font.Resource.Value.GetFace(container.FontStyle);
 
-                return new Size2D(
-                    Math.Max(size.Width, fontResource.SpaceWidth),
-                    Math.Max(size.Height, fontResource.LineSpacing));
+                return new Size2D(fontResource.SpaceWidth, fontResource.LineSpacing);
             }
 
-            return size;
+            return Size2D.Zero;
         }
 
         /// <inheritdoc/>
@@ -45,6 +45,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             var textBox = Control as TextBox;
             if (textBox != null)
                 textBox.InvalidateTextClip();
+        }
+
+        /// <summary>
+        /// Gets the <see cref="TextBox"/> that contains this content presenter.
+        /// </summary>
+        protected TextBox ContainingTextBox
+        {
+            get { return Control as TextBox; }
         }
     }
 }

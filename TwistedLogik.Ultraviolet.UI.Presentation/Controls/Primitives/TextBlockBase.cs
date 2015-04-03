@@ -1,4 +1,6 @@
 ﻿using System;
+using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
+using TwistedLogik.Ultraviolet.UI.Presentation.Documents;
 using TwistedLogik.Ultraviolet.UI.Presentation.Styles;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
@@ -7,7 +9,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
     /// Represents the base class for text blocks.
     /// </summary>
     [UvmlKnownType]
-    public abstract class TextBlockBase : FrameworkElement
+    public abstract class TextBlockBase : FrameworkElement, ITextHost
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="TextBlockBase"/> class.
@@ -18,6 +20,33 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             : base(uv, id)
         {
 
+        }
+
+        /// <summary>
+        /// Gets or sets the font used to draw the control's text.
+        /// </summary>
+        public SourcedResource<SpriteFont> Font
+        {
+            get { return GetValue<SourcedResource<SpriteFont>>(FontProperty); }
+            set { SetValue<SourcedResource<SpriteFont>>(FontProperty, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets the color used to draw the control's text.
+        /// </summary>
+        public Color FontColor
+        {
+            get { return GetValue<Color>(FontColorProperty); }
+            set { SetValue<Color>(FontColorProperty, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets the font style which is used to draw the control's text.
+        /// </summary>
+        public SpriteFontStyle FontStyle
+        {
+            get { return GetValue<SpriteFontStyle>(FontStyleProperty); }
+            set { SetValue<SpriteFontStyle>(FontStyleProperty, value); }
         }
 
         /// <summary>
@@ -49,6 +78,24 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         public event UpfEventHandler VerticalContentAlignmentChanged;
 
         /// <summary>
+        /// Identifies the <see cref="Font"/> dependency property.
+        /// </summary>
+        [Styled("font")]
+        public static readonly DependencyProperty FontProperty = TextElement.FontProperty.AddOwner(typeof(TextBlockBase), new PropertyMetadata(HandleFontChanged));
+
+        /// <summary>
+        /// Identifies the <see cref="FontColor"/> dependency property.
+        /// </summary>
+        [Styled("font-color")]
+        public static readonly DependencyProperty FontColorProperty = TextElement.FontColorProperty.AddOwner(typeof(TextBlockBase));
+
+        /// <summary>
+        /// Identifies the <see cref="FontStyle"/> dependency property.
+        /// </summary>
+        [Styled("font-style")]
+        public static readonly DependencyProperty FontStyleProperty = TextElement.FontStyleProperty.AddOwner(typeof(TextBlockBase));
+
+        /// <summary>
         /// Identifies the <see cref="HorizontalContentAlignment"/> dependency property.
         /// </summary>
         [Styled("content-halign")]
@@ -61,6 +108,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         [Styled("content-valign")]
         public static readonly DependencyProperty VerticalContentAlignmentProperty = DependencyProperty.Register("VerticalContentAlignment", typeof(VerticalAlignment), typeof(TextBlockBase),
             new PropertyMetadata(PresentationBoxedValues.VerticalAlignment.Top, PropertyMetadataOptions.AffectsArrange, HandleVerticalContentAlignmentChanged));
+
+        /// <inheritdoc/>
+        protected override void ReloadContentCore(Boolean recursive)
+        {
+            ReloadFont();
+
+            base.ReloadContentCore(recursive);
+        }
 
         /// <summary>
         /// Raises the <see cref="HorizontalContentAlignmentChanged"/> event.
@@ -87,6 +142,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         }
 
         /// <summary>
+        /// Reloads the <see cref="Font"/> resource.
+        /// </summary>
+        protected void ReloadFont()
+        {
+            LoadResource(Font);
+        }
+
+        /// <summary>
         /// Occurs when the value of the <see cref="HorizontalContentAlignment"/> dependency property changes.
         /// </summary>
         /// <param name="dobj">The dependency object that raised the event.</param>
@@ -104,6 +167,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         {
             var label = (TextBlockBase)dobj;
             label.OnVerticalContentAlignmentChanged();
+        }
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="Font"/> dependency property changes.
+        /// </summary>
+        /// <param name="dobj">The dependency object that raised the event.</param>
+        private static void HandleFontChanged(DependencyObject dobj)
+        {
+            ((TextBlockBase)dobj).ReloadFont();
         }
     }
 }

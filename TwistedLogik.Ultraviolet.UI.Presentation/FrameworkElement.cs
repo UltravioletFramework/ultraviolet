@@ -34,33 +34,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
-        /// Gets or sets the font used to draw the element's text.
-        /// </summary>
-        public SourcedResource<SpriteFont> Font
-        {
-            get { return GetValue<SourcedResource<SpriteFont>>(FontProperty); }
-            set { SetValue<SourcedResource<SpriteFont>>(FontProperty, value); }
-        }
-
-        /// <summary>
-        /// Gets or sets the color used to draw the element's text.
-        /// </summary>
-        public Color FontColor
-        {
-            get { return GetValue<Color>(FontColorProperty); }
-            set { SetValue<Color>(FontColorProperty, value); }
-        }
-
-        /// <summary>
-        /// Gets or sets the font style which is used to draw the element's text.
-        /// </summary>
-        public SpriteFontStyle FontStyle
-        {
-            get { return GetValue<SpriteFontStyle>(FontStyleProperty); }
-            set { SetValue<SpriteFontStyle>(FontStyleProperty, value); }
-        }
-
-        /// <summary>
         /// Gets or sets the element's width in device-independent pixels.
         /// </summary>
         public Double Width
@@ -151,21 +124,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
-        /// Occurs when the value of the <see cref="Font"/> property changes.
-        /// </summary>
-        public event UpfEventHandler FontChanged;
-
-        /// <summary>
-        /// Occurs when the value of the <see cref="FontColor"/> property changes.
-        /// </summary>
-        public event UpfEventHandler FontColorChanged;
-
-        /// <summary>
-        /// Occurs when the value of the <see cref="FontStyle"/> property changes.
-        /// </summary>
-        public event UpfEventHandler FontStyleChanged;
-
-        /// <summary>
         /// Occurs when the value of the <see cref="Width"/> property changes.
         /// </summary>
         public event UpfEventHandler WidthChanged;
@@ -214,27 +172,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Occurs when the value of the <see cref="VerticalAlignment"/> property changes.
         /// </summary>
         public event UpfEventHandler VerticalAlignmentChanged;
-
-        /// <summary>
-        /// Identifies the <see cref="Font"/> dependency property.
-        /// </summary>
-        [Styled("font")]
-        public static readonly DependencyProperty FontProperty = DependencyProperty.Register("Font", typeof(SourcedResource<SpriteFont>), typeof(FrameworkElement),
-            new PropertyMetadata(null, PropertyMetadataOptions.AffectsMeasure, HandleFontChanged));
-
-        /// <summary>
-        /// Identifies the <see cref="FontColor"/> dependency property.
-        /// </summary>
-        [Styled("font-color")]
-        public static readonly DependencyProperty FontColorProperty = DependencyProperty.Register("FontColor", typeof(Color), typeof(FrameworkElement),
-            new PropertyMetadata(UltravioletBoxedValues.Color.Black, HandleFontColorChanged));
-
-        /// <summary>
-        /// Identifies the <see cref="FontStyle"/> dependency property.
-        /// </summary>
-        [Styled("font-style")]
-        public static readonly DependencyProperty FontStyleProperty = DependencyProperty.Register("FontStyle", typeof(SpriteFontStyle), typeof(FrameworkElement),
-           new PropertyMetadata(UltravioletBoxedValues.SpriteFontStyle.Regular, PropertyMetadataOptions.AffectsMeasure, HandleFontStyleChanged));
 
         /// <summary>
         /// Identifies the <see cref="Width"/> dependency property.
@@ -383,14 +320,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         protected sealed override void UpdateCore(UltravioletTime time)
         {
             UpdateOverride(time);
-        }
-
-        /// <inheritdoc/>
-        protected override void ReloadContentCore(Boolean recursive)
-        {
-            ReloadFont();
-
-            base.ReloadContentCore(recursive);
         }
 
         /// <inheritdoc/>
@@ -597,42 +526,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
-        /// Raises the <see cref="FontChanged"/> event.
-        /// </summary>
-        protected virtual void OnFontChanged()
-        {
-            var temp = FontChanged;
-            if (temp != null)
-            {
-                temp(this);
-            }
-        }
-
-        /// <summary>
-        /// Raises the <see cref="FontColorChanged"/> event.
-        /// </summary>
-        protected virtual void OnFontColorChanged()
-        {
-            var temp = FontColorChanged;
-            if (temp != null)
-            {
-                temp(this);
-            }
-        }
-
-        /// <summary>
-        /// Raises the <see cref="FontStyleChanged"/> event.
-        /// </summary>
-        protected virtual void OnFontStyleChanged()
-        {
-            var temp = FontStyleChanged;
-            if (temp != null)
-            {
-                temp(this);
-            }
-        }
-
-        /// <summary>
         /// Raises the <see cref="WidthChanged"/> event.
         /// </summary>
         protected virtual void OnWidthChanged()
@@ -758,45 +651,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         protected VisualStateGroupCollection VisualStateGroups
         {
             get { return visualStateGroups; }
-        }
-
-        /// <summary>
-        /// Reloads the element's font.
-        /// </summary>
-        protected void ReloadFont()
-        {
-            LoadResource(Font);
-        }
-
-        /// <summary>
-        /// Occurs when the value of the <see cref="Font"/> dependency property changes.
-        /// </summary>
-        /// <param name="dobj">The dependency object that raised the event.</param>
-        private static void HandleFontChanged(DependencyObject dobj)
-        {
-            var element = (FrameworkElement)dobj;
-            element.ReloadFont();
-            element.OnFontChanged();
-        }
-
-        /// <summary>
-        /// Occurs when the value of the <see cref="FontColor"/> dependency property changes.
-        /// </summary>
-        /// <param name="dobj">The dependency object that raised the event.</param>
-        private static void HandleFontColorChanged(DependencyObject dobj)
-        {
-            var element = (FrameworkElement)dobj;
-            element.OnFontColorChanged();
-        }
-
-        /// <summary>
-        /// Occurs when the value of the <see cref="FontStyle"/> dependency property changes.
-        /// </summary>
-        /// <param name="dobj">The dependency object that raised the event.</param>
-        private static void HandleFontStyleChanged(DependencyObject dobj)
-        {
-            var element = (FrameworkElement)dobj;
-            element.OnFontStyleChanged();
         }
 
         /// <summary>
