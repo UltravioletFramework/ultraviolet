@@ -199,20 +199,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// <param name="selector">The selector which caused the style to be applied.</param>
         private void ApplyStyleToElement(UIElement element, UvssStyle style, UvssSelector selector)
         {
-            var styleIsForContainer = !String.IsNullOrEmpty(style.Container);
-            if (styleIsForContainer)
-            {
-                var styleMatchesContainer = element.Parent != null && 
-                    String.Equals(element.Parent.UvmlName, style.Container, StringComparison.OrdinalIgnoreCase);
-
-                if (styleMatchesContainer)
-                {
-                    element.ApplyStyle(style, selector, true);
-                    return;
-                }
-            }
-
-            element.ApplyStyle(style, selector, false);
+            var dp = DependencyProperty.FindByStylingName(element.Ultraviolet, element, style.Container, style.Name);
+            element.ApplyStyle(style, selector, dp);
         }
 
         // State values.

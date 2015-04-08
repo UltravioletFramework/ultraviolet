@@ -3,7 +3,7 @@
   <Stylesheet>DebugViewScreenStyles.uvss</Stylesheet>
   <View ViewModelType="UvDebugSandbox.UI.Screens.DebugViewModel, UvDebugSandbox">
 
-    <DockPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+    <DockPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch" LastChildFill="true">
       <Grid HorizontalAlignment="Stretch" DockPanel.Dock="Top">
         <Rectangle HorizontalAlignment="Stretch" VerticalAlignment="Stretch" FillColor="#ffe0e0e0"/>
         <TextBlock Margin="8 8 0 8" Height="48" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">HEADER TEXT GOES HERE</TextBlock>

@@ -41,30 +41,26 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             Contract.Require(ownerType, "ownerType");
             Contract.Require(dp, "dp");
 
-            var propertyDomain = GetPropertyDomain(ownerType);
-            if (propertyDomain.ContainsKey(dp.Name))
-            {
-                throw new ArgumentException(PresentationStrings.DependencyPropertyAlreadyRegistered);
-            }
-            propertyDomain[dp.Name] = dp;
+            RegisterInternal(dp, ownerType);
         }
 
         /// <summary>
         /// Registers a new dependency property.
         /// </summary>
         /// <param name="name">The dependency property's name.</param>
+        /// <param name="uvssName">The dependency property's name within the UVSS styling system.</param>
         /// <param name="propertyType">The dependency property's value type.</param>
         /// <param name="ownerType">The dependency property's owner type.</param>
         /// <param name="metadata">The dependency property's metadata.</param>
         /// <returns>A <see cref="DependencyProperty"/> instance which represents the registered dependency property.</returns>
-        public static DependencyProperty Register(String name, Type propertyType, Type ownerType, PropertyMetadata metadata = null)
+        public static DependencyProperty Register(String name, String uvssName, Type propertyType, Type ownerType, PropertyMetadata metadata = null)
         {
             Contract.Require(name, "name");
             Contract.Require(propertyType, "propertyType");
             Contract.Require(ownerType, "ownerType");
 
-            var dp = new DependencyProperty(dpid++, name, propertyType, ownerType, metadata);
-            RegisterInternal(dp);
+            var dp = new DependencyProperty(dpid++, name, uvssName, propertyType, ownerType, metadata);
+            RegisterInternal(dp, ownerType);
             return dp;
         }
 
@@ -72,18 +68,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Registers a new read-only dependency property.
         /// </summary>
         /// <param name="name">The dependency property's name.</param>
+        /// <param name="uvssName">The dependency property's name within the UVSS styling system.</param>
         /// <param name="propertyType">The dependency property's value type.</param>
         /// <param name="ownerType">The dependency property's owner type.</param>
         /// <param name="metadata">The dependency property's metadata.</param>
         /// <returns>A <see cref="DependencyPropertyKey"/> instance which provides access to the read-only dependency property.</returns>
-        public static DependencyPropertyKey RegisterReadOnly(String name, Type propertyType, Type ownerType, PropertyMetadata metadata = null)
+        public static DependencyPropertyKey RegisterReadOnly(String name, String uvssName, Type propertyType, Type ownerType, PropertyMetadata metadata = null)
         {
             Contract.Require(name, "name");
             Contract.Require(propertyType, "propertyType");
             Contract.Require(ownerType, "ownerType");
 
-            var dp = new DependencyProperty(dpid++, name, propertyType, ownerType, metadata, isReadOnly: true);
-            RegisterInternal(dp);
+            var dp = new DependencyProperty(dpid++, name, uvssName, propertyType, ownerType, metadata, isReadOnly: true);
+            RegisterInternal(dp, ownerType);
             return new DependencyPropertyKey(dp);
         }
 
@@ -105,7 +102,35 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 var property = default(DependencyProperty);
                 var propertyDomain = GetPropertyDomain(type);
                 if (propertyDomain.TryGetValue(name, out property))
+                {
                     return property;
+                }
+                type = type.BaseType;
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// Finds the dependency property with the specified styling name.
+        /// </summary>
+        /// <param name="name">The styling name of the dependency property for which to search.</param>
+        /// <param name="ownerType">The dependency property's owner type.</param>
+        /// <returns>A <see cref="DependencyProperty"/> instance which represents the specified dependency property, 
+        /// or <c>null</c> if no such dependency property exists.</returns>
+        public static DependencyProperty FindByStylingName(String name, Type ownerType)
+        {
+            Contract.Require(name, "name");
+            Contract.Require(ownerType, "ownerType");
+
+            var type = ownerType;
+            while (type != null)
+            {
+                var property = default(DependencyProperty);
+                var propertyDomain = GetStylingPropertyDomain(type);
+                if (propertyDomain.TryGetValue(name, out property))
+                {
+                    return property;
+                }
                 type = type.BaseType;
             }
             return null;
@@ -115,14 +140,20 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Registers the specified dependency property.
         /// </summary>
         /// <param name="dp">The dependency property to register.</param>
-        private static void RegisterInternal(DependencyProperty dp)
+        /// <param name="ownerType">The owner type for which to register the dependency property.</param>
+        private static void RegisterInternal(DependencyProperty dp, Type ownerType)
         {
-            var propertyDomain = GetPropertyDomain(dp.OwnerType);
+            var propertyDomain = GetPropertyDomain(ownerType);
             if (propertyDomain.ContainsKey(dp.Name))
-            {
                 throw new ArgumentException(PresentationStrings.DependencyPropertyAlreadyRegistered);
-            }
+
             propertyDomain[dp.Name] = dp;
+
+            var stylingPropertyDomain = GetStylingPropertyDomain(ownerType);
+            if (stylingPropertyDomain.ContainsKey(dp.UvssName))
+                throw new ArgumentException(PresentationStrings.DependencyPropertyAlreadyRegistered);
+
+            stylingPropertyDomain[dp.UvssName] = dp;
         }
 
         /// <summary>
@@ -141,8 +172,26 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             return propertyDomain;
         }
 
+        /// <summary>
+        /// Gets the dependency property styling domain associated with the specified owner type.
+        /// </summary>
+        /// <param name="type">The type for which to retrieve a dependency property styling domain.</param>
+        /// <returns>The dependency property styling domain associated with the specified owner type.</returns>
+        private static Dictionary<String, DependencyProperty> GetStylingPropertyDomain(Type type)
+        {
+            Dictionary<String, DependencyProperty> propertyDomain;
+            if (!dependencyPropertyStylingRegistry.TryGetValue(type, out propertyDomain))
+            {
+                propertyDomain = new Dictionary<String, DependencyProperty>();
+                dependencyPropertyStylingRegistry[type] = propertyDomain;
+            }
+            return propertyDomain;
+        }
+
         // State values.
         private static readonly Dictionary<Type, Dictionary<String, DependencyProperty>> dependencyPropertyRegistry =
+            new Dictionary<Type, Dictionary<String, DependencyProperty>>();
+        private static readonly Dictionary<Type, Dictionary<String, DependencyProperty>> dependencyPropertyStylingRegistry =
             new Dictionary<Type, Dictionary<String, DependencyProperty>>();
         private static Int64 dpid = 1;
     }

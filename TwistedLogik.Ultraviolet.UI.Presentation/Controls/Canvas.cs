@@ -121,28 +121,24 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Gets or sets a value indicating the distance between the left edge of the canvas and the left edge of the element.
         /// </summary>
-        [Styled("left")]
         public static readonly DependencyProperty LeftProperty = DependencyProperty.Register("Left", typeof(Double), typeof(Canvas),
             new PropertyMetadata<Double>(CommonBoxedValues.Double.NaN, PropertyMetadataOptions.AffectsMeasure));
 
         /// <summary>
         /// Gets or sets a value indicating the distance between the top edge of the canvas and the top edge of the element.
         /// </summary>
-        [Styled("top")]
         public static readonly DependencyProperty TopProperty = DependencyProperty.Register("Top", typeof(Double), typeof(Canvas),
             new PropertyMetadata<Double>(CommonBoxedValues.Double.NaN, PropertyMetadataOptions.AffectsMeasure));
 
         /// <summary>
         /// Gets or sets a value indicating the distance between the right edge of the canvas and the right edge of the element.
         /// </summary>
-        [Styled("right")]
         public static readonly DependencyProperty RightProperty = DependencyProperty.Register("Right", typeof(Double), typeof(Canvas),
             new PropertyMetadata<Double>(CommonBoxedValues.Double.NaN, PropertyMetadataOptions.AffectsMeasure));
 
         /// <summary>
         /// Gets or sets a value indicating the distance between the bottom edge of the canvas and the bottom edge of the element.
         /// </summary>
-        [Styled("bottom")]
         public static readonly DependencyProperty BottomProperty = DependencyProperty.Register("Bottom", typeof(Double), typeof(Canvas),
             new PropertyMetadata<Double>(CommonBoxedValues.Double.NaN, PropertyMetadataOptions.AffectsMeasure));
 

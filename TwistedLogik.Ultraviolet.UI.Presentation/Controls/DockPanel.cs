@@ -57,14 +57,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Identifies the Dock attached property.
         /// </summary>
-        [Styled("dock")]
         public static readonly DependencyProperty DockProperty = DependencyProperty.Register("Dock", typeof(Dock), typeof(DockPanel),
             new PropertyMetadata<Dock>(PresentationBoxedValues.Dock.Left, PropertyMetadataOptions.AffectsArrange));
 
         /// <summary>
         /// Identifies the <see cref="LastChildFill"/> dependency property.
         /// </summary>
-        [Styled("last-child-fill")]
         public static readonly DependencyProperty LastChildFillProperty = DependencyProperty.Register("LastChildFill", typeof(Boolean), typeof(DockPanel),
             new PropertyMetadata<Boolean>(CommonBoxedValues.Boolean.False, PropertyMetadataOptions.AffectsArrange));
 

@@ -13,24 +13,20 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Registers a new routed event.
         /// </summary>
         /// <param name="name">The routed event's name.</param>
+        /// <param name="uvssName">The routed event's name within the UVSS styling system.</param>
         /// <param name="routingStrategy">The routed event's routing strategy.</param>
         /// <param name="delegateType">The routed event's delegate type.</param>
         /// <param name="ownerType">The routed event's owner type.</param>
         /// <returns>A <see cref="RoutedEvent"/> instance which represents the registered routed event.</returns>
-        public static RoutedEvent Register(String name, RoutingStrategy routingStrategy, Type delegateType, Type ownerType)
+        public static RoutedEvent Register(String name, String uvssName, RoutingStrategy routingStrategy, Type delegateType, Type ownerType)
         {
             Contract.Require(name, "name");
             Contract.Require(delegateType, "delegateType");
             Contract.Require(ownerType, "ownerType");
 
-            var evtDomain = GetEventDomain(ownerType);
-            if (evtDomain.ContainsKey(name))
-            {
-                throw new ArgumentException(PresentationStrings.RoutedEventAlreadyRegistered);
-            }
-            var re = new RoutedEvent(reid++, name, routingStrategy, delegateType, ownerType);
-            evtDomain[name] = re;
-            return re;
+            var evt = new RoutedEvent(reid++, name, uvssName, routingStrategy, delegateType, ownerType);
+            RegisterInternal(evt, ownerType);
+            return evt;
         }
 
         /// <summary>
@@ -60,6 +56,52 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Finds the routed event with the specified styling name.
+        /// </summary>
+        /// <param name="name">The styling name of the routed event for which to search.</param>
+        /// <param name="ownerType">The routed event's owner type.</param>
+        /// <returns>A <see cref="RoutedEvent"/> instance which represents the specified routed event, 
+        /// or <c>null</c> if no such routed event exists.</returns>
+        public static RoutedEvent FindByStylingName(String name, Type ownerType)
+        {
+            Contract.Require(name, "name");
+            Contract.Require(ownerType, "ownerType");
+
+            var type = ownerType;
+            while (type != null)
+            {
+                var evt = default(RoutedEvent);
+                var evtDomain = GetStylingEventDomain(type);
+                if (evtDomain.TryGetValue(name, out evt))
+                {
+                    return evt;
+                }
+                type = type.BaseType;
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// Registers the specified routed event.
+        /// </summary>
+        /// <param name="evt">The routed event to register.</param>
+        /// <param name="ownerType">The owner type for which to register the routed event.</param>
+        private static void RegisterInternal(RoutedEvent evt, Type ownerType)
+        {
+            var propertyDomain = GetEventDomain(ownerType);
+            if (propertyDomain.ContainsKey(evt.Name))
+                throw new ArgumentException(PresentationStrings.RoutedEventAlreadyRegistered);
+
+            propertyDomain[evt.Name] = evt;
+
+            var stylingPropertyDomain = GetStylingEventDomain(ownerType);
+            if (stylingPropertyDomain.ContainsKey(evt.UvssName))
+                throw new ArgumentException(PresentationStrings.RoutedEventAlreadyRegistered);
+
+            stylingPropertyDomain[evt.UvssName] = evt;
+        }
+
+        /// <summary>
         /// Gets the routed event domain associated with the specified owner type.
         /// </summary>
         /// <param name="type">The type for which to retrieve a routed event domain.</param>
@@ -75,8 +117,26 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             return eventDomain;
         }
 
+        /// <summary>
+        /// Gets the routed event styling domain associated with the specified owner type.
+        /// </summary>
+        /// <param name="type">The type for which to retrieve a routed event styling domain.</param>
+        /// <returns>The routed event styling domain associated with the specified owner type.</returns>
+        private static Dictionary<String, RoutedEvent> GetStylingEventDomain(Type type)
+        {
+            Dictionary<String, RoutedEvent> propertyDomain;
+            if (!routedEventStylingRegistry.TryGetValue(type, out propertyDomain))
+            {
+                propertyDomain = new Dictionary<String, RoutedEvent>();
+                routedEventStylingRegistry[type] = propertyDomain;
+            }
+            return propertyDomain;
+        }
+
         // State values.
         private static readonly Dictionary<Type, Dictionary<String, RoutedEvent>> routedEventRegistry =
+            new Dictionary<Type, Dictionary<String, RoutedEvent>>();
+        private static readonly Dictionary<Type, Dictionary<String, RoutedEvent>> routedEventStylingRegistry =
             new Dictionary<Type, Dictionary<String, RoutedEvent>>();
         private static Int64 reid = 1;
     }

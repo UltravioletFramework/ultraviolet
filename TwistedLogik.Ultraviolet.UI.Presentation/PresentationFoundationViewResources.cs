@@ -11,7 +11,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
     /// <summary>
     /// Contains the global resources used by a Presentation Foundation view.
     /// </summary>
-    public sealed class PresentationFoundationViewResources : StyledDependencyObject
+    public sealed class PresentationFoundationViewResources : DependencyObject
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="PresentationFoundationViewResources"/> class.
@@ -60,7 +60,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Identifies the <see cref="BlankImage"/> dependency property.
         /// </summary>
-        [Styled("blank-image")]
         internal static readonly DependencyProperty BlankImageProperty = DependencyProperty.Register("BlankImage", typeof(SourcedImage), typeof(PresentationFoundationViewResources),
             new PropertyMetadata<SourcedImage>(HandleBlankImagePropertyChanged));
         
@@ -88,16 +87,20 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             {
                 foreach (var style in rule.Styles)
                 {
-                    ApplyStyle(style, rule.Selectors[0], false);
+                    var dp = DependencyProperty.FindByStylingName(style.Name, GetType());
+                    if (dp != null)
+                    {
+                        base.ApplyStyle(style, rule.Selectors[0], dp);
+                    }
                 }
             }
             base.ApplyStyles(document);
         }
 
         /// <inheritdoc/>
-        protected internal sealed override void ApplyStyle(UvssStyle style, UvssSelector selector, bool attached)
+        protected internal sealed override void ApplyStyle(UvssStyle style, UvssSelector selector, DependencyProperty dp)
         {
-            base.ApplyStyle(style, selector, attached);
+            base.ApplyStyle(style, selector, dp);
         }
 
         /// <inheritdoc/>

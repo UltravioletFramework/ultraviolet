@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet.UI.Presentation.Animations;
+using System.Globalization;
+using TwistedLogik.Ultraviolet.UI.Presentation.Styles;
+using TwistedLogik.Nucleus.Data;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation
 {
@@ -412,6 +415,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             wrapper.ClearStyledValue();
         }
 
+        /// <summary>
+        /// Occurs when the value of one of the object's dependency properties changes.
+        /// </summary>
+        /// <typeparam name="T">The type of value contained by the dependency property.</typeparam>
+        /// <param name="property">The dependency property that was changed.</param>
+        /// <param name="oldValue">The dependency property's old value.</param>
+        /// <param name="newValue">The dependency property's new value.</param>
         protected internal virtual void OnPropertyChanged<T>(DependencyProperty property, T oldValue, T newValue)
         {
 
@@ -434,6 +444,30 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Applies the styles from the specified stylesheet to this object.
+        /// </summary>
+        /// <param name="document">The stylesheet to apply to this object.</param>
+        protected internal virtual void ApplyStyles(UvssDocument document)
+        {
+
+        }
+
+        /// <summary>
+        /// Applies a style to this object.
+        /// </summary>
+        /// <param name="style">The style which is being applied.</param>
+        /// <param name="selector">The selector which caused the style to be applied.</param>
+        /// <param name="dp">The dependency property to which to apply the style, or <c>null</c> if the style does
+        /// not apply to a dependency property.</param>
+        protected internal virtual void ApplyStyle(UvssStyle style, UvssSelector selector, DependencyProperty dp)
+        {
+            if (dp != null)
+            {
+                dp.ApplyStyle(this, style);
+            }
+        }
+
+        /// <summary>
         /// Gets the dependency object's containing object.
         /// </summary>
         protected internal abstract DependencyObject DependencyContainer
@@ -447,6 +481,29 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         protected internal abstract Object DependencyDataSource
         {
             get;
+        }
+
+        /// <summary>
+        /// Converts a string to a value to be applied to a styled dependency property.
+        /// </summary>
+        /// <param name="style">The style to resolve to a value.</param>
+        /// <param name="type">The type of object to create.</param>
+        /// <param name="provider">An object that supplies culture-specific formatting information.</param>
+        /// <returns>The object that was created.</returns>
+        private static Object ResolveStyledValue(UvssStyle style, Type type, IFormatProvider provider)
+        {
+            if (style.CachedResolvedValue != null && style.CachedResolvedValue.GetType() == type)
+                return style.CachedResolvedValue;
+
+            var value = style.Value.Trim();
+            if (value == "null")
+            {
+                return type.IsValueType ? Activator.CreateInstance(type) : null;
+            }
+
+            var resolvedValue = ObjectResolver.FromString(value, type, provider);
+            style.CachedResolvedValue = resolvedValue;
+            return resolvedValue;
         }
 
         /// <summary>

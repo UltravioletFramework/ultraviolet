@@ -1,4 +1,5 @@
 ﻿using System;
+using TwistedLogik.Ultraviolet.UI.Presentation.Styles;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation
 {
@@ -25,13 +26,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         /// <param name="id">The event's unique identifier within the routed events system.</param>
         /// <param name="name">The routed event's name.</param>
+        /// <param name="uvssName">The dependency property's name within the UVSS styling system.</param>
         /// <param name="routingStrategy">The routed event's routing strategy.</param>
         /// <param name="delegateType">The routed event's delegate type.</param>
         /// <param name="ownerType">The routed event's owner type.</param>
-        internal RoutedEvent(Int64 id, String name, RoutingStrategy routingStrategy, Type delegateType, Type ownerType)
+        internal RoutedEvent(Int64 id, String name, String uvssName, RoutingStrategy routingStrategy, Type delegateType, Type ownerType)
         {
             this.id                 = id;
             this.name               = name;
+            this.uvssName           = uvssName ?? UvssNameGenerator.GenerateUvssName(name);
             this.routingStrategy    = routingStrategy;
             this.delegateType       = delegateType;
             this.ownerType          = ownerType;
@@ -52,6 +55,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         internal String Name
         {
             get { return name; }
+        }
+
+        /// <summary>
+        /// Gets the routed event's name within the UVSS styling system.
+        /// </summary>
+        internal String UvssName
+        {
+            get { return uvssName; }
         }
 
         /// <summary>
@@ -89,6 +100,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         // Property values.
         private readonly Int64 id;
         private readonly String name;
+        private readonly String uvssName;
         private readonly RoutingStrategy routingStrategy;
         private readonly Type delegateType;
         private readonly Type ownerType;

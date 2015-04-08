@@ -51,6 +51,10 @@ togglebutton .button-focus
 		{
 			keyframe 100 { }
 		}
+		animation canvas.left
+		{
+			keyframe 100 { 100 }
+		}
 	}
 	target image (*:storyboard-root > canvas > .button-background)
 	{

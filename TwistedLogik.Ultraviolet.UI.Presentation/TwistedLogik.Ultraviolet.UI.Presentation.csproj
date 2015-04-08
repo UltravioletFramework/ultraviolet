@@ -231,9 +231,7 @@
     <Compile Include="SourcedAssetID.cs" />
     <Compile Include="SourcedImage.cs" />
     <Compile Include="SourcedResource.cs" />
-    <Compile Include="StyledDependencyObject.cs" />
     <Compile Include="Styles\NamespaceDoc.cs" />
-    <Compile Include="Styles\StyledAttribute.cs" />
     <Compile Include="Styles\UvssClassCollection.cs" />
     <Compile Include="Styles\UvssClassCollection.IEnumerable.cs" />
     <Compile Include="Styles\UvssDocument.cs" />
@@ -242,6 +240,7 @@
     <Compile Include="Styles\UvssLexer.cs" />
     <Compile Include="Styles\UvssLexerToken.cs" />
     <Compile Include="Styles\UvssLexerTokenType.cs" />
+    <Compile Include="Styles\UvssNameGenerator.cs" />
     <Compile Include="Styles\UvssParser.cs" />
     <Compile Include="Styles\UvssParserState.cs" />
     <Compile Include="Styles\UvssRule.cs" />

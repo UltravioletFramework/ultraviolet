@@ -30,7 +30,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Identifies the <see cref="ContentOffset"/> dependency property.
         /// </summary>
-        [Styled("content-offset")]
         public static readonly DependencyProperty ContentOffsetProperty = DependencyProperty.Register("ContentOffset", typeof(Point2D), typeof(ContentPresenter),
             new PropertyMetadata<Point2D>(HandleContentOffsetChanged));
 
@@ -252,16 +251,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 if (textLayoutResult == null)
                     textLayoutResult = new TextLayoutResult();
 
-                var availableSizeInPixels = Display.DipsToPixels(availableSize);
+                if (container.Font.IsLoaded)
+                {
+                    var availableSizeInPixels = Display.DipsToPixels(availableSize);
 
-                var hAlign = container.HorizontalContentAlignment;
-                var vAlign = container.VerticalContentAlignment;
+                    var hAlign = container.HorizontalContentAlignment;
+                    var vAlign = container.VerticalContentAlignment;
 
-                var flags    = LayoutUtil.ConvertAlignmentsToTextFlags(hAlign, vAlign);
-                var settings = new TextLayoutSettings(container.Font, 
-                    (Int32)availableSizeInPixels.Width,
-                    (Int32)availableSizeInPixels.Height, flags, container.FontStyle);
-                View.Resources.TextRenderer.CalculateLayout(textParserResult, textLayoutResult, settings);
+                    var flags    = LayoutUtil.ConvertAlignmentsToTextFlags(hAlign, vAlign);
+                    var settings = new TextLayoutSettings(container.Font,
+                        (Int32)availableSizeInPixels.Width,
+                        (Int32)availableSizeInPixels.Height, flags, container.FontStyle);
+                    View.Resources.TextRenderer.CalculateLayout(textParserResult, textLayoutResult, settings);
+                }
             }
         }
 

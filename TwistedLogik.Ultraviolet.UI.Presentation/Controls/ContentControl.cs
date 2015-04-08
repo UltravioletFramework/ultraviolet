@@ -94,20 +94,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Identifies the <see cref="Font"/> dependency property.
         /// </summary>
-        [Styled("font")]
         public static readonly DependencyProperty FontProperty = TextElement.FontProperty.AddOwner(typeof(ContentControl), 
             new PropertyMetadata<SourcedResource<SpriteFont>>(HandleFontChanged));
 
         /// <summary>
         /// Identifies the <see cref="FontColor"/> dependency property.
         /// </summary>
-        [Styled("font-color")]
         public static readonly DependencyProperty FontColorProperty = TextElement.FontColorProperty.AddOwner(typeof(ContentControl));
 
         /// <summary>
         /// Identifies the <see cref="FontStyle"/> dependency property.
         /// </summary>
-        [Styled("font-style")]
         public static readonly DependencyProperty FontStyleProperty = TextElement.FontStyleProperty.AddOwner(typeof(ContentControl));
 
         /// <summary>

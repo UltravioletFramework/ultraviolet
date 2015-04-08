@@ -9,6 +9,7 @@ using TwistedLogik.Ultraviolet.Platform;
 using TwistedLogik.Ultraviolet.UI.Presentation.Animations;
 using TwistedLogik.Ultraviolet.UI.Presentation.Controls;
 using TwistedLogik.Ultraviolet.UI.Presentation.Styles;
+using System.Diagnostics;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation
 {
@@ -248,7 +249,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 {
                     foreach (var animation in target.Animations)
                     {
-                        var dp = FindDependencyPropertyByName(animation.Key);
+                        var dp = DependencyProperty.FindByName(Ultraviolet, this, animation.Key.Container, animation.Key.Name);
                         if (dp != null)
                         {
                             Animate(dp, animation.Value, clock);
@@ -864,35 +865,30 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Identifies the <see cref="IsEnabled"/> dependency property.
         /// </summary>
-        [Styled("enabled")]
         public static readonly DependencyProperty IsEnabledProperty = DependencyProperty.Register("IsEnabled", typeof(Boolean), typeof(UIElement),
             new PropertyMetadata<Boolean>(CommonBoxedValues.Boolean.True, HandleIsEnabledChanged, CoerceIsEnabled));
 
         /// <summary>
         /// Identifies the <see cref="IsHitTestVisible"/> dependency property.
         /// </summary>
-        [Styled("hit-test-visible")]
         public static readonly DependencyProperty IsHitTestVisibleProperty = DependencyProperty.Register("IsHitTestVisible", typeof(Boolean), typeof(UIElement),
             new PropertyMetadata<Boolean>(CommonBoxedValues.Boolean.True, HandleIsHitTestVisibleChanged));
         
         /// <summary>
         /// Identifies the <see cref="Focusable"/> dependency property.
         /// </summary>
-        [Styled("focusable")]
         public static readonly DependencyProperty FocusableProperty = DependencyProperty.Register("Focusable", typeof(Boolean), typeof(UIElement),
             new PropertyMetadata<Boolean>(CommonBoxedValues.Boolean.False, HandleFocusableChanged));
 
         /// <summary>
         /// Identifies the <see cref="Visibility"/> dependency property.
         /// </summary>
-        [Styled("visibility")]
         public static readonly DependencyProperty VisibilityProperty = DependencyProperty.Register("Visibility", typeof(Visibility), typeof(UIElement),
             new PropertyMetadata<Visibility>(PresentationBoxedValues.Visibility.Visible, PropertyMetadataOptions.AffectsArrange, HandleVisibilityChanged));
 
         /// <summary>
         /// Identifies the <see cref="Opacity"/> dependency property.
         /// </summary>
-        [Styled("opacity")]
         public static readonly DependencyProperty OpacityProperty = DependencyProperty.Register("Opacity", typeof(Single), typeof(UIElement),
             new PropertyMetadata<Single>(CommonBoxedValues.Single.One));
         
@@ -1017,38 +1013,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         internal void InvalidateArrangeInternal()
         {
             isArrangeValid = false;
-        }
-
-        /// <summary>
-        /// Searches the object for a dependency property which matches the specified name.
-        /// </summary>
-        /// <param name="name">The name of the dependency property for which to search.</param>
-        /// <returns>The <see cref="DependencyProperty"/> instance which matches the specified name, or <c>null</c> if no
-        /// such property exists on this object.</returns>
-        internal DependencyProperty FindDependencyPropertyByName(DependencyPropertyName name)
-        {
-            if (name.IsAttachedProperty)
-            {
-                if (Parent != null && String.Equals(Parent.UvmlName, name.Container, StringComparison.OrdinalIgnoreCase))
-                {
-                    return DependencyProperty.FindByName(name.Name, Parent.GetType());
-                }
-                return null;
-            }
-            return DependencyProperty.FindByName(name.Name, GetType());
-        }
-
-        /// <summary>
-        /// Finds a styled dependency property according to its styling name.
-        /// </summary>
-        /// <param name="name">The styling name of the dependency property to retrieve.</param>
-        /// <returns>The <see cref="DependencyProperty"/> instance which matches the specified styling name, or <c>null</c> if no
-        /// such dependency property exists on this object.</returns>
-        internal DependencyProperty FindStyledDependencyProperty(String name)
-        {
-            Contract.RequireNotEmpty(name, "name");
-
-            return FindStyledDependencyProperty(name, GetType());
         }
 
         /// <summary>
@@ -1192,7 +1156,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="style">The style which is being applied.</param>
         /// <param name="selector">The selector which caused the style to be applied.</param>
         /// <param name="attached">A value indicating whether thie style represents an attached property.</param>
-        protected internal sealed override void ApplyStyle(UvssStyle style, UvssSelector selector, Boolean attached)
+        protected internal sealed override void ApplyStyle(UvssStyle style, UvssSelector selector, DependencyProperty dp)
         {
             Contract.Require(style, "style");
             Contract.Require(selector, "selector");
@@ -1204,11 +1168,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             }
             else
             {
-                var setter = attached ? Parent.GetStyleSetter(name, selector.PseudoClass) : GetStyleSetter(name, selector.PseudoClass);
-                if (setter == null)
-                    return;
-
-                setter(this, style, CultureInfo.InvariantCulture);
+                if (dp != null)
+                {
+                    dp.ApplyStyle(this, style, CultureInfo.InvariantCulture);
+                }
             }
         }
 

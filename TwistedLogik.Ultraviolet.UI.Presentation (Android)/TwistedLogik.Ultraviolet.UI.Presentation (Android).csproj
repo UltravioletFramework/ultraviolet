@@ -560,14 +560,8 @@
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\SourcedResource.cs">
       <Link>SourcedResource.cs</Link>
     </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\StyledDependencyObject.cs">
-      <Link>StyledDependencyObject.cs</Link>
-    </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Styles\NamespaceDoc.cs">
       <Link>Styles\NamespaceDoc.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Styles\StyledAttribute.cs">
-      <Link>Styles\StyledAttribute.cs</Link>
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Styles\UvssClassCollection.cs">
       <Link>Styles\UvssClassCollection.cs</Link>
@@ -592,6 +586,9 @@
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Styles\UvssLexerTokenType.cs">
       <Link>Styles\UvssLexerTokenType.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Styles\UvssNameGenerator.cs">
+      <Link>Styles\UvssNameGenerator.cs</Link>
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Styles\UvssParser.cs">
       <Link>Styles\UvssParser.cs</Link>

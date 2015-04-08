@@ -18,7 +18,21 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <returns>A <see cref="RoutedEvent"/> instance which represents the registered routed event.</returns>
         public static RoutedEvent RegisterRoutedEvent(String name, RoutingStrategy routingStrategy, Type delegateType, Type ownerType)
         {
-            return RoutedEventSystem.Register(name, routingStrategy, delegateType, ownerType);
+            return RoutedEventSystem.Register(name, null, routingStrategy, delegateType, ownerType);
+        }
+
+        /// <summary>
+        /// Registers a new routed event.
+        /// </summary>
+        /// <param name="name">The routed event's name.</param>
+        /// <param name="uvssName">The dependency property's name within the UVSS styling system.</param>
+        /// <param name="routingStrategy">The routed event's routing strategy.</param>
+        /// <param name="delegateType">The routed event's delegate type.</param>
+        /// <param name="ownerType">The routed event's owner type.</param>
+        /// <returns>A <see cref="RoutedEvent"/> instance which represents the registered routed event.</returns>
+        public static RoutedEvent RegisterRoutedEvent(String name, String uvssName, RoutingStrategy routingStrategy, Type delegateType, Type ownerType)
+        {
+            return RoutedEventSystem.Register(name, uvssName, routingStrategy, delegateType, ownerType);
         }
 
         /// <summary>

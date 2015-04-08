@@ -532,10 +532,23 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
             var propertyToken = state.TryConsumeNonWhiteSpace();
             MatchTokenOrFail(state, propertyToken, UvssLexerTokenType.Identifier);
 
+            var propertyNameStart  = propertyToken.Value.Start;
+            var propertyNameLength = propertyToken.Value.Length;
+
+            while (true)
+            {
+                if (state.CurrentToken.TokenType != UvssLexerTokenType.Identifier)
+                    break;
+
+                propertyNameLength += state.CurrentToken.Length;
+
+                state.Consume();
+            }
+
             AdvanceBeyondWhiteSpaceOrFail(state);
 
             var keyframes = ConsumeStoryboardKeyframeList(state);
-            return new UvssStoryboardAnimation(propertyToken.Value.Value, keyframes);
+            return new UvssStoryboardAnimation(state.Source.Substring(propertyNameStart, propertyNameLength), keyframes);
         }
 
         /// <summary>

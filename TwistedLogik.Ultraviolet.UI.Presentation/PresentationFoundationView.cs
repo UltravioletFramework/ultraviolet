@@ -24,9 +24,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public PresentationFoundationView(UltravioletContext uv, Type viewModelType)
             : base(uv, viewModelType)
         {
-            this.namescope = new Namescope();
-            this.resources       = new PresentationFoundationViewResources(this);
-            this.drawingContext  = new DrawingContext(this);
+            this.namescope      = new Namescope();
+            this.resources      = new PresentationFoundationViewResources(this);
+            this.drawingContext = new DrawingContext(this);
 
             this.layoutRoot = new Grid(uv, null);
             this.layoutRoot.HorizontalAlignment = HorizontalAlignment.Stretch;

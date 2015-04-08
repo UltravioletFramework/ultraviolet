@@ -204,7 +204,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
             var possiblePropertyMatches =
                 from f in filter
                 let elementType = ResolveElementType(uv, f)
-                let propertyID = UIElement.FindStyledDependencyProperty(propertyName, elementType)
+                let propertyID = DependencyProperty.FindByStylingName(propertyName, elementType)
                 let propertyType = (propertyID == null) ? null : propertyID.PropertyType
                 where propertyType != null
                 select new { PropertyID = propertyID, PropertyType = propertyType };

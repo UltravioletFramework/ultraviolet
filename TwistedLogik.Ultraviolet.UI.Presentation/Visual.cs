@@ -7,7 +7,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
     /// Represents the base class for all visually rendered objects
     /// in the Ultraviolet Presentation Foundation.
     /// </summary>
-    public abstract class Visual : StyledDependencyObject
+    public abstract class Visual : DependencyObject
     {
         /// <summary>
         /// Performs a hit test against this and returns the topmost descendant
