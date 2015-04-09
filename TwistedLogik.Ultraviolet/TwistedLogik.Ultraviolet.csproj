@@ -311,6 +311,7 @@
     <Compile Include="IUltravioletUI.cs" />
     <Compile Include="Matrix.cs" />
     <Compile Include="InvalidCompatibilityShimException.cs" />
+    <Compile Include="Messages\NamespaceDoc.cs" />
     <Compile Include="Messages\OrientationChangedMessageData.cs" />
     <Compile Include="MutableVector2.cs" />
     <Compile Include="MutableVector3.cs" />
