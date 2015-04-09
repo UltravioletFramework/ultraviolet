@@ -47,7 +47,7 @@ Known Issues
 Documentation
 =============
 
-[Reference Documentation](http://uv.twistedlogik.net/ultraviolet/reference/v1.0/html/R_Project_Ultraviolet.htm)
+[Reference Documentation](http://uv.twistedlogik.net/ultraviolet/reference/v1.1)
 
 _Overview_
 
