@@ -36,6 +36,35 @@ namespace UvTestViewer.Models
         }
 
         /// <summary>
+        /// Gets or sets the GPU vendor for which the tests were run.
+        /// </summary>
+        public GpuVendor Vendor
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Gets the friendly display name for the test run's associated hardware vendor.
+        /// </summary>
+        public String VendorDisplayName
+        {
+            get
+            {
+                switch (Vendor)
+                {
+                    case GpuVendor.Intel:
+                        return "Intel HD Graphics";
+                    case GpuVendor.Nvidia:
+                        return "NVIDIA";
+                    case GpuVendor.Amd:
+                        return "AMD";
+                }
+                return "unknown";
+            }
+        }
+
+        /// <summary>
         /// Gets or sets the set of tests to display.
         /// </summary>
         public IEnumerable<RenderingTest> Tests

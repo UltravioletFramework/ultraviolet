@@ -11,7 +11,16 @@ namespace UvTestRunnerClient
     {
         private static void Main(string[] args)
         {
-            var resultPath = Task.Run(() => Run());
+            var resultPath = Task.Run(() => 
+            {
+                var task1 = Run(Settings.Default.UvTestRunnerUrlIntel, Settings.Default.OutputPath, Settings.Default.OutputNameIntel);
+                var task2 = Run(Settings.Default.UvTestRunnerUrlNvidia, Settings.Default.OutputPath, Settings.Default.OutputNameNvidia);
+                var task3 = Run(Settings.Default.UvTestRunnerUrlAmd, Settings.Default.OutputPath, Settings.Default.OutputNameAmd);
+
+                Task.WaitAll(task1, task2, task3);
+
+                return true;
+            });
             Console.WriteLine(resultPath.Result);
         }
 
@@ -19,10 +28,13 @@ namespace UvTestRunnerClient
         /// Spawns a new test run, waits for it to complete, and copies the results to the configured output directory.
         /// </summary>
         /// <returns>The path to the output result file.</returns>
-        private static async Task<String> Run()
+        private static async Task<String> Run(String testRunnerUrl, String outputPath, String outputName)
         {
+            if (String.IsNullOrEmpty(testRunnerUrl))
+                return null;
+
             // Kick off a test run.
-            var id = await SpawnNewTestRun();
+            var id = await SpawnNewTestRun(testRunnerUrl);
 
             // Poll until the test run is complete.
             var status = TestRunStatus.Pending;
@@ -34,7 +46,7 @@ namespace UvTestRunnerClient
 
             // Spit out the result file.
             var resultData = await RetrieveTestResult(id);
-            var resultPath = Path.Combine(Settings.Default.OutputPath, Settings.Default.OutputName);
+            var resultPath = Path.Combine(outputPath, outputName);
             File.WriteAllBytes(resultPath, resultData);
 
             return resultPath;
@@ -44,11 +56,11 @@ namespace UvTestRunnerClient
         /// Posts a request to the server to spawn a new test run.
         /// </summary>
         /// <returns>The identifier of the test run within the server's database.</returns>
-        private static async Task<Int64> SpawnNewTestRun()
+        private static async Task<Int64> SpawnNewTestRun(String testRunnerUrl)
         {
             using (var client = new HttpClient())
             {
-                client.BaseAddress = new Uri(Settings.Default.UvTestRunnerUrl);
+                client.BaseAddress = new Uri(testRunnerUrl);
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
@@ -71,7 +83,7 @@ namespace UvTestRunnerClient
         {
             using (var client = new HttpClient())
             {
-                client.BaseAddress = new Uri(Settings.Default.UvTestRunnerUrl);
+                client.BaseAddress = new Uri(Settings.Default.UvTestRunnerUrlNvidia);
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 

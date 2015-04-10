@@ -1,4 +1,8 @@
-﻿body {
+﻿html {
+    overflow-y: scroll;
+}
+
+body {
     font-family: 'Segoe UI', Arial, sans-serif;
     background-color: #e1d6eb;
     margin: 0;
@@ -17,7 +21,6 @@
     width: 100%;
     color: #fff;
     background-color: #7100b5;
-    margin-bottom: 16px;
     padding: 8px;
     text-align: center;
 }
@@ -31,6 +34,56 @@
     font-size: 1em;
     font-style: italic;
     font-weight: normal;
+}
+
+.testrun-subheader {
+    height: 2.5em;
+    line-height: 2.5em;
+    background-color: #8d4eb2;
+    text-align: center;
+    margin-bottom: 16px;
+}
+
+.testrun-subheader .vendorlink {    
+    color: #fff;
+    text-decoration: none;
+    display: inline-block;
+    width: 200px;
+}
+
+.testrun-subheader .vendorlink:hover {
+    background-color: #7100b5;
+}
+
+.vendorlink span {
+    filter: grayscale(100%);
+    -webkit-filter: grayscale(100%);
+}
+
+.vendorlink.selected {
+    background-color: #ae5ddd;
+    pointer-events: none;
+}
+
+.vendorlink.selected span {
+    font-weight: bold;
+    filter: grayscale(0%);
+    -webkit-filter: grayscale(0%);
+}
+
+.vendorlink.Intel span {
+    padding-left: 32px;
+    background: url("/Images/intel.png") left no-repeat;
+}
+
+.vendorlink.Nvidia span {
+    padding-left: 32px;
+    background: url("/Images/nvidia.png") left no-repeat;
+}
+
+.vendorlink.Amd span {
+    padding-left: 32px;
+    background: url("/Images/amd.png") left no-repeat;
 }
 
 table {
@@ -135,4 +188,31 @@ table thead tr:nth-child(2) td {
     color: #fff;
     background-color: #d72929;
     border: 1px solid #751515;
+}
+
+.testcount.none {
+    color: #000;
+    background-color: #d7b326;
+    border: 1px solid #9d831b;
+}
+
+.vendoricon {
+    width: 24px;
+    height: 24px;
+    background-repeat: no-repeat;
+    display: inline-block;
+    position: relative;
+    top: 6px;
+}
+
+.vendoricon.Intel {
+    background-image: url("/Images/intel.png");
+}
+
+.vendoricon.Nvidia {
+    background-image: url("/Images/nvidia.png");
+}
+
+.vendoricon.Amd {
+    background-image: url("/Images/amd.png");
 }

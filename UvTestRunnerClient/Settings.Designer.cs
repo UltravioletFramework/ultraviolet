@@ -26,9 +26,9 @@ namespace UvTestRunnerClient {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("http://localhost:9000")]
-        public string UvTestRunnerUrl {
+        public string UvTestRunnerUrlNvidia {
             get {
-                return ((string)(this["UvTestRunnerUrl"]));
+                return ((string)(this["UvTestRunnerUrlNvidia"]));
             }
         }
         
@@ -43,10 +43,10 @@ namespace UvTestRunnerClient {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("foo.trx")]
-        public string OutputName {
+        [global::System.Configuration.DefaultSettingValueAttribute("foo_amd.trx")]
+        public string OutputNameAmd {
             get {
-                return ((string)(this["OutputName"]));
+                return ((string)(this["OutputNameAmd"]));
             }
         }
         
@@ -56,6 +56,42 @@ namespace UvTestRunnerClient {
         public string UvTestViewerUrl {
             get {
                 return ((string)(this["UvTestViewerUrl"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://localhost:9000")]
+        public string UvTestRunnerUrlIntel {
+            get {
+                return ((string)(this["UvTestRunnerUrlIntel"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://localhost:9000")]
+        public string UvTestRunnerUrlAmd {
+            get {
+                return ((string)(this["UvTestRunnerUrlAmd"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("foo_intel.trx")]
+        public string OutputNameIntel {
+            get {
+                return ((string)(this["OutputNameIntel"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("foo_nvidia.trx")]
+        public string OutputNameNvidia {
+            get {
+                return ((string)(this["OutputNameNvidia"]));
             }
         }
     }

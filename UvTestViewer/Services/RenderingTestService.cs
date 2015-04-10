@@ -16,11 +16,12 @@ namespace UvTestViewer.Services
         /// <summary>
         /// Gets an overview of the most recent rendering test run.
         /// </summary>
+        /// <param name="vendor">The vendor for which to retrieve a rendering test run.</param>
         /// <returns>A <see cref="RenderingTestOverview"/> instance which represents the msot recent test run.</returns>
-        public RenderingTestOverview GetMostRecentRenderingTestOverview()
+        public RenderingTestOverview GetMostRecentRenderingTestOverview(GpuVendor vendor)
         {
             var id        = 0L;
-            var directory = GetMostRecentTestResultsDirectory(out id);
+            var directory = GetMostRecentTestResultsDirectory(vendor, out id);
             if (directory == null)
                 return null;
 
@@ -33,7 +34,7 @@ namespace UvTestViewer.Services
                                group filename by testname into g
                                select g;
 
-            var outputdir = Path.Combine("/TestResults", id.ToString());
+            var outputdir = Path.Combine("TestResults", vendor.ToString(), id.ToString());
 
             var failedTests = GetFailedTests(directory);
 
@@ -54,7 +55,13 @@ namespace UvTestViewer.Services
                 tests.Add(test);
             }
 
-            return new RenderingTestOverview() { TestRunID = id, Tests = tests, TimeProcessed = directory.CreationTime };
+            return new RenderingTestOverview()
+            {
+                TestRunID = id,
+                Tests = tests,
+                TimeProcessed = directory.CreationTime,
+                Vendor = vendor
+            };
         }
 
         /// <summary>
@@ -76,11 +83,37 @@ namespace UvTestViewer.Services
         /// <summary>
         /// Gets a <see cref="DirectoryInfo"/> which represents the most recent rendering test run.
         /// </summary>
+        /// <param name="vendor">The vendor for which to retrieve a rendering test run.</param>
         /// <param name="id">The identifier of the test run associated with the retrieved directory.</param>
         /// <returns>A <see cref="DirectoryInfo"/> which represents the most recent rendering test run.</returns>
-        private static DirectoryInfo GetMostRecentTestResultsDirectory(out Int64 id)
+        private static DirectoryInfo GetMostRecentTestResultsDirectory(GpuVendor vendor, out Int64 id)
         {
-            var root            = ConfigurationManager.AppSettings["TestResultRootDirectory"];
+            var root = ConfigurationManager.AppSettings["TestResultRootDirectory"];
+
+            switch (vendor)
+            {
+                case GpuVendor.Intel: 
+                    root = Path.Combine(root, "Intel"); 
+                    break;
+                
+                case GpuVendor.Nvidia: 
+                    root = Path.Combine(root, "Nvidia"); 
+                    break;
+                
+                case GpuVendor.Amd: 
+                    root = Path.Combine(root, "Amd"); 
+                    break;
+
+                default: 
+                    throw new ArgumentException("Unrecognized GPU hardware vendor.");
+            }
+
+            if (!Directory.Exists(root))
+            {
+                id = 0;
+                return null;
+            }
+
             var rootSubdirs     = Directory.GetDirectories(root);
             var rootSubdirsByID = from subdir in rootSubdirs
                                   let dirInfo = new DirectoryInfo(subdir)

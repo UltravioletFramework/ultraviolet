@@ -81,6 +81,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Global.asax" />
+    <Content Include="Images\amd.png" />
+    <Content Include="Images\intel.png" />
+    <Content Include="Images\nvidia.png" />
     <Content Include="Styles\Main.css" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -92,6 +95,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\GpuVendor.cs" />
     <Compile Include="Models\RenderingTest.cs" />
     <Compile Include="Models\RenderingTestOverview.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
