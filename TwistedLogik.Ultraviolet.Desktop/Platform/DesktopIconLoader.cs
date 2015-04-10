@@ -3,6 +3,7 @@ using System.Reflection;
 using TwistedLogik.Ultraviolet.Desktop.Graphics;
 using TwistedLogik.Ultraviolet.Graphics;
 using TwistedLogik.Ultraviolet.Platform;
+using System.IO;
 
 namespace TwistedLogik.Ultraviolet.Desktop.Platform
 {
@@ -16,6 +17,12 @@ namespace TwistedLogik.Ultraviolet.Desktop.Platform
         {
             var assembly = Assembly.GetEntryAssembly();
             var assemblyLocation = (assembly == null) ? typeof(UltravioletContext).Assembly.Location : assembly.Location;
+
+            /* HACK: Trying to load an icon from a network path throws an exception, which is a problem
+             * given the way the test servers are currently configured. So just skip loading it. */
+            var driveInfo = new DriveInfo(assemblyLocation);
+            if (driveInfo.DriveType == DriveType.Network)
+                return null;
 
             var icon = System.Drawing.Icon.ExtractAssociatedIcon(assemblyLocation);
             if (icon == null)
