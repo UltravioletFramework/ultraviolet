@@ -40,23 +40,31 @@ namespace UvTestRunnerClient
             if (String.IsNullOrEmpty(testRunnerUrl))
                 return null;
 
-            // Kick off a test run.
-            var id = await SpawnNewTestRun(testRunnerUrl);
-
-            // Poll until the test run is complete.
-            var status = TestRunStatus.Pending;
-            while (status != TestRunStatus.Succeeded && status != TestRunStatus.Failed)
+            try
             {
-                await Task.Delay(1000);
-                status = await QueryTestRunStatus(id);
+                // Kick off a test run.
+                var id = await SpawnNewTestRun(testRunnerUrl);
+
+                // Poll until the test run is complete.
+                var status = TestRunStatus.Pending;
+                while (status != TestRunStatus.Succeeded && status != TestRunStatus.Failed)
+                {
+                    await Task.Delay(1000);
+                    status = await QueryTestRunStatus(testRunnerUrl, id);
+                }
+
+                // Spit out the result file.
+                var resultData = await RetrieveTestResult(vendor, id);
+                var resultPath = Path.Combine(outputPath, outputName);
+                File.WriteAllBytes(resultPath, resultData);
+
+                return resultPath;
             }
-
-            // Spit out the result file.
-            var resultData = await RetrieveTestResult(vendor, id);
-            var resultPath = Path.Combine(outputPath, outputName);
-            File.WriteAllBytes(resultPath, resultData);
-
-            return resultPath;
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
         }
 
         /// <summary>
@@ -73,7 +81,10 @@ namespace UvTestRunnerClient
 
                 var response = await client.PostAsync("Api/UvTest", new StringContent(String.Empty));
                 if (!response.IsSuccessStatusCode)
+                {
+                    Console.WriteLine("Failed to POST to test server at {0}.", testRunnerUrl);
                     Environment.Exit(1);
+                }
 
                 var responseObject = await response.Content.ReadAsAsync<TestRunCreationResponse>();
 
@@ -86,17 +97,20 @@ namespace UvTestRunnerClient
         /// </summary>
         /// <param name="id">The identifier of the test run within the server's database.</param>
         /// <returns>The current status of the specified test run.</returns>
-        private static async Task<TestRunStatus> QueryTestRunStatus(Int64 id)
+        private static async Task<TestRunStatus> QueryTestRunStatus(String testRunnerUrl, Int64 id)
         {
             using (var client = new HttpClient())
             {
-                client.BaseAddress = new Uri(Settings.Default.UvTestRunnerUrlNvidia);
+                client.BaseAddress = new Uri(testRunnerUrl);
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
                 var response = await client.GetAsync("Api/UvTest/" + id.ToString());
                 if (!response.IsSuccessStatusCode)
+                {
+                    Console.WriteLine("Failed to GET from test server at {0}.", testRunnerUrl);
                     Environment.Exit(1);
+                }
 
                 var responseObject = await response.Content.ReadAsAsync<TestRunStatusResponse>();
 
@@ -120,7 +134,10 @@ namespace UvTestRunnerClient
                 var response = await client.GetAsync(request);
 
                 if (!response.IsSuccessStatusCode)
+                {
+                    Console.WriteLine("Failed to retrieve {0} test results.", vendor);
                     Environment.Exit(1);
+                }
 
                 var data = await response.Content.ReadAsByteArrayAsync();
 
