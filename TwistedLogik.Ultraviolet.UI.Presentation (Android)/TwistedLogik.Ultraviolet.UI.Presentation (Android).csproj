@@ -257,6 +257,15 @@
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\Primitives\NamespaceDoc.cs">
       <Link>Controls\Primitives\NamespaceDoc.cs</Link>
     </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\Primitives\PlacementMode.cs">
+      <Link>Controls\Primitives\PlacementMode.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\Primitives\Popup.cs">
+      <Link>Controls\Primitives\Popup.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\Primitives\PopupRoot.cs">
+      <Link>Controls\Primitives\PopupRoot.cs</Link>
+    </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\Primitives\RangeBase.cs">
       <Link>Controls\Primitives\RangeBase.cs</Link>
     </Compile>
@@ -484,6 +493,9 @@
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\NamespaceDoc.cs">
       <Link>NamespaceDoc.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\PopupQueue.cs">
+      <Link>PopupQueue.cs</Link>
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\PresentationBoxedValues.cs">
       <Link>PresentationBoxedValues.cs</Link>

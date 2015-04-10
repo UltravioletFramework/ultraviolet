@@ -7,6 +7,7 @@ using System.Xml.Linq;
 using TwistedLogik.Nucleus.Data;
 using TwistedLogik.Nucleus.Xml;
 using TwistedLogik.Ultraviolet.UI.Presentation.Controls;
+using TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation
 {
@@ -814,8 +815,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             }
             else
             {
+                /* TODO: The code below can probably be generalized by looking at the default property for the parent control
+                 * and seeing whether its type derives from UIElement, but for now, we're just going to brute force it. */
+
                 var contentControl = uiElement as ContentControl;
-                if (contentControl != null && !(uiElement is UserControl))
+                var popupControl   = uiElement as Popup;
+
+                if ((contentControl != null || popupControl != null) && !(uiElement is UserControl))
                 {
                     if (xmlChildren.Count > 1)
                     {
@@ -825,11 +831,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                     var contentElement = xmlChildren.SingleOrDefault();
                     if (contentElement != null)
                     {
-                        if (contentControl.ContentPresenter == null)
+                        if (contentControl != null)
                         {
-                            throw new InvalidOperationException(PresentationStrings.ContentControlRequiresPresenter.Format(contentControl.GetType().Name));
+                            if (contentControl.ContentPresenter == null)
+                            {
+                                throw new InvalidOperationException(PresentationStrings.ContentControlRequiresPresenter.Format(contentControl.GetType().Name));
+                            }
+                            contentControl.Content = InstantiateAndPopulateElement(uv, null, contentElement, context);
                         }
-                        contentControl.Content = InstantiateAndPopulateElement(uv, null, contentElement, context);
+                        else if (popupControl != null)
+                        {
+                            popupControl.Child = InstantiateAndPopulateElement(uv, null, contentElement, context);
+                        }
                     }
                 }
                 else

@@ -113,6 +113,7 @@ namespace UvTestRunnerClient
                 }
 
                 var responseObject = await response.Content.ReadAsAsync<TestRunStatusResponse>();
+                Console.WriteLine("Received response from {0}: {1} / {2}", testRunnerUrl, responseObject.TestRunID, responseObject.TestRunStatus);
 
                 return responseObject.TestRunStatus;
             }
@@ -126,6 +127,8 @@ namespace UvTestRunnerClient
         /// <returns>The contents of the test result file associated with the specified test run.</returns>
         private static async Task<Byte[]> RetrieveTestResult(String vendor, Int64 id)
         {
+            Console.WriteLine("Retreiving test result for {0}...", vendor);
+
             using (var client = new HttpClient())
             {
                 client.BaseAddress = new Uri(Settings.Default.UvTestViewerUrl);
@@ -140,6 +143,7 @@ namespace UvTestRunnerClient
                 }
 
                 var data = await response.Content.ReadAsByteArrayAsync();
+                Console.WriteLine("Received {0} bytes from {1}", data.Length, vendor);
 
                 return data;
             }

@@ -9,7 +9,6 @@ using TwistedLogik.Ultraviolet.Platform;
 using TwistedLogik.Ultraviolet.UI.Presentation.Animations;
 using TwistedLogik.Ultraviolet.UI.Presentation.Controls;
 using TwistedLogik.Ultraviolet.UI.Presentation.Styles;
-using System.Diagnostics;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation
 {
@@ -120,6 +119,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public void ClearStyledValues(Boolean recursive = true)
         {
             ClearStyledValuesCore(recursive);
+            isStyleValid = false;
         }
 
         /// <summary>

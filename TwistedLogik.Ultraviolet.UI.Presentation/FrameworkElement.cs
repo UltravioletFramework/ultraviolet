@@ -15,7 +15,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Initializes a new instance of the <see cref="FrameworkElement"/> class.
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
-        /// <param name="name">The unique identifier of this element within its layout.</param>
+        /// <param name="name">The identifying name of this element within its layout.</param>
         public FrameworkElement(UltravioletContext uv, String name)
             : base(uv)
         {
