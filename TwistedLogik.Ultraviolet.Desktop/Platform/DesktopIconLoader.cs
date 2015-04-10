@@ -20,8 +20,8 @@ namespace TwistedLogik.Ultraviolet.Desktop.Platform
 
             /* HACK: Trying to load an icon from a network path throws an exception, which is a problem
              * given the way the test servers are currently configured. So just skip loading it. */
-            var driveInfo = new DriveInfo(assemblyLocation);
-            if (driveInfo.DriveType == DriveType.Network)
+            var uri = new Uri(assemblyLocation);
+            if (uri.IsUnc)
                 return null;
 
             var icon = System.Drawing.Icon.ExtractAssociatedIcon(assemblyLocation);
