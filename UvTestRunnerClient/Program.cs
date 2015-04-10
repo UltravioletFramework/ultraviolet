@@ -11,24 +11,31 @@ namespace UvTestRunnerClient
     {
         private static void Main(string[] args)
         {
-            var resultPath = Task.Run(() => 
+            var succeeded = Task.Run(() => 
             {
-                var task1 = Run(Settings.Default.UvTestRunnerUrlIntel, Settings.Default.OutputPath, Settings.Default.OutputNameIntel);
-                var task2 = Run(Settings.Default.UvTestRunnerUrlNvidia, Settings.Default.OutputPath, Settings.Default.OutputNameNvidia);
-                var task3 = Run(Settings.Default.UvTestRunnerUrlAmd, Settings.Default.OutputPath, Settings.Default.OutputNameAmd);
+                var task1 = Run("Intel", 
+                    Settings.Default.UvTestRunnerUrlIntel, Settings.Default.OutputPath, Settings.Default.OutputNameIntel);
+                var task2 = Run("Nvidia", 
+                    Settings.Default.UvTestRunnerUrlNvidia, Settings.Default.OutputPath, Settings.Default.OutputNameNvidia);
+                var task3 = Run("Amd", 
+                    Settings.Default.UvTestRunnerUrlAmd, Settings.Default.OutputPath, Settings.Default.OutputNameAmd);
 
                 Task.WaitAll(task1, task2, task3);
 
                 return true;
             });
-            Console.WriteLine(resultPath.Result);
+            Console.WriteLine(succeeded.Result);
         }
 
         /// <summary>
         /// Spawns a new test run, waits for it to complete, and copies the results to the configured output directory.
         /// </summary>
+        /// <param name="vendor">The name of the GPU vendor for which to run rendering tests.</param>
+        /// <param name="testRunnerUrl">The URL of the test runner server.</param>
+        /// <param name="outputPath">The path to which to output the result file.</param>
+        /// <param name="outputName">The name to give to the result file.</param>
         /// <returns>The path to the output result file.</returns>
-        private static async Task<String> Run(String testRunnerUrl, String outputPath, String outputName)
+        private static async Task<String> Run(String vendor, String testRunnerUrl, String outputPath, String outputName)
         {
             if (String.IsNullOrEmpty(testRunnerUrl))
                 return null;
@@ -40,12 +47,12 @@ namespace UvTestRunnerClient
             var status = TestRunStatus.Pending;
             while (status != TestRunStatus.Succeeded && status != TestRunStatus.Failed)
             {
-                Task.Delay(1000).Wait();
+                await Task.Delay(1000);
                 status = await QueryTestRunStatus(id);
             }
 
             // Spit out the result file.
-            var resultData = await RetrieveTestResult(id);
+            var resultData = await RetrieveTestResult(vendor, id);
             var resultPath = Path.Combine(outputPath, outputName);
             File.WriteAllBytes(resultPath, resultData);
 
@@ -100,15 +107,18 @@ namespace UvTestRunnerClient
         /// <summary>
         /// Retrieves the test result file associated with the specified test run.
         /// </summary>
+        /// <param name="vendor">The vendor for which to retrieve test results.</param>
         /// <param name="id">The identifier of the test run within the server's database.</param>
         /// <returns>The contents of the test result file associated with the specified test run.</returns>
-        private static async Task<Byte[]> RetrieveTestResult(Int64 id)
+        private static async Task<Byte[]> RetrieveTestResult(String vendor, Int64 id)
         {
             using (var client = new HttpClient())
             {
                 client.BaseAddress = new Uri(Settings.Default.UvTestViewerUrl);
 
-                var response = await client.GetAsync("TestResults/" + id + "/Result.trx");
+                var request  = Path.Combine("TestResults/" + vendor + "/" + id + "/Result.trx");
+                var response = await client.GetAsync(request);
+
                 if (!response.IsSuccessStatusCode)
                     Environment.Exit(1);
 

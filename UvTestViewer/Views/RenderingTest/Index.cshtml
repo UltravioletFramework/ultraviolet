@@ -29,7 +29,7 @@
     <div>
         @{ var failingTestCount = Model.Tests.Where(x => x.Failed).Count(); }
         @if (Model.TestRunID == 0) {
-            <h3 class="testcount none">No tests run.</h3>
+            <h3 class="testcount none">No tests run</h3>
         } else if (failingTestCount > 0) {
             <h3 class="testcount failed">@Model.Tests.Where(x => x.Failed).Count() failed</h3>
         } else {

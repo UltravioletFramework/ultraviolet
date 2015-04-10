@@ -1,7 +1,8 @@
 ﻿using System;
+using System.Threading.Tasks;
 using System.Web.Http;
-using UvTestRunner.Services;
 using UvTestRunner.Models;
+using UvTestRunner.Services;
 
 namespace UvTestRunner.Controllers
 {
@@ -10,9 +11,10 @@ namespace UvTestRunner.Controllers
         private readonly TestRunnerService testRunnerService = new TestRunnerService();
 
         [Route("api/uvtest")]
-        public IHttpActionResult Post()
+        public async Task<IHttpActionResult> Post()
         {
-            return Ok(new TestRunCreationResponse() { TestRunID = testRunnerService.Run() });
+            var testRunID = await testRunnerService.Run();
+            return Ok(new TestRunCreationResponse() { TestRunID = testRunID });
         }
 
         [Route("api/uvtest/{id}")]
