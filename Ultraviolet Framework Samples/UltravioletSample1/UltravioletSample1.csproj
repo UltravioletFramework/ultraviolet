@@ -148,7 +148,8 @@
 call update.bat</PreBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
-    <PreBuildEvent>cd "$(SolutionDir)Dependencies"
+    <PreBuildEvent>if not "%25UvSkipSampleDependencyUpdate%25"=="" exit 
+cd "$(SolutionDir)Dependencies"
 if exist Update$(ConfigurationName).bat call Update$(ConfigurationName).bat</PreBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
