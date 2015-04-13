@@ -3,10 +3,16 @@
   <Stylesheet>DebugViewScreenStyles.uvss</Stylesheet>
   <View ViewModelType="UvDebugSandbox.UI.Screens.DebugViewModel, UvDebugSandbox">
 
-    <Popup IsOpen="true" PlacementTarget="foobar">
-      <Button Name="baz">Hello, world!</Button>
+    <Popup Name="asdf" PlacementTarget="foobar">
+      <ListBox>
+        <ListBoxItem>Selection 1</ListBoxItem>
+        <ListBoxItem>Selection 2</ListBoxItem>
+        <ListBoxItem>Selection 3</ListBoxItem>
+        <ListBoxItem>Selection 4</ListBoxItem>
+        <ListBoxItem>Selection 5</ListBoxItem>
+      </ListBox>
     </Popup>
-    <Button Margin="100" Name="foobar">foobar</Button>
+    <Button Click="HandleClick" Margin="100" Name="foobar">foobar</Button>
 
   </View>
 </UIPanelDefinition>
