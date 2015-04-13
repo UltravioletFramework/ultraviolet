@@ -51,8 +51,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var objectTree = BuildObjectTree(uv, xml, view.LayoutRoot, context);
             PopulateObjectTree(uv, objectTree, context);
 
-            view.LayoutRoot.InitializeDependencyProperties(true);
-
             return view;
         }
 
@@ -483,19 +481,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
-        /// Populates a UI element's events, properties, and children.
-        /// </summary>
-        /// <param name="uv">The Ultraviolet context.</param>
-        /// <param name="uiElement">The element whose properties, events, and children will be populated.</param>
-        /// <param name="xmlElement">The XML element that represents the UI element.</param>
-        /// <param name="context">The current instantiation context.</param>
-        private static void PopulateElement(UltravioletContext uv, UIElement uiElement, XElement xmlElement, InstantiationContext context)
-        {
-            PopulateElementPropertiesAndEvents(uv, uiElement, xmlElement, context);
-            //PopulateElementChildren(uv, uiElement, xmlElement, context);
-        }
-        
-        /// <summary>
         /// Populates a UI element's events and properties.
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
@@ -504,6 +489,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="context">The current instantiation context.</param>
         private static void PopulateElementPropertiesAndEvents(UltravioletContext uv, UIElement uiElement, XElement xmlElement, InstantiationContext context)
         {
+            uiElement.InitializeDependencyProperties(false);
+
             var attrs = CategorizeUvmlAttributes(uv, uiElement, xmlElement, context);
 
             foreach (var attr in attrs)
@@ -1069,7 +1056,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 context.PushBindingContext(bindingContext);
             }
 
-            PopulateElement(uv, root.Instance, root.Xml, context);
+            PopulateElementPropertiesAndEvents(uv, root.Instance, root.Xml, context);
             foreach (var child in root.Children)
             {
                 PopulateObjectTree(uv, child, context);
