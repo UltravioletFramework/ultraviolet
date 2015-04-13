@@ -48,6 +48,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var view    = new PresentationFoundationView(uv, viewModelType);
             var context = new InstantiationContext(uv, viewModelType);
 
+            var fe = view.LayoutRoot as FrameworkElement;
+            if (fe != null)
+                fe.BeginInit();
+
             var objectTree = BuildObjectTree(uv, xml, view.LayoutRoot, context);
             PopulateObjectTree(uv, objectTree, context);
 
@@ -84,13 +88,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             var uv      = userControl.Ultraviolet;
             var context = new InstantiationContext(uv, viewModelType, userControl, bindingContext);
-            var content = InstantiateElement(uv, null, contentElement, context);
 
-            var objectTree = BuildObjectTree(uv, contentElement, content, context);
-            PopulateObjectTree(uv, objectTree, context);
+            userControl.BeginInit();
+
+            var content           = InstantiateElement(uv, null, contentElement, context);
+            var contentObjectTree = BuildObjectTree(uv, contentElement, content, context);
 
             userControl.ComponentRoot = content;
             userControl.PopulateFieldsFromRegisteredElements();
+            
+            PopulateObjectTree(uv, contentObjectTree, context);
         }
 
         /// <summary>
@@ -109,10 +116,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (rootElement == null)
                 return;
 
-            var root = InstantiateElement(uv, null, rootElement, context);
-
-            var objectTree = BuildObjectTree(uv, rootElement, root, context);
-            PopulateObjectTree(uv, objectTree, context);
+            var componentRoot           = InstantiateElement(uv, null, rootElement, context);
+            var componentRootObjectTree = BuildObjectTree(uv, rootElement, componentRoot, context);
 
             var contentControl = control as ContentControl;
             if (contentControl != null)
@@ -124,8 +129,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 contentControl.ContentPresenter = context.ContentPresenter;
             }
 
-            control.ComponentRoot = root;
+            control.ComponentRoot = componentRoot;
             control.PopulateFieldsFromRegisteredElements();
+
+            PopulateObjectTree(uv, componentRootObjectTree, context);
         }
 
         /// <summary>
@@ -264,6 +271,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             {
                 context.ContentPresenter = (ContentPresenter)instance;
             }
+
+            var fe = instance as FrameworkElement;
+            if (fe != null)
+                fe.BeginInit();
 
             return instance;
         }
@@ -1066,6 +1077,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             {
                 context.PopBindingContext();
             }
+
+            var fe = root.Instance as FrameworkElement;
+            if (fe != null)
+                fe.EndInit();
         }
 
         // Reflection information.
