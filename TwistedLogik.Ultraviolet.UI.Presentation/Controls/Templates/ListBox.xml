@@ -3,10 +3,9 @@
   <Canvas Class="listbox-component" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
     <Rectangle Class="listbox-background"
       Canvas.Left="0" Canvas.Right="0" Canvas.Top="0" Canvas.Bottom="0"/>
-    <Border Class="listbox-border" 
+    <Border Class="listbox-border" HorizontalContentAlignment="Stretch"
       Canvas.Left="0" Canvas.Right="0" Canvas.Top="0" Canvas.Bottom="0">
-      <ScrollViewer HorizontalContentAlignment="Stretch" VerticalContentAlignment="Top"
-                    HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+      <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
         <ItemsPanel HorizontalAlignment="Stretch"/>
       </ScrollViewer>
     </Border>
