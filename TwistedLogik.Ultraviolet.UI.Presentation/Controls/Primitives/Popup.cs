@@ -291,13 +291,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
                     popup.UpdatePopupMeasure();
                     popup.UpdatePopupArrange(popup.MostRecentFinalRect.Size);
                 }
-
                 popup.OnOpened();
             }
             else
             {
-                child.ChangeVisualParent(null);
-
+                if (child != null)
+                {
+                    child.ChangeVisualParent(null);
+                }
                 popup.OnClosed();
             }
         }

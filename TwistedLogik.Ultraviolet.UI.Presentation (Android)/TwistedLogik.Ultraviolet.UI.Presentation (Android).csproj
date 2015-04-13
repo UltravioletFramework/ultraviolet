@@ -725,8 +725,8 @@
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\UvmlLoader.UvmlAttributeType.cs">
       <Link>UvmlLoader.UvmlAttributeType.cs</Link>
     </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\UvmlLoaderDeferredProperty.cs">
-      <Link>UvmlLoaderDeferredProperty.cs</Link>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\UvmlObject.cs">
+      <Link>UvmlObject.cs</Link>
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\VerticalAlignment.cs">
       <Link>VerticalAlignment.cs</Link>

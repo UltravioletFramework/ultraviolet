@@ -288,7 +288,7 @@
     <Compile Include="UvmlLoader.cs" />
     <Compile Include="UvmlLoader.InstantiationContext.cs" />
     <Compile Include="UvmlLoader.UvmlAttribute.cs" />
-    <Compile Include="UvmlLoaderDeferredProperty.cs" />
+    <Compile Include="UvmlObject.cs" />
     <Compile Include="VerticalAlignment.cs" />
     <Compile Include="Visibility.cs" />
     <Compile Include="Visual.cs" />
