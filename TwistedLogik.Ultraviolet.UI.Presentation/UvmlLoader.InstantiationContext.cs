@@ -123,6 +123,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             }
 
             /// <summary>
+            /// Gets the list of properties which have had their population deferred.
+            /// </summary>
+            public List<UvmlLoaderDeferredProperty> DeferredProperties
+            {
+                get { return deferredProperties; }
+            }
+
+            /// <summary>
             /// Regenerates the value of the <see cref="BindingContext"/> property from the
             /// current binding context stack.
             /// </summary>
@@ -142,6 +150,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             private ContentPresenter componentContentViewer;
             private String bindingContext;
             private Type viewModelType;
+            private readonly List<UvmlLoaderDeferredProperty> deferredProperties = 
+                new List<UvmlLoaderDeferredProperty>();
 
             // State values.
             private readonly Stack<String> bindingContextStack = new Stack<String>();

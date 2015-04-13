@@ -49,6 +49,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var context = new InstantiationContext(uv, viewModelType);
 
             PopulateElement(uv, view.LayoutRoot, xml, context);
+            PopulateDeferredProperties(context);
 
             view.LayoutRoot.InitializeDependencyProperties(true);
 
@@ -87,6 +88,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var context = new InstantiationContext(uv, viewModelType, userControl, bindingContext);
             var content = InstantiateAndPopulateElement(uv, null, contentElement, context);
 
+            PopulateDeferredProperties(context);
+
             userControl.ComponentRoot = content;
             userControl.PopulateFieldsFromRegisteredElements();
         }
@@ -118,6 +121,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 }
                 contentControl.ContentPresenter = context.ContentPresenter;
             }
+
+            PopulateDeferredProperties(context);
 
             control.ComponentRoot = root;
             control.PopulateFieldsFromRegisteredElements();
@@ -620,7 +625,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             {
                 case UvmlAttributeType.DependencyProperty:
                     {
-                        BindOrSetDependencyProperty(uiElement, (DependencyProperty)attr.Identifier, attr.Value, context);
+                        var dprop = (DependencyProperty)attr.Identifier;
+                        if (IsDeferredProperty(dprop))
+                        {
+                            context.DeferredProperties.Add(new UvmlLoaderDeferredProperty(uiElement, attr.Name, attr.Value));
+                        }
+                        else
+                        {
+                            BindOrSetDependencyProperty(uiElement, dprop, attr.Value, context);
+                        }
                     }
                     break;
                 
@@ -635,8 +648,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 case UvmlAttributeType.FrameworkProperty:
                     {
                         var propInfo  = (PropertyInfo)attr.Identifier;
-                        var propValue = ResolveValue(attr.Value, propInfo.PropertyType);
-                        propInfo.SetValue(uiElement, propValue, null);
+                        if (IsDeferredProperty(propInfo))
+                        {
+                            context.DeferredProperties.Add(new UvmlLoaderDeferredProperty(uiElement, attr.Name, attr.Value));
+                        }
+                        else
+                        {
+                            var propValue = ResolveValue(uiElement, attr.Value, propInfo.PropertyType);
+                            propInfo.SetValue(uiElement, propValue, null);
+                        }
                     }
                     break;
 
@@ -657,13 +677,20 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="name">The name of the property to populate.</param>
         /// <param name="value">The value to set in the specified property.</param>
         /// <param name="context">The current instantiation context.</param>
-        private static void PopulateElementProperty(UIElement uiElement, String name, String value, InstantiationContext context)
+        /// <param name="deferred">A value indicating whether to populate deferred properties.</param>
+        private static void PopulateElementProperty(UIElement uiElement, String name, String value, InstantiationContext context, Boolean deferred = false)
         {
             var isAttachedEvent = false;
 
             var dprop = FindElementDependencyProperty(context.Ultraviolet, uiElement, name, out isAttachedEvent);
             if (dprop != null)
             {
+                if (!deferred && IsDeferredProperty(dprop))
+                {
+                    context.DeferredProperties.Add(new UvmlLoaderDeferredProperty(uiElement, name, value));
+                    return;
+                }
+
                 BindOrSetDependencyProperty(uiElement, dprop, value, context);
             }
             else
@@ -675,7 +702,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 if (!propInfo.CanWrite)
                     throw new InvalidOperationException(PresentationStrings.PropertyHasNoSetter.Format(name));
 
-                var propValue = ResolveValue(value, propInfo.PropertyType);
+                if (!deferred && IsDeferredProperty(propInfo))
+                {
+                    context.DeferredProperties.Add(new UvmlLoaderDeferredProperty(uiElement, name, value));
+                    return;
+                }
+
+                var propValue = ResolveValue(uiElement, value, propInfo.PropertyType);
                 propInfo.SetValue(uiElement, propValue, null);
             }
         }
@@ -856,6 +889,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Populates any deferred properties associated with the specified instantiation context.
+        /// </summary>
+        /// <param name="context">The current instantiation context.</param>
+        private static void PopulateDeferredProperties(InstantiationContext context)
+        {
+            foreach (var prop in context.DeferredProperties)
+            {
+                PopulateElementProperty(prop.UIElement, prop.Name, prop.Value, context, true);
+            }
+        }
+
+        /// <summary>
         /// Binds or sets the specified dependency property, depending on whether the given value is a binding expression.
         /// </summary>
         /// <param name="dobj">The dependency object to modify.</param>
@@ -885,7 +930,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             try
             {
                 var type          = dprop.PropertyType;
-                var resolvedValue = ResolveValue(value, type);
+                var resolvedValue = ResolveValue(dobj as UIElement, value, type);
                 
                 miSetLocalValue.MakeGenericMethod(type).Invoke(dobj, new Object[] { dprop, resolvedValue });
             }
@@ -982,15 +1027,26 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Resolves a string to a value.
         /// </summary>
+        /// <param name="uiElement">The <see cref="UIElement"/> for which the value is being resolved.</param>
         /// <param name="value">The string to resolve.</param>
         /// <param name="type">The type of value to resolve.</param>
         /// <returns>The resolved value.</returns>
-        private static Object ResolveValue(String value, Type type)
+        private static Object ResolveValue(UIElement uiElement, String value, Type type)
         {
             if (value == "{{null}}")
             {
                 return type.IsValueType ? Activator.CreateInstance(type) : null;
             }
+
+            if (uiElement != null && typeof(UIElement).IsAssignableFrom(type))
+            {
+                var namescope = (uiElement.Control == null) ? uiElement.View.Namescope : uiElement.Control.ComponentNamescope;
+                if (namescope == null)
+                    return null;
+
+                return namescope.GetElementByName(value);
+            }
+
             return ObjectResolver.FromString(value, type);
         }
 
@@ -1026,6 +1082,28 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         private static Boolean IsBindingExpression(String value)
         {
             return BindingExpressions.IsBindingExpression(value);
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the specified dependency property's population should
+        /// be deferred until after the layout is loaded.
+        /// </summary>
+        /// <param name="dprop">The dependency property to evaluate.</param>
+        /// <returns><c>true</c> if populating the property should be deferred; otherwise, <c>false</c>.</returns>
+        private static Boolean IsDeferredProperty(DependencyProperty dprop)
+        {
+            return typeof(UIElement).IsAssignableFrom(dprop.PropertyType);
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the specified .NET Framework property's population should
+        /// be deferred until after the layout is loaded.
+        /// </summary>
+        /// <param name="propInfo">The property to evaluate.</param>
+        /// <returns><c>true</c> if populating the property should be deferred; otherwise, <c>false</c>.</returns>
+        private static Boolean IsDeferredProperty(PropertyInfo propInfo)
+        {
+            return typeof(UIElement).IsAssignableFrom(propInfo.PropertyType);
         }
 
         /// <summary>

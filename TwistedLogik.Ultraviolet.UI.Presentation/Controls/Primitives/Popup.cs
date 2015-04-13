@@ -64,6 +64,25 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         }
 
         /// <summary>
+        /// Gets or sets the <see cref="PlacementMode"/> value which specifies how the <see cref="Popup"/> is
+        /// positioned relative to its placement target.
+        /// </summary>
+        public PlacementMode Placement
+        {
+            get { return GetValue<PlacementMode>(PlacementProperty); }
+            set { SetValue<PlacementMode>(PlacementProperty, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets <see cref="UIElement"/> relative to which the <see cref="Popup"/> will be positioned.
+        /// </summary>
+        public UIElement PlacementTarget
+        {
+            get { return GetValue<UIElement>(PlacementTargetProperty); }
+            set { SetValue<UIElement>(PlacementTargetProperty, value); }
+        }
+
+        /// <summary>
         /// Occurs when the <see cref="IsOpen"/> property changes to <c>true</c>.
         /// </summary>
         public event UpfEventHandler Opened;
@@ -96,6 +115,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// </summary>
         public static readonly DependencyProperty VerticalOffsetProperty = DependencyProperty.Register("VerticalOffset", typeof(Double), typeof(Popup),
             new PropertyMetadata<Double>(CommonBoxedValues.Double.Zero, PropertyMetadataOptions.None));
+
+        /// <summary>
+        /// Identifies the <see cref="Placement"/> property.
+        /// </summary>
+        public static readonly DependencyProperty PlacementProperty = DependencyProperty.Register("Placement", typeof(PlacementMode), typeof(Popup),
+            new PropertyMetadata<PlacementMode>(PlacementMode.Bottom, PropertyMetadataOptions.None, HandlePlacementChanged));
+
+        /// <summary>
+        /// Identifies the <see cref="PlacementTarget"/> property.
+        /// </summary>
+        public static readonly DependencyProperty PlacementTargetProperty = DependencyProperty.Register("PlacementTarget", typeof(UIElement), typeof(Popup),
+            new PropertyMetadata<UIElement>(null, PropertyMetadataOptions.None, HandlePlacementTargetChanged));
 
         /// <inheritdoc/>
         protected internal override UIElement GetLogicalChild(Int32 childIndex)
@@ -271,6 +302,24 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         }
 
         /// <summary>
+        /// Occurs when the value of the <see cref="Placement"/> dependency property changes.
+        /// </summary>
+        private static void HandlePlacementChanged(DependencyObject dobj, PlacementMode oldValue, PlacementMode newValue)
+        {
+            var popup = (Popup)dobj;
+            popup.UpdatePopupArrange(popup.MostRecentFinalRect.Size);
+        }
+        
+        /// <summary>
+        /// Occurs when the value of the <see cref="PlacementTarget"/> dependency property changes.
+        /// </summary>
+        private static void HandlePlacementTargetChanged(DependencyObject dobj, UIElement oldValue, UIElement newValue)
+        {
+            var popup = (Popup)dobj;
+            popup.UpdatePopupArrange(popup.MostRecentFinalRect.Size);
+        }
+
+        /// <summary>
         /// Updates the stylesheet which is applied to the popup content.
         /// </summary>
         /// <param name="stylesheet">The stylesheet to apply to the popup content.</param>
@@ -300,12 +349,69 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// </summary>
         private void UpdatePopupArrange(Size2D finalSize)
         {
-            // TODO: Implement popup positioning
+            switch (Placement)
+            {
+                case PlacementMode.Absolute:
+                    CalculatePopupPosition_Absolute(finalSize, out popupX, out popupY);
+                    break;
 
-            popupX = HorizontalOffset;
-            popupY = VerticalOffset;
+                case PlacementMode.Relative:
+                    break;
+
+                case PlacementMode.Bottom:
+                    CalculatePopupPosition_Bottom(finalSize, out popupX, out popupY);
+                    break;
+
+                case PlacementMode.Center:
+                    break;
+                case PlacementMode.Right:
+                    break;
+                case PlacementMode.AbsolutePoint:
+                    break;
+                case PlacementMode.RelativePoint:
+                    break;
+                case PlacementMode.Mouse:
+                    break;
+                case PlacementMode.MousePoint:
+                    break;
+                case PlacementMode.Left:
+                    break;
+                case PlacementMode.Top:
+                    break;
+            }
+
+            popupX += HorizontalOffset;
+            popupY += VerticalOffset;
 
             root.Arrange(new RectangleD(popupX, popupY, finalSize.Width, finalSize.Height), ArrangeOptions.None);
+        }
+
+        /// <summary>
+        /// Calculates the popup's position when <see cref="Placement"/> is set to <see cref="PlacementMode.Absolute"/>.
+        /// </summary>
+        private void CalculatePopupPosition_Absolute(Size2D finalSize, out Double popupX, out Double popupY)
+        {
+            popupX = 0;
+            popupY = 0;
+        }
+
+        /// <summary>
+        /// Calculates the popup's position when <see cref="Placement"/> is set to <see cref="PlacementMode.Bottom"/>.
+        /// </summary>
+        private void CalculatePopupPosition_Bottom(Size2D finalSize, out Double popupX, out Double popupY)
+        {
+            var target = PlacementTarget;
+            if (target == null)
+            {
+                popupX = 0;
+                popupY = 0;
+                return;
+            }
+
+            var targetBounds = target.AbsoluteBounds;
+
+            popupX = targetBounds.Left;
+            popupY = targetBounds.Bottom;
         }
 
         // The root visual of the popup's content.

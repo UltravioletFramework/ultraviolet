@@ -3,40 +3,10 @@
   <Stylesheet>DebugViewScreenStyles.uvss</Stylesheet>
   <View ViewModelType="UvDebugSandbox.UI.Screens.DebugViewModel, UvDebugSandbox">
 
-    <DockPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch" LastChildFill="true">
-      <Grid HorizontalAlignment="Stretch" DockPanel.Dock="Top">
-        <Rectangle HorizontalAlignment="Stretch" VerticalAlignment="Stretch" FillColor="#ffe0e0e0"/>
-        <TextBlock Margin="8 8 0 8" Height="48" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">HEADER TEXT GOES HERE</TextBlock>
-      </Grid>
-      <Grid HorizontalAlignment="Stretch" DockPanel.Dock="Bottom">
-        <Grid.ColumnDefinitions>
-          <ColumnDefinition Width="Auto"/>
-          <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
-        <Rectangle Grid.ColumnSpan="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" FillColor="#ffe0e0e0"/>
-        <StackPanel Grid.Column="0" Orientation="Horizontal">
-          <ToggleButton Margin="8 8 0 8" Width="48" Height="48">A</ToggleButton>
-          <ToggleButton Margin="8 8 0 8" Width="48" Height="48">B</ToggleButton>
-          <ToggleButton Margin="8 8 0 8" Width="48" Height="48">C</ToggleButton>
-          <TextBlock Margin="8 8 0 8" Height="48" VerticalContentAlignment="Center">Some status text goes here</TextBlock>
-        </StackPanel>
-        <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
-          <Button Margin="0 8 8 8" Height="48" Click="HandleExit">Exit Game</Button>
-        </StackPanel>
-      </Grid>
-      <ListBox DockPanel.Dock="Left" VerticalAlignment="Stretch">
-        <ListBoxItem>Hello!</ListBoxItem>
-        <Button>A</Button>
-        <Button>The quick brown fox jumped</Button>
-        <Button>over the lazy dog</Button>
-        <CheckBox>A</CheckBox>
-        <RadioButton>A</RadioButton>
-        <RadioButton>A</RadioButton>
-        <RadioButton>A</RadioButton>
-        <Button>A</Button>
-        <TextBox Width="300">Hello!</TextBox>
-      </ListBox>
-    </DockPanel>
+    <Popup IsOpen="true" PlacementTarget="foobar">
+      <Button Name="baz">Hello, world!</Button>
+    </Popup>
+    <Button Margin="100" Name="foobar">foobar</Button>
 
   </View>
 </UIPanelDefinition>
