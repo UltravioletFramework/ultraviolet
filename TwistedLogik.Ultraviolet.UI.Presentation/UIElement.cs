@@ -459,16 +459,27 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Invalidates the element's styling state.
         /// </summary>
-        public void InvalidateStyle()
+        public void InvalidateStyle(Boolean recursive = false)
         {
-            if (View == null || !IsStyleValid || IsStyling)
+            if (View == null)
                 return;
 
-            this.isStyleValid = false;
+            if (IsStyleValid && !IsStyling)
+            {
+                this.isStyleValid = false;
 
-            var upf = uv.GetUI().GetPresentationFoundation();
-            upf.PerformanceStats.InvalidateStyleCountLastFrame++;
-            upf.StyleQueue.Enqueue(this);
+                var upf = uv.GetUI().GetPresentationFoundation();
+                upf.PerformanceStats.InvalidateStyleCountLastFrame++;
+                upf.StyleQueue.Enqueue(this);
+            }
+
+            if (recursive)
+            {
+                VisualTreeHelper.ForEachChild<UIElement>(this, null, (child, state) =>
+                {
+                    child.InvalidateStyle(true);
+                });
+            }
         }
 
         /// <summary>

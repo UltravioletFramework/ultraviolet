@@ -363,7 +363,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             if (!IsOpen || stylesheet == null)
                 return;
 
-            root.InvalidateStyle();
+            root.InvalidateStyle(true);
             root.Style(MostRecentStylesheet);
         }
 

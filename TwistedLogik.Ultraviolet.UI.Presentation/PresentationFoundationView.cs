@@ -112,7 +112,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         public void InvalidateStyle()
         {
-            layoutRoot.InvalidateStyle();
+            layoutRoot.InvalidateStyle(true);
         }
 
         /// <summary>
