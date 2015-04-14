@@ -102,7 +102,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// Identifies the <see cref="IsOpen"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty IsOpenProperty = DependencyProperty.Register("IsOpen", typeof(Boolean), typeof(Popup),
-            new PropertyMetadata<Boolean>(CommonBoxedValues.Boolean.False, PropertyMetadataOptions.None, HandleIsOpenChanged));
+            new PropertyMetadata<Boolean>(CommonBoxedValues.Boolean.False, PropertyMetadataOptions.None, HandleIsOpenChanged, CoerceIsOpen));
 
         /// <summary>
         /// Identifies the <see cref="HorizontalOffset"/> dependency property.
@@ -249,6 +249,24 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         }
 
         /// <summary>
+        /// Coerces the value of the <see cref="IsOpen"/> property in order to allow popup
+        /// opening to be deferred in case the popup hasn't fully loaded yet.
+        /// </summary>
+        private static Boolean CoerceIsOpen(DependencyObject dobj, Boolean value)
+        {
+            if (value)
+            {
+                var popup = (Popup)dobj;
+                if (popup.IsLoaded)
+                    return true;
+
+                popup.Loaded += OpenDeferred;
+                return false;
+            }
+            return value;
+        }
+
+        /// <summary>
         /// Occurs when the value of the <see cref="Child"/> dependency property changes.
         /// </summary>
         private static void HandleChildChanged(DependencyObject dobj, UIElement oldValue, UIElement newValue)
@@ -323,6 +341,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         {
             var popup = (Popup)dobj;
             popup.UpdatePopupArrange(popup.MostRecentFinalRect.Size);
+        }
+
+        /// <summary>
+        /// An event handler which is used to defer the opening of a popup until after it has
+        /// been fully loaded, in order to ensure proper positioning.
+        /// </summary>
+        private static void OpenDeferred(DependencyObject element, ref RoutedEventData data)
+        {
+            var popup = (Popup)element;
+            popup.Loaded -= OpenDeferred;
+            popup.IsOpen = true;
         }
 
         /// <summary>

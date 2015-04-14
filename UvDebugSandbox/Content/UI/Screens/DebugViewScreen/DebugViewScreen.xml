@@ -3,7 +3,7 @@
   <Stylesheet>DebugViewScreenStyles.uvss</Stylesheet>
   <View ViewModelType="UvDebugSandbox.UI.Screens.DebugViewModel, UvDebugSandbox">
 
-    <Popup Name="asdf" PlacementTarget="foobar">
+    <Popup Name="asdf" IsOpen="true" PlacementTarget="foobar">
       <Button>Hello</Button>      
     </Popup>
     <Button Click="HandleClick" Margin="100" Name="foobar">foobar</Button>
