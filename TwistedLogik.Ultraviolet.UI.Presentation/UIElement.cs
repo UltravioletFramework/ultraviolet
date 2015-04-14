@@ -919,8 +919,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         internal virtual void OnLayoutCacheInvalidatedInternal()
         {
             CacheLayoutParameters();
-            InvalidateStyle();
-
+            if (VisualParent != null)
+            {
+                InvalidateStyle();
+            }
             OnLayoutCacheInvalidated();
         }
 
@@ -1287,7 +1289,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         protected virtual void OnLogicalParentChanged()
         {
             CacheLayoutParameters();
-            InvalidateStyle();
+            if (LogicalTreeHelper.GetParent(this) != null)
+            {
+                InvalidateStyle();
+            }
         }
 
         /// <inheritdoc/>
