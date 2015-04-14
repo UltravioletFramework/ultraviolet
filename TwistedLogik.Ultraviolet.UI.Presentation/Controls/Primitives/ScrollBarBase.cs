@@ -96,7 +96,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <param name="type">The scroll event type.</param>
         protected internal void RaiseScrollEvent(ScrollEventType type)
         {
-            System.Diagnostics.Debug.WriteLine("Raising " + type);
             var evtData     = new RoutedEventData(this);
             var evtDelegate = EventManager.GetInvocationDelegate<UpfScrollEventHandler>(ScrollEvent);
             evtDelegate(this, type, ref evtData);
