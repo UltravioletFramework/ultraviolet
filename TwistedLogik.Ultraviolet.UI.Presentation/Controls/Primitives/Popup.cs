@@ -387,6 +387,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             if (!IsOpen)
                 return;
 
+            var flipIfNecessary = false;
+
             switch (Placement)
             {
                 case PlacementMode.Absolute:
@@ -394,6 +396,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
                     break;
 
                 case PlacementMode.Relative:
+                    CalculatePopupPosition_Relative(finalSize, out popupX, out popupY);
                     break;
 
                 case PlacementMode.Bottom:
@@ -401,25 +404,62 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
                     break;
 
                 case PlacementMode.Center:
+                    CalculatePopupPosition_Center(finalSize, out popupX, out popupY);
                     break;
+
                 case PlacementMode.Right:
+                    CalculatePopupPosition_Right(finalSize, out popupX, out popupY);
                     break;
+
                 case PlacementMode.AbsolutePoint:
+                    CalculatePopupPosition_Absolute(finalSize, out popupX, out popupY);
+                    flipIfNecessary = true;
                     break;
+
                 case PlacementMode.RelativePoint:
+                    CalculatePopupPosition_Relative(finalSize, out popupX, out popupY);
+                    flipIfNecessary = true;
                     break;
+
                 case PlacementMode.Mouse:
+                    CalculatePopupPosition_Mouse(finalSize, out popupX, out popupY);
                     break;
+                
                 case PlacementMode.MousePoint:
+                    CalculatePopupPosition_Mouse(finalSize, out popupX, out popupY);
+                    flipIfNecessary = true;
                     break;
+                
                 case PlacementMode.Left:
+                    CalculatePopupPosition_Left(finalSize, out popupX, out popupY);
                     break;
+
                 case PlacementMode.Top:
+                    CalculatePopupPosition_Top(finalSize, out popupX, out popupY);
                     break;
             }
 
             popupX += HorizontalOffset;
             popupY += VerticalOffset;
+
+            if (flipIfNecessary)
+            {
+                var boundsView  = Display.PixelsToDips(View.Area);
+                var boundsPopup = new RectangleD(popupX, popupY, root.DesiredSize.Width, root.DesiredSize.Height);
+
+                if (boundsPopup.Left < boundsView.Left || boundsPopup.Right > boundsView.Right)
+                {
+                    popupX -= root.DesiredSize.Width;
+                }
+
+                if (boundsPopup.Top < boundsView.Top || boundsPopup.Bottom > boundsView.Bottom)
+                {
+                    popupY -= root.DesiredSize.Height;
+                }
+            }
+
+            popupX = Math.Max(popupX, 0);
+            popupY = Math.Max(popupY, 0);
 
             root.Arrange(new RectangleD(popupX, popupY, finalSize.Width, finalSize.Height), ArrangeOptions.None);
         }
@@ -434,22 +474,114 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         }
 
         /// <summary>
+        /// Calculates the popup's position when <see cref="Placement"/> is set to <see cref="PlacementMode.Relative"/>.
+        /// </summary>
+        private void CalculatePopupPosition_Relative(Size2D finalSize, out Double popupX, out Double popupY)
+        {
+            var targetBounds = GetPopupTargetBounds();
+
+            popupX = targetBounds.X;
+            popupY = targetBounds.Y;
+        }
+
+        /// <summary>
         /// Calculates the popup's position when <see cref="Placement"/> is set to <see cref="PlacementMode.Bottom"/>.
         /// </summary>
         private void CalculatePopupPosition_Bottom(Size2D finalSize, out Double popupX, out Double popupY)
         {
-            var target = PlacementTarget;
-            if (target == null)
+            var targetBounds = GetPopupTargetBounds();
+
+            popupX = targetBounds.Left;
+            popupY = targetBounds.Bottom;
+        }
+
+        /// <summary>
+        /// Calculates the popup's position when <see cref="Placement"/> is set to <see cref="PlacementMode.Center"/>.
+        /// </summary>
+        private void CalculatePopupPosition_Center(Size2D finalSize, out Double popupX, out Double popupY)
+        {
+            var parent = VisualTreeHelper.GetParent(this) as UIElement;
+            if (parent == null)
             {
                 popupX = 0;
                 popupY = 0;
                 return;
             }
 
-            var targetBounds = target.AbsoluteBounds;
+            popupX = (parent.AbsoluteBounds.Width - root.DesiredSize.Width) / 2;
+            popupY = (parent.AbsoluteBounds.Height - root.DesiredSize.Height) / 2;
+        }
+
+        /// <summary>
+        /// Calculates the popup's position when <see cref="Placement"/> is set to <see cref="PlacementMode.Right"/>.
+        /// </summary>
+        private void CalculatePopupPosition_Right(Size2D finalSize, out Double popupX, out Double popupY)
+        {
+            var targetBounds = GetPopupTargetBounds();
+
+            popupX = targetBounds.Right;
+            popupY = targetBounds.Top;
+        }
+
+        /// <summary>
+        /// Calculates the popup's position when <see cref="Placement"/> is set to <see cref="PlacementMode.Mouse"/>.
+        /// </summary>
+        private void CalculatePopupPosition_Mouse(Size2D finalSize, out Double popupX, out Double popupY)
+        {
+            var mouse = Ultraviolet.GetInput().GetMouse();
+            if (mouse == null)
+            {
+                popupX = 0;
+                popupY = 0;
+                return;
+            }
+
+            var cursor = Ultraviolet.GetPlatform().Cursor;
+
+            var dipsMousePos    = Display.PixelsToDips(mouse.Position);
+            var dipsMouseWidth  = Display.PixelsToDips(cursor == null ? DefaultCursorWidth : cursor.Width);
+            var dipsMouseHeight = Display.PixelsToDips(cursor == null ? DefaultCursorHeight : cursor.Height);
+
+            var targetBounds = new RectangleD(dipsMousePos.X, dipsMousePos.Y, dipsMouseWidth, dipsMouseHeight);
 
             popupX = targetBounds.Left;
             popupY = targetBounds.Bottom;
+        }
+
+        /// <summary>
+        /// Calculates the popup's position when <see cref="Placement"/> is set to <see cref="PlacementMode.Left"/>.
+        /// </summary>
+        private void CalculatePopupPosition_Left(Size2D finalSize, out Double popupX, out Double popupY)
+        {
+            var targetBounds = GetPopupTargetBounds();
+
+            popupX = targetBounds.Left - root.DesiredSize.Width;
+            popupY = targetBounds.Top;
+        }
+
+        /// <summary>
+        /// Calculates the popup's position when <see cref="Placement"/> is set to <see cref="PlacementMode.Top"/>.
+        /// </summary>
+        private void CalculatePopupPosition_Top(Size2D finalSize, out Double popupX, out Double popupY)
+        {
+            var targetBounds = GetPopupTargetBounds();
+
+            popupX = targetBounds.Left;
+            popupY = targetBounds.Top - root.DesiredSize.Height;
+        }
+
+        /// <summary>
+        /// Gets the bounds of the region around which the popup is placed.
+        /// </summary>
+        /// <returns>The bounds of the region around which the popup is placed.</returns>
+        private RectangleD GetPopupTargetBounds()
+        {
+            var target = PlacementTarget;
+            if (target != null)
+            {
+                return target.AbsoluteBounds;
+            }
+            return RectangleD.Empty;
         }
 
         // The root visual of the popup's content.
@@ -460,5 +592,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         private Double popupY;
         private Double popupWidth;
         private Double popupHeight;
+        
+        // The assumed size of the default cursor, since there's currently no way to query it.
+        private const Int32 DefaultCursorWidth = 16;
+        private const Int32 DefaultCursorHeight = 16;
     }
 }
