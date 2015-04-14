@@ -339,6 +339,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Removes the specified UI element from all of the Foundation's processing queues.
+        /// </summary>
+        /// <param name="element">The element to remove from the queues.</param>
+        internal void RemoveFromQueues(UIElement element)
+        {
+            Contract.Require(element, "element");
+
+            StyleQueue.Remove(element);
+            MeasureQueue.Remove(element);
+            ArrangeQueue.Remove(element);
+        }
+
+        /// <summary>
         /// Gets the queue of elements with invalid styling states.
         /// </summary>
         internal LayoutQueue StyleQueue

@@ -283,6 +283,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
 
             if (newValue)
             {
+                root.EnsureIsLoaded(true);
+
                 if (child != null)
                 {
                     child.ChangeVisualParent(root);
@@ -295,6 +297,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             }
             else
             {
+                root.EnsureIsLoaded(false);
+
                 if (child != null)
                 {
                     child.ChangeVisualParent(null);
@@ -351,6 +355,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// </summary>
         private void UpdatePopupArrange(Size2D finalSize)
         {
+            if (!IsOpen)
+                return;
+
             switch (Placement)
             {
                 case PlacementMode.Absolute:

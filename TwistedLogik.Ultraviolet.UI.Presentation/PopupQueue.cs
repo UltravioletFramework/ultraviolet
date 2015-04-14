@@ -41,6 +41,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
                 dc.Reset();
 
+                position.Value.EnsureIsLoaded(true);
                 position.Value.Draw(time, dc);
 
                 if (next == null)

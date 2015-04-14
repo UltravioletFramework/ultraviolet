@@ -84,6 +84,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             drawingContext.Reset();
             drawingContext.SpriteBatch = spriteBatch;
 
+            var fe = layoutRoot as FrameworkElement;
+            if (fe != null)
+                fe.EnsureIsLoaded(true);
+
             layoutRoot.Draw(time, drawingContext);
             popupQueue.Draw(time, drawingContext);
 

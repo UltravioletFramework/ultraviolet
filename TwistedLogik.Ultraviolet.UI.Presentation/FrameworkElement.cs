@@ -155,6 +155,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Gets a value indicating whether the element has been loaded and laid out.
+        /// </summary>
+        public Boolean IsLoaded
+        {
+            get { return isLoaded; }
+        }
+
+        /// <summary>
         /// Occurs when the element is initialized.
         /// </summary>
         public event UpfEventHandler Initialized;
@@ -218,6 +226,121 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         public static readonly DependencyProperty VerticalAlignmentProperty = DependencyProperty.Register("VerticalAlignment", "valign",
             typeof(VerticalAlignment), typeof(FrameworkElement), new PropertyMetadata<VerticalAlignment>(PresentationBoxedValues.VerticalAlignment.Top, PropertyMetadataOptions.AffectsArrange));
+
+        /// <summary>
+        /// Occurs when the element is loaded.
+        /// </summary>
+        public event UpfRoutedEventHandler Loaded
+        {
+            add { AddHandler(LoadedEvent, value); }
+            remove { RemoveHandler(LoadedEvent, value); }
+        }
+
+        /// <summary>
+        /// Occurs when the element is unloaded.
+        /// </summary>
+        public event UpfRoutedEventHandler Unloaded
+        {
+            add { AddHandler(UnloadedEvent, value); }
+            remove { RemoveHandler(UnloadedEvent, value); }
+        }
+
+        /// <summary>
+        /// Identifies the <see cref="Loaded"/> routed event.
+        /// </summary>
+        public static readonly RoutedEvent LoadedEvent = EventManager.RegisterRoutedEvent("Loaded", RoutingStrategy.Direct,
+            typeof(UpfRoutedEventHandler), typeof(FrameworkElement));
+
+        /// <summary>
+        /// Identifies the <see cref="Unloaded"/> routed event.
+        /// </summary>
+        public static readonly RoutedEvent UnloadedEvent = EventManager.RegisterRoutedEvent("Unloaded", RoutingStrategy.Direct,
+            typeof(UpfRoutedEventHandler), typeof(FrameworkElement));
+
+        /// <summary>
+        /// Sets the value of the <see cref="IsLoaded"/> property, propagating it downward through the
+        /// element's visual descendants.
+        /// </summary>
+        /// <param name="value">The new value to set for the <see cref="IsLoaded"/> property.</param>
+        private void SetIsLoaded(Boolean value)
+        {
+            if (IsLoaded == value)
+                return;
+
+            isLoaded = value;
+
+            if (!value)
+            {
+                var upf = Ultraviolet.GetUI().GetPresentationFoundation();
+                upf.RemoveFromQueues(this);
+            }
+
+            VisualTreeHelper.ForEachChild<FrameworkElement>(this, CommonBoxedValues.Boolean.FromValue(value), (child, state) =>
+            {
+                child.SetIsLoaded((Boolean)state);
+            });
+        }
+
+        /// <summary>
+        /// Raises the <see cref="Loaded"/> or <see cref="Unloaded"/> events on this element
+        /// and all of its visual descendants.
+        /// </summary>
+        /// <param name="loaded">A value indicating whether to raise the <see cref="Loaded"/> or <see cref="Unloaded"/> event.</param>
+        private void RaiseLoadedOrUnloaded(Boolean loaded)
+        {
+            var routedEvent = loaded ? LoadedEvent : UnloadedEvent;
+
+            var evt     = EventManager.GetInvocationDelegate<UpfRoutedEventHandler>(routedEvent);
+            var evtData = new RoutedEventData(this);
+            evt(this, ref evtData);
+
+            VisualTreeHelper.ForEachChild<FrameworkElement>(this, CommonBoxedValues.Boolean.FromValue(loaded), (child, state) =>
+            {
+                child.RaiseLoadedOrUnloaded((Boolean)state);
+            });
+        }
+
+        /// <summary>
+        /// Ensures that the value of the element's <see cref="IsLoaded"/> property matches the specified value.
+        /// </summary>
+        /// <param name="value">A value indicating whether the element should be loaded or unloaded.</param>
+        internal void EnsureIsLoaded(Boolean value)
+        {
+            if (IsLoaded == value)
+                return;
+
+            SetIsLoaded(value);
+            RaiseLoadedOrUnloaded(value);
+        }
+
+        /// <inheritdoc/>
+        internal override void OnVisualParentChangedInternal()
+        {
+            var parent = VisualParent as FrameworkElement;
+            if (parent != null)
+            {
+                if (parent.IsLoaded != IsLoaded)
+                {
+                    if (parent.IsLoaded)
+                    {
+                        EnsureIsLoaded(true);
+                    }
+                    else
+                    {
+                        EnsureIsLoaded(false);
+                    }
+                }
+            }
+            else
+            {
+                if (IsLoaded)
+                {
+                    EnsureIsLoaded(false);
+                }
+            }
+
+            base.OnVisualParentChangedInternal();
+        }
 
         /// <inheritdoc/>
         internal override void ApplyStyledVisualStateTransition(UvssStyle style)
@@ -528,6 +651,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         private readonly String name;
         private readonly VisualStateGroupCollection visualStateGroups;
         private Boolean isInitialized;
+        private Boolean isLoaded;
 
         // State values.
         private Boolean isInitializing;
