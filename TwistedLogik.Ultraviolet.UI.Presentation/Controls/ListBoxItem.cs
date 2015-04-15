@@ -40,7 +40,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <inheritdoc/>
         protected override void OnMouseDown(MouseDevice device, MouseButton button, ref RoutedEventData data)
         {
-            if (button == MouseButton.Left)
+            if (!data.Handled && button == MouseButton.Left)
             {
                 var list = ItemsControl.ItemsControlFromItemContainer(this) as ListBox;
                 if (list != null)
@@ -48,7 +48,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                     list.HandleItemClicked(this);
                 }
             }
+
+            data.Handled = true;
+
             base.OnMouseDown(device, button, ref data);
+        }
+        
+        /// <summary>
+        /// Gets the opacity of the list box item's selection highlight.
+        /// </summary>
+        protected Double HighlightOpacity
+        {
+            get { return IsSelected ? 1 : 0; }
         }
 
         /// <summary>
@@ -71,14 +82,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 
                 evtDelegate(dobj, ref evtData);
             }
-        }
-
-        /// <summary>
-        /// Gets the opacity of the list box item's selection highlight.
-        /// </summary>
-        private Double HighlightOpacity
-        {
-            get { return IsSelected ? 1 : 0; }
         }
     }
 }

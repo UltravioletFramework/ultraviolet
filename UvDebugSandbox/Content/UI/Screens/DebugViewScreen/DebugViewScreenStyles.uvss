@@ -467,18 +467,18 @@ vslider .slider-track-bg
 	width: 10;
 }
 
-.listbox-border
+.listbox-border, .combobox-dropdown-border
 {
 	border-thickness: 1;
 	border-color: #ff000000;
 }
 
-.listbox-background
+.listbox-background, .combobox-dropdown-border
 {
 	fill-color: #ffffffff;
 }
 
-.listboxitem-highlight
+.listboxitem-highlight, .combobox-dropdownitem-highlight
 {
 	fill-color: #ff0000ff;
 }

@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ComponentTemplate>
+  <Canvas Class="border-component" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+    
+    <TextBox Name="PART_Input" Canvas.Left="0" Canvas.Top="0" Canvas.Right="0" Canvas.Bottom="0" 
+             Focusable="false" PreviewMouseDown="PART_Input_PreviewMouseDown"/>    
+    
+    <Popup Name="PART_Popup" PlacementTarget="PART_Input">
+      <Canvas Class="combobox-dropdown" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" MinWidth="{{ActualWidth}}">
+        <Rectangle Class="combobox-dropdown-background"
+          Canvas.Left="0" Canvas.Right="0" Canvas.Top="0" Canvas.Bottom="0"/>
+        <Border Class="combobox-dropdown-border" HorizontalContentAlignment="Stretch"
+          Canvas.Left="0" Canvas.Right="0" Canvas.Top="0" Canvas.Bottom="0">
+          <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+            <ItemsPanel HorizontalAlignment="Stretch"/>
+          </ScrollViewer>
+        </Border>
+      </Canvas>
+    </Popup>
+  
+  </Canvas>
+</ComponentTemplate>

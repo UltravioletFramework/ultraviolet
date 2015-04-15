@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Text;
 using System.Text.RegularExpressions;
+using TwistedLogik.Nucleus;
 using TwistedLogik.Nucleus.Text;
 using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
 using TwistedLogik.Ultraviolet.Input;
@@ -176,6 +177,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
+        /// Gets or sets a value indicating whether text editing is disabled for this control.
+        /// </summary>
+        public Boolean IsReadOnly
+        {
+            get { return GetValue<Boolean>(IsReadOnlyProperty); }
+            set { SetValue<Boolean>(IsReadOnlyProperty, value); }
+        }
+
+        /// <summary>
         /// Identifies the <see cref="Text"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty TextProperty = DependencyProperty.Register("Text", typeof(String), typeof(TextBox),
@@ -244,6 +254,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// Identifies the <see cref="FontStyle"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty FontStyleProperty = TextElement.FontStyleProperty.AddOwner(typeof(TextBox));
+
+        /// <summary>
+        /// Identifies the <see cref="IsReadOnly"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty IsReadOnlyProperty = DependencyProperty.Register("IsReadOnly", typeof(Boolean), typeof(TextBox),
+            new PropertyMetadata<Boolean>(CommonBoxedValues.Boolean.False));
 
         /// <summary>
         /// Invalidates the clipping region used for the text box's text.

@@ -3,18 +3,12 @@
   <Stylesheet>DebugViewScreenStyles.uvss</Stylesheet>
   <View ViewModelType="UvDebugSandbox.UI.Screens.DebugViewModel, UvDebugSandbox">
 
-    <Popup Name="asdf" IsOpen="true" PlacementTarget="foobar" Placement="Bottom">
-      <ListBox Width="150" Height="100">
-        <ListBoxItem>Item A</ListBoxItem>
-        <ListBoxItem>Item B</ListBoxItem>
-        <ListBoxItem>Item C</ListBoxItem>
-        <ListBoxItem>Item D</ListBoxItem>
-        <ListBoxItem>Item E</ListBoxItem>
-        <ListBoxItem>Item F</ListBoxItem>
-        <ListBoxItem>Item G</ListBoxItem>
-      </ListBox>   
-    </Popup>
-    <Button Click="HandleClick" Width="100" Margin="600 600 0 0" Name="foobar">foobar</Button>
+    <ComboBox Margin="100" Width="200" Height="32">
+      <ComboBoxItem>Item 1</ComboBoxItem>
+      <ComboBoxItem>Item 2</ComboBoxItem>
+      <ComboBoxItem>Item 3</ComboBoxItem>
+      <ComboBoxItem>Item 4</ComboBoxItem>
+    </ComboBox>
 
   </View>
 </UIPanelDefinition>
