@@ -280,4 +280,14 @@
       <Variant>The specified Visual already has a parent.</Variant>
     </en-US>
   </String>
+  <String Key="BEGIN_INIT_ALREADY_CALLED">
+    <en-US>
+      <Variant>BeginInit() cannot be called again until EndInit() has been called.</Variant>
+    </en-US>
+  </String>
+  <String Key="BEGIN_INIT_NOT_CALLED">
+    <en-US>
+      <Variant>EndInit() cannot be called because BeginInit() has not been called.</Variant>
+    </en-US>
+  </String>
 </LocalizedStrings>

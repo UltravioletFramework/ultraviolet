@@ -1,6 +1,5 @@
 ﻿using System;
 using TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text;
-using TwistedLogik.Ultraviolet.UI.Presentation.Styles;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 {
@@ -111,8 +110,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             var contentElement = content as UIElement;
             if (contentElement != null)
             {
-                var hAlign = container.HorizontalContentAlignment;
-                var vAlign = container.VerticalContentAlignment;
+                var hAlign = ActualHorizontalContentAlignment;
+                var vAlign = ActualVerticalContentAlignment;
 
                 var desiredWidth  = (hAlign == HorizontalAlignment.Stretch) ? finalSize.Width : contentElement.DesiredSize.Width;
                 var desiredHeight = (vAlign == VerticalAlignment.Stretch) ? finalSize.Height : contentElement.DesiredSize.Height;
@@ -191,6 +190,42 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             get 
             {
                 return (ContainingContentControl != null && ContainingContentControl.Content is UIElement) ? 1 : 0;
+            }
+        }
+
+        /// <summary>
+        /// Gets the <see cref="HorizontalAlignment"/> value which is actually used to align
+        /// this presenter's content. The <see cref="ScrollContentPresenter"/> class overrides
+        /// this in order to use the content's alignment, rather than the container's alignment.
+        /// </summary>
+        protected internal virtual HorizontalAlignment ActualHorizontalContentAlignment
+        {
+            get 
+            {
+                var container = ContainingContentControl;
+                if (container != null)
+                {
+                    return container.HorizontalContentAlignment;
+                }
+                return HorizontalAlignment.Left;
+            }
+        }
+
+        /// <summary>
+        /// Gets the <see cref="VerticalAlignment"/> value which is actually used to align
+        /// this presenter's content. The <see cref="ScrollContentPresenter"/> class overrides
+        /// this in order to use the content's alignment, rather than the container's alignment.
+        /// </summary>
+        protected internal virtual VerticalAlignment ActualVerticalContentAlignment
+        {
+            get
+            {
+                var container = ContainingContentControl;
+                if (container != null)
+                {
+                    return container.VerticalContentAlignment;
+                }
+                return VerticalAlignment.Top;
             }
         }
 

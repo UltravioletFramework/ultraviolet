@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using TwistedLogik.Nucleus;
-using TwistedLogik.Ultraviolet.UI.Presentation.Animations;
-using System.Globalization;
-using TwistedLogik.Ultraviolet.UI.Presentation.Styles;
 using TwistedLogik.Nucleus.Data;
+using TwistedLogik.Ultraviolet.UI.Presentation.Animations;
+using TwistedLogik.Ultraviolet.UI.Presentation.Styles;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation
 {

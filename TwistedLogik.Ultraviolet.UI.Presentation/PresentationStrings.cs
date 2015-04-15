@@ -79,6 +79,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public static readonly StringResource NotUIElement                         = new StringResource(StringDatabase, "NOT_UIELEMENT");
         public static readonly StringResource NotAnInputElement                    = new StringResource(StringDatabase, "NOT_AN_INPUT_ELEMENT");
         public static readonly StringResource VisualAlreadyHasAParent              = new StringResource(StringDatabase, "VISUAL_ALREADY_HAS_A_PARENT");
+        public static readonly StringResource BeginInitAlreadyCalled               = new StringResource(StringDatabase, "BEGIN_INIT_ALREADY_CALLED");
+        public static readonly StringResource BeginInitNotCalled                   = new StringResource(StringDatabase, "BEGIN_INIT_NOT_CALLED");
 #pragma warning restore 1591
     }
 }

@@ -7,6 +7,7 @@ using System.Xml.Linq;
 using TwistedLogik.Nucleus.Data;
 using TwistedLogik.Nucleus.Xml;
 using TwistedLogik.Ultraviolet.UI.Presentation.Controls;
+using TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation
 {
@@ -47,9 +48,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var view    = new PresentationFoundationView(uv, viewModelType);
             var context = new InstantiationContext(uv, viewModelType);
 
-            PopulateElement(uv, view.LayoutRoot, xml, context);
+            var fe = view.LayoutRoot as FrameworkElement;
+            if (fe != null)
+                fe.BeginInit();
 
-            view.LayoutRoot.InitializeDependencyProperties(true);
+            var objectTree = BuildObjectTree(uv, xml, view.LayoutRoot, context);
+            PopulateObjectTree(uv, objectTree, context);
 
             return view;
         }
@@ -84,10 +88,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             var uv      = userControl.Ultraviolet;
             var context = new InstantiationContext(uv, viewModelType, userControl, bindingContext);
-            var content = InstantiateAndPopulateElement(uv, null, contentElement, context);
+
+            userControl.BeginInit();
+
+            var content           = InstantiateElement(uv, null, contentElement, context);
+            var contentObjectTree = BuildObjectTree(uv, contentElement, content, context);
 
             userControl.ComponentRoot = content;
             userControl.PopulateFieldsFromRegisteredElements();
+            
+            PopulateObjectTree(uv, contentObjectTree, context);
         }
 
         /// <summary>
@@ -106,7 +116,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (rootElement == null)
                 return;
 
-            var root = InstantiateAndPopulateElement(uv, null, rootElement, context);
+            var componentRoot           = InstantiateElement(uv, null, rootElement, context);
+            var componentRootObjectTree = BuildObjectTree(uv, rootElement, componentRoot, context);
 
             var contentControl = control as ContentControl;
             if (contentControl != null)
@@ -118,8 +129,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 contentControl.ContentPresenter = context.ContentPresenter;
             }
 
-            control.ComponentRoot = root;
+            control.ComponentRoot = componentRoot;
             control.PopulateFieldsFromRegisteredElements();
+
+            PopulateObjectTree(uv, componentRootObjectTree, context);
         }
 
         /// <summary>
@@ -250,45 +263,22 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (contentControl != null)
                 contentControl.Content = instance;
 
+            var popupControl = parent as Popup;
+            if (popupControl != null)
+                popupControl.Child = instance;
+
             if (context.ComponentOwner != null && instance is ContentPresenter)
             {
                 context.ContentPresenter = (ContentPresenter)instance;
             }
 
+            var fe = instance as FrameworkElement;
+            if (fe != null)
+                fe.BeginInit();
+
             return instance;
         }
 
-        /// <summary>
-        /// Instantiates a new interface element.
-        /// </summary>
-        /// <param name="uv">The Ultraviolet context.</param>
-        /// <param name="parent">The element which is the element's parent.</param>
-        /// <param name="xmlElement">The XML element that defines the element to instantiate.</param>
-        /// <param name="context">The current instantiation context.</param>
-        /// <returns>The interface element that was instantiated.</returns>
-        private static UIElement InstantiateAndPopulateElement(UltravioletContext uv, UIElement parent, XElement xmlElement, InstantiationContext context)
-        {
-            var bindingContext        = xmlElement.AttributeValueString("BindingContext");
-            var bindingContextDefined = (bindingContext != null);
-            if (bindingContextDefined)
-            {
-                if (!BindingExpressions.IsBindingExpression(bindingContext))
-                    throw new InvalidOperationException(PresentationStrings.InvalidBindingContext.Format(bindingContext));
-
-                context.PushBindingContext(bindingContext);
-            }
-
-            var element = InstantiateElement(uv, parent, xmlElement, context);
-            PopulateElement(uv, element, xmlElement, context);
-
-            if (bindingContextDefined)
-            {
-                context.PopBindingContext();
-            }
-
-            return element;
-        }
-        
         /// <summary>
         /// Finds the identifier of the specified dependency property on the specified UI element.
         /// </summary>
@@ -502,19 +492,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
-        /// Populates a UI element's events, properties, and children.
-        /// </summary>
-        /// <param name="uv">The Ultraviolet context.</param>
-        /// <param name="uiElement">The element whose properties, events, and children will be populated.</param>
-        /// <param name="xmlElement">The XML element that represents the UI element.</param>
-        /// <param name="context">The current instantiation context.</param>
-        private static void PopulateElement(UltravioletContext uv, UIElement uiElement, XElement xmlElement, InstantiationContext context)
-        {
-            PopulateElementPropertiesAndEvents(uv, uiElement, xmlElement, context);
-            PopulateElementChildren(uv, uiElement, xmlElement, context);
-        }
-        
-        /// <summary>
         /// Populates a UI element's events and properties.
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
@@ -523,6 +500,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="context">The current instantiation context.</param>
         private static void PopulateElementPropertiesAndEvents(UltravioletContext uv, UIElement uiElement, XElement xmlElement, InstantiationContext context)
         {
+            uiElement.InitializeDependencyProperties(false);
+
             var attrs = CategorizeUvmlAttributes(uv, uiElement, xmlElement, context);
 
             foreach (var attr in attrs)
@@ -619,7 +598,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             {
                 case UvmlAttributeType.DependencyProperty:
                     {
-                        BindOrSetDependencyProperty(uiElement, (DependencyProperty)attr.Identifier, attr.Value, context);
+                        var dprop = (DependencyProperty)attr.Identifier;
+                        BindOrSetDependencyProperty(uiElement, dprop, attr.Value, context);
                     }
                     break;
                 
@@ -634,7 +614,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 case UvmlAttributeType.FrameworkProperty:
                     {
                         var propInfo  = (PropertyInfo)attr.Identifier;
-                        var propValue = ResolveValue(attr.Value, propInfo.PropertyType);
+                        var propValue = ResolveValue(uiElement, attr.Value, propInfo.PropertyType);
                         propInfo.SetValue(uiElement, propValue, null);
                     }
                     break;
@@ -656,7 +636,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="name">The name of the property to populate.</param>
         /// <param name="value">The value to set in the specified property.</param>
         /// <param name="context">The current instantiation context.</param>
-        private static void PopulateElementProperty(UIElement uiElement, String name, String value, InstantiationContext context)
+        /// <param name="deferred">A value indicating whether to populate deferred properties.</param>
+        private static void PopulateElementProperty(UIElement uiElement, String name, String value, InstantiationContext context, Boolean deferred = false)
         {
             var isAttachedEvent = false;
 
@@ -674,7 +655,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 if (!propInfo.CanWrite)
                     throw new InvalidOperationException(PresentationStrings.PropertyHasNoSetter.Format(name));
 
-                var propValue = ResolveValue(value, propInfo.PropertyType);
+                var propValue = ResolveValue(uiElement, value, propInfo.PropertyType);
                 propInfo.SetValue(uiElement, propValue, null);
             }
         }
@@ -793,56 +774,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
-        /// Populates the specified container with children.
-        /// </summary>
-        /// <param name="uv">The Ultraviolet container.</param>
-        /// <param name="uiElement">The element to populate with children.</param>
-        /// <param name="xmlElement">The XML element that represents the UI container.</param>
-        /// <param name="context">The current instantiation context.</param>
-        private static void PopulateElementChildren(UltravioletContext uv, UIElement uiElement, XElement xmlElement, InstantiationContext context)
-        {
-            var xmlChildren = xmlElement.Elements().Where(x => !ElementNameRepresentsProperty(x)).ToList();
-
-            var uiElementDebugID = (uiElement is FrameworkElement) ? ((FrameworkElement)uiElement).Name : uiElement.GetType().Name;
-
-            if (uiElement is Panel || uiElement is ItemsControl)
-            {
-                foreach (var child in xmlChildren)
-                {
-                    InstantiateAndPopulateElement(uv, uiElement, child, context);
-                }
-            }
-            else
-            {
-                var contentControl = uiElement as ContentControl;
-                if (contentControl != null && !(uiElement is UserControl))
-                {
-                    if (xmlChildren.Count > 1)
-                    {
-                        throw new InvalidOperationException(PresentationStrings.InvalidChildElements.Format(uiElementDebugID));
-                    }
-
-                    var contentElement = xmlChildren.SingleOrDefault();
-                    if (contentElement != null)
-                    {
-                        if (contentControl.ContentPresenter == null)
-                        {
-                            throw new InvalidOperationException(PresentationStrings.ContentControlRequiresPresenter.Format(contentControl.GetType().Name));
-                        }
-                        contentControl.Content = InstantiateAndPopulateElement(uv, null, contentElement, context);
-                    }
-                }
-                else
-                {
-                    if (xmlChildren.Any())
-                    {
-                        throw new InvalidOperationException(PresentationStrings.InvalidChildElements.Format(uiElementDebugID));
-                    }
-                }
-            }
-        }
-
-        /// <summary>
         /// Binds or sets the specified dependency property, depending on whether the given value is a binding expression.
         /// </summary>
         /// <param name="dobj">The dependency object to modify.</param>
@@ -872,7 +803,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             try
             {
                 var type          = dprop.PropertyType;
-                var resolvedValue = ResolveValue(value, type);
+                var resolvedValue = ResolveValue(dobj as UIElement, value, type);
                 
                 miSetLocalValue.MakeGenericMethod(type).Invoke(dobj, new Object[] { dprop, resolvedValue });
             }
@@ -969,15 +900,26 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Resolves a string to a value.
         /// </summary>
+        /// <param name="uiElement">The <see cref="UIElement"/> for which the value is being resolved.</param>
         /// <param name="value">The string to resolve.</param>
         /// <param name="type">The type of value to resolve.</param>
         /// <returns>The resolved value.</returns>
-        private static Object ResolveValue(String value, Type type)
+        private static Object ResolveValue(UIElement uiElement, String value, Type type)
         {
             if (value == "{{null}}")
             {
                 return type.IsValueType ? Activator.CreateInstance(type) : null;
             }
+
+            if (uiElement != null && typeof(UIElement).IsAssignableFrom(type))
+            {
+                var namescope = (uiElement.Control == null) ? uiElement.View.Namescope : uiElement.Control.ComponentNamescope;
+                if (namescope == null)
+                    return null;
+
+                return namescope.GetElementByName(value);
+            }
+
             return ObjectResolver.FromString(value, type);
         }
 
@@ -1033,6 +975,112 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             {
                 return BindingExpressions.CreateViewModelBoundEventDelegate(uiElement, context.ViewModelType, handlerType, handlerName);
             }
+        }
+
+        /// <summary>
+        /// Builds an object tree from the specified root.
+        /// </summary>
+        /// <param name="uv">The Ultraviolet context.</param>
+        /// <param name="xml">The xml that defines the root object.</param>
+        /// <param name="instance">The element instance that corresponds to the root object.</param>
+        /// <param name="context">The current instantiation context.</param>
+        /// <returns>The object tree's root object.</returns>
+        private static UvmlObject BuildObjectTree(UltravioletContext uv, XElement xml, UIElement instance, InstantiationContext context)
+        {
+            var root = new UvmlObject(xml, instance);
+            BuildObjectTree(uv, root, context);
+            return root;
+        }
+
+        /// <summary>
+        /// Builds an object subtree from the specified root.
+        /// </summary>
+        /// <param name="uv">The Ultraviolet context.</param>
+        /// <param name="root">The object subtree's root object.</param>
+        /// <param name="context">The current instantiation context.</param>
+        /// <returns>The object tree's root object.</returns>
+        private static UvmlObject BuildObjectTree(UltravioletContext uv, UvmlObject root, InstantiationContext context)
+        {
+            var debugName   = root.Instance.GetType().Name;
+            var childrenXml = root.Xml.Elements().Where(x => !ElementNameRepresentsProperty(x));
+
+            // Single child
+            if (root.Instance is ContentControl || root.Instance is Popup)
+            {
+                var fe = root.Instance as FrameworkElement;
+                if (fe != null)
+                    debugName = fe.Name;
+
+                if (childrenXml.Count() > 1)
+                    throw new InvalidOperationException(PresentationStrings.InvalidChildElements.Format(debugName));
+
+                var childXml = childrenXml.SingleOrDefault();
+                if (childXml != null)
+                {
+                    var child       = InstantiateElement(uv, root.Instance, childXml, context);
+                    var childObject = new UvmlObject(childXml, child);
+
+                    root.Children.Add(childObject);
+
+                    BuildObjectTree(uv, childObject, context);
+                }
+                return root;
+            }
+
+            // Multiple children
+            if (root.Instance is Panel || root.Instance is ItemsControl)
+            {
+                foreach (var childXml in childrenXml)
+                {
+                    var child       = InstantiateElement(uv, root.Instance, childXml, context);
+                    var childObject = new UvmlObject(childXml, child);
+
+                    root.Children.Add(childObject);
+
+                    BuildObjectTree(uv, childObject, context);
+                }
+                return root;
+            }
+
+            // No children
+            if (childrenXml.Any())
+                throw new InvalidOperationException(debugName);
+
+            return root;
+        }
+
+        /// <summary>
+        /// Populates the properties and events of the elements in the specified object tree.
+        /// </summary>
+        /// <param name="uv">The Ultraviolet context.</param>
+        /// <param name="root">The root object of the object tree to populate.</param>
+        /// <param name="context">The current instantiation context.</param>
+        private static void PopulateObjectTree(UltravioletContext uv, UvmlObject root, InstantiationContext context)
+        {
+            var bindingContext        = root.Xml.AttributeValueString("BindingContext");
+            var bindingContextDefined = (bindingContext != null);
+            if (bindingContextDefined)
+            {
+                if (!BindingExpressions.IsBindingExpression(bindingContext))
+                    throw new InvalidOperationException(PresentationStrings.InvalidBindingContext.Format(bindingContext));
+
+                context.PushBindingContext(bindingContext);
+            }
+
+            PopulateElementPropertiesAndEvents(uv, root.Instance, root.Xml, context);
+            foreach (var child in root.Children)
+            {
+                PopulateObjectTree(uv, child, context);
+            }
+
+            if (bindingContextDefined)
+            {
+                context.PopBindingContext();
+            }
+
+            var fe = root.Instance as FrameworkElement;
+            if (fe != null)
+                fe.EndInit();
         }
 
         // Reflection information.

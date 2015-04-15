@@ -84,6 +84,42 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <inheritdoc/>
+        protected internal override HorizontalAlignment ActualHorizontalContentAlignment
+        {
+            get
+            {
+                var container = ContainingContentControl;
+                if (container != null)
+                {
+                    var contentElement = container.Content as FrameworkElement;
+                    if (contentElement != null)
+                    {
+                        return contentElement.HorizontalAlignment;
+                    }
+                }
+                return HorizontalAlignment.Stretch;
+            }
+        }
+
+        /// <inheritdoc/>
+        protected internal override VerticalAlignment ActualVerticalContentAlignment
+        {
+            get
+            {
+                var container = ContainingContentControl;
+                if (container != null)
+                {
+                    var contentElement = container.Content as FrameworkElement;
+                    if (contentElement != null)
+                    {
+                        return contentElement.VerticalAlignment;
+                    }
+                }
+                return VerticalAlignment.Stretch;
+            }
+        }
+
+        /// <inheritdoc/>
         protected override Size2D MeasureOverride(Size2D availableSize)
         {
             if (Control == null)
@@ -99,12 +135,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 
             var contentSize = base.MeasureOverride(contentAvailableSize);
 
-            var hSizeToContent = !hCanScroll || Double.IsPositiveInfinity(availableSize.Width);
-            var vSizeToContent = !vCanScroll || Double.IsPositiveInfinity(availableSize.Height);
-
             var presenterSize = new Size2D(
-                hSizeToContent ? Math.Min(availableSize.Width, contentSize.Width) : availableSize.Width,
-                vSizeToContent ? Math.Min(availableSize.Height, contentSize.Height) : availableSize.Height
+                Math.Min(availableSize.Width, contentSize.Width),
+                Math.Min(availableSize.Height, contentSize.Height)
             );
 
             var extentChanged = (extentWidth != contentSize.Width || extentHeight != contentSize.Height);

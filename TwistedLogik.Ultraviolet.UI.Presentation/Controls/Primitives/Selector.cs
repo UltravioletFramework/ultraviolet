@@ -23,7 +23,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// Initializes a new instance of the <see cref="Selector"/> class.
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
-        /// <param name="name">The unique identifier of this element within a layout.</param>
+        /// <param name="name">The identifying name of this element within a layout.</param>
         public Selector(UltravioletContext uv, String name)
             : base(uv, name)
         {

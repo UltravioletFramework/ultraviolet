@@ -1,6 +1,7 @@
 ﻿using System;
 using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text;
+using TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation
 {
@@ -30,7 +31,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             Contract.Require(element, "element");
 
-            return element.Visibility == Visibility.Visible && !element.RenderSize.Equals(Size2.Zero);
+            return element.Visibility == Visibility.Visible && (element is Popup || !element.RenderSize.Equals(Size2.Zero));
         }
 
         /// <summary>
