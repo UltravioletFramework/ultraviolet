@@ -307,7 +307,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// specified is available for the element's layout.</param>
         public void Measure(Size2D availableSize)
         {
-            Contract.EnsureRange(availableSize.Width >= 0 && availableSize.Height >= 0, "availableSize");
+            if (availableSize.Width < 0 || availableSize.Height < 0)
+                availableSize = Size2D.Zero;
 
             if (View == null)
             {

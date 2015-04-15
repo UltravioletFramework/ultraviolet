@@ -3,7 +3,7 @@
   <Stylesheet>DebugViewScreenStyles.uvss</Stylesheet>
   <View ViewModelType="UvDebugSandbox.UI.Screens.DebugViewModel, UvDebugSandbox">
 
-    <Popup Name="asdf" IsOpen="true" VerticalOffset="-582" Placement="AbsolutePoint">
+    <Popup Name="asdf" IsOpen="true" PlacementTarget="foobar" Placement="Bottom">
       <ListBox Width="150" Height="100">
         <ListBoxItem>Item A</ListBoxItem>
         <ListBoxItem>Item B</ListBoxItem>
@@ -14,7 +14,7 @@
         <ListBoxItem>Item G</ListBoxItem>
       </ListBox>   
     </Popup>
-    <Button Click="HandleClick" Width="100" Margin="200" Name="foobar">foobar</Button>
+    <Button Click="HandleClick" Width="100" Margin="600 600 0 0" Name="foobar">foobar</Button>
 
   </View>
 </UIPanelDefinition>

@@ -7,8 +7,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
     /// <summary>
     /// Represents a popup window.
     /// </summary>
+    /// <remarks>For more information on the calculations used to position popups, see the MSDN article on how it's 
+    /// handled in WPF (https://msdn.microsoft.com/en-us/library/bb613596.aspx). Ultraviolet follows the algorithms 
+    /// described on that page. See in particular the tables under the "How the Properties Work Together" and 
+    /// "When the Popup Encounters the Edge of the Screen" headings.</remarks>
     [UvmlKnownType]
-    public class Popup : FrameworkElement
+    public partial class Popup : FrameworkElement
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="FrameworkElement"/> class.
@@ -83,6 +87,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         }
 
         /// <summary>
+        /// Gets or sets the rectangle relative to which the popup is positioned.
+        /// </summary>
+        public RectangleD PlacementRectangle
+        {
+            get { return GetValue<RectangleD>(PlacementRectangleProperty); }
+            set { SetValue<RectangleD>(PlacementRectangleProperty, value); }
+        }
+
+        /// <summary>
         /// Occurs when the <see cref="IsOpen"/> property changes to <c>true</c>.
         /// </summary>
         public event UpfEventHandler Opened;
@@ -127,6 +140,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// </summary>
         public static readonly DependencyProperty PlacementTargetProperty = DependencyProperty.Register("PlacementTarget", typeof(UIElement), typeof(Popup),
             new PropertyMetadata<UIElement>(null, PropertyMetadataOptions.None, HandlePlacementTargetChanged));
+
+        /// <summary>
+        /// Identifies the <see cref="PlacementRectangle"/> property.
+        /// </summary>
+        public static readonly DependencyProperty PlacementRectangleProperty = DependencyProperty.Register("PlacementRectangle", typeof(RectangleD), typeof(Popup),
+            new PropertyMetadata<RectangleD>(RectangleD.Empty, PropertyMetadataOptions.None, HandlePlacementRectangleChanged));
 
         /// <inheritdoc/>
         protected internal override UIElement GetLogicalChild(Int32 childIndex)
@@ -344,6 +363,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         }
 
         /// <summary>
+        /// Occurs when the value of the <see cref="PlacementRectangle"/> dependency property changes.
+        /// </summary>
+        private static void HandlePlacementRectangleChanged(DependencyObject dobj, RectangleD oldValue, RectangleD newValue)
+        {
+            var popup = (Popup)dobj;
+            popup.UpdatePopupArrange(popup.MostRecentFinalRect.Size);
+        }
+
+        /// <summary>
         /// An event handler which is used to defer the opening of a popup until after it has
         /// been fully loaded, in order to ensure proper positioning.
         /// </summary>
@@ -387,207 +415,526 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             if (!IsOpen)
                 return;
 
-            var flipIfNecessary = false;
+            var screenArea = Display.PixelsToDips(View.Area);
+            var popupArea  = RectangleD.Empty;
 
             switch (Placement)
             {
                 case PlacementMode.Absolute:
-                    CalculatePopupPosition_Absolute(finalSize, out popupX, out popupY);
+                    popupArea = CalculatePopupPosition_Absolute(ref screenArea, root.DesiredSize);
                     break;
 
                 case PlacementMode.Relative:
-                    CalculatePopupPosition_Relative(finalSize, out popupX, out popupY);
+                    popupArea = CalculatePopupPosition_Relative(ref screenArea, root.DesiredSize);
                     break;
 
                 case PlacementMode.Bottom:
-                    CalculatePopupPosition_Bottom(finalSize, out popupX, out popupY);
+                    popupArea = CalculatePopupPosition_Bottom(ref screenArea, root.DesiredSize);
                     break;
 
                 case PlacementMode.Center:
-                    CalculatePopupPosition_Center(finalSize, out popupX, out popupY);
+                    popupArea = CalculatePopupPosition_Center(ref screenArea, root.DesiredSize);
                     break;
 
                 case PlacementMode.Right:
-                    CalculatePopupPosition_Right(finalSize, out popupX, out popupY);
+                    popupArea = CalculatePopupPosition_Right(ref screenArea, root.DesiredSize);
                     break;
 
                 case PlacementMode.AbsolutePoint:
-                    CalculatePopupPosition_Absolute(finalSize, out popupX, out popupY);
-                    flipIfNecessary = true;
+                    popupArea = CalculatePopupPosition_AbsolutePoint(ref screenArea, root.DesiredSize);
                     break;
 
                 case PlacementMode.RelativePoint:
-                    CalculatePopupPosition_Relative(finalSize, out popupX, out popupY);
-                    flipIfNecessary = true;
+                    popupArea = CalculatePopupPosition_RelativePoint(ref screenArea, root.DesiredSize);
                     break;
 
                 case PlacementMode.Mouse:
-                    CalculatePopupPosition_Mouse(finalSize, out popupX, out popupY);
+                    popupArea = CalculatePopupPosition_Mouse(ref screenArea, root.DesiredSize);
                     break;
-                
+
                 case PlacementMode.MousePoint:
-                    CalculatePopupPosition_Mouse(finalSize, out popupX, out popupY);
-                    flipIfNecessary = true;
+                    popupArea = CalculatePopupPosition_MousePoint(ref screenArea, root.DesiredSize);
                     break;
-                
+
                 case PlacementMode.Left:
-                    CalculatePopupPosition_Left(finalSize, out popupX, out popupY);
+                    popupArea = CalculatePopupPosition_Left(ref screenArea, root.DesiredSize);
                     break;
 
                 case PlacementMode.Top:
-                    CalculatePopupPosition_Top(finalSize, out popupX, out popupY);
+                    popupArea = CalculatePopupPosition_Top(ref screenArea, root.DesiredSize);
                     break;
             }
 
-            popupX += HorizontalOffset;
-            popupY += VerticalOffset;
+            popupX = popupArea.X;
+            popupY = popupArea.Y;
 
-            if (flipIfNecessary)
+            root.Arrange(popupArea, ArrangeOptions.None);
+        }
+
+        /// <summary>
+        /// Aligns the given rectangle to the edges of the screen.
+        /// </summary>
+        /// <param name="screenArea">The rectangle that represents the area of the screen.</param>
+        /// <param name="popupArea">The area to align to the edges of the screen.</param>
+        /// <param name="edges">A set of <see cref="PopupScreenEdges"/> values indicating which edges should be aligned.</param>
+        private void AlignToScreenEdges(ref RectangleD screenArea, ref RectangleD popupArea, PopupScreenEdges edges)
+        {
+            if ((edges & PopupScreenEdges.Left) == PopupScreenEdges.Left)
             {
-                var boundsView  = Display.PixelsToDips(View.Area);
-                var boundsPopup = new RectangleD(popupX, popupY, root.DesiredSize.Width, root.DesiredSize.Height);
-
-                if (boundsPopup.Left < boundsView.Left || boundsPopup.Right > boundsView.Right)
-                {
-                    popupX -= root.DesiredSize.Width;
-                }
-
-                if (boundsPopup.Top < boundsView.Top || boundsPopup.Bottom > boundsView.Bottom)
-                {
-                    popupY -= root.DesiredSize.Height;
-                }
+                if (IsCrossingScreenEdge(ref screenArea, ref popupArea, PopupScreenEdges.Left))
+                    popupArea = new RectangleD(screenArea.Left, popupArea.Top, popupArea.Width, popupArea.Height);
             }
 
-            popupX = Math.Max(popupX, 0);
-            popupY = Math.Max(popupY, 0);
+            if ((edges & PopupScreenEdges.Top) == PopupScreenEdges.Top)
+            {
+                if (IsCrossingScreenEdge(ref screenArea, ref popupArea, PopupScreenEdges.Top))
+                    popupArea = new RectangleD(popupArea.Left, screenArea.Top, popupArea.Width, popupArea.Height);
+            }
 
-            root.Arrange(new RectangleD(popupX, popupY, finalSize.Width, finalSize.Height), ArrangeOptions.None);
+            if ((edges & PopupScreenEdges.Right) == PopupScreenEdges.Right)
+            {
+                if (IsCrossingScreenEdge(ref screenArea, ref popupArea, PopupScreenEdges.Right))
+                    popupArea = new RectangleD(screenArea.Right - popupArea.Width, popupArea.Top, popupArea.Width, popupArea.Height);
+            }
+
+            if ((edges & PopupScreenEdges.Bottom) == PopupScreenEdges.Bottom)
+            {
+                if (IsCrossingScreenEdge(ref screenArea, ref popupArea, PopupScreenEdges.Bottom))
+                    popupArea = new RectangleD(popupArea.Left, screenArea.Bottom - popupArea.Height, popupArea.Width, popupArea.Height);
+            }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the specified popup area is crossing the specified edge of the screen.
+        /// </summary>
+        /// <param name="screenArea">A rectangle that describes the area of the screen.</param>
+        /// <param name="popupArea">A rectangle that describes the area of the popup.</param>
+        /// <param name="edge">A <see cref="PopupScreenEdges"/> value that specifies which edge to examine.</param>
+        /// <returns><c>true</c> if the popup is crossing the specified screen edge; otherwise, <c>false</c>.</returns>
+        private Boolean IsCrossingScreenEdge(ref RectangleD screenArea, ref RectangleD popupArea, PopupScreenEdges edge)
+        {
+            switch (edge)
+            {
+                case PopupScreenEdges.Left:
+                    return popupArea.Left < screenArea.Left;
+
+                case PopupScreenEdges.Top:
+                    return popupArea.Top < screenArea.Top;
+
+                case PopupScreenEdges.Right:
+                    return popupArea.Right > screenArea.Right;
+
+                case PopupScreenEdges.Bottom:
+                    return popupArea.Bottom > screenArea.Bottom;
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// Positions one rectangle relative to another, according to the specified <see cref="PopupAlignmentPoint"/> values.
+        /// </summary>
+        /// <param name="targetOrigin">The origin point of the target rectangle.</param>
+        /// <param name="target">The target rectangle.</param>
+        /// <param name="popupOrigin">The origin point of the popup rectangle.</param>
+        /// <param name="popup">The popup size.</param>
+        /// <returns>The popup rectangle positioned relative to the target rectangle and including the 
+        /// values of <see cref="HorizontalOffset"/> and <see cref="VerticalOffset"/> properties.</returns>
+        private RectangleD PositionRects(PopupAlignmentPoint targetOrigin, ref RectangleD target, PopupAlignmentPoint popupOrigin, Size2D popup)
+        {
+            var transformX = 0.0;
+            switch (popupOrigin)
+            {
+                case PopupAlignmentPoint.TopCenter:
+                case PopupAlignmentPoint.Center:
+                case PopupAlignmentPoint.BottomCenter:
+                    transformX = -popup.Width / 2.0;
+                    break;
+
+                case PopupAlignmentPoint.TopRight:
+                case PopupAlignmentPoint.MiddleRight:
+                case PopupAlignmentPoint.BottomRight:
+                    transformX = -popup.Width;
+                    break;
+            }
+
+            var transformY = 0.0;
+            switch (popupOrigin)
+            {
+                case PopupAlignmentPoint.MiddleLeft:
+                case PopupAlignmentPoint.Center:
+                case PopupAlignmentPoint.MiddleRight:
+                    transformY = -popup.Height / 2.0;
+                    break;
+
+                case PopupAlignmentPoint.BottomLeft:
+                case PopupAlignmentPoint.BottomCenter:
+                case PopupAlignmentPoint.BottomRight:
+                    transformY = -popup.Height;
+                    break;
+            }
+
+            var resultX = 0.0;
+            var resultY = 0.0;
+
+            switch (targetOrigin)
+            {
+                case PopupAlignmentPoint.TopLeft:
+                    resultX = target.Left;
+                    resultY = target.Top;
+                    break;
+
+                case PopupAlignmentPoint.TopCenter:
+                    resultX = target.Left + (target.Width / 2.0);
+                    resultY = target.Top;
+                    break;
+
+                case PopupAlignmentPoint.TopRight:
+                    resultX = target.Right;
+                    resultY = target.Top;
+                    break;
+
+                case PopupAlignmentPoint.MiddleLeft:
+                    resultX = target.Left;
+                    resultY = target.Top + (target.Height / 2.0);
+                    break;
+
+                case PopupAlignmentPoint.Center:
+                    resultX = target.Left + (target.Width / 2.0);
+                    resultY = target.Top + (target.Height / 2.0);
+                    break;
+                
+                case PopupAlignmentPoint.MiddleRight:
+                    resultX = target.Right;
+                    resultY = target.Top + (target.Height / 2.0);
+                    break;
+                
+                case PopupAlignmentPoint.BottomLeft:
+                    resultX = target.Left;
+                    resultY = target.Bottom;
+                    break;
+                
+                case PopupAlignmentPoint.BottomCenter:
+                    resultX = target.Left + (target.Width / 2.0);
+                    resultY = target.Bottom;
+                    break;
+                
+                case PopupAlignmentPoint.BottomRight:
+                    resultX = target.Right;
+                    resultY = target.Bottom;
+                    break;
+            }
+
+            return new RectangleD(
+                resultX + transformX + HorizontalOffset, 
+                resultY + transformY + VerticalOffset, popup.Width, popup.Height);
         }
 
         /// <summary>
         /// Calculates the popup's position when <see cref="Placement"/> is set to <see cref="PlacementMode.Absolute"/>.
         /// </summary>
-        private void CalculatePopupPosition_Absolute(Size2D finalSize, out Double popupX, out Double popupY)
+        private RectangleD CalculatePopupPosition_Absolute(ref RectangleD screenArea, Size2D popupSize)
         {
-            popupX = 0;
-            popupY = 0;
+            var placementArea = GetPlacementTargetArea(true);
+            if (placementArea.IsEmpty)
+                placementArea = Display.PixelsToDips(View.Area);
+
+            var popupArea = PositionRects(
+                PopupAlignmentPoint.TopLeft, ref placementArea,
+                PopupAlignmentPoint.TopLeft, popupSize);
+
+            AlignToScreenEdges(ref screenArea, ref popupArea, PopupScreenEdges.All);
+
+            return popupArea;
         }
 
         /// <summary>
         /// Calculates the popup's position when <see cref="Placement"/> is set to <see cref="PlacementMode.Relative"/>.
         /// </summary>
-        private void CalculatePopupPosition_Relative(Size2D finalSize, out Double popupX, out Double popupY)
+        private RectangleD CalculatePopupPosition_Relative(ref RectangleD screenArea, Size2D popupSize)
         {
-            var targetBounds = GetPopupTargetBounds();
+            var placementArea = GetPlacementTargetArea();
 
-            popupX = targetBounds.X;
-            popupY = targetBounds.Y;
+            var popupArea = PositionRects(
+                PopupAlignmentPoint.TopLeft, ref placementArea,
+                PopupAlignmentPoint.TopLeft, popupSize);
+
+            AlignToScreenEdges(ref screenArea, ref popupArea, PopupScreenEdges.All);
+
+            return popupArea;
         }
 
         /// <summary>
         /// Calculates the popup's position when <see cref="Placement"/> is set to <see cref="PlacementMode.Bottom"/>.
         /// </summary>
-        private void CalculatePopupPosition_Bottom(Size2D finalSize, out Double popupX, out Double popupY)
+        private RectangleD CalculatePopupPosition_Bottom(ref RectangleD screenArea, Size2D popupSize)
         {
-            var targetBounds = GetPopupTargetBounds();
+            var placementArea = GetPlacementTargetArea();
 
-            popupX = targetBounds.Left;
-            popupY = targetBounds.Bottom;
+            var popupArea = PositionRects(
+                PopupAlignmentPoint.BottomLeft, ref placementArea,
+                PopupAlignmentPoint.TopLeft, popupSize);
+
+            if (IsCrossingScreenEdge(ref screenArea, ref popupArea, PopupScreenEdges.Bottom))
+            {
+                popupArea = PositionRects(
+                    PopupAlignmentPoint.TopLeft, ref placementArea,
+                    PopupAlignmentPoint.BottomLeft, popupSize);
+            }
+
+            AlignToScreenEdges(ref screenArea, ref popupArea, PopupScreenEdges.Left | PopupScreenEdges.Top | PopupScreenEdges.Right);
+
+            return popupArea;
         }
 
         /// <summary>
         /// Calculates the popup's position when <see cref="Placement"/> is set to <see cref="PlacementMode.Center"/>.
         /// </summary>
-        private void CalculatePopupPosition_Center(Size2D finalSize, out Double popupX, out Double popupY)
+        private RectangleD CalculatePopupPosition_Center(ref RectangleD screenArea, Size2D popupSize)
         {
-            var parent = VisualTreeHelper.GetParent(this) as UIElement;
-            if (parent == null)
-            {
-                popupX = 0;
-                popupY = 0;
-                return;
-            }
+            var placementArea = GetPlacementTargetArea();
 
-            popupX = (parent.AbsoluteBounds.Width - root.DesiredSize.Width) / 2;
-            popupY = (parent.AbsoluteBounds.Height - root.DesiredSize.Height) / 2;
+            var popupArea = PositionRects(
+                PopupAlignmentPoint.Center, ref placementArea,
+                PopupAlignmentPoint.Center, popupSize);
+
+            AlignToScreenEdges(ref screenArea, ref popupArea, PopupScreenEdges.All);
+
+            return popupArea;
         }
 
         /// <summary>
         /// Calculates the popup's position when <see cref="Placement"/> is set to <see cref="PlacementMode.Right"/>.
         /// </summary>
-        private void CalculatePopupPosition_Right(Size2D finalSize, out Double popupX, out Double popupY)
+        private RectangleD CalculatePopupPosition_Right(ref RectangleD screenArea, Size2D popupSize)
         {
-            var targetBounds = GetPopupTargetBounds();
+            var placementArea = GetPlacementTargetArea();
 
-            popupX = targetBounds.Right;
-            popupY = targetBounds.Top;
+            var popupArea = PositionRects(
+                PopupAlignmentPoint.TopRight, ref placementArea,
+                PopupAlignmentPoint.TopLeft, popupSize);
+
+            if (IsCrossingScreenEdge(ref screenArea, ref popupArea, PopupScreenEdges.Right))
+            {
+                popupArea = PositionRects(
+                    PopupAlignmentPoint.TopLeft, ref placementArea,
+                    PopupAlignmentPoint.TopRight, popupSize);
+            }
+
+            AlignToScreenEdges(ref screenArea, ref popupArea, PopupScreenEdges.Left | PopupScreenEdges.Top | PopupScreenEdges.Bottom);
+
+            return popupArea;
+        }
+
+        /// <summary>
+        /// Calculates the popup's position when <see cref="Placement"/> is set to <see cref="PlacementMode.AbsolutePoint"/>.
+        /// </summary>
+        private RectangleD CalculatePopupPosition_AbsolutePoint(ref RectangleD screenArea, Size2D popupSize)
+        {
+            var placementArea = GetPlacementTargetArea(true);
+            if (placementArea.IsEmpty)
+                placementArea = Display.PixelsToDips(View.Area);
+
+            var popupArea = PositionRects(
+                PopupAlignmentPoint.TopLeft, ref placementArea,
+                PopupAlignmentPoint.TopLeft, popupSize);
+
+            if (IsCrossingScreenEdge(ref screenArea, ref popupArea, PopupScreenEdges.Bottom))
+            {
+                popupArea = PositionRects(
+                    PopupAlignmentPoint.TopLeft, ref placementArea,
+                    PopupAlignmentPoint.BottomLeft, popupSize);
+            }
+
+            if (IsCrossingScreenEdge(ref screenArea, ref popupArea, PopupScreenEdges.Right))
+            {
+                popupArea = PositionRects(
+                    PopupAlignmentPoint.TopLeft, ref placementArea,
+                    PopupAlignmentPoint.TopRight, popupSize);
+            }
+
+            AlignToScreenEdges(ref screenArea, ref popupArea, PopupScreenEdges.Left | PopupScreenEdges.Top);
+
+            return popupArea;
+        }
+
+        /// <summary>
+        /// Calculates the popup's position when <see cref="Placement"/> is set to <see cref="PlacementMode.RelativePoint"/>.
+        /// </summary>
+        private RectangleD CalculatePopupPosition_RelativePoint(ref RectangleD screenArea, Size2D popupSize)
+        {
+            var placementArea = GetPlacementTargetArea();
+
+            var popupArea = PositionRects(
+                PopupAlignmentPoint.TopLeft, ref placementArea,
+                PopupAlignmentPoint.TopLeft, popupSize);
+
+            if (IsCrossingScreenEdge(ref screenArea, ref popupArea, PopupScreenEdges.Bottom))
+            {
+                popupArea = PositionRects(
+                    PopupAlignmentPoint.TopLeft, ref placementArea,
+                    PopupAlignmentPoint.BottomLeft, popupSize);
+            }
+
+            if (IsCrossingScreenEdge(ref screenArea, ref popupArea, PopupScreenEdges.Right))
+            {
+                popupArea = PositionRects(
+                    PopupAlignmentPoint.TopLeft, ref placementArea,
+                    PopupAlignmentPoint.TopRight, popupSize);
+            }
+
+            AlignToScreenEdges(ref screenArea, ref popupArea, PopupScreenEdges.Left | PopupScreenEdges.Top);
+
+            return popupArea;
         }
 
         /// <summary>
         /// Calculates the popup's position when <see cref="Placement"/> is set to <see cref="PlacementMode.Mouse"/>.
         /// </summary>
-        private void CalculatePopupPosition_Mouse(Size2D finalSize, out Double popupX, out Double popupY)
+        private RectangleD CalculatePopupPosition_Mouse(ref RectangleD screenArea, Size2D popupSize)
         {
-            var mouse = Ultraviolet.GetInput().GetMouse();
-            if (mouse == null)
+            var placementArea = GetPlacementTargetArea(true);
+
+            var popupArea = PositionRects(
+                PopupAlignmentPoint.BottomLeft, ref placementArea,
+                PopupAlignmentPoint.TopLeft, popupSize);
+
+            if (IsCrossingScreenEdge(ref screenArea, ref popupArea, PopupScreenEdges.Bottom))
             {
-                popupX = 0;
-                popupY = 0;
-                return;
+                popupArea = PositionRects(
+                    PopupAlignmentPoint.TopLeft, ref placementArea,
+                    PopupAlignmentPoint.BottomLeft, popupSize);
             }
 
-            var cursor = Ultraviolet.GetPlatform().Cursor;
+            AlignToScreenEdges(ref screenArea, ref popupArea, PopupScreenEdges.Left | PopupScreenEdges.Top | PopupScreenEdges.Right);
 
-            var dipsMousePos    = Display.PixelsToDips(mouse.Position);
-            var dipsMouseWidth  = Display.PixelsToDips(cursor == null ? DefaultCursorWidth : cursor.Width);
-            var dipsMouseHeight = Display.PixelsToDips(cursor == null ? DefaultCursorHeight : cursor.Height);
+            return popupArea;
+        }
 
-            var targetBounds = new RectangleD(dipsMousePos.X, dipsMousePos.Y, dipsMouseWidth, dipsMouseHeight);
+        /// <summary>
+        /// Calculates the popup's position when <see cref="Placement"/> is set to <see cref="PlacementMode.MousePoint"/>.
+        /// </summary>
+        private RectangleD CalculatePopupPosition_MousePoint(ref RectangleD screenArea, Size2D popupSize)
+        {
+            var placementArea = GetPlacementTargetArea(true);
 
-            popupX = targetBounds.Left;
-            popupY = targetBounds.Bottom;
+            var popupArea = PositionRects(
+                PopupAlignmentPoint.BottomLeft, ref placementArea,
+                PopupAlignmentPoint.TopLeft, popupSize);
+
+            if (IsCrossingScreenEdge(ref screenArea, ref popupArea, PopupScreenEdges.Bottom))
+            {
+                popupArea = PositionRects(
+                    PopupAlignmentPoint.BottomLeft, ref placementArea,
+                    PopupAlignmentPoint.BottomLeft, popupSize);
+            }
+
+            if (IsCrossingScreenEdge(ref screenArea, ref popupArea, PopupScreenEdges.Right))
+            {
+                popupArea = PositionRects(
+                    PopupAlignmentPoint.BottomLeft, ref placementArea,
+                    PopupAlignmentPoint.TopRight, popupSize);
+            }
+
+            AlignToScreenEdges(ref screenArea, ref popupArea, PopupScreenEdges.Left | PopupScreenEdges.Top);
+
+            return popupArea;
         }
 
         /// <summary>
         /// Calculates the popup's position when <see cref="Placement"/> is set to <see cref="PlacementMode.Left"/>.
         /// </summary>
-        private void CalculatePopupPosition_Left(Size2D finalSize, out Double popupX, out Double popupY)
+        private RectangleD CalculatePopupPosition_Left(ref RectangleD screenArea, Size2D popupSize)
         {
-            var targetBounds = GetPopupTargetBounds();
+            var placementArea = GetPlacementTargetArea();
 
-            popupX = targetBounds.Left - root.DesiredSize.Width;
-            popupY = targetBounds.Top;
+            var popupArea = PositionRects(
+                PopupAlignmentPoint.TopLeft, ref placementArea,
+                PopupAlignmentPoint.TopRight, popupSize);
+
+            if (IsCrossingScreenEdge(ref screenArea, ref popupArea, PopupScreenEdges.Left))
+            {
+                popupArea = PositionRects(
+                    PopupAlignmentPoint.TopRight, ref placementArea,
+                    PopupAlignmentPoint.TopLeft, popupSize);
+            }
+
+            AlignToScreenEdges(ref screenArea, ref popupArea, PopupScreenEdges.Top | PopupScreenEdges.Right | PopupScreenEdges.Bottom);
+
+            return popupArea;
         }
 
         /// <summary>
         /// Calculates the popup's position when <see cref="Placement"/> is set to <see cref="PlacementMode.Top"/>.
         /// </summary>
-        private void CalculatePopupPosition_Top(Size2D finalSize, out Double popupX, out Double popupY)
+        private RectangleD CalculatePopupPosition_Top(ref RectangleD screenArea, Size2D popupSize)
         {
-            var targetBounds = GetPopupTargetBounds();
+            var placementArea = GetPlacementTargetArea();
 
-            popupX = targetBounds.Left;
-            popupY = targetBounds.Top - root.DesiredSize.Height;
+            var popupArea = PositionRects(
+                PopupAlignmentPoint.TopLeft, ref placementArea,
+                PopupAlignmentPoint.BottomLeft, popupSize);
+
+            if (IsCrossingScreenEdge(ref screenArea, ref popupArea, PopupScreenEdges.Top))
+            {
+                popupArea = PositionRects(
+                    PopupAlignmentPoint.BottomLeft, ref placementArea,
+                    PopupAlignmentPoint.TopLeft, popupSize);
+            }
+
+            AlignToScreenEdges(ref screenArea, ref popupArea, PopupScreenEdges.Left | PopupScreenEdges.Right | PopupScreenEdges.Bottom);
+
+            return popupArea;
         }
 
         /// <summary>
         /// Gets the bounds of the region around which the popup is placed.
         /// </summary>
+        /// <param name="ignorePlacementTarget">A value indicating whether to ignore the value of the <see cref="PlacementTarget"/> property.</param>
         /// <returns>The bounds of the region around which the popup is placed.</returns>
-        private RectangleD GetPopupTargetBounds()
+        private RectangleD GetPlacementTargetArea(Boolean ignorePlacementTarget = false)
         {
-            var target = PlacementTarget;
-            if (target != null)
+            var placement = Placement;
+            if (placement == PlacementMode.Mouse || placement == PlacementMode.MousePoint)
+                return GetMouseCursorArea();
+
+            var target = (PlacementTarget ?? VisualTreeHelper.GetParent(this)) as UIElement;
+            if (target == null || ignorePlacementTarget)
             {
-                return target.AbsoluteBounds;
+                return RectangleD.Empty;
             }
-            return RectangleD.Empty;
+            else
+            {
+                var placementArea = PlacementRectangle;
+                if (placementArea.IsEmpty)
+                {
+                    placementArea = target.AbsoluteBounds;
+                }
+                return placementArea;
+            }
         }
 
-        // The root visual of the popup's content.
-        private readonly PopupRoot root;
+        /// <summary>
+        /// Gets the area on the screen that is inhabited by the mouse cursor.
+        /// </summary>
+        /// <returns>The area in device-independent coordinates which is inhabited by the mouse cursor.</returns>
+        private RectangleD GetMouseCursorArea()
+        {
+            var mouse = Ultraviolet.GetInput().GetMouse();
+            if (mouse == null)
+                return RectangleD.Empty;
 
-        // The popup's size and position.
+            var cursor = Ultraviolet.GetPlatform().Cursor;
+
+            var mousePos    = Display.PixelsToDips(mouse.Position);
+            var mouseWidth  = Display.PixelsToDips(cursor == null ? DefaultCursorWidth : cursor.Width);
+            var mouseHeight = Display.PixelsToDips(cursor == null ? DefaultCursorHeight : cursor.Height);
+
+            return new RectangleD(mousePos.X, mousePos.Y, mouseWidth, mouseHeight);
+        }
+
+        // State values.
+        private readonly PopupRoot root;
         private Double popupX;
         private Double popupY;
         private Double popupWidth;

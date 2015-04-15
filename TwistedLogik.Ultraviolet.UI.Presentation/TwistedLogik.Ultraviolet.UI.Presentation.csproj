@@ -99,6 +99,8 @@
     <Compile Include="Controls\Primitives\NamespaceDoc.cs" />
     <Compile Include="Controls\Primitives\PlacementMode.cs" />
     <Compile Include="Controls\Primitives\Popup.cs" />
+    <Compile Include="Controls\Primitives\Popup.PopupAlignmentPoint.cs" />
+    <Compile Include="Controls\Primitives\Popup.PopupScreenEdges.cs" />
     <Compile Include="Controls\Primitives\PopupRoot.cs" />
     <Compile Include="Controls\Primitives\ScrollEventType.cs" />
     <Compile Include="Controls\SelectionMode.cs" />
