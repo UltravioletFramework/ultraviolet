@@ -267,6 +267,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <inheritdoc/>
         protected override Size2D ArrangeOverride(Size2D finalSize, ArrangeOptions options)
         {
+            PrepareForArrange(ColumnDefinitions);
+            PrepareForArrange(RowDefinitions);
+
             FinalizeDimension(ColumnDefinitions, finalSize.Width);
             FinalizeDimension(RowDefinitions, finalSize.Height);
 
@@ -507,6 +510,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 
                 def.ResetContentDimension(dimMin);
                 def.MeasuredDimension = Math.Max(dimMin, Math.Min(dim, dimMax));
+            }
+        }
+
+        /// <summary>
+        /// Prepares the grid's rows or columns for arrangement.
+        /// </summary>
+        /// <param name="definitions">The collection of row or column definitions to prepare for measurement.</param>
+        private void PrepareForArrange(IDefinitionBaseCollection definitions)
+        {
+            for (int i = 0; i < definitions.Count; i++)
+            {
+                var def = definitions[i];
+                def.AssumedUnitType = def.Dimension.GridUnitType;
             }
         }
 
