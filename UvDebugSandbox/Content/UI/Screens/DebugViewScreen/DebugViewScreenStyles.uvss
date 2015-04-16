@@ -482,3 +482,13 @@ vslider .slider-track-bg
 {
 	fill-color: #ff0000ff;
 }
+
+listboxitem
+{
+	padding: 8;
+}
+
+comboboxitem
+{
+	padding: 8;
+}

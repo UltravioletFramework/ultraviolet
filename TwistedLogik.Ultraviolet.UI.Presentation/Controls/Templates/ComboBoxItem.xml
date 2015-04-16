@@ -7,9 +7,9 @@
       Canvas.Right="0"
       Canvas.Bottom ="0"/>
     <ContentPresenter Class="combobox-dropdownitem-content"
-      Canvas.Left="8"
-      Canvas.Top="8"
-      Canvas.Right="8"
-      Canvas.Bottom="8"/>
+      Canvas.Left="{{Padding.Left}}"
+      Canvas.Top="{{Padding.Top}}"
+      Canvas.Right="{{Padding.Right}}"
+      Canvas.Bottom="{{Padding.Bottom}}"/>
   </Canvas>
 </ComponentTemplate>
