@@ -81,9 +81,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Global.asax" />
-    <Content Include="Images\amd.png" />
-    <Content Include="Images\intel.png" />
-    <Content Include="Images\nvidia.png" />
+    <Content Include="Styles\Images\amd.png" />
+    <Content Include="Styles\Images\intel.png" />
+    <Content Include="Styles\Images\nvidia.png" />
     <Content Include="Styles\Main.css" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>

@@ -73,17 +73,17 @@ body {
 
 .vendorlink.Intel span {
     padding-left: 32px;
-    background: url("/Images/intel.png") left no-repeat;
+    background: url("Images/intel.png") left no-repeat;
 }
 
 .vendorlink.Nvidia span {
     padding-left: 32px;
-    background: url("/Images/nvidia.png") left no-repeat;
+    background: url("Images/nvidia.png") left no-repeat;
 }
 
 .vendorlink.Amd span {
     padding-left: 32px;
-    background: url("/Images/amd.png") left no-repeat;
+    background: url("Images/amd.png") left no-repeat;
 }
 
 table {
@@ -206,13 +206,13 @@ table thead tr:nth-child(2) td {
 }
 
 .vendoricon.Intel {
-    background-image: url("/Images/intel.png");
+    background-image: url("Images/intel.png");
 }
 
 .vendoricon.Nvidia {
-    background-image: url("/Images/nvidia.png");
+    background-image: url("Images/nvidia.png");
 }
 
 .vendoricon.Amd {
-    background-image: url("/Images/amd.png");
+    background-image: url("Images/amd.png");
 }

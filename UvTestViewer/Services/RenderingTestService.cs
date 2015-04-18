@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
 using System.Linq;
+using System.Web;
 using System.Xml.Linq;
 using UvTestViewer.Models;
 
@@ -34,8 +35,8 @@ namespace UvTestViewer.Services
                                group filename by testname into g
                                select g;
 
-            var outputdir = Path.Combine("TestResults", vendor.ToString(), id.ToString());
-
+            var outputDir = VirtualPathUtility.ToAbsolute(String.Format("~/TestResults/{0}/{1}", vendor, id));
+            
             var failedTests = GetFailedTests(directory);
 
             var tests = new List<RenderingTest>();
@@ -46,9 +47,9 @@ namespace UvTestViewer.Services
                 var testDiff     = imageGroup.Where(x => x.EndsWith("_Diff.png")).SingleOrDefault();
 
                 var test = new RenderingTest(imageGroup.Key,
-                    GetRelativeUrlOfImage(outputdir, testExpected),
-                    GetRelativeUrlOfImage(outputdir, testActual),
-                    GetRelativeUrlOfImage(outputdir, testDiff));
+                    GetRelativeUrlOfImage(outputDir, testExpected),
+                    GetRelativeUrlOfImage(outputDir, testActual),
+                    GetRelativeUrlOfImage(outputDir, testDiff));
 
                 test.Failed = failedTests.Contains(imageGroup.Key);
 
@@ -88,33 +89,34 @@ namespace UvTestViewer.Services
         /// <returns>A <see cref="DirectoryInfo"/> which represents the most recent rendering test run.</returns>
         private static DirectoryInfo GetMostRecentTestResultsDirectory(GpuVendor vendor, out Int64 id)
         {
-            var root = ConfigurationManager.AppSettings["TestResultRootDirectory"];
+            var root       = ConfigurationManager.AppSettings["TestResultRootDirectory"];
+            var rootMapped = HttpContext.Current.Server.MapPath(root);
 
             switch (vendor)
             {
-                case GpuVendor.Intel: 
-                    root = Path.Combine(root, "Intel"); 
+                case GpuVendor.Intel:
+                    rootMapped = Path.Combine(rootMapped, "Intel"); 
                     break;
                 
-                case GpuVendor.Nvidia: 
-                    root = Path.Combine(root, "Nvidia"); 
+                case GpuVendor.Nvidia:
+                    rootMapped = Path.Combine(rootMapped, "Nvidia"); 
                     break;
                 
-                case GpuVendor.Amd: 
-                    root = Path.Combine(root, "Amd"); 
+                case GpuVendor.Amd:
+                    rootMapped = Path.Combine(rootMapped, "Amd"); 
                     break;
 
                 default: 
                     throw new ArgumentException("Unrecognized GPU hardware vendor.");
             }
 
-            if (!Directory.Exists(root))
+            if (!Directory.Exists(rootMapped))
             {
                 id = 0;
                 return null;
             }
 
-            var rootSubdirs     = Directory.GetDirectories(root);
+            var rootSubdirs     = Directory.GetDirectories(rootMapped);
             var rootSubdirsByID = from subdir in rootSubdirs
                                   let dirInfo = new DirectoryInfo(subdir)
                                   let dirID = GetDirectoryID(dirInfo.Name)
@@ -140,7 +142,7 @@ namespace UvTestViewer.Services
         /// <returns>The relative URL used to display the specified unit test image.</returns>
         private static String GetRelativeUrlOfImage(String rootdir, String image)
         {
-            return String.IsNullOrEmpty(image) ? null : Path.Combine(rootdir, image);
+            return String.IsNullOrEmpty(image) ? null : String.Format("{0}/{1}", rootdir, image);
         }
 
         /// <summary>
