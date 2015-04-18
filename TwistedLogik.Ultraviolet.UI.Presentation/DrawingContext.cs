@@ -26,7 +26,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         public void Reset()
         {
-
+            opacityStack.Clear();
+            clipStack.Clear();
         }
 
         /// <summary>

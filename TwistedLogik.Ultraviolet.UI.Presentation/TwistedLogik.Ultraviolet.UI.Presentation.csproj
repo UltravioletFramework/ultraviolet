@@ -97,6 +97,11 @@
     <Compile Include="ComponentTemplateManager.cs" />
     <Compile Include="Controls\ItemContainerGenerator.cs" />
     <Compile Include="Controls\Primitives\NamespaceDoc.cs" />
+    <Compile Include="Controls\Primitives\PlacementMode.cs" />
+    <Compile Include="Controls\Primitives\Popup.cs" />
+    <Compile Include="Controls\Primitives\Popup.PopupAlignmentPoint.cs" />
+    <Compile Include="Controls\Primitives\Popup.PopupScreenEdges.cs" />
+    <Compile Include="Controls\Primitives\PopupRoot.cs" />
     <Compile Include="Controls\Primitives\ScrollEventType.cs" />
     <Compile Include="Controls\SelectionMode.cs" />
     <Compile Include="Controls\Primitives\Selector.SelectionCollection.cs" />
@@ -114,6 +119,7 @@
     <Compile Include="Documents\TextElement.cs" />
     <Compile Include="EventManager.cs" />
     <Compile Include="ITextHost.cs" />
+    <Compile Include="PopupQueue.cs" />
     <Compile Include="PropertyMetadata.cs" />
     <Compile Include="DependencyPropertyName.cs" />
     <Compile Include="PropertyMetadataOfT.cs" />
@@ -284,6 +290,7 @@
     <Compile Include="UvmlLoader.cs" />
     <Compile Include="UvmlLoader.InstantiationContext.cs" />
     <Compile Include="UvmlLoader.UvmlAttribute.cs" />
+    <Compile Include="UvmlObject.cs" />
     <Compile Include="VerticalAlignment.cs" />
     <Compile Include="Visibility.cs" />
     <Compile Include="Visual.cs" />

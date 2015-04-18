@@ -56,5 +56,21 @@ namespace TwistedLogik.Ultraviolet
             var uv = UltravioletContext.DemandCurrent();
             return uv.GetFactoryMethod<CursorFactory>()(uv, surface, hx, hy);
         }
+
+        /// <summary>
+        /// Gets the width of the cursor in pixels.
+        /// </summary>
+        public abstract Int32 Width
+        {
+            get;
+        }
+
+        /// <summary>
+        /// Gets the height of the cursor in pixels.
+        /// </summary>
+        public abstract Int32 Height
+        {
+            get;
+        }
     }
 }

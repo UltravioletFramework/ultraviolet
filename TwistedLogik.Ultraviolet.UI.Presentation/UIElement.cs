@@ -9,7 +9,6 @@ using TwistedLogik.Ultraviolet.Platform;
 using TwistedLogik.Ultraviolet.UI.Presentation.Animations;
 using TwistedLogik.Ultraviolet.UI.Presentation.Controls;
 using TwistedLogik.Ultraviolet.UI.Presentation.Styles;
-using System.Diagnostics;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation
 {
@@ -120,6 +119,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public void ClearStyledValues(Boolean recursive = true)
         {
             ClearStyledValuesCore(recursive);
+            isStyleValid = false;
         }
 
         /// <summary>
@@ -307,7 +307,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// specified is available for the element's layout.</param>
         public void Measure(Size2D availableSize)
         {
-            Contract.EnsureRange(availableSize.Width >= 0 && availableSize.Height >= 0, "availableSize");
+            if (availableSize.Width < 0 || availableSize.Height < 0)
+                availableSize = Size2D.Zero;
 
             if (View == null)
             {
@@ -459,16 +460,27 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Invalidates the element's styling state.
         /// </summary>
-        public void InvalidateStyle()
+        public void InvalidateStyle(Boolean recursive = false)
         {
-            if (View == null || !IsStyleValid || IsStyling)
+            if (View == null)
                 return;
 
-            this.isStyleValid = false;
+            if (IsStyleValid && !IsStyling)
+            {
+                this.isStyleValid = false;
 
-            var upf = uv.GetUI().GetPresentationFoundation();
-            upf.PerformanceStats.InvalidateStyleCountLastFrame++;
-            upf.StyleQueue.Enqueue(this);
+                var upf = uv.GetUI().GetPresentationFoundation();
+                upf.PerformanceStats.InvalidateStyleCountLastFrame++;
+                upf.StyleQueue.Enqueue(this);
+            }
+
+            if (recursive)
+            {
+                VisualTreeHelper.ForEachChild<UIElement>(this, null, (child, state) =>
+                {
+                    child.InvalidateStyle(true);
+                });
+            }
         }
 
         /// <summary>
@@ -908,8 +920,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         internal virtual void OnLayoutCacheInvalidatedInternal()
         {
             CacheLayoutParameters();
-            InvalidateStyle();
-
+            if (VisualParent != null)
+            {
+                InvalidateStyle();
+            }
             OnLayoutCacheInvalidated();
         }
 
@@ -1276,7 +1290,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         protected virtual void OnLogicalParentChanged()
         {
             CacheLayoutParameters();
-            InvalidateStyle();
+            if (LogicalTreeHelper.GetParent(this) != null)
+            {
+                InvalidateStyle();
+            }
         }
 
         /// <inheritdoc/>

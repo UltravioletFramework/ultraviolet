@@ -29,6 +29,9 @@ namespace TwistedLogik.Ultraviolet.OpenGL
             if (AreCursorsSupported(uv))
             {
                 this.cursor = SDL.CreateColorCursor(((OpenGLSurface2D)surface).Native, hx, hy);
+                this.width  = surface.Width;
+                this.height = surface.Height;
+
                 if (this.cursor == null)
                 {
                     throw new SDL2Exception();
@@ -37,6 +40,8 @@ namespace TwistedLogik.Ultraviolet.OpenGL
             else
             {
                 this.cursor = null;
+                this.width  = 0;
+                this.height = 0;
             }
         }
 
@@ -50,6 +55,18 @@ namespace TwistedLogik.Ultraviolet.OpenGL
             Contract.Require(uv, "uv");
 
             return uv.Platform != UltravioletPlatform.Android;
+        }
+
+        /// <inhertidoc/>
+        public override Int32 Width
+        {
+            get { return width; }
+        }
+
+        /// <inhertidoc/>
+        public override Int32 Height
+        {
+            get { return height; }
         }
 
         /// <summary>
@@ -81,5 +98,9 @@ namespace TwistedLogik.Ultraviolet.OpenGL
 
         // The native SDL2 cursor.
         private readonly SDL_Cursor* cursor;
+
+        // Property values.
+        private readonly Int32 width;
+        private readonly Int32 height;
     }
 }

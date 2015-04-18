@@ -10,7 +10,7 @@
       <RowDefinition Height="Auto"/>
     </Grid.RowDefinitions>
 
-    <ScrollContentPresenter Name="PART_ContentPresenter" Grid.Column="0" Grid.Row="0" />
+    <ScrollContentPresenter Name="PART_ContentPresenter" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Column="0" Grid.Row="0" />
 
     <HScrollBar Name="PART_HScroll" Class="scrollview-hscroll" Grid.Column="0" Grid.Row="1" HorizontalAlignment="Stretch" 
                 SmallChange="16" LargeChange="{{ViewportWidth}}" ValueChanged="HandleScrollValueChanged"/>

@@ -6,6 +6,7 @@ using TwistedLogik.Ultraviolet.Input;
 using TwistedLogik.Ultraviolet.Platform;
 using TwistedLogik.Ultraviolet.UI.Presentation.Animations;
 using TwistedLogik.Ultraviolet.UI.Presentation.Controls;
+using TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives;
 using TwistedLogik.Ultraviolet.UI.Presentation.Input;
 using TwistedLogik.Ultraviolet.UI.Presentation.Styles;
 
@@ -75,13 +76,20 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             Contract.Require(time, "time");
             Contract.Require(spriteBatch, "spriteBatch");
 
+            popupQueue.Clear();
+
             if (Window == null)
                 return;
 
             drawingContext.Reset();
             drawingContext.SpriteBatch = spriteBatch;
 
+            var fe = layoutRoot as FrameworkElement;
+            if (fe != null)
+                fe.EnsureIsLoaded(true);
+
             layoutRoot.Draw(time, drawingContext);
+            popupQueue.Draw(time, drawingContext);
 
             drawingContext.SpriteBatch = null;
         }
@@ -104,7 +112,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         public void InvalidateStyle()
         {
-            layoutRoot.InvalidateStyle();
+            layoutRoot.InvalidateStyle(true);
         }
 
         /// <summary>
@@ -257,7 +265,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var dipsX = Display.PixelsToDips(x - Area.X);
             var dipsY = Display.PixelsToDips(y - Area.Y);
 
-            return LayoutRoot.HitTest(new Point2D(dipsX, dipsY));
+            var popup = default(Popup);
+
+            return HitTestInternal(new Point2D(dipsX, dipsY), out popup);
         }
 
         /// <summary>
@@ -269,7 +279,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             var dipsPoint = Display.PixelsToDips(point - Area.Location);
 
-            return LayoutRoot.HitTest(dipsPoint);
+            var popup = default(Popup);
+
+            return HitTestInternal(dipsPoint, out popup);
         }
 
         /// <summary>
@@ -283,7 +295,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var dipsX = Display.PixelsToDips(x);
             var dipsY = Display.PixelsToDips(y);
 
-            return LayoutRoot.HitTest(new Point2D(dipsX, dipsY));
+            var popup = default(Popup);
+
+            return HitTestInternal(new Point2D(dipsX, dipsY), out popup);
         }
 
         /// <summary>
@@ -295,7 +309,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             var dipsPoint = Display.PixelsToDips(point - Area.Location);
 
-            return LayoutRoot.HitTest(dipsPoint);
+            var popup = default(Popup);
+
+            return HitTestInternal(dipsPoint, out popup);
         }
 
         /// <summary>
@@ -306,7 +322,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <returns>The topmost <see cref="Visual"/> in the view which contains the specified point, or <c>null</c>.</returns>
         public Visual HitTest(Double x, Double y)
         {
-            return LayoutRoot.HitTest(new Point2D(x, y));
+            var popup = default(Popup);
+
+            return HitTestInternal(new Point2D(x, y), out popup);
         }
 
         /// <summary>
@@ -316,7 +334,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <returns>The topmost <see cref="Visual"/> in the view which contains the specified point, or <c>null</c>.</returns>
         public Visual HitTest(Point2D point)
         {
-            return LayoutRoot.HitTest(point);
+            var popup = default(Popup);
+
+            return HitTestInternal(point, out popup);
         }
 
         /// <summary>
@@ -496,7 +516,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         internal Namescope Namescope
         {
             get { return namescope; }
-        } 
+        }
+
+        /// <summary>
+        /// Gets the view's popup queue.
+        /// </summary>
+        internal PopupQueue Popups
+        {
+            get { return popupQueue; }
+        }
 
         /// <inheritdoc/>
         protected override void Dispose(Boolean disposing)
@@ -538,6 +566,25 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             layoutRoot.Arrange(dipsArea);
 
             base.OnViewSizeChanged();
+        }
+
+        /// <summary>
+        /// Performs a hit test against the layout root and any active popup windows.
+        /// </summary>
+        /// <param name="point">The point in device-independent screen space to test.</param>
+        /// <param name="popup">The popup that contains the resulting visual.</param>
+        /// <returns>The topmost <see cref="Visual"/> that contains the specified point, 
+        /// or <c>null</c> if none of the items in the layout contain the point.</returns>
+        private Visual HitTestInternal(Point2D point, out Popup popup)
+        {
+            var popupMatch = popupQueue.HitTest(point, out popup);
+            if (popupMatch != null)
+            {
+                return popupMatch;
+            }
+
+            popup = null;
+            return LayoutRoot.HitTest(point);
         }
 
         /// <summary>
@@ -656,7 +703,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// of the specified element.
         /// </summary>
         /// <param name="root">The element to update.</param>
-        private void UpdateIsMouseOver(UIElement root)
+        /// <param name="unset">A value indicating whether to forcibly unset the property value.</param>
+        private void UpdateIsMouseOver(UIElement root, Boolean unset = false)
         {
             if (root == null)
                 return;
@@ -671,7 +719,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 if (uiElement != null)
                 {
                     var bounds = uiElement.AbsoluteBounds;
-                    uiElement.IsMouseOver = bounds.Contains(mousePos);
+                    uiElement.IsMouseOver = !unset && bounds.Contains(mousePos);
                 }
                 current = VisualTreeHelper.GetParent(current);
             }
@@ -690,8 +738,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 var mousePos  = mouse.Position;
                 var mouseView = mouse.Window == Window ? this : null;
 
-                elementUnderMousePrev = elementUnderMouse;
-                elementUnderMouse     = (mouseView == null) ? null : mouseView.HitTestScreenPixel((Point2)mousePos) as UIElement;
+                elementUnderMousePopupPrev = elementUnderMousePopup;
+                elementUnderMousePrev      = elementUnderMouse;
+                elementUnderMouse          = (mouseView == null) ? null : mouseView.HitTestInternal((Point2)mousePos, out elementUnderMousePopup) as UIElement;
             }
 
             if (elementUnderMouse != null && !IsElementValidForInput(elementUnderMouse))
@@ -703,7 +752,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             // Handle mouse motion events
             if (elementUnderMouse != elementUnderMousePrev)
             {
-                UpdateIsMouseOver(elementUnderMousePrev as UIElement);
+                UpdateIsMouseOver(elementUnderMousePrev as UIElement, elementUnderMousePopup != elementUnderMousePopupPrev);
 
                 if (elementUnderMousePrev != null)
                 {
@@ -1002,5 +1051,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         private IInputElement elementUnderMouse;
         private IInputElement elementWithMouseCapture;
         private IInputElement elementWithFocus;
+
+        // Popup handling.
+        private readonly PopupQueue popupQueue = new PopupQueue();
+        private Popup elementUnderMousePopupPrev;
+        private Popup elementUnderMousePopup;
     }
 }

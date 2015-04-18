@@ -2,6 +2,7 @@
 using TwistedLogik.Ultraviolet.Content;
 using TwistedLogik.Ultraviolet.UI.Presentation;
 using TwistedLogik.Ultraviolet.UI.Presentation.Controls;
+using TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives;
 
 namespace UvDebugSandbox.UI.Screens
 {
@@ -86,6 +87,13 @@ namespace UvDebugSandbox.UI.Screens
         {
             view.Ultraviolet.Host.Exit();
         }
+
+        public void HandleClick(DependencyObject dobj, ref RoutedEventData data)
+        {
+            asdf.IsOpen = !asdf.IsOpen;
+        }
+
+        private readonly Popup asdf = null;
     }
 
     public class DebugViewScreen : UvDebugScreen
