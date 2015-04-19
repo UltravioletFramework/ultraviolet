@@ -392,6 +392,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 try
                 {
                     this.renderSize = ArrangeCore(finalRect, options);
+                    SetValue<Double>(ActualWidthPropertyKey, this.renderSize.Width);
+                    SetValue<Double>(ActualHeightPropertyKey, this.renderSize.Height);
                 }
                 finally
                 {
@@ -827,21 +829,37 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
-        /// Gets the offset applied to the region's content. This is usually used to scroll the 
-        /// element's content within its content region.
-        /// </summary>
-        public virtual Point2D ContentOffset
-        {
-            get { return Point2D.Zero; }
-        }
-
-        /// <summary>
         /// Gets or sets the opacity of the element and its children.
         /// </summary>
         public Single Opacity
         {
             get { return GetValue<Single>(OpacityProperty); }
             set { SetValue<Single>(OpacityProperty, value); }
+        }
+
+        /// <summary>
+        /// Gets the rendered width of this element.
+        /// </summary>
+        public Double ActualWidth
+        {
+            get { return GetValue<Double>(ActualWidthProperty); }
+        }
+
+        /// <summary>
+        /// Gets the rendered height of this element.
+        /// </summary>
+        public Double ActualHeight
+        {
+            get { return GetValue<Double>(ActualHeightProperty); }
+        }
+
+        /// <summary>
+        /// Gets the offset applied to the region's content. This is usually used to scroll the 
+        /// element's content within its content region.
+        /// </summary>
+        public virtual Point2D ContentOffset
+        {
+            get { return Point2D.Zero; }
         }
 
         /// <summary>
@@ -883,6 +901,28 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Occurs when the value of the <see cref="Focusable"/> dependency property changes.
         /// </summary>
         public event UpfEventHandler FocusableChanged;
+
+        /// <summary>
+        /// The private access key for the <see cref="ActualWidth"/> read-only dependency property.
+        /// </summary>
+        private static readonly DependencyPropertyKey ActualWidthPropertyKey = DependencyProperty.RegisterReadOnly("ActualWidth", typeof(Double), typeof(UIElement),
+            new PropertyMetadata<Double>(CommonBoxedValues.Double.Zero));
+
+        /// <summary>
+        /// Identifies the <see cref="ActualWidth"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty ActualWidthProperty = ActualWidthPropertyKey.DependencyProperty;
+
+        /// <summary>
+        /// The private access key for the <see cref="ActualHeight"/> read-only dependency property.
+        /// </summary>
+        private static readonly DependencyPropertyKey ActualHeightPropertyKey = DependencyProperty.RegisterReadOnly("ActualHeight", typeof(Double), typeof(UIElement),
+            new PropertyMetadata<Double>(CommonBoxedValues.Double.Zero));
+
+        /// <summary>
+        /// Identifies the <see cref="ActualHeight"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty ActualHeightProperty = ActualHeightPropertyKey.DependencyProperty;
 
         /// <summary>
         /// The private access key for the <see cref="IsVisible"/> read-only dependency property.
