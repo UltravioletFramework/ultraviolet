@@ -417,7 +417,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 mouseSelectionInProgress = true;
 
                 Focus();
-                Mouse.Capture(View, this);
+                CaptureMouse();
 
                 textCaretPosition   = CalculateIndexFromCursor(device);
                 textSelectionLength = 0;
@@ -434,7 +434,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             if (button == MouseButton.Left)
             {
                 mouseSelectionInProgress = false;
-                Mouse.Capture(View, null);
+                ReleaseMouseCapture();
             }
             data.Handled = true;
             base.OnMouseUp(device, button, ref data);

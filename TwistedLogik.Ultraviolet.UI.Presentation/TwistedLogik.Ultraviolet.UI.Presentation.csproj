@@ -120,6 +120,7 @@
     <Compile Include="Controls\ListBoxSelectedItems.cs" />
     <Compile Include="Documents\TextElement.cs" />
     <Compile Include="EventManager.cs" />
+    <Compile Include="Input\CaptureMode.cs" />
     <Compile Include="ITextHost.cs" />
     <Compile Include="PopupQueue.cs" />
     <Compile Include="PropertyMetadata.cs" />

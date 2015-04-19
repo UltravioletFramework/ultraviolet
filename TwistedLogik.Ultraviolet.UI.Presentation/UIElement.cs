@@ -9,6 +9,7 @@ using TwistedLogik.Ultraviolet.Platform;
 using TwistedLogik.Ultraviolet.UI.Presentation.Animations;
 using TwistedLogik.Ultraviolet.UI.Presentation.Controls;
 using TwistedLogik.Ultraviolet.UI.Presentation.Styles;
+using TwistedLogik.Ultraviolet.UI.Presentation.Input;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation
 {
@@ -565,6 +566,26 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             View.FocusElement(this);
             return true;
         }
+        
+        /// <summary>
+        /// Captures the mouse to this element.
+        /// </summary>
+        /// <returns><c>true</c> if the mouse was successfully captured; otherwise, <c>false</c>.</returns>
+        public Boolean CaptureMouse()
+        {
+            return View != null && Mouse.Capture(View, this);
+        }
+
+        /// <summary>
+        /// Releases mouse capture from this element.
+        /// </summary>
+        public void ReleaseMouseCapture()
+        {
+            if (View != null && Mouse.GetCaptured(View) == this)
+            {
+                Mouse.Capture(View, null);
+            }
+        }
 
         /// <summary>
         /// Gets the Ultraviolet context that created this element.
@@ -867,7 +888,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// The private access key for the <see cref="IsVisible"/> read-only dependency property.
         /// </summary>
         private static readonly DependencyPropertyKey IsVisiblePropertyKey = DependencyProperty.RegisterReadOnly("IsVisible", typeof(Boolean), typeof(UIElement),
-            new PropertyMetadata<Boolean>(HandleIsVisibleChanged));
+            new PropertyMetadata<Boolean>(CommonBoxedValues.Boolean.True, HandleIsVisibleChanged));
 
         /// <summary>
         /// Identifies the <see cref="IsVisible"/> dependency property.

@@ -28,6 +28,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <inheritdoc/>
+        public Boolean IsMouseCaptureWithin
+        {
+            get { return GetValue<Boolean>(IsMouseCaptureWithinProperty); }
+            internal set { SetValue<Boolean>(IsMouseCaptureWithinPropertyKey, value); }
+        }
+
+        /// <inheritdoc/>
         public Boolean IsMouseOver
         {
             get { return GetValue<Boolean>(IsMouseOverProperty); }
@@ -75,6 +82,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public static readonly DependencyProperty IsMouseCapturedProperty = IsMouseCapturedPropertyKey.DependencyProperty;
 
         /// <summary>
+        /// The private access key for the <see cref="IsMouseCaptureWithin"/> read-only dependency property.
+        /// </summary>
+        private static readonly DependencyPropertyKey IsMouseCaptureWithinPropertyKey = DependencyProperty.RegisterReadOnly("IsMouseCaptureWithin", typeof(Boolean), typeof(UIElement),
+            new PropertyMetadata<Boolean>(HandleIsMouseCaptureWithinChanged));
+
+        /// <summary>
+        /// Identifies the <see cref="IsMouseCaptureWithin"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty IsMouseCaptureWithinProperty = IsMouseCaptureWithinPropertyKey.DependencyProperty;
+
+        /// <summary>
         /// The private access key for the <see cref="IsMouseOver"/> read-only dependency property.
         /// </summary>
         private static readonly DependencyPropertyKey IsMouseOverPropertyKey = DependencyProperty.RegisterReadOnly("IsMouseOver", typeof(Boolean), typeof(UIElement),
@@ -107,9 +125,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public event UpfEventHandler IsKeyboardFocusWithinChanged;
 
         /// <summary>
-        /// Occurs when the value of the <see cref="IsMouseCapturedChanged"/> property changes.
+        /// Occurs when the value of the <see cref="IsMouseCaptured"/> property changes.
         /// </summary>
         public event UpfEventHandler IsMouseCapturedChanged;
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="IsMouseCaptureWithin"/> property changes.
+        /// </summary>
+        public event UpfEventHandler IsMouseCaptureWithinChanged;
 
         /// <summary>
         /// Occurs when the value of the <see cref="IsMouseOver"/> property changes.
@@ -305,6 +328,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         protected virtual void OnIsMouseCapturedChanged()
         {
             var temp = IsMouseCapturedChanged;
+            if (temp != null)
+            {
+                temp(this);
+            }
+        }
+
+        /// <summary>
+        /// Raises the <see cref="IsMouseCaptureWithinChanged"/> event.
+        /// </summary>
+        protected virtual void OnIsMouseCaptureWithinChanged()
+        {
+            var temp = IsMouseCaptureWithinChanged;
             if (temp != null)
             {
                 temp(this);
@@ -693,6 +728,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         private static void HandleIsMouseCapturedChanged(DependencyObject dobj, Boolean oldValue, Boolean newValue)
         {
             ((UIElement)dobj).OnIsMouseCapturedChanged();
+        }
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="IsMouseCaptureWithin"/> dependency property changes.
+        /// </summary>
+        private static void HandleIsMouseCaptureWithinChanged(DependencyObject dobj, Boolean oldValue, Boolean newValue)
+        {
+            ((UIElement)dobj).OnIsMouseCaptureWithinChanged();
         }
 
         /// <summary>

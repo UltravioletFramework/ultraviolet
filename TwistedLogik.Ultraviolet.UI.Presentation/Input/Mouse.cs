@@ -56,17 +56,31 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// </summary>
         /// <param name="view">The view for which to set mouse capture.</param>
         /// <param name="element">The element to capture the mouse.</param>
-        public static void Capture(PresentationFoundationView view, IInputElement element)
+        /// <returns><c>true</c> if the mouse was successfully captured; otherwise, <c>false</c>.</returns>
+        public static Boolean Capture(PresentationFoundationView view, IInputElement element)
+        {
+            return Capture(view, element, CaptureMode.Element);
+        }
+
+        /// <summary>
+        /// Captures the mouse within the specified input element.
+        /// </summary>
+        /// <param name="view">The view for which to set mouse capture.</param>
+        /// <param name="element">The element to capture the mouse.</param>
+        /// <param name="mode">The mouse capture mode.</param>
+        /// <returns><c>true</c> if the mouse was successfully captured; otherwise, <c>false</c>.</returns>
+        public static Boolean Capture(PresentationFoundationView view, IInputElement element, CaptureMode mode)
         {
             Contract.Require(view, "view");
 
             if (element != null)
             {
-                view.CaptureMouse(element);
+                return view.CaptureMouse(element, mode);
             }
             else
             {
                 view.ReleaseMouse();
+                return true;
             }
         }
 
