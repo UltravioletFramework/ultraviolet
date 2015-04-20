@@ -39,6 +39,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             base.OnMouseDown(device, button, ref data);
         }
 
+        /// <inheritdoc/>
         protected override void OnContentChanged()
         {
             var comboBox = ItemsControl.ItemsControlFromItemContainer(this) as ComboBox;
@@ -47,6 +48,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 comboBox.HandleItemChanged(this);
             }
             base.OnContentChanged();
+        }
+
+        /// <inheritdoc/>
+        protected override double HighlightOpacity
+        {
+            get { return IsMouseOver ? 1 : 0; }
         }
     }
 }

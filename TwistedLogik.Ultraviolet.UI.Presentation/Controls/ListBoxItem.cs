@@ -57,7 +57,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Gets the opacity of the list box item's selection highlight.
         /// </summary>
-        protected Double HighlightOpacity
+        protected virtual Double HighlightOpacity
         {
             get { return IsSelected ? 1 : 0; }
         }
