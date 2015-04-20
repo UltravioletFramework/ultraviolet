@@ -101,11 +101,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
-        /// Loads the component root of the specified control.
+        /// Loads the component template of the specified control.
         /// </summary>
         /// <param name="control">The instance of <see cref="Control"/> for which to load a component root.</param>
-        /// <param name="template">The component template that specified the control's component layout.</param>
-        public static void LoadComponentRoot(Control control, XDocument template)
+        /// <param name="template">The component template that specifies the control's component layout.</param>
+        public static void LoadComponentTemplate(Control control, XDocument template)
         {
             var uv      = control.Ultraviolet;
             var context = new InstantiationContext(uv, null, control, null);
@@ -229,13 +229,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var typeName = xmlElement.Name.LocalName;
             if (String.Equals("ItemsPanel", typeName, StringComparison.InvariantCulture))
             {
-                var itemPresenterControl = context.ComponentOwner as ItemsControl;
+                var itemPresenterControl = context.TemplatedParent as ItemsControl;
                 if (itemPresenterControl == null)
                     throw new UvmlException(PresentationStrings.ItemPresenterNotInItemsControl);
 
                 instance = itemPresenterControl.CreateItemsPanel();
                 if (instance == null)
-                    throw new InvalidOperationException(PresentationStrings.ItemPresenterNotCreatedCorrectly.Format(context.ComponentOwner.GetType().Name));
+                    throw new InvalidOperationException(PresentationStrings.ItemPresenterNotCreatedCorrectly.Format(context.TemplatedParent.GetType().Name));
 
                 itemPresenterControl.ItemsPanelElement = (Panel)instance;
             }
@@ -245,6 +245,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 if (instance == null)
                     throw new UvmlException(PresentationStrings.UnrecognizedType.Format(xmlElement.Name.LocalName));
             }
+
+            var frameworkElement = instance as FrameworkElement;
+            if (frameworkElement != null)
+                frameworkElement.TemplatedParent = context.TemplatedParent;
 
             foreach (var className in classList)
             {
@@ -267,7 +271,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (popupControl != null)
                 popupControl.Child = instance;
 
-            if (context.ComponentOwner != null && instance is ContentPresenter)
+            if (context.TemplatedParent != null && instance is ContentPresenter)
             {
                 context.ContentPresenter = (ContentPresenter)instance;
             }
@@ -833,7 +837,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="context">The current instantiation context.</param>
         private static void BindDependencyProperty(DependencyObject dobj, DependencyProperty dprop, String expression, InstantiationContext context)
         {
-            if (context.ComponentOwner == null)
+            if (context.TemplatedParent == null)
             {
                 if (context.ViewModelType == null)
                     throw new InvalidOperationException(PresentationStrings.NoViewModel);
@@ -845,7 +849,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             }
             else
             {
-                miBindValue.Invoke(dobj, new Object[] { dprop, context.ComponentOwner.GetType(), expression });
+                miBindValue.Invoke(dobj, new Object[] { dprop, context.TemplatedParent.GetType(), expression });
             }
         }
 
@@ -911,9 +915,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 return type.IsValueType ? Activator.CreateInstance(type) : null;
             }
 
-            if (uiElement != null && typeof(UIElement).IsAssignableFrom(type))
+            var frameworkElement = uiElement as FrameworkElement;
+            if (frameworkElement != null && typeof(UIElement).IsAssignableFrom(type))
             {
-                var namescope = (uiElement.Control == null) ? uiElement.View.Namescope : uiElement.Control.ComponentNamescope;
+                var templatedParentControl = frameworkElement.TemplatedParent as Control;
+
+                var namescope = (templatedParentControl == null) ? frameworkElement.View.Namescope : templatedParentControl.ComponentTemplateNamescope;
                 if (namescope == null)
                     return null;
 
@@ -967,9 +974,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <returns>The specified delegate.</returns>
         private static Delegate CreateEventDelegate(UIElement uiElement, Type handlerType, String handlerName, InstantiationContext context)
         {
-            if (context.ComponentOwner != null)
+            var templateParentElement = context.TemplatedParent as UIElement;
+            if (templateParentElement != null)
             {
-                return BindingExpressions.CreateElementBoundEventDelegate(context.ComponentOwner, handlerType, handlerName);
+                return BindingExpressions.CreateElementBoundEventDelegate(templateParentElement, handlerType, handlerName);
             }
             else
             {

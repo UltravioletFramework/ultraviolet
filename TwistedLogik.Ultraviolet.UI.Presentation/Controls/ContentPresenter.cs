@@ -21,7 +21,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <inheritdoc/>
-        public override Point2D ContentOffset
+        public Point2D ContentOffset
         {
             get { return GetValue<Point2D>(ContentOffsetProperty); }
         }
@@ -35,7 +35,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <inheritdoc/>
         protected override void CacheLayoutParametersCore()
         {
-            containingContentControl = Control as ContentControl;
+            containingContentControl = (TemplatedParent ?? Parent) as ContentControl;
 
             base.CacheLayoutParametersCore();
         }
@@ -235,7 +235,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         private static void HandleContentOffsetChanged(DependencyObject dobj, Point2D oldValue, Point2D newValue)
         {
             var presenter = (ContentPresenter)dobj;
-            presenter.Position();
+            presenter.Position(presenter.MostRecentPositionOffset);
             presenter.PositionChildren();
         }
 

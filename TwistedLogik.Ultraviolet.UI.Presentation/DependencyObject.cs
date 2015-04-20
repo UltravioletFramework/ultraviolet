@@ -415,6 +415,22 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Gets or sets the data source from which the object's dependency properties will retrieve values if they are data bound.
+        /// </summary>
+        internal abstract Object DependencyDataSource
+        {
+            get;
+        }
+
+        /// <summary>
+        /// Gets the dependency object's containing object.
+        /// </summary>
+        internal abstract DependencyObject DependencyContainer
+        {
+            get;
+        }
+
+        /// <summary>
         /// Occurs when the value of one of the object's dependency properties changes.
         /// </summary>
         /// <typeparam name="T">The type of value contained by the dependency property.</typeparam>
@@ -464,22 +480,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             {
                 dp.ApplyStyle(this, style);
             }
-        }
-
-        /// <summary>
-        /// Gets the dependency object's containing object.
-        /// </summary>
-        protected internal abstract DependencyObject DependencyContainer
-        {
-            get;
-        }
-
-        /// <summary>
-        /// Gets or sets the data source from which the object's dependency properties will retrieve values if they are data bound.
-        /// </summary>
-        protected internal abstract Object DependencyDataSource
-        {
-            get;
         }
 
         /// <summary>

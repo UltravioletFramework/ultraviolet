@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
+using TwistedLogik.Ultraviolet.UI.Presentation.Controls;
 using TwistedLogik.Ultraviolet.UI.Presentation.Styles;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation
@@ -46,6 +47,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 isInitialized = true;
                 OnInitialized();
             }
+        }
+
+        /// <summary>
+        /// Gets the template parent of this element. The template parent is the control which caused
+        /// this element to be created, if applicable.
+        /// </summary>
+        public DependencyObject TemplatedParent
+        {
+            get { return templatedParent; }
+            internal set { templatedParent = value; }
         }
 
         /// <summary>
@@ -384,26 +395,34 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             }
         }
 
-        /// <inheritdoc/>
-        internal override void RegisterElementWithNamescope(Namescope namescope)
+        /// <summary>
+        /// Registers the element with the specified namescope.
+        /// </summary>
+        /// <param name="namescope">The namescope with which to register the element.</param>
+        internal void RegisterElementWithNamescope(Namescope namescope)
         {
             if (String.IsNullOrEmpty(Name))
                 return;
 
             namescope.RegisterElement(this);
-
-            base.RegisterElementWithNamescope(namescope);
         }
 
-        /// <inheritdoc/>
-        internal override void UnregisterElementFromNamescope(Namescope namescope)
+        /// <summary>
+        /// Unregisters the element from the specified namescope.
+        /// </summary>
+        /// <param name="namescope">The namescope from which to unregister the element.</param>
+        internal void UnregisterElementFromNamescope(Namescope namescope)
         {
             if (String.IsNullOrEmpty(Name))
                 return;
 
             namescope.UnregisterElement(this);
+        }
 
-            base.UnregisterElementFromNamescope(namescope);
+        /// <inheritdoc/>
+        internal override Object DependencyDataSource
+        {
+            get { return TemplatedParent ?? ViewModel; }
         }
 
         /// <summary>
@@ -526,6 +545,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <inheritdoc/>
+        protected override void CacheLayoutParametersCore()
+        {
+            var templatedParentControl = TemplatedParent as Control;
+            if (templatedParentControl != null)
+            {
+                templatedParentControl.ComponentTemplateNamescope.UnregisterElement(this);
+                templatedParentControl.ComponentTemplateNamescope.RegisterElement(this);
+            }
+
+            base.CacheLayoutParametersCore();
+        }
+
+        /// <inheritdoc/>
         protected override void OnGotKeyboardFocus(ref RoutedEventData data)
         {
             if (data.OriginalSource == this)
@@ -631,7 +663,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             VisualTreeHelper.ForEachChild<UIElement>(this, this, (child, state) =>
             {
-                child.Position();
+                child.Position(Size2D.Zero);
                 child.PositionChildren();
             });
         }
@@ -648,6 +680,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         private static readonly String[] VSGFocus = new[] { "blurred", "focused" };
 
         // Property values.
+        private DependencyObject templatedParent;
         private readonly String name;
         private readonly VisualStateGroupCollection visualStateGroups;
         private Boolean isInitialized;

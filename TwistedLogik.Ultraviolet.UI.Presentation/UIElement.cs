@@ -7,9 +7,8 @@ using TwistedLogik.Ultraviolet.Content;
 using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
 using TwistedLogik.Ultraviolet.Platform;
 using TwistedLogik.Ultraviolet.UI.Presentation.Animations;
-using TwistedLogik.Ultraviolet.UI.Presentation.Controls;
-using TwistedLogik.Ultraviolet.UI.Presentation.Styles;
 using TwistedLogik.Ultraviolet.UI.Presentation.Input;
+using TwistedLogik.Ultraviolet.UI.Presentation.Styles;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation
 {
@@ -209,7 +208,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             CacheLayoutDepth();
             CacheView();
-            CacheControl();
 
             if (View != view)
             {
@@ -410,10 +408,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Updates the element's position in absolute screen space.
         /// </summary>
-        public void Position()
+        /// <param name="offset">The amount by which to offset the element's position from its desired position.</param>
+        public void Position(Size2D offset)
         {
             if (View == null)
                 return;
+
+            mostRecentPositionOffset = offset;
 
             var upf = Ultraviolet.GetUI().GetPresentationFoundation();
             upf.PerformanceStats.PositionCountLastFrame++;
@@ -421,14 +422,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var parent         = VisualTreeHelper.GetParent(this) as UIElement;
             var parentPosition = (parent == null) ? Point2D.Zero : parent.AbsolutePosition;
 
-            var contentRegionOffset = (parent == null || parent == Control) ? Point2D.Zero : parent.ContentOffset;
+            var totalOffsetX = mostRecentFinalRect.X + RenderOffset.X + offset.Width;
+            var totalOffsetY = mostRecentFinalRect.Y + RenderOffset.Y + offset.Height;
+            var totalOffset  = new Size2D(totalOffsetX, totalOffsetY);
 
-            var offsetX = mostRecentFinalRect.X + RenderOffset.X + contentRegionOffset.X;
-            var offsetY = mostRecentFinalRect.Y + RenderOffset.Y + contentRegionOffset.Y;
-            var offset  = new Point2D(offsetX, offsetY);
-
-            this.relativeBounds = new RectangleD(offset.X, offset.Y, RenderSize.Width, RenderSize.Height);
-            this.absoluteBounds = new RectangleD(parentPosition.X + offset.X, parentPosition.Y + offset.Y, RenderSize.Width, RenderSize.Height);
+            this.relativeBounds = new RectangleD(Point2D.Zero + totalOffset, RenderSize);
+            this.absoluteBounds = new RectangleD(parentPosition + totalOffset, RenderSize);
 
             PositionCore();
 
@@ -647,22 +646,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
-        /// Gets the control that owns this element, if this element is a control component.
-        /// </summary>
-        public Control Control
-        {
-            get { return control; }
-        }
-
-        /// <summary>
-        /// Gets a value indicating whether this element is a control component.
-        /// </summary>
-        public Boolean IsComponent
-        {
-            get { return control != null; }
-        }
-
-        /// <summary>
         /// Gets a value indicating whether the element's styling state is valid.
         /// </summary>
         public Boolean IsStyleValid
@@ -854,15 +837,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
-        /// Gets the offset applied to the region's content. This is usually used to scroll the 
-        /// element's content within its content region.
-        /// </summary>
-        public virtual Point2D ContentOffset
-        {
-            get { return Point2D.Zero; }
-        }
-
-        /// <summary>
         /// Occurs when a class is added to the element.
         /// </summary>
         public event UIElementClassEventHandler ClassAdded;
@@ -964,7 +938,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         public static readonly DependencyProperty OpacityProperty = DependencyProperty.Register("Opacity", typeof(Single), typeof(UIElement),
             new PropertyMetadata<Single>(CommonBoxedValues.Single.One));
-        
+
         /// <summary>
         /// Applies a visual state transition to the element.
         /// </summary>
@@ -1002,24 +976,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             OnLayoutCacheInvalidatedInternal();
             base.OnVisualParentChangedInternal();
-        }
-
-        /// <summary>
-        /// Registers the element with the specified namescope.
-        /// </summary>
-        /// <param name="namescope">The namescope with which to register the element.</param>
-        internal virtual void RegisterElementWithNamescope(Namescope namescope)
-        {
-
-        }
-
-        /// <summary>
-        /// Unregisters the element from the specified namescope.
-        /// </summary>
-        /// <param name="namescope">The namescope from which to unregister the element.</param>
-        internal virtual void UnregisterElementFromNamescope(Namescope namescope)
-        {
-
         }
 
         /// <summary>
@@ -1171,6 +1127,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Gets the position offset that was most recently passed to the <see cref="Position(Point2D)"/> method.
+        /// </summary>
+        internal Size2D MostRecentPositionOffset
+        {
+            get { return mostRecentPositionOffset; }
+        }
+
+        /// <summary>
         /// Gets the element's depth within the layout tree.
         /// </summary>
         internal Int32 LayoutDepth
@@ -1200,6 +1164,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         internal Boolean IsArranging
         {
             get { return isArranging; }
+        }
+
+        /// <inheritdoc/>
+        internal override Object DependencyDataSource
+        {
+            get { return ViewModel; }
+        }
+
+        /// <inheritdoc/>
+        internal override DependencyObject DependencyContainer
+        {
+            get { return VisualTreeHelper.GetParent(this); }
         }
 
         /// <inheritdoc/>
@@ -1295,18 +1271,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         protected internal virtual void RemoveLogicalChild(UIElement child)
         {
 
-        }
-
-        /// <inheritdoc/>
-        protected internal sealed override Object DependencyDataSource
-        {
-            get { return IsComponent ? Control : ViewModel; }
-        }
-
-        /// <inheritdoc/>
-        protected internal sealed override DependencyObject DependencyContainer
-        {
-            get { return VisualTreeHelper.GetParent(this); }
         }
 
         /// <summary>
@@ -1574,7 +1538,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             VisualTreeHelper.ForEachChild<UIElement>(this, this, (child, state) =>
             {
-                child.Position();
+                child.Position(Size2D.Zero);
                 child.PositionChildren();
             });
         }
@@ -1893,7 +1857,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             var oldAbsolutePosition = AbsolutePosition;
 
-            Position();
+            Position(mostRecentPositionOffset);
 
             if (!oldAbsolutePosition.Equals(AbsolutePosition))
             {
@@ -1960,63 +1924,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                     }
                 }
             }
-        }
-
-        /// <summary>
-        /// Updates the value of the <see cref="Control"/> property.
-        /// </summary>
-        private void CacheControl()
-        {
-            if (namescope != null)
-            {
-                UnregisterElementFromNamescope(namescope);
-                namescope = null;
-            }
-
-            this.control = FindControl();
-
-            if (namescope == null)
-                namescope = FindNamescope();
-
-            if (namescope != null)
-                RegisterElementWithNamescope(namescope);
-        }
-
-        /// <summary>
-        /// Finds the element registration context for this element.
-        /// </summary>
-        /// <returns>The element registration context for this element.</returns>
-        private Namescope FindNamescope()
-        {
-            if (Control != null)
-            {
-                return Control.ComponentNamescope;
-            }
-            return (view == null) ? null : view.Namescope;
-        }
-
-        /// <summary>
-        /// Searches the element hierarchy for the control that owns
-        /// this element, if this element is a component.
-        /// </summary>
-        /// <returns>The control that owns this element, or <c>null</c> if this element is not a component.</returns>
-        private Control FindControl()
-        {
-            if (Parent is Control && ((Control)Parent).ComponentRoot == this)
-                return (Control)Parent;
-
-            var current = Parent;
-            while (current != null)
-            {
-                if (current is ContentControl)
-                    return null;
-
-                if (current.Control != null)
-                    return current.Control;
-
-                current = current.Parent;
-            }
-            return null;
         }
 
         /// <summary>
@@ -2099,7 +2006,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         private readonly String uvmlName;
         private PresentationFoundationView view;
         private UIElement parent;
-        private Control control = null;
         private Boolean isStyleValid;
         private Boolean isMeasureValid;
         private Boolean isArrangeValid;
@@ -2115,11 +2021,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         private ArrangeOptions mostRecentArrangeOptions;
         private RectangleD mostRecentFinalRect;
         private Size2D mostRecentAvailableSize;
+        private Size2D mostRecentPositionOffset;
         private Int32 layoutDepth;
         private Int32 logicalOrder;
 
         // State values.
-        private Namescope namescope;
         private Boolean isStyling;
         private Boolean isMeasuring;
         private Boolean isArranging;

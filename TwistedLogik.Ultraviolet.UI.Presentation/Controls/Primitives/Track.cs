@@ -67,12 +67,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         {
             get
             {
-                var owner = Control as ScrollBarBase;
+                var owner = TemplatedParent as ScrollBarBase;
                 return (owner == null) ? Double.NaN : owner.ViewportSize;
             }
             set
             {
-                var owner = Control as ScrollBarBase;
+                var owner = TemplatedParent as ScrollBarBase;
                 if (owner != null)
                 {
                     owner.ViewportSize = value;
@@ -87,12 +87,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         {
             get
             {
-                var owner = Control as RangeBase;
+                var owner = TemplatedParent as RangeBase;
                 return (owner == null) ? 0 : owner.Minimum;
             }
             set
             {
-                var owner = Control as RangeBase;
+                var owner = TemplatedParent as RangeBase;
                 if (owner != null)
                 {
                     owner.Minimum = value;
@@ -107,12 +107,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         {
             get
             {
-                var owner = Control as RangeBase;
+                var owner = TemplatedParent as RangeBase;
                 return (owner == null) ? 0 : owner.Maximum;
             }
             set
             {
-                var owner = Control as RangeBase;
+                var owner = TemplatedParent as RangeBase;
                 if (owner != null)
                 {
                     owner.Maximum = value;
@@ -127,12 +127,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         {
             get
             {
-                var owner = Control as RangeBase;
+                var owner = TemplatedParent as RangeBase;
                 return (owner == null) ? 0 : owner.Value;
             }
             set
             {
-                var owner = Control as RangeBase;
+                var owner = TemplatedParent as RangeBase;
                 if (owner != null)
                 {
                     owner.Value = value;
@@ -344,7 +344,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// </summary>
         private void HandleDecreaseButtonClick(DependencyObject element, ref RoutedEventData data)
         {
-            var owner = Control as RangeBase;
+            var owner = TemplatedParent as RangeBase;
             if (owner != null)
             {
                 owner.DecreaseLarge();
@@ -362,7 +362,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// </summary>
         private void HandleIncreaseButtonClick(DependencyObject element, ref RoutedEventData data)
         {
-            var owner = Control as RangeBase;
+            var owner = TemplatedParent as RangeBase;
             if (owner != null)
             {
                 owner.IncreaseLarge();
@@ -397,7 +397,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
 
                 if (Value != oldValue)
                 {
-                    var scrollbar = Control as ScrollBarBase;
+                    var scrollbar = TemplatedParent as ScrollBarBase;
                     if (scrollbar != null)
                     {
                         scrollbar.RaiseScrollEvent(ScrollEventType.ThumbTrack);
@@ -433,7 +433,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             if (!thumbDragging)
                 return;
 
-            var scrollbar = Control as ScrollBarBase;
+            var scrollbar = TemplatedParent as ScrollBarBase;
             if (scrollbar != null)
             {
                 scrollbar.RaiseScrollEvent(ScrollEventType.EndScroll);

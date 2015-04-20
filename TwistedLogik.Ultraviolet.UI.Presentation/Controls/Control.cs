@@ -54,15 +54,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         internal void PopulateFieldsFromRegisteredElements()
         {
-            componentRegistry.PopulateFieldsFromRegisteredElements(this);
+            componentTemplateNamescope.PopulateFieldsFromRegisteredElements(this);
         }
 
         /// <summary>
-        /// Gets the namescope for the control's component definition.
+        /// Gets the namescope for the control's component template.
         /// </summary>
-        internal Namescope ComponentNamescope
+        internal Namescope ComponentTemplateNamescope
         {
-            get { return componentRegistry; }
+            get { return componentTemplateNamescope; }
         }
 
         /// <summary>
@@ -79,6 +79,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 if (componentRoot != null)
                     componentRoot.ChangeLogicalAndVisualParents(null, null);
 
+                componentTemplateNamescope.Clear();
                 componentRoot = value;
 
                 if (componentRoot != null)
@@ -173,13 +174,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             if (template == null)
                 return;
 
-            UvmlLoader.LoadComponentRoot(this, template);
+            UvmlLoader.LoadComponentTemplate(this, template);
         }
 
         // Property values.
         private UIElement componentRoot;
-
-        // The registry of components belonging to this control.
-        private readonly Namescope componentRegistry = new Namescope();
+        private readonly Namescope componentTemplateNamescope = new Namescope();
     }
 }

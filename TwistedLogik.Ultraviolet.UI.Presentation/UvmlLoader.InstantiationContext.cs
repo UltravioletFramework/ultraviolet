@@ -28,13 +28,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             /// </summary>
             /// <param name="uv">The Ultraviolet context.</param>
             /// <param name="viewModelType">The type of view model to which the view is bound.</param>
-            /// <param name="componentOwner">The current user control.</param>
+            /// <param name="templatedParent">The template parent to assign to elements instantiated by this context.</param>
             /// <param name="initialBindingContext">The initial binding context.</param>
-            public InstantiationContext(UltravioletContext uv, Type viewModelType, UIElement componentOwner, String initialBindingContext)
+            public InstantiationContext(UltravioletContext uv, Type viewModelType, DependencyObject templatedParent, String initialBindingContext)
             {
-                this.uv             = uv;
-                this.componentOwner = componentOwner;
-                this.viewModelType  = viewModelType;
+                this.uv              = uv;
+                this.templatedParent = templatedParent;
+                this.viewModelType   = viewModelType;
 
                 if (!String.IsNullOrEmpty(initialBindingContext))
                 {
@@ -72,13 +72,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             }
 
             /// <summary>
-            /// Gets or sets the component owner for the current context. Elements which are created when this
-            /// property has a non-<c>null</c> value are considered components of the component owner element.
+            /// Gets or sets the templated parent which will be assigned to elements
+            /// created within this instantiation context.
             /// </summary>
-            public UIElement ComponentOwner
+            public DependencyObject TemplatedParent
             {
-                get { return componentOwner; }
-                set { componentOwner = value; }
+                get { return templatedParent; }
+                set { templatedParent = value; }
             }
 
             /// <summary>
@@ -86,8 +86,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             /// </summary>
             public ContentPresenter ContentPresenter
             {
-                get { return componentContentViewer; }
-                set { componentContentViewer = value; }
+                get { return contentPresenter; }
+                set { contentPresenter = value; }
             }
 
             /// <summary>
@@ -138,8 +138,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             // Property values.
             private readonly UltravioletContext uv;
-            private UIElement componentOwner;
-            private ContentPresenter componentContentViewer;
+            private DependencyObject templatedParent;
+            private ContentPresenter contentPresenter;
             private String bindingContext;
             private Type viewModelType;
 

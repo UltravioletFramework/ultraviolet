@@ -24,6 +24,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
+        /// Gets or sets the maximum height of the combo box's drop-down list.
+        /// </summary>
+        public Double MaxDropDownHeight
+        {
+            get { return GetValue<Double>(MaxDropDownHeightProperty); }
+            set { SetValue<Double>(MaxDropDownHeightProperty, value); }
+        }
+
+        /// <summary>
         /// Gets or sets a value indicating whether the combo box's drop-down list is currently open.
         /// </summary>
         public Boolean IsDropDownOpen
@@ -49,6 +58,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// Occurs when the combo box's drop-down list is closed.
         /// </summary>
         public event UpfEventHandler DropDownClosed;
+
+        /// <summary>
+        /// Identifies the <see cref="MaxDropDownHeight"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty MaxDropDownHeightProperty = DependencyProperty.Register("MaxDropDownHeight", typeof(Double), typeof(ComboBox),
+            new PropertyMetadata<Double>(1080.0 / 3.0, PropertyMetadataOptions.None));
 
         /// <summary>
         /// Identifies the <see cref="IsDropDownOpen"/> dependency property.

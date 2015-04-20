@@ -39,7 +39,8 @@
                 VerticalAlignment="Stretch">
           <ScrollViewer Class="combobox-dropdown-scrollviewer"
                         HorizontalScrollBarVisibility="Disabled"
-                        VerticalScrollBarVisibility="Auto">
+                        VerticalScrollBarVisibility="Auto"
+                        MaxHeight="{{MaxDropDownHeight}}">
             
             <ItemsPanel HorizontalAlignment="Stretch"/>
 
