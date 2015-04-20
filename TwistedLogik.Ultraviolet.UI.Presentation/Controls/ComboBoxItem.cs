@@ -38,5 +38,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 
             base.OnMouseDown(device, button, ref data);
         }
+
+        protected override void OnContentChanged()
+        {
+            var comboBox = ItemsControl.ItemsControlFromItemContainer(this) as ComboBox;
+            if (comboBox != null)
+            {
+                comboBox.HandleItemChanged(this);
+            }
+            base.OnContentChanged();
+        }
     }
 }

@@ -1,6 +1,8 @@
 ﻿using System;
+using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet.Input;
 using TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives;
+using TwistedLogik.Ultraviolet.UI.Presentation.Input;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 {
@@ -22,6 +24,50 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
+        /// Gets or sets a value indicating whether the combo box's drop-down list is currently open.
+        /// </summary>
+        public Boolean IsDropDownOpen
+        {
+            get { return GetValue<Boolean>(IsDropDownOpenProperty); }
+            set { SetValue<Boolean>(IsDropDownOpenProperty, value); }
+        }
+
+        /// <summary>
+        /// Gets the item that is displayed in the combo box's selection box.
+        /// </summary>
+        public Object SelectionBoxItem
+        {
+            get { return GetValue<Object>(SelectionBoxItemProperty); }
+        }
+
+        /// <summary>
+        /// Occurs when the combo box's drop-down list is opened.
+        /// </summary>
+        public event UpfEventHandler DropDownOpened;
+
+        /// <summary>
+        /// Occurs when the combo box's drop-down list is closed.
+        /// </summary>
+        public event UpfEventHandler DropDownClosed;
+
+        /// <summary>
+        /// Identifies the <see cref="IsDropDownOpen"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty IsDropDownOpenProperty = DependencyProperty.Register("IsDropDownOpen", typeof(Boolean), typeof(ComboBox),
+            new PropertyMetadata<Boolean>(CommonBoxedValues.Boolean.False, HandleIsDropDownOpenChanged));
+
+        /// <summary>
+        /// The private access key for the <see cref="SelectionBoxItem"/> read-only dependency property.
+        /// </summary>
+        private static readonly DependencyPropertyKey SelectionBoxItemPropertyKey = DependencyProperty.RegisterReadOnly("SelectionBoxItem", typeof(Object), typeof(ComboBox),
+            new PropertyMetadata<Boolean>(null));
+
+        /// <summary>
+        /// Identifies the <see cref="SelectionBoxItem"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty SelectionBoxItemProperty = SelectionBoxItemPropertyKey.DependencyProperty;
+
+        /// <summary>
         /// Called to inform the combo box that one of its items was clicked.
         /// </summary>
         /// <param name="container">The item container that was clicked.</param>
@@ -41,11 +87,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 
                 EndChangeSelection();
             }
+
+            IsDropDownOpen = false;
         }
 
-        private Double ActualWidth
+        /// <summary>
+        /// Called to inform the combo box that one of its items was changed.
+        /// </summary>
+        /// <param name="container">The item container that was changed.</param>
+        internal void HandleItemChanged(ComboBoxItem container)
         {
-            get { return AbsoluteBounds.Width; }
+            UpdateSelectionBox();
         }
 
         /// <inheritdoc/>
@@ -76,28 +128,98 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             return cbi.Content == item;
         }
 
-        protected override void OnSelectedItemAdded(object item)
+        /// <inheritdoc/>
+        protected override void OnSelectionChanged()
         {
-            base.OnSelectedItemAdded(item);
+            UpdateSelectionBox();
+            base.OnSelectionChanged();
         }
 
-        protected override void OnSelectedItemRemoved(object item)
+        /// <inheritdoc/>
+        protected override void OnMouseUp(MouseDevice device, MouseButton button, ref RoutedEventData data)
         {
-            base.OnSelectedItemRemoved(item);
+            if (button == TwistedLogik.Ultraviolet.Input.MouseButton.Left)
+            {
+                IsDropDownOpen = false;
+            }
+            base.OnMouseUp(device, button, ref data);
         }
 
         /// <summary>
-        /// Handles the <see cref="UIElement.PreviewMouseDown"/> event for the PART_Input component.
+        /// Raises the <see cref="DropDownOpened"/> event.
         /// </summary>
-        private void PART_Input_PreviewMouseDown(DependencyObject element, MouseDevice device, MouseButton button, ref RoutedEventData data)
+        protected virtual void OnDropDownOpened()
         {
-            if (PART_Popup != null)
+            var temp = DropDownOpened;
+            if (temp != null)
             {
-                PART_Popup.IsOpen = !PART_Popup.IsOpen;
+                temp(this);
             }
         }
 
+        /// <summary>
+        /// Raises the <see cref="DropDownClosed"/> event.
+        /// </summary>
+        protected virtual void OnDropDownClosed()
+        {
+            var temp = DropDownClosed;
+            if (temp != null)
+            {
+                temp(this);
+            }
+        }
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="IsDropDownOpen"/> dependency property changes.
+        /// </summary>
+        private static void HandleIsDropDownOpenChanged(DependencyObject dobj, Boolean oldValue, Boolean newValue)
+        {
+            var comboBox = (ComboBox)dobj;
+
+            if (newValue)
+            {
+                Mouse.Capture(comboBox.View, comboBox, CaptureMode.SubTree);
+
+                if (comboBox.PART_Arrow != null)
+                {
+                    comboBox.PART_Arrow.Classes.Add("combobox-arrow-open");
+                    comboBox.PART_Arrow.Classes.Remove("combobox-arrow-closed");
+                }
+
+                comboBox.OnDropDownOpened();
+            }
+            else
+            {
+                if (comboBox.IsMouseCaptured)
+                    Mouse.Capture(comboBox.View, null, CaptureMode.None);
+
+                if (comboBox.PART_Arrow != null)
+                {
+                    comboBox.PART_Arrow.Classes.Remove("combobox-arrow-open");
+                    comboBox.PART_Arrow.Classes.Add("combobox-arrow-closed");
+                }
+
+                comboBox.OnDropDownClosed();
+            }
+        }
+
+        /// <summary>
+        /// Updates the selection box.
+        /// </summary>
+        private void UpdateSelectionBox()
+        {
+            var selectionBoxItem = (Object)null;
+
+            var contentControl = SelectedItem as ContentControl;
+            if (contentControl != null)
+            {
+                selectionBoxItem = contentControl.Content;
+            }
+
+            SetValue<Object>(SelectionBoxItemPropertyKey, selectionBoxItem ?? String.Empty);
+        }
+
         // Component references.
-        private readonly Popup PART_Popup = null;
+        private readonly UIElement PART_Arrow = null;
     }
 }

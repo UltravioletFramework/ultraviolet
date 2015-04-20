@@ -3,7 +3,7 @@
   <Stylesheet>DebugViewScreenStyles.uvss</Stylesheet>
   <View ViewModelType="UvDebugSandbox.UI.Screens.DebugViewModel, UvDebugSandbox">
 
-    <ComboBox Margin="100" Width="200" Height="32">
+    <ComboBox Margin="100" Width="200" SelectedIndex="1">
       <ComboBoxItem>Item 1</ComboBoxItem>
       <ComboBoxItem>Item 2</ComboBoxItem>
       <ComboBoxItem>Item 3</ComboBoxItem>

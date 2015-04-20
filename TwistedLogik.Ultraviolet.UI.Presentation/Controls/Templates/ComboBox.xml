@@ -1,22 +1,52 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ComponentTemplate>
-  <Canvas Class="border-component" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-    
-    <TextBox Name="PART_Input" Canvas.Left="0" Canvas.Top="0" Canvas.Right="0" Canvas.Bottom="0" 
-             Focusable="false" PreviewMouseDown="PART_Input_PreviewMouseDown"/>    
-    
-    <Popup Name="PART_Popup" PlacementTarget="PART_Input">
-      <Canvas Class="combobox-dropdown" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" MinWidth="{{ActualWidth}}">
-        <Rectangle Class="combobox-dropdown-background"
-          Canvas.Left="0" Canvas.Right="0" Canvas.Top="0" Canvas.Bottom="0"/>
-        <Border Class="combobox-dropdown-border" HorizontalContentAlignment="Stretch"
-          Canvas.Left="0" Canvas.Right="0" Canvas.Top="0" Canvas.Bottom="0">
-          <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+  <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="*"/>
+      <ColumnDefinition Width="Auto"/>
+    </Grid.ColumnDefinitions>
+
+    <!-- Selection box -->
+    <ToggleButton Name="PART_SelectionBox"
+                  Class="combobox-selectionbox"
+                  Grid.Row="0"
+                  Grid.Column="0"
+                  Grid.ColumnSpan="2"
+                  HorizontalContentAlignment="Left"
+                  HorizontalAlignment="Stretch"
+                  VerticalAlignment="Stretch"
+                  IsChecked="{{IsDropDownOpen}}">{{SelectionBoxItem}}</ToggleButton>
+
+    <Image Name="PART_Arrow" 
+           Class="combobox-arrow combobox-arrow-closed" 
+           Grid.Row="0"
+           Grid.Column="1" 
+           IsHitTestVisible="false"/>
+
+    <!-- Popup list -->
+    <Popup Name="PART_Popup" 
+           Class="combobox-dropdown-popup" 
+           PlacementTarget="PART_SelectionBox"
+           IsOpen="{{IsDropDownOpen}}">
+      <Grid Class="combobox-dropdown-grid" 
+            MinWidth="{{ActualWidth}}">
+        <Rectangle Class="combobox-dropdown-background" 
+                   HorizontalAlignment="Stretch" 
+                   VerticalAlignment="Stretch"/>
+        <Border Class="combobox-dropdown-border" 
+                HorizontalContentAlignment="Stretch" 
+                HorizontalAlignment="Stretch" 
+                VerticalAlignment="Stretch">
+          <ScrollViewer Class="combobox-dropdown-scrollviewer"
+                        HorizontalScrollBarVisibility="Disabled"
+                        VerticalScrollBarVisibility="Auto">
+            
             <ItemsPanel HorizontalAlignment="Stretch"/>
+
           </ScrollViewer>
         </Border>
-      </Canvas>
+      </Grid>
     </Popup>
-  
-  </Canvas>
+
+  </Grid>
 </ComponentTemplate>

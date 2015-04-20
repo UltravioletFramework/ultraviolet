@@ -133,7 +133,7 @@ togglebutton .button-focus
 	{
 		animation opacity
 		{
-			keyframe 0 { 1 }
+			keyframe 0 { 0 }
 		}
 	}
 }
@@ -491,4 +491,24 @@ listboxitem
 comboboxitem
 {
 	padding: 8;
+}
+
+.combobox-arrow
+{
+	width: 22;
+	height: 22;
+}
+
+.combobox-arrow-open
+{
+	margin: 0 10 6 0;
+	source-image: #Global:Textures:DebugUI 77 839 36 36;
+	source-color: #ff000000;
+}
+
+.combobox-arrow-closed
+{
+	margin: 0 6 6 0;
+	source-image: #Global:Textures:DebugUI 77 839 36 36;
+	source-color: #ff000000;
 }

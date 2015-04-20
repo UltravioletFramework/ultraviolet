@@ -193,7 +193,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 return;
 
             var elementHadMouseCapture = elementWithMouseCapture;
-            elementWithMouseCapture = null;
+            elementWithMouseCapture    = null;
+            mouseCaptureMode           = CaptureMode.None;
 
             var uiElement = elementHadMouseCapture as UIElement;
             if (uiElement != null)
@@ -859,7 +860,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var current = (DependencyObject)element;
             while (current != null)
             {
-                if (current == element)
+                if (current == elementWithMouseCapture)
                     return true;
 
                 current = VisualTreeHelper.GetParent(current) ?? LogicalTreeHelper.GetParent(current);
