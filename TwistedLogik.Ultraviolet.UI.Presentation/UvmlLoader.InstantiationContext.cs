@@ -82,15 +82,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             }
 
             /// <summary>
-            /// Gets or sets the component content presenter associated with the current context.
-            /// </summary>
-            public ContentPresenter ContentPresenter
-            {
-                get { return contentPresenter; }
-                set { contentPresenter = value; }
-            }
-
-            /// <summary>
             /// Gets or sets the current binding context. The binding context is prepended to all binding
             /// expressions within the instantiation context.
             /// </summary>
@@ -139,7 +130,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             // Property values.
             private readonly UltravioletContext uv;
             private DependencyObject templatedParent;
-            private ContentPresenter contentPresenter;
             private String bindingContext;
             private Type viewModelType;
 

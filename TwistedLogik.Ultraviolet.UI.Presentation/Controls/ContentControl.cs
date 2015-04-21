@@ -130,15 +130,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             get { return treatContentAsLogicalChild; }
         }
 
-        /// <summary>
-        /// Gets the control's content presenter.
-        /// </summary>
-        internal ContentPresenter ContentPresenter
-        {
-            get { return contentPresenter; }
-            set { contentPresenter = value; }
-        }
-
         /// <inheritdoc/>
         protected internal override void RemoveLogicalChild(UIElement child)
         {
@@ -219,7 +210,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 {
                     oldElement.ChangeLogicalParent(null);
                 }
-                oldElement.ChangeVisualParent(null);
             }
 
             control.contentElement = control.Content as UIElement;
@@ -232,11 +222,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 {
                     newElement.ChangeLogicalParent(control);
                 }
-                newElement.ChangeVisualParent(control.ContentPresenter);
             }
-
-            if (control.contentPresenter != null)
-                control.contentPresenter.InvalidateMeasure();
 
             control.OnContentChanged();
         }
@@ -259,7 +245,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 
         // State values.
         private UIElement contentElement;
-        private ContentPresenter contentPresenter;
         private Boolean treatContentAsLogicalChild = true;
     }
 }

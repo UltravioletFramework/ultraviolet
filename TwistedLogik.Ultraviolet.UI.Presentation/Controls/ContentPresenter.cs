@@ -280,7 +280,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         private static void HandleContentChanged(DependencyObject dobj, Object oldValue, Object newValue)
         {
-            // TODO
+            var contentPresenter = (ContentPresenter)dobj;
+
+            var oldElement = oldValue as UIElement;
+            if (oldElement != null)
+            {
+                oldElement.ChangeVisualParent(null);
+            }
+
+            var newElement = newValue as UIElement;
+            if (newElement != null)
+            {
+                newElement.ChangeVisualParent(contentPresenter);
+            }
         }
 
         /// <summary>
@@ -288,7 +300,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         private static void HandleContentStringFormatChanged(DependencyObject dobj, String oldValue, String newValue)
         {
-            // TODO
+            var contentPresenter = (ContentPresenter)dobj;
+            contentPresenter.UpdateTextParserCache();
         }
 
         /// <summary>
@@ -320,7 +333,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 if (textParserResult == null)
                     textParserResult = new TextParserResult();
 
-                var contentAsString = content.ToString();
+                var contentAsString = String.Format(ContentStringFormat ?? "{0}", content);
                 View.Resources.TextRenderer.Parse(contentAsString, textParserResult);
             }
 

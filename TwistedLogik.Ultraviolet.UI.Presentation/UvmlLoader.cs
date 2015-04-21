@@ -119,16 +119,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var componentRoot           = InstantiateElement(uv, null, rootElement, context);
             var componentRootObjectTree = BuildObjectTree(uv, rootElement, componentRoot, context);
 
-            var contentControl = control as ContentControl;
-            if (contentControl != null)
-            {
-                if (context.ContentPresenter == null)
-                {
-                    throw new InvalidOperationException(PresentationStrings.ContentControlRequiresPresenter.Format(control.GetType().Name));
-                }
-                contentControl.ContentPresenter = context.ContentPresenter;
-            }
-
             control.ComponentRoot = componentRoot;
             control.PopulateFieldsFromRegisteredElements();
 
@@ -270,11 +260,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var popupControl = parent as Popup;
             if (popupControl != null)
                 popupControl.Child = instance;
-
-            if (context.TemplatedParent != null && instance is ContentPresenter)
-            {
-                context.ContentPresenter = (ContentPresenter)instance;
-            }
 
             var fe = instance as FrameworkElement;
             if (fe != null)
@@ -515,6 +500,46 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             PopulateElementPropertiesFromElements(uv, uiElement, xmlElement, context);
             PopulateElementDefaultProperty(uv, uiElement, xmlElement, context);
+
+            var contentPresenter = uiElement as ContentPresenter;
+            if (contentPresenter != null)
+            {
+                PopulateAliasedContentPresenterProperties(uv, contentPresenter);
+            }
+        }
+
+        /// <summary>
+        /// When creating an instance of <see cref="ContentPresenter"/>, this method is responsible for binding its aliased
+        /// properties (i.e. <see cref="ContentPresenter.Content"/> and <see cref="ContentPresenter.ContentStringFormat"/>) to
+        /// the presenter's templated parent.
+        /// </summary>
+        private static void PopulateAliasedContentPresenterProperties(UltravioletContext uv, ContentPresenter contentPresenter)
+        {
+            if (contentPresenter.HasDefinedValue(ContentPresenter.ContentProperty) || contentPresenter.TemplatedParent == null)
+                return;
+
+            var alias = contentPresenter.ContentSource ?? "Content";
+            if (alias == String.Empty)
+                return;
+
+            var templateType = contentPresenter.TemplatedParent.GetType();
+
+            var dpAliasedContent = DependencyProperty.FindByName(alias, templateType);
+            if (dpAliasedContent != null)
+            {
+                contentPresenter.BindValue(ContentPresenter.ContentProperty, templateType, 
+                    "{{" + dpAliasedContent.Name + "}}");
+            }
+
+            if (!contentPresenter.HasDefinedValue(ContentPresenter.ContentStringFormatProperty))
+            {
+                var dpAliasedContentStringFormat = DependencyProperty.FindByName(alias + "StringFormat", templateType);
+                if (dpAliasedContentStringFormat != null)
+                {
+                    contentPresenter.BindValue(ContentPresenter.ContentStringFormatProperty, templateType,
+                        "{{" + dpAliasedContentStringFormat.Name + "}}");
+                }
+            }
         }
 
         /// <summary>
