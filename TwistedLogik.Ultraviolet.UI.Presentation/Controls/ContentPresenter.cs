@@ -1,5 +1,7 @@
 ﻿using System;
+using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
 using TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text;
+using TwistedLogik.Ultraviolet.UI.Presentation.Documents;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 {
@@ -7,7 +9,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
     /// Represents an element which is used to indicate the position of child content within a component template.
     /// </summary>
     [UvmlKnownType]
-    public class ContentPresenter : FrameworkElement
+    public class ContentPresenter : FrameworkElement, ITextHost
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ContentPresenter"/> class.
@@ -18,6 +20,27 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             : base(uv, name)
         {
 
+        }
+
+        /// <inheritdoc/>
+        public SourcedResource<SpriteFont> Font
+        {
+            get { return GetValue<SourcedResource<SpriteFont>>(FontProperty); }
+            set { SetValue<SourcedResource<SpriteFont>>(FontProperty, value); }
+        }
+
+        /// <inheritdoc/>
+        public Color FontColor
+        {
+            get { return GetValue<Color>(FontColorProperty); }
+            set { SetValue<Color>(FontColorProperty, value); }
+        }
+
+        /// <inheritdoc/>
+        public SpriteFontStyle FontStyle
+        {
+            get { return GetValue<SpriteFontStyle>(FontStyleProperty); }
+            set { SetValue<SpriteFontStyle>(FontStyleProperty, value); }
         }
 
         /// <summary>
@@ -55,6 +78,22 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
+        /// Identifies the <see cref="Font"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty FontProperty = TextElement.FontProperty.AddOwner(typeof(ContentPresenter),
+            new PropertyMetadata<SourcedResource<SpriteFont>>(HandleFontChanged));
+
+        /// <summary>
+        /// Identifies the <see cref="FontColor"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty FontColorProperty = TextElement.FontColorProperty.AddOwner(typeof(ContentPresenter));
+
+        /// <summary>
+        /// Identifies the <see cref="FontStyle"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty FontStyleProperty = TextElement.FontStyleProperty.AddOwner(typeof(ContentPresenter));
+
+        /// <summary>
         /// Identifies the <see cref="Content"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty ContentProperty = DependencyProperty.Register("Content", typeof(Object), typeof(ContentPresenter),
@@ -79,6 +118,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             new PropertyMetadata<Point2D>(HandleContentOffsetChanged));
 
         /// <inheritdoc/>
+        protected override void ReloadContentCore(Boolean recursive)
+        {
+            ReloadFont();
+
+            base.ReloadContentCore(recursive);
+        }
+
+        /// <inheritdoc/>
         protected override void CacheLayoutParametersCore()
         {
             containingContentControl = (TemplatedParent ?? Parent) as ContentControl;
@@ -89,16 +136,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <inheritdoc/>
         protected override void DrawOverride(UltravioletTime time, DrawingContext dc)
         {
-            if (ContainingContentControl != null)
+            if (textLayoutResult != null && textLayoutResult.Count > 0)
             {
-                if (textLayoutResult != null && textLayoutResult.Count > 0)
-                {
-                    var position = Display.DipsToPixels(AbsolutePosition + ContentOffset);
-                    var color    = ContainingContentControl.FontColor;
+                var position = Display.DipsToPixels(AbsolutePosition + ContentOffset);
+                var color    = FontColor;
 
-                    View.Resources.TextRenderer.Draw(dc.SpriteBatch, textLayoutResult, (Vector2)position, color);
-                }
+                View.Resources.TextRenderer.Draw(dc.SpriteBatch, textLayoutResult, (Vector2)position, color);
             }
+
             base.DrawOverride(time, dc);
         }
 
@@ -256,6 +301,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
+        /// Occurs when the value of the <see cref="Font"/> dependency property changes.
+        /// </summary>
+        private static void HandleFontChanged(DependencyObject dobj, SourcedResource<SpriteFont> oldValue, SourcedResource<SpriteFont> newValue)
+        {
+            ((ContentPresenter)dobj).ReloadFont();
+        }
+
+        /// <summary>
         /// Occurs when the value of the <see cref="Content"/> dependency property changes.
         /// </summary>
         private static void HandleContentChanged(DependencyObject dobj, Object oldValue, Object newValue)
@@ -292,6 +345,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             var presenter = (ContentPresenter)dobj;
             presenter.Position(presenter.MostRecentPositionOffset);
             presenter.PositionChildren();
+        }
+
+        /// <summary>
+        /// Reloads the <see cref="Font"/> resource.
+        /// </summary>
+        protected void ReloadFont()
+        {
+            LoadResource(Font);
         }
 
         /// <summary>
@@ -341,7 +402,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 if (textLayoutResult == null)
                     textLayoutResult = new TextLayoutResult();
 
-                if (container.Font.IsLoaded)
+                var font = Font;
+                if (font.IsLoaded)
                 {
                     var availableSizeInPixels = Display.DipsToPixels(availableSize);
 
@@ -349,9 +411,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                     var vAlign = container.VerticalContentAlignment;
 
                     var flags    = LayoutUtil.ConvertAlignmentsToTextFlags(hAlign, vAlign);
-                    var settings = new TextLayoutSettings(container.Font,
+                    var settings = new TextLayoutSettings(font,
                         (Int32)availableSizeInPixels.Width,
-                        (Int32)availableSizeInPixels.Height, flags, container.FontStyle);
+                        (Int32)availableSizeInPixels.Height, flags, FontStyle);
                     View.Resources.TextRenderer.CalculateLayout(textParserResult, textLayoutResult, settings);
                 }
             }
