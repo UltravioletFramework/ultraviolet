@@ -164,6 +164,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Gets a value indicating whether this property's value has been defined.
+        /// </summary>
+        Boolean HasDefinedValue
+        {
+            get;
+        }
+
+        /// <summary>
         /// Gets the clock which is driving the value's current animation, if any.
         /// </summary>
         Clock AnimationClock
