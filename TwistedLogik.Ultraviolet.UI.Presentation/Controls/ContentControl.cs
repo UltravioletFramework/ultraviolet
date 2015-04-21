@@ -39,6 +39,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
+        /// Gets or sets the formatting string used to format the content control's content when that content
+        /// is being displayed as string.
+        /// </summary>
+        public String ContentStringFormat
+        {
+            get { return GetValue<String>(ContentStringFormatProperty); }
+            set { SetValue<String>(ContentStringFormatProperty, value); }
+        }
+
+        /// <summary>
         /// Gets a value indicating whether the control has any content.
         /// </summary>
         public Boolean HasContent
@@ -78,6 +88,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         public static readonly DependencyProperty ContentProperty = DependencyProperty.Register("Content", typeof(Object), typeof(ContentControl),
             new PropertyMetadata<Object>(null, PropertyMetadataOptions.AffectsMeasure | PropertyMetadataOptions.CoerceObjectToString, HandleContentChanged));
+
+        /// <summary>
+        /// Identifies the <see cref="ContentStringFormat"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty ContentStringFormatProperty = DependencyProperty.Register("ContentStringFormat", typeof(String), typeof(ContentControl),
+            new PropertyMetadata<String>(null, PropertyMetadataOptions.AffectsMeasure | PropertyMetadataOptions.CoerceObjectToString, HandleContentStringFormatChanged));
 
         /// <summary>
         /// The private access key for the <see cref="HasContent"/> read-only dependency property.
@@ -223,6 +239,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 control.contentPresenter.InvalidateMeasure();
 
             control.OnContentChanged();
+        }
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="ContentStringFormat"/> dependency property changes.
+        /// </summary>
+        private static void HandleContentStringFormatChanged(DependencyObject dobj, String oldValue, String newValue)
+        {
+            // TODO
         }
 
         /// <summary>

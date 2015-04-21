@@ -20,11 +20,57 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 
         }
 
+        /// <summary>
+        /// Gets or sets the content presenter's content.
+        /// </summary>
+        public Object Content
+        {
+            get { return GetValue<Object>(ContentProperty); }
+            set { SetValue<Object>(ContentProperty, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets the formatting string used to format the content presenter's content when that content
+        /// is being displayed as string.
+        /// </summary>
+        public String ContentStringFormat
+        {
+            get { return GetValue<String>(ContentStringFormatProperty); }
+            set { SetValue<String>(ContentStringFormatProperty, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets the name to use when aliasing the <see cref="Content"/> and <see cref="ContentStringFormat"/> properties.
+        /// </summary>
+        public String ContentSource
+        {
+            get { return GetValue<String>(ContentSourceProperty); }
+            set { SetValue<String>(ContentSourceProperty, value); }
+        }
+
         /// <inheritdoc/>
         public Point2D ContentOffset
         {
             get { return GetValue<Point2D>(ContentOffsetProperty); }
         }
+
+        /// <summary>
+        /// Identifies the <see cref="Content"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty ContentProperty = DependencyProperty.Register("Content", typeof(Object), typeof(ContentPresenter),
+            new PropertyMetadata<Object>(null, PropertyMetadataOptions.AffectsMeasure | PropertyMetadataOptions.CoerceObjectToString, HandleContentChanged));
+
+        /// <summary>
+        /// Identifies the <see cref="ContentStringFormat"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty ContentStringFormatProperty = DependencyProperty.Register("ContentStringFormat", typeof(String), typeof(ContentPresenter),
+            new PropertyMetadata<String>(null, PropertyMetadataOptions.AffectsMeasure, HandleContentStringFormatChanged));
+
+        /// <summary>
+        /// Identifies the <see cref="ContentSource"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty ContentSourceProperty = DependencyProperty.Register("ContentSource", typeof(String), typeof(ContentPresenter),
+            new PropertyMetadata<String>());
 
         /// <summary>
         /// Identifies the <see cref="ContentOffset"/> dependency property.
@@ -227,6 +273,22 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 }
                 return VerticalAlignment.Top;
             }
+        }
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="Content"/> dependency property changes.
+        /// </summary>
+        private static void HandleContentChanged(DependencyObject dobj, Object oldValue, Object newValue)
+        {
+            // TODO
+        }
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="ContentStringFormat"/> dependency property changes.
+        /// </summary>
+        private static void HandleContentStringFormatChanged(DependencyObject dobj, String oldValue, String newValue)
+        {
+            // TODO
         }
 
         /// <summary>
