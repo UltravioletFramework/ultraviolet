@@ -432,7 +432,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <returns>The logical child of this element with the specified index.</returns>
         protected internal virtual UIElement GetLogicalChild(Int32 childIndex)
         {
-            throw new ArgumentOutOfRangeException("ix");
+            throw new ArgumentOutOfRangeException("childIndex");
         }
 
         /// <summary>

@@ -74,14 +74,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         {
             get
             {
-                var container = ContainingContentControl;
-                if (container != null)
+                var contentElement = Content as FrameworkElement;
+                if (contentElement != null)
                 {
-                    var contentElement = container.Content as FrameworkElement;
-                    if (contentElement != null)
-                    {
-                        return contentElement.HorizontalAlignment;
-                    }
+                    return contentElement.HorizontalAlignment;
                 }
                 return HorizontalAlignment.Stretch;
             }
@@ -92,14 +88,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         {
             get
             {
-                var container = ContainingContentControl;
-                if (container != null)
+                var contentElement = Content as FrameworkElement;
+                if (contentElement != null)
                 {
-                    var contentElement = container.Content as FrameworkElement;
-                    if (contentElement != null)
-                    {
-                        return contentElement.VerticalAlignment;
-                    }
+                    return contentElement.VerticalAlignment;
                 }
                 return VerticalAlignment.Stretch;
             }

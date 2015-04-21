@@ -105,10 +105,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <inheritdoc/>
         protected override Size2D MeasureOverride(Size2D availableSize)
         {
-            if (ContainingContentControl == null)
-                return Size2D.Zero;
+            var content = Content;
 
-            var content = ContainingContentControl.Content;
             var contentText = content as String;
             if (contentText != null)
             {
@@ -141,11 +139,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <inheritdoc/>
         protected override Size2D ArrangeOverride(Size2D finalSize, ArrangeOptions options)
         {
-            var container = ContainingContentControl;
-            if (container == null)
-                return finalSize;
+            var content = Content;
 
-            var content = container.Content;
             var contentText = content as String;
             if (contentText != null)
             {
@@ -177,41 +172,29 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <inheritdoc/>
         protected override RectangleD? ClipCore()
         {
-            if (ContainingContentControl != null)
+            var contentElement = Content as UIElement;
+            if (contentElement != null)
             {
-                var contentElement = ContainingContentControl.Content as UIElement;
-                if (contentElement != null)
+                if (contentElement.RenderSize.Width > RenderSize.Width || 
+                    contentElement.RenderSize.Height > RenderSize.Height)
                 {
-                    if (contentElement.RenderSize.Width > RenderSize.Width || 
-                        contentElement.RenderSize.Height > RenderSize.Height)
-                    {
-                        return AbsoluteBounds;
-                    }
+                    return AbsoluteBounds;
                 }
             }
+
             return base.ClipCore();
         }
 
         /// <inheritdoc/>
         protected internal override UIElement GetLogicalChild(Int32 childIndex)
         {
-            if (ContainingContentControl == null || ContainingContentControl.TreatContentAsLogicalChild)
-                throw new ArgumentOutOfRangeException("childIndex");
-
-            var contentElement = ContainingContentControl.Content as UIElement;
-            if (contentElement == null || childIndex != 0)
-                throw new ArgumentOutOfRangeException("childIndex");
-
-            return contentElement;
+            return base.GetLogicalChild(childIndex);
         }
 
         /// <inheritdoc/>
         protected internal override UIElement GetVisualChild(Int32 childIndex)
         {
-            if (ContainingContentControl == null)
-                throw new ArgumentOutOfRangeException("childIndex");
-
-            var contentElement = ContainingContentControl.Content as UIElement;
+            var contentElement = Content as UIElement;
             if (contentElement == null || childIndex != 0)
                 throw new ArgumentOutOfRangeException("childIndex");
 
@@ -223,10 +206,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         {
             get
             {
-                if (ContainingContentControl == null || ContainingContentControl.TreatContentAsLogicalChild)
-                    return 0;
-
-                return ContainingContentControl.Content is UIElement ? 1 : 0;
+                return base.LogicalChildrenCount;
             }
         }
 
@@ -235,7 +215,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         {
             get 
             {
-                return (ContainingContentControl != null && ContainingContentControl.Content is UIElement) ? 1 : 0;
+                return Content is UIElement ? 1 : 0;
             }
         }
 
@@ -322,10 +302,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             if (textParserResult != null)
                 textParserResult.Clear();
 
-            if (View == null || ContainingContentControl == null)
+            if (View == null)
                 return;
 
-            var content = ContainingContentControl.Content;
+            var content = Content;
 
             var contentElement = content as UIElement;
             if (contentElement == null)
@@ -353,7 +333,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 return;
 
             var container = ContainingContentControl;
-            var content   = container.Content;
+            var content   = Content;
 
             var contentElement = content as UIElement;
             if (contentElement == null)
