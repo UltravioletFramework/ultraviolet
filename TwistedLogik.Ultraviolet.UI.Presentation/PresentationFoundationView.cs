@@ -854,8 +854,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (mouseCaptureMode == CaptureMode.None)
                 return false;
 
-            if (mouseCaptureMode == CaptureMode.Element && uiElement == elementWithMouseCapture)
-                return true;
+            if (mouseCaptureMode == CaptureMode.Element)
+                return uiElement == elementWithMouseCapture;
 
             var current = (DependencyObject)element;
             while (current != null)

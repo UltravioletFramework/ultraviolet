@@ -35,9 +35,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <inheritdoc/>
         protected override void OnValueChanged()
         {
-            if (Track != null)
+            if (PART_Track != null)
             {
-                Track.InvalidateArrange();
+                PART_Track.InvalidateArrange();
             }
             base.OnValueChanged();
         }
@@ -113,6 +113,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         }
 
         // Component references.
-        private readonly Track Track = null;
+        private readonly Track PART_Track = null;
     }
 }

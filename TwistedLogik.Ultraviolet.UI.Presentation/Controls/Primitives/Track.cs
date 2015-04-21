@@ -381,7 +381,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         private void HandleThumbPreviewMouseMove(DependencyObject element, MouseDevice device, Double x, Double y, Double dx, Double dy, ref RoutedEventData data)
         {
             var button = element as Button;
-            if (button != null && button.IsPressed)
+            if (button != null && button.IsMouseCaptured)
             {
                 var oldValue = Value;
                 if (Orientation == Orientation.Vertical)
