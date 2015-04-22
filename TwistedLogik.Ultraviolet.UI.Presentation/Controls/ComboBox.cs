@@ -50,6 +50,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
+        /// Gets or sets the formatting string used to format the item in the selection box.
+        /// </summary>
+        public String SelectionBoxItemStringFormat
+        {
+            get { return GetValue<String>(SelectionBoxItemStringFormatProperty); }
+        }
+
+        /// <summary>
         /// Occurs when the combo box's drop-down list is opened.
         /// </summary>
         public event UpfEventHandler DropDownOpened;
@@ -81,6 +89,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// Identifies the <see cref="SelectionBoxItem"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty SelectionBoxItemProperty = SelectionBoxItemPropertyKey.DependencyProperty;
+
+        /// <summary>
+        /// The private access key for the <see cref="SelectionBoxItemStringFormat"/> read-only dependency property.
+        /// </summary>
+        private static readonly DependencyPropertyKey SelectionBoxItemStringFormatPropertyKey = DependencyProperty.RegisterReadOnly("SelectionBoxItemStringFormat", typeof(String), typeof(ComboBox),
+            new PropertyMetadata<String>(null));
+
+        /// <summary>
+        /// Identifies the <see cref="SelectionBoxItemStringFormat"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty SelectionBoxItemStringFormatProperty = SelectionBoxItemStringFormatPropertyKey.DependencyProperty;
 
         /// <summary>
         /// Called to inform the combo box that one of its items was clicked.
@@ -223,15 +242,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         private void UpdateSelectionBox()
         {
-            var selectionBoxItem = (Object)null;
+            var selectionBoxItem             = (Object)null;
+            var selectionBoxItemStringFormat = ItemStringFormat;
 
             var contentControl = SelectedItem as ContentControl;
             if (contentControl != null)
             {
-                selectionBoxItem = contentControl.Content;
+                selectionBoxItem             = contentControl.Content;
+                selectionBoxItemStringFormat = contentControl.ContentStringFormat;
             }
 
             SetValue<Object>(SelectionBoxItemPropertyKey, selectionBoxItem ?? String.Empty);
+            SetValue<String>(SelectionBoxItemStringFormatPropertyKey, selectionBoxItemStringFormat);
         }
 
         // Component references.

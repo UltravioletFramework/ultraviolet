@@ -70,34 +70,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <inheritdoc/>
-        protected internal override HorizontalAlignment ActualHorizontalContentAlignment
-        {
-            get
-            {
-                var contentElement = Content as FrameworkElement;
-                if (contentElement != null)
-                {
-                    return contentElement.HorizontalAlignment;
-                }
-                return HorizontalAlignment.Stretch;
-            }
-        }
-
-        /// <inheritdoc/>
-        protected internal override VerticalAlignment ActualVerticalContentAlignment
-        {
-            get
-            {
-                var contentElement = Content as FrameworkElement;
-                if (contentElement != null)
-                {
-                    return contentElement.VerticalAlignment;
-                }
-                return VerticalAlignment.Stretch;
-            }
-        }
-
-        /// <inheritdoc/>
         protected override Size2D MeasureOverride(Size2D availableSize)
         {
             var templatedParentElement = TemplatedParent as UIElement;

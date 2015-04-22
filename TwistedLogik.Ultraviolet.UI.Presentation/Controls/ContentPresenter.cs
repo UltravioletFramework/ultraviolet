@@ -81,8 +81,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <inheritdoc/>
         protected override void CacheLayoutParametersCore()
         {
-            // TODO: Remove containingContentControl
-            containingContentControl = (TemplatedParent ?? Parent) as ContentControl;
             containingControl = FindContainingControl();
 
             base.CacheLayoutParametersCore();
@@ -106,10 +104,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         protected override Size2D MeasureOverride(Size2D availableSize)
         {
             var content = Content;
-
             var contentText = content as String;
             if (contentText != null)
             {
+                if (contentText == String.Empty)
+                {
+                    if (containingControl != null && containingControl.Font.IsLoaded)
+                    {
+                        var lineSpacing = containingControl.Font.Resource.Value.Regular.LineSpacing;
+                        return new Size2D(0, Display.PixelsToDips(lineSpacing));
+                    }
+                    return Size2D.Zero;
+                }
+
                 UpdateTextParserCache();
                 UpdateTextLayoutCache(availableSize);
 
@@ -151,17 +158,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             var contentElement = content as UIElement;
             if (contentElement != null)
             {
-                var hAlign = ActualHorizontalContentAlignment;
-                var vAlign = ActualVerticalContentAlignment;
-
-                var desiredWidth  = (hAlign == HorizontalAlignment.Stretch) ? finalSize.Width : contentElement.DesiredSize.Width;
-                var desiredHeight = (vAlign == VerticalAlignment.Stretch) ? finalSize.Height : contentElement.DesiredSize.Height;
-                var desiredSize   = new Size2D(desiredWidth, desiredHeight);
-
-                var offsetX = LayoutUtil.PerformHorizontalAlignment(finalSize, desiredSize, hAlign);
-                var offsetY = LayoutUtil.PerformVerticalAlignment(finalSize, desiredSize, vAlign);
-
-                contentElement.Arrange(new RectangleD(offsetX, offsetY, desiredWidth, desiredHeight), options);
+                var contentElementRect = new RectangleD(0, 0, finalSize.Width, finalSize.Height);
+                contentElement.Arrange(contentElementRect, options);
 
                 return finalSize;
             }
@@ -216,42 +214,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             get 
             {
                 return Content is UIElement ? 1 : 0;
-            }
-        }
-
-        /// <summary>
-        /// Gets the <see cref="HorizontalAlignment"/> value which is actually used to align
-        /// this presenter's content. The <see cref="ScrollContentPresenter"/> class overrides
-        /// this in order to use the content's alignment, rather than the container's alignment.
-        /// </summary>
-        protected internal virtual HorizontalAlignment ActualHorizontalContentAlignment
-        {
-            get 
-            {
-                var container = ContainingContentControl;
-                if (container != null)
-                {
-                    return container.HorizontalContentAlignment;
-                }
-                return HorizontalAlignment.Left;
-            }
-        }
-
-        /// <summary>
-        /// Gets the <see cref="VerticalAlignment"/> value which is actually used to align
-        /// this presenter's content. The <see cref="ScrollContentPresenter"/> class overrides
-        /// this in order to use the content's alignment, rather than the container's alignment.
-        /// </summary>
-        protected internal virtual VerticalAlignment ActualVerticalContentAlignment
-        {
-            get
-            {
-                var container = ContainingContentControl;
-                if (container != null)
-                {
-                    return container.VerticalContentAlignment;
-                }
-                return VerticalAlignment.Top;
             }
         }
 
@@ -369,33 +331,20 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 {
                     var availableSizeInPixels = Display.DipsToPixels(availableSize);
 
-                    var container = ContainingContentControl;
-                    var hAlign    = container.HorizontalContentAlignment;
-                    var vAlign    = container.VerticalContentAlignment;
-
-                    var flags    = LayoutUtil.ConvertAlignmentsToTextFlags(hAlign, vAlign);
                     var settings = new TextLayoutSettings(font,
                         (Int32)availableSizeInPixels.Width,
-                        (Int32)availableSizeInPixels.Height, flags, containingControl.FontStyle);
+                        (Int32)availableSizeInPixels.Height, TextFlags.Standard, containingControl.FontStyle);
+
                     View.Resources.TextRenderer.CalculateLayout(textParserResult, textLayoutResult, settings);
                 }
             }
-        }
-
-        /// <summary>
-        /// Gets the <see cref="ContentControl"/> that contains this element.
-        /// </summary>
-        protected ContentControl ContainingContentControl
-        {
-            get { return containingContentControl; }
         }
 
         // Cached parser/layout results for content text.
         private TextParserResult textParserResult;
         private TextLayoutResult textLayoutResult;
 
-        // Cached layout parameters
-        private ContentControl containingContentControl;
+        // Cached layout parameters.
         private Control containingControl;
     }
 }

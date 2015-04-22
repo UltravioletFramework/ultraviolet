@@ -1,13 +1,28 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ComponentTemplate>
-  <Canvas Class="listbox-component" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-    <Rectangle Class="listbox-background"
-      Canvas.Left="0" Canvas.Right="0" Canvas.Top="0" Canvas.Bottom="0"/>
-    <Border Class="listbox-border" HorizontalContentAlignment="Stretch"
-      Canvas.Left="0" Canvas.Right="0" Canvas.Top="0" Canvas.Bottom="0">
-      <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+  <Grid Class="listbox-component" 
+        HorizontalAlignment="Stretch" 
+        VerticalAlignment="Stretch">
+    
+    <Rectangle Class="listbox-background" 
+               HorizontalAlignment="Stretch" 
+               VerticalAlignment="Stretch"/>
+    
+    <Border Class="listbox-border" 
+            HorizontalAlignment="Stretch"
+            HorizontalContentAlignment="Stretch"
+            VerticalAlignment="Stretch">
+    
+      <ScrollViewer HorizontalAlignment="Stretch"
+                    HorizontalScrollBarVisibility="Disabled" 
+                    VerticalAlignment="Stretch"
+                    VerticalScrollBarVisibility="Auto">
+
         <ItemsPanel HorizontalAlignment="Stretch"/>
+
       </ScrollViewer>
+  
     </Border>
-  </Canvas>
+
+  </Grid>
 </ComponentTemplate>

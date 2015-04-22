@@ -6,10 +6,18 @@
       <ColumnDefinition Width="*"/>
     </Grid.ColumnDefinitions>
     
-    <Image Class="toggle-box" Grid.Column="0" VerticalAlignment="{{VerticalContentAlignment}}"></Image>
-    <Image Class="toggle-mark" Grid.Column="0" VerticalAlignment="{{VerticalContentAlignment}}" Visibility="{{MarkVisibility}}"></Image>
-
-    <ContentPresenter Class="toggle-content" Grid.Column="1" VerticalAlignment="Stretch"></ContentPresenter>
+    <Image Class="toggle-box" 
+           Grid.Row="0"
+           Grid.Column="0" 
+           VerticalAlignment="{{VerticalContentAlignment}}"/>
+    <Image Class="toggle-mark" 
+           Grid.Row="0"
+           Grid.Column="0" 
+           VerticalAlignment="{{VerticalContentAlignment}}" Visibility="{{MarkVisibility}}"/>
+    <ContentPresenter Class="toggle-content"
+                      Grid.Row="0"
+                      Grid.Column="1"
+                      VerticalAlignment="Stretch"/>
 
   </Grid>
 </ComponentTemplate>

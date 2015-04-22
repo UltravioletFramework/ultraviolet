@@ -78,9 +78,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var width  = Math.Max(0, size.Width + thickness.Left + thickness.Right);
             var height = Math.Max(0, size.Height + thickness.Top + thickness.Bottom);
 
-            if (width == 0 || height == 0)
-                return Size2.Zero;
-
             return new Size2D(width, height);
         }
 
@@ -94,9 +91,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             var width  = Math.Max(0, size.Width + thickness.Left + thickness.Right);
             var height = Math.Max(0, size.Height + thickness.Top + thickness.Bottom);
-
-            if (width == 0 || height == 0)
-                return Size2.Zero;
 
             return new Size2D(width, height);
         }
@@ -112,9 +106,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var width  = Math.Max(0, size.Width - (thickness.Left + thickness.Right));
             var height = Math.Max(0, size.Height - (thickness.Top + thickness.Bottom));
 
-            if (width == 0 || height == 0)
-                return Size2D.Zero;
-
             return new Size2D(width, height);
         }
 
@@ -128,9 +119,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             var width = Math.Max(0, rectangle.Width + thickness.Left + thickness.Right);
             var height = Math.Max(0, rectangle.Height + thickness.Top + thickness.Bottom);
-
-            if (width == 0 || height == 0)
-                return RectangleD.Empty;
 
             return new RectangleD(rectangle.X - thickness.Left, rectangle.Y - thickness.Top, width, height);
         }
@@ -146,9 +134,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var width = Math.Max(0, rectangle.Width + thickness.Left + thickness.Right);
             var height = Math.Max(0, rectangle.Height + thickness.Top + thickness.Bottom);
 
-            if (width == 0 || height == 0)
-                return RectangleD.Empty;
-
             return new RectangleD(rectangle.X - thickness.Left, rectangle.Y - thickness.Top, width, height);
         }
 
@@ -162,9 +147,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             var width  = Math.Max(0, rectangle.Width - (thickness.Left + thickness.Right));
             var height = Math.Max(0, rectangle.Height - (thickness.Top + thickness.Bottom));
-
-            if (width == 0 || height == 0)
-                return RectangleD.Empty;
 
             return new RectangleD(rectangle.X + thickness.Left, rectangle.Y + thickness.Top, width, height);
         }

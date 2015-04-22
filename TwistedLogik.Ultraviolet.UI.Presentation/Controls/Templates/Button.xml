@@ -1,12 +1,19 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ComponentTemplate>
-  <Canvas Class="button-component" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-    <Image Class="button-background" Canvas.Left="0" Canvas.Top="0" Canvas.Right="0" Canvas.Bottom="0"/>
-    <Image Class="button-focus" Canvas.Left="0" Canvas.Top="0" Canvas.Right="0" Canvas.Bottom="0"/>
+  <Grid Class="button-component" 
+        HorizontalAlignment="Stretch" 
+        VerticalAlignment="Stretch">
+    
+    <Image Class="button-background" 
+           HorizontalAlignment="Stretch" 
+           VerticalAlignment="Stretch"/>
+    <Image Class="button-focus" 
+           HorizontalAlignment="Stretch" 
+           VerticalAlignment="Stretch"/>
     <ContentPresenter Class="button-content"
-      Canvas.Left="{{Padding.Left}}" 
-      Canvas.Top="{{Padding.Top}}" 
-      Canvas.Right="{{Padding.Right}}" 
-      Canvas.Bottom="{{Padding.Bottom}}"/>
-  </Canvas>
+                      HorizontalAlignment="{{HorizontalContentAlignment}}"
+                      VerticalAlignment="{{VerticalContentAlignment}}"
+                      Margin="{{Padding}}"/>
+    
+  </Grid>
 </ComponentTemplate>

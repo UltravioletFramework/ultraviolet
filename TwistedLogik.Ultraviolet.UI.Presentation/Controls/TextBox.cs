@@ -436,7 +436,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 
             if (!String.IsNullOrEmpty(Text))
             {
-                var textPos = Display.DipsToPixels(textArea.Location + new Point2D(textScrollOffset, 0));
+                var textCenteringOffset = (Display.DipsToPixels(textArea.Height) - Font.Resource.Value.Regular.LineSpacing) / 2.0;
+                var textPos             = Display.DipsToPixels(textArea.Location + new Point2D(textScrollOffset, textCenteringOffset));
                 dc.SpriteBatch.DrawString(Font.Resource.Value.Regular, Text, (Vector2)textPos, Foreground * dc.Opacity);
             }
 

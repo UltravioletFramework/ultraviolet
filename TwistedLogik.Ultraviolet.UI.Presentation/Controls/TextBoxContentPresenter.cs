@@ -38,6 +38,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <inheritdoc/>
+        protected override Size2D ArrangeOverride(Size2D finalSize, ArrangeOptions options)
+        {
+            return finalSize;
+        }
+
+        /// <inheritdoc/>
         protected override void PositionOverride()
         {
             base.PositionOverride();
