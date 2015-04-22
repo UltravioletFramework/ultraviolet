@@ -8,7 +8,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
     /// Represents the base class for text blocks.
     /// </summary>
     [UvmlKnownType]
-    public abstract class TextBlockBase : FrameworkElement, ITextHost
+    public abstract class TextBlockBase : FrameworkElement
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="TextBlockBase"/> class.
@@ -22,7 +22,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         }
 
         /// <summary>
-        /// Gets or sets the font used to draw the control's text.
+        /// Gets or sets the font used to draw the element's text.
         /// </summary>
         public SourcedResource<SpriteFont> Font
         {
@@ -31,21 +31,30 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         }
 
         /// <summary>
-        /// Gets or sets the color used to draw the control's text.
-        /// </summary>
-        public Color FontColor
-        {
-            get { return GetValue<Color>(FontColorProperty); }
-            set { SetValue<Color>(FontColorProperty, value); }
-        }
-
-        /// <summary>
-        /// Gets or sets the font style which is used to draw the control's text.
+        /// Gets or sets the font style which is used to draw the element's text.
         /// </summary>
         public SpriteFontStyle FontStyle
         {
             get { return GetValue<SpriteFontStyle>(FontStyleProperty); }
             set { SetValue<SpriteFontStyle>(FontStyleProperty, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets the element's foreground color.
+        /// </summary>
+        public Color Foreground
+        {
+            get { return GetValue<Color>(ForegroundProperty); }
+            set { SetValue<Color>(ForegroundProperty, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets the element's background color.
+        /// </summary>
+        public Color Background
+        {
+            get { return GetValue<Color>(BackgroundProperty); }
+            set { SetValue<Color>(BackgroundProperty, value); }
         }
 
         /// <summary>
@@ -79,18 +88,24 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <summary>
         /// Identifies the <see cref="Font"/> dependency property.
         /// </summary>
-        public static readonly DependencyProperty FontProperty = TextElement.FontProperty.AddOwner(typeof(TextBlockBase), 
-            new PropertyMetadata<SourcedResource<SpriteFont>>(HandleFontChanged));
-
-        /// <summary>
-        /// Identifies the <see cref="FontColor"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty FontColorProperty = TextElement.FontColorProperty.AddOwner(typeof(TextBlockBase));
+        public static readonly DependencyProperty FontProperty = TextElement.FontProperty.AddOwner(typeof(TextBlockBase),
+            new PropertyMetadata<SourcedResource<SpriteFont>>(null, PropertyMetadataOptions.AffectsArrange, HandleFontChanged));
 
         /// <summary>
         /// Identifies the <see cref="FontStyle"/> dependency property.
         /// </summary>
-        public static readonly DependencyProperty FontStyleProperty = TextElement.FontStyleProperty.AddOwner(typeof(TextBlockBase));
+        public static readonly DependencyProperty FontStyleProperty = TextElement.FontStyleProperty.AddOwner(typeof(TextBlockBase),
+            new PropertyMetadata<SpriteFontStyle>(null, PropertyMetadataOptions.AffectsArrange));
+
+        /// <summary>
+        /// Identifies the <see cref="Foreground"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty ForegroundProperty = TextElement.ForegroundProperty.AddOwner(typeof(TextBlockBase));
+
+        /// <summary>
+        /// Identifies the <see cref="Background"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty BackgroundProperty = TextElement.BackgroundProperty.AddOwner(typeof(TextBlockBase));
 
         /// <summary>
         /// Identifies the <see cref="HorizontalContentAlignment"/> dependency property.

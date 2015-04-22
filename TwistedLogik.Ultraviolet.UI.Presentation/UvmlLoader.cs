@@ -8,7 +8,6 @@ using TwistedLogik.Nucleus.Data;
 using TwistedLogik.Nucleus.Xml;
 using TwistedLogik.Ultraviolet.UI.Presentation.Controls;
 using TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives;
-using TwistedLogik.Ultraviolet.UI.Presentation.Documents;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation
 {
@@ -540,24 +539,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                     contentPresenter.BindValue(ContentPresenter.ContentStringFormatProperty, templateType,
                         "{{" + dpAliasedContentStringFormat.Name + "}}");
                 }
-            }
-
-            if (!contentPresenter.HasDefinedValue(TextElement.FontProperty))
-            {
-                contentPresenter.BindValue(TextElement.FontProperty, templateType, 
-                    "{{" + TextElement.FontProperty.Name + "}}");
-            }
-
-            if (!contentPresenter.HasDefinedValue(TextElement.FontColorProperty))
-            {
-                contentPresenter.BindValue(TextElement.FontColorProperty, templateType, 
-                    "{{" + TextElement.FontColorProperty.Name + "}}");
-            }
-
-            if (!contentPresenter.HasDefinedValue(TextElement.FontStyleProperty))
-            {
-                contentPresenter.BindValue(TextElement.FontStyleProperty, templateType, 
-                    "{{" + TextElement.FontStyleProperty.Name + "}}");
             }
         }
 

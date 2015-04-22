@@ -1,4 +1,6 @@
 ﻿using System;
+using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
+using TwistedLogik.Ultraviolet.UI.Presentation.Documents;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 {
@@ -19,6 +21,42 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
+        /// Gets or sets the font used to draw the control's text.
+        /// </summary>
+        public SourcedResource<SpriteFont> Font
+        {
+            get { return GetValue<SourcedResource<SpriteFont>>(FontProperty); }
+            set { SetValue<SourcedResource<SpriteFont>>(FontProperty, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets the font style which is used to draw the control's text.
+        /// </summary>
+        public SpriteFontStyle FontStyle
+        {
+            get { return GetValue<SpriteFontStyle>(FontStyleProperty); }
+            set { SetValue<SpriteFontStyle>(FontStyleProperty, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets the control's foreground color.
+        /// </summary>
+        public Color Foreground
+        {
+            get { return GetValue<Color>(ForegroundProperty); }
+            set { SetValue<Color>(ForegroundProperty, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets the control's background color.
+        /// </summary>
+        public Color Background
+        {
+            get { return GetValue<Color>(BackgroundProperty); }
+            set { SetValue<Color>(BackgroundProperty, value); }
+        }
+
+        /// <summary>
         /// Gets or sets the horizontal alignment of the control's content.
         /// </summary>
         public HorizontalAlignment HorizontalContentAlignment
@@ -35,6 +73,28 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             get { return GetValue<VerticalAlignment>(VerticalContentAlignmentProperty); }
             set { SetValue<VerticalAlignment>(VerticalContentAlignmentProperty, value); }
         }
+
+        /// <summary>
+        /// Identifies the <see cref="Font"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty FontProperty = TextElement.FontProperty.AddOwner(typeof(Control),
+            new PropertyMetadata<SourcedResource<SpriteFont>>(null, PropertyMetadataOptions.AffectsArrange, HandleFontChanged));
+
+        /// <summary>
+        /// Identifies the <see cref="FontStyle"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty FontStyleProperty = TextElement.FontStyleProperty.AddOwner(typeof(Control),
+            new PropertyMetadata<SpriteFontStyle>(null, PropertyMetadataOptions.AffectsArrange));
+
+        /// <summary>
+        /// Identifies the <see cref="Foreground"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty ForegroundProperty = TextElement.ForegroundProperty.AddOwner(typeof(Control));
+
+        /// <summary>
+        /// Identifies the <see cref="Background"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty BackgroundProperty = TextElement.BackgroundProperty.AddOwner(typeof(Control));
 
         /// <summary>
         /// Identifies the <see cref="HorizontalContentAlignment"/> dependency property.
@@ -136,6 +196,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <inheritdoc/>
+        protected override void ReloadContentCore(Boolean recursive)
+        {
+            ReloadFont();
+
+            base.ReloadContentCore(recursive);
+        }
+
+        /// <inheritdoc/>
         protected override Size2D MeasureOverride(Size2D availableSize)
         {
             if (componentRoot == null)
@@ -160,6 +228,22 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             var finalRect = new RectangleD(Point2D.Zero, finalSize);
             componentRoot.Arrange(finalRect, options);
             return componentRoot.RenderSize;
+        }
+
+        /// <summary>
+        /// Reloads the <see cref="Font"/> resource.
+        /// </summary>
+        protected void ReloadFont()
+        {
+            LoadResource(Font);
+        }
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="Font"/> dependency property changes.
+        /// </summary>
+        private static void HandleFontChanged(DependencyObject dobj, SourcedResource<SpriteFont> oldValue, SourcedResource<SpriteFont> newValue)
+        {
+            ((Control)dobj).ReloadFont();
         }
 
         /// <summary>

@@ -1,7 +1,5 @@
 ﻿using System;
-using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
 using TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text;
-using TwistedLogik.Ultraviolet.UI.Presentation.Documents;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 {
@@ -9,7 +7,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
     /// Represents an element which is used to indicate the position of child content within a component template.
     /// </summary>
     [UvmlKnownType]
-    public class ContentPresenter : FrameworkElement, ITextHost
+    public class ContentPresenter : FrameworkElement
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ContentPresenter"/> class.
@@ -20,27 +18,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             : base(uv, name)
         {
 
-        }
-
-        /// <inheritdoc/>
-        public SourcedResource<SpriteFont> Font
-        {
-            get { return GetValue<SourcedResource<SpriteFont>>(FontProperty); }
-            set { SetValue<SourcedResource<SpriteFont>>(FontProperty, value); }
-        }
-
-        /// <inheritdoc/>
-        public Color FontColor
-        {
-            get { return GetValue<Color>(FontColorProperty); }
-            set { SetValue<Color>(FontColorProperty, value); }
-        }
-
-        /// <inheritdoc/>
-        public SpriteFontStyle FontStyle
-        {
-            get { return GetValue<SpriteFontStyle>(FontStyleProperty); }
-            set { SetValue<SpriteFontStyle>(FontStyleProperty, value); }
         }
 
         /// <summary>
@@ -78,22 +55,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
-        /// Identifies the <see cref="Font"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty FontProperty = TextElement.FontProperty.AddOwner(typeof(ContentPresenter),
-            new PropertyMetadata<SourcedResource<SpriteFont>>(HandleFontChanged));
-
-        /// <summary>
-        /// Identifies the <see cref="FontColor"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty FontColorProperty = TextElement.FontColorProperty.AddOwner(typeof(ContentPresenter));
-
-        /// <summary>
-        /// Identifies the <see cref="FontStyle"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty FontStyleProperty = TextElement.FontStyleProperty.AddOwner(typeof(ContentPresenter));
-
-        /// <summary>
         /// Identifies the <see cref="Content"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty ContentProperty = DependencyProperty.Register("Content", typeof(Object), typeof(ContentPresenter),
@@ -118,17 +79,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             new PropertyMetadata<Point2D>(HandleContentOffsetChanged));
 
         /// <inheritdoc/>
-        protected override void ReloadContentCore(Boolean recursive)
-        {
-            ReloadFont();
-
-            base.ReloadContentCore(recursive);
-        }
-
-        /// <inheritdoc/>
         protected override void CacheLayoutParametersCore()
         {
+            // TODO: Remove containingContentControl
             containingContentControl = (TemplatedParent ?? Parent) as ContentControl;
+            containingControl = FindContainingControl();
 
             base.CacheLayoutParametersCore();
         }
@@ -136,10 +91,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <inheritdoc/>
         protected override void DrawOverride(UltravioletTime time, DrawingContext dc)
         {
-            if (textLayoutResult != null && textLayoutResult.Count > 0)
+            if (textLayoutResult != null && textLayoutResult.Count > 0 && containingControl != null)
             {
                 var position = Display.DipsToPixels(AbsolutePosition + ContentOffset);
-                var color    = FontColor;
+                var color    = containingControl.Foreground;
 
                 View.Resources.TextRenderer.Draw(dc.SpriteBatch, textLayoutResult, (Vector2)position, color);
             }
@@ -301,14 +256,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
-        /// Occurs when the value of the <see cref="Font"/> dependency property changes.
-        /// </summary>
-        private static void HandleFontChanged(DependencyObject dobj, SourcedResource<SpriteFont> oldValue, SourcedResource<SpriteFont> newValue)
-        {
-            ((ContentPresenter)dobj).ReloadFont();
-        }
-
-        /// <summary>
         /// Occurs when the value of the <see cref="Content"/> dependency property changes.
         /// </summary>
         private static void HandleContentChanged(DependencyObject dobj, Object oldValue, Object newValue)
@@ -348,11 +295,27 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
-        /// Reloads the <see cref="Font"/> resource.
+        /// Finds the <see cref="Control"/> which contains the content presenter - either the template parent, if
+        /// it has one, or the nearest ancestor in the logical tree of type <see cref="Control"/>.
         /// </summary>
-        protected void ReloadFont()
+        private Control FindContainingControl()
         {
-            LoadResource(Font);
+            var container = TemplatedParent as Control;
+            if (containingControl == null)
+            {
+                var current = LogicalTreeHelper.GetParent(this);
+                while (current != null)
+                {
+                    var control = current as Control;
+                    if (control != null)
+                    {
+                        container = control;
+                        break;
+                    }
+                    current = LogicalTreeHelper.GetParent(current);
+                }
+            }
+            return container;
         }
 
         /// <summary>
@@ -390,11 +353,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             if (textLayoutResult != null)
                 textLayoutResult.Clear();
 
-            if (View == null)
+            if (View == null || containingControl == null)
                 return;
 
-            var container = ContainingContentControl;
-            var content   = Content;
+            var content = Content;
 
             var contentElement = content as UIElement;
             if (contentElement == null)
@@ -402,18 +364,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 if (textLayoutResult == null)
                     textLayoutResult = new TextLayoutResult();
 
-                var font = Font;
+                var font = containingControl.Font;
                 if (font.IsLoaded)
                 {
                     var availableSizeInPixels = Display.DipsToPixels(availableSize);
 
-                    var hAlign = container.HorizontalContentAlignment;
-                    var vAlign = container.VerticalContentAlignment;
+                    var container = ContainingContentControl;
+                    var hAlign    = container.HorizontalContentAlignment;
+                    var vAlign    = container.VerticalContentAlignment;
 
                     var flags    = LayoutUtil.ConvertAlignmentsToTextFlags(hAlign, vAlign);
                     var settings = new TextLayoutSettings(font,
                         (Int32)availableSizeInPixels.Width,
-                        (Int32)availableSizeInPixels.Height, flags, FontStyle);
+                        (Int32)availableSizeInPixels.Height, flags, containingControl.FontStyle);
                     View.Resources.TextRenderer.CalculateLayout(textParserResult, textLayoutResult, settings);
                 }
             }
@@ -433,5 +396,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 
         // Cached layout parameters
         private ContentControl containingContentControl;
+        private Control containingControl;
     }
 }

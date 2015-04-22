@@ -6,7 +6,6 @@ using TwistedLogik.Nucleus;
 using TwistedLogik.Nucleus.Text;
 using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
 using TwistedLogik.Ultraviolet.Input;
-using TwistedLogik.Ultraviolet.UI.Presentation.Documents;
 using TwistedLogik.Ultraviolet.UI.Presentation.Input;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
@@ -16,7 +15,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
     /// </summary>
     [UvmlKnownType(null, "TwistedLogik.Ultraviolet.UI.Presentation.Controls.Templates.TextBox.xml")]
     [DefaultProperty("Text")]
-    public partial class TextBox : Control, ITextHost
+    public partial class TextBox : Control
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="TextBox"/> class.
@@ -150,33 +149,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
-        /// Gets or sets the font used to draw the control's text.
-        /// </summary>
-        public SourcedResource<SpriteFont> Font
-        {
-            get { return GetValue<SourcedResource<SpriteFont>>(FontProperty); }
-            set { SetValue<SourcedResource<SpriteFont>>(FontProperty, value); }
-        }
-
-        /// <summary>
-        /// Gets or sets the color used to draw the control's text.
-        /// </summary>
-        public Color FontColor
-        {
-            get { return GetValue<Color>(FontColorProperty); }
-            set { SetValue<Color>(FontColorProperty, value); }
-        }
-
-        /// <summary>
-        /// Gets or sets the font style which is used to draw the control's text.
-        /// </summary>
-        public SpriteFontStyle FontStyle
-        {
-            get { return GetValue<SpriteFontStyle>(FontStyleProperty); }
-            set { SetValue<SpriteFontStyle>(FontStyleProperty, value); }
-        }
-
-        /// <summary>
         /// Gets or sets a value indicating whether text editing is disabled for this control.
         /// </summary>
         public Boolean IsReadOnly
@@ -238,22 +210,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         public static readonly DependencyProperty InsertionModeProperty = DependencyProperty.Register("InsertionMode", typeof(TextBoxInsertionMode), typeof(TextBox),
             new PropertyMetadata<TextBoxInsertionMode>(TextBoxInsertionMode.Insert));
-
-        /// <summary>
-        /// Identifies the <see cref="Font"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty FontProperty = TextElement.FontProperty.AddOwner(typeof(TextBox), 
-            new PropertyMetadata<SourcedResource<SpriteFont>>(HandleFontChanged));
-
-        /// <summary>
-        /// Identifies the <see cref="FontColor"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty FontColorProperty = TextElement.FontColorProperty.AddOwner(typeof(TextBox));
-
-        /// <summary>
-        /// Identifies the <see cref="FontStyle"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty FontStyleProperty = TextElement.FontStyleProperty.AddOwner(typeof(TextBox));
 
         /// <summary>
         /// Identifies the <see cref="IsReadOnly"/> dependency property.
@@ -456,7 +412,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         {
             ReloadCaretImage();
             ReloadSelectionImage();
-            ReloadFont();
 
             base.ReloadContentCore(recursive);
         }
@@ -482,7 +437,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             if (!String.IsNullOrEmpty(Text))
             {
                 var textPos = Display.DipsToPixels(textArea.Location + new Point2D(textScrollOffset, 0));
-                dc.SpriteBatch.DrawString(Font.Resource.Value.Regular, Text, (Vector2)textPos, FontColor * dc.Opacity);
+                dc.SpriteBatch.DrawString(Font.Resource.Value.Regular, Text, (Vector2)textPos, Foreground * dc.Opacity);
             }
 
             DrawTextCaret(dc);
@@ -564,14 +519,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         protected void ReloadSelectionImage()
         {
             LoadImage(SelectionImage);
-        }
-
-        /// <summary>
-        /// Reloads the <see cref="Font"/> resource.
-        /// </summary>
-        protected void ReloadFont()
-        {
-            LoadResource(Font);
         }
 
         /// <summary>

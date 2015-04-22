@@ -1,7 +1,7 @@
 ﻿*
 {
 	font: #Global:Fonts:SegoeUI;
-	font-color: #ffffffff;
+	foreground: #ffffffff;
 }
 
 view
