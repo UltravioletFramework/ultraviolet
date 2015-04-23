@@ -47,19 +47,19 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Offsets a point by subtracting the specified size.
         /// </summary>
-        /// <param name="offset">The <see cref="Point2F"/> to offset.</param>
-        /// <param name="point">The <see cref="Size2"/> that specifies how much to offset <paramref name="point"/>.</param>
+        /// <param name="point">The <see cref="Point2F"/> to offset.</param>
+        /// <param name="offset">The <see cref="Size2"/> that specifies how much to offset <paramref name="point"/>.</param>
         /// <returns>A <see cref="Point2F"/> that represents the original point plus the specified offset.</returns>
-        public static Point2F operator -(Point2F point, Size2 size)
+        public static Point2F operator -(Point2F point, Size2 offset)
         {
-            return new Point2F(point.X - size.Width, point.Y - size.Height);
+            return new Point2F(point.X - offset.Width, point.Y - offset.Height);
         }
 
         /// <summary>
         /// Offsets a point by adding the specified size.
         /// </summary>
-        /// <param name="offset">The <see cref="Point2F"/> to offset.</param>
-        /// <param name="point">The <see cref="Size2D"/> that specifies how much to offset <paramref name="point"/>.</param>
+        /// <param name="point">The <see cref="Point2F"/> to offset.</param>
+        /// <param name="offset">The <see cref="Size2D"/> that specifies how much to offset <paramref name="point"/>.</param>
         /// <returns>A <see cref="Point2F"/> that represents the original point plus the specified offset.</returns>
         public static Point2F operator +(Point2F point, Size2 offset)
         {
@@ -69,8 +69,8 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Offsets a point by adding the specified size.
         /// </summary>
-        /// <param name="offset">The <see cref="Point2F"/> to offset.</param>
-        /// <param name="point">The <see cref="Size2F"/> that specifies how much to offset <paramref name="point"/>.</param>
+        /// <param name="point">The <see cref="Point2F"/> to offset.</param>
+        /// <param name="offset">The <see cref="Size2F"/> that specifies how much to offset <paramref name="point"/>.</param>
         /// <returns>A <see cref="Point2F"/> that represents the original point plus the specified offset.</returns>
         public static Point2F operator +(Point2F point, Size2F offset)
         {
@@ -80,12 +80,12 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Offsets a point by subtracting the specified size.
         /// </summary>
-        /// <param name="offset">The <see cref="Point2F"/> to offset.</param>
-        /// <param name="point">The <see cref="Size2F"/> that specifies how much to offset <paramref name="point"/>.</param>
+        /// <param name="point">The <see cref="Point2F"/> to offset.</param>
+        /// <param name="offset">The <see cref="Size2F"/> that specifies how much to offset <paramref name="point"/>.</param>
         /// <returns>A <see cref="Point2F"/> that represents the original point plus the specified offset.</returns>
-        public static Point2F operator -(Point2F point, Size2F size)
+        public static Point2F operator -(Point2F point, Size2F offset)
         {
-            return new Point2F(point.X - size.Width, point.Y - size.Height);
+            return new Point2F(point.X - offset.Width, point.Y - offset.Height);
         }
 
         /// <summary>
