@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ComponentTemplate>
-  <Grid Class="scrollview-component" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+  <Grid Class="scrollviewer-component" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
     <Grid.ColumnDefinitions>
       <ColumnDefinition Width="*"/>
       <ColumnDefinition Width="Auto"/>
@@ -16,7 +16,7 @@
                             Grid.Column="0" 
                             Grid.Row="0" />
     <HScrollBar Name="PART_HScroll" 
-                Class="scrollview-hscroll" 
+                Class="scrollviewer-hscroll" 
                 Grid.Column="0" 
                 Grid.Row="1" 
                 HorizontalAlignment="Stretch" 
@@ -24,14 +24,15 @@
                 LargeChange="{{ViewportWidth}}" 
                 ValueChanged="HandleScrollValueChanged"/>
     <VScrollBar Name="PART_VScroll" 
-                Class="scrollview-vscroll" 
+                Class="scrollviewer-vscroll" 
                 Grid.Column="1" 
                 Grid.Row="0" 
                 VerticalAlignment="Stretch" 
                 SmallChange="16" 
                 LargeChange="{{ViewportHeight}}" 
                 ValueChanged="HandleScrollValueChanged"/>    
-    <Rectangle Class="scrollview-rect" 
+    <Rectangle Class="scrollviewer-rect" 
+               FillColor="{{Background}}"
                Grid.Column="1" 
                Grid.Row="1" 
                HorizontalAlignment="Stretch" 

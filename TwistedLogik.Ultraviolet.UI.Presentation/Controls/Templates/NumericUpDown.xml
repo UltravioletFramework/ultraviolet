@@ -12,6 +12,8 @@
   
     <TextBox Name="PART_Input" 
              Class="updown-input" 
+             Background="{{Background}}"
+             Foreground="{{Foreground}}"
              Grid.RowSpan="2" 
              HorizontalAlignment="Stretch"
              VerticalAlignment="Stretch">{{Value}}</TextBox>

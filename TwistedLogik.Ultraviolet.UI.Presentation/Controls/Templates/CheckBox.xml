@@ -9,6 +9,7 @@
     <Image Class="toggle-box" 
            Grid.Row="0"
            Grid.Column="0" 
+           SourceColor="{{Background}}"
            VerticalAlignment="{{VerticalContentAlignment}}"/>
     <Image Class="toggle-mark" 
            Grid.Row="0"

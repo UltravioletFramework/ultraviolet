@@ -4,7 +4,7 @@
         HorizontalAlignment="Stretch" 
         VerticalAlignment="Stretch">
     
-    <ContentPresenter Class="border-content"
+    <ContentPresenter Class="border-content" 
                       HorizontalAlignment="{{HorizontalContentAlignment}}"
                       VerticalAlignment="{{VerticalContentAlignment}}"
                       Margin="{{BorderThickness}}"/>    

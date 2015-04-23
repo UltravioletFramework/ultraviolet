@@ -405,9 +405,9 @@ numericupdown
 	width: 32;
 }
 
-.scrollview-rect
+scrollviewer
 {
-	fill-color: #ffeeeeee;
+	background: #ffeeeeee;
 }
 
 hslider
@@ -451,13 +451,13 @@ hslider .track-thumb, vslider .track-thumb
 	transition (common, pressed): null;
 }
 
-hslider .slider-track-bg
+hslider .slider-track-background
 {
 	source-image: #Global:Textures:DebugUI 1 839 24 10 9 9;
 	height: 10;
 }
 
-vslider .slider-track-bg
+vslider .slider-track-background
 {
 	source-image: #Global:Textures:DebugUI 26 839 10 24 9 9 vertical;
 	width: 10;
@@ -474,7 +474,7 @@ vslider .slider-track-bg
 	fill-color: #ffffffff;
 }
 
-.listboxitem-highlight, .combobox-dropdownitem-highlight
+.listboxitem-highlight, .comboboxitem-highlight
 {
 	fill-color: #ff0000ff;
 }

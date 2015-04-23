@@ -4,7 +4,7 @@
         HorizontalAlignment="Stretch" 
         VerticalAlignment="Stretch">
 
-    <Image Class="slider-track-bg slider-track-bg-horizontal" 
+    <Image Class="slider-track-background slider-track-background-horizontal" 
            HorizontalAlignment="Stretch" 
            VerticalAlignment="Center"/>
     <Track Name="PART_Track" 

@@ -5,6 +5,7 @@
         VerticalAlignment="Stretch">
     
     <Rectangle Class="listbox-background" 
+               FillColor="{{Background}}"
                HorizontalAlignment="Stretch" 
                VerticalAlignment="Stretch"/>
     
@@ -13,7 +14,8 @@
             HorizontalContentAlignment="Stretch"
             VerticalAlignment="Stretch">
     
-      <ScrollViewer HorizontalAlignment="Stretch"
+      <ScrollViewer Class="listbox-scrollviewer" 
+                    HorizontalAlignment="Stretch"
                     HorizontalScrollBarVisibility="Disabled" 
                     VerticalAlignment="Stretch"
                     VerticalScrollBarVisibility="Auto">

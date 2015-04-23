@@ -4,6 +4,7 @@
         HorizontalAlignment="Stretch" 
         VerticalAlignment="Stretch">
     <Image Class="button-background" 
+           SourceColor="{{Background}}"
            HorizontalAlignment="Stretch"
            VerticalAlignment="Stretch"/>
     <Image Class="button-focus" 

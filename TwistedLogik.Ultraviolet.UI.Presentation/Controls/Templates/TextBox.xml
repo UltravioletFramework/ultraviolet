@@ -5,6 +5,7 @@
         VerticalAlignment="Stretch">
     
     <Image Class="textbox-background"
+           SourceColor="{{Background}}"
            HorizontalAlignment="Stretch" 
            VerticalAlignment="Stretch"/>
     <TextBoxContentPresenter Name="PART_ContentPresenter" 

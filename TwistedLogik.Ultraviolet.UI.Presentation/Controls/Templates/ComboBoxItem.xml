@@ -1,15 +1,15 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ComponentTemplate HorizontalAlignment="Stretch">
-  <Grid Class="combobox-dropdownitem-component" 
+  <Grid Class="comboboxitem-component" 
         HorizontalAlignment="Stretch" 
         VerticalAlignment="Stretch">
     
-    <Rectangle Class="combobox-dropdownitem-highlight"
+    <Rectangle Class="comboboxitem-highlight"
                HorizontalAlignment="Stretch"
                VerticalAlignment="Stretch"
                IsHitTestVisible="false"
                Opacity="{{HighlightOpacity}}"/>
-    <ContentPresenter Class="combobox-dropdownitem-content"
+    <ContentPresenter Class="comboboxitem-content"
                       HorizontalAlignment="Stretch"
                       VerticalAlignment="Stretch"
                       Margin="{{Padding}}"/>
