@@ -184,39 +184,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
-        /// Assigns mouse capture to the specified element.
-        /// </summary>
-        /// <param name="element">The element to which to assign mouse capture.</param>
-        public void CaptureMouse(IInputElement element)
-        {
-            Contract.Require(element, "element");
-
-            if (elementWithMouseCapture == element)
-                return;
-
-            if (elementWithMouseCapture != null)
-            {
-                ReleaseMouse();
-            }
-
-            elementWithMouseCapture = element;
-
-            var dobj = elementWithMouseCapture as DependencyObject;
-            if (dobj != null)
-            {
-                var gotMouseCaptureData = new RoutedEventData(dobj);
-                Mouse.RaiseGotMouseCapture(dobj, ref gotMouseCaptureData);
-            }
-
-            var uiElement = elementWithMouseCapture as UIElement;
-            if (uiElement != null)
-            {
-                uiElement.IsMouseCaptured = true;
-                UpdateIsMouseOver(uiElement);
-            }
-        }
-
-        /// <summary>
         /// Releases the mouse from the element that is currently capturing it.
         /// </summary>
         /// <param name="element">The element that is attempting to release mouse capture.</param>
@@ -225,21 +192,72 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (elementWithMouseCapture == null)
                 return;
 
-            var dobj = elementWithMouseCapture as DependencyObject;
+            var elementHadMouseCapture = elementWithMouseCapture;
+            elementWithMouseCapture    = null;
+            mouseCaptureMode           = CaptureMode.None;
+
+            var uiElement = elementHadMouseCapture as UIElement;
+            if (uiElement != null)
+            {
+                uiElement.IsMouseCaptured = false;
+                UpdateIsMouseCaptureWithin(uiElement, false);
+                UpdateIsMouseOver(uiElement);
+            }
+
+            var dobj = elementHadMouseCapture as DependencyObject;
             if (dobj != null)
             {
                 var lostMouseCaptureData = new RoutedEventData(dobj);
                 Mouse.RaiseLostMouseCapture(dobj, ref lostMouseCaptureData);
             }
+        }
+
+        /// <summary>
+        /// Assigns mouse capture to the specified element.
+        /// </summary>
+        /// <param name="element">The element to which to assign mouse capture.</param>
+        /// <param name="mode">The mouse capture mode to apply.</param>
+        /// <returns><c>true</c> if the mouse was successfully captured; otherwise, <c>false</c>.</returns>
+        public Boolean CaptureMouse(IInputElement element, CaptureMode mode)
+        {
+            Contract.Require(element, "element");
+
+            if (element == null || mode == CaptureMode.None)
+            {
+                element = null;
+                mode    = CaptureMode.None;
+            }
+
+            if (elementWithMouseCapture == element)
+                return true;
+
+            if (element != null && !IsElementValidForInput(element))
+                return false;
+
+            if (elementWithMouseCapture != null)
+            {
+                ReleaseMouse();
+            }
+
+            elementWithMouseCapture = element;
+            mouseCaptureMode        = mode;
 
             var uiElement = elementWithMouseCapture as UIElement;
             if (uiElement != null)
             {
-                uiElement.IsMouseCaptured = false;
+                uiElement.IsMouseCaptured = true;
+                UpdateIsMouseCaptureWithin(uiElement, true);
                 UpdateIsMouseOver(uiElement);
             }
-            
-            elementWithMouseCapture = null;
+
+            var dobj = elementWithMouseCapture as DependencyObject;
+            if (dobj != null)
+            {
+                var gotMouseCaptureData = new RoutedEventData(dobj);
+                Mouse.RaiseGotMouseCapture(dobj, ref gotMouseCaptureData);
+            }
+
+            return true;
         }
 
         /// <summary>
@@ -726,6 +744,29 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Updates the value of the <see cref="UIElement.IsMouseCaptureWithin"/> property for ancestors
+        /// of the specified element.
+        /// </summary>
+        /// <param name="root">The element to update.</param>
+        /// <param name="value">The value to set on the specified tree.</param>
+        private void UpdateIsMouseCaptureWithin(UIElement root, Boolean value)
+        {
+            if (root == null)
+                return;
+
+            var current = root as DependencyObject;
+            while (current != null)
+            {
+                var uiElement = current as UIElement;
+                if (uiElement != null)
+                {
+                    uiElement.IsMouseCaptureWithin = value;
+                }
+                current = VisualTreeHelper.GetParent(current);
+            }
+        }
+
+        /// <summary>
         /// Determines which element is currently under the mouse cursor.
         /// </summary>
         private void UpdateElementUnderMouse()
@@ -733,20 +774,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var mouse = Ultraviolet.GetInput().GetMouse();
 
             // Determine which element is currently under the mouse cursor.
-            if (elementWithMouseCapture == null)
-            {
-                var mousePos  = mouse.Position;
-                var mouseView = mouse.Window == Window ? this : null;
+            var mousePos  = mouse.Position;
+            var mouseView = mouse.Window == Window ? this : null;
 
-                elementUnderMousePopupPrev = elementUnderMousePopup;
-                elementUnderMousePrev      = elementUnderMouse;
-                elementUnderMouse          = (mouseView == null) ? null : mouseView.HitTestInternal((Point2)mousePos, out elementUnderMousePopup) as UIElement;
-            }
+            elementUnderMousePopupPrev = elementUnderMousePopup;
+            elementUnderMousePrev      = elementUnderMouse;
+            elementUnderMouse          = (mouseView == null) ? null : mouseView.HitTestInternal((Point2)mousePos, out elementUnderMousePopup) as UIElement;
+            elementUnderMouse          = RedirectMouseInput(elementUnderMouse);
 
-            if (elementUnderMouse != null && !IsElementValidForInput(elementUnderMouse))
+            if (!IsElementValidForInput(elementUnderMouse))
                 elementUnderMouse = null;
 
-            if (elementWithMouseCapture != null && !IsElementValidForInput(elementWithMouseCapture))
+            if (mouseCaptureMode != CaptureMode.None && !IsElementValidForInput(elementWithMouseCapture))
                 ReleaseMouse();
 
             // Handle mouse motion events
@@ -797,7 +836,49 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (uiElement == null)
                 return false;
 
-            return uiElement.IsHitTestVisible && uiElement.IsEnabled;
+            return uiElement.IsHitTestVisible && uiElement.IsVisible && uiElement.IsEnabled;
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the specified element has captured the mouse
+        /// or is within the capture subtree.
+        /// </summary>
+        /// <param name="element">The element to evaluate.</param>
+        /// <returns><c>true</c> if the specified element has captured the mouse; otherwise, <c>false</c>.</returns>
+        private Boolean IsMouseCapturedByElement(IInputElement element)
+        {
+            var uiElement = element as UIElement;
+            if (uiElement == null)
+                return false;
+
+            if (mouseCaptureMode == CaptureMode.None)
+                return false;
+
+            if (mouseCaptureMode == CaptureMode.Element)
+                return uiElement == elementWithMouseCapture;
+
+            var current = (DependencyObject)element;
+            while (current != null)
+            {
+                if (current == elementWithMouseCapture)
+                    return true;
+
+                current = VisualTreeHelper.GetParent(current) ?? LogicalTreeHelper.GetParent(current);
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Redirects mouse input to the element with mouse capture, if necessary.
+        /// </summary>
+        /// <param name="recipient">The element that will be the target of the input event prior to considering mouse capture.</param>
+        /// <returns>The element that will be the target of the input event after considering mouse capture.</returns>
+        private IInputElement RedirectMouseInput(IInputElement recipient)
+        {
+            if (mouseCaptureMode == CaptureMode.None)
+                return recipient;
+
+            return IsMouseCapturedByElement(recipient) ? recipient : elementWithMouseCapture;
         }
 
         /// <summary>
@@ -894,7 +975,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (window != Window)
                 return;
 
-            var recipient = elementWithMouseCapture ?? elementUnderMouse;
+            var recipient = elementUnderMouse;
             if (recipient != null)
             {
                 var dipsX      = Display.PixelsToDips(x);
@@ -920,13 +1001,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (window != Window)
                 return;
 
-            var recipient = elementWithMouseCapture;
-            if (recipient == null)
-            {
-                UpdateElementUnderMouse();
-                recipient = elementUnderMouse;
-            }
+            UpdateElementUnderMouse();
 
+            var recipient = elementUnderMouse;
             if (recipient != elementWithFocus)
             {
                 if (elementWithFocus != null)
@@ -960,7 +1037,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (window != Window)
                 return;
 
-            var recipient = elementWithMouseCapture ?? elementUnderMouse;
+            var recipient = elementUnderMouse;
             if (recipient != null)
             {
                 var dobj = recipient as DependencyObject;
@@ -981,7 +1058,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (window != Window)
                 return;
 
-            var recipient = elementWithMouseCapture ?? elementUnderMouse;
+            var recipient = elementUnderMouse;
             if (recipient != null)
             {
                 var dobj = recipient as DependencyObject;
@@ -1002,7 +1079,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (window != Window)
                 return;
 
-            var recipient = elementWithMouseCapture ?? elementUnderMouse;
+            var recipient = elementUnderMouse;
             if (recipient != null)
             {
                 var dobj = recipient as DependencyObject;
@@ -1023,7 +1100,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (window != Window)
                 return;
 
-            var recipient = elementWithMouseCapture ?? elementUnderMouse;
+            var recipient = elementUnderMouse;
             if (recipient != null)
             {
                 var dipsX = Display.PixelsToDips(x);
@@ -1051,6 +1128,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         private IInputElement elementUnderMouse;
         private IInputElement elementWithMouseCapture;
         private IInputElement elementWithFocus;
+        private CaptureMode mouseCaptureMode;
 
         // Popup handling.
         private readonly PopupQueue popupQueue = new PopupQueue();

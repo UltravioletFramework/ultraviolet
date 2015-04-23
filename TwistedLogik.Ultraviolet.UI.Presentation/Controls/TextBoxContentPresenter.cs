@@ -38,11 +38,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <inheritdoc/>
+        protected override Size2D ArrangeOverride(Size2D finalSize, ArrangeOptions options)
+        {
+            return finalSize;
+        }
+
+        /// <inheritdoc/>
         protected override void PositionOverride()
         {
             base.PositionOverride();
 
-            var textBox = Control as TextBox;
+            var textBox = ContainingTextBox;
             if (textBox != null)
                 textBox.InvalidateTextClip();
         }
@@ -52,7 +58,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         protected TextBox ContainingTextBox
         {
-            get { return Control as TextBox; }
+            get { return TemplatedParent as TextBox; }
         }
     }
 }

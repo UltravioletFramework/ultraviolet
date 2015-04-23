@@ -19,20 +19,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 
         }
 
-        /// <inheritdoc/>
-        public override Point2D ContentOffset
-        {
-            get
-            {
-                var scrollViewer = Control as ScrollViewer;
-                if (scrollViewer != null)
-                {
-                    return new Point2D(-scrollViewer.HorizontalOffset, -scrollViewer.VerticalOffset);
-                }
-                return Point2D.Zero;
-            }
-        }
-
         /// <summary>
         /// Gets or sets a value indicating whether the presenter's content can scroll horizontally.
         /// </summary>
@@ -84,45 +70,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <inheritdoc/>
-        protected internal override HorizontalAlignment ActualHorizontalContentAlignment
-        {
-            get
-            {
-                var container = ContainingContentControl;
-                if (container != null)
-                {
-                    var contentElement = container.Content as FrameworkElement;
-                    if (contentElement != null)
-                    {
-                        return contentElement.HorizontalAlignment;
-                    }
-                }
-                return HorizontalAlignment.Stretch;
-            }
-        }
-
-        /// <inheritdoc/>
-        protected internal override VerticalAlignment ActualVerticalContentAlignment
-        {
-            get
-            {
-                var container = ContainingContentControl;
-                if (container != null)
-                {
-                    var contentElement = container.Content as FrameworkElement;
-                    if (contentElement != null)
-                    {
-                        return contentElement.VerticalAlignment;
-                    }
-                }
-                return VerticalAlignment.Stretch;
-            }
-        }
-
-        /// <inheritdoc/>
         protected override Size2D MeasureOverride(Size2D availableSize)
         {
-            if (Control == null)
+            var templatedParentElement = TemplatedParent as UIElement;
+            if (templatedParentElement == null)
                 return availableSize;
 
             var hCanScroll = CanScrollHorizontally;
@@ -150,9 +101,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             viewportWidth  = presenterSize.Width;
             viewportHeight = presenterSize.Height;
 
-            if (Control != null && (extentChanged || viewportChanged))
+            if (templatedParentElement != null && (extentChanged || viewportChanged))
             {
-                Control.InvalidateMeasure();
+                templatedParentElement.InvalidateMeasure();
             }
 
             return presenterSize;
@@ -161,7 +112,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <inheritdoc/>
         protected override Size2D ArrangeOverride(Size2D finalSize, ArrangeOptions options)
         {
-            if (Control == null)
+            if (TemplatedParent == null)
                 return finalSize;
 
             var contentFinalSize = new Size2D(
@@ -182,6 +133,28 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             viewportHeight = presenterSize.Height;
 
             return presenterSize;
+        }
+
+        /// <inheritdoc/>
+        protected override void PositionChildrenOverride()
+        {
+            VisualTreeHelper.ForEachChild<UIElement>(this, this, (child, state) =>
+            {
+                var scrollCP     = (ScrollContentPresenter)state;
+                var scrollViewer = scrollCP.TemplatedParent as ScrollViewer;
+                var scrollOffset = scrollViewer == null ? Size2D.Zero : new Size2D(-scrollViewer.HorizontalOffset, -scrollViewer.VerticalOffset);
+
+                var frameworkElement = child as FrameworkElement;
+                if (frameworkElement != null)
+                {
+                    child.Position(frameworkElement.TemplatedParent == state ? Size2D.Zero : scrollOffset);
+                }
+                else
+                {
+                    child.Position(Size2D.Zero);
+                }
+                child.PositionChildren();
+            });
         }
 
         // Property values.

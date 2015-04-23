@@ -95,6 +95,8 @@
     <Compile Include="BindingExpressions.cs" />
     <Compile Include="BoundEventBuilder.cs" />
     <Compile Include="ComponentTemplateManager.cs" />
+    <Compile Include="Controls\ComboBox.cs" />
+    <Compile Include="Controls\ComboBoxItem.cs" />
     <Compile Include="Controls\ItemContainerGenerator.cs" />
     <Compile Include="Controls\Primitives\NamespaceDoc.cs" />
     <Compile Include="Controls\Primitives\PlacementMode.cs" />
@@ -118,7 +120,7 @@
     <Compile Include="Controls\ListBoxSelectedItems.cs" />
     <Compile Include="Documents\TextElement.cs" />
     <Compile Include="EventManager.cs" />
-    <Compile Include="ITextHost.cs" />
+    <Compile Include="Input\CaptureMode.cs" />
     <Compile Include="PopupQueue.cs" />
     <Compile Include="PropertyMetadata.cs" />
     <Compile Include="DependencyPropertyName.cs" />
@@ -367,6 +369,12 @@
     <EmbeddedResource Include="Controls\Primitives\Templates\VScrollBar.xml">
       <SubType>Designer</SubType>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Controls\Templates\ComboBoxItem.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Controls\Templates\ComboBox.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

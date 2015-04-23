@@ -48,6 +48,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         Boolean IsMouseCaptured { get; }
 
         /// <summary>
+        /// Gets a value indicating whether this element or any of its descendants have mouse capture.
+        /// </summary>
+        Boolean IsMouseCaptureWithin { get; }
+
+        /// <summary>
         /// Gets a value indicating whether the cursor is located over this element or any of its descendants.
         /// </summary>
         Boolean IsMouseOver { get; }

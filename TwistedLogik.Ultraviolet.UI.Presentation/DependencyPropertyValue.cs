@@ -365,6 +365,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             }
 
             /// <inheritdoc/>
+            public Boolean HasDefinedValue
+            {
+                get
+                {
+                    return IsDataBound || IsAnimated || HasLocalValue || HasStyledValue;
+                }
+            }
+
+            /// <inheritdoc/>
             public Clock AnimationClock
             {
                 get { return animationClock; }

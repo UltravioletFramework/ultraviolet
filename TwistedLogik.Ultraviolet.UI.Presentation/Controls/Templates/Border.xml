@@ -1,10 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ComponentTemplate>
-  <Canvas Class="border-component" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-    <ContentPresenter Class="border-content"
-      Canvas.Left="{{BorderThickness.Left}}"
-      Canvas.Top="{{BorderThickness.Top}}"
-      Canvas.Right="{{BorderThickness.Right}}"
-      Canvas.Bottom="{{BorderThickness.Bottom}}"/>    
-  </Canvas>
+  <Grid Class="border-component" 
+        HorizontalAlignment="Stretch" 
+        VerticalAlignment="Stretch">
+    
+    <ContentPresenter Class="border-content" 
+                      HorizontalAlignment="{{HorizontalContentAlignment}}"
+                      VerticalAlignment="{{VerticalContentAlignment}}"
+                      Margin="{{BorderThickness}}"/>    
+    
+  </Grid>
 </ComponentTemplate>

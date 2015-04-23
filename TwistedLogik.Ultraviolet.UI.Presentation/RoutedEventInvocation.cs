@@ -329,12 +329,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             }
             else
             {
-                if (current.DependencyContainer == null)
+                var parent = VisualTreeHelper.GetParent(current) ?? LogicalTreeHelper.GetParent(current) ?? current.DependencyContainer;
+                if (parent == null)
                 {
                     current = null;
                     return false;
                 }
-                current = current.DependencyContainer;
+                current = parent;
                 return true;
             }
         }

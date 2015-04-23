@@ -1,7 +1,5 @@
 ﻿using System;
 using System.ComponentModel;
-using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
-using TwistedLogik.Ultraviolet.UI.Presentation.Documents;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 {
@@ -9,7 +7,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
     /// Represents a control which displays a single item of content.
     /// </summary>
     [DefaultProperty("Content")]
-    public abstract class ContentControl : Control, IItemContainer, ITextHost
+    public abstract class ContentControl : Control, IItemContainer
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ContentControl"/> class.
@@ -39,6 +37,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
+        /// Gets or sets the formatting string used to format the content control's content when that content
+        /// is being displayed as string.
+        /// </summary>
+        public String ContentStringFormat
+        {
+            get { return GetValue<String>(ContentStringFormatProperty); }
+            set { SetValue<String>(ContentStringFormatProperty, value); }
+        }
+
+        /// <summary>
         /// Gets a value indicating whether the control has any content.
         /// </summary>
         public Boolean HasContent
@@ -47,37 +55,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
-        /// Gets or sets the font used to draw the control's text.
-        /// </summary>
-        public SourcedResource<SpriteFont> Font
-        {
-            get { return GetValue<SourcedResource<SpriteFont>>(FontProperty); }
-            set { SetValue<SourcedResource<SpriteFont>>(FontProperty, value); }
-        }
-
-        /// <summary>
-        /// Gets or sets the color used to draw the control's text.
-        /// </summary>
-        public Color FontColor
-        {
-            get { return GetValue<Color>(FontColorProperty); }
-            set { SetValue<Color>(FontColorProperty, value); }
-        }
-
-        /// <summary>
-        /// Gets or sets the font style which is used to draw the control's text.
-        /// </summary>
-        public SpriteFontStyle FontStyle
-        {
-            get { return GetValue<SpriteFontStyle>(FontStyleProperty); }
-            set { SetValue<SpriteFontStyle>(FontStyleProperty, value); }
-        }
-
-        /// <summary>
         /// Identifies the <see cref="Content"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty ContentProperty = DependencyProperty.Register("Content", typeof(Object), typeof(ContentControl),
             new PropertyMetadata<Object>(null, PropertyMetadataOptions.AffectsMeasure | PropertyMetadataOptions.CoerceObjectToString, HandleContentChanged));
+
+        /// <summary>
+        /// Identifies the <see cref="ContentStringFormat"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty ContentStringFormatProperty = DependencyProperty.Register("ContentStringFormat", typeof(String), typeof(ContentControl),
+            new PropertyMetadata<String>(null, PropertyMetadataOptions.AffectsMeasure | PropertyMetadataOptions.CoerceObjectToString, HandleContentStringFormatChanged));
 
         /// <summary>
         /// The private access key for the <see cref="HasContent"/> read-only dependency property.
@@ -91,36 +78,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         public static readonly DependencyProperty HasContentProperty = HasContentPropertyKey.DependencyProperty;
 
         /// <summary>
-        /// Identifies the <see cref="Font"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty FontProperty = TextElement.FontProperty.AddOwner(typeof(ContentControl), 
-            new PropertyMetadata<SourcedResource<SpriteFont>>(HandleFontChanged));
-
-        /// <summary>
-        /// Identifies the <see cref="FontColor"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty FontColorProperty = TextElement.FontColorProperty.AddOwner(typeof(ContentControl));
-
-        /// <summary>
-        /// Identifies the <see cref="FontStyle"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty FontStyleProperty = TextElement.FontStyleProperty.AddOwner(typeof(ContentControl));
-
-        /// <summary>
         /// Gets a value indicating whether the content control treats its content as a logical child.
         /// </summary>
         internal Boolean TreatContentAsLogicalChild
         {
             get { return treatContentAsLogicalChild; }
-        }
-
-        /// <summary>
-        /// Gets the control's content presenter.
-        /// </summary>
-        internal ContentPresenter ContentPresenter
-        {
-            get { return contentPresenter; }
-            set { contentPresenter = value; }
         }
 
         /// <inheritdoc/>
@@ -165,28 +127,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             get { return base.VisualChildrenCount; }
         }
         
-        /// <inheritdoc/>
-        protected override void ReloadContentCore(Boolean recursive)
-        {
-            ReloadFont();
-
-            base.ReloadContentCore(recursive);
-        }
-
         /// <summary>
         /// Raises the <see cref="ContentChanged"/> event.
         /// </summary>
         protected virtual void OnContentChanged()
         {
 
-        }
-
-        /// <summary>
-        /// Reloads the <see cref="Font"/> resource.
-        /// </summary>
-        protected void ReloadFont()
-        {
-            LoadResource(Font);
         }
 
         /// <summary>
@@ -203,7 +149,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 {
                     oldElement.ChangeLogicalParent(null);
                 }
-                oldElement.ChangeVisualParent(null);
             }
 
             control.contentElement = control.Content as UIElement;
@@ -216,26 +161,21 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 {
                     newElement.ChangeLogicalParent(control);
                 }
-                newElement.ChangeVisualParent(control.ContentPresenter);
             }
-
-            if (control.contentPresenter != null)
-                control.contentPresenter.InvalidateMeasure();
 
             control.OnContentChanged();
         }
 
         /// <summary>
-        /// Occurs when the value of the <see cref="Font"/> dependency property changes.
+        /// Occurs when the value of the <see cref="ContentStringFormat"/> dependency property changes.
         /// </summary>
-        private static void HandleFontChanged(DependencyObject dobj, SourcedResource<SpriteFont> oldValue, SourcedResource<SpriteFont> newValue)
+        private static void HandleContentStringFormatChanged(DependencyObject dobj, String oldValue, String newValue)
         {
-            ((ContentControl)dobj).ReloadFont();
+            // TODO
         }
 
         // State values.
         private UIElement contentElement;
-        private ContentPresenter contentPresenter;
         private Boolean treatContentAsLogicalChild = true;
     }
 }

@@ -1,7 +1,6 @@
 ﻿using System;
 using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet.Input;
-using TwistedLogik.Ultraviolet.UI.Presentation.Input;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
 {
@@ -115,7 +114,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             if (button == MouseButton.Left)
             {
                 Focus();
-                Mouse.Capture(View, this);
+                CaptureMouse();
 
                 IsPressed = true;
 
@@ -136,7 +135,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             {
                 var clicked = IsPressed;
 
-                Mouse.Capture(View, null);
+                ReleaseMouseCapture();
 
                 IsPressed = false;
 

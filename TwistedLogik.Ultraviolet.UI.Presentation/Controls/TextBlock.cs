@@ -44,7 +44,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             if (textLayoutResult.Count > 0)
             {
                 var position = (Vector2)Display.DipsToPixels(AbsolutePosition);
-                View.Resources.TextRenderer.Draw(dc.SpriteBatch, textLayoutResult, position, FontColor * dc.Opacity);
+                View.Resources.TextRenderer.Draw(dc.SpriteBatch, textLayoutResult, position, Foreground * dc.Opacity);
             }
             base.DrawOverride(time, dc);
         }

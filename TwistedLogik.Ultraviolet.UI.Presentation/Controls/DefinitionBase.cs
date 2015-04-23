@@ -15,15 +15,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
     public abstract class DefinitionBase : DependencyObject
     {
         /// <inheritdoc/>
-        protected internal sealed override DependencyObject DependencyContainer
+        internal override Object DependencyDataSource
         {
-            get { return Grid; }
+            get { return Grid == null ? null : Grid.DependencyDataSource; }
         }
 
         /// <inheritdoc/>
-        protected internal sealed override Object DependencyDataSource
+        internal override DependencyObject DependencyContainer
         {
-            get { return Grid == null ? null : Grid.DependencyDataSource; }
+            get { return Grid; }
         }
 
         /// <summary>

@@ -20,22 +20,68 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 
         }
 
-        /// <inheritdoc/>
-        public override Point2D ContentOffset
+        /// <summary>
+        /// Gets or sets the content presenter's content.
+        /// </summary>
+        public Object Content
         {
-            get { return GetValue<Point2D>(ContentOffsetProperty); }
+            get { return GetValue<Object>(ContentProperty); }
+            set { SetValue<Object>(ContentProperty, value); }
         }
+
+        /// <summary>
+        /// Gets or sets the formatting string used to format the content presenter's content when that content
+        /// is being displayed as string.
+        /// </summary>
+        public String ContentStringFormat
+        {
+            get { return GetValue<String>(ContentStringFormatProperty); }
+            set { SetValue<String>(ContentStringFormatProperty, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets the name to use when aliasing the <see cref="Content"/> and <see cref="ContentStringFormat"/> properties.
+        /// </summary>
+        public String ContentSource
+        {
+            get { return GetValue<String>(ContentSourceProperty); }
+            set { SetValue<String>(ContentSourceProperty, value); }
+        }
+
+        /// <inheritdoc/>
+        public Size2D ContentOffset
+        {
+            get { return GetValue<Size2D>(ContentOffsetProperty); }
+        }
+
+        /// <summary>
+        /// Identifies the <see cref="Content"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty ContentProperty = DependencyProperty.Register("Content", typeof(Object), typeof(ContentPresenter),
+            new PropertyMetadata<Object>(null, PropertyMetadataOptions.AffectsMeasure | PropertyMetadataOptions.CoerceObjectToString, HandleContentChanged));
+
+        /// <summary>
+        /// Identifies the <see cref="ContentStringFormat"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty ContentStringFormatProperty = DependencyProperty.Register("ContentStringFormat", typeof(String), typeof(ContentPresenter),
+            new PropertyMetadata<String>(null, PropertyMetadataOptions.AffectsMeasure, HandleContentStringFormatChanged));
+
+        /// <summary>
+        /// Identifies the <see cref="ContentSource"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty ContentSourceProperty = DependencyProperty.Register("ContentSource", typeof(String), typeof(ContentPresenter),
+            new PropertyMetadata<String>());
 
         /// <summary>
         /// Identifies the <see cref="ContentOffset"/> dependency property.
         /// </summary>
-        public static readonly DependencyProperty ContentOffsetProperty = DependencyProperty.Register("ContentOffset", typeof(Point2D), typeof(ContentPresenter),
-            new PropertyMetadata<Point2D>(HandleContentOffsetChanged));
+        public static readonly DependencyProperty ContentOffsetProperty = DependencyProperty.Register("ContentOffset", typeof(Size2D), typeof(ContentPresenter),
+            new PropertyMetadata<Size2D>(HandleContentOffsetChanged));
 
         /// <inheritdoc/>
         protected override void CacheLayoutParametersCore()
         {
-            containingContentControl = Control as ContentControl;
+            containingControl = FindContainingControl();
 
             base.CacheLayoutParametersCore();
         }
@@ -43,29 +89,34 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <inheritdoc/>
         protected override void DrawOverride(UltravioletTime time, DrawingContext dc)
         {
-            if (ContainingContentControl != null)
+            if (textLayoutResult != null && textLayoutResult.Count > 0 && containingControl != null)
             {
-                if (textLayoutResult != null && textLayoutResult.Count > 0)
-                {
-                    var position = Display.DipsToPixels(AbsolutePosition + ContentOffset);
-                    var color    = ContainingContentControl.FontColor;
+                var position = Display.DipsToPixels(AbsolutePosition + ContentOffset);
+                var color    = containingControl.Foreground;
 
-                    View.Resources.TextRenderer.Draw(dc.SpriteBatch, textLayoutResult, (Vector2)position, color);
-                }
+                View.Resources.TextRenderer.Draw(dc.SpriteBatch, textLayoutResult, (Vector2)position, color);
             }
+
             base.DrawOverride(time, dc);
         }
 
         /// <inheritdoc/>
         protected override Size2D MeasureOverride(Size2D availableSize)
         {
-            if (ContainingContentControl == null)
-                return Size2D.Zero;
-
-            var content = ContainingContentControl.Content;
+            var content = Content;
             var contentText = content as String;
             if (contentText != null)
             {
+                if (contentText == String.Empty)
+                {
+                    if (containingControl != null && containingControl.Font.IsLoaded)
+                    {
+                        var lineSpacing = containingControl.Font.Resource.Value.Regular.LineSpacing;
+                        return new Size2D(0, Display.PixelsToDips(lineSpacing));
+                    }
+                    return Size2D.Zero;
+                }
+
                 UpdateTextParserCache();
                 UpdateTextLayoutCache(availableSize);
 
@@ -95,11 +146,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <inheritdoc/>
         protected override Size2D ArrangeOverride(Size2D finalSize, ArrangeOptions options)
         {
-            var container = ContainingContentControl;
-            if (container == null)
-                return finalSize;
+            var content = Content;
 
-            var content = container.Content;
             var contentText = content as String;
             if (contentText != null)
             {
@@ -110,17 +158,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             var contentElement = content as UIElement;
             if (contentElement != null)
             {
-                var hAlign = ActualHorizontalContentAlignment;
-                var vAlign = ActualVerticalContentAlignment;
-
-                var desiredWidth  = (hAlign == HorizontalAlignment.Stretch) ? finalSize.Width : contentElement.DesiredSize.Width;
-                var desiredHeight = (vAlign == VerticalAlignment.Stretch) ? finalSize.Height : contentElement.DesiredSize.Height;
-                var desiredSize   = new Size2D(desiredWidth, desiredHeight);
-
-                var offsetX = LayoutUtil.PerformHorizontalAlignment(finalSize, desiredSize, hAlign);
-                var offsetY = LayoutUtil.PerformVerticalAlignment(finalSize, desiredSize, vAlign);
-
-                contentElement.Arrange(new RectangleD(offsetX, offsetY, desiredWidth, desiredHeight), options);
+                var contentElementRect = new RectangleD(0, 0, finalSize.Width, finalSize.Height);
+                contentElement.Arrange(contentElementRect, options);
 
                 return finalSize;
             }
@@ -129,43 +168,42 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <inheritdoc/>
+        protected override void PositionChildrenOverride()
+        {
+            VisualTreeHelper.ForEachChild<UIElement>(this, this, (child, state) =>
+            {
+                var offset = ((ContentPresenter)state).ContentOffset;
+                child.Position(offset);
+                child.PositionChildren();
+            });
+        }
+
+        /// <inheritdoc/>
         protected override RectangleD? ClipCore()
         {
-            if (ContainingContentControl != null)
+            var contentElement = Content as UIElement;
+            if (contentElement != null)
             {
-                var contentElement = ContainingContentControl.Content as UIElement;
-                if (contentElement != null)
+                if (contentElement.RenderSize.Width > RenderSize.Width || 
+                    contentElement.RenderSize.Height > RenderSize.Height)
                 {
-                    if (contentElement.RenderSize.Width > RenderSize.Width || 
-                        contentElement.RenderSize.Height > RenderSize.Height)
-                    {
-                        return AbsoluteBounds;
-                    }
+                    return AbsoluteBounds;
                 }
             }
+
             return base.ClipCore();
         }
 
         /// <inheritdoc/>
         protected internal override UIElement GetLogicalChild(Int32 childIndex)
         {
-            if (ContainingContentControl == null || ContainingContentControl.TreatContentAsLogicalChild)
-                throw new ArgumentOutOfRangeException("childIndex");
-
-            var contentElement = ContainingContentControl.Content as UIElement;
-            if (contentElement == null || childIndex != 0)
-                throw new ArgumentOutOfRangeException("childIndex");
-
-            return contentElement;
+            return base.GetLogicalChild(childIndex);
         }
 
         /// <inheritdoc/>
         protected internal override UIElement GetVisualChild(Int32 childIndex)
         {
-            if (ContainingContentControl == null)
-                throw new ArgumentOutOfRangeException("childIndex");
-
-            var contentElement = ContainingContentControl.Content as UIElement;
+            var contentElement = Content as UIElement;
             if (contentElement == null || childIndex != 0)
                 throw new ArgumentOutOfRangeException("childIndex");
 
@@ -177,10 +215,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         {
             get
             {
-                if (ContainingContentControl == null || ContainingContentControl.TreatContentAsLogicalChild)
-                    return 0;
-
-                return ContainingContentControl.Content is UIElement ? 1 : 0;
+                return base.LogicalChildrenCount;
             }
         }
 
@@ -189,54 +224,75 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         {
             get 
             {
-                return (ContainingContentControl != null && ContainingContentControl.Content is UIElement) ? 1 : 0;
+                return Content is UIElement ? 1 : 0;
             }
         }
 
         /// <summary>
-        /// Gets the <see cref="HorizontalAlignment"/> value which is actually used to align
-        /// this presenter's content. The <see cref="ScrollContentPresenter"/> class overrides
-        /// this in order to use the content's alignment, rather than the container's alignment.
+        /// Occurs when the value of the <see cref="Content"/> dependency property changes.
         /// </summary>
-        protected internal virtual HorizontalAlignment ActualHorizontalContentAlignment
+        private static void HandleContentChanged(DependencyObject dobj, Object oldValue, Object newValue)
         {
-            get 
+            var contentPresenter = (ContentPresenter)dobj;
+
+            var oldElement = oldValue as UIElement;
+            if (oldElement != null)
             {
-                var container = ContainingContentControl;
-                if (container != null)
-                {
-                    return container.HorizontalContentAlignment;
-                }
-                return HorizontalAlignment.Left;
+                oldElement.ChangeVisualParent(null);
+            }
+
+            var newElement = newValue as UIElement;
+            if (newElement != null)
+            {
+                newElement.ChangeVisualParent(contentPresenter);
+            }
+            else
+            {
+                contentPresenter.UpdateTextParserCache();
             }
         }
 
         /// <summary>
-        /// Gets the <see cref="VerticalAlignment"/> value which is actually used to align
-        /// this presenter's content. The <see cref="ScrollContentPresenter"/> class overrides
-        /// this in order to use the content's alignment, rather than the container's alignment.
+        /// Occurs when the value of the <see cref="ContentStringFormat"/> dependency property changes.
         /// </summary>
-        protected internal virtual VerticalAlignment ActualVerticalContentAlignment
+        private static void HandleContentStringFormatChanged(DependencyObject dobj, String oldValue, String newValue)
         {
-            get
-            {
-                var container = ContainingContentControl;
-                if (container != null)
-                {
-                    return container.VerticalContentAlignment;
-                }
-                return VerticalAlignment.Top;
-            }
+            var contentPresenter = (ContentPresenter)dobj;
+            contentPresenter.UpdateTextParserCache();
         }
 
         /// <summary>
         /// Occurs when the value of the <see cref="ContentOffset"/> dependency property changes.
         /// </summary>
-        private static void HandleContentOffsetChanged(DependencyObject dobj, Point2D oldValue, Point2D newValue)
+        private static void HandleContentOffsetChanged(DependencyObject dobj, Size2D oldValue, Size2D newValue)
         {
             var presenter = (ContentPresenter)dobj;
-            presenter.Position();
+            presenter.Position(presenter.MostRecentPositionOffset);
             presenter.PositionChildren();
+        }
+
+        /// <summary>
+        /// Finds the <see cref="Control"/> which contains the content presenter - either the template parent, if
+        /// it has one, or the nearest ancestor in the logical tree of type <see cref="Control"/>.
+        /// </summary>
+        private Control FindContainingControl()
+        {
+            var container = TemplatedParent as Control;
+            if (containingControl == null)
+            {
+                var current = LogicalTreeHelper.GetParent(this);
+                while (current != null)
+                {
+                    var control = current as Control;
+                    if (control != null)
+                    {
+                        container = control;
+                        break;
+                    }
+                    current = LogicalTreeHelper.GetParent(current);
+                }
+            }
+            return container;
         }
 
         /// <summary>
@@ -247,10 +303,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             if (textParserResult != null)
                 textParserResult.Clear();
 
-            if (View == null || ContainingContentControl == null)
+            if (View == null)
                 return;
 
-            var content = ContainingContentControl.Content;
+            var content = Content;
 
             var contentElement = content as UIElement;
             if (contentElement == null)
@@ -258,7 +314,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 if (textParserResult == null)
                     textParserResult = new TextParserResult();
 
-                var contentAsString = content.ToString();
+                var contentAsString = String.Format(ContentStringFormat ?? "{0}", content);
                 View.Resources.TextRenderer.Parse(contentAsString, textParserResult);
             }
 
@@ -274,11 +330,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             if (textLayoutResult != null)
                 textLayoutResult.Clear();
 
-            if (View == null)
+            if (View == null || containingControl == null)
                 return;
 
-            var container = ContainingContentControl;
-            var content   = container.Content;
+            var content = Content;
 
             var contentElement = content as UIElement;
             if (contentElement == null)
@@ -286,35 +341,25 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 if (textLayoutResult == null)
                     textLayoutResult = new TextLayoutResult();
 
-                if (container.Font.IsLoaded)
+                var font = containingControl.Font;
+                if (font.IsLoaded)
                 {
                     var availableSizeInPixels = Display.DipsToPixels(availableSize);
 
-                    var hAlign = container.HorizontalContentAlignment;
-                    var vAlign = container.VerticalContentAlignment;
-
-                    var flags    = LayoutUtil.ConvertAlignmentsToTextFlags(hAlign, vAlign);
-                    var settings = new TextLayoutSettings(container.Font,
+                    var settings = new TextLayoutSettings(font,
                         (Int32)availableSizeInPixels.Width,
-                        (Int32)availableSizeInPixels.Height, flags, container.FontStyle);
+                        (Int32)availableSizeInPixels.Height, TextFlags.Standard, containingControl.FontStyle);
+
                     View.Resources.TextRenderer.CalculateLayout(textParserResult, textLayoutResult, settings);
                 }
             }
-        }
-
-        /// <summary>
-        /// Gets the <see cref="ContentControl"/> that contains this element.
-        /// </summary>
-        protected ContentControl ContainingContentControl
-        {
-            get { return containingContentControl; }
         }
 
         // Cached parser/layout results for content text.
         private TextParserResult textParserResult;
         private TextLayoutResult textLayoutResult;
 
-        // Cached layout parameters
-        private ContentControl containingContentControl;
+        // Cached layout parameters.
+        private Control containingControl;
     }
 }

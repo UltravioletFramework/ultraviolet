@@ -1,7 +1,7 @@
 ﻿*
 {
 	font: #Global:Fonts:SegoeUI;
-	font-color: #ffffffff;
+	foreground: #ffffffff;
 }
 
 view
@@ -21,15 +21,15 @@ button, repeatbutton
 	transition (common, pressed): button-to-pressed;
 }
 
-      button > canvas > contentpresenter, 
-repeatbutton > canvas > contentpresenter
+      button > grid > contentpresenter, 
+repeatbutton > grid > contentpresenter
 {
 	content-offset: 0 0;
 }
 
-	  button > canvas > .button-background, 
-repeatbutton > canvas > .button-background,
-togglebutton > canvas > .button-background
+	  button > grid > .button-background, 
+repeatbutton > grid > .button-background,
+togglebutton > grid > .button-background
 {
 	source-image: #Global:Textures:DebugUI 1 589 190 49 6 4 6 8;
 }
@@ -47,16 +47,12 @@ togglebutton .button-focus
 {
 	target button (*:storyboard-root)
 	{
-		animation font-color
+		animation foreground
 		{
 			keyframe 100 { }
 		}
-		animation canvas.left
-		{
-			keyframe 100 { 100 }
-		}
 	}
-	target image (*:storyboard-root > canvas > .button-background)
+	target image (*:storyboard-root > grid > .button-background)
 	{
 		animation source-image
 		{
@@ -67,7 +63,7 @@ togglebutton .button-focus
 			keyframe 250 { }
 		}
 	}
-	target contentpresenter (*:storyboard-root > canvas > contentpresenter)
+	target contentpresenter (*:storyboard-root > grid > contentpresenter)
 	{	
 		animation content-offset
 		{
@@ -79,12 +75,12 @@ togglebutton .button-focus
 {
 	target button (*:storyboard-root)
 	{
-		animation font-color
+		animation foreground
 		{
 			keyframe 100 { #ff004080 }
 		}
 	}
-	target image (*:storyboard-root > canvas > .button-background)
+	target image (*:storyboard-root > grid > .button-background)
 	{
 		animation source-image
 		{
@@ -95,7 +91,7 @@ togglebutton .button-focus
 			keyframe 250 { #ffff0000 }
 		}	
 	}
-	target contentpresenter (*:storyboard-root > canvas > contentpresenter)
+	target contentpresenter (*:storyboard-root > grid > contentpresenter)
 	{
 		animation content-offset
 		{
@@ -107,19 +103,19 @@ togglebutton .button-focus
 {
 	target button (*:storyboard-root)
 	{
-		animation font-color
+		animation foreground
 		{
 			keyframe 100 { #ff004080 }
 		}
 	}
-	target image (*:storyboard-root > canvas > .button-background)
+	target image (*:storyboard-root > grid > .button-background)
 	{
 		animation source-image
 		{
 			keyframe 0 { #Global:Textures:DebugUI 1 639 190 49 6 8 6 4 }
 		}	
 	}
-	target contentpresenter (*:storyboard-root > canvas > contentpresenter)
+	target contentpresenter (*:storyboard-root > grid > contentpresenter)
 	{	
 		animation content-offset
 		{
@@ -129,17 +125,17 @@ togglebutton .button-focus
 }
 @button-to-focused
 {
-	target (*:storyboard-root > canvas > .button-focus)
+	target (*:storyboard-root > grid > .button-focus)
 	{
 		animation opacity
 		{
-			keyframe 0 { 1 }
+			keyframe 0 { 0 }
 		}
 	}
 }
 @button-to-blurred
 {
-	target (*:storyboard-root > canvas > .button-focus)
+	target (*:storyboard-root > grid > .button-focus)
 	{
 		animation opacity
 		{
@@ -166,12 +162,12 @@ togglebutton
 {
 	target togglebutton (*:storyboard-root)
 	{
-		animation font-color
+		animation foreground
 		{
 			keyframe 100 { }
 		}
 	}
-	target image (*:storyboard-root > canvas > .button-background)
+	target image (*:storyboard-root > grid > .button-background)
 	{
 		animation source-color
 		{
@@ -183,12 +179,12 @@ togglebutton
 {
 	target togglebutton (*:storyboard-root)
 	{
-		animation font-color
+		animation foreground
 		{
 			keyframe 100 { #ff004080 }
 		}
 	}
-	target image (*:storyboard-root > canvas > .button-background)
+	target image (*:storyboard-root > grid > .button-background)
 	{
 		animation source-color
 		{
@@ -198,14 +194,14 @@ togglebutton
 }
 @togglebutton-to-unchecked
 {
-	target image (*:storyboard-root > canvas > .button-background)
+	target image (*:storyboard-root > grid > .button-background)
 	{
 		animation source-image
 		{
 			keyframe 0 { }
 		}	
 	}
-	target contentpresenter (*:storyboard-root > canvas > contentpresenter)
+	target contentpresenter (*:storyboard-root > grid > contentpresenter)
 	{
 		animation content-offset
 		{
@@ -215,14 +211,14 @@ togglebutton
 }
 @togglebutton-to-checked
 {
-	target image (*:storyboard-root > canvas > .button-background)
+	target image (*:storyboard-root > grid > .button-background)
 	{
 		animation source-image
 		{
 			keyframe 0 { #Global:Textures:DebugUI 1 639 190 49 6 8 6 4 }
 		}	
 	}
-	target contentpresenter (*:storyboard-root > canvas > contentpresenter)
+	target contentpresenter (*:storyboard-root > grid > contentpresenter)
 	{
 		animation content-offset
 		{
@@ -280,7 +276,7 @@ radiobutton, checkbox
 {
 	target
 	{
-		animation font-color
+		animation foreground
 		{
 			keyframe 100 { }
 		}
@@ -298,7 +294,7 @@ radiobutton, checkbox
 {
 	target 
 	{
-		animation font-color
+		animation foreground
 		{
 			keyframe 100 { #ff004080 }
 		}
@@ -409,9 +405,9 @@ numericupdown
 	width: 32;
 }
 
-.scrollview-rect
+scrollviewer
 {
-	fill-color: #ffeeeeee;
+	background: #ffeeeeee;
 }
 
 hslider
@@ -455,30 +451,65 @@ hslider .track-thumb, vslider .track-thumb
 	transition (common, pressed): null;
 }
 
-hslider .slider-track-bg
+hslider .slider-track-background
 {
 	source-image: #Global:Textures:DebugUI 1 839 24 10 9 9;
 	height: 10;
 }
 
-vslider .slider-track-bg
+vslider .slider-track-background
 {
 	source-image: #Global:Textures:DebugUI 26 839 10 24 9 9 vertical;
 	width: 10;
 }
 
-.listbox-border
+.listbox-border, .combobox-dropdown-border
 {
 	border-thickness: 1;
 	border-color: #ff000000;
 }
 
-.listbox-background
+.listbox-background, .combobox-dropdown-border
 {
 	fill-color: #ffffffff;
 }
 
-.listboxitem-highlight
+.listboxitem-highlight, .comboboxitem-highlight
 {
 	fill-color: #ff0000ff;
+}
+
+listboxitem
+{
+	padding: 8;
+}
+
+combobox
+{
+	padding: 8 8 8 12;
+}
+
+comboboxitem
+{
+	padding: 8;
+}
+
+.combobox-arrow
+{
+	width: 22;
+	height: 22;
+}
+
+.combobox-arrow-open
+{
+	margin: 0 10 6 0;
+	source-image: #Global:Textures:DebugUI 77 839 36 36;
+	source-color: #ff000000;
+}
+
+.combobox-arrow-closed
+{
+	margin: 0 6 6 0;
+	source-image: #Global:Textures:DebugUI 77 839 36 36;
+	source-color: #ff000000;
 }

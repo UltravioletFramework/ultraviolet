@@ -13,6 +13,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
     public abstract partial class DependencyObject
     {
         /// <summary>
+        /// Gets a value indicating whether this object has a defined value for the specified dependency property.
+        /// </summary>
+        /// <param name="dp">A <see cref="DependencyProperty"/> instance which identifies the dependency property to evaluate.</param>
+        /// <returns><c>true</c> if the specified property has a defined value on this object; otherwise, <c>false</c>.</returns>
+        public Boolean HasDefinedValue(DependencyProperty dp)
+        {
+            var wrapper = GetDependencyPropertyValue(dp, dp.PropertyType);
+            return wrapper.HasDefinedValue;
+        }
+
+        /// <summary>
         /// Immediately digests the specified dependency property, but only if it is currently data bound.
         /// </summary>
         /// <param name="dp">A <see cref="DependencyProperty"/> instance which identifies the dependency property to digest.</param>
@@ -415,6 +426,22 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Gets or sets the data source from which the object's dependency properties will retrieve values if they are data bound.
+        /// </summary>
+        internal abstract Object DependencyDataSource
+        {
+            get;
+        }
+
+        /// <summary>
+        /// Gets the dependency object's containing object.
+        /// </summary>
+        internal abstract DependencyObject DependencyContainer
+        {
+            get;
+        }
+
+        /// <summary>
         /// Occurs when the value of one of the object's dependency properties changes.
         /// </summary>
         /// <typeparam name="T">The type of value contained by the dependency property.</typeparam>
@@ -464,22 +491,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             {
                 dp.ApplyStyle(this, style);
             }
-        }
-
-        /// <summary>
-        /// Gets the dependency object's containing object.
-        /// </summary>
-        protected internal abstract DependencyObject DependencyContainer
-        {
-            get;
-        }
-
-        /// <summary>
-        /// Gets or sets the data source from which the object's dependency properties will retrieve values if they are data bound.
-        /// </summary>
-        protected internal abstract Object DependencyDataSource
-        {
-            get;
         }
 
         /// <summary>

@@ -15,6 +15,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// </summary>
         static Selector()
         {
+            EventManager.RegisterClassHandler(typeof(Selector), SelectionChangedEvent, new UpfRoutedEventHandler(HandleSelectionChanged));
             EventManager.RegisterClassHandler(typeof(Selector), SelectedEvent, new UpfRoutedEventHandler(HandleSelected));
             EventManager.RegisterClassHandler(typeof(Selector), UnselectedEvent, new UpfRoutedEventHandler(HandleUnselected));
         }
@@ -385,12 +386,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// Occurs when the value of the <see cref="SelectionChanged"/> dependency property changes.
         /// </summary>
         /// <param name="dobj">The dependency object that raised the event.</param>
-        private static void HandleSelectionChanged(DependencyObject dobj)
+        private static void HandleSelectionChanged(DependencyObject dobj, ref RoutedEventData data)
         {
-            var evtDelegate = EventManager.GetInvocationDelegate<UpfRoutedEventHandler>(SelectionChangedEvent);
-            var evtData     = new RoutedEventData(dobj);
-
-            evtDelegate(dobj, ref evtData);
+            if (data.OriginalSource == dobj)
+            {
+                ((Selector)dobj).OnSelectionChanged();
+            }
         }
 
         /// <summary>
