@@ -964,6 +964,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (VisualParent != null)
             {
                 InvalidateStyle();
+
+                var parent = VisualParent as UIElement;
+                if (parent != null && parent.MostRecentStylesheet != null)
+                {
+                    Style(parent.MostRecentStylesheet);
+                }
             }
             OnLayoutCacheInvalidated();
         }
