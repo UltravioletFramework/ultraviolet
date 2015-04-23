@@ -305,6 +305,26 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Gets a value indicating whether the specified type (or one of its ancestors) is one of this property's owner types.
+        /// </summary>
+        /// <param name="type">The type to evaluate.</param>
+        /// <returns><c>true</c> if the specified type is an owner type; otherwise, <c>false</c>.</returns>
+        internal Boolean IsOwner(Type type)
+        {
+            Contract.Require(type, "type");
+
+            var current = type;
+            while (current != null)
+            {
+                if (ownerType == current || metadataOverrides.ContainsKey(current))
+                    return true;
+
+                current = current.BaseType;
+            }
+            return false;
+        }
+
+        /// <summary>
         /// Applies the specified style to the dependency property.
         /// </summary>
         /// <param name="dobj">The dependency object on which to set the style.</param>

@@ -811,6 +811,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="context">The current instantiation context.</param>
         private static void BindOrSetDependencyProperty(DependencyObject dobj, DependencyProperty dprop, String value, InstantiationContext context)
         {
+            if (!dprop.IsAttached && !dprop.IsOwner(dobj.GetType()))
+                throw new InvalidOperationException(PresentationStrings.LocalPropertyCannotBeAppliedToType.Format(dprop.Name, dprop.OwnerType.Name));
+
             if (IsBindingExpression(value))
             {
                 BindDependencyProperty(dobj, dprop, value, context);

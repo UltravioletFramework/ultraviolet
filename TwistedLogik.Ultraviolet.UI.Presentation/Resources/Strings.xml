@@ -285,4 +285,9 @@
       <Variant>EndInit() cannot be called because BeginInit() has not been called.</Variant>
     </en-US>
   </String>
+  <String Key="LOCAL_PROPERTY_CANNOT_BE_APPLIED_TO_TYPE">
+    <en-US>
+      <Variant>The local property "{0}" can only be applied to "{1}" or one of its descendant types.</Variant>
+    </en-US>
+  </String>
 </LocalizedStrings>
