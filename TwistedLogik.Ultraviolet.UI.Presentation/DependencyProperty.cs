@@ -42,7 +42,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="ownerType">The dependency property's owner type.</param>
         /// <param name="metadata">The dependency property's metadata.</param>
         /// <param name="isReadOnly">A value indicating whether this is a read-only dependency property.</param>
-        internal DependencyProperty(Int64 id, String name, String uvssName, Type propertyType, Type ownerType, PropertyMetadata metadata, Boolean isReadOnly = false)
+        /// <param name="isAttached">A value indicating whether this is an attached property.</param>
+        internal DependencyProperty(Int64 id, String name, String uvssName, Type propertyType, Type ownerType, PropertyMetadata metadata, Boolean isReadOnly = false, Boolean isAttached = false)
         {
             this.id              = id;
             this.name            = name;
@@ -51,6 +52,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             this.ownerType       = ownerType;
             this.defaultMetadata = metadata ?? (PropertyMetadata)typeof(PropertyMetadata<>).MakeGenericType(propertyType).GetField("Empty").GetValue(null);
             this.isReadOnly      = isReadOnly;
+            this.isAttached      = isAttached;
             this.styleSetter     = CreateStyleSetter();
         }
 
@@ -106,6 +108,60 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public static DependencyPropertyKey RegisterReadOnly(String name, String uvssName, Type propertyType, Type ownerType, PropertyMetadata metadata = null)
         {
             return DependencyPropertySystem.RegisterReadOnly(name, uvssName, propertyType, ownerType, metadata);
+        }
+
+        /// <summary>
+        /// Registers a new attached property.
+        /// </summary>
+        /// <param name="name">The attached property's name.</param>
+        /// <param name="propertyType">The attached property's value type.</param>
+        /// <param name="ownerType">The attached property's owner type.</param>
+        /// <param name="metadata">The attached property's metadata.</param>
+        /// <returns>A <see cref="DependencyProperty"/> instance which represents the registered attached property.</returns>
+        public static DependencyProperty RegisterAttached(String name, Type propertyType, Type ownerType, PropertyMetadata metadata = null)
+        {
+            return DependencyPropertySystem.RegisterAttached(name, null, propertyType, ownerType, metadata);
+        }
+
+        /// <summary>
+        /// Registers a new attached property.
+        /// </summary>
+        /// <param name="name">The attached property's name.</param>
+        /// <param name="uvssName">The attached property's name within the UVSS styling system.</param>
+        /// <param name="propertyType">The attached property's value type.</param>
+        /// <param name="ownerType">The attached property's owner type.</param>
+        /// <param name="metadata">The attached property's metadata.</param>
+        /// <returns>A <see cref="DependencyProperty"/> instance which represents the registered attached property.</returns>
+        public static DependencyProperty RegisterAttached(String name, String uvssName, Type propertyType, Type ownerType, PropertyMetadata metadata = null)
+        {
+            return DependencyPropertySystem.RegisterAttached(name, uvssName, propertyType, ownerType, metadata);
+        }
+
+        /// <summary>
+        /// Registers a new read-only attached property.
+        /// </summary>
+        /// <param name="name">The attached property's name.</param>
+        /// <param name="propertyType">The attached property's value type.</param>
+        /// <param name="ownerType">The attached property's owner type.</param>
+        /// <param name="metadata">The attached property's metadata.</param>
+        /// <returns>A <see cref="DependencyPropertyKey"/> instance which provides access to the read-only attached property.</returns>
+        public static DependencyPropertyKey RegisterAttachedReadOnly(String name, Type propertyType, Type ownerType, PropertyMetadata metadata = null)
+        {
+            return DependencyPropertySystem.RegisterAttachedReadOnly(name, null, propertyType, ownerType, metadata);
+        }
+
+        /// <summary>
+        /// Registers a new read-only attached property.
+        /// </summary>
+        /// <param name="name">The attached property's name.</param>
+        /// <param name="uvssName">The attached property's name within the UVSS styling system.</param>
+        /// <param name="propertyType">The attached property's value type.</param>
+        /// <param name="ownerType">The attached property's owner type.</param>
+        /// <param name="metadata">The attached property's metadata.</param>
+        /// <returns>A <see cref="DependencyPropertyKey"/> instance which provides access to the read-only attached property.</returns>
+        public static DependencyPropertyKey RegisterAttachedReadOnly(String name, String uvssName, Type propertyType, Type ownerType, PropertyMetadata metadata = null)
+        {
+            return DependencyPropertySystem.RegisterAttachedReadOnly(name, uvssName, propertyType, ownerType, metadata);
         }
 
         /// <summary>
@@ -345,6 +401,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Gets a value indicating whether this dependency property is an attached property.
+        /// </summary>
+        internal Boolean IsAttached
+        {
+            get { return isAttached; }
+        }
+
+        /// <summary>
         /// Dynamically compiles a collection of lambda methods which can be used to apply styles
         /// to the object's properties.
         /// </summary>
@@ -378,6 +442,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         private readonly Type ownerType;
         private readonly PropertyMetadata defaultMetadata;
         private readonly Boolean isReadOnly;
+        private readonly Boolean isAttached;
         private readonly Dictionary<Type, PropertyMetadata> metadataOverrides = 
             new Dictionary<Type, PropertyMetadata>();
 

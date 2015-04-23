@@ -65,6 +65,26 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Registers a new attached property.
+        /// </summary>
+        /// <param name="name">The attached property's name.</param>
+        /// <param name="uvssName">The attached property's name within the UVSS styling system.</param>
+        /// <param name="propertyType">The attached property's value type.</param>
+        /// <param name="ownerType">The attached property's owner type.</param>
+        /// <param name="metadata">The attached property's metadata.</param>
+        /// <returns>A <see cref="DependencyProperty"/> instance which represents the registered attached property.</returns>
+        public static DependencyProperty RegisterAttached(String name, String uvssName, Type propertyType, Type ownerType, PropertyMetadata metadata = null)
+        {
+            Contract.Require(name, "name");
+            Contract.Require(propertyType, "propertyType");
+            Contract.Require(ownerType, "ownerType");
+
+            var dp = new DependencyProperty(dpid++, name, uvssName, propertyType, ownerType, metadata, isAttached: true);
+            RegisterInternal(dp, ownerType);
+            return dp;
+        }
+
+        /// <summary>
         /// Registers a new read-only dependency property.
         /// </summary>
         /// <param name="name">The dependency property's name.</param>
@@ -80,6 +100,26 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             Contract.Require(ownerType, "ownerType");
 
             var dp = new DependencyProperty(dpid++, name, uvssName, propertyType, ownerType, metadata, isReadOnly: true);
+            RegisterInternal(dp, ownerType);
+            return new DependencyPropertyKey(dp);
+        }
+
+        /// <summary>
+        /// Registers a new read-only attached property.
+        /// </summary>
+        /// <param name="name">The attached property's name.</param>
+        /// <param name="uvssName">The attached property's name within the UVSS styling system.</param>
+        /// <param name="propertyType">The attached property's value type.</param>
+        /// <param name="ownerType">The attached property's owner type.</param>
+        /// <param name="metadata">The attached property's metadata.</param>
+        /// <returns>A <see cref="DependencyPropertyKey"/> instance which provides access to the read-only attached property.</returns>
+        public static DependencyPropertyKey RegisterAttachedReadOnly(String name, String uvssName, Type propertyType, Type ownerType, PropertyMetadata metadata = null)
+        {
+            Contract.Require(name, "name");
+            Contract.Require(propertyType, "propertyType");
+            Contract.Require(ownerType, "ownerType");
+
+            var dp = new DependencyProperty(dpid++, name, uvssName, propertyType, ownerType, metadata, isReadOnly: true, isAttached: true);
             RegisterInternal(dp, ownerType);
             return new DependencyPropertyKey(dp);
         }
