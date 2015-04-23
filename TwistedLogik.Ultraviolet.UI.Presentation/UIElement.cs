@@ -212,6 +212,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (View != view)
             {
                 InvalidateStyle();
+
+                var stylesheet = View.Stylesheet;
+                if (stylesheet != null)
+                {
+                    Style(stylesheet);
+                }
             }
 
             CacheLayoutParametersCore();
