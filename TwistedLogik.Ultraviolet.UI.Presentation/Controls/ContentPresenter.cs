@@ -49,9 +49,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <inheritdoc/>
-        public Point2D ContentOffset
+        public Size2D ContentOffset
         {
-            get { return GetValue<Point2D>(ContentOffsetProperty); }
+            get { return GetValue<Size2D>(ContentOffsetProperty); }
         }
 
         /// <summary>
@@ -75,8 +75,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Identifies the <see cref="ContentOffset"/> dependency property.
         /// </summary>
-        public static readonly DependencyProperty ContentOffsetProperty = DependencyProperty.Register("ContentOffset", typeof(Point2D), typeof(ContentPresenter),
-            new PropertyMetadata<Point2D>(HandleContentOffsetChanged));
+        public static readonly DependencyProperty ContentOffsetProperty = DependencyProperty.Register("ContentOffset", typeof(Size2D), typeof(ContentPresenter),
+            new PropertyMetadata<Size2D>(HandleContentOffsetChanged));
 
         /// <inheritdoc/>
         protected override void CacheLayoutParametersCore()
@@ -168,6 +168,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <inheritdoc/>
+        protected override void PositionChildrenOverride()
+        {
+            VisualTreeHelper.ForEachChild<UIElement>(this, this, (child, state) =>
+            {
+                var offset = ((ContentPresenter)state).ContentOffset;
+                child.Position(offset);
+                child.PositionChildren();
+            });
+        }
+
+        /// <inheritdoc/>
         protected override RectangleD? ClipCore()
         {
             var contentElement = Content as UIElement;
@@ -235,6 +246,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             {
                 newElement.ChangeVisualParent(contentPresenter);
             }
+            else
+            {
+                contentPresenter.UpdateTextParserCache();
+            }
         }
 
         /// <summary>
@@ -249,7 +264,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Occurs when the value of the <see cref="ContentOffset"/> dependency property changes.
         /// </summary>
-        private static void HandleContentOffsetChanged(DependencyObject dobj, Point2D oldValue, Point2D newValue)
+        private static void HandleContentOffsetChanged(DependencyObject dobj, Size2D oldValue, Size2D newValue)
         {
             var presenter = (ContentPresenter)dobj;
             presenter.Position(presenter.MostRecentPositionOffset);
