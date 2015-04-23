@@ -94,7 +94,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Represents an attached property which is used to associate containers with items.
         /// </summary>
-        private static readonly DependencyProperty AssociatedItemProperty = DependencyProperty.Register("AssociatedItem", typeof(Object), typeof(ItemContainerGenerator),
+        private static readonly DependencyProperty AssociatedItemProperty = DependencyProperty.RegisterAttached("AssociatedItem", typeof(Object), typeof(ItemContainerGenerator),
             new PropertyMetadata<Object>(null, PropertyMetadataOptions.None));
 
         // State values.

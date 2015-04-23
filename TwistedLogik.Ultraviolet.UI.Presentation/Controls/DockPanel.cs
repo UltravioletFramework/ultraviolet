@@ -56,7 +56,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Identifies the Dock attached property.
         /// </summary>
-        public static readonly DependencyProperty DockProperty = DependencyProperty.Register("Dock", typeof(Dock), typeof(DockPanel),
+        public static readonly DependencyProperty DockProperty = DependencyProperty.RegisterAttached("Dock", typeof(Dock), typeof(DockPanel),
             new PropertyMetadata<Dock>(PresentationBoxedValues.Dock.Left, PropertyMetadataOptions.AffectsArrange));
 
         /// <summary>

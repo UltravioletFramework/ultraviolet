@@ -154,13 +154,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <summary>
         /// Identifies the IsSelected attached property.
         /// </summary>
-        public static readonly DependencyProperty IsSelectedProperty = DependencyProperty.Register("IsSelected", typeof(Boolean), typeof(Selector), 
+        public static readonly DependencyProperty IsSelectedProperty = DependencyProperty.RegisterAttached("IsSelected", typeof(Boolean), typeof(Selector), 
             new PropertyMetadata<Boolean>());
 
         /// <summary>
         /// The private access key for the <see cref="IsSelectionActive"/> read-only dependency property.
         /// </summary>
-        private static readonly DependencyPropertyKey IsSelectionActivePropertyKey = DependencyProperty.RegisterReadOnly("IsSelectionActive", typeof(Boolean), typeof(Selector),
+        private static readonly DependencyPropertyKey IsSelectionActivePropertyKey = DependencyProperty.RegisterAttachedReadOnly("IsSelectionActive", typeof(Boolean), typeof(Selector),
             new PropertyMetadata<Boolean>());
 
         /// <summary>
