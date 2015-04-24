@@ -574,7 +574,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 for (int i = 0; i < defsInSpan.Count; i++)
                 {
                     var def             = defsInSpan[i];
-                    var defDistribution = undistributed / (span - i);
+                    var defDistribution = undistributed / (defsInSpan.Count - i);
                     var defContentSize  = Math.Min(defDistribution, def.PreferredDesiredDimension);
 
                     def.ExpandContentDimension(defContentSize);

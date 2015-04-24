@@ -112,7 +112,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                     if (containingControl != null && containingControl.Font.IsLoaded)
                     {
                         var lineSpacing = containingControl.Font.Resource.Value.Regular.LineSpacing;
-                        return new Size2D(0, Display.PixelsToDips(lineSpacing));
+                        return new Size2D(0, Math.Min(availableSize.Height, Display.PixelsToDips(lineSpacing)));
                     }
                     return Size2D.Zero;
                 }
@@ -137,7 +137,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             if (contentElement != null)
             {
                 contentElement.Measure(availableSize);
-                return contentElement.DesiredSize;
+                return new Size2D(
+                    Math.Min(availableSize.Width, contentElement.DesiredSize.Width),
+                    Math.Min(availableSize.Height, contentElement.DesiredSize.Height));
             }
 
             return Size2D.Zero;
@@ -184,8 +186,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             var contentElement = Content as UIElement;
             if (contentElement != null)
             {
-                if (contentElement.RenderSize.Width > RenderSize.Width || 
-                    contentElement.RenderSize.Height > RenderSize.Height)
+                if (!AbsoluteBounds.Contains(contentElement.AbsoluteBounds))
                 {
                     return AbsoluteBounds;
                 }
