@@ -9,8 +9,6 @@
     <!-- Selection box -->
     <ToggleButton Name="PART_SelectionBox"
                   Class="combobox-selectionbox"
-                  Content="{{SelectionBoxItem}}"
-                  ContentStringFormat="{{SelectionBoxItemStringFormat}}"
                   Grid.Row="0"
                   Grid.Column="0"
                   Grid.ColumnSpan="2"
@@ -18,6 +16,13 @@
                   HorizontalAlignment="Stretch"
                   VerticalAlignment="Stretch"
                   IsChecked="{{IsDropDownOpen}}"/>
+    <ContentPresenter Name="PART_ContentPresenter"
+                      Class="combobox-content"
+                      Grid.Row="0"
+                      Grid.Column="0"
+                      Content="{{SelectionBoxItem}}"
+                      ContentStringFormat="{{SelectionBoxItemStringFormat}}"
+                      IsHitTestVisible="false"/>
     <Image Name="PART_Arrow" 
            Class="combobox-arrow combobox-arrow-closed" 
            Grid.Row="0"

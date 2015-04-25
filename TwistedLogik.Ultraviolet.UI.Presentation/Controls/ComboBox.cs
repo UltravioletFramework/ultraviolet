@@ -13,6 +13,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
     public class ComboBox : Selector
     {
         /// <summary>
+        /// Initializes the <see cref="ComboBox"/> type.
+        /// </summary>
+        static ComboBox()
+        {
+            IsEnabledProperty.OverrideMetadata(typeof(ComboBox), new PropertyMetadata<Boolean>(HandleIsEnabledChanged));
+        }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="ComboBox"/> class.
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
@@ -20,7 +28,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         public ComboBox(UltravioletContext uv, String name)
             : base(uv, name)
         {
-
+            VisualStateGroups.Create("common", new[] { "normal", "hover", "disabled" });
+            VisualStateGroups.Create("opened", new[] { "closed", "open" });
         }
 
         /// <summary>
@@ -170,6 +179,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <inheritdoc/>
+        protected override void OnIsMouseOverChanged()
+        {
+            UpdateVisualState();
+            base.OnIsMouseOverChanged();
+        }
+
+        /// <inheritdoc/>
         protected override void OnMouseUp(MouseDevice device, MouseButton button, ref RoutedEventData data)
         {
             if (button == TwistedLogik.Ultraviolet.Input.MouseButton.Left)
@@ -204,6 +220,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
+        /// Occurs when the value of the <see cref="IsEnabledChanged"/> dependency property changes.
+        /// </summary>
+        private static void HandleIsEnabledChanged(DependencyObject dobj, Boolean oldValue, Boolean newValue)
+        {
+            var comboBox = (ComboBox)dobj;
+            comboBox.UpdateVisualState();
+        }
+
+        /// <summary>
         /// Occurs when the value of the <see cref="IsDropDownOpen"/> dependency property changes.
         /// </summary>
         private static void HandleIsDropDownOpenChanged(DependencyObject dobj, Boolean oldValue, Boolean newValue)
@@ -220,6 +245,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                     comboBox.PART_Arrow.Classes.Remove("combobox-arrow-closed");
                 }
 
+                comboBox.UpdateVisualState();
                 comboBox.OnDropDownOpened();
             }
             else
@@ -233,6 +259,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                     comboBox.PART_Arrow.Classes.Add("combobox-arrow-closed");
                 }
 
+                comboBox.UpdateVisualState();
                 comboBox.OnDropDownClosed();
             }
         }
@@ -254,6 +281,37 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 
             SetValue<Object>(SelectionBoxItemPropertyKey, selectionBoxItem ?? String.Empty);
             SetValue<String>(SelectionBoxItemStringFormatPropertyKey, selectionBoxItemStringFormat);
+        }
+
+        /// <summary>
+        /// Transitions the combo box into the appropriate visual states.
+        /// </summary>
+        private void UpdateVisualState()
+        {
+            if (IsEnabled)
+            {
+                if (IsMouseOver)
+                {
+                    VisualStateGroups.GoToState("common", "hover");
+                }
+                else
+                {
+                    VisualStateGroups.GoToState("common", "normal");
+                }
+            }
+            else
+            {
+                VisualStateGroups.GoToState("common", "disabled");
+            }
+
+            if (IsDropDownOpen)
+            {
+                VisualStateGroups.GoToState("opened", "open");
+            }
+            else
+            {
+                VisualStateGroups.GoToState("opened", "closed");
+            }
         }
 
         // Component references.
