@@ -228,7 +228,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             get
             {
-                return (flags & PropertyMetadataOptions.Inherited) == PropertyMetadataOptions.Inherited;
+                return (flags & PropertyMetadataOptions.Inherits) == PropertyMetadataOptions.Inherits;
             }
         }
 

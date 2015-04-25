@@ -16,7 +16,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// The dependency property's value is inherited from its container.
         /// </summary>
-        Inherited = 1,
+        Inherits = 1,
 
         /// <summary>
         /// The dependency property's value influences the arrangement of its object.
