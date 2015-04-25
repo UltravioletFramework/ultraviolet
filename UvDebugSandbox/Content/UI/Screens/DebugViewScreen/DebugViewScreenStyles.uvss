@@ -486,7 +486,57 @@ listboxitem
 
 combobox
 {
-	padding: 8 8 8 12;
+	transition (common, normal): combobox-to-normal;
+	transition (common, hover): combobox-to-hover;
+
+	transition (opened, open): combobox-to-open;
+	transition (opened, closed): combobox-to-closed;
+}
+
+combobox > grid > contentpresenter
+{
+	margin: 8 8 4 12;
+}
+
+@combobox-to-normal
+{
+	target combobox (*:storyboard-root)
+	{
+		animation foreground
+		{
+			keyframe 100 { }
+		}
+	}
+}
+@combobox-to-hover
+{
+	target combobox (*:storyboard-root)
+	{
+		animation foreground
+		{
+			keyframe 100 { #ff004080 }
+		}
+	}
+}
+@combobox-to-open
+{
+	target contentpresenter (*:storyboard-root > grid > contentpresenter)
+	{	
+		animation content-offset
+		{
+			keyframe 0 { 0 4 }
+		}
+	}
+}
+@combobox-to-closed
+{
+	target contentpresenter (*:storyboard-root > grid > contentpresenter)
+	{	
+		animation content-offset
+		{
+			keyframe 0 { }
+		}
+	}
 }
 
 comboboxitem
