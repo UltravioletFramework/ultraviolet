@@ -39,6 +39,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             new PropertyMetadata<String>(null, PropertyMetadataOptions.AffectsMeasure, HandleTextChanged));
 
         /// <inheritdoc/>
+        protected override void OnInitialized()
+        {
+            UpdateTextParserResult();
+            base.OnInitialized();
+        }
+
+        /// <inheritdoc/>
         protected override void DrawOverride(UltravioletTime time, DrawingContext dc)
         {
             if (textLayoutResult.Count > 0)

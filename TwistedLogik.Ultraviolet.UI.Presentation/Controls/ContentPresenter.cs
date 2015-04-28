@@ -79,6 +79,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             new PropertyMetadata<Size2D>(HandleContentOffsetChanged));
 
         /// <inheritdoc/>
+        protected override void OnInitialized()
+        {
+            UpdateTextParserCache();
+            base.OnInitialized();
+        }
+
+        /// <inheritdoc/>
         protected override void CacheLayoutParametersCore()
         {
             containingControl = FindContainingControl();

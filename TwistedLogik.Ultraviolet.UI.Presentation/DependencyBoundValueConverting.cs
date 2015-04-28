@@ -22,8 +22,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public DependencyBoundValueConverting(IDependencyPropertyValue value, Type expressionType, Type dataSourceType, String expression, Boolean coerce)
             : base(value, expressionType, dataSourceType, expression)
         {
-            this.formatString = BindingExpressions.GetBindingFormatStringPart(expression);
-            this.coerce       = coerce;
+            this.formatString         = BindingExpressions.GetBindingFormatStringPart(expression);
+            this.coerce               = coerce;
+            this.cachedConvertedValue = GetFresh();
         }
 
         /// <inheritdoc/>
