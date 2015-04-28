@@ -7,6 +7,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
     /// <summary>
     /// Represents a framework element which consists of multiple component elements.
     /// </summary>
+    [UvmlKnownType]
     public abstract class Control : FrameworkElement
     {
         /// <summary>
