@@ -53,9 +53,21 @@ namespace TwistedLogik.Nucleus.Data
 		/// <returns>The object that was created.</returns>
 		public static Object FromString(String value, Type type)
 		{
-			return FromString(value, type, Thread.CurrentThread.CurrentCulture);
+			return FromString(value, type, Thread.CurrentThread.CurrentCulture, false);
 		}
 
+        /// <summary>
+        /// Creates an object from the specified value string.
+        /// </summary>
+        /// <param name="value">The value string from which to create the object.</param>
+        /// <param name="type">The type of object to create.</param>
+        /// <param name="ignoreCase">A value indicating whether to ignore casing whenever relevant (particularly, when converting enum values).</param>
+        /// <returns>The object that was created.</returns>
+        public static Object FromString(String value, Type type, Boolean ignoreCase)
+        {
+            return FromString(value, type, Thread.CurrentThread.CurrentCulture, ignoreCase);
+        }
+        
 		/// <summary>
 		/// Creates an object from the specified value string.
 		/// </summary>
@@ -64,6 +76,19 @@ namespace TwistedLogik.Nucleus.Data
 		/// <param name="provider">An object that supplies culture-specific formatting information.</param>
 		/// <returns>The object that was created.</returns>
 		public static Object FromString(String value, Type type, IFormatProvider provider)
+        {
+            return FromString(value, type, provider, false);
+        }
+
+		/// <summary>
+		/// Creates an object from the specified value string.
+		/// </summary>
+		/// <param name="value">The value string from which to create the object.</param>
+		/// <param name="type">The type of object to create.</param>
+		/// <param name="provider">An object that supplies culture-specific formatting information.</param>
+        /// <param name="ignoreCase">A value indicating whether to ignore casing whenever relevant (particularly, when converting enum values).</param>
+        /// <returns>The object that was created.</returns>
+		public static Object FromString(String value, Type type, IFormatProvider provider, Boolean ignoreCase)
 		{
             // Ensure that the static constructor for this class has been run, as it
             // might need to register custom resolvers.
@@ -101,7 +126,7 @@ namespace TwistedLogik.Nucleus.Data
 			// Handle enumerations.
 			if (type.IsEnum)
 			{
-				return ParseEnum(type, value, false);
+				return ParseEnum(type, value, ignoreCase);
 			}
 
             // Handle lazy loaders.

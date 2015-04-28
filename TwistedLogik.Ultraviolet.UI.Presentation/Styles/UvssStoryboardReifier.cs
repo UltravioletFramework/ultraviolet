@@ -150,7 +150,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
             var time   = TimeSpan.FromMilliseconds(keyframeDefinition.Time);
             var easing = ParseEasingFunction(keyframeDefinition.Easing);
             var str    = keyframeDefinition.Value == null ? null : keyframeDefinition.Value.Trim();
-            var value  = String.IsNullOrWhiteSpace(str) ? null : ObjectResolver.FromString(str, animatedType);
+            var value  = String.IsNullOrWhiteSpace(str) ? null : ObjectResolver.FromString(str, animatedType, true);
 
             var keyframe = (value == null) ?
                     (AnimationKeyframeBase)Activator.CreateInstance(keyframeType, time, easing) :

@@ -511,7 +511,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 return type.IsValueType ? Activator.CreateInstance(type) : null;
             }
 
-            var resolvedValue = ObjectResolver.FromString(value, type, provider);
+            var resolvedValue = ObjectResolver.FromString(value, type, provider, true);
             style.CachedResolvedValue = resolvedValue;
             return resolvedValue;
         }
