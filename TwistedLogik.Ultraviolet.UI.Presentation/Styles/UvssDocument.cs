@@ -157,7 +157,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// <param name="element">The element to which to apply styles.</param>
         private void ApplyStylesInternal(UIElement element)
         {
-            element.ClearStyledValues();
+            element.ClearStyledValues(false);
 
             // Gather styles from document
             var selector = default(UvssSelector);
