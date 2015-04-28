@@ -126,7 +126,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
                 }
                 else
                 {
-                    IsChecked = true;
+                    IsChecked = false;
                 }
             }
             else
