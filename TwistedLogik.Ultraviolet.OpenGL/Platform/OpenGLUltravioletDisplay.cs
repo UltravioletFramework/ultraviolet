@@ -55,7 +55,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
             {
                 return Int32.MinValue;
             }
-            return Math.Round(dips * DensityScale);
+            return dips * DensityScale;
         }
 
         /// <inheritdoc/>
