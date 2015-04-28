@@ -14,7 +14,7 @@
     <Image Class="toggle-mark" 
            Grid.Row="0"
            Grid.Column="0" 
-           VerticalAlignment="{{VerticalContentAlignment}}" Visibility="{{MarkVisibility}}"/>
+           VerticalAlignment="{{VerticalContentAlignment}}"/>
     <ContentPresenter Class="toggle-content"
                       Grid.Row="0"
                       Grid.Column="1"

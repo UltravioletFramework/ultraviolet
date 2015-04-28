@@ -19,18 +19,5 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         {
 
         }
-
-        /// <summary>
-        /// Gets a <see cref="Visibility"/> value that describes the visibility state
-        /// of the radio button's mark.
-        /// </summary>
-        private Visibility MarkVisibility
-        {
-            get
-            {
-                var isChecked = IsChecked.GetValueOrDefault(true);
-                return isChecked || (!isChecked && IsPressed) ? Visibility.Visible : Visibility.Collapsed; 
-            }
-        }
     }
 }
