@@ -499,7 +499,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 var caretWidth = Font.Resource.Value.Regular.MeasureGlyph(caretChar1, caretChar2).Width;
 
                 var caretThickness = (Int32)Display.DipsToPixels(CaretThickness);
-                var caretPosition  = new Point2D(textX + textScrollOffset + caretOffset, textHeight - caretThickness);
+                var caretPosition  = new Point2D(textX + textScrollOffset + caretOffset, textY + textHeight - caretThickness);
                 var caretArea      = new RectangleD(caretPosition.X, caretPosition.Y, caretWidth, caretThickness);
 
                 DrawImage(dc, CaretImage, caretArea, CaretColor);
@@ -998,7 +998,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             var text      = Text;
             var endOfLine = ix == text.Length;
             var segment   = new StringSegment(text, 0, ix);
-            var kerning   = font.Kerning.Get(text[ix - 1], endOfLine ? ' ' : text[ix]);
+            var kerning   = endOfLine ? 0 : font.Kerning.Get(text[ix - 1], endOfLine ? ' ' : text[ix]) / 2;
             var measure   = font.MeasureString(segment);
 
             return Display.PixelsToDips(measure.Width + kerning);
