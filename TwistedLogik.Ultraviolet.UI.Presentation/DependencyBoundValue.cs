@@ -108,6 +108,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             {
                 throw new InvalidOperationException(PresentationStrings.BindingIsReadOnly);
             }
+
+            var owner    = dependencyValue.Owner;
+            var metadata = dependencyValue.Property.GetMetadataForOwner(owner.GetType());
+            if (metadata.CoerceValueCallback != null)
+            {
+                value = metadata.CoerceValue<T>(owner, value);
+            }
+
             setter(dependencyValue.Owner.DependencyDataSource, value);
             dependencyValue.DigestImmediately();
         }
