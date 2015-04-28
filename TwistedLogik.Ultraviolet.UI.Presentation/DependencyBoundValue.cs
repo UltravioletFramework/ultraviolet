@@ -21,7 +21,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             this.getter          = (DataBindingGetter<T>)BindingExpressions.CreateBindingGetter(expressionType, dataSourceType, expression);
             this.setter          = (DataBindingSetter<T>)BindingExpressions.CreateBindingSetter(expressionType, dataSourceType, expression);
             this.comparer        = (DataBindingComparer<T>)BindingExpressions.GetComparisonFunction(expressionType);
-            this.forceUpdate     = true;
+            this.cachedValue     = GetUnderlyingValue();
         }
 
         /// <inheritdoc/>
@@ -42,9 +42,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public Boolean CheckHasChanged()
         {
             var value = GetUnderlyingValue();
-            if (forceUpdate || !comparer(cachedValue, value))
+            if (!comparer(cachedValue, value))
             {
-                forceUpdate = false;
                 cachedValue = value;
                 OnCachedValueChanged(value);
                 return true;
@@ -119,6 +118,5 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         private readonly DataBindingGetter<T> getter;
         private readonly DataBindingSetter<T> setter;
         private T cachedValue;
-        private Boolean forceUpdate;
     }
 }

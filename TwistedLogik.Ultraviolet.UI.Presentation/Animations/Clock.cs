@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using TwistedLogik.Nucleus;
 using TwistedLogik.Nucleus.Collections;
 
@@ -237,8 +238,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
         /// </summary>
         private void OnStopped()
         {
-            foreach (var subscriber in subscribers)
-                subscriber.ClockStopped();
+            var current = default(LinkedListNode<IDependencyPropertyValue>);
+            var next    = default(LinkedListNode<IDependencyPropertyValue>);
+
+            for (current = subscribers.First; current != null; current = next)
+            {
+                current.Value.ClockStopped();
+                next = current.Next;
+            }
 
             var temp = Stopped;
             if (temp != null)
