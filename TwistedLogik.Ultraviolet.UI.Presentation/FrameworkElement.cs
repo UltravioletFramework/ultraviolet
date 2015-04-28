@@ -459,6 +459,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <inheritdoc/>
+        protected override void StyleCore(UvssDocument stylesheet)
+        {
+            base.StyleCore(stylesheet);
+
+            VisualStateGroups.ReapplyStates();
+        }
+
+        /// <inheritdoc/>
         protected sealed override Size2D MeasureCore(Size2D availableSize)
         {
             var margin = this.Margin;

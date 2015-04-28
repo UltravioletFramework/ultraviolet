@@ -98,16 +98,27 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             Contract.RequireNotEmpty(group, "group");
             Contract.Require(states, "states");
 
+            var hasGroups = groups.Count > 0;
+
             if (IsDefined(group))
                 Destroy(group);
 
             Create(group);
 
+            var str = String.Empty;
+
             var vsg = Get(group);
             foreach (var state in states)
             {
+                if (str == String.Empty)
+                    str = state;
+
                 vsg.Create(state);
             }
+
+            if (!hasGroups && !String.IsNullOrEmpty(str))
+                GoToState(group, str);
+
             return true;
         }
 
