@@ -186,13 +186,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <inheritdoc/>
-        protected override void OnMouseUp(MouseDevice device, MouseButton button, ref RoutedEventData data)
+        protected override void OnMouseDown(MouseDevice device, MouseButton button, ref RoutedEventData data)
         {
-            if (button == TwistedLogik.Ultraviolet.Input.MouseButton.Left)
+            if (button == MouseButton.Left)
             {
                 IsDropDownOpen = false;
+                data.Handled = true;
             }
-            base.OnMouseUp(device, button, ref data);
+            base.OnMouseDown(device, button, ref data);
         }
 
         /// <summary>
