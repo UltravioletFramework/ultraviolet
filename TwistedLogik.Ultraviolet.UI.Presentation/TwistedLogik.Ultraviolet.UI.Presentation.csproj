@@ -188,7 +188,7 @@
     <Compile Include="Controls\TextBox.cs" />
     <Compile Include="Controls\TextBox.OffsetPosition.cs" />
     <Compile Include="Controls\TextBoxInsertionMode.cs" />
-    <Compile Include="Controls\ToggleButton.cs" />
+    <Compile Include="Controls\Primitives\ToggleButton.cs" />
     <Compile Include="Controls\UIElementCollection.cs" />
     <Compile Include="Controls\UIElementCollection.IEnumerable.cs" />
     <Compile Include="Controls\UserControl.cs" />
@@ -357,7 +357,7 @@
     <EmbeddedResource Include="Controls\Templates\ListBoxItem.xml" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Controls\Templates\ToggleButton.xml" />
+    <EmbeddedResource Include="Controls\Primitives\Templates\ToggleButton.xml" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Controls\Templates\Border.xml" />

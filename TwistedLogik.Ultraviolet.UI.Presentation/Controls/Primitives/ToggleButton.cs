@@ -1,13 +1,12 @@
 ﻿using System;
 using TwistedLogik.Nucleus;
-using TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
+namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
 {
     /// <summary>
     /// Represents a button on a user interface which can be toggled between its states.
     /// </summary>
-    [UvmlKnownType(null, "TwistedLogik.Ultraviolet.UI.Presentation.Controls.Templates.ToggleButton.xml")]
+    [UvmlKnownType(null, "TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives.Templates.ToggleButton.xml")]
     public class ToggleButton : ButtonBase
     {
         /// <summary>

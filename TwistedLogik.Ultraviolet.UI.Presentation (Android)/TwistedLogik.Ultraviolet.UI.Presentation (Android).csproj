@@ -302,6 +302,9 @@
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\Primitives\TextBlockBase.cs">
       <Link>Controls\Primitives\TextBlockBase.cs</Link>
     </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\Primitives\ToggleButton.cs">
+      <Link>Controls\Primitives\ToggleButton.cs</Link>
+    </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\Primitives\Track.cs">
       <Link>Controls\Primitives\Track.cs</Link>
     </Compile>
@@ -361,9 +364,6 @@
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\TextBoxInsertionMode.cs">
       <Link>Controls\TextBoxInsertionMode.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\ToggleButton.cs">
-      <Link>Controls\ToggleButton.cs</Link>
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\UIElementCollection.cs">
       <Link>Controls\UIElementCollection.cs</Link>
@@ -781,6 +781,9 @@
     <Content Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\Primitives\Templates\HScrollBar.xml">
       <Link>Controls\Primitives\Templates\HScrollBar.xml</Link>
     </Content>
+    <Content Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\Primitives\Templates\ToggleButton.xml">
+      <Link>Controls\Primitives\Templates\ToggleButton.xml</Link>
+    </Content>
     <Content Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\Primitives\Templates\VScrollBar.xml">
       <Link>Controls\Primitives\Templates\VScrollBar.xml</Link>
     </Content>
@@ -823,9 +826,6 @@
     <Content Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\Templates\TextBox.xml">
       <Link>Controls\Templates\TextBox.xml</Link>
     </Content>
-    <Content Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\Templates\ToggleButton.xml">
-      <Link>Controls\Templates\ToggleButton.xml</Link>
-    </Content>
     <Content Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\Templates\VSlider.xml">
       <Link>Controls\Templates\VSlider.xml</Link>
     </Content>
@@ -852,7 +852,7 @@
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties ProjectLinkReference="7379d9e1-bb01-4b05-b4f7-5d39b393348f" ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" />
+      <UserProperties ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" ProjectLinkReference="7379d9e1-bb01-4b05-b4f7-5d39b393348f" />
     </VisualStudio>
   </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

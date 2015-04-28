@@ -7,9 +7,6 @@
            SourceColor="{{Background}}"
            HorizontalAlignment="Stretch"
            VerticalAlignment="Stretch"/>
-    <Image Class="button-focus" 
-           HorizontalAlignment="Stretch"
-           VerticalAlignment="Stretch"/>
     <ContentPresenter Class="button-content"
                       Margin="{{Padding}}"
                       HorizontalAlignment="{{HorizontalContentAlignment}}"
