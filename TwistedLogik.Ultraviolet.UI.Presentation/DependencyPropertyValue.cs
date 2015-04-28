@@ -69,7 +69,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
                 this.animation            = (Animation<T>)animation;
                 this.animationClock       = clock;
-                this.animatedValue        = oldValue;
+                this.animatedValue        = GetInitialAnimatedValue(oldValue);
                 this.animatedHandOffValue = oldValue;
 
                 this.animationClock.Subscribe(this);
@@ -93,7 +93,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
                 this.animation            = null;
                 this.animationClock       = clock;
-                this.animatedValue        = oldValue;
+                this.animatedValue        = GetInitialAnimatedValue(oldValue);
                 this.animatedTargetValue  = value;
                 this.animatedHandOffValue = oldValue;
                 this.animationEasing      = fn ?? Easings.EaseInLinear;
@@ -644,6 +644,24 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                     SimpleClockPool.Instance.Release(simpleClock);
                     animationClock = null;
                 }
+            }
+
+            /// <summary>
+            /// Gets the value to which the property should change when an animation is first applied.
+            /// </summary>
+            /// <param name="oldValue">The property's old value prior to animation.</param>
+            /// <returns>The value to which the property should change.</returns>
+            private T GetInitialAnimatedValue(T oldValue)
+            {
+                if (animation != null && animation.Keyframes.Count > 0)
+                {
+                    var keyframe = animation.Keyframes[0];
+                    if (keyframe.HasValue && keyframe.Time == TimeSpan.Zero)
+                    {
+                        return keyframe.Value;
+                    }
+                }
+                return oldValue;
             }
 
             /// <summary>
