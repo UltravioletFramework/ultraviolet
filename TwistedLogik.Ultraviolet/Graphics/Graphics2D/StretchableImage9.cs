@@ -287,7 +287,8 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
             var centerPosition = new Vector2(dstLeft, dstTop);
             if (this.TileCenter)
             {
-                TileImageSegment(spriteBatch, this.Texture, centerPosition, centerRegion, centerSource, color, rotation, origin, effects, layerDepth, data);
+                TileImageSegment(TilingMode.Both,
+                    spriteBatch, this.Texture, centerPosition, centerRegion, centerSource, color, rotation, origin, effects, layerDepth, data);
             }
             else
             {
@@ -314,10 +315,14 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
 
             if (this.TileEdges)
             {
-                TileImageSegment(spriteBatch, this.Texture, leftPosition, leftRegion, leftSource, color, rotation, origin, effects, layerDepth, data);
-                TileImageSegment(spriteBatch, this.Texture, rightPosition, rightRegion, rightSource, color, rotation, origin, effects, layerDepth, data);
-                TileImageSegment(spriteBatch, this.Texture, topPosition, topRegion, topSource, color, rotation, origin, effects, layerDepth, data);
-                TileImageSegment(spriteBatch, this.Texture, bottomPosition, bottomRegion, bottomSource, color, rotation, origin, effects, layerDepth, data);
+                TileImageSegment(TilingMode.Both,
+                    spriteBatch, this.Texture, leftPosition, leftRegion, leftSource, color, rotation, origin, effects, layerDepth, data);
+                TileImageSegment(TilingMode.Both,
+                    spriteBatch, this.Texture, rightPosition, rightRegion, rightSource, color, rotation, origin, effects, layerDepth, data);
+                TileImageSegment(TilingMode.Both,
+                    spriteBatch, this.Texture, topPosition, topRegion, topSource, color, rotation, origin, effects, layerDepth, data);
+                TileImageSegment(TilingMode.Both,
+                    spriteBatch, this.Texture, bottomPosition, bottomRegion, bottomSource, color, rotation, origin, effects, layerDepth, data);
             }
             else
             {
