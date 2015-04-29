@@ -145,6 +145,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 "0." + new String('0', DecimalPlaces) : "0");
         }
 
+        /// <summary>
+        /// Handles the input box's <see cref="UIElement.PreviewMouseWheel"/> event.
+        /// </summary>
+        private void PART_Input_PreviewMouseWheel(DependencyObject element, MouseDevice device, Double x, Double y, ref RoutedEventData data)
+        {
+            if (PART_Input != null && PART_Input.IsFocused)
+            {
+                Value += y;
+            }
+        }
+
         // Component references.
         private readonly TextBox PART_Input = null;
     }

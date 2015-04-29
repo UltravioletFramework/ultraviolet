@@ -17,7 +17,8 @@
              Grid.RowSpan="2" 
              Grid.ColumnSpan="2"
              HorizontalAlignment="Stretch"
-             VerticalAlignment="Stretch">{{Value}}</TextBox>
+             VerticalAlignment="Stretch"
+             PreviewMouseWheel="PART_Input_PreviewMouseWheel">{{Value}}</TextBox>
     <RepeatButton Class="updown-button updown-button-up"
                   Focusable="false"
                   Grid.Column="1"
