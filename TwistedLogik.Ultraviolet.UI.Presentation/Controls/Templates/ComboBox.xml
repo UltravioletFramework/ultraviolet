@@ -25,6 +25,7 @@
                       IsHitTestVisible="false"/>
     <Image Name="PART_Arrow" 
            Class="combobox-arrow combobox-arrow-closed" 
+           VerticalAlignment="Center"
            Grid.Row="0"
            Grid.Column="1" 
            IsHitTestVisible="false"/>
@@ -38,7 +39,7 @@
       <Grid Class="combobox-dropdown-grid" 
             MinWidth="{{ActualWidth}}">
         
-        <Rectangle Class="combobox-dropdown-background" 
+        <Image Class="combobox-dropdown-background" 
                    HorizontalAlignment="Stretch" 
                    VerticalAlignment="Stretch"/>
         <Border Class="combobox-dropdown-border" 

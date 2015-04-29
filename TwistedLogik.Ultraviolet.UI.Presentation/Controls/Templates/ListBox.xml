@@ -4,22 +4,22 @@
         HorizontalAlignment="Stretch" 
         VerticalAlignment="Stretch">
     
-    <Rectangle Class="listbox-background" 
-               FillColor="{{Background}}"
-               HorizontalAlignment="Stretch" 
-               VerticalAlignment="Stretch"/>
-    
+    <Image Class="listbox-background" 
+           SourceColor="{{Background}}"
+           HorizontalAlignment="Stretch" 
+           VerticalAlignment="Stretch"/>    
     <Border Class="listbox-border" 
             HorizontalAlignment="Stretch"
             HorizontalContentAlignment="Stretch"
-            VerticalAlignment="Stretch">
-    
-      <ScrollViewer Class="listbox-scrollviewer" 
+            VerticalAlignment="Stretch"
+            VerticalContentAlignment="Stretch">
+
+      <ScrollViewer Class="listbox-scrollviewer"
                     HorizontalAlignment="Stretch"
-                    HorizontalScrollBarVisibility="Disabled" 
+                    HorizontalScrollBarVisibility="Auto"
                     VerticalAlignment="Stretch"
                     VerticalScrollBarVisibility="Auto">
-
+          
         <ItemsPanel HorizontalAlignment="Stretch"/>
 
       </ScrollViewer>

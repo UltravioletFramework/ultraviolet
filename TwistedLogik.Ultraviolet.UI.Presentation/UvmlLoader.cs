@@ -90,6 +90,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var context = new InstantiationContext(uv, viewModelType, userControl, bindingContext);
 
             userControl.BeginInit();
+            userControl.ComponentTemplateNamescope.Clear();
 
             var content           = InstantiateElement(uv, null, contentElement, context);
             var contentObjectTree = BuildObjectTree(uv, contentElement, content, context);
@@ -109,6 +110,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             var uv      = control.Ultraviolet;
             var context = new InstantiationContext(uv, null, control, null);
+
+            control.ComponentTemplateNamescope.Clear();
 
             PopulateElementPropertiesAndEvents(uv, control, template.Root, context);
 

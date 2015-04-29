@@ -140,7 +140,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 if (componentRoot != null)
                     componentRoot.ChangeLogicalAndVisualParents(null, null);
 
-                componentTemplateNamescope.Clear();
                 componentRoot = value;
 
                 if (componentRoot != null)

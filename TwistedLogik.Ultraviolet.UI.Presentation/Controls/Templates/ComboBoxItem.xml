@@ -4,14 +4,14 @@
         HorizontalAlignment="Stretch" 
         VerticalAlignment="Stretch">
     
-    <Rectangle Class="comboboxitem-highlight"
-               HorizontalAlignment="Stretch"
-               VerticalAlignment="Stretch"
-               IsHitTestVisible="false"
-               Opacity="{{HighlightOpacity}}"/>
+    <Image Class="comboboxitem-highlight"
+           HorizontalAlignment="Stretch"
+           VerticalAlignment="Stretch"
+           IsHitTestVisible="false"
+           Opacity="{{HighlightOpacity}}"/>
     <ContentPresenter Class="comboboxitem-content"
-                      HorizontalAlignment="Stretch"
-                      VerticalAlignment="Stretch"
+                      HorizontalAlignment="{{HorizontalContentAlignment}}"
+                      VerticalAlignment="{{VerticalContentAlignment}}"
                       Margin="{{Padding}}"/>
     
   </Grid>

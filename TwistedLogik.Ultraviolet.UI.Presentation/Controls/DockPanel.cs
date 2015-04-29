@@ -84,7 +84,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 switch (GetDock(child))
                 {
                     case Dock.Left:
-                        sizeTop += child.DesiredSize.Width;
+                        sizeLeft += child.DesiredSize.Width;
                         break;
                     case Dock.Top:
                         sizeTop += child.DesiredSize.Height;

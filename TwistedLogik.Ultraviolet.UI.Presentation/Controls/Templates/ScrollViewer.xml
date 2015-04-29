@@ -10,11 +10,24 @@
       <RowDefinition Height="Auto"/>
     </Grid.RowDefinitions>
 
-    <ScrollContentPresenter Name="PART_ContentPresenter" 
-                            HorizontalAlignment="Stretch" 
-                            VerticalAlignment="Stretch" 
-                            Grid.Column="0" 
-                            Grid.Row="0" />
+    <Image Class="scrollviewer-background"
+           HorizontalAlignment="Stretch"
+           VerticalAlignment="Stretch"
+           Grid.Column="0"
+           Grid.Row="0"/>
+    <Border 
+      HorizontalAlignment="Stretch"
+      HorizontalContentAlignment="Stretch"
+      VerticalAlignment="Stretch"
+      VerticalContentAlignment="Stretch">
+      
+      <ScrollContentPresenter Name="PART_ContentPresenter"
+                              HorizontalAlignment="Stretch"
+                              VerticalAlignment="Stretch"
+                              Grid.Column="0"
+                              Grid.Row="0" />
+      
+    </Border>
     <HScrollBar Name="PART_HScroll" 
                 Class="scrollviewer-hscroll" 
                 Grid.Column="0" 

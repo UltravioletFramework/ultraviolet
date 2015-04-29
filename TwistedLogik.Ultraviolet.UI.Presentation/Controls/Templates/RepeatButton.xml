@@ -8,12 +8,9 @@
            SourceColor="{{Background}}"
            HorizontalAlignment="Stretch" 
            VerticalAlignment="Stretch"/>
-    <Image Class="button-focus"
-           HorizontalAlignment="Stretch" 
-           VerticalAlignment="Stretch" />
     <ContentPresenter Class="button-content"
-                      HorizontalAlignment="Stretch"
-                      VerticalAlignment="Stretch"
+                      HorizontalAlignment="{{HorizontalContentAlignment}}"
+                      VerticalAlignment="{{VerticalContentAlignment}}"
                       Margin="{{Padding}}"/>
     
   </Grid>

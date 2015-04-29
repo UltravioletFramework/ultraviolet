@@ -7,6 +7,6 @@ namespace UvDebugSandbox.Assets
     /// </summary>
     public static class GlobalTextureID
     {
-        public static readonly AssetID DebugUI;
+        public static readonly AssetID DefaultUI;
     }
 }

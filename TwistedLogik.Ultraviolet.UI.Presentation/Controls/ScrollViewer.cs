@@ -204,8 +204,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <inheritdoc/>
         protected override void PositionOverride()
         {
-            PART_ContentPresenter.PositionChildren();
-
+            if (PART_ContentPresenter != null)
+            {
+                PART_ContentPresenter.PositionChildren();
+            }
             base.PositionOverride();
         }
 

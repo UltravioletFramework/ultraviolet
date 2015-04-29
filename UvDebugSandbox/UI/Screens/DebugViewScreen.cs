@@ -41,7 +41,8 @@ namespace UvDebugSandbox.UI.Screens
 
         public Double SomeValue
         {
-            get { return DateTime.UtcNow.Second; }
+            get;
+            set;
         }
 
         public Int32 Index

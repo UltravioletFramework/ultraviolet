@@ -8,14 +8,22 @@
     </Grid.ColumnDefinitions>
     
     <RepeatButton Class="scroll-button scroll-button-left" Grid.Column="0" VerticalAlignment="Stretch"
-                  Click="HandleClickLineLeft"></RepeatButton>
+                  Click="HandleClickLineLeft">
+
+      <Image Class="scroll-button-left-arrow"/>
+
+    </RepeatButton>
 
     <Image Class="scroll-track-bg scroll-track-bg-horizontal" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
     <Track Name="PART_Track" 
            Class="scroll-track" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Orientation="Horizontal" />
     
     <RepeatButton Class="scroll-button scroll-button-right" Grid.Column="2" VerticalAlignment="Stretch"
-                  Click="HandleClickLineRight"></RepeatButton>    
+                  Click="HandleClickLineRight">
+
+      <Image Class="scroll-button-right-arrow"/>
+      
+    </RepeatButton>    
     
   </Grid>
 </ComponentTemplate>

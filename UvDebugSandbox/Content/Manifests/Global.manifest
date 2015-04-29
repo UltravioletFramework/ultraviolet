@@ -2,9 +2,10 @@
 <ContentManifest Name="Global">
   <ContentGroup Name="Fonts" Directory="Fonts" Type="TwistedLogik.Ultraviolet.Graphics.Graphics2D.SpriteFont">
     <Asset Name="SegoeUI">SegoeUI</Asset>
-    <Asset Name="DebugUI">..\UI\DebugUIFont</Asset>
+    <Asset Name="DefaultUI">..\UI\DefaultUIFont</Asset>
   </ContentGroup>
   <ContentGroup Name="Textures" Directory="Textures" Type="TwistedLogik.Ultraviolet.Graphics.Texture2D">
-    <Asset Name="DebugUI">..\UI\DebugUITexture</Asset>
+    <Asset Name="DefaultUI">..\UI\DefaultUI</Asset>
+    <Asset Name="DefaultUIBackground">..\UI\DefaultUIBackground</Asset>
   </ContentGroup>
 </ContentManifest>
