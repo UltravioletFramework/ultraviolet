@@ -21,7 +21,7 @@ namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation
                     var screen = new ComplexScreen(content);
                     content.Ultraviolet.GetUI().GetScreens().Open(screen);
                 })
-                .SkipFrames(10).Render(uv => 
+                .Render(uv => 
                 {
                     using (var spriteBatch = SpriteBatch.Create())
                     {
