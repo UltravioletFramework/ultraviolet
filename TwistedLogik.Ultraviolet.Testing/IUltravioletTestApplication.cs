@@ -17,6 +17,12 @@ namespace TwistedLogik.Ultraviolet.Testing
         IUltravioletTestApplication WithAudioSubsystem(String audioSubsystem);
 
         /// <summary>
+        /// Specifies that the application should configure the Presentation Foundation.
+        /// </summary>
+        /// <returns>The Ultraviolet test application.</returns>
+        IUltravioletTestApplication WithPresentationFoundationConfigured();
+
+        /// <summary>
         /// Specifies the application's initialization code.
         /// </summary>
         /// <param name="initializer">An action which will initialize the application.</param>
@@ -29,6 +35,13 @@ namespace TwistedLogik.Ultraviolet.Testing
         /// <param name="loader">An action which will load the unit test's required content.</param>
         /// <returns>The Ultraviolet test application.</returns>
         IUltravioletTestApplication WithContent(Action<ContentManager> loader);
+
+        /// <summary>
+        /// Skips the specified number of frames prior to rendering the tested scene.
+        /// </summary>
+        /// <param name="frameCount">The number of frames to skip.</param>
+        /// <returns>The Ultraviolet test application.</returns>
+        IUltravioletTestApplication SkipFrames(Int32 frameCount);
 
         /// <summary>
         /// Renders a scene and outputs the resulting image.

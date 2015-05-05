@@ -2,10 +2,12 @@
 using System.Diagnostics;
 using System.Drawing;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet.Content;
 using TwistedLogik.Ultraviolet.Graphics;
 using TwistedLogik.Ultraviolet.Input;
 using TwistedLogik.Ultraviolet.OpenGL;
+using TwistedLogik.Ultraviolet.UI.Presentation;
 
 namespace TwistedLogik.Ultraviolet.Testing
 {
@@ -36,6 +38,13 @@ namespace TwistedLogik.Ultraviolet.Testing
         }
 
         /// <inheritdoc/>
+        public IUltravioletTestApplication WithPresentationFoundationConfigured()
+        {
+            configureUPF = true;
+            return this;
+        }
+
+        /// <inheritdoc/>
         public IUltravioletTestApplication WithInitialization(Action<UltravioletContext> initializer)
         {
             if (this.initializer != null)
@@ -52,6 +61,15 @@ namespace TwistedLogik.Ultraviolet.Testing
                 throw new InvalidOperationException("Content loading has already been configured.");
 
             this.loader = loader;
+            return this;
+        }
+
+        /// <inheritdoc/>
+        public IUltravioletTestApplication SkipFrames(Int32 frameCount)
+        {
+            Contract.EnsureRange(frameCount >= 0, "frameCount");
+
+            framesToSkip = frameCount;
             return this;
         }
 
@@ -115,6 +133,9 @@ namespace TwistedLogik.Ultraviolet.Testing
 
             if (!String.IsNullOrEmpty(audioSubsystem))
                 configuration.AudioSubsystemAssembly = audioSubsystem;
+
+            if (configureUPF)
+                PresentationFoundation.Configure(configuration);
             
             return new OpenGLUltravioletContext(this, configuration);
         }
@@ -171,9 +192,12 @@ namespace TwistedLogik.Ultraviolet.Testing
         /// <param name="time">Time elapsed since the last call to Update.</param>
         protected override void OnUpdating(UltravioletTime time)
         {
-            if (shouldExit())
+            if (framesToSkip == 0)
             {
-                Exit();
+                if (shouldExit())
+                {
+                    Exit();
+                }
             }
             base.OnUpdating(time);
         }
@@ -184,21 +208,28 @@ namespace TwistedLogik.Ultraviolet.Testing
         /// <param name="time">Time elapsed since the last call to Draw.</param>
         protected override void OnDrawing(UltravioletTime time)
         {
-            if (rtsAttribute == null)
+            if (framesToSkip == 0)
             {
-                Ultraviolet.GetGraphics().SetRenderTarget(rtarget);
-            }
-            Ultraviolet.GetGraphics().Clear(Color.Black);
+                if (rtsAttribute == null)
+                {
+                    Ultraviolet.GetGraphics().SetRenderTarget(rtarget);
+                }
+                Ultraviolet.GetGraphics().Clear(Color.Black);
 
-            if (renderer != null)
-            {
-                renderer(Ultraviolet);
-            }
+                if (renderer != null)
+                {
+                    renderer(Ultraviolet);
+                }
 
-            if (rtsAttribute == null)
+                if (rtsAttribute == null)
+                {
+                    Ultraviolet.GetGraphics().SetRenderTarget(null);
+                    bmp = ConvertRenderTargetToBitmap(rtarget);
+                }
+            }
+            else
             {
-                Ultraviolet.GetGraphics().SetRenderTarget(null);
-                bmp = ConvertRenderTargetToBitmap(rtarget);
+                framesToSkip--;
             }
             base.OnDrawing(time);
         }
@@ -229,6 +260,7 @@ namespace TwistedLogik.Ultraviolet.Testing
         // State values.
         private readonly RenderToScreenAttribute rtsAttribute;
         private readonly Boolean headless;
+        private Boolean configureUPF;
         private String audioSubsystem;
         private Func<Boolean> shouldExit;
         private ContentManager content;
@@ -236,6 +268,7 @@ namespace TwistedLogik.Ultraviolet.Testing
         private Action<ContentManager> loader;
         private Action<UltravioletContext> renderer;
         private Bitmap bmp;
+        private Int32 framesToSkip;
 
         // The render target to which the test scene will be rendered.
         private RenderTarget2D rtarget;
