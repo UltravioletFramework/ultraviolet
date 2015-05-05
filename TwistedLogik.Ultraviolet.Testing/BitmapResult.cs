@@ -59,6 +59,9 @@ namespace TwistedLogik.Ultraviolet.Testing
 
             using (var diff = new Bitmap(expected.Width, expected.Height))
             {
+                // Ignore pixels that are within about 1% of the expected value.
+                const Int32 PixelDiffThreshold = 2;
+
                 for (int y = 0; y < expected.Height; y++)
                 {
                     for (int x = 0; x < expected.Width; x++)
@@ -66,11 +69,11 @@ namespace TwistedLogik.Ultraviolet.Testing
                         var pixelExpected = expected.GetPixel(x, y);
                         var pixelActual   = bitmap.GetPixel(x, y);
 
-                        var diffR = pixelExpected.R + pixelActual.R - 2 * Math.Min(pixelExpected.R, pixelActual.R);
-                        var diffG = pixelExpected.G + pixelActual.G - 2 * Math.Min(pixelExpected.G, pixelActual.G);
-                        var diffB = pixelExpected.B + pixelActual.B - 2 * Math.Min(pixelExpected.B, pixelActual.B);
+                        var diffR = Math.Abs(pixelExpected.R + pixelActual.R - 2 * Math.Min(pixelExpected.R, pixelActual.R));
+                        var diffG = Math.Abs(pixelExpected.G + pixelActual.G - 2 * Math.Min(pixelExpected.G, pixelActual.G));
+                        var diffB = Math.Abs(pixelExpected.B + pixelActual.B - 2 * Math.Min(pixelExpected.B, pixelActual.B));
 
-                        if (diffR != 0 || diffG != 0 || diffB != 0)
+                        if (diffR > PixelDiffThreshold || diffG > PixelDiffThreshold || diffB > PixelDiffThreshold)
                         {
                             mismatchesFound++;
                         }
