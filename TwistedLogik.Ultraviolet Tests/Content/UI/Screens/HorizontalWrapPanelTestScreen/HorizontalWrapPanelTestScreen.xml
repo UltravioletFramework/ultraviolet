@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<UIPanelDefinition>
+  <Stylesheet>DefaultUIStyles.uvss</Stylesheet>
+  <View ViewModelType="TwistedLogik.Ultraviolet.Tests.UI.Presentation.HorizontalWrapPanelTestScreenViewModel, TwistedLogik.Ultraviolet.Tests">
+
+    <WrapPanel Orientation="Horizontal" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+
+      <Rectangle FillColor="#ffff0000" Width="32" Height="32"/>
+      <Rectangle FillColor="#ff00ff00" Width="32" Height="128"/>
+      <Rectangle FillColor="#ff0000ff" Width="32" Height="32" VerticalAlignment="Bottom"/>
+      <Rectangle FillColor="#ffff0000" Width="32" Height="32"/>
+      <Rectangle FillColor="#ff00ff00" Width="32" Height="128"/>
+      <Rectangle FillColor="#ff0000ff" Width="32" Height="32" VerticalAlignment="Bottom"/>
+      <Rectangle FillColor="#ffff0000" Width="32" Height="32"/>
+      <Rectangle FillColor="#ff00ff00" Width="32" Height="128"/>
+      <Rectangle FillColor="#ff0000ff" Width="32" Height="32" VerticalAlignment="Bottom"/>
+      <Rectangle FillColor="#ffff0000" Width="32" Height="32"/>
+      <Rectangle FillColor="#ff00ff00" Width="32" Height="128"/>
+      <Rectangle FillColor="#ff0000ff" Width="32" Height="32" VerticalAlignment="Bottom"/>
+      <Rectangle FillColor="#ffff0000" Width="32" Height="32"/>
+      <Rectangle FillColor="#ff00ff00" Width="32" Height="128"/>
+      <Rectangle FillColor="#ff0000ff" Width="32" Height="32" VerticalAlignment="Bottom"/>
+      <Rectangle FillColor="#ffff0000" Width="32" Height="32"/>
+      <Rectangle FillColor="#ff00ff00" Width="32" Height="128"/>
+      <Rectangle FillColor="#ff0000ff" Width="32" Height="32" VerticalAlignment="Bottom"/>
+      <Rectangle FillColor="#ffff0000" Width="32" Height="32"/>
+      <Rectangle FillColor="#ff00ff00" Width="32" Height="128"/>
+      <Rectangle FillColor="#ff0000ff" Width="32" Height="32" VerticalAlignment="Bottom"/>
+      <Rectangle FillColor="#ffff0000" Width="32" Height="32"/>
+      <Rectangle FillColor="#ff00ff00" Width="32" Height="128"/>
+      <Rectangle FillColor="#ff0000ff" Width="32" Height="32" VerticalAlignment="Bottom"/>
+      <Rectangle FillColor="#ffff0000" Width="32" Height="32"/>
+      <Rectangle FillColor="#ff00ff00" Width="32" Height="128"/>
+      <Rectangle FillColor="#ff0000ff" Width="32" Height="32" VerticalAlignment="Bottom"/>
+      <Rectangle FillColor="#ffff0000" Width="32" Height="32"/>
+      <Rectangle FillColor="#ff00ff00" Width="32" Height="128"/>
+      <Rectangle FillColor="#ff0000ff" Width="32" Height="32" VerticalAlignment="Bottom"/>
+
+    </WrapPanel>
+
+  </View>
+</UIPanelDefinition>
