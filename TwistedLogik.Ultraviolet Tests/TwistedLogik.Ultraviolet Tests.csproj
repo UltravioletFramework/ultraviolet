@@ -206,9 +206,6 @@
     <None Include="Content\Manifests\Global.manifest">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Content\UI\Screens\ComplexScreen\DefaultUIStyles.uvss">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <None Include="Content\Songs\Deep Haze.ogg">
@@ -239,25 +236,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Content\UI\Screens\CanvasTestScreen\DefaultUIStyles.uvss">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Content\UI\Screens\DockPanelTestScreen\DefaultUIStyles.uvss">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Content\UI\Screens\VerticalWrapPanelTestScreen\DefaultUIStyles.uvss">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Content\UI\Screens\HorizontalWrapPanelTestScreen\DefaultUIStyles.uvss">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Content\UI\Screens\HorizontalStackPanelTestScreen\DefaultUIStyles.uvss">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Content\UI\Screens\VerticalStackPanelTestScreen\DefaultUIStyles.uvss">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Content\UI\Screens\GridTestScreen\DefaultUIStyles.uvss">
+    <None Include="Content\UI\DefaultUIStyles.uvss">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Resources\Expected\Graphics\UltravioletGraphics_CanRenderATexturedTriangle.png">

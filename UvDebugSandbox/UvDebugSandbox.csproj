@@ -99,7 +99,10 @@
     <None Include="Content\Manifests\Global.manifest">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Content\UI\Screens\DebugViewScreen\DefaultUIStyles.uvss">
+    <None Include="Content\UI\DefaultUIStyles.uvss">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\UI\Screens\DebugViewScreen\Test.uvss">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

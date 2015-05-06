@@ -19,16 +19,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// <param name="storyboards">A collection containing the document's storyboards.</param>
         internal UvssDocument(IEnumerable<UvssRule> rules, IEnumerable<UvssStoryboard> storyboards)
         {
-            Contract.Require(rules, "rules");
-
             this.rules                    = (rules ?? Enumerable.Empty<UvssRule>()).ToList();
             this.storyboards              = (storyboards ?? Enumerable.Empty<UvssStoryboard>()).ToList();
             this.storyboardsByName        = new Dictionary<String, UvssStoryboard>(StringComparer.OrdinalIgnoreCase);
             this.reifiedStoryboardsByName = new Dictionary<String, Storyboard>(StringComparer.OrdinalIgnoreCase);
 
-            foreach (var storyboard in storyboards)
+            if (storyboards != null)
             {
-                this.storyboardsByName[storyboard.Name] = storyboard;
+                foreach (var storyboard in storyboards)
+                {
+                    this.storyboardsByName[storyboard.Name] = storyboard;
+                }
             }
         }
 
@@ -63,6 +64,35 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
                 var document = parser.Parse(source, tokens);
 
                 return document;
+            }
+        }
+
+        /// <summary>
+        /// Clears the document's lists of rules and storyboards.
+        /// </summary>
+        public void Clear()
+        {
+            uv = null;
+            rules.Clear();
+            storyboards.Clear();
+            storyboardsByName.Clear();
+            reifiedStoryboardsByName.Clear();
+        }
+
+        /// <summary>
+        /// Appends another styling document to the end of this document.
+        /// </summary>
+        /// <param name="document">The document to append to the end of this document.</param>
+        public void Append(UvssDocument document)
+        {
+            Contract.Require(document, "document");
+
+            this.rules.AddRange(document.Rules);
+            this.storyboards.AddRange(document.Storyboards);
+
+            foreach (var storyboard in document.Storyboards)
+            {
+                this.storyboardsByName[storyboard.Name] = storyboard;
             }
         }
 

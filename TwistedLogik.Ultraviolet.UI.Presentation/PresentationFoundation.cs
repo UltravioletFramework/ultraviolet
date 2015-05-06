@@ -7,6 +7,7 @@ using System.Xml.Linq;
 using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet.UI.Presentation.Animations;
 using TwistedLogik.Ultraviolet.UI.Presentation.Controls;
+using TwistedLogik.Ultraviolet.UI.Presentation.Styles;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation
 {
@@ -323,6 +324,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Sets the global stylesheet used by all Presentation Foundation views.
+        /// </summary>
+        /// <param name="stylesheet">The global stylesheet to set.</param>
+        public void SetGlobalStylesheet(UvssDocument stylesheet)
+        {
+            this.globalStylesheet = stylesheet;
+            OnGlobalStylesheetChanged();
+        }
+
+        /// <summary>
         /// Gets the performance statistics which have been collected by the Ultraviolet Presentation Foundation.
         /// </summary>
         public PresentationFoundationPerformanceStats PerformanceStats
@@ -337,6 +348,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             get { return componentTemplateManager; }
         }
+
+        /// <summary>
+        /// Gets the current global stylesheet.
+        /// </summary>
+        public UvssDocument GlobalStylesheet
+        {
+            get { return globalStylesheet; }
+        }
+
+        /// <summary>
+        /// Occurs when the Presentation Foundation's global stylesheet is changed.
+        /// </summary>
+        public event EventHandler GlobalStylesheetChanged;
 
         /// <summary>
         /// Removes the specified UI element from all of the Foundation's processing queues.
@@ -628,6 +652,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Raises the <see cref="GlobalStylesheetChanged"/> event.
+        /// </summary>
+        private void OnGlobalStylesheetChanged()
+        {
+            var temp = GlobalStylesheetChanged;
+            if (temp != null)
+            {
+                temp(this, EventArgs.Empty);
+            }
+        }
+
+        /// <summary>
         /// Processes the queue of elements with invalid styling states.
         /// </summary>
         private void ProcessStyleQueue()
@@ -752,5 +788,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         private readonly LayoutQueue styleQueue;
         private readonly LayoutQueue measureQueue;
         private readonly LayoutQueue arrangeQueue;
+
+        // The global stylesheet.
+        private UvssDocument globalStylesheet;
     }
 }

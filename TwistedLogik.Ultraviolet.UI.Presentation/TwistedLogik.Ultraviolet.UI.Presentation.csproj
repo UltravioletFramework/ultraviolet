@@ -242,8 +242,10 @@
     <Compile Include="Styles\NamespaceDoc.cs" />
     <Compile Include="Styles\UvssClassCollection.cs" />
     <Compile Include="Styles\UvssClassCollection.IEnumerable.cs" />
+    <Compile Include="Styles\UvssDocumentImporter.cs" />
     <Compile Include="Styles\UvssDocument.cs" />
     <Compile Include="Styles\UvssDocument.PrioritizedStyleData.cs" />
+    <Compile Include="Styles\UvssDocumentProcessor.cs" />
     <Compile Include="Styles\UvssException.cs" />
     <Compile Include="Styles\UvssLexer.cs" />
     <Compile Include="Styles\UvssLexerToken.cs" />

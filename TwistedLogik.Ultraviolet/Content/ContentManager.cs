@@ -382,7 +382,12 @@ namespace TwistedLogik.Ultraviolet.Content
             Contract.EnsureNotDisposed(this, Disposed);
 
             String directory;
-            return Path.GetFullPath(GetAssetPath(NormalizeAssetPath(asset), null, out directory));
+
+            var normalizedPath = GetAssetPath(NormalizeAssetPath(asset), null, out directory);
+            if (normalizedPath == null)
+                throw new FileNotFoundException(asset);
+
+            return Path.GetFullPath(normalizedPath);
         }
 
         /// <summary>

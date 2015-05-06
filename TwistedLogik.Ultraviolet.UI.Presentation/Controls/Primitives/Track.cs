@@ -335,8 +335,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         protected Size2D CalculateIncreaseButtonSize(Size2D trackSize, Size2D decreaseButtonSize, Size2D thumbSize)
         {
             return (Orientation == Orientation.Horizontal) ? 
-               new Size2D((trackSize.Width - (decreaseButtonSize.Width + thumbSize.Width)), trackSize.Height) :
-               new Size2D(trackSize.Width, (trackSize.Height - (decreaseButtonSize.Height + thumbSize.Height)));
+               new Size2D(Math.Max(0, trackSize.Width - (decreaseButtonSize.Width + thumbSize.Width)), trackSize.Height) :
+               new Size2D(trackSize.Width, Math.Max(0, trackSize.Height - (decreaseButtonSize.Height + thumbSize.Height)));
         }
 
         /// <summary>

@@ -5,6 +5,8 @@ using TwistedLogik.Ultraviolet.Content;
 using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
 using TwistedLogik.Ultraviolet.Testing;
 using TwistedLogik.Ultraviolet.UI;
+using TwistedLogik.Ultraviolet.UI.Presentation;
+using TwistedLogik.Ultraviolet.UI.Presentation.Styles;
 
 namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation
 {
@@ -94,6 +96,9 @@ namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation
                 {
                     var contentManifestFiles = content.GetAssetFilePathsInDirectory("Manifests");
                     content.Ultraviolet.GetContent().Manifests.Load(contentManifestFiles);
+
+                    var globalStylesheet = content.Load<UvssDocument>(@"UI\DefaultUIStyles");
+                    content.Ultraviolet.GetUI().GetPresentationFoundation().SetGlobalStylesheet(globalStylesheet);
 
                     var screen = ctor(content);
                     content.Ultraviolet.GetUI().GetScreens().Open(screen);

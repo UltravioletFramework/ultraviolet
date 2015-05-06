@@ -1,6 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <UIPanelDefinition>
-  <Stylesheet>DefaultUIStyles.uvss</Stylesheet>
   <View ViewModelType="TwistedLogik.Ultraviolet.Tests.UI.Presentation.VerticalStackPanelTestScreenViewModel, TwistedLogik.Ultraviolet.Tests">
 
     <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">

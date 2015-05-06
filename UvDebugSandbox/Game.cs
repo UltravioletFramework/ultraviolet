@@ -14,6 +14,7 @@ using UvDebugSandbox.Assets;
 using UvDebugSandbox.Input;
 using UvDebugSandbox.UI;
 using UvDebugSandbox.UI.Screens;
+using TwistedLogik.Ultraviolet.UI.Presentation.Styles;
 
 namespace UvDebugSandbox
 {
@@ -90,6 +91,7 @@ namespace UvDebugSandbox
             LoadInputBindings();
             LoadContentManifests();
             LoadCursors();
+            LoadPresentation();
 
             this.spriteBatch = SpriteBatch.Create();
             this.spriteFont = this.content.Load<SpriteFont>(GlobalFontID.SegoeUI);
@@ -162,6 +164,15 @@ namespace UvDebugSandbox
         {
             this.cursors = this.content.Load<CursorCollection>("Cursors/Cursors");
             Ultraviolet.GetPlatform().Cursor = this.cursors["Normal"];
+        }
+
+        /// <summary>
+        /// Loads files necessary for the Presentation Foundation.
+        /// </summary>
+        protected void LoadPresentation()
+        {
+            var globalStylesheet = content.Load<UvssDocument>("UI/DefaultUIStyles");
+            Ultraviolet.GetUI().GetPresentationFoundation().SetGlobalStylesheet(globalStylesheet);
         }
 
         /// <summary>

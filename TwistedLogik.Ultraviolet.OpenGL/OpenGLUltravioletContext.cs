@@ -66,7 +66,10 @@ namespace TwistedLogik.Ultraviolet.OpenGL
             this.content = new UltravioletContent(this);
             this.ui = new UltravioletUI(this, configuration);
 
-            this.content.RegisterImportersAndProcessors();
+            this.content.RegisterImportersAndProcessors(new[] 
+            {
+                String.IsNullOrEmpty(configuration.ViewProviderAssembly) ? null : Assembly.Load(configuration.ViewProviderAssembly)
+            });
             this.content.Importers.RegisterImporter<XmlContentImporter>("prog");
 
             PumpEvents();
