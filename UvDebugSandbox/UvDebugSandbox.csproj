@@ -102,9 +102,6 @@
     <None Include="Content\UI\DefaultUIStyles.uvss">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Content\UI\Screens\DebugViewScreen\Test.uvss">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TwistedLogik.Gluon\TwistedLogik.Gluon.csproj">
