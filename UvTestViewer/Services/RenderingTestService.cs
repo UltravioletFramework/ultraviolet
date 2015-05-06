@@ -185,7 +185,8 @@ namespace UvTestViewer.Services
             {
                 var resultFilename = Path.Combine(dir.FullName, "Result.trx");
                 var resultXml      = XDocument.Load(resultFilename);
-                var resultNodes    = resultXml.Descendants("UnitTestResult");
+                var resultNs       = resultXml.Root.GetDefaultNamespace();
+                var resultNodes    = resultXml.Root.Descendants(resultNs + "UnitTestResult");
 
                 var names = from r in resultNodes
                             let testName = (String)r.Attribute("testName")
