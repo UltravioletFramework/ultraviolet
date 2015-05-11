@@ -240,6 +240,8 @@
     <Compile Include="SourcedImage.cs" />
     <Compile Include="SourcedResource.cs" />
     <Compile Include="Styles\NamespaceDoc.cs" />
+    <Compile Include="Styles\TriggerComparisonCache.cs" />
+    <Compile Include="Styles\TriggerComparisonOp.cs" />
     <Compile Include="Styles\UvssClassCollection.cs" />
     <Compile Include="Styles\UvssClassCollection.IEnumerable.cs" />
     <Compile Include="Styles\UvssDocumentImporter.cs" />

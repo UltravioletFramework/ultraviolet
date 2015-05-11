@@ -290,4 +290,9 @@
       <Variant>The local property "{0}" can only be applied to "{1}" or one of its descendant types.</Variant>
     </en-US>
   </String>
+  <String Key="TYPE_DOES_NOT_DEFINE_EQUALS_OR_COMPARETO">
+    <en-US>
+      <Variant>The type "{0}" cannot be used in a trigger condition because it does not define both Equals() and CompareTo() methods.</Variant>
+    </en-US>
+  </String>
 </LocalizedStrings>

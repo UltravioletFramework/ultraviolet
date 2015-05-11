@@ -81,6 +81,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public static readonly StringResource BeginInitAlreadyCalled               = new StringResource(StringDatabase, "BEGIN_INIT_ALREADY_CALLED");
         public static readonly StringResource BeginInitNotCalled                   = new StringResource(StringDatabase, "BEGIN_INIT_NOT_CALLED");
         public static readonly StringResource LocalPropertyCannotBeAppliedToType   = new StringResource(StringDatabase, "LOCAL_PROPERTY_CANNOT_BE_APPLIED_TO_TYPE");
+        public static readonly StringResource TypeDoesNotDefineEqualsOrCompareTo   = new StringResource(StringDatabase, "TYPE_DOES_NOT_DEFINE_EQUALS_OR_COMPARETO");
 #pragma warning restore 1591
     }
 }
