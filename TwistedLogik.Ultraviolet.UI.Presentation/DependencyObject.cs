@@ -124,6 +124,20 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Clears the triggered values of all of the object's dependency properties.
+        /// </summary>
+        public void ClearTriggeredValues()
+        {
+            foreach (var kvp in dependencyPropertyValues)
+            {
+                if (!kvp.Value.Property.IsReadOnly)
+                {
+                    kvp.Value.ClearTriggeredValue();
+                }
+            }
+        }
+
+        /// <summary>
         /// Applies the specified animation to a dependency property.
         /// </summary>
         /// <param name="dp">A <see cref="DependencyProperty"/> instance which identifies the dependency property to animate.</param>
@@ -364,6 +378,23 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Sets the triggered value of the specified dependency property.
+        /// </summary>
+        /// <param name="dp">A <see cref="DependencyProperty"/> instance which identifies the dependency property for which to set a value;.;</param>
+        /// <param name="action">The trigger action which will provide the dependency property's value.</param>
+        public void SetTriggeredValue(DependencyProperty dp, SetTriggerAction action)
+        {
+            Contract.Require(dp, "dp");
+            Contract.Require(action, "action");
+
+            if (dp.IsReadOnly)
+                throw new InvalidOperationException(PresentationStrings.DependencyPropertyIsReadOnly.Format(dp.Name));
+
+            var wrapper = GetDependencyPropertyValue(dp, dp.PropertyType);
+            wrapper.Trigger(action);
+        }
+
+        /// <summary>
         /// Sets the format string used to convert the specified dependency property's value to a string.
         /// </summary>
         /// <typeparam name="T">The typoe of value contained by the dependency property.</typeparam>
@@ -411,7 +442,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
-        /// Clears the styled value associated with the specified 
+        /// Clears the styled value associated with the specified dependency property. 
         /// </summary>
         /// <param name="dp">A <see cref="DependencyProperty"/> instance which identifies the dependency property to clear.</param>
         public void ClearStyledValue(DependencyProperty dp)
@@ -423,6 +454,39 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             var wrapper = GetDependencyPropertyValue(dp, dp.PropertyType);
             wrapper.ClearStyledValue();
+        }
+
+        /// <summary>
+        /// Clears the triggered value associated with the specified dependency property.
+        /// </summary>
+        /// <param name="dp">A <see cref="DependencyProperty"/> instance which identifies the dependency property to clear.</param>
+        public void ClearTriggeredValue(DependencyProperty dp)
+        {
+            Contract.Require(dp, "dp");
+
+            if (dp.IsReadOnly)
+                throw new InvalidOperationException(PresentationStrings.DependencyPropertyIsReadOnly.Format(dp.Name));
+
+            var wrapper = GetDependencyPropertyValue(dp, dp.PropertyType);
+            wrapper.ClearTriggeredValue();
+        }
+
+        /// <summary>
+        /// Clears the triggered value associated with the specified dependency property, if it is currently being provided
+        /// by the specified trigger action. Otherwise, nothing happens.
+        /// </summary>
+        /// <param name="dp">A <see cref="DependencyProperty"/> instance which identifies the dependency property to clear.</param>
+        /// <param name="action">The trigger action to clear from the specified dependency property.</param>
+        public void ClearTriggeredValue(DependencyProperty dp, SetTriggerAction action)
+        {
+            Contract.Require(dp, "dp");
+            Contract.Require(action, "action");
+
+            if (dp.IsReadOnly)
+                throw new InvalidOperationException(PresentationStrings.DependencyPropertyIsReadOnly.Format(dp.Name));
+
+            var wrapper = GetDependencyPropertyValue(dp, dp.PropertyType);
+            wrapper.ClearTriggeredValue(action);
         }
 
         /// <summary>

@@ -30,6 +30,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
                 if (dprop == null)
                     throw new InvalidOperationException(PresentationStrings.EventOrPropertyDoesNotExist.Format(condition.DependencyPropertyName, dobj.GetType()));
 
+                Evaluate(dobj);
+
                 DependencyProperty.RegisterChangeNotification(dobj, dprop, this);
             }
         }
@@ -42,6 +44,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
                 var dprop = DependencyProperty.FindByStylingName(condition.DependencyPropertyName, dobj.GetType());
                 if (dprop == null)
                     throw new InvalidOperationException(PresentationStrings.EventOrPropertyDoesNotExist.Format(condition.DependencyPropertyName, dobj.GetType()));
+
+                // TODO: Clear triggered property values
 
                 DependencyProperty.UnregisterChangeNotification(dobj, dprop, this);
             }

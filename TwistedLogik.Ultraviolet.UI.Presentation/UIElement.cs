@@ -120,7 +120,20 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public void ClearStyledValues(Boolean recursive = true)
         {
             ClearStyledValuesCore(recursive);
+            ClearTriggeredValues(recursive);
             isStyleValid = false;
+        }
+
+        /// <summary>
+        /// Clears the triggered values of this element's dependency properties,
+        /// and optionally the triggered values of any dependency properties belonging
+        /// to children of this element.
+        /// </summary>
+        /// <param name="recursive">A value indicating whether to clear the triggered dependency
+        /// property values of this element's child elements.</param>
+        public void ClearTriggeredValues(Boolean recursive = true)
+        {
+            ClearTriggeredValuesCore(recursive);
         }
 
         /// <summary>
@@ -200,6 +213,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public void Cleanup()
         {
             ClearAnimations(false);
+            ClearTriggeredValues();
             CleanupStoryboards();
             CleanupCore();
         }
@@ -1455,6 +1469,23 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             VisualTreeHelper.ForEachChild<UIElement>(this, CommonBoxedValues.Boolean.FromValue(recursive), (child, state) =>
             {
                 child.ClearStyledValues((Boolean)state);
+            });
+        }
+
+        /// <summary>
+        /// When overridden in a derived class, clears the triggered values of this element's 
+        /// dependency properties, and optionally the triggered values of any dependency properties belonging
+        /// to children of this element.
+        /// </summary>
+        /// <param name="recursive">A value indicating whether to clear the triggered dependency
+        /// property values of this element's child elements.</param>
+        protected virtual void ClearTriggeredValuesCore(Boolean recursive)
+        {
+            ((DependencyObject)this).ClearTriggeredValues();
+
+            VisualTreeHelper.ForEachChild<UIElement>(this, CommonBoxedValues.Boolean.FromValue(recursive), (child, state) =>
+            {
+                child.ClearTriggeredValues((Boolean)state);
             });
         }
 

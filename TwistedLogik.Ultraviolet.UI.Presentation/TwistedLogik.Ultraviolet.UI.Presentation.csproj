@@ -245,9 +245,13 @@
     <Compile Include="SourcedResource.cs" />
     <Compile Include="Styles\EventTrigger.cs" />
     <Compile Include="Styles\NamespaceDoc.cs" />
+    <Compile Include="Styles\PlaySoundEffectTriggerAction.cs" />
+    <Compile Include="Styles\PlayStoryboardTriggerAction.cs" />
     <Compile Include="Styles\PropertyTrigger.cs" />
     <Compile Include="Styles\PropertyTriggerConditionCollection.cs" />
     <Compile Include="Styles\PropertyTriggerConditionCollection.IEnumerable.cs" />
+    <Compile Include="Styles\SetTriggerAction.cs" />
+    <Compile Include="Styles\TriggerAction.cs" />
     <Compile Include="Styles\TriggerComparisonCache.cs" />
     <Compile Include="Styles\TriggerComparisonOp.cs" />
     <Compile Include="Styles\TriggerCondition.cs" />

@@ -1,5 +1,6 @@
 ﻿using System;
 using TwistedLogik.Ultraviolet.UI.Presentation.Animations;
+using TwistedLogik.Ultraviolet.UI.Presentation.Styles;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation
 {
@@ -18,6 +19,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Update(UltravioletTime)"/>.</param>
         void Digest(UltravioletTime time);
+
+        /// <summary>
+        /// Sets the dependency property to draw its value from the specified trigger action.
+        /// </summary>
+        /// <param name="action">The trigger action from which to draw the dependency property value.</param>
+        void Trigger(SetTriggerAction action);
 
         /// <summary>
         /// Applies the specified animation to the property value.
@@ -64,6 +71,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Clears the dependency property's styled value, if it has one.
         /// </summary>
         void ClearStyledValue();
+
+        /// <summary>
+        /// Clears the dependency property's triggered value, if it has one.
+        /// </summary>
+        void ClearTriggeredValue();
+
+        /// <summary>
+        /// Clears the dependency property's triggered value, if it has one and it is currently
+        /// being provided by the specified trigger action. Otherwise, nothing happens.
+        /// </summary>
+        void ClearTriggeredValue(SetTriggerAction action);
 
         /// <summary>
         /// Sets the format string used to convert the dependency property value to a string.
@@ -159,6 +177,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Gets a value indicating whether the dependency property has a styled value.
         /// </summary>
         Boolean HasStyledValue
+        {
+            get;
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the dependency property has a triggered value.
+        /// </summary>
+        Boolean HasTriggeredValue
         {
             get;
         }

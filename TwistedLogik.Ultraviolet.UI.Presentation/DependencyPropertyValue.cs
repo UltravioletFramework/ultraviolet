@@ -1,6 +1,7 @@
 ﻿using System;
 using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet.UI.Presentation.Animations;
+using TwistedLogik.Ultraviolet.UI.Presentation.Styles;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation
 {
@@ -52,6 +53,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             public void Digest(UltravioletTime time)
             {
                 CheckForChanges(time);
+            }
+
+            /// <inheritdoc/>
+            public void Trigger(SetTriggerAction action)
+            {
+                Contract.Require(action, "action");
+
+                triggeredValueSource = action;
+                triggeredValue       = action.GetValue<T>();
             }
 
             /// <inheritdoc/>
@@ -205,6 +215,24 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 hasStyledValue = false;
 
                 UpdateRequiresDigest(oldValue);
+            }
+
+            /// <inheritdoc/>
+            public void ClearTriggeredValue()
+            {
+                triggeredValue       = default(T);
+                triggeredValueSource = null;
+            }
+
+            /// <inheritdoc/>
+            public void ClearTriggeredValue(SetTriggerAction trigger)
+            {
+                Contract.Require(trigger, "trigger");
+
+                if (triggeredValueSource != trigger)
+                    return;
+
+                ClearTriggeredValue();
             }
 
             /// <inheritdoc/>
@@ -362,6 +390,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             public Boolean HasStyledValue
             {
                 get { return hasStyledValue; }
+            }
+
+            /// <inheritdoc/>
+            public Boolean HasTriggeredValue
+            {
+                get { return triggeredValueSource != null; }
             }
 
             /// <inheritdoc/>
@@ -727,6 +761,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             private T defaultValue;
             private T previousValue;
             private T coercedValue;
+            private T triggeredValue;
+            private SetTriggerAction triggeredValueSource;
 
             // State values.
             private readonly DataBindingComparer<T> comparer;
