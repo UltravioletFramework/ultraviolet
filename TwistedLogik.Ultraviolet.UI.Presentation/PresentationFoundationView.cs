@@ -110,6 +110,21 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Performs the specified action on all objects within the view's visual tree
+        /// which match the specified UVSS selector.
+        /// </summary>
+        /// <param name="selector">The UVSS selector that specifies which objects should be targeted by the action.</param>
+        /// <param name="state">A state value which is passed to the specified action.</param>
+        /// <param name="action">The action to perform on the selected objects.</param>
+        public void Select(UvssSelector selector, Object state, Action<UIElement, Object> action)
+        {
+            Contract.Require(selector, "selector");
+            Contract.Require(action, "action");
+
+            Select(layoutRoot, selector, state, action);
+        }
+
+        /// <summary>
         /// Invalidates the styling state of the view's layout root.
         /// </summary>
         public void InvalidateStyle()
@@ -602,7 +617,27 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             popup = null;
             return LayoutRoot.HitTest(point);
         }
-        
+
+        /// <summary>
+        /// Recursively performs the specified action on all objects within the view's visual tree
+        /// which match the specified UVSS selector.
+        /// </summary>
+        private void Select(UIElement element, UvssSelector selector, Object state, Action<UIElement, Object> action)
+        {
+            if (selector.MatchesElement(element))
+                action(element, state);
+
+            var children = VisualTreeHelper.GetChildrenCount(element);
+            for (int i = 0; i < children; i++)
+            {
+                var child = VisualTreeHelper.GetChild(element, i) as UIElement;
+                if (child == null)
+                    continue;
+
+                Select(child, selector, state, action);
+            }
+        }
+
         /// <summary>
         /// Updates the view's combined stylesheet, which includes both UPF's global styles and the view's local styles.
         /// </summary>

@@ -13,31 +13,59 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// Initializes a new instance of the <see cref="SetTriggerAction"/> class.
         /// </summary>
         /// <param name="dprop">The dependency property which is set by this action.</param>
+        /// <param name="selector">A UVSS selector which specifies the target (or targets) of the action.</param>
         /// <param name="value">The value which is provided by this action.</param>
-        internal SetTriggerAction(DependencyProperty dprop, String value)
+        internal SetTriggerAction(DependencyProperty dprop, UvssSelector selector, String value)
         {
             Contract.Require(dprop, "dprop");
             Contract.RequireNotEmpty(value, "value");
 
-            this.dprop = dprop;
-            this.value = value;
+            this.dprop    = dprop;
+            this.selector = selector;
+            this.value    = value;
         }
 
         /// <inheritdoc/>
         public override void Activate(DependencyObject dobj)
         {
-            // TODO: Actually, we need to be able to set a specific target within the visual tree!
-            dobj.SetTriggeredValue(dprop, this);
-
+            if (selector == null)
+            {
+                dobj.SetTriggeredValue(dprop, this);
+            }
+            else
+            {
+                var element = dobj as UIElement;
+                if (element != null && element.View != null)
+                {
+                    element.View.Select(selector, this, (e, s) =>
+                    {
+                        var action = (SetTriggerAction)s;
+                        e.SetTriggeredValue(action.dprop, action);
+                    });
+                }
+            }
             base.Activate(dobj);
         }
 
         /// <inheritdoc/>
         public override void Deactivate(DependencyObject dobj)
         {
-            // TODO: Actually, we need to be able to set a specific target within the visual tree!
-            dobj.ClearTriggeredValue(dprop, this);
-
+            if (selector == null)
+            {
+                dobj.ClearTriggeredValue(dprop, this);
+            }
+            else
+            {
+                var element = dobj as UIElement;
+                if (element != null && element.View != null)
+                {
+                    element.View.Select(selector, this, (e, s) =>
+                    {
+                        var action = (SetTriggerAction)s;
+                        e.ClearTriggeredValue(action.dprop, action);
+                    });
+                }
+            }
             base.Deactivate(dobj);
         }
 
@@ -56,6 +84,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
 
         // State values.
         private readonly DependencyProperty dprop;
+        private readonly UvssSelector selector;
         private readonly String value;
         private Object valueCache;
     }
