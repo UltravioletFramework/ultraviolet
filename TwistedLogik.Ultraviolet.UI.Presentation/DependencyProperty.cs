@@ -5,6 +5,7 @@ using System.Globalization;
 using System.Linq.Expressions;
 using System.Reflection;
 using TwistedLogik.Nucleus;
+using TwistedLogik.Nucleus.Collections;
 using TwistedLogik.Ultraviolet.UI.Presentation.Styles;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation
@@ -21,7 +22,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
     /// Represents a dependency property.
     /// </summary>
     [DebuggerDisplay(@"\{Name: {Name} Owner: {OwnerType}\}")]
-    public class DependencyProperty
+    public partial class DependencyProperty
     {
         /// <summary>
         /// Initializes the <see cref="DependencyProperty"/> type.
@@ -54,6 +55,38 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             this.isReadOnly      = isReadOnly;
             this.isAttached      = isAttached;
             this.styleSetter     = CreateStyleSetter();
+        }
+
+        /// <summary>
+        /// Registers the specified subscriber to receive change notifications for the specified dependency property.
+        /// </summary>
+        /// <param name="dobj">The dependency object to monitor for changes.</param>
+        /// <param name="dprop">The dependency property for which to receive change notifications.</param>
+        /// <param name="subscriber">The subscriber that wishes to receive change notifications for the specified dependency property.</param>
+        public static void RegisterChangeNotification(DependencyObject dobj, DependencyProperty dprop, IDependencyPropertyChangeNotificationSubscriber subscriber)
+        {
+            Contract.Require(dobj, "dobj");
+            Contract.Require(dprop, "dprop");
+            Contract.Require(subscriber, "subscriber");
+
+            lock (dprop.changeNotificationSubs)
+                dprop.changeNotificationSubs.AddLast(new ChangeNotificationKey(subscriber, dobj));
+        }
+
+        /// <summary>
+        /// Unregisters the specified subscriber from receiving change notifications for the specified dependency property.
+        /// </summary>
+        /// <param name="dobj">The dependency object to monitor for changes.</param>
+        /// <param name="dprop">The dependency property for which to stop receiving change notifications.</param>
+        /// <param name="subscriber">The subscriber that wishes to stop receiving change notifications for the specified dependency property.</param>
+        public static void UnregisterChangeNotification(DependencyObject dobj, DependencyProperty dprop, IDependencyPropertyChangeNotificationSubscriber subscriber)
+        {
+            Contract.Require(dobj, "dobj");
+            Contract.Require(dprop, "dprop");
+            Contract.Require(subscriber, "subscriber");
+
+            lock (dprop.changeNotificationSubs)
+                dprop.changeNotificationSubs.Remove(new ChangeNotificationKey(subscriber, dobj));
         }
 
         /// <summary>
@@ -325,6 +358,25 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Raises a change notification for this dependency property.
+        /// </summary>
+        /// <param name="dobj">The object that was changed.</param>
+        internal void RaiseChangeNotification(DependencyObject dobj)
+        {
+            lock (changeNotificationSubs)
+            {
+                for (var current = changeNotificationSubs.First; current != null; current = current.Next)
+                {
+                    var key = current.Value;
+                    if (key.Target == dobj)
+                    {
+                        key.Subscriber.ReceiveDependencyPropertyChangeNotification(dobj, this);
+                    }
+                }
+            }
+        }
+
+        /// <summary>
         /// Applies the specified style to the dependency property.
         /// </summary>
         /// <param name="dobj">The dependency object on which to set the style.</param>
@@ -468,5 +520,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
         // State values.
         private readonly DependencyPropertyStyleSetter styleSetter;
+        private readonly PooledLinkedList<ChangeNotificationKey> changeNotificationSubs = 
+            new PooledLinkedList<ChangeNotificationKey>(1);
     }
 }

@@ -165,6 +165,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 ((PropertyChangedCallback<T>)ChangedCallback)(dobj, oldValue, newValue);
             }
 
+            dp.RaiseChangeNotification(dobj);
+
             if (IsMeasureAffecting)
             {
                 dobj.OnMeasureAffectingPropertyChanged();

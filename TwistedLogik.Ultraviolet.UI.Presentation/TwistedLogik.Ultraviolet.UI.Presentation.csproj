@@ -115,11 +115,13 @@
     <Compile Include="DependencyBoundValueConverting.cs" />
     <Compile Include="DependencyBoundValueNonConverting.cs" />
     <Compile Include="DependencyObject.cs" />
+    <Compile Include="DependencyProperty.ChangeNotificationKey.cs" />
     <Compile Include="DependencyProperty.cs" />
     <Compile Include="DependencyPropertyKey.cs" />
     <Compile Include="Controls\ListBoxSelectedItems.cs" />
     <Compile Include="Documents\TextElement.cs" />
     <Compile Include="EventManager.cs" />
+    <Compile Include="IDependencyPropertyChangeNotificationSubscriber.cs" />
     <Compile Include="Input\CaptureMode.cs" />
     <Compile Include="PopupQueue.cs" />
     <Compile Include="PropertyMetadata.cs" />
@@ -240,9 +242,13 @@
     <Compile Include="SourcedImage.cs" />
     <Compile Include="SourcedResource.cs" />
     <Compile Include="Styles\NamespaceDoc.cs" />
+    <Compile Include="Styles\PropertyTrigger.cs" />
+    <Compile Include="Styles\PropertyTriggerConditionCollection.cs" />
+    <Compile Include="Styles\PropertyTriggerConditionCollection.IEnumerable.cs" />
     <Compile Include="Styles\TriggerComparisonCache.cs" />
     <Compile Include="Styles\TriggerComparisonOp.cs" />
     <Compile Include="Styles\TriggerCondition.cs" />
+    <Compile Include="Styles\Trigger.cs" />
     <Compile Include="Styles\UvssClassCollection.cs" />
     <Compile Include="Styles\UvssClassCollection.IEnumerable.cs" />
     <Compile Include="Styles\UvssDocumentImporter.cs" />

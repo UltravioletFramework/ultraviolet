@@ -42,6 +42,22 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
             return comparison(dobj, dprop, refvalCache);
         }
 
+        /// <summary>
+        /// Gets the name of the dependency property which is evaluated by this condition.
+        /// </summary>
+        public String DependencyPropertyName
+        {
+            get { return dpropName; }
+        }
+
+        /// <summary>
+        /// Gets a string which represents the reference value for this condition.
+        /// </summary>
+        public String ReferenceValue
+        {
+            get { return refval; }
+        }
+
         // State values.
         private readonly TriggerComparisonOp op;
         private readonly String dpropName;
