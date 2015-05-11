@@ -55,11 +55,6 @@
       <Variant>The specified object is not a dependency object.</Variant>
     </en-US>
   </String>
-  <String Key="PROPERTY_DOES_NOT_EXIST">
-    <en-US>
-      <Variant>No property named '{0}' exists on the type '{1}'</Variant>
-    </en-US>
-  </String>
   <String Key="PROPERTY_HAS_NO_GETTER">
     <en-US>
       <Variant>The property '{0}' cannot be used in this context because it has no get accessor.</Variant>

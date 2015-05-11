@@ -360,7 +360,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             var standardProperty = uiElement.GetType().GetProperty(name,  bindingAttr);
             if (standardProperty == null)
-                throw new InvalidOperationException(PresentationStrings.PropertyDoesNotExist.Format(name, uiElement.GetType()));
+                throw new InvalidOperationException(PresentationStrings.EventOrPropertyDoesNotExist.Format(name, uiElement.GetType()));
 
             return standardProperty;
         }

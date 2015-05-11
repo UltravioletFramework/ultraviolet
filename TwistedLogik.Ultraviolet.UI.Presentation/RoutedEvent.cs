@@ -1,4 +1,6 @@
 ﻿using System;
+using TwistedLogik.Nucleus;
+using TwistedLogik.Nucleus.Collections;
 using TwistedLogik.Ultraviolet.UI.Presentation.Styles;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation
@@ -19,7 +21,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
     /// <summary>
     /// Represents the identifier of a routed event.
     /// </summary>
-    public sealed class RoutedEvent
+    public sealed partial class RoutedEvent
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="RoutedEvent"/> class.
@@ -39,6 +41,57 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             this.delegateType       = delegateType;
             this.ownerType          = ownerType;
             this.invocationDelegate = RoutedEventInvocation.CreateInvocationDelegate(this);
+        }
+
+        /// <summary>
+        /// Registers the specified subscriber to receive routed event notifications for the specified routed event.
+        /// </summary>
+        /// <param name="dobj">The dependency object to monitor for changes.</param>
+        /// <param name="routedEvent">The dependency property for which to receive change notifications.</param>
+        /// <param name="subscriber">The subscriber that wishes to receive change notifications for the specified dependency property.</param>
+        internal static void RegisterRaisedNotification(DependencyObject dobj, RoutedEvent routedEvent, IRoutedEventRaisedNotificationSubscriber subscriber)
+        {
+            Contract.Require(dobj, "dobj");
+            Contract.Require(routedEvent, "routedEvent");
+            Contract.Require(subscriber, "subscriber");
+
+            lock (routedEvent.raisedNotificationSubs)
+                routedEvent.raisedNotificationSubs.AddLast(new RaisedNotificationKey(subscriber, dobj));
+        }
+
+        /// <summary>
+        /// Unregisters the specified subscriber from receiving routed event notifications for the specified routed event.
+        /// </summary>
+        /// <param name="dobj">The dependency object to monitor for changes.</param>
+        /// <param name="routedEvent">The routed event </param>
+        /// <param name="subscriber">The subscriber that wishes to stop receiving change notifications for the specified dependency property.</param>
+        internal static void UnregisterRaisedNotification(DependencyObject dobj, RoutedEvent routedEvent, IRoutedEventRaisedNotificationSubscriber subscriber)
+        {
+            Contract.Require(dobj, "dobj");
+            Contract.Require(routedEvent, "routedEvent");
+            Contract.Require(subscriber, "subscriber");
+
+            lock (routedEvent.raisedNotificationSubs)
+                routedEvent.raisedNotificationSubs.Remove(new RaisedNotificationKey(subscriber, dobj));
+        }
+
+        /// <summary>
+        /// Raises an event notification for this routed event.
+        /// </summary>
+        /// <param name="dobj">The dependency object that raised the event.</param>
+        internal void RaiseRaisedNotification(DependencyObject dobj)
+        {
+            lock (raisedNotificationSubs)
+            {
+                for (var current = raisedNotificationSubs.First; current != null; current = current.Next)
+                {
+                    var key = current.Value;
+                    if (key.Target == dobj)
+                    {
+                        key.Subscriber.ReceiveRoutedEventRaisedNotification(dobj, this);
+                    }
+                }
+            }
         }
 
         /// <summary>
@@ -105,5 +158,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         private readonly Type delegateType;
         private readonly Type ownerType;
         private readonly Delegate invocationDelegate;
+
+        // State values.
+        private readonly PooledLinkedList<RaisedNotificationKey> raisedNotificationSubs = 
+            new PooledLinkedList<RaisedNotificationKey>(1);
     }
 }

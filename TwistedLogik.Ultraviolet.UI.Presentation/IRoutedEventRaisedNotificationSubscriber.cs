@@ -1,0 +1,16 @@
+﻿
+namespace TwistedLogik.Ultraviolet.UI.Presentation
+{
+    /// <summary>
+    /// Represents an object which can subscribe to routed event notifications.
+    /// </summary>
+    internal interface IRoutedEventRaisedNotificationSubscriber
+    {
+        /// <summary>
+        /// Called when the object receives a routed event notification.
+        /// </summary>
+        /// <param name="dobj">The dependency object for which the event was raised.</param>
+        /// <param name="evt">The routed event that was raised.</param>
+        void ReceiveRoutedEventRaisedNotification(DependencyObject dobj, RoutedEvent evt);
+    }
+}

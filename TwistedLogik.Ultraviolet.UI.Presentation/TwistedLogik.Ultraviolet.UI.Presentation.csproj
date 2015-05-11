@@ -115,6 +115,7 @@
     <Compile Include="DependencyBoundValueConverting.cs" />
     <Compile Include="DependencyBoundValueNonConverting.cs" />
     <Compile Include="DependencyObject.cs" />
+    <Compile Include="RoutedEvent.RaisedNotificationKey.cs" />
     <Compile Include="DependencyProperty.ChangeNotificationKey.cs" />
     <Compile Include="DependencyProperty.cs" />
     <Compile Include="DependencyPropertyKey.cs" />
@@ -123,6 +124,7 @@
     <Compile Include="EventManager.cs" />
     <Compile Include="IDependencyPropertyChangeNotificationSubscriber.cs" />
     <Compile Include="Input\CaptureMode.cs" />
+    <Compile Include="IRoutedEventRaisedNotificationSubscriber.cs" />
     <Compile Include="PopupQueue.cs" />
     <Compile Include="PropertyMetadata.cs" />
     <Compile Include="DependencyPropertyName.cs" />
@@ -241,6 +243,7 @@
     <Compile Include="SourcedAssetID.cs" />
     <Compile Include="SourcedImage.cs" />
     <Compile Include="SourcedResource.cs" />
+    <Compile Include="Styles\EventTrigger.cs" />
     <Compile Include="Styles\NamespaceDoc.cs" />
     <Compile Include="Styles\PropertyTrigger.cs" />
     <Compile Include="Styles\PropertyTriggerConditionCollection.cs" />

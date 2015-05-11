@@ -82,5 +82,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             return RoutedEventSystem.FindByName(name, ownerType);
         }
+
+        /// <summary>
+        /// Finds the routed event with the specified styling name.
+        /// </summary>
+        /// <param name="name">The styling name of the routed event for which to search.</param>
+        /// <param name="ownerType">The routed event's owner type.</param>
+        /// <returns>A <see cref="RoutedEvent"/> instance which represents the specified routed event, 
+        /// or <c>null</c> if no such routed event exists.</returns>
+        public static RoutedEvent FindByStylingName(String name, Type ownerType)
+        {
+            return RoutedEventSystem.FindByStylingName(name, ownerType);
+        }
     }
 }

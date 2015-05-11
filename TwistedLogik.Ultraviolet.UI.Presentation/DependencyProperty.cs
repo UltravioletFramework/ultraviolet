@@ -58,38 +58,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
-        /// Registers the specified subscriber to receive change notifications for the specified dependency property.
-        /// </summary>
-        /// <param name="dobj">The dependency object to monitor for changes.</param>
-        /// <param name="dprop">The dependency property for which to receive change notifications.</param>
-        /// <param name="subscriber">The subscriber that wishes to receive change notifications for the specified dependency property.</param>
-        public static void RegisterChangeNotification(DependencyObject dobj, DependencyProperty dprop, IDependencyPropertyChangeNotificationSubscriber subscriber)
-        {
-            Contract.Require(dobj, "dobj");
-            Contract.Require(dprop, "dprop");
-            Contract.Require(subscriber, "subscriber");
-
-            lock (dprop.changeNotificationSubs)
-                dprop.changeNotificationSubs.AddLast(new ChangeNotificationKey(subscriber, dobj));
-        }
-
-        /// <summary>
-        /// Unregisters the specified subscriber from receiving change notifications for the specified dependency property.
-        /// </summary>
-        /// <param name="dobj">The dependency object to monitor for changes.</param>
-        /// <param name="dprop">The dependency property for which to stop receiving change notifications.</param>
-        /// <param name="subscriber">The subscriber that wishes to stop receiving change notifications for the specified dependency property.</param>
-        public static void UnregisterChangeNotification(DependencyObject dobj, DependencyProperty dprop, IDependencyPropertyChangeNotificationSubscriber subscriber)
-        {
-            Contract.Require(dobj, "dobj");
-            Contract.Require(dprop, "dprop");
-            Contract.Require(subscriber, "subscriber");
-
-            lock (dprop.changeNotificationSubs)
-                dprop.changeNotificationSubs.Remove(new ChangeNotificationKey(subscriber, dobj));
-        }
-
-        /// <summary>
         /// Registers a new dependency property.
         /// </summary>
         /// <param name="name">The dependency property's name.</param>
@@ -338,23 +306,35 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
-        /// Gets a value indicating whether the specified type (or one of its ancestors) is one of this property's owner types.
+        /// Registers the specified subscriber to receive change notifications for the specified dependency property.
         /// </summary>
-        /// <param name="type">The type to evaluate.</param>
-        /// <returns><c>true</c> if the specified type is an owner type; otherwise, <c>false</c>.</returns>
-        internal Boolean IsOwner(Type type)
+        /// <param name="dobj">The dependency object to monitor for changes.</param>
+        /// <param name="dprop">The dependency property for which to receive change notifications.</param>
+        /// <param name="subscriber">The subscriber that wishes to receive change notifications for the specified dependency property.</param>
+        internal static void RegisterChangeNotification(DependencyObject dobj, DependencyProperty dprop, IDependencyPropertyChangeNotificationSubscriber subscriber)
         {
-            Contract.Require(type, "type");
+            Contract.Require(dobj, "dobj");
+            Contract.Require(dprop, "dprop");
+            Contract.Require(subscriber, "subscriber");
 
-            var current = type;
-            while (current != null)
-            {
-                if (ownerType == current || metadataOverrides.ContainsKey(current))
-                    return true;
+            lock (dprop.changeNotificationSubs)
+                dprop.changeNotificationSubs.AddLast(new ChangeNotificationKey(subscriber, dobj));
+        }
 
-                current = current.BaseType;
-            }
-            return false;
+        /// <summary>
+        /// Unregisters the specified subscriber from receiving change notifications for the specified dependency property.
+        /// </summary>
+        /// <param name="dobj">The dependency object to monitor for changes.</param>
+        /// <param name="dprop">The dependency property for which to stop receiving change notifications.</param>
+        /// <param name="subscriber">The subscriber that wishes to stop receiving change notifications for the specified dependency property.</param>
+        internal static void UnregisterChangeNotification(DependencyObject dobj, DependencyProperty dprop, IDependencyPropertyChangeNotificationSubscriber subscriber)
+        {
+            Contract.Require(dobj, "dobj");
+            Contract.Require(dprop, "dprop");
+            Contract.Require(subscriber, "subscriber");
+
+            lock (dprop.changeNotificationSubs)
+                dprop.changeNotificationSubs.Remove(new ChangeNotificationKey(subscriber, dobj));
         }
 
         /// <summary>
@@ -422,6 +402,26 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 }
             }
             return defaultMetadata;
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the specified type (or one of its ancestors) is one of this property's owner types.
+        /// </summary>
+        /// <param name="type">The type to evaluate.</param>
+        /// <returns><c>true</c> if the specified type is an owner type; otherwise, <c>false</c>.</returns>
+        internal Boolean IsOwner(Type type)
+        {
+            Contract.Require(type, "type");
+
+            var current = type;
+            while (current != null)
+            {
+                if (ownerType == current || metadataOverrides.ContainsKey(current))
+                    return true;
+
+                current = current.BaseType;
+            }
+            return false;
         }
 
         /// <summary>

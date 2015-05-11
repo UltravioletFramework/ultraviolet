@@ -21,6 +21,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             miShouldContinueBubbling        = typeof(RoutedEventInvocation).GetMethod("ShouldContinueBubbling", BindingFlags.NonPublic | BindingFlags.Static);
             miShouldContinueTunnelling      = typeof(RoutedEventInvocation).GetMethod("ShouldContinueTunnelling", BindingFlags.NonPublic | BindingFlags.Static);
             miGetEventHandler               = typeof(RoutedEventInvocation).GetMethod("GetEventHandler", BindingFlags.NonPublic | BindingFlags.Static);
+            miRaiseRaisedNotification       = typeof(RoutedEvent).GetMethod("RaiseRaisedNotification", BindingFlags.NonPublic | BindingFlags.Instance);
         }
 
         /// <summary>
@@ -69,6 +70,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
              *      
              *      while (ShouldContinueBubbling(element, ref current))
              *      {
+             *          if (!data.Handled)
+             *              RoutedEventID.RaiseRaisedNotification(element);     
+             * 
              *          index = 0;
              *          while (GetEventHandler(current, RoutedEventID, index, out handler))
              *          {
@@ -111,6 +115,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 Expression.IfThenElse(
                     Expression.Call(miShouldContinueBubbling, expParamElement, varCurrent),
                     Expression.Block(
+                        Expression.IfThen(Expression.Not(Expression.Property(expParamData, "Handled")), 
+                            Expression.Call(Expression.Constant(evt), miRaiseRaisedNotification, expParamElement)),
                         Expression.Assign(varIndex, Expression.Constant(0)),
                         Expression.Loop(
                             Expression.IfThenElse(
@@ -149,9 +155,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
              *      var index   = 0;
              *      var handler = default(RoutedEventHandlerMetadata);      
              * 
+             *      RoutedEventID.RaiseRaisedNotification(element);
+             * 
              *      while (GetEventHandler(current, RoutedEventID, index, out handler))
              *      {
-             *          if (ShouldEventBeRaisedForElement(ref data, handlerInfo.HandledEventsToo))
+             *          if (ShouldEventBeRaisedForElement(ref data, handler.HandledEventsToo))
              *          {
              *              handler.Handler(element, p1, p2, ..., pN, ref data);
              *          }
@@ -164,7 +172,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             var expParams       = evtParams.Select(x => Expression.Parameter(x.ParameterType, x.Name)).ToList();
             var expParamElement = expParams.First();
-            var expParamHandled = expParams.Last();
+            var expParamData    = expParams.Last();
 
             var expParts = new List<Expression>();
             var expVars  = new List<ParameterExpression>();
@@ -175,13 +183,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var varHandler = Expression.Variable(typeof(RoutedEventHandlerMetadata), "handlers");
             expVars.Add(varHandler);
 
-            var expInvokeBreak = Expression.Label();
+            var expRaiseRaised = Expression.IfThen(Expression.Not(Expression.Property(expParamData, "Handled")),
+                Expression.Call(Expression.Constant(evt), miRaiseRaisedNotification, expParamElement));
+            expParts.Add(expRaiseRaised);
 
+            var expInvokeBreak = Expression.Label();
             var expInvoke = Expression.Loop(
                 Expression.IfThenElse(
                     Expression.Call(miGetEventHandler, expParamElement, Expression.Constant(evt), varIndex, varHandler),
                     Expression.IfThen(
-                        Expression.Call(miShouldEventBeRaisedForElement, expParamHandled, Expression.Property(varHandler, "HandledEventsToo")),
+                        Expression.Call(miShouldEventBeRaisedForElement, expParamData, Expression.Property(varHandler, "HandledEventsToo")),
                         Expression.Invoke(Expression.Convert(Expression.Property(varHandler, "Handler"), evt.DelegateType), expParams)
                     ),
                     Expression.Break(expInvokeBreak)
@@ -212,6 +223,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
              *      
              *      while (ShouldContinueTunnelling(element, ref current))
              *      {
+             *          if (!data.Handled)
+             *              RoutedEventID.RaiseRaisedNotification(element);     
+             * 
              *          index = 0;
              *          while (GetEventHandler(current, RoutedEventID, index, out handler))
              *          {
@@ -254,6 +268,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 Expression.IfThenElse(
                     Expression.Call(miShouldContinueTunnelling, expParamElement, varCurrent),
                     Expression.Block(
+                        Expression.IfThen(Expression.Not(Expression.Property(expParamData, "Handled")),
+                            Expression.Call(Expression.Constant(evt), miRaiseRaisedNotification, expParamElement)),
                         Expression.Assign(varIndex, Expression.Constant(0)),
                         Expression.Loop(
                             Expression.IfThenElse(
@@ -436,6 +452,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         private static readonly MethodInfo miShouldContinueBubbling;
         private static readonly MethodInfo miShouldContinueTunnelling;
         private static readonly MethodInfo miGetEventHandler;
+        private static readonly MethodInfo miRaiseRaisedNotification;
 
         // The stack used to track the tunnelling path for tunnelled events.
         [ThreadStatic]

@@ -4,7 +4,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
     /// <summary>
     /// Represents an object which can subscribe to dependency property change notifications.
     /// </summary>
-    public interface IDependencyPropertyChangeNotificationSubscriber
+    internal interface IDependencyPropertyChangeNotificationSubscriber
     {
         /// <summary>
         /// Called when the object receives a dependency property change notification.
