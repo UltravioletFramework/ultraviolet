@@ -593,6 +593,9 @@
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Styles\TriggerComparisonOp.cs">
       <Link>Styles\TriggerComparisonOp.cs</Link>
     </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Styles\TriggerCondition.cs">
+      <Link>Styles\TriggerCondition.cs</Link>
+    </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Styles\UvssClassCollection.cs">
       <Link>Styles\UvssClassCollection.cs</Link>
     </Compile>

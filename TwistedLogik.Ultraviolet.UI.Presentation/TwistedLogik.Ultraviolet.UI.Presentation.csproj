@@ -242,6 +242,7 @@
     <Compile Include="Styles\NamespaceDoc.cs" />
     <Compile Include="Styles\TriggerComparisonCache.cs" />
     <Compile Include="Styles\TriggerComparisonOp.cs" />
+    <Compile Include="Styles\TriggerCondition.cs" />
     <Compile Include="Styles\UvssClassCollection.cs" />
     <Compile Include="Styles\UvssClassCollection.IEnumerable.cs" />
     <Compile Include="Styles\UvssDocumentImporter.cs" />
