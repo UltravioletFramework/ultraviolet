@@ -13,7 +13,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// Activates the actions in the collection, with the specified dependency object as their implicit target.
         /// </summary>
         /// <param name="dobj">The dependency object which is the implicit target of the activated actions.</param>
-        public void Activate(DependencyObject dobj)
+        internal void Activate(DependencyObject dobj)
         {
             foreach (var action in actions)
             {
@@ -25,7 +25,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// Deactivates the actions in the collection, with the specified dependency object as their implicit target.
         /// </summary>
         /// <param name="dobj">The dependency object which is the implicit target of the deactivated actions.</param>
-        public void Deactivate(DependencyObject dobj)
+        internal void Deactivate(DependencyObject dobj)
         {
             foreach (var action in actions)
             {
@@ -36,7 +36,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// <summary>
         /// Removes all items from the collection.
         /// </summary>
-        public void Clear()
+        internal void Clear()
         {
             actions.Clear();
         }
@@ -45,7 +45,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// Adds an action to the collection.
         /// </summary>
         /// <param name="action">The action to add to the collection.</param>
-        public void Add(TriggerAction action)
+        internal void Add(TriggerAction action)
         {
             Contract.Require(action, "action");
 
@@ -57,7 +57,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// </summary>
         /// <param name="action">The action to remove from the collection.</param>
         /// <returns><c>true</c> if the action was removed from the collection; otherwise, <c>false</c>.</returns>
-        public Boolean Remove(TriggerAction action)
+        internal Boolean Remove(TriggerAction action)
         {
             Contract.Require(action, "action");
 
@@ -69,7 +69,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// </summary>
         /// <param name="action">The action to evaluate.</param>
         /// <returns><c>true</c> if the collection contains the specified action; otherwise, <c>false</c>.</returns>
-        public Boolean Contains(TriggerAction action)
+        internal Boolean Contains(TriggerAction action)
         {
             Contract.Require(action, "action");
 

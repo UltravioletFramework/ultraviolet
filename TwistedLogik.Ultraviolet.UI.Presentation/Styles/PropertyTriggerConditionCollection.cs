@@ -14,7 +14,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// </summary>
         /// <param name="dobj">The dependency object to evaluate.</param>
         /// <returns><c>true</c> if the specified object satisfies all of the collection's conditions; otherwise, <c>false</c>.</returns>
-        public Boolean Evaluate(DependencyObject dobj)
+        internal Boolean Evaluate(DependencyObject dobj)
         {
             Contract.Require(dobj, "dobj");
 
@@ -29,7 +29,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// <summary>
         /// Removes all items from the collection.
         /// </summary>
-        public void Clear()
+        internal void Clear()
         {
             conditions.Clear();
         }
@@ -38,7 +38,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// Adds the specified item to the collection.
         /// </summary>
         /// <param name="condition">The item to add to the collection.</param>
-        public void Add(TriggerCondition condition)
+        internal void Add(TriggerCondition condition)
         {
             Contract.Require(condition, "condition");
 
@@ -49,7 +49,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// Removes the specified item from the collection.
         /// </summary>
         /// <param name="condition">The item to remove from the collection.</param>
-        public Boolean Remove(TriggerCondition condition)
+        internal Boolean Remove(TriggerCondition condition)
         {
             Contract.Require(condition, "condition");
 
@@ -61,7 +61,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// </summary>
         /// <param name="condition">The item to evaluate.</param>
         /// <returns><c>true</c> if the collection contains the specified item; otherwise, <c>false</c>.</returns>
-        public Boolean Contains(TriggerCondition condition)
+        internal Boolean Contains(TriggerCondition condition)
         {
             Contract.Require(condition, "condition");
 

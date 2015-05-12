@@ -7,6 +7,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
     public abstract class TriggerAction
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="TriggerAction"/> class.
+        /// </summary>
+        internal TriggerAction()
+        {
+
+        }
+
+        /// <summary>
         /// Activates the action.
         /// </summary>
         /// <param name="dobj">The dependency object for which to activate the action.</param>
