@@ -90,5 +90,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// Represents a multi line comment (beginning with /* and ending with */).
         /// </summary>
         MultiLineComment,
+
+        /// <summary>
+        /// Represents the "trigger" keyword.
+        /// </summary>
+        TriggerKeyword,
+
+        /// <summary>
+        /// Represents a comparison operator. 
+        /// </summary>
+        ComparisonOperator,
     }
 }

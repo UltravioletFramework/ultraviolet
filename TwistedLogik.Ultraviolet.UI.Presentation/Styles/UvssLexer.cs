@@ -15,13 +15,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// <returns>A sequence of lexer tokens produced from the specified input.</returns>
         public IList<UvssLexerToken> Lex(String input)
         {
-            var output     = new List<UvssLexerToken>();
-            var ix         = 0;
-            var line       = 0;
-            var braces     = 0;
-            var parens     = 0;
-            var storyboard = false;
-            var arglist    = false;
+            var output                = new List<UvssLexerToken>();
+            var ix                    = 0;
+            var line                  = 0;
+            var braces                = 0;
+            var parens                = 0;
+            var storyboard            = false;
+            var arglist               = false;
+            var trigger               = false;
+            var triggerInit           = false;
+            var triggerInitEvent      = false;
+            var triggerBracesExpected = 0;
+            var triggerBracesSeen     = 0;
 
             while (ix < input.Length)
             {
@@ -31,61 +36,127 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
                     continue;
                 if (ConsumeMultiLineComment(input, output, ref line, ref ix))
                     continue;
-                if (!storyboard && !arglist)
+
+                if (triggerInit || triggerInitEvent)
                 {
-                    if (braces > 0)
+                    if (ConsumeIdentifier(input, output, line, ref ix, ref storyboard))
                     {
-                        if (ConsumeStyleName(input, output, line, ref ix))
+                        if (triggerInitEvent)
+                        {
+                            triggerInitEvent = false;
                             continue;
-                        if (ConsumeStyleQualifier(input, output, line, ref ix))
+                        }
+                        else
+                        {
+                            var triggerType = output[output.Count - 1].Value;
+                            if (String.Equals(triggerType, "property", StringComparison.InvariantCultureIgnoreCase))
+                            {
+                                triggerInit           = false;
+                                triggerInitEvent      = false;
+                                triggerBracesExpected = 1;
+                                continue;
+                            }
+                            if (String.Equals(triggerType, "event", StringComparison.InvariantCultureIgnoreCase))
+                            {
+                                triggerInit           = false;
+                                triggerInitEvent      = true;
+                                triggerBracesExpected = 0;
+                                continue;
+                            }
+                            throw new UvssException(PresentationStrings.StylesheetInvalidTriggerType.Format(line, triggerType));
+                        }
+                    }
+                }
+                else
+                {
+                    if (trigger)
+                    {
+                        if (triggerBracesExpected == triggerBracesSeen)
+                        {
+                            if (ConsumeComma(input, output, line, ref ix))
+                            {
+                                triggerBracesExpected++;
+                                continue;
+                            }
+                            else
+                            {
+                                trigger = false;
+                            }
+                        }
+                        if (ConsumeComparisonOperator(input, output, ref line, ref ix))
                             continue;
                     }
-                }
-                if (ConsumeChildSelector(input, output, line, ref ix))
-                    continue;
-                if (ConsumeUniversalSelector(input, output, line, ref ix))
-                    continue;
-                if (ConsumeIdentifier(input, output, line, ref ix, ref storyboard))
-                    continue;
-                if (ConsumeNumber(input, output, line, ref ix))
-                    continue;
-                if (ConsumeString(input, output, line, ref ix))
-                    continue;
-                if (ConsumeOpenParenthesis(input, output, line, ref ix))
-                {
-                    parens++;
-                    arglist = true;
-                    continue;
-                }
-                if (ConsumeCloseParenthesis(input, output, line, ref ix))
-                {
-                    parens--;
-                    if (parens == 0)
+
+                    if (!storyboard && !arglist && !trigger)
                     {
-                        arglist = false;
+                        if (braces == 1)
+                        {
+                            if (ConsumeStyleName(input, output, line, ref ix))
+                            {
+                                var token = output[output.Count - 1];
+                                if (token.TokenType == UvssLexerTokenType.TriggerKeyword)
+                                {
+                                    triggerBracesExpected = 0;
+                                    triggerBracesSeen     = 0;
+                                    trigger               = true;
+                                    triggerInit           = true;
+                                }
+                                continue;
+                            }
+                            if (ConsumeStyleQualifier(input, output, line, ref ix))
+                                continue;
+                        }
                     }
-                    continue;
-                }
-                if (ConsumeOpenCurlyBrace(input, output, line, ref ix))
-                {
-                    braces++;
-                    continue;
-                }
-                if (ConsumeCloseCurlyBrace(input, output, line, ref ix))
-                {
-                    braces--;
-                    if (braces == 0)
+                    if (ConsumeChildSelector(input, output, line, ref ix))
+                        continue;
+                    if (ConsumeUniversalSelector(input, output, line, ref ix))
+                        continue;
+                    if (ConsumeIdentifier(input, output, line, ref ix, ref storyboard))
+                        continue;
+                    if (ConsumeNumber(input, output, line, ref ix))
+                        continue;
+                    if (ConsumeString(input, output, line, ref ix))
+                        continue;
+                    if (ConsumeOpenParenthesis(input, output, line, ref ix))
                     {
-                        storyboard = false;
+                        parens++;
+                        arglist = true;
+                        continue;
                     }
-                    continue;
+                    if (ConsumeCloseParenthesis(input, output, line, ref ix))
+                    {
+                        parens--;
+                        if (parens == 0)
+                        {
+                            arglist = false;
+                        }
+                        continue;
+                    }
+                    if (ConsumeOpenCurlyBrace(input, output, line, ref ix))
+                    {
+                        braces++;
+                        continue;
+                    }
+                    if (ConsumeCloseCurlyBrace(input, output, line, ref ix))
+                    {
+                        braces--;
+                        if (trigger)
+                        {
+                            triggerBracesSeen++;
+                        }
+                        if (braces == 0)
+                        {
+                            storyboard = false;
+                        }
+                        continue;
+                    }
+                    if (ConsumeColon(input, output, line, ref ix))
+                        continue;
+                    if (ConsumeSemicolon(input, output, line, ref ix))
+                        continue;
+                    if (ConsumeComma(input, output, line, ref ix))
+                        continue;
                 }
-                if (ConsumeColon(input, output, line, ref ix))
-                    continue;
-                if (ConsumeSemicolon(input, output, line, ref ix))
-                    continue;
-                if (ConsumeComma(input, output, line, ref ix))
-                    continue;
 
                 throw new UvssException(PresentationStrings.StylesheetInvalidCharacter.Format(line, input[ix]));
             }
@@ -234,6 +305,56 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         }
 
         /// <summary>
+        /// Attempts to consume a ComparisonOperator token.
+        /// </summary>
+        private static Boolean ConsumeComparisonOperator(String input, IList<UvssLexerToken> output, ref Int32 line, ref Int32 ix)
+        {
+            var c1 = input[ix];
+            var c2 = ix + 1 < input.Length ? input[ix + 1] : default(Char);
+            var op = "";
+
+            switch (c1)
+            {
+                case '=':
+                    op = "=";
+                    break;
+
+                case '<':
+                    if (c2 == '>')
+                    {
+                        op = "<>";
+                        break;
+                    }
+                    if (c2 == '=')
+                    {
+                        op = "<=";
+                        break;
+                    }
+                    op = "<";
+                    break;
+
+                case '>':
+                    if (c2 == '=')
+                    {
+                        op = ">=";
+                        break;
+                    }
+                    op = ">";
+                    break;
+
+                default:
+                    return false;
+            }
+
+            var token = new UvssLexerToken(UvssLexerTokenType.ComparisonOperator, ix, op.Length, line, op);
+            output.Add(token);
+
+            ix += op.Length;
+
+            return true;
+        }
+
+        /// <summary>
         /// Attempts to consume a StyleName token.
         /// </summary>
         private static Boolean ConsumeStyleName(String input, IList<UvssLexerToken> output, Int32 line, ref Int32 ix)
@@ -248,7 +369,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
             while (ix < input.Length && IsValidInStyleName(input[ix], ref qualified)) { ix++; length++; }
 
             var value = input.Substring(start, length);
-            var token = new UvssLexerToken(UvssLexerTokenType.StyleName, start, length, line, value);
+            var type  = String.Equals(value, "trigger", StringComparison.InvariantCultureIgnoreCase) ? UvssLexerTokenType.TriggerKeyword : UvssLexerTokenType.StyleName;
+            var token = new UvssLexerToken(type, start, length, line, value);
             output.Add(token);
 
             return true;

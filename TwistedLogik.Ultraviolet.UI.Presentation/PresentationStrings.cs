@@ -33,6 +33,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public static readonly StringResource StylesheetSyntaxUnexpectedValue      = new StringResource(StringDatabase, "STYLESHEET_SYNTAX_UNEXPECTED_VALUE");
         public static readonly StringResource StylesheetSyntaxUnexpectedEOF        = new StringResource(StringDatabase, "STYLESHEET_SYNTAX_UNEXPECTED_EOF");
         public static readonly StringResource StylesheetInvalidCharacter           = new StringResource(StringDatabase, "STYLESHEET_SYNTAX_INVALID_CHARACTER");
+        public static readonly StringResource StylesheetInvalidTriggerType         = new StringResource(StringDatabase, "STYLESHEET_INVALID_TRIGGER_TYPE");
         public static readonly StringResource IsNotDependencyObject                = new StringResource(StringDatabase, "IS_NOT_DEPENDENCY_OBJECT");
         public static readonly StringResource PropertyHasNoGetter                  = new StringResource(StringDatabase, "PROPERTY_HAS_NO_GETTER");
         public static readonly StringResource PropertyHasNoSetter                  = new StringResource(StringDatabase, "PROPERTY_HAS_NO_SETTER");

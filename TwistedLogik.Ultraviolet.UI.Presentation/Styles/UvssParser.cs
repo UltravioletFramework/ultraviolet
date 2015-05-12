@@ -821,33 +821,36 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
 
             var styleListTokens = GetTokensBetweenCurlyBraces(state);
             var styleListState  = new UvssParserState(state.Source, styleListTokens);
+            var styles          = new List<UvssStyle>();
+            var triggers        = new List<Trigger>();
 
-            var style  = default(UvssStyle);
-            var styles = new List<UvssStyle>();
-
-            while ((style = ConsumeStyle(styleListState)) != null)
-            {
-                styles.Add(style);
-            }
+            while (ConsumeStyleOrTrigger(styleListState, styles, triggers)) 
+            { }
 
             return new UvssStyleCollection(styles);
         }
 
         /// <summary>
-        /// Consumes a sequence of tokens representing a UVSS style.
+        /// Consumes a sequence of tokens representing a UVSS style or UVSS trigger.
         /// </summary>
         /// <param name="state">The parser state.</param>
-        /// <returns>A new <see cref="UvssStyle"/> object representing the style that was consumed.</returns>
-        private static UvssStyle ConsumeStyle(UvssParserState state)
+        /// <param name="styles">The list containing the styles being created.</param>
+        /// <param name="triggers">The list containing the triggers being created.</param>
+        /// <returns><c>true</c> if a style or trigger was successfully consumed; otherwise, <c>false</c>.</returns>
+        private static Boolean ConsumeStyleOrTrigger(UvssParserState state, List<UvssStyle> styles, List<Trigger> triggers)
         {
             state.AdvanceBeyondWhiteSpace();
 
             if (state.IsPastEndOfStream)
-                return null;
+                return false;
 
             var qualifierImportant = false;
 
             var nameToken = state.TryConsumeNonWhiteSpace();
+            if (nameToken.HasValue && nameToken.Value.TokenType == UvssLexerTokenType.TriggerKeyword)
+            {
+                return ConsumeTrigger(state, triggers);
+            }
             MatchTokenOrFail(state, nameToken, UvssLexerTokenType.StyleName);
 
             AdvanceBeyondWhiteSpaceOrFail(state);
@@ -896,7 +899,160 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
                 name          = nameParts[1];
             }
 
-            return new UvssStyle(arguments, container, name, value, qualifierImportant);
+            var style = new UvssStyle(arguments, container, name, value, qualifierImportant);
+            styles.Add(style);
+
+            return true;
+        }
+
+        /// <summary>
+        /// Consumes a sequence of tokens representing a UVSS trigger.
+        /// </summary>
+        /// <param name="state">The parser state.</param>
+        /// <param name="triggers">The list containing the triggers being created.</param>
+        /// <returns><c>true</c> if a trigger was successfully consumed; otherwise, <c>false</c>.</returns>
+        private static Boolean ConsumeTrigger(UvssParserState state, List<Trigger> triggers)
+        {
+            AdvanceBeyondWhiteSpaceOrFail(state);
+
+            var triggerTypeToken = state.Consume();
+            MatchTokenOrFail(state, triggerTypeToken, UvssLexerTokenType.Identifier);
+
+            if (String.Equals(triggerTypeToken.Value, "property", StringComparison.InvariantCultureIgnoreCase))
+            {
+                return ConsumePropertyTrigger(state, triggers);
+            }
+
+            if (String.Equals(triggerTypeToken.Value, "event", StringComparison.InvariantCultureIgnoreCase))
+            {
+                return ConsumeEventTrigger(state, triggers);
+            }
+
+            ThrowExpectedValue(state, triggerTypeToken, "property|event");
+            return false;
+        }
+
+        /// <summary>
+        /// Consumes a sequence of tokens representing a UVSS property trigger.
+        /// </summary>
+        /// <param name="state">The parser state.</param>
+        /// <param name="triggers">The list containing the triggers being created.</param>
+        /// <returns><c>true</c> if a trigger was successfully consumed; otherwise, <c>false</c>.</returns>
+        private static Boolean ConsumePropertyTrigger(UvssParserState state, List<Trigger> triggers)
+        {
+            var conditions = ConsumePropertyTriggerConditionList(state);
+
+            var trigger = new PropertyTrigger();
+            foreach (var condition in conditions)
+            {
+                trigger.Conditions.Add(condition);
+            }
+
+            // TODO
+            state.AdvanceBeyondWhiteSpace();
+            GetTokensBetweenCurlyBraces(state);
+
+            triggers.Add(trigger);
+
+            return true;
+        }
+
+        /// <summary>
+        /// Consumes a sequence of tokens representing a UVSS property trigger condition list.
+        /// </summary>
+        /// <param name="state">The parser state.</param>
+        /// <returns>A collection containing the trigger condition list that was parsed.</returns>
+        private static IEnumerable<TriggerCondition> ConsumePropertyTriggerConditionList(UvssParserState state)
+        {
+            var conditions = new List<TriggerCondition>();
+
+            while (true)
+            {
+                var condition = ConsumePropertyTriggerCondition(state);
+                conditions.Add(condition);
+
+                state.AdvanceBeyondWhiteSpace();
+
+                if (state.IsPastEndOfStream || state.CurrentToken.TokenType != UvssLexerTokenType.Comma)
+                    break;
+
+                state.Consume();
+            }
+
+            return conditions;
+        }
+
+        /// <summary>
+        /// Consumes a sequence of tokens representing a UVSS property trigger condition.
+        /// </summary>
+        /// <param name="state">The parser state.</param>
+        /// <returns>The trigger condition that was parsed.</returns>
+        private static TriggerCondition ConsumePropertyTriggerCondition(UvssParserState state)
+        {
+            state.AdvanceBeyondWhiteSpace();
+
+            var propertyToken = state.TryConsumeNonWhiteSpace();
+            MatchTokenOrFail(state, propertyToken, UvssLexerTokenType.Identifier);
+
+            state.AdvanceBeyondWhiteSpace();
+
+            var opToken = state.TryConsumeNonWhiteSpace();
+            MatchTokenOrFail(state, opToken, UvssLexerTokenType.ComparisonOperator);
+
+            var opValue = default(TriggerComparisonOp);
+            switch (opToken.Value.Value)
+            {
+                case "=":
+                    opValue = TriggerComparisonOp.Equals;
+                    break;
+
+                case "<>":
+                    opValue = TriggerComparisonOp.NotEquals;
+                    break;
+
+                case "<":
+                    opValue = TriggerComparisonOp.LessThan;
+                    break;
+
+                case "<=":
+                    opValue = TriggerComparisonOp.LessThanOrEqualTo;
+                    break;
+
+                case ">":
+                    opValue = TriggerComparisonOp.GreaterThan;
+                    break;
+
+                case ">=":
+                    opValue = TriggerComparisonOp.GreaterThanOrEqualTo;
+                    break;
+            }
+
+            state.AdvanceBeyondWhiteSpace();
+
+            var valueTokens = GetTokensBetweenCurlyBraces(state);
+            var value       = String.Join(String.Empty, valueTokens.Select(x => x.Value)).Trim();
+
+            return new TriggerCondition(opValue, propertyToken.Value.Value, value);
+        }
+
+        /// <summary>
+        /// Consumes a sequence of tokens representing a UVSS event trigger.
+        /// </summary>
+        /// <param name="state">The parser state.</param>
+        /// <param name="triggers">The list containing the triggers being created.</param>
+        /// <returns><c>true</c> if a trigger was successfully consumed; otherwise, <c>false</c>.</returns>
+        private static Boolean ConsumeEventTrigger(UvssParserState state, List<Trigger> triggers)
+        {
+            state.AdvanceBeyondWhiteSpace();
+
+            var eventNameToken = state.TryConsumeNonWhiteSpace();
+            MatchTokenOrFail(state, eventNameToken, UvssLexerTokenType.Identifier);
+
+            // TODO
+            state.AdvanceBeyondWhiteSpace();
+            GetTokensBetweenCurlyBraces(state);
+
+            return false;
         }
 
         /// <summary>

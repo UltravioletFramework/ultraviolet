@@ -50,6 +50,11 @@
       <Variant>Invalid character in stylesheet (line {0}): '{1}'</Variant>
     </en-US>
   </String>
+  <String Key="STYLESHEET_INVALID_TRIGGER_TYPE">
+    <en-US>
+      <Variant>The specified trigger type '{0}' is not valid. Specify 'property' for a property trigger or 'event' for an event trigger.</Variant>
+    </en-US>
+  </String>
   <String Key="IS_NOT_DEPENDENCY_OBJECT">
     <en-US>
       <Variant>The specified object is not a dependency object.</Variant>

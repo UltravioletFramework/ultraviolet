@@ -19,6 +19,18 @@ button, repeatbutton, togglebutton
 	transition (common, disabled): button-to-disabled;
 }
 
+togglebutton
+{
+	trigger property mouse-over = { true }, fill-color = { #ffff0000 }
+	{
+		set foo { bar }
+	}
+	trigger event mouse-enter
+	{
+		set baz { qux }
+	}
+}
+
 	  button > grid > .button-background, 
 repeatbutton > grid > .button-background,
 togglebutton > grid > .button-background
