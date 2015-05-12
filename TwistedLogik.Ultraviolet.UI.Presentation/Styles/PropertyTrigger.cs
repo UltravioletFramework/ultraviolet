@@ -58,7 +58,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         {
             if (conditions.Evaluate(dobj))
             {
-                // TODO
+                Activate(dobj);
+            }
+            else
+            {
+                Deactivate(dobj);
             }
         }
 

@@ -252,6 +252,8 @@
     <Compile Include="Styles\PropertyTriggerConditionCollection.IEnumerable.cs" />
     <Compile Include="Styles\SetTriggerAction.cs" />
     <Compile Include="Styles\TriggerAction.cs" />
+    <Compile Include="Styles\TriggerActionCollection.cs" />
+    <Compile Include="Styles\TriggerActionCollection.IEnumerable.cs" />
     <Compile Include="Styles\TriggerComparisonCache.cs" />
     <Compile Include="Styles\TriggerComparisonOp.cs" />
     <Compile Include="Styles\TriggerCondition.cs" />
