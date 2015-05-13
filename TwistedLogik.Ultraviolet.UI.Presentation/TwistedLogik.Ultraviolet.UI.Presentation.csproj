@@ -265,6 +265,7 @@
     <Compile Include="Styles\UvssDocument.PrioritizedStyleData.cs" />
     <Compile Include="Styles\UvssDocumentProcessor.cs" />
     <Compile Include="Styles\UvssException.cs" />
+    <Compile Include="Styles\UvssLexer.LexerContext.cs" />
     <Compile Include="Styles\UvssLexer.cs" />
     <Compile Include="Styles\UvssLexerToken.cs" />
     <Compile Include="Styles\UvssLexerTokenType.cs" />

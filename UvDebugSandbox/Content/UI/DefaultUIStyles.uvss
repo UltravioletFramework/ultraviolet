@@ -23,7 +23,7 @@ togglebutton
 {
 	trigger property mouse-over = { true }, fill-color = { #ffff0000 }
 	{
-		set foo { bar }
+		set foo (#optional) { bar }
 	}
 	trigger event mouse-enter
 	{
