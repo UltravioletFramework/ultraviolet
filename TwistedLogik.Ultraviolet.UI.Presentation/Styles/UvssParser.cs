@@ -291,6 +291,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         }
 
         /// <summary>
+        /// Gets the source string between a matching pair of curly braces.
+        /// </summary>
+        /// <param name="state">The parser state.</param>
+        /// <returns>The source string between the specified matching pair of tokens.</returns>
+        private static String GetStringBetweenCurlyBraces(UvssParserState state)
+        {
+            var valueTokens = GetTokensBetweenCurlyBraces(state);
+            var value       = String.Join(String.Empty, valueTokens.Select(x => x.Value)).Trim();
+
+            return value;
+        }
+
+        /// <summary>
         /// Advances the parser state beyond any current white space. If the end of the stream is reached,
         /// a syntax exception is thrown.
         /// </summary>
@@ -804,6 +817,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
                     break;
                 }
 
+                if (valid)
+                    break;
+
                 ThrowUnexpectedToken(state, token);
             }
 
@@ -948,9 +964,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
                 trigger.Conditions.Add(condition);
             }
 
-            // TODO
-            state.AdvanceBeyondWhiteSpace();
-            GetTokensBetweenCurlyBraces(state);
+            if (!ConsumeTriggerActions(state, trigger))
+                return false;
 
             triggers.Add(trigger);
 
@@ -1048,11 +1063,135 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
             var eventNameToken = state.TryConsumeNonWhiteSpace();
             MatchTokenOrFail(state, eventNameToken, UvssLexerTokenType.Identifier);
 
-            // TODO
-            state.AdvanceBeyondWhiteSpace();
-            GetTokensBetweenCurlyBraces(state);
+            var trigger = new EventTrigger(eventNameToken.Value.Value);
+
+            if (!ConsumeTriggerActions(state, trigger))
+                return false;
+
+            triggers.Add(trigger);
 
             return false;
+        }
+
+        /// <summary>
+        /// Consumes a list of trigger actions.
+        /// </summary>
+        /// <param name="state">The parser state.</param>
+        /// <param name="trigger">The trigger to populate with actions.</param>
+        /// <returns><c>true</c> if a trigger action list was successfully consumed; otherwise, <c>false</c>.</returns>
+        private static Boolean ConsumeTriggerActions(UvssParserState state, Trigger trigger)
+        {
+            var openCurlyToken = state.TryConsumeNonWhiteSpace();
+            MatchTokenOrFail(state, openCurlyToken, UvssLexerTokenType.OpenCurlyBrace);
+
+            while (true)
+            {
+                state.AdvanceBeyondWhiteSpace();
+
+                var nextToken = state.TryConsumeNonWhiteSpace();
+                if (nextToken.HasValue && nextToken.Value.TokenType == UvssLexerTokenType.CloseCurlyBrace)
+                {
+                    return true;
+                }
+
+                MatchTokenOrFail(state, nextToken, UvssLexerTokenType.Identifier);
+
+                if (String.Equals(nextToken.Value.Value, "set", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    if (!ConsumeSetTriggerAction(state, trigger))
+                        return false;
+
+                    continue;
+                }
+
+                if (String.Equals(nextToken.Value.Value, "play-sfx", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    if (!ConsumePlaySfxTriggerAction(state, trigger))
+                        return false;
+
+                    continue;
+                }
+
+                if (String.Equals(nextToken.Value.Value, "play-storyboard", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    if (!ConsumePlayStoryboardTriggerAction(state, trigger))
+                        return false;
+
+                    continue;
+                }
+
+                ThrowExpectedValue(state, nextToken.Value, "set|play-sfx|play-storyboard");
+            }
+        }
+
+        /// <summary>
+        /// Consumes a 'set' trigger action.
+        /// </summary>
+        /// <param name="state">The parser state.</param>
+        /// <param name="trigger">The trigger to populate with actions.</param>
+        /// <returns><c>true</c> if a trigger action was successfully consumed; otherwise, <c>false</c>.</returns>
+        private static Boolean ConsumeSetTriggerAction(UvssParserState state, Trigger trigger)
+        {
+            var selector = default(UvssSelector);
+
+            state.AdvanceBeyondWhiteSpace();
+
+            var propertyNameToken = state.TryConsumeNonWhiteSpace();
+            MatchTokenOrFail(state, propertyNameToken, UvssLexerTokenType.StyleName);
+
+            state.AdvanceBeyondWhiteSpace();
+
+            if (state.CurrentToken.TokenType == UvssLexerTokenType.OpenParenthesis)
+            {
+                var selectorOpenParensToken = state.TryConsumeNonWhiteSpace();
+                MatchTokenOrFail(state, selectorOpenParensToken, UvssLexerTokenType.OpenParenthesis);
+
+                selector = ConsumeSelector(state, false);
+
+                var selectorCloseParensToken = state.TryConsumeNonWhiteSpace();
+                MatchTokenOrFail(state, selectorCloseParensToken, UvssLexerTokenType.CloseParenthesis);
+            }
+
+            state.AdvanceBeyondWhiteSpace();
+
+            var value  = GetStringBetweenCurlyBraces(state);
+            var action = new SetTriggerAction(propertyNameToken.Value.Value, selector, value);
+
+            trigger.Actions.Add(action);
+
+            return true;
+        }
+
+        /// <summary>
+        /// Consumes a 'play-sfx' trigger action.
+        /// </summary>
+        /// <param name="state">The parser state.</param>
+        /// <param name="trigger">The trigger to populate with actions.</param>
+        /// <returns><c>true</c> if a trigger action was successfully consumed; otherwise, <c>false</c>.</returns>
+        private static Boolean ConsumePlaySfxTriggerAction(UvssParserState state, Trigger trigger)
+        {
+            var valueTokens = GetTokensBetweenCurlyBraces(state);
+            var value       = String.Join(String.Empty, valueTokens);
+
+            // TODO
+
+            return true;
+        }
+
+        /// <summary>
+        /// Consumes a 'play-storyboard' trigger action.
+        /// </summary>
+        /// <param name="state">The parser state.</param>
+        /// <param name="trigger">The trigger to populate with actions.</param>
+        /// <returns><c>true</c> if a trigger action was successfully consumed; otherwise, <c>false</c>.</returns>
+        private static Boolean ConsumePlayStoryboardTriggerAction(UvssParserState state, Trigger trigger)
+        {
+            var valueTokens = GetTokensBetweenCurlyBraces(state);
+            var value       = String.Join(String.Empty, valueTokens);
+
+            // TODO
+
+            return true;
         }
 
         /// <summary>

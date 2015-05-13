@@ -12,17 +12,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// <summary>
         /// Initializes a new instance of the <see cref="SetTriggerAction"/> class.
         /// </summary>
-        /// <param name="dprop">The dependency property which is set by this action.</param>
+        /// <param name="dpropName">The styling name of the dependency property which is set by this action.</param>
         /// <param name="selector">A UVSS selector which specifies the target (or targets) of the action.</param>
         /// <param name="value">The value which is provided by this action.</param>
-        internal SetTriggerAction(DependencyProperty dprop, UvssSelector selector, String value)
+        internal SetTriggerAction(String dpropName, UvssSelector selector, String value)
         {
-            Contract.Require(dprop, "dprop");
+            Contract.RequireNotEmpty(dpropName, "dpropName");
             Contract.RequireNotEmpty(value, "value");
 
-            this.dprop    = dprop;
-            this.selector = selector;
-            this.value    = value;
+            this.dpropName = dpropName;
+            this.selector  = selector;
+            this.value     = value;
         }
 
         /// <inheritdoc/>
@@ -30,7 +30,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         {
             if (selector == null)
             {
-                dobj.SetTriggeredValue(dprop, this);
+                var dprop = DependencyProperty.FindByStylingName(dpropName, dobj.GetType());
+                if (dprop != null)
+                {
+                    dobj.SetTriggeredValue(dprop, this);
+                }
             }
             else
             {
@@ -40,7 +44,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
                     element.View.Select(selector, this, (e, s) =>
                     {
                         var action = (SetTriggerAction)s;
-                        e.SetTriggeredValue(action.dprop, action);
+                        var dprop = DependencyProperty.FindByStylingName(action.dpropName, e.GetType());
+                        if (dprop != null)
+                        {
+                            e.SetTriggeredValue(dprop, action);
+                        }
                     });
                 }
             }
@@ -52,7 +60,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         {
             if (selector == null)
             {
-                dobj.ClearTriggeredValue(dprop, this);
+                var dprop = DependencyProperty.FindByStylingName(dpropName, dobj.GetType());
+                if (dprop != null)
+                {
+                    dobj.ClearTriggeredValue(dprop, this);
+                }
             }
             else
             {
@@ -62,7 +74,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
                     element.View.Select(selector, this, (e, s) =>
                     {
                         var action = (SetTriggerAction)s;
-                        e.ClearTriggeredValue(action.dprop, action);
+                        var dprop = DependencyProperty.FindByStylingName(action.dpropName, e.GetType());
+                        if (dprop != null)
+                        {
+                            e.ClearTriggeredValue(dprop, action);
+                        }
                     });
                 }
             }
@@ -83,7 +99,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         }
 
         // State values.
-        private readonly DependencyProperty dprop;
+        private readonly String dpropName;
         private readonly UvssSelector selector;
         private readonly String value;
         private Object valueCache;
