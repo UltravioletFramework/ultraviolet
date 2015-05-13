@@ -121,6 +121,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                     kvp.Value.ClearStyledValue();
                 }
             }
+            OnClearingStyles();
         }
 
         /// <summary>
@@ -135,6 +136,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                     kvp.Value.ClearTriggeredValue();
                 }
             }
+            OnClearingTriggers();
         }
 
         /// <summary>
@@ -506,6 +508,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Occurs when the dependency object is clearing its styles.
+        /// </summary>
+        internal event UpfEventHandler ClearingStyles;
+
+        /// <summary>
+        /// Occurs when the dependency object is clearing its triggers.
+        /// </summary>
+        internal event UpfEventHandler ClearingTriggers;
+
+        /// <summary>
         /// Occurs when the value of one of the object's dependency properties changes.
         /// </summary>
         /// <typeparam name="T">The type of value contained by the dependency property.</typeparam>
@@ -628,6 +640,30 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             else
             {
                 digestedDependencyProperties.Remove(value);
+            }
+        }
+
+        /// <summary>
+        /// Raises the <see cref="ClearingStyles"/> event.
+        /// </summary>
+        private void OnClearingStyles()
+        {
+            var temp = ClearingStyles;
+            if (temp != null)
+            {
+                temp(this);
+            }
+        }
+
+        /// <summary>
+        /// Raises the <see cref="ClearingTriggers"/> event.
+        /// </summary>
+        private void OnClearingTriggers()
+        {
+            var temp = ClearingTriggers;
+            if (temp != null)
+            {
+                temp(this);
             }
         }
 

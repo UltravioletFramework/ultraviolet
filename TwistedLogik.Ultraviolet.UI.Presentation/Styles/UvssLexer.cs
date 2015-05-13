@@ -710,6 +710,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
                     continue;
                 if (ConsumeIdentifier(input, output, line, ref ix, ref storyboard))
                     continue;
+                if (ConsumeColon(input, output, line, ref ix))
+                    continue;
 
                 break;
             }

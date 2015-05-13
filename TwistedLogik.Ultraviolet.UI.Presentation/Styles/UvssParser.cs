@@ -331,9 +331,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
                 return null;
 
             var selectors = ConsumeSelectorList(state);
-            var styles    = ConsumeStyleList(state);
+            var styles    = default(UvssStyleCollection);
+            var triggers  = default(UvssTriggerCollection);
+            ConsumeStyleList(state, out styles, out triggers);
 
-            return new UvssRule(selectors, styles);
+            return new UvssRule(selectors, styles, triggers);
         }
 
         /// <summary>
@@ -830,20 +832,22 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// Consumes a sequence of tokens representing a UVSS style list.
         /// </summary>
         /// <param name="state">The parser state.</param>
-        /// <returns>A new <see cref="UvssStyleCollection"/> object representing the style list that was consumed.</returns>
-        private static UvssStyleCollection ConsumeStyleList(UvssParserState state)
+        /// <param name="styles">A <see cref="UvssStyleCollection"/> object representing the style list that was consumed.</param>
+        /// <param name="triggers">A <see cref="UvssTriggerCollection"/> object representing the trigger list that was consumed.</param>
+        private static void ConsumeStyleList(UvssParserState state, out UvssStyleCollection styles, out UvssTriggerCollection triggers)
         {
             state.AdvanceBeyondWhiteSpace();
 
             var styleListTokens = GetTokensBetweenCurlyBraces(state);
             var styleListState  = new UvssParserState(state.Source, styleListTokens);
-            var styles          = new List<UvssStyle>();
-            var triggers        = new List<Trigger>();
+            var tempStyles      = new List<UvssStyle>();
+            var tempTriggers    = new List<Trigger>();
 
-            while (ConsumeStyleOrTrigger(styleListState, styles, triggers)) 
+            while (ConsumeStyleOrTrigger(styleListState, tempStyles, tempTriggers))
             { }
 
-            return new UvssStyleCollection(styles);
+            styles   = new UvssStyleCollection(tempStyles);
+            triggers = new UvssTriggerCollection(tempTriggers);
         }
 
         /// <summary>

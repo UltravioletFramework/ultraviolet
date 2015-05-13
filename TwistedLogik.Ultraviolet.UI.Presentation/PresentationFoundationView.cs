@@ -121,7 +121,23 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             Contract.Require(selector, "selector");
             Contract.Require(action, "action");
 
-            Select(layoutRoot, selector, state, action);
+            SelectInternal(layoutRoot, selector, state, action);
+        }
+
+        /// <summary>
+        /// Performs the specified action on all objects within the view's visual tree
+        /// which match the specified UVSS selector.
+        /// </summary>
+        /// <param name="root">The root element at which to begin evaluation, or <c>null</c> to begin at the layout root.</param>
+        /// <param name="selector">The UVSS selector that specifies which objects should be targeted by the action.</param>
+        /// <param name="state">A state value which is passed to the specified action.</param>
+        /// <param name="action">The action to perform on the selected objects.</param>
+        public void Select(UIElement root, UvssSelector selector, Object state, Action<UIElement, Object> action)
+        {
+            Contract.Require(selector, "selector");
+            Contract.Require(action, "action");
+
+            SelectInternal(root ?? layoutRoot, selector, state, action);
         }
 
         /// <summary>
@@ -622,7 +638,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Recursively performs the specified action on all objects within the view's visual tree
         /// which match the specified UVSS selector.
         /// </summary>
-        private void Select(UIElement element, UvssSelector selector, Object state, Action<UIElement, Object> action)
+        private void SelectInternal(UIElement element, UvssSelector selector, Object state, Action<UIElement, Object> action)
         {
             if (selector.MatchesElement(element))
                 action(element, state);

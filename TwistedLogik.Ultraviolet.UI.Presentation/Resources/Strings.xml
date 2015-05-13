@@ -247,7 +247,7 @@
   </String>
   <String Key="HANDLER_TYPE_MISMATCH">
     <en-US>
-      <Variant>The specified event handler '{0}' is invalid because it is not a delegate of type '{1}'.</Variant>
+      <Variant>The specified event handler '{0}' is invalid because it is not a delegate of type '{1}.</Variant>
     </en-US>
   </String>
   <String Key="NOT_VISUAL_OBJECT">
@@ -287,12 +287,17 @@
   </String>
   <String Key="LOCAL_PROPERTY_CANNOT_BE_APPLIED_TO_TYPE">
     <en-US>
-      <Variant>The local property "{0}" can only be applied to "{1}" or one of its descendant types.</Variant>
+      <Variant>The local property '{0}' can only be applied to '{1}' or one of its descendant types.</Variant>
     </en-US>
   </String>
-  <String Key="TYPE_DOES_NOT_DEFINE_EQUALS_OR_COMPARETO">
+  <String Key="TYPE_IS_NOT_COMPARABLE">
     <en-US>
-      <Variant>The type "{0}" cannot be used in a trigger condition because it does not define both Equals() and CompareTo() methods.</Variant>
+      <Variant>The type '{0}' cannot be used in a trigger condition because it doesn't define Equals() or CompareTo() methods.</Variant>
+    </en-US>
+  </String>
+  <String Key="INVALID_TRIGGER_COMPARISON">
+    <en-US>
+      <Variant>The dependency property '{0}' does not support the {1} comparison operator because it is of type '{2}'.</Variant>
     </en-US>
   </String>
 </LocalizedStrings>

@@ -211,6 +211,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
                     }
                     styleAggregator[styleKey] = new PrioritizedStyleData(style, selector, stylePriority);
                 }
+
+                foreach (var trigger in rule.Triggers)
+                {
+                    trigger.Attach(element);
+                }
             }
 
             // Apply styles to element

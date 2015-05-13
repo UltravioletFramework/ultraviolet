@@ -722,6 +722,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 {
                     return localValue;
                 }
+                if (HasTriggeredValue)
+                {
+                    return triggeredValue;
+                }
                 if (hasStyledValue)
                 {
                     return styledValue;

@@ -39,6 +39,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
                 refvalCache = ObjectResolver.FromString(refval, dprop.PropertyType);
 
             var comparison = TriggerComparisonCache.Get(dprop.PropertyType, op);
+            if (comparison == null)
+                throw new InvalidOperationException(PresentationStrings.InvalidTriggerComparison.Format(dpropName, op, dprop.PropertyType));
+
             return comparison(dobj, dprop, refvalCache);
         }
 

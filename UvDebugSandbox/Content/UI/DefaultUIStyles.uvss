@@ -12,7 +12,7 @@ view
 button, repeatbutton, togglebutton
 {
 	padding: 10 8 10 8;
-	
+		
 	transition (common, normal): button-to-normal;
 	transition (common, hover): button-to-hover;
 	transition (common, pressed): button-to-pressed;
@@ -21,13 +21,17 @@ button, repeatbutton, togglebutton
 
 togglebutton
 {
-	trigger property mouse-over = { true }, fill-color = { #ffff0000 }
+	transition (common, hover): null;
+	transition (common, pressed): null;
+
+	trigger property checked = { false }, mouse-over = { true }
 	{
-		set foo (#optional > foo .baz) { bar }
+		set source-image (*:trigger-root > grid > .button-background) { #Global:Textures:DefaultUI 256 35 71 33 4 4 4 4 }	
 	}
-	trigger event mouse-enter
+	trigger property checked = { true }
 	{
-		set baz { qux }
+		set foreground { #ffaaaaaa }
+		set source-image (*:trigger-root > grid > .button-background) { #Global:Textures:DefaultUI 256 69 71 33 4 4 4 4 }
 	}
 }
 

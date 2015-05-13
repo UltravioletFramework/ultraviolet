@@ -120,7 +120,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public void ClearStyledValues(Boolean recursive = true)
         {
             ClearStyledValuesCore(recursive);
-            ClearTriggeredValues(recursive);
             isStyleValid = false;
         }
 

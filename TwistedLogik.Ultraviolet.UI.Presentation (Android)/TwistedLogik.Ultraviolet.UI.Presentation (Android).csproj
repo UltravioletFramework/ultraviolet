@@ -755,6 +755,12 @@
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Styles\UvssStyleCollection.IEnumerable.cs">
       <Link>Styles\UvssStyleCollection.IEnumerable.cs</Link>
     </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Styles\UvssTriggerCollection.cs">
+      <Link>Styles\UvssTriggerCollection.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Styles\UvssTriggerCollection.IEnumerable.cs">
+      <Link>Styles\UvssTriggerCollection.IEnumerable.cs</Link>
+    </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\TextAlignment.cs">
       <Link>TextAlignment.cs</Link>
     </Compile>

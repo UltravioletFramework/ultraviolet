@@ -41,7 +41,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
                 var element = dobj as UIElement;
                 if (element != null && element.View != null)
                 {
-                    element.View.Select(selector, this, (e, s) =>
+                    var rooted = String.Equals(selector.PseudoClass, "trigger-root", StringComparison.InvariantCultureIgnoreCase);
+                    var target = rooted ? dobj as UIElement : null;
+
+                    element.View.Select(target, selector, this, (e, s) =>
                     {
                         var action = (SetTriggerAction)s;
                         var dprop = DependencyProperty.FindByStylingName(action.dpropName, e.GetType());
@@ -71,7 +74,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
                 var element = dobj as UIElement;
                 if (element != null && element.View != null)
                 {
-                    element.View.Select(selector, this, (e, s) =>
+                    var rooted = String.Equals(selector.PseudoClass, "trigger-root", StringComparison.InvariantCultureIgnoreCase);
+                    var target = rooted ? dobj as UIElement : null;
+
+                    element.View.Select(target, selector, this, (e, s) =>
                     {
                         var action = (SetTriggerAction)s;
                         var dprop = DependencyProperty.FindByStylingName(action.dpropName, e.GetType());

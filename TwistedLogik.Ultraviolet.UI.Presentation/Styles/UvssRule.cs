@@ -12,10 +12,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// </summary>
         /// <param name="selectors">The rule's selectors.</param>
         /// <param name="styles">The rule's styles.</param>
-        internal UvssRule(UvssSelectorCollection selectors, UvssStyleCollection styles)
+        /// <param name="triggers">The rule's triggers.</param>
+        internal UvssRule(UvssSelectorCollection selectors, UvssStyleCollection styles, UvssTriggerCollection triggers)
         {
             this.selectors = selectors;
             this.styles    = styles;
+            this.triggers  = triggers;
         }
 
         /// <inheritdoc/>
@@ -79,8 +81,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
             get { return styles; }
         }
 
+        /// <summary>
+        /// Gets the rule's triggers.
+        /// </summary>
+        public UvssTriggerCollection Triggers
+        {
+            get { return triggers; }
+        }
+
         // State values.
         private readonly UvssSelectorCollection selectors;
         private readonly UvssStyleCollection styles;
+        private readonly UvssTriggerCollection triggers;
     }
 }
