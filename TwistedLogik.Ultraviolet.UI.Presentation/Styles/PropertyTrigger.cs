@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
 {
@@ -8,14 +7,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
     /// </summary>
     public sealed partial class PropertyTrigger : Trigger, IDependencyPropertyChangeNotificationSubscriber
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="PropertyTrigger"/> class.
-        /// </summary>
-        public PropertyTrigger()
-        {
-            cachedDelegateHandleClearingStyles = HandleClearingStyles;
-        }
-
         /// <inheritdoc/>
         public void ReceiveDependencyPropertyChangeNotification(DependencyObject dobj, DependencyProperty dprop)
         {
@@ -36,10 +27,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
             if (IsAttachedTo(dobj))
                 return;
 
-            CreateAttachment(dobj);
-
-            dobj.ClearingStyles += cachedDelegateHandleClearingStyles;
-
             foreach (var condition in conditions)
             {
                 var dprop = DependencyProperty.FindByStylingName(condition.DependencyPropertyName, dobj.GetType());
@@ -50,6 +37,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
             }
 
             Evaluate(dobj);
+
+            base.Attach(dobj);
         }
 
         /// <inheritdoc/>
@@ -57,12 +46,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         {
             if (!IsAttachedTo(dobj))
                 return;
-
-            var wasActivated = IsActivatedOn(dobj);
-
-            DeleteAttachment(dobj);
-
-            dobj.ClearingStyles -= cachedDelegateHandleClearingStyles;
 
             foreach (var condition in conditions)
             {
@@ -73,72 +56,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
                 DependencyProperty.UnregisterChangeNotification(dobj, dprop, this);
             }
 
-            if (wasActivated)
+            if (IsActivatedOn(dobj))
+            {
                 Deactivate(dobj);
-        }
-
-        /// <summary>
-        /// Gets a value indicating whether the property trigger is attached to the specified target.
-        /// </summary>
-        /// <param name="target">The target to evaluate.</param>
-        /// <returns><c>true</c> if the property trigger is attached to the specified target; otherwise, <c>false</c>.</returns>
-        private Boolean IsAttachedTo(DependencyObject target)
-        {
-            return attachments.ContainsKey(target);
-        }
-
-        /// <summary>
-        /// Gets a value indicating whether the property trigger is activated on the specified target.
-        /// </summary>
-        /// <param name="target">The target to evaluate.</param>
-        /// <returns><c>true</c> if the property trigger is activated on the specified target; otherwise, <c>false</c>.</returns>
-        private Boolean IsActivatedOn(DependencyObject target)
-        {
-            Boolean activated;
-            attachments.TryGetValue(target, out activated);
-            return activated;
-        }
-
-        /// <summary>
-        /// Creates an attachment with the specified target.
-        /// </summary>
-        /// <param name="target">The target to which to attach the trigger.</param>
-        private void CreateAttachment(DependencyObject target)
-        {
-            attachments.Add(target, false);
-        }
-
-        /// <summary>
-        /// Deletes an attachment with the specified target.
-        /// </summary>
-        /// <param name="target">The target from which to detach the trigger.</param>
-        private void DeleteAttachment(DependencyObject target)
-        {
-            attachments.Remove(target);
-        }
-
-        /// <summary>
-        /// Activates the trigger's attachment with the specified target.
-        /// </summary>
-        /// <param name="target">The target to activate.</param>
-        private void ActivateAttachment(DependencyObject target)
-        {
-            if (attachments.ContainsKey(target))
-            {
-                attachments[target] = true;
             }
-        }
 
-        /// <summary>
-        /// Deactivates the trigger's attachment with the specified target.
-        /// </summary>
-        /// <param name="target">The target to deactivate.</param>
-        private void DeactivateAttachment(DependencyObject target)
-        {
-            if (attachments.ContainsKey(target))
-            {
-                attachments[target] = false;
-            }
+            base.Detach(dobj);
         }
 
         /// <summary>
@@ -150,7 +73,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
             {
                 if (!IsActivatedOn(dobj))
                 {
-                    ActivateAttachment(dobj);
                     Activate(dobj);
                 }
             }
@@ -158,31 +80,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
             {
                 if (IsActivatedOn(dobj))
                 {
-                    DeactivateAttachment(dobj);
                     Deactivate(dobj);
                 }
             }
         }
 
-        /// <summary>
-        /// Called when an attached element is clearing its styles.
-        /// </summary>
-        /// <param name="element">The element that is clearing its styles.</param>
-        private void HandleClearingStyles(DependencyObject element)
-        {
-            if (!IsAttachedTo(element))
-                return;
-
-            Detach(element);
-        }
-
         // Property values.
         private readonly PropertyTriggerConditionCollection conditions = 
             new PropertyTriggerConditionCollection();
-
-        // State values.
-        private readonly UpfEventHandler cachedDelegateHandleClearingStyles;
-        private readonly Dictionary<DependencyObject, Boolean> attachments = 
-            new Dictionary<DependencyObject, Boolean>();
     }
 }
