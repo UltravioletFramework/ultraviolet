@@ -83,6 +83,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public static readonly StringResource LocalPropertyCannotBeAppliedToType   = new StringResource(StringDatabase, "LOCAL_PROPERTY_CANNOT_BE_APPLIED_TO_TYPE");
         public static readonly StringResource TypeIsNotComparable                  = new StringResource(StringDatabase, "TYPE_IS_NOT_COMPARABLE");
         public static readonly StringResource InvalidTriggerComparison             = new StringResource(StringDatabase, "INVALID_TRIGGER_COMPARISON");
+        public static readonly StringResource InvalidAssetIdentifier               = new StringResource(StringDatabase, "INVALID_ASSET_IDENTIFIER");
 #pragma warning restore 1591
     }
 }

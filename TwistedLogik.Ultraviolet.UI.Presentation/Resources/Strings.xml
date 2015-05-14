@@ -300,4 +300,9 @@
       <Variant>The dependency property '{0}' does not support the {1} comparison operator because it is of type '{2}'.</Variant>
     </en-US>
   </String>
+  <String Key="INVALID_ASSET_IDENTIFIER">
+    <en-US>
+      <Variant>The asset identifier '{0}' is not valid.</Variant>
+    </en-US>
+  </String>
 </LocalizedStrings>

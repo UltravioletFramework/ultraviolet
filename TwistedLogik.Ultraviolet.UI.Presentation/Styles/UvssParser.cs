@@ -297,6 +297,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// <returns>The source string between the specified matching pair of tokens.</returns>
         private static String GetStringBetweenCurlyBraces(UvssParserState state)
         {
+            state.AdvanceBeyondWhiteSpace();
+
             var valueTokens = GetTokensBetweenCurlyBraces(state);
             var value       = String.Join(String.Empty, valueTokens.Select(x => x.Value)).Trim();
 
@@ -1174,10 +1176,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// <returns><c>true</c> if a trigger action was successfully consumed; otherwise, <c>false</c>.</returns>
         private static Boolean ConsumePlaySfxTriggerAction(UvssParserState state, Trigger trigger)
         {
-            var valueTokens = GetTokensBetweenCurlyBraces(state);
-            var value       = String.Join(String.Empty, valueTokens);
+            var value  = GetStringBetweenCurlyBraces(state);
 
-            // TODO
+            SourcedAssetID sfxAssetID;
+            if (!SourcedAssetID.TryParse(value, out sfxAssetID))
+                throw new UvssException(PresentationStrings.InvalidAssetIdentifier.Format(value));
+
+            var action = new PlaySoundEffectTriggerAction(sfxAssetID);
+
+            trigger.Actions.Add(action);
 
             return true;
         }
@@ -1190,10 +1197,27 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// <returns><c>true</c> if a trigger action was successfully consumed; otherwise, <c>false</c>.</returns>
         private static Boolean ConsumePlayStoryboardTriggerAction(UvssParserState state, Trigger trigger)
         {
-            var valueTokens = GetTokensBetweenCurlyBraces(state);
-            var value       = String.Join(String.Empty, valueTokens);
+            var selector = default(UvssSelector);
 
-            // TODO
+            state.AdvanceBeyondWhiteSpace();
+
+            if (state.CurrentToken.TokenType == UvssLexerTokenType.OpenParenthesis)
+            {
+                var selectorOpenParensToken = state.TryConsumeNonWhiteSpace();
+                MatchTokenOrFail(state, selectorOpenParensToken, UvssLexerTokenType.OpenParenthesis);
+
+                selector = ConsumeSelector(state, false);
+
+                var selectorCloseParensToken = state.TryConsumeNonWhiteSpace();
+                MatchTokenOrFail(state, selectorCloseParensToken, UvssLexerTokenType.CloseParenthesis);
+            }
+
+            state.AdvanceBeyondWhiteSpace();
+
+            var value  = GetStringBetweenCurlyBraces(state);
+            var action = new PlayStoryboardTriggerAction(value, selector);
+
+            trigger.Actions.Add(action);
 
             return true;
         }

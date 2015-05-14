@@ -30,6 +30,7 @@ togglebutton
 	}
 	trigger property checked = { true }
 	{
+		play-sfx { #Global:SoundEffects:Click1 }
 		set foreground { #ffaaaaaa }
 		set source-image (*:trigger-root > grid > .button-background) { #Global:Textures:DefaultUI 256 69 71 33 4 4 4 4 }
 	}

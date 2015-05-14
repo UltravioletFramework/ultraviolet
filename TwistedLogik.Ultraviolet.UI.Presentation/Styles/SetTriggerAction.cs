@@ -47,6 +47,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
                     element.View.Select(target, selector, this, (e, s) =>
                     {
                         var action = (SetTriggerAction)s;
+
                         var dprop = DependencyProperty.FindByStylingName(action.dpropName, e.GetType());
                         if (dprop != null)
                         {
