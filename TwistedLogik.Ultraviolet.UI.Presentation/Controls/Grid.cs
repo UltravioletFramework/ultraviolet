@@ -137,24 +137,28 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Identifies the Row attached property.
         /// </summary>
+        /// <remarks>The styling name of this dependency property is 'row'.</remarks>
         public static readonly DependencyProperty RowProperty = DependencyProperty.RegisterAttached("Row", typeof(Int32), typeof(Grid),
             new PropertyMetadata<Int32>(null, PropertyMetadataOptions.AffectsMeasure, HandleRowChanged));
 
         /// <summary>
         /// Identifies the Column attached property.
         /// </summary>
+        /// <remarks>The styling name of this dependency property is 'column'.</remarks>
         public static readonly DependencyProperty ColumnProperty = DependencyProperty.RegisterAttached("Column", typeof(Int32), typeof(Grid),
             new PropertyMetadata<Int32>(null, PropertyMetadataOptions.AffectsMeasure, HandleColumnChanged));
 
         /// <summary>
         /// Identifies the <see cref="RowSpan"/> dependency property.
         /// </summary>
+        /// <remarks>The styling name of this dependency property is 'row-span'.</remarks>
         public static readonly DependencyProperty RowSpanProperty = DependencyProperty.RegisterAttached("RowSpan", typeof(Int32), typeof(Grid),
             new PropertyMetadata<Int32>(CommonBoxedValues.Int32.One));
 
         /// <summary>
         /// Identifies the <see cref="ColumnSpan"/> dependency property.
         /// </summary>
+        /// <remarks>The styling name of this dependency property is 'column-span'.</remarks>
         public static readonly DependencyProperty ColumnSpanProperty = DependencyProperty.RegisterAttached("ColumnSpan", typeof(Int32), typeof(Grid),
             new PropertyMetadata<Int32>(CommonBoxedValues.Int32.One));
 

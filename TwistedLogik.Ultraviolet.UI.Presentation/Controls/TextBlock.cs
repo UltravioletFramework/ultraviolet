@@ -35,6 +35,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Identifies the <see cref="Text"/> dependency property.
         /// </summary>
+        /// <remarks>The styling name of this dependency property is 'text'.</remarks>
         public static readonly DependencyProperty TextProperty = DependencyProperty.Register("Text", typeof(String), typeof(TextBlock),
             new PropertyMetadata<String>(null, PropertyMetadataOptions.AffectsMeasure, HandleTextChanged));
 

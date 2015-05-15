@@ -112,36 +112,42 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <summary>
         /// Identifies the <see cref="Value"/> dependency property.
         /// </summary>
+        /// <remarks>The styling name of this dependency property is 'value'.</remarks>
         public static readonly DependencyProperty ValueProperty = DependencyProperty.Register("Value", typeof(Double), typeof(RangeBase),
             new PropertyMetadata<Double>(HandleValueChanged, CoerceValue));
 
         /// <summary>
         /// Identifies the <see cref="Minimum"/> dependency property.
         /// </summary>
+        /// <remarks>The styling name of this dependency property is 'minimum'.</remarks>
         public static readonly DependencyProperty MinimumProperty = DependencyProperty.Register("Minimum", typeof(Double), typeof(RangeBase),
             new PropertyMetadata<Double>(HandleMinimumChanged));
 
         /// <summary>
         /// Identifies the <see cref="Maximum"/> dependency property.
         /// </summary>
+        /// <remarks>The styling name of this dependency property is 'maximum'.</remarks>
         public static readonly DependencyProperty MaximumProperty = DependencyProperty.Register("Maximum", typeof(Double), typeof(RangeBase),
             new PropertyMetadata<Double>(CommonBoxedValues.Double.One, HandleMaximumChanged));
 
         /// <summary>
         /// Identifies the <see cref="SmallChange"/> dependency property.
         /// </summary>
+        /// <remarks>The styling name of this dependency property is 'small-change'.</remarks>
         public static readonly DependencyProperty SmallChangeProperty = DependencyProperty.Register("SmallChange", typeof(Double), typeof(RangeBase),
             new PropertyMetadata<Double>(0.1));
 
         /// <summary>
         /// Identifies the <see cref="LargeChange"/> dependency property.
         /// </summary>
+        /// <remarks>The styling name of this dependency property is 'large-change'.</remarks>
         public static readonly DependencyProperty LargeChangeProperty = DependencyProperty.Register("LargeChange", typeof(Double), typeof(RangeBase),
             new PropertyMetadata<Double>(CommonBoxedValues.Double.One));
 
         /// <summary>
         /// Identifies the <see cref="ValueChanged"/> routed event.
         /// </summary>
+        /// <remarks>The styling name of this routed event is 'value-changed'.</remarks>
         public static readonly RoutedEvent ValueChangedEvent = EventManager.RegisterRoutedEvent("ValueChanged", RoutingStrategy.Bubble, 
             typeof(UpfRoutedEventHandler), typeof(RangeBase));
 

@@ -181,60 +181,70 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Identifies the <see cref="Width"/> dependency property.
         /// </summary>
+        /// <remarks>The styling name of this dependency property is 'width'.</remarks>
         public static readonly DependencyProperty WidthProperty = DependencyProperty.Register("Width", typeof(Double), typeof(FrameworkElement),
             new PropertyMetadata<Double>(CommonBoxedValues.Double.NaN, PropertyMetadataOptions.AffectsMeasure));
         
         /// <summary>
         /// Identifies the <see cref="MinWidth"/> dependency property.
         /// </summary>
+        /// <remarks>The styling name of this dependency property is 'min-width'.</remarks>
         public static readonly DependencyProperty MinWidthProperty = DependencyProperty.Register("MinWidth", typeof(Double), typeof(FrameworkElement),
             new PropertyMetadata<Double>(null, PropertyMetadataOptions.AffectsMeasure));
 
         /// <summary>
         /// Identifies the <see cref="MaxWidth"/> dependency property.
         /// </summary>
+        /// <remarks>The styling name of this dependency property is 'max-width'.</remarks>
         public static readonly DependencyProperty MaxWidthProperty = DependencyProperty.Register("MaxWidth", typeof(Double), typeof(FrameworkElement),
             new PropertyMetadata<Double>(CommonBoxedValues.Double.PositiveInfinity, PropertyMetadataOptions.AffectsMeasure));
 
         /// <summary>
         /// Identifies the <see cref="Height"/> dependency property.
         /// </summary>
+        /// <remarks>The styling name of this dependency property is 'height'.</remarks>
         public static readonly DependencyProperty HeightProperty = DependencyProperty.Register("Height", typeof(Double), typeof(FrameworkElement),
             new PropertyMetadata<Double>(CommonBoxedValues.Double.NaN, PropertyMetadataOptions.AffectsMeasure));
 
         /// <summary>
         /// Identifies the <see cref="MinHeight"/> dependency property.
         /// </summary>
+        /// <remarks>The styling name of this dependency property is 'min-height'.</remarks>
         public static readonly DependencyProperty MinHeightProperty = DependencyProperty.Register("MinHeight", typeof(Double), typeof(FrameworkElement),
             new PropertyMetadata<Double>(null, PropertyMetadataOptions.AffectsMeasure));
 
         /// <summary>
         /// Identifies the <see cref="MaxHeight"/> dependency property.
         /// </summary>
+        /// <remarks>The styling name of this dependency property is 'max-height'.</remarks>
         public static readonly DependencyProperty MaxHeightProperty = DependencyProperty.Register("MaxHeight", typeof(Double), typeof(FrameworkElement),
             new PropertyMetadata<Double>(CommonBoxedValues.Double.PositiveInfinity, PropertyMetadataOptions.AffectsMeasure));
 
         /// <summary>
         /// Identifies the <see cref="Margin"/> dependency property.
         /// </summary>
+        /// <remarks>The styling name of this dependency property is 'margin'.</remarks>
         public static readonly DependencyProperty MarginProperty = DependencyProperty.Register("Margin", typeof(Thickness), typeof(FrameworkElement),
             new PropertyMetadata<Double>(null, PropertyMetadataOptions.AffectsMeasure));
 
         /// <summary>
         /// Identifies the <see cref="Padding"/> dependency property.
         /// </summary>
+        /// <remarks>The styling name of this dependency property is 'padding'.</remarks>
         public static readonly DependencyProperty PaddingProperty = DependencyProperty.Register("Padding", typeof(Thickness), typeof(FrameworkElement),
             new PropertyMetadata<Double>(null, PropertyMetadataOptions.AffectsMeasure));
 
         /// <summary>
         /// Identifies the <see cref="HorizontalAlignment"/> dependency property.
         /// </summary>
+        /// <remarks>The styling name of this dependency property is 'halign'.</remarks>
         public static readonly DependencyProperty HorizontalAlignmentProperty = DependencyProperty.Register("HorizontalAlignment", "halign", 
             typeof(HorizontalAlignment), typeof(FrameworkElement), new PropertyMetadata<HorizontalAlignment>(PresentationBoxedValues.HorizontalAlignment.Left, PropertyMetadataOptions.AffectsArrange));
         
         /// <summary>
         /// Identifies the <see cref="VerticalAlignment"/> dependency property.
         /// </summary>
+        /// <remarks>The styling name of this dependency property is 'valign'.</remarks>
         public static readonly DependencyProperty VerticalAlignmentProperty = DependencyProperty.Register("VerticalAlignment", "valign",
             typeof(VerticalAlignment), typeof(FrameworkElement), new PropertyMetadata<VerticalAlignment>(PresentationBoxedValues.VerticalAlignment.Top, PropertyMetadataOptions.AffectsArrange));
 
@@ -259,12 +269,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Identifies the <see cref="Loaded"/> routed event.
         /// </summary>
+        /// <remarks>The styling name of this routed event is 'loaded'.</remarks>
         public static readonly RoutedEvent LoadedEvent = EventManager.RegisterRoutedEvent("Loaded", RoutingStrategy.Direct,
             typeof(UpfRoutedEventHandler), typeof(FrameworkElement));
 
         /// <summary>
         /// Identifies the <see cref="Unloaded"/> routed event.
         /// </summary>
+        /// <remarks>The styling name of this routed event is 'unloaded'.</remarks>
         public static readonly RoutedEvent UnloadedEvent = EventManager.RegisterRoutedEvent("Unloaded", RoutingStrategy.Direct,
             typeof(UpfRoutedEventHandler), typeof(FrameworkElement));
 

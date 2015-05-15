@@ -71,30 +71,35 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <summary>
         /// Identifies the <see cref="IsChecked"/> dependency property.
         /// </summary>
+        /// <remarks>The styling name of this dependency property is 'checked'.</remarks>
         public static readonly DependencyProperty IsCheckedProperty = DependencyProperty.Register("IsChecked", typeof(Boolean?), typeof(ToggleButton),
             new PropertyMetadata<Boolean?>(CommonBoxedValues.Boolean.False, HandleIsCheckedChanged));
 
         /// <summary>
         /// Identifies the <see cref="IsThreeState"/> dependency property.
         /// </summary>
+        /// <remarks>The styling name of this dependency property is 'three-state'.</remarks>
         public static readonly DependencyProperty IsThreeStateProperty = DependencyProperty.Register("IsThreeState", typeof(Boolean), typeof(ToggleButton),
             new PropertyMetadata<Boolean>(CommonBoxedValues.Boolean.False));
 
         /// <summary>
         /// Identifies the <see cref="Checked"/> routed event.
         /// </summary>
+        /// <remarks>The styling name of this routed event is 'checked'.</remarks>
         public static readonly RoutedEvent CheckedEvent = EventManager.RegisterRoutedEvent("Checked", RoutingStrategy.Bubble, 
             typeof(UpfRoutedEventHandler), typeof(ToggleButton));
 
         /// <summary>
         /// Identifies the <see cref="Unchecked"/> routed event.
         /// </summary>
+        /// <remarks>The styling name of this routed event is 'unchecked'.</remarks>
         public static readonly RoutedEvent UncheckedEvent = EventManager.RegisterRoutedEvent("Unchecked", RoutingStrategy.Bubble, 
             typeof(UpfRoutedEventHandler), typeof(ToggleButton));
 
         /// <summary>
         /// Identifies the <see cref="Indeterminate"/> routed event.
         /// </summary>
+        /// <remarks>The styling name of this routed event is 'indeterminate'.</remarks>
         public static readonly RoutedEvent IndeterminateEvent = EventManager.RegisterRoutedEvent("Indeterminate", RoutingStrategy.Bubble,
             typeof(UpfRoutedEventHandler), typeof(ToggleButton));
 

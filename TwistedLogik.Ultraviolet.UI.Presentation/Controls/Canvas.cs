@@ -120,24 +120,28 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Gets or sets a value indicating the distance between the left edge of the canvas and the left edge of the element.
         /// </summary>
+        /// <remarks>The styling name of this dependency property is 'left'.</remarks>
         public static readonly DependencyProperty LeftProperty = DependencyProperty.RegisterAttached("Left", typeof(Double), typeof(Canvas),
             new PropertyMetadata<Double>(CommonBoxedValues.Double.NaN, PropertyMetadataOptions.AffectsMeasure));
 
         /// <summary>
         /// Gets or sets a value indicating the distance between the top edge of the canvas and the top edge of the element.
         /// </summary>
+        /// <remarks>The styling name of this dependency property is 'top'.</remarks>
         public static readonly DependencyProperty TopProperty = DependencyProperty.RegisterAttached("Top", typeof(Double), typeof(Canvas),
             new PropertyMetadata<Double>(CommonBoxedValues.Double.NaN, PropertyMetadataOptions.AffectsMeasure));
 
         /// <summary>
         /// Gets or sets a value indicating the distance between the right edge of the canvas and the right edge of the element.
         /// </summary>
+        /// <remarks>The styling name of this dependency property is 'right'.</remarks>
         public static readonly DependencyProperty RightProperty = DependencyProperty.RegisterAttached("Right", typeof(Double), typeof(Canvas),
             new PropertyMetadata<Double>(CommonBoxedValues.Double.NaN, PropertyMetadataOptions.AffectsMeasure));
 
         /// <summary>
         /// Gets or sets a value indicating the distance between the bottom edge of the canvas and the bottom edge of the element.
         /// </summary>
+        /// <remarks>The styling name of this dependency property is 'bottom'.</remarks>
         public static readonly DependencyProperty BottomProperty = DependencyProperty.RegisterAttached("Bottom", typeof(Double), typeof(Canvas),
             new PropertyMetadata<Double>(CommonBoxedValues.Double.NaN, PropertyMetadataOptions.AffectsMeasure));
 

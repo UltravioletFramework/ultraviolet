@@ -143,6 +143,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <summary>
         /// Identifies the <see cref="Orientation"/> dependency property.
         /// </summary>
+        /// <remarks>The styling name of this dependency property is 'orientation'.</remarks>
         public static readonly DependencyProperty OrientationProperty = DependencyProperty.Register("Orientation", typeof(Orientation), typeof(Track),
             new PropertyMetadata<Orientation>(null, PropertyMetadataOptions.AffectsMeasure));
 

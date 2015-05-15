@@ -909,6 +909,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Identifies the <see cref="ActualWidth"/> dependency property.
         /// </summary>
+        /// <remarks>The styling name of this dependency property is 'actual-width'.</remarks>
         public static readonly DependencyProperty ActualWidthProperty = ActualWidthPropertyKey.DependencyProperty;
 
         /// <summary>
@@ -920,6 +921,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Identifies the <see cref="ActualHeight"/> dependency property.
         /// </summary>
+        /// <remarks>The styling name of this dependency property is 'actual-height'.</remarks>
         public static readonly DependencyProperty ActualHeightProperty = ActualHeightPropertyKey.DependencyProperty;
 
         /// <summary>
@@ -931,35 +933,41 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Identifies the <see cref="IsVisible"/> dependency property.
         /// </summary>
+        /// <remarks>The styling name of this dependency property is 'visible'.</remarks>
         public static readonly DependencyProperty IsVisibleProperty = IsVisiblePropertyKey.DependencyProperty;
 
         /// <summary>
         /// Identifies the <see cref="IsEnabled"/> dependency property.
         /// </summary>
+        /// <remarks>The styling name of this dependency property is 'enabled'.</remarks>
         public static readonly DependencyProperty IsEnabledProperty = DependencyProperty.Register("IsEnabled", typeof(Boolean), typeof(UIElement),
             new PropertyMetadata<Boolean>(CommonBoxedValues.Boolean.True, HandleIsEnabledChanged, CoerceIsEnabled));
 
         /// <summary>
         /// Identifies the <see cref="IsHitTestVisible"/> dependency property.
         /// </summary>
+        /// <remarks>The styling name of this dependency property is 'hit-test-visible'.</remarks>
         public static readonly DependencyProperty IsHitTestVisibleProperty = DependencyProperty.Register("IsHitTestVisible", typeof(Boolean), typeof(UIElement),
             new PropertyMetadata<Boolean>(CommonBoxedValues.Boolean.True, HandleIsHitTestVisibleChanged));
         
         /// <summary>
         /// Identifies the <see cref="Focusable"/> dependency property.
         /// </summary>
+        /// <remarks>The styling name of this dependency property is 'focusable'.</remarks>
         public static readonly DependencyProperty FocusableProperty = DependencyProperty.Register("Focusable", typeof(Boolean), typeof(UIElement),
             new PropertyMetadata<Boolean>(CommonBoxedValues.Boolean.False, HandleFocusableChanged));
 
         /// <summary>
         /// Identifies the <see cref="Visibility"/> dependency property.
         /// </summary>
+        /// <remarks>The styling name of this dependency property is 'visibility'.</remarks>
         public static readonly DependencyProperty VisibilityProperty = DependencyProperty.Register("Visibility", typeof(Visibility), typeof(UIElement),
             new PropertyMetadata<Visibility>(PresentationBoxedValues.Visibility.Visible, PropertyMetadataOptions.AffectsArrange, HandleVisibilityChanged));
 
         /// <summary>
         /// Identifies the <see cref="Opacity"/> dependency property.
         /// </summary>
+        /// <remarks>The styling name of this dependency property is 'opacity'.</remarks>
         public static readonly DependencyProperty OpacityProperty = DependencyProperty.Register("Opacity", typeof(Single), typeof(UIElement),
             new PropertyMetadata<Single>(CommonBoxedValues.Single.One));
 

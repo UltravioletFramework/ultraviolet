@@ -30,6 +30,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <summary>
         /// Identifies the <see cref="Child"/> dependency property.
         /// </summary>
+        /// <remarks>The styling name of this dependency property is 'child'.</remarks>
         public static readonly DependencyProperty ChildProperty = DependencyProperty.Register("Child", typeof(UIElement), typeof(PopupRoot),
             new PropertyMetadata<UIElement>(null, PropertyMetadataOptions.None, HandleChildChanged));
 

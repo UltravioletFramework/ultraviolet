@@ -61,18 +61,21 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Identifies the <see cref="Width"/> dependency property.
         /// </summary>
+        /// <remarks>The styling name of this dependency property is 'width'.</remarks>
         public static readonly DependencyProperty WidthProperty = DependencyProperty.Register("Width", typeof(GridLength), typeof(ColumnDefinition),
             new PropertyMetadata<GridLength>(PresentationBoxedValues.GridLength.One, HandleWidthChanged));
 
         /// <summary>
         /// Identifies the <see cref="MinWidth"/> dependency property.
         /// </summary>
+        /// <remarks>The styling name of this dependency property is 'min-width'.</remarks>
         public static readonly DependencyProperty MinWidthProperty = DependencyProperty.Register("MinWidth", typeof(Double), typeof(ColumnDefinition),
             new PropertyMetadata<Double>(HandleMinWidthChanged));
 
         /// <summary>
         /// Identifies the <see cref="MaxWidth"/> dependency property.
         /// </summary>
+        /// <remarks>The styling name of this dependency property is 'max-width'.</remarks>
         public static readonly DependencyProperty MaxWidthProperty = DependencyProperty.Register("MaxWidth", typeof(Double), typeof(ColumnDefinition),
             new PropertyMetadata<Double>(CommonBoxedValues.Double.PositiveInfinity, HandleMaxWidthChanged));
         

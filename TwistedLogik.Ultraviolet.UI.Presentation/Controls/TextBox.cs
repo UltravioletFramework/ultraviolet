@@ -160,60 +160,70 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Identifies the <see cref="Text"/> dependency property.
         /// </summary>
+        /// <remarks>The styling name of this dependency property is 'text'.</remarks>
         public static readonly DependencyProperty TextProperty = DependencyProperty.Register("Text", typeof(String), typeof(TextBox),
             new PropertyMetadata<String>(HandleTextChanged));
 
         /// <summary>
         /// Identifies the <see cref="Pattern"/> dependency property.
         /// </summary>
+        /// <remarks>The styling name of this dependency property is 'pattern'.</remarks>
         public static readonly DependencyProperty PatternProperty = DependencyProperty.Register("Pattern", typeof(String), typeof(TextBox),
             new PropertyMetadata<String>(HandlePatternChanged));
 
         /// <summary>
         /// Identifies the <see cref="MaxLength"/> dependency property.
         /// </summary>
+        /// <remarks>The styling name of this dependency property is 'max-length'.</remarks>
         public static readonly DependencyProperty MaxLengthProperty = DependencyProperty.Register("MaxLength", typeof(Int32), typeof(TextBox),
             new PropertyMetadata<Int32>());
 
         /// <summary>
         /// Identifies the <see cref="CaretThickness"/> dependency property.
         /// </summary>
+        /// <remarks>The styling name of this dependency property is 'caret-thickness'.</remarks>
         public static readonly DependencyProperty CaretThicknessProperty = DependencyProperty.Register("CaretThickness", typeof(Double), typeof(TextBox),
             new PropertyMetadata<Double>(4.0));
 
         /// <summary>
         /// Identifies the <see cref="CaretImage"/> dependency property.
         /// </summary>
+        /// <remarks>The styling name of this dependency property is 'caret-image'.</remarks>
         public static readonly DependencyProperty CaretImageProperty = DependencyProperty.Register("CaretImage", typeof(SourcedImage), typeof(TextBox),
             new PropertyMetadata<SourcedImage>(HandleCaretImageChanged));
 
         /// <summary>
         /// Identifies the <see cref="CaretColor"/> dependency property.
         /// </summary>
+        /// <remarks>The styling name of this dependency property is 'caret-color'.</remarks>
         public static readonly DependencyProperty CaretColorProperty = DependencyProperty.Register("CaretColor", typeof(Color), typeof(TextBox),
             new PropertyMetadata<Color>(Color.Blue * 0.4f));
 
         /// <summary>
         /// Identifies the <see cref="SelectionImage"/> dependency property.
         /// </summary>
+        /// <remarks>The styling name of this dependency property is 'selection-image'.</remarks>
         public static readonly DependencyProperty SelectionImageProperty = DependencyProperty.Register("SelectionImage", typeof(SourcedImage), typeof(TextBox),
             new PropertyMetadata<SourcedImage>(HandleSelectionImageChanged));
 
         /// <summary>
         /// Identifies the <see cref="SelectionColor"/> dependency property.
         /// </summary>
+        /// <remarks>The styling name of this dependency property is 'selection-color'.</remarks>
         public static readonly DependencyProperty SelectionColorProperty = DependencyProperty.Register("SelectionColor", typeof(Color), typeof(TextBox),
             new PropertyMetadata<Color>(Color.Blue * 0.4f));
 
         /// <summary>
         /// Identifies the <see cref="InsertionMode"/> dependency property.
         /// </summary>
+        /// <remarks>The styling name of this dependency property is 'insertion-mode'.</remarks>
         public static readonly DependencyProperty InsertionModeProperty = DependencyProperty.Register("InsertionMode", typeof(TextBoxInsertionMode), typeof(TextBox),
             new PropertyMetadata<TextBoxInsertionMode>(TextBoxInsertionMode.Insert));
 
         /// <summary>
         /// Identifies the <see cref="IsReadOnly"/> dependency property.
         /// </summary>
+        /// <remarks>The styling name of this dependency property is 'read-only'.</remarks>
         public static readonly DependencyProperty IsReadOnlyProperty = DependencyProperty.Register("IsReadOnly", typeof(Boolean), typeof(TextBox),
             new PropertyMetadata<Boolean>(CommonBoxedValues.Boolean.False));
 

@@ -40,6 +40,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Identifies the <see cref="DecimalPlaces"/> dependency property.
         /// </summary>
+        /// <remarks>The styling name of this dependency property is 'decimal-places'.</remarks>
         public static readonly DependencyProperty DecimalPlacesProperty = DependencyProperty.Register("DecimalPlaces", typeof(Int32), typeof(NumericUpDown),
             new PropertyMetadata<Int32>(HandleDecimalPlacesChanged));
 

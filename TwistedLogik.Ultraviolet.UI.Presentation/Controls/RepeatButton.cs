@@ -53,12 +53,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Identifies the <see cref="Delay"/> dependency property.
         /// </summary>
+        /// <remarks>The styling name of this dependency property is 'delay'.</remarks>
         public static readonly DependencyProperty DelayProperty = DependencyProperty.Register("Delay", typeof(Double), typeof(RepeatButton),
             new PropertyMetadata<Double>(GetDefaultDelay()));
         
         /// <summary>
         /// Identifies the <see cref="Interval"/> dependency property.
         /// </summary>
+        /// <remarks>The styling name of this dependency property is 'interval'.</remarks>
         public static readonly DependencyProperty IntervalProperty = DependencyProperty.Register("Interval", typeof(Double), typeof(RepeatButton),
             new PropertyMetadata<Double>(GetDefaultInterval()));
 

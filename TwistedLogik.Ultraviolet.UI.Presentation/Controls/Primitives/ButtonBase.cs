@@ -67,17 +67,20 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <summary>
         /// Identifies the <see cref="IsPressed"/> dependency property.
         /// </summary>
+        /// <remarks>The styling name of this dependency property is 'pressed'.</remarks>
         public static readonly DependencyProperty IsPressedProperty = IsPressedPropertyKey.DependencyProperty;
 
         /// <summary>
         /// Identifies the <see cref="ClickMode"/> dependency property.
         /// </summary>
+        /// <remarks>The styling name of this dependency property is 'click-mode'.</remarks>
         public static readonly DependencyProperty ClickModeProperty = DependencyProperty.Register("ClickMode", typeof(ClickMode), typeof(ButtonBase),
             new PropertyMetadata<ClickMode>(PresentationBoxedValues.ClickMode.Release));
 
         /// <summary>
         /// Identifies the <see cref="Click"/> routed event.
         /// </summary>
+        /// <remarks>The styling name of this routed event is 'click'.</remarks>
         public static readonly RoutedEvent ClickEvent = EventManager.RegisterRoutedEvent("Click", RoutingStrategy.Bubble, 
             typeof(UpfRoutedEventHandler), typeof(ButtonBase));
 

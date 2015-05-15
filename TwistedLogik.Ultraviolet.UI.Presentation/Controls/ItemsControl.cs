@@ -97,18 +97,21 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Identifies the <see cref="ItemsSource"/> dependency property.
         /// </summary>
+        /// <remarks>The styling name of this dependency property is 'items-source'.</remarks>
         public static readonly DependencyProperty ItemsSourceProperty = DependencyProperty.Register("ItemsSource", typeof(IEnumerable), typeof(ItemsControl),
             new PropertyMetadata<IEnumerable>(HandleItemsSourceChanged));
 
         /// <summary>
         /// Identifies the <see cref="ItemStringFormat"/> dependency property.
         /// </summary>
+        /// <remarks>The styling name of this dependency property is 'item-string-format'.</remarks>
         public static readonly DependencyProperty ItemStringFormatProperty = DependencyProperty.Register("ItemStringFormat", typeof(String), typeof(ItemsControl),
             new PropertyMetadata<String>());
 
         /// <summary>
         /// The private access key for the <see cref="HasItems"/> read-only dependency property.
         /// </summary>
+        /// <remarks>The styling name of this dependency property is 'has-items'.</remarks>
         private static readonly DependencyPropertyKey HasItemsPropertyKey = DependencyProperty.RegisterReadOnly("HasItems", typeof(Boolean), typeof(ItemsControl),
             new PropertyMetadata<Boolean>());
 

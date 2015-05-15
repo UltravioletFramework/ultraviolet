@@ -57,6 +57,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Identifies the <see cref="IsKeyboardFocused"/> dependency property.
         /// </summary>
+        /// <remarks>The styling name of this dependency property is 'keyboard-focused'.</remarks>
         public static readonly DependencyProperty IsKeyboardFocusedProperty = IsKeyboardFocusedPropertyKey.DependencyProperty;
 
         /// <summary>
@@ -68,6 +69,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Identifies the <see cref="IsKeyboardFocusWithin"/> dependency property.
         /// </summary>
+        /// <remarks>The styling name of this dependency property is 'keyboard-focus-within'.</remarks>
         public static readonly DependencyProperty IsKeyboardFocusWithinProperty = IsKeyboardFocusWithinPropertyKey.DependencyProperty;
 
         /// <summary>
@@ -79,6 +81,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Identifies the <see cref="IsMouseCaptured"/> dependency property.
         /// </summary>
+        /// <remarks>The styling name of this dependency property is 'mouse-captured'.</remarks>
         public static readonly DependencyProperty IsMouseCapturedProperty = IsMouseCapturedPropertyKey.DependencyProperty;
 
         /// <summary>
@@ -90,6 +93,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Identifies the <see cref="IsMouseCaptureWithin"/> dependency property.
         /// </summary>
+        /// <remarks>The styling name of this dependency property is 'mouse-capture-within'.</remarks>
         public static readonly DependencyProperty IsMouseCaptureWithinProperty = IsMouseCaptureWithinPropertyKey.DependencyProperty;
 
         /// <summary>
@@ -101,6 +105,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Identifies the <see cref="IsMouseOver"/> dependency property.
         /// </summary>
+        /// <remarks>The styling name of this dependency property is 'mouse-over'.</remarks>
         public static readonly DependencyProperty IsMouseOverProperty = IsMouseOverPropertyKey.DependencyProperty;
 
         /// <summary>
@@ -112,6 +117,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Identifies the <see cref="IsMouseDirectlyOver"/> dependency property.
         /// </summary>
+        /// <remarks>The styling name of this dependency property is 'mouse-directly-over'.</remarks>
         public static readonly DependencyProperty IsMouseDirectlyOverProperty = IsMouseDirectlyOverPropertyKey.DependencyProperty;
 
         /// <summary>

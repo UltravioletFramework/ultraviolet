@@ -61,18 +61,21 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Identifies the <see cref="Height"/> dependency property.
         /// </summary>
+        /// <remarks>The styling name of this dependency property is 'height'.</remarks>
         public static readonly DependencyProperty HeightProperty = DependencyProperty.Register("Height", typeof(GridLength), typeof(RowDefinition),
             new PropertyMetadata<GridLength>(PresentationBoxedValues.GridLength.One, HandleHeightChanged));
         
         /// <summary>
         /// Identifies the <see cref="MinHeight"/> dependency property.
         /// </summary>
+        /// <remarks>The styling name of this dependency property is 'min-height'.</remarks>
         public static readonly DependencyProperty MinHeightProperty = DependencyProperty.Register("MinHeight", typeof(Double), typeof(RowDefinition),
             new PropertyMetadata<Double>(HandleMinHeightChanged));
 
         /// <summary>
         /// Identifies the <see cref="MaxHeight"/> dependency property.
         /// </summary>
+        /// <remarks>The styling name of this dependency property is 'max-height'.</remarks>
         public static readonly DependencyProperty MaxHeightProperty = DependencyProperty.Register("MaxHeight", typeof(Double), typeof(RowDefinition),
             new PropertyMetadata<Double>(CommonBoxedValues.Double.PositiveInfinity, HandleMaxHeightChanged));
 

@@ -548,96 +548,112 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <summary>
         /// Identifies the GotMouseCapture routed event.
         /// </summary>
+        /// <remarks>The styling name of this routed event is got-mouse-capture.</remarks>
         public static readonly RoutedEvent GotMouseCaptureEvent = EventManager.RegisterRoutedEvent("GotMouseCapture", RoutingStrategy.Direct,
             typeof(UpfRoutedEventHandler), typeof(Mouse));
 
         /// <summary>
         /// Identifies the LostMouseCapture routed event.
         /// </summary>
+        /// <remarks>The styling name of this routed event is lost-mouse-capture.</remarks>
         public static readonly RoutedEvent LostMouseCaptureEvent = EventManager.RegisterRoutedEvent("LostMouseCapture", RoutingStrategy.Direct,
             typeof(UpfRoutedEventHandler), typeof(Mouse));
 
         /// <summary>
         /// Identifies the PreviewMouseMotion routed event.
         /// </summary>
+        /// <remarks>The styling name of this routed event is preview-mouse-move.</remarks>
         public static readonly RoutedEvent PreviewMouseMoveEvent = EventManager.RegisterRoutedEvent("PreviewMouseMove", RoutingStrategy.Tunnel,
             typeof(UpfMouseMoveEventHandler), typeof(Mouse));
 
         /// <summary>
         /// Identifies the PreviewMouseDown routed event.
         /// </summary>
+        /// <remarks>The styling name of this routed event is preview-mouse-down.</remarks>
         public static readonly RoutedEvent PreviewMouseDownEvent = EventManager.RegisterRoutedEvent("PreviewMouseDown", RoutingStrategy.Tunnel,
             typeof(UpfMouseButtonEventHandler), typeof(Mouse));
 
         /// <summary>
         /// Identifies the PreviewMouseUp routed event.
         /// </summary>
+        /// <remarks>The styling name of this routed event is preview-mouse-up.</remarks>
         public static readonly RoutedEvent PreviewMouseUpEvent = EventManager.RegisterRoutedEvent("PreviewMouseUp", RoutingStrategy.Tunnel,
             typeof(UpfMouseButtonEventHandler), typeof(Mouse));
 
         /// <summary>
         /// Identifies the PreviewMouseClick routed event.
         /// </summary>
+        /// <remarks>The styling name of this routed event is preview-mouse-click.</remarks>
         public static readonly RoutedEvent PreviewMouseClickEvent = EventManager.RegisterRoutedEvent("PreviewMouseClick", RoutingStrategy.Tunnel,
             typeof(UpfMouseButtonEventHandler), typeof(Mouse));
 
         /// <summary>
         /// Identifies the PreviewMouseDoubleClick routed event.
         /// </summary>
+        /// <remarks>The styling name of this routed event is preview-mouse-double.</remarks>
         public static readonly RoutedEvent PreviewMouseDoubleClickEvent = EventManager.RegisterRoutedEvent("PreviewMouseDoubleClick", RoutingStrategy.Tunnel,
             typeof(UpfMouseButtonEventHandler), typeof(Mouse));
 
         /// <summary>
         /// Identifies the PreviewMouseWheel routed event.
         /// </summary>
+        /// <remarks>The styling name of this routed event is preview-mouse-wheel.</remarks>
         public static readonly RoutedEvent PreviewMouseWheelEvent = EventManager.RegisterRoutedEvent("PreviewMouseWheel", RoutingStrategy.Tunnel,
             typeof(UpfMouseWheelEventHandler), typeof(Mouse));
 
         /// <summary>
         /// Identifies the MouseMotion routed event.
         /// </summary>
+        /// <remarks>The styling name of this routed event is mouse-move.</remarks>
         public static readonly RoutedEvent MouseMoveEvent = EventManager.RegisterRoutedEvent("MouseMove", RoutingStrategy.Bubble,
             typeof(UpfMouseMoveEventHandler), typeof(Mouse));
 
         /// <summary>
         /// Identifies the MouseEnter routed event.
         /// </summary>
+        /// <remarks>The styling name of this routed event is mouse-enter.</remarks>
         public static readonly RoutedEvent MouseEnterEvent = EventManager.RegisterRoutedEvent("MouseEnter", RoutingStrategy.Direct,
             typeof(UpfMouseEventHandler), typeof(Mouse));
 
         /// <summary>
         /// Identifies the MouseLeave routed event.
         /// </summary>
+        /// <remarks>The styling name of this routed event is mouse-leave.</remarks>
         public static readonly RoutedEvent MouseLeaveEvent = EventManager.RegisterRoutedEvent("MouseLeave", RoutingStrategy.Direct,
             typeof(UpfMouseEventHandler), typeof(Mouse));
 
         /// <summary>
         /// Identifies the MouseDown routed event.
         /// </summary>
+        /// <remarks>The styling name of this routed event is mouse-down.</remarks>
         public static readonly RoutedEvent MouseDownEvent = EventManager.RegisterRoutedEvent("MouseDown", RoutingStrategy.Bubble,
             typeof(UpfMouseButtonEventHandler), typeof(Mouse));
 
         /// <summary>
         /// Identifies the MouseUp routed event.
         /// </summary>
+        /// <remarks>The styling name of this routed event is mouse-up.</remarks>
         public static readonly RoutedEvent MouseUpEvent = EventManager.RegisterRoutedEvent("MouseUp", RoutingStrategy.Bubble,
             typeof(UpfMouseButtonEventHandler), typeof(Mouse));
 
         /// <summary>
         /// Identifies the MouseClick routed event.
         /// </summary>
+        /// <remarks>The styling name of this routed event is mouse-click.</remarks>
         public static readonly RoutedEvent MouseClickEvent = EventManager.RegisterRoutedEvent("MouseClick", RoutingStrategy.Bubble,
             typeof(UpfMouseButtonEventHandler), typeof(Mouse));
 
         /// <summary>
         /// Identifies the MouseDoubleClick routed event.
         /// </summary>
+        /// <remarks>The styling name of this routed event is mouse-double-click.</remarks>
         public static readonly RoutedEvent MouseDoubleClickEvent = EventManager.RegisterRoutedEvent("MouseDoubleClick", RoutingStrategy.Bubble,
             typeof(UpfMouseButtonEventHandler), typeof(Mouse));
 
         /// <summary>
         /// Identifies the MouseWheel routed event.
         /// </summary>
+        /// <remarks>The styling name of this routed event is mouse-wheel.</remarks>
         public static readonly RoutedEvent MouseWheelEvent = EventManager.RegisterRoutedEvent("MouseWheel", RoutingStrategy.Bubble,
             typeof(UpfMouseWheelEventHandler), typeof(Mouse));
 

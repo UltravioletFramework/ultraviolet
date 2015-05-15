@@ -57,24 +57,28 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Identifies the <see cref="Content"/> dependency property.
         /// </summary>
+        /// <remarks>The styling name of this dependency property is 'content'.</remarks>
         public static readonly DependencyProperty ContentProperty = DependencyProperty.Register("Content", typeof(Object), typeof(ContentPresenter),
             new PropertyMetadata<Object>(null, PropertyMetadataOptions.AffectsMeasure | PropertyMetadataOptions.CoerceObjectToString, HandleContentChanged));
 
         /// <summary>
         /// Identifies the <see cref="ContentStringFormat"/> dependency property.
         /// </summary>
+        /// <remarks>The styling name of this dependency property is 'content-string-format'.</remarks>
         public static readonly DependencyProperty ContentStringFormatProperty = DependencyProperty.Register("ContentStringFormat", typeof(String), typeof(ContentPresenter),
             new PropertyMetadata<String>(null, PropertyMetadataOptions.AffectsMeasure, HandleContentStringFormatChanged));
 
         /// <summary>
         /// Identifies the <see cref="ContentSource"/> dependency property.
         /// </summary>
+        /// <remarks>The styling name of this dependency property is 'content-source'.</remarks>
         public static readonly DependencyProperty ContentSourceProperty = DependencyProperty.Register("ContentSource", typeof(String), typeof(ContentPresenter),
             new PropertyMetadata<String>());
 
         /// <summary>
         /// Identifies the <see cref="ContentOffset"/> dependency property.
         /// </summary>
+        /// <remarks>The styling name of this dependency property is 'content-offset'.</remarks>
         public static readonly DependencyProperty ContentOffsetProperty = DependencyProperty.Register("ContentOffset", typeof(Size2D), typeof(ContentPresenter),
             new PropertyMetadata<Size2D>(HandleContentOffsetChanged));
 

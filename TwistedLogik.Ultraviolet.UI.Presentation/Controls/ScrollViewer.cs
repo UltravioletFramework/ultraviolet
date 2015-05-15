@@ -107,13 +107,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Identifies the <see cref="HorizontalScrollBarVisibility"/> dependency property.
         /// </summary>
-        public static readonly DependencyProperty HorizontalScrollBarVisibilityProperty = DependencyProperty.Register("HorizontalScrollBarVisibility", typeof(ScrollBarVisibility), typeof(ScrollViewer),
+        /// <remarks>The styling name of this dependency property is 'hscrollbar-visibility'.</remarks>
+        public static readonly DependencyProperty HorizontalScrollBarVisibilityProperty = DependencyProperty.Register("HorizontalScrollBarVisibility", "hscrollbar-visibility", typeof(ScrollBarVisibility), typeof(ScrollViewer),
             new PropertyMetadata<ScrollBarVisibility>(PresentationBoxedValues.ScrollBarVisibility.Disabled, PropertyMetadataOptions.AffectsArrange));
 
         /// <summary>
         /// Identifies the <see cref="VerticalScrollBarVisibility"/> dependency property.
         /// </summary>
-        public static readonly DependencyProperty VerticalScrollBarVisibilityProperty = DependencyProperty.Register("VerticalScrollBarVisibility", typeof(ScrollBarVisibility), typeof(ScrollViewer),
+        /// <remarks>The styling name of this dependency property is 'vscrollbar-visibility'.</remarks>
+        public static readonly DependencyProperty VerticalScrollBarVisibilityProperty = DependencyProperty.Register("VerticalScrollBarVisibility", "vscrollbar-visibility", typeof(ScrollBarVisibility), typeof(ScrollViewer),
             new PropertyMetadata<ScrollBarVisibility>(PresentationBoxedValues.ScrollBarVisibility.Visible, PropertyMetadataOptions.AffectsArrange));
 
         /// <inheritdoc/>

@@ -284,48 +284,56 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <summary>
         /// Identifies the GotKeyboardFocus attached event.
         /// </summary>
+        /// <remarks>The styling name of this routed event is got-keyboard-focus.</remarks>
         public static readonly RoutedEvent GotKeyboardFocusEvent = EventManager.RegisterRoutedEvent("GotKeyboardFocus", RoutingStrategy.Bubble,
             typeof(UpfRoutedEventHandler), typeof(Keyboard));
 
         /// <summary>
         /// Identifies the LostKeyboardFocus attached event.
         /// </summary>
+        /// <remarks>The styling name of this routed event is lost-keyboard-focus.</remarks>
         public static readonly RoutedEvent LostKeyboardFocusEvent = EventManager.RegisterRoutedEvent("LostKeyboardFocus", RoutingStrategy.Bubble,
             typeof(UpfRoutedEventHandler), typeof(Keyboard));
 
         /// <summary>
         /// Identifies the PreviewTextInput attached event.
         /// </summary>
+        /// <remarks>The styling name of this routed event is preview-text-input.</remarks>
         public static readonly RoutedEvent PreviewTextInputEvent = EventManager.RegisterRoutedEvent("PreviewTextInput", RoutingStrategy.Tunnel,
             typeof(UpfKeyboardEventHandler), typeof(Keyboard));
 
         /// <summary>
         /// Identifies the PreviewKeyDown attached event.
         /// </summary>
+        /// <remarks>The styling name of this routed event is preview-key-down.</remarks>
         public static readonly RoutedEvent PreviewKeyDownEvent = EventManager.RegisterRoutedEvent("PreviewKeyDown", RoutingStrategy.Tunnel,
             typeof(UpfKeyDownEventHandler), typeof(Keyboard));
 
         /// <summary>
         /// Identifies the PreviewKeyUp attached event.
         /// </summary>
+        /// <remarks>The styling name of this routed event is preview-key-up.</remarks>
         public static readonly RoutedEvent PreviewKeyUpEvent = EventManager.RegisterRoutedEvent("PreviewKeyUp", RoutingStrategy.Tunnel,
             typeof(UpfKeyEventHandler), typeof(Keyboard));
 
         /// <summary>
         /// Identifies the TextInput attached event.
         /// </summary>
+        /// <remarks>The styling name of this routed event is text-input.</remarks>
         public static readonly RoutedEvent TextInputEvent = EventManager.RegisterRoutedEvent("TextInput", RoutingStrategy.Bubble,
             typeof(UpfKeyboardEventHandler), typeof(Keyboard));
 
         /// <summary>
         /// Identifies the KeyDown attached event.
         /// </summary>
+        /// <remarks>The styling name of this routed event is key-down.</remarks>
         public static readonly RoutedEvent KeyDownEvent = EventManager.RegisterRoutedEvent("KeyDown", RoutingStrategy.Bubble,
             typeof(UpfKeyDownEventHandler), typeof(Keyboard));
 
         /// <summary>
         /// Identifies the KeyUp attached event.
         /// </summary>
+        /// <remarks>The styling name of this routed event is key-up.</remarks>
         public static readonly RoutedEvent KeyUpEvent = EventManager.RegisterRoutedEvent("KeyUp", RoutingStrategy.Bubble,
             typeof(UpfKeyEventHandler), typeof(Keyboard));
 

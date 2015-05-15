@@ -43,12 +43,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Identifies the <see cref="Value"/> dependency property.
         /// </summary>
+        /// <remarks>The styling name of this dependency property is 'value'.</remarks>
         public static readonly DependencyProperty ValueProperty = DependencyProperty.Register("Value", typeof(Double), typeof(NumericTextBlock),
             new PropertyMetadata<Double>(null, PropertyMetadataOptions.AffectsMeasure));
         
         /// <summary>
         /// Identifies the <see cref="Format"/> dependency property.
         /// </summary>
+        /// <remarks>The styling name of this dependency property is 'format'.</remarks>
         public static readonly DependencyProperty FormatProperty = DependencyProperty.Register("Format", typeof(String), typeof(NumericTextBlock),
             new PropertyMetadata<String>(null, PropertyMetadataOptions.AffectsMeasure));
 

@@ -88,34 +88,40 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <summary>
         /// Identifies the <see cref="Font"/> dependency property.
         /// </summary>
+        /// <remarks>The styling name of this dependency property is 'font'.</remarks>
         public static readonly DependencyProperty FontProperty = TextElement.FontProperty.AddOwner(typeof(TextBlockBase),
             new PropertyMetadata<SourcedResource<SpriteFont>>(null, PropertyMetadataOptions.AffectsArrange, HandleFontChanged));
 
         /// <summary>
         /// Identifies the <see cref="FontStyle"/> dependency property.
         /// </summary>
+        /// <remarks>The styling name of this dependency property is 'font-style'.</remarks>
         public static readonly DependencyProperty FontStyleProperty = TextElement.FontStyleProperty.AddOwner(typeof(TextBlockBase),
             new PropertyMetadata<SpriteFontStyle>(null, PropertyMetadataOptions.AffectsArrange));
 
         /// <summary>
         /// Identifies the <see cref="Foreground"/> dependency property.
         /// </summary>
+        /// <remarks>The styling name of this dependency property is 'foreground'.</remarks>
         public static readonly DependencyProperty ForegroundProperty = TextElement.ForegroundProperty.AddOwner(typeof(TextBlockBase));
 
         /// <summary>
         /// Identifies the <see cref="Background"/> dependency property.
         /// </summary>
+        /// <remarks>The styling name of this dependency property is 'background'.</remarks>
         public static readonly DependencyProperty BackgroundProperty = TextElement.BackgroundProperty.AddOwner(typeof(TextBlockBase));
 
         /// <summary>
         /// Identifies the <see cref="HorizontalContentAlignment"/> dependency property.
         /// </summary>
+        /// <remarks>The styling name of this dependency property is 'content-halign'.</remarks>
         public static readonly DependencyProperty HorizontalContentAlignmentProperty = DependencyProperty.Register("HorizontalContentAlignment", "content-halign",
             typeof(HorizontalAlignment), typeof(TextBlockBase), new PropertyMetadata<HorizontalAlignment>(PresentationBoxedValues.HorizontalAlignment.Left, PropertyMetadataOptions.AffectsArrange, HandleHorizontalContentAlignmentChanged));
 
         /// <summary>
         /// Identifies the <see cref="VerticalContentAlignment"/> dependency property.
         /// </summary>
+        /// <remarks>The styling name of this dependency property is 'content-valign'.</remarks>
         public static readonly DependencyProperty VerticalContentAlignmentProperty = DependencyProperty.Register("VerticalContentAlignment", "content-valign",
             typeof(VerticalAlignment), typeof(TextBlockBase), new PropertyMetadata<VerticalAlignment>(PresentationBoxedValues.VerticalAlignment.Top, PropertyMetadataOptions.AffectsArrange, HandleVerticalContentAlignmentChanged));
 

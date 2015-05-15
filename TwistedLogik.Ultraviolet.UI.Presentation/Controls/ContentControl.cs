@@ -57,12 +57,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Identifies the <see cref="Content"/> dependency property.
         /// </summary>
+        /// <remarks>The styling name of this dependency property is 'content'.</remarks>
         public static readonly DependencyProperty ContentProperty = DependencyProperty.Register("Content", typeof(Object), typeof(ContentControl),
             new PropertyMetadata<Object>(null, PropertyMetadataOptions.AffectsMeasure | PropertyMetadataOptions.CoerceObjectToString, HandleContentChanged));
 
         /// <summary>
         /// Identifies the <see cref="ContentStringFormat"/> dependency property.
         /// </summary>
+        /// <remarks>The styling name of this dependency property is 'content-string-format'.</remarks>
         public static readonly DependencyProperty ContentStringFormatProperty = DependencyProperty.Register("ContentStringFormat", typeof(String), typeof(ContentControl),
             new PropertyMetadata<String>(null, PropertyMetadataOptions.AffectsMeasure | PropertyMetadataOptions.CoerceObjectToString, HandleContentStringFormatChanged));
 
@@ -75,6 +77,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Identifies the <see cref="HasContent"/> dependency property.
         /// </summary>
+        /// <remarks>The styling name of this dependency property is 'has-content'.</remarks>
         public static readonly DependencyProperty HasContentProperty = HasContentPropertyKey.DependencyProperty;
 
         /// <summary>

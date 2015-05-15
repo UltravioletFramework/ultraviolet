@@ -108,42 +108,49 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <summary>
         /// Identifies the <see cref="Child"/> dependency property.
         /// </summary>
+        /// <remarks>The styling name of this dependency property is 'child'.</remarks>
         public static readonly DependencyProperty ChildProperty = DependencyProperty.Register("Child", typeof(UIElement), typeof(Popup),
             new PropertyMetadata<UIElement>(null, PropertyMetadataOptions.None, HandleChildChanged));
 
         /// <summary>
         /// Identifies the <see cref="IsOpen"/> dependency property.
         /// </summary>
+        /// <remarks>The styling name of this dependency property is 'open'.</remarks>
         public static readonly DependencyProperty IsOpenProperty = DependencyProperty.Register("IsOpen", typeof(Boolean), typeof(Popup),
             new PropertyMetadata<Boolean>(CommonBoxedValues.Boolean.False, PropertyMetadataOptions.None, HandleIsOpenChanged, CoerceIsOpen));
 
         /// <summary>
         /// Identifies the <see cref="HorizontalOffset"/> dependency property.
         /// </summary>
-        public static readonly DependencyProperty HorizontalOffsetProperty = DependencyProperty.Register("HorizontalOffset", typeof(Double), typeof(Popup),
+        /// <remarks>The styling name of this dependency property is 'hoffset'.</remarks>
+        public static readonly DependencyProperty HorizontalOffsetProperty = DependencyProperty.Register("HorizontalOffset", "hoffset", typeof(Double), typeof(Popup),
             new PropertyMetadata<Double>(CommonBoxedValues.Double.Zero, PropertyMetadataOptions.None));
 
         /// <summary>
         /// Identifies the <see cref="VerticalOffset"/> dependency property.
         /// </summary>
-        public static readonly DependencyProperty VerticalOffsetProperty = DependencyProperty.Register("VerticalOffset", typeof(Double), typeof(Popup),
+        /// <remarks>The styling name of this dependency property is 'voffset'.</remarks>
+        public static readonly DependencyProperty VerticalOffsetProperty = DependencyProperty.Register("VerticalOffset", "voffset", typeof(Double), typeof(Popup),
             new PropertyMetadata<Double>(CommonBoxedValues.Double.Zero, PropertyMetadataOptions.None));
 
         /// <summary>
         /// Identifies the <see cref="Placement"/> property.
         /// </summary>
+        /// <remarks>The styling name of this dependency property is 'placement'.</remarks>
         public static readonly DependencyProperty PlacementProperty = DependencyProperty.Register("Placement", typeof(PlacementMode), typeof(Popup),
             new PropertyMetadata<PlacementMode>(PlacementMode.Bottom, PropertyMetadataOptions.None, HandlePlacementChanged));
 
         /// <summary>
         /// Identifies the <see cref="PlacementTarget"/> property.
         /// </summary>
+        /// <remarks>The styling name of this dependency property is 'placement-target'.</remarks>
         public static readonly DependencyProperty PlacementTargetProperty = DependencyProperty.Register("PlacementTarget", typeof(UIElement), typeof(Popup),
             new PropertyMetadata<UIElement>(null, PropertyMetadataOptions.None, HandlePlacementTargetChanged));
 
         /// <summary>
         /// Identifies the <see cref="PlacementRectangle"/> property.
         /// </summary>
+        /// <remarks>The styling name of this dependency property is 'placement-rectangle'.</remarks>
         public static readonly DependencyProperty PlacementRectangleProperty = DependencyProperty.Register("PlacementRectangle", typeof(RectangleD), typeof(Popup),
             new PropertyMetadata<RectangleD>(RectangleD.Empty, PropertyMetadataOptions.None, HandlePlacementRectangleChanged));
 

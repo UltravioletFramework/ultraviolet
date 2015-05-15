@@ -142,18 +142,21 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <summary>
         /// Identifies the <see cref="SelectedIndex"/> dependency property.
         /// </summary>
+        /// <remarks>The styling name of this dependency property is 'selected-index'.</remarks>
         public static readonly DependencyProperty SelectedIndexProperty = DependencyProperty.Register("SelectedIndex", typeof(Int32), typeof(Selector),
             new PropertyMetadata<Int32>(CommonBoxedValues.Int32.NegativeOne, HandleSelectedIndexChanged));
 
         /// <summary>
         /// Identifies the <see cref="SelectedItem"/> dependency property.
         /// </summary>
+        /// <remarks>The styling name of this dependency property is 'selected-item'.</remarks>
         public static readonly DependencyProperty SelectedItemProperty = DependencyProperty.Register("SelectedItem", typeof(Object), typeof(Selector),
             new PropertyMetadata<Object>());
 
         /// <summary>
         /// Identifies the IsSelected attached property.
         /// </summary>
+        /// <remarks>The styling name of this dependency property is 'selected'.</remarks>
         public static readonly DependencyProperty IsSelectedProperty = DependencyProperty.RegisterAttached("IsSelected", typeof(Boolean), typeof(Selector), 
             new PropertyMetadata<Boolean>());
 
@@ -166,23 +169,27 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <summary>
         /// Identifies the IsSelectionActive attached property.
         /// </summary>
+        /// <remarks>The styling name of this dependency property is 'selection-active'.</remarks>
         public static readonly DependencyProperty IsSelectionActiveProperty = IsSelectionActivePropertyKey.DependencyProperty;
 
         /// <summary>
         /// Identifies the <see cref="SelectionChanged"/> routed event.
         /// </summary>
+        /// <remarks>The styling name of this routed event is 'selection-changed'.</remarks>
         public static readonly RoutedEvent SelectionChangedEvent = EventManager.RegisterRoutedEvent("SelectionChanged", RoutingStrategy.Bubble,
             typeof(UpfRoutedEventHandler), typeof(Selector));
 
         /// <summary>
         /// Identifies the Selected attached event.
         /// </summary>
+        /// <remarks>The styling name of this routed event is 'selected'.</remarks>
         public static readonly RoutedEvent SelectedEvent = EventManager.RegisterRoutedEvent("Selected", RoutingStrategy.Bubble, 
             typeof(UpfRoutedEventHandler), typeof(Selector));
 
         /// <summary>
         /// Identifies the Unselected attached event.
         /// </summary>
+        /// <remarks>The styling name of this routed event is 'unselected'.</remarks>
         public static readonly RoutedEvent UnselectedEvent = EventManager.RegisterRoutedEvent("Unselected", RoutingStrategy.Bubble,
             typeof(UpfRoutedEventHandler), typeof(Selector));
 

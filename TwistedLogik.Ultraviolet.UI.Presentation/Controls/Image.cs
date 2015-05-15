@@ -42,12 +42,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Identifies the <see cref="Source"/> property.
         /// </summary>
+        /// <remarks>The styling name of this dependency property is 'source-image'.</remarks>
         public static readonly DependencyProperty SourceProperty = DependencyProperty.Register("Source", "source-image",
             typeof(SourcedImage), typeof(Image), new PropertyMetadata<SourcedImage>(HandleSourceChanged));
         
         /// <summary>
         /// Identifies the <see cref="SourceColor"/> property.
         /// </summary>
+        /// <remarks>The styling name of this dependency property is 'source-color'.</remarks>
         public static readonly DependencyProperty SourceColorProperty = DependencyProperty.Register("SourceColor", typeof(Color), typeof(Image),
             new PropertyMetadata<Color>(UltravioletBoxedValues.Color.White));
 
