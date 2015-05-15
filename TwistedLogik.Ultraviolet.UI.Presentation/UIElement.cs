@@ -1415,10 +1415,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         protected virtual void ReloadContentCore(Boolean recursive)
         {
-            VisualTreeHelper.ForEachChild<UIElement>(this, CommonBoxedValues.Boolean.FromValue(recursive), (child, state) =>
+            if (recursive)
             {
-                child.ReloadContent((Boolean)state);
-            });
+                VisualTreeHelper.ForEachChild<UIElement>(this, CommonBoxedValues.Boolean.FromValue(recursive), (child, state) =>
+                {
+                    child.ReloadContent((Boolean)state);
+                });
+            }
         }
 
         /// <summary>
@@ -1431,10 +1434,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             ((DependencyObject)this).ClearAnimations();
 
-            VisualTreeHelper.ForEachChild<UIElement>(this, CommonBoxedValues.Boolean.FromValue(recursive), (child, state) =>
+            if (recursive)
             {
-                child.ClearAnimations((Boolean)state);
-            });
+                VisualTreeHelper.ForEachChild<UIElement>(this, CommonBoxedValues.Boolean.FromValue(recursive), (child, state) =>
+                {
+                    child.ClearAnimations((Boolean)state);
+                });
+            }
         }
 
         /// <summary>
@@ -1448,10 +1454,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             ((DependencyObject)this).ClearLocalValues();
 
-            VisualTreeHelper.ForEachChild<UIElement>(this, CommonBoxedValues.Boolean.FromValue(recursive), (child, state) =>
+            if (recursive)
             {
-                child.ClearLocalValues((Boolean)state);
-            });
+                VisualTreeHelper.ForEachChild<UIElement>(this, CommonBoxedValues.Boolean.FromValue(recursive), (child, state) =>
+                {
+                    child.ClearLocalValues((Boolean)state);
+                });
+            }
         }
 
         /// <summary>
@@ -1465,10 +1474,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             ((DependencyObject)this).ClearStyledValues();
 
-            VisualTreeHelper.ForEachChild<UIElement>(this, CommonBoxedValues.Boolean.FromValue(recursive), (child, state) =>
+            if (recursive)
             {
-                child.ClearStyledValues((Boolean)state);
-            });
+                VisualTreeHelper.ForEachChild<UIElement>(this, CommonBoxedValues.Boolean.FromValue(recursive), (child, state) =>
+                {
+                    child.ClearStyledValues((Boolean)state);
+                });
+            }
         }
 
         /// <summary>
@@ -1482,10 +1494,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             ((DependencyObject)this).ClearTriggeredValues();
 
-            VisualTreeHelper.ForEachChild<UIElement>(this, CommonBoxedValues.Boolean.FromValue(recursive), (child, state) =>
+            if (recursive)
             {
-                child.ClearTriggeredValues((Boolean)state);
-            });
+                VisualTreeHelper.ForEachChild<UIElement>(this, CommonBoxedValues.Boolean.FromValue(recursive), (child, state) =>
+                {
+                    child.ClearTriggeredValues((Boolean)state);
+                });
+            }
         }
 
         /// <summary>
