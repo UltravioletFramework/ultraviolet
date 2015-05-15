@@ -28,7 +28,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             RegisterCoreTypes();
 
-            this.styleQueue    = new LayoutQueue(InvalidateStyle);
+            this.styleQueue    = new LayoutQueue(InvalidateStyle, false);
             this.measureQueue  = new LayoutQueue(InvalidateMeasure);
             this.arrangeQueue  = new LayoutQueue(InvalidateArrange);
         }

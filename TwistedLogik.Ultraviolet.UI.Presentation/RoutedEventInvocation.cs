@@ -71,7 +71,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
              *      while (ShouldContinueBubbling(element, ref current))
              *      {
              *          if (!data.Handled)
-             *              RoutedEventID.RaiseRaisedNotification(element);     
+             *              RoutedEventID.RaiseRaisedNotification(current);     
              * 
              *          index = 0;
              *          while (GetEventHandler(current, RoutedEventID, index, out handler))
@@ -116,7 +116,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                     Expression.Call(miShouldContinueBubbling, expParamElement, varCurrent),
                     Expression.Block(
                         Expression.IfThen(Expression.Not(Expression.Property(expParamData, "Handled")), 
-                            Expression.Call(Expression.Constant(evt), miRaiseRaisedNotification, expParamElement)),
+                            Expression.Call(Expression.Constant(evt), miRaiseRaisedNotification, varCurrent)),
                         Expression.Assign(varIndex, Expression.Constant(0)),
                         Expression.Loop(
                             Expression.IfThenElse(
@@ -224,7 +224,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
              *      while (ShouldContinueTunnelling(element, ref current))
              *      {
              *          if (!data.Handled)
-             *              RoutedEventID.RaiseRaisedNotification(element);     
+             *              RoutedEventID.RaiseRaisedNotification(current);     
              * 
              *          index = 0;
              *          while (GetEventHandler(current, RoutedEventID, index, out handler))
@@ -269,7 +269,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                     Expression.Call(miShouldContinueTunnelling, expParamElement, varCurrent),
                     Expression.Block(
                         Expression.IfThen(Expression.Not(Expression.Property(expParamData, "Handled")),
-                            Expression.Call(Expression.Constant(evt), miRaiseRaisedNotification, expParamElement)),
+                            Expression.Call(Expression.Constant(evt), miRaiseRaisedNotification, varCurrent)),
                         Expression.Assign(varIndex, Expression.Constant(0)),
                         Expression.Loop(
                             Expression.IfThenElse(

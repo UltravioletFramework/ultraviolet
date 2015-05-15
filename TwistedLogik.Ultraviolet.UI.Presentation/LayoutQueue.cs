@@ -13,11 +13,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Initializes a new instance of the <see cref="LayoutQueue"/> class.
         /// </summary>
         /// <param name="invalidate">An action which invalidates the element state associated with this queue.</param>
-        public LayoutQueue(Action<UIElement> invalidate)
+        /// <param name="bubble">A value indicating whether to bubble invalidation up through the visual tree.</param>
+        public LayoutQueue(Action<UIElement> invalidate, Boolean bubble = true)
         {
             Contract.Require(invalidate, "invalidate");
 
             this.invalidate = invalidate;
+            this.bubble     = bubble;
         }
 
         /// <summary>
@@ -49,6 +51,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                     var entry = new Entry(current.LayoutDepth, current);
                     queue.Remove(entry);
                 }
+
+                if (!bubble)
+                    break;
 
                 current = parent;
             }
@@ -98,6 +103,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /* An action which invalidates any elements along the path between
         /* an element which is added to the queue and its visual parent. */
         private readonly Action<UIElement> invalidate;
+        private readonly Boolean bubble;
 
         // The sorted list which represents our queue's storage.
         private readonly SortedList<Entry, UIElement> queue = 
