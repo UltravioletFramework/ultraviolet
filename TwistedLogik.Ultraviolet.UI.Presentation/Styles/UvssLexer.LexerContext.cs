@@ -231,13 +231,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
             /// <inheritdoc/>
             public override Boolean Lex(String input, IList<UvssLexerToken> output, ref Int32 line, ref Int32 ix)
             {
-                var storyboard = false;
-
                 while (true)
                 {
                     ConsumeAllWhiteSpaceAndComments(input, output, ref line, ref ix);
 
-                    if (!ConsumeIdentifier(input, output, line, ref ix, ref storyboard))
+                    if (!ConsumeStyleName(input, output, line, ref ix))
                         return false;
 
                     ConsumeAllWhiteSpaceAndComments(input, output, ref line, ref ix);
@@ -275,8 +273,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
                 if (ConsumeWhiteSpaceAndComments(input, output, ref line, ref ix))
                     return true;
 
-                var storyboard = false;
-                if (ConsumeIdentifier(input, output, line, ref ix, ref storyboard))
+                if (ConsumeStyleName(input, output, line, ref ix))
                 {
                     ChangeContext(cachedLexerContext_TriggerActionList);
                     return true;

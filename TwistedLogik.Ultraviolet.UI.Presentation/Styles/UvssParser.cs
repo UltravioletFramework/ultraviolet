@@ -1013,7 +1013,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
             state.AdvanceBeyondWhiteSpace();
 
             var propertyToken = state.TryConsumeNonWhiteSpace();
-            MatchTokenOrFail(state, propertyToken, UvssLexerTokenType.Identifier);
+            MatchTokenOrFail(state, propertyToken, UvssLexerTokenType.StyleName);
 
             state.AdvanceBeyondWhiteSpace();
 
@@ -1067,7 +1067,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
             state.AdvanceBeyondWhiteSpace();
 
             var eventNameToken = state.TryConsumeNonWhiteSpace();
-            MatchTokenOrFail(state, eventNameToken, UvssLexerTokenType.Identifier);
+            MatchTokenOrFail(state, eventNameToken, UvssLexerTokenType.StyleName);
 
             var trigger = new EventTrigger(eventNameToken.Value.Value);
 
