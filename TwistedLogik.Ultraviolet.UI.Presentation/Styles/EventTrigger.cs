@@ -16,7 +16,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         {
             Contract.RequireNotEmpty(eventName, "eventName");
 
-            this.eventName = eventName;
+            this.eventName = new UvmlName(eventName);
         }
 
         /// <inheritdoc/>
@@ -28,7 +28,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// <summary>
         /// Gets the name of the event that causes this trigger to be applied.
         /// </summary>
-        public String EventName
+        public UvmlName EventName
         {
             get { return eventName; }
         }
@@ -36,7 +36,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// <inheritdoc/>
         protected internal override void Attach(DependencyObject dobj)
         {
-            var routedEvent = EventManager.FindByStylingName(eventName, dobj.GetType());
+            var routedEvent = EventManager.FindByStylingName(Ultraviolet, dobj, eventName.Owner, eventName.Name);
             if (routedEvent == null)
                 throw new InvalidOperationException(PresentationStrings.EventOrPropertyDoesNotExist.Format(eventName, dobj.GetType()));
 
@@ -46,7 +46,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// <inheritdoc/>
         protected internal override void Detach(DependencyObject dobj)
         {
-            var routedEvent = EventManager.FindByStylingName(eventName, dobj.GetType());
+            var routedEvent = EventManager.FindByStylingName(Ultraviolet, dobj, eventName.Owner, eventName.Name);
             if (routedEvent == null)
                 throw new InvalidOperationException(PresentationStrings.EventOrPropertyDoesNotExist.Format(eventName, dobj.GetType()));
 
@@ -54,6 +54,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         }
 
         // Property values.
-        private readonly String eventName;
+        private readonly UvmlName eventName;
     }
 }

@@ -12,15 +12,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// <summary>
         /// Gets a value indicating whether the specified dependency object satisfies all of the conditions in the collection.
         /// </summary>
+        /// <param name="uv">The Ultraviolet context.</param>
         /// <param name="dobj">The dependency object to evaluate.</param>
         /// <returns><c>true</c> if the specified object satisfies all of the collection's conditions; otherwise, <c>false</c>.</returns>
-        internal Boolean Evaluate(DependencyObject dobj)
+        internal Boolean Evaluate(UltravioletContext uv, DependencyObject dobj)
         {
+            Contract.Require(uv, "uv");
             Contract.Require(dobj, "dobj");
 
             foreach (var condition in conditions)
             {
-                if (!condition.Evaluate(dobj))
+                if (!condition.Evaluate(uv, dobj))
                     return false;
             }
             return true;

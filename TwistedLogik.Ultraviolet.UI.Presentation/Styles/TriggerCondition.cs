@@ -18,7 +18,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         internal TriggerCondition(TriggerComparisonOp op, String dpropName, String refval)
         {
             this.op        = op;
-            this.dpropName = dpropName;
+            this.dpropName = new UvmlName(dpropName);
             this.refval    = refval;
         }
 
@@ -27,11 +27,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// </summary>
         /// <param name="dobj">The object against which to evaluate the trigger condition.</param>
         /// <returns><c>true</c> if the condition is true for the specified object; otherwise, <c>false</c>.</returns>
-        public Boolean Evaluate(DependencyObject dobj)
+        internal Boolean Evaluate(UltravioletContext uv, DependencyObject dobj)
         {
+            Contract.Require(uv, "uv");
             Contract.Require(dobj, "dobj");
 
-            var dprop = DependencyProperty.FindByStylingName(dpropName, dobj.GetType());
+            var dprop = DependencyProperty.FindByStylingName(uv, dobj, dpropName.Owner, dpropName.Name);
             if (dprop == null)
                 return false;
 
@@ -48,7 +49,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// <summary>
         /// Gets the name of the dependency property which is evaluated by this condition.
         /// </summary>
-        public String DependencyPropertyName
+        public UvmlName DependencyPropertyName
         {
             get { return dpropName; }
         }
@@ -63,7 +64,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
 
         // State values.
         private readonly TriggerComparisonOp op;
-        private readonly String dpropName;
+        private readonly UvmlName dpropName;
         private readonly String refval;
         private Object refvalCache;
     }

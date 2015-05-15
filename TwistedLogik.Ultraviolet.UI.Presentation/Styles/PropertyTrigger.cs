@@ -29,7 +29,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
 
             foreach (var condition in conditions)
             {
-                var dprop = DependencyProperty.FindByStylingName(condition.DependencyPropertyName, dobj.GetType());
+                var dprop = DependencyProperty.FindByStylingName(Ultraviolet, dobj, condition.DependencyPropertyName.Owner, condition.DependencyPropertyName.Name);
                 if (dprop == null)
                     throw new InvalidOperationException(PresentationStrings.EventOrPropertyDoesNotExist.Format(condition.DependencyPropertyName, dobj.GetType()));
 
@@ -49,7 +49,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
 
             foreach (var condition in conditions)
             {
-                var dprop = DependencyProperty.FindByStylingName(condition.DependencyPropertyName, dobj.GetType());
+                var dprop = DependencyProperty.FindByStylingName(Ultraviolet, dobj, condition.DependencyPropertyName.Owner, condition.DependencyPropertyName.Name);
                 if (dprop == null)
                     throw new InvalidOperationException(PresentationStrings.EventOrPropertyDoesNotExist.Format(condition.DependencyPropertyName, dobj.GetType()));
 
@@ -69,7 +69,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// </summary>
         private void Evaluate(DependencyObject dobj)
         {
-            if (conditions.Evaluate(dobj))
+            if (conditions.Evaluate(Ultraviolet, dobj))
             {
                 if (!IsActivatedOn(dobj))
                 {

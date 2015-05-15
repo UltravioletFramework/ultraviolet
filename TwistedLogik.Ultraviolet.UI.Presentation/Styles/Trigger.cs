@@ -88,6 +88,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         }
 
         /// <summary>
+        /// Gets the current Ultraviolet context.
+        /// </summary>
+        protected UltravioletContext Ultraviolet
+        {
+            get { return upf.Value.Ultraviolet; }
+        }
+
+        /// <summary>
         /// Creates an attachment with the specified target.
         /// </summary>
         /// <param name="target">The target to which to attach the trigger.</param>
@@ -140,6 +148,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
 
             Detach(element);
         }
+
+        // A singleton reference to the current Presentation Foundation.
+        private static readonly UltravioletSingleton<PresentationFoundation> upf = new UltravioletSingleton<PresentationFoundation>((uv) =>
+        {
+            return uv.GetUI().GetPresentationFoundation(); 
+        });
 
         // State values.
         private readonly UpfEventHandler cachedDelegateHandleClearingStyles;
