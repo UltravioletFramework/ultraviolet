@@ -1076,7 +1076,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
 
             triggers.Add(trigger);
 
-            return false;
+            return true;
         }
 
         /// <summary>
