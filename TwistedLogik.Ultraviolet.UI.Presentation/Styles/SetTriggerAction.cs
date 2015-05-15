@@ -18,7 +18,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         internal SetTriggerAction(String dpropName, UvssSelector selector, String value)
         {
             Contract.RequireNotEmpty(dpropName, "dpropName");
-            Contract.RequireNotEmpty(value, "value");
 
             this.dpropName = dpropName;
             this.selector  = selector;
@@ -33,7 +32,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
                 var dprop = DependencyProperty.FindByStylingName(dpropName, dobj.GetType());
                 if (dprop != null)
                 {
-                    dobj.SetTriggeredValue(dprop, this);
+                    var clear = String.IsNullOrEmpty(value);
+                    if (clear)
+                    {
+                        dobj.ClearTriggeredValue(dprop);
+                    }
+                    else
+                    {
+                        dobj.SetTriggeredValue(dprop, this);
+                    }
                 }
             }
             else
@@ -47,11 +54,20 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
                     element.View.Select(target, selector, this, (e, s) =>
                     {
                         var action = (SetTriggerAction)s;
+                        var value  = action.value;
 
                         var dprop = DependencyProperty.FindByStylingName(action.dpropName, e.GetType());
                         if (dprop != null)
                         {
-                            e.SetTriggeredValue(dprop, action);
+                            var clear = String.IsNullOrEmpty(value);
+                            if (clear)
+                            {
+                                e.ClearTriggeredValue(dprop);
+                            }
+                            else
+                            {
+                                e.SetTriggeredValue(dprop, action);
+                            }
                         }
                     });
                 }
