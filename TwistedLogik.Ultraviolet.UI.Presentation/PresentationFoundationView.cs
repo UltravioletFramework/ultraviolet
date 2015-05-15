@@ -830,8 +830,31 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 var uiElement = current as UIElement;
                 if (uiElement != null)
                 {
-                    var bounds = uiElement.AbsoluteBounds;
-                    uiElement.IsMouseOver = !unset && bounds.Contains(mousePos);
+                    var bounds   = uiElement.AbsoluteBounds;
+                    var oldValue = uiElement.IsMouseOver;
+                    var newValue = !unset && bounds.Contains(mousePos);
+                    if (oldValue != newValue)
+                    {
+                        uiElement.IsMouseOver = newValue;
+                        if (newValue)
+                        {
+                            var dobj = uiElement as DependencyObject;
+                            if (dobj != null)
+                            {
+                                var mouseEnterData = new RoutedEventData(dobj);
+                                Mouse.RaiseMouseEnter(dobj, mouse, ref mouseEnterData);
+                            }
+                        }
+                        else
+                        {
+                            var dobj = uiElement as DependencyObject;
+                            if (dobj != null)
+                            {
+                                var mouseLeaveData = new RoutedEventData(dobj);
+                                Mouse.RaiseMouseLeave(dobj, mouse, ref mouseLeaveData);
+                            }
+                        }
+                    }
                 }
                 current = VisualTreeHelper.GetParent(current);
             }
@@ -892,13 +915,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                     var uiElement = elementUnderMousePrev as UIElement;
                     if (uiElement != null)
                         uiElement.IsMouseDirectlyOver = false;
-
-                    var dobj = elementUnderMousePrev as DependencyObject;
-                    if (dobj != null)
-                    {
-                        var mouseLeaveData = new RoutedEventData(dobj);
-                        Mouse.RaiseMouseLeave(dobj, mouse, ref mouseLeaveData);
-                    }
                 }
 
                 if (elementUnderMouse != null)
@@ -906,13 +922,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                     var uiElement = elementUnderMouse as UIElement;
                     if (uiElement != null)
                         uiElement.IsMouseDirectlyOver = true;
-
-                    var dobj = elementUnderMouse as DependencyObject;
-                    if (dobj != null)
-                    {
-                        var mouseEnterData = new RoutedEventData(dobj);
-                        Mouse.RaiseMouseEnter(dobj, mouse, ref mouseEnterData);
-                    }
                 }
 
                 UpdateIsMouseOver(elementUnderMouse as UIElement);
