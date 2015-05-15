@@ -7,7 +7,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
     /// <summary>
     /// Represents a storyboard target's collection of animations.
     /// </summary>
-    public sealed partial class StoryboardTargetAnimationCollection : IEnumerable<KeyValuePair<DependencyPropertyName, AnimationBase>>
+    public sealed partial class StoryboardTargetAnimationCollection : IEnumerable<KeyValuePair<UvmlName, AnimationBase>>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="StoryboardTargetAnimationCollection"/> class.
@@ -31,7 +31,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
             Contract.RequireNotEmpty(property, "property");
             Contract.Require(animation, "animation");
 
-            var name = new DependencyPropertyName(property);
+            var name = new UvmlName(property);
             return Add(name, animation);
         }
 
@@ -41,7 +41,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
         /// <param name="property">The name of the dependency property to which the animation applies.</param>
         /// <param name="animation">The animation to add to the collection.</param>
         /// <returns><c>true</c> if the animation was added to the collection; otherwise, <c>false</c>.</returns>
-        public Boolean Add(DependencyPropertyName property, AnimationBase animation)
+        public Boolean Add(UvmlName property, AnimationBase animation)
         {
             Contract.Require(animation, "animation");
 
@@ -68,7 +68,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
         {
             Contract.RequireNotEmpty(property, "property");
 
-            var name = new DependencyPropertyName(property);
+            var name = new UvmlName(property);
             return Remove(name);
         }
 
@@ -77,7 +77,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
         /// </summary>
         /// <param name="property">The name of the property to remove from the collection.</param>
         /// <returns><c>true</c> if the animation was removed from the collection; otherwise, <c>false</c>.</returns>
-        public Boolean Remove(DependencyPropertyName property)
+        public Boolean Remove(UvmlName property)
         {
             AnimationBase animation;
             if (!animations.TryGetValue(property, out animation))
@@ -103,7 +103,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
         {
             Contract.Require(animation, "animation");
 
-            var property = default(DependencyPropertyName);
+            var property = default(UvmlName);
             var found    = false;
 
             foreach (var kvp in animations)
@@ -131,7 +131,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
         {
             Contract.RequireNotEmpty(property, "property");
 
-            var name = new DependencyPropertyName(property);
+            var name = new UvmlName(property);
             return animations.ContainsKey(name);
         }
 
@@ -140,7 +140,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
         /// </summary>
         /// <param name="property">The name of the property to evaluate.</param>
         /// <returns><c>true</c> if this collection contains an animation on the specified property; otherwise, <c>false</c>.</returns>
-        public Boolean ContainsKey(DependencyPropertyName property)
+        public Boolean ContainsKey(UvmlName property)
         {
             return animations.ContainsKey(property);
         }
@@ -177,7 +177,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
         private readonly StoryboardTarget target;
 
         // State values.
-        private readonly Dictionary<DependencyPropertyName, AnimationBase> animations = 
-            new Dictionary<DependencyPropertyName, AnimationBase>();
+        private readonly Dictionary<UvmlName, AnimationBase> animations = 
+            new Dictionary<UvmlName, AnimationBase>();
     }
 }

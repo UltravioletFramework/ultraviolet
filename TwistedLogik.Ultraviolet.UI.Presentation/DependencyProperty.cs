@@ -182,21 +182,21 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
         /// <param name="dobj">The dependency object which is searching for a dependency property.</param>
-        /// <param name="container">The name of the dependency property's containing type.</param>
+        /// <param name="owner">The name of the dependency property's containing type.</param>
         /// <param name="name">The name of the dependency property.</param>
         /// <returns>A <see cref="DependencyProperty"/> instance which represents the specified dependency property, 
         /// or <c>null</c> if no such dependency property exists.</returns>
-        public static DependencyProperty FindByName(UltravioletContext uv, DependencyObject dobj, String container, String name)
+        public static DependencyProperty FindByName(UltravioletContext uv, DependencyObject dobj, String owner, String name)
         {
             Contract.Require(uv, "uv");
             Contract.Require(dobj, "dobj");
             Contract.RequireNotEmpty(name, "name");
 
-            var type = String.IsNullOrEmpty(container) ? dobj.GetType() : null;
+            var type = String.IsNullOrEmpty(owner) ? dobj.GetType() : null;
             if (type == null)
             {
-                if (!uv.GetUI().GetPresentationFoundation().GetKnownType(container, false, out type))
-                    throw new InvalidOperationException(PresentationStrings.UnrecognizedType.Format(container));
+                if (!uv.GetUI().GetPresentationFoundation().GetKnownType(owner, false, out type))
+                    throw new InvalidOperationException(PresentationStrings.UnrecognizedType.Format(owner));
             }
 
             return FindByName(name, type);
@@ -219,21 +219,21 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
         /// <param name="dobj">The dependency object which is searching for a dependency property.</param>
-        /// <param name="container">The name of the dependency property's containing type.</param>
+        /// <param name="owner">The name of the dependency property's containing type.</param>
         /// <param name="name">The styling name of the dependency property.</param>
         /// <returns>A <see cref="DependencyProperty"/> instance which represents the specified dependency property, 
         /// or <c>null</c> if no such dependency property exists.</returns>
-        public static DependencyProperty FindByStylingName(UltravioletContext uv, DependencyObject dobj, String container, String name)
+        public static DependencyProperty FindByStylingName(UltravioletContext uv, DependencyObject dobj, String owner, String name)
         {
             Contract.Require(uv, "uv");
             Contract.Require(dobj, "dobj");
             Contract.RequireNotEmpty(name, "name");
 
-            var type = String.IsNullOrEmpty(container) ? dobj.GetType() : null;
+            var type = String.IsNullOrEmpty(owner) ? dobj.GetType() : null;
             if (type == null)
             {
-                if (!uv.GetUI().GetPresentationFoundation().GetKnownType(container, false, out type))
-                    throw new InvalidOperationException(PresentationStrings.UnrecognizedType.Format(container));
+                if (!uv.GetUI().GetPresentationFoundation().GetKnownType(owner, false, out type))
+                    throw new InvalidOperationException(PresentationStrings.UnrecognizedType.Format(owner));
             }
 
             return FindByStylingName(name, type);

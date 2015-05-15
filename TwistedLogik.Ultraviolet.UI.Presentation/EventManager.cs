@@ -84,6 +84,31 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Finds the routed event with the specified name.
+        /// </summary>
+        /// <param name="uv">The Ultraviolet context.</param>
+        /// <param name="dobj">The dependency object which is searching for a routed event.</param>
+        /// <param name="owner">The name of the routed event's owner type.</param>
+        /// <param name="name">The name of the routed event.</param>
+        /// <returns>A <see cref="RoutedEvent"/> instance which represents the specified routed event, 
+        /// or <c>null</c> if no such routed event exists.</returns>
+        public static RoutedEvent FindByName(UltravioletContext uv, DependencyObject dobj, String owner, String name)
+        {
+            Contract.Require(uv, "uv");
+            Contract.Require(dobj, "dobj");
+            Contract.RequireNotEmpty(name, "name");
+
+            var type = String.IsNullOrEmpty(owner) ? dobj.GetType() : null;
+            if (type == null)
+            {
+                if (!uv.GetUI().GetPresentationFoundation().GetKnownType(owner, false, out type))
+                    throw new InvalidOperationException(PresentationStrings.UnrecognizedType.Format(owner));
+            }
+
+            return FindByName(name, type);
+        }
+
+        /// <summary>
         /// Finds the routed event with the specified styling name.
         /// </summary>
         /// <param name="name">The styling name of the routed event for which to search.</param>
@@ -93,6 +118,31 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public static RoutedEvent FindByStylingName(String name, Type ownerType)
         {
             return RoutedEventSystem.FindByStylingName(name, ownerType);
+        }
+
+        /// <summary>
+        /// Finds the routed event with the specified styling name.
+        /// </summary>
+        /// <param name="uv">The Ultraviolet context.</param>
+        /// <param name="dobj">The dependency object which is searching for a routed event.</param>
+        /// <param name="owner">The name of the routed event's owner type.</param>
+        /// <param name="name">The styling name of the routed event.</param>
+        /// <returns>A <see cref="RoutedEvent"/> instance which represents the specified routed event, 
+        /// or <c>null</c> if no such routed event exists.</returns>
+        public static RoutedEvent FindByStylingName(UltravioletContext uv, DependencyObject dobj, String owner, String name)
+        {
+            Contract.Require(uv, "uv");
+            Contract.Require(dobj, "dobj");
+            Contract.RequireNotEmpty(name, "name");
+
+            var type = String.IsNullOrEmpty(owner) ? dobj.GetType() : null;
+            if (type == null)
+            {
+                if (!uv.GetUI().GetPresentationFoundation().GetKnownType(owner, false, out type))
+                    throw new InvalidOperationException(PresentationStrings.UnrecognizedType.Format(owner));
+            }
+
+            return FindByStylingName(name, type);
         }
     }
 }

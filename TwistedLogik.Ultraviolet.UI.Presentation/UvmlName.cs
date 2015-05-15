@@ -4,15 +4,15 @@ using TwistedLogik.Nucleus;
 namespace TwistedLogik.Ultraviolet.UI.Presentation
 {
     /// <summary>
-    /// Represents a fully-qualified dependency property name.
+    /// Represents a fully-qualified dependency property or routed event name, as specified in UVML.
     /// </summary>
-    public struct DependencyPropertyName : IEquatable<DependencyPropertyName>
+    public struct UvmlName : IEquatable<UvmlName>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="DependencyPropertyName"/> structure.
+        /// Initializes a new instance of the <see cref="UvmlName"/> structure.
         /// </summary>
         /// <param name="name">The dependency property's name.</param>
-        public DependencyPropertyName(String name)
+        public UvmlName(String name)
         {
             Contract.RequireNotEmpty(name, "name");
 
@@ -46,15 +46,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <inheritdoc/>
         public override Boolean Equals(Object obj)
         {
-            if (obj is DependencyPropertyName)
+            if (obj is UvmlName)
             {
-                return Equals((DependencyPropertyName)obj);
+                return Equals((UvmlName)obj);
             }
             return false;
         }
 
         /// <inheritdoc/>
-        public Boolean Equals(DependencyPropertyName obj)
+        public Boolean Equals(UvmlName obj)
         {
             return this.qualifiedName == obj.qualifiedName;
         }
@@ -68,10 +68,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
-        /// Gets the name of the attached property's container, if this
+        /// Gets the name of the attached property's owner type, if this
         /// is an attached property name.
         /// </summary>
-        public String Container
+        public String Owner
         {
             get { return container; }
         }

@@ -407,9 +407,6 @@
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\DependencyPropertyKey.cs">
       <Link>DependencyPropertyKey.cs</Link>
     </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\DependencyPropertyName.cs">
-      <Link>DependencyPropertyName.cs</Link>
-    </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\DependencyPropertySystem.cs">
       <Link>DependencyPropertySystem.cs</Link>
     </Compile>
@@ -803,6 +800,9 @@
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\UvmlLoader.UvmlAttributeType.cs">
       <Link>UvmlLoader.UvmlAttributeType.cs</Link>
     </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\UvmlName.cs">
+      <Link>UvmlName.cs</Link>
+    </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\UvmlObject.cs">
       <Link>UvmlObject.cs</Link>
     </Compile>
@@ -918,7 +918,7 @@
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" ProjectLinkReference="7379d9e1-bb01-4b05-b4f7-5d39b393348f" />
+      <UserProperties ProjectLinkReference="7379d9e1-bb01-4b05-b4f7-5d39b393348f" ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" />
     </VisualStudio>
   </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

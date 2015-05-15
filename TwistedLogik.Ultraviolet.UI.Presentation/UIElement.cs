@@ -272,7 +272,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 {
                     foreach (var animation in target.Animations)
                     {
-                        var dp = DependencyProperty.FindByName(Ultraviolet, this, animation.Key.Container, animation.Key.Name);
+                        var dp = DependencyProperty.FindByName(Ultraviolet, this, animation.Key.Owner, animation.Key.Name);
                         if (dp != null)
                         {
                             Animate(dp, animation.Value, clock);

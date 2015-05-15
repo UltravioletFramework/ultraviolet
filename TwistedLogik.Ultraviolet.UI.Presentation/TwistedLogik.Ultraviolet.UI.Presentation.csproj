@@ -127,7 +127,7 @@
     <Compile Include="IRoutedEventRaisedNotificationSubscriber.cs" />
     <Compile Include="PopupQueue.cs" />
     <Compile Include="PropertyMetadata.cs" />
-    <Compile Include="DependencyPropertyName.cs" />
+    <Compile Include="UvmlName.cs" />
     <Compile Include="PropertyMetadataOfT.cs" />
     <Compile Include="PropertyMetadataOptions.cs" />
     <Compile Include="DependencyPropertySystem.cs" />
