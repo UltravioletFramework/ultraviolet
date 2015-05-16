@@ -41,6 +41,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
                 throw new InvalidOperationException(PresentationStrings.EventOrPropertyDoesNotExist.Format(eventName, dobj.GetType()));
 
             RoutedEvent.RegisterRaisedNotification(dobj, routedEvent, this);
+
+            base.Attach(dobj);
         }
 
         /// <inheritdoc/>
@@ -51,6 +53,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
                 throw new InvalidOperationException(PresentationStrings.EventOrPropertyDoesNotExist.Format(eventName, dobj.GetType()));
 
             RoutedEvent.UnregisterRaisedNotification(dobj, routedEvent, this);
+
+            base.Detach(dobj);
         }
 
         // Property values.
