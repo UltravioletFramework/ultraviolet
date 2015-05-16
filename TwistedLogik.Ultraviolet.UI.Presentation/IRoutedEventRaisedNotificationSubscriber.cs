@@ -11,6 +11,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         /// <param name="dobj">The dependency object for which the event was raised.</param>
         /// <param name="evt">The routed event that was raised.</param>
-        void ReceiveRoutedEventRaisedNotification(DependencyObject dobj, RoutedEvent evt);
+        /// <param name="data">The routed event's metadata.</param>
+        void ReceiveRoutedEventRaisedNotification(DependencyObject dobj, RoutedEvent evt, ref RoutedEventData data);
     }
 }

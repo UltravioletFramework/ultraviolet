@@ -1069,7 +1069,43 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
             var eventNameToken = state.TryConsumeNonWhiteSpace();
             MatchTokenOrFail(state, eventNameToken, UvssLexerTokenType.StyleName);
 
-            var trigger = new EventTrigger(eventNameToken.Value.Value);
+            state.AdvanceBeyondWhiteSpace();
+
+            var handled = false;
+            var setHandled = false;
+
+            if (state.CurrentToken.TokenType == UvssLexerTokenType.OpenParenthesis)
+            {
+                state.Consume();
+
+                while (true)
+                {
+                    if (state.CurrentToken.TokenType == UvssLexerTokenType.CloseParenthesis)
+                    {
+                        state.Consume();
+                        break;
+                    }
+
+                    var argToken = state.TryConsumeNonWhiteSpace();
+                    MatchTokenOrFail(state, argToken, UvssLexerTokenType.Identifier);
+
+                    if (String.Equals(argToken.Value.Value, "handled", StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        handled = true;
+                        continue;
+                    }
+
+                    if (String.Equals(argToken.Value.Value, "set-handled", StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        setHandled = true;
+                        continue;
+                    }
+
+                    return false;
+                }
+            }
+
+            var trigger = new EventTrigger(eventNameToken.Value.Value, handled, setHandled);
 
             if (!ConsumeTriggerActions(state, trigger))
                 return false;

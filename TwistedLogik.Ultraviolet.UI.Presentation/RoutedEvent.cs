@@ -79,7 +79,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Raises an event notification for this routed event.
         /// </summary>
         /// <param name="dobj">The dependency object that raised the event.</param>
-        internal void RaiseRaisedNotification(DependencyObject dobj)
+        /// <param name="data">The routed event's metadata.</param>
+        internal void RaiseRaisedNotification(DependencyObject dobj, ref RoutedEventData data)
         {
             lock (raisedNotificationSubs)
             {
@@ -88,7 +89,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                     var key = current.Value;
                     if (key.Target == dobj)
                     {
-                        key.Subscriber.ReceiveRoutedEventRaisedNotification(dobj, this);
+                        key.Subscriber.ReceiveRoutedEventRaisedNotification(dobj, this, ref data);
                     }
                 }
             }

@@ -70,9 +70,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
              *      
              *      while (ShouldContinueBubbling(element, ref current))
              *      {
-             *          if (!data.Handled)
-             *              RoutedEventID.RaiseRaisedNotification(current);     
-             * 
              *          index = 0;
              *          while (GetEventHandler(current, RoutedEventID, index, out handler))
              *          {
@@ -81,6 +78,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
              *                  handler.Handler(current, p1, p2, ..., pN, ref data);
              *              }
              *          }
+             *          
+             *          RoutedEventID.RaiseRaisedNotification(current, ref data);     
              *      }
              * }
              */
@@ -115,8 +114,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 Expression.IfThenElse(
                     Expression.Call(miShouldContinueBubbling, expParamElement, varCurrent),
                     Expression.Block(
-                        Expression.IfThen(Expression.Not(Expression.Property(expParamData, "Handled")), 
-                            Expression.Call(Expression.Constant(evt), miRaiseRaisedNotification, varCurrent)),
                         Expression.Assign(varIndex, Expression.Constant(0)),
                         Expression.Loop(
                             Expression.IfThenElse(
@@ -128,7 +125,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                                 Expression.Break(expWhileBubbleBreakInner)
                             ),
                             expWhileBubbleBreakInner
-                        )
+                        ),
+                        Expression.Call(Expression.Constant(evt), miRaiseRaisedNotification, varCurrent, expParamData)
                     ),
                     Expression.Break(expWhileBubbleBreakOuter)
                 ),
@@ -155,8 +153,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
              *      var index   = 0;
              *      var handler = default(RoutedEventHandlerMetadata);      
              * 
-             *      RoutedEventID.RaiseRaisedNotification(element);
-             * 
              *      while (GetEventHandler(current, RoutedEventID, index, out handler))
              *      {
              *          if (ShouldEventBeRaisedForElement(ref data, handler.HandledEventsToo))
@@ -164,6 +160,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
              *              handler.Handler(element, p1, p2, ..., pN, ref data);
              *          }
              *      }
+             *      
+             *      RoutedEventID.RaiseRaisedNotification(element, ref data);
              * }
              */
 
@@ -183,10 +181,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var varHandler = Expression.Variable(typeof(RoutedEventHandlerMetadata), "handlers");
             expVars.Add(varHandler);
 
-            var expRaiseRaised = Expression.IfThen(Expression.Not(Expression.Property(expParamData, "Handled")),
-                Expression.Call(Expression.Constant(evt), miRaiseRaisedNotification, expParamElement));
-            expParts.Add(expRaiseRaised);
-
             var expInvokeBreak = Expression.Label();
             var expInvoke = Expression.Loop(
                 Expression.IfThenElse(
@@ -200,6 +194,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 expInvokeBreak
             );
             expParts.Add(expInvoke);
+
+            var expRaiseRaised = Expression.Call(Expression.Constant(evt), miRaiseRaisedNotification, expParamElement, expParamData);
+            expParts.Add(expRaiseRaised);
 
             return Expression.Lambda(evt.DelegateType, Expression.Block(expVars, expParts), expParams).Compile();
         }
@@ -223,9 +220,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
              *      
              *      while (ShouldContinueTunnelling(element, ref current))
              *      {
-             *          if (!data.Handled)
-             *              RoutedEventID.RaiseRaisedNotification(current);     
-             * 
              *          index = 0;
              *          while (GetEventHandler(current, RoutedEventID, index, out handler))
              *          {
@@ -234,6 +228,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
              *                  handler.Handler(current, p1, p2, ..., pN, ref data);
              *              }
              *          }
+             *          
+             *          RoutedEventID.RaiseRaisedNotification(current, ref data);     
              *      }
              * }
              */
@@ -268,8 +264,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 Expression.IfThenElse(
                     Expression.Call(miShouldContinueTunnelling, expParamElement, varCurrent),
                     Expression.Block(
-                        Expression.IfThen(Expression.Not(Expression.Property(expParamData, "Handled")),
-                            Expression.Call(Expression.Constant(evt), miRaiseRaisedNotification, varCurrent)),
                         Expression.Assign(varIndex, Expression.Constant(0)),
                         Expression.Loop(
                             Expression.IfThenElse(
@@ -281,7 +275,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                                 Expression.Break(expWhileTunnelBreakInner)
                             ),
                             expWhileTunnelBreakInner
-                        )
+                        ),
+                        Expression.Call(Expression.Constant(evt), miRaiseRaisedNotification, varCurrent, expParamData)
                     ),
                     Expression.Break(expWhileTunnelBreakOuter)
                 ),

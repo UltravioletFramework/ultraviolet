@@ -12,17 +12,29 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// Initializes a new instance of the <see cref="EventTrigger"/> class.
         /// </summary>
         /// <param name="eventName">The name of the event that causes this trigger to be applied.</param>
-        internal EventTrigger(String eventName)
+        /// <param name="handled">A value indicating whether this trigger should respond to handled events.</param>
+        /// <param name="setHandled">A value indicating whether this trigger should mark the event as handled.</param>
+        internal EventTrigger(String eventName, Boolean handled, Boolean setHandled)
         {
             Contract.RequireNotEmpty(eventName, "eventName");
 
-            this.eventName = new UvmlName(eventName);
+            this.eventName  = new UvmlName(eventName);
+            this.handled    = handled;
+            this.setHandled = setHandled;
         }
 
         /// <inheritdoc/>
-        void IRoutedEventRaisedNotificationSubscriber.ReceiveRoutedEventRaisedNotification(DependencyObject dobj, RoutedEvent evt)
+        void IRoutedEventRaisedNotificationSubscriber.ReceiveRoutedEventRaisedNotification(DependencyObject dobj, RoutedEvent evt, ref RoutedEventData data)
         {
-            Activate(dobj);
+            if (!data.Handled || handled)
+            {
+                Activate(dobj);
+
+                if (setHandled)
+                {
+                    data.Handled = true;
+                }
+            }
         }
 
         /// <summary>
@@ -59,5 +71,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
 
         // Property values.
         private readonly UvmlName eventName;
+        private readonly Boolean handled;
+        private readonly Boolean setHandled;
     }
 }

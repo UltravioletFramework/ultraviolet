@@ -273,13 +273,32 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
                 if (ConsumeWhiteSpaceAndComments(input, output, ref line, ref ix))
                     return true;
 
-                if (ConsumeStyleName(input, output, line, ref ix))
+                if (!ConsumeStyleName(input, output, line, ref ix))
+                    return false;
+
+                ConsumeAllWhiteSpaceAndComments(input, output, ref line, ref ix);
+
+                var storyboard = false;
+                if (ConsumeOpenParenthesis(input, output, line, ref ix))
                 {
-                    ChangeContext(cachedLexerContext_TriggerActionList);
-                    return true;
+                    while (true)
+                    {
+                        ConsumeAllWhiteSpaceAndComments(input, output, ref line, ref ix);
+
+                        if (ConsumeIdentifier(input, output, line, ref ix, ref storyboard))
+                            continue;
+                        if (ConsumeComma(input, output, line, ref ix))
+                            continue;
+
+                        if (ConsumeCloseParenthesis(input, output, line, ref ix))
+                            break;
+
+                        return false;
+                    }
                 }
 
-                return false;
+                ChangeContext(cachedLexerContext_TriggerActionList);
+                return true;
             }
         }
 
