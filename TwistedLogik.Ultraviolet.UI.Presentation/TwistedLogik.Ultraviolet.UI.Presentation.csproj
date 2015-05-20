@@ -128,6 +128,9 @@
     <Compile Include="PopupQueue.cs" />
     <Compile Include="PropertyMetadata.cs" />
     <Compile Include="Styles\TriggerComparisonOpExtensions.cs" />
+    <Compile Include="Styles\UvssStylePrioritizer.cs" />
+    <Compile Include="Styles\UvssStylePrioritizer.PrioritizedStyle.cs" />
+    <Compile Include="Styles\UvssStylePrioritizer.PrioritizedTrigger.cs" />
     <Compile Include="UvmlName.cs" />
     <Compile Include="PropertyMetadataOfT.cs" />
     <Compile Include="PropertyMetadataOptions.cs" />

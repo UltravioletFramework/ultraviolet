@@ -198,18 +198,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
 
                 foreach (var style in rule.Styles)
                 {
-                    const Int32 ImportantStylePriority = 1000000000;
-
-                    var styleKey      = style.QualifiedName;
-                    var stylePriority = selector.Priority + (style.IsImportant ? ImportantStylePriority : 0);
-
-                    PrioritizedStyleData existingStyleData;
-                    if (styleAggregator.TryGetValue(styleKey, out existingStyleData))
-                    {
-                        if (existingStyleData.Priority > stylePriority)
-                            continue;
-                    }
-                    styleAggregator[styleKey] = new PrioritizedStyleData(style, selector, stylePriority);
+                    prioritizer.Add(selector, style);
                 }
 
                 foreach (var trigger in rule.Triggers)
@@ -219,11 +208,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
             }
 
             // Apply styles to element
-            foreach (var kvp in styleAggregator)
-            {
-                ApplyStyleToElement(element, kvp.Value.Style, kvp.Value.Selector);
-            }
-            styleAggregator.Clear();
+            prioritizer.Apply(element);
         }
 
         /// <summary>
@@ -234,15 +219,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// <param name="selector">The selector which caused the style to be applied.</param>
         private void ApplyStyleToElement(UIElement element, UvssStyle style, UvssSelector selector)
         {
-            var dp = DependencyProperty.FindByStylingName(element.Ultraviolet, element, style.Container, style.Name);
+            var dp = DependencyProperty.FindByStylingName(element.Ultraviolet, element, style.OwnerType, style.Name);
             element.ApplyStyle(style, selector, dp);
         }
 
         // State values.
-        private static readonly Dictionary<String, PrioritizedStyleData> styleAggregator = 
-            new Dictionary<String, PrioritizedStyleData>();
         private static readonly UvssLexer lexer   = new UvssLexer();
         private static readonly UvssParser parser = new UvssParser();
+        private readonly UvssStylePrioritizer prioritizer = new UvssStylePrioritizer();
 
         // Property values.
         private readonly List<UvssRule> rules;

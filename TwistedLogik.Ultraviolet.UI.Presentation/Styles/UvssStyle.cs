@@ -12,17 +12,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// Initializes a new instance of the <see cref="UvssStyle"/> class.
         /// </summary>
         /// <param name="arguments">The style's argument list.</param>
-        /// <param name="container">The style's container.</param>
-        /// <param name="name">The style's name.</param>
+        /// <param name="ownerType">The name of the owner of type of the attached property that this style modifies, if
+        /// it modifies an attached property.</param>
+        /// <param name="name">The name of the dependency property that this style modifies.</param>
         /// <param name="value">The style's value.</param>
         /// <param name="isImportant">A value indicating whether the style has the !important qualifier.</param>
-        internal UvssStyle(UvssStyleArgumentsCollection arguments, String container, String name, String value, Boolean isImportant)
+        internal UvssStyle(UvssStyleArgumentsCollection arguments, String ownerType, String name, String value, Boolean isImportant)
         {
             Contract.Require(arguments, "arguments");
 
             this.arguments     = arguments;
-            this.qualifiedName = GetQualifiedName(arguments, container, name);
-            this.container     = container;
+            this.qualifiedName = GetCanonicalName(arguments, ownerType, name);
+            this.container     = ownerType;
             this.name          = name;
             this.value         = value;
             this.isImportant   = isImportant;
@@ -45,23 +46,24 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         }
 
         /// <summary>
-        /// Gets the style's qualified name, including its container.
+        /// Gets the canonical name that uniquely identifies this style.
         /// </summary>
-        public String QualifiedName
+        public String CanonicalName
         {
             get { return qualifiedName; }
         }
 
         /// <summary>
-        /// Gets the name of the container which defines the attached property that this style represents.
+        /// Gets the name of the owner type of the attached property that this style modifies, if
+        /// it modifies an attached property.
         /// </summary>
-        public String Container
+        public String OwnerType
         {
             get { return container; }
         }
 
         /// <summary>
-        /// Gets the style's name.
+        /// Gets the name of the dependency property that this style modifies.
         /// </summary>
         public String Name
         {
@@ -94,15 +96,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         }
 
         /// <summary>
-        /// Gets the qualified name for a style with the specified parameters.
+        /// Gets the canonical name of a style with the specified parameters.
         /// </summary>
-        /// <param name="arguments">The style's list of arguments.</param>
-        /// <param name="container">The style's container.</param>
-        /// <param name="name">The style's name.</param>
-        /// <returns>The qualified name for a style with the specified parameters.</returns>
-        private static String GetQualifiedName(UvssStyleArgumentsCollection arguments, String container, String name)
+        private static String GetCanonicalName(UvssStyleArgumentsCollection arguments, String ownerType, String name)
         {
-            var part1 = (container == null) ? name : String.Format("{0}.{1}", container, name);
+            var part1 = (ownerType == null) ? name : String.Format("{0}.{1}", ownerType, name);
             var part2 = (arguments.Count > 0) ? String.Format(" ({0})", arguments) : null;
             return part1 + part2;
         }

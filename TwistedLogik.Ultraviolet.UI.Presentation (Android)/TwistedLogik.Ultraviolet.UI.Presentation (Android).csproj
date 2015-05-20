@@ -755,6 +755,15 @@
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Styles\UvssStyleCollection.IEnumerable.cs">
       <Link>Styles\UvssStyleCollection.IEnumerable.cs</Link>
     </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Styles\UvssStylePrioritizer.cs">
+      <Link>Styles\UvssStylePrioritizer.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Styles\UvssStylePrioritizer.PrioritizedStyle.cs">
+      <Link>Styles\UvssStylePrioritizer.PrioritizedStyle.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Styles\UvssStylePrioritizer.PrioritizedTrigger.cs">
+      <Link>Styles\UvssStylePrioritizer.PrioritizedTrigger.cs</Link>
+    </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Styles\UvssTriggerCollection.cs">
       <Link>Styles\UvssTriggerCollection.cs</Link>
     </Compile>
