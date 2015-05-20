@@ -983,9 +983,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// </summary>
         /// <param name="state">The parser state.</param>
         /// <returns>A collection containing the trigger condition list that was parsed.</returns>
-        private static IEnumerable<TriggerCondition> ConsumePropertyTriggerConditionList(UvssParserState state)
+        private static IEnumerable<PropertyTriggerCondition> ConsumePropertyTriggerConditionList(UvssParserState state)
         {
-            var conditions = new List<TriggerCondition>();
+            var conditions = new List<PropertyTriggerCondition>();
 
             while (true)
             {
@@ -1008,7 +1008,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// </summary>
         /// <param name="state">The parser state.</param>
         /// <returns>The trigger condition that was parsed.</returns>
-        private static TriggerCondition ConsumePropertyTriggerCondition(UvssParserState state)
+        private static PropertyTriggerCondition ConsumePropertyTriggerCondition(UvssParserState state)
         {
             state.AdvanceBeyondWhiteSpace();
 
@@ -1053,7 +1053,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
             var valueTokens = GetTokensBetweenCurlyBraces(state);
             var value       = String.Join(String.Empty, valueTokens.Select(x => x.Value)).Trim();
 
-            return new TriggerCondition(opValue, propertyToken.Value.Value, value);
+            return new PropertyTriggerCondition(opValue, propertyToken.Value.Value, value);
         }
 
         /// <summary>

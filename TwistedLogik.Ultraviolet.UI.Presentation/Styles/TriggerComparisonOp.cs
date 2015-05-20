@@ -1,4 +1,5 @@
-﻿
+﻿using System;
+
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
 {
     /// <summary>

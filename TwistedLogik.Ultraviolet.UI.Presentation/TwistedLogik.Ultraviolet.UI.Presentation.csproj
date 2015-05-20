@@ -127,6 +127,7 @@
     <Compile Include="IRoutedEventRaisedNotificationSubscriber.cs" />
     <Compile Include="PopupQueue.cs" />
     <Compile Include="PropertyMetadata.cs" />
+    <Compile Include="Styles\TriggerComparisonOpExtensions.cs" />
     <Compile Include="UvmlName.cs" />
     <Compile Include="PropertyMetadataOfT.cs" />
     <Compile Include="PropertyMetadataOptions.cs" />
@@ -256,7 +257,7 @@
     <Compile Include="Styles\TriggerActionCollection.IEnumerable.cs" />
     <Compile Include="Styles\TriggerComparisonCache.cs" />
     <Compile Include="Styles\TriggerComparisonOp.cs" />
-    <Compile Include="Styles\TriggerCondition.cs" />
+    <Compile Include="Styles\PropertyTriggerCondition.cs" />
     <Compile Include="Styles\Trigger.cs" />
     <Compile Include="Styles\UvssClassCollection.cs" />
     <Compile Include="Styles\UvssClassCollection.IEnumerable.cs" />

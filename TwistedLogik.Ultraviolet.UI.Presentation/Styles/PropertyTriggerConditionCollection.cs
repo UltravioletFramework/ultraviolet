@@ -40,7 +40,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// Adds the specified item to the collection.
         /// </summary>
         /// <param name="condition">The item to add to the collection.</param>
-        internal void Add(TriggerCondition condition)
+        internal void Add(PropertyTriggerCondition condition)
         {
             Contract.Require(condition, "condition");
 
@@ -51,7 +51,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// Removes the specified item from the collection.
         /// </summary>
         /// <param name="condition">The item to remove from the collection.</param>
-        internal Boolean Remove(TriggerCondition condition)
+        internal Boolean Remove(PropertyTriggerCondition condition)
         {
             Contract.Require(condition, "condition");
 
@@ -63,7 +63,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// </summary>
         /// <param name="condition">The item to evaluate.</param>
         /// <returns><c>true</c> if the collection contains the specified item; otherwise, <c>false</c>.</returns>
-        internal Boolean Contains(TriggerCondition condition)
+        internal Boolean Contains(PropertyTriggerCondition condition)
         {
             Contract.Require(condition, "condition");
 
@@ -79,7 +79,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         }
 
         // The collection's underlying list of conditions.
-        private readonly List<TriggerCondition> conditions = 
-            new List<TriggerCondition>();
+        private readonly List<PropertyTriggerCondition> conditions = 
+            new List<PropertyTriggerCondition>();
     }
 }

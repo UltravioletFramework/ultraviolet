@@ -3,19 +3,19 @@ using System.Collections.Generic;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
 {
-    partial class PropertyTriggerConditionCollection : IEnumerable<TriggerCondition>
+    partial class PropertyTriggerConditionCollection : IEnumerable<PropertyTriggerCondition>
     {
         /// <summary>
         /// Gets an enumerator for the collection.
         /// </summary>
         /// <returns>The enumerator for the collection.</returns>
-        public List<TriggerCondition>.Enumerator GetEnumerator()
+        public List<PropertyTriggerCondition>.Enumerator GetEnumerator()
         {
             return conditions.GetEnumerator();
         }
 
         /// <inheritdoc/>
-        IEnumerator<TriggerCondition> IEnumerable<TriggerCondition>.GetEnumerator()
+        IEnumerator<PropertyTriggerCondition> IEnumerable<PropertyTriggerCondition>.GetEnumerator()
         {
             return GetEnumerator();
         }

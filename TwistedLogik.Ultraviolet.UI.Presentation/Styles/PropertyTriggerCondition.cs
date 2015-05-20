@@ -7,15 +7,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
     /// <summary>
     /// Represents one of the conditions of a property trigger.
     /// </summary>
-    public class TriggerCondition
+    public class PropertyTriggerCondition
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="TriggerCondition"/> class.
+        /// Initializes a new instance of the <see cref="PropertyTriggerCondition"/> class.
         /// </summary>
         /// <param name="op">A <see cref="TriggerComparisonOp"/> value that specifies the type of comparison performed by this condition.</param>
         /// <param name="dpropName">The name of the dependency property to evaluate.</param>
         /// <param name="refval">The reference value to compare to the value of the dependency property.</param>
-        internal TriggerCondition(TriggerComparisonOp op, String dpropName, String refval)
+        internal PropertyTriggerCondition(TriggerComparisonOp op, String dpropName, String refval)
         {
             this.op        = op;
             this.dpropName = new UvmlName(dpropName);
