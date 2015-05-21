@@ -6,7 +6,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
     /// Represents a value which is bound to a dependency property.
     /// </summary>
     /// <typeparam name="T">The type of the bound value.</typeparam>
-    internal abstract class DependencyBoundValue<T>
+    internal abstract class DependencyBoundValue<T> : IDependencyPropertyChangeNotificationSubscriber
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="DependencyBoundValue{TDependency}"/> class.
@@ -22,9 +22,41 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             this.setter          = (DataBindingSetter<T>)BindingExpressions.CreateBindingSetter(expressionType, dataSourceType, expression);
             this.comparer        = (DataBindingComparer<T>)BindingExpressions.GetComparisonFunction(expressionType);
             this.cachedValue     = GetUnderlyingValue();
+            this.dpropReference  = BindingExpressions.GetSimpleDependencyProperty(dataSourceType, expression);
+
+            if (dpropReference != null)
+            {
+                var dataSource = value.Owner.DependencyDataSource;
+                if (dataSource != null)
+                {
+                    HookDependencyProperty(dataSource);
+                }
+            }
         }
 
         /// <inheritdoc/>
+        public void ReceiveDependencyPropertyChangeNotification(DependencyObject dobj, DependencyProperty dprop)
+        {
+            dependencyValue.DigestImmediately();
+        }
+
+        /// <summary>
+        /// Called when the bound object's data source is changed.
+        /// </summary>
+        /// <param name="oldValue">The old value of the <see cref="DependencyDataSource"/> property.</param>
+        /// <param name="newValue">The new value of the <see cref="DependencyDataSource"/> property.</param>
+        public void HandleDataSourceChanged(Object oldValue, Object newValue)
+        {
+            if (oldValue != null)
+                UnhookDependencyProperty(oldValue);
+
+            if (newValue != null)
+                HookDependencyProperty(newValue);
+        }
+
+        /// <summary>
+        /// Invalidates any cached display values held by this binding.
+        /// </summary>
         public virtual void InvalidateDisplayCache()
         {
 
@@ -33,7 +65,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Modifies the format string used to convert the bound value to a string, if applicable.
         /// </summary>
-        public abstract void SetFormatString(String formatString);
+        public virtual void SetFormatString(String formatString)
+        {
+
+        }
 
         /// <summary>
         /// Checks to see whether the bound value has changed since the last digest cycle.
@@ -65,6 +100,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public Boolean IsWritable
         {
             get { return setter != null; }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether this binding should suppress digestion, even if it would
+        /// otherwise need to be part of the digest cycle.
+        /// </summary>
+        public Boolean SuppressDigest
+        {
+            get { return dpropReference != null; }
         }
 
         /// <summary>
@@ -120,11 +164,45 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             dependencyValue.DigestImmediately();
         }
 
+        /// <summary>
+        /// Hooks into the change notifications for the binding's associated dependency property, if applicable.
+        /// </summary>
+        private void HookDependencyProperty(Object dataSource)
+        {
+            if (dpropReference == null)
+                return;
+
+            var dobjDataSource = dataSource as DependencyObject;
+            if (dobjDataSource == null)
+                return;
+
+            DependencyProperty.RegisterChangeNotification(dobjDataSource, dpropReference, this);
+        }
+
+        /// <summary>
+        /// Unhooks from the change notifications for the binding's associated dependency property, if applicable.
+        /// </summary>
+        private void UnhookDependencyProperty(Object dataSource)
+        {
+            if (dpropReference == null)
+                return;
+
+            var dobjDataSource = dataSource as DependencyObject;
+            if (dobjDataSource == null)
+                return;
+
+            DependencyProperty.UnregisterChangeNotification(dobjDataSource, dpropReference, this);
+        }
+
         // State values.
         private readonly IDependencyPropertyValue dependencyValue;
         private readonly DataBindingComparer<T> comparer;
         private readonly DataBindingGetter<T> getter;
         private readonly DataBindingSetter<T> setter;
         private T cachedValue;
+
+        // The dependency property referenced by this binding, used for optimization.
+        private readonly DependencyProperty dpropReference;
+
     }
 }

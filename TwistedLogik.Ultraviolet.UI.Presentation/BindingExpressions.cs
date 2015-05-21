@@ -98,6 +98,22 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Gets a value indicating whether the specified binding expression is a simple reference
+        /// to a dependency property; that is, a direct reference with no intermediate steps.
+        /// </summary>
+        /// <param name="dataSourceType">The type of the data source to evaluate.</param>
+        /// <param name="expression">The binding expression to evaluate.</param>
+        /// <param name="braces">A value indicating whether the binding expression includes its enclosing braces.</param>
+        /// <returns><c>true</c> if the specified expression is a simple reference to a dependency property; otherwise, <c>false</c>.</returns>
+        public static Boolean IsSimpleDependencyProperty(Type dataSourceType, String expression, Boolean braces = true)
+        {
+            if (!IsBindingExpression(expression, braces))
+                return false;
+
+            return GetSimpleDependencyProperty(dataSourceType, expression, braces) != null;
+        }
+
+        /// <summary>
         /// Parses the specified binding expression into its constituent components.
         /// </summary>
         /// <param name="expression">The binding expression to parse.</param>
@@ -313,6 +329,27 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
                 return typeComparer;
             }
+        }
+
+        /// <summary>
+        /// Retrieves the dependency property which is referenced by the specified binding expression, if
+        /// the expression is a simple dependency property reference.
+        /// </summary>
+        /// <param name="dataSourceType">The type of the data source to evaluate.</param>
+        /// <param name="expression">The binding expression to evaluate.</param>
+        /// <param name="braces">A value indicating whether the binding expression includes its enclosing braces.</param>
+        /// <returns>The dependency property referenced by the specified expression, or <c>null</c> if the specified
+        /// expression is not a simple dependency property reference.</returns>
+        public static DependencyProperty GetSimpleDependencyProperty(Type dataSourceType, String expression, Boolean braces = true)
+        {
+            if (!IsBindingExpression(expression, braces))
+                throw new ArgumentException(PresentationStrings.InvalidBindingExpression.Format(expression));
+
+            var components = ParseBindingExpression(expression, braces);
+            if (components.Count() != 1)
+                return null;
+
+            return DependencyProperty.FindByName(components.Single(), dataSourceType);
         }
 
         /// <summary>

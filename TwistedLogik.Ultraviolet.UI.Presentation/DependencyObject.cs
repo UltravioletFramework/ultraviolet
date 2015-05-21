@@ -570,6 +570,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Called when the value of the <see cref="DependencyDataSource"/> property changes.
+        /// </summary>
+        /// <param name="oldValue">The old value of the <see cref="DependencyDataSource"/> property.</param>
+        /// <param name="newValue">The new value of the <see cref="DependencyDataSource"/> property.</param>
+        protected void OnDependencyDataSourceChanged(Object oldValue, Object newValue)
+        {
+            foreach (var kvp in dependencyPropertyValues)
+            {
+                kvp.Value.HandleDataSourceChanged(oldValue, newValue);
+            }
+        }
+
+        /// <summary>
         /// Converts a string to a value to be applied to a styled dependency property.
         /// </summary>
         /// <param name="style">The style to resolve to a value.</param>

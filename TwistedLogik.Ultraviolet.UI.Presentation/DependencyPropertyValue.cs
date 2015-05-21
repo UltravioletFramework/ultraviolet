@@ -44,6 +44,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             }
 
             /// <inheritdoc/>
+            public void HandleDataSourceChanged(Object oldValue, Object newValue)
+            {
+                if (cachedBoundValue != null)
+                    cachedBoundValue.HandleDataSourceChanged(oldValue, newValue);
+            }
+
+            /// <inheritdoc/>
             public void DigestImmediately()
             {
                 CheckForChanges();
@@ -553,6 +560,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             {
                 var requiresDigestNew = IsDataBound || IsAnimated || 
                     (metadata.IsInherited && !hasLocalValue && !hasStyledValue);
+
+                if (cachedBoundValue != null && cachedBoundValue.SuppressDigest)
+                    requiresDigestNew = false;
 
                 if (requiresDigestNew != requiresDigest)
                 {

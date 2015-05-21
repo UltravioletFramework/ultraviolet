@@ -27,6 +27,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         TDependency GetFresh();
 
         /// <summary>
+        /// Called when the data source attached to the object which owns this value changes.
+        /// </summary>
+        /// <param name="oldValue">The old value of the <see cref="DependencyDataSource"/> property.</param>
+        /// <param name="newValue">The new value of the <see cref="DependencyDataSource"/> property.</param>
+        void HandleDataSourceChanged(Object oldValue, Object newValue);
+
+        /// <summary>
         /// Invalidates the cached display value for the dependency property. This will cause
         /// the interface to display the property's actual value, rather than the value most recently
         /// entered by the user (which may be different if coercion is involved).
@@ -54,5 +61,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Gets a value indicating whether the bound property can be written.
         /// </summary>
         Boolean IsWritable { get; }
+
+        /// <summary>
+        /// Gets a value indicating whether this binding should suppress digestion, even if it would
+        /// otherwise need to be part of the digest cycle.
+        /// </summary>
+        Boolean SuppressDigest { get; }
     }
 }

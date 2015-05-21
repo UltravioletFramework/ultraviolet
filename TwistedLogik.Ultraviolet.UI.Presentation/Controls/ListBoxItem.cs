@@ -54,13 +54,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 
             base.OnMouseDown(device, button, ref data);
         }
-        
+
         /// <summary>
         /// Gets the opacity of the list box item's selection highlight.
         /// </summary>
         protected virtual Double HighlightOpacity
         {
-            get { return IsSelected ? 1 : 0; }
+            get { return GetValue<Double>(HighlightOpacityProperty); }
         }
 
         /// <summary>
@@ -83,6 +83,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 
                 evtDelegate(dobj, ref evtData);
             }
+
+            dobj.SetValue<Double>(HighlightOpacityPropertyKey, newValue ? 1.0 : 0.0);
         }
+
+        /// <summary>
+        /// The private access key for the <see cref="HighlightOpacity"/> read-only dependency property.
+        /// </summary>
+        private static readonly DependencyPropertyKey HighlightOpacityPropertyKey = DependencyProperty.RegisterReadOnly("HighlightOpacity", typeof(Double), typeof(ListBoxItem), 
+            new PropertyMetadata<Double>(CommonBoxedValues.Double.Zero));
+
+        /// <summary>
+        /// Identifies the <see cref="HighlightOpacity"/> dependency property.
+        /// </summary>
+        private static readonly DependencyProperty HighlightOpacityProperty = HighlightOpacityPropertyKey.DependencyProperty;
     }
 }
