@@ -13,6 +13,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
             Evaluate(dobj);
         }
 
+        /// <inheritdoc/>
+        public override String CanonicalName
+        {
+            get { return conditions.CanonicalName; }
+        }
+
         /// <summary>
         /// Gets the trigger's collection of conditions.
         /// </summary>

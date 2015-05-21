@@ -27,7 +27,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
             var priority = CalculatePriorityFromSelector(selector, style.IsImportant);
 
             PrioritizedStyle existing;
-            if (!styles.TryGetValue(style.CanonicalName, out existing) || existing.Priority < priority)
+            if (!styles.TryGetValue(style.CanonicalName, out existing) || existing.Priority <= priority)
             {
                 styles[style.CanonicalName] = new PrioritizedStyle(style, selector, priority);
             }
@@ -40,7 +40,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// <param name="trigger">The trigger to add to the prioritizer.</param>
         public void Add(UvssSelector selector, Trigger trigger)
         {
-            // TODO
+            var priority = CalculatePriorityFromSelector(selector, false);
+
+            PrioritizedTrigger existing;
+            if (!triggers.TryGetValue(trigger.CanonicalName, out existing) || existing.Priority <= priority)
+            {
+                triggers[trigger.CanonicalName] = new PrioritizedTrigger(trigger, selector, priority);
+            }
         }
 
         /// <summary>
@@ -53,14 +59,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
             {
                 var style    = kvp.Value.Style;
                 var selector = kvp.Value.Selector;
-                var dprop    = DependencyProperty.FindByStylingName(element.Ultraviolet, element, style.OwnerType, style.Name);
+                var dprop    = DependencyProperty.FindByStylingName(element.Ultraviolet, element, style.Owner, style.Name);
 
                 element.ApplyStyle(style, selector, dprop);
             }
 
             foreach (var kvp in triggers)
             {
-                // TODO
+                kvp.Value.Trigger.Attach(element);
             }
 
             Reset();

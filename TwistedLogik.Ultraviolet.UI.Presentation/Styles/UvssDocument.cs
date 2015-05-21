@@ -203,7 +203,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
 
                 foreach (var trigger in rule.Triggers)
                 {
-                    trigger.Attach(element);
+                    prioritizer.Add(selector, trigger);
                 }
             }
 
@@ -219,7 +219,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// <param name="selector">The selector which caused the style to be applied.</param>
         private void ApplyStyleToElement(UIElement element, UvssStyle style, UvssSelector selector)
         {
-            var dp = DependencyProperty.FindByStylingName(element.Ultraviolet, element, style.OwnerType, style.Name);
+            var dp = DependencyProperty.FindByStylingName(element.Ultraviolet, element, style.Owner, style.Name);
             element.ApplyStyle(style, selector, dp);
         }
 

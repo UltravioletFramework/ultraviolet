@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using TwistedLogik.Nucleus;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
@@ -45,6 +46,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
             Contract.Require(condition, "condition");
 
             conditions.Add(condition);
+            UpdateCanonicalName();
+        }
+
+        /// <summary>
+        /// Adds a set of conditions to this collection.
+        /// </summary>
+        /// <param name="conditions">The set of conditions to add to this collection.</param>
+        internal void AddRange(IEnumerable<PropertyTriggerCondition> conditions)
+        {
+            Contract.Require(conditions, "conditions");
+
+            this.conditions.AddRange(conditions);
+            UpdateCanonicalName();
         }
 
         /// <summary>
@@ -73,12 +87,34 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// <summary>
         /// Gets the number of conditions in the collection.
         /// </summary>
-        public Int32 Count
+        internal Int32 Count
         {
             get { return conditions.Count; }
         }
 
+        /// <summary>
+        /// Gets the canonical name that uniquely identifies the set of conditions included in this collection.
+        /// </summary>
+        internal String CanonicalName
+        {
+            get { return canonicalName; }
+        }
+
+        /// <summary>
+        /// Updates the collection's canonical name.
+        /// </summary>
+        private void UpdateCanonicalName()
+        {
+            var conditionStrings = conditions.OrderBy(x => x.DependencyPropertyName.QualifiedName).Select(x => String.Format("{0} {1} {{ {2} }}", 
+                x.DependencyPropertyName.QualifiedName, 
+                x.ComparisonOperation.ConvertToSymbol(), 
+                x.ReferenceValue));
+
+            canonicalName = String.Join(", ", conditionStrings);
+        }
+
         // The collection's underlying list of conditions.
+        private String canonicalName;
         private readonly List<PropertyTriggerCondition> conditions = 
             new List<PropertyTriggerCondition>();
     }

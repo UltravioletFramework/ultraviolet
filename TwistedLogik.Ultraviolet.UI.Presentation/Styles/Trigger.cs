@@ -38,6 +38,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         }
 
         /// <summary>
+        /// Gets the canonical name which uniquely identifies this trigger.
+        /// </summary>
+        public abstract String CanonicalName
+        {
+            get;
+        }
+
+        /// <summary>
         /// Gets the trigger's collection of associated actions.
         /// </summary>
         public TriggerActionCollection Actions

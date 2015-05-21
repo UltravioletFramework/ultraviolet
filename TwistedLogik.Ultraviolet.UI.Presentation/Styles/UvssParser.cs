@@ -965,10 +965,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
             var conditions = ConsumePropertyTriggerConditionList(state);
 
             var trigger = new PropertyTrigger();
-            foreach (var condition in conditions)
-            {
-                trigger.Conditions.Add(condition);
-            }
+            trigger.Conditions.AddRange(conditions);
 
             if (!ConsumeTriggerActions(state, trigger))
                 return false;

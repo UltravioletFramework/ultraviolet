@@ -37,6 +37,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
             }
         }
 
+        /// <inheritdoc/>
+        public override String CanonicalName
+        {
+            get { return eventName.QualifiedName; }
+        }
+
         /// <summary>
         /// Gets the name of the event that causes this trigger to be applied.
         /// </summary>

@@ -47,6 +47,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         }
 
         /// <summary>
+        /// Gets the comparison operation performed by this condition.
+        /// </summary>
+        public TriggerComparisonOp ComparisonOperation
+        {
+            get { return op; }
+        }
+
+        /// <summary>
         /// Gets the name of the dependency property which is evaluated by this condition.
         /// </summary>
         public UvmlName DependencyPropertyName
