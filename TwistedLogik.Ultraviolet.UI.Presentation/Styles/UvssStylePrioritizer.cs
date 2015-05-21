@@ -66,6 +66,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
 
             foreach (var kvp in triggers)
             {
+                if (kvp.Value.Trigger.Actions.Count == 0)
+                    continue;
+
                 kvp.Value.Trigger.Attach(element);
             }
 
