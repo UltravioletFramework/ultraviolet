@@ -45,10 +45,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         /// <param name="oldValue">The old value of the <see cref="DependencyDataSource"/> property.</param>
         /// <param name="newValue">The new value of the <see cref="DependencyDataSource"/> property.</param>
-        public void HandleDataSourceChanged(Object oldValue, Object newValue)
+        public void HandleDataSourceChanged(Object newValue)
         {
-            if (oldValue != null)
-                UnhookDependencyProperty(oldValue);
+            UnhookDependencyProperty();
 
             if (newValue != null)
                 HookDependencyProperty(newValue);
@@ -176,22 +175,20 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (dobjDataSource == null)
                 return;
 
+            this.dataSource = dobjDataSource;
+
             DependencyProperty.RegisterChangeNotification(dobjDataSource, dpropReference, this);
         }
 
         /// <summary>
         /// Unhooks from the change notifications for the binding's associated dependency property, if applicable.
         /// </summary>
-        private void UnhookDependencyProperty(Object dataSource)
+        private void UnhookDependencyProperty()
         {
             if (dpropReference == null)
                 return;
 
-            var dobjDataSource = dataSource as DependencyObject;
-            if (dobjDataSource == null)
-                return;
-
-            DependencyProperty.UnregisterChangeNotification(dobjDataSource, dpropReference, this);
+            DependencyProperty.UnregisterChangeNotification(dataSource, dpropReference, this);
         }
 
         // State values.
@@ -203,6 +200,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
         // The dependency property referenced by this binding, used for optimization.
         private readonly DependencyProperty dpropReference;
+        private DependencyObject dataSource;
 
     }
 }

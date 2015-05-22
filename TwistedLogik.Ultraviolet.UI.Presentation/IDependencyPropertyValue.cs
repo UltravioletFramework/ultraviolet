@@ -12,9 +12,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Called when the data source attached to the object which owns this value changes.
         /// </summary>
-        /// <param name="oldValue">The old value of the <see cref="DependencyDataSource"/> property.</param>
-        /// <param name="newValue">The new value of the <see cref="DependencyDataSource"/> property.</param>
-        void HandleDataSourceChanged(Object oldValue, Object newValue);
+        /// <param name="dataSource">The new value of the <see cref="DependencyDataSource"/> property.</param>
+        void HandleDataSourceChanged(Object dataSource);
 
         /// <summary>
         /// Immediately digests the dependency property value.

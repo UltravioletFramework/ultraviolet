@@ -44,10 +44,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             }
 
             /// <inheritdoc/>
-            public void HandleDataSourceChanged(Object oldValue, Object newValue)
+            public void HandleDataSourceChanged(Object dataSource)
             {
                 if (cachedBoundValue != null)
-                    cachedBoundValue.HandleDataSourceChanged(oldValue, newValue);
+                    cachedBoundValue.HandleDataSourceChanged(dataSource);
             }
 
             /// <inheritdoc/>
@@ -155,7 +155,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 {
                     var oldValue = GetValue();
 
-                    bound            = false;
+                    bound = false;
+
+                    cachedBoundValue.HandleDataSourceChanged(null);
                     cachedBoundValue = null;
 
                     UpdateRequiresDigest(oldValue);

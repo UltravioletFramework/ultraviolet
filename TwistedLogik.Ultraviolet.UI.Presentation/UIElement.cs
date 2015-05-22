@@ -88,6 +88,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Clears any bindings which are set on dependency properties of this element, and optionally
+        /// any bindings which are set on children of this element.
+        /// </summary>
+        /// <param name="recursive">A value indicating whether to clear the bindings
+        /// of this element's child elements.</param>
+        public void ClearBindings(Boolean recursive = true)
+        {
+            ClearBindingsCore(recursive);
+        }
+
+        /// <summary>
         /// Clears the animations which are attached to this element, and optionally
         /// any animations attached to children of this element.
         /// </summary>
@@ -211,6 +222,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         public void Cleanup()
         {
+            ClearBindings(false);
             ClearAnimations(false);
             ClearTriggeredValues();
             CleanupStoryboards();
@@ -1428,6 +1440,25 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 VisualTreeHelper.ForEachChild<UIElement>(this, CommonBoxedValues.Boolean.FromValue(recursive), (child, state) =>
                 {
                     child.ReloadContent((Boolean)state);
+                });
+            }
+        }
+
+        /// <summary>
+        /// When overridden in a derived class, clears any bindings which are set on dependency properties of this element, and optionally
+        /// any bindings which are set on children of this element.
+        /// </summary>
+        /// <param name="recursive">A value indicating whether to clear the bindings
+        /// of this element's child elements.</param>
+        protected virtual void ClearBindingsCore(Boolean recursive)
+        {
+            ((DependencyObject)this).ClearBindings();
+
+            if (recursive)
+            {
+                VisualTreeHelper.ForEachChild<UIElement>(this, CommonBoxedValues.Boolean.FromValue(recursive), (child, state) =>
+                {
+                    child.ClearBindings((Boolean)state);
                 });
             }
         }

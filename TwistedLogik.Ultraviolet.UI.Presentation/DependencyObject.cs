@@ -82,6 +82,20 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Clears the bindings set on all of the object's dependency properties.
+        /// </summary>
+        public void ClearBindings()
+        {
+            foreach (var kvp in dependencyPropertyValues)
+            {
+                if (kvp.Value.IsDataBound)
+                {
+                    kvp.Value.Unbind();
+                }
+            }
+        }
+
+        /// <summary>
         /// Clears the animations on all of the object's dependency properties.
         /// </summary>
         public void ClearAnimations()
@@ -572,13 +586,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Called when the value of the <see cref="DependencyDataSource"/> property changes.
         /// </summary>
-        /// <param name="oldValue">The old value of the <see cref="DependencyDataSource"/> property.</param>
-        /// <param name="newValue">The new value of the <see cref="DependencyDataSource"/> property.</param>
-        protected void OnDependencyDataSourceChanged(Object oldValue, Object newValue)
+        protected void OnDependencyDataSourceChanged()
         {
+            var dataSource = DependencyDataSource;
+            
             foreach (var kvp in dependencyPropertyValues)
             {
-                kvp.Value.HandleDataSourceChanged(oldValue, newValue);
+                kvp.Value.HandleDataSourceChanged(dataSource);
             }
         }
 
