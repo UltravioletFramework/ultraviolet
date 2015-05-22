@@ -19,7 +19,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         public ListBoxItem(UltravioletContext uv, String name)
             : base(uv, name)
         {
-
+            HighlightOnSelect = true;
         }
 
         /// <summary>
@@ -55,12 +55,51 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             base.OnMouseDown(device, button, ref data);
         }
 
+        /// <inheritdoc/>
+        protected override void OnMouseEnter(MouseDevice device, ref RoutedEventData data)
+        {
+            if (HighlightOnMouseOver)
+            {
+                HighlightOpacity = 1.0;
+            }
+            base.OnMouseEnter(device, ref data);
+        }
+
+        /// <inheritdoc/>
+        protected override void OnMouseLeave(MouseDevice device, ref RoutedEventData data)
+        {
+            if (HighlightOnMouseOver)
+            {
+                HighlightOpacity = 0.0;
+            }
+            base.OnMouseLeave(device, ref data);
+        }
+
         /// <summary>
         /// Gets the opacity of the list box item's selection highlight.
         /// </summary>
-        protected virtual Double HighlightOpacity
+        protected Double HighlightOpacity
         {
             get { return GetValue<Double>(HighlightOpacityProperty); }
+            private set { SetValue<Double>(HighlightOpacityProperty, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether this list box is highlighted when it is selected.
+        /// </summary>
+        protected Boolean HighlightOnSelect
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether this list box is highlighted when the mouse enters its bounds.
+        /// </summary>
+        protected Boolean HighlightOnMouseOver
+        {
+            get;
+            set;
         }
 
         /// <summary>
@@ -84,18 +123,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 evtDelegate(dobj, ref evtData);
             }
 
-            dobj.SetValue<Double>(HighlightOpacityPropertyKey, newValue ? 1.0 : 0.0);
+            if (item.HighlightOnSelect)
+                item.HighlightOpacity = newValue ? 1.0 : 0.0;
         }
-
-        /// <summary>
-        /// The private access key for the <see cref="HighlightOpacity"/> read-only dependency property.
-        /// </summary>
-        private static readonly DependencyPropertyKey HighlightOpacityPropertyKey = DependencyProperty.RegisterReadOnly("HighlightOpacity", typeof(Double), typeof(ListBoxItem), 
-            new PropertyMetadata<Double>(CommonBoxedValues.Double.Zero));
 
         /// <summary>
         /// Identifies the <see cref="HighlightOpacity"/> dependency property.
         /// </summary>
-        private static readonly DependencyProperty HighlightOpacityProperty = HighlightOpacityPropertyKey.DependencyProperty;
+        private static readonly DependencyProperty HighlightOpacityProperty = DependencyProperty.Register("HighlightOpacity", typeof(Double), typeof(ListBoxItem),
+            new PropertyMetadata<Double>(CommonBoxedValues.Double.Zero));
     }
 }

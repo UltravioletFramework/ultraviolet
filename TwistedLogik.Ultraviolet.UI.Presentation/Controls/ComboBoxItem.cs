@@ -17,7 +17,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         public ComboBoxItem(UltravioletContext uv, String name)
             : base(uv, name)
         {
-
+            HighlightOnSelect    = false;
+            HighlightOnMouseOver = true;
         }
 
         /// <inheritdoc/>
@@ -46,12 +47,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 comboBox.HandleItemChanged(this);
             }
             base.OnContentChanged();
-        }
-
-        /// <inheritdoc/>
-        protected override double HighlightOpacity
-        {
-            get { return IsMouseOver ? 1 : 0; }
         }
     }
 }
