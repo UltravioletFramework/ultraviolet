@@ -23,6 +23,15 @@ button, repeatbutton, togglebutton
 	transition (common, hover): button-to-hover;
 	transition (common, pressed): button-to-pressed;
 	transition (common, disabled): button-to-disabled;
+
+	trigger event mouse.mouse-enter
+	{
+		play-sfx { #Global:SoundEffects:Rollover3 }
+	}
+	trigger event click (set-handled)
+	{
+		play-sfx { #Global:SoundEffects:Click1 }
+	}
 }
 
 togglebutton
@@ -36,7 +45,6 @@ togglebutton
 	}
 	trigger property checked = { true }
 	{
-		play-sfx { #Global:SoundEffects:Click1 }
 		set foreground { #ffaaaaaa }
 		set source-image (*:trigger-root > grid > .button-background) { #Global:Textures:DefaultUI 256 69 71 33 4 4 4 4 }
 	}
@@ -120,7 +128,15 @@ radiobutton, checkbox
 	transition (common, normal): toggle-to-normal;
 	transition (common, hover): toggle-to-hover;
 	transition (checkstate, unchecked): radiobutton-to-unchecked;
-	transition (checkstate, checked): radiobutton-to-checked;
+	transition (checkstate, checked): radiobutton-to-checked;	
+}
+
+radiobutton
+{
+	trigger event checked
+	{
+		play-sfx { #Global:SoundEffects:Click1 }
+	}
 }
 
 checkbox
@@ -128,6 +144,19 @@ checkbox
 	transition (checkstate, unchecked): checkbox-to-unchecked;
 	transition (checkstate, checked): checkbox-to-checked;
 	transition (checkstate, indeterminate): checkbox-to-indeterminate;
+
+	trigger event checked
+	{
+		play-sfx { #Global:SoundEffects:Click1 }
+	}
+	trigger event unchecked
+	{
+		play-sfx { #Global:SoundEffects:Click1 }
+	}
+	trigger event indeterminate
+	{
+		play-sfx { #Global:SoundEffects:Click1 }
+	}
 }
 
 .radiobutton-component > .toggle-box
@@ -335,6 +364,12 @@ vslider .slider-track-background
 	width: 10;
 }
 
+track button, track repeatbutton
+{
+	trigger event mouse.mouse-enter { }
+	trigger event click { }
+}
+
 progressbar
 {
 	bar-image: #Global:Textures:DefaultUI 328 1 49 20 10 10 tile-center;
@@ -378,6 +413,11 @@ listboxitem
 	padding: 10 0 10 0;
 	height: 25;
 	content-valign: Center;
+
+	trigger event mouse.mouse-down (handled)
+	{
+		play-sfx { #Global:SoundEffects:Click1 }
+	}
 }
 
 .listboxitem-highlight
@@ -389,6 +429,14 @@ combobox
 {
 	transition (opened, open): combobox-to-open;
 	transition (opened, closed): combobox-to-closed;
+}
+
+comboboxitem
+{
+	trigger event mouse.mouse-down (handled)
+	{
+		play-sfx { #Global:SoundEffects:Click1 }
+	}
 }
 
 combobox > grid > contentpresenter
@@ -659,6 +707,12 @@ vscrollbar
 {
 	width: 17;
 	min-height: 64;
+}
+
+.scroll-button
+{
+	trigger event mouse.mouse-enter { }
+	trigger event click { }
 }
 
 .scroll-button-up, .scroll-button-down
