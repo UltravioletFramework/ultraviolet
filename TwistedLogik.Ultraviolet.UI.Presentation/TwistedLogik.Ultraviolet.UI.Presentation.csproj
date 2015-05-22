@@ -115,8 +115,8 @@
     <Compile Include="DependencyBoundValueConverting.cs" />
     <Compile Include="DependencyBoundValueNonConverting.cs" />
     <Compile Include="DependencyObject.cs" />
-    <Compile Include="RoutedEvent.RaisedNotificationKey.cs" />
-    <Compile Include="DependencyProperty.ChangeNotificationKey.cs" />
+    <Compile Include="RoutedEventRaisedNotificationServer.cs" />
+    <Compile Include="DependencyPropertyChangeNotificationServer.cs" />
     <Compile Include="DependencyProperty.cs" />
     <Compile Include="DependencyPropertyKey.cs" />
     <Compile Include="Controls\ListBoxSelectedItems.cs" />

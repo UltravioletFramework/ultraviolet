@@ -1,6 +1,5 @@
 ﻿using System;
 using TwistedLogik.Nucleus;
-using TwistedLogik.Nucleus.Collections;
 using TwistedLogik.Ultraviolet.UI.Presentation.Styles;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation
@@ -41,6 +40,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             this.delegateType       = delegateType;
             this.ownerType          = ownerType;
             this.invocationDelegate = RoutedEventInvocation.CreateInvocationDelegate(this);
+
+            this.raisedNotificationServer = new RoutedEventRaisedNotificationServer(this);
         }
 
         /// <summary>
@@ -55,8 +56,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             Contract.Require(routedEvent, "routedEvent");
             Contract.Require(subscriber, "subscriber");
 
-            lock (routedEvent.raisedNotificationSubs)
-                routedEvent.raisedNotificationSubs.AddLast(new RaisedNotificationKey(subscriber, dobj));
+            routedEvent.raisedNotificationServer.Subscribe(dobj, subscriber);
         }
 
         /// <summary>
@@ -71,8 +71,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             Contract.Require(routedEvent, "routedEvent");
             Contract.Require(subscriber, "subscriber");
 
-            lock (routedEvent.raisedNotificationSubs)
-                routedEvent.raisedNotificationSubs.Remove(new RaisedNotificationKey(subscriber, dobj));
+            routedEvent.raisedNotificationServer.Unsubscribe(dobj, subscriber);
         }
 
         /// <summary>
@@ -82,17 +81,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="data">The routed event's metadata.</param>
         internal void RaiseRaisedNotification(DependencyObject dobj, ref RoutedEventData data)
         {
-            lock (raisedNotificationSubs)
-            {
-                for (var current = raisedNotificationSubs.First; current != null; current = current.Next)
-                {
-                    var key = current.Value;
-                    if (key.Target == dobj)
-                    {
-                        key.Subscriber.ReceiveRoutedEventRaisedNotification(dobj, this, ref data);
-                    }
-                }
-            }
+            raisedNotificationServer.Notify(dobj, ref data);
         }
 
         /// <summary>
@@ -161,7 +150,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         private readonly Delegate invocationDelegate;
 
         // State values.
-        private readonly PooledLinkedList<RaisedNotificationKey> raisedNotificationSubs = 
-            new PooledLinkedList<RaisedNotificationKey>(1);
+        private readonly RoutedEventRaisedNotificationServer raisedNotificationServer;
     }
 }

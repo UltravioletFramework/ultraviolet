@@ -5,7 +5,6 @@ using System.Globalization;
 using System.Linq.Expressions;
 using System.Reflection;
 using TwistedLogik.Nucleus;
-using TwistedLogik.Nucleus.Collections;
 using TwistedLogik.Ultraviolet.UI.Presentation.Styles;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation
@@ -55,6 +54,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             this.isReadOnly      = isReadOnly;
             this.isAttached      = isAttached;
             this.styleSetter     = CreateStyleSetter();
+
+            this.changeNotificationServer = new DependencyPropertyChangeNotificationServer(this);
         }
 
         /// <summary>
@@ -317,8 +318,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             Contract.Require(dprop, "dprop");
             Contract.Require(subscriber, "subscriber");
 
-            lock (dprop.changeNotificationSubs)
-                dprop.changeNotificationSubs.AddLast(new ChangeNotificationKey(subscriber, dobj));
+            dprop.changeNotificationServer.Subscribe(dobj, subscriber);
         }
 
         /// <summary>
@@ -333,8 +333,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             Contract.Require(dprop, "dprop");
             Contract.Require(subscriber, "subscriber");
 
-            lock (dprop.changeNotificationSubs)
-                dprop.changeNotificationSubs.Remove(new ChangeNotificationKey(subscriber, dobj));
+            dprop.changeNotificationServer.Unsubscribe(dobj, subscriber);
         }
 
         /// <summary>
@@ -343,17 +342,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="dobj">The object that was changed.</param>
         internal void RaiseChangeNotification(DependencyObject dobj)
         {
-            lock (changeNotificationSubs)
-            {
-                for (var current = changeNotificationSubs.First; current != null; current = current.Next)
-                {
-                    var key = current.Value;
-                    if (key.Target == dobj)
-                    {
-                        key.Subscriber.ReceiveDependencyPropertyChangeNotification(dobj, this);
-                    }
-                }
-            }
+            changeNotificationServer.Notify(dobj);
         }
 
         /// <summary>
@@ -520,7 +509,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
         // State values.
         private readonly DependencyPropertyStyleSetter styleSetter;
-        private readonly PooledLinkedList<ChangeNotificationKey> changeNotificationSubs = 
-            new PooledLinkedList<ChangeNotificationKey>(1);
+        private readonly DependencyPropertyChangeNotificationServer changeNotificationServer;
     }
 }
