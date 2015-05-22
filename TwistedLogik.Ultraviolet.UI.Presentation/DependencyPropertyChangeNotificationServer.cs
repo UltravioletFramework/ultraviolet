@@ -31,7 +31,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             {
                 PooledLinkedList<IDependencyPropertyChangeNotificationSubscriber> subscribers;
                 if (!subscriptions.TryGetValue(target, out subscribers))
-                    subscriptions[target] = subscribers = new PooledLinkedList<IDependencyPropertyChangeNotificationSubscriber>(1);
+                {
+                    lock (subscriberListPool)
+                    {
+                        subscribers = subscriberListPool.Retrieve();
+                    }
+                    subscriptions[target] = subscribers;
+                }
 
                 subscribers.AddLast(subscriber);
             }
@@ -51,6 +57,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                     return;
 
                 subscribers.Remove(subscriber);
+
+                if (subscribers.Count == 0)
+                {
+                    subscriptions.Remove(target);
+
+                    lock (subscriberListPool)
+                    {
+                        subscriberListPool.Release(subscribers);
+                    }
+                }
             }
         }
 
@@ -72,6 +88,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 }
             }
         }
+
+        // The global pool of subscriber lists.
+        private static readonly IPool<PooledLinkedList<IDependencyPropertyChangeNotificationSubscriber>> subscriberListPool = 
+            new ExpandingPool<PooledLinkedList<IDependencyPropertyChangeNotificationSubscriber>>(16, () => new PooledLinkedList<IDependencyPropertyChangeNotificationSubscriber>(1));
 
         // State values.
         private readonly DependencyProperty dprop;
