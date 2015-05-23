@@ -45,6 +45,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             miReferenceEquals = typeof(Object).GetMethod("ReferenceEquals", new[] { typeof(Object), typeof(Object) });
             miObjectEquals    = typeof(Object).GetMethod("Equals", BindingFlags.Public | BindingFlags.Static, null, new[] { typeof(Object), typeof(Object) }, null);
             miNullableEquals  = typeof(Nullable).GetMethods().Where(x => x.Name == "Equals" && x.IsGenericMethod).Single();
+            miCreateSimpleGet = typeof(BindingExpressions).GetMethod("CreateGetterForSimpleDependencyProperty", BindingFlags.NonPublic | BindingFlags.Static, null, new[] { typeof(DependencyProperty) }, null);
+            miCreateSimpleSet = typeof(BindingExpressions).GetMethod("CreateSetterForSimpleDependencyProperty", BindingFlags.NonPublic | BindingFlags.Static, null, new[] { typeof(DependencyProperty) }, null);
         }
 
         /// <summary>
@@ -270,8 +272,21 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             Contract.Require(dataSourceType, "dataSourceType");
             Contract.RequireNotEmpty(expression, "expression");
 
-            var builder = new DataBindingGetterBuilder(boundType, dataSourceType, expression);
-            return builder.Compile();
+            /* NOTE:
+             * The special case for simple dependency properties here is an optimization.
+             * Profiling shows that a significant part of our time during loading is spent
+             * compiling our expression trees, so we want to bypass that where possible. */
+
+            var dprop = GetSimpleDependencyProperty(dataSourceType, expression);
+            if (dprop != null && dprop.PropertyType == boundType)
+            {
+                return (Delegate)miCreateSimpleGet.MakeGenericMethod(boundType).Invoke(null, new[] { dprop });
+            }
+            else
+            {
+                var builder = new DataBindingGetterBuilder(boundType, dataSourceType, expression);
+                return builder.Compile();
+            }
         }
 
         /// <summary>
@@ -287,8 +302,21 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             Contract.Require(dataSourceType, "dataSourceType");
             Contract.RequireNotEmpty(expression, "expression");
 
-            var builder = new DataBindingSetterBuilder(boundType, dataSourceType, expression);
-            return builder.Compile();
+            /* NOTE:
+             * The special case for simple dependency properties here is an optimization.
+             * Profiling shows that a significant part of our time during loading is spent
+             * compiling our expression trees, so we want to bypass that where possible. */
+
+            var dprop = GetSimpleDependencyProperty(dataSourceType, expression);
+            if (dprop != null && dprop.PropertyType == boundType)
+            {
+                return (Delegate)miCreateSimpleSet.MakeGenericMethod(boundType).Invoke(null, new[] { dprop });
+            }
+            else
+            {
+                var builder = new DataBindingSetterBuilder(boundType, dataSourceType, expression);
+                return builder.Compile();
+            }
         }
 
         /// <summary>
@@ -496,10 +524,36 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             return null;
         }
 
+        /// <summary>
+        /// Creates an instance of <see cref="DataBindingGetter{T}"/> for cases where the binding expression
+        /// is a simple dependency property reference.
+        /// </summary>
+        private static DataBindingGetter<T> CreateGetterForSimpleDependencyProperty<T>(DependencyProperty dprop)
+        {
+            return new DataBindingGetter<T>((ds) =>
+            {
+                return ((DependencyObject)ds).GetValue<T>(dprop);
+            });
+        }
+
+        /// <summary>
+        /// Creates an instance of <see cref="DataBindingGetter{T}"/> for cases where the binding expression
+        /// is a simple dependency property reference.
+        /// </summary>
+        private static DataBindingSetter<T> CreateSetterForSimpleDependencyProperty<T>(DependencyProperty dprop)
+        {
+            return new DataBindingSetter<T>((ds, value) =>
+            {
+                ((DependencyObject)ds).SetValue<T>(dprop, value);
+            });
+        }
+
         // Reflection information for commonly-used methods.
         private static readonly MethodInfo miReferenceEquals;
         private static readonly MethodInfo miObjectEquals;
         private static readonly MethodInfo miNullableEquals;
+        private static readonly MethodInfo miCreateSimpleGet;
+        private static readonly MethodInfo miCreateSimpleSet;
 
         // Comparison functions for various types.
         private static readonly Dictionary<Type, Delegate> comparerRegistry = new Dictionary<Type, Delegate>();
