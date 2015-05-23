@@ -36,8 +36,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
             if (dprop == null)
                 return false;
 
-            if (refvalCache == null || refvalCache.GetType() != dprop.PropertyType)
+            if (refvalCache == null || (refvalCache.GetType() != dprop.PropertyType && Nullable.GetUnderlyingType(dprop.PropertyType) != refvalCache.GetType()))
+            {
                 refvalCache = ObjectResolver.FromString(refval, dprop.PropertyType);
+            }
 
             var comparison = TriggerComparisonCache.Get(dprop.PropertyType, op);
             if (comparison == null)
