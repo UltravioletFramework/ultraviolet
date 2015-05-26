@@ -290,6 +290,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
         private Double total;
         private Double delta = 1;
         private readonly PooledLinkedList<IDependencyPropertyValue> subscribers = 
-            new PooledLinkedList<IDependencyPropertyValue>();
+            new PooledLinkedList<IDependencyPropertyValue>(1);
     }
 }
