@@ -49,6 +49,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             this.name            = name;
             this.uvssName        = uvssName ?? UvssNameGenerator.GenerateUvssName(name);
             this.propertyType    = propertyType;
+            this.underlyingType  = Nullable.GetUnderlyingType(propertyType);
             this.ownerType       = ownerType;
             this.defaultMetadata = metadata ?? (PropertyMetadata)typeof(PropertyMetadata<>).MakeGenericType(propertyType).GetField("Empty").GetValue(null);
             this.isReadOnly      = isReadOnly;
@@ -446,6 +447,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// If the dependency property's type is nullable, this property retrieves its underlying type.
+        /// Otherwise, this property returns <c>null</c>.
+        /// </summary>
+        internal Type UnderlyingType
+        {
+            get { return underlyingType; }
+        }
+
+        /// <summary>
         /// Gets the dependency property's owner type.
         /// </summary>
         internal Type OwnerType
@@ -500,6 +510,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         private readonly String name;
         private readonly String uvssName;
         private readonly Type propertyType;
+        private readonly Type underlyingType;
         private readonly Type ownerType;
         private readonly PropertyMetadata defaultMetadata;
         private readonly Boolean isReadOnly;

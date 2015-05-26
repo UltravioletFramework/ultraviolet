@@ -60,7 +60,24 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             Contract.Require(classType, "classType");
             Contract.Require(routedEvent, "routedEvent");
 
-            var manager = GetClassHandlerManager(routedEvent, classType);
+            var manager = GetClassHandlerManager(routedEvent, classType, false);
+            if (manager == null)
+            {
+                while (true)
+                {
+                    classType = classType.BaseType;
+
+                    if (classType == null)
+                        break;
+
+                    manager = GetClassHandlerManager(routedEvent, classType, false);
+                    if (manager != null)
+                    {
+                        return manager.GetClassHandlers();
+                    }
+                }
+                return null;
+            }
             return manager.GetClassHandlers();
         }
 
@@ -70,11 +87,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="routedEvent">The event for which to retrieve a class handler manager.</param>
         /// <param name="classType">The type for which to retrieve a class handler manager.</param>
         /// <returns>The <see cref="RoutedEventClassHandlerManager"/> for the specified event and type.</returns>
-        private static RoutedEventClassHandlerManager GetClassHandlerManager(RoutedEvent routedEvent, Type classType)
+        private static RoutedEventClassHandlerManager GetClassHandlerManager(RoutedEvent routedEvent, Type classType, Boolean createIfMissing = true)
         {
             Dictionary<Type, RoutedEventClassHandlerManager> managersByType;
             if (!managers.TryGetValue(routedEvent, out managersByType))
             {
+                if (!createIfMissing)
+                    return null;
+
                 managersByType = new Dictionary<Type, RoutedEventClassHandlerManager>();
                 managers[routedEvent] = managersByType;
             }
@@ -82,6 +102,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             RoutedEventClassHandlerManager manager;
             if (!managersByType.TryGetValue(classType, out manager))
             {
+                if (!createIfMissing)
+                    return null;
+
                 manager = CreateClassHandlerManager(routedEvent, classType);
                 managersByType[classType] = manager;
             }
