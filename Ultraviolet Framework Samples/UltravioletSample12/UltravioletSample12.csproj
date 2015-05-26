@@ -75,6 +75,9 @@
     <Reference Include="TwistedLogik.Ultraviolet.SDL2">
       <HintPath>..\Dependencies\TwistedLogik.Ultraviolet.SDL2.dll</HintPath>
     </Reference>
+    <Reference Include="TwistedLogik.Ultraviolet.UI.Presentation">
+      <HintPath>..\Dependencies\TwistedLogik.Ultraviolet.UI.Presentation.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Game.cs" />
