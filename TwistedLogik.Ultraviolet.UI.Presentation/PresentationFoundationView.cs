@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet.Content;
 using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
@@ -821,8 +822,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (root == null)
                 return;
 
-            var mouse    = Ultraviolet.GetInput().GetMouse();
-            var mousePos = Display.PixelsToDips(mouse.Position);
+            var mouse = Ultraviolet.GetInput().GetMouse();
+            if (mouse == null)
+                return;
+
+            isMouseOverSet.Clear();
+
+            var elementAtMouse = (DependencyObject)HitTestScreenPixel((Point2)mouse.Position);
+            while (elementAtMouse != null)
+            {
+                isMouseOverSet.Add(elementAtMouse);
+                elementAtMouse = VisualTreeHelper.GetParent(elementAtMouse);
+            }
 
             var current = root as DependencyObject;
             while (current != null)
@@ -830,9 +841,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 var uiElement = current as UIElement;
                 if (uiElement != null)
                 {
-                    var bounds   = uiElement.AbsoluteBounds;
                     var oldValue = uiElement.IsMouseOver;
-                    var newValue = !unset && bounds.Contains(mousePos);
+                    var newValue = isMouseOverSet.Contains(uiElement);
                     if (oldValue != newValue)
                     {
                         uiElement.IsMouseOver = newValue;
@@ -858,6 +868,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 }
                 current = VisualTreeHelper.GetParent(current);
             }
+
+            isMouseOverSet.Clear();
         }
 
         /// <summary>
@@ -1235,6 +1247,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         private Grid layoutRoot;
 
         // State values.
+        private readonly HashSet<DependencyObject> isMouseOverSet = new HashSet<DependencyObject>();
         private readonly DrawingContext drawingContext;
         private IInputElement elementUnderMousePrev;
         private IInputElement elementUnderMouse;
