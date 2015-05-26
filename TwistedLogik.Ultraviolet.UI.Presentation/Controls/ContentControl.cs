@@ -66,7 +66,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         /// <remarks>The styling name of this dependency property is 'content-string-format'.</remarks>
         public static readonly DependencyProperty ContentStringFormatProperty = DependencyProperty.Register("ContentStringFormat", typeof(String), typeof(ContentControl),
-            new PropertyMetadata<String>(null, PropertyMetadataOptions.AffectsMeasure | PropertyMetadataOptions.CoerceObjectToString, HandleContentStringFormatChanged));
+            new PropertyMetadata<String>(null, PropertyMetadataOptions.AffectsMeasure | PropertyMetadataOptions.CoerceObjectToString));
 
         /// <summary>
         /// The private access key for the <see cref="HasContent"/> read-only dependency property.
@@ -167,14 +167,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             }
 
             control.OnContentChanged();
-        }
-
-        /// <summary>
-        /// Occurs when the value of the <see cref="ContentStringFormat"/> dependency property changes.
-        /// </summary>
-        private static void HandleContentStringFormatChanged(DependencyObject dobj, String oldValue, String newValue)
-        {
-            // TODO
         }
 
         // State values.
