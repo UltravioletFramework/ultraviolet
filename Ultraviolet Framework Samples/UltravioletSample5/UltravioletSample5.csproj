@@ -78,14 +78,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\GlobalSpriteID.cs" />
-    <None Include="..\Dependencies\TwistedLogik.Ultraviolet.BASS.dll.config">
-      <Link>TwistedLogik.Ultraviolet.BASS.dll.config</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="..\Dependencies\TwistedLogik.Ultraviolet.SDL2.dll.config">
-      <Link>TwistedLogik.Ultraviolet.SDL2.dll.config</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <None Include="..\Dependencies\x64\unix\libbass.so">
       <Link>x64\unix\libbass.so</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
