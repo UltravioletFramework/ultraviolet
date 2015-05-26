@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using TwistedLogik.Ultraviolet.Content;
 using TwistedLogik.Ultraviolet.UI;
 using UltravioletSample.UI.Screens;
-using TwistedLogik.Ultraviolet.Content;
 
 namespace UltravioletSample.UI
 {
@@ -18,15 +18,7 @@ namespace UltravioletSample.UI
         {
             this.globalContent = globalContent;
 
-            Register(new LoadingScreen(globalContent, this));
-        }
-
-        /// <summary>
-        /// Loads the game's screens into memory.
-        /// </summary>
-        public void Load()
-        {
-            Register(new GameplayScreen(globalContent, this));
+            Register(new ExampleScreen(globalContent, this));
         }
 
         /// <summary>
