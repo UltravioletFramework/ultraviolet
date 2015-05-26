@@ -210,6 +210,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <inheritdoc/>
+        protected override void StyleCore(Styles.UvssDocument stylesheet)
+        {
+            if (componentRoot != null)
+                componentRoot.InvalidateStyle(true);
+
+            base.StyleCore(stylesheet);
+        }
+
+        /// <inheritdoc/>
         protected override Size2D MeasureOverride(Size2D availableSize)
         {
             if (componentRoot == null)

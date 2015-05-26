@@ -403,6 +403,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             UpdateCombinedStylesheet();
 
             LoadViewResources(combinedStylesheet);
+
+            layoutRoot.InvalidateStyle(true);
             layoutRoot.Style(combinedStylesheet);
         }
 
