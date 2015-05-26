@@ -63,11 +63,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var manager = GetClassHandlerManager(routedEvent, classType, false);
             if (manager == null)
             {
-                while (classType != null)
+                while (true)
                 {
                     classType = classType.BaseType;
-                    
-                    manager = GetClassHandlerManager(routedEvent, classType);
+
+                    if (classType == null)
+                        break;
+
+                    manager = GetClassHandlerManager(routedEvent, classType, false);
                     if (manager != null)
                     {
                         return manager.GetClassHandlers();
