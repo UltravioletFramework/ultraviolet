@@ -15,9 +15,9 @@ namespace TwistedLogik.Ultraviolet.OpenGL
         public OpenGLUltravioletConfiguration()
         {
 #if PRODUCTION
-            AudioSubsystemAssembly = "TwistedLogik.Ultraviolet.BASS, Version=1.1.0.0, Culture=neutral, PublicKeyToken=78da2f4877323311, processorArchitecture=MSIL";
+            AudioSubsystemAssembly = "TwistedLogik.Ultraviolet.BASS, Version=1.2.0.0, Culture=neutral, PublicKeyToken=78da2f4877323311, processorArchitecture=MSIL";
 #else
-            AudioSubsystemAssembly = "TwistedLogik.Ultraviolet.BASS, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL";
+            AudioSubsystemAssembly = "TwistedLogik.Ultraviolet.BASS, Version=1.2.0.0, Culture=neutral, processorArchitecture=MSIL";
 #endif
         }
 
