@@ -9,7 +9,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
     /// </summary>
     /// <param name="element">The element that raised the event.</param>
     /// <param name="device">The mouse device.</param>
-    /// <param name="handled">A value indicating whether the event has been handled.</param>
+    /// <param name="data">The routed event metadata for this event invocation.</param>
     public delegate void UpfMouseEventHandler(DependencyObject element, MouseDevice device, ref RoutedEventData data);
 
     /// <summary>
@@ -18,7 +18,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
     /// <param name="element">The element that raised the event.</param>
     /// <param name="device">The mouse device.</param>
     /// <param name="button">The mouse button that was pressed or released.</param>
-    /// <param name="handled">A value indicating whether the event has been handled.</param>
+    /// <param name="data">The routed event metadata for this event invocation.</param>
     public delegate void UpfMouseButtonEventHandler(DependencyObject element, MouseDevice device, MouseButton button, ref RoutedEventData data);
 
     /// <summary>
@@ -32,7 +32,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
     /// current position and the x-coordinate of the mouse's previous position.</param>
     /// <param name="dy">The difference between the y-coordinate of the mouse's 
     /// current position and the y-coordinate of the mouse's previous position.</param>
-    /// <param name="handled">A value indicating whether the event has been handled.</param>
+    /// <param name="data">The routed event metadata for this event invocation.</param>
     public delegate void UpfMouseMoveEventHandler(DependencyObject element, MouseDevice device, Double x, Double y, Double dx, Double dy, ref RoutedEventData data);
 
     /// <summary>
@@ -42,7 +42,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
     /// <param name="device">The mouse device.</param>
     /// <param name="x">The amount that the wheel was scrolled along the x-axis.</param>
     /// <param name="y">The amount that the wheel was scrolled along the y-axis.</param>
-    /// <param name="handled">A value indicating whether the event has been handled.</param>
+    /// <param name="data">The routed event metadata for this event invocation.</param>
     public delegate void UpfMouseWheelEventHandler(DependencyObject element, MouseDevice device, Double x, Double y, ref RoutedEventData data);
 
     /// <summary>

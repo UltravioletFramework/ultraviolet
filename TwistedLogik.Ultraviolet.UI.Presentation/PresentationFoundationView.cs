@@ -220,7 +220,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Releases the mouse from the element that is currently capturing it.
         /// </summary>
-        /// <param name="element">The element that is attempting to release mouse capture.</param>
         public void ReleaseMouse()
         {
             if (elementWithMouseCapture == null)

@@ -127,7 +127,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             public event CollectionItemRemovedEventHandler CollectionItemRemoved;
 
             /// <summary>
-            /// Raises the <see cref="CollectionItemReset"/> event.
+            /// Raises the <see cref="CollectionReset"/> event.
             /// </summary>
             private void OnCollectionReset()
             {

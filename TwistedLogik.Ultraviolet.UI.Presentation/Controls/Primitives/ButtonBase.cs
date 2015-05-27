@@ -23,8 +23,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
         /// <param name="name">The element's identifying name within its namescope.</param>
-        public ButtonBase(UltravioletContext uv, String id)
-            : base(uv, id)
+        public ButtonBase(UltravioletContext uv, String name)
+            : base(uv, name)
         {
             SetDefaultValue<Boolean>(FocusableProperty, true);
 
@@ -177,7 +177,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         }
 
         /// <summary>
-        /// Occurs when the value of the <see cref="IsEnabledChanged"/> dependency property changes.
+        /// Occurs when the value of the <see cref="UIElement.IsEnabledChanged"/> dependency property changes.
         /// </summary>
         private static void HandleIsEnabledChanged(DependencyObject dobj, Boolean oldValue, Boolean newValue)
         {

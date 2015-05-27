@@ -11,7 +11,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// Adds an event handler for a routed event to the specified input element.
         /// </summary>
         /// <param name="dobj">The input element to which to add the event handler.</param>
-        /// <param name="evt">A <see cref="RoutedEvent"/> that identifies the routed event for which to add a handler.</param>
+        /// <param name="routedEvent">A <see cref="RoutedEvent"/> that identifies the routed event for which to add a handler.</param>
         /// <param name="handler">A delegate that represents the handler to add to the element for the specified routed event.</param>
         public static void AddHandler(DependencyObject dobj, RoutedEvent routedEvent, Delegate handler)
         {
@@ -29,7 +29,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// Removes a handler for a routed event from the specified input element.
         /// </summary>
         /// <param name="dobj">The input element from which to remove the event handler.</param>
-        /// <param name="evt">A <see cref="RoutedEvent"/> that identifies the routed event for which to remove a handler.</param>
+        /// <param name="routedEvent">A <see cref="RoutedEvent"/> that identifies the routed event for which to remove a handler.</param>
         /// <param name="handler">A delegate that represents the handler to remove from the element for the specified routed event.</param>
         public static void RemoveHandler(DependencyObject dobj, RoutedEvent routedEvent, Delegate handler)
         {

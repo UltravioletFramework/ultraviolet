@@ -133,7 +133,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// containing a collection of <see cref="UvmlAttribute"/> objects which represent them.
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
-        /// <param name="parent">The element which is the element's parent.</param>
+        /// <param name="uiElement">The UI element for which attributes are being categorized.</param>
         /// <param name="xmlElement">The XML element that defines the element to instantiate.</param>
         /// <param name="context">The current instantiation context.</param>
         /// <returns>A list containing a collection of <see cref="UvmlAttribute"/> objects which represents the categorized attributes.</returns>

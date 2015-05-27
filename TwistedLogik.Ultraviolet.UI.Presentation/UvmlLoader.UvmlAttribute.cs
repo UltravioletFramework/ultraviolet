@@ -16,7 +16,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             /// <param name="attachment">The name of the attribute's attachment, if it has one.</param>
             /// <param name="name">The name of the property or event that the attribute represents.</param>
             /// <param name="value">The value of the property or event as declared in the UVML document.</param>
-            /// <param name="identifier">The identifier associated with the property or event that the attribute represents, such as a <see cref="DependencyProperty"/> or a <see cref="EventInfo"/>.</param>
+            /// <param name="identifier">The identifier associated with the property or event that the attribute represents, such as a <see cref="DependencyProperty"/> or a <see cref="RoutedEvent"/>.</param>
             public UvmlAttribute(UvmlAttributeType attributeType, String attachment, String name, String value, Object identifier)
             {
                 this.attributeType = attributeType;
@@ -60,7 +60,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             /// <summary>
             /// Gets the identifier associated with the property or event that the attribute represents, such
-            /// as a <see cref="DependencyProperty"/> or a <see cref="EventInfo"/>.
+            /// as a <see cref="DependencyProperty"/> or a <see cref="RoutedEvent"/>.
             /// </summary>
             public Object Identifier
             {

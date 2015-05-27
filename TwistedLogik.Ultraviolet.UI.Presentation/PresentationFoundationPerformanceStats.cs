@@ -1,4 +1,5 @@
 ﻿using System;
+using TwistedLogik.Ultraviolet.UI.Presentation.Styles;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation
 {
@@ -8,7 +9,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
     public sealed class PresentationFoundationPerformanceStats
     {
         /// <summary>
-        /// Gets the number of <see cref="UIElement.InvalidateStyle()"/> calls made in the last frame.
+        /// Gets the number of <see cref="UIElement.InvalidateStyle(Boolean)"/> calls made in the last frame.
         /// </summary>
         public Int32 InvalidateStyleCountLastFrame
         {
@@ -35,7 +36,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
-        /// Gets the number of <see cref="UIElement.Style()"/> calls that were actually handled in the last frame.
+        /// Gets the number of <see cref="UIElement.Style(UvssDocument)"/> calls that were actually handled in the last frame.
         /// </summary>
         public Int32 StyleCountLastFrame
         {
@@ -44,7 +45,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
-        /// Gets the number of <see cref="UIElement.Measure()"/> calls that were actually handled in the last frame.
+        /// Gets the number of <see cref="UIElement.Measure(Size2D)"/> calls that were actually handled in the last frame.
         /// </summary>
         public Int32 MeasureCountLastFrame
         {
@@ -53,7 +54,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
-        /// Gets the number of <see cref="UIElement.Arrange()"/> calls that were actually handled in the last frame.
+        /// Gets the number of <see cref="UIElement.Arrange(RectangleD, ArrangeOptions)"/> calls that were actually handled in the last frame.
         /// </summary>
         public Int32 ArrangeCountLastFrame
         {
@@ -62,7 +63,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
-        /// Gets the number of <see cref="UIElement.Position()"/> calls that were actually handled in the last frame.
+        /// Gets the number of <see cref="UIElement.Position(Size2D)"/> calls that were actually handled in the last frame.
         /// </summary>
         public Int32 PositionCountLastFrame
         {

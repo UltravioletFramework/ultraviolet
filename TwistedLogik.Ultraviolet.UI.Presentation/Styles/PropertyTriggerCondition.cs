@@ -25,6 +25,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// <summary>
         /// Evaluates whether the condition is true for the specified object.
         /// </summary>
+        /// <param name="uv">The Ultraviolet context.</param>
         /// <param name="dobj">The object against which to evaluate the trigger condition.</param>
         /// <returns><c>true</c> if the condition is true for the specified object; otherwise, <c>false</c>.</returns>
         internal Boolean Evaluate(UltravioletContext uv, DependencyObject dobj)

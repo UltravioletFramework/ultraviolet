@@ -86,6 +86,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         /// <param name="routedEvent">The event for which to retrieve a class handler manager.</param>
         /// <param name="classType">The type for which to retrieve a class handler manager.</param>
+        /// <param name="createIfMissing">A value specifying whether the manager should be created if it does not already exist.</param>
         /// <returns>The <see cref="RoutedEventClassHandlerManager"/> for the specified event and type.</returns>
         private static RoutedEventClassHandlerManager GetClassHandlerManager(RoutedEvent routedEvent, Type classType, Boolean createIfMissing = true)
         {

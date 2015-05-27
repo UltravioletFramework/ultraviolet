@@ -16,8 +16,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
         /// <param name="name">The element's identifying name within its namescope.</param>
-        public ProgressBar(UltravioletContext uv, String id)
-            : base(uv, id)
+        public ProgressBar(UltravioletContext uv, String name)
+            : base(uv, name)
         {
             SetDefaultValue<Double>(MaximumProperty, 100.0);
         }

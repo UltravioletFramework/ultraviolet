@@ -9,7 +9,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
     /// </summary>
     /// <param name="element">The element that raised the event.</param>
     /// <param name="device">The keyboard device.</param>
-    /// <param name="handled">A value indicating whether the event has been handled.</param>
+    /// <param name="data">The routed event metadata for this event invocation.</param>
     public delegate void UpfKeyboardEventHandler(DependencyObject element, KeyboardDevice device, ref RoutedEventData data);
 
     /// <summary>
@@ -19,7 +19,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
     /// <param name="device">The <see cref="KeyboardDevice"/> that raised the event.</param>
     /// <param name="key">The <see cref="Key"/> value that represents the key that was pressed.</param>
     /// <param name="modifiers">A <see cref="ModifierKeys"/> value indicating which of the key modifiers are currently active.</param>
-    /// <param name="handled">A value indicating whether the event has been handled.</param>
+    /// <param name="data">The routed event metadata for this event invocation.</param>
     public delegate void UpfKeyDownEventHandler(DependencyObject element, KeyboardDevice device, Key key, ModifierKeys modifiers, ref RoutedEventData data);
 
     /// <summary>
@@ -28,7 +28,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
     /// <param name="element">The element that raised the event.</param>
     /// <param name="device">The <see cref="KeyboardDevice"/> that raised the event.</param>
     /// <param name="key">The <see cref="Key"/> value that represents the key that was pressed.</param>
-    /// <param name="handled">A value indicating whether the event has been handled.</param>
+    /// <param name="data">The routed event metadata for this event invocation.</param>
     public delegate void UpfKeyEventHandler(DependencyObject element, KeyboardDevice device, Key key, ref RoutedEventData data);
 
     /// <summary>

@@ -102,6 +102,7 @@
     <Compile Include="Controls\ComboBox.cs" />
     <Compile Include="Controls\ComboBoxItem.cs" />
     <Compile Include="Controls\ItemContainerGenerator.cs" />
+    <Compile Include="Controls\ListBoxSelectedItems.IEnumerable.cs" />
     <Compile Include="Controls\Primitives\NamespaceDoc.cs" />
     <Compile Include="Controls\Primitives\PlacementMode.cs" />
     <Compile Include="Controls\Primitives\Popup.cs" />

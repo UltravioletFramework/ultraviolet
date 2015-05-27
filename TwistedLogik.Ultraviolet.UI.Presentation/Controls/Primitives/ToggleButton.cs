@@ -14,8 +14,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
         /// <param name="name">The element's identifying name within its namescope.</param>
-        public ToggleButton(UltravioletContext uv, String id)
-            : base(uv, id)
+        public ToggleButton(UltravioletContext uv, String name)
+            : base(uv, name)
         {
             VisualStateGroups.Create("checkstate", new[] { "unchecked", "checked", "indeterminate" });
 

@@ -14,8 +14,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
         /// <param name="name">The element's identifying name within its namescope.</param>
-        public CheckBox(UltravioletContext uv, String id)
-            : base(uv, id)
+        public CheckBox(UltravioletContext uv, String name)
+            : base(uv, name)
         {
 
         }

@@ -16,8 +16,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
         /// <param name="name">The element's identifying name within its namescope.</param>
-        public ScrollViewer(UltravioletContext uv, String id)
-            : base(uv, id)
+        public ScrollViewer(UltravioletContext uv, String name)
+            : base(uv, name)
         {
 
         }
@@ -259,7 +259,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
-        /// Handles the <see cref="RangeControl.ValueChanged"/> event for the scroll viewer's scroll bars.
+        /// Handles the <see cref="RangeBase.ValueChanged"/> event for the scroll viewer's scroll bars.
         /// </summary>
         private void HandleScrollValueChanged(DependencyObject element, ref RoutedEventData data)
         {

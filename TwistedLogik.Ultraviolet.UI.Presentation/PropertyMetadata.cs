@@ -6,6 +6,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
     /// Represents the method that is invoked when a dependency property's value changes.
     /// </summary>
     /// <param name="dependencyObject">The dependency object that raised the event.</param>
+    /// <param name="oldValue">The old value of the dependency property.</param>
+    /// <param name="newValue">The new value of the dependency property.</param>
     public delegate void PropertyChangedCallback<T>(DependencyObject dependencyObject, T oldValue, T newValue);
 
     /// <summary>

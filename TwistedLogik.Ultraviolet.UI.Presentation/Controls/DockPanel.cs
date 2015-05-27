@@ -14,8 +14,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
         /// <param name="name">The element's identifying name within its namescope.</param>
-        public DockPanel(UltravioletContext uv, String id)
-            : base(uv, id)
+        public DockPanel(UltravioletContext uv, String name)
+            : base(uv, name)
         {
 
         }

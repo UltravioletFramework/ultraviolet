@@ -43,14 +43,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Called when the bound object's data source is changed.
         /// </summary>
-        /// <param name="oldValue">The old value of the <see cref="DependencyDataSource"/> property.</param>
-        /// <param name="newValue">The new value of the <see cref="DependencyDataSource"/> property.</param>
-        public void HandleDataSourceChanged(Object newValue)
+        /// <param name="dataSource">The new value of the <see cref="UIElement.DependencyDataSource"/> property.</param>
+        public void HandleDataSourceChanged(Object dataSource)
         {
             UnhookDependencyProperty();
 
-            if (newValue != null)
-                HookDependencyProperty(newValue);
+            if (dataSource != null)
+                HookDependencyProperty(dataSource);
         }
 
         /// <summary>

@@ -2,6 +2,7 @@
 using System.Runtime.InteropServices;
 using System.Security;
 using TwistedLogik.Ultraviolet.Input;
+using TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 {
@@ -25,8 +26,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
         /// <param name="name">The element's identifying name within its namescope.</param>
-        public RepeatButton(UltravioletContext uv, String id)
-            : base(uv, id)
+        public RepeatButton(UltravioletContext uv, String name)
+            : base(uv, name)
         {
             SetDefaultValue<ClickMode>(ClickModeProperty, ClickMode.Press);
         }

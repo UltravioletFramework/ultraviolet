@@ -131,7 +131,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
         
         /// <summary>
-        /// Raises the <see cref="ContentChanged"/> event.
+        /// Occurs when the value of the <see cref="Content"/> property is changed.
         /// </summary>
         protected virtual void OnContentChanged()
         {

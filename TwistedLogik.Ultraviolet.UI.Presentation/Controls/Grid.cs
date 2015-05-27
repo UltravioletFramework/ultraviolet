@@ -15,8 +15,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
         /// <param name="name">The element's identifying name within its namescope.</param>
-        public Grid(UltravioletContext uv, String id)
-            : base(uv, id)
+        public Grid(UltravioletContext uv, String name)
+            : base(uv, name)
         {
             this.rowDefinitions    = new RowDefinitionCollection(this);
             this.columnDefinitions = new ColumnDefinitionCollection(this);
@@ -149,14 +149,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             new PropertyMetadata<Int32>(null, PropertyMetadataOptions.AffectsMeasure, HandleColumnChanged));
 
         /// <summary>
-        /// Identifies the <see cref="RowSpan"/> dependency property.
+        /// Identifies the RowSpan attached property.
         /// </summary>
         /// <remarks>The styling name of this dependency property is 'row-span'.</remarks>
         public static readonly DependencyProperty RowSpanProperty = DependencyProperty.RegisterAttached("RowSpan", typeof(Int32), typeof(Grid),
             new PropertyMetadata<Int32>(CommonBoxedValues.Int32.One));
 
         /// <summary>
-        /// Identifies the <see cref="ColumnSpan"/> dependency property.
+        /// Identifies the ColumnSpan attached property.
         /// </summary>
         /// <remarks>The styling name of this dependency property is 'column-span'.</remarks>
         public static readonly DependencyProperty ColumnSpanProperty = DependencyProperty.RegisterAttached("ColumnSpan", typeof(Int32), typeof(Grid),
@@ -398,6 +398,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// Measures the cells in the specified priority group.
         /// </summary>
         /// <param name="priority">The measurement priority group to measure.</param>
+        /// <param name="options">The measurement options for this priority group.</param>
         private void MeasureVirtualCells(Int32 priority, GridMeasurementOptions options = GridMeasurementOptions.None)
         {
             if (!hasCellsOfPriority[priority])
@@ -943,7 +944,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 
         /// <summary>
         /// Retrieves a buffer containing all of the non-auto-sized row/column definitions in the specified span.
-        /// The buffer is sorted in ascending order of <see cref="DefinitionBase.DesiredDiemsion"/>. 
+        /// The buffer is sorted in ascending order of <see cref="DefinitionBase.PreferredDesiredDimension"/>. 
         /// </summary>
         /// <param name="definitions">The collection of definitions from which to retrieve the span.</param>
         /// <param name="index">The index of the first definition in the span.</param>

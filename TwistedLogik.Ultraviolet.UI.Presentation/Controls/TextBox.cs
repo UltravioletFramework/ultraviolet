@@ -18,12 +18,20 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
     public partial class TextBox : Control
     {
         /// <summary>
+        /// Initializes the <see cref="TextBox"/> class.
+        /// </summary>
+        static TextBox()
+        {
+            FontProperty.AddOwner(typeof(TextBox), new PropertyMetadata<SourcedResource<SpriteFont>>(HandleFontChanged));
+        }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="TextBox"/> class.
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
         /// <param name="name">The element's identifying name within its namescope.</param>
-        public TextBox(UltravioletContext uv, String id)
-            : base(uv, id)
+        public TextBox(UltravioletContext uv, String name)
+            : base(uv, name)
         {
             SetDefaultValue<Boolean>(FocusableProperty, true);
         }
@@ -479,7 +487,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Draws the text caret.
         /// </summary>
-        /// <param name="container">The element within which the control's text is being drawn.</param>
         /// <param name="dc">The drawing context that describes the render state of the layout.</param>
         protected virtual void DrawTextCaret(DrawingContext dc)
         {
@@ -574,7 +581,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
-        /// Occurs when the value of the <see cref="Font"/> dependency property changes.
+        /// Occurs when the value of the <see cref="Control.Font"/> dependency property changes.
         /// </summary>
         private static void HandleFontChanged(DependencyObject dobj, SourcedResource<SpriteFont> oldValue, SourcedResource<SpriteFont> newValue)
         {

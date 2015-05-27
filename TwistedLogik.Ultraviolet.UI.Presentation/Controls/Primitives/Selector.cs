@@ -161,7 +161,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             new PropertyMetadata<Boolean>());
 
         /// <summary>
-        /// The private access key for the <see cref="IsSelectionActive"/> read-only dependency property.
+        /// The private access key for the IsSelectionActive read-only attached dependency property.
         /// </summary>
         private static readonly DependencyPropertyKey IsSelectionActivePropertyKey = DependencyProperty.RegisterAttachedReadOnly("IsSelectionActive", typeof(Boolean), typeof(Selector),
             new PropertyMetadata<Boolean>());
@@ -297,7 +297,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <summary>
         /// Selects the specified item and unselects any other items.
         /// </summary>
-        /// <param name="dobj">The item to select.</param>
+        /// <param name="item">The item to select.</param>
         protected void SelectItem(Object item)
         {
             Contract.Require(item, "item");
@@ -392,7 +392,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <summary>
         /// Occurs when the value of the <see cref="SelectionChanged"/> dependency property changes.
         /// </summary>
-        /// <param name="dobj">The dependency object that raised the event.</param>
         private static void HandleSelectionChanged(DependencyObject dobj, ref RoutedEventData data)
         {
             if (data.OriginalSource == dobj)

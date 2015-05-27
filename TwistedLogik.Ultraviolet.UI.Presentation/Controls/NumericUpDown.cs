@@ -17,8 +17,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
         /// <param name="name">The element's identifying name within its namescope.</param>
-        public NumericUpDown(UltravioletContext uv, String id)
-            : base(uv, id)
+        public NumericUpDown(UltravioletContext uv, String name)
+            : base(uv, name)
         {
             SetDefaultValue<Double>(MinimumProperty, 0.0);
             SetDefaultValue<Double>(MaximumProperty, 100.0);

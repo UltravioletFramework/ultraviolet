@@ -72,7 +72,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Removes a class handler from the manager.
         /// </summary>
-        /// <param name="classType">The type for which the handler is defined; must be a supertype of the manager's owner type.</param>
         /// <param name="handler">A delegate which represents the handler to remove from the specified routed event.</param>
         public void RemoveHandler(Delegate handler)
         {

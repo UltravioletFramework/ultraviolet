@@ -14,7 +14,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
     /// Represents the method that is called when an interface element raises a routed event.
     /// </summary>
     /// <param name="element">The element that raised the event.</param>
-    /// <param name="handled">A value indicating whether the event has been handled.</param>
+    /// <param name="data">The routed event metadata for this event invocation.</param>
     public delegate void UpfRoutedEventHandler(DependencyObject element, ref RoutedEventData data);
 
     /// <summary>

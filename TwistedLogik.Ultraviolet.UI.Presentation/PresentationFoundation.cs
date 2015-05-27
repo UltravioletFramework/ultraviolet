@@ -455,6 +455,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Registers a custom element type with the Presentation Foundation.
         /// </summary>
+        /// <param name="registry">The registry to which to add the element.</param>
         /// <param name="type">The type that implements the custom element.</param>
         /// <param name="layout">The XML document that defines the custom element's layout.</param>
         private void RegisterElementInternal(Dictionary<String, KnownType> registry, Type type, XDocument layout)

@@ -759,7 +759,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
         /// <summary>
         /// Gets the position of the element in absolute screen coordinates as of the
-        /// last call to the <see cref="Position(Point2D)"/> method.
+        /// last call to the <see cref="Position(Size2D)"/> method.
         /// </summary>
         public Point2D AbsolutePosition
         {
@@ -1177,7 +1177,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
-        /// Gets the position offset that was most recently passed to the <see cref="Position(Point2D)"/> method.
+        /// Gets the position offset that was most recently passed to the <see cref="Position(Size2D)"/> method.
         /// </summary>
         internal Size2D MostRecentPositionOffset
         {
@@ -1256,8 +1256,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         /// <param name="style">The style which is being applied.</param>
         /// <param name="selector">The selector which caused the style to be applied.</param>
-        /// <param name="attached">A value indicating whether thie style represents an attached property.</param>
-        protected internal sealed override void ApplyStyle(UvssStyle style, UvssSelector selector, DependencyProperty dp)
+        /// <param name="dprop">A <see cref="DependencyProperty"/> that identifies the dependency property which is being styled.</param>
+        protected internal sealed override void ApplyStyle(UvssStyle style, UvssSelector selector, DependencyProperty dprop)
         {
             Contract.Require(style, "style");
             Contract.Require(selector, "selector");
@@ -1269,9 +1269,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             }
             else
             {
-                if (dp != null)
+                if (dprop != null)
                 {
-                    dp.ApplyStyle(this, style, CultureInfo.InvariantCulture);
+                    dprop.ApplyStyle(this, style, CultureInfo.InvariantCulture);
                 }
             }
         }

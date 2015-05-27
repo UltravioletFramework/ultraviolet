@@ -225,7 +225,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
-        /// Occurs when the value of the <see cref="IsEnabledChanged"/> dependency property changes.
+        /// Occurs when the value of the <see cref="UIElement.IsEnabledChanged"/> dependency property changes.
         /// </summary>
         private static void HandleIsEnabledChanged(DependencyObject dobj, Boolean oldValue, Boolean newValue)
         {

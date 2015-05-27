@@ -15,8 +15,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
         /// <param name="name">The element's identifying name within its namescope.</param>
-        public Track(UltravioletContext uv, String id)
-            : base(uv, id)
+        public Track(UltravioletContext uv, String name)
+            : base(uv, name)
         {
             this.Thumb = new Button(uv, null) 
             { 
@@ -377,7 +377,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         }
 
         /// <summary>
-        /// Handles the <see cref="Mouse.PreviewMouseMove"/> event for the Thumb button.
+        /// Handles the <see cref="Mouse.PreviewMouseMoveEvent"/> routed event for the Thumb button.
         /// </summary>
         private void HandleThumbPreviewMouseMove(DependencyObject element, MouseDevice device, Double x, Double y, Double dx, Double dy, ref RoutedEventData data)
         {
@@ -408,7 +408,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         }
 
         /// <summary>
-        /// Handles the <see cref="Mouse.PreviewMouseDown"/> event for the Thumb button.
+        /// Handles the <see cref="Mouse.PreviewMouseDownEvent"/> routed event for the Thumb button.
         /// </summary>
         private void HandleThumbPreviewMouseDown(DependencyObject element, MouseDevice device, MouseButton pressed, ref RoutedEventData data)
         {
@@ -427,7 +427,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         }
         
         /// <summary>
-        /// Handles the <see cref="Mouse.PreviewMouseUp"/> event for the Thumb button.
+        /// Handles the <see cref="Mouse.PreviewMouseUpEvent"/> routed event for the Thumb button.
         /// </summary>
         private void HandleThumbPreviewMouseUp(DependencyObject element, MouseDevice device, MouseButton pressed, ref RoutedEventData data)
         {
