@@ -109,8 +109,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 
             if (textParserResult.Count > 0 && Font.IsLoaded)
             {
-                var unconstrainedWidth  = Double.IsNaN(Width)  && HorizontalAlignment != HorizontalAlignment.Stretch;
-                var unconstrainedHeight = Double.IsNaN(Height) && VerticalAlignment != VerticalAlignment.Stretch;
+                var unconstrainedWidth  = Double.IsPositiveInfinity(availableSize.Width)  && HorizontalAlignment != HorizontalAlignment.Stretch;
+                var unconstrainedHeight = Double.IsPositiveInfinity(availableSize.Height) && VerticalAlignment != VerticalAlignment.Stretch;
 
                 var constraintX = unconstrainedWidth  ? null : (Int32?)Display.DipsToPixels(availableSize.Width);
                 var constraintY = unconstrainedHeight ? null : (Int32?)Display.DipsToPixels(availableSize.Height);
