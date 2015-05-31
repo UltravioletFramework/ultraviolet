@@ -5,7 +5,7 @@ using System.Linq;
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
 {
     /// <summary>
-    /// Represents a list of selectors in an Ultraviolet Stylesheet (UVSS) document.
+    /// Represents a list of selectors in an Ultraviolet Style Sheet (UVSS) document.
     /// </summary>
     public sealed partial class UvssSelectorCollection : IEnumerable<UvssSelector>
     {

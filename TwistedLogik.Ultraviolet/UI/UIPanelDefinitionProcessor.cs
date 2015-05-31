@@ -24,19 +24,19 @@ namespace TwistedLogik.Ultraviolet.UI
             var defaultOpenTransitionDuration  = input.Root.AttributeValueDouble("DefaultOpenTransitionDuration") ?? 0.0;
             var defaultCloseTransitionDuration = input.Root.AttributeValueDouble("DefaultCloseTransitionDuration") ?? 0.0;
 
-            var stylesheetRoot     = Path.GetDirectoryName(metadata.AssetPath);
-            var stylesheetElements = input.Root.Elements("Stylesheet");
-            var stylesheetPaths    = stylesheetElements.Select(x => manager.ResolveAssetFilePath(Path.Combine(stylesheetRoot, x.Value)));
-            var stylesheetSources  = new List<String>();
+            var styleSheetRoot     = Path.GetDirectoryName(metadata.AssetPath);
+            var styleSheetElements = input.Root.Elements("StyleSheet");
+            var styleSheetPaths    = styleSheetElements.Select(x => manager.ResolveAssetFilePath(Path.Combine(styleSheetRoot, x.Value)));
+            var styleSheetSources  = new List<String>();
 
-            foreach (var stylesheetPath in stylesheetPaths)
+            foreach (var styleSheetPath in styleSheetPaths)
             {
-                using (var stream = fss.OpenRead(stylesheetPath))
+                using (var stream = fss.OpenRead(styleSheetPath))
                 {
                     using(var reader = new StreamReader(stream))
                     {
                         var source = reader.ReadToEnd();
-                        stylesheetSources.Add(source);
+                        styleSheetSources.Add(source);
                     }
                 }
             }
@@ -47,7 +47,7 @@ namespace TwistedLogik.Ultraviolet.UI
                 DefaultCloseTransitionDuration = TimeSpan.FromMilliseconds(defaultCloseTransitionDuration),
                 RootElement                    = input.Root,
                 ViewElement                    = input.Root.Element("View"),
-                Stylesheets                    = stylesheetSources,
+                StyleSheets                    = styleSheetSources,
             };
         }    
     }

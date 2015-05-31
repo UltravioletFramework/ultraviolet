@@ -214,7 +214,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
                         return true;
                     }
 
-                    throw new UvssException(PresentationStrings.StylesheetInvalidTriggerType.Format(line, GetLastTokenValue(output)));
+                    throw new UvssException(PresentationStrings.StyleSheetInvalidTriggerType.Format(line, GetLastTokenValue(output)));
                 }
 
                 return false;

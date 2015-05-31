@@ -2,7 +2,7 @@
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
 {
     /// <summary>
-    /// Represents an Ultraviolet Stylesheet document's representation of a storyboard target.
+    /// Represents an Ultraviolet Style Sheet document's representation of a storyboard target.
     /// </summary>
     public sealed class UvssStoryboardTarget 
     {

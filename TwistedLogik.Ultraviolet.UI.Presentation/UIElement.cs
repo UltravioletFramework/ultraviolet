@@ -243,10 +243,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             {
                 InvalidateStyle();
 
-                var stylesheet = View.Stylesheet;
-                if (stylesheet != null)
+                var styleSheet = View.StyleSheet;
+                if (styleSheet != null)
                 {
-                    Style(stylesheet);
+                    Style(styleSheet);
                 }
             }
 
@@ -297,10 +297,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
-        /// Applies the specified stylesheet to this element.
+        /// Applies the specified style sheet to this element.
         /// </summary>
-        /// <param name="stylesheet">The stylesheet to apply to this element.</param>
-        public void Style(UvssDocument stylesheet)
+        /// <param name="styleSheet">The style sheet to apply to this element.</param>
+        public void Style(UvssDocument styleSheet)
         {
             if (View == null)
             {
@@ -308,19 +308,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 return;
             }
 
-            if (isStyleValid && mostRecentStylesheet == stylesheet)
+            if (isStyleValid && mostRecentStyleSheet == styleSheet)
                 return;
 
             var upf = Ultraviolet.GetUI().GetPresentationFoundation();
             upf.PerformanceStats.StyleCountLastFrame++;
 
-            this.mostRecentStylesheet = stylesheet;
+            this.mostRecentStyleSheet = styleSheet;
 
             isStyling = true;
             try
             {
-                ApplyStyles(stylesheet);
-                StyleCore(stylesheet);
+                ApplyStyles(styleSheet);
+                StyleCore(styleSheet);
                 ReloadContent(false);
             }
             finally
@@ -1004,9 +1004,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 InvalidateStyle();
 
                 var parent = VisualParent as UIElement;
-                if (parent != null && parent.MostRecentStylesheet != null)
+                if (parent != null && parent.MostRecentStyleSheet != null)
                 {
-                    Style(parent.MostRecentStylesheet);
+                    Style(parent.MostRecentStyleSheet);
                 }
             }
             OnLayoutCacheInvalidated();
@@ -1145,11 +1145,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
-        /// Gets the stylesheet that was most recently passed to the <see cref="Style(UvssDocument)"/> method.
+        /// Gets the style sheet that was most recently passed to the <see cref="Style(UvssDocument)"/> method.
         /// </summary>
-        internal UvssDocument MostRecentStylesheet
+        internal UvssDocument MostRecentStyleSheet
         {
-            get { return mostRecentStylesheet; }
+            get { return mostRecentStyleSheet; }
         }
 
         /// <summary>
@@ -1243,12 +1243,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
-        /// Applies the specified stylesheet's styles to this element and its children.
+        /// Applies the specified style sheet's styles to this element and its children.
         /// </summary>
-        /// <param name="stylesheet">The stylesheet to apply to the element.</param>
-        protected internal sealed override void ApplyStyles(UvssDocument stylesheet)
+        /// <param name="styleSheet">The style sheet to apply to the element.</param>
+        protected internal sealed override void ApplyStyles(UvssDocument styleSheet)
         {
-            stylesheet.ApplyStyles(this);
+            styleSheet.ApplyStyles(this);
         }
 
         /// <summary>
@@ -1587,13 +1587,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
-        /// When overridden in a derived class, applies the specified stylesheet
+        /// When overridden in a derived class, applies the specified style sheet
         /// to this element and to any child elements.
         /// </summary>
-        /// <param name="stylesheet">The stylesheet to apply to this element and its children.</param>
-        protected virtual void StyleCore(UvssDocument stylesheet)
+        /// <param name="styleSheet">The style sheet to apply to this element and its children.</param>
+        protected virtual void StyleCore(UvssDocument styleSheet)
         {
-            VisualTreeHelper.ForEachChild<UIElement>(this, stylesheet, (child, state) =>
+            VisualTreeHelper.ForEachChild<UIElement>(this, styleSheet, (child, state) =>
             {
                 child.Style((UvssDocument)state);
             });
@@ -2118,7 +2118,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         private RectangleD? clipRectangle;
 
         // Layout parameters.
-        private UvssDocument mostRecentStylesheet;
+        private UvssDocument mostRecentStyleSheet;
         private ArrangeOptions mostRecentArrangeOptions;
         private RectangleD mostRecentFinalRect;
         private Size2D mostRecentAvailableSize;

@@ -1,6 +1,7 @@
 ﻿using System;
 using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
 using TwistedLogik.Ultraviolet.UI.Presentation.Documents;
+using TwistedLogik.Ultraviolet.UI.Presentation.Styles;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 {
@@ -210,12 +211,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <inheritdoc/>
-        protected override void StyleCore(Styles.UvssDocument stylesheet)
+        protected override void StyleCore(UvssDocument styleSheet)
         {
             if (componentRoot != null)
                 componentRoot.InvalidateStyle(true);
 
-            base.StyleCore(stylesheet);
+            base.StyleCore(styleSheet);
         }
 
         /// <inheritdoc/>

@@ -4,7 +4,7 @@ using TwistedLogik.Nucleus;
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
 {
     /// <summary>
-    /// Represents one of the styles defined by an Ultraviolet Stylesheet (UVSS) socument.
+    /// Represents one of the styles defined by an Ultraviolet Style Sheet (UVSS) socument.
     /// </summary>
     public sealed class UvssStyle
     {

@@ -26,7 +26,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public PresentationFoundationView(UltravioletContext uv, Type viewModelType)
             : base(uv, viewModelType)
         {
-            this.combinedStylesheet = new UvssDocument(null, null);
+            this.combinedStyleSheet = new UvssDocument(null, null);
 
             this.namescope      = new Namescope();
             this.resources      = new PresentationFoundationViewResources(this);
@@ -59,10 +59,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             var view = UvmlLoader.Load(uv, uiPanelDefinition.ViewElement);
 
-            var uvss    = String.Join(Environment.NewLine, uiPanelDefinition.Stylesheets);
+            var uvss    = String.Join(Environment.NewLine, uiPanelDefinition.StyleSheets);
             var uvssdoc = UvssDocument.Parse(uvss);
 
-            view.SetStylesheet(uvssdoc);
+            view.SetStyleSheet(uvssdoc);
 
             return view;
         }
@@ -391,20 +391,20 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
-        /// Sets the view's stylesheet.
+        /// Sets the view's style sheet.
         /// </summary>
-        /// <param name="stylesheet">The view's stylesheet.</param>
-        public void SetStylesheet(UvssDocument stylesheet)
+        /// <param name="styleSheet">The view's style sheet.</param>
+        public void SetStyleSheet(UvssDocument styleSheet)
         {
-            HookOnGlobalStylesheetChanged();
+            HookOnGlobalStyleSheetChanged();
 
-            this.localStylesheet = stylesheet;
-            UpdateCombinedStylesheet();
+            this.localStyleSheet = styleSheet;
+            UpdateCombinedStyleSheet();
 
-            LoadViewResources(combinedStylesheet);
+            LoadViewResources(combinedStyleSheet);
 
             layoutRoot.InvalidateStyle(true);
-            layoutRoot.Style(combinedStylesheet);
+            layoutRoot.Style(combinedStyleSheet);
         }
 
         /// <summary>
@@ -494,7 +494,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
-        /// Searches the view's associated stylesheet for a storyboard with the specified name.
+        /// Searches the view's associated style sheet for a storyboard with the specified name.
         /// </summary>
         /// <param name="name">The name of the storyboard to retrieve.</param>
         /// <returns>The <see cref="Storyboard"/> with the specified name, or <c>null</c> if the specified storyboard does not exist.</returns>
@@ -502,20 +502,20 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             Contract.RequireNotEmpty(name, "name");
 
-            if (Stylesheet != null)
+            if (StyleSheet != null)
             {
-                return Stylesheet.InstantiateStoryboardByName(LayoutRoot.Ultraviolet, name);
+                return StyleSheet.InstantiateStoryboardByName(LayoutRoot.Ultraviolet, name);
             }
 
             return null;
         }
 
         /// <summary>
-        /// Gets the stylesheet that is currently applied to this view.
+        /// Gets the style sheet that is currently applied to this view.
         /// </summary>
-        public UvssDocument Stylesheet
+        public UvssDocument StyleSheet
         {
-            get { return combinedStylesheet; }
+            get { return combinedStyleSheet; }
         }
 
         /// <summary>
@@ -579,7 +579,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             if (disposing && !Ultraviolet.Disposed)
             {
-                UnhookGlobalStylesheetChanged();
+                UnhookGlobalStyleSheetChanged();
                 UnhookKeyboardEvents();
                 UnhookMouseEvents();
             }
@@ -657,49 +657,49 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
-        /// Updates the view's combined stylesheet, which includes both UPF's global styles and the view's local styles.
+        /// Updates the view's combined style sheet, which includes both UPF's global styles and the view's local styles.
         /// </summary>
-        private void UpdateCombinedStylesheet()
+        private void UpdateCombinedStyleSheet()
         {
-            this.combinedStylesheet.Clear();
+            this.combinedStyleSheet.Clear();
 
             var upf = Ultraviolet.GetUI().GetPresentationFoundation();
-            if (upf.GlobalStylesheet != null)
+            if (upf.GlobalStyleSheet != null)
             {
-                this.combinedStylesheet.Append(upf.GlobalStylesheet);
+                this.combinedStyleSheet.Append(upf.GlobalStyleSheet);
             }
 
-            if (this.localStylesheet != null)
+            if (this.localStyleSheet != null)
             {
-                this.combinedStylesheet.Append(this.localStylesheet);
+                this.combinedStyleSheet.Append(this.localStyleSheet);
             }
         }
 
         /// <summary>
-        /// Loads the view's global resources from the specified stylesheet.
+        /// Loads the view's global resources from the specified style sheet.
         /// </summary>
-        /// <param name="stylesheet">The stylesheet from which to load global resources.</param>
-        private void LoadViewResources(UvssDocument stylesheet)
+        /// <param name="styleSheet">The style sheet from which to load global resources.</param>
+        private void LoadViewResources(UvssDocument styleSheet)
         {
             resources.ClearStyledValues();
 
-            if (stylesheet != null)
+            if (styleSheet != null)
             {
-                resources.ApplyStyles(stylesheet);
+                resources.ApplyStyles(styleSheet);
             }
         }
 
         /// <summary>
-        /// Hooks into the <see cref="PresentationFoundation.GlobalStylesheetChanged"/> event.
+        /// Hooks into the <see cref="PresentationFoundation.GlobalStyleSheetChanged"/> event.
         /// </summary>
-        private void HookOnGlobalStylesheetChanged()
+        private void HookOnGlobalStyleSheetChanged()
         {
-            if (hookedGlobalStylesheetChanged)
+            if (hookedGlobalStyleSheetChanged)
                 return;
 
-            hookedGlobalStylesheetChanged = true;
+            hookedGlobalStyleSheetChanged = true;
 
-            Ultraviolet.GetUI().GetPresentationFoundation().GlobalStylesheetChanged += PresentationFoundationView_GlobalStylesheetChanged;
+            Ultraviolet.GetUI().GetPresentationFoundation().GlobalStyleSheetChanged += PresentationFoundationView_GlobalStyleSheetChanged;
         }
 
         /// <summary>
@@ -736,16 +736,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
-        /// Unhooks from the <see cref="PresentationFoundation.GlobalStylesheetChanged"/> event.
+        /// Unhooks from the <see cref="PresentationFoundation.GlobalStyleSheetChanged"/> event.
         /// </summary>
-        private void UnhookGlobalStylesheetChanged()
+        private void UnhookGlobalStyleSheetChanged()
         {
-            if (!hookedGlobalStylesheetChanged)
+            if (!hookedGlobalStyleSheetChanged)
                 return;
 
-            Ultraviolet.GetUI().GetPresentationFoundation().GlobalStylesheetChanged -= PresentationFoundationView_GlobalStylesheetChanged;
+            Ultraviolet.GetUI().GetPresentationFoundation().GlobalStyleSheetChanged -= PresentationFoundationView_GlobalStyleSheetChanged;
 
-            hookedGlobalStylesheetChanged = false;
+            hookedGlobalStyleSheetChanged = false;
         }
 
         /// <summary>
@@ -1233,18 +1233,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
-        /// Called when the Presentation Foundation's global stylesheet is changed.
+        /// Called when the Presentation Foundation's global style sheet is changed.
         /// </summary>
-        private void PresentationFoundationView_GlobalStylesheetChanged(Object sender, EventArgs e)
+        private void PresentationFoundationView_GlobalStyleSheetChanged(Object sender, EventArgs e)
         {
-            SetStylesheet(localStylesheet);
+            SetStyleSheet(localStyleSheet);
         }
 
         // Property values.
         private readonly Namescope namescope;
         private readonly PresentationFoundationViewResources resources;
-        private readonly UvssDocument combinedStylesheet;
-        private UvssDocument localStylesheet;
+        private readonly UvssDocument combinedStyleSheet;
+        private UvssDocument localStyleSheet;
         private Grid layoutRoot;
 
         // State values.
@@ -1255,7 +1255,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         private IInputElement elementWithMouseCapture;
         private IInputElement elementWithFocus;
         private CaptureMode mouseCaptureMode;
-        private Boolean hookedGlobalStylesheetChanged;
+        private Boolean hookedGlobalStyleSheetChanged;
 
         // Popup handling.
         private readonly PopupQueue popupQueue = new PopupQueue();

@@ -171,8 +171,8 @@ namespace UvDebugSandbox
         /// </summary>
         protected void LoadPresentation()
         {
-            var globalStylesheet = content.Load<UvssDocument>("UI/DefaultUIStyles");
-            Ultraviolet.GetUI().GetPresentationFoundation().SetGlobalStylesheet(globalStylesheet);
+            var globalStyleSheet = content.Load<UvssDocument>("UI/DefaultUIStyles");
+            Ultraviolet.GetUI().GetPresentationFoundation().SetGlobalStyleSheet(globalStyleSheet);
         }
 
         /// <summary>

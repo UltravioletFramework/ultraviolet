@@ -245,11 +245,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         }
 
         /// <inheritdoc/>
-        protected override void StyleCore(UvssDocument stylesheet)
+        protected override void StyleCore(UvssDocument styleSheet)
         {
-            UpdatePopupStyle(stylesheet);
+            UpdatePopupStyle(styleSheet);
 
-            base.StyleCore(stylesheet);
+            base.StyleCore(styleSheet);
         }
 
         /// <inheritdoc/>
@@ -309,7 +309,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
 
                 if (popup.IsOpen)
                 {
-                    popup.UpdatePopupStyle(popup.MostRecentStylesheet);
+                    popup.UpdatePopupStyle(popup.MostRecentStyleSheet);
                     popup.UpdatePopupMeasure();
                 }
             } 
@@ -333,7 +333,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
                 {
                     child.ChangeVisualParent(root);
 
-                    popup.UpdatePopupStyle(popup.MostRecentStylesheet);
+                    popup.UpdatePopupStyle(popup.MostRecentStyleSheet);
                     popup.UpdatePopupMeasure();
                     popup.UpdatePopupArrange(popup.MostRecentFinalRect.Size);
                 }
@@ -390,16 +390,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         }
 
         /// <summary>
-        /// Updates the stylesheet which is applied to the popup content.
+        /// Updates the style sheet which is applied to the popup content.
         /// </summary>
-        /// <param name="stylesheet">The stylesheet to apply to the popup content.</param>
-        private void UpdatePopupStyle(UvssDocument stylesheet)
+        /// <param name="styleSheet">The style sheet to apply to the popup content.</param>
+        private void UpdatePopupStyle(UvssDocument styleSheet)
         {
-            if (!IsOpen || stylesheet == null)
+            if (!IsOpen || styleSheet == null)
                 return;
 
             root.InvalidateStyle(true);
-            root.Style(MostRecentStylesheet);
+            root.Style(MostRecentStyleSheet);
         }
 
         /// <summary>

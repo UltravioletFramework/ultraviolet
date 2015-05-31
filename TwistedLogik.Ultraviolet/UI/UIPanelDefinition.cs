@@ -32,8 +32,8 @@ namespace TwistedLogik.Ultraviolet.UI
         public XElement ViewElement { get; internal set; }
 
         /// <summary>
-        /// The contents of the panel's associated stylesheets, if it has any.
+        /// The contents of the panel's associated style sheets, if it has any.
         /// </summary>
-        public IEnumerable<String> Stylesheets { get; internal set; }
+        public IEnumerable<String> StyleSheets { get; internal set; }
     }
 }

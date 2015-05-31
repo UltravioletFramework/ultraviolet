@@ -3,7 +3,7 @@
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
 {
     /// <summary>
-    /// Represents an Ultraviolet Stylesheet document's representation of an animation keyframe.
+    /// Represents an Ultraviolet Style Sheet document's representation of an animation keyframe.
     /// </summary>
     public sealed class UvssStoryboardKeyframe
     {

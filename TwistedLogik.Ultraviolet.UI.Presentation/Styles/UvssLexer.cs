@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
 {
     /// <summary>
-    /// Represents a lexer for the Ultraviolet Stylesheet (UVSS) language.
+    /// Represents a lexer for the Ultraviolet Style Sheet (UVSS) language.
     /// </summary>
     internal sealed partial class UvssLexer
     {
@@ -22,9 +22,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         }
 
         /// <summary>
-        /// Lexes an Ultraviolet Stylesheet (UVSS) file.
+        /// Lexes an Ultraviolet Style Sheet (UVSS) file.
         /// </summary>
-        /// <param name="input">The Ultraviolet Stylesheet source code to lex.</param>
+        /// <param name="input">The Ultraviolet Style Sheet source code to lex.</param>
         /// <returns>A sequence of lexer tokens produced from the specified input.</returns>
         public IList<UvssLexerToken> Lex(String input)
         {
@@ -40,11 +40,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
                 {
                     if (IsPastEndOfStream(input, ix))
                     {
-                        throw new UvssException(PresentationStrings.StylesheetSyntaxUnexpectedEOF.Format(line));
+                        throw new UvssException(PresentationStrings.StyleSheetSyntaxUnexpectedEOF.Format(line));
                     }
                     else
                     {
-                        throw new UvssException(PresentationStrings.StylesheetInvalidCharacter.Format(line, input[ix]));
+                        throw new UvssException(PresentationStrings.StyleSheetInvalidCharacter.Format(line, input[ix]));
                     }
                 }
             }
@@ -483,7 +483,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
             {
                 if (ix + 1 == input.Length && input[ix] != '"')
                 {
-                    throw new UvssException(PresentationStrings.StylesheetSyntaxUnterminatedString.Format(line));
+                    throw new UvssException(PresentationStrings.StyleSheetSyntaxUnterminatedString.Format(line));
                 }
 
                 var c = input[ix++];

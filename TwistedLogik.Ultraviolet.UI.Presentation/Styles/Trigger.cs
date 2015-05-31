@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
 {
     /// <summary>
-    /// Represents a trigger specified by an Ultraviolet stylesheet. Triggers can be used
+    /// Represents a trigger specified by an Ultraviolet style sheet. Triggers can be used
     /// to modify the property values of a dependency object when certain conditions are met.
     /// </summary>
     public abstract class Trigger

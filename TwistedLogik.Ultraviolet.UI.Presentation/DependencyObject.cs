@@ -559,9 +559,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
-        /// Applies the styles from the specified stylesheet to this object.
+        /// Applies the styles from the specified style sheet to this object.
         /// </summary>
-        /// <param name="document">The stylesheet to apply to this object.</param>
+        /// <param name="document">The style sheet to apply to this object.</param>
         protected internal virtual void ApplyStyles(UvssDocument document)
         {
 

@@ -6,7 +6,7 @@ using TwistedLogik.Nucleus;
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
 {
     /// <summary>
-    /// Represents a selector in an Ultraviolet Stylesheet (UVSS) document.
+    /// Represents a selector in an Ultraviolet Style Sheet (UVSS) document.
     /// </summary>
     public sealed partial class UvssSelector : IEnumerable<UvssSelectorPart>
     {

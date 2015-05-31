@@ -324,13 +324,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
-        /// Sets the global stylesheet used by all Presentation Foundation views.
+        /// Sets the global style sheet used by all Presentation Foundation views.
         /// </summary>
-        /// <param name="stylesheet">The global stylesheet to set.</param>
-        public void SetGlobalStylesheet(UvssDocument stylesheet)
+        /// <param name="styleSheet">The global style sheet to set.</param>
+        public void SetGlobalStyleSheet(UvssDocument styleSheet)
         {
-            this.globalStylesheet = stylesheet;
-            OnGlobalStylesheetChanged();
+            this.globalStyleSheet = styleSheet;
+            OnGlobalStyleSheetChanged();
         }
 
         /// <summary>
@@ -350,17 +350,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
-        /// Gets the current global stylesheet.
+        /// Gets the current global style sheet.
         /// </summary>
-        public UvssDocument GlobalStylesheet
+        public UvssDocument GlobalStyleSheet
         {
-            get { return globalStylesheet; }
+            get { return globalStyleSheet; }
         }
 
         /// <summary>
-        /// Occurs when the Presentation Foundation's global stylesheet is changed.
+        /// Occurs when the Presentation Foundation's global style sheet is changed.
         /// </summary>
-        public event EventHandler GlobalStylesheetChanged;
+        public event EventHandler GlobalStyleSheetChanged;
 
         /// <summary>
         /// Removes the specified UI element from all of the Foundation's processing queues.
@@ -653,11 +653,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
-        /// Raises the <see cref="GlobalStylesheetChanged"/> event.
+        /// Raises the <see cref="GlobalStyleSheetChanged"/> event.
         /// </summary>
-        private void OnGlobalStylesheetChanged()
+        private void OnGlobalStyleSheetChanged()
         {
-            var temp = GlobalStylesheetChanged;
+            var temp = GlobalStyleSheetChanged;
             if (temp != null)
             {
                 temp(this, EventArgs.Empty);
@@ -675,7 +675,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 if (element.IsStyleValid)
                     continue;
 
-                element.Style(element.View.Stylesheet);
+                element.Style(element.View.StyleSheet);
                 element.InvalidateMeasure();
             }
         }
@@ -790,7 +790,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         private readonly LayoutQueue measureQueue;
         private readonly LayoutQueue arrangeQueue;
 
-        // The global stylesheet.
-        private UvssDocument globalStylesheet;
+        // The global style sheet.
+        private UvssDocument globalStyleSheet;
     }
 }

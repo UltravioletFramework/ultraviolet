@@ -8,7 +8,7 @@ using TwistedLogik.Ultraviolet.UI.Presentation.Animations;
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
 {
     /// <summary>
-    /// Represents an Ultraviolet Stylesheet (UVSS) document.
+    /// Represents an Ultraviolet Style Sheet (UVSS) document.
     /// </summary>
     public sealed partial class UvssDocument
     {
@@ -34,7 +34,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         }
 
         /// <summary>
-        /// Loads an Ultraviolet Stylesheet (UVSS) document from the specified source text.
+        /// Loads an Ultraviolet Style Sheet (UVSS) document from the specified source text.
         /// </summary>
         /// <param name="source">The source text from which to load the document.</param>
         /// <returns>A new instance of <see cref="UvssDocument"/> that represents the loaded data.</returns>
@@ -49,7 +49,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         }
 
         /// <summary>
-        /// Loads an Ultraviolet Stylesheet (UVSS) document from the specified stream.
+        /// Loads an Ultraviolet Style Sheet (UVSS) document from the specified stream.
         /// </summary>
         /// <param name="stream">The <see cref="Stream"/> that contains the document to load.</param>
         /// <returns>A new instance of <see cref="UvssDocument"/> that represents the loaded data.</returns>
@@ -146,7 +146,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         }
 
         /// <summary>
-        /// Gets the lexer instance used to lex Ultraviolet Stylesheet source code.
+        /// Gets the lexer instance used to lex Ultraviolet Style Sheet source code.
         /// </summary>
         internal static UvssLexer Lexer
         {
@@ -154,7 +154,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         }
 
         /// <summary>
-        /// Gets the parser instance used to parse Ultraviolet Stylesheet source code.
+        /// Gets the parser instance used to parse Ultraviolet Style Sheet source code.
         /// </summary>
         internal static UvssParser Parser
         {

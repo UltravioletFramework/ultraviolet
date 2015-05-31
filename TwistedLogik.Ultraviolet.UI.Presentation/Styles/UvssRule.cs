@@ -3,7 +3,7 @@
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
 {
     /// <summary>
-    /// Represents a rule in an Ultraviolet Stylesheet (UVSS) document.
+    /// Represents a rule in an Ultraviolet Style Sheet (UVSS) document.
     /// </summary>
     public sealed class UvssRule
     {

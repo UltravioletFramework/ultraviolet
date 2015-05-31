@@ -4,7 +4,7 @@ using TwistedLogik.Ultraviolet.UI.Presentation.Animations;
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
 {
     /// <summary>
-    /// Represents an Ultraviolet Stylesheet document's representation of a storyboard animation.
+    /// Represents an Ultraviolet Style Sheet document's representation of a storyboard animation.
     /// </summary>
     public sealed class UvssStoryboard
     {

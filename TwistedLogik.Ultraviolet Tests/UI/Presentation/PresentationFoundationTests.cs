@@ -97,8 +97,8 @@ namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation
                     var contentManifestFiles = content.GetAssetFilePathsInDirectory("Manifests");
                     content.Ultraviolet.GetContent().Manifests.Load(contentManifestFiles);
 
-                    var globalStylesheet = content.Load<UvssDocument>(@"UI\DefaultUIStyles");
-                    content.Ultraviolet.GetUI().GetPresentationFoundation().SetGlobalStylesheet(globalStylesheet);
+                    var globalStyleSheet = content.Load<UvssDocument>(@"UI\DefaultUIStyles");
+                    content.Ultraviolet.GetUI().GetPresentationFoundation().SetGlobalStyleSheet(globalStyleSheet);
 
                     var screen = ctor(content);
                     content.Ultraviolet.GetUI().GetScreens().Open(screen);

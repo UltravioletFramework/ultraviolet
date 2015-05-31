@@ -370,14 +370,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             Contract.Require(style, "style");
 
-            if (View != null && View.Stylesheet != null)
+            if (View != null && View.StyleSheet != null)
             {
                 var value = (style.CachedResolvedValue != null && style.CachedResolvedValue is String) ?
                     (String)style.CachedResolvedValue : style.Value.Trim();
 
                 style.CachedResolvedValue = value;
 
-                var storyboard = View.Stylesheet.InstantiateStoryboardByName(Ultraviolet, value);
+                var storyboard = View.StyleSheet.InstantiateStoryboardByName(Ultraviolet, value);
                 if (storyboard != null)
                 {
                     var group = default(String);
@@ -471,9 +471,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <inheritdoc/>
-        protected override void StyleCore(UvssDocument stylesheet)
+        protected override void StyleCore(UvssDocument styleSheet)
         {
-            base.StyleCore(stylesheet);
+            base.StyleCore(styleSheet);
 
             VisualStateGroups.ReapplyStates();
         }

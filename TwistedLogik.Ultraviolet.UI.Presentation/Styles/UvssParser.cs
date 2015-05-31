@@ -7,7 +7,7 @@ using TwistedLogik.Ultraviolet.UI.Presentation.Animations;
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
 {
     /// <summary>
-    /// Contains methods for parsing an Ultraviolet Stylesheet (UVSS) lexical token stream into
+    /// Contains methods for parsing an Ultraviolet Style Sheet (UVSS) lexical token stream into
     /// an instance of the <see cref="UvssDocument"/> class.
     /// </summary>
     internal sealed partial class UvssParser
@@ -51,7 +51,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         }
 
         /// <summary>
-        /// Parses an Ultraviolet Stylesheet selector from the specified token stream.
+        /// Parses an Ultraviolet Style Sheet selector from the specified token stream.
         /// </summary>
         /// <param name="source">The source text.</param>
         /// <param name="tokens">The token stream to parse.</param>
@@ -89,7 +89,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         private static void ThrowExpectedToken(UvssParserState state, UvssLexerToken token, UvssLexerTokenType expected)
         {
             var lineNumber = token.Line;
-            throw new UvssException(PresentationStrings.StylesheetSyntaxExpectedToken.Format(lineNumber, token.TokenType, expected));
+            throw new UvssException(PresentationStrings.StyleSheetSyntaxExpectedToken.Format(lineNumber, token.TokenType, expected));
         }
 
         /// <summary>
@@ -101,7 +101,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         private static void ThrowExpectedValue(UvssParserState state, UvssLexerToken token, String expected)
         {
             var lineNumber = token.Line;
-            throw new UvssException(PresentationStrings.StylesheetSyntaxExpectedValue.Format(lineNumber, token.Value, expected));
+            throw new UvssException(PresentationStrings.StyleSheetSyntaxExpectedValue.Format(lineNumber, token.Value, expected));
         }
 
         /// <summary>
@@ -112,7 +112,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         private static void ThrowUnexpectedToken(UvssParserState state, UvssLexerToken token)
         {
             var lineNumber = token.Line;
-            throw new UvssException(PresentationStrings.StylesheetSyntaxUnexpectedToken.Format(lineNumber, token.TokenType));
+            throw new UvssException(PresentationStrings.StyleSheetSyntaxUnexpectedToken.Format(lineNumber, token.TokenType));
         }
 
         /// <summary>
@@ -123,7 +123,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         private static void ThrowUnexpectedValue(UvssParserState state, UvssLexerToken token)
         {
             var lineNumber = token.Line;
-            throw new UvssException(PresentationStrings.StylesheetSyntaxUnexpectedValue.Format(lineNumber, token.Value));
+            throw new UvssException(PresentationStrings.StyleSheetSyntaxUnexpectedValue.Format(lineNumber, token.Value));
         }
 
         /// <summary>
@@ -133,7 +133,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         private static void ThrowUnexpectedEOF(UvssParserState state)
         {
             var lineNumber = state.Tokens.Last().Line;
-            throw new UvssException(PresentationStrings.StylesheetSyntaxUnexpectedEOF.Format(lineNumber));
+            throw new UvssException(PresentationStrings.StyleSheetSyntaxUnexpectedEOF.Format(lineNumber));
         }
 
         /// <summary>
@@ -143,7 +143,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         private static void ThrowUnterminatedSequence(UvssParserState state)
         {
             var lineNumber = state.Tokens.Last().Line;
-            throw new UvssException(PresentationStrings.StylesheetSyntaxUnterminatedSequence.Format(lineNumber));
+            throw new UvssException(PresentationStrings.StyleSheetSyntaxUnterminatedSequence.Format(lineNumber));
         }
 
         /// <summary>
@@ -154,7 +154,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         private static void ThrowInvalidStyleArguments(UvssParserState state, String style)
         {
             var lineNumber = state.Tokens.Last().Line;
-            throw new UvssException(PresentationStrings.StylesheetSyntaxInvalidStyleArgs.Format(lineNumber, style));
+            throw new UvssException(PresentationStrings.StyleSheetSyntaxInvalidStyleArgs.Format(lineNumber, style));
         }
 
         /// <summary>

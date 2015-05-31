@@ -3,7 +3,7 @@
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
 {
     /// <summary>
-    /// Represents the exception that is thrown when an error is encountered during Ultraviolet Stylesheet (UVSS) interpretation.
+    /// Represents the exception that is thrown when an error is encountered during Ultraviolet Style Sheet (UVSS) interpretation.
     /// </summary>
     [Serializable]
     public sealed class UvssException : Exception
