@@ -26,11 +26,12 @@
     <CleanIntermediates>True</CleanIntermediates>
     <DocumentationSources>
       <DocumentationSource sourceFile="Binaries\AnyCPU\Production\TwistedLogik.Nucleus.dll" />
-<DocumentationSource sourceFile="Binaries\AnyCPU\Production\TwistedLogik.Nucleus.XML" />
-<DocumentationSource sourceFile="Binaries\AnyCPU\Production\TwistedLogik.Ultraviolet.dll" />
-<DocumentationSource sourceFile="Binaries\AnyCPU\Production\TwistedLogik.Ultraviolet.UI.Presentation.dll" />
-<DocumentationSource sourceFile="Binaries\AnyCPU\Production\TwistedLogik.Ultraviolet.UI.Presentation.xml" />
-<DocumentationSource sourceFile="Binaries\AnyCPU\Production\TwistedLogik.Ultraviolet.XML" /></DocumentationSources>
+      <DocumentationSource sourceFile="Binaries\AnyCPU\Production\TwistedLogik.Nucleus.XML" />
+      <DocumentationSource sourceFile="Binaries\AnyCPU\Production\TwistedLogik.Ultraviolet.dll" />
+      <DocumentationSource sourceFile="Binaries\AnyCPU\Production\TwistedLogik.Ultraviolet.UI.Presentation.dll" />
+      <DocumentationSource sourceFile="Binaries\AnyCPU\Production\TwistedLogik.Ultraviolet.UI.Presentation.xml" />
+      <DocumentationSource sourceFile="Binaries\AnyCPU\Production\TwistedLogik.Ultraviolet.XML" />
+    </DocumentationSources>
     <MaximumGroupParts>2</MaximumGroupParts>
     <NamespaceGrouping>False</NamespaceGrouping>
     <SyntaxFilters>C#, Visual Basic</SyntaxFilters>
@@ -86,6 +87,9 @@
     </Reference>
     <Reference Include="TwistedLogik.Ultraviolet">
       <HintPath>Binaries\AnyCPU\Production\TwistedLogik.Ultraviolet.dll</HintPath>
+    </Reference>
+    <Reference Include="TwistedLogik.Ultraviolet.UI.Presentation">
+      <HintPath>Binaries\AnyCPU\Production\TwistedLogik.Ultraviolet.UI.Presentation.dll</HintPath>
     </Reference>
   </ItemGroup>
   <!-- Import the SHFB build targets -->
