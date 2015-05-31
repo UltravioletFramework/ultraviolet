@@ -517,7 +517,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var ixDelimiter = expression.IndexOf('|');
             if (ixDelimiter >= 0)
             {
-                var offset = braces ? 2 : 0;
                 var length = (expression.Length - (braces ? 2 : 0)) - (ixDelimiter + 1);
                 return expression.Substring(ixDelimiter + 1, length).Trim();
             }

@@ -21,8 +21,6 @@ namespace UltravioletSample.UI.Screens
 
             IsOpaque = true;
 
-            this.uiScreenService = uiScreenService;
-
             this.font         = LocalContent.Load<SpriteFont>("Garamond");
             this.blankTexture = GlobalContent.Load<Texture2D>(GlobalTextureID.Blank);
             this.textRenderer = new TextRenderer();
@@ -73,9 +71,7 @@ namespace UltravioletSample.UI.Screens
             }
             return 0;
         }
-
-        private readonly UIScreenService uiScreenService;
-
+			
         private readonly SpriteFont font;
         private readonly Texture2D blankTexture;
         private readonly TextRenderer textRenderer;

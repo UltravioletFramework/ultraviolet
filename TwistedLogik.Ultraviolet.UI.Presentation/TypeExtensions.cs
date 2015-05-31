@@ -67,8 +67,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                                     (m.Name == "op_Explicit" || m.Name == "op_Implicit") && m.ReturnType == typeTo
                                 select m;
 
-                    var methods = typeFrom.GetMethods();
-
                     castable = casts.Any();
                     supportedCasts[typeFrom] = castable;
                 }

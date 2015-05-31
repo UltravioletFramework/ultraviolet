@@ -135,9 +135,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             var hAuto = (hVisibility == ScrollBarVisibility.Auto);
             var vAuto = (vVisibility == ScrollBarVisibility.Auto);
 
-            var hNoScroll = (hVisibility == ScrollBarVisibility.Disabled);
-            var vNoScroll = (vVisibility == ScrollBarVisibility.Disabled);
-
             PART_ContentPresenter.CanScrollHorizontally = (hVisibility != ScrollBarVisibility.Disabled);
             PART_ContentPresenter.CanScrollVertically   = (vVisibility != ScrollBarVisibility.Disabled);
 

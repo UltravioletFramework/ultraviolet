@@ -18,8 +18,6 @@ namespace UltravioletSample.UI.Screens
         {
             Contract.Require(uiScreenService, "uiScreenService");
 
-            this.uiScreenService = uiScreenService;
-
             this.textRenderer    = new TextRenderer();
             this.blankTexture    = GlobalContent.Load<Texture2D>(GlobalTextureID.Blank);
             this.photograph      = GlobalContent.Load<Texture2D>(GlobalTextureID.Photograph);
@@ -48,7 +46,6 @@ namespace UltravioletSample.UI.Screens
             base.OnDrawingForeground(time, spriteBatch);
         }
 
-        private readonly UIScreenService uiScreenService;
         private readonly TextRenderer textRenderer;
         private readonly Texture2D blankTexture;
         private readonly Texture2D photograph;

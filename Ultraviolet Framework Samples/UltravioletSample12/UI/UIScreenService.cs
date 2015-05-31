@@ -16,8 +16,6 @@ namespace UltravioletSample.UI
         /// </summary>
         public UIScreenService(ContentManager globalContent)
         {
-            this.globalContent = globalContent;
-
             Register(new ExampleScreen(globalContent, this));
         }
 
@@ -42,7 +40,6 @@ namespace UltravioletSample.UI
         }
 
         // State values.
-        private readonly ContentManager globalContent;
         private readonly Dictionary<Type, UIScreen> screens = 
             new Dictionary<Type, UIScreen>();
     }

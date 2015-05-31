@@ -27,7 +27,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 return Size2D.Zero;
 
             var font = container.Font;
-            if (font != null && font.IsLoaded)
+            if (font.IsLoaded)
             {
                 var fontResource = font.Resource.Value.GetFace(container.FontStyle);
 

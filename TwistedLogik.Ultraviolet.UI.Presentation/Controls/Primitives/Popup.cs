@@ -24,8 +24,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         {
             this.root = new PopupRoot(uv, () =>
             {
-                this.popupWidth  = root.DesiredSize.Width;
-                this.popupHeight = root.DesiredSize.Height;
                 this.UpdatePopupArrange(MostRecentFinalRect.Size);
             });
             this.root.ChangeLogicalParent(this);
@@ -409,9 +407,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         {
             root.InvalidateMeasure();
             root.Measure(new Size2D(Double.PositiveInfinity, Double.PositiveInfinity));
-
-            popupWidth  = root.DesiredSize.Width;
-            popupHeight = root.DesiredSize.Height;
         }
 
         /// <summary>
@@ -944,8 +939,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         private readonly PopupRoot root;
         private Double popupX;
         private Double popupY;
-        private Double popupWidth;
-        private Double popupHeight;
         
         // The assumed size of the default cursor, since there's currently no way to query it.
         private const Int32 DefaultCursorWidth = 16;

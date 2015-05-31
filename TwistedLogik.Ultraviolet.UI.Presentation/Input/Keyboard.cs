@@ -381,7 +381,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
             var temp = EventManager.GetInvocationDelegate<UpfKeyDownEventHandler>(PreviewKeyDownEvent);
             if (temp != null)
             {
-                var modifiers = CreateModifierKeys(alt, ctrl, shift, repeat);
                 temp(element, device, key, Keyboard.Modifiers, ref data);
             }
         }

@@ -1972,21 +1972,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         private void CacheLayoutDepth()
         {
             this.layoutDepth = (Parent == null) ? 0 : Parent.LayoutDepth + 1;
-            this.logicalOrder = 0;
-
-            var parent = LogicalTreeHelper.GetParent(this);
-            if (parent != null)
-            {
-                var children = LogicalTreeHelper.GetChildrenCount(parent);
-                for (int i = 0; i < children; i++)
-                {
-                    if (LogicalTreeHelper.GetChild(parent, i) == this)
-                    {
-                        this.logicalOrder = i;
-                        break;
-                    }
-                }
-            }
         }
 
         /// <summary>
@@ -2124,7 +2109,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         private Size2D mostRecentAvailableSize;
         private Size2D mostRecentPositionOffset;
         private Int32 layoutDepth;
-        private Int32 logicalOrder;
 
         // State values.
         private Boolean isStyling;

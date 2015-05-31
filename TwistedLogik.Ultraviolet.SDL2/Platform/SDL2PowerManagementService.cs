@@ -48,10 +48,9 @@ namespace TwistedLogik.Ultraviolet.SDL2.Platform
             var now = DateTime.UtcNow;
             if ((now - lastCacheUpdate).TotalSeconds > 1.0)
             {
-                int sdlSecs, sdlPct;
+                int sdlPct;
 
-                this.sdlPowerState = SDL.GetPowerInfo(&sdlSecs, &sdlPct);
-                this.secs          = sdlSecs;
+				this.sdlPowerState = SDL.GetPowerInfo(null, &sdlPct);
                 this.pct           = sdlPct;
 
                 switch (sdlPowerState)
@@ -80,7 +79,6 @@ namespace TwistedLogik.Ultraviolet.SDL2.Platform
 
         // Cached property values.
         private SDL_PowerState sdlPowerState;
-        private Int32 secs;
         private Int32 pct;
         private Boolean isBatteryPowered;
         private Boolean isPluggedIn;

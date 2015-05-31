@@ -58,7 +58,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         protected override void DrawOverride(UltravioletTime time, DrawingContext dc)
         {
             var font = Font;
-            if (font != null && font.IsLoaded)
+            if (font.IsLoaded)
             {
                 View.Resources.StringFormatter.Reset();
                 View.Resources.StringFormatter.AddArgument(Value);
@@ -76,7 +76,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         protected override Size2D MeasureOverride(Size2D availableSize)
         {
             var font = Font;
-            if (font == null || !font.IsLoaded)
+            if (!font.IsLoaded)
                 return Size2D.Zero;
 
             View.Resources.StringFormatter.Reset();

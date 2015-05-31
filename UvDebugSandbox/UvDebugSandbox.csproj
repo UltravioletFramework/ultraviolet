@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -36,9 +36,6 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
-  <PropertyGroup>
-    <StartupObject />
-  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Production|AnyCPU'">
     <OutputPath>bin\Production\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
@@ -49,6 +46,7 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -102,38 +100,41 @@
     <None Include="Content\UI\DefaultUIStyles.uvss">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="Content\SoundEffects\Click1.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TwistedLogik.Gluon\TwistedLogik.Gluon.csproj">
-      <Project>{0e4bafbf-5211-4e2f-af39-092ec6671581}</Project>
+      <Project>{0E4BAFBF-5211-4E2F-AF39-092EC6671581}</Project>
       <Name>TwistedLogik.Gluon</Name>
     </ProjectReference>
     <ProjectReference Include="..\TwistedLogik.Nucleus\TwistedLogik.Nucleus.csproj">
-      <Project>{7da6158b-a0b9-4100-904e-22fd86949608}</Project>
+      <Project>{7DA6158B-A0B9-4100-904E-22FD86949608}</Project>
       <Name>TwistedLogik.Nucleus</Name>
     </ProjectReference>
     <ProjectReference Include="..\TwistedLogik.Ultraviolet.BASS\TwistedLogik.Ultraviolet.BASS.csproj">
-      <Project>{ea948cf3-ad34-480a-b8ce-e7ec5caa4d77}</Project>
+      <Project>{EA948CF3-AD34-480A-B8CE-E7EC5CAA4D77}</Project>
       <Name>TwistedLogik.Ultraviolet.BASS</Name>
     </ProjectReference>
     <ProjectReference Include="..\TwistedLogik.Ultraviolet.Desktop\TwistedLogik.Ultraviolet.Desktop.csproj">
-      <Project>{073cafc1-86cb-414d-a71e-46440e25a3f4}</Project>
+      <Project>{073CAFC1-86CB-414D-A71E-46440E25A3F4}</Project>
       <Name>TwistedLogik.Ultraviolet.Desktop</Name>
     </ProjectReference>
     <ProjectReference Include="..\TwistedLogik.Ultraviolet.OpenGL\TwistedLogik.Ultraviolet.OpenGL.csproj">
-      <Project>{40d272db-90e1-4332-a32f-6effeb44fe87}</Project>
+      <Project>{40D272DB-90E1-4332-A32F-6EFFEB44FE87}</Project>
       <Name>TwistedLogik.Ultraviolet.OpenGL</Name>
     </ProjectReference>
     <ProjectReference Include="..\TwistedLogik.Ultraviolet.SDL2\TwistedLogik.Ultraviolet.SDL2.csproj">
-      <Project>{50aefa93-fe53-414a-89fc-c061c165c673}</Project>
+      <Project>{50AEFA93-FE53-414A-89FC-C061C165C673}</Project>
       <Name>TwistedLogik.Ultraviolet.SDL2</Name>
     </ProjectReference>
     <ProjectReference Include="..\TwistedLogik.Ultraviolet.UI.Presentation\TwistedLogik.Ultraviolet.UI.Presentation.csproj">
-      <Project>{7379d9e1-bb01-4b05-b4f7-5d39b393348f}</Project>
+      <Project>{7379D9E1-BB01-4B05-B4F7-5D39B393348F}</Project>
       <Name>TwistedLogik.Ultraviolet.UI.Presentation</Name>
     </ProjectReference>
     <ProjectReference Include="..\TwistedLogik.Ultraviolet\TwistedLogik.Ultraviolet.csproj">
-      <Project>{f071abe3-05e5-4df9-a929-cf71b01ec50a}</Project>
+      <Project>{F071ABE3-05E5-4DF9-A929-CF71B01EC50A}</Project>
       <Name>TwistedLogik.Ultraviolet</Name>
     </ProjectReference>
   </ItemGroup>
@@ -193,11 +194,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Content\UI\DefaultUIBackground.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Content\SoundEffects\click1.wav">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
