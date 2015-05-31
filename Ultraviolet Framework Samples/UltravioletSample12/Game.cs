@@ -110,7 +110,7 @@ namespace UltravioletSample
         private void LoadPresentation()
         {
             var globalStylesheet = content.Load<UvssDocument>("UI/DefaultUIStyles");
-            Ultraviolet.GetUI().GetPresentationFoundation().SetGlobalStylesheet(globalStylesheet);
+            Ultraviolet.GetUI().GetPresentationFoundation().SetGlobalStyleSheet(globalStylesheet);
         }
 
         private void LoadContentManifests()
