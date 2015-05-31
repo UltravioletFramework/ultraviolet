@@ -157,6 +157,66 @@ namespace TwistedLogik.Ultraviolet
         }
 
         /// <summary>
+        /// Explicitly converts a <see cref="Vector2"/> structure to a <see cref="Point2"/> structure.
+        /// </summary>
+        /// <param name="vector">The structure to convert.</param>
+        /// <returns>The converted structure.</returns>
+        public static explicit operator Point2(Vector2 vector)
+        {
+            return new Point2((Int32)vector.X, (Int32)vector.Y);
+        }
+
+        /// <summary>
+        /// Explicitly converts a <see cref="Vector2"/> structure to a <see cref="Point2F"/> structure.
+        /// </summary>
+        /// <param name="vector">The structure to convert.</param>
+        /// <returns>The converted structure.</returns>
+        public static explicit operator Point2F(Vector2 vector)
+        {
+            return new Point2F(vector.X, vector.Y);
+        }
+
+        /// <summary>
+        /// Explicitly converts a <see cref="Vector2"/> structure to a <see cref="Point2D"/> structure.
+        /// </summary>
+        /// <param name="vector">The structure to convert.</param>
+        /// <returns>The converted structure.</returns>
+        public static explicit operator Point2D(Vector2 vector)
+        {
+            return new Point2D(vector.X, vector.Y);
+        }
+
+        /// <summary>
+        /// Explicitly converts a <see cref="Point2"/> structure to a <see cref="Vector2"/> structure.
+        /// </summary>
+        /// <param name="point">The structure to convert.</param>
+        /// <returns>The converted structure.</returns>
+        public static explicit operator Vector2(Point2 point)
+        {
+            return new Vector2(point.X, point.Y);
+        }
+
+        /// <summary>
+        /// Explicitly converts a <see cref="Point2F"/> structure to a <see cref="Vector2"/> structure.
+        /// </summary>
+        /// <param name="point">The structure to convert.</param>
+        /// <returns>The converted structure.</returns>
+        public static explicit operator Vector2(Point2F point)
+        {
+            return new Vector2(point.X, point.Y);
+        }
+
+        /// <summary>
+        /// Explicitly converts a <see cref="Point2D"/> structure to a <see cref="Vector2"/> structure.
+        /// </summary>
+        /// <param name="point">The structure to convert.</param>
+        /// <returns>The converted structure.</returns>
+        public static explicit operator Vector2(Point2D point)
+        {
+            return new Vector2((Single)point.X, (Single)point.Y);
+        }
+
+        /// <summary>
         /// Converts the string representation of a vector into an instance of the <see cref="Vector2"/> structure.
         /// A return value indicates whether the conversion succeeded.
         /// </summary>

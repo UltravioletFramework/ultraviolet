@@ -160,7 +160,7 @@ namespace TwistedLogik.Ultraviolet
         }
 
         /// <summary>
-        /// Converts the string representation of a circle into an instance of the <see cref="Radians"/> structure.
+        /// Converts the string representation of an angle in radians into an instance of the <see cref="Radians"/> structure.
         /// A return value indicates whether the conversion succeeded.
         /// </summary>
         /// <param name="s">A string containing an angle to convert.</param>
@@ -182,7 +182,7 @@ namespace TwistedLogik.Ultraviolet
         }
 
         /// <summary>
-        /// Converts the string representation of a circle into an instance of the <see cref="Radians"/> structure.
+        /// Converts the string representation of an angle in radians into an instance of the <see cref="Radians"/> structure.
         /// A return value indicates whether the conversion succeeded.
         /// </summary>
         /// <param name="s">A string containing an angle to convert.</param>
@@ -213,7 +213,7 @@ namespace TwistedLogik.Ultraviolet
         }
 
         /// <summary>
-        /// Converts the string representation of angle in radians to an equivalent instance of the <see cref="Radians"/> structure.
+        /// Converts the string representation of an angle in radians to an equivalent instance of the <see cref="Radians"/> structure.
         /// </summary>
         /// <param name="s">A string containing the angle to convert.</param>
         /// <param name="style">A set of <see cref="NumberStyles"/> values indicating which elements are present in <paramref name="s"/>.</param>

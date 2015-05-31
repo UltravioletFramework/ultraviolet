@@ -115,6 +115,9 @@ namespace TwistedLogik.Ultraviolet
         public static readonly StringResource InvalidContentArchive                = new StringResource(StringDatabase, "INVALID_CONTENT_ARCHIVE");
         public static readonly StringResource ContentManagerNotBatchingDeletes     = new StringResource(StringDatabase, "CONTENT_MANAGER_NOT_BATCHING_DELETES");
         public static readonly StringResource ContentManagerRequiresBatch          = new StringResource(StringDatabase, "CONTENT_MANAGER_REQUIRES_BATCH");
+        public static readonly StringResource StretchableImageNotLoaded            = new StringResource(StringDatabase, "STRETCHABLE_IMAGE_NOT_LOADED");
+        public static readonly StringResource InvalidViewProviderAssembly          = new StringResource(StringDatabase, "INVALID_VIEW_PROVIDER_ASSEMBLY");
+        public static readonly StringResource IncompatibleViewModel                = new StringResource(StringDatabase, "INCOMPATIBLE_VIEW_MODEL");
 #pragma warning restore 1591
     }
 }

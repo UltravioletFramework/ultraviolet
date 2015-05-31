@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ComponentTemplate HorizontalAlignment="Stretch">
+  <Grid Class="comboboxitem-component" 
+        HorizontalAlignment="Stretch" 
+        VerticalAlignment="Stretch">
+    
+    <Image Class="comboboxitem-highlight"
+           HorizontalAlignment="Stretch"
+           VerticalAlignment="Stretch"
+           IsHitTestVisible="false"
+           Opacity="{{HighlightOpacity}}"/>
+    <ContentPresenter Class="comboboxitem-content"
+                      HorizontalAlignment="{{HorizontalContentAlignment}}"
+                      VerticalAlignment="{{VerticalContentAlignment}}"
+                      Margin="{{Padding}}"/>
+    
+  </Grid>
+</ComponentTemplate>

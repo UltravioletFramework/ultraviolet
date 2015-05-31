@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using TwistedLogik.Nucleus;
 
 namespace TwistedLogik.Ultraviolet.Content
@@ -19,11 +21,8 @@ namespace TwistedLogik.Ultraviolet.Content
 
         }
 
-        /// <summary>
-        /// Registers any content importers or processors defined in the Ultraviolet core assembly or
-        /// any assembly containing the implementation of one of the Ultraviolet context's subsystems.
-        /// </summary>
-        public void RegisterImportersAndProcessors()
+        /// <inheritdoc/>
+        public void RegisterImportersAndProcessors(IEnumerable<Assembly> additionalAssemblies)
         {
             Contract.EnsureNot(registered, UltravioletStrings.ContentHandlersAlreadyRegistered);
 
@@ -37,7 +36,7 @@ namespace TwistedLogik.Ultraviolet.Content
             var asmUltravioletInput    = Ultraviolet.GetInput().GetType().Assembly;
             var asmUltravioletUI       = Ultraviolet.GetUI().GetType().Assembly;
 
-            var assemblies = (new[] { 
+            var assemblies = new[] { 
                 asmUltravioletCore, 
                 asmUltravioletImpl, 
                 asmUltravioletPlatform,
@@ -45,7 +44,7 @@ namespace TwistedLogik.Ultraviolet.Content
                 asmUltravioletGraphics,
                 asmUltravioletAudio,
                 asmUltravioletInput,
-                asmUltravioletUI }).Distinct();
+                asmUltravioletUI }.Union(additionalAssemblies ?? Enumerable.Empty<Assembly>()).Where(x => x != null).Distinct();
 
             foreach (var asm in assemblies)
             {
@@ -56,10 +55,7 @@ namespace TwistedLogik.Ultraviolet.Content
             registered = true;
         }
 
-        /// <summary>
-        /// Updates the subsystem's state.
-        /// </summary>
-        /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Update(UltravioletTime)"/>.</param>
+        /// <inheritdoc/>
         public void Update(UltravioletTime time)
         {
             Contract.EnsureNotDisposed(this, Disposed);
@@ -67,9 +63,7 @@ namespace TwistedLogik.Ultraviolet.Content
             OnUpdating(time);
         }
 
-        /// <summary>
-        /// Gets the content manifest registry.
-        /// </summary>
+        /// <inheritdoc/>
         public ContentManifestRegistry Manifests
         {
             get
@@ -80,9 +74,7 @@ namespace TwistedLogik.Ultraviolet.Content
             }
         }
 
-        /// <summary>
-        /// Gets the content importer registry.
-        /// </summary>
+        /// <inheritdoc/>
         public ContentImporterRegistry Importers
         {
             get
@@ -93,9 +85,7 @@ namespace TwistedLogik.Ultraviolet.Content
             }
         }
 
-        /// <summary>
-        /// Gets the content processor registry.
-        /// </summary>
+        /// <inheritdoc/>
         public ContentProcessorRegistry Processors
         {
             get
@@ -106,9 +96,7 @@ namespace TwistedLogik.Ultraviolet.Content
             }
         }
 
-        /// <summary>
-        /// Occurs when the subsystem is updating its state.
-        /// </summary>
+        /// <inheritdoc/>
         public event UltravioletSubsystemUpdateEventHandler Updating;
 
         /// <summary>

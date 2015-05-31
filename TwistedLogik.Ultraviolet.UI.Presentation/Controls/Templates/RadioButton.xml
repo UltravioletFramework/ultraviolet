@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ComponentTemplate>
+  <Grid Class="radiobutton-component" 
+        HorizontalAlignment="Stretch" 
+        VerticalAlignment="Stretch">
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="Auto"/>
+      <ColumnDefinition Width="*"/>
+    </Grid.ColumnDefinitions>
+
+    <Image Class="toggle-box" 
+           Grid.Column="0" 
+           Grid.Row="0"
+           VerticalAlignment="{{VerticalContentAlignment}}"/>
+    <Image Class="toggle-mark" 
+           Grid.Column="0" 
+           Grid.Row="0"
+           VerticalAlignment="{{VerticalContentAlignment}}"/>    
+    <ContentPresenter Class="toggle-content" 
+                      Grid.Column="1"
+                      Grid.Row="0"
+                      VerticalAlignment="Stretch"/>
+    
+  </Grid>
+</ComponentTemplate>

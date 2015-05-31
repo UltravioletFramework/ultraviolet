@@ -238,8 +238,12 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
                 {
                     Ultraviolet.QueueWorkItem((state) =>
                     {
-                        gl.DeleteVertexArray(((OpenGLGeometryStream)state).vao);
-                        gl.ThrowIfError();                        
+                        var vao = ((OpenGLGeometryStream)state).vao;
+
+                        gl.DeleteVertexArray(vao);
+                        gl.ThrowIfError();
+
+                        OpenGLState.DeleteVertexArrayObject(vao, 0, glElementArrayBufferBinding ?? 0);
                     }, this);
                 }
                 vbuffers.Clear();

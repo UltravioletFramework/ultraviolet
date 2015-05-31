@@ -111,7 +111,8 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                 TextStyle tokenStyleActive;
                 GetStyle(thisToken.Style, out tokenStyleBase, out tokenStyleActive);
 
-                var tokenFont = GetFontFace(ref tokenStyleBase, ref tokenStyleActive);
+                var tokenFont = (thisToken.Style == 0) ? settings.Font.GetFace(settings.Style) : 
+                    GetFontFace(ref tokenStyleBase, ref tokenStyleActive);
 
                 if (thisToken.IsNewLine)
                 {

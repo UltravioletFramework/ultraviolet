@@ -14,16 +14,14 @@ namespace UltravioletSample.UI.Screens
     public class GameplayScreen : UIScreen
     {
         public GameplayScreen(ContentManager globalContent, UIScreenService uiScreenService)
-            : base("GameplayScreen", Path.Combine("Content", "UI", "Screens", "GameplayScreen"))
+            : base("Content/UI/Screens/GameplayScreen", "GameplayScreen", globalContent)
         {
             Contract.Require(uiScreenService, "uiScreenService");
 
-            this.uiScreenService = uiScreenService;
-
             this.textRenderer    = new TextRenderer();
-            this.blankTexture    = globalContent.Load<Texture2D>(GlobalTextureID.Blank);
-            this.photograph      = globalContent.Load<Texture2D>(GlobalTextureID.Photograph);
-            this.font            = globalContent.Load<SpriteFont>(GlobalFontID.SegoeUI);
+            this.blankTexture    = GlobalContent.Load<Texture2D>(GlobalTextureID.Blank);
+            this.photograph      = GlobalContent.Load<Texture2D>(GlobalTextureID.Photograph);
+            this.font            = GlobalContent.Load<SpriteFont>(GlobalFontID.SegoeUI);
         }
 
         protected override void OnUpdating(UltravioletTime time)
@@ -48,7 +46,6 @@ namespace UltravioletSample.UI.Screens
             base.OnDrawingForeground(time, spriteBatch);
         }
 
-        private readonly UIScreenService uiScreenService;
         private readonly TextRenderer textRenderer;
         private readonly Texture2D blankTexture;
         private readonly Texture2D photograph;

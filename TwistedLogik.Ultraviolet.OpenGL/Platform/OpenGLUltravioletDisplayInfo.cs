@@ -21,28 +21,25 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
                 .ToList<IUltravioletDisplay>();
         }
 
-        /// <summary>
-        /// Gets the collection's enumerator.
-        /// </summary>
-        /// <returns>The collection's enumerator.</returns>
+        /// <inheritdoc/>
+        public IUltravioletDisplay PrimaryDisplay
+        {
+            get { return displays.Count == 0 ? null : displays[0]; }
+        }
+
+        /// <inheritdoc/>
         public List<IUltravioletDisplay>.Enumerator GetEnumerator()
         {
             return displays.GetEnumerator();
         }
 
-        /// <summary>
-        /// Gets the collection's enumerator.
-        /// </summary>
-        /// <returns>The collection's enumerator.</returns>
+        /// <inheritdoc/>
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
         }
 
-        /// <summary>
-        /// Gets the collection's enumerator.
-        /// </summary>
-        /// <returns>The collection's enumerator.</returns>
+        /// <inheritdoc/>
         IEnumerator<IUltravioletDisplay> IEnumerable<IUltravioletDisplay>.GetEnumerator()
         {
             return GetEnumerator();

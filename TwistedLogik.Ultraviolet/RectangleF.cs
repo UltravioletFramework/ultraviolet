@@ -12,6 +12,17 @@ namespace TwistedLogik.Ultraviolet
     public struct RectangleF : IEquatable<RectangleF>, IInterpolatable<RectangleF>
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="RectangleF"/> class.
+        /// </summary>
+        /// <param name="position">The rectangle's position.</param>
+        /// <param name="size">The rectangle's size.</param>
+        public RectangleF(Point2F position, Size2F size)
+            : this(position.X, position.Y, size.Width, size.Height)
+        {
+
+        }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="RectangleF"/> structure.
         /// </summary>
         /// <param name="x">The x-coordinate of the rectangle's top-left corner.</param>
@@ -35,6 +46,28 @@ namespace TwistedLogik.Ultraviolet
             : this(position.X, position.Y, size.Width, size.Height)
         {
 
+        }
+
+        /// <summary>
+        /// Offsets the specified <see cref="RectangleF"/> by adding the specified <see cref="Point2F"/> to its location.
+        /// </summary>
+        /// <param name="rect">The <see cref="RectangleF"/> to offset.</param>
+        /// <param name="point">The <see cref="Point2F"/> by which to offset the rectangle.</param>
+        /// <returns>A <see cref="RectangleF"/> that has been offset by the specified amount.</returns>
+        public static RectangleF operator +(RectangleF rect, Point2F point)
+        {
+            return new RectangleF(rect.X + point.X, rect.Y + point.Y, rect.Width, rect.Height);
+        }
+
+        /// <summary>
+        /// Offsets the specified <see cref="RectangleF"/> by subtracting the specified <see cref="Point2F"/> from its location.
+        /// </summary>
+        /// <param name="rect">The <see cref="RectangleF"/> to offset.</param>
+        /// <param name="point">The <see cref="Point2F"/> by which to offset the rectangle.</param>
+        /// <returns>A <see cref="RectangleF"/> that has been offset by the specified amount.</returns>
+        public static RectangleF operator -(RectangleF rect, Point2F point)
+        {
+            return new RectangleF(rect.X - point.X, rect.Y - point.Y, rect.Width, rect.Height);
         }
 
         /// <summary>
@@ -67,6 +100,16 @@ namespace TwistedLogik.Ultraviolet
         public static explicit operator Rectangle(RectangleF rect)
         {
             return new Rectangle((int)rect.x, (int)rect.y, (int)rect.width, (int)rect.height);
+        }
+
+        /// <summary>
+        /// Implicitly converts a <see cref="Rectangle"/> structure to a <see cref="RectangleF"/> structure.
+        /// </summary>
+        /// <param name="rect">The structure to convert.</param>
+        /// <returns>The converted structure.</returns>
+        public static implicit operator RectangleF(Rectangle rect)
+        {
+            return new RectangleF(rect.X, rect.Y, rect.Width, rect.Height);
         }
 
         /// <summary>
@@ -265,7 +308,7 @@ namespace TwistedLogik.Ultraviolet
             var minRight = rectangle1.Right < rectangle2.Right ? rectangle1.Right : rectangle2.Right;
             var minBottom = rectangle1.Bottom < rectangle2.Bottom ? rectangle1.Bottom : rectangle2.Bottom;
 
-            var isEmpty = (minRight > maxLeft && minBottom > maxTop);
+            var isEmpty = (minRight <= maxLeft || minBottom <= maxTop);
 
             return isEmpty ? RectangleF.Empty : new RectangleF(maxLeft, maxTop, minRight - maxLeft, minBottom - maxTop);
         }
@@ -283,7 +326,7 @@ namespace TwistedLogik.Ultraviolet
             var minRight = rectangle1.Right < rectangle2.Right ? rectangle1.Right : rectangle2.Right;
             var minBottom = rectangle1.Bottom < rectangle2.Bottom ? rectangle1.Bottom : rectangle2.Bottom;
 
-            var isEmpty = (minRight > maxLeft && minBottom > maxTop);
+            var isEmpty = (minRight <= maxLeft || minBottom <= maxTop);
 
             result = isEmpty ? RectangleF.Empty : new RectangleF(maxLeft, maxTop, minRight - maxLeft, minBottom - maxTop);
         }
@@ -385,6 +428,30 @@ namespace TwistedLogik.Ultraviolet
             return
                 x >= this.x && x < this.x + this.width &&
                 y >= this.y && y < this.y + this.height;
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the rectangle contains the specified point.
+        /// </summary>
+        /// <param name="point">The point to evaluate.</param>
+        /// <param name="result">A value indicating whether the rectangle contains the specified point.</param>
+        public void Contains(ref Point2F point, out Boolean result)
+        {
+            result =
+                point.X >= this.x && point.X < this.x + this.width &&
+                point.Y >= this.y && point.Y < this.y + this.height;
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the rectangle contains the specified point.
+        /// </summary>
+        /// <param name="point">The point to evaluate.</param>
+        /// <returns><c>true</c> if the rectangle contains the specified point; otherwise, <c>false</c>.</returns>
+        public Boolean Contains(Point2F point)
+        {
+            return
+                point.X >= this.x && point.X < this.x + this.width &&
+                point.Y >= this.y && point.Y < this.y + this.height;
         }
 
         /// <summary>
@@ -533,17 +600,25 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Gets the position of the rectangle's top-left corner.
         /// </summary>
-        public Vector2 Location
+        public Point2F Location
         {
-            get { return new Vector2(x, y); }
+            get { return new Point2F(x, y); }
         }
 
         /// <summary>
         /// Gets the position of the rectangle's center.
         /// </summary>
-        public Vector2 Center
+        public Point2F Center
         {
-            get { return new Vector2(x + (width / 2f), y + (height / 2f)); }
+            get { return new Point2F(x + (width / 2.0f), y + (height / 2.0f)); }
+        }
+
+        /// <summary>
+        /// Gets the rectangle's size.
+        /// </summary>
+        public Size2F Size
+        {
+            get { return new Size2F(width, height); }
         }
 
         // Property values.

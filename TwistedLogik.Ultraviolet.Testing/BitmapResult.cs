@@ -21,17 +21,6 @@ namespace TwistedLogik.Ultraviolet.Testing
         }
 
         /// <summary>
-        /// Specifies that subsequent comparisons should be within the specified linear distance.
-        /// </summary>
-        /// <param name="distance">The distance value to set.</param>
-        /// <returns>The result object.</returns>
-        public BitmapResult WithinDistance(Single distance)
-        {
-            this.distance = distance;
-            return this;
-        }
-
-        /// <summary>
         /// Specifies that subsequent comparisons should have the specified threshold value.
         /// The threshold value is the number of pixels which must match the expected image
         /// in order for the images to be considered a match.
@@ -51,34 +40,55 @@ namespace TwistedLogik.Ultraviolet.Testing
         public void ShouldMatch(String filename)
         {
             var expected = (Bitmap)Bitmap.FromFile(filename);
+
+            var filenameNoExtension = Path.GetFileNameWithoutExtension(filename);
+
+            var filenameExpected = Path.ChangeExtension(filenameNoExtension + "_Expected", "png");
+            expected.Save(filenameExpected);
+
+            var filenameActual = Path.ChangeExtension(filenameNoExtension + "_Actual", "png");
+            bitmap.Save(filenameActual, ImageFormat.Png);
+
             if (expected.Width != bitmap.Width || expected.Height != bitmap.Height)
             {
-                Assert.Fail("Images do not match");
+                Assert.Fail("Images do not match due to differing dimensions");
             }
 
-            var matches         = 0;
-            var requiredMatches = (Int32)((bitmap.Width * bitmap.Height) * (1f - threshold));
+            var mismatchesFound    = 0;
+            var mismatchesRequired = (Int32)((bitmap.Width * bitmap.Height) * threshold);
 
-            for (int y = 0; y < expected.Height; y++)
+            using (var diff = new Bitmap(expected.Width, expected.Height))
             {
-                for (int x = 0; x < expected.Width; x++)
+                // Ignore pixels that are within about 1% of the expected value.
+                const Int32 PixelDiffThreshold = 2;
+
+                for (int y = 0; y < expected.Height; y++)
                 {
-                    var pixelExpected = expected.GetPixel(x, y);
-                    var pixelActual   = bitmap.GetPixel(x, y);
-                    if (CalculateColorDistance(pixelExpected, pixelActual) <= distance)
+                    for (int x = 0; x < expected.Width; x++)
                     {
-                        matches++;
+                        var pixelExpected = expected.GetPixel(x, y);
+                        var pixelActual   = bitmap.GetPixel(x, y);
+
+                        var diffR = Math.Abs(pixelExpected.R + pixelActual.R - 2 * Math.Min(pixelExpected.R, pixelActual.R));
+                        var diffG = Math.Abs(pixelExpected.G + pixelActual.G - 2 * Math.Min(pixelExpected.G, pixelActual.G));
+                        var diffB = Math.Abs(pixelExpected.B + pixelActual.B - 2 * Math.Min(pixelExpected.B, pixelActual.B));
+
+                        if (diffR > PixelDiffThreshold || diffG > PixelDiffThreshold || diffB > PixelDiffThreshold)
+                        {
+                            mismatchesFound++;
+                        }
+
+                        diff.SetPixel(x, y, System.Drawing.Color.FromArgb(255, diffR, diffG, diffB));
                     }
                 }
-            }
 
-            if (matches < requiredMatches)
-            {
-                var filenameNoExtension = Path.GetFileNameWithoutExtension(filename);
-                var filenameActual = Path.ChangeExtension(filenameNoExtension + "_Failed", "png");
-                bitmap.Save(filenameActual, ImageFormat.Png);
+                var filenameDiff = Path.ChangeExtension(filenameNoExtension + "_Diff", "png");
+                diff.Save(filenameDiff, ImageFormat.Png);
 
-                Assert.Fail("Images do not match");
+                if (mismatchesFound >= mismatchesRequired)
+                {
+                    Assert.Fail("Images do not match");
+                }
             }
         }
 
@@ -90,25 +100,8 @@ namespace TwistedLogik.Ultraviolet.Testing
             get { return bitmap; }
         }
 
-        /// <summary>
-        /// Calculates the linear distance between two colors.
-        /// </summary>
-        /// <param name="c1">The first <see cref="Color"/> to compare.</param>
-        /// <param name="c2">The second <see cref="Color"/> to compare.</param>
-        /// <returns>The linear distance between the specified color.</returns>
-        private static Single CalculateColorDistance(System.Drawing.Color c1, System.Drawing.Color c2)
-        {
-            return (Single)Math.Sqrt(
-                Math.Pow(c1.A - c2.A, 2) +
-                Math.Pow(c1.R - c2.R, 2) +
-                Math.Pow(c1.G - c2.G, 2) +
-                Math.Pow(c1.B - c2.B, 2)
-            );
-        }
-
         // State values.
         private readonly Bitmap bitmap;
-        private Single distance = 5.0f;
         private Single threshold = 0.01f;
     }
 }

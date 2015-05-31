@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ComponentTemplate>
+  <Grid Class="slider-component" 
+        HorizontalAlignment="Stretch" 
+        VerticalAlignment="Stretch">
+
+    <Image Class="slider-track-background slider-track-background-vertical"
+           HorizontalAlignment="Center" 
+           VerticalAlignment="Stretch"/>
+    <Track Name="PART_Track" 
+           Class="slider-track slider-track-vertical" 
+           HorizontalAlignment="Center" 
+           VerticalAlignment="Stretch" 
+           Orientation="Vertical"/>
+
+  </Grid>
+</ComponentTemplate>

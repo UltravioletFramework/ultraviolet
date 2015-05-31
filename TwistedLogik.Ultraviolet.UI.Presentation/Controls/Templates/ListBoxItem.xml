@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ComponentTemplate HorizontalAlignment="Stretch">
+  <Grid Class="listboxitem-component" 
+        HorizontalAlignment="Stretch" 
+        VerticalAlignment="Stretch">
+    
+    <Image Class="listboxitem-highlight"
+           HorizontalAlignment="Stretch"
+           VerticalAlignment="Stretch"
+           IsHitTestVisible="false"
+           Opacity="{{HighlightOpacity}}"/>
+    <ContentPresenter Class="listboxitem-content"
+                      HorizontalAlignment="{{HorizontalContentAlignment}}"
+                      VerticalAlignment="{{VerticalContentAlignment}}"
+                      Margin="{{Padding}}"/>
+                      
+  </Grid>
+</ComponentTemplate>

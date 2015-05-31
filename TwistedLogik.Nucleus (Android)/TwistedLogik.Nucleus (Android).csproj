@@ -80,6 +80,12 @@
     <Compile Include="..\TwistedLogik.Nucleus\Collections\GenericEnumerator.cs">
       <Link>Collections\GenericEnumerator.cs</Link>
     </Compile>
+    <Compile Include="..\TwistedLogik.Nucleus\Collections\INotifyCollectionChanged.cs">
+      <Link>Collections\INotifyCollectionChanged.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Nucleus\Collections\INotifyCollectionChangedOfT.cs">
+      <Link>Collections\INotifyCollectionChangedOfT.cs</Link>
+    </Compile>
     <Compile Include="..\TwistedLogik.Nucleus\Collections\IPool.cs">
       <Link>Collections\IPool.cs</Link>
     </Compile>
@@ -103,6 +109,9 @@
     </Compile>
     <Compile Include="..\TwistedLogik.Nucleus\Collections\PriorityQueue.cs">
       <Link>Collections\PriorityQueue.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Nucleus\CommonBoxedValues.cs">
+      <Link>CommonBoxedValues.cs</Link>
     </Compile>
     <Compile Include="..\TwistedLogik.Nucleus\Contract.cs">
       <Link>Contract.cs</Link>
@@ -306,14 +315,14 @@
     <EmbeddedResource Include="..\TwistedLogik.Nucleus\Resources\Strings.xml">
       <Link>Resources\Strings.xml</Link>
     </EmbeddedResource>
-    <Content Include="..\TwistedLogik.Nucleus\TwistedLogik.Nucleus.Licenses.txt">
+    <None Include="..\TwistedLogik.Nucleus\TwistedLogik.Nucleus.Licenses.txt">
       <Link>TwistedLogik.Nucleus.Licenses.txt</Link>
-    </Content>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties ProjectLinkReference="7da6158b-a0b9-4100-904e-22fd86949608" ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" />
+      <UserProperties ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" ProjectLinkReference="7da6158b-a0b9-4100-904e-22fd86949608" />
     </VisualStudio>
   </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

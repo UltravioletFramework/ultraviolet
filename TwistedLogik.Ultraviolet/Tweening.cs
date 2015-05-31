@@ -8,6 +8,54 @@ namespace TwistedLogik.Ultraviolet
     public static class Tweening
     {
         /// <summary>
+        /// Initializes the <see cref="Tweening"/> type.
+        /// </summary>
+        static Tweening()
+        {
+            Interpolators.Register<Object>(Tween);
+            Interpolators.Register<Boolean>(Tween);
+            Interpolators.Register<Byte>(Tween);
+            Interpolators.Register<SByte>(Tween);
+            Interpolators.Register<Char>(Tween);
+            Interpolators.Register<Int16>(Tween);
+            Interpolators.Register<Int32>(Tween);
+            Interpolators.Register<Int64>(Tween);
+            Interpolators.Register<UInt16>(Tween);
+            Interpolators.Register<UInt32>(Tween);
+            Interpolators.Register<UInt64>(Tween);
+            Interpolators.Register<Single>(Tween);
+            Interpolators.Register<Double>(Tween);
+            Interpolators.Register<Decimal>(Tween);
+
+            Interpolators.RegisterDefault<Color>();
+        }
+
+        /// <summary>
+        /// Tweens the specified values.
+        /// </summary>
+        /// <param name="tweenStart">The start value.</param>
+        /// <param name="tweenEnd">The end value.</param>
+        /// <param name="fn">The easing function to apply.</param>
+        /// <param name="t">A value between 0.0 and 1.0 indicating the current position in the tween.</param>
+        /// <returns>A value which is interpolated from the specified start and end values.</returns>
+        public static Object Tween(Object tweenStart, Object tweenEnd, EasingFunction fn, Single t)
+        {
+            return (fn ?? Easings.EaseInLinear)(t) < 1.0f ? tweenStart : tweenEnd;
+        }
+
+        /// <summary>
+        /// Performs a linear interpolation between the specified values.
+        /// </summary>
+        /// <param name="lerpStart">The start value.</param>
+        /// <param name="lerpEnd">The end value.</param>
+        /// <param name="t">A value between 0.0 and 1.0 indicating the current position in the interpolation.</param>
+        /// <returns>A value which is interpolated from the specified start and end values.</returns>
+        public static Object Lerp(Object lerpStart, Object lerpEnd, Single t)
+        {
+            return t < 1.0f ? lerpStart : lerpEnd;
+        }
+
+        /// <summary>
         /// Tweens the specified values.
         /// </summary>
         /// <param name="tweenStart">The start value.</param>
@@ -17,7 +65,7 @@ namespace TwistedLogik.Ultraviolet
         /// <returns>A value which is interpolated from the specified start and end values.</returns>
         public static Boolean Tween(Boolean tweenStart, Boolean tweenEnd, EasingFunction fn, Single t)
         {
-            return fn(t) < 0.5f ? tweenStart : tweenEnd;
+            return (fn ?? Easings.EaseInLinear)(t) < 1.0f ? tweenStart : tweenEnd;
         }
 
         /// <summary>
@@ -29,7 +77,7 @@ namespace TwistedLogik.Ultraviolet
         /// <returns>A value which is interpolated from the specified start and end values.</returns>
         public static Boolean Lerp(Boolean lerpStart, Boolean lerpEnd, Single t)
         {
-            return t < 0.5f ? lerpStart : lerpEnd;
+            return t < 1.0f ? lerpStart : lerpEnd;
         }
 
         /// <summary>
@@ -47,7 +95,7 @@ namespace TwistedLogik.Ultraviolet
                 return Tween(tweenEnd, tweenStart, fn, 1f - t);
             }
             var delta = (tweenEnd - tweenStart);
-            return (Byte)(tweenStart + (delta * fn(t)));
+            return (Byte)(tweenStart + (delta * (fn ?? Easings.EaseInLinear)(t)));
         }
 
         /// <summary>
@@ -79,7 +127,7 @@ namespace TwistedLogik.Ultraviolet
         public static SByte Tween(SByte tweenStart, SByte tweenEnd, EasingFunction fn, Single t)
         {
             var delta = (tweenEnd - tweenStart);
-            return (SByte)(tweenStart + (delta * fn(t)));
+            return (SByte)(tweenStart + (delta * (fn ?? Easings.EaseInLinear)(t)));
         }
 
         /// <summary>
@@ -111,7 +159,7 @@ namespace TwistedLogik.Ultraviolet
                 return Tween(tweenEnd, tweenStart, fn, 1f - t);
             }
             var delta = (tweenEnd - tweenStart);
-            return (Char)(tweenStart + (delta * fn(t)));
+            return (Char)(tweenStart + (delta * (fn ?? Easings.EaseInLinear)(t)));
         }
 
         /// <summary>
@@ -142,7 +190,7 @@ namespace TwistedLogik.Ultraviolet
         public static Int16 Tween(Int16 tweenStart, Int16 tweenEnd, EasingFunction fn, Single t)
         {
             var delta = (tweenEnd - tweenStart);
-            return (Int16)(tweenStart + (delta * fn(t)));
+            return (Int16)(tweenStart + (delta * (fn ?? Easings.EaseInLinear)(t)));
         }
 
         /// <summary>
@@ -174,7 +222,7 @@ namespace TwistedLogik.Ultraviolet
                 return Tween(tweenEnd, tweenStart, fn, 1f - t);
             }
             var delta = (tweenEnd - tweenStart);
-            return (UInt16)(tweenStart + (delta * fn(t)));
+            return (UInt16)(tweenStart + (delta * (fn ?? Easings.EaseInLinear)(t)));
         }
 
         /// <summary>
@@ -206,7 +254,7 @@ namespace TwistedLogik.Ultraviolet
         public static Int32 Tween(Int32 tweenStart, Int32 tweenEnd, EasingFunction fn, Single t)
         {
             var delta = (tweenEnd - tweenStart);
-            return (Int32)(tweenStart + (delta * fn(t)));
+            return (Int32)(tweenStart + (delta * (fn ?? Easings.EaseInLinear)(t)));
         }
 
         /// <summary>
@@ -238,7 +286,7 @@ namespace TwistedLogik.Ultraviolet
                 return Tween(tweenEnd, tweenStart, fn, 1f - t);
             }
             var delta = (tweenEnd - tweenStart);
-            return (UInt32)(tweenStart + (delta * fn(t)));
+            return (UInt32)(tweenStart + (delta * (fn ?? Easings.EaseInLinear)(t)));
         }
 
         /// <summary>
@@ -270,7 +318,7 @@ namespace TwistedLogik.Ultraviolet
         public static Int64 Tween(Int64 tweenStart, Int64 tweenEnd, EasingFunction fn, Single t)
         {
             var delta = (tweenEnd - tweenStart);
-            return (Int64)(tweenStart + (delta * fn(t)));
+            return (Int64)(tweenStart + (delta * (fn ?? Easings.EaseInLinear)(t)));
         }
 
         /// <summary>
@@ -302,7 +350,7 @@ namespace TwistedLogik.Ultraviolet
                 return Tween(tweenEnd, tweenStart, fn, t);
             }
             var delta = (tweenEnd - tweenStart);
-            return (UInt64)(tweenStart + (delta * fn(t)));
+            return (UInt64)(tweenStart + (delta * (fn ?? Easings.EaseInLinear)(t)));
         }
 
         /// <summary>
@@ -334,7 +382,7 @@ namespace TwistedLogik.Ultraviolet
         public static Single Tween(Single tweenStart, Single tweenEnd, EasingFunction fn, Single t)
         {
             var delta = (tweenEnd - tweenStart);
-            return (Single)(tweenStart + (delta * fn(t)));
+            return (Single)(tweenStart + (delta * (fn ?? Easings.EaseInLinear)(t)));
         }
 
         /// <summary>
@@ -361,7 +409,7 @@ namespace TwistedLogik.Ultraviolet
         public static Double Tween(Double tweenStart, Double tweenEnd, EasingFunction fn, Single t)
         {
             var delta = (tweenEnd - tweenStart);
-            return (Double)(tweenStart + (delta * fn(t)));
+            return (Double)(tweenStart + (delta * (fn ?? Easings.EaseInLinear)(t)));
         }
 
         /// <summary>
@@ -388,7 +436,7 @@ namespace TwistedLogik.Ultraviolet
         public static Decimal Tween(Decimal tweenStart, Decimal tweenEnd, EasingFunction fn, Single t)
         {
             var delta = (tweenEnd - tweenStart);
-            return (Decimal)(tweenStart + (delta * (Decimal)fn(t)));
+            return (Decimal)(tweenStart + (delta * (Decimal)(fn ?? Easings.EaseInLinear)(t)));
         }
 
         /// <summary>
@@ -413,9 +461,14 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="fn">The easing function to apply.</param>
         /// <param name="t">A value between 0.0 and 1.0 indicating the current position in the tween.</param>
         /// <returns>A value which is interpolated from the specified start and end values.</returns>
-        public static T Tween<T>(T tweenStart, T tweenEnd, EasingFunction fn, Single t) where T : IInterpolatable<T>
+        public static T Tween<T>(T tweenStart, T tweenEnd, EasingFunction fn, Single t)
         {
-            return tweenStart.Interpolate(tweenEnd, fn(t));
+            Interpolator<T> interpolator;
+            if (!Interpolators.TryGet<T>(out interpolator) || interpolator == null)
+            {
+                return (T)Tween((Object)tweenStart, (Object)tweenEnd, fn, t);
+            }
+            return interpolator(tweenStart, tweenEnd, fn, t);
         }
 
         /// <summary>
@@ -426,9 +479,14 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="lerpEnd">The end value.</param>
         /// <param name="t">A value between 0.0 and 1.0 indicating the current position in the interpolation.</param>
         /// <returns>A value which is interpolated from the specified start and end values.</returns>
-        public static T Lerp<T>(T lerpStart, T lerpEnd, Single t) where T : IInterpolatable<T>
+        public static T Lerp<T>(T lerpStart, T lerpEnd, Single t)
         {
-            return lerpStart.Interpolate(lerpEnd, t);
+            Interpolator<T> interpolator;
+            if (!Interpolators.TryGet<T>(out interpolator) || interpolator == null)
+            {
+                return (T)Tween((Object)lerpStart, (Object)lerpEnd, Easings.EaseInLinear, t);
+            }
+            return interpolator(lerpStart, lerpEnd, Easings.EaseInLinear, t);
         }
 
         /// <summary>
@@ -440,9 +498,14 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="fn">The easing function to apply.</param>
         /// <param name="t">A value between 0.0 and 1.0 indicating the current position in the tween.</param>
         /// <returns>A value which is interpolated from the specified start and end values.</returns>
-        public static T TweenRef<T>(ref T tweenStart, ref T tweenEnd, EasingFunction fn, Single t) where T : struct, IInterpolatable<T>
+        public static T TweenRef<T>(ref T tweenStart, ref T tweenEnd, EasingFunction fn, Single t) where T : struct
         {
-            return tweenStart.Interpolate(tweenEnd, fn(t));
+            Interpolator<T> interpolator;
+            if (!Interpolators.TryGet<T>(out interpolator) || interpolator == null)
+            {
+                return (T)Tween((Object)tweenStart, (Object)tweenEnd, fn, t);
+            }
+            return interpolator(tweenStart, tweenEnd, fn, t);
         }
 
         /// <summary>
@@ -453,9 +516,26 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="lerpEnd">The end value.</param>
         /// <param name="t">A value between 0.0 and 1.0 indicating the current position in the interpolation.</param>
         /// <returns>A value which is interpolated from the specified start and end values.</returns>
-        public static T LerpRef<T>(ref T lerpStart, ref T lerpEnd, Single t) where T : struct, IInterpolatable<T>
+        public static T LerpRef<T>(ref T lerpStart, ref T lerpEnd, Single t) where T : struct
         {
-            return lerpStart.Interpolate(lerpEnd, t);
+            Interpolator<T> interpolator;
+            if (!Interpolators.TryGet<T>(out interpolator) || interpolator == null)
+            {
+                return (T)Tween((Object)lerpStart, (Object)lerpEnd, Easings.EaseInLinear, t);
+            }
+            return interpolator(lerpStart, lerpEnd, Easings.EaseInLinear, t);
         }
+
+        /// <summary>
+        /// Gets the tweening system's custom interpolation function registry.
+        /// </summary>
+        public static TweeningInterpolationRegistry Interpolators
+        {
+            get { return interpolators; }
+        }
+
+        // State values.
+        private static readonly TweeningInterpolationRegistry interpolators = 
+            new TweeningInterpolationRegistry();
     }
 }

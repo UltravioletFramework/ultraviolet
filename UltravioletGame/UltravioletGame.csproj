@@ -12,8 +12,6 @@
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile>Client</TargetFrameworkProfile>
-    <ProductVersion>12.0.0</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -25,7 +23,6 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
-    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
     <UseVSHostingProcess>true</UseVSHostingProcess>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
@@ -97,6 +94,7 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Production|x64'">
     <OutputPath>bin\x64\Production\</OutputPath>
@@ -107,6 +105,7 @@
     <PlatformTarget>x64</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Production|x86'">
     <OutputPath>bin\x86\Production\</OutputPath>
@@ -117,6 +116,7 @@
     <PlatformTarget>x86</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -222,16 +222,12 @@
       <Project>{0E4BAFBF-5211-4E2F-AF39-092EC6671581}</Project>
       <Name>TwistedLogik.Gluon</Name>
     </ProjectReference>
-    <ProjectReference Include="..\TwistedLogik.Nucleus\TwistedLogik.Nucleus.csproj">
-      <Project>{7DA6158B-A0B9-4100-904E-22FD86949608}</Project>
-      <Name>TwistedLogik.Nucleus</Name>
-    </ProjectReference>
     <ProjectReference Include="..\TwistedLogik.Ultraviolet.BASS\TwistedLogik.Ultraviolet.BASS.csproj">
       <Project>{EA948CF3-AD34-480A-B8CE-E7EC5CAA4D77}</Project>
       <Name>TwistedLogik.Ultraviolet.BASS</Name>
     </ProjectReference>
     <ProjectReference Include="..\TwistedLogik.Ultraviolet.Desktop\TwistedLogik.Ultraviolet.Desktop.csproj">
-      <Project>{073cafc1-86cb-414d-a71e-46440e25a3f4}</Project>
+      <Project>{073CAFC1-86CB-414D-A71E-46440E25A3F4}</Project>
       <Name>TwistedLogik.Ultraviolet.Desktop</Name>
     </ProjectReference>
     <ProjectReference Include="..\TwistedLogik.Ultraviolet.OpenGL\TwistedLogik.Ultraviolet.OpenGL.csproj">
@@ -245,6 +241,10 @@
     <ProjectReference Include="..\TwistedLogik.Ultraviolet\TwistedLogik.Ultraviolet.csproj">
       <Project>{F071ABE3-05E5-4DF9-A929-CF71B01EC50A}</Project>
       <Name>TwistedLogik.Ultraviolet</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TwistedLogik.Nucleus\TwistedLogik.Nucleus.csproj">
+      <Project>{7DA6158B-A0B9-4100-904E-22FD86949608}</Project>
+      <Name>TwistedLogik.Nucleus</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection;
 using System.Xml.Linq;
 using TwistedLogik.Nucleus;
 using TwistedLogik.Nucleus.Xml;
@@ -23,7 +24,6 @@ namespace TwistedLogik.Ultraviolet
             return new XElement("Window",
                 new XElement("WindowState",                    settings.WindowState),
                 new XElement("WindowMode",                     settings.WindowMode),
-                new XElement("WindowedClientSize",             settings.WindowedClientSize),
                 new XElement("WindowedPosition",               settings.WindowedPosition),
                 new XElement("SynchronizeWithVerticalRetrace", settings.SynchronizeWithVerticalRetrace),
                 settings.FullscreenDisplayMode == null ? null : new XElement("FullscreenDisplayMode",
@@ -39,31 +39,46 @@ namespace TwistedLogik.Ultraviolet
         /// Loads window settings from the specified XML element.
         /// </summary>
         /// <param name="xml">The XML element that contains the window settings to load.</param>
-        /// <returns>The window settings that were loaded from the specified XML element.</returns>
+        /// <returns>The window settings that were loaded from the specified XML element or <c>null</c> if 
+        /// settings could not be loaded correctly.</returns>
         public static UltravioletApplicationWindowSettings Load(XElement xml)
         {
             Contract.Require(xml, "xml");
 
-            var settings = new UltravioletApplicationWindowSettings();
-
-            settings.WindowState                    = xml.ElementValue<WindowState>("WindowState");
-            settings.WindowMode                     = xml.ElementValue<WindowMode>("WindowMode");
-            settings.WindowedPosition               = xml.ElementValue<Vector2>("WindowedPosition");
-            settings.WindowedClientSize             = xml.ElementValue<Size2>("WindowedClientSize");
-            settings.SynchronizeWithVerticalRetrace = xml.ElementValue<Boolean>("SynchronizeWithVerticalRetrace");
-
-            var fullscreenDisplayMode = xml.Element("FullscreenDisplayMode");
-            if (fullscreenDisplayMode != null)
+            try
             {
-                var width        = fullscreenDisplayMode.ElementValue<Int32>("Width");
-                var height       = fullscreenDisplayMode.ElementValue<Int32>("Height");
-                var bitsPerPixel = fullscreenDisplayMode.ElementValue<Int32>("BitsPerPixel");
-                var refreshRate  = fullscreenDisplayMode.ElementValue<Int32>("RefreshRate");
+                var settings = new UltravioletApplicationWindowSettings();
 
-                settings.FullscreenDisplayMode = new DisplayMode(width, height, bitsPerPixel, refreshRate);
+                settings.WindowState                    = xml.ElementValue<WindowState>("WindowState");
+                settings.WindowMode                     = xml.ElementValue<WindowMode>("WindowMode");
+                settings.WindowedPosition               = xml.ElementValue<Rectangle>("WindowedPosition");
+                settings.SynchronizeWithVerticalRetrace = xml.ElementValue<Boolean>("SynchronizeWithVerticalRetrace");
+
+                var fullscreenDisplayMode = xml.Element("FullscreenDisplayMode");
+                if (fullscreenDisplayMode != null)
+                {
+                    var width        = fullscreenDisplayMode.ElementValue<Int32>("Width");
+                    var height       = fullscreenDisplayMode.ElementValue<Int32>("Height");
+                    var bitsPerPixel = fullscreenDisplayMode.ElementValue<Int32>("BitsPerPixel");
+                    var refreshRate  = fullscreenDisplayMode.ElementValue<Int32>("RefreshRate");
+
+                    settings.FullscreenDisplayMode = new DisplayMode(width, height, bitsPerPixel, refreshRate);
+                }
+
+                return settings;
             }
-
-            return settings;
+            catch (FormatException)
+            {
+                return null;
+            }
+            catch (TargetInvocationException e)
+            {
+                if (e.InnerException is FormatException)
+                {
+                    return null;
+                }
+                throw;
+            }
         }
 
         /// <summary>
@@ -83,8 +98,7 @@ namespace TwistedLogik.Ultraviolet
 
             settings.WindowState                    = primary.GetWindowState();
             settings.WindowMode                     = primary.GetWindowMode();
-            settings.WindowedPosition               = primary.WindowedPosition;
-            settings.WindowedClientSize             = primary.WindowedClientSize;
+            settings.WindowedPosition               = new Rectangle(primary.WindowedPosition, primary.WindowedClientSize);
             settings.FullscreenDisplayMode          = primary.GetFullscreenDisplayMode();
             settings.SynchronizeWithVerticalRetrace = primary.SynchronizeWithVerticalRetrace;
 
@@ -103,8 +117,8 @@ namespace TwistedLogik.Ultraviolet
 
             primary.SetWindowState(WindowState);
             primary.SetWindowMode(WindowMode);
-            primary.WindowedPosition               = WindowedPosition;
-            primary.WindowedClientSize             = WindowedClientSize;
+            primary.WindowedPosition               = WindowedPosition.Location;
+            primary.WindowedClientSize             = WindowedPosition.Size;
             primary.SynchronizeWithVerticalRetrace = SynchronizeWithVerticalRetrace;
 
             if (FullscreenDisplayMode != null)
@@ -141,18 +155,9 @@ namespace TwistedLogik.Ultraviolet
         }
 
         /// <summary>
-        /// Gets the window's position.
+        /// Gets the primary window's position and client size.
         /// </summary>
-        public Vector2 WindowedPosition
-        {
-            get;
-            private set;
-        }
-
-        /// <summary>
-        /// Gets the primary window's client size.
-        /// </summary>
-        public Size2 WindowedClientSize
+        public Rectangle WindowedPosition
         {
             get;
             private set;

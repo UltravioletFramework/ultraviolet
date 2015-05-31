@@ -2,7 +2,7 @@
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi"
      xmlns:netfx="http://schemas.microsoft.com/wix/NetFxExtension"
      xmlns:util="http://schemas.microsoft.com/wix/UtilExtension">
-  <Product Id="*" Name="Ultraviolet Framework 1.1" Language="1033" Version="1.1.3.0" Manufacturer="TwistedLogik Software" UpgradeCode="167cedac-b1a9-47d8-8646-8b986f178343">
+  <Product Id="*" Name="Ultraviolet Framework 1.2" Language="1033" Version="1.2.0.0" Manufacturer="TwistedLogik Software" UpgradeCode="167cedac-b1a9-47d8-8646-8b986f178343">
     <Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" InstallPrivileges="elevated" />
 
     <InstallExecuteSequence>
@@ -106,6 +106,8 @@
       <ComponentRef Id="TwistedLogik.Ultraviolet.WindowsForms" />
       <ComponentRef Id="TwistedLogik.Ultraviolet.WindowsForms_XML" />
       <ComponentRef Id="TwistedLogik.Ultraviolet.Desktop" />
+      <ComponentRef Id="TwistedLogik.Ultraviolet.UI.Presentation"/>
+      <ComponentRef Id="TwistedLogik.Ultraviolet.UI.Presentation_XML"/>
       <ComponentRef Id="Newtonsoft.Json" />
       <ComponentRef Id="Tools_PATH"/>
       <ComponentRef Id="Tools_UvFont"/>
@@ -218,19 +220,19 @@
       <Directory Id="ProgramFilesFolder">
         <!-- Core Components - References -->
         <Directory Id="UltravioletCoreFolder" Name="Ultraviolet Framework">
-          <Directory Id="UltravioletCoreVersionFolder" Name="v1.1">
+          <Directory Id="UltravioletCoreVersionFolder" Name="v1.2">
             <!-- References -->
             <Directory Id="References" Name="References">
               <!-- Add References folder to AssemblyFoldersEx for VS Add Reference dialog -->
               <Component Id="AssemblyFoldersEx_x86">
                 <Condition>NOT VersionNT64</Condition>
-                <RegistryKey Root="HKLM" Key="Software\Microsoft\.NETFramework\v4.0.30319\AssemblyFoldersEx\Ultraviolet Framework 1.1">
+                <RegistryKey Root="HKLM" Key="Software\Microsoft\.NETFramework\v4.0.30319\AssemblyFoldersEx\Ultraviolet Framework 1.2">
                   <RegistryValue Type="string" Value="[References]"/>
                 </RegistryKey>
               </Component>
               <Component Id="AssemblyFoldersEx_x64">
                 <Condition>VersionNT64</Condition>
-                <RegistryKey Root="HKLM" Key="Software\Wow6432Node\Microsoft\.NETFramework\v4.0.30319\AssemblyFoldersEx\Ultraviolet Framework 1.1">
+                <RegistryKey Root="HKLM" Key="Software\Wow6432Node\Microsoft\.NETFramework\v4.0.30319\AssemblyFoldersEx\Ultraviolet Framework 1.2">
                   <RegistryValue Type="string" Value="[References]"/>
                 </RegistryKey>
               </Component>
@@ -270,6 +272,12 @@
               </Component>
               <Component Id="TwistedLogik.Ultraviolet.Desktop">
                 <File Id="TwistedLogik.Ultraviolet.Desktop" Source="..\Binaries\AnyCPU\Production\TwistedLogik.Ultraviolet.Desktop.dll" />
+              </Component>
+              <Component Id="TwistedLogik.Ultraviolet.UI.Presentation">
+                <File Id="TwistedLogik.Ultraviolet.UI.Presentation" Source="..\Binaries\AnyCPU\Production\TwistedLogik.Ultraviolet.UI.Presentation.dll" />
+              </Component>
+              <Component Id="TwistedLogik.Ultraviolet.UI.Presentation_XML">
+                <File Id="TwistedLogik.Ultraviolet.UI.Presentation_XML" Source="..\Binaries\AnyCPU\Production\TwistedLogik.Ultraviolet.UI.Presentation.xml" />
               </Component>
               <Component Id="Newtonsoft.Json">
                 <File Id="Newtonsoft.Json" Source="..\Dependencies\Newtonsoft.Json.dll" />
@@ -435,9 +443,9 @@
           <Directory Id="VS2010CSExpressFolder" Name="VCSExpress">
             <Directory Id="VS2010CSExpressProjectTemplatesFolder" Name="ProjectTemplates">
               <Directory Id="VS2010CSExpressCSharpFolder" Name="CSharp">
-                <Directory Id="VS2010CSExpressUltravioletFrameworkFolder" Name="Ultraviolet Framework 1.1">
+                <Directory Id="VS2010CSExpressUltravioletFrameworkFolder" Name="Ultraviolet Framework 1.2">
                   <Component Id="VS2010CSExpressRegKey">
-                    <RegistryValue Id="VS2010CSExpressRegKey" Root="HKLM" Key="SOFTWARE\TwistedLogik\Ultraviolet Framework 1.1\Features" Name="VS2010CSIntegration" Value="1" Type="integer" />
+                    <RegistryValue Id="VS2010CSExpressRegKey" Root="HKLM" Key="SOFTWARE\TwistedLogik\Ultraviolet Framework 1.2\Features" Name="VS2010CSIntegration" Value="1" Type="integer" />
                   </Component>
                   <Component Id="VS2010CSExpressUltravioletGame.zip">
                     <File Id="VS2010CSExpressUltravioletGame.zip" Source="..\Ultraviolet Game.zip" />
@@ -455,9 +463,9 @@
           <Directory Id="VS2012WDExpressFolder" Name="WDExpress">
             <Directory Id="VS2012WDExpressProjectTemplatesFolder" Name="ProjectTemplates">
               <Directory Id="VS2012WDExpressCSharpFolder" Name="CSharp">
-                <Directory Id="VS2012WDExpressUltravioletFrameworkFolder" Name="Ultraviolet Framework 1.1">
+                <Directory Id="VS2012WDExpressUltravioletFrameworkFolder" Name="Ultraviolet Framework 1.2">
                   <Component Id="VS2012WDExpressRegKey">
-                    <RegistryValue Id="VS2012WDExpressRegKey" Root="HKLM" Key="SOFTWARE\TwistedLogik\Ultraviolet Framework 1.1\Features" Name="VS2012WDIntegration" Value="1" Type="integer" />
+                    <RegistryValue Id="VS2012WDExpressRegKey" Root="HKLM" Key="SOFTWARE\TwistedLogik\Ultraviolet Framework 1.2\Features" Name="VS2012WDIntegration" Value="1" Type="integer" />
                   </Component>
                   <Component Id="VS2012WDExpressUltravioletGame.zip">
                     <File Id="VS2012WDExpressUltravioletGame.zip" Source="..\Ultraviolet Game.zip" />
@@ -475,9 +483,9 @@
           <Directory Id="VS2013WDExpressFolder" Name="WDExpress">
             <Directory Id="VS2013WDExpressProjectTemplatesFolder" Name="ProjectTemplates">
               <Directory Id="VS2013WDExpressCSharpFolder" Name="CSharp">
-                <Directory Id="VS2013WDExpressUltravioletFrameworkFolder" Name="Ultraviolet Framework 1.1">
+                <Directory Id="VS2013WDExpressUltravioletFrameworkFolder" Name="Ultraviolet Framework 1.2">
                   <Component Id="VS2013WDExpressRegKey">
-                    <RegistryValue Id="VS2013WDExpressRegKey" Root="HKLM" Key="SOFTWARE\TwistedLogik\Ultraviolet Framework 1.1\Features" Name="VS2013WDIntegration" Value="1" Type="integer" />
+                    <RegistryValue Id="VS2013WDExpressRegKey" Root="HKLM" Key="SOFTWARE\TwistedLogik\Ultraviolet Framework 1.2\Features" Name="VS2013WDIntegration" Value="1" Type="integer" />
                   </Component>
                   <Component Id="VS2013WDExpressUltravioletGame.zip">
                     <File Id="VS2013WDExpressUltravioletGame.zip" Source="..\Ultraviolet Game.zip" />
@@ -493,9 +501,9 @@
         <!-- VS2010 -->
         <Directory Id="VS2010_PROJECTTEMPLATES_DIR" Name="VS2010Dir">
           <Directory Id="VS2010CSharpFolder" Name="CSharp">
-            <Directory Id="VS2010UltravioletFrameworkFolder" Name="Ultraviolet Framework 1.1">
+            <Directory Id="VS2010UltravioletFrameworkFolder" Name="Ultraviolet Framework 1.2">
               <Component Id="VS2010RegKey">
-                <RegistryValue Id="VS2010RegKey" Root="HKLM" Key="SOFTWARE\TwistedLogik\Ultraviolet Framework 1.1\Features" Name="VS2010Integration" Value="1" Type="integer" />
+                <RegistryValue Id="VS2010RegKey" Root="HKLM" Key="SOFTWARE\TwistedLogik\Ultraviolet Framework 1.2\Features" Name="VS2010Integration" Value="1" Type="integer" />
               </Component>
               <Component Id="VS2010UltravioletGame.zip">
                 <File Id="VS2010UltravioletGame.zip" Source="..\Ultraviolet Game.zip" />
@@ -509,9 +517,9 @@
         <!-- VS2012 -->
         <Directory Id="VS2012_PROJECTTEMPLATES_DIR" Name="VS2012Dir">
           <Directory Id="VS2012CSharpFolder" Name="CSharp">
-            <Directory Id="VS2012UltravioletFrameworkFolder" Name="Ultraviolet Framework 1.1">
+            <Directory Id="VS2012UltravioletFrameworkFolder" Name="Ultraviolet Framework 1.2">
               <Component Id="VS2012RegKey">
-                <RegistryValue Id="VS2012RegKey" Root="HKLM" Key="SOFTWARE\TwistedLogik\Ultraviolet Framework 1.1\Features" Name="VS2012Integration" Value="1" Type="integer" />
+                <RegistryValue Id="VS2012RegKey" Root="HKLM" Key="SOFTWARE\TwistedLogik\Ultraviolet Framework 1.2\Features" Name="VS2012Integration" Value="1" Type="integer" />
               </Component>
               <Component Id="VS2012UltravioletGame.zip">
                 <File Id="VS2012UltravioletGame.zip" Source="..\Ultraviolet Game.zip" />
@@ -525,9 +533,9 @@
         <!-- VS2013 -->
         <Directory Id="VS2013_PROJECTTEMPLATES_DIR" Name="VS2013Dir">
           <Directory Id="VS2013CSharpFolder" Name="CSharp">
-            <Directory Id="VS2013UltravioletFrameworkFolder" Name="Ultraviolet Framework 1.1">
+            <Directory Id="VS2013UltravioletFrameworkFolder" Name="Ultraviolet Framework 1.2">
               <Component Id="VS2013RegKey">
-                <RegistryValue Id="VS2013RegKey" Root="HKLM" Key="SOFTWARE\TwistedLogik\Ultraviolet Framework 1.1\Features" Name="VS2013Integration" Value="1" Type="integer" />
+                <RegistryValue Id="VS2013RegKey" Root="HKLM" Key="SOFTWARE\TwistedLogik\Ultraviolet Framework 1.2\Features" Name="VS2013Integration" Value="1" Type="integer" />
               </Component>
               <Component Id="VS2013UltravioletGame.zip">
                 <File Id="VS2013UltravioletGame.zip" Source="..\Ultraviolet Game.zip" />

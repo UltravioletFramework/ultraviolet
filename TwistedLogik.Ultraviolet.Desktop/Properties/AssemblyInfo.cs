@@ -11,7 +11,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyProduct("Ultraviolet Framework")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyCompany("TwistedLogik Software")]
-[assembly: AssemblyCopyright("Copyright © Cole Campbell 2014")]
+[assembly: AssemblyCopyright("Copyright © Cole Campbell 2014-2015")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -33,5 +33,5 @@ using System.Runtime.InteropServices;
 //      Build Number
 //      Revision
 //
-[assembly: AssemblyVersion("1.1.0.0")]
-[assembly: AssemblyFileVersion("1.1.3.0")]
+[assembly: AssemblyVersion("1.2.0.0")]
+[assembly: AssemblyFileVersion("1.2.0.0")]

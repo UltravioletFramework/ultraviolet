@@ -413,6 +413,24 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         }
 
         /// <summary>
+        /// Indicates that the specified vertex array object has been deleted and updates the OpenGL state accordingly.
+        /// </summary>
+        /// <param name="vertexArrayObject">The vertex array object to delete.</param>
+        /// <param name="arrayBuffer">The array buffer to delete.</param>
+        /// <param name="elementArrayBuffer">The element array buffer to delete.</param>
+        public static void DeleteVertexArrayObject(UInt32 vertexArrayObject, UInt32 arrayBuffer, UInt32 elementArrayBuffer)
+        {
+            if (OpenGLState.GL_VERTEX_ARRAY_BINDING == vertexArrayObject)
+            {
+                OpenGLState.GL_VERTEX_ARRAY_BINDING.Update(0);
+                OpenGLState.GL_ARRAY_BUFFER_BINDING.Update(0);
+                OpenGLState.GL_ELEMENT_ARRAY_BUFFER_BINDING.Update(0);
+
+                OpenGLState.VerifyCache();
+            }
+        }
+
+        /// <summary>
         /// Applies the state object's values to the OpenGL context.
         /// </summary>
         public void Apply()

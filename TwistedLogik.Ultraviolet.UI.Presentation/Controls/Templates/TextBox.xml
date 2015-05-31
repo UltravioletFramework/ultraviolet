@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ComponentTemplate>
+  <Grid Class="textbox-component" 
+        HorizontalAlignment="Stretch"
+        VerticalAlignment="Stretch">
+    
+    <Image Class="textbox-background"
+           SourceColor="{{Background}}"
+           HorizontalAlignment="Stretch" 
+           VerticalAlignment="Stretch"/>
+    <TextBoxContentPresenter Name="PART_ContentPresenter" 
+                             Class="textbox-content" 
+                             HorizontalAlignment="Stretch"
+                             VerticalAlignment="Stretch"
+                             Margin="{{Padding}}"                             
+                             Updating="PresenterUpdate" 
+                             Drawing="PresenterDraw"/>
+    <Image Class="textbox-focus"
+           HorizontalAlignment="Stretch"
+           VerticalAlignment="Stretch" 
+           IsHitTestVisible="false"/>
+
+  </Grid>
+</ComponentTemplate>

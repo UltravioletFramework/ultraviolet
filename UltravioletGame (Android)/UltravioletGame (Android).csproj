@@ -143,10 +143,10 @@
     <AndroidResource Include="Resources\drawable\Icon.png" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="..\UltravioletGame\README-SDL.txt">
+    <None Include="..\UltravioletGame\README-SDL.txt">
       <Link>README-SDL.txt</Link>
-    </Content>
-    <Content Include="Properties\AndroidManifest.xml" />
+    </None>
+    <None Include="Properties\AndroidManifest.xml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TwistedLogik.Gluon %28Android%29\TwistedLogik.Gluon %28Android%29.csproj">

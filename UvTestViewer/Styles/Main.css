@@ -1,0 +1,218 @@
+﻿html {
+    overflow-y: scroll;
+}
+
+body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background-color: #e1d6eb;
+    margin: 0;
+    padding: 0;
+}
+
+.testrun-container {
+    text-align: center;
+}
+
+.testrun {
+    display: inline-block;
+}
+
+.testrun-header {
+    width: 100%;
+    color: #fff;
+    background-color: #7100b5;
+    padding: 8px;
+    text-align: center;
+}
+
+.testrun-header h1 {
+    margin: 0;
+}
+
+.testrun-header h2 {
+    margin: 0;
+    font-size: 1em;
+    font-style: italic;
+    font-weight: normal;
+}
+
+.testrun-subheader {
+    height: 2.5em;
+    line-height: 2.5em;
+    background-color: #8d4eb2;
+    text-align: center;
+    margin-bottom: 16px;
+}
+
+.testrun-subheader .vendorlink {    
+    color: #fff;
+    text-decoration: none;
+    display: inline-block;
+    width: 200px;
+}
+
+.testrun-subheader .vendorlink:hover {
+    background-color: #7100b5;
+}
+
+.vendorlink span {
+    filter: grayscale(100%);
+    -webkit-filter: grayscale(100%);
+}
+
+.vendorlink.selected {
+    background-color: #ae5ddd;
+    pointer-events: none;
+}
+
+.vendorlink.selected span {
+    font-weight: bold;
+    filter: grayscale(0%);
+    -webkit-filter: grayscale(0%);
+}
+
+.vendorlink.Intel span {
+    padding-left: 32px;
+    background: url("Images/intel.png") left no-repeat;
+}
+
+.vendorlink.Nvidia span {
+    padding-left: 32px;
+    background: url("Images/nvidia.png") left no-repeat;
+}
+
+.vendorlink.Amd span {
+    padding-left: 32px;
+    background: url("Images/amd.png") left no-repeat;
+}
+
+table {
+    border-collapse: collapse;
+    background-color: #fff;
+}
+
+table {
+    margin: 8px;
+}
+
+table td {
+    padding: 0;
+}
+
+table thead tr:nth-child(1) td {
+    padding: 8px;
+}
+
+table thead tr:nth-child(2) {
+    font-style: italic;
+}
+
+table thead tr:nth-child(2) td {
+    padding: 8px;
+}
+
+.test.passed table thead tr:nth-child(1) {
+    color: #fff;
+    background-color: #7100b5;
+    font-weight: normal;
+    font-family: Consolas;
+}
+
+.test.passed table {
+    border-top: 1px solid #7100b5;
+    border-bottom: 1px solid #7100b5;
+}
+
+.test.passed table td {
+    border-left: 1px solid #7100b5;
+    border-right: 1px solid #7100b5;
+}
+
+.test.failed table thead tr:nth-child(1) {
+    color: #fff;
+    background-color: #d72929;
+    font-weight: normal;
+    font-family: Consolas;
+}
+
+.test.failed table {
+    border-top: 1px solid #751515;
+    border-bottom: 1px solid #751515;
+}
+
+.test.failed table td {
+    border-left: 1px solid #751515;
+    border-right: 1px solid #751515;
+}
+
+.expected {
+    padding-left: 4px;
+    padding-right: 4px;
+}
+
+.actual {
+    padding-left: 4px;
+    padding-right: 4px;
+}
+
+.diff {
+    padding-left: 4px;
+    padding-right: 4px;
+}
+
+.testrun-footer {
+    width: 100%;
+    text-align: center;
+    font-size: 0.75em;
+    font-style: italic;
+    padding-bottom: 16px;
+}
+
+.testcount {
+    text-align: center;
+    width: 400px;
+    padding: 16px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 0;
+    margin-bottom: 8px;
+}
+
+.testcount.passed {
+    color: #fff;
+    background-color: #379f3c;
+    border: 1px solid #0f5b13;
+}
+
+.testcount.failed {
+    color: #fff;
+    background-color: #d72929;
+    border: 1px solid #751515;
+}
+
+.testcount.none {
+    color: #000;
+    background-color: #d7b326;
+    border: 1px solid #9d831b;
+}
+
+.vendoricon {
+    width: 24px;
+    height: 24px;
+    background-repeat: no-repeat;
+    display: inline-block;
+    position: relative;
+    top: 6px;
+}
+
+.vendoricon.Intel {
+    background-image: url("Images/intel.png");
+}
+
+.vendoricon.Nvidia {
+    background-image: url("Images/nvidia.png");
+}
+
+.vendoricon.Amd {
+    background-image: url("Images/amd.png");
+}

@@ -18,38 +18,35 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
             private set;
         }
 
-        /// <summary>
-        /// Raises the Cleared event.
-        /// </summary>
-        protected override void OnCleared()
+        /// <inheritdoc />
+        protected override void OnCollectionReset()
         {
-            Duration = 0;
+            var recalculateDuration = 0;
+            foreach (var item in this)
+            {
+                recalculateDuration += item.Duration;
+            }
+            Duration = recalculateDuration;
 
-            base.OnCleared();
+            base.OnCollectionReset();
         }
 
-        /// <summary>
-        /// Raises the ItemAdded event.
-        /// </summary>
-        /// <param name="item">The item that was added to the list.</param>
-        protected override void OnItemAdded(SpriteFrame item)
+        /// <inheritdoc />
+        protected override void OnCollectionItemAdded(SpriteFrame item)
         {
             Contract.Require(item, "item");
 
             Duration += item.Duration;
 
-            base.OnItemAdded(item);
+            base.OnCollectionItemAdded(item);
         }
 
-        /// <summary>
-        /// Raises the ItemRemoved event.
-        /// </summary>
-        /// <param name="item">The item that was added to the list.</param>
-        protected override void OnItemRemoved(SpriteFrame item)
+        /// <inheritdoc />
+        protected override void OnCollectionItemRemoved(SpriteFrame item)
         {
             Duration -= item.Duration;
 
-            base.OnItemRemoved(item);
+            base.OnCollectionItemRemoved(item);
         }
     }
 }

@@ -11,16 +11,22 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// <summary>
         /// No effects.
         /// </summary>
-        None,
+        None = 0x0000,
 
         /// <summary>
         /// Flips the sprite horizontally across the y-axis.
         /// </summary>
-        FlipHorizontally,
+        FlipHorizontally = 0x0001,
 
         /// <summary>
         /// Flips the sprite vertically across the x-axis.
         /// </summary>
-        FlipVertically,
+        FlipVertically = 0x0002,
+
+        /// <summary>
+        /// Indicates that the sprite's point of origin should be considered relative to
+        /// its destination rectangle, rather than its source rectangle.
+        /// </summary>
+        OriginRelativeToDestination = 0x0004,
     }
 }

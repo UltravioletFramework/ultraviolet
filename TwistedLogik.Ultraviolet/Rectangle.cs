@@ -12,6 +12,17 @@ namespace TwistedLogik.Ultraviolet
     public struct Rectangle : IEquatable<Rectangle>, IInterpolatable<Rectangle>
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="Rectangle"/> class.
+        /// </summary>
+        /// <param name="position">The rectangle's position.</param>
+        /// <param name="size">The rectangle's size.</param>
+        public Rectangle(Point2 position, Size2 size)
+            : this(position.X, position.Y, size.Width, size.Height)
+        {
+
+        }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="Rectangle"/> structure.
         /// </summary>
         /// <param name="x">The x-coordinate of the rectangle's top-left corner.</param>
@@ -24,6 +35,28 @@ namespace TwistedLogik.Ultraviolet
             this.y = y;
             this.width = width;
             this.height = height;
+        }
+
+        /// <summary>
+        /// Offsets the specified <see cref="Rectangle"/> by adding the specified <see cref="Point2"/> to its location.
+        /// </summary>
+        /// <param name="rect">The <see cref="Rectangle"/> to offset.</param>
+        /// <param name="point">The <see cref="Point2"/> by which to offset the rectangle.</param>
+        /// <returns>A <see cref="Rectangle"/> that has been offset by the specified amount.</returns>
+        public static Rectangle operator +(Rectangle rect, Point2 point)
+        {
+            return new Rectangle(rect.X + point.X, rect.Y + point.Y, rect.Width, rect.Height);
+        }
+
+        /// <summary>
+        /// Offsets the specified <see cref="Rectangle"/> by subtracting the specified <see cref="Point2"/> from its location.
+        /// </summary>
+        /// <param name="rect">The <see cref="Rectangle"/> to offset.</param>
+        /// <param name="point">The <see cref="Point2"/> by which to offset the rectangle.</param>
+        /// <returns>A <see cref="Rectangle"/> that has been offset by the specified amount.</returns>
+        public static Rectangle operator -(Rectangle rect, Point2 point)
+        {
+            return new Rectangle(rect.X - point.X, rect.Y - point.Y, rect.Width, rect.Height);
         }
 
         /// <summary>
@@ -46,16 +79,6 @@ namespace TwistedLogik.Ultraviolet
         public static Boolean operator !=(Rectangle r1, Rectangle r2)
         {
             return !r1.Equals(r2);
-        }
-
-        /// <summary>
-        /// Implicitly converts a <see cref="Rectangle"/> structure to a <see cref="RectangleF"/> structure.
-        /// </summary>
-        /// <param name="rect">The <see cref="Rectangle"/> to convert.</param>
-        /// <returns>The converted <see cref="RectangleF"/>.</returns>
-        public static implicit operator RectangleF(Rectangle rect)
-        {
-            return new RectangleF(rect.x, rect.y, rect.width, rect.height);
         }
 
         /// <summary>
@@ -256,7 +279,7 @@ namespace TwistedLogik.Ultraviolet
             var minRight = rectangle1.Right < rectangle2.Right ? rectangle1.Right : rectangle2.Right;
             var minBottom = rectangle1.Bottom < rectangle2.Bottom ? rectangle1.Bottom : rectangle2.Bottom;
 
-            var isEmpty = (minRight > maxLeft && minBottom > maxTop);
+            var isEmpty = (minRight <= maxLeft || minBottom <= maxTop);
 
             return isEmpty ? Rectangle.Empty : new Rectangle(maxLeft, maxTop, minRight - maxLeft, minBottom - maxTop);
         }
@@ -274,7 +297,7 @@ namespace TwistedLogik.Ultraviolet
             var minRight = rectangle1.Right < rectangle2.Right ? rectangle1.Right : rectangle2.Right;
             var minBottom = rectangle1.Bottom < rectangle2.Bottom ? rectangle1.Bottom : rectangle2.Bottom;
 
-            var isEmpty = (minRight > maxLeft && minBottom > maxTop);
+            var isEmpty = (minRight <= maxLeft || minBottom <= maxTop);
 
             result = isEmpty ? Rectangle.Empty : new Rectangle(maxLeft, maxTop, minRight - maxLeft, minBottom - maxTop);
         }
@@ -376,6 +399,30 @@ namespace TwistedLogik.Ultraviolet
             return
                 x >= this.x && x < this.x + this.width &&
                 y >= this.y && y < this.y + this.height;
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the rectangle contains the specified point.
+        /// </summary>
+        /// <param name="point">The point to evaluate.</param>
+        /// <param name="result">A value indicating whether the rectangle contains the specified point.</param>
+        public void Contains(ref Point2 point, out Boolean result)
+        {
+            result =
+                point.X >= this.x && point.X < this.x + this.width &&
+                point.Y >= this.y && point.Y < this.y + this.height;
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the rectangle contains the specified point.
+        /// </summary>
+        /// <param name="point">The point to evaluate.</param>
+        /// <returns><c>true</c> if the rectangle contains the specified point; otherwise, <c>false</c>.</returns>
+        public Boolean Contains(Point2 point)
+        {
+            return
+                point.X >= this.x && point.X < this.x + this.width &&
+                point.Y >= this.y && point.Y < this.y + this.height;
         }
 
         /// <summary>
@@ -524,17 +571,25 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Gets the position of the rectangle's top-left corner.
         /// </summary>
-        public Vector2 Location
+        public Point2 Location
         {
-            get { return new Vector2(x, y); }
+            get { return new Point2(x, y); }
         }
 
         /// <summary>
         /// Gets the position of the rectangle's center.
         /// </summary>
-        public Vector2 Center
+        public Point2 Center
         {
-            get { return new Vector2(x + (width / 2), y + (height / 2)); }
+            get { return new Point2(x + (width / 2), y + (height / 2)); }
+        }
+
+        /// <summary>
+        /// Gets the rectangle's size.
+        /// </summary>
+        public Size2 Size
+        {
+            get { return new Size2(width, height); }
         }
 
         // Property values.

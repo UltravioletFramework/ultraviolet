@@ -59,7 +59,7 @@ namespace TwistedLogik.Ultraviolet
             this.messages = new LocalMessageQueue<UltravioletMessageID>();
             this.messages.Subscribe(this, UltravioletMessages.Quit);
 
-            InitializeFactory();
+            InitializeFactory(configuration);
         }
 
         /// <summary>
@@ -184,6 +184,31 @@ namespace TwistedLogik.Ultraviolet
         /// Gets the factory method of the specified delegate type.
         /// </summary>
         /// <typeparam name="T">The delegate type of the factory method to retrieve.</typeparam>
+        /// <returns>The default factory method of the specified delegate type, or <c>null</c> if no such factory method is registered.</returns>
+        public T TryGetFactoryMethod<T>() where T : class
+        {
+            Contract.EnsureNotDisposed(this, disposed);
+
+            return factory.TryGetFactoryMethod<T>();
+        }
+
+        /// <summary>
+        /// Attempts to retrieve a named factory method of the specified delegate type.
+        /// </summary>
+        /// <typeparam name="T">The delegate type of the factory method to retrieve.</typeparam>
+        /// <param name="name">The name of the factory method to retrieve.</param>
+        /// <returns>The specified named factory method, or <c>null</c> if no such factory method is registered.</returns>
+        public T TryGetFactoryMethod<T>(String name) where T : class
+        {
+            Contract.EnsureNotDisposed(this, disposed);
+
+            return factory.TryGetFactoryMethod<T>(name);
+        }
+
+        /// <summary>
+        /// Gets the factory method of the specified delegate type.
+        /// </summary>
+        /// <typeparam name="T">The delegate type of the factory method to retrieve.</typeparam>
         /// <returns>The default factory method of the specified delegate type.</returns>
         public T GetFactoryMethod<T>() where T : class
         {
@@ -197,7 +222,7 @@ namespace TwistedLogik.Ultraviolet
         /// </summary>
         /// <typeparam name="T">The delegate type of the factory method to retrieve.</typeparam>
         /// <param name="name">The name of the factory method to retrieve.</param>
-        /// <returns>The specified factory method of the specified type.</returns>
+        /// <returns>The specified named factory method.</returns>
         public T GetFactoryMethod<T>(String name) where T : class
         {
             Contract.EnsureNotDisposed(this, disposed);
@@ -508,6 +533,14 @@ namespace TwistedLogik.Ultraviolet
         }
 
         /// <summary>
+        /// Gets a value indicating whether the context has been initialized.
+        /// </summary>
+        public Boolean IsInitialized
+        {
+            get { return isInitialized; }
+        }
+
+        /// <summary>
         /// Gets a value indicating whether the object has been disposed.
         /// </summary>
         public Boolean Disposed
@@ -521,14 +554,33 @@ namespace TwistedLogik.Ultraviolet
         public static event EventHandler ContextInvalidated;
 
         /// <summary>
+        /// Occurs when the current context is initialized.
+        /// </summary>
+        public static event EventHandler ContextInitialized;
+
+        /// <summary>
         /// Occurs when the context is updating the application's state.
         /// </summary>
         public event UltravioletContextUpdateEventHandler Updating;
 
         /// <summary>
+        /// Occurs when the context is initialized.
+        /// </summary>
+        public event UltravioletContextEventHandler Initialized;
+
+        /// <summary>
         /// Occurs when the Ultraviolet context is being shut down.
         /// </summary>
         public event UltravioletContextEventHandler Shutdown;
+
+        /// <summary>
+        /// Retrieves the current Ultraviolet context, throwing an exception if it does not exist.
+        /// </summary>
+        /// <returns>The current Ultraviolet context, or <c>null</c> if no contex exists.</returns>
+        internal static UltravioletContext RequestCurrent()
+        {
+            return current;
+        }
 
         /// <summary>
         /// Retrieves the current Ultraviolet context, throwing an exception if it does not exist.
@@ -569,6 +621,17 @@ namespace TwistedLogik.Ultraviolet
                     OnContextInvalidated();
                 }
             }
+        }
+
+        /// <summary>
+        /// Initializes the context and marks it ready for use.
+        /// </summary>
+        protected void InitializeContext()
+        {
+            isInitialized = true;
+
+            OnInitialized();
+            OnContextInitialized();
         }
 
         /// <summary>
@@ -656,6 +719,18 @@ namespace TwistedLogik.Ultraviolet
         }
 
         /// <summary>
+        /// Raises the <see cref="Initialized"/> event.
+        /// </summary>
+        protected virtual void OnInitialized()
+        {
+            var temp = Initialized;
+            if (temp != null)
+            {
+                temp(this);
+            }
+        }
+
+        /// <summary>
         /// Raises the <see cref="Shutdown"/> event.
         /// </summary>
         protected virtual void OnShutdown()
@@ -684,6 +759,18 @@ namespace TwistedLogik.Ultraviolet
         }
 
         /// <summary>
+        /// Raises the <see cref="ContextInitialized"/> event.
+        /// </summary>
+        private static void OnContextInitialized()
+        {
+            var temp = ContextInitialized;
+            if (temp != null)
+            {
+                temp(null, EventArgs.Empty);
+            }
+        }
+
+        /// <summary>
         /// Raises the <see cref="ContextInvalidated"/> event.
         /// </summary>
         private static void OnContextInvalidated()
@@ -698,7 +785,8 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Initializes the context's object factory.
         /// </summary>
-        private void InitializeFactory()
+        /// <param name="configuration">The Ultraviolet Framework configuration settings for this context.</param>
+        private void InitializeFactory(UltravioletConfiguration configuration)
         {
             var asmCore = typeof(UltravioletContext).Assembly;
             var asmImpl = GetType().Assembly;
@@ -706,6 +794,7 @@ namespace TwistedLogik.Ultraviolet
             InitializeFactoryMethodsInAssembly(asmCore);
             InitializeFactoryMethodsInAssembly(asmImpl);
             InitializeFactoryMethodsInCompatibilityShim();
+            InitializeFactoryMethodsInViewProvider(configuration);
         }
 
         /// <summary>
@@ -740,6 +829,33 @@ namespace TwistedLogik.Ultraviolet
             catch (FileNotFoundException e)
             {
                 throw new InvalidCompatibilityShimException(UltravioletStrings.MissingCompatibilityShim.Format(e.FileName));
+            }
+        }
+
+        /// <summary>
+        /// Initializes any factory methods exposed by the registered view provider.
+        /// </summary>
+        /// <param name="configuration">The Ultraviolet Framework configuration settings for this context.</param>
+        private void InitializeFactoryMethodsInViewProvider(UltravioletConfiguration configuration)
+        {
+            if (String.IsNullOrEmpty(configuration.ViewProviderAssembly))
+                return;
+
+            Assembly asm;
+            try
+            {
+                asm = Assembly.Load(configuration.ViewProviderAssembly);
+                InitializeFactoryMethodsInAssembly(asm);
+            }
+            catch (Exception e)
+            {
+                if (e is FileNotFoundException ||
+                    e is FileLoadException ||
+                    e is BadImageFormatException)
+                {
+                    throw new InvalidOperationException(UltravioletStrings.InvalidViewProviderAssembly, e);
+                }
+                throw;
             }
         }
 
@@ -781,6 +897,7 @@ namespace TwistedLogik.Ultraviolet
         private readonly UltravioletFactory factory = new UltravioletFactory();
         private readonly ConcurrentQueue<Task> queuedWorkItems = new ConcurrentQueue<Task>();
         private readonly Thread thread;
+        private Boolean isInitialized;
         private Boolean disposed;
         private Boolean disposing;
 

@@ -185,10 +185,6 @@
       <Project>{073cafc1-86cb-414d-a71e-46440e25a3f4}</Project>
       <Name>TwistedLogik.Ultraviolet.Desktop</Name>
     </ProjectReference>
-    <ProjectReference Include="..\TwistedLogik.Ultraviolet.Layout.XiliumCef\TwistedLogik.Ultraviolet.Layout.XiliumCef.csproj">
-      <Project>{2A601037-7575-4E1B-90FC-658DF01019BD}</Project>
-      <Name>TwistedLogik.Ultraviolet.Layout.XiliumCef</Name>
-    </ProjectReference>
     <ProjectReference Include="..\TwistedLogik.Ultraviolet.OpenGL\TwistedLogik.Ultraviolet.OpenGL.csproj">
       <Project>{40D272DB-90E1-4332-A32F-6EFFEB44FE87}</Project>
       <Name>TwistedLogik.Ultraviolet.OpenGL</Name>

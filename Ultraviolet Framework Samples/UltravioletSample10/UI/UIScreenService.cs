@@ -21,6 +21,9 @@ namespace UltravioletSample.UI
             Register(new LoadingScreen(globalContent, this));
         }
 
+        /// <summary>
+        /// Loads the game's screens into memory.
+        /// </summary>
         public void Load()
         {
             Register(new GameplayScreen(globalContent, this));

@@ -45,7 +45,7 @@ namespace SafeProjectName.Input
 #if ANDROID
             ExitApplication.Primary = CreateKeyboardBinding(Key.AppControlBack);
 #else
-            ExitApplication.Primary = CreateGamePadBinding(0, GamePadButton.Back); // CreateKeyboardBinding(Key.Escape);
+            ExitApplication.Primary = CreateKeyboardBinding(Key.Escape);
 #endif
 
             base.OnResetting();

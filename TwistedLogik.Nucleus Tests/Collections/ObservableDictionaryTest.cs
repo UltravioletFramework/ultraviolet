@@ -3,20 +3,20 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TwistedLogik.Nucleus.Collections;
 using TwistedLogik.Nucleus.Testing;
 
-namespace TwistedLogik.Nucleus.Tests.IO
+namespace TwistedLogik.NucleusTests.Collections
 {
     [TestClass]
     public class ObservableDictionaryTest : NucleusTestFramework
     {
         [TestMethod]
-        public void ObservableDictionary_RaisesItemAdded()
+        public void ObservableDictionary_RaisesCollectionItemAdded()
         {
             var dict  = new ObservableDictionary<String, Int32>();
             var added = false;
 
-            dict.ItemAdded += (dictionary, key, value) =>
+            dict.CollectionItemAdded += (dictionary, item) =>
             {
-                added = (key == "Testing" && value == 1234);
+                added = (item.Key == "Testing" && item.Value == 1234);
             };
             dict["Testing"] = 1234;
 
@@ -24,14 +24,14 @@ namespace TwistedLogik.Nucleus.Tests.IO
         }
 
         [TestMethod]
-        public void ObservableDictionary_RaisesItemRemoved()
+        public void ObservableDictionary_RaisesCollectionItemRemoved()
         {
             var dict    = new ObservableDictionary<String, Int32>();
             var removed = false;
             
-            dict.ItemRemoved += (dictionary, key, value) =>
+            dict.CollectionItemRemoved += (dictionary, item) =>
             {
-                removed = (key == "Testing" && value == 1234);
+                removed = (item.Key == "Testing" && item.Value == 1234);
             };
             dict["Testing"] = 1234;
             dict.Remove("Testing");
@@ -40,19 +40,19 @@ namespace TwistedLogik.Nucleus.Tests.IO
         }
 
         [TestMethod]
-        public void ObservableDictionary_RaisesCleared()
+        public void ObservableDictionary_RaisesCollectionResetOnClear()
         {
-            var dict    = new ObservableDictionary<String, Int32>();
-            var cleared = false;
+            var dict  = new ObservableDictionary<String, Int32>();
+            var reset = false;
             
-            dict.Cleared += (dictionary) =>
+            dict.CollectionReset += (dictionary) =>
             {
-                cleared = true;
+                reset = true;
             };
             dict["Testing"] = 1234;
             dict.Clear();
 
-            TheResultingValue(cleared).ShouldBe(true);
+            TheResultingValue(reset).ShouldBe(true);
         }
     }
 }

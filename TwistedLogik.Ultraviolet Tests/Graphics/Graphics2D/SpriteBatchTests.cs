@@ -6,13 +6,10 @@ using TwistedLogik.Ultraviolet.Testing;
 namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D
 {
     [TestClass]
-    [DeploymentItem(@"Resources")]
-    [DeploymentItem(@"Dependencies")]
     public class SpriteBatchTests : UltravioletApplicationTestFramework
     {
         [TestMethod]
         [TestCategory("Rendering")]
-        [DeploymentItem(@"Expected\Graphics\Graphics2D\SpriteBatch_CanRenderSimpleStrings.png")]
         public void SpriteBatch_CanRenderSimpleStrings()
         {
             var spriteBatch = default(SpriteBatch);
@@ -31,7 +28,7 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D
                     spriteBatch.End();
                 });
 
-            TheResultingImage(result).ShouldMatch(@"Expected\Graphics\Graphics2D\SpriteBatch_CanRenderSimpleStrings.png");
+            TheResultingImage(result).ShouldMatch(@"Resources\Expected\Graphics\Graphics2D\SpriteBatch_CanRenderSimpleStrings.png");
         }
     }
 }

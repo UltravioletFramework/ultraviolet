@@ -38,6 +38,26 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         }
 
         /// <summary>
+        /// Flushes the current batch.
+        /// </summary>
+        public void Flush()
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
+            Contract.Ensure(begun, UltravioletStrings.BeginMustBeCalledBeforeEnd);
+
+            var sortMode          = this.sortMode;
+            var blendState        = this.blendState;
+            var samplerState      = this.samplerState;
+            var depthStencilState = this.depthStencilState;
+            var rasterizerState   = this.rasterizerState;
+            var effect            = this.customEffect;
+            var transformMatrix   = this.transformMatrix;
+
+            End();
+            Begin(sortMode, blendState, samplerState, depthStencilState, rasterizerState, effect, transformMatrix);
+        }
+
+        /// <summary>
         /// Begins a sprite batch operation using deferred sort and default state objects.
         /// </summary>
         public void Begin()
@@ -974,6 +994,75 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
 
             DrawStringInternal(fontFace, new StringSource(text), position, color, rotation, origin, scale, effects, layerDepth, data);
         }
+        
+        /// <summary>
+        /// Draws an image.
+        /// </summary>
+        /// <param name="image">An <see cref="TextureImage"/> that represents the image to draw.</param>
+        /// <param name="position">The position at which to draw the image.</param>
+        /// <param name="width">The width of the image in pixels.</param>
+        /// <param name="height">The height of the image in pixels.</param>
+        /// <param name="color">The image's color.</param>
+        public void DrawImage(TextureImage image, Vector2 position, Int32 width, Int32 height, Color color)
+        {
+            DrawImage(image, position, width, height, color, 0f, Vector2.Zero, SpriteEffects.None, 0f, default(SpriteData));
+        }        
+
+        /// <summary>
+        /// Draws an image.
+        /// </summary>
+        /// <param name="image">An <see cref="TextureImage"/> that represents the image to draw.</param>
+        /// <param name="position">The position at which to draw the image.</param>
+        /// <param name="width">The width of the image in pixels.</param>
+        /// <param name="height">The height of the image in pixels.</param>
+        /// <param name="color">The image's color.</param>
+        /// <param name="rotation">The image's rotation in radians.</param>
+        /// <param name="origin">The image's point of origin.</param>
+        /// <param name="effects">The image's rendering effects.</param>
+        /// <param name="layerDepth">The image's layer depth.</param>
+        public void DrawImage(TextureImage image, Vector2 position, Int32 width, Int32 height, Color color, Single rotation, Vector2 origin, SpriteEffects effects, Single layerDepth)
+        {
+            DrawImage(image, position, width, height, color, rotation, origin, effects, layerDepth, default(SpriteData));
+        }
+
+        /// <summary>
+        /// Draws an image.
+        /// </summary>
+        /// <param name="image">An <see cref="TextureImage"/> that represents the image to draw.</param>
+        /// <param name="position">The position at which to draw the image.</param>
+        /// <param name="width">The width of the image in pixels.</param>
+        /// <param name="height">The height of the image in pixels.</param>
+        /// <param name="color">The image's color.</param>
+        /// <param name="data">The image's custom data.</param>
+        public void DrawImage(TextureImage image, Vector2 position, Int32 width, Int32 height, Color color, SpriteData data)
+        {
+            DrawImage(image, position, width, height, color, 0f, Vector2.Zero, SpriteEffects.None, 0f, data);
+        }        
+
+        /// <summary>
+        /// Draws an image.
+        /// </summary>
+        /// <param name="image">An <see cref="TextureImage"/> that represents the image to draw.</param>
+        /// <param name="position">The position at which to draw the image.</param>
+        /// <param name="width">The width of the image in pixels.</param>
+        /// <param name="height">The height of the image in pixels.</param>
+        /// <param name="color">The image's color.</param>
+        /// <param name="rotation">The image's rotation in radians.</param>
+        /// <param name="origin">The image's point of origin.</param>
+        /// <param name="effects">The image's rendering effects.</param>
+        /// <param name="layerDepth">The image's layer depth.</param>
+        /// <param name="data">The image's custom data.</param>
+        public void DrawImage(TextureImage image, Vector2 position, Int32 width, Int32 height, Color color, Single rotation, Vector2 origin, SpriteEffects effects, Single layerDepth, SpriteData data)
+        {
+            Contract.Require(image, "image");
+            Contract.EnsureNotDisposed(this, Disposed);
+            Contract.Ensure(begun, UltravioletStrings.BeginMustBeCalledBeforeDraw);
+
+            if (!image.IsLoaded)
+                throw new ArgumentException(UltravioletStrings.StretchableImageNotLoaded.Format("image"));
+
+            image.Draw<VertexType, SpriteData>(this, position, width, height, color, rotation, origin, effects, layerDepth, data);
+        }
 
         /// <summary>
         /// Gets the maximum number of sprites that can drawn in a single batch by this <see cref="SpriteBatch"/>.
@@ -1035,8 +1124,16 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         [CLSCompliant(false)]
         protected void CalculateRelativeOrigin(SpriteHeader* metadata)
         {
-            cachedOriginX = (metadata->SourceWidth == 0) ? 0 : metadata->OriginX / (float)metadata->SourceWidth;
-            cachedOriginY = (metadata->SourceHeight == 0) ? 0 : metadata->OriginY / (float)metadata->SourceHeight;
+            if ((metadata->Effects & SpriteEffects.OriginRelativeToDestination) == SpriteEffects.OriginRelativeToDestination)
+            {
+                cachedOriginX = (metadata->DestinationWidth == 0) ? 0 : metadata->OriginX / (float)metadata->DestinationWidth;
+                cachedOriginY = (metadata->DestinationHeight == 0) ? 0 : metadata->OriginY / (float)metadata->DestinationHeight;
+            }
+            else
+            {
+                cachedOriginX = (metadata->SourceWidth == 0) ? 0 : metadata->OriginX / (float)metadata->SourceWidth;
+                cachedOriginY = (metadata->SourceHeight == 0) ? 0 : metadata->OriginY / (float)metadata->SourceHeight;
+            }
         }
 
         /// <summary>

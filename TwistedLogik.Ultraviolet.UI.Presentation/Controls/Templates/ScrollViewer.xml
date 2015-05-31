@@ -1,0 +1,55 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ComponentTemplate>
+  <Grid Class="scrollviewer-component" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="*"/>
+      <ColumnDefinition Width="Auto"/>
+    </Grid.ColumnDefinitions>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="*"/>
+      <RowDefinition Height="Auto"/>
+    </Grid.RowDefinitions>
+
+    <Image Class="scrollviewer-background"
+           HorizontalAlignment="Stretch"
+           VerticalAlignment="Stretch"
+           Grid.Column="0"
+           Grid.Row="0"/>
+    <Border 
+      HorizontalAlignment="Stretch"
+      HorizontalContentAlignment="Stretch"
+      VerticalAlignment="Stretch"
+      VerticalContentAlignment="Stretch">
+      
+      <ScrollContentPresenter Name="PART_ContentPresenter"
+                              HorizontalAlignment="Stretch"
+                              VerticalAlignment="Stretch"
+                              Grid.Column="0"
+                              Grid.Row="0" />
+      
+    </Border>
+    <HScrollBar Name="PART_HScroll" 
+                Class="scrollviewer-hscroll" 
+                Grid.Column="0" 
+                Grid.Row="1" 
+                HorizontalAlignment="Stretch" 
+                SmallChange="16" 
+                LargeChange="{{ViewportWidth}}" 
+                ValueChanged="HandleScrollValueChanged"/>
+    <VScrollBar Name="PART_VScroll" 
+                Class="scrollviewer-vscroll" 
+                Grid.Column="1" 
+                Grid.Row="0" 
+                VerticalAlignment="Stretch" 
+                SmallChange="16" 
+                LargeChange="{{ViewportHeight}}" 
+                ValueChanged="HandleScrollValueChanged"/>    
+    <Rectangle Class="scrollviewer-rect" 
+               FillColor="{{Background}}"
+               Grid.Column="1" 
+               Grid.Row="1" 
+               HorizontalAlignment="Stretch" 
+               VerticalAlignment="Stretch"/>
+    
+  </Grid>
+</ComponentTemplate>

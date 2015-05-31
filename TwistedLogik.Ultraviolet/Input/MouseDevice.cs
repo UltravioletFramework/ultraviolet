@@ -50,6 +50,13 @@ namespace TwistedLogik.Ultraviolet.Input
         }
 
         /// <summary>
+        /// Gets the mouse cursor's position within the specified window.
+        /// </summary>
+        /// <param name="window">The window to evaluate.</param>
+        /// <returns>The cursor's position within the specified window, or <c>null</c> if the cursor is outside of the window.</returns>
+        public abstract Vector2? GetPositionInWindow(IUltravioletWindow window);
+
+        /// <summary>
         /// Gets a value indicating whether the specified button was clicked this frame.
         /// </summary>
         /// <param name="button">The <see cref="MouseButton"/> value that represents the button to evaluate.</param>
@@ -62,6 +69,14 @@ namespace TwistedLogik.Ultraviolet.Input
         /// <param name="button">The <see cref="MouseButton"/> value that represents the button to evaluate.</param>
         /// <returns><c>true</c> if the button was double clicked this frame; otherwise, <c>false</c>.</returns>
         public abstract Boolean IsButtonDoubleClicked(MouseButton button);
+
+        /// <summary>
+        /// Gets the window that currently contains the mouse cursor.
+        /// </summary>
+        public abstract IUltravioletWindow Window
+        {
+            get;
+        }
 
         /// <summary>
         /// Gets the mouse's current position.

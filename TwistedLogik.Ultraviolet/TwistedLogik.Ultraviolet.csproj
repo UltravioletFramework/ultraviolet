@@ -12,15 +12,13 @@
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile>Client</TargetFrameworkProfile>
-    <ProductVersion>12.0.0</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>..\Binaries\AnyCPU\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;DEBUG_GRID</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
@@ -90,14 +88,8 @@
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)' == 'Production'">
-    <SignAssembly>true</SignAssembly>
-  </PropertyGroup>
   <PropertyGroup>
     <AssemblyOriginatorKeyFile>..\TwistedLogik.Public.snk</AssemblyOriginatorKeyFile>
-  </PropertyGroup>
-  <PropertyGroup>
-    <DelaySign>true</DelaySign>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>uv.ico</ApplicationIcon>
@@ -113,6 +105,7 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>..\UltravioletStyleRules.ruleset</CodeAnalysisRuleSet>
+    <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Production|x86'">
     <OutputPath>bin\x86\Production\</OutputPath>
@@ -125,6 +118,7 @@
     <PlatformTarget>x86</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Production|x64'">
     <OutputPath>bin\x64\Production\</OutputPath>
@@ -136,6 +130,13 @@
     <PlatformTarget>x64</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>  
+  <PropertyGroup Condition="'$(Configuration)' == 'Production' And '$(OS)' != 'Unix'">
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)' == 'Production' And '$(OS)' != 'Unix'">
+    <DelaySign>true</DelaySign>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -157,6 +158,7 @@
     <Compile Include="Audio\SoundEffect.cs" />
     <Compile Include="Audio\SoundEffectPlayer.cs" />
     <Compile Include="Circle.cs" />
+    <Compile Include="CircleD.cs" />
     <Compile Include="CircleF.cs" />
     <Compile Include="Color.cs" />
     <Compile Include="Content\ContentArchive.cs" />
@@ -203,6 +205,7 @@
     <Compile Include="CurveKeyCollection.cs" />
     <Compile Include="CurveLoopType.cs" />
     <Compile Include="CurveProcessor.cs" />
+    <Compile Include="DebugColors.cs" />
     <Compile Include="Easings.cs" />
     <Compile Include="Graphics\EffectImplementation.cs" />
     <Compile Include="Graphics\EffectPass.cs" />
@@ -218,6 +221,10 @@
     <Compile Include="Graphics\Graphics2D\sspack\OutOfSpaceException.cs" />
     <Compile Include="Graphics\Graphics2D\sspack\Packing\ArevaloRectanglePacker.cs" />
     <Compile Include="Graphics\Graphics2D\sspack\Packing\RectanglePacker.cs" />
+    <Compile Include="Graphics\Graphics2D\StretchableImage.cs" />
+    <Compile Include="Graphics\Graphics2D\StaticImage.cs" />
+    <Compile Include="Graphics\Graphics2D\StretchableImage3.cs" />
+    <Compile Include="Graphics\Graphics2D\StretchableImage9.cs" />
     <Compile Include="Graphics\Graphics2D\StringSource.cs" />
     <Compile Include="Graphics\Graphics2D\SpriteFont.cs" />
     <Compile Include="Graphics\Graphics2D\SpriteFontKerning.cs" />
@@ -236,6 +243,7 @@
     <Compile Include="Graphics\FillMode.cs" />
     <Compile Include="Graphics\GeometryStream.cs" />
     <Compile Include="Graphics\Graphics2D\CharacterRegion.cs" />
+    <Compile Include="Graphics\Graphics2D\TextureImage.cs" />
     <Compile Include="Graphics\Graphics2D\Text\InlineIconInfo.cs" />
     <Compile Include="Graphics\Graphics2D\Text\NamespaceDoc.cs" />
     <Compile Include="Graphics\Graphics2D\Text\TextTableLayoutProcessor.cs" />
@@ -304,6 +312,7 @@
     <Compile Include="IUltravioletUI.cs" />
     <Compile Include="Matrix.cs" />
     <Compile Include="InvalidCompatibilityShimException.cs" />
+    <Compile Include="Messages\NamespaceDoc.cs" />
     <Compile Include="Messages\OrientationChangedMessageData.cs" />
     <Compile Include="MutableVector2.cs" />
     <Compile Include="MutableVector3.cs" />
@@ -313,38 +322,45 @@
     <Compile Include="Platform\FileSystemService.cs" />
     <Compile Include="Platform\IconLoader.cs" />
     <Compile Include="Platform\DisplayMode.cs" />
+    <Compile Include="Platform\IUltravioletClipboardInfo.cs" />
     <Compile Include="Platform\IUltravioletDisplay.cs" />
     <Compile Include="Platform\IUltravioletDisplayInfo.cs" />
     <Compile Include="Platform\IUltravioletWindow.cs" />
     <Compile Include="Platform\IUltravioletWindowInfo.cs" />
     <Compile Include="Platform\NamespaceDoc.cs" />
+    <Compile Include="Platform\PowerManagementService.cs" />
     <Compile Include="Platform\ScreenDensityBucket.cs" />
     <Compile Include="Platform\ScreenDensityService.cs" />
     <Compile Include="Platform\WindowFlags.cs" />
+    <Compile Include="Point2D.cs" />
+    <Compile Include="Point2F.cs" />
+    <Compile Include="Point2.cs" />
+    <Compile Include="UltravioletBoxedValues.cs" />
     <Compile Include="Radians.cs" />
     <Compile Include="Rectangle.cs" />
+    <Compile Include="RectangleD.cs" />
     <Compile Include="RectangleF.cs" />
     <Compile Include="Platform\ScreenRotationService.cs" />
     <Compile Include="Platform\ScreenRotation.cs" />
     <Compile Include="Size2.cs" />
+    <Compile Include="Size2D.cs" />
     <Compile Include="Size2F.cs" />
     <Compile Include="Size3.cs" />
+    <Compile Include="Size3D.cs" />
     <Compile Include="Size3F.cs" />
     <Compile Include="TaskUtil.cs" />
+    <Compile Include="TweeningInterpolationRegistry.cs" />
     <Compile Include="Tweening.cs" />
     <Compile Include="UI\NamespaceDoc.cs" />
     <Compile Include="UI\UIPanelDefinition.cs" />
     <Compile Include="UI\UIPanelDefinitionProcessor.cs" />
-    <Compile Include="UI\IUILayout.cs" />
-    <Compile Include="UI\LayoutEngineException.cs" />
-    <Compile Include="UI\UILayoutState.cs" />
     <Compile Include="UI\UIPanel.cs" />
     <Compile Include="UI\UIPanelState.cs" />
     <Compile Include="UI\UIScreen.cs" />
     <Compile Include="UI\UIScreenStack.cs" />
     <Compile Include="UI\UIScreenStackCollection.cs" />
+    <Compile Include="UI\UIView.cs" />
     <Compile Include="UI\UltravioletUI.cs" />
-    <Compile Include="UI\IUILayoutProvider.cs" />
     <Compile Include="UltravioletCollection.cs" />
     <Compile Include="Graphics\SamplerState.cs" />
     <Compile Include="Graphics\RasterizerState.cs" />
@@ -427,12 +443,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\TwistedLogik.Nucleus\TwistedLogik.Nucleus.csproj">
-      <Project>{7DA6158B-A0B9-4100-904E-22FD86949608}</Project>
-      <Name>TwistedLogik.Nucleus</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="Resources\Strings.xml">
       <SubType>Designer</SubType>
     </EmbeddedResource>
@@ -455,4 +465,10 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+  <ItemGroup>
+    <ProjectReference Include="..\TwistedLogik.Nucleus\TwistedLogik.Nucleus.csproj">
+      <Project>{7DA6158B-A0B9-4100-904E-22FD86949608}</Project>
+      <Name>TwistedLogik.Nucleus</Name>
+    </ProjectReference>
+  </ItemGroup>
 </Project>

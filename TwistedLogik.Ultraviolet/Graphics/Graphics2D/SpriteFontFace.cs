@@ -142,6 +142,19 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         }
 
         /// <summary>
+        /// Measures the specified glyph, taking kerning into account.
+        /// </summary>
+        /// <param name="c1">The glyph to measure.</param>
+        /// <param name="c2">The glyph that comes immediately after the glyph being measured.</param>
+        /// <returns>The size of the specified glyph.</returns>
+        public Size2 MeasureGlyph(Char c1, Char? c2 = null)
+        {
+            var glyph  = this[c1];
+            var offset = c2.HasValue ? kerning.Get(c1, c2.GetValueOrDefault()) : 0;
+            return new Size2(glyph.Width + offset, glyph.Height);
+        }
+
+        /// <summary>
         /// Gets the font face's kerning information.
         /// </summary>
         public SpriteFontKerning Kerning

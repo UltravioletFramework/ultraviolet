@@ -171,6 +171,24 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
         }
 
         /// <inheritdoc/>
+        public override Boolean IsNumLockDown
+        {
+            get
+            {
+                return (SDL.GetModState() & SDL_Keymod.NUM) == SDL_Keymod.NUM;
+            }
+        }
+
+        /// <inheritdoc/>
+        public override Boolean IsCapsLockDown
+        {
+            get
+            {
+                return (SDL.GetModState() & SDL_Keymod.CAPS) == SDL_Keymod.CAPS;
+            }
+        }
+
+        /// <inheritdoc/>
         protected override void Dispose(Boolean disposing)
         {
             if (Disposed)

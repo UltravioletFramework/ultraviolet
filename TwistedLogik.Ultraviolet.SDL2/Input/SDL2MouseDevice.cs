@@ -2,6 +2,7 @@
 using TwistedLogik.Nucleus;
 using TwistedLogik.Nucleus.Messages;
 using TwistedLogik.Ultraviolet.Input;
+using TwistedLogik.Ultraviolet.Platform;
 using TwistedLogik.Ultraviolet.SDL2.Messages;
 using TwistedLogik.Ultraviolet.SDL2.Native;
 
@@ -19,7 +20,9 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
         public SDL2MouseDevice(UltravioletContext uv)
             : base(uv)
         {
-            var buttonCount = Enum.GetValues(typeof(MouseButton)).Length;
+            this.window = Ultraviolet.GetPlatform().Windows.GetPrimary();
+
+            var buttonCount = Enum.GetValues(typeof(MouseButton)).Length;            
             this.states = new InternalButtonState[buttonCount];
 
             uv.Messages.Subscribe(this,
@@ -73,6 +76,21 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
 
         }
 
+        /// <summary>
+        /// Gets the mouse cursor's position within the specified window.
+        /// </summary>
+        /// <param name="window">The window to evaluate.</param>
+        /// <returns>The cursor's position within the specified window, or <c>null</c> if the cursor is outside of the window.</returns>
+        public override Vector2? GetPositionInWindow(IUltravioletWindow window)
+        {
+            Contract.Require(window, "window");
+
+            if (Window != window)
+                return null;
+
+            return Position;
+        }
+
         /// <inheritdoc/>
         public override Boolean IsButtonDown(MouseButton button)
         {
@@ -119,6 +137,12 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
             Contract.EnsureNotDisposed(this, Disposed);
 
             return (buttonStateDoubleClicks & SDL_BUTTON(button)) != 0;
+        }
+
+        /// <inheritdoc/>
+        public override IUltravioletWindow Window
+        {
+            get { return window; }
         }
 
         /// <inheritdoc/>
@@ -262,7 +286,7 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
             if (!Ultraviolet.GetInput().EmulateMouseWithTouchInput && evt.which == SDL_TOUCH_MOUSEID)
                 return;
 
-            var window = Ultraviolet.GetPlatform().Windows.GetByID((int)evt.windowID);
+            this.window = Ultraviolet.GetPlatform().Windows.GetByID((int)evt.windowID);
 
             this.x = evt.x;
             this.y = evt.y;
@@ -336,6 +360,7 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
         private Int32 y;
         private Int32 wheelDeltaX;
         private Int32 wheelDeltaY;
+        private IUltravioletWindow window;
 
         // State values.
         private InternalButtonState[] states;

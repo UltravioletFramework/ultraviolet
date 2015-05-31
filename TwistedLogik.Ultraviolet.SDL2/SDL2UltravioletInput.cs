@@ -109,12 +109,6 @@ namespace TwistedLogik.Ultraviolet.SDL2
         }
 
         /// <inheritdoc/>
-        public Int32 GetGamePadMaxIndex()
-        {
-            throw new NotImplementedException();
-        }
-
-        /// <inheritdoc/>
         public Boolean IsGamePadSupported()
         {
             Contract.EnsureNotDisposed(this, Disposed);

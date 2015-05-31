@@ -1,0 +1,71 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ComponentTemplate>
+  <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="*"/>
+      <ColumnDefinition Width="Auto"/>
+    </Grid.ColumnDefinitions>
+
+    <!-- Selection box -->
+    <ToggleButton Name="PART_SelectionBox"
+                  Class="combobox-selectionbox"
+                  Grid.Row="0"
+                  Grid.Column="0"
+                  Grid.ColumnSpan="2"
+                  HorizontalContentAlignment="Left"
+                  HorizontalAlignment="Stretch"
+                  VerticalAlignment="Stretch"
+                  IsChecked="{{IsDropDownOpen}}"/>
+    <ContentPresenter Name="PART_ContentPresenter"
+                      Class="combobox-content"
+                      Grid.Row="0"
+                      Grid.Column="0"
+                      Content="{{SelectionBoxItem}}"
+                      ContentStringFormat="{{SelectionBoxItemStringFormat}}"
+                      IsHitTestVisible="false"/>
+    <Image Name="PART_Arrow" 
+           Class="combobox-arrow combobox-arrow-closed" 
+           VerticalAlignment="Center"
+           Grid.Row="0"
+           Grid.Column="1" 
+           IsHitTestVisible="false"/>
+
+    <!-- Popup list -->
+    <Popup Name="PART_Popup" 
+           Class="combobox-dropdown-popup" 
+           PlacementTarget="PART_SelectionBox"
+           IsOpen="{{IsDropDownOpen}}">
+      
+      <Grid Class="combobox-dropdown-grid" 
+            MinWidth="{{ActualWidth}}">
+        
+        <Image Class="combobox-dropdown-background" 
+                   HorizontalAlignment="Stretch" 
+                   VerticalAlignment="Stretch"/>
+        <Border Class="combobox-dropdown-border" 
+                HorizontalAlignment="Stretch" 
+                HorizontalContentAlignment="Stretch"
+                VerticalAlignment="Stretch"
+                VerticalContentAlignment="Stretch">
+          
+          <ScrollViewer Class="combobox-dropdown-scrollviewer"
+                        HorizontalAlignment="Stretch"
+                        HorizontalContentAlignment="Stretch"
+                        HorizontalScrollBarVisibility="Disabled"
+                        VerticalAlignment="Stretch"
+                        VerticalContentAlignment="Stretch"
+                        VerticalScrollBarVisibility="Auto"
+                        MaxHeight="{{MaxDropDownHeight}}">
+            
+            <ItemsPanel HorizontalAlignment="Stretch"/>
+
+          </ScrollViewer>
+          
+        </Border>
+        
+      </Grid>
+      
+    </Popup>
+
+  </Grid>
+</ComponentTemplate>

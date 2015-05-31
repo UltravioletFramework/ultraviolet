@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Xml.Linq;
 
 namespace TwistedLogik.Ultraviolet.UI
@@ -6,7 +7,7 @@ namespace TwistedLogik.Ultraviolet.UI
     /// <summary>
     /// Represents a UI panel's definition file.
     /// </summary>
-    public sealed class UIPanelDefinition
+    public class UIPanelDefinition
     {
         /// <summary>
         /// Gets the amount of time over which the panel will transition to
@@ -21,18 +22,18 @@ namespace TwistedLogik.Ultraviolet.UI
         public TimeSpan DefaultCloseTransitionDuration { get; internal set; }
 
         /// <summary>
-        /// Gets the root directory of the panel's layout files.
+        /// Gets the root element of the panel definition.
         /// </summary>
-        public String LayoutRootDirectory { get; internal set; }
+        public XElement RootElement { get; internal set; }
 
         /// <summary>
-        /// Gets the source file containing the panel's layout information.
+        /// Gets the XML element which describes the panel's view layout.
         /// </summary>
-        public String LayoutSource { get; internal set; }
+        public XElement ViewElement { get; internal set; }
 
         /// <summary>
-        /// Gets the XML element that contains the panel's layout information.
+        /// The contents of the panel's associated style sheets, if it has any.
         /// </summary>
-        public XElement Layout { get; internal set; }
+        public IEnumerable<String> StyleSheets { get; internal set; }
     }
 }

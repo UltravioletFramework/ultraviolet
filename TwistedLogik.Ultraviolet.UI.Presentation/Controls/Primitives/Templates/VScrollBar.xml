@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ComponentTemplate LargeChange="10" SmallChange="1">
+  <Grid Class="scroll-component" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto"/>
+      <RowDefinition Height="*"/>
+      <RowDefinition Height="Auto"/>
+    </Grid.RowDefinitions>
+
+    <RepeatButton Class="scroll-button scroll-button-up" Grid.Row="0" HorizontalAlignment="Stretch"
+                  Click="HandleClickLineUp">
+
+      <Image Class="scroll-button-up-arrow"/>
+      
+    </RepeatButton>
+
+    <Image Class="scroll-track-bg scroll-track-bg-vertical" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+    <Track Name="PART_Track" 
+           Class="scroll-track" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Orientation="Vertical" />
+    
+    <RepeatButton Class="scroll-button scroll-button-down" Grid.Row="2" HorizontalAlignment="Stretch"
+                  Click="HandleClickLineDown">
+
+      <Image Class="scroll-button-down-arrow"/>
+      
+    </RepeatButton>    
+
+  </Grid>
+</ComponentTemplate>

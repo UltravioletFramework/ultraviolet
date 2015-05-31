@@ -66,15 +66,23 @@ _Sample Projects_
 * [Sample 8 - Playing Sound Effects](http://uv.twistedlogik.net/index.php?title=Sample_8_-_Playing_Sound_Effects)
 * [Sample 9 - Managing State with UI Screens](http://uv.twistedlogik.net/index.php?title=Sample_9_-_Managing_State_with_UI_Screens)
 * [Sample 10 - Asynchronous Content Loading](http://uv.twistedlogik.net/index.php?title=Sample_10_-_Asynchronous_Content_Loading)
+* [Sample 11 - Game Pads](http://uv.twistedlogik.net/index.php?title=Sample_11_-_Game_Pads)
 
 _Advanced Topics_
 
+* Data
+  * [Data object registries](http://uv.twistedlogik.net/index.php?title=Data_object_registries) 
 * Content
+  * [Content archives](http://uv.twistedlogik.net/index.php?title=Content_archives)
+  * [Content substitution](http://uv.twistedlogik.net/index.php?title=Content_substitution)
   * [Content preprocessing](http://uv.twistedlogik.net/index.php?title=Content_preprocessing)
   * [Content metadata files](http://uv.twistedlogik.net/index.php?title=Content_metadata_files)
 * Graphics
+  * [Generating fonts](http://uv.twistedlogik.net/index.php?title=Generating_fonts) 
   * [Custom shaders and effects](http://uv.twistedlogik.net/index.php?title=Custom_shaders_and_effects)
   * [Custom SpriteBatch implementations](http://uv.twistedlogik.net/index.php?title=Custom_SpriteBatch_implementations)
+* Android
+  * [Working with Ultraviolet on Android](http://uv.twistedlogik.net/index.php?title=Working_with_Ultraviolet_on_Android) 
 
 Project Road Map
 ================
@@ -98,7 +106,7 @@ What follows is a tentative road map for the next several major revisions of Ult
     * ~~Better support for East Asian character sets in ``SpriteFont``~~
 * __Ultraviolet 1.2__
   * _UI_
-    * Ultraviolet Core Layout Provider
+    * ~~Ultraviolet Presentation Foundation (UPF)~~
 * __Ultraviolet 1.3__
   * _Graphics_
     * Improved 3D rendering support

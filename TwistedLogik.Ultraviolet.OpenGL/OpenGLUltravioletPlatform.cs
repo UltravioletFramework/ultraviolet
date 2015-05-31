@@ -17,17 +17,15 @@ namespace TwistedLogik.Ultraviolet.OpenGL
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
         /// <param name="configuration">The Ultraviolet Framework configuration settings for the current context.</param>
-        public OpenGLUltravioletPlatform(UltravioletContext uv, UltravioletConfiguration configuration)
+        public OpenGLUltravioletPlatform(UltravioletContext uv, OpenGLUltravioletConfiguration configuration)
             : base(uv)
         {
-            this.windows  = new OpenGLUltravioletWindowInfo(uv, configuration);
-            this.displays = new OpenGLUltravioletDisplayInfo();
+            this.clipboard = new OpenGLUltravioletClipboardInfo();
+            this.windows   = new OpenGLUltravioletWindowInfo(uv, configuration);
+            this.displays  = new OpenGLUltravioletDisplayInfo();
         }
 
-        /// <summary>
-        /// Updates the subsystem's state.
-        /// </summary>
-        /// <param name="time">Time elapsed since the last call to Update.</param>
+        /// <inheritdoc/>
         public void Update(UltravioletTime time)
         {
             Contract.EnsureNotDisposed(this, Disposed);
@@ -35,10 +33,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL
             OnUpdating(time);
         }
 
-        /// <summary>
-        /// Gets or sets the current cursor.
-        /// </summary>
-        /// <remarks>Setting this property to null will restore the default cursor.</remarks>
+        /// <inheritdoc/>
         public Cursor Cursor
         {
             get
@@ -66,9 +61,18 @@ namespace TwistedLogik.Ultraviolet.OpenGL
             }
         }
 
-        /// <summary>
-        /// Gets the window information manager.
-        /// </summary>
+        /// <inheritdoc/>
+        public IUltravioletClipboardInfo Clipboard
+        {
+            get
+            {
+                Contract.EnsureNotDisposed(this, Disposed); 
+                
+                return clipboard;
+            }
+        }
+
+        /// <inheritdoc/>
         public IUltravioletWindowInfo Windows
         {
             get
@@ -79,9 +83,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL
             }
         }
 
-        /// <summary>
-        /// Gets the display information manager.
-        /// </summary>
+        /// <inheritdoc/>
         public IUltravioletDisplayInfo Displays
         {
             get
@@ -92,15 +94,10 @@ namespace TwistedLogik.Ultraviolet.OpenGL
             }
         }
 
-        /// <summary>
-        /// Occurs when the subsystem is updating its state.
-        /// </summary>
+        /// <inheritdoc/>
         public event UltravioletSubsystemUpdateEventHandler Updating;
 
-        /// <summary>
-        /// Releases resources associated with the object.
-        /// </summary>
-        /// <param name="disposing">true if the object is being disposed; false if the object is being finalized.</param>
+        /// <inheritdoc/>
         protected override void Dispose(Boolean disposing)
         {
             if (disposing && !Disposed)
@@ -129,6 +126,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL
 
         // Property values.
         private Cursor cursor;
+        private readonly OpenGLUltravioletClipboardInfo clipboard;
         private readonly OpenGLUltravioletWindowInfo windows;
         private readonly OpenGLUltravioletDisplayInfo displays;
     }

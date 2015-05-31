@@ -11,7 +11,7 @@ namespace TwistedLogik.Nucleus.Collections
     /// <typeparam name="TKey">The type of the keys in the dictionary.</typeparam>
     /// <typeparam name="TValue">The type of the values in the dictionary.</typeparam>
     /// <param name="dictionary">The dictionary that raised the event.</param>
-    public delegate void ObservableDictionaryEvent<TKey, TValue>(ObservableDictionary<TKey, TValue> dictionary);
+    public delegate void ObservableDictionaryEventHandler<TKey, TValue>(ObservableDictionary<TKey, TValue> dictionary);
 
     /// <summary>
     /// Represents a method that is called when an observable dictionary performs an operation
@@ -22,14 +22,14 @@ namespace TwistedLogik.Nucleus.Collections
     /// <param name="dictionary">The dictionary that raised the event.</param>
     /// <param name="key">The key that is the target of the operation.</param>
     /// <param name="value">The value that is the target of the operation.</param>
-    public delegate void ObservableDictionaryItemEvent<TKey, TValue>(ObservableDictionary<TKey, TValue> dictionary, TKey key, TValue value);
+    public delegate void ObservableDictionaryItemEventHandler<TKey, TValue>(ObservableDictionary<TKey, TValue> dictionary, TKey key, TValue value);
 
     /// <summary>
     /// Represents a dictionary which raises events when items are added or removed.
     /// </summary>
     /// <typeparam name="TKey">The type of the keys in the dictionary.</typeparam>
     /// <typeparam name="TValue">The type of the values in the dictionary.</typeparam>
-    public class ObservableDictionary<TKey, TValue> : IDictionary<TKey, TValue>
+    public class ObservableDictionary<TKey, TValue> : IDictionary<TKey, TValue>, INotifyCollectionChanged<KeyValuePair<TKey, TValue>>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ObservableDictionary{TKey, TValue}"/> class.
@@ -96,11 +96,12 @@ namespace TwistedLogik.Nucleus.Collections
         {
             TValue existing;
             if (dictionary.TryGetValue(key, out existing))
-                OnItemRemoved(key, existing);
+            {
+                OnCollectionItemRemoved(new KeyValuePair<TKey, TValue>(key, existing));
+            }
 
             dictionary.Add(key, value);
-            OnItemAdded(key, value);
-            OnChanged();
+            OnCollectionItemAdded(new KeyValuePair<TKey, TValue>(key, value));
         }
 
         /// <summary>
@@ -111,12 +112,9 @@ namespace TwistedLogik.Nucleus.Collections
         public Boolean Remove(TKey key)
         {
             TValue existing;
-            dictionary.TryGetValue(key, out existing);
-
-            if (dictionary.Remove(key))
+            if (dictionary.TryGetValue(key, out existing) && dictionary.Remove(key))
             {
-                OnItemRemoved(key, existing);
-                OnChanged();
+                OnCollectionItemRemoved(new KeyValuePair<TKey, TValue>(key, existing));
                 return true;
             }
             return false;
@@ -128,8 +126,7 @@ namespace TwistedLogik.Nucleus.Collections
         public void Clear()
         {
             dictionary.Clear();
-            OnCleared();
-            OnChanged();
+            OnCollectionReset();
         }
 
         /// <summary>
@@ -180,8 +177,8 @@ namespace TwistedLogik.Nucleus.Collections
         void ICollection<KeyValuePair<TKey, TValue>>.Add(KeyValuePair<TKey, TValue> item)
         {
             ((ICollection<KeyValuePair<TKey, TValue>>)dictionary).Add(item);
-            OnItemAdded(item.Key, item.Value);
-            OnChanged();
+
+            OnCollectionItemAdded(item);
         }
 
         /// <summary>
@@ -193,8 +190,7 @@ namespace TwistedLogik.Nucleus.Collections
         {
             if (((ICollection<KeyValuePair<TKey, TValue>>)dictionary).Remove(item))
             {
-                OnItemRemoved(item.Key, item.Value);
-                OnChanged();
+                OnCollectionItemRemoved(item);
                 return true;
             }
             return false;
@@ -249,11 +245,12 @@ namespace TwistedLogik.Nucleus.Collections
             {
                 TValue existing;
                 if (dictionary.TryGetValue(key, out existing))
-                    OnItemRemoved(key, existing);
+                {
+                    OnCollectionItemRemoved(new KeyValuePair<TKey, TValue>(key, existing));
+                }
 
                 dictionary[key] = value;
-                OnItemAdded(key, value);
-                OnChanged();
+                OnCollectionItemAdded(new KeyValuePair<TKey, TValue>(key, value));
             }
         }
 
@@ -282,6 +279,18 @@ namespace TwistedLogik.Nucleus.Collections
         }
 
         /// <summary>
+        /// Gets or sets a value indicating whether this collection is suppressing the untyped events raised by
+        /// the non-generic <see cref="INotifyCollectionChanged"/> interface. Where these events are not necessary,
+        /// suppressing them may be useful for performance reasons because it can prevent boxing if the collection
+        /// contains value types.
+        /// </summary>
+        public Boolean SuppressUntypedNotifications
+        {
+            get { return suppressUntypedNotifications; }
+            set { suppressUntypedNotifications = value; }
+        }
+
+        /// <summary>
         /// Gets a value indicating whether the collection is read-only.
         /// </summary>
         Boolean ICollection<KeyValuePair<TKey, TValue>>.IsReadOnly
@@ -289,79 +298,109 @@ namespace TwistedLogik.Nucleus.Collections
             get { return ((ICollection<KeyValuePair<TKey, TValue>>)dictionary).IsReadOnly; }
         }
 
-        /// <summary>
-        /// Occurs whenever an operation is performed which modifies the contents of the dictionary.
-        /// </summary>
-        public ObservableDictionaryEvent<TKey, TValue> Changed;
-
-        /// <summary>
-        /// Occurs when the dictionary is cleared.
-        /// </summary>
-        public ObservableDictionaryEvent<TKey, TValue> Cleared;
-
-        /// <summary>
-        /// Occurs when an item is added to the dictionary.
-        /// </summary>
-        public ObservableDictionaryItemEvent<TKey, TValue> ItemAdded;
-
-        /// <summary>
-        /// Occurs when an item is removed from the dictionary.
-        /// </summary>
-        public ObservableDictionaryItemEvent<TKey, TValue> ItemRemoved;
-
-        /// <summary>
-        /// Raises the <see cref="Changed"/> event.
-        /// </summary>
-        protected virtual void OnChanged()
+        /// <inheritdoc/>
+        event CollectionResetEventHandler INotifyCollectionChanged.CollectionReset
         {
-            var temp = Changed;
-            if (temp != null)
+            add { lock (untypedEventSyncObject) { untypedCollectionReset += value; } }
+            remove { lock (untypedEventSyncObject) { untypedCollectionReset -= value; } }
+        }
+
+        /// <inheritdoc/>
+        event CollectionItemAddedEventHandler INotifyCollectionChanged.CollectionItemAdded
+        {
+            add { lock (untypedEventSyncObject) { untypedCollectionItemAdded += value; } }
+            remove { lock (untypedEventSyncObject) { untypedCollectionItemAdded -= value; } }
+        }
+
+        /// <inheritdoc/>
+        event CollectionItemRemovedEventHandler INotifyCollectionChanged.CollectionItemRemoved
+        {
+            add { lock (untypedEventSyncObject) { untypedCollectionItemRemoved += value; } }
+            remove { lock (untypedEventSyncObject) { untypedCollectionItemRemoved -= value; } }
+        }
+
+        /// <inheritdoc/>
+        public event CollectionResetEventHandler<KeyValuePair<TKey, TValue>> CollectionReset;
+
+        /// <inheritdoc/>
+        public event CollectionItemAddedEventHandler<KeyValuePair<TKey, TValue>> CollectionItemAdded;
+
+        /// <inheritdoc/>
+        public event CollectionItemRemovedEventHandler<KeyValuePair<TKey, TValue>> CollectionItemRemoved;
+
+        /// <summary>
+        /// Raises the <see cref="CollectionReset"/> event.
+        /// </summary>
+        protected virtual void OnCollectionReset()
+        {
+            var temp1 = CollectionReset;
+            if (temp1 != null)
             {
-                temp(this);
+                temp1(this);
+            }
+
+            if (suppressUntypedNotifications)
+                return;
+
+            var temp2 = untypedCollectionReset;
+            if (temp2 != null)
+            {
+                temp2(this);
             }
         }
 
         /// <summary>
-        /// Raises the <see cref="Cleared"/> event.
+        /// Raises the <see cref="CollectionItemAdded"/> event.
         /// </summary>
-        protected virtual void OnCleared()
+        /// <param name="item">The item that was added to the list.</param>
+        protected virtual void OnCollectionItemAdded(KeyValuePair<TKey, TValue> item)
         {
-            var temp = Cleared;
-            if (temp != null)
+            var temp1 = CollectionItemAdded;
+            if (temp1 != null)
             {
-                temp(this);
+                temp1(this, item);
+            }
+
+            if (suppressUntypedNotifications)
+                return;
+
+            var temp2 = untypedCollectionItemAdded;
+            if (temp2 != null)
+            {
+                temp2(this, item);
             }
         }
 
         /// <summary>
-        /// Raises the <see cref="ItemAdded"/> event.
+        /// Raises the <see cref="CollectionItemRemoved"/> event.
         /// </summary>
-        /// <param name="key">The key of the item that was added.</param>
-        /// <param name="value">The value of the item that was added.</param>
-        protected virtual void OnItemAdded(TKey key, TValue value)
+        /// <param name="item">The item that was added to the list.</param>
+        protected virtual void OnCollectionItemRemoved(KeyValuePair<TKey, TValue> item)
         {
-            var temp = ItemAdded;
+            var temp = CollectionItemRemoved;
             if (temp != null)
             {
-                temp(this, key, value);
+                temp(this, item);
             }
-        }
 
-        /// <summary>
-        /// Raises the <see cref="ItemRemoved"/> event.
-        /// </summary>
-        /// <param name="key">The key of the item that was removed.</param>
-        /// <param name="value">The value of the item that was removed.</param>
-        protected virtual void OnItemRemoved(TKey key, TValue value)
-        {
-            var temp = ItemRemoved;
-            if (temp != null)
+            if (suppressUntypedNotifications)
+                return;
+
+            var temp2 = untypedCollectionItemRemoved;
+            if (temp2 != null)
             {
-                temp(this, key, value);
+                temp2(this, item);
             }
         }
 
         // The wrapped dictionary which contains our items.
         private readonly Dictionary<TKey, TValue> dictionary;
+
+        // Explicitly implemented events belonging to INotifyCollectionChanged.
+        private readonly Object untypedEventSyncObject = new Object();
+        private CollectionResetEventHandler untypedCollectionReset;
+        private CollectionItemAddedEventHandler untypedCollectionItemAdded;
+        private CollectionItemRemovedEventHandler untypedCollectionItemRemoved;
+        private Boolean suppressUntypedNotifications;
     }
 }

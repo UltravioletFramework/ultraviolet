@@ -1,0 +1,882 @@
+﻿/* 
+ * Default Ultraviolet Styles
+ * This style and its associated graphics are based on Moonify UI by Joachim Löfstedt, made available
+ * under the CC BY 3.0 license. This style also includes sound effects provided by Kenney (www.kenney.nl).
+ */
+
+*
+{
+	font: #Global:Fonts:DefaultUI;
+	foreground: #ffffffff;
+}
+
+view
+{
+	blank-image: #Global:Textures:DefaultUI 2 434 30 30;
+}
+
+button, repeatbutton, togglebutton
+{
+	padding: 10 8 10 8;
+		
+	transition (common, normal): button-to-normal;
+	transition (common, hover): button-to-hover;
+	transition (common, pressed): button-to-pressed;
+	transition (common, disabled): button-to-disabled;
+
+	trigger event mouse.mouse-enter
+	{
+		play-sfx { #Global:SoundEffects:Rollover3 }
+	}
+	trigger event click (set-handled)
+	{
+		play-sfx { #Global:SoundEffects:Click1 }
+	}
+}
+
+togglebutton
+{
+	transition (common, hover): null;
+	transition (common, pressed): null;
+
+	trigger property checked = { false }, mouse-over = { true }
+	{
+		set source-image (*:trigger-root > grid > .button-background) { #Global:Textures:DefaultUI 256 35 71 33 4 4 4 4 }	
+	}
+	trigger property checked = { true }
+	{
+		set foreground { #ffaaaaaa }
+		set source-image (*:trigger-root > grid > .button-background) { #Global:Textures:DefaultUI 256 69 71 33 4 4 4 4 }
+	}
+}
+
+	  button > grid > .button-background, 
+repeatbutton > grid > .button-background,
+togglebutton > grid > .button-background
+{
+	source-image: #Global:Textures:DefaultUI 256 1 71 33 4 4 4 4;
+}
+
+@button-to-normal
+{
+	target control (*:storyboard-root)
+	{
+		animation foreground
+		{
+			keyframe 0 { }
+		}
+	}
+	target image (*:storyboard-root > grid > .button-background)
+	{
+		animation source-image
+		{
+			keyframe 0 { }
+		}
+		animation source-color
+		{
+			keyframe 0 { }
+		}
+	}
+}
+@button-to-hover
+{
+	target control (*:storyboard-root)
+	{
+		animation foreground
+		{
+			keyframe 0 { }
+		}
+	}
+	target image (*:storyboard-root > grid > .button-background)
+	{
+		animation source-image
+		{
+			keyframe 0 { #Global:Textures:DefaultUI 256 35 71 33 4 4 4 4 }
+		}
+	}
+}
+@button-to-pressed
+{
+	target control (*:storyboard-root)
+	{
+		animation foreground
+		{
+			keyframe 0 { #ffacb3bf }
+		}
+	}
+	target image (*:storyboard-root > grid > .button-background)
+	{
+		animation source-image
+		{
+			keyframe 0 { #Global:Textures:DefaultUI 256 69 71 33 4 4 4 4 }
+		}
+	}
+}
+@button-to-disabled
+{
+	target button (*:storyboard-root)
+	{
+		animation foreground
+		{
+			keyframe 0 { #ffaaaaaa }
+		}
+	}
+}
+
+radiobutton, checkbox
+{
+	transition (common, normal): toggle-to-normal;
+	transition (common, hover): toggle-to-hover;
+	transition (checkstate, unchecked): radiobutton-to-unchecked;
+	transition (checkstate, checked): radiobutton-to-checked;	
+}
+
+radiobutton
+{
+	trigger event checked
+	{
+		play-sfx { #Global:SoundEffects:Click1 }
+	}
+}
+
+checkbox
+{
+	transition (checkstate, unchecked): checkbox-to-unchecked;
+	transition (checkstate, checked): checkbox-to-checked;
+	transition (checkstate, indeterminate): checkbox-to-indeterminate;
+
+	trigger event checked
+	{
+		play-sfx { #Global:SoundEffects:Click1 }
+	}
+	trigger event unchecked
+	{
+		play-sfx { #Global:SoundEffects:Click1 }
+	}
+	trigger event indeterminate
+	{
+		play-sfx { #Global:SoundEffects:Click1 }
+	}
+}
+
+.radiobutton-component > .toggle-box
+{
+	source-image: #Global:Textures:DefaultUI 328 61 16 17;
+	min-width: 16;
+	min-height: 17;
+}
+
+.radiobutton-component > .toggle-mark
+{
+	source-image: #Global:Textures:DefaultUI 345 61 16 17;
+	source-color: #ffcccccc;
+	min-width: 16;
+	min-height: 17;
+}
+
+.checkbox-component > .toggle-box
+{
+	source-image: #Global:Textures:DefaultUI 328 43 16 17;
+	min-width: 16;
+	min-height: 16;
+}
+
+.checkbox-component > .toggle-mark
+{
+	source-image: #Global:Textures:DefaultUI 345 43 16 17;
+	source-color: #ffcccccc;
+	min-width: 16;
+	min-height: 17;
+}
+
+@toggle-to-normal
+{
+	target image (.toggle-mark)
+	{
+		animation source-color
+		{	
+			keyframe 0 { }
+		}
+	}
+}
+@toggle-to-hover
+{
+	target image (.toggle-mark)
+	{
+		animation source-color
+		{	
+			keyframe 0 { #ffffffff }
+		}
+	}
+}
+
+@radiobutton-to-unchecked
+{
+	target image (.toggle-mark)
+	{
+		animation visibility
+		{
+			keyframe 0 { collapsed }
+		}
+	}
+}
+@radiobutton-to-checked
+{
+	target image (.toggle-mark)
+	{
+		animation visibility
+		{
+			keyframe 0 { visible }
+		}
+	}
+}
+
+@checkbox-to-unchecked
+{
+	target image (.toggle-mark)
+	{
+		animation visibility
+		{
+			keyframe 0 { collapsed }
+		}
+	}
+}
+@checkbox-to-checked
+{
+	target image (.toggle-mark)
+	{
+		animation source-image
+		{
+			keyframe 0 { }
+		}
+		animation visibility
+		{
+			keyframe 0 { visible }
+		}
+	}
+}
+@checkbox-to-indeterminate
+{
+	target image (.toggle-mark)
+	{
+		animation source-image
+		{
+			keyframe 0 { #Global:Textures:DefaultUI 379 43 16 17 }
+		}
+		animation visibility
+		{
+			keyframe 0 { visible }
+		}
+	}
+}
+
+textbox
+{
+	padding: 10 8 10 8;
+
+	caret-image: #Global:Textures:DefaultUI 2 434 30 30;
+	caret-color: #ffffffff;
+	selection-image: #Global:Textures:DefaultUI 2 434 30 30;
+	selection-color: #ff528cc9;
+
+	transition (focus, focused): textbox-to-focused;
+	transition (focus, blurred): textbox-to-blurred;
+}
+
+.textbox-component .textbox-background
+{
+	source-image: #Global:Textures:DefaultUI 267 134 62 31 4 4 4 4;
+}
+
+@textbox-to-focused
+{
+	target (.textbox-focus)
+	{
+		animation opacity
+		{
+			keyframe 250 { 1 }
+		}
+	}
+}
+@textbox-to-blurred
+{
+	target (.textbox-focus)
+	{
+		animation opacity
+		{
+			keyframe 250 { }
+		}
+	}
+}
+
+hslider
+{
+	min-width: 32;
+	min-height: 19;
+}
+
+vslider
+{
+	min-width: 19;
+	min-height: 32;
+}
+
+hslider .track-thumb
+{
+	width: 10;
+	height: 19;
+}
+
+vslider .track-thumb
+{
+	width: 19;
+	height: 10;
+}
+
+hslider .track-thumb .button-background
+{
+	source-image: #Global:Textures:DefaultUI 267 114 10 19;
+}
+
+vslider .track-thumb .button-background
+{
+	source-image: #Global:Textures:DefaultUI 278 114 19 10;
+}
+
+hslider .track-thumb, vslider .track-thumb
+{
+	transition (focus, blurred): null;
+	transition (focus, focused): null;
+	transition (common, normal): null;
+	transition (common, hover): null;
+	transition (common, pressed): null;
+}
+
+hslider .slider-track-background
+{
+	source-image: #Global:Textures:DefaultUI 256 103 71 10 4 4;
+	height: 10;
+}
+
+vslider .slider-track-background
+{
+	source-image: #Global:Textures:DefaultUI 256 114 10 71 4 4 vertical;
+	width: 10;
+}
+
+track button, track repeatbutton
+{
+	trigger event mouse.mouse-enter { }
+	trigger event click { }
+}
+
+progressbar
+{
+	bar-image: #Global:Textures:DefaultUI 328 1 49 20 10 10 tile-center;
+	fill-image: #Global:Textures:DefaultUI 328 22 49 20 10 10 tile-center;
+	fill-color: #ff5ea0d2;
+	height: 20;
+}
+
+.listbox-scrollviewer > grid > border
+{
+	border-thickness: 0;
+}
+
+.listbox-scrollviewer > grid > .scrollviewer-background
+{
+	source-image: #Global:Textures:DefaultUI 402 145 62 31 4 4 4 4;
+}
+
+.listbox-scrollviewer > grid > border > scrollcontentpresenter
+{
+	margin: 1 2 1 2;
+}
+
+.listbox-scrollviewer > grid > vscrollbar
+{
+	margin: 2 0 0 0;
+}
+
+.listbox-scrollviewer > grid > hscrollbar
+{
+	margin: 0 1 0 0;
+}
+
+.listbox-border
+{
+	border-thickness: 0;
+}
+
+listboxitem
+{
+	padding: 10 0 10 0;
+	height: 25;
+	content-valign: Center;
+
+	trigger event mouse.mouse-down (handled)
+	{
+		play-sfx { #Global:SoundEffects:Click1 }
+	}
+}
+
+.listboxitem-highlight
+{
+	source-image: #Global:Textures:DefaultUI 266 186 8 15 1 1;
+}
+
+combobox
+{
+	transition (opened, open): combobox-to-open;
+	transition (opened, closed): combobox-to-closed;
+}
+
+comboboxitem
+{
+	trigger event mouse.mouse-down (handled)
+	{
+		play-sfx { #Global:SoundEffects:Click1 }
+	}
+}
+
+combobox > grid > contentpresenter
+{
+	margin: 10 8 10 8;
+}
+
+.combobox-dropdown-grid
+{
+	margin: 0 2 0 0;
+}
+
+.combobox-dropdown-background
+{
+	source-image: #Global:Textures:DefaultUI 256 186 9 9 4 4 4 4;
+}
+
+.combobox-dropdown-border
+{
+	border-thickness: 0;
+}
+
+.combobox-dropdown-scrollviewer > grid > border
+{
+	border-thickness: 0;
+}
+
+.combobox-dropdown-scrollviewer > grid > .scrollviewer-vscroll
+{
+	margin: 2 0 2 0;
+}
+
+.combobox-arrow
+{
+	source-image: #Global:Textures:DefaultUI 299 166 11 9;
+	margin: 0 0 10 0;
+	width: 11;
+	height: 9;
+}
+
+.combobox-arrow-open
+{
+	source-color: #ffacb3bf;
+}
+
+.combobox-dropdown-scrollviewer
+{
+	margin: 1 4 1 4;
+}
+
+@combobox-to-open
+{
+	target control (*:storyboard-root)
+	{	
+		animation foreground
+		{
+			keyframe 0 { #ffacb3bf }
+		}
+	}
+}
+@combobox-to-closed
+{
+	target control (*:storyboard-root)
+	{	
+		animation foreground
+		{
+			keyframe 0 { }
+		}
+	}
+}
+
+comboboxitem
+{
+	height: 25;
+	padding: 10 0 10 0;
+	content-valign: Center;
+}
+
+.comboboxitem-highlight
+{
+	source-image: #Global:Textures:DefaultUI 266 186 8 15 1 1;
+}
+
+numericupdown
+{
+	min-width: 64;
+	min-height: 32;
+}
+
+.updown-button
+{
+	padding: 6 0 6 0;
+}
+
+.updown-button-up
+{
+	transition (common, normal): updown-button-up-to-normal;
+	transition (common, hover): updown-button-up-to-hover;
+	transition (common, pressed): updown-button-up-to-pressed;
+	transition (common, disabled): updown-button-up-to-disabled;
+}
+
+.updown-button-up > grid > .button-background
+{
+	source-image: #Global:Textures:DefaultUI 330 79 71 32 4 4 4 4;
+}
+
+.updown-button-up-arrow
+{
+	source-image: #Global:Textures:DefaultUI 267 178 5 5;
+	width: 5;
+	height: 5;
+}
+
+@updown-button-up-to-normal
+{
+	target image (*:storyboard-root > grid > .button-background)
+	{
+		animation source-image
+		{
+			keyframe 0 { }
+		}
+		animation source-color
+		{
+			keyframe 0 { }
+		}
+	}
+	target image (*:storyboard-root > .updown-button-up-arrow)
+	{
+		animation source-color
+		{
+			keyframe 0 { }
+		}
+	}
+}
+@updown-button-up-to-hover
+{
+	target image (*:storyboard-root > grid > .button-background)
+	{
+		animation source-image
+		{
+			keyframe 0 { #Global:Textures:DefaultUI 402 79 71 32 4 4 4 4 }
+		}
+	}
+	target image (*:storyboard-root > .updown-button-up-arrow)
+	{
+		animation source-color
+		{
+			keyframe 0 { }
+		}
+	}
+}
+@updown-button-up-to-pressed
+{
+	target image (*:storyboard-root > grid > .button-background)
+	{
+		animation source-image
+		{
+			keyframe 0 { #Global:Textures:DefaultUI 330 145 71 32 4 4 4 4 }
+		}
+	}
+	target image (*:storyboard-root > .updown-button-up-arrow)
+	{
+		animation source-color
+		{
+			keyframe 0 { #ffacb3bf }
+		}
+	}
+}
+@updown-button-up-to-disabled
+{
+	target image (*:storyboard-root > .updown-button-up-arrow)
+	{
+		animation source-color
+		{
+			keyframe 0 { #ffaaaaaa }
+		}
+	}
+}
+
+.updown-button-down
+{
+	transition (common, normal): updown-button-down-to-normal;
+	transition (common, hover): updown-button-down-to-hover;
+	transition (common, pressed): updown-button-down-to-pressed;
+	transition (common, disabled): updown-button-down-to-disabled;
+}
+
+.updown-button-down > grid > .button-background
+{
+	source-image: #Global:Textures:DefaultUI 330 112 71 32 4 4 4 4;
+}
+
+.updown-button-down-arrow
+{
+	source-image: #Global:Textures:DefaultUI 273 178 5 5;
+	width: 5;
+	height: 5;
+}
+
+@updown-button-down-to-normal
+{
+	target image (*:storyboard-root > grid > .button-background)
+	{
+		animation source-image
+		{
+			keyframe 0 { }
+		}
+		animation source-color
+		{
+			keyframe 0 { }
+		}
+	}
+	target image (*:storyboard-root > .updown-button-down-arrow)
+	{
+		animation source-color
+		{
+			keyframe 0 { }
+		}
+	}
+}
+@updown-button-down-to-hover
+{
+	target image (*:storyboard-root > grid > .button-background)
+	{
+		animation source-image
+		{
+			keyframe 0 { #Global:Textures:DefaultUI 402 112 71 32 4 4 4 4 }
+		}
+	}
+	target image (*:storyboard-root > .updown-button-down-arrow)
+	{
+		animation source-color
+		{
+			keyframe 0 { }
+		}
+	}
+}
+@updown-button-down-to-pressed
+{
+	target image (*:storyboard-root > grid > .button-background)
+	{
+		animation source-image
+		{
+			keyframe 0 { #Global:Textures:DefaultUI 330 178 71 32 4 4 4 4 }
+		}
+	}
+	target image (*:storyboard-root > .updown-button-down-arrow)
+	{
+		animation source-color
+		{
+			keyframe 0 { #ffacb3bf }
+		}
+	}
+}
+@updown-button-up-to-disabled
+{
+	target image (*:storyboard-root > .updown-button-down-arrow)
+	{
+		animation source-color
+		{
+			keyframe 0 { #ffaaaaaa }
+		}
+	}
+}
+
+vscrollbar
+{
+	width: 17;
+	min-height: 64;
+}
+
+.scroll-button
+{
+	trigger event mouse.mouse-enter { }
+	trigger event click { }
+}
+
+.scroll-button-up, .scroll-button-down
+{
+	padding: 0;
+	width: 17;
+	height: 21;
+		
+	transition (common, normal): scrollbutton-to-normal;
+	transition (common, hover): scrollbutton-to-hover;
+	transition (common, pressed): scrollbutton-to-pressed;
+	transition (common, disabled): scrollbutton-to-disabled;
+}
+
+.scroll-button-up-arrow
+{
+	source-image: #Global:Textures:DefaultUI 286 178 9 6;
+	width: 9;
+	height: 6;
+}
+
+.scroll-button-down-arrow
+{
+	source-image: #Global:Textures:DefaultUI 286 185 9 6;
+	width: 9;
+	height: 6;
+}
+
+.scroll-button-up > grid > .button-background
+{
+	source-image: #Global:Textures:DefaultUI 312 166 17 21;
+}
+
+.scroll-button-down > grid > .button-background
+{
+	source-image: #Global:Textures:DefaultUI 312 200 17 21;
+}
+
+.scroll-track-bg-vertical
+{
+	source-image: #Global:Textures:DefaultUI 312 188 17 11 8 4 8 4;
+}
+
+vscrollbar > grid > track > .track-thumb
+{
+	transition (common, hover): null;
+	transition (common, pressed): null;
+}
+
+vscrollbar > grid > track > .track-thumb > grid > .button-background
+{
+	source-image: #Global:Textures:DefaultUI 312 222 17 55 8 8 vertical;
+}
+
+hscrollbar
+{
+	min-width: 64;
+	height: 17;
+}
+
+.scroll-button-left, .scroll-button-right
+{
+	padding: 0;
+	width: 21;
+	height: 17;
+
+	transition (common, normal): scrollbutton-to-normal;
+	transition (common, hover): scrollbutton-to-hover;
+	transition (common, pressed): scrollbutton-to-pressed;
+	transition (common, disabled): scrollbutton-to-disabled;
+}
+
+.scroll-button-left-arrow
+{
+	source-image: #Global:Textures:DefaultUI 279 188 6 9;
+	width: 6;
+	height: 9;
+}
+
+.scroll-button-right-arrow
+{
+	source-image: #Global:Textures:DefaultUI 279 178 6 9;
+	width: 6;
+	height: 9;
+}
+
+.scroll-button-left > grid > .button-background
+{
+	source-image: #Global:Textures:DefaultUI 251 212 21 17;
+}
+
+.scroll-button-right > grid > .button-background
+{
+	source-image: #Global:Textures:DefaultUI 285 212 21 17;
+}
+
+.scroll-track-bg-horizontal
+{
+	source-image: #Global:Textures:DefaultUI 273 212 11 17 4 8 4 8;
+}
+
+hscrollbar > grid > track > .track-thumb
+{
+	transition (common, hover): null;
+	transition (common, pressed): null;
+}
+
+hscrollbar > grid > track > .track-thumb > grid > .button-background
+{
+	source-image: #Global:Textures:DefaultUI 251 230 55 17 8 8;
+}
+
+@scrollbutton-to-normal
+{
+	target image (*:storyboard-root > image) 
+	{
+		animation source-color
+		{
+			keyframe 0 { }
+		}
+	}
+}
+@scrollbutton-to-hover
+{
+	target image (*:storyboard-root > image) 
+	{
+		animation source-color
+		{
+			keyframe 0 { }
+		}
+	}
+}
+@scrollbutton-to-pressed
+{
+	target image (*:storyboard-root > image) 
+	{
+		animation source-color
+		{
+			keyframe 0 { #ffacb3bf }
+		}
+	}
+}
+@scrollbutton-to-disabled
+{
+	target image (*:storyboard-root > image) 
+	{
+		animation source-color
+		{
+			keyframe 0 { #ffaaaaaa }
+		}
+	}
+}
+
+.scrollviewer-rect
+{
+	visibility: collapsed;
+}
+
+.scrollviewer-vscroll
+{
+	margin: 2 0 0 0;
+}
+
+.scrollviewer-hscroll
+{
+	margin: 0 2 0 0;
+}

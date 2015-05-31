@@ -460,4 +460,19 @@
       <Variant>The operation is not valid because the content manager requires a deletion batch for an operation in progress.</Variant>
     </en-US>
   </String>
+  <String Key="STRETCHABLE_IMAGE_NOT_LOADED">
+    <en-US>
+      <Variant>The image '{0}' cannot be rendered until its texture resource has been loaded using the Load() method.</Variant>
+    </en-US>
+  </String>
+  <String Key="INVALID_VIEW_PROVIDER_ASSEMBLY">
+    <en-US>
+      <Variant>Invalid view provider assembly.</Variant>
+    </en-US>
+  </String>
+  <String Key="INCOMPATIBLE_VIEW_MODEL">
+    <en-US>
+      <Variant>The specified view model cannot be bound to this view because the view requires a view model of type '{0}'.</Variant>
+    </en-US>
+  </String>
 </LocalizedStrings>

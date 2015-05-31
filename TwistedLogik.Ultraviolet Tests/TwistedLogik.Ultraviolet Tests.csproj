@@ -23,7 +23,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <CodeAnalysisRuleSet>..\UltravioletStyleRules.ruleset</CodeAnalysisRuleSet>
@@ -119,20 +119,35 @@
   </Choose>
   <ItemGroup>
     <Compile Include="AssemblyInitialize.cs" />
-    <Compile Include="Audio\FMOD_SoundEffectPlayerTests.cs" />
-    <Compile Include="Audio\FMOD_SongPlayerTests.cs" />
     <Compile Include="Audio\BASS_SoundEffectPlayerTests.cs" />
     <Compile Include="Audio\BASS_SongPlayerTests.cs" />
+    <Compile Include="CircleDTests.cs" />
     <Compile Include="Graphics\Graphics2D\SpriteBatchTests.cs" />
     <Compile Include="Graphics\Graphics2D\Text\TextTableTests.cs" />
     <Compile Include="Graphics\Graphics2D\Text\TextRendererTests.cs" />
     <Compile Include="Graphics\UltravioletGraphicsTests.cs" />
     <Compile Include="RadiansTest.cs" />
+    <Compile Include="RectangleDTests.cs" />
+    <Compile Include="Point2DTests.cs" />
+    <Compile Include="Size2DTests.cs" />
+    <Compile Include="Point2FTests.cs" />
     <Compile Include="Size2FTests.cs" />
     <Compile Include="RectangleFTests.cs" />
     <Compile Include="RectangleTests.cs" />
+    <Compile Include="Point2Tests.cs" />
+    <Compile Include="Size3DTests.cs" />
     <Compile Include="Size3FTests.cs" />
     <Compile Include="MatrixTests.cs" />
+    <Compile Include="UI\Presentation\ComplexScreen.cs" />
+    <Compile Include="UI\Presentation\ComplexScreenViewModel.cs" />
+    <Compile Include="UI\Presentation\CanvasTestScreen.cs" />
+    <Compile Include="UI\Presentation\DockPanelTestScreen.cs" />
+    <Compile Include="UI\Presentation\VerticalWrapPanelTestScreen.cs" />
+    <Compile Include="UI\Presentation\HorizontalWrapPanelTestScreen.cs" />
+    <Compile Include="UI\Presentation\HorizontalStackPanelTestScreen.cs" />
+    <Compile Include="UI\Presentation\VerticalStackPanelTestScreen.cs" />
+    <Compile Include="UI\Presentation\GridTestScreen.cs" />
+    <Compile Include="UI\Presentation\PresentationFoundationTests.cs" />
     <Compile Include="Vector4Tests.cs" />
     <Compile Include="Vector3Tests.cs" />
     <Compile Include="Vector2Tests.cs" />
@@ -160,10 +175,6 @@
       <Project>{ea948cf3-ad34-480a-b8ce-e7ec5caa4d77}</Project>
       <Name>TwistedLogik.Ultraviolet.BASS</Name>
     </ProjectReference>
-    <ProjectReference Include="..\TwistedLogik.Ultraviolet.FMOD\TwistedLogik.Ultraviolet.FMOD.csproj">
-      <Project>{c647c68e-6295-43bc-bcad-de8208efd006}</Project>
-      <Name>TwistedLogik.Ultraviolet.FMOD</Name>
-    </ProjectReference>
     <ProjectReference Include="..\TwistedLogik.Ultraviolet.OpenGL\TwistedLogik.Ultraviolet.OpenGL.csproj">
       <Project>{40d272db-90e1-4332-a32f-6effeb44fe87}</Project>
       <Name>TwistedLogik.Ultraviolet.OpenGL</Name>
@@ -176,20 +187,59 @@
       <Project>{bf3c3975-5e7c-40c0-b49b-9a0cbd22bfcb}</Project>
       <Name>TwistedLogik.Ultraviolet.Testing</Name>
     </ProjectReference>
+    <ProjectReference Include="..\TwistedLogik.Ultraviolet.UI.Presentation\TwistedLogik.Ultraviolet.UI.Presentation.csproj">
+      <Project>{7379d9e1-bb01-4b05-b4f7-5d39b393348f}</Project>
+      <Name>TwistedLogik.Ultraviolet.UI.Presentation</Name>
+    </ProjectReference>
     <ProjectReference Include="..\TwistedLogik.Ultraviolet\TwistedLogik.Ultraviolet.csproj">
       <Project>{f071abe3-05e5-4df9-a929-cf71b01ec50a}</Project>
       <Name>TwistedLogik.Ultraviolet</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\Ultraviolet Framework Samples\UltravioletSample7\Content\Songs\Deep Haze.ogg">
-      <Link>Dependencies\Content\Songs\Deep Haze.ogg</Link>
+    <None Include="Content\Fonts\SegoeUI.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Dependencies\Content\Fonts\SegoeUI.xml">
+    <None Include="Content\Fonts\SegoeUITexture.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Dependencies\Content\Fonts\SegoeUITexture.png">
+    <None Include="Content\Manifests\Global.manifest">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Content\Songs\Deep Haze.ogg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Content\Textures\Triangle.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Content\Tables\TestTextTable.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Content\Fonts\Garamond.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Fonts\GaramondTexture.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Content\SoundEffects\grenade.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Content\UI\DefaultUIStyles.uvss">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\Expected\Graphics\UltravioletGraphics_CanRenderATexturedTriangle.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
@@ -197,14 +247,19 @@
     <None Include="Resources\Expected\Graphics\Graphics2D\SpriteBatch_CanRenderSimpleStrings.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-  </ItemGroup>
-  <ItemGroup>
+    <None Include="Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CanAlignTextWithinAnArea.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CanRenderColoredStrings.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CanAlignTextWithinAnArea.png">
+    <None Include="Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CanRenderStyledStrings.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CorrectlyAlignsKernedTextAcrossTokenBoundaries.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\Expected\Graphics\Graphics2D\Text\TextTable_RendersFromViewModel.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
@@ -214,72 +269,87 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Dependencies\Content\Textures\Triangle.png">
+    <None Include="Resources\Expected\UI\Presentation\PresentationFoundation_CorrectlyLaysOutComplexScreen.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\Expected\Graphics\UltravioletGraphics_CanRenderATexturedTriangle.png">
+    <None Include="Content\UI\Screens\ComplexScreen\ComplexScreen.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CanRenderStyledStrings.png">
+    <None Include="Content\UI\DefaultUI.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Dependencies\Content\Tables\TestTextTable.xml">
+    <None Include="Content\UI\DefaultUIBackground.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\Expected\Graphics\Graphics2D\Text\TextTable_RendersFromViewModel.png">
+    <None Include="Content\UI\DefaultUIFont.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Dependencies\Content\Fonts\Garamond.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Dependencies\Content\Fonts\GaramondTexture.png">
+    <None Include="Content\UI\Screens\GridTestScreen\GridTestScreen.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CorrectlyAlignsKernedTextAcrossTokenBoundaries.png">
+    <None Include="Content\UI\Screens\CanvasTestScreen\CanvasTestScreen.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\Dependencies\BASS\x64\win32nt\bass.dll">
-      <Link>Dependencies\x64\win32nt\bass.dll</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="..\Dependencies\BASS\x64\win32nt\bass_fx.dll">
-      <Link>Dependencies\x64\win32nt\bass_fx.dll</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="..\Dependencies\BASS\x86\win32nt\bass.dll">
-      <Link>Dependencies\x86\win32nt\bass.dll</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="..\Dependencies\BASS\x86\win32nt\bass_fx.dll">
-      <Link>Dependencies\x86\win32nt\bass_fx.dll</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="..\Dependencies\SDL2\x64\win32nt\SDL2.dll">
-      <Link>Dependencies\x64\win32nt\SDL2.dll</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="..\Dependencies\SDL2\x86\win32nt\SDL2.dll">
-      <Link>Dependencies\x86\win32nt\SDL2.dll</Link>
+    <None Include="Content\UI\Screens\VerticalStackPanelTestScreen\VerticalStackPanelTestScreen.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\Ultraviolet Framework Samples\UltravioletSample8\Content\SoundEffects\grenade.wav">
-      <Link>Dependencies\Content\SoundEffects\grenade.wav</Link>
+    <None Include="Content\UI\Screens\HorizontalStackPanelTestScreen\HorizontalStackPanelTestScreen.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Content\UI\Screens\HorizontalWrapPanelTestScreen\HorizontalWrapPanelTestScreen.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Content\UI\Screens\VerticalWrapPanelTestScreen\VerticalWrapPanelTestScreen.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Content\UI\Screens\DockPanelTestScreen\DockPanelTestScreen.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Expected\UI\Presentation\PresentationFoundation_Canvas_CorrectlyArrangesChildren.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\Expected\UI\Presentation\PresentationFoundation_DockPanel_CorrectlyArrangesChildren.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\Expected\UI\Presentation\PresentationFoundation_Grid_CorrectlyArrangesChildren.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\Expected\UI\Presentation\PresentationFoundation_Horizontal_StackPanel_CorrectlyArrangesChildren.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\Expected\UI\Presentation\PresentationFoundation_Horizontal_WrapPanel_CorrectlyArrangesChildren.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\Expected\UI\Presentation\PresentationFoundation_Vertical_WrapPanel_CorrectlyArrangesChildren.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Expected\UI\Presentation\PresentationFoundation_Vertical_StackPanel_CorrectlyArrangesChildren.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

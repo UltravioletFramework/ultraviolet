@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.30723.0
+VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UltravioletSample1", "UltravioletSample1\UltravioletSample1.csproj", "{254C229D-BA03-4CED-A139-F4213F8AF6D9}"
 EndProject
@@ -80,6 +80,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UltravioletSample8 (Android)", "UltravioletSample8 (Android)\UltravioletSample8 (Android).csproj", "{B0D5ECE3-C07D-40DB-90E6-92D16C3800FC}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UltravioletSample11 (Android)", "UltravioletSample11 (Android)\UltravioletSample11 (Android).csproj", "{5CC7C3F8-D523-4ED2-A2B1-1957699C7907}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UltravioletSample12", "UltravioletSample12\UltravioletSample12.csproj", "{3DFDEF78-D6C3-4BE4-9F99-A62294C72A1F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -229,6 +231,12 @@ Global
 		{5CC7C3F8-D523-4ED2-A2B1-1957699C7907}.Production|Any CPU.Build.0 = Production|Any CPU
 		{5CC7C3F8-D523-4ED2-A2B1-1957699C7907}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5CC7C3F8-D523-4ED2-A2B1-1957699C7907}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3DFDEF78-D6C3-4BE4-9F99-A62294C72A1F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3DFDEF78-D6C3-4BE4-9F99-A62294C72A1F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3DFDEF78-D6C3-4BE4-9F99-A62294C72A1F}.Production|Any CPU.ActiveCfg = Production|Any CPU
+		{3DFDEF78-D6C3-4BE4-9F99-A62294C72A1F}.Production|Any CPU.Build.0 = Production|Any CPU
+		{3DFDEF78-D6C3-4BE4-9F99-A62294C72A1F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3DFDEF78-D6C3-4BE4-9F99-A62294C72A1F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

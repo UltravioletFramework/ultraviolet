@@ -168,20 +168,16 @@ namespace TwistedLogik.Ultraviolet.OpenGL
 
             if (this.viewport != viewport)
             {
-                var currentWindow = Ultraviolet.GetPlatform().Windows.GetCurrent();
-                if (currentWindow == null)
-                    return;
-
-                var targetHeight = (renderTarget == null) ? currentWindow.ClientSize.Height : renderTarget.Height;
                 var x = viewport.X;
-                var y = targetHeight - (viewport.Height + viewport.Y);
+                var y = viewport.Y;
+                ConvertScreenRegionUvToGL(ref x, ref y, viewport.Width, viewport.Height);
 
                 gl.Viewport(x, y, viewport.Width, viewport.Height);
                 gl.ThrowIfError();
 
                 this.viewport = viewport;
 
-                SetScissorRectangle(Rectangle.Empty);
+                SetScissorRectangle(null);
             }
         }
 
@@ -401,50 +397,47 @@ namespace TwistedLogik.Ultraviolet.OpenGL
             return this.samplerStates[sampler];
         }
 
-        /// <summary>
-        /// Sets the device's scissor rectangle.
-        /// </summary>
-        /// <param name="x">The x-coordinate of the top-left corner of the scissor rectangle.</param>
-        /// <param name="y">The y-coordinate of the top-left corner of the scissor rectangle.</param>
-        /// <param name="width">The width of the scissor rectangle.</param>
-        /// <param name="height">The height of the scissor rectangle.</param>
+        /// <inheritdoc/>
         public void SetScissorRectangle(Int32 x, Int32 y, Int32 width, Int32 height)
         {
-            Contract.EnsureRange(width >= 0, "width");
-            Contract.EnsureRange(height >= 0, "height");
-            Contract.EnsureNotDisposed(this, Disposed);
-
             var rect = new Rectangle(x, y, width, height);
-            if (this.scissorRectangle != rect)
-            {
-                gl.Scissor(x, y, width, height);
-                gl.ThrowIfError();
-                this.scissorRectangle = rect;
-            }
+            SetScissorRectangle(rect);
         }
 
-        /// <summary>
-        /// Sets the device's scissor rectangle.
-        /// </summary>
-        /// <param name="rect">The scissor rectangle.</param>
-        public void SetScissorRectangle(Rectangle rect)
+        /// <inheritdoc/>
+        public void SetScissorRectangle(Rectangle? rect)
         {
-            Contract.Ensure(rect.Width >= 0 && rect.Height >= 0, "rect");
             Contract.EnsureNotDisposed(this, Disposed);
 
             if (this.scissorRectangle != rect)
             {
-                gl.Scissor(rect.X, rect.Y, rect.Width, rect.Height);
-                gl.ThrowIfError();
+                if (rect == null)
+                {
+                    gl.Disable(gl.GL_SCISSOR_TEST);
+                    gl.ThrowIfError();
+                }
+                else
+                {
+                    var rectValue = rect.GetValueOrDefault();
+                    if (rectValue.Width < 0 || rectValue.Height < 0)
+                        throw new ArgumentOutOfRangeException("rect");
+
+                    var x = rectValue.X;
+                    var y = rectValue.Y;
+                    ConvertScreenRegionUvToGL(ref x, ref y, rectValue.Width, rectValue.Height);
+
+                    gl.Enable(gl.GL_SCISSOR_TEST);
+                    gl.ThrowIfError();
+
+                    gl.Scissor(x, y, rectValue.Width, rectValue.Height);
+                    gl.ThrowIfError();
+                }
                 this.scissorRectangle = rect;
             }
         }
 
-        /// <summary>
-        /// Gets the device's scissor rectangle.
-        /// </summary>
-        /// <returns>The device's scissor rectangle.</returns>
-        public Rectangle GetScissorRectangle()
+        /// <inheritdoc/>
+        public Rectangle? GetScissorRectangle()
         {
             Contract.EnsureNotDisposed(this, Disposed);
 
@@ -731,6 +724,23 @@ namespace TwistedLogik.Ultraviolet.OpenGL
             }
         }
 
+        /// <summary>
+        /// Converts an Ultraviolet screen region to OpenGL coordinates.
+        /// </summary>
+        /// <param name="x">The x-coordinate of the region to convert.</param>
+        /// <param name="y">The y-coordinate of the region to convert.</param>
+        /// <param name="width">The width of the region to convert.</param>
+        /// <param name="height">The height of the region to convert.</param>
+        private void ConvertScreenRegionUvToGL(ref Int32 x, ref Int32 y, Int32 width, Int32 height)
+        {
+            var currentWindow = Ultraviolet.GetPlatform().Windows.GetCurrent();
+            if (currentWindow == null)
+                return;
+
+            var targetHeight = (renderTarget == null) ? currentWindow.ClientSize.Height : renderTarget.Height;
+            y = targetHeight - (height + y);
+        }
+
         // Device state.
         private IntPtr context;
         private OpenGLRenderTarget2D renderTarget;
@@ -739,7 +749,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL
         private OpenGLBlendState blendState;
         private OpenGLDepthStencilState depthStencilState;
         private OpenGLRasterizerState rasterizerState;
-        private Rectangle scissorRectangle;
+        private Rectangle? scissorRectangle;
 
         // Frame rate counter.
         private Stopwatch frameRateTimer = new Stopwatch();

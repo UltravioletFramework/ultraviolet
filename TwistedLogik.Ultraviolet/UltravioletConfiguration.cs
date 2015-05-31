@@ -14,8 +14,17 @@ namespace TwistedLogik.Ultraviolet
         {
             WindowIsVisible = true;
             WindowIsResizable = true;
-            InitialWindowPosition = new Vector2(100, 100);
-            InitialWindowClientSize = new Size2(640, 480);
+            InitialWindowPosition = new Rectangle(100, 100, 640, 480);
+        }
+
+        /// <summary>
+        /// Gets or sets the full name of the assembly which is responsible for
+        /// creating and managing instances of the <see cref="TwistedLogik.Ultraviolet.UI.UIView"/> class.
+        /// </summary>
+        public String ViewProviderAssembly
+        {
+            get;
+            set;
         }
 
         /// <summary>
@@ -86,27 +95,9 @@ namespace TwistedLogik.Ultraviolet
         }
 
         /// <summary>
-        /// Gets the initial position of the context's primary window.
+        /// Gets or sets the intial size and position of the context's primary window.
         /// </summary>
-        public Vector2 InitialWindowPosition
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
-        /// Gets the initial client size of the context's primary window.
-        /// </summary>
-        public Size2 InitialWindowClientSize
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
-        /// Gets or sets the name of the assembly that contains the application's layout provider.
-        /// </summary>
-        public String LayoutProviderAssembly
+        public Rectangle InitialWindowPosition
         {
             get;
             set;

@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Xml.Linq;
 using TwistedLogik.Nucleus.Xml;
 using TwistedLogik.Ultraviolet.Content;
+using TwistedLogik.Ultraviolet.Platform;
 
 namespace TwistedLogik.Ultraviolet.UI
 {
@@ -13,30 +16,39 @@ namespace TwistedLogik.Ultraviolet.UI
     [ContentProcessor]
     internal sealed class UIPanelDefinitionProcessor : ContentProcessor<XDocument, UIPanelDefinition>
     {
-        /// <summary>
-        /// Processes the specified data structure into a game asset.
-        /// </summary>
-        /// <param name="manager">The content manager with which the asset is being processed.</param>
-        /// <param name="metadata">The asset's metadata.</param>
-        /// <param name="input">The input data structure to process.</param>
-        /// <returns>The game asset that was created.</returns>
+        /// <inheritdoc/>
         public override UIPanelDefinition Process(ContentManager manager, IContentProcessorMetadata metadata, XDocument input)
         {
+            var fss = FileSystemService.Create();
+
             var defaultOpenTransitionDuration  = input.Root.AttributeValueDouble("DefaultOpenTransitionDuration") ?? 0.0;
             var defaultCloseTransitionDuration = input.Root.AttributeValueDouble("DefaultCloseTransitionDuration") ?? 0.0;
 
-            var layout        = input.Root.Element("Layout");
-            var layoutSource  = (layout == null) ? null : layout.AttributeValueString("Source");
-            var layoutRootDir = Path.GetDirectoryName(metadata.AssetPath);
+            var styleSheetRoot     = Path.GetDirectoryName(metadata.AssetPath);
+            var styleSheetElements = input.Root.Elements("StyleSheet");
+            var styleSheetPaths    = styleSheetElements.Select(x => manager.ResolveAssetFilePath(Path.Combine(styleSheetRoot, x.Value)));
+            var styleSheetSources  = new List<String>();
+
+            foreach (var styleSheetPath in styleSheetPaths)
+            {
+                using (var stream = fss.OpenRead(styleSheetPath))
+                {
+                    using(var reader = new StreamReader(stream))
+                    {
+                        var source = reader.ReadToEnd();
+                        styleSheetSources.Add(source);
+                    }
+                }
+            }
 
             return new UIPanelDefinition()
             {
                 DefaultOpenTransitionDuration  = TimeSpan.FromMilliseconds(defaultOpenTransitionDuration),
                 DefaultCloseTransitionDuration = TimeSpan.FromMilliseconds(defaultCloseTransitionDuration),
-                Layout                         = layout,
-                LayoutSource                   = layoutSource,
-                LayoutRootDirectory            = layoutRootDir
+                RootElement                    = input.Root,
+                ViewElement                    = input.Root.Element("View"),
+                StyleSheets                    = styleSheetSources,
             };
-        }
+        }    
     }
 }

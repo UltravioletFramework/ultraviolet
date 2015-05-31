@@ -55,7 +55,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BitmapResult.cs" />
+    <Compile Include="CircleDResult.cs" />
     <Compile Include="IUltravioletTestApplication.cs" />
+    <Compile Include="Point2DResult.cs" />
+    <Compile Include="Point2FResult.cs" />
+    <Compile Include="RectangleDResult.cs" />
+    <Compile Include="RenderToScreenAttribute.cs" />
+    <Compile Include="Size2DResult.cs" />
+    <Compile Include="Point2Result.cs" />
+    <Compile Include="Size3DResult.cs" />
     <Compile Include="UltravioletApplicationTestFramework.cs" />
     <Compile Include="UltravioletTestApplication.cs" />
     <Compile Include="Vector4Result.cs" />
@@ -103,6 +111,10 @@
     <ProjectReference Include="..\TwistedLogik.Ultraviolet.SDL2\TwistedLogik.Ultraviolet.SDL2.csproj">
       <Project>{50aefa93-fe53-414a-89fc-c061c165c673}</Project>
       <Name>TwistedLogik.Ultraviolet.SDL2</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TwistedLogik.Ultraviolet.UI.Presentation\TwistedLogik.Ultraviolet.UI.Presentation.csproj">
+      <Project>{7379d9e1-bb01-4b05-b4f7-5d39b393348f}</Project>
+      <Name>TwistedLogik.Ultraviolet.UI.Presentation</Name>
     </ProjectReference>
     <ProjectReference Include="..\TwistedLogik.Ultraviolet\TwistedLogik.Ultraviolet.csproj">
       <Project>{f071abe3-05e5-4df9-a929-cf71b01ec50a}</Project>

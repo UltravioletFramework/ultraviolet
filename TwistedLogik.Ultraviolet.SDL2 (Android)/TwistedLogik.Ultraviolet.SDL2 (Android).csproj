@@ -217,6 +217,9 @@
     <Compile Include="..\TwistedLogik.Ultraviolet.SDL2\Native\SDL_PixelType.cs">
       <Link>Native\SDL_PixelType.cs</Link>
     </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.SDL2\Native\SDL_PowerState.cs">
+      <Link>Native\SDL_PowerState.cs</Link>
+    </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.SDL2\Native\SDL_QuitEvent.cs">
       <Link>Native\SDL_QuitEvent.cs</Link>
     </Compile>
@@ -292,6 +295,9 @@
     <Compile Include="..\TwistedLogik.Ultraviolet.SDL2\Native\SDL_WindowFlags.cs">
       <Link>Native\SDL_WindowFlags.cs</Link>
     </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.SDL2\Platform\SDL2PowerManagementService.cs">
+      <Link>Platform\SDL2PowerManagementService.cs</Link>
+    </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.SDL2\Properties\AssemblyInfo.cs">
       <Link>Properties\AssemblyInfo.cs</Link>
     </Compile>
@@ -320,9 +326,9 @@
     <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.SDL2\Resources\Strings.xml">
       <Link>Resources\Strings.xml</Link>
     </EmbeddedResource>
-    <Content Include="..\TwistedLogik.Ultraviolet.SDL2\TwistedLogik.Ultraviolet.SDL2.Licenses.txt">
+    <None Include="..\TwistedLogik.Ultraviolet.SDL2\TwistedLogik.Ultraviolet.SDL2.Licenses.txt">
       <Link>TwistedLogik.Ultraviolet.SDL2.Licenses.txt</Link>
-    </Content>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TwistedLogik.Nucleus %28Android%29\TwistedLogik.Nucleus %28Android%29.csproj">

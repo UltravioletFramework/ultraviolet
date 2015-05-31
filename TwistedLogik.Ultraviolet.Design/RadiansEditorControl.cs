@@ -2,6 +2,7 @@
 using System.Drawing;
 using System.Windows.Forms;
 using System.Windows.Forms.Design;
+using GdiPoint = System.Drawing.Point;
 
 namespace TwistedLogik.Ultraviolet.Design
 {
@@ -58,9 +59,9 @@ namespace TwistedLogik.Ultraviolet.Design
         /// <inheritdoc/>
         protected override void OnPaint(PaintEventArgs e)
         {
-            e.Graphics.DrawLine(Pens.Silver, new Point(offset, radius), new Point(offset + (2 * radius), radius));
-            e.Graphics.DrawLine(Pens.Silver, new Point(offset + radius, 0), new Point(offset + radius, 2 * radius));
-            e.Graphics.DrawLine(Pens.Black, new Point(offset + radius, 0), new Point(offset + radius, radius));
+            e.Graphics.DrawLine(Pens.Silver, new GdiPoint(offset, radius), new GdiPoint(offset + (2 * radius), radius));
+            e.Graphics.DrawLine(Pens.Silver, new GdiPoint(offset + radius, 0), new GdiPoint(offset + radius, 2 * radius));
+            e.Graphics.DrawLine(Pens.Black, new GdiPoint(offset + radius, 0), new GdiPoint(offset + radius, radius));
 
             e.Graphics.DrawLine(Pens.Red, center, target);
             e.Graphics.DrawArc(Pens.DarkRed, 
@@ -100,7 +101,7 @@ namespace TwistedLogik.Ultraviolet.Design
         {
             this.radius = Math.Min(ClientSize.Width / 2, ClientSize.Height / 2);
             this.offset = (ClientSize.Width - (2 * radius)) / 2;
-            this.center = new Point(offset + radius, radius);
+            this.center = new GdiPoint(offset + radius, radius);
 
             UpdateAngle();
         }
@@ -139,7 +140,7 @@ namespace TwistedLogik.Ultraviolet.Design
                 targetVector = Vector2.Transform(-Vector2.UnitY * radius, Matrix.CreateRotationZ((Single)angle));
             }
 
-            this.target  = new Point(center.X + (Int32)targetVector.X, center.Y + (Int32)targetVector.Y);
+            this.target  = new GdiPoint(center.X + (Int32)targetVector.X, center.Y + (Int32)targetVector.Y);
             this.radians = (Single)angle;
             this.degrees = (Single)angle * 57.2957795f;
         }
@@ -148,8 +149,8 @@ namespace TwistedLogik.Ultraviolet.Design
         private readonly IWindowsFormsEditorService editorService;
         private Single radians;
         private Single degrees;
-        private Point center;
-        private Point target;
+        private GdiPoint center;
+        private GdiPoint target;
         private Int32 radius;
         private Int32 offset;
     }

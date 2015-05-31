@@ -119,6 +119,7 @@
   <ItemGroup>
     <Compile Include="AssemblyInitialize.cs" />
     <Compile Include="Collections\BinaryHeapTest.cs" />
+    <Compile Include="Collections\ObservableItem.cs" />
     <Compile Include="Collections\ObservableListTest.cs" />
     <Compile Include="Collections\ObservableDictionaryTest.cs" />
     <Compile Include="Collections\GenericEnumeratorTest.cs" />

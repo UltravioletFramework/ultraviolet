@@ -75,7 +75,7 @@ namespace TwistedLogik.Ultraviolet.Input
             released = false;
             if (pressed)
             {
-                if (!Enabled || mouse.IsButtonReleased(button))
+                if (!Enabled || mouse.IsButtonReleased(button) || !AreModifiersSatisfied())
                 {
                     pressed = false;
                     released = true;

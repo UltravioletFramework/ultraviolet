@@ -245,6 +245,9 @@
     <Compile Include="..\TwistedLogik.Ultraviolet.OpenGL\OpenGLUltravioletPlatform.cs">
       <Link>OpenGLUltravioletPlatform.cs</Link>
     </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.OpenGL\Platform\OpenGLUltravioletClipboardInfo.cs">
+      <Link>Platform\OpenGLUltravioletClipboardInfo.cs</Link>
+    </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.OpenGL\Platform\OpenGLUltravioletDisplay.cs">
       <Link>Platform\OpenGLUltravioletDisplay.cs</Link>
     </Compile>
@@ -339,9 +342,9 @@
     <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.OpenGL\Resources\uv64.png">
       <Link>Resources\uv64.png</Link>
     </EmbeddedResource>
-    <Content Include="..\TwistedLogik.Ultraviolet.OpenGL\TwistedLogik.Ultraviolet.OpenGL.Licenses.txt">
+    <None Include="..\TwistedLogik.Ultraviolet.OpenGL\TwistedLogik.Ultraviolet.OpenGL.Licenses.txt">
       <Link>TwistedLogik.Ultraviolet.OpenGL.Licenses.txt</Link>
-    </Content>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <ProjectExtensions>

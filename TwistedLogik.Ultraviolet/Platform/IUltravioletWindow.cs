@@ -88,7 +88,7 @@ namespace TwistedLogik.Ultraviolet.Platform
         /// <summary>
         /// Gets or sets the window's position.
         /// </summary>
-        Vector2 Position
+        Point2 Position
         {
             get;
             set;
@@ -97,7 +97,7 @@ namespace TwistedLogik.Ultraviolet.Platform
         /// <summary>
         /// Gets or sets the position to which the window will be restored upon entering non-maximized windowed mode.
         /// </summary>
-        Vector2 WindowedPosition
+        Point2 WindowedPosition
         {
             get;
             set;

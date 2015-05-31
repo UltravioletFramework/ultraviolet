@@ -32,6 +32,9 @@ namespace TwistedLogik.Nucleus.Collections
             Contract.EnsureRange(capacity >= 1, "capacity");
 
             NodePool = new List<LinkedListNode<T>>(capacity);
+
+            for (int i = 0; i < capacity; i++)
+                NodePool.Add(new LinkedListNode<T>(default(T)));
         }
 
         /// <summary>
@@ -245,6 +248,7 @@ namespace TwistedLogik.Nucleus.Collections
             if (NodePool.Count == 0)
             {
                 node = new LinkedListNode<T>(default(T));
+                NodePool.Capacity++;
             }
             else
             {

@@ -17,11 +17,15 @@ namespace TwistedLogik.Nucleus.Messages
         public void ReceiveMessage(TMessageType messageType, MessageData data)
         {
             tempstorage.Clear();
-            tempstorage.AddRange(this[messageType]);
+
+            foreach (var sub in this[messageType])
+                tempstorage.Add(sub);
+
             foreach (var subscriber in tempstorage)
             {
                 subscriber.ReceiveMessage(messageType, data);
             }
+
             tempstorage.Clear();
         }
 

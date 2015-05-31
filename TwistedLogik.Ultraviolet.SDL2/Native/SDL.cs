@@ -155,6 +155,9 @@ namespace TwistedLogik.Ultraviolet.SDL2.Native
         [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GetScancodeFromKey")]
         public static extern SDL_Scancode GetScancodeFromKey(SDL_Keycode keycode);
 
+        [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GetModState")]
+        public static extern SDL_Keymod GetModState();
+
         [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_SetHint", BestFitMapping = false)]
         public static extern Boolean SetHint([MarshalAs(UnmanagedType.LPStr)] String name, [MarshalAs(UnmanagedType.LPStr)] String value);
 
@@ -315,5 +318,23 @@ namespace TwistedLogik.Ultraviolet.SDL2.Native
 
         [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_StopTextInput")]
         public static extern void StopTextInput();
+
+        [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_HasClipboardText")]
+        public static extern Boolean HasClipboardText();
+
+        [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GetClipboardText")]
+        private static extern IntPtr GetClipboardText_Impl();
+
+        public static String GetClipboardText()
+        {
+            var ptr = GetClipboardText_Impl();
+            return (ptr == IntPtr.Zero) ? null : Marshal.PtrToStringAnsi(ptr);
+        }
+
+        [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_SetClipboardText")]
+        public static extern void SetClipboardText([MarshalAs(UnmanagedType.LPStr)] String text);
+
+        [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GetPowerInfo")]
+        public static extern SDL_PowerState GetPowerInfo(int* secs, int* pct);
     }
 }

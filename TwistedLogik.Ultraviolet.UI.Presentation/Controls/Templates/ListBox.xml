@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ComponentTemplate>
+  <Grid Class="listbox-component" 
+        HorizontalAlignment="Stretch" 
+        VerticalAlignment="Stretch">
+    
+    <Image Class="listbox-background" 
+           SourceColor="{{Background}}"
+           HorizontalAlignment="Stretch" 
+           VerticalAlignment="Stretch"/>    
+    <Border Class="listbox-border" 
+            HorizontalAlignment="Stretch"
+            HorizontalContentAlignment="Stretch"
+            VerticalAlignment="Stretch"
+            VerticalContentAlignment="Stretch">
+
+      <ScrollViewer Class="listbox-scrollviewer"
+                    HorizontalAlignment="Stretch"
+                    HorizontalScrollBarVisibility="Auto"
+                    VerticalAlignment="Stretch"
+                    VerticalScrollBarVisibility="Auto">
+          
+        <ItemsPanel HorizontalAlignment="Stretch"/>
+
+      </ScrollViewer>
+  
+    </Border>
+
+  </Grid>
+</ComponentTemplate>

@@ -12,6 +12,7 @@ echo f | xcopy "..\..\Binaries\AnyCPU\Release\TwistedLogik.Ultraviolet.SDL2.dll.
 echo f | xcopy "..\..\Binaries\AnyCPU\Release\TwistedLogik.Ultraviolet.BASS.dll" TwistedLogik.Ultraviolet.BASS.dll /Y
 echo f | xcopy "..\..\Binaries\AnyCPU\Release\TwistedLogik.Ultraviolet.BASS.dll.config" TwistedLogik.Ultraviolet.BASS.dll.config /Y
 echo f | xcopy "..\..\Binaries\AnyCPU\Release\TwistedLogik.Ultraviolet.Desktop.dll" TwistedLogik.Ultraviolet.Desktop.dll /Y
+echo f | xcopy "..\..\Binaries\AnyCPU\Release\TwistedLogik.Ultraviolet.UI.Presentation.dll" TwistedLogik.Ultraviolet.UI.Presentation.dll /Y
 
 echo f | xcopy "..\..\Binaries\AnyCPU\Release\Newtonsoft.Json.dll" Android\Newtonsoft.Json.dll /Y
 echo f | xcopy "..\..\Binaries\Android\Release\TwistedLogik.Gluon.dll" Android\TwistedLogik.Gluon.dll /Y
@@ -24,4 +25,5 @@ echo f | xcopy "..\..\Binaries\Android\Release\TwistedLogik.Ultraviolet.OpenGL.x
 echo f | xcopy "..\..\Binaries\Android\Release\TwistedLogik.Ultraviolet.SDL2.dll" Android\TwistedLogik.Ultraviolet.SDL2.dll /Y
 echo f | xcopy "..\..\Binaries\Android\Release\TwistedLogik.Ultraviolet.BASS.dll" Android\TwistedLogik.Ultraviolet.BASS.dll /Y
 echo f | xcopy "..\..\Binaries\Android\Release\TwistedLogik.Ultraviolet.Android.dll" Android\TwistedLogik.Ultraviolet.Android.dll /Y
+echo f | xcopy "..\..\Binaries\Android\Release\TwistedLogik.Ultraviolet.UI.Presentation.dll" Android\TwistedLogik.Ultraviolet.UI.Presentation.dll /Y
 echo f | xcopy "..\..\Binaries\Android\Release\org.libsdl.app.dll" Android\org.libsdl.app.dll /Y

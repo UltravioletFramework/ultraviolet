@@ -36,9 +36,10 @@ namespace TwistedLogik.Ultraviolet.UI
         /// <summary>
         /// Initializes a new instance of the <see cref="UIPanel"/> class.
         /// </summary>
-        /// <param name="size">The panel's default size, or <c>null</c> to fit the panel to the primary window.</param>
-        internal UIPanel(Size2? size = null)
-            : this(null, size)
+        /// <param name="rootDirectory">The root directory of the panel's local content manager.</param>
+        /// <param name="globalContent">The content manager with which to load globally-available assets.</param>
+        internal UIPanel(String rootDirectory, ContentManager globalContent)
+            : this(null, rootDirectory, globalContent)
         {
 
         }
@@ -47,21 +48,16 @@ namespace TwistedLogik.Ultraviolet.UI
         /// Initializes a new instance of the <see cref="UIPanel"/> class.
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
-        /// <param name="size">The panel's default size, or <c>null</c> to fit the panel to the primary window.</param>
-        internal UIPanel(UltravioletContext uv, Size2? size = null)
+        /// <param name="rootDirectory">The root directory of the panel's local content manager.</param>
+        /// <param name="globalContent">The content manager with which to load globally-available assets.</param>
+        internal UIPanel(UltravioletContext uv, String rootDirectory, ContentManager globalContent)
             : base(uv ?? UltravioletContext.DemandCurrent())
         {
-            var calculatedSize = CalculateInitialLayoutSize(size);
+            Contract.RequireNotEmpty(rootDirectory, "rootDirectory");
+            Contract.Require(globalContent, "globalContent");
 
-            var layoutProvider = Ultraviolet.GetUI().GetLayoutProvider();
-            if (layoutProvider != null)
-            {
-                this.layout = layoutProvider.CreateLayout(0, 0, calculatedSize.Width, calculatedSize.Height);
-                this.layout.Initialized += (sender) => { OnLayoutInitialized(); };
-                this.layout.Loading += (sender) => { OnLayoutLoading(); };
-                this.layout.Ready += (sender) => { OnLayoutReady(); };
-                this.layout.Interactive = false;
-            }
+            this.localContent  = ContentManager.Create(rootDirectory);
+            this.globalContent = globalContent;
         }
 
         /// <summary>
@@ -84,9 +80,11 @@ namespace TwistedLogik.Ultraviolet.UI
         {
             Contract.EnsureNotDisposed(this, Disposed);
 
-            if (this.layout != null)
+            isFocused = true;
+
+            if (view != null)
             {
-                this.layout.Focus();
+                view.Focus();
             }
         }
 
@@ -97,23 +95,62 @@ namespace TwistedLogik.Ultraviolet.UI
         {
             Contract.EnsureNotDisposed(this, Disposed);
 
-            if (this.layout != null)
+            isFocused = false;
+
+            if (view != null)
             {
-                this.layout.Blur();
+                view.Blur();
             }
         }
 
         /// <summary>
-        /// Gets the panel's layout.
+        /// Gets the content manager which is used to load globally-available assets.
         /// </summary>
-        public IUILayout Layout
+        public ContentManager GlobalContent
         {
             get
             {
                 Contract.EnsureNotDisposed(this, Disposed);
 
-                return this.layout;
+                return globalContent;
             }
+        }
+
+        /// <summary>
+        /// Gets the content manager which is used to load assets which are local to this screen.
+        /// </summary>
+        public ContentManager LocalContent
+        {
+            get
+            {
+                Contract.EnsureNotDisposed(this, Disposed);
+
+                return localContent;
+            }
+        }
+        
+        /// <summary>
+        /// Gets the screen's view, if it has one.
+        /// </summary>
+        public UIView View
+        {
+            get { return view; }
+        }
+
+        /// <summary>
+        /// Gets the panel's x-coordinate on the screen.
+        /// </summary>
+        public abstract Int32 X
+        {
+            get;
+        }
+
+        /// <summary>
+        /// Gets the panel's y-coordinate on the screen.
+        /// </summary>
+        public abstract Int32 Y
+        {
+            get;
         }
 
         /// <summary>
@@ -167,6 +204,19 @@ namespace TwistedLogik.Ultraviolet.UI
                 Contract.EnsureNotDisposed(this, Disposed);
 
                 return state; 
+            }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the panel has input focus.
+        /// </summary>
+        public Boolean IsFocused
+        {
+            get 
+            {
+                Contract.EnsureNotDisposed(this, Disposed);
+
+                return isFocused; 
             }
         }
 
@@ -269,11 +319,6 @@ namespace TwistedLogik.Ultraviolet.UI
                 Contract.EnsureNotDisposed(this, Disposed);
 
                 this.window = value;
-
-                if (this.layout != null)
-                {
-                    this.layout.Window = value;
-                }
             }
         }
 
@@ -289,21 +334,6 @@ namespace TwistedLogik.Ultraviolet.UI
                 return this.window == null ? null : Ultraviolet.GetUI().GetScreens(this.window);
             }
         }
-
-        /// <summary>
-        /// Occurs when the panel's layout has been initialized.
-        /// </summary>
-        public event UIPanelEventHandler LayoutInitialized;
-
-        /// <summary>
-        /// Occurs when the panel begins loading a new layout.
-        /// </summary>
-        public event UIPanelEventHandler LayoutLoading;
-
-        /// <summary>
-        /// Occurs when the panel's layout is ready for interaction.
-        /// </summary>
-        public event UIPanelEventHandler LayoutReady;
 
         /// <summary>
         /// Occurs when the panel is being updated.
@@ -395,53 +425,15 @@ namespace TwistedLogik.Ultraviolet.UI
             return CloseInternal(duration ?? DefaultCloseTransitionDuration, true);
         }
 
-        /// <summary>
-        /// Releases resources associated with the object.
-        /// </summary>
-        /// <param name="disposing"><c>true</c> if the object is being disposed; <c>false</c> if the object is being finalized.</param>
+        /// <inheritdoc/>
         protected override void Dispose(Boolean disposing)
         {
             if (disposing)
             {
-                SafeDispose.Dispose(layout);
+                SafeDispose.Dispose(this.view);
+                SafeDispose.Dispose(this.localContent);
             }
             base.Dispose(disposing);
-        }
-
-        /// <summary>
-        /// Raises the <see cref="LayoutInitialized"/> event.
-        /// </summary>
-        protected virtual void OnLayoutInitialized()
-        {
-            var temp = LayoutInitialized;
-            if (temp != null)
-            {
-                temp(this);
-            }
-        }
-
-        /// <summary>
-        /// Raises the <see cref="LayoutLoading"/> event.
-        /// </summary>
-        protected virtual void OnLayoutLoading()
-        {
-            var temp = LayoutLoading;
-            if (temp != null)
-            {
-                temp(this);
-            }
-        }
-
-        /// <summary>
-        /// Raises the <see cref="LayoutReady"/> event.
-        /// </summary>
-        protected virtual void OnLayoutReady()
-        {
-            var temp = LayoutReady;
-            if (temp != null)
-            {
-                temp(this);
-            }
         }
 
         /// <summary>
@@ -548,35 +540,62 @@ namespace TwistedLogik.Ultraviolet.UI
         }
 
         /// <summary>
-        /// Draws the panel's layout.
+        /// Occurs when the panel's view is loaded.
+        /// </summary>
+        protected virtual void OnViewLoaded()
+        {
+
+        }
+
+        /// <summary>
+        /// Loads the view from the specified panel definition.
+        /// </summary>
+        /// <param name="definition">The panel definition from which to load the view.</param>
+        protected void LoadView(UIPanelDefinition definition)
+        {
+            var view = UIView.Create(definition);
+            if (view != null)
+            {
+                if (window != null)
+                {
+                    var area = new Rectangle(X, Y, Width, Height);
+                    view.SetViewPosition(window, area);
+                }
+
+                if (IsFocused)
+                    view.Focus();
+            }
+
+            this.view = view;
+
+            HandleViewLoaded();
+        }
+
+        /// <summary>
+        /// Draws the panel's view.
         /// </summary>
         /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Draw(UltravioletTime)"/>.</param>
         /// <param name="spriteBatch">The <see cref="SpriteBatch"/> with which the panel is being drawn.</param>
-        protected virtual void DrawLayout(UltravioletTime time, SpriteBatch spriteBatch)
+        protected void DrawView(UltravioletTime time, SpriteBatch spriteBatch)
         {
-            if (this.layout != null)
+            if (view != null)
             {
-                this.layout.Draw(time, spriteBatch, Color.White);
-                OnDrawingLayout(time, spriteBatch);
+                view.Draw(time, spriteBatch);
             }
         }
 
         /// <summary>
-        /// Updates the panel's layout.
+        /// Updates the panel's view.
         /// </summary>
         /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Update(UltravioletTime)"/>.</param>
-        protected void UpdateLayout(UltravioletTime time)
+        protected void UpdateView(UltravioletTime time)
         {
-            if (layout == null)
-                return;
-
-            var window = Window;
-            if (window == null)
-                return;
-
-            layout.Position = Vector2.Zero;
-            layout.Size = window.ClientSize;
-            layout.Update(time);
+            if (view != null && State == UIPanelState.Open)
+            {
+                var area = new Rectangle(X, Y, Width, Height);
+                view.SetViewPosition(Window, area);
+                view.Update(time);
+            }
         }
 
         /// <summary>
@@ -600,31 +619,11 @@ namespace TwistedLogik.Ultraviolet.UI
             }
             if (transitionPosition > 1)
             {
-                if (this.layout != null)
-                {
-                    this.layout.Interactive = true;
-                }
                 this.transitionPosition = 1;
                 this.transitionDuration = 0;
                 this.state = UIPanelState.Open;
                 HandleOpened();
             }
-        }
-
-        /// <summary>
-        /// Loads the specified panel definition into the panel's layout, if the panel has a layout.
-        /// </summary>
-        /// <param name="content">The <see cref="ContentManager"/> with which to load layout content.</param>
-        /// <param name="definition">The <see cref="UIPanelDefinition"/> to load into the panel's layout.</param>
-        /// <returns><c>true</c> if the layout was loaded; otherwise, <c>false</c>.</returns>
-        protected Boolean LoadLayout(ContentManager content, UIPanelDefinition definition)
-        {
-            if (layout != null)
-            {
-                layout.LoadLayout(content, definition);
-                return true;
-            }
-            return false;
         }
 
         /// <summary>
@@ -746,19 +745,13 @@ namespace TwistedLogik.Ultraviolet.UI
                 tcsClosed = null;
             }
         }
-        
+
         /// <summary>
-        /// Gets the initial size of the panel's layout.
+        /// Occurs when the panel's view is loaded.
         /// </summary>
-        /// <returns>The initial size of the panel's layout.</returns>
-        private Size2 CalculateInitialLayoutSize(Size2? requested)
+        internal virtual void HandleViewLoaded()
         {
-            if (requested.HasValue)
-            {
-                return requested.Value;
-            }
-            var window = Ultraviolet.GetPlatform().Windows.GetPrimary();
-            return window == null ? Size2.Zero : window.ClientSize;
+            OnViewLoaded();
         }
 
         /// <summary>
@@ -802,10 +795,6 @@ namespace TwistedLogik.Ultraviolet.UI
             {
                 this.state = UIPanelState.Open;
                 this.transitionPosition = 1;
-                if (this.layout != null)
-                {
-                    this.layout.Interactive = true;
-                }
                 HandleOpened();
             }
 
@@ -830,10 +819,6 @@ namespace TwistedLogik.Ultraviolet.UI
             this.state = UIPanelState.Closing;
             this.transitionDuration = remaining * duration.TotalMilliseconds;
             this.transitionDirection = -1;
-            if (this.layout != null)
-            {
-                this.layout.Interactive = false;
-            }
             this.Blur();
 
             OnClosing();
@@ -864,11 +849,12 @@ namespace TwistedLogik.Ultraviolet.UI
             return null;
         }
 
-        // The screen's layout container.
-        private readonly IUILayout layout;
-
         // Property values.
+        private readonly ContentManager globalContent;
+        private readonly ContentManager localContent;
+        private UIView view;
         private UIPanelState state = UIPanelState.Closed;
+        private Boolean isFocused;
         private Double transitionPosition = 0f;
         private Double transitionDuration = 0f;
         private Double transitionDirection = 0f;

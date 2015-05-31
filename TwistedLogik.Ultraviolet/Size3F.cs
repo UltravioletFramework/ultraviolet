@@ -27,33 +27,43 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Compares two sizes for equality.
         /// </summary>
-        /// <param name="v1">The first <see cref="Size3F"/> to compare.</param>
-        /// <param name="v2">The second <see cref="Size3F"/> to compare.</param>
+        /// <param name="s1">The first <see cref="Size3F"/> to compare.</param>
+        /// <param name="s2">The second <see cref="Size3F"/> to compare.</param>
         /// <returns><c>true</c> if the specified sizes are equal; otherwise, <c>false</c>.</returns>
-        public static Boolean operator ==(Size3F v1, Size3F v2)
+        public static Boolean operator ==(Size3F s1, Size3F s2)
         {
-            return v1.Equals(v2);
+            return s1.Equals(s2);
         }
 
         /// <summary>
         /// Compares two sizes for inequality.
         /// </summary>
-        /// <param name="v1">The first <see cref="Size3F"/> to compare.</param>
-        /// <param name="v2">The second <see cref="Size3F"/> to compare.</param>
+        /// <param name="s1">The first <see cref="Size3F"/> to compare.</param>
+        /// <param name="s2">The second <see cref="Size3F"/> to compare.</param>
         /// <returns><c>true</c> if the specified sizes are unequal; otherwise, <c>false</c>.</returns>
-        public static Boolean operator !=(Size3F v1, Size3F v2)
+        public static Boolean operator !=(Size3F s1, Size3F s2)
         {
-            return !v1.Equals(v2);
+            return !s1.Equals(s2);
         }
 
         /// <summary>
         /// Explicitly converts a <see cref="Size3F"/> structure to a <see cref="Size3"/> structure.
         /// </summary>
-        /// <param name="circle">The structure to convert.</param>
+        /// <param name="size">The structure to convert.</param>
         /// <returns>The converted structure.</returns>
-        public static explicit operator Size3(Size3F circle)
+        public static explicit operator Size3(Size3F size)
         {
-            return new Size3((int)circle.width, (int)circle.height, (int)circle.depth);
+            return new Size3((int)size.width, (int)size.height, (int)size.depth);
+        }
+
+        /// <summary>
+        /// Implicitly converts a <see cref="Size3"/> structure to a <see cref="Size3F"/> structure.
+        /// </summary>
+        /// <param name="size">The structure to convert.</param>
+        /// <returns>The converted structure.</returns>
+        public static implicit operator Size3F(Size3 size)
+        {
+            return new Size3F(size.Width, size.Height, size.Depth);
         }
 
         /// <summary>

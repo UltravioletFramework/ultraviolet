@@ -8,8 +8,6 @@ using TwistedLogik.Ultraviolet.Testing;
 namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
 {
     [TestClass]
-    [DeploymentItem(@"Resources")]
-    [DeploymentItem(@"Dependencies")]
     public class TextTableTests : UltravioletApplicationTestFramework
     {
         private class TextTableViewModel
@@ -29,7 +27,6 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
 
         [TestMethod]
         [TestCategory("Rendering")]
-        [DeploymentItem(@"Expected\Graphics\Graphics2D\Text\TextTable_RendersFromViewModel.png")]
         public void TextTable_RendersFromViewModel()
         {
             const Int32 TablePadding = 4;
@@ -82,7 +79,7 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
                     spriteBatch.End();
                 });
 
-            TheResultingImage(result).ShouldMatch(@"Expected\Graphics\Graphics2D\Text\TextTable_RendersFromViewModel.png");
+            TheResultingImage(result).ShouldMatch(@"Resources\Expected\Graphics\Graphics2D\Text\TextTable_RendersFromViewModel.png");
         }
     }
 }

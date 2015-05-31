@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentManifest Name="Global">
+  <ContentGroup Name="Fonts" Directory="Fonts" Type="TwistedLogik.Ultraviolet.Graphics.Graphics2D.SpriteFont">
+    <Asset Name="SegoeUI">SegoeUI</Asset>
+    <Asset Name="DefaultUI">..\UI\DefaultUIFont</Asset>
+  </ContentGroup>
+  <ContentGroup Name="Textures" Directory="Textures" Type="TwistedLogik.Ultraviolet.Graphics.Texture2D">
+    <Asset Name="DefaultUI">..\UI\DefaultUI</Asset>
+    <Asset Name="DefaultUIBackground">..\UI\DefaultUIBackground</Asset>
+  </ContentGroup>
+  <ContentGroup Name="SoundEffects" Directory="SoundEffects" Type="TwistedLogik.Ultraviolet.Audio.SoundEffect">
+    <Asset Name="Click1">Click1</Asset>
+    <Asset Name="Rollover3">rollover3</Asset>
+  </ContentGroup>
+</ContentManifest>

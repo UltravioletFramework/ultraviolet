@@ -13,10 +13,11 @@ namespace TwistedLogik.Ultraviolet.UI
         /// <summary>
         /// Initializes a new instance of the <see cref="UIScreen"/> class.
         /// </summary>
-        /// <param name="definition">The asset path of the screen's definition file.</param>
-        /// <param name="rootDirectory">The root directory of the screen's <see cref="ContentManager"/>.</param>
-        protected UIScreen(String definition, String rootDirectory = null)
-            : this(null, definition, rootDirectory)
+        /// <param name="rootDirectory">The root directory of the panel's local content manager.</param>
+        /// <param name="definitionAsset">The asset path of the screen's definition file.</param>
+        /// <param name="globalContent">The content manager with which to load globally-available assets.</param>
+        protected UIScreen(String rootDirectory, String definitionAsset, ContentManager globalContent)
+            : this(null, rootDirectory, definitionAsset, globalContent)
         {
 
         }
@@ -25,40 +26,34 @@ namespace TwistedLogik.Ultraviolet.UI
         /// Initializes a new instance of the <see cref="UIScreen"/> class.
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
-        /// <param name="definition">The asset path of the screen's definition file.</param>
-        /// <param name="rootDirectory">The root directory of the screen's <see cref="ContentManager"/>.</param>
-        protected UIScreen(UltravioletContext uv, String definition, String rootDirectory = null)
-            : base(uv)
-        {
-            this.content    = ContentManager.Create(rootDirectory);
-            this.definition = String.IsNullOrEmpty(definition) ? null : content.Load<UIPanelDefinition>(definition);
-
-            if (this.definition != null)
+        /// <param name="rootDirectory">The root directory of the panel's local content manager.</param>
+        /// <param name="definitionAsset">The asset path of the screen's definition file.</param>
+        /// <param name="globalContent">The content manager with which to load globally-available assets.</param>
+        protected UIScreen(UltravioletContext uv, String rootDirectory, String definitionAsset, ContentManager globalContent)
+            : base(uv, rootDirectory, globalContent)
+        {            
+            var definition = String.IsNullOrEmpty(definitionAsset) ? null : LocalContent.Load<UIPanelDefinition>(definitionAsset);
+            if (definition != null)
             {
-                DefaultOpenTransitionDuration  = this.definition.DefaultOpenTransitionDuration;
-                DefaultCloseTransitionDuration = this.definition.DefaultCloseTransitionDuration;
+                DefaultOpenTransitionDuration  = definition.DefaultOpenTransitionDuration;
+                DefaultCloseTransitionDuration = definition.DefaultCloseTransitionDuration;
+
+                LoadView(definition);
             }
         }
 
-        /// <summary>
-        /// Updates the screen's state.
-        /// </summary>
-        /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Update(UltravioletTime)"/>.</param>
+        /// <inheritdoc/>
         public override void Update(UltravioletTime time)
         {
             Contract.EnsureNotDisposed(this, Disposed);
 
-            UpdateLayout(time);
+            UpdateView(time);
             UpdateTransition(time);
 
             OnUpdating(time);
         }
 
-        /// <summary>
-        /// Draws the screen using the specified sprite batch.
-        /// </summary>
-        /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Draw(UltravioletTime)"/>.</param>
-        /// <param name="spriteBatch">The <see cref="SpriteBatch"/> with which to draw the screen.</param>
+        /// <inheritdoc/>
         public override void Draw(UltravioletTime time, SpriteBatch spriteBatch)
         {
             Contract.Require(spriteBatch, "spriteBatch");
@@ -68,13 +63,23 @@ namespace TwistedLogik.Ultraviolet.UI
                 return;
 
             OnDrawingBackground(time, spriteBatch);
-            DrawLayout(time, spriteBatch);
+            DrawView(time, spriteBatch);
             OnDrawingForeground(time, spriteBatch);
         }
 
-        /// <summary>
-        /// Gets the screen's size in pixels.
-        /// </summary>
+        /// <inheritdoc/>
+        public override Int32 X
+        {
+            get { return 0; }
+        }
+
+        /// <inheritdoc/>
+        public override Int32 Y
+        {
+            get { return 0; }
+        }
+
+        /// <inheritdoc/>
         public override Size2 Size
         {
             get
@@ -85,9 +90,7 @@ namespace TwistedLogik.Ultraviolet.UI
             }
         }
 
-        /// <summary>
-        /// Gets the screen's width in pixels.
-        /// </summary>
+        /// <inheritdoc/>
         public override Int32 Width
         {
             get
@@ -98,9 +101,7 @@ namespace TwistedLogik.Ultraviolet.UI
             }
         }
 
-        /// <summary>
-        /// Gets the screen's height in pixels.
-        /// </summary>
+        /// <inheritdoc/>
         public override Int32 Height
         {
             get
@@ -111,9 +112,7 @@ namespace TwistedLogik.Ultraviolet.UI
             }
         }
 
-        /// <summary>
-        /// Gets a value indicating whether this panel is ready for input.
-        /// </summary>
+        /// <inheritdoc/>
         public override Boolean IsReadyForInput
         {
             get
@@ -131,10 +130,7 @@ namespace TwistedLogik.Ultraviolet.UI
             }
         }
 
-        /// <summary>
-        /// Gets a value indicating whether this panel is ready for input which does
-        /// not require the panel to be topmost on the window.
-        /// </summary>
+        /// <inheritdoc/>
         public override Boolean IsReadyForBackgroundInput
         {
             get
@@ -183,78 +179,45 @@ namespace TwistedLogik.Ultraviolet.UI
             }
         }
 
-        /// <summary>
-        /// Gets the screen's content manager.
-        /// </summary>
-        public ContentManager Content
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return content;
-            }
-        }
-
-        /// <summary>
-        /// Raises the <see cref="UIPanel.Opened"/> event.
-        /// </summary>
+        /// <inheritdoc/>
         internal override void HandleOpened()
         {
             Focus();
             base.HandleOpened();
         }
 
-        /// <summary>
-        /// Raises the <see cref="UIPanel.Closed"/> event.
-        /// </summary>
+        /// <inheritdoc/>
         internal override void HandleClosed()
         {
+            if (View != null)
+            {
+                View.Cleanup();
+            }
             Blur();
             base.HandleClosed();
         }
 
-        /// <summary>
-        /// Gets the screen's definition.
-        /// </summary>
-        internal UIPanelDefinition Definition
+        /// <inheritdoc/>
+        internal override void HandleViewLoaded()
         {
-            get 
+            if (View != null)
             {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return definition; 
+                View.SetContentManagers(GlobalContent, LocalContent);
             }
+            base.HandleViewLoaded();
         }
 
-        /// <summary>
-        /// Raises the <see cref="UIPanel.LayoutInitialized"/> event.
-        /// </summary>
-        protected override void OnLayoutInitialized()
-        {
-            if (this.definition != null)
-            {
-                LoadLayout(this.content, this.definition);
-            }
-            base.OnLayoutInitialized();
-        }
-
-        /// <summary>
-        /// Releases resources associated with the object.
-        /// </summary>
-        /// <param name="disposing"><c>true</c> if the object is being disposed; <c>false</c> if the object is being finalized.</param>
+        /// <inheritdoc/>
         protected override void Dispose(Boolean disposing)
         {
-            if (disposing)
+            if (View != null)
             {
-                this.content.Dispose();
+                View.Dispose();
             }
             base.Dispose(disposing);
         }
 
         // Property values.
-        private readonly UIPanelDefinition definition;
-        private readonly ContentManager content;
         private Boolean isOpaque;
     }
 }

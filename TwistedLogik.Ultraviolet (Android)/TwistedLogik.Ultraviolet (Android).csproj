@@ -90,6 +90,9 @@
     <Compile Include="..\TwistedLogik.Ultraviolet\Circle.cs">
       <Link>Circle.cs</Link>
     </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\CircleD.cs">
+      <Link>CircleD.cs</Link>
+    </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet\CircleF.cs">
       <Link>CircleF.cs</Link>
     </Compile>
@@ -236,6 +239,9 @@
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet\CurveProcessor.cs">
       <Link>CurveProcessor.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\DebugColors.cs">
+      <Link>DebugColors.cs</Link>
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet\DebugLevels.cs">
       <Link>DebugLevels.cs</Link>
@@ -408,8 +414,23 @@
     <Compile Include="..\TwistedLogik.Ultraviolet\Graphics\Graphics2D\sspack\Packing\RectanglePacker.cs">
       <Link>Graphics\Graphics2D\sspack\Packing\RectanglePacker.cs</Link>
     </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Graphics\Graphics2D\StaticImage.cs">
+      <Link>Graphics\Graphics2D\StaticImage.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Graphics\Graphics2D\StretchableImage.cs">
+      <Link>Graphics\Graphics2D\StretchableImage.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Graphics\Graphics2D\StretchableImage3.cs">
+      <Link>Graphics\Graphics2D\StretchableImage3.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Graphics\Graphics2D\StretchableImage9.cs">
+      <Link>Graphics\Graphics2D\StretchableImage9.cs</Link>
+    </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet\Graphics\Graphics2D\StringSource.cs">
       <Link>Graphics\Graphics2D\StringSource.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Graphics\Graphics2D\TextureImage.cs">
+      <Link>Graphics\Graphics2D\TextureImage.cs</Link>
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet\Graphics\Graphics2D\Text\InlineIconInfo.cs">
       <Link>Graphics\Graphics2D\Text\InlineIconInfo.cs</Link>
@@ -684,6 +705,9 @@
     <Compile Include="..\TwistedLogik.Ultraviolet\Matrix.cs">
       <Link>Matrix.cs</Link>
     </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Messages\NamespaceDoc.cs">
+      <Link>Messages\NamespaceDoc.cs</Link>
+    </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet\Messages\OrientationChangedMessageData.cs">
       <Link>Messages\OrientationChangedMessageData.cs</Link>
     </Compile>
@@ -711,6 +735,9 @@
     <Compile Include="..\TwistedLogik.Ultraviolet\Platform\IconLoader.cs">
       <Link>Platform\IconLoader.cs</Link>
     </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Platform\IUltravioletClipboardInfo.cs">
+      <Link>Platform\IUltravioletClipboardInfo.cs</Link>
+    </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet\Platform\IUltravioletDisplay.cs">
       <Link>Platform\IUltravioletDisplay.cs</Link>
     </Compile>
@@ -725,6 +752,9 @@
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet\Platform\NamespaceDoc.cs">
       <Link>Platform\NamespaceDoc.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Platform\PowerManagementService.cs">
+      <Link>Platform\PowerManagementService.cs</Link>
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet\Platform\ScreenDensityBucket.cs">
       <Link>Platform\ScreenDensityBucket.cs</Link>
@@ -747,6 +777,15 @@
     <Compile Include="..\TwistedLogik.Ultraviolet\Platform\WindowState.cs">
       <Link>Platform\WindowState.cs</Link>
     </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Point2.cs">
+      <Link>Point2.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Point2D.cs">
+      <Link>Point2D.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Point2F.cs">
+      <Link>Point2F.cs</Link>
+    </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet\Properties\AssemblyInfo.cs">
       <Link>Properties\AssemblyInfo.cs</Link>
     </Compile>
@@ -756,17 +795,26 @@
     <Compile Include="..\TwistedLogik.Ultraviolet\Rectangle.cs">
       <Link>Rectangle.cs</Link>
     </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\RectangleD.cs">
+      <Link>RectangleD.cs</Link>
+    </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet\RectangleF.cs">
       <Link>RectangleF.cs</Link>
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet\Size2.cs">
       <Link>Size2.cs</Link>
     </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Size2D.cs">
+      <Link>Size2D.cs</Link>
+    </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet\Size2F.cs">
       <Link>Size2F.cs</Link>
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet\Size3.cs">
       <Link>Size3.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Size3D.cs">
+      <Link>Size3D.cs</Link>
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet\Size3F.cs">
       <Link>Size3F.cs</Link>
@@ -777,20 +825,11 @@
     <Compile Include="..\TwistedLogik.Ultraviolet\Tweening.cs">
       <Link>Tweening.cs</Link>
     </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet\UI\IUILayout.cs">
-      <Link>UI\IUILayout.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet\UI\IUILayoutProvider.cs">
-      <Link>UI\IUILayoutProvider.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet\UI\LayoutEngineException.cs">
-      <Link>UI\LayoutEngineException.cs</Link>
+    <Compile Include="..\TwistedLogik.Ultraviolet\TweeningInterpolationRegistry.cs">
+      <Link>TweeningInterpolationRegistry.cs</Link>
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet\UI\NamespaceDoc.cs">
       <Link>UI\NamespaceDoc.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet\UI\UILayoutState.cs">
-      <Link>UI\UILayoutState.cs</Link>
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet\UI\UIPanel.cs">
       <Link>UI\UIPanel.cs</Link>
@@ -813,8 +852,14 @@
     <Compile Include="..\TwistedLogik.Ultraviolet\UI\UIScreenStackCollection.cs">
       <Link>UI\UIScreenStackCollection.cs</Link>
     </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\UIView.cs">
+      <Link>UI\UIView.cs</Link>
+    </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet\UI\UltravioletUI.cs">
       <Link>UI\UltravioletUI.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UltravioletBoxedValues.cs">
+      <Link>UltravioletBoxedValues.cs</Link>
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet\UltravioletCollection.cs">
       <Link>UltravioletCollection.cs</Link>
@@ -880,12 +925,12 @@
     <EmbeddedResource Include="..\TwistedLogik.Ultraviolet\Resources\Strings.xml">
       <Link>Resources\Strings.xml</Link>
     </EmbeddedResource>
-    <Content Include="..\TwistedLogik.Ultraviolet\TwistedLogik.Ultraviolet.Licenses.txt">
+    <None Include="..\TwistedLogik.Ultraviolet\TwistedLogik.Ultraviolet.Licenses.txt">
       <Link>TwistedLogik.Ultraviolet.Licenses.txt</Link>
-    </Content>
-    <Content Include="..\TwistedLogik.Ultraviolet\uv.ico">
+    </None>
+    <None Include="..\TwistedLogik.Ultraviolet\uv.ico">
       <Link>uv.ico</Link>
-    </Content>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Graphics\Graphics3D\" />
@@ -903,7 +948,7 @@
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties ProjectLinkReference="f071abe3-05e5-4df9-a929-cf71b01ec50a" ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" />
+      <UserProperties ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" ProjectLinkReference="f071abe3-05e5-4df9-a929-cf71b01ec50a" />
     </VisualStudio>
   </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

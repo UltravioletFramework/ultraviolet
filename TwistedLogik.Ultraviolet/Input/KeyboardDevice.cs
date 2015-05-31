@@ -140,6 +140,22 @@ namespace TwistedLogik.Ultraviolet.Input
         }
 
         /// <summary>
+        /// Gets a value indicating whether the Num Lock modifier is currently down.
+        /// </summary>
+        public abstract Boolean IsNumLockDown
+        {
+            get;
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the Caps Lock modifier is currently down.
+        /// </summary>
+        public abstract Boolean IsCapsLockDown
+        {
+            get;
+        }
+
+        /// <summary>
         /// Occurs when a button is pressed.
         /// </summary>
         public event KeyboardButtonEventHandler ButtonPressed;

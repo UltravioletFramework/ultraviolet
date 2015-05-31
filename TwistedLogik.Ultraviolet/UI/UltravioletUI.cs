@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Linq;
-using System.Reflection;
 using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet.Platform;
 
@@ -19,10 +17,6 @@ namespace TwistedLogik.Ultraviolet.UI
         public UltravioletUI(UltravioletContext uv, UltravioletConfiguration configuration)
             : base(uv)
         {
-            if (!String.IsNullOrEmpty(configuration.LayoutProviderAssembly))
-            {
-                SetLayoutProvider(configuration.LayoutProviderAssembly);
-            }
             screenStacks = new UIScreenStackCollection(uv);
         }
 
@@ -33,11 +27,6 @@ namespace TwistedLogik.Ultraviolet.UI
         public void Update(UltravioletTime time)
         {
             Contract.EnsureNotDisposed(this, Disposed);
-
-            if (layoutProvider != null)
-            {
-                layoutProvider.Update(time);
-            }
 
             foreach (var stack in screenStacks)
             {
@@ -76,66 +65,6 @@ namespace TwistedLogik.Ultraviolet.UI
         }
 
         /// <summary>
-        /// Sets the assembly which contains the layout provider.
-        /// </summary>
-        /// <param name="assembly">The name of the assembly that contains the layout provider.</param>
-        public void SetLayoutProvider(String assembly)
-        {
-            Contract.EnsureNotDisposed(this, Disposed);
-
-            var asm = String.IsNullOrEmpty(assembly) ? null : Assembly.LoadFrom(assembly);
-            SetLayoutProvider(asm);
-        }
-
-        /// <summary>
-        /// Sets the assembly which contains the layout provider.
-        /// </summary>
-        /// <param name="assembly">The assembly that contains the layout provider.</param>
-        public void SetLayoutProvider(Assembly assembly)
-        {
-            Contract.EnsureNotDisposed(this, Disposed);
-
-            if (assembly == null)
-            {
-                this.layoutProviderAssembly = null;
-                this.layoutProvider = null;
-            }
-            else
-            {
-                if (assembly.FullName != layoutProviderAssembly)
-                {
-                    var types = from t in assembly.GetTypes()
-                                where t.GetInterfaces().Contains(typeof(IUILayoutProvider))
-                                select t;
-
-                    if (!types.Any() || types.Count() > 1)
-                        throw new InvalidOperationException(UltravioletStrings.LayoutProviderNotFound);
-
-                    var type = types.Single();
-                    var ctor = type.GetConstructor(new Type[] { typeof(UltravioletContext) });
-                    if (ctor == null)
-                        throw new InvalidOperationException(UltravioletStrings.LayoutProviderInvalidCtor);
-
-                    var instance = (IUILayoutProvider)ctor.Invoke(new Object[] { Ultraviolet });
-
-                    this.layoutProviderAssembly = assembly.FullName;
-                    this.layoutProvider = instance;
-                }
-            }
-        }
-
-        /// <summary>
-        /// Gets the current layout provider service.
-        /// </summary>
-        /// <returns>The current layout provider service.</returns>
-        public IUILayoutProvider GetLayoutProvider()
-        {
-            Contract.EnsureNotDisposed(this, Disposed);
-
-            return layoutProvider;
-        }
-
-        /// <summary>
         /// Occurs when the subsystem is updating its state.
         /// </summary>
         public event UltravioletSubsystemUpdateEventHandler Updating;
@@ -165,10 +94,6 @@ namespace TwistedLogik.Ultraviolet.UI
                 temp(this, time);
             }
         }
-
-        // The current layout provider service.
-        private String layoutProviderAssembly;
-        private IUILayoutProvider layoutProvider;
 
         // The collection of screens associated with each window.
         private readonly UIScreenStackCollection screenStacks;

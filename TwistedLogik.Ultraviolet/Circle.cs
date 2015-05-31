@@ -25,6 +25,17 @@ namespace TwistedLogik.Ultraviolet
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="Circle"/> structure.
+        /// </summary>
+        /// <param name="position">The position of the circle's center.</param>
+        /// <param name="radius">The circle's radius.</param>
+        public Circle(Point2 position, Int32 radius)
+            : this(position.X, position.Y, radius)
+        {
+
+        }
+
+        /// <summary>
         /// Compares two circles for equality.
         /// </summary>
         /// <param name="c1">The first <see cref="Circle"/> to compare.</param>
@@ -209,9 +220,9 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Gets the circle's position.
         /// </summary>
-        public Vector2 Position
+        public Point2 Position
         {
-            get { return new Vector2(x, y); }
+            get { return new Point2(x, y); }
         }
 
         /// <summary>

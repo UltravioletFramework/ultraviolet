@@ -9,7 +9,7 @@ namespace TwistedLogik.Ultraviolet.Testing
     public sealed class RectangleResult
     {
         /// <summary>
-        /// Initializes a new instance of the RectangleResult class.
+        /// Initializes a new instance of the <see cref="RectangleResult"/> class.
         /// </summary>
         /// <param name="value">The value being examined.</param>
         internal RectangleResult(Rectangle value)
