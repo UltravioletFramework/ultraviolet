@@ -118,6 +118,8 @@
     <Compile Include="DependencyBoundValueConverting.cs" />
     <Compile Include="DependencyBoundValueNonConverting.cs" />
     <Compile Include="DependencyObject.cs" />
+    <Compile Include="Documents\NamespaceDoc.cs" />
+    <Compile Include="Input\NamespaceDoc.cs" />
     <Compile Include="RoutedEventRaisedNotificationServer.cs" />
     <Compile Include="DependencyPropertyChangeNotificationServer.cs" />
     <Compile Include="DependencyProperty.cs" />
