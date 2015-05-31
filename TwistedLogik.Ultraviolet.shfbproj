@@ -25,11 +25,12 @@
     <CppCommentsFixup>False</CppCommentsFixup>
     <CleanIntermediates>True</CleanIntermediates>
     <DocumentationSources>
-      <DocumentationSource sourceFile="Binaries\AnyCPU\Production\TwistedLogik.Nucleus.dll" xmlns="" />
-      <DocumentationSource sourceFile="Binaries\AnyCPU\Production\TwistedLogik.Nucleus.XML" xmlns="" />
-      <DocumentationSource sourceFile="Binaries\AnyCPU\Production\TwistedLogik.Ultraviolet.dll" xmlns="" />
-      <DocumentationSource sourceFile="Binaries\AnyCPU\Production\TwistedLogik.Ultraviolet.XML" xmlns="" />
-    </DocumentationSources>
+      <DocumentationSource sourceFile="Binaries\AnyCPU\Production\TwistedLogik.Nucleus.dll" />
+<DocumentationSource sourceFile="Binaries\AnyCPU\Production\TwistedLogik.Nucleus.XML" />
+<DocumentationSource sourceFile="Binaries\AnyCPU\Production\TwistedLogik.Ultraviolet.dll" />
+<DocumentationSource sourceFile="Binaries\AnyCPU\Production\TwistedLogik.Ultraviolet.UI.Presentation.dll" />
+<DocumentationSource sourceFile="Binaries\AnyCPU\Production\TwistedLogik.Ultraviolet.UI.Presentation.xml" />
+<DocumentationSource sourceFile="Binaries\AnyCPU\Production\TwistedLogik.Ultraviolet.XML" /></DocumentationSources>
     <MaximumGroupParts>2</MaximumGroupParts>
     <NamespaceGrouping>False</NamespaceGrouping>
     <SyntaxFilters>C#, Visual Basic</SyntaxFilters>
