@@ -43,13 +43,15 @@
     <HelpTitle>Ultraviolet Framework</HelpTitle>
     <ContentPlacement>AboveNamespaces</ContentPlacement>
     <ApiFilter>
-      <Filter entryType="Namespace" fullName="TwistedLogik.Nucleus" isExposed="True" xmlns="">
-        <Filter entryType="Class" fullName="TwistedLogik.Nucleus.NucleusStrings" filterName="NucleusStrings" isExposed="False" />
-      </Filter>
-      <Filter entryType="Namespace" fullName="TwistedLogik.Ultraviolet" isExposed="True" xmlns="">
-        <Filter entryType="Class" fullName="TwistedLogik.Ultraviolet.UltravioletStrings" filterName="UltravioletStrings" isExposed="False" />
-      </Filter>
-    </ApiFilter>
+      <Filter entryType="Namespace" fullName="TwistedLogik.Nucleus" isExposed="True">
+  <Filter entryType="Class" fullName="TwistedLogik.Nucleus.NucleusStrings" filterName="NucleusStrings" isExposed="False" />
+</Filter>
+<Filter entryType="Namespace" fullName="TwistedLogik.Ultraviolet" isExposed="True">
+  <Filter entryType="Class" fullName="TwistedLogik.Ultraviolet.UltravioletStrings" filterName="UltravioletStrings" isExposed="False" />
+</Filter>
+<Filter entryType="Namespace" fullName="TwistedLogik.Ultraviolet.UI.Presentation" isExposed="True">
+  <Filter entryType="Class" fullName="TwistedLogik.Ultraviolet.UI.Presentation.PresentationStrings" filterName="PresentationStrings" isExposed="False" />
+</Filter></ApiFilter>
     <VisibleItems>InheritedMembers, InheritedFrameworkMembers, Protected, ProtectedInternalAsProtected</VisibleItems>
     <TransformComponentArguments>
       <Argument Key="logoFile" Value="" />
