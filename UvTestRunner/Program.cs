@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.ExceptionServices;
 using System.Threading;
 using Microsoft.Owin.Hosting;
 
@@ -10,6 +11,8 @@ namespace UvTestRunner
 
         private static void Main(String[] args)
         {
+            AppDomain.CurrentDomain.FirstChanceException += CurrentDomain_FirstChanceException;
+
             Console.CancelKeyPress += Console_CancelKeyPress;
             Console.WriteLine("Starting UvTestRunner...");
 
@@ -21,6 +24,20 @@ namespace UvTestRunner
             }
 
             Console.WriteLine("Goodbye.");
+        }
+
+        private static void CurrentDomain_FirstChanceException(Object sender, FirstChanceExceptionEventArgs e)
+        {
+            var color = Console.ForegroundColor;
+
+            Console.ForegroundColor = ConsoleColor.Red;
+
+            Console.WriteLine("FIRST CHANCE EXCEPTION");
+            Console.WriteLine("======================");
+            Console.WriteLine(e.Exception);
+            Console.WriteLine("======================");
+
+            Console.ForegroundColor = color;
         }
 
         private static void Console_CancelKeyPress(Object sender, ConsoleCancelEventArgs e)

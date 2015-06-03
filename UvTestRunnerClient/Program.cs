@@ -139,6 +139,10 @@ namespace UvTestRunnerClient
                 if (!response.IsSuccessStatusCode)
                 {
                     Console.WriteLine("Failed to retrieve {0} test results: {1} {2}.", vendor, (Int32)response.StatusCode, response.ReasonPhrase);
+
+                    var error = await response.Content.ReadAsStringAsync();
+                    File.WriteAllText(String.Format("Error_{0}_{1:yyyy_MM_dd_HH_mm_ss}.html", vendor, DateTime.Now), error);
+
                     Environment.Exit(1);
                 }
 
