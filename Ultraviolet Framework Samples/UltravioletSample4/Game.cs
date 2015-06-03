@@ -91,7 +91,7 @@ namespace UltravioletSample
 
             this.effect = BasicEffect.Create();
 
-            this.vbuffer = VertexBuffer.Create<VertexPositionColorTexture>(4);
+            this.vbuffer = VertexBuffer.Create<VertexPositionColorTexture>(3);
             this.vbuffer.SetData<VertexPositionColorTexture>(new[]
             {
                 new VertexPositionColorTexture(new Vector3(0, 1, 0), Color.Lime, new Vector2(0, 1)),
