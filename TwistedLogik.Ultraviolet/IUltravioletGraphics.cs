@@ -166,5 +166,13 @@ namespace TwistedLogik.Ultraviolet
         {
             get;
         }
+
+        /// <summary>
+        /// Gets a <see cref="GraphicsCapabilities"/> object which exposes the capabilities of the current graphics device.
+        /// </summary>
+        GraphicsCapabilities Capabilities 
+        { 
+            get; 
+        }
     }
 }

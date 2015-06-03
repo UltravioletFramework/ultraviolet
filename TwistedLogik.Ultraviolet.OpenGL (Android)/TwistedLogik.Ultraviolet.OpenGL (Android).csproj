@@ -155,6 +155,9 @@
     <Compile Include="..\TwistedLogik.Ultraviolet.OpenGL\Graphics\OpenGLGeometryStream.cs">
       <Link>Graphics\OpenGLGeometryStream.cs</Link>
     </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.OpenGL\Graphics\OpenGLGraphicsCapabilities.cs">
+      <Link>Graphics\OpenGLGraphicsCapabilities.cs</Link>
+    </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.OpenGL\Graphics\OpenGLIndexBuffer.cs">
       <Link>Graphics\OpenGLIndexBuffer.cs</Link>
     </Compile>
@@ -349,7 +352,7 @@
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties ProjectLinkReference="40d272db-90e1-4332-a32f-6effeb44fe87" ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" />
+      <UserProperties ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" ProjectLinkReference="40d272db-90e1-4332-a32f-6effeb44fe87" />
     </VisualStudio>
   </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
