@@ -148,7 +148,7 @@ call update.bat</PreBuildEvent>
   <PropertyGroup Condition=" '$(OS)' != 'Unix' ">
     <PreBuildEvent>if not "%25UvSkipSampleDependencyUpdate%25"=="" exit 
 cd "$(SolutionDir)Dependencies"
-if exist Update$(ConfigurationName).bat call Update$(ConfigurationName).bat</PreBuildEvent>
+if exist Update.bat call Update.bat $(ConfigurationName) $(PlatformName)</PreBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

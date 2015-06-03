@@ -82,7 +82,7 @@ namespace UvTestRunnerClient
                 var response = await client.PostAsync("Api/UvTest", new StringContent(String.Empty));
                 if (!response.IsSuccessStatusCode)
                 {
-                    Console.WriteLine("Failed to POST to test server at {0}.", testRunnerUrl);
+                    Console.WriteLine("Failed to POST to test server at {0}: {1} {2}.", testRunnerUrl, (Int32)response.StatusCode, response.ReasonPhrase);
                     Environment.Exit(1);
                 }
 
@@ -108,7 +108,7 @@ namespace UvTestRunnerClient
                 var response = await client.GetAsync("Api/UvTest/" + id.ToString());
                 if (!response.IsSuccessStatusCode)
                 {
-                    Console.WriteLine("Failed to GET from test server at {0}.", testRunnerUrl);
+                    Console.WriteLine("Failed to GET from test server at {0}: {1} {2}.", testRunnerUrl, (Int32)response.StatusCode, response.ReasonPhrase);
                     Environment.Exit(1);
                 }
 
@@ -138,7 +138,7 @@ namespace UvTestRunnerClient
 
                 if (!response.IsSuccessStatusCode)
                 {
-                    Console.WriteLine("Failed to retrieve {0} test results.", vendor);
+                    Console.WriteLine("Failed to retrieve {0} test results: {1} {2}.", vendor, (Int32)response.StatusCode, response.ReasonPhrase);
                     Environment.Exit(1);
                 }
 
