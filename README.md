@@ -98,9 +98,16 @@ Project Road Map
 
 What follows is a tentative road map for the next several major revisions of Ultraviolet. This list is subject to change at any time. Items which have been ~~struck through~~ are basically complete, though they may not yet be part of an official release.
 
-* __Ultraviolet 1.0__
-  * _Miscellaneous_
-    * ~~First release~~
+* __Ultraviolet 1.3__
+  * _Graphics_
+    * Improved 3D rendering support
+    * Model class or equivalent
+    * Support for model instancing
+    * Support for skeletal animation
+  * Signed distance field fonts
+* __Ultraviolet 1.2__
+  * _UI_
+    * ~~Ultraviolet Presentation Foundation (UPF)~~
 * __Ultraviolet 1.1__
   * _Miscellaneous_
     * ~~Android support~~
@@ -113,13 +120,6 @@ What follows is a tentative road map for the next several major revisions of Ult
   * _Graphics_
     * ~~Support for Direct State Access (DSA)~~
     * ~~Better support for East Asian character sets in ``SpriteFont``~~
-* __Ultraviolet 1.2__
-  * _UI_
-    * ~~Ultraviolet Presentation Foundation (UPF)~~
-* __Ultraviolet 1.3__
-  * _Graphics_
-    * Improved 3D rendering support
-    * Model class or equivalent
-    * Support for model instancing
-    * Support for skeletal animation
-  * Signed distance field fonts
+* __Ultraviolet 1.0__
+  * _Miscellaneous_
+    * ~~First release~~
