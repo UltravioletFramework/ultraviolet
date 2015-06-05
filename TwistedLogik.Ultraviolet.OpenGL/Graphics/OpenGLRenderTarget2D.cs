@@ -96,8 +96,9 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         {
             Contract.Require(data, "data");
 
-            if (data.Length != Width * Height)
-                throw new ArgumentException(OpenGLStrings.BufferIsTooSmall.Format("data"));
+            var bufferTargetSize = Width * Height;
+            if (bufferTargetSize != data.Length)
+                throw new ArgumentException(OpenGLStrings.BufferIsWrongSize);
 
             GetDataInternal(data, new Rectangle(0, 0, Width, Height));
         }
@@ -115,8 +116,9 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
             Contract.EnsureRange(region.Width > 0 && region.X + region.Width < Width, "region");
             Contract.EnsureRange(region.Height > 0 && region.Y + region.Height < Height, "region");
 
-            if (data.Length != region.Width * region.Height)
-                throw new ArgumentException(OpenGLStrings.BufferIsTooSmall.Format("data"));
+            var bufferTargetSize = region.Width * region.Height;
+            if (bufferTargetSize != data.Length)
+                throw new ArgumentException(OpenGLStrings.BufferIsWrongSize);
 
             GetDataInternal(data, region);
         }

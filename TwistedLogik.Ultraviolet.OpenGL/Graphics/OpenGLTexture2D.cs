@@ -384,17 +384,10 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         /// <param name="format">The format of the data being set.</param>
         private void SetDataInternal(Int32 level, Rectangle? rect, IntPtr data, Int32 offset, Int32 count, Int32 stride, TextureDataFormat format)
         {
-            int xoffset = 0;
-            int yoffset = 0;
-            int width = this.width;
-            int height = this.height;
-            if (rect.HasValue)
+            var region = rect ?? new Rectangle(0, 0, width, height);
+            if (region.Width * region.Height != count)
             {
-                var rectval = rect.GetValueOrDefault();
-                xoffset = rectval.X;
-                yoffset = rectval.Y;
-                width = rectval.Width;
-                height = rectval.Height;
+                throw new InvalidOperationException(OpenGLStrings.BufferIsWrongSize);
             }
 
             using (OpenGLState.ScopedBindTexture2D(texture))
@@ -405,7 +398,8 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
                 gl.PixelStorei(gl.GL_UNPACK_ALIGNMENT, 1);
                 gl.ThrowIfError();
 
-                gl.TextureSubImage2D(texture, gl.GL_TEXTURE_2D, level, xoffset, yoffset, width, height, GetOpenGLTextureFormat(format), gl.GL_UNSIGNED_BYTE, data.ToPointer());
+                gl.TextureSubImage2D(texture, gl.GL_TEXTURE_2D, level, region.X, region.Y, region.Width, region.Height, 
+                    GetOpenGLTextureFormat(format), gl.GL_UNSIGNED_BYTE, data.ToPointer());
                 gl.ThrowIfError();
 
                 gl.PixelStorei(gl.GL_UNPACK_ROW_LENGTH, 0);

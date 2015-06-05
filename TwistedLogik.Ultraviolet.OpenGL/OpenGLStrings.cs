@@ -37,7 +37,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL
         public static readonly StringResource NoEffect                              = new StringResource(StringDatabase, "NO_EFFECT");
         public static readonly StringResource InvalidSpriteFontTexture              = new StringResource(StringDatabase, "INVALID_SPRITEFONT_TEXTURE");
         public static readonly StringResource InvalidSpriteFontKerningPair          = new StringResource(StringDatabase, "INVALID_SPRITEFONT_KERNING_PAIR");
-        public static readonly StringResource BufferIsTooSmall                      = new StringResource(StringDatabase, "BUFFER_IS_TOO_SMALL");
+        public static readonly StringResource BufferIsWrongSize                     = new StringResource(StringDatabase, "BUFFER_IS_WRONG_SIZE");
         public static readonly StringResource RenderTargetNeedsBuffers              = new StringResource(StringDatabase, "RENDER_TARGET_NEEDS_BUFFERS");
         public static readonly StringResource RenderTargetFramebufferIsNotComplete  = new StringResource(StringDatabase, "RENDER_TARGET_FRAMEBUFFER_IS_NOT_COMPLETE");
         public static readonly StringResource RenderTargetCannotBeUsedAsTexture     = new StringResource(StringDatabase, "RENDER_TARGET_CANNOT_BE_USED_AS_TEXTURE");
