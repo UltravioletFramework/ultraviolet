@@ -546,6 +546,9 @@
     <Compile Include="..\TwistedLogik.Ultraviolet\Graphics\SetDataOptions.cs">
       <Link>Graphics\SetDataOptions.cs</Link>
     </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Graphics\SetDataOrigin.cs">
+      <Link>Graphics\SetDataOrigin.cs</Link>
+    </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet\Graphics\StencilOperation.cs">
       <Link>Graphics\StencilOperation.cs</Link>
     </Compile>
@@ -581,6 +584,9 @@
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet\Graphics\TextureFilter.cs">
       <Link>Graphics\TextureFilter.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Graphics\TextureUtil.cs">
+      <Link>Graphics\TextureUtil.cs</Link>
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet\Graphics\VertexBuffer.cs">
       <Link>Graphics\VertexBuffer.cs</Link>
@@ -951,7 +957,7 @@
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties ProjectLinkReference="f071abe3-05e5-4df9-a929-cf71b01ec50a" ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" />
+      <UserProperties ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" ProjectLinkReference="f071abe3-05e5-4df9-a929-cf71b01ec50a" />
     </VisualStudio>
   </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -276,6 +276,7 @@
     <Compile Include="Graphics\RenderTarget2D.cs" />
     <Compile Include="Graphics\RenderBufferFormat.cs" />
     <Compile Include="Graphics\BasicEffect.cs" />
+    <Compile Include="Graphics\SetDataOrigin.cs" />
     <Compile Include="Graphics\Surface2D.cs" />
     <Compile Include="CursorCollectionProcessor.cs" />
     <Compile Include="Graphics\SurfaceSaver.cs" />
@@ -285,6 +286,7 @@
     <Compile Include="Graphics\TextureAtlasImage.cs" />
     <Compile Include="Graphics\TextureAtlasProcessor.cs" />
     <Compile Include="Graphics\TextureDataFormat.cs" />
+    <Compile Include="Graphics\TextureUtil.cs" />
     <Compile Include="IInterpolatable.cs" />
     <Compile Include="Input\ButtonState.cs" />
     <Compile Include="Input\GamePadAxis.cs" />

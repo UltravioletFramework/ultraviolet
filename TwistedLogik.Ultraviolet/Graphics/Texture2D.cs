@@ -75,7 +75,8 @@ namespace TwistedLogik.Ultraviolet.Graphics
         /// </summary>
         /// <typeparam name="T">The type of the elements in the array being set as the texture's data.</typeparam>
         /// <param name="data">An array containing the data to set.</param>
-        public abstract void SetData<T>(T[] data) where T : struct;
+        /// <param name="origin">A <see cref="SetDataOrigin"/> value specifying the origin of the texture data in <paramref name="data"/>.</param>
+        public abstract void SetData<T>(T[] data, SetDataOrigin origin = SetDataOrigin.TopLeft) where T : struct;
 
         /// <summary>
         /// Sets the texture's data.
@@ -84,7 +85,7 @@ namespace TwistedLogik.Ultraviolet.Graphics
         /// <param name="data">An array containing the data to set.</param>
         /// <param name="offset">The index of the first element to set.</param>
         /// <param name="count">The number of elements to set.</param>
-        public abstract void SetData<T>(T[] data, Int32 offset, Int32 count) where T : struct;
+        public abstract void SetData<T>(T[] data, Int32 offset, Int32 count, SetDataOrigin origin = SetDataOrigin.TopLeft) where T : struct;
 
         /// <summary>
         /// Sets the texture's data.
@@ -96,7 +97,21 @@ namespace TwistedLogik.Ultraviolet.Graphics
         /// <param name="offset">The index of the first element to set.</param>
         /// <param name="count">The number of elements to set.</param>
         /// <param name="stride">The number of elements in one row of data, or zero to use the width of <paramref name="rect"/>.</param>
-        public abstract void SetData<T>(Int32 level, Rectangle? rect, T[] data, Int32 offset, Int32 count, Int32 stride = 0) where T : struct;
+        /// <param name="origin">A <see cref="SetDataOrigin"/> value specifying the origin of the texture data in <paramref name="data"/>.</param>
+        public abstract void SetData<T>(Int32 level, Rectangle? rect, T[] data, Int32 offset, Int32 count, SetDataOrigin origin = SetDataOrigin.TopLeft) where T : struct;
+
+        /// <summary>
+        /// Sets the texture's data.
+        /// </summary>
+        /// <typeparam name="T">The type of the elements of the array to set as the texture's data.</typeparam>
+        /// <param name="level">The mipmap level for which to set data.</param>
+        /// <param name="rect">A rectangle describing the position and size of the data to set, or <c>null</c> to set the entire texture.</param>
+        /// <param name="data">An array containing the data to set.</param>
+        /// <param name="offset">The index of the first element to set.</param>
+        /// <param name="count">The number of elements to set.</param>
+        /// <param name="stride">The number of elements in one row of data, or zero to use the width of <paramref name="rect"/>.</param>
+        /// <param name="origin">A <see cref="SetDataOrigin"/> value specifying the origin of the texture data in <paramref name="data"/>.</param>
+        public abstract void SetData<T>(Int32 level, Rectangle? rect, T[] data, Int32 offset, Int32 count, Int32 stride, SetDataOrigin origin = SetDataOrigin.TopLeft) where T : struct;
 
         /// <summary>
         /// Sets the texture's data.
@@ -108,7 +123,8 @@ namespace TwistedLogik.Ultraviolet.Graphics
         /// <param name="count">The number of elements to set.</param>
         /// <param name="stride">The number of elements in one row of data, or zero to use the width of <paramref name="rect"/>.</param>
         /// <param name="format">The format of the data being set.</param>
-        public abstract void SetData(Int32 level, Rectangle? rect, IntPtr data, Int32 offset, Int32 count, Int32 stride, TextureDataFormat format);
+        /// <param name="origin">A <see cref="SetDataOrigin"/> value specifying the origin of the texture data in <paramref name="data"/>.</param>
+        public abstract void SetData(Int32 level, Rectangle? rect, IntPtr data, Int32 offset, Int32 count, Int32 stride, TextureDataFormat format, SetDataOrigin origin = SetDataOrigin.TopLeft);
 
         /// <summary>
         /// Gets the texture's width in pixels.

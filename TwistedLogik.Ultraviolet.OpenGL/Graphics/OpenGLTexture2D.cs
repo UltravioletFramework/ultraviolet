@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using System.Security;
 using TwistedLogik.Gluon;
 using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet.Graphics;
@@ -121,39 +122,61 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         }
 
         /// <inheritdoc/>
-        public override void SetData<T>(T[] data)
+        public override void SetData<T>(T[] data, SetDataOrigin origin = SetDataOrigin.TopLeft)
         {
             SetData(0, null, data, 0, (data == null) ? 0 : data.Length);
         }
 
         /// <inheritdoc/>
-        public override void SetData<T>(T[] data, Int32 offset, Int32 count)
+        public override void SetData<T>(T[] data, Int32 offset, Int32 count, SetDataOrigin origin = SetDataOrigin.TopLeft)
         {
             SetData(0, null, data, offset, count);
         }
 
         /// <inheritdoc/>
-        public override void SetData<T>(Int32 level, Rectangle? rect, T[] data, Int32 offset, Int32 count, Int32 stride = 0)
+        public override void SetData<T>(Int32 level, Rectangle? rect, T[] data, Int32 offset, Int32 count, SetDataOrigin origin = SetDataOrigin.TopLeft)
         {
             Contract.EnsureNotDisposed(this, Disposed);
 
-            var pData = GCHandle.Alloc(data, GCHandleType.Pinned);
+            var handle = default(GCHandle);
             try
             {
-                SetDataInternal(level, rect, pData.AddrOfPinnedObject(), offset, count, stride, TextureDataFormat.RGBA);
+                handle = GCHandle.Alloc(data, GCHandleType.Pinned);
+
+                SetDataInternal(level, rect, handle.AddrOfPinnedObject(), offset, count, 0, TextureDataFormat.RGBA, origin);
             }
             finally
             {
-                pData.Free();
+                if (handle.IsAllocated)
+                    handle.Free();
             }
         }
 
         /// <inheritdoc/>
-        public override void SetData(Int32 level, Rectangle? rect, IntPtr data, Int32 offset, Int32 count, Int32 stride, TextureDataFormat format)
+        public override void SetData<T>(Int32 level, Rectangle? rect, T[] data, Int32 offset, Int32 count, Int32 stride, SetDataOrigin origin = SetDataOrigin.TopLeft)
         {
             Contract.EnsureNotDisposed(this, Disposed);
 
-            SetDataInternal(level, rect, data, offset, count, stride, format);
+            var handle = default(GCHandle);
+            try
+            {
+                handle = GCHandle.Alloc(data, GCHandleType.Pinned);
+
+                SetDataInternal(level, rect, handle.AddrOfPinnedObject(), offset, count, stride, TextureDataFormat.RGBA, origin);
+            }
+            finally
+            {
+                if (handle.IsAllocated)
+                    handle.Free();
+            }
+        }
+
+        /// <inheritdoc/>
+        public override void SetData(Int32 level, Rectangle? rect, IntPtr data, Int32 offset, Int32 count, Int32 stride, TextureDataFormat format, SetDataOrigin origin = SetDataOrigin.TopLeft)
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
+
+            SetDataInternal(level, rect, data, offset, count, stride, format, origin);
         }
 
         /// <inheritdoc/>
@@ -382,12 +405,30 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         /// <param name="count">The number of elements to set.</param>
         /// <param name="stride">The number of elements in one row of data.</param>
         /// <param name="format">The format of the data being set.</param>
-        private void SetDataInternal(Int32 level, Rectangle? rect, IntPtr data, Int32 offset, Int32 count, Int32 stride, TextureDataFormat format)
+        /// <param name="origin">A <see cref="SetDataOrigin"/> value specifying the origin of the texture data in <paramref name="data"/>.</param>
+        private unsafe void SetDataInternal(Int32 level, Rectangle? rect, IntPtr data, Int32 offset, Int32 count, Int32 stride, TextureDataFormat format, SetDataOrigin origin)
         {
             var region = rect ?? new Rectangle(0, 0, width, height);
             if (region.Width * region.Height != count)
             {
-                throw new InvalidOperationException(OpenGLStrings.BufferIsWrongSize);
+                throw new InvalidOperationException(UltravioletStrings.BufferIsWrongSize);
+            }
+
+            const Int32 SizeOfTextureElementInBytes = 4;
+
+            var flipHorizontally = (origin == SetDataOrigin.TopRight || origin == SetDataOrigin.BottomRight);
+            var flipVertically   = (origin == SetDataOrigin.TopLeft || origin == SetDataOrigin.TopRight);
+
+            TextureUtil.ReorientTextureData(data.ToPointer(), region.Width, region.Height, 
+                SizeOfTextureElementInBytes, flipHorizontally, flipVertically);
+
+            if (flipHorizontally)
+            {
+                region = new Rectangle((width - region.Width) - region.X, region.Y, region.Width, region.Height);
+            }
+            if (flipVertically)
+            {
+                region = new Rectangle(region.X, (height - region.Height) - region.Y, region.Width, region.Height);
             }
 
             using (OpenGLState.ScopedBindTexture2D(texture))

@@ -70,27 +70,33 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         }
 
         /// <inheritdoc/>
-        public override void SetData<T>(T[] data)
+        public override void SetData<T>(T[] data, SetDataOrigin origin = SetDataOrigin.TopLeft)
         {
-            texture.SetData<T>(data);
+            texture.SetData<T>(data, origin);
         }
 
         /// <inheritdoc/>
-        public override void SetData<T>(T[] data, Int32 offset, Int32 count)
+        public override void SetData<T>(T[] data, Int32 offset, Int32 count, SetDataOrigin origin = SetDataOrigin.TopLeft)
         {
-            texture.SetData(data, offset, count);
+            texture.SetData(data, offset, count, origin);
         }
 
         /// <inheritdoc/>
-        public override void SetData<T>(Int32 level, Rectangle? rect, T[] data, Int32 offset, Int32 count, Int32 stride = 0)
+        public override void SetData<T>(Int32 level, Rectangle? rect, T[] data, Int32 offset, Int32 count, SetDataOrigin origin = SetDataOrigin.TopLeft)
         {
-            texture.SetData(level, rect, data, offset, count, stride);
+            texture.SetData(level, rect, data, offset, count, 0, origin);
         }
 
         /// <inheritdoc/>
-        public override void SetData(Int32 level, Rectangle? rect, IntPtr data, Int32 offset, Int32 count, Int32 stride, TextureDataFormat format)
+        public override void SetData<T>(Int32 level, Rectangle? rect, T[] data, Int32 offset, Int32 count, Int32 stride, SetDataOrigin origin = SetDataOrigin.TopLeft)
         {
-            texture.SetData(level, rect, data, offset, count, stride, format);
+            texture.SetData(level, rect, data, offset, count, stride, origin);
+        }
+
+        /// <inheritdoc/>
+        public override void SetData(Int32 level, Rectangle? rect, IntPtr data, Int32 offset, Int32 count, Int32 stride, TextureDataFormat format, SetDataOrigin origin = SetDataOrigin.TopLeft)
+        {
+            texture.SetData(level, rect, data, offset, count, stride, format, origin);
         }
 
         /// <inheritdoc/>

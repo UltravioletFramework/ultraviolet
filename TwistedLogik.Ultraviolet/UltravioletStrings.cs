@@ -118,6 +118,7 @@ namespace TwistedLogik.Ultraviolet
         public static readonly StringResource StretchableImageNotLoaded            = new StringResource(StringDatabase, "STRETCHABLE_IMAGE_NOT_LOADED");
         public static readonly StringResource InvalidViewProviderAssembly          = new StringResource(StringDatabase, "INVALID_VIEW_PROVIDER_ASSEMBLY");
         public static readonly StringResource IncompatibleViewModel                = new StringResource(StringDatabase, "INCOMPATIBLE_VIEW_MODEL");
+        public static readonly StringResource BufferIsWrongSize                    = new StringResource(StringDatabase, "BUFFER_IS_WRONG_SIZE");
 #pragma warning restore 1591
     }
 }

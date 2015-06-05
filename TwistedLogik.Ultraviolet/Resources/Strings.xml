@@ -480,4 +480,9 @@
       <Variant>The specified operation is not currently valid because the resource in question is bound to the device.</Variant>
     </en-US>
   </String>
+  <String Key="BUFFER_IS_WRONG_SIZE">
+    <en-US>
+      <Variant>The specified buffer is either too big or too small for this operation.</Variant>
+    </en-US>
+  </String>
 </LocalizedStrings>

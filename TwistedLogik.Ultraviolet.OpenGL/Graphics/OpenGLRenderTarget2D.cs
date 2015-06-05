@@ -98,7 +98,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
 
             var bufferTargetSize = Width * Height;
             if (bufferTargetSize != data.Length)
-                throw new ArgumentException(OpenGLStrings.BufferIsWrongSize);
+                throw new ArgumentException(UltravioletStrings.BufferIsWrongSize);
 
             GetDataInternal(data, new Rectangle(0, 0, Width, Height));
         }
@@ -118,7 +118,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
 
             var bufferTargetSize = region.Width * region.Height;
             if (bufferTargetSize != data.Length)
-                throw new ArgumentException(OpenGLStrings.BufferIsWrongSize);
+                throw new ArgumentException(UltravioletStrings.BufferIsWrongSize);
 
             GetDataInternal(data, region);
         }
