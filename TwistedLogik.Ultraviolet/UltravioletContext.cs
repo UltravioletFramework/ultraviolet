@@ -27,6 +27,13 @@ namespace TwistedLogik.Ultraviolet
     public delegate void UltravioletContextEventHandler(UltravioletContext uv);
 
     /// <summary>
+    /// Represents the method that is called when an Ultraviolet context draw is about to draw the current scene.
+    /// </summary>
+    /// <param name="uv">The Ultraviolet context.</param>
+    /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Draw(UltravioletTime)"/>.</param>
+    public delegate void UltravioletContextDrawEventHandler(UltravioletContext uv, UltravioletTime time);
+
+    /// <summary>
     /// Represents the method that is called when an Ultraviolet context updates the application state.
     /// </summary>
     /// <param name="uv">The Ultraviolet context.</param>
@@ -559,6 +566,12 @@ namespace TwistedLogik.Ultraviolet
         public static event EventHandler ContextInitialized;
 
         /// <summary>
+        /// Occurs when the context is preparing to draw the current scene. This event is called
+        /// before the context associates itself to any windows.
+        /// </summary>
+        public event UltravioletContextDrawEventHandler Drawing;
+
+        /// <summary>
         /// Occurs when the context is updating the application's state.
         /// </summary>
         public event UltravioletContextUpdateEventHandler Updating;
@@ -693,6 +706,19 @@ namespace TwistedLogik.Ultraviolet
             this.disposing = false;
 
             ReleaseContext();
+        }
+
+        /// <summary>
+        /// Raises the <see cref="Drawing"/> event.
+        /// </summary>
+        /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Draw(UltravioletTime)"/>.</param>
+        protected virtual void OnDrawing(UltravioletTime time)
+        {
+            var temp = Drawing;
+            if (temp != null)
+            {
+                temp(this, time);
+            }
         }
 
         /// <summary>

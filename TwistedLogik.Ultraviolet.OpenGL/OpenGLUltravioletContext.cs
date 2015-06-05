@@ -126,6 +126,10 @@ namespace TwistedLogik.Ultraviolet.OpenGL
         {
             Contract.EnsureNotDisposed(this, Disposed);
 
+            OnDrawing(time);
+
+            graphics.SetRenderTarget(null);
+
             var glcontext = graphics.OpenGLContext;
             var windowInfo = ((OpenGLUltravioletWindowInfo)platform.Windows);
             foreach (OpenGLUltravioletWindow window in windowInfo)

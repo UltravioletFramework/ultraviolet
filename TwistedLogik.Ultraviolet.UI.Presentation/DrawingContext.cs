@@ -14,10 +14,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Initializes a new instance of the <see cref="DrawingContext"/> class.
         /// </summary>
+        internal DrawingContext()
+        {
+
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DrawingContext"/> class.
+        /// </summary>
         internal DrawingContext(PresentationFoundationView view)
         {
-            Contract.Require(view, "view");
-
             this.view = view;
         }
 
@@ -120,7 +126,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 return;
 
             var uv       = SpriteBatch.Ultraviolet;
-            var cliprect = (ClipRectangle == null) ? (Rectangle?)null : (Rectangle?)view.Display.DipsToPixels(ClipRectangle.Value);
+            var cliprect = (ClipRectangle == null || view == null) ? (Rectangle?)null : (Rectangle?)view.Display.DipsToPixels(ClipRectangle.Value);
 
             var current = SpriteBatch.Ultraviolet.GetGraphics().GetScissorRectangle();
             if (current == cliprect)

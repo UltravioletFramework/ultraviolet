@@ -103,7 +103,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL
                 var targetSize = Size2.Zero;
 
                 var currentWindow = Ultraviolet.GetPlatform().Windows.GetCurrent();
-                if (oglRenderTarget != null || currentWindow == null)
+                if (oglRenderTarget != null)
                 {
                     oglRenderTarget.ValidateStatus();
 
@@ -112,7 +112,8 @@ namespace TwistedLogik.Ultraviolet.OpenGL
                 }
                 else
                 {
-                    targetSize = currentWindow.ClientSize;
+                    if (currentWindow != null)
+                        targetSize = currentWindow.ClientSize;
                 }
 
                 OpenGLState.BindFramebuffer(targetName);

@@ -86,6 +86,9 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
             {
                 buffer.Resize(width, height);
             }
+
+            this.width  = width;
+            this.height = height;
         }
 
         /// <summary>
@@ -436,8 +439,8 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         }
 
         // Property values.
-        private readonly Int32 width;
-        private readonly Int32 height;
+        private Int32 width;
+        private Int32 height;
 
         // State values.
         private readonly UInt32 framebuffer;

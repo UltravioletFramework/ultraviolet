@@ -120,6 +120,8 @@
     <Compile Include="DependencyObject.cs" />
     <Compile Include="Documents\NamespaceDoc.cs" />
     <Compile Include="Input\NamespaceDoc.cs" />
+    <Compile Include="OutOfBandRenderer.cs" />
+    <Compile Include="OutOfBandRenderer.OutOfBandRenderTarget.cs" />
     <Compile Include="RoutedEventRaisedNotificationServer.cs" />
     <Compile Include="DependencyPropertyChangeNotificationServer.cs" />
     <Compile Include="DependencyProperty.cs" />

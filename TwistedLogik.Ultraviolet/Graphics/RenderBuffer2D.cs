@@ -40,6 +40,18 @@ namespace TwistedLogik.Ultraviolet.Graphics
         }
 
         /// <summary>
+        /// Creates a new instance of the <see cref="RenderBuffer2D"/> that represents a color buffer.
+        /// </summary>
+        /// <param name="width">The render buffer's width in pixels.</param>
+        /// <param name="height">The render buffer's height in pixels.</param>
+        /// <param name="immutable">A value indicating whether the render buffer should use immutable storage.</param>
+        /// <returns>The instance of <see cref="RenderBuffer2D"/> that was created.</returns>
+        public static new RenderBuffer2D Create(Int32 width, Int32 height, Boolean immutable)
+        {
+            return Create(RenderBufferFormat.Color, width, height, immutable);
+        }
+
+        /// <summary>
         /// Creates a new instance of the <see cref="RenderBuffer2D"/> class.
         /// </summary>
         /// <param name="format">A <see cref="RenderBufferFormat"/> value specifying the render buffer's data format.</param>

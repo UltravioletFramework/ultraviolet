@@ -28,9 +28,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             RegisterCoreTypes();
 
-            this.styleQueue    = new LayoutQueue(InvalidateStyle, false);
-            this.measureQueue  = new LayoutQueue(InvalidateMeasure);
-            this.arrangeQueue  = new LayoutQueue(InvalidateArrange);
+            this.outOfBandRenderer = new OutOfBandRenderer(uv);
+
+            this.styleQueue   = new LayoutQueue(InvalidateStyle, false);
+            this.measureQueue = new LayoutQueue(InvalidateMeasure);
+            this.arrangeQueue = new LayoutQueue(InvalidateArrange);
         }
 
         /// <summary>
@@ -43,6 +45,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             Contract.Require(configuration, "configuration");
 
             configuration.ViewProviderAssembly = typeof(PresentationFoundation).Assembly.FullName;
+        }
+
+        /// <summary>
+        /// Draws any render targets used by the Presentation Foundation.
+        /// </summary>
+        /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Draw(UltravioletTime)"/>.</param>
+        public void DrawRenderTargets(UltravioletTime time)
+        {
+            OutOfBandRenderer.DrawRenderTargets(time);
         }
 
         /// <summary>
@@ -329,6 +340,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="styleSheet">The global style sheet to set.</param>
         public void SetGlobalStyleSheet(UvssDocument styleSheet)
         {
+            Contract.EnsureNotDisposed(this, Disposed);
+
             this.globalStyleSheet = styleSheet;
             OnGlobalStyleSheetChanged();
         }
@@ -338,7 +351,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         public PresentationFoundationPerformanceStats PerformanceStats
         {
-            get { return performanceStats; }
+            get 
+            {
+                Contract.EnsureNotDisposed(this, Disposed);
+
+                return performanceStats; 
+            }
         }
 
         /// <summary>
@@ -346,7 +364,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         public ComponentTemplateManager ComponentTemplates
         {
-            get { return componentTemplateManager; }
+            get
+            {
+                Contract.EnsureNotDisposed(this, Disposed);
+
+                return componentTemplateManager; 
+            }
         }
 
         /// <summary>
@@ -376,6 +399,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Gets the renderer which is used to render elements out-of-band.
+        /// </summary>
+        internal OutOfBandRenderer OutOfBandRenderer
+        {
+            get
+            {
+                Contract.EnsureNotDisposed(this, Disposed);
+
+                return outOfBandRenderer;
+            }
+        }
+
+        /// <summary>
         /// Gets the queue of elements with invalid styling states.
         /// </summary>
         internal LayoutQueue StyleQueue
@@ -397,6 +433,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         internal LayoutQueue ArrangeQueue
         {
             get { return arrangeQueue; }
+        }
+
+        /// <inheritdoc/>
+        protected override void Dispose(Boolean disposing)
+        {
+            if (disposing)
+            {
+                SafeDispose.Dispose(outOfBandRenderer);
+            }
+            base.Dispose(disposing);
         }
 
         /// <summary>
@@ -784,6 +830,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         // The custom type registry.
         private readonly Dictionary<String, KnownType> registeredTypes = 
             new Dictionary<String, KnownType>(StringComparer.OrdinalIgnoreCase);
+
+        // The out-of-band element renderer.
+        private readonly OutOfBandRenderer outOfBandRenderer;
 
         // The queues of elements with invalid layouts.
         private readonly LayoutQueue styleQueue;
