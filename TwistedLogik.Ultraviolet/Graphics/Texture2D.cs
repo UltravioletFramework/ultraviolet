@@ -9,8 +9,9 @@ namespace TwistedLogik.Ultraviolet.Graphics
     /// <param name="uv">The Ultraviolet context.</param>
     /// <param name="width">The texture's width in pixels.</param>
     /// <param name="height">The texture's height in pixels.</param>
+    /// <param name="immutable">A value indicating whether the texture should be created with immutable storage.</param>
     /// <returns>The instance of <see cref="Texture2D"/> that was created.</returns>
-    public delegate Texture2D Texture2DFactory(UltravioletContext uv, Int32 width, Int32 height);
+    public delegate Texture2D Texture2DFactory(UltravioletContext uv, Int32 width, Int32 height, Boolean immutable);
 
     /// <summary>
     /// Represents a two-dimensional texture.
@@ -35,13 +36,25 @@ namespace TwistedLogik.Ultraviolet.Graphics
         /// <returns>The instance of <see cref="Texture2D"/> that was created.</returns>
         public static Texture2D Create(Int32 width, Int32 height)
         {
+            return Create(width, height, true);
+        }
+
+        /// <summary>
+        /// Creates a new instance of the <see cref="Texture2D"/> class.
+        /// </summary>
+        /// <param name="width">The texture's width in pixels.</param>
+        /// <param name="height">The texture's height in pixels.</param>
+        /// <param name="immutable">A value indicating whether to use immutable storage.</param>
+        /// <returns>The instance of <see cref="Texture2D"/> that was created.</returns>
+        public static Texture2D Create(Int32 width, Int32 height, Boolean immutable)
+        {
             Contract.EnsureRange(width > 0, "width");
             Contract.EnsureRange(height > 0, "height");
 
             var uv = UltravioletContext.DemandCurrent();
-            return uv.GetFactoryMethod<Texture2DFactory>()(uv, width, height);
+            return uv.GetFactoryMethod<Texture2DFactory>()(uv, width, height, immutable);
         }
-        
+
         /// <summary>
         /// Compares the texture with another texture and returns a value indicating whether the current
         /// instance comes before, after, or in the same position as the specified texture.
@@ -49,6 +62,13 @@ namespace TwistedLogik.Ultraviolet.Graphics
         /// <param name="other">The <see cref="Texture2D"/> to compare to this instance.</param>
         /// <returns>A value indicating the relative order of the objects being compared.</returns>
         public abstract Int32 CompareTo(Texture2D other);
+
+        /// <summary>
+        /// Resizes the texture.
+        /// </summary>
+        /// <param name="width">The texture's new width in pixels.</param>
+        /// <param name="height">The texture's new height in pixels.</param>
+        public abstract void Resize(Int32 width, Int32 height);
 
         /// <summary>
         /// Sets the texture's data.
@@ -118,6 +138,14 @@ namespace TwistedLogik.Ultraviolet.Graphics
         /// Gets a value indicating whether the texture is bound to the device for writing.
         /// </summary>
         public abstract Boolean BoundForWriting
+        {
+            get;
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the texture is using immutable storage.
+        /// </summary>
+        public abstract Boolean ImmutableStorage
         {
             get;
         }

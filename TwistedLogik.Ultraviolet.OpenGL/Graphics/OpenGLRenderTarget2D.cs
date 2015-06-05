@@ -75,6 +75,19 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
             buffers.Add(sdlBuffer);
         }
 
+        /// <inheritdoc/>
+        public override void Resize(Int32 width, Int32 height)
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
+            Contract.EnsureRange(width >= 1, "width");
+            Contract.EnsureRange(height >= 1, "height");
+
+            foreach (var buffer in buffers)
+            {
+                buffer.Resize(width, height);
+            }
+        }
+
         /// <summary>
         /// Gets the render target's data.
         /// </summary>

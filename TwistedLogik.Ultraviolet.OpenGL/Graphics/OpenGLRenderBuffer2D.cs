@@ -17,32 +17,34 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         /// <param name="format">The render buffer's format.</param>
         /// <param name="width">The render buffer's width in pixels.</param>
         /// <param name="height">The render buffer's height in pixels.</param>
-        public OpenGLRenderBuffer2D(UltravioletContext uv, RenderBufferFormat format, Int32 width, Int32 height)
+        /// <param name="immutable">A value indicating whether to use immutable texture storage.</param>
+        public OpenGLRenderBuffer2D(UltravioletContext uv, RenderBufferFormat format, Int32 width, Int32 height, Boolean immutable)
             : base(uv)
         {
             Contract.EnsureRange(width > 0, "width");
             Contract.EnsureRange(height > 0, "height");
 
-            this.format = format;
-            this.width = width;
-            this.height = height;
+            this.format    = format;
+            this.width     = width;
+            this.height    = height;
+            this.immutable = immutable;
 
             switch (format)
             {
                 case RenderBufferFormat.Color:
-                    this.texture = new OpenGLTexture2D(uv, gl.GL_RGBA8, width, height, gl.GL_RGBA, gl.GL_UNSIGNED_BYTE, IntPtr.Zero);
+                    this.texture = new OpenGLTexture2D(uv, gl.GL_RGBA8, width, height, gl.GL_RGBA, gl.GL_UNSIGNED_BYTE, IntPtr.Zero, immutable);
                     break;
 
                 case RenderBufferFormat.Depth24Stencil8:
-                    this.texture = new OpenGLTexture2D(uv, gl.GL_DEPTH24_STENCIL8, width, height, gl.GL_DEPTH_STENCIL, gl.GL_UNSIGNED_INT_24_8, IntPtr.Zero);
+                    this.texture = new OpenGLTexture2D(uv, gl.GL_DEPTH24_STENCIL8, width, height, gl.GL_DEPTH_STENCIL, gl.GL_UNSIGNED_INT_24_8, IntPtr.Zero, immutable);
                     break;
 
                 case RenderBufferFormat.Depth32:
-                    this.texture = new OpenGLTexture2D(uv, gl.GL_DEPTH_COMPONENT32, width, height, gl.GL_DEPTH_COMPONENT, gl.GL_UNSIGNED_INT, IntPtr.Zero);
+                    this.texture = new OpenGLTexture2D(uv, gl.GL_DEPTH_COMPONENT32, width, height, gl.GL_DEPTH_COMPONENT, gl.GL_UNSIGNED_INT, IntPtr.Zero, immutable);
                     break;
 
                 case RenderBufferFormat.Depth16:
-                    this.texture = new OpenGLTexture2D(uv, gl.GL_DEPTH_COMPONENT16, width, height, gl.GL_DEPTH_COMPONENT, gl.GL_UNSIGNED_SHORT, IntPtr.Zero);
+                    this.texture = new OpenGLTexture2D(uv, gl.GL_DEPTH_COMPONENT16, width, height, gl.GL_DEPTH_COMPONENT, gl.GL_UNSIGNED_SHORT, IntPtr.Zero, immutable);
                     break;
 
                 default:
@@ -50,69 +52,48 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
             }
         }
 
-        /// <summary>
-        /// Compares the texture with another texture and returns a value indicating whether the current
-        /// instance comes before, after, or in the same position as the specified texture.
-        /// </summary>
-        /// <param name="other">The texture to compare to this instance.</param>
-        /// <returns>A value indicating the relative order of the objects being compared.</returns>
+        /// <inheritdoc/>
         public override Int32 CompareTo(Texture2D other)
         {
             return texture.CompareTo(other);
         }
 
-        /// <summary>
-        /// Sets the texture's data.
-        /// </summary>
-        /// <param name="data">An array containing the data to set.</param>
+        /// <inheritdoc/>
+        public override void Resize(Int32 width, Int32 height)
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
+
+            this.texture.Resize(width, height);
+
+            this.width  = width;
+            this.height = height;
+        }
+
+        /// <inheritdoc/>
         public override void SetData<T>(T[] data)
         {
             texture.SetData<T>(data);
         }
 
-        /// <summary>
-        /// Sets the texture's data.
-        /// </summary>
-        /// <param name="data">An array containing the data to set.</param>
-        /// <param name="offset">The index of the first element to set.</param>
-        /// <param name="count">The number of elements to set.</param>
+        /// <inheritdoc/>
         public override void SetData<T>(T[] data, Int32 offset, Int32 count)
         {
             texture.SetData(data, offset, count);
         }
 
-        /// <summary>
-        /// Sets the texture's data.
-        /// </summary>
-        /// <param name="level">The mipmap level for which to set data.</param>
-        /// <param name="rect">A rectangle describing the position and size of the data to set, or null to set the entire texture.</param>
-        /// <param name="data">An array containing the data to set.</param>
-        /// <param name="offset">The index of the first element to set.</param>
-        /// <param name="count">The number of elements to set.</param>
-        /// <param name="stride">The number of elements in one row of data, or zero to use the width of <paramref name="rect"/>.</param>
+        /// <inheritdoc/>
         public override void SetData<T>(Int32 level, Rectangle? rect, T[] data, Int32 offset, Int32 count, Int32 stride = 0)
         {
             texture.SetData(level, rect, data, offset, count, stride);
         }
 
-        /// <summary>
-        /// Sets the texture's data.
-        /// </summary>
-        /// <param name="level">The mipmap level for which to set data.</param>
-        /// <param name="rect">A rectangle describing the position and size of the data to set, or null to set the entire texture.</param>
-        /// <param name="data">A pointer to the data to set.</param>
-        /// <param name="offset">The index of the first element to set.</param>
-        /// <param name="count">The number of elements to set.</param>
-        /// <param name="stride">The number of elements in one row of data, or zero to use the width of <paramref name="rect"/>.</param>
-        /// <param name="format">The format of the data being set.</param>
+        /// <inheritdoc/>
         public override void SetData(Int32 level, Rectangle? rect, IntPtr data, Int32 offset, Int32 count, Int32 stride, TextureDataFormat format)
         {
             texture.SetData(level, rect, data, offset, count, stride, format);
         }
 
-        /// <summary>
-        /// Binds the resource for reading.
-        /// </summary>
+        /// <inheritdoc/>
         public void BindRead()
         {
             Contract.EnsureNotDisposed(this, Disposed);
@@ -121,9 +102,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
             boundRead = true;
         }
 
-        /// <summary>
-        /// Binds the resource for writing.
-        /// </summary>
+        /// <inheritdoc/>
         public void BindWrite()
         {
             Contract.EnsureNotDisposed(this, Disposed);
@@ -132,9 +111,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
             boundWrite = true;
         }
 
-        /// <summary>
-        /// Unbinds the resource for reading.
-        /// </summary>
+        /// <inheritdoc/>
         public void UnbindRead()
         {
             Contract.EnsureNotDisposed(this, Disposed);
@@ -143,9 +120,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
             boundRead = false;
         }
 
-        /// <summary>
-        /// Unbinds the resource for reading.
-        /// </summary>
+        /// <inheritdoc/>
         public void UnbindWrite()
         {
             Contract.EnsureNotDisposed(this, Disposed);
@@ -154,9 +129,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
             boundWrite = false;
         }
 
-        /// <summary>
-        /// Gets the OpenGL renderbuffer handle.
-        /// </summary>
+        /// <inheritdoc/>
         public UInt32 OpenGLName
         {
             get
@@ -167,9 +140,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
             }
         }
 
-        /// <summary>
-        /// Gets the render buffer's format.
-        /// </summary>
+        /// <inheritdoc/>
         public override RenderBufferFormat Format
         {
             get
@@ -180,9 +151,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
             }
         }
 
-        /// <summary>
-        /// Gets the render buffer's width.
-        /// </summary>
+        /// <inheritdoc/>
         public override Int32 Width
         {
             get
@@ -193,9 +162,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
             }
         }
 
-        /// <summary>
-        /// Gets the render buffer's height.
-        /// </summary>
+        /// <inheritdoc/>
         public override Int32 Height
         {
             get
@@ -206,9 +173,18 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
             }
         }
 
-        /// <summary>
-        /// Gets a value indicating whether the texture is bound to the device for reading.
-        /// </summary>
+        /// <inheritdoc/>
+        public override Boolean ImmutableStorage
+        {
+            get 
+            {
+                Contract.EnsureNotDisposed(this, Disposed);
+                
+                return immutable;
+            }
+        }
+
+        /// <inheritdoc/>
         public override Boolean BoundForReading
         {
             get
@@ -219,9 +195,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
             }
         }
 
-        /// <summary>
-        /// Gets a value indicating whether the texture is bound to the device for writing.
-        /// </summary>
+        /// <inheritdoc/>
         public override Boolean BoundForWriting
         {
             get
@@ -251,8 +225,9 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
 
         // Property values.
         private readonly RenderBufferFormat format;
-        private readonly Int32 width;
-        private readonly Int32 height;
+        private Int32 width;
+        private Int32 height;
+        private readonly Boolean immutable;
         private Boolean boundRead;
         private Boolean boundWrite;
 

@@ -59,6 +59,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL
         public static readonly StringResource UnsupportedFillModeGLES               = new StringResource(StringDatabase, "UNSUPPORTED_FILLMODE_GLES");
         public static readonly StringResource UnsupportedLODBiasGLES                = new StringResource(StringDatabase, "UNSUPPORTED_LOD_BIAS_GLES");
         public static readonly StringResource CannotCreateHeadlessContextOnAndroid  = new StringResource(StringDatabase, "CANNOT_CREATE_HEADLESS_CONTEXT_ON_ANDROID");
+        public static readonly StringResource InvalidOperationWhileBound            = new StringResource(StringDatabase, "INVALID_OPERATION_WHILE_BOUND");
 #pragma warning restore 1591
     }
 }

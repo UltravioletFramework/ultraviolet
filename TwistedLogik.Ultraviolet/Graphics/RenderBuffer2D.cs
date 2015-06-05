@@ -11,7 +11,7 @@ namespace TwistedLogik.Ultraviolet.Graphics
     /// <param name="width">The render buffer's width in pixels.</param>
     /// <param name="height">The render buffer's height in pixels.</param>
     /// <returns>The instance of <see cref="RenderBuffer2D"/> that was created.</returns>
-    public delegate RenderBuffer2D RenderBuffer2DFactory(UltravioletContext uv, RenderBufferFormat format, Int32 width, Int32 height);
+    public delegate RenderBuffer2D RenderBuffer2DFactory(UltravioletContext uv, RenderBufferFormat format, Int32 width, Int32 height, Boolean immutable);
 
     /// <summary>
     /// Represents a two-dimensional render buffer containing color, depth, or stencil data.
@@ -36,7 +36,7 @@ namespace TwistedLogik.Ultraviolet.Graphics
         /// <returns>The instance of <see cref="RenderBuffer2D"/> that was created.</returns>
         public static new RenderBuffer2D Create(Int32 width, Int32 height)
         {
-            return Create(RenderBufferFormat.Color, width, height);
+            return Create(RenderBufferFormat.Color, width, height, true);
         }
 
         /// <summary>
@@ -48,11 +48,24 @@ namespace TwistedLogik.Ultraviolet.Graphics
         /// <returns>The instance of <see cref="RenderBuffer2D"/> that was created.</returns>
         public static RenderBuffer2D Create(RenderBufferFormat format, Int32 width, Int32 height)
         {
+            return Create(format, width, height, true);
+        }
+
+        /// <summary>
+        /// Creates a new instance of the <see cref="RenderBuffer2D"/> class.
+        /// </summary>
+        /// <param name="format">A <see cref="RenderBufferFormat"/> value specifying the render buffer's data format.</param>
+        /// <param name="width">The render buffer's width in pixels.</param>
+        /// <param name="height">The render buffer's height in pixels.</param>
+        /// <param name="immutable">A value indicating whether the render buffer should use immutable storage.</param>
+        /// <returns>The instance of <see cref="RenderBuffer2D"/> that was created.</returns>
+        public static RenderBuffer2D Create(RenderBufferFormat format, Int32 width, Int32 height, Boolean immutable)
+        {
             Contract.EnsureRange(width > 0, "width");
             Contract.EnsureRange(height > 0, "height");
 
             var uv = UltravioletContext.DemandCurrent();
-            return uv.GetFactoryMethod<RenderBuffer2DFactory>()(uv, format, width, height);
+            return uv.GetFactoryMethod<RenderBuffer2DFactory>()(uv, format, width, height, immutable);
         }
 
         /// <summary>

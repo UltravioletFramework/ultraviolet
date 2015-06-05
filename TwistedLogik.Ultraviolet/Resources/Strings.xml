@@ -475,4 +475,9 @@
       <Variant>The specified view model cannot be bound to this view because the view requires a view model of type '{0}'.</Variant>
     </en-US>
   </String>
+  <String Key="INVALID_OPERATION_WHILE_BOUND">
+    <en-US>
+      <Variant>The specified operation is not currently valid because the resource in question is bound to the device.</Variant>
+    </en-US>
+  </String>
 </LocalizedStrings>
