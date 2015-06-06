@@ -120,6 +120,14 @@
     <Compile Include="DependencyObject.cs" />
     <Compile Include="Documents\NamespaceDoc.cs" />
     <Compile Include="Input\NamespaceDoc.cs" />
+    <Compile Include="Media\IdentityTransform.cs" />
+    <Compile Include="Media\RotateTransform.cs" />
+    <Compile Include="Media\TransformCollection.cs" />
+    <Compile Include="Media\TransformCollection.IEnumerable.cs" />
+    <Compile Include="Media\TransformGroup.cs" />
+    <Compile Include="Media\TranslateTransform.cs" />
+    <Compile Include="Media\ScaleTransform.cs" />
+    <Compile Include="Media\Transform.cs" />
     <Compile Include="OutOfBandRenderer.cs" />
     <Compile Include="OutOfBandRenderer.OutOfBandRenderTarget.cs" />
     <Compile Include="RoutedEventRaisedNotificationServer.cs" />
