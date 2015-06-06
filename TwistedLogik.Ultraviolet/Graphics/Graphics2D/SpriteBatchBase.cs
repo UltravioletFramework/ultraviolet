@@ -1628,7 +1628,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
 
             var viewport = Ultraviolet.GetGraphics().GetViewport();
             var projection = Matrix.CreateSpriteBatchProjection(viewport.Width, viewport.Height);
-            customEffect.Parameters["MatrixTransform"].SetValue(transformMatrix * projection);
+            customEffect.Parameters["MatrixTransform"].SetValue(projection * transformMatrix);
             customEffect.CurrentTechnique.Passes[0].Apply();
         }
 
