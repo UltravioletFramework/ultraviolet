@@ -10,10 +10,17 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         /// <summary>
         /// Initializes a new instance of the <see cref="OpenGLGraphicsCapabilities"/> class.
         /// </summary>
-        internal OpenGLGraphicsCapabilities()
+        internal unsafe OpenGLGraphicsCapabilities()
         {
             this.maximumTextureSize = gl.GetInteger(gl.GL_MAX_TEXTURE_SIZE);
-            this.maximumViewportSize = gl.GetInteger(gl.GL_MAX_VIEWPORT_DIMS);
+            gl.ThrowIfError();
+
+            var viewportDims = stackalloc int[2];
+            gl.GetIntegerv(gl.GL_MAX_VIEWPORT_DIMS, viewportDims);
+            gl.ThrowIfError();
+
+            this.maximumViewportWidth  = viewportDims[0];
+            this.maximumViewportHeight = viewportDims[1];
         }
 
         /// <inheritdoc/>
@@ -23,13 +30,20 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         }
 
         /// <inheritdoc/>
-        public override Int32 MaximumViewportSize
+        public override Int32 MaximumViewportWidth
         {
-            get { return maximumViewportSize; }
+            get { return maximumViewportWidth; }
+        }
+
+        /// <inheritdoc/>
+        public override Int32 MaximumViewportHeight
+        {
+            get { return maximumViewportHeight; }
         }
 
         // Property values.
         private readonly Int32 maximumTextureSize;
-        private readonly Int32 maximumViewportSize;
+        private readonly Int32 maximumViewportWidth;
+        private readonly Int32 maximumViewportHeight;
     }
 }

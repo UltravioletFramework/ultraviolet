@@ -13,8 +13,13 @@ namespace TwistedLogik.Ultraviolet.Graphics
         public abstract Int32 MaximumTextureSize { get; }
 
         /// <summary>
-        /// Gets the maximum supported viewport size.
+        /// Gets the maximum supported viewport width.
         /// </summary>
-        public abstract Int32 MaximumViewportSize { get; }
+        public abstract Int32 MaximumViewportWidth { get; }
+
+        /// <summary>
+        /// Gets the maximum supported viewport height.
+        /// </summary>
+        public abstract Int32 MaximumViewportHeight { get; }
     }
 }
