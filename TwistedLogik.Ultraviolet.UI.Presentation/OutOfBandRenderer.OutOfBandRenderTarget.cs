@@ -39,6 +39,25 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             }
 
             /// <summary>
+            /// Gets or sets a value indicating whether the render target is ready to be rendered.
+            /// </summary>
+            public Boolean IsReady
+            {
+                get
+                {
+                    Contract.EnsureNotDisposed(this, Disposed);
+
+                    return isReady;
+                }
+                set
+                {
+                    Contract.EnsureNotDisposed(this, Disposed);
+
+                    isReady = value;
+                }
+            }
+
+            /// <summary>
             /// Gets the width of the render target in pixels.
             /// </summary>
             public Int32 Width
@@ -102,6 +121,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             }
 
             // Property values.
+            private Boolean isReady;
             private readonly RenderTarget2D renderTarget;
             private readonly RenderBuffer2D colorBuffer;
         }

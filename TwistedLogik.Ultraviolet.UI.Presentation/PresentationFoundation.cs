@@ -39,12 +39,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Modifies the specified <see cref="UltravioletConfiguration"/> instance so that the Ultraviolet
         /// Presentation Foundation will be registered as the context's view provider.
         /// </summary>
-        /// <param name="configuration">The <see cref="UltravioletConfiguration"/> instance to modify.</param>
-        public static void Configure(UltravioletConfiguration configuration)
+        /// <param name="ultravioletConfig">The <see cref="UltravioletConfiguration"/> instance to modify.</param>
+        /// <param name="presentationConfig">Configuration settings for the Ultraviolet Presentation Foundation.</param>
+        public static void Configure(UltravioletConfiguration ultravioletConfig, PresentationFoundationConfiguration presentationConfig = null)
         {
-            Contract.Require(configuration, "configuration");
+            Contract.Require(ultravioletConfig, "configuration");
 
-            configuration.ViewProviderAssembly = typeof(PresentationFoundation).Assembly.FullName;
+            ultravioletConfig.ViewProviderAssembly      = typeof(PresentationFoundation).Assembly.FullName;
+            ultravioletConfig.ViewProviderConfiguration = presentationConfig;
         }
 
         /// <summary>

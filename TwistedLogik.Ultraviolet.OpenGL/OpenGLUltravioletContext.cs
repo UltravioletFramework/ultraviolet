@@ -75,6 +75,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL
             PumpEvents();
 
             InitializeContext();
+            InitializeViewProvider(configuration);
         }
 
         /// <inheritdoc/>

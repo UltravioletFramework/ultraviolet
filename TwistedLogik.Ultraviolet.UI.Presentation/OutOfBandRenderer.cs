@@ -45,6 +45,21 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Gets a value indicating whether the specified element's texture is ready to be used.
+        /// </summary>
+        /// <param name="element">The element to evaluate.</param>
+        /// <returns><c>true</c> if the specified element's texture is ready; otherwise, <c>false</c>.</returns>
+        public Boolean IsTextureReady(UIElement element)
+        {
+            OutOfBandRenderTarget rtarget;
+            if (registeredElements.TryGetValue(element, out rtarget))
+            {
+                return rtarget.IsReady;
+            }
+            return false;
+        }
+
+        /// <summary>
         /// Registers an element with the out-of-band renderer.
         /// </summary>
         /// <param name="element">The element to register.</param>
@@ -57,7 +72,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 return;
 
             var rt = renderTargetPool.Retrieve();
-            MatchRenderTargetSizeToElement(rt, element);
+            UpdateRenderTargetSize(rt);
             registeredElements.Add(element, rt);
         }
 
@@ -94,11 +109,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 isDrawingRenderTargets = true;
 
                 foreach (var kvp in registeredElements)
+                    kvp.Value.IsReady = false;
+
+                foreach (var kvp in registeredElements)
                 {
                     var element = kvp.Key;
                     var rtarget = kvp.Value;
-
-                    MatchRenderTargetSizeToElement(rtarget, element);
 
                     graphics.SetRenderTarget(rtarget.RenderTarget);
                     graphics.Clear(Color.Transparent);
@@ -106,14 +122,26 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                     drawingContext.Reset();
                     drawingContext.SpriteBatch = spriteBatch;
 
-                    var translate = (Vector2)element.View.Display.DipsToPixels(element.AbsolutePosition);
-                    var transform = Matrix.CreateTranslation(-translate.X, -translate.Y, 0);
+                    var centerX = rtarget.RenderTarget.Width / 2f;
+                    var centerY = rtarget.RenderTarget.Height / 2f;
+
+                    var display = element.View.Display;
+
+                    var pxRenderOriginX = (Single)display.DipsToPixels(element.RenderSize.Width * element.RenderTransformOrigin.X);
+                    var pxRenderOriginY = (Single)display.DipsToPixels(element.RenderSize.Height * element.RenderTransformOrigin.Y);
+                    var pxPositionX     = (Single)display.DipsToPixels(element.AbsolutePosition.X);
+                    var pxPositionY     = (Single)display.DipsToPixels(element.AbsolutePosition.Y);
+
+                    var translate = new Vector2(centerX - (pxPositionX + pxRenderOriginX), centerY - (pxPositionY + pxRenderOriginY));
+                    var transform = Matrix.CreateTranslation(translate.X, translate.Y, 0);
 
                     spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, null, null, null, null, transform);
 
                     element.Draw(time, drawingContext);
 
                     spriteBatch.End();
+
+                    rtarget.IsReady = true;
                 }
             }
             finally
@@ -150,7 +178,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         public Boolean IsCurrentlyInUse
         {
-            get { return registeredElements.Count > 0; }
+            get
+            {
+                Contract.EnsureNotDisposed(this, Disposed);
+ 
+                return registeredElements.Count > 0; 
+            }
         }
 
         /// <summary>
@@ -158,7 +191,42 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         public Boolean IsDrawingRenderTargets
         {
-            get { return isDrawingRenderTargets; }
+            get 
+            {
+                Contract.EnsureNotDisposed(this, Disposed);
+
+                return isDrawingRenderTargets; 
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the size of the renderer's render targets.
+        /// </summary>
+        public Int32 RenderTargetSize
+        {
+            get
+            {
+                Contract.EnsureNotDisposed(this, Disposed);
+
+                return renderTargetSize;
+            }
+            set
+            {
+                Contract.EnsureNotDisposed(this, Disposed);
+
+                var max     = Ultraviolet.GetGraphics().Capabilities.MaximumTextureSize;
+                var clamped = Math.Min(max, value);
+
+                if (clamped != renderTargetSize)
+                {
+                    renderTargetSize = clamped;
+
+                    foreach (var kvp in registeredElements)
+                    {
+                        UpdateRenderTargetSize(kvp.Value);
+                    }
+                }
+            }
         }
 
         /// <inheritdoc/>
@@ -178,19 +246,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
-        /// Resizes the specified render target to match the specified element.
+        /// Ensures that the specified render target has the correct size.
         /// </summary>
-        private static void MatchRenderTargetSizeToElement(OutOfBandRenderTarget rt, UIElement element)
-        {
-            var display = element.View.Display;
-            var dims    = display.DipsToPixels(element.RenderSize);
-
-            var width  = Math.Max(1, (Int32)dims.Width);
-            var height = Math.Max(1, (Int32)dims.Height);
-
-            if (rt.Width != width || rt.Height != height)
+        private void UpdateRenderTargetSize(OutOfBandRenderTarget rt)
+        {   
+            if (rt.Width != renderTargetSize || rt.Height != renderTargetSize)
             {
-                rt.Resize(width, height);
+                rt.Resize(renderTargetSize, renderTargetSize);
             }
         }
 
@@ -198,14 +260,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         private readonly IPool<OutOfBandRenderTarget> renderTargetPool;
 
         // The collection of registered elements and their render buffers.
-        private readonly Dictionary<UIElement, OutOfBandRenderTarget> registeredElements = 
-            new Dictionary<UIElement, OutOfBandRenderTarget>();
+        private readonly SortedDictionary<UIElement, OutOfBandRenderTarget> registeredElements = 
+            new SortedDictionary<UIElement, OutOfBandRenderTarget>(new UIElementComparer());
         
         // The drawing context used to render elements.
         private readonly DrawingContext drawingContext;
         private readonly SpriteBatch spriteBatch;
 
         // Property values.
+        private Int32 renderTargetSize = 1;
         private Boolean isDrawingRenderTargets;
     }
 }

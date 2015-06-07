@@ -554,6 +554,9 @@
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\OutOfBandRenderer.OutOfBandRenderTarget.cs">
       <Link>OutOfBandRenderer.OutOfBandRenderTarget.cs</Link>
     </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\OutOfBandRenderer.UIElementComparer.cs">
+      <Link>OutOfBandRenderer.UIElementComparer.cs</Link>
+    </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\PopupQueue.cs">
       <Link>PopupQueue.cs</Link>
     </Compile>
@@ -569,8 +572,14 @@
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\PresentationFoundation.KnownType.cs">
       <Link>PresentationFoundation.KnownType.cs</Link>
     </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\PresentationFoundationConfiguration.cs">
+      <Link>PresentationFoundationConfiguration.cs</Link>
+    </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\PresentationFoundationFactoryInitializer.cs">
       <Link>PresentationFoundationFactoryInitializer.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\PresentationFoundationInitializer.cs">
+      <Link>PresentationFoundationInitializer.cs</Link>
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\PresentationFoundationPerformanceStats.cs">
       <Link>PresentationFoundationPerformanceStats.cs</Link>
@@ -976,7 +985,7 @@
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties ProjectLinkReference="7379d9e1-bb01-4b05-b4f7-5d39b393348f" ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" />
+      <UserProperties ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" ProjectLinkReference="7379d9e1-bb01-4b05-b4f7-5d39b393348f" />
     </VisualStudio>
   </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

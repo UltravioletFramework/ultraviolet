@@ -28,6 +28,15 @@ namespace TwistedLogik.Ultraviolet
         }
 
         /// <summary>
+        /// Gets or sets an object which provides configuration values for the view provider.
+        /// </summary>
+        public Object ViewProviderConfiguration
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
         /// Gets or sets a value indicating whether to create a debug context.
         /// </summary>
         public Boolean Debug

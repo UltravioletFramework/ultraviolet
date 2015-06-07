@@ -9,6 +9,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using TwistedLogik.Nucleus;
 using TwistedLogik.Nucleus.Messages;
+using TwistedLogik.Ultraviolet.UI;
 
 namespace TwistedLogik.Ultraviolet
 {
@@ -663,6 +664,20 @@ namespace TwistedLogik.Ultraviolet
             {
                 var initializerInstance = (IUltravioletFactoryInitializer)Activator.CreateInstance(initializerType);
                 initializerInstance.Initialize(this, Factory);
+            }
+        }
+
+        /// <summary>
+        /// Initializes the context's view provider.
+        /// </summary>
+        /// <param name="configuration">The Ultraviolet Framework configuration settings for this context.</param>
+        protected void InitializeViewProvider(UltravioletConfiguration configuration)
+        {
+            var initializerFactory = TryGetFactoryMethod<UIViewProviderInitializerFactory>();
+            if (initializerFactory != null)
+            {
+                var initializer = initializerFactory();
+                initializer.Initialize(this, configuration.ViewProviderConfiguration);
             }
         }
 
