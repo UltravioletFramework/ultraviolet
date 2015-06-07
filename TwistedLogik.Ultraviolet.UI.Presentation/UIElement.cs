@@ -179,32 +179,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             {
                 dc.PushOpacity(Opacity);
 
-                var upf = Ultraviolet.GetUI().GetPresentationFoundation();
-                if (upf.OutOfBandRenderer.IsRenderedOutOfBand(this) && !upf.OutOfBandRenderer.IsDrawingRenderTargets)
-                {
-                    var texture = upf.OutOfBandRenderer.GetElementTexture(this);
-                    if (texture != null)
-                    {
-                        var renderTransformOrigin = RenderTransformOrigin;
-                        var renderPixelSize       = View.Display.DipsToPixels(RenderSize);
-                        var renderPixelOrigin     = new Vector2(
-                            (Single)(renderTransformOrigin.X * renderPixelSize.Width),
-                            (Single)(renderTransformOrigin.Y * renderPixelSize.Height));
-
-                        var renderPosition  = (Vector2)View.Display.DipsToPixels(AbsolutePosition) + renderPixelOrigin;
-                        var renderTransform = Matrix.CreateTranslation(renderPosition.X, renderPosition.Y, 0) * 
-                            RenderTransform.GetValueForDisplay(View.Display);
-
-                        dc.SpriteBatch.End();
-
-                        dc.SpriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null, renderTransform);
-                        dc.SpriteBatch.Draw(texture, Vector2.Zero, null, Color.White, 0f, renderPixelOrigin, 1f, SpriteEffects.None, 0f);
-                        dc.SpriteBatch.End();
-
-                        dc.SpriteBatch.Begin(SpriteSortMode.Deferred, null);
-                    }
-                }
-                else
+                if (!DrawOutOfBandTexture(dc))
                 {
                     DrawCore(time, dc);
                     OnDrawing(time, dc);
@@ -2072,6 +2047,50 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                     var uiElement = (UIElement)dobj;
                     return uiElement.IsEnabledCore;
                 }
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Draws the element's out-of-band texture, if it has one.
+        /// </summary>
+        /// <param name="dc">The drawing context that describes the render state of the layout.</param>
+        /// <returns><c>true</c> if the element's out-of-band texture was drawn; otherwise, <c>false</c>.</returns>
+        private Boolean DrawOutOfBandTexture(DrawingContext dc)
+        {
+            var upf = Ultraviolet.GetUI().GetPresentationFoundation();
+            if (upf.OutOfBandRenderer.IsTextureReady(this))
+            {
+                var texture = upf.OutOfBandRenderer.GetElementTexture(this);
+                if (texture != null)
+                {
+                    var textureOrigin = new Vector2(texture.Width / 2f, texture.Height / 2f);
+
+                    var spriteBatchState = dc.SpriteBatch.GetCurrentState();
+
+                    var renderTransformOrigin = RenderTransformOrigin;
+                    var renderPixelSize       = View.Display.DipsToPixels(RenderSize);
+                    var renderPixelOrigin     = new Vector2(
+                        (Single)(renderTransformOrigin.X * renderPixelSize.Width),
+                        (Single)(renderTransformOrigin.Y * renderPixelSize.Height));
+
+                    var renderPosition  = (Vector2)View.Display.DipsToPixels(AbsolutePosition) + renderPixelOrigin;
+                    var renderTransform = Matrix.CreateTranslation(renderPosition.X, renderPosition.Y, 0) * 
+                            RenderTransform.GetValueForDisplay(View.Display);
+
+                    dc.SpriteBatch.End();
+
+                    dc.SpriteBatch.Begin(SpriteSortMode.Immediate, null, null, null, null, null, spriteBatchState.TransformMatrix * renderTransform);
+                    dc.ReapplyClipRectangle();
+
+                    dc.SpriteBatch.Draw(texture, Vector2.Zero, null, Color.White * dc.Opacity, 0f, textureOrigin, 1f, SpriteEffects.None, 0f);
+                    
+                    dc.SpriteBatch.End();
+
+                    dc.SpriteBatch.Begin(spriteBatchState);
+                    dc.ReapplyClipRectangle();
+                }
+                return true;
             }
             return false;
         }

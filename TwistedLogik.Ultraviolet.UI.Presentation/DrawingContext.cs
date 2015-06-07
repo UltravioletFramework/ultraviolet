@@ -93,6 +93,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Reapplies the drawing context's clipping rectangle to the graphics device.
+        /// </summary>
+        public void ReapplyClipRectangle()
+        {
+            FlushClipRectangle(false);
+        }
+
+        /// <summary>
         /// Gets the <see cref="SpriteBatch"/> with which the layout will be rendered.
         /// </summary>
         public SpriteBatch SpriteBatch
@@ -120,7 +128,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Flushes the sprite batch and applies the current clip rectangle to the graphics device.
         /// </summary>
-        private void FlushClipRectangle()
+        /// <param name="flush">A value indicating whether to flush the sprite batch before applying the scissor rectangle.</param>
+        private void FlushClipRectangle(Boolean flush = true)
         {
             if (spriteBatch == null)
                 return;
@@ -132,7 +141,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (current == cliprect)
                 return;
 
-            SpriteBatch.Flush();
+            if (flush)
+            {
+                SpriteBatch.Flush();
+            }
             SpriteBatch.Ultraviolet.GetGraphics().SetScissorRectangle(cliprect);
         }
 
