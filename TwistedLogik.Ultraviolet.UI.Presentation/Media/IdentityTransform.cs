@@ -1,5 +1,4 @@
 ﻿using TwistedLogik.Ultraviolet.Platform;
-using TwistedLogik.Ultraviolet.UI.Presentation;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Media
 {
