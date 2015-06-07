@@ -21,7 +21,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
-        /// Invokes the <see cref="OnVisualParentChanged()"/> method.
+        /// Invokes the <see cref="OnVisualParentChanged(Visual, Visual)"/> method.
         /// </summary>
         /// <param name="oldParent">The visual's old visual parent.</param>
         /// <param name="newParent">The visual's new visual parent.</param>

@@ -1086,7 +1086,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         }
 
         /// <summary>
-        /// Gets the maximum number of sprites that can drawn in a single batch by this <see cref="SpriteBatchBase{T}"/>.
+        /// Gets the maximum number of sprites that can drawn in a single batch by this <see cref="SpriteBatchBase{VertexType, SpriteData}"/>.
         /// </summary>
         public Int32 BatchSize
         {
