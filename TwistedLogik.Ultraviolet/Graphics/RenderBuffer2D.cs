@@ -10,6 +10,7 @@ namespace TwistedLogik.Ultraviolet.Graphics
     /// <param name="format">The render buffer's format.</param>
     /// <param name="width">The render buffer's width in pixels.</param>
     /// <param name="height">The render buffer's height in pixels.</param>
+    /// <param name="immutable">A value indicating whether the render buffer should use immutable storage.</param>
     /// <returns>The instance of <see cref="RenderBuffer2D"/> that was created.</returns>
     public delegate RenderBuffer2D RenderBuffer2DFactory(UltravioletContext uv, RenderBufferFormat format, Int32 width, Int32 height, Boolean immutable);
 

@@ -85,6 +85,7 @@ namespace TwistedLogik.Ultraviolet.Graphics
         /// <param name="data">An array containing the data to set.</param>
         /// <param name="offset">The index of the first element to set.</param>
         /// <param name="count">The number of elements to set.</param>
+        /// <param name="origin">A <see cref="SetDataOrigin"/> value specifying the origin of the texture data in <paramref name="data"/>.</param>
         public abstract void SetData<T>(T[] data, Int32 offset, Int32 count, SetDataOrigin origin = SetDataOrigin.TopLeft) where T : struct;
 
         /// <summary>
@@ -96,7 +97,6 @@ namespace TwistedLogik.Ultraviolet.Graphics
         /// <param name="data">An array containing the data to set.</param>
         /// <param name="offset">The index of the first element to set.</param>
         /// <param name="count">The number of elements to set.</param>
-        /// <param name="stride">The number of elements in one row of data, or zero to use the width of <paramref name="rect"/>.</param>
         /// <param name="origin">A <see cref="SetDataOrigin"/> value specifying the origin of the texture data in <paramref name="data"/>.</param>
         public abstract void SetData<T>(Int32 level, Rectangle? rect, T[] data, Int32 offset, Int32 count, SetDataOrigin origin = SetDataOrigin.TopLeft) where T : struct;
 
