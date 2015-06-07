@@ -218,6 +218,7 @@
     <Compile Include="Graphics\Graphics2D\ISpriteBatchEffect.cs" />
     <Compile Include="Graphics\Graphics2D\NamespaceDoc.cs" />
     <Compile Include="Graphics\Graphics2D\SpriteAnimationID.cs" />
+    <Compile Include="Graphics\Graphics2D\SpriteBatchState.cs" />
     <Compile Include="Graphics\Graphics2D\sspack\OutOfSpaceException.cs" />
     <Compile Include="Graphics\Graphics2D\sspack\Packing\ArevaloRectanglePacker.cs" />
     <Compile Include="Graphics\Graphics2D\sspack\Packing\RectanglePacker.cs" />

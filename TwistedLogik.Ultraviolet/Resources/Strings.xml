@@ -152,7 +152,12 @@
   </String>
   <String Key="BEGIN_MUST_BE_CALLED_BEFORE_DRAW">
     <en-US>
-      <Variant>Begin must be called successfully before a Draw can be called.</Variant>
+      <Variant>Begin must be called successfully before Draw can be called.</Variant>
+    </en-US>
+  </String>
+  <String Key="BEGIN_MUST_BE_CALLED_BEFORE_STATE_QUERY">
+    <en-US>
+      <Variant>Begin must be called successfully before the sprite batch's state can be queried.</Variant>
     </en-US>
   </String>
   <String Key="STATE_IS_IMMUTABLE_AFTER_BIND">

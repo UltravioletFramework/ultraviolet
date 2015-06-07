@@ -133,6 +133,15 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         }
 
         /// <summary>
+        /// Begins a sprite batch operation using the specified state values.
+        /// </summary>
+        /// <param name="state">A <see cref="SpriteBatchState"/> value representing the batch's state.</param>
+        public void Begin(SpriteBatchState state)
+        {
+            Begin(state.SortMode, state.BlendState, state.SamplerState, state.DepthStencilState, state.RasterizerState, state.Effect, state.TransformMatrix);
+        }
+
+        /// <summary>
         /// Finishes a sprite batch operation.
         /// </summary>
         public void End()
@@ -1065,11 +1074,121 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         }
 
         /// <summary>
-        /// Gets the maximum number of sprites that can drawn in a single batch by this <see cref="SpriteBatch"/>.
+        /// Gets a <see cref="SpriteBatchState"/> value that represents the current batch's state.
+        /// </summary>
+        /// <returns>A <see cref="SpriteBatchState"/> value that represents the current batch's state.</returns>
+        public SpriteBatchState GetCurrentState()
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
+            Contract.Ensure(begun, UltravioletStrings.BeginMustBeCalledBeforeStateQuery);
+
+            return new SpriteBatchState(sortMode, blendState, samplerState, rasterizerState, depthStencilState, customEffect, transformMatrix);
+        }
+
+        /// <summary>
+        /// Gets the maximum number of sprites that can drawn in a single batch by this <see cref="SpriteBatchBase{T}"/>.
         /// </summary>
         public Int32 BatchSize
         {
             get { return batchSize; }
+        }
+
+        /// <summary>
+        /// Gets the <see cref="SpriteSortMode"/> which is in effect for the current batch.
+        /// </summary>
+        public SpriteSortMode CurrentSortMode
+        {
+            get
+            {
+                Contract.EnsureNotDisposed(this, Disposed);
+                Contract.Ensure(begun, UltravioletStrings.BeginMustBeCalledBeforeStateQuery);
+
+                return sortMode;
+            }
+        }
+
+        /// <summary>
+        /// Gets the <see cref="BlendState"/> which is in effect for the current batch.
+        /// </summary>
+        public BlendState CurrentBlendState
+        {
+            get
+            {
+                Contract.EnsureNotDisposed(this, Disposed);
+                Contract.Ensure(begun, UltravioletStrings.BeginMustBeCalledBeforeStateQuery);
+
+                return blendState;
+            }
+        }
+
+        /// <summary>
+        /// Gets the <see cref="SamplerState"/> which is in effect for the current batch.
+        /// </summary>
+        public SamplerState CurrentSamplerState
+        {
+            get
+            {
+                Contract.EnsureNotDisposed(this, Disposed);
+                Contract.Ensure(begun, UltravioletStrings.BeginMustBeCalledBeforeStateQuery);
+
+                return samplerState;
+            }
+        }
+
+        /// <summary>
+        /// Gets the <see cref="RasterizerState"/> which is in effect for the current batch.
+        /// </summary>
+        public RasterizerState CurrentRasterizerState
+        {
+            get
+            {
+                Contract.EnsureNotDisposed(this, Disposed);
+                Contract.Ensure(begun, UltravioletStrings.BeginMustBeCalledBeforeStateQuery);
+
+                return rasterizerState;
+            }
+        }
+
+        /// <summary>
+        /// Gets the <see cref="DepthStencilState"/> which is in effect for the current batch.
+        /// </summary>
+        public DepthStencilState CurrentDepthStencilState
+        {
+            get
+            {
+                Contract.EnsureNotDisposed(this, Disposed);
+                Contract.Ensure(begun, UltravioletStrings.BeginMustBeCalledBeforeStateQuery);
+
+                return depthStencilState;
+            }
+        }
+
+        /// <summary>
+        /// Gets the <see cref="Effect"/> which is in effect for the current batch.
+        /// </summary>
+        public Effect CurrentEffect
+        {
+            get
+            {
+                Contract.EnsureNotDisposed(this, Disposed);
+                Contract.Ensure(begun, UltravioletStrings.BeginMustBeCalledBeforeStateQuery);
+
+                return customEffect;
+            }
+        }
+
+        /// <summary>
+        /// Gets the transformation matrix which is in effect for the current batch.
+        /// </summary>
+        public Matrix CurrentTransformMatrix
+        {
+            get
+            {
+                Contract.EnsureNotDisposed(this, Disposed);
+                Contract.Ensure(begun, UltravioletStrings.BeginMustBeCalledBeforeStateQuery);
+
+                return transformMatrix;
+            }
         }
 
         /// <summary>
