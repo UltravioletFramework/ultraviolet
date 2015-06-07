@@ -777,6 +777,78 @@ namespace TwistedLogik.Ultraviolet.Tests
         }
 
         [TestMethod]
+        public void Matrix_TryInvertCalculatedCorrectly()
+        {
+            var matrix = new Matrix(
+                4, 0, 0, 0,
+                0, 0, 2, 0,
+                0, 1, 2, 0,
+                1, 0, 0, 1);
+
+            Matrix result;
+            var succeeded = Matrix.TryInvert(matrix, out result);
+
+            TheResultingValue(succeeded).ShouldBe(true);
+            TheResultingValue(result).ShouldBe(
+                 0.25f, 0.00f, 0.00f, 0.00f,
+                 0.00f, -1.00f, 1.00f, 0.00f,
+                 0.00f, 0.50f, 0.00f, 0.00f,
+                -0.25f, 0.00f, 0.00f, 1.00f
+            );
+        }
+
+        [TestMethod]
+        public void Matrix_TryInvertRefCalculatedCorrectly()
+        {
+            var matrix = new Matrix(
+                4, 0, 0, 0,
+                0, 0, 2, 0,
+                0, 1, 2, 0,
+                1, 0, 0, 1);
+
+            Matrix result;
+            var succeeded = Matrix.TryInvertRef(ref matrix, out result);
+
+            TheResultingValue(succeeded).ShouldBe(true);
+            TheResultingValue(result).ShouldBe(
+                 0.25f, 0.00f, 0.00f, 0.00f,
+                 0.00f, -1.00f, 1.00f, 0.00f,
+                 0.00f, 0.50f, 0.00f, 0.00f,
+                -0.25f, 0.00f, 0.00f, 1.00f
+            );
+        }
+
+        [TestMethod]
+        public void Matrix_TryInvertFailsForSingularMatrix()
+        {
+            var matrix = new Matrix(
+                16,  2,  3, 13,
+                 5, 11, 10,  8,
+                 9,  7,  6, 12,
+                 4, 14, 15,  1);
+
+            Matrix result;
+            var succeeded = Matrix.TryInvert(matrix, out result);
+
+            TheResultingValue(succeeded).ShouldBe(false);
+        }
+
+        [TestMethod]
+        public void Matrix_TryInvertRefFailsForSingularMatrix()
+        {
+            var matrix = new Matrix(
+                16,  2,  3, 13,
+                 5, 11, 10,  8,
+                 9,  7,  6, 12,
+                 4, 14, 15,  1);
+
+            Matrix result;
+            var succeeded = Matrix.TryInvertRef(ref matrix, out result);
+
+            TheResultingValue(succeeded).ShouldBe(false);
+        }
+
+        [TestMethod]
         public void Matrix_CreateFromAxisAngleCalculatedCorrectly()
         {
             var axis  = Vector3.Normalize(new Vector3(5.1f, 3.2f, 7.4f));

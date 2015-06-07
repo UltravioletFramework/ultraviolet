@@ -1629,6 +1629,126 @@ namespace TwistedLogik.Ultraviolet
         }
 
         /// <summary>
+        /// Attempts to calculate the inverse of the specified matrix.
+        /// </summary>
+        /// <param name="matrix">The <see cref="Matrix"/> to invert.</param>
+        /// <param name="result">The inverted <see cref="Matrix"/>.</param>
+        /// <returns><c>true</c> if the matrix was inverted; otherwise, <c>false</c>.</returns>
+        public static Boolean TryInvert(Matrix matrix, out Matrix result)
+        {
+            var s0 = matrix.m11 * matrix.m22 - matrix.m21 * matrix.m12;
+            var s1 = matrix.m11 * matrix.m23 - matrix.m21 * matrix.m13;
+            var s2 = matrix.m11 * matrix.m24 - matrix.m21 * matrix.m14;
+            var s3 = matrix.m12 * matrix.m23 - matrix.m22 * matrix.m13;
+            var s4 = matrix.m12 * matrix.m24 - matrix.m22 * matrix.m14;
+            var s5 = matrix.m13 * matrix.m24 - matrix.m23 * matrix.m14;
+
+            var c5 = matrix.m33 * matrix.m44 - matrix.m43 * matrix.m34;
+            var c4 = matrix.m32 * matrix.m44 - matrix.m42 * matrix.m34;
+            var c3 = matrix.m32 * matrix.m43 - matrix.m42 * matrix.m33;
+            var c2 = matrix.m31 * matrix.m44 - matrix.m41 * matrix.m34;
+            var c1 = matrix.m31 * matrix.m43 - matrix.m41 * matrix.m33;
+            var c0 = matrix.m31 * matrix.m42 - matrix.m41 * matrix.m32;
+
+            var det = (s0 * c5 - s1 * c4 + s2 * c3 + s3 * c2 - s4 * c1 + s5 * c0);
+            if (det == 0)
+            {
+                result = Matrix.Identity;
+                return false;
+            }
+
+            var invdet = 1.0 / det;
+
+            var m11 = (matrix.m22 * c5 - matrix.m23 * c4 + matrix.m24 * c3) * invdet;
+            var m12 = (-matrix.m12 * c5 + matrix.m13 * c4 - matrix.m14 * c3) * invdet;
+            var m13 = (matrix.m42 * s5 - matrix.m43 * s4 + matrix.m44 * s3) * invdet;
+            var m14 = (-matrix.m32 * s5 + matrix.m33 * s4 - matrix.m34 * s3) * invdet;
+
+            var m21 = (-matrix.m21 * c5 + matrix.m23 * c2 - matrix.m24 * c1) * invdet;
+            var m22 = (matrix.m11 * c5 - matrix.m13 * c2 + matrix.m14 * c1) * invdet;
+            var m23 = (-matrix.m41 * s5 + matrix.m43 * s2 - matrix.m44 * s1) * invdet;
+            var m24 = (matrix.m31 * s5 - matrix.m33 * s2 + matrix.m34 * s1) * invdet;
+
+            var m31 = (matrix.m21 * c4 - matrix.m22 * c2 + matrix.m24 * c0) * invdet;
+            var m32 = (-matrix.m11 * c4 + matrix.m12 * c2 - matrix.m14 * c0) * invdet;
+            var m33 = (matrix.m41 * s4 - matrix.m42 * s2 + matrix.m44 * s0) * invdet;
+            var m34 = (-matrix.m31 * s4 + matrix.m32 * s2 - matrix.m34 * s0) * invdet;
+
+            var m41  = (-matrix.m21 * c3 + matrix.m22 * c1 - matrix.m23 * c0) * invdet;
+            var m42 = (matrix.m11 * c3 - matrix.m12 * c1 + matrix.m13 * c0) * invdet;
+            var m43 = (-matrix.m41 * s3 + matrix.m42 * s1 - matrix.m43 * s0) * invdet;
+            var m44 = (matrix.m31 * s3 - matrix.m32 * s1 + matrix.m33 * s0) * invdet;
+
+            result = new Matrix(
+                (float)m11, (float)m12, (float)m13, (float)m14,
+                (float)m21, (float)m22, (float)m23, (float)m24,
+                (float)m31, (float)m32, (float)m33, (float)m34,
+                (float)m41, (float)m42, (float)m43, (float)m44);
+
+            return true;
+        }
+
+        /// <summary>
+        /// Attempts to calculate the inverse of the specified matrix.
+        /// </summary>
+        /// <param name="matrix">The <see cref="Matrix"/> to invert.</param>
+        /// <param name="result">The inverted <see cref="Matrix"/>.</param>
+        /// <returns><c>true</c> if the matrix was inverted; otherwise, <c>false</c>.</returns>
+        public static Boolean TryInvertRef(ref Matrix matrix, out Matrix result)
+        {
+            var s0 = matrix.m11 * matrix.m22 - matrix.m21 * matrix.m12;
+            var s1 = matrix.m11 * matrix.m23 - matrix.m21 * matrix.m13;
+            var s2 = matrix.m11 * matrix.m24 - matrix.m21 * matrix.m14;
+            var s3 = matrix.m12 * matrix.m23 - matrix.m22 * matrix.m13;
+            var s4 = matrix.m12 * matrix.m24 - matrix.m22 * matrix.m14;
+            var s5 = matrix.m13 * matrix.m24 - matrix.m23 * matrix.m14;
+
+            var c5 = matrix.m33 * matrix.m44 - matrix.m43 * matrix.m34;
+            var c4 = matrix.m32 * matrix.m44 - matrix.m42 * matrix.m34;
+            var c3 = matrix.m32 * matrix.m43 - matrix.m42 * matrix.m33;
+            var c2 = matrix.m31 * matrix.m44 - matrix.m41 * matrix.m34;
+            var c1 = matrix.m31 * matrix.m43 - matrix.m41 * matrix.m33;
+            var c0 = matrix.m31 * matrix.m42 - matrix.m41 * matrix.m32;
+
+            var det = (s0 * c5 - s1 * c4 + s2 * c3 + s3 * c2 - s4 * c1 + s5 * c0);
+            if (det == 0)
+            {
+                result = Matrix.Identity;
+                return false;
+            }
+
+            var invdet = 1.0 / det;
+
+            var m11 = (matrix.m22 * c5 - matrix.m23 * c4 + matrix.m24 * c3) * invdet;
+            var m12 = (-matrix.m12 * c5 + matrix.m13 * c4 - matrix.m14 * c3) * invdet;
+            var m13 = (matrix.m42 * s5 - matrix.m43 * s4 + matrix.m44 * s3) * invdet;
+            var m14 = (-matrix.m32 * s5 + matrix.m33 * s4 - matrix.m34 * s3) * invdet;
+
+            var m21 = (-matrix.m21 * c5 + matrix.m23 * c2 - matrix.m24 * c1) * invdet;
+            var m22 = (matrix.m11 * c5 - matrix.m13 * c2 + matrix.m14 * c1) * invdet;
+            var m23 = (-matrix.m41 * s5 + matrix.m43 * s2 - matrix.m44 * s1) * invdet;
+            var m24 = (matrix.m31 * s5 - matrix.m33 * s2 + matrix.m34 * s1) * invdet;
+
+            var m31 = (matrix.m21 * c4 - matrix.m22 * c2 + matrix.m24 * c0) * invdet;
+            var m32 = (-matrix.m11 * c4 + matrix.m12 * c2 - matrix.m14 * c0) * invdet;
+            var m33 = (matrix.m41 * s4 - matrix.m42 * s2 + matrix.m44 * s0) * invdet;
+            var m34 = (-matrix.m31 * s4 + matrix.m32 * s2 - matrix.m34 * s0) * invdet;
+
+            var m41  = (-matrix.m21 * c3 + matrix.m22 * c1 - matrix.m23 * c0) * invdet;
+            var m42 = (matrix.m11 * c3 - matrix.m12 * c1 + matrix.m13 * c0) * invdet;
+            var m43 = (-matrix.m41 * s3 + matrix.m42 * s1 - matrix.m43 * s0) * invdet;
+            var m44 = (matrix.m31 * s3 - matrix.m32 * s1 + matrix.m33 * s0) * invdet;
+
+            result = new Matrix(
+                (float)m11, (float)m12, (float)m13, (float)m14,
+                (float)m21, (float)m22, (float)m23, (float)m24,
+                (float)m31, (float)m32, (float)m33, (float)m34,
+                (float)m41, (float)m42, (float)m43, (float)m44);
+
+            return true;
+        }
+
+        /// <summary>
         /// Negates the specified matrix's elements.
         /// </summary>
         /// <param name="matrix">The <see cref="Matrix"/> to negate.</param>
