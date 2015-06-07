@@ -148,7 +148,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
                     if (position != null)
                     {
                         var positionRelative = View.Display.PixelsToDips((Point2D)position.Value) - AbsolutePosition;
-                        if (HitTest(positionRelative) != null)
+                        var positionRender   = default(Point2D);
+
+                        if (PointToRender(positionRelative, out positionRender) && Bounds.Contains(positionRender))
                         {
                             OnClick();
                         }

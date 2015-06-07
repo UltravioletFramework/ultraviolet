@@ -350,35 +350,39 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <inheritdoc/>
         protected override void OnMouseMove(MouseDevice device, Double x, Double y, Double dx, Double dy, ref RoutedEventData data)
         {
-            if (mouseSelectionInProgress && !String.IsNullOrEmpty(Text))
+            Point2D mousePosInRenderSpace;
+            if (PointToRender(new Point2D(x, y) - AbsolutePosition, out mousePosInRenderSpace))
             {
-                // Cursor is inside box
-                var textArea = AbsoluteTextBounds;
-                if (textArea.Left <= x && textArea.Right > x)
+                if (mouseSelectionInProgress && !String.IsNullOrEmpty(Text))
                 {
-                    var index = CalculateIndexFromCursor(device);
-                    SelectToIndex(index);
-                    ScrollToSelectionHead();
-                }
-                else
-                {
-                    var delta = (Int32)dx;
-
-                    // Cursor is left of box, moving left
-                    if (x < textArea.Left && delta < 0)
+                    // Cursor is inside box
+                    var textArea = RelativeTextBounds;
+                    if (textArea.Left <= mousePosInRenderSpace.X && textArea.Right > mousePosInRenderSpace.X)
                     {
-                        MoveSelectionLeft(Math.Abs(delta));
+                        var index = CalculateIndexFromCursor(device);
+                        SelectToIndex(index);
                         ScrollToSelectionHead();
                     }
-
-                    // Cursor is right of box, moving right
-                    if (x >= textArea.Right && delta > 0)
+                    else
                     {
-                        MoveSelectionRight(Math.Abs(delta));
-                        ScrollToSelectionHead();
+                        var delta = (Int32)dx;
+
+                        // Cursor is left of box, moving left
+                        if (mousePosInRenderSpace.X < textArea.Left && delta < 0)
+                        {
+                            MoveSelectionLeft(Math.Abs(delta));
+                            ScrollToSelectionHead();
+                        }
+
+                        // Cursor is right of box, moving right
+                        if (mousePosInRenderSpace.X >= textArea.Right && delta > 0)
+                        {
+                            MoveSelectionRight(Math.Abs(delta));
+                            ScrollToSelectionHead();
+                        }
                     }
+                    data.Handled = true;
                 }
-                data.Handled = true;
             }
             base.OnMouseMove(device, x, y, dx, dy, ref data);
         }
@@ -954,10 +958,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <returns>The offset of the character beneath the mouse cursor.</returns>
         private Double CalculateOffsetFromCursor(MouseDevice mouse)
         {
-            var cursorpos  = Display.PixelsToDips((Point2D)mouse.Position) - AbsolutePosition;
-            var textOffset = (cursorpos.X - RelativeTextBounds.X) - textScrollOffset;
-
-            return textOffset;
+            var cursorClientPos = Display.PixelsToDips((Point2D)mouse.Position) - AbsolutePosition;
+            var cursorRenderPos = default(Point2D);
+            if (PointToRender(cursorClientPos, out cursorRenderPos))
+            {
+                var textOffset = (cursorRenderPos.X - RelativeTextBounds.X) - textScrollOffset;
+                return textOffset;
+            }
+            return 0;
         }
 
         /// <summary>
