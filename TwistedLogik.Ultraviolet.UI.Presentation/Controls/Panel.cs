@@ -80,7 +80,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <inheritdoc/>
         protected override Visual HitTestCore(Point2D point)
         {
-            if (!IsHitTestVisible || !Bounds.Contains(point))
+            if (!HitTestUtil.IsPotentialHit(this, ref point))
                 return null;
 
             var childMatch = HitTestChildren(point);

@@ -654,6 +654,43 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Transforms the specified point from client space to render space. The coordinate system defined by
+        /// render space includes any layout and render transforms applied to this element.
+        /// </summary>
+        /// <param name="point">The point to transform.</param>
+        /// <param name="result">The transformed point.</param>
+        /// <returns><c>true</c> if the point was transformed; otherwise, <c>false</c>.</returns>
+        public Boolean PointToRender(Point2D point, out Point2D result)
+        {
+            var transform = RenderTransform;
+            if (!IsIdentityTransform(transform))
+            {
+                var offsetX = (RenderTransformOrigin.X * RenderSize.Width);
+                var offsetY = (RenderTransformOrigin.Y * RenderSize.Height);
+                var offset  = new Point2D(offsetX, offsetY);
+
+                Matrix matrix = transform.GetValueForDisplay(View.Display);
+                Matrix matrixInverse;
+
+                if (!Matrix.TryInvertRef(ref matrix, out matrixInverse))
+                {
+                    result = Point2D.Zero;
+                    return false;
+                }
+
+                Point2D pointRelative = point - offset;
+                Point2D pointTransformed;
+                Point2D.Transform(ref pointRelative, ref matrixInverse, out pointTransformed);
+
+                result = pointTransformed + offset;
+                return true;
+            }
+
+            result = point;
+            return true;
+        }
+
+        /// <summary>
         /// Gets the Ultraviolet context that created this element.
         /// </summary>
         public UltravioletContext Ultraviolet
@@ -1433,7 +1470,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <inheritdoc/>
         protected override Visual HitTestCore(Point2D point)
         {
-            if (!IsHitTestVisible || !Bounds.Contains(point))
+            if (!HitTestUtil.IsPotentialHit(this, ref point))
                 return null;
 
             var children = VisualTreeHelper.GetChildrenCount(this);
@@ -1930,6 +1967,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         protected virtual Boolean IsEnabledCore
         {
             get { return true; }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the specified transformation is an identity transformation.
+        /// </summary>
+        /// <param name="transform">The transform to evaluate.</param>
+        /// <returns><c>true</c> if the specified transform is an identity transform; otherwise, <c>false</c>.</returns>
+        private static Boolean IsIdentityTransform(Transform transform)
+        {
+            return (transform == null || transform is IdentityTransform);
         }
 
         /// <summary>
