@@ -7,6 +7,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media
     /// <summary>
     /// Represents a transformation which translates an object.
     /// </summary>
+    [UvmlKnownType]
     public sealed class TranslateTransform : Transform
     {
         /// <inheritdoc/>

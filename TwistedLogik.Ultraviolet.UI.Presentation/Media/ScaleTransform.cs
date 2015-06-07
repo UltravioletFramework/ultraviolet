@@ -7,6 +7,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media
     /// <summary>
     /// Represents a transformation which scales an object.
     /// </summary>
+    [UvmlKnownType]
     public sealed class ScaleTransform : Transform
     {
         /// <inheritdoc/>

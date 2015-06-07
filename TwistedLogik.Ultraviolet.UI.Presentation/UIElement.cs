@@ -9,6 +9,7 @@ using TwistedLogik.Ultraviolet.Platform;
 using TwistedLogik.Ultraviolet.UI.Presentation.Animations;
 using TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives;
 using TwistedLogik.Ultraviolet.UI.Presentation.Input;
+using TwistedLogik.Ultraviolet.UI.Presentation.Media;
 using TwistedLogik.Ultraviolet.UI.Presentation.Styles;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation
@@ -178,8 +179,36 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             {
                 dc.PushOpacity(Opacity);
 
-                DrawCore(time, dc);
-                OnDrawing(time, dc);
+                var upf = Ultraviolet.GetUI().GetPresentationFoundation();
+                if (upf.OutOfBandRenderer.IsRenderedOutOfBand(this) && !upf.OutOfBandRenderer.IsDrawingRenderTargets)
+                {
+                    var texture = upf.OutOfBandRenderer.GetElementTexture(this);
+                    if (texture != null)
+                    {
+                        var renderTransformOrigin = RenderTransformOrigin;
+                        var renderPixelSize       = View.Display.DipsToPixels(RenderSize);
+                        var renderPixelOrigin     = new Vector2(
+                            (Single)(renderTransformOrigin.X * renderPixelSize.Width),
+                            (Single)(renderTransformOrigin.Y * renderPixelSize.Height));
+
+                        var renderPosition  = (Vector2)View.Display.DipsToPixels(AbsolutePosition) + renderPixelOrigin;
+                        var renderTransform = Matrix.CreateTranslation(renderPosition.X, renderPosition.Y, 0) * 
+                            RenderTransform.GetValueForDisplay(View.Display);
+
+                        dc.SpriteBatch.End();
+
+                        dc.SpriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null, renderTransform);
+                        dc.SpriteBatch.Draw(texture, Vector2.Zero, null, Color.White, 0f, renderPixelOrigin, 1f, SpriteEffects.None, 0f);
+                        dc.SpriteBatch.End();
+
+                        dc.SpriteBatch.Begin(SpriteSortMode.Deferred, null);
+                    }
+                }
+                else
+                {
+                    DrawCore(time, dc);
+                    OnDrawing(time, dc);
+                }
 
                 dc.PopOpacity();
             }
@@ -873,6 +902,24 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Gets or sets the element's rendering transformation.
+        /// </summary>
+        public Transform RenderTransform
+        {
+            get { return GetValue<Transform>(RenderTransformProperty); }
+            set { SetValue<Transform>(RenderTransformProperty, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets the relative center point of transforms applied to this element.
+        /// </summary>
+        public Point2D RenderTransformOrigin
+        {
+            get { return GetValue<Point2D>(RenderTransformOriginProperty); }
+            set { SetValue<Point2D>(RenderTransformOriginProperty, value); }
+        }
+
+        /// <summary>
         /// Occurs when a class is added to the element.
         /// </summary>
         public event UIElementClassEventHandler ClassAdded;
@@ -982,6 +1029,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <remarks>The styling name of this dependency property is 'opacity'.</remarks>
         public static readonly DependencyProperty OpacityProperty = DependencyProperty.Register("Opacity", typeof(Single), typeof(UIElement),
             new PropertyMetadata<Single>(CommonBoxedValues.Single.One));
+
+        /// <summary>
+        /// Identifies the <see cref="RenderTransform"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty RenderTransformProperty = DependencyProperty.Register("RenderTransform", typeof(Transform), typeof(UIElement),
+            new PropertyMetadata<Transform>(Transform.Identity, PropertyMetadataOptions.None, HandleRenderTransformChanged));
+
+        /// <summary>
+        /// Identifies the <see cref="RenderTransformOrigin"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty RenderTransformOriginProperty = DependencyProperty.Register("RenderTransformOrigin", typeof(Point2D), typeof(UIElement),
+            new PropertyMetadata<Point2D>(new Point2D(0.5, 0.5), PropertyMetadataOptions.None));
 
         /// <summary>
         /// Applies a visual state transition to the element.
@@ -1930,6 +1989,25 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             {
                 element.SetValue<Boolean>(IsVisiblePropertyKey, false);
                 element.IndicateDesiredSizeChanged();
+            }
+        }
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="RenderTransform"/> dependency property changes.
+        /// </summary>
+        private static void HandleRenderTransformChanged(DependencyObject dobj, Transform oldValue, Transform newValue)
+        {
+            var element  = (UIElement)dobj;
+            var uv       = element.Ultraviolet;
+            var renderer = uv.GetUI().GetPresentationFoundation().OutOfBandRenderer;
+
+            if (newValue == null || newValue is IdentityTransform)
+            {
+                renderer.Unregister(element);
+            }
+            else
+            {
+                renderer.Register(element);
             }
         }
 

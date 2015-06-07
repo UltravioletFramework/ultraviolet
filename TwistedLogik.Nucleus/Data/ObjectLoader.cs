@@ -18,8 +18,9 @@ namespace TwistedLogik.Nucleus.Data
     /// <param name="obj">The object which is being populated.</param>
     /// <param name="name">The name of the property which is being populated.</param>
     /// <param name="value">The value which is being resolved.</param>
+    /// <param name="attribute">A value indicating whether this member is being loaded from an attribute.</param>
     /// <returns><c>true</c> if the property was resolved; otherwise, <c>false</c>.</returns>
-    public delegate Boolean ObjectLoaderMemberResolutionHandler(Object obj, String name, String value);
+    public delegate Boolean ObjectLoaderMemberResolutionHandler(Object obj, String name, String value, Boolean attribute);
 
     /// <summary>
     /// Contains methods for loading object definitions from data files.
@@ -715,7 +716,7 @@ namespace TwistedLogik.Nucleus.Data
                 var attrMember = ObjectLoaderMember.Find(objectInstance, attr.Name, state.IgnoreMissingMembers);
                 if (attrMember != null)
                 {
-                    if (state.Resolver != null && state.Resolver(objectInstance, attr.Name, attr.Value))
+                    if (state.Resolver != null && state.Resolver(objectInstance, attr.Name, attr.Value, true))
                         continue;
 
                     var attrValue = ObjectResolver.FromString(attr.Value, attrMember.MemberType);
@@ -763,7 +764,7 @@ namespace TwistedLogik.Nucleus.Data
                 }
             }
 
-            if (state.Resolver != null && state.Resolver(objectInstance, memberElement.Name, memberElement.Value))
+            if (state.Resolver != null && state.Resolver(objectInstance, memberElement.Name, memberElement.Value, false))
                 return objectInstance;
 
             var member = ObjectLoaderMember.Find(objectInstance, memberElement.Name, state.IgnoreMissingMembers);

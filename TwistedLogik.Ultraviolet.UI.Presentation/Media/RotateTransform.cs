@@ -7,12 +7,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media
     /// <summary>
     /// Represents a transformation which rotates an object around the specified origin.
     /// </summary>
+    [UvmlKnownType]
     public sealed class RotateTransform : Transform
     {
         /// <inheritdoc/>
         public override Matrix GetValue()
         {
-            return Matrix.CreateTranslation(-(Single)CenterX, -(Single)CenterY, 0f) * Matrix.CreateRotationZ(Angle); 
+            return Matrix.CreateTranslation(-(Single)CenterX, -(Single)CenterY, 0f) * Matrix.CreateRotationZ(Radians.FromDegrees((Single)Angle)); 
         }
 
         /// <inheritdoc/>
@@ -21,7 +22,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media
             var displayCenterX = (Single)display.DipsToPixels(CenterX);
             var displayCenterY = (Single)display.DipsToPixels(CenterY);
 
-            return Matrix.CreateTranslation(-displayCenterX, -displayCenterY, 0f) * Matrix.CreateRotationZ(Angle); 
+            return Matrix.CreateTranslation(-displayCenterX, -displayCenterY, 0f) * Matrix.CreateRotationZ(Radians.FromDegrees((Single)Angle)); 
         }
 
         /// <summary>
