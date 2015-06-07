@@ -1093,10 +1093,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <inheritdoc/>
-        internal override void OnVisualParentChangedInternal()
+        internal override void OnVisualParentChangedInternal(Visual oldParent, Visual newParent)
         {
+            var hasRenderTransform = !IsIdentityTransform(RenderTransform);
+
+            if (oldParent != null)
+                UpdateDescendantsWithRenderTransformsCounter(oldParent, -((hasRenderTransform ? 1 : 0) + descendantsWithRenderTransforms));
+
+            if (newParent != null)
+                UpdateDescendantsWithRenderTransformsCounter(newParent, +((hasRenderTransform ? 1 : 0) + descendantsWithRenderTransforms));
+
             OnLayoutCacheInvalidatedInternal();
-            base.OnVisualParentChangedInternal();
+            base.OnVisualParentChangedInternal(oldParent, newParent);
         }
 
         /// <summary>
@@ -1285,6 +1293,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         internal Boolean IsArranging
         {
             get { return isArranging; }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the element has any descendants with render transforms.
+        /// </summary>
+        internal Boolean HasRenderTransformedDescendants
+        {
+            get { return descendantsWithRenderTransforms > 0; }
         }
 
         /// <inheritdoc/>
@@ -2026,10 +2042,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (newValue == null || newValue is IdentityTransform)
             {
                 renderer.Unregister(element);
+                element.UpdateDescendantsWithRenderTransformsCounter(element.VisualParent, -1);
             }
             else
             {
                 renderer.Register(element);
+                element.UpdateDescendantsWithRenderTransformsCounter(element.VisualParent, +1);
             }
         }
 
@@ -2093,6 +2111,30 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 return true;
             }
             return false;
+        }
+        
+        /// <summary>
+        /// Updates the counter used by this element's ancestors to track whether they have any
+        /// descendants with render transforms.
+        /// </summary>
+        /// <param name="parent">The parent object to update.</param>
+        /// <param name="count">The amount by which to adjust the counter.</param>
+        private void UpdateDescendantsWithRenderTransformsCounter(DependencyObject parent, Int32 count)
+        {
+            if (parent == null)
+                return;
+
+            var current = (DependencyObject)parent;
+            while (current != null)
+            {
+                var element = current as UIElement;
+                if (element != null)
+                {
+                    element.descendantsWithRenderTransforms += count;
+                }
+
+                current = VisualTreeHelper.GetParent(current);
+            }
         }
 
         /// <summary>
@@ -2253,6 +2295,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         private Size2D mostRecentAvailableSize;
         private Size2D mostRecentPositionOffset;
         private Int32 layoutDepth;
+        private Int32 descendantsWithRenderTransforms;
 
         // State values.
         private Boolean isStyling;

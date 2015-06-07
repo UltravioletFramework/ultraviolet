@@ -23,9 +23,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Invokes the <see cref="OnVisualParentChanged()"/> method.
         /// </summary>
-        internal virtual void OnVisualParentChangedInternal()
+        /// <param name="oldParent">The visual's old visual parent.</param>
+        /// <param name="newParent">The visual's new visual parent.</param>
+        internal virtual void OnVisualParentChangedInternal(Visual oldParent, Visual newParent)
         {
-            OnVisualParentChanged();
+            OnVisualParentChanged(oldParent, newParent);
         }
 
         /// <summary>
@@ -49,8 +51,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             if (child.visualParent != this)
             {
-                child.visualParent = this;
-                child.OnVisualParentChangedInternal();
+                var oldParent = child.visualParent;
+                var newParent = this;
+
+                child.visualParent = newParent;
+                child.OnVisualParentChangedInternal(oldParent, newParent);
             }
         }
 
@@ -65,7 +70,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (child.visualParent == this)
             {
                 child.visualParent = null;
-                child.OnVisualParentChangedInternal();
+                child.OnVisualParentChangedInternal(this, null);
             }
         }
 
@@ -90,7 +95,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Occurs when the object's visual parent is changed.
         /// </summary>
-        protected virtual void OnVisualParentChanged()
+        /// <param name="oldParent">The visual's old visual parent.</param>
+        /// <param name="newParent">The visual's new visual parent.</param>
+        protected virtual void OnVisualParentChanged(Visual oldParent, Visual newParent)
         {
 
         }

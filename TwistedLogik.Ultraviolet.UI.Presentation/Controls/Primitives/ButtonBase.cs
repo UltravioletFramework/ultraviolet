@@ -145,9 +145,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
                 if (clicked && ClickMode == ClickMode.Release)
                 {
                     var position = device.GetPositionInWindow(View.Window);
-                    if (position != null && AbsoluteBounds.Contains(position.Value))
+                    if (position != null)
                     {
-                        OnClick();
+                        var positionRelative = View.Display.PixelsToDips((Point2D)position.Value) - AbsolutePosition;
+                        if (HitTest(positionRelative) != null)
+                        {
+                            OnClick();
+                        }
                     }
                 }
 

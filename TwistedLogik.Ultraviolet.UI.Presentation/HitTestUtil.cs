@@ -22,7 +22,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (!element.PointToRender(point, out transformedPoint))
                 return false;
 
-            if (!element.Bounds.Contains(transformedPoint))
+            if (!element.HasRenderTransformedDescendants && !element.Bounds.Contains(transformedPoint))
                 return false;
 
             point = transformedPoint;
