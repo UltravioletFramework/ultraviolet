@@ -24,7 +24,7 @@ namespace TwistedLogik.Ultraviolet
             var uv = UltravioletContext.RequestCurrent();
             if (uv != null && uv.IsInitialized)
             {
-                initializer(uv);
+                resource = initializer(uv);
             }
 
             UltravioletContext.ContextInitialized += UltravioletContext_ContextInitialized;
