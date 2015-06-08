@@ -62,6 +62,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         public override void Resize(Int32 width, Int32 height)
         {
             Contract.EnsureNotDisposed(this, Disposed);
+            Contract.EnsureNot(attached, OpenGLStrings.CannotResizeAttachedRenderBuffer);
 
             this.texture.Resize(width, height);
 
@@ -133,6 +134,17 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
             Contract.Ensure(boundWrite, OpenGLStrings.ResourceNotBound);
 
             boundWrite = false;
+        }
+
+        /// <summary>
+        /// Marks the render buffer as being attached to a render target.
+        /// </summary>
+        public void MarkAttached()
+        {
+            if (attached)
+                throw new InvalidOperationException();
+
+            attached = true;
         }
 
         /// <inheritdoc/>
@@ -212,6 +224,28 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
             }
         }
 
+        /// <inheritdoc/>
+        public override Boolean Attached
+        {
+            get { return attached; }
+        }
+
+        /// <summary>
+        /// Resizes the render buffer. This method should only be called by the render target
+        /// to which this buffer is attached.
+        /// </summary>
+        /// <param name="width">The render buffer's new width in pixels.</param>
+        /// <param name="height">The render target's new width in pixels.</param>
+        internal void ResizeInternal(Int32 width, Int32 height)
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
+
+            this.texture.Resize(width, height);
+
+            this.width  = width;
+            this.height = height;
+        }
+
         /// <summary>
         /// Releases resources associated with the object.
         /// </summary>
@@ -236,6 +270,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         private readonly Boolean immutable;
         private Boolean boundRead;
         private Boolean boundWrite;
+        private Boolean attached;
 
         // State values.
         private readonly OpenGLTexture2D texture;

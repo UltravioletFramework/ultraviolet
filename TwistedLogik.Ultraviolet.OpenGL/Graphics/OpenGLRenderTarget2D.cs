@@ -72,6 +72,8 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
                 }
             });
 
+            sdlBuffer.MarkAttached();
+
             buffers.Add(sdlBuffer);
         }
 
@@ -84,7 +86,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
 
             foreach (var buffer in buffers)
             {
-                buffer.Resize(width, height);
+                buffer.ResizeInternal(width, height);
             }
 
             this.width  = width;

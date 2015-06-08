@@ -88,5 +88,13 @@ namespace TwistedLogik.Ultraviolet.Graphics
         {
             get;
         }
+
+        /// <summary>
+        /// Gets a value indicating whether the render buffer has been attached to a render target.
+        /// </summary>
+        public abstract Boolean Attached
+        {
+            get;
+        }
     }
 }
