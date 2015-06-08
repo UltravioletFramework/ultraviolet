@@ -11,18 +11,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media
     public sealed class TranslateTransform : Transform
     {
         /// <inheritdoc/>
-        public override Matrix GetValue()
+        public override Matrix Value
         {
-            return Matrix.CreateTranslation((Single)X, (Single)Y, 0f);
+            get { return value; }
         }
 
         /// <inheritdoc/>
-        public override Matrix GetValueForDisplay(IUltravioletDisplay display)
+        public override Matrix? Inverse
         {
-            var displayX = (Single)display.DipsToPixels(X);
-            var displayY = (Single)display.DipsToPixels(Y);
-
-            return Matrix.CreateTranslation(displayX, displayY, 0f);
+            get { return inverse; }
         }
 
         /// <summary>
@@ -47,12 +44,42 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media
         /// Identifies the <see cref="X"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty XProperty = DependencyProperty.Register("X", typeof(Double), typeof(TranslateTransform),
-            new PropertyMetadata<Double>(CommonBoxedValues.Double.Zero, PropertyMetadataOptions.None));
+            new PropertyMetadata<Double>(CommonBoxedValues.Double.Zero, PropertyMetadataOptions.None, HandleTranslationChanged));
 
         /// <summary>
         /// Identifies the <see cref="Y"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty YProperty = DependencyProperty.Register("Y", typeof(Double), typeof(TranslateTransform),
-            new PropertyMetadata<Double>(CommonBoxedValues.Double.Zero, PropertyMetadataOptions.None));
+            new PropertyMetadata<Double>(CommonBoxedValues.Double.Zero, PropertyMetadataOptions.None, HandleTranslationChanged));
+
+        /// <summary>
+        /// Called when the value of the <see cref="X"/> or <see cref="Y"/> dependency properties change.
+        /// </summary>
+        private static void HandleTranslationChanged(DependencyObject dobj, Double oldValue, Double newValue)
+        {
+            ((TranslateTransform)dobj).UpdateValue();
+        }
+
+        /// <summary>
+        /// Updates the transform's cached value.
+        /// </summary>
+        private void UpdateValue()
+        {
+            this.value = Matrix.CreateTranslation((Single)X, (Single)Y, 0f);
+
+            Matrix inverse;
+            if (Matrix.TryInvert(value, out inverse))
+            {
+                this.inverse = inverse;
+            }
+            else
+            {
+                this.inverse = null;
+            }
+        }
+
+        // Property values.
+        private Matrix value = Matrix.Identity;
+        private Matrix? inverse;
     }
 }

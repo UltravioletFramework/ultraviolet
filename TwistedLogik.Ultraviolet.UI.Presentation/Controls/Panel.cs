@@ -80,7 +80,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <inheritdoc/>
         protected override Visual HitTestCore(Point2D point)
         {
-            if (!HitTestUtil.IsPotentialHit(this, ref point))
+            if (!HitTestUtil.IsPotentialHit(this, point))
                 return null;
 
             var childMatch = HitTestChildren(point);
@@ -104,7 +104,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             {
                 var child = children[i];
 
-                var childMatch = child.HitTest(point - child.RelativeBounds.Location);
+                var childMatch = child.HitTest(TransformToDescendant(child, point));
                 if (childMatch != null)
                 {
                     return childMatch;

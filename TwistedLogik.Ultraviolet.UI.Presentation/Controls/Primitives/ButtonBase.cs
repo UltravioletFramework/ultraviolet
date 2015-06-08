@@ -1,6 +1,7 @@
 ﻿using System;
 using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet.Input;
+using TwistedLogik.Ultraviolet.UI.Presentation.Input;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
 {
@@ -144,16 +145,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
 
                 if (clicked && ClickMode == ClickMode.Release)
                 {
-                    var position = device.GetPositionInWindow(View.Window);
-                    if (position != null)
+                    var position = Mouse.GetPosition(this);
+                    if (Bounds.Contains(position))
                     {
-                        var positionRelative = View.Display.PixelsToDips((Point2D)position.Value) - AbsolutePosition;
-                        var positionRender   = default(Point2D);
-
-                        if (PointToRender(positionRelative, out positionRender) && Bounds.Contains(positionRender))
-                        {
-                            OnClick();
-                        }
+                        OnClick();
                     }
                 }
 

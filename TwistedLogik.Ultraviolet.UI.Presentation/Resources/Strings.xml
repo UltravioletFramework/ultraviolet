@@ -315,4 +315,9 @@
       <Variant>The specified element is not a descendant of this element.</Variant>
     </en-US>
   </String>
+  <String Key="INVALID_TRANSFORMATION">
+    <en-US>
+      <Variant>The specified transformation is not valid.</Variant>
+    </en-US>
+  </String>
 </LocalizedStrings>

@@ -1,4 +1,5 @@
 ﻿using System;
+using TwistedLogik.Ultraviolet.UI.Presentation.Media;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation
 {
@@ -11,21 +12,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Gets a value indicating whether the specified point is potentially a hit for the specified element.
         /// </summary>
         /// <param name="element">The element to evaluate.</param>
-        /// <param name="point">The point to evaluate. This point will be transformed into the element's render space.</param>
+        /// <param name="point">The point to evaluate.</param>
         /// <returns><c>true</c> if the specified point is a potential hit; otherwise, <c>false</c>.</returns>
-        public static Boolean IsPotentialHit(UIElement element, ref Point2D point)
+        public static Boolean IsPotentialHit(UIElement element, Point2D point)
         {
             if (!element.IsHitTestVisible)
                 return false;
 
-            Point2D transformedPoint;
-            if (!element.PointToRender(point, out transformedPoint))
+            if (!element.HasRenderTransformedDescendants && !element.Bounds.Contains(point))
                 return false;
 
-            if (!element.HasRenderTransformedDescendants && !element.Bounds.Contains(transformedPoint))
-                return false;
-
-            point = transformedPoint;
             return true;
         }
     }

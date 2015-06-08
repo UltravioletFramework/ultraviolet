@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel;
-using TwistedLogik.Ultraviolet.Platform;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Media
 {
@@ -19,37 +18,38 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media
         }
 
         /// <inheritdoc/>
-        public override Matrix GetValue()
+        public override Matrix Value
         {
-            var matrix   = Matrix.Identity;
-            var children = Children;
-
-            if (children != null && children.Count > 0)
+            get
             {
-                foreach (var child in children)
-                {
-                    matrix *= child.GetValue();
-                }
-            }
+                var matrix   = Matrix.Identity;
+                var children = Children;
 
-            return matrix;
+                if (children != null && children.Count > 0)
+                {
+                    foreach (var child in children)
+                    {
+                        matrix *= child.Value;
+                    }
+                }
+
+                return matrix;
+            }
         }
 
         /// <inheritdoc/>
-        public override Matrix GetValueForDisplay(IUltravioletDisplay display)
+        public override Matrix? Inverse
         {
-            var matrix   = Matrix.Identity;
-            var children = Children;
-
-            if (children != null && children.Count > 0)
+            get
             {
-                foreach (var child in children)
+                Matrix value = Value;
+                Matrix inverse;
+                if (Matrix.TryInvert(value, out inverse))
                 {
-                    matrix *= child.GetValueForDisplay(display);
+                    return inverse;
                 }
+                return null;
             }
-
-            return matrix;
         }
 
         /// <summary>

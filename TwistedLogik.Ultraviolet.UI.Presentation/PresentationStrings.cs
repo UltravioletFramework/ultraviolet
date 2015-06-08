@@ -86,6 +86,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public static readonly StringResource InvalidAssetIdentifier               = new StringResource(StringDatabase, "INVALID_ASSET_IDENTIFIER");
         public static readonly StringResource ElementIsNotAnAncestor               = new StringResource(StringDatabase, "ELEMENT_IS_NOT_AN_ANCESTOR");
         public static readonly StringResource ElementIsNotADescendant              = new StringResource(StringDatabase, "ELEMENT_IS_NOT_A_DESCENDANT");
+        public static readonly StringResource InvalidTransformation                = new StringResource(StringDatabase, "INVALID_TRANSFORMATION");
 #pragma warning restore 1591
     }
 }

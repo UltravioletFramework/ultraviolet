@@ -9,15 +9,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media
     public sealed class IdentityTransform : Transform
     {
         /// <inheritdoc/>
-        public override Matrix GetValue()
+        public override Matrix Value
         {
-            return Matrix.Identity;
+            get { return Matrix.Identity; }
         }
 
         /// <inheritdoc/>
-        public override Matrix GetValueForDisplay(IUltravioletDisplay display)
+        public override Matrix? Inverse
         {
-            return Matrix.Identity;
+            get { return Matrix.Identity; }
         }
     }
 }

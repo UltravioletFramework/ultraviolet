@@ -121,7 +121,9 @@
     <Compile Include="Documents\NamespaceDoc.cs" />
     <Compile Include="HitTestUtil.cs" />
     <Compile Include="Input\NamespaceDoc.cs" />
+    <Compile Include="Media\GeneralTransform.cs" />
     <Compile Include="Media\IdentityTransform.cs" />
+    <Compile Include="Media\MatrixTransform.cs" />
     <Compile Include="Media\RotateTransform.cs" />
     <Compile Include="Media\TransformCollection.cs" />
     <Compile Include="Media\TransformCollection.IEnumerable.cs" />

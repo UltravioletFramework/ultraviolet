@@ -1,13 +1,27 @@
 ﻿using System;
-using TwistedLogik.Ultraviolet.Platform;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Media
 {
     /// <summary>
     /// Represents a two-dimensional transformation.
     /// </summary>
-    public abstract class Transform : DependencyObject
+    [UvmlKnownType]
+    public abstract class Transform : GeneralTransform
     {
+        /// <inheritdoc/>
+        public override Boolean TryTransform(Vector2 vector, out Vector2 result)
+        {
+            result = Vector2.Transform(vector, Value);
+            return true;
+        }
+
+        /// <inheritdoc/>
+        public override Boolean TryTransform(Point2D point, out Point2D result)
+        {
+            result = Point2D.Transform(point, Value);
+            return true;
+        }
+
         /// <summary>
         /// Gets the identity transformation.
         /// </summary>
@@ -20,15 +34,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media
         /// Gets the <see cref="Matrix"/> that represents this transformation.
         /// </summary>
         /// <returns>A <see cref="Matrix"/> that represents the transformation.</returns>
-        public abstract Matrix GetValue();
+        public abstract Matrix Value
+        {
+            get;
+        }
 
         /// <summary>
-        /// Gets the <see cref="Matrix"/> that represents this transformation when applied 
-        /// in the screen space of the specified display.
+        /// Gets the inverse of this transform, if it exists.
         /// </summary>
-        /// <param name="display">The display in which the transformation will be applied.</param>
-        /// <returns>A <see cref="Matrix"/> that represents the transformation.</returns>
-        public abstract Matrix GetValueForDisplay(IUltravioletDisplay display);
+        public abstract Matrix? Inverse
+        {
+            get;
+        }
 
         /// <inheritdoc/>>
         internal sealed override Object DependencyDataSource

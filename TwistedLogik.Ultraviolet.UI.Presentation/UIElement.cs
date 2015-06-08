@@ -629,43 +629,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
-        /// Transforms the specified point from client space to render space. The coordinate system defined by
-        /// render space includes any layout and render transforms applied to this element.
-        /// </summary>
-        /// <param name="point">The point to transform.</param>
-        /// <param name="result">The transformed point.</param>
-        /// <returns><c>true</c> if the point was transformed; otherwise, <c>false</c>.</returns>
-        public Boolean PointToRender(Point2D point, out Point2D result)
-        {
-            var transform = RenderTransform;
-            if (!IsIdentityTransform(transform))
-            {
-                var offsetX = (RenderTransformOrigin.X * RenderSize.Width);
-                var offsetY = (RenderTransformOrigin.Y * RenderSize.Height);
-                var offset  = new Point2D(offsetX, offsetY);
-
-                Matrix matrix = transform.GetValueForDisplay(View.Display);
-                Matrix matrixInverse;
-
-                if (!Matrix.TryInvertRef(ref matrix, out matrixInverse))
-                {
-                    result = Point2D.Zero;
-                    return false;
-                }
-
-                Point2D pointRelative = point - offset;
-                Point2D pointTransformed;
-                Point2D.Transform(ref pointRelative, ref matrixInverse, out pointTransformed);
-
-                result = pointTransformed + offset;
-                return true;
-            }
-
-            result = point;
-            return true;
-        }
-
-        /// <summary>
         /// Gets the Ultraviolet context that created this element.
         /// </summary>
         public UltravioletContext Ultraviolet
@@ -1461,7 +1424,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <inheritdoc/>
         protected override Visual HitTestCore(Point2D point)
         {
-            if (!HitTestUtil.IsPotentialHit(this, ref point))
+            if (!HitTestUtil.IsPotentialHit(this, point))
                 return null;
 
             var children = VisualTreeHelper.GetChildrenCount(this);
@@ -1471,7 +1434,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 if (child == null)
                     continue;
 
-                var childMatch = child.HitTest(point - child.RelativeBounds.Location);
+                var childMatch = child.HitTest(TransformToDescendant(child, point));
                 if (childMatch != null)
                 {
                     return childMatch;
@@ -2087,18 +2050,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                     var spriteBatchState = dc.SpriteBatch.GetCurrentState();
 
                     var renderTransformOrigin = RenderTransformOrigin;
-                    var renderPixelSize       = View.Display.DipsToPixels(RenderSize);
-                    var renderPixelOrigin     = new Vector2(
-                        (Single)(renderTransformOrigin.X * renderPixelSize.Width),
-                        (Single)(renderTransformOrigin.Y * renderPixelSize.Height));
+                    var renderOrigin          = new Vector2(
+                        (Single)(renderTransformOrigin.X * RenderSize.Width),
+                        (Single)(renderTransformOrigin.Y * RenderSize.Height));
 
-                    var renderPosition  = (Vector2)View.Display.DipsToPixels(AbsolutePosition) + renderPixelOrigin;
-                    var renderTransform = Matrix.CreateTranslation(renderPosition.X, renderPosition.Y, 0) * 
-                            RenderTransform.GetValueForDisplay(View.Display);
+                    var renderPosition  = (Vector2)View.Display.DipsToPixels(AbsolutePosition) + renderOrigin;
+                    var renderTransformDips = Matrix.CreateTranslation(renderPosition.X, renderPosition.Y, 0) * RenderTransform.Value;
+
+                    Matrix renderTransformPixs;
+                    View.Display.DipsToPixels(ref renderTransformDips, out renderTransformPixs);
 
                     dc.SpriteBatch.End();
 
-                    dc.SpriteBatch.Begin(SpriteSortMode.Immediate, null, null, null, null, null, spriteBatchState.TransformMatrix * renderTransform);
+                    dc.SpriteBatch.Begin(SpriteSortMode.Immediate, null, null, null, null, null, spriteBatchState.TransformMatrix * renderTransformPixs);
                     dc.ReapplyClipRectangle();
 
                     dc.SpriteBatch.Draw(texture, Vector2.Zero, null, Color.White * dc.Opacity, 0f, textureOrigin, 1f, SpriteEffects.None, 0f);
