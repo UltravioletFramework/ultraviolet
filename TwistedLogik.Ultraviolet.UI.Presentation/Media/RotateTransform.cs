@@ -13,16 +13,46 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media
         /// <inheritdoc/>
         public override Matrix GetValue()
         {
-            return Matrix.CreateTranslation(-(Single)CenterX, -(Single)CenterY, 0f) * Matrix.CreateRotationZ(Radians.FromDegrees((Single)Angle)); 
+            var centerX = CenterX;
+            var centerY = CenterY;
+            var radians = Radians.FromDegrees((Single)Angle);
+
+            var hasCenter = (centerX != 0 || centerY != 0);
+            if (hasCenter)
+            {
+                var mtxCenter = Matrix.CreateTranslation(-(Single)centerX, -(Single)centerY, 0f);
+                var mtxRotate = Matrix.CreateRotationZ(radians);
+
+                Matrix mtxResult;
+                Matrix.Multiply(ref mtxCenter, ref mtxRotate, out mtxResult);
+
+                return mtxResult;
+            }
+            return Matrix.CreateRotationZ(radians);
         }
 
         /// <inheritdoc/>
         public override Matrix GetValueForDisplay(IUltravioletDisplay display)
         {
-            var displayCenterX = (Single)display.DipsToPixels(CenterX);
-            var displayCenterY = (Single)display.DipsToPixels(CenterY);
+            var centerX = CenterX;
+            var centerY = CenterY;
+            var radians = Radians.FromDegrees((Single)Angle);
 
-            return Matrix.CreateTranslation(-displayCenterX, -displayCenterY, 0f) * Matrix.CreateRotationZ(Radians.FromDegrees((Single)Angle)); 
+            var hasCenter = (centerX != 0 || centerY != 0);
+            if (hasCenter)
+            {
+                var displayCenterX = (Single)display.DipsToPixels(CenterX);
+                var displayCenterY = (Single)display.DipsToPixels(CenterY);
+
+                var mtxCenter = Matrix.CreateTranslation(-displayCenterX, -displayCenterY, 0f);
+                var mtxRotate = Matrix.CreateRotationZ(radians);
+
+                Matrix mtxResult;
+                Matrix.Multiply(ref mtxCenter, ref mtxRotate, out mtxResult);
+
+                return mtxResult;
+            }
+            return Matrix.CreateRotationZ(radians);
         }
 
         /// <summary>

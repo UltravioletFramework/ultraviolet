@@ -1,5 +1,6 @@
 ﻿using System;
 using TwistedLogik.Nucleus;
+using TwistedLogik.Ultraviolet.UI.Presentation.Media;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation
 {
@@ -9,6 +10,32 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
     /// </summary>
     public abstract class Visual : DependencyObject
     {
+        /// <summary>
+        /// Returns a transformation matrix which can be used to transform coordinates from this visual to
+        /// the specified ancestor of this visual.
+        /// </summary>
+        /// <param name="ancestor">The ancestor to which coordinates will be transformed.</param>
+        /// <returns>A <see cref="Matrix"/> which represents the specified transformation.</returns>
+        public Matrix MatrixTransformToAncestor(Visual ancestor)
+        {
+            Contract.Require(ancestor, "ancestor");
+
+            return ancestor.MatrixTransformToDescendantInternal(this, true);
+        }
+
+        /// <summary>
+        /// Returns a transformation matrix which can be used to transform coordinates from this visual to
+        /// the specified descendant of this visual.
+        /// </summary>
+        /// <param name="descendant">The descendnat to which coordinates will be transformed.</param>
+        /// <returns>A <see cref="Matrix"/> which represents the specified transformation.</returns>
+        public Matrix MatrixTransformToDescendant(Visual descendant)
+        {
+            Contract.Require(descendant, "descendant");
+
+            return MatrixTransformToDescendantInternal(descendant, false);
+        }
+
         /// <summary>
         /// Performs a hit test against this and returns the topmost descendant
         /// which contains the specified point.
@@ -111,6 +138,62 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         protected virtual Visual HitTestCore(Point2D point)
         {
             return null;
+        }
+
+        /// <summary>
+        /// Returns a transformation matrix which can be used to transform coordinates from this visual to
+        /// the specified descendant of this visual.
+        /// </summary>
+        /// <param name="descendant">The descendnat to which coordinates will be transformed.</param>
+        /// <param name="invert">A value indicating whether to invert the resulting matrix.</param>
+        /// <returns>A <see cref="Matrix"/> which represents the specified transformation.</returns>
+        private Matrix MatrixTransformToDescendantInternal(Visual descendant, Boolean invert)
+        {
+            var foundAncestor = false;
+
+            var matrix  = Matrix.Identity;
+            var current = (DependencyObject)descendant;
+
+            while (current != null)
+            {
+                if (current == this)
+                    foundAncestor = true;
+
+                var uiElement = current as UIElement;
+                if (uiElement != null)
+                {
+                    var rtOrigin   = uiElement.RenderTransformOrigin;
+                    var rtransform = uiElement.RenderTransform ?? Transform.Identity;
+
+                    var rtoriginOffsetX = rtOrigin.X * uiElement.RenderSize.Width;
+                    var rtoriginOffsetY = rtOrigin.Y * uiElement.RenderSize.Height;
+
+                    var mtxTranslateIntoOriginRelativeSpace = Matrix.CreateTranslation(
+                        (Single)(uiElement.RelativeBounds.X + rtoriginOffsetX),
+                        (Single)(uiElement.RelativeBounds.Y + rtoriginOffsetY), 0);
+                    var mtxElementRenderTransform = rtransform.GetValueForDisplay(uiElement.View.Display);
+                    var mtxTranslateOriginToTopLeft = Matrix.CreateTranslation(-(Single)rtoriginOffsetX, -(Single)rtoriginOffsetY, 0);
+
+                    Matrix.Multiply(ref matrix, ref mtxTranslateIntoOriginRelativeSpace, out matrix);
+
+                    matrix = 
+                        Matrix.CreateTranslation((Single)(uiElement.RelativeBounds.X + rtoriginOffsetX), (Single)(uiElement.RelativeBounds.Y + rtoriginOffsetY), 0) *
+                        rtransform.GetValueForDisplay(uiElement.View.Display) *
+                        Matrix.CreateTranslation(-(Single)rtoriginOffsetX, -(Single)rtoriginOffsetY, 0) * 
+                        matrix;
+                }
+
+                current = VisualTreeHelper.GetParent(current);
+            }
+
+            if (!foundAncestor)
+            {
+                var paramName = invert ? "ancestor" : "descendant";
+                var message = invert ? PresentationStrings.ElementIsNotAnAncestor : PresentationStrings.ElementIsNotADescendant;
+                throw new ArgumentException(message, paramName);
+            }
+
+            return invert ? matrix : Matrix.Invert(matrix);
         }
 
         // State values.

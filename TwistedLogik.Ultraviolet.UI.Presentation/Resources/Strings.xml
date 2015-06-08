@@ -305,4 +305,14 @@
       <Variant>The asset identifier '{0}' is not valid.</Variant>
     </en-US>
   </String>
+  <String Key="ELEMENT_IS_NOT_AN_ANCESTOR">
+    <en-US>
+      <Variant>The specified element is not an ancestor of this element.</Variant>
+    </en-US>
+  </String>
+  <String Key="ELEMENT_IS_NOT_A_DESCENDANT">
+    <en-US>
+      <Variant>The specified element is not a descendant of this element.</Variant>
+    </en-US>
+  </String>
 </LocalizedStrings>

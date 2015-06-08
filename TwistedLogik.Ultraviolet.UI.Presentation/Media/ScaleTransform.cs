@@ -13,16 +13,44 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media
         /// <inheritdoc/>
         public override Matrix GetValue()
         {
-            return Matrix.CreateTranslation(-(Single)CenterX, -(Single)CenterY, 0f) * Matrix.CreateScale(ScaleX, ScaleY, 1f);
+            var centerX = CenterX;
+            var centerY = CenterY;
+
+            var hasCenter = (centerX != 0 || centerY != 0);
+            if (hasCenter)
+            {
+                var mtxCenter = Matrix.CreateTranslation(-(Single)centerX, -(Single)centerY, 0f);
+                var mtxScale  = Matrix.CreateScale(ScaleX, ScaleY, 1f);
+
+                Matrix mtxResult;
+                Matrix.Multiply(ref mtxCenter, ref mtxScale, out mtxResult);
+
+                return mtxResult;
+            }
+            return Matrix.CreateScale(ScaleX, ScaleY, 1f);
         }
 
         /// <inheritdoc/>
         public override Matrix GetValueForDisplay(IUltravioletDisplay display)
         {
-            var displayCenterX = (Single)display.DipsToPixels(CenterX);
-            var displayCenterY = (Single)display.DipsToPixels(CenterY);
+            var centerX = CenterX;
+            var centerY = CenterY;
 
-            return Matrix.CreateTranslation(-displayCenterX, -displayCenterY, 0f) * Matrix.CreateScale(ScaleX, ScaleY, 1f);
+            var hasCenter = (centerX != 0 || centerY != 0);
+            if (hasCenter)
+            {
+                var displayCenterX = (Single)display.DipsToPixels(centerX);
+                var displayCenterY = (Single)display.DipsToPixels(centerY);
+
+                var mtxCenter = Matrix.CreateTranslation(-displayCenterX, -displayCenterY, 0f);
+                var mtxScale  = Matrix.CreateScale(ScaleX, ScaleY, 1f);
+
+                Matrix mtxResult;
+                Matrix.Multiply(ref mtxCenter, ref mtxScale, out mtxResult);
+
+                return mtxResult;
+            }
+            return Matrix.CreateScale(ScaleX, ScaleY, 1f);
         }
 
         /// <summary>
