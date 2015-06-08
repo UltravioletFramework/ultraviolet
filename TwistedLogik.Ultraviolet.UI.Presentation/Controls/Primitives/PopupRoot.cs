@@ -92,6 +92,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         }
 
         /// <inheritdoc/>
+        protected override Visual HitTestCore(Point2D point)
+        {
+            var child = Child;
+            if (child == null)
+                return null;
+
+            return child.HitTest(point);
+        }
+
+        /// <inheritdoc/>
         protected override void OnChildDesiredSizeChanged(UIElement child)
         {
             var popup = Parent as Popup;

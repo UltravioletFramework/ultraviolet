@@ -239,19 +239,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <returns>A <see cref="Matrix"/> which represents the specified transformation.</returns>
         private Matrix MatrixTransformToDescendantInternal(Visual descendant, Boolean invert)
         {
-            var foundAncestor = false;
+            var mtxTransformation = Matrix.Identity;
 
-            var matrix  = Matrix.Identity;
-            var current = (DependencyObject)descendant;
-
-            while (current != null)
+            DependencyObject current;
+            for (current = descendant; current != null && current != this; current = VisualTreeHelper.GetParent(current))
             {
-                if (current == this)
-                {
-                    foundAncestor = true;
-                    break;
-                }
-
                 var uiElement = current as UIElement;
                 if (uiElement != null)
                 {
@@ -267,26 +259,21 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                     var mtxElementRenderTransform = rtTransform.Value;
                     var mtxTranslateOriginToTopLeft = Matrix.CreateTranslation(-(Single)rtOriginOffsetX, -(Single)rtOriginOffsetY, 0);
 
-//                    Matrix.Multiply(ref matrix, ref mtxTranslateIntoOriginRelativeSpace, out matrix);
-
-                    matrix = 
-                        Matrix.CreateTranslation((Single)(uiElement.RelativeBounds.X + rtOriginOffsetX), (Single)(uiElement.RelativeBounds.Y + rtOriginOffsetY), 0) *
-                        rtTransform.Value *
-                        Matrix.CreateTranslation(-(Single)rtOriginOffsetX, -(Single)rtOriginOffsetY, 0) * 
-                        matrix;
+                    Matrix mtxResult;
+                    Matrix.Multiply(ref mtxTranslateIntoOriginRelativeSpace, ref mtxElementRenderTransform, out mtxResult);
+                    Matrix.Multiply(ref mtxResult, ref mtxTranslateOriginToTopLeft, out mtxResult);
+                    Matrix.Multiply(ref mtxResult, ref mtxTransformation, out mtxTransformation);
                 }
-
-                current = VisualTreeHelper.GetParent(current);
             }
 
-            if (!foundAncestor)
+            if (current != this)
             {
                 var paramName = invert ? "ancestor" : "descendant";
                 var message = invert ? PresentationStrings.ElementIsNotAnAncestor : PresentationStrings.ElementIsNotADescendant;
                 throw new ArgumentException(message, paramName);
             }
 
-            return invert ? matrix : Matrix.Invert(matrix);
+            return invert ? mtxTransformation : Matrix.Invert(mtxTransformation);
         }
 
         // State values.
