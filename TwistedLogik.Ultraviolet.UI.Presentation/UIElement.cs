@@ -160,18 +160,22 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             var shouldDraw = true;
 
-            var popup = this as Popup;
-            if (popup == null || View.Popups.IsDrawingPopup(popup))
+            var upf = Ultraviolet.GetUI().GetPresentationFoundation();
+            if (upf.OutOfBandRenderer.IsRenderedOutOfBand(this) && !upf.OutOfBandRenderer.IsDrawingRenderTargets)
             {
-                if (clip.HasValue && clip.Value.IsEmpty)
-                    shouldDraw = false;
-
-                var scissor = Ultraviolet.GetGraphics().GetScissorRectangle();
-                if (scissor.HasValue && !(this is Popup))
+                var popup = this as Popup;
+                if (popup == null || View.Popups.IsDrawingPopup(popup))
                 {
-                    var absBounds = Display.DipsToPixels(AbsoluteBounds);
-                    if (!absBounds.Intersects(scissor.Value))
+                    if (clip.HasValue && clip.Value.IsEmpty)
                         shouldDraw = false;
+
+                    var scissor = Ultraviolet.GetGraphics().GetScissorRectangle();
+                    if (scissor.HasValue && !(this is Popup))
+                    {
+                        var absBounds = Display.DipsToPixels(AbsoluteBounds);
+                        if (!absBounds.Intersects(scissor.Value))
+                            shouldDraw = false;
+                    }
                 }
             }
 
