@@ -20,7 +20,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public OutOfBandRenderer(UltravioletContext uv)
             : base(uv)
         {
-            this.renderTargetPool = new ExpandingPool<OutOfBandRenderTarget>(4, () => 
+            this.renderTargetPool = new ExpandingPool<OutOfBandRenderTarget>(4, 32, () => 
             {
                 return new OutOfBandRenderTarget(uv);
             });

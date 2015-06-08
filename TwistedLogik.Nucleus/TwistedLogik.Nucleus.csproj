@@ -158,6 +158,7 @@
     <Compile Include="Collections\NamespaceDoc.cs" />
     <Compile Include="Collections\ObservableDictionary.cs" />
     <Compile Include="Collections\ObservableList.cs" />
+    <Compile Include="Collections\Pool.cs" />
     <Compile Include="Collections\PooledLinkedList.cs" />
     <Compile Include="Collections\PooledObjectScope.cs" />
     <Compile Include="Collections\ExpandingPoolRegistry.cs" />
