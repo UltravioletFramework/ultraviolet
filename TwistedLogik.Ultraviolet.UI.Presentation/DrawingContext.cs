@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
+using TwistedLogik.Ultraviolet.Platform;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation
 {
@@ -12,26 +13,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
     public sealed partial class DrawingContext
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="DrawingContext"/> class.
-        /// </summary>
-        internal DrawingContext()
-        {
-
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DrawingContext"/> class.
-        /// </summary>
-        internal DrawingContext(PresentationFoundationView view)
-        {
-            this.view = view;
-        }
-
-        /// <summary>
         /// Resets the drawing context by clearing its render state stacks.
         /// </summary>
-        public void Reset()
+        /// <param name="display">The display on which the drawing context is rendering.</param>
+        public void Reset(IUltravioletDisplay display)
         {
+            this.display = display;
+
             opacityStack.Clear();
             clipStack.Clear();
         }
@@ -126,6 +114,24 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Gets the amount by which the drawing context's clipping regions are translated along the x-axis.
+        /// </summary>
+        internal Single ClipTranslationX
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Gets the amount by which the drawing context's clipping regions are translated along the y-axis.
+        /// </summary>
+        internal Single ClipTranslationY
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
         /// Flushes the sprite batch and applies the current clip rectangle to the graphics device.
         /// </summary>
         /// <param name="flush">A value indicating whether to flush the sprite batch before applying the scissor rectangle.</param>
@@ -135,7 +141,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 return;
 
             var uv       = SpriteBatch.Ultraviolet;
-            var cliprect = (ClipRectangle == null || view == null) ? (Rectangle?)null : (Rectangle?)view.Display.DipsToPixels(ClipRectangle.Value);
+            var cliprect = (ClipRectangle == null || display == null) ? (Rectangle?)null : (Rectangle?)display.DipsToPixels(ClipRectangle.Value);
+
+            if (cliprect.HasValue)
+            {
+                var cliprectValue = cliprect.Value;
+
+                cliprect = new Rectangle(
+                    cliprectValue.X + (Int32)ClipTranslationX,
+                    cliprectValue.Y + (Int32)ClipTranslationY,
+                    cliprectValue.Width,
+                    cliprectValue.Height);
+            }
 
             var current = SpriteBatch.Ultraviolet.GetGraphics().GetScissorRectangle();
             if (current == cliprect)
@@ -145,6 +162,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             {
                 SpriteBatch.Flush();
             }
+
             SpriteBatch.Ultraviolet.GetGraphics().SetScissorRectangle(cliprect);
         }
 
@@ -152,7 +170,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         private SpriteBatch spriteBatch;
 
         // State values.
-        private readonly PresentationFoundationView view;
+        private IUltravioletDisplay display;
         private readonly Stack<OpacityState> opacityStack = new Stack<OpacityState>(32);
         private readonly Stack<ClipState> clipStack = new Stack<ClipState>(32);
     }

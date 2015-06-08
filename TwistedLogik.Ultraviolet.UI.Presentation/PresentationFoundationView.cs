@@ -30,7 +30,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             this.namescope      = new Namescope();
             this.resources      = new PresentationFoundationViewResources(this);
-            this.drawingContext = new DrawingContext(this);
+            this.drawingContext = new DrawingContext();
 
             this.layoutRoot = new Grid(uv, null);
             this.layoutRoot.HorizontalAlignment = HorizontalAlignment.Stretch;
@@ -84,7 +84,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (Window == null)
                 return;
 
-            drawingContext.Reset();
+            drawingContext.Reset(Display);
             drawingContext.SpriteBatch = spriteBatch;
 
             var fe = layoutRoot as FrameworkElement;

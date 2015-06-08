@@ -39,7 +39,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 position = (position == null) ? queue.First : position.Next;
                 next     = position.Next;
 
-                dc.Reset();
+                dc.Reset(position.Value.View.Display);
 
                 position.Value.EnsureIsLoaded(true);
                 position.Value.Draw(time, dc);

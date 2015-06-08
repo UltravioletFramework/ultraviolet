@@ -119,7 +119,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                     graphics.SetRenderTarget(rtarget.RenderTarget);
                     graphics.Clear(Color.Transparent);
 
-                    drawingContext.Reset();
+                    drawingContext.Reset(element.View.Display);
                     drawingContext.SpriteBatch = spriteBatch;
 
                     var centerX = rtarget.RenderTarget.Width / 2f;
@@ -136,6 +136,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                     var transform = Matrix.CreateTranslation(translate.X, translate.Y, 0);
 
                     spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, null, null, null, null, transform);
+
+                    drawingContext.ClipTranslationX = translate.X;
+                    drawingContext.ClipTranslationY = translate.Y;
 
                     element.Draw(time, drawingContext);
 
