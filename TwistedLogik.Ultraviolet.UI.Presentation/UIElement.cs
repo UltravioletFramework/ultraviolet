@@ -690,6 +690,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Gets a value indicating whether this element has a transform applied to it.
+        /// </summary>
+        public Boolean HasTransform
+        {
+            get { return !IsIdentityTransform(RenderTransform); }
+        }
+
+        /// <summary>
         /// Gets a value indicating whether the element's styling state is valid.
         /// </summary>
         public Boolean IsStyleValid
@@ -1357,6 +1365,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Removes the specified child element from this element.
+        /// </summary>
+        /// <param name="child">The child element to remove from this element.</param>
+        protected internal virtual void RemoveLogicalChild(UIElement child)
+        {
+
+        }
+
+        /// <summary>
         /// Called when the desired size of one of the element's children is changed.
         /// </summary>
         /// <param name="child">The child element that was resized.</param>
@@ -1366,15 +1383,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             {
                 InvalidateMeasure();
             }
-        }
-
-        /// <summary>
-        /// Removes the specified child element from this element.
-        /// </summary>
-        /// <param name="child">The child element to remove from this element.</param>
-        protected internal virtual void RemoveLogicalChild(UIElement child)
-        {
-
         }
 
         /// <summary>
@@ -1423,6 +1431,33 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             {
                 InvalidateStyle();
             }
+        }
+
+        /// <summary>
+        /// Occurs when the element's transform state changes.
+        /// </summary>
+        protected virtual void OnTransformChanged()
+        {
+            var thisElementIsTransformed = !IsIdentityTransform(RenderTransform);
+
+            VisualTreeHelper.ForEachChild<UIElement>(this, CommonBoxedValues.Boolean.FromValue(thisElementIsTransformed), (child, state) =>
+            {
+                child.OnAncestorTransformChanged((Boolean)state);
+            });
+        }
+
+        /// <summary>
+        /// Occurs when the transform of one of this element's ancestors is changed.
+        /// </summary>
+        /// <param name="transformed">A value indicating whether any of this element's ancestors are currently transformed.</param>
+        protected virtual void OnAncestorTransformChanged(Boolean transformed)
+        {
+            var thisElementIsTransformed = transformed || !IsIdentityTransform(RenderTransform);
+
+            VisualTreeHelper.ForEachChild<UIElement>(this, CommonBoxedValues.Boolean.FromValue(thisElementIsTransformed), (child, state) =>
+            {
+                child.OnAncestorTransformChanged((Boolean)state);
+            });
         }
 
         /// <inheritdoc/>
@@ -1904,6 +1939,26 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Checks to see whether this element, or any of its ancestors, is transformed.
+        /// </summary>
+        /// <returns></returns>
+        protected Boolean CheckIsTransformed()
+        {
+            var current = (DependencyObject)this;
+            while (current != null)
+            {
+                var uiElement = current as UIElement;
+                if (uiElement != null && uiElement.HasTransform)
+                {
+                    return true;
+                }
+
+                current = VisualTreeHelper.GetParent(current);
+            }
+            return false;
+        }
+
+        /// <summary>
         /// Gets the window in which the element is being displayed.
         /// </summary>
         protected IUltravioletWindow Window
@@ -2016,6 +2071,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 renderer.Register(element);
                 element.UpdateDescendantsWithRenderTransformsCounter(element.VisualParent, +1);
             }
+
+            element.OnTransformChanged();
         }
 
         /// <summary>

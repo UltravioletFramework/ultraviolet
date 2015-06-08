@@ -58,6 +58,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public void Clear()
         {
             queue.Clear();
+
+            foreach (var popup in pending)
+                queue.AddLast(popup);
+
+            pending.Clear();
         }
 
         /// <summary>
@@ -79,6 +84,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Enqueues a popup which is being rendered out-of-band.
+        /// </summary>
+        /// <param name="popup">The popup to enqueue.</param>
+        public void EnqueueOutOfBand(Popup popup)
+        {
+            Contract.Require(popup, "popup");
+
+            pending.AddLast(popup);
+        }
+
+        /// <summary>
         /// Performs a hit test against the contents of the queue.
         /// </summary>
         /// <param name="point">A point in device-independent screen space to test against the contents of the queue.</param>
@@ -95,7 +111,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             for (var current = queue.Last; current != null; current = current.Previous)
             {
-                var match = current.Value.HitTest(point);
+                var match = current.Value.PopupHitTest(point);
                 if (match != null)
                 {
                     popup = current.Value;
@@ -117,6 +133,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
         // State values.
         private readonly PooledLinkedList<Popup> queue = new PooledLinkedList<Popup>(8);
+        private readonly PooledLinkedList<Popup> pending = new PooledLinkedList<Popup>(8);
         private LinkedListNode<Popup> position;
         private LinkedListNode<Popup> next;
     }

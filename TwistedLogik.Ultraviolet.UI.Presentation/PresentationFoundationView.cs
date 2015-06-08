@@ -79,6 +79,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             Contract.Require(time, "time");
             Contract.Require(spriteBatch, "spriteBatch");
 
+            popupQueue.Clear();
+
             if (Window == null)
                 return;
 
@@ -91,7 +93,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             layoutRoot.Draw(time, drawingContext);
             popupQueue.Draw(time, drawingContext);
-            popupQueue.Clear();
 
             drawingContext.SpriteBatch = null;
         }

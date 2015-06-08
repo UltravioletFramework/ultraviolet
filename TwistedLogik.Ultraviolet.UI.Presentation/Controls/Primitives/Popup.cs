@@ -152,6 +152,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         public static readonly DependencyProperty PlacementRectangleProperty = DependencyProperty.Register("PlacementRectangle", typeof(RectangleD), typeof(Popup),
             new PropertyMetadata<RectangleD>(RectangleD.Empty, PropertyMetadataOptions.None, HandlePlacementRectangleChanged));
 
+        /// <summary>
+        /// Performs a hit test against the popup.
+        /// </summary>
+        /// <param name="point">The point in screen space to evaluate.</param>
+        /// <returns>The <see cref="Visual"/> at the specified point in screen space, or <c>null</c> if there is no such visual.</returns>
+        internal Visual PopupHitTest(Point2D point)
+        {
+            return root.HitTest(point - new Point2D(popupX, popupY));
+        }
+
         /// <inheritdoc/>
         protected internal override UIElement GetLogicalChild(Int32 childIndex)
         {
@@ -182,6 +192,22 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         }
 
         /// <inheritdoc/>
+        protected override void OnVisualParentChanged(Visual oldParent, Visual newParent)
+        {
+            this.root.IsTransformed = CheckIsTransformed();
+
+            base.OnVisualParentChanged(oldParent, newParent);
+        }
+
+        /// <inheritdoc/>
+        protected override void OnAncestorTransformChanged(Boolean transformed)
+        {
+            this.root.IsTransformed = transformed;
+
+            base.OnAncestorTransformChanged(transformed);
+        }
+
+        /// <inheritdoc/>
         protected override void ReloadContentCore(Boolean recursive)
         {
             base.ReloadContentCore(recursive);
@@ -199,7 +225,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             {
                 if (IsOpen)
                 {
-                    View.Popups.Enqueue(this);
+                    var upf = Ultraviolet.GetUI().GetPresentationFoundation();
+                    if (upf.OutOfBandRenderer.IsDrawingRenderTargets)
+                    {
+                        View.Popups.EnqueueOutOfBand(this);
+                    }
+                    else
+                    {
+                        View.Popups.Enqueue(this);
+                    }
                 }
             }
         }
@@ -216,30 +250,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         {
             base.CacheLayoutParametersCore();
             root.CacheLayoutParameters();
-        }
-
-        /// <summary>
-        /// Raises the <see cref="Opened"/> event.
-        /// </summary>
-        protected virtual void OnOpened()
-        {
-            var temp = Opened;
-            if (temp != null)
-            {
-                temp(this);
-            }
-        }
-
-        /// <summary>
-        /// Raises the <see cref="Closed"/> event.
-        /// </summary>
-        protected virtual void OnClosed()
-        {
-            var temp = Closed;
-            if (temp != null)
-            {
-                temp(this);
-            }
         }
 
         /// <inheritdoc/>
@@ -269,7 +279,31 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <inheritdoc/>
         protected override Visual HitTestCore(Point2D point)
         {
-            return root.HitTest(point - new Point2D(popupX, popupY));
+            return null;
+        }
+
+        /// <summary>
+        /// Raises the <see cref="Opened"/> event.
+        /// </summary>
+        protected virtual void OnOpened()
+        {
+            var temp = Opened;
+            if (temp != null)
+            {
+                temp(this);
+            }
+        }
+
+        /// <summary>
+        /// Raises the <see cref="Closed"/> event.
+        /// </summary>
+        protected virtual void OnClosed()
+        {
+            var temp = Closed;
+            if (temp != null)
+            {
+                temp(this);
+            }
         }
 
         /// <summary>
@@ -326,6 +360,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             if (newValue)
             {
                 root.EnsureIsLoaded(true);
+                root.IsOpen = true;
 
                 if (child != null)
                 {
@@ -340,6 +375,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             else
             {
                 root.EnsureIsLoaded(false);
+                root.IsOpen = false;
 
                 if (child != null)
                 {
