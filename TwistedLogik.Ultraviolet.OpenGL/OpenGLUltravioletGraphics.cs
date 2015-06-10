@@ -665,12 +665,21 @@ namespace TwistedLogik.Ultraviolet.OpenGL
         /// <param name="height">The height of the region to convert.</param>
         private void ConvertScreenRegionUvToGL(ref Int32 x, ref Int32 y, Int32 width, Int32 height)
         {
-            var currentWindow = Ultraviolet.GetPlatform().Windows.GetCurrent();
-            if (currentWindow == null)
-                return;
+            var renderTargetHeight = 0;
+            if (renderTarget != null)
+            {
+                renderTargetHeight = renderTarget.Height;
+            }
+            else
+            {
+                var currentWindow = Ultraviolet.GetPlatform().Windows.GetCurrent();
+                if (currentWindow == null)
+                    return;
 
-            var targetHeight = (renderTarget == null) ? currentWindow.ClientSize.Height : renderTarget.Height;
-            y = targetHeight - (height + y);
+                renderTargetHeight = currentWindow.ClientSize.Height;
+            }
+
+            y = renderTargetHeight - (height + y);
         }
 
         // Property values.
