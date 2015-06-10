@@ -36,5 +36,19 @@ namespace TwistedLogik.Ultraviolet.Graphics
         /// <param name="surface">The surface to save.</param>
         /// <param name="stream">The stream to which to save the surface data.</param>
         public abstract void SaveAsJpeg(Surface2D surface, Stream stream);
+
+        /// <summary>
+        /// Saves the specified render target as a PNG image.
+        /// </summary>
+        /// <param name="renderTarget">The render target to save.</param>
+        /// <param name="stream">The stream to which to save the render target data.</param>
+        public abstract void SaveAsPng(RenderTarget2D renderTarget, Stream stream);
+
+        /// <summary>
+        /// Saves the specified render target as a JPEG image.
+        /// </summary>
+        /// <param name="renderTarget">The render target to save.</param>
+        /// <param name="stream">The stream to which to save the render target data.</param>
+        public abstract void SaveAsJpeg(RenderTarget2D renderTarget, Stream stream);
     }
 }
