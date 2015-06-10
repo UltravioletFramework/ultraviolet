@@ -100,7 +100,7 @@ namespace TwistedLogik.Ultraviolet.Desktop.Graphics
 
                         for (int x = 0; x < width; x++)
                         {
-                            *pDst++ = (*pSrc++).ToRgba();
+                            *pDst++ = (*pSrc++).ToArgb();
                         }
                     }
                 }
