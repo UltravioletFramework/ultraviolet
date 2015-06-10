@@ -256,14 +256,20 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             var scissorRect     = scissor.GetValueOrDefault();
             var scissorClipping = scissor.HasValue;
 
+            if (scissorClipping && !IsScissorClippingOptimizationPossibleForTransform(spriteBatch.CurrentTransformMatrix))
+                scissorClipping = false;
+
             foreach (var token in input)
             {
                 var tokenBounds = token.Bounds;
 
                 if (scissorClipping)
                 {
-                    if (position.Y + tokenBounds.Bottom < scissorRect.Top || position.Y + tokenBounds.Top > scissorRect.Bottom ||
-                        position.X + tokenBounds.Right < scissorRect.Left || position.X + tokenBounds.Left > scissorRect.Right)
+                    var translation = spriteBatch.CurrentTransformMatrix.Translation;
+                    if (translation.Y + position.Y + tokenBounds.Bottom < scissorRect.Top || 
+                        translation.Y + position.Y + tokenBounds.Top > scissorRect.Bottom ||
+                        translation.X + position.X + tokenBounds.Right < scissorRect.Left || 
+                        translation.X + position.X + tokenBounds.Left > scissorRect.Right)
                     {
                         continue;
                     }
@@ -290,6 +296,22 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             }
 
             return new RectangleF(position.X + input.Bounds.X, position.Y + input.Bounds.Y, input.Bounds.Width, input.Bounds.Height);
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the text renderer can optimize text rendering under the specified transform.
+        /// The optimization in question stops rendering if we leave the scissor rectangle; this is not currently possible
+        /// if the sprite batch is being rotated or scaled.
+        /// </summary>
+        /// <param name="matrix">The transform matrix to evaluate.</param>
+        /// <returns><c>true</c> if the specified matrix allows for the optimization to take place; otherwise, <c>false</c>.</returns>
+        private static Boolean IsScissorClippingOptimizationPossibleForTransform(Matrix matrix)
+        {
+            return
+                matrix.M11 == 1 && matrix.M12 == 0 && matrix.M13 == 0 &&
+                matrix.M21 == 0 && matrix.M22 == 1 && matrix.M23 == 0 &&
+                matrix.M31 == 0 && matrix.M32 == 0 && matrix.M33 == 1 &&
+                matrix.M41 == 0 && matrix.M42 == 0 && matrix.M43 == 0 && matrix.M44 == 1;
         }
 
         // The lexer and parser used to process input text.
