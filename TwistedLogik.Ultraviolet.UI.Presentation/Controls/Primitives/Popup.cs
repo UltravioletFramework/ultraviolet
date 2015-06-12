@@ -506,7 +506,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             popupX = popupArea.X;
             popupY = popupArea.Y;
 
-            root.Arrange(popupArea, ArrangeOptions.None);
+            root.Arrange(popupArea, ArrangeOptions.ForceInvalidatePosition);
         }
 
         /// <summary>

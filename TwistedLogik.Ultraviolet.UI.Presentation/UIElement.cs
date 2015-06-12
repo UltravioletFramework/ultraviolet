@@ -444,7 +444,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             }
             this.isArrangeValid = true;
 
-            PositionElementAndPotentiallyChildren();
+            var forceInvalidatePosition = ((options & ArrangeOptions.ForceInvalidatePosition) == ArrangeOptions.ForceInvalidatePosition);
+            PositionElementAndPotentiallyChildren(forceInvalidatePosition);
 
             upf.ArrangeQueue.Remove(this);
         }
@@ -2165,13 +2166,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Updates the element's position and, if that position changes, the positions of the element's children.
         /// </summary>
-        private void PositionElementAndPotentiallyChildren()
+        private void PositionElementAndPotentiallyChildren(Boolean forceInvalidatePosition)
         {
             var oldAbsolutePosition = AbsolutePosition;
 
             Position(mostRecentPositionOffset);
 
-            if (!oldAbsolutePosition.Equals(AbsolutePosition))
+            if (forceInvalidatePosition || !oldAbsolutePosition.Equals(AbsolutePosition))
             {
                 PositionChildren();
             }
