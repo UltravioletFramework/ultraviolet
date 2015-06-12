@@ -192,6 +192,22 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         }
 
         /// <inheritdoc/>
+        protected override void OnVisualParentChanged(Visual oldParent, Visual newParent)
+        {
+            this.root.IsTransformed = CheckIsTransformed();
+
+            base.OnVisualParentChanged(oldParent, newParent);
+        }
+
+        /// <inheritdoc/>
+        protected override void OnAncestorTransformChanged(Boolean transformed)
+        {
+            this.root.IsTransformed = transformed;
+
+            base.OnAncestorTransformChanged(transformed);
+        }
+
+        /// <inheritdoc/>
         protected override void ReloadContentCore(Boolean recursive)
         {
             base.ReloadContentCore(recursive);
@@ -216,10 +232,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
                     }
                     else
                     {
-                        View.Popups.Enqueue(this);
-                    }
+                    View.Popups.Enqueue(this);
                 }
             }
+        }
         }
 
         /// <inheritdoc/>
@@ -234,30 +250,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         {
             base.CacheLayoutParametersCore();
             root.CacheLayoutParameters();
-        }
-
-        /// <summary>
-        /// Raises the <see cref="Opened"/> event.
-        /// </summary>
-        protected virtual void OnOpened()
-        {
-            var temp = Opened;
-            if (temp != null)
-            {
-                temp(this);
-            }
-        }
-
-        /// <summary>
-        /// Raises the <see cref="Closed"/> event.
-        /// </summary>
-        protected virtual void OnClosed()
-        {
-            var temp = Closed;
-            if (temp != null)
-            {
-                temp(this);
-            }
         }
 
         /// <inheritdoc/>
@@ -288,6 +280,30 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         protected override Visual HitTestCore(Point2D point)
         {
             return null;
+        }
+
+        /// <summary>
+        /// Raises the <see cref="Opened"/> event.
+        /// </summary>
+        protected virtual void OnOpened()
+        {
+            var temp = Opened;
+            if (temp != null)
+            {
+                temp(this);
+            }
+        }
+
+        /// <summary>
+        /// Raises the <see cref="Closed"/> event.
+        /// </summary>
+        protected virtual void OnClosed()
+        {
+            var temp = Closed;
+            if (temp != null)
+            {
+                temp(this);
+            }
         }
 
         /// <summary>
@@ -344,6 +360,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             if (newValue)
             {
                 root.EnsureIsLoaded(true);
+                root.IsOpen = true;
 
                 if (child != null)
                 {
@@ -358,6 +375,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             else
             {
                 root.EnsureIsLoaded(false);
+                root.IsOpen = false;
 
                 if (child != null)
                 {
@@ -488,7 +506,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             popupX = popupArea.X;
             popupY = popupArea.Y;
 
-            root.Arrange(popupArea, ArrangeOptions.None);
+            root.Arrange(popupArea, ArrangeOptions.ForceInvalidatePosition);
         }
 
         /// <summary>

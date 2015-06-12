@@ -4,6 +4,7 @@ using TwistedLogik.Nucleus;
 using TwistedLogik.Nucleus.Collections;
 using TwistedLogik.Ultraviolet.Graphics;
 using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
+using TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation
 {
@@ -72,7 +73,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 return;
 
             var rt = renderTargetPool.Retrieve();
-            UpdateRenderTargetSize(rt);
+            rt.Resize(renderTargetSize, renderTargetSize);
             registeredElements.Add(element, rt);
         }
 
@@ -226,7 +227,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
                     foreach (var kvp in registeredElements)
                     {
-                        UpdateRenderTargetSize(kvp.Value);
+                        kvp.Value.Resize(renderTargetSize, renderTargetSize);
                     }
                 }
             }
@@ -246,17 +247,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 registeredElements.Clear();
             }
             base.Dispose(disposing);
-        }
-
-        /// <summary>
-        /// Ensures that the specified render target has the correct size.
-        /// </summary>
-        private void UpdateRenderTargetSize(OutOfBandRenderTarget rt)
-        {   
-            if (rt.Width != renderTargetSize || rt.Height != renderTargetSize)
-            {
-                rt.Resize(renderTargetSize, renderTargetSize);
-            }
         }
 
         // The pool of available render buffers.
