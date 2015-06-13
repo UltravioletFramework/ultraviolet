@@ -2111,13 +2111,51 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
                     var spriteBatchState = dc.SpriteBatch.GetCurrentState();
 
+                    var renderPosition = AbsolutePosition;
+                    var renderTransform = (RenderTransform ?? Transform.Identity).Value;
                     var renderTransformOrigin = RenderTransformOrigin;
-                    var renderOrigin          = new Vector2(
+                    var renderTransformOriginRelative = new Vector2(
                         (Single)(renderTransformOrigin.X * RenderSize.Width),
-                        (Single)(renderTransformOrigin.Y * RenderSize.Height));
+                        (Single)(renderTransformOrigin.Y * RenderSize.Height)
+                    );
 
-                    var renderPosition  = (Vector2)View.Display.DipsToPixels(AbsolutePosition) + renderOrigin;
-                    var renderTransformDips = Matrix.CreateTranslation(renderPosition.X, renderPosition.Y, 0) * RenderTransform.Value;
+                    var positionOffsetX = 0.0;
+                    var positionOffsetY = 0.0;
+
+                    var isPopup = VisualParent is PopupRoot;
+                    if (isPopup)
+                    {
+                        var popupRoot = (PopupRoot)VisualParent;
+                        var popup = (Popup)popupRoot.Parent;
+
+                        var popupOffsetX = 0.0;
+                        var popupOffsetY = 0.0;
+
+                        var placementTargetCenterX = 0.0;
+                        var placementTargetCenterY = 0.0;
+
+                        var placementTarget = popup.PlacementTarget ?? this;
+                        var placementTargetRto = placementTarget.RenderTransformOrigin;
+                        placementTargetCenterX = placementTarget.RenderSize.Width * placementTargetRto.X;
+                        placementTargetCenterY = placementTarget.RenderSize.Height * placementTargetRto.Y;
+
+                        popupOffsetX = AbsolutePosition.X - placementTarget.AbsolutePosition.X;
+                        popupOffsetY = AbsolutePosition.Y - placementTarget.AbsolutePosition.Y;
+
+                        positionOffsetX = (renderTransformOriginRelative.X - placementTargetCenterX) + popupOffsetX;
+                        positionOffsetY = (renderTransformOriginRelative.Y - placementTargetCenterY) + popupOffsetY;
+
+                        renderTransformOriginRelative = new Vector2(
+                            (Single)placementTargetCenterX,
+                            (Single)placementTargetCenterY
+                        );
+
+                        renderPosition = (placementTarget == null) ? AbsolutePosition : placementTarget.AbsolutePosition;
+                        renderTransform = popupRoot.InheritedRenderTransform;
+                    }
+
+                    var renderTranslate  = (Vector2)View.Display.DipsToPixels(renderPosition) + renderTransformOriginRelative;
+                    var renderTransformDips = Matrix.CreateTranslation(renderTranslate.X, renderTranslate.Y, 0) * renderTransform;
 
                     Matrix renderTransformPixs;
                     View.Display.DipsToPixels(ref renderTransformDips, out renderTransformPixs);
@@ -2127,8 +2165,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                     dc.SpriteBatch.Begin(SpriteSortMode.Immediate, null, null, null, null, null, spriteBatchState.TransformMatrix * renderTransformPixs);
                     dc.ReapplyClipRectangle();
 
-                    dc.SpriteBatch.Draw(texture, Vector2.Zero, null, Color.White * dc.Opacity, 0f, textureOrigin, 1f, SpriteEffects.None, 0f);
-                    
+                    var position = new Vector2((Single)positionOffsetX, (Single)positionOffsetY);
+                    dc.SpriteBatch.Draw(texture, position, null, Color.White * dc.Opacity, 0f, textureOrigin, 1f, SpriteEffects.None, 0f);
+
                     dc.SpriteBatch.End();
 
                     dc.SpriteBatch.Begin(spriteBatchState);

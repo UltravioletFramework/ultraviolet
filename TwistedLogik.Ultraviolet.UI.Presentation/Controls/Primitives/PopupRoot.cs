@@ -1,4 +1,5 @@
 ﻿using System;
+using TwistedLogik.Ultraviolet.UI.Presentation.Media;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
 {
@@ -16,6 +17,25 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             : base(uv, null)
         {
             this.resized = resized;
+        }
+
+        /// <summary>
+        /// Updates the popup root's transformation state.
+        /// </summary>
+        /// <param name="placementTarget">The popup's placement target, if it has one.</param>
+        public void UpdateTransform(UIElement placementTarget)
+        {
+            inheritedRenderTransform = Matrix.Identity;
+
+            for (var current = (DependencyObject)placementTarget; current != null; current = VisualTreeHelper.GetParent(current))
+            {
+                var uiElement = current as UIElement;
+                if (uiElement == null)
+                    continue;
+
+                var ancestorRenderTransform = uiElement.RenderTransform ?? Transform.Identity;
+                inheritedRenderTransform = ancestorRenderTransform.Value * inheritedRenderTransform;
+            }
         }
 
         /// <summary>
@@ -57,6 +77,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
                     UpdateOutOfBandRegistration();
                 }
             }
+        }
+
+        /// <summary>
+        /// Gets the render transform which the popup inherits from its placement target.
+        /// </summary>
+        public Matrix InheritedRenderTransform
+        {
+            get { return inheritedRenderTransform; }
         }
 
         /// <summary>
@@ -194,5 +222,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         private readonly Action resized;
         private Boolean isOpen;
         private Boolean isTransformed;
+        private Matrix inheritedRenderTransform;
     }
 }

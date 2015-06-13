@@ -366,6 +366,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
                 {
                     child.ChangeVisualParent(root);
 
+                    root.UpdateTransform(popup.PlacementTarget);
+
                     popup.UpdatePopupStyle(popup.MostRecentStyleSheet);
                     popup.UpdatePopupMeasure();
                     popup.UpdatePopupArrange(popup.MostRecentFinalRect.Size);
