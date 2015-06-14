@@ -2109,18 +2109,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 {
                     var textureOrigin = new Vector2(texture.Width / 2f, texture.Height / 2f);
 
-                    var spriteBatchState = dc.SpriteBatch.GetCurrentState();
+                    var positionX = 0.0;
+                    var positionY = 0.0;
 
-                    var renderPosition = AbsolutePosition;
-                    var renderTransform = (RenderTransform ?? Transform.Identity).Value;
-                    var renderTransformOrigin = RenderTransformOrigin;
-                    var renderTransformOriginRelative = new Vector2(
-                        (Single)(renderTransformOrigin.X * RenderSize.Width),
-                        (Single)(renderTransformOrigin.Y * RenderSize.Height)
-                    );
-
-                    var positionOffsetX = 0.0;
-                    var positionOffsetY = 0.0;
+                    var transform = Matrix.Identity;
 
                     var isPopup = VisualParent is PopupRoot;
                     if (isPopup)
@@ -2128,44 +2120,39 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                         var popupRoot = (PopupRoot)VisualParent;
                         var popup = (Popup)popupRoot.Parent;
 
-                        var popupOffsetX = 0.0;
-                        var popupOffsetY = 0.0;
+                        var popupOffsetX = AbsolutePosition.X - popup.PlacementTarget.AbsolutePosition.X;
+                        var popupOffsetY = AbsolutePosition.Y - popup.PlacementTarget.AbsolutePosition.Y;
 
-                        var placementTargetCenterX = 0.0;
-                        var placementTargetCenterY = 0.0;
+                        var popupTransformOrigin = RenderTransformOrigin;
+                        positionX = (Single)((popupTransformOrigin.X * RenderSize.Width) + popupOffsetX);
+                        positionY = (Single)((popupTransformOrigin.Y * RenderSize.Height) + popupOffsetY);
 
-                        var placementTarget = popup.PlacementTarget ?? this;
-                        var placementTargetRto = placementTarget.RenderTransformOrigin;
-                        placementTargetCenterX = placementTarget.RenderSize.Width * placementTargetRto.X;
-                        placementTargetCenterY = placementTarget.RenderSize.Height * placementTargetRto.Y;
-
-                        popupOffsetX = AbsolutePosition.X - placementTarget.AbsolutePosition.X;
-                        popupOffsetY = AbsolutePosition.Y - placementTarget.AbsolutePosition.Y;
-
-                        positionOffsetX = (renderTransformOriginRelative.X - placementTargetCenterX) + popupOffsetX;
-                        positionOffsetY = (renderTransformOriginRelative.Y - placementTargetCenterY) + popupOffsetY;
-
-                        renderTransformOriginRelative = new Vector2(
-                            (Single)placementTargetCenterX,
-                            (Single)placementTargetCenterY
+                        transform = popupRoot.InheritedRenderTransform;
+                    }
+                    else
+                    {
+                        var renderPosition = AbsolutePosition;
+                        var renderTransform = (RenderTransform ?? Transform.Identity).Value;
+                        var renderTransformOrigin = RenderTransformOrigin;
+                        var renderTransformOriginRelative = new Vector2(
+                            (Single)(renderTransformOrigin.X * RenderSize.Width),
+                            (Single)(renderTransformOrigin.Y * RenderSize.Height)
                         );
 
-                        renderPosition = (placementTarget == null) ? AbsolutePosition : placementTarget.AbsolutePosition;
-                        renderTransform = popupRoot.InheritedRenderTransform;
+                        var renderTranslate  = (Vector2)View.Display.DipsToPixels(renderPosition) + renderTransformOriginRelative;
+                        var renderTransformDips = Matrix.CreateTranslation(renderTranslate.X, renderTranslate.Y, 0) * renderTransform;
+
+                        View.Display.DipsToPixels(ref renderTransformDips, out transform);
                     }
 
-                    var renderTranslate  = (Vector2)View.Display.DipsToPixels(renderPosition) + renderTransformOriginRelative;
-                    var renderTransformDips = Matrix.CreateTranslation(renderTranslate.X, renderTranslate.Y, 0) * renderTransform;
-
-                    Matrix renderTransformPixs;
-                    View.Display.DipsToPixels(ref renderTransformDips, out renderTransformPixs);
+                    var spriteBatchState = dc.SpriteBatch.GetCurrentState();
 
                     dc.SpriteBatch.End();
 
-                    dc.SpriteBatch.Begin(SpriteSortMode.Immediate, null, null, null, null, null, spriteBatchState.TransformMatrix * renderTransformPixs);
+                    dc.SpriteBatch.Begin(SpriteSortMode.Immediate, null, null, null, null, null, spriteBatchState.TransformMatrix * transform);
                     dc.ReapplyClipRectangle();
 
-                    var position = new Vector2((Single)positionOffsetX, (Single)positionOffsetY);
+                    var position = new Vector2((Single)positionX, (Single)positionY);
                     dc.SpriteBatch.Draw(texture, position, null, Color.White * dc.Opacity, 0f, textureOrigin, 1f, SpriteEffects.None, 0f);
 
                     dc.SpriteBatch.End();
