@@ -159,7 +159,29 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <returns>The <see cref="Visual"/> at the specified point in screen space, or <c>null</c> if there is no such visual.</returns>
         internal Visual PopupHitTest(Point2D point)
         {
-            return root.HitTest(point - new Point2D(popupX, popupY));
+            var source = PlacementTarget ?? root;
+
+            var sourceOrigin = source.RenderTransformOrigin;
+
+            var sourceOriginDipsX = source.RenderSize.Width * sourceOrigin.X;
+            var sourceOriginDipsY = source.RenderSize.Height * sourceOrigin.Y;
+
+            var sourceAbsCenterX = source.AbsolutePosition.X + sourceOriginDipsX;
+            var sourceAbsCenterY = source.AbsolutePosition.Y + sourceOriginDipsY;
+
+            var invertedTransform = Matrix.Invert(root.InheritedRenderTransform);
+
+            var popupOffsetX = root.AbsolutePosition.X - source.AbsolutePosition.X;
+            var popupOffsetY = root.AbsolutePosition.Y - source.AbsolutePosition.Y;
+
+            var pointRelToSourceOrigin = new Point2D(point.X - sourceAbsCenterX, point.Y - sourceAbsCenterY);
+            var pointRelToSourceOriginTransformed = Point2D.Transform(pointRelToSourceOrigin, invertedTransform);
+            var pointRelToSourceCorner = new Point2D(
+                pointRelToSourceOriginTransformed.X + sourceOriginDipsX,
+                pointRelToSourceOriginTransformed.Y + sourceOriginDipsY);
+            var pointRelToPopupCorner = new Point2D(pointRelToSourceCorner.X - popupOffsetX, pointRelToSourceCorner.Y - popupOffsetY);
+
+            return root.HitTest(pointRelToPopupCorner);
         }
 
         /// <inheritdoc/>

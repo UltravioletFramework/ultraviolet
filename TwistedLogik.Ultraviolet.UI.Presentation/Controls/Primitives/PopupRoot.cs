@@ -158,7 +158,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             if (child == null)
                 return null;
 
-            return child.HitTest(point);
+            return child.HitTest(new Point2D(point.X - child.RelativeBounds.X, point.Y - child.RelativeBounds.Y));
         }
 
         /// <inheritdoc/>
