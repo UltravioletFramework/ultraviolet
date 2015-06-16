@@ -80,18 +80,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <inheritdoc/>
-        internal sealed override Object DependencyDataSource
-        {
-            get { return null; }
-        }
-
-        /// <inheritdoc/>
-        internal sealed override DependencyObject DependencyContainer
-        {
-            get { return null; }
-        }
-
-        /// <inheritdoc/>
         protected internal sealed override void ApplyStyles(UvssDocument document)
         {
             var rule = document.Rules.Where(x => x.IsViewResourceRule()).LastOrDefault();

@@ -434,7 +434,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <inheritdoc/>
         internal override Object DependencyDataSource
         {
-            get { return TemplatedParent ?? ViewModel; }
+            get { return DeclarativeViewModelOrTemplate ?? TemplatedParent ?? ViewModel; }
         }
 
         /// <summary>

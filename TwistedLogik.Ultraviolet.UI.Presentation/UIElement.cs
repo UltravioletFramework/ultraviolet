@@ -207,6 +207,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             Digest(time);
 
+            var renderTransform = RenderTransform;
+            if (renderTransform != null)
+                renderTransform.Digest(time);
+
             UpdateCore(time);
             OnUpdating(time);
         }
@@ -1282,7 +1286,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <inheritdoc/>
         internal override Object DependencyDataSource
         {
-            get { return ViewModel; }
+            get { return DeclarativeViewModelOrTemplate ?? ViewModel; }
         }
 
         /// <inheritdoc/>

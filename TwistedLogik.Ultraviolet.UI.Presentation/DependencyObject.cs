@@ -505,19 +505,48 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
-        /// Gets or sets the data source from which the object's dependency properties will retrieve values if they are data bound.
+        /// Gets or sets the object's data source according to the context in which it was declared. Usually this
+        /// will either be a view or a control's templated parent.
         /// </summary>
-        internal abstract Object DependencyDataSource
+        internal Object DeclarativeDataSource
         {
             get;
+            set;
+        }
+
+        /// <summary>
+        /// Gets the object's declarative view model or templated parent.
+        /// </summary>
+        internal Object DeclarativeViewModelOrTemplate
+        {
+            get
+            {
+                var view = DeclarativeDataSource as PresentationFoundationView;
+                if (view != null)
+                {
+                    return view.ViewModel;
+                }
+                return DeclarativeDataSource; 
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the data source from which the object's dependency properties will retrieve values if they are data bound.
+        /// </summary>
+        internal virtual Object DependencyDataSource
+        {
+            get 
+            {
+                return DeclarativeViewModelOrTemplate;
+            }
         }
 
         /// <summary>
         /// Gets the dependency object's containing object.
         /// </summary>
-        internal abstract DependencyObject DependencyContainer
+        internal virtual DependencyObject DependencyContainer
         {
-            get;
+            get { return null; }
         }
 
         /// <summary>

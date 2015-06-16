@@ -47,7 +47,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             }
 
             var view    = new PresentationFoundationView(uv, viewModelType);
-            var context = new InstantiationContext(uv, viewModelType);
+            var context = new InstantiationContext(uv, view, viewModelType);
 
             var fe = view.LayoutRoot as FrameworkElement;
             if (fe != null)
@@ -88,7 +88,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 return;
 
             var uv      = userControl.Ultraviolet;
-            var context = new InstantiationContext(uv, viewModelType, userControl, bindingContext);
+            var context = new InstantiationContext(uv, null, viewModelType, userControl, bindingContext);
 
             userControl.BeginInit();
             userControl.ComponentTemplateNamescope.Clear();
@@ -110,7 +110,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public static void LoadComponentTemplate(Control control, XDocument template)
         {
             var uv      = control.Ultraviolet;
-            var context = new InstantiationContext(uv, null, control, null);
+            var context = new InstantiationContext(uv, null, null, control, null);
 
             control.ComponentTemplateNamescope.Clear();
 
@@ -268,6 +268,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var fe = instance as FrameworkElement;
             if (fe != null)
                 fe.BeginInit();
+
+            instance.DeclarativeDataSource = context.DeclarativeDataSource;
 
             return instance;
         }
@@ -469,19 +471,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             return true;
         }
 
-        private static Type GetGenericListElementType(Type type)
-        {
-            var ifaces = type.GetInterfaces();
-            foreach (var iface in ifaces)
-            {
-                if (iface.IsGenericType && iface.GetGenericTypeDefinition() == typeof(IList<>))
-                {
-                    return iface.GetGenericArguments()[0];
-                }
-            }
-            return null;
-        }
-
         /// <summary>
         /// Loads an object using the Nucleus object serializer.
         /// </summary>
@@ -492,36 +481,39 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <returns>The object that was loaded.</returns>
         private static Object LoadObjectWithSerializer(UltravioletContext uv, Type type, XElement value, InstantiationContext context)
         {
-            if (typeof(DependencyObject).IsAssignableFrom(type))
-            {
-                if (type.IsAbstract)
-                {
-                    var child = value.Elements().SingleOrDefault();
-                    if (child != null)
-                    {
-                        Type childType;
-                        if (!uv.GetUI().GetPresentationFoundation().GetKnownType(child.Name.LocalName, out childType))
-                            throw new InvalidOperationException();
+            var instance = default(Object);
 
-                        return LoadObjectWithSerializer(uv, childType, child, context);
-                    }
-                    return null;
+            if (type.IsAbstract)
+            {
+                var child = value.Elements().SingleOrDefault();
+                if (child != null)
+                {
+                    Type childType;
+                    if (!uv.GetUI().GetPresentationFoundation().GetKnownType(child.Name.LocalName, out childType))
+                        throw new InvalidOperationException();
+
+                    instance = LoadObjectWithSerializer(uv, childType, child, context);
                 }
                 else
                 {
-                    var instance = (DependencyObject)ObjectLoader.LoadObject(
-                        (loaderObj, loaderName, loaderValue, attribute) => !attribute, type, value);
-
-                    LoadObjectDefaultProperty(uv, instance, value, context);
-
-                    return instance;
+                    return null;
                 }
             }
-
-            return ObjectLoader.LoadObject((loaderObj, loaderName, loaderValue, attribute) =>
+            else
             {
-                return DependencyPropertyResolutionHandler(loaderObj, loaderName, loaderValue, context);
-            }, type, value);
+                instance = ObjectLoader.LoadObject((loaderObj, loaderName, loaderValue, attribute) =>
+                {
+                    return DependencyPropertyResolutionHandler(loaderObj, loaderName, loaderValue, context);
+                }, type, value);
+            }
+
+            var dobj = instance as DependencyObject;
+            if (dobj != null)
+            {
+                dobj.DeclarativeDataSource = context.DeclarativeDataSource;
+            }
+
+            return instance;
         }
 
         /// <summary>
@@ -543,7 +535,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (defaultProp == null)
                 return;
 
-            var itemType = GetGenericListElementType(defaultProp.PropertyType);
+            var itemType = defaultProp.PropertyType.GetGenericListElementType();
             if (itemType != null)
             {
                 var listInstance  = Activator.CreateInstance(defaultProp.PropertyType);
@@ -1097,15 +1089,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <returns>The specified delegate.</returns>
         private static Delegate CreateEventDelegate(UIElement uiElement, Type handlerType, String handlerName, InstantiationContext context)
         {
-            var templateParentElement = context.TemplatedParent as UIElement;
-            if (templateParentElement != null)
+            var dataSource = (Object)uiElement.View;
+            var dataSourceType = context.ViewModelType;
+
+            var templatedParent = context.TemplatedParent as UIElement;
+            if (templatedParent != null)
             {
-                return BindingExpressions.CreateElementBoundEventDelegate(templateParentElement, handlerType, handlerName);
+                dataSource = templatedParent;
+                dataSourceType = dataSource.GetType();
             }
-            else
-            {
-                return BindingExpressions.CreateViewModelBoundEventDelegate(uiElement, context.ViewModelType, handlerType, handlerName);
-            }
+
+            return BindingExpressions.CreateBoundEventDelegate(dataSource, dataSourceType, handlerType, handlerName);     
         }
 
         /// <summary>

@@ -47,18 +47,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media
             get;
         }
 
-        /// <inheritdoc/>>
-        internal sealed override Object DependencyDataSource
-        {
-            get { return null; }
-        }
-
-        /// <inheritdoc/>
-        internal sealed override DependencyObject DependencyContainer
-        {
-            get { return null; }
-        }
-
         /// Property values.
         private static readonly Transform identity = new IdentityTransform();
     }
