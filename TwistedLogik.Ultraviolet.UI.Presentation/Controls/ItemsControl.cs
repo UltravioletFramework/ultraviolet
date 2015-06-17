@@ -8,6 +8,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
     /// <summary>
     /// Represents a control which presents the user with a list of items to select.
     /// </summary>
+    [UvmlKnownType]
     public abstract class ItemsControl : Control
     {
         /// <summary>

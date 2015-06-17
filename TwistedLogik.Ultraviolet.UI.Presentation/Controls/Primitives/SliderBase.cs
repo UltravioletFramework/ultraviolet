@@ -5,6 +5,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
     /// <summary>
     /// Represents the base class for sliders.
     /// </summary>
+    [UvmlKnownType]
     public abstract class SliderBase : RangeBase
     {
         /// <summary>

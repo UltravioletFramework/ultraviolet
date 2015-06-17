@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Media
 {
@@ -7,7 +8,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media
     /// </summary>
     [UvmlKnownType]
     [DefaultProperty("Children")]
-    public sealed class TransformGroup : Transform
+    public sealed class TransformGroup : Transform, IIndexable
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="TransformGroup"/> class.
@@ -15,6 +16,32 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media
         public TransformGroup()
         {
             Children = new TransformCollection();
+        }
+
+        /// <summary>
+        /// Gets the transform at the specified index within the group.
+        /// </summary>
+        /// <param name="index">The index of the transform to retrieve.</param>
+        /// <returns>The transform at the specified index within the group.</returns>
+        public Transform this[Int32 index]
+        {
+            get
+            {
+                var children = Children;
+                if (children == null)
+                    throw new ArgumentOutOfRangeException("index");
+
+                return children[index];
+            }
+        }
+
+        /// <inheritdoc/>
+        Object IIndexable.this[int index]
+        {
+            get
+            {
+                return this[index];
+            }
         }
 
         /// <inheritdoc/>
@@ -66,5 +93,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media
         /// </summary>
         public static readonly DependencyProperty ChildrenProperty = DependencyProperty.Register("Children", typeof(TransformCollection), typeof(TransformGroup),
             new PropertyMetadata<TransformCollection>(null, PropertyMetadataOptions.None));
+
+        /// <inheritdoc/>
+        protected override void OnDigesting(UltravioletTime time)
+        {
+            var children = Children;
+            if (children != null)
+            {
+                foreach (var child in children)
+                {
+                    child.Digest(time);
+                }
+            }
+            base.OnDigesting(time);
+        }
     }
 }

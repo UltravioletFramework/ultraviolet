@@ -207,10 +207,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             Digest(time);
 
-            var renderTransform = RenderTransform;
-            if (renderTransform != null)
-                renderTransform.Digest(time);
-
             UpdateCore(time);
             OnUpdating(time);
         }
@@ -296,10 +292,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 {
                     foreach (var animation in target.Animations)
                     {
-                        var dp = DependencyProperty.FindByName(Ultraviolet, this, animation.Key.Owner, animation.Key.Name);
-                        if (dp != null)
+                        var propertyName = animation.Key.PropertyName;
+
+                        var dpSource = animation.Key.NavigationExpression.HasValue ? 
+                            animation.Key.NavigationExpression.Value.ApplyExpression(Ultraviolet, this) : this;
+                        if (dpSource != null)
                         {
-                            Animate(dp, animation.Value, clock);
+                            var dp = DependencyProperty.FindByName(Ultraviolet, dpSource, propertyName.Owner, propertyName.Name);
+                            if (dp != null)
+                            {
+                                dpSource.Animate(dp, animation.Value, clock);
+                            }
                         }
                     }
                 }
@@ -1378,6 +1381,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
         }
 
+        /// <inheritdoc/>
+        protected override void OnDigesting(UltravioletTime time)
+        {
+            var renderTransform = RenderTransform;
+            if (renderTransform != null)
+            {
+                renderTransform.Digest(time);
+            }
+
+            base.OnDigesting(time);
+        }
+
         /// <summary>
         /// Called when the desired size of one of the element's children is changed.
         /// </summary>
@@ -2143,8 +2158,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                             (Single)(renderTransformOrigin.Y * RenderSize.Height)
                         );
 
-                        var renderTranslate  = (Vector2)View.Display.DipsToPixels(renderPosition) + renderTransformOriginRelative;
-                        var renderTransformDips = Matrix.CreateTranslation(renderTranslate.X, renderTranslate.Y, 0) * renderTransform;
+                        var renderTranslate = (Vector2)View.Display.DipsToPixels(renderPosition) + renderTransformOriginRelative;
+                        var renderTranslateRounded = new Vector2((Int32)renderTranslate.X, (Int32)renderTranslate.Y);
+                        var renderTransformDips = Matrix.CreateTranslation(renderTranslateRounded.X, renderTranslateRounded.Y, 0) * renderTransform;
 
                         View.Display.DipsToPixels(ref renderTransformDips, out transform);
                     }
@@ -2156,7 +2172,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                     dc.SpriteBatch.Begin(SpriteSortMode.Immediate, null, null, null, null, null, spriteBatchState.TransformMatrix * transform);
                     dc.ReapplyClipRectangle();
 
-                    var position = new Vector2((Single)positionX, (Single)positionY);
+                    var position = new Vector2((Single)(Int32)positionX, (Single)(Int32)positionY);
                     dc.SpriteBatch.Draw(texture, position, null, Color.White * dc.Opacity, 0f, textureOrigin, 1f, SpriteEffects.None, 0f);
 
                     dc.SpriteBatch.End();

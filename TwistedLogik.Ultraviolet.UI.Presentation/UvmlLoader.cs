@@ -22,9 +22,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         static UvmlLoader()
         {
-            miBindValue     = typeof(DependencyObject).GetMethod("BindValue");
-            miSetLocalValue = typeof(DependencyObject).GetMethod("SetLocalValue");
-            miGetValue      = typeof(DependencyObject).GetMethod("GetValue");
+            var dobjMethods = typeof(DependencyObject).GetMethods();
+
+            miBindValue     = dobjMethods.Where(x => x.Name == "BindValue").Single();
+            miSetLocalValue = dobjMethods.Where(x => x.Name == "SetLocalValue").Single();
+            miGetValue      = dobjMethods.Where(x => x.Name == "GetValue" && x.IsGenericMethod).Single();
         }
 
         /// <summary>
@@ -503,8 +505,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             {
                 instance = ObjectLoader.LoadObject((loaderObj, loaderName, loaderValue, attribute) =>
                 {
-                    return DependencyPropertyResolutionHandler(loaderObj, loaderName, loaderValue, context);
+                    if (attribute)
+                    {
+                        return DependencyPropertyResolutionHandler(loaderObj, loaderName, loaderValue, context);
+                    }
+                    return true;
                 }, type, value);
+
+                LoadObjectDefaultProperty(uv, instance, value, context);
             }
 
             var dobj = instance as DependencyObject;

@@ -35,6 +35,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (wrapper.IsDataBound)
             {
                 wrapper.DigestImmediately();
+                OnDigestingImmediately(dp);
             }
         }
 
@@ -48,6 +49,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             var wrapper = GetDependencyPropertyValue(dp, dp.PropertyType);
             wrapper.DigestImmediately();
+            OnDigestingImmediately(dp);
         }
 
         /// <summary>
@@ -60,6 +62,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             {
                 digestedDependencyProperties[i].Digest(time);
             }
+            OnDigesting(time);
         }
 
         /// <summary>
@@ -278,10 +281,23 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
-        /// Gets the value typed value of the specified dependency property.
+        /// Gets the value of the specified dependency property, without regard for its type.
+        /// </summary>
+        /// <param name="dp">A <see cref="DependencyProperty"/> instance which identifies the dependency property for which to retrieve a value.</param>
+        /// <returns>The value of the specified dependency property.</returns>
+        public Object GetUntypedValue(DependencyProperty dp)
+        {
+            Contract.Require(dp, "dp");
+
+            var wrapper = GetDependencyPropertyValue(dp, dp.PropertyType);
+            return wrapper.GetUntypedValue();
+        }
+
+        /// <summary>
+        /// Gets the value of the specified dependency property.
         /// </summary>
         /// <typeparam name="T">The type of value contained by the dependency property.</typeparam>
-        /// <param name="dp">A <see cref="DependencyProperty"/> instance which identifies the dependency property for which to set a value.</param>
+        /// <param name="dp">A <see cref="DependencyProperty"/> instance which identifies the dependency property for which to retrieve a value.</param>
         /// <returns>The value of the specified dependency property.</returns>
         public T GetValue<T>(DependencyProperty dp)
         {
@@ -609,6 +625,24 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             {
                 dp.ApplyStyle(this, style);
             }
+        }
+
+        /// <summary>
+        /// Called when a dependency property on this object is being immediately digested.
+        /// </summary>
+        /// <param name="dp">A <see cref="DependencyProperty"/> value which identifies the dependency property being digested.</param>
+        protected virtual void OnDigestingImmediately(DependencyProperty dp)
+        {
+
+        }
+
+        /// <summary>
+        /// Called when the object is being digested.
+        /// </summary>
+        /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Update(UltravioletTime)"/>.</param>
+        protected virtual void OnDigesting(UltravioletTime time)
+        {
+
         }
 
         /// <summary>

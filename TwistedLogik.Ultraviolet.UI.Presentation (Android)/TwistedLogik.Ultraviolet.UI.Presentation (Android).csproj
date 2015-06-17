@@ -122,6 +122,9 @@
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Animations\StoryboardTargetAnimationCollection.IEnumerable.cs">
       <Link>Animations\StoryboardTargetAnimationCollection.IEnumerable.cs</Link>
     </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Animations\StoryboardTargetAnimationKey.cs">
+      <Link>Animations\StoryboardTargetAnimationKey.cs</Link>
+    </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Animations\StoryboardTargetCollection.cs">
       <Link>Animations\StoryboardTargetCollection.cs</Link>
     </Compile>
@@ -461,6 +464,9 @@
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\IDependencyPropertyValue.cs">
       <Link>IDependencyPropertyValue.cs</Link>
     </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\IIndexable.cs">
+      <Link>IIndexable.cs</Link>
+    </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\IInputElement.cs">
       <Link>IInputElement.cs</Link>
     </Compile>
@@ -656,6 +662,9 @@
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Styles\NamespaceDoc.cs">
       <Link>Styles\NamespaceDoc.cs</Link>
     </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Styles\NavigationExpression.cs">
+      <Link>Styles\NavigationExpression.cs</Link>
+    </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Styles\PlaySoundEffectTriggerAction.cs">
       <Link>Styles\PlaySoundEffectTriggerAction.cs</Link>
     </Compile>
@@ -733,6 +742,9 @@
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Styles\UvssNameGenerator.cs">
       <Link>Styles\UvssNameGenerator.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Styles\UvssNavigationExpression.cs">
+      <Link>Styles\UvssNavigationExpression.cs</Link>
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Styles\UvssParser.cs">
       <Link>Styles\UvssParser.cs</Link>

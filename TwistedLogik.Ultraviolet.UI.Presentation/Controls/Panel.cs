@@ -6,6 +6,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
     /// <summary>
     /// Represents a framework element with child elements.
     /// </summary>
+    [UvmlKnownType]
     public abstract class Panel : Control
     {
         /// <summary>

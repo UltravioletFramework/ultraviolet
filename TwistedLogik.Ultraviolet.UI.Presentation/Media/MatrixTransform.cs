@@ -4,6 +4,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media
     /// <summary>
     /// Represents a transformation based on an arbitrary matrix.
     /// </summary>
+    [UvmlKnownType]
     public sealed class MatrixTransform : Transform
     {
         /// <summary>

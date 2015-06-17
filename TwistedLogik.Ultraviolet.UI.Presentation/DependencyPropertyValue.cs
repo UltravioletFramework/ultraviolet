@@ -253,6 +253,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 cachedBoundValue.SetFormatString(formatString);
             }
 
+            /// <inheritdoc/>
+            public Object GetUntypedValue()
+            {
+                return GetValue();
+            }
+
             /// <summary>
             /// Sets the dependency property's value.
             /// </summary>

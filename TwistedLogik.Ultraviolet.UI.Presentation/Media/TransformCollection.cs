@@ -6,6 +6,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media
     /// <summary>
     /// Represents a collection of transformations.
     /// </summary>
+    [UvmlKnownType]
     public sealed partial class TransformCollection : IList<Transform>
     {
         /// <inheritdoc/>

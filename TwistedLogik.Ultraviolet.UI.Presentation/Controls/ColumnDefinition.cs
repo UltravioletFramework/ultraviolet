@@ -6,6 +6,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
     /// <summary>
     /// Represents the definition for a column in a <see cref="Grid"/> control.
     /// </summary>
+    [UvmlKnownType]
     public class ColumnDefinition : DefinitionBase
     {
         /// <summary>
