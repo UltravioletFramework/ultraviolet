@@ -119,6 +119,7 @@
     <Compile Include="DependencyBoundValueNonConverting.cs" />
     <Compile Include="DependencyObject.cs" />
     <Compile Include="Documents\NamespaceDoc.cs" />
+    <Compile Include="DrawingContext.ClipStencilStates.cs" />
     <Compile Include="HitTestUtil.cs" />
     <Compile Include="IIndexable.cs" />
     <Compile Include="Input\NamespaceDoc.cs" />

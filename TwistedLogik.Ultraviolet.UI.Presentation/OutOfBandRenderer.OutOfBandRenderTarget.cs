@@ -18,10 +18,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             public OutOfBandRenderTarget(UltravioletContext uv)
                 : base(uv)
             {
-                this.colorBuffer = RenderBuffer2D.Create(1, 1, false);
- 
+                this.colorBuffer = RenderBuffer2D.Create(RenderBufferFormat.Color, 1, 1, false);
+                this.depthBuffer = RenderBuffer2D.Create(RenderBufferFormat.Depth24Stencil8, 1, 1, false);
+
                 this.renderTarget = RenderTarget2D.Create(1, 1);
                 this.renderTarget.Attach(this.colorBuffer);
+                this.renderTarget.Attach(this.depthBuffer);
             }
 
             /// <summary>
@@ -109,6 +111,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 }
             }
 
+            /// <summary>
+            /// Gets the <see cref="RenderBuffer2D"/> that represents this element's depth/stencil buffer.
+            /// </summary>
+            public RenderBuffer2D DepthBuffer
+            {
+                get
+                {
+                    Contract.EnsureNotDisposed(this, Disposed);
+
+                    return depthBuffer;
+                }
+            }
+
             /// <inheritdoc/>
             protected override void Dispose(Boolean disposing)
             {
@@ -124,6 +139,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             private Boolean isReady;
             private readonly RenderTarget2D renderTarget;
             private readonly RenderBuffer2D colorBuffer;
+            private readonly RenderBuffer2D depthBuffer;
         }
     }
 }

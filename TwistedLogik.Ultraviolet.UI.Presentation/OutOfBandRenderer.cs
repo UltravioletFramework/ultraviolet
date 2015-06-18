@@ -135,14 +135,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                     var translate = new Vector2(centerX - (pxPositionX + pxRenderOriginX), centerY - (pxPositionY + pxRenderOriginY));
                     var transform = Matrix.CreateTranslation(translate.X, translate.Y, 0);
 
-                    spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, null, null, null, null, transform);
-
-                    drawingContext.ClipTranslationX = translate.X;
-                    drawingContext.ClipTranslationY = translate.Y;
-
+                    drawingContext.Begin(SpriteSortMode.Deferred, null, transform);
                     element.Draw(time, drawingContext);
-
-                    spriteBatch.End();
+                    drawingContext.End();
 
                     rtarget.IsReady = true;
                 }
@@ -261,6 +256,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
         // Property values.
         private Int32 renderTargetSize = 1;
-        private Boolean isDrawingRenderTargets;
+        private bool isDrawingRenderTargets;
     }
 }
