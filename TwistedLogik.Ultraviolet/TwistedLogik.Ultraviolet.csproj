@@ -208,6 +208,7 @@
     <Compile Include="CurveProcessor.cs" />
     <Compile Include="DebugColors.cs" />
     <Compile Include="Easings.cs" />
+    <Compile Include="Graphics\ColorWriteChannels.cs" />
     <Compile Include="Graphics\EffectImplementation.cs" />
     <Compile Include="Graphics\EffectPass.cs" />
     <Compile Include="Graphics\EffectPassCollection.cs" />

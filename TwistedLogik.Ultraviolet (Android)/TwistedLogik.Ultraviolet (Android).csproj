@@ -264,6 +264,9 @@
     <Compile Include="..\TwistedLogik.Ultraviolet\Graphics\BlendState.cs">
       <Link>Graphics\BlendState.cs</Link>
     </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Graphics\ColorWriteChannels.cs">
+      <Link>Graphics\ColorWriteChannels.cs</Link>
+    </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet\Graphics\CompareFunction.cs">
       <Link>Graphics\CompareFunction.cs</Link>
     </Compile>
