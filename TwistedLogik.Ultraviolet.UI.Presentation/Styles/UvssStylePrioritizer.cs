@@ -21,6 +21,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// <summary>
         /// Adds a style to the prioritizer.
         /// </summary>
+        /// <param name="uv">The Ultraviolet context.</param>
         /// <param name="selector">The selector which caused this style to be considered.</param>
         /// <param name="navigationExpression">The navigation expression associated with the style.</param>
         /// <param name="style">The style to add to the prioritizer.</param>
@@ -41,6 +42,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// <summary>
         /// Adds a trigger to the prioritizer.
         /// </summary>
+        /// <param name="uv">The Ultraviolet context.</param>
         /// <param name="selector">The selector which caused this style to be considered.</param>
         /// <param name="navigationExpression">The navigation expression associated with the style.</param>
         /// <param name="trigger">The trigger to add to the prioritizer.</param>
