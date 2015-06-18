@@ -11,16 +11,25 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Clears the back buffer to the specified color.
         /// </summary>
-        /// <param name="color">The <see cref="Color"/> to which to clear the buffer.</param>
+        /// <param name="color">The <see cref="Color"/> to which to clear the color buffer.</param>
         void Clear(Color color);
         
         /// <summary>
         /// Clears the back buffer to the specified color, depth, and stencil values.
         /// </summary>
-        /// <param name="color">The <see cref="Color"/> to which to clear the buffer.</param>
-        /// <param name="depth">The depth value to which to clear the buffer.</param>
-        /// <param name="stencil">The stencil value to which to clear the buffer.</param>
+        /// <param name="color">The <see cref="Color"/> to which to clear the color buffer.</param>
+        /// <param name="depth">The depth value to which to clear the depth buffer.</param>
+        /// <param name="stencil">The stencil value to which to clear the stencil buffer.</param>
         void Clear(Color color, Double depth, Int32 stencil);
+
+        /// <summary>
+        /// Clears the back buffer to the specified color, depth, and stencil values.
+        /// </summary>
+        /// <param name="options">A set of <see cref="ClearOptions"/> flags specifying which buffers to clear.</param>
+        /// <param name="color">The <see cref="Color"/> to which to clear the color buffer.</param>
+        /// <param name="depth">The depth value to which to clear the depth buffer.</param>
+        /// <param name="stencil">The stencil value to which to clear the stencil buffer.</param>
+        void Clear(ClearOptions options, Color color, Double depth, Int32 stencil);
 
         /// <summary>
         /// Sets the render target.

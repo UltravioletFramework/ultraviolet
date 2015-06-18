@@ -154,7 +154,7 @@ namespace TwistedLogik.Ultraviolet.Graphics
         /// <summary>
         /// Gets or sets a value indicating whether stencil buffering is enabled.
         /// </summary>
-        public Boolean StencilBuffer
+        public Boolean StencilEnable
         {
             get
             {

@@ -90,6 +90,34 @@ namespace TwistedLogik.Ultraviolet.OpenGL
         }
 
         /// <inheritdoc/>
+        public void Clear(ClearOptions options, Color color, Double depth, Int32 stencil)
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
+
+            var mask = 0u;
+
+            if ((options & ClearOptions.Target) == ClearOptions.Target)
+            {
+                gl.ClearColor(color.R / 255f, color.G / 255f, color.B / 255f, color.A / 255f);
+                mask |= gl.GL_COLOR_BUFFER_BIT;
+            }
+
+            if ((options & ClearOptions.DepthBuffer) == ClearOptions.DepthBuffer)
+            {
+                gl.ClearDepth(depth);
+                mask |= gl.GL_DEPTH_BUFFER_BIT;
+            }
+
+            if ((options & ClearOptions.Stencil) == ClearOptions.Stencil)
+            {
+                gl.ClearStencil(stencil);
+                mask |= gl.GL_STENCIL_BUFFER_BIT;
+            }
+
+            gl.Clear(mask);
+        }
+
+        /// <inheritdoc/>
         public void SetRenderTarget(RenderTarget2D renderTarget)
         {
             Contract.EnsureNotDisposed(this, Disposed);

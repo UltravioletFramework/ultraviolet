@@ -160,6 +160,7 @@
     <Compile Include="Circle.cs" />
     <Compile Include="CircleD.cs" />
     <Compile Include="CircleF.cs" />
+    <Compile Include="ClearOptions.cs" />
     <Compile Include="Color.cs" />
     <Compile Include="Content\ContentArchive.cs" />
     <Compile Include="Content\ContentArchiveNode.cs" />
