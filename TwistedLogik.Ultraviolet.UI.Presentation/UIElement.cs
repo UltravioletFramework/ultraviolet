@@ -1312,28 +1312,30 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             base.OnMeasureAffectingPropertyChanged();
         }
 
-        /// <summary>
-        /// Applies the specified style sheet's styles to this element and its children.
-        /// </summary>
-        /// <param name="styleSheet">The style sheet to apply to the element.</param>
+        /// <inheritdoc/>
         protected internal sealed override void ApplyStyles(UvssDocument styleSheet)
         {
             styleSheet.ApplyStyles(this);
         }
 
-        /// <summary>
-        /// Applies a style to the element.
-        /// </summary>
-        /// <param name="style">The style which is being applied.</param>
-        /// <param name="selector">The selector which caused the style to be applied.</param>
-        /// <param name="dprop">A <see cref="DependencyProperty"/> that identifies the dependency property which is being styled.</param>
-        protected internal sealed override void ApplyStyle(UvssStyle style, UvssSelector selector, DependencyProperty dprop)
+        /// <inheritdoc/>
+        protected internal sealed override void ApplyStyle(UvssStyle style, UvssSelector selector, NavigationExpression? navigationExpression, DependencyProperty dprop)
         {
             Contract.Require(style, "style");
             Contract.Require(selector, "selector");
 
+            var target = (DependencyObject)this;
+            if (navigationExpression.HasValue)
+            {
+                target = navigationExpression.Value.ApplyExpression(Ultraviolet, this);
+                if (target == null)
+                    return;
+
+                dprop = DependencyProperty.FindByStylingName(Ultraviolet, target, style.Owner, style.Name);
+            }
+
             var name = style.Name;
-            if (name == "transition")
+            if (name == "transition" && !navigationExpression.HasValue)
             {
                 ApplyStyledVisualStateTransition(style);
             }
@@ -1341,7 +1343,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             {
                 if (dprop != null)
                 {
-                    dprop.ApplyStyle(this, style, CultureInfo.InvariantCulture);
+                    dprop.ApplyStyle(target, style, CultureInfo.InvariantCulture);
                 }
             }
         }

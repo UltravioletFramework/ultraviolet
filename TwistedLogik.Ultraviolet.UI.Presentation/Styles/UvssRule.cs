@@ -11,19 +11,22 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// Initializes a new instance of the <see cref="UvssRule"/> class.
         /// </summary>
         /// <param name="selectors">The rule's selectors.</param>
+        /// <param name="navigationExpression">The rule's associated navigation expression.</param>
         /// <param name="styles">The rule's styles.</param>
         /// <param name="triggers">The rule's triggers.</param>
-        internal UvssRule(UvssSelectorCollection selectors, UvssStyleCollection styles, UvssTriggerCollection triggers)
+        internal UvssRule(UvssSelectorCollection selectors, UvssNavigationExpression navigationExpression, UvssStyleCollection styles, UvssTriggerCollection triggers)
         {
-            this.selectors = selectors;
-            this.styles    = styles;
-            this.triggers  = triggers;
+            this.selectors            = selectors;
+            this.navigationExpression = navigationExpression;
+            this.styles               = styles;
+            this.triggers             = triggers;
         }
 
         /// <inheritdoc/>
         public override String ToString()
         {
-            return String.Format("{0} {{ {1} }}", Selectors, Styles);
+            var fmt = (navigationExpression != null) ? "{0} {{ {1} }} | {2}" : "{0} {{ {1} }}";
+            return String.Format(fmt, Selectors, Styles, NavigationExpression);
         }
 
         /// <summary>
@@ -74,6 +77,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         }
 
         /// <summary>
+        /// Gets the rule's navigation expression.
+        /// </summary>
+        public UvssNavigationExpression NavigationExpression
+        {
+            get { return navigationExpression; }
+        }
+
+        /// <summary>
         /// Gets the rule's styles.
         /// </summary>
         public UvssStyleCollection Styles
@@ -91,6 +102,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
 
         // State values.
         private readonly UvssSelectorCollection selectors;
+        private readonly UvssNavigationExpression navigationExpression;
         private readonly UvssStyleCollection styles;
         private readonly UvssTriggerCollection triggers;
     }

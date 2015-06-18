@@ -196,31 +196,22 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
                 if (!rule.MatchesElement(element, out selector))
                     continue;
 
+                var uv = element.Ultraviolet;
+                var navexp = NavigationExpression.FromUvssNavigationExpression(uv, rule.NavigationExpression);
+
                 foreach (var style in rule.Styles)
                 {
-                    prioritizer.Add(selector, style);
+                    prioritizer.Add(uv, selector, navexp, style);
                 }
 
                 foreach (var trigger in rule.Triggers)
                 {
-                    prioritizer.Add(selector, trigger);
+                    prioritizer.Add(uv, selector, navexp, trigger);
                 }
             }
 
             // Apply styles to element
             prioritizer.Apply(element);
-        }
-
-        /// <summary>
-        /// Applies a style to the specified element.
-        /// </summary>
-        /// <param name="element">The element to which to apply the style.</param>
-        /// <param name="style">The style which is being applied.</param>
-        /// <param name="selector">The selector which caused the style to be applied.</param>
-        private void ApplyStyleToElement(UIElement element, UvssStyle style, UvssSelector selector)
-        {
-            var dp = DependencyProperty.FindByStylingName(element.Ultraviolet, element, style.Owner, style.Name);
-            element.ApplyStyle(style, selector, dp);
         }
 
         // State values.

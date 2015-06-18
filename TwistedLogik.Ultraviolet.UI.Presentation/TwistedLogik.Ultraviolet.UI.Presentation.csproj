@@ -428,6 +428,7 @@
     <EmbeddedResource Include="Controls\Templates\ComboBox.xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Styles\UvssStylePrioritizer.StyleKey.cs" />
     <None Include="TwistedLogik.Ultraviolet.Licenses.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

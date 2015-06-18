@@ -613,13 +613,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
-        /// Applies a style to this object.
+        /// Applies a style to the element.
         /// </summary>
         /// <param name="style">The style which is being applied.</param>
         /// <param name="selector">The selector which caused the style to be applied.</param>
-        /// <param name="dp">The dependency property to which to apply the style, or <c>null</c> if the style does
-        /// not apply to a dependency property.</param>
-        protected internal virtual void ApplyStyle(UvssStyle style, UvssSelector selector, DependencyProperty dp)
+        /// <param name="navigationExpression">The navigation expression associated with the style.</param>
+        /// <param name="dprop">A <see cref="DependencyProperty"/> that identifies the dependency property which is being styled.</param>
+        protected internal virtual void ApplyStyle(UvssStyle style, UvssSelector selector, NavigationExpression? navigationExpression, DependencyProperty dp)
         {
             if (dp != null)
             {

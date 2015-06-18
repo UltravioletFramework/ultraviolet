@@ -333,11 +333,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
                 return null;
 
             var selectors = ConsumeSelectorList(state);
+            var navigation = ConsumeOptionalNavigationExpression(state);
             var styles    = default(UvssStyleCollection);
             var triggers  = default(UvssTriggerCollection);
             ConsumeStyleList(state, out styles, out triggers);
 
-            return new UvssRule(selectors, styles, triggers);
+            return new UvssRule(selectors, navigation, styles, triggers);
         }
 
         /// <summary>
@@ -791,7 +792,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
 
                 if (token.TokenType == UvssLexerTokenType.WhiteSpace ||
                     token.TokenType == UvssLexerTokenType.Comma ||
-                    token.TokenType == UvssLexerTokenType.OpenCurlyBrace)
+                    token.TokenType == UvssLexerTokenType.OpenCurlyBrace ||
+                    token.TokenType == UvssLexerTokenType.Pipe)
                 {
                     if (child && !valid)
                     {

@@ -19,6 +19,28 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
             this.navigationExpression = navigationExpression;
         }
 
+        /// <summary>
+        /// Compares two <see cref="StoryboardTargetAnimationKey"/> values for equality.
+        /// </summary>
+        /// <param name="stk1">The first <see cref="StoryboardTargetAnimationKey"/> to compare.</param>
+        /// <param name="stk2">The second <see cref="StoryboardTargetAnimationKey"/> to compare.</param>
+        /// <returns><c>true</c> if the specified keys are equal; otherwise, <c>false</c>.</returns>
+        public static Boolean operator ==(StoryboardTargetAnimationKey stk1, StoryboardTargetAnimationKey stk2)
+        {
+            return stk1.Equals(stk2);
+        }
+
+        /// <summary>
+        /// Compares two <see cref="StoryboardTargetAnimationKey"/> values for inequality.
+        /// </summary>
+        /// <param name="stk1">The first <see cref="StoryboardTargetAnimationKey"/> to compare.</param>
+        /// <param name="stk2">The second <see cref="StoryboardTargetAnimationKey"/> to compare.</param>
+        /// <returns><c>true</c> if the specified keys are unequal; otherwise, <c>false</c>.</returns>
+        public static Boolean operator !=(StoryboardTargetAnimationKey stk1, StoryboardTargetAnimationKey stk2)
+        {
+            return !stk1.Equals(stk2);
+        }
+
         /// <inheritdoc/>
         public override Int32 GetHashCode()
         {

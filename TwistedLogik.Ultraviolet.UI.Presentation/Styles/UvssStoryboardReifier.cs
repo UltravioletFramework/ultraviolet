@@ -119,20 +119,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
             if (navigationExpressionDef != null)
             {
                 propertyType = GetDependencyPropertyType(uv, new[] { navigationExpressionDef.NavigationPropertyType }, ref propertyName);
-
-                var upf = uv.GetUI().GetPresentationFoundation();
-
-                var navigationPropertyName = new UvmlName(navigationExpressionDef.NavigationProperty);
-                var navigationPropertyIndex = navigationExpressionDef.NavigationPropertyIndex;
-
-                var navigationPropertyType = default(Type);
-                if (navigationExpressionDef.NavigationPropertyType != null)
-                {
-                    if (!upf.GetKnownType(navigationExpressionDef.NavigationPropertyType, false, out navigationPropertyType))
-                        throw new UvssException(PresentationStrings.UnrecognizedType.Format(navigationExpressionDef.NavigationPropertyType));
-                }
-
-                navigationExpression = new NavigationExpression(navigationPropertyName, navigationPropertyType, navigationPropertyIndex);
+                navigationExpression = NavigationExpression.FromUvssNavigationExpression(uv, navigationExpressionDef);
             }
 
             animationKey = new StoryboardTargetAnimationKey(new UvmlName(propertyName), navigationExpression);

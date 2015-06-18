@@ -90,7 +90,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                     var dp = DependencyProperty.FindByStylingName(style.Name, GetType());
                     if (dp != null)
                     {
-                        base.ApplyStyle(style, rule.Selectors[0], dp);
+                        var navexp = NavigationExpression.FromUvssNavigationExpression(view.Ultraviolet, rule.NavigationExpression);
+                        base.ApplyStyle(style, rule.Selectors[0], navexp, dp);
                     }
                 }
             }
@@ -98,9 +99,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <inheritdoc/>
-        protected internal sealed override void ApplyStyle(UvssStyle style, UvssSelector selector, DependencyProperty dp)
+        protected internal sealed override void ApplyStyle(UvssStyle style, UvssSelector selector, NavigationExpression? navigationExpression, DependencyProperty dp)
         {
-            base.ApplyStyle(style, selector, dp);
+            base.ApplyStyle(style, selector, navigationExpression, dp);
         }
 
         /// <summary>

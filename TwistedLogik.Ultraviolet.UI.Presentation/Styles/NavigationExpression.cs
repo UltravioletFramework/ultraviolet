@@ -46,6 +46,35 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
             return !exp1.Equals(exp2);
         }
 
+        /// <summary>
+        /// Creates a new instance of the <see cref="NavigationExpression"/> from the
+        /// specified <see cref="UvssNavigationExpression"/> object.
+        /// </summary>
+        /// <param name="uv">The Ultraviolet context.</param>
+        /// <param name="uvssexp">The UVSS navigation expression from which to create a new structure.</param>
+        /// <returns>The <see cref="NavigationExpression"/> that was created.</returns>
+        public static NavigationExpression? FromUvssNavigationExpression(UltravioletContext uv, UvssNavigationExpression uvssexp)
+        {
+            Contract.Require(uv, "uv");
+
+            if (uvssexp == null)
+                return null;
+
+            var upf = uv.GetUI().GetPresentationFoundation();
+
+            var navigationPropertyName = new UvmlName(uvssexp.NavigationProperty);
+            var navigationPropertyIndex = uvssexp.NavigationPropertyIndex;
+            var navigationPropertyType = default(Type);
+
+            if (uvssexp.NavigationPropertyType != null)
+            {
+                if (!upf.GetKnownType(uvssexp.NavigationPropertyType, false, out navigationPropertyType))
+                    throw new UvssException(PresentationStrings.UnrecognizedType.Format(uvssexp.NavigationPropertyType));
+            }
+
+            return new NavigationExpression(navigationPropertyName, navigationPropertyType, navigationPropertyIndex);
+        }
+
         /// <inheritdoc/>
         public override Int32 GetHashCode()
         {
@@ -128,12 +157,22 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
                 {
                     if (isIndexable)
                     {
-                        return ((IIndexable)child)[propertyIndex.Value] as DependencyObject;
+                        var indexable = ((IIndexable)child);
+                        var index = propertyIndex.Value;
+                        if (index < 0 || index >= indexable.Count)
+                            return null;
+
+                        return indexable[index] as DependencyObject;
                     }
 
                     if (isList)
                     {
-                        return ((IList)child)[propertyIndex.Value] as DependencyObject;
+                        var list = ((IList)child);
+                        var index = propertyIndex.Value;
+                        if (index < 0 || index >= list.Count)
+                            return null;
+
+                        return list[index] as DependencyObject;
                     }
 
                     return null;

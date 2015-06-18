@@ -45,6 +45,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media
         }
 
         /// <inheritdoc/>
+        Int32 IIndexable.Count
+        {
+            get
+            {
+                var children = Children;
+                if (children == null)
+                    return 0;
+
+                return children.Count;
+            }
+        }
+
+        /// <inheritdoc/>
         public override Matrix Value
         {
             get
