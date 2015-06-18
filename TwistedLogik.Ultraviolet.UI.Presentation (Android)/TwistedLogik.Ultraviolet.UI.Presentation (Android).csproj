@@ -563,17 +563,11 @@
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\NamespaceDoc.cs">
       <Link>NamespaceDoc.cs</Link>
     </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\OutOfBandRenderer.cs">
-      <Link>OutOfBandRenderer.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\OutOfBandRenderer.OutOfBandRenderTarget.cs">
-      <Link>OutOfBandRenderer.OutOfBandRenderTarget.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\OutOfBandRenderer.UIElementComparer.cs">
-      <Link>OutOfBandRenderer.UIElementComparer.cs</Link>
-    </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\PopupQueue.cs">
       <Link>PopupQueue.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\PopupQueue.EnqueuedPopup.cs">
+      <Link>PopupQueue.EnqueuedPopup.cs</Link>
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\PresentationBoxedValues.cs">
       <Link>PresentationBoxedValues.cs</Link>

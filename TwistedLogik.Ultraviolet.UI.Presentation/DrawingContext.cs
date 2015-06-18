@@ -196,8 +196,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 SpriteBatch.Ultraviolet.GetGraphics().Clear(ClearOptions.Stencil, Color.White, 0.0, 0);
             }
 
-            SpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, StencilReadDepthState, RasterizerState.CullCounterClockwise, state.Effect, state.TransformMatrix);
-//          SpriteBatch.Begin(state.SortMode, state.BlendState, state.SamplerState, StencilReadDepthState, state.RasterizerState, state.Effect, state.TransformMatrix);
+            Begin(SpriteSortMode.Deferred, null, state.TransformMatrix);
         }
 
         // Property values.

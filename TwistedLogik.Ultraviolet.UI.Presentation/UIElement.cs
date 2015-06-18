@@ -160,33 +160,71 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             var shouldDraw = true;
 
-            var upf = Ultraviolet.GetUI().GetPresentationFoundation();
-            if (upf.OutOfBandRenderer.IsRenderedOutOfBand(this) && !upf.OutOfBandRenderer.IsDrawingRenderTargets)
+            var popup = this as Popup;
+            if (popup == null || View.Popups.IsDrawingPopup(popup))
             {
-                var popup = this as Popup;
-                if (popup == null || View.Popups.IsDrawingPopup(popup))
-                {
-                    if (clip.HasValue && clip.Value.IsEmpty)
-                        shouldDraw = false;
-
-                    var scissor = Ultraviolet.GetGraphics().GetScissorRectangle();
-                    if (scissor.HasValue && !(this is Popup))
-                    {
-                        var absBounds = Display.DipsToPixels(AbsoluteBounds);
-                        if (!absBounds.Intersects(scissor.Value))
-                            shouldDraw = false;
-                    }
-                }
+                if (clip.HasValue && clip.Value.IsEmpty)
+                    shouldDraw = false;
             }
 
             if (shouldDraw)
             {
                 dc.PushOpacity(Opacity);
 
-                if (!DrawOutOfBandTexture(dc))
+                var state = dc.SpriteBatch.GetCurrentState();
+                var flush = false;
+
+                if (this is PopupRoot)
                 {
-                    DrawCore(time, dc);
-                    OnDrawing(time, dc);
+                    var transformMatrix = view.Popups.GetCurrentTransformMatrix();
+                    if (transformMatrix != null)
+                    {
+                        dc.End();
+                        dc.Begin(SpriteSortMode.Deferred, null, transformMatrix.Value);
+
+                        flush = true;
+                    }
+                }
+                else
+                {
+                    var renderTransform = RenderTransform;
+
+                    if (!IsIdentityTransform(renderTransform))
+                    {
+                        var matTransformToAncestor = GetTransformToAncestorMatrix(view.LayoutRoot);
+
+                        var rto = RenderTransformOrigin;
+                        Point2D rtoRelative = new Point2D(rto.X * RenderSize.Width, rto.Y * RenderSize.Height);
+                        Point2D rtoAbsolute;
+                        Point2D.Transform(ref rtoRelative, ref matTransformToAncestor, out rtoAbsolute);
+
+                        var translateX = (Single)rtoAbsolute.X;
+                        var translateY = (Single)rtoAbsolute.Y;
+
+                        var matSpriteBatch = state.TransformMatrix;
+                        var matRenderTransform = renderTransform.Value;
+                        var matTranslateToOrigin = Matrix.CreateTranslation(-translateX, -translateY, 0);
+                        var matTranslateToScreen = Matrix.CreateTranslation(translateX, translateY, 0);
+
+                        Matrix matTransformFinal;
+                        Matrix.Concat(ref matSpriteBatch, ref matTranslateToOrigin, out matTransformFinal);
+                        Matrix.Concat(ref matTransformFinal, ref matRenderTransform, out matTransformFinal);
+                        Matrix.Concat(ref matTransformFinal, ref matTranslateToScreen, out matTransformFinal);
+
+                        dc.End();
+                        dc.Begin(SpriteSortMode.Deferred, null, matTransformFinal);
+
+                        flush = true;
+                    }
+                }
+
+                DrawCore(time, dc);
+                OnDrawing(time, dc);
+
+                if (flush)
+                {
+                    dc.End();
+                    dc.Begin(SpriteSortMode.Deferred, null, state.TransformMatrix);
                 }
 
                 dc.PopOpacity();
@@ -2011,7 +2049,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <returns><c>true</c> if the specified transform is an identity transform; otherwise, <c>false</c>.</returns>
         private static Boolean IsIdentityTransform(Transform transform)
         {
-            return (transform == null || transform is IdentityTransform);
+            return (transform == null || transform.IsIdentity);
         }
 
         /// <summary>
@@ -2079,18 +2117,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         private static void HandleRenderTransformChanged(DependencyObject dobj, Transform oldValue, Transform newValue)
         {
-            var element  = (UIElement)dobj;
-            var uv       = element.Ultraviolet;
-            var renderer = uv.GetUI().GetPresentationFoundation().OutOfBandRenderer;
+            var element = (UIElement)dobj;
+            var uv      = element.Ultraviolet;
 
             if (newValue == null || newValue is IdentityTransform)
             {
-                renderer.Unregister(element);
                 element.UpdateDescendantsWithRenderTransformsCounter(element.VisualParent, -1);
             }
             else
             {
-                renderer.Register(element);
                 element.UpdateDescendantsWithRenderTransformsCounter(element.VisualParent, +1);
             }
 
@@ -2111,78 +2146,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                     var uiElement = (UIElement)dobj;
                     return uiElement.IsEnabledCore;
                 }
-            }
-            return false;
-        }
-
-        /// <summary>
-        /// Draws the element's out-of-band texture, if it has one.
-        /// </summary>
-        /// <param name="dc">The drawing context that describes the render state of the layout.</param>
-        /// <returns><c>true</c> if the element's out-of-band texture was drawn; otherwise, <c>false</c>.</returns>
-        private Boolean DrawOutOfBandTexture(DrawingContext dc)
-        {
-            var upf = Ultraviolet.GetUI().GetPresentationFoundation();
-            if (upf.OutOfBandRenderer.IsTextureReady(this))
-            {
-                var texture = upf.OutOfBandRenderer.GetElementTexture(this);
-                if (texture != null)
-                {
-                    var textureOrigin = new Vector2(texture.Width / 2f, texture.Height / 2f);
-
-                    var positionX = 0.0;
-                    var positionY = 0.0;
-
-                    var transform = Matrix.Identity;
-
-                    var isPopup = VisualParent is PopupRoot;
-                    if (isPopup)
-                    {
-                        var popupRoot = (PopupRoot)VisualParent;
-                        var popup = (Popup)popupRoot.Parent;
-
-                        var popupOffsetX = AbsolutePosition.X - popup.PlacementTarget.AbsolutePosition.X;
-                        var popupOffsetY = AbsolutePosition.Y - popup.PlacementTarget.AbsolutePosition.Y;
-
-                        var popupTransformOrigin = RenderTransformOrigin;
-                        positionX = (Single)((popupTransformOrigin.X * RenderSize.Width) + popupOffsetX);
-                        positionY = (Single)((popupTransformOrigin.Y * RenderSize.Height) + popupOffsetY);
-
-                        transform = popupRoot.InheritedRenderTransform;
-                    }
-                    else
-                    {
-                        var renderPosition = AbsolutePosition;
-                        var renderTransform = (RenderTransform ?? Transform.Identity).Value;
-                        var renderTransformOrigin = RenderTransformOrigin;
-                        var renderTransformOriginRelative = new Vector2(
-                            (Single)(renderTransformOrigin.X * RenderSize.Width),
-                            (Single)(renderTransformOrigin.Y * RenderSize.Height)
-                        );
-
-                        var renderTranslate = (Vector2)View.Display.DipsToPixels(renderPosition) + renderTransformOriginRelative;
-                        var renderTranslateRounded = new Vector2((Int32)renderTranslate.X, (Int32)renderTranslate.Y);
-                        var renderTransformDips = Matrix.CreateTranslation(renderTranslateRounded.X, renderTranslateRounded.Y, 0) * renderTransform;
-
-                        View.Display.DipsToPixels(ref renderTransformDips, out transform);
-                    }
-
-                    var spriteBatchState = dc.SpriteBatch.GetCurrentState();
-
-                    dc.SpriteBatch.End();
-
-                    dc.SpriteBatch.Begin(SpriteSortMode.Immediate, null, null, null, null, null, spriteBatchState.TransformMatrix * transform);
-                    dc.ReapplyClipRectangle();
-
-                    var position = new Vector2((Single)(Int32)positionX, (Single)(Int32)positionY);
-                    dc.SpriteBatch.Draw(texture, position, null, Color.White * dc.Opacity, 0f, textureOrigin, 1f, SpriteEffects.None, 0f);
-
-                    dc.SpriteBatch.End();
-
-                    dc.SpriteBatch.Begin(spriteBatchState);
-                    dc.ReapplyClipRectangle();
-                }
-                return true;
             }
             return false;
         }

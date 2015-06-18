@@ -1,4 +1,5 @@
-﻿
+﻿using System;
+
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Media
 {
     /// <summary>
@@ -36,6 +37,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media
             get { return inverse; }
         }
 
+        /// <inheritdoc/>
+        public override Boolean IsIdentity
+        {
+            get { return isIdentity; }
+        }
+
         /// <summary>
         /// Gets or sets the transformation matrix that this transform represents.
         /// </summary>
@@ -67,9 +74,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media
             {
                 transform.inverse = null;
             }
+
+            transform.isIdentity = Matrix.Identity.Equals(newValue);
         }
 
         // The matrix's cached inverse.
         private Matrix? inverse;
+        private Boolean isIdentity = true;
     }
 }

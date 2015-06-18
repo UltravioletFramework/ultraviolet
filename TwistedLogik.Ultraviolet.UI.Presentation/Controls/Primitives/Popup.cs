@@ -236,17 +236,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             {
                 if (IsOpen)
                 {
-                    var upf = Ultraviolet.GetUI().GetPresentationFoundation();
-                    if (upf.OutOfBandRenderer.IsDrawingRenderTargets)
-                    {
-                        View.Popups.EnqueueOutOfBand(this);
-                    }
-                    else
-                    {
-                    View.Popups.Enqueue(this);
+                    var transform = dc.SpriteBatch.CurrentTransformMatrix;
+                    var transformed = !Matrix.Identity.Equals(transform);
+                    View.Popups.Enqueue(this, transformed ? transform : (Matrix?)null);
                 }
             }
-        }
         }
 
         /// <inheritdoc/>

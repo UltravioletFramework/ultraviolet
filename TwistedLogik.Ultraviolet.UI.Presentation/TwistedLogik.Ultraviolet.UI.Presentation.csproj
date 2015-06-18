@@ -133,9 +133,7 @@
     <Compile Include="Media\TranslateTransform.cs" />
     <Compile Include="Media\ScaleTransform.cs" />
     <Compile Include="Media\Transform.cs" />
-    <Compile Include="OutOfBandRenderer.cs" />
-    <Compile Include="OutOfBandRenderer.OutOfBandRenderTarget.cs" />
-    <Compile Include="OutOfBandRenderer.UIElementComparer.cs" />
+    <Compile Include="PopupQueue.EnqueuedPopup.cs" />
     <Compile Include="PresentationFoundationConfiguration.cs" />
     <Compile Include="PresentationFoundationInitializer.cs" />
     <Compile Include="RoutedEventRaisedNotificationServer.cs" />

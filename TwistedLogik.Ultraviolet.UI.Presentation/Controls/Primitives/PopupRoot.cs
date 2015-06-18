@@ -43,14 +43,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         public Boolean IsOpen
         {
             get { return isOpen; }
-            set 
-            {
-                if (isOpen != value)
-                {
-                    isOpen = value;
-                    UpdateOutOfBandRegistration();
-                }
-            }
+            set { isOpen = value; } 
         }
 
         /// <summary>
@@ -59,14 +52,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         public Boolean IsTransformed
         {
             get { return isTransformed; }
-            set 
-            {
-                if (isTransformed != value)
-                {
-                    isTransformed = value;
-                    UpdateOutOfBandRegistration();
-                }
-            }
+            set { isTransformed = value; }
         }
 
         /// <summary>
@@ -183,28 +169,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             else
             {
                 newValue.ChangeVisualParent(null);
-            }
-
-            popupRoot.UpdateOutOfBandRegistration();
-        }
-
-        /// <summary>
-        /// Updates the out-of-band registration status of this popup's child element.
-        /// </summary>
-        private void UpdateOutOfBandRegistration()
-        {
-            var child = Child;
-            if (child != null)
-            {
-                var upf = Ultraviolet.GetUI().GetPresentationFoundation();
-                if (isTransformed && isOpen)
-                {
-                    upf.OutOfBandRenderer.Register(child);
-                }
-                else
-                {
-                    upf.OutOfBandRenderer.Unregister(child);
-                }
             }
         }
 

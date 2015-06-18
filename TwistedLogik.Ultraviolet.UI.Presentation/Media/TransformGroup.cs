@@ -92,6 +92,24 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media
             }
         }
 
+        /// <inheritdoc/>
+        public override Boolean IsIdentity
+        {
+            get
+            {
+                var children = Children;
+                if (children != null)
+                {
+                    foreach (var child in children)
+                    {
+                        if (!child.IsIdentity)
+                            return false;
+                    }
+                }
+                return true;
+            }
+        }
+
         /// <summary>
         /// Gets or sets the transform group's list of child transformations.
         /// </summary>

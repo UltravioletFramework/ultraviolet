@@ -9,8 +9,20 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
     /// <summary>
     /// Represents the queue that manages the Presentation Foundation's list of active popup windows.
     /// </summary>
-    internal class PopupQueue
+    internal partial class PopupQueue
     {
+        /// <summary>
+        /// Gets the transformation matrix associated with the popup that is currently being drawn.
+        /// </summary>
+        /// <returns>The transformation matrix associated with the popup that is currently being drawn.</returns>
+        public Matrix? GetCurrentTransformMatrix()
+        {
+            if (position == null)
+                return null;
+
+            return position.Value.Transform;
+        }
+
         /// <summary>
         /// Gets a value indicating whether the queue is currently drawing the specified popup.
         /// </summary>
@@ -18,7 +30,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <returns><c>true</c> if the queue is currently drawing the specified popup; otherwise, <c>false</c>.</returns>
         public Boolean IsDrawingPopup(Popup popup)
         {
-            return position != null && position.Value == popup;
+            return position != null && position.Value.Popup == popup;
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the popup which is being drawn has a non-identity transformation matrix.
+        /// </summary>
+        /// <returns><c>true</c> if the current popup is being transformed; otherwise, <c>false</c>.</returns>
+        public Boolean IsTransformed()
+        {
+            return position != null && position.Value.Transform.HasValue;
         }
 
         /// <summary>
@@ -39,10 +60,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 position = (position == null) ? queue.First : position.Next;
                 next     = position.Next;
 
-                dc.Reset(position.Value.View.Display);
+                var popup = position.Value.Popup;
 
-                position.Value.EnsureIsLoaded(true);
-                position.Value.Draw(time, dc);
+                dc.Reset(popup.View.Display);
+
+                popup.EnsureIsLoaded(true);
+                popup.Draw(time, dc);
 
                 if (next == null)
                     break;
@@ -58,40 +81,25 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public void Clear()
         {
             queue.Clear();
-
-            foreach (var popup in pending)
-                queue.AddLast(popup);
-
-            pending.Clear();
         }
 
         /// <summary>
         /// Enqueues a popup at the next position within the queue.
         /// </summary>
         /// <param name="popup">The popup to enqueue.</param>
-        public void Enqueue(Popup popup)
+        /// <param name="transform">The popup's transformation matrix.</param>
+        public void Enqueue(Popup popup, Matrix? transform)
         {
             Contract.Require(popup, "popup");
 
             if (next == null)
             {
-                queue.AddLast(popup);
+                queue.AddLast(new EnqueuedPopup(popup, transform));
             }
             else
             {
-                queue.AddBefore(next, popup);
+                queue.AddBefore(next, new EnqueuedPopup(popup, transform));
             }
-        }
-
-        /// <summary>
-        /// Enqueues a popup which is being rendered out-of-band.
-        /// </summary>
-        /// <param name="popup">The popup to enqueue.</param>
-        public void EnqueueOutOfBand(Popup popup)
-        {
-            Contract.Require(popup, "popup");
-
-            pending.AddLast(popup);
         }
 
         /// <summary>
@@ -111,10 +119,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             for (var current = queue.Last; current != null; current = current.Previous)
             {
-                var match = current.Value.PopupHitTest(point);
+                var match = current.Value.Popup.PopupHitTest(point);
                 if (match != null)
                 {
-                    popup = current.Value;
+                    popup = current.Value.Popup;
                     return match;
                 }
             }
@@ -132,9 +140,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         // State values.
-        private readonly PooledLinkedList<Popup> queue = new PooledLinkedList<Popup>(8);
-        private readonly PooledLinkedList<Popup> pending = new PooledLinkedList<Popup>(8);
-        private LinkedListNode<Popup> position;
-        private LinkedListNode<Popup> next;
+        private readonly PooledLinkedList<EnqueuedPopup> queue = new PooledLinkedList<EnqueuedPopup>(8);
+        private LinkedListNode<EnqueuedPopup> position;
+        private LinkedListNode<EnqueuedPopup> next;
     }
 }

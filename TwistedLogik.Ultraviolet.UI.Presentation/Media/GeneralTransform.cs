@@ -57,5 +57,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media
         /// <param name="result">The transformed point.</param>
         /// <returns><c>true</c> if the transformation was successful; otherwise, <c>false</c>.</returns>
         public abstract Boolean TryTransform(Point2D point, out Point2D result);
+
+        /// <summary>
+        /// Gets a value indicating whether this is an identity transform.
+        /// </summary>
+        public abstract Boolean IsIdentity
+        {
+            get;
+        }
     }
 }

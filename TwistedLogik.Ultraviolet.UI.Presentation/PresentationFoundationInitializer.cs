@@ -12,8 +12,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             var upf       = uv.GetUI().GetPresentationFoundation();
             var upfconfig = (configuration as PresentationFoundationConfiguration) ?? new PresentationFoundationConfiguration();
-
-            upf.OutOfBandRenderer.RenderTargetSize = upfconfig.OutOfBandRenderTargetSize;
         }
     }
 }

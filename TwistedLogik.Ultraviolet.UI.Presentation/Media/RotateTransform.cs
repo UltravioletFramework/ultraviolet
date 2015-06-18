@@ -21,6 +21,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media
             get { return inverse; }
         }
 
+        /// <inheritdoc/>
+        public override bool IsIdentity
+        {
+            get { return isIdentity; }
+        }
+
         /// <summary>
         /// Gets tor sets the angle of rotation in degrees.
         /// </summary>
@@ -116,10 +122,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media
             {
                 this.inverse = null;
             }
+
+            this.isIdentity = Matrix.Identity.Equals(value);
         }
 
         // Property values.
         private Matrix value = Matrix.Identity;
         private Matrix? inverse;
+        private Boolean isIdentity = true;
     }
 }

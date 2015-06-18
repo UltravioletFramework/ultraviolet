@@ -21,6 +21,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media
             get { return inverse; }
         }
 
+        /// <inheritdoc/>
+        public override Boolean IsIdentity
+        {
+            get { return isIdentity; }
+        }
+
         /// <summary>
         /// Gets or sets the transform's scaling factor along the x-axis.
         /// </summary>
@@ -130,10 +136,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media
             {
                 this.inverse = null;
             }
+
+            this.isIdentity = Matrix.Identity.Equals(value);
         }
 
         // Property values.
         private Matrix value = Matrix.Identity;
         private Matrix? inverse;
+        private Boolean isIdentity;
     }
 }

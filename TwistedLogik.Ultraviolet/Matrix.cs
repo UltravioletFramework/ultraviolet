@@ -1073,6 +1073,32 @@ namespace TwistedLogik.Ultraviolet
         }
 
         /// <summary>
+        /// Concatenates two matrices. The operation specified by the matrix on the left is applied first; the operation specified by the matrix 
+        /// on the right is applied second. This is in contrast to the <see cref="Multiply(Matrix, Matrix, Matrix)"/> method, which applies the 
+        /// operand on the right first, and the operand on the left second.
+        /// </summary>
+        /// <param name="m1">The first matrix to concatenate.</param>
+        /// <param name="m2">The second matrix to concatenate.</param>
+        /// <param name="result">A matrix which is the result of concatenating the specified matrices.</param>
+        public static void Concat(ref Matrix m1, ref Matrix m2, out Matrix result)
+        {
+            Multiply(ref m2, ref m1, out result);
+        }
+
+        /// <summary>
+        /// Concatenates two matrices. The operation specified by the matrix on the left is applied first; the operation specified by the matrix 
+        /// on the right is applied second. This is in contrast to the <see cref="Multiply(Matrix, Matrix, Matrix)"/> method, which applies the 
+        /// operand on the right first, and the operand on the left second.
+        /// </summary>
+        /// <param name="m1">The first matrix to concatenate.</param>
+        /// <param name="m2">The second matrix to concatenate.</param>
+        /// <returns>A matrix which is the result of concatenating the specified matrices.</returns>
+        public static Matrix Concat(Matrix m1, Matrix m2)
+        {
+            return m2 * m1;
+        }
+
+        /// <summary>
         /// Adds a matrix to another matrix.
         /// </summary>
         /// <param name="m1">The <see cref="Matrix"/> on the left side of the addition operator.</param>

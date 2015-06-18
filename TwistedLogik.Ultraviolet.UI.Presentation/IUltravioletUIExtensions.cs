@@ -24,10 +24,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             new UltravioletSingleton<PresentationFoundation>((uv) =>
             {
                 var instance = new PresentationFoundation(uv);
-                uv.Drawing += (s, t) =>
-                {
-                    instance.DrawRenderTargets(t);
-                };
                 uv.GetUI().Updating += (s, t) =>
                 {
                     instance.Update(t);

@@ -1,4 +1,5 @@
-﻿
+﻿using System;
+
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Media
 {
     /// <summary>
@@ -17,6 +18,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media
         public override Matrix? Inverse
         {
             get { return Matrix.Identity; }
+        }
+
+        /// <inheritdoc/>
+        public override Boolean IsIdentity
+        {
+            get { return true; }
         }
     }
 }

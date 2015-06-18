@@ -4,16 +4,21 @@
 
     <Image Source="#Global:Textures:DefaultUIBackground 0 0 1161 685" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
 
-    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" >
       <StackPanel.RenderTransform>
         <RotateTransform Angle="45"/>
       </StackPanel.RenderTransform>
-      <Button Width="200" Height="64">
-        <Button.RenderTransform>
-          <RotateTransform Angle="45"/>
-        </Button.RenderTransform>
-        Hello, world!
-      </Button>
+      
+      <ComboBox Width="200">
+        <ComboBox.RenderTransform>
+          <RotateTransform Angle="{{Angle}}"/>
+        </ComboBox.RenderTransform>
+        <ComboBoxItem>Item 1</ComboBoxItem>
+        <ComboBoxItem>Item 2</ComboBoxItem>
+        <ComboBoxItem>Item 3</ComboBoxItem>
+      </ComboBox>
+      <HSlider Margin="0 100 0 0" Width="200" Maximum="360">{{Angle}}</HSlider>
+
     </StackPanel>
 
   </View>
