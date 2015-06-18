@@ -4,7 +4,6 @@ using TwistedLogik.Nucleus;
 using TwistedLogik.Nucleus.Collections;
 using TwistedLogik.Ultraviolet.Graphics;
 using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
-using TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation
 {
