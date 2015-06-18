@@ -1462,9 +1462,11 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
             }
             else
             {
-                ApplyState();
-                FlushBatch();
-
+                if (batchInfo.Count > 0)
+                {
+                    ApplyState();
+                    FlushBatch();
+                }
                 SpriteBatchCoordinator.RelinquishDeferred();
             }
             begun = false;
