@@ -384,15 +384,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             var button = element as Button;
             if (button != null && button.IsMouseCaptured)
             {
+                var relativeMousePosition = Mouse.GetPosition(this);
+
                 var oldValue = Value;
                 if (Orientation == Orientation.Vertical)
                 {
-                    var relY = y - (AbsolutePosition.Y + thumbDragOffset);
+                    var relY = relativeMousePosition.Y - thumbDragOffset;
                     Value = OffsetToValue(relY, RenderSize.Height, Thumb.RenderSize.Height);
                 }
                 else
                 {
-                    var relX = x - (AbsolutePosition.X + thumbDragOffset);
+                    var relX = relativeMousePosition.X - thumbDragOffset;
                     Value = OffsetToValue(relX, RenderSize.Width, Thumb.RenderSize.Width);
                 }
 
@@ -414,15 +416,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         {
             var uiElement = (UIElement)element;
 
+            var relativeMousePosition = Mouse.GetPosition(Thumb);
+
             if (Orientation == Orientation.Vertical)
             {
                 thumbDragging   = true;
-                thumbDragOffset = Display.PixelsToDips(device.Y) - uiElement.AbsoluteBounds.Y;
+                thumbDragOffset = relativeMousePosition.Y;
             }
             else
             {
                 thumbDragging   = true;
-                thumbDragOffset = Display.PixelsToDips(device.X) - uiElement.AbsoluteBounds.X;
+                thumbDragOffset = relativeMousePosition.X;
             }
         }
         
