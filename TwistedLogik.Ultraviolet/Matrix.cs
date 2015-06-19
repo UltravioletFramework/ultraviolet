@@ -1074,7 +1074,7 @@ namespace TwistedLogik.Ultraviolet
 
         /// <summary>
         /// Concatenates two matrices. The operation specified by the matrix on the left is applied first; the operation specified by the matrix 
-        /// on the right is applied second. This is in contrast to the <see cref="Multiply(Matrix, Matrix, Matrix)"/> method, which applies the 
+        /// on the right is applied second. This is in contrast to the <see cref="Multiply(ref Matrix, ref Matrix, out Matrix)"/> method, which applies the 
         /// operand on the right first, and the operand on the left second.
         /// </summary>
         /// <param name="m1">The first matrix to concatenate.</param>
@@ -1087,7 +1087,7 @@ namespace TwistedLogik.Ultraviolet
 
         /// <summary>
         /// Concatenates two matrices. The operation specified by the matrix on the left is applied first; the operation specified by the matrix 
-        /// on the right is applied second. This is in contrast to the <see cref="Multiply(Matrix, Matrix, Matrix)"/> method, which applies the 
+        /// on the right is applied second. This is in contrast to the <see cref="Multiply(ref Matrix, ref Matrix, out Matrix)"/> method, which applies the 
         /// operand on the right first, and the operand on the left second.
         /// </summary>
         /// <param name="m1">The first matrix to concatenate.</param>
