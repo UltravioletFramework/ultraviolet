@@ -179,6 +179,47 @@ namespace TwistedLogik.Ultraviolet.Tests
         }
 
         [TestMethod]
+        public void Matrix_ConcatsCorrectly()
+        {
+            var matrix1 = new Matrix(
+                 100, 200, 300, 400,
+                 500, 600, 700, 800,
+                 900, 1000, 1100, 1200,
+                1300, 1400, 1500, 1600);
+
+            var matrix2 = new Matrix(
+                 10, 20, 30, 40,
+                 50, 60, 70, 80,
+                 90, 100, 110, 120,
+                130, 140, 150, 160);
+
+            var result = Matrix.Concat(matrix1, matrix2);
+
+            TheResultingValue(result).ShouldBe(matrix2 * matrix1);
+        }
+
+        [TestMethod]
+        public void Matrix_ConcatsCorrectlyWithOutParam()
+        {
+            var matrix1 = new Matrix(
+                 100, 200, 300, 400,
+                 500, 600, 700, 800,
+                 900, 1000, 1100, 1200,
+                1300, 1400, 1500, 1600);
+
+            var matrix2 = new Matrix(
+                 10, 20, 30, 40,
+                 50, 60, 70, 80,
+                 90, 100, 110, 120,
+                130, 140, 150, 160);
+
+            var result = Matrix.Identity;
+            Matrix.Concat(ref matrix1, ref matrix2, out result);
+
+            TheResultingValue(result).ShouldBe(matrix2 * matrix1);
+        }
+
+        [TestMethod]
         public void Matrix_AddsCorrectly()
         {
             var matrix1 = new Matrix(

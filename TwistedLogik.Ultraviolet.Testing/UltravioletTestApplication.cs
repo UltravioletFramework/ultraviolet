@@ -172,9 +172,11 @@ namespace TwistedLogik.Ultraviolet.Testing
 
             if (!headless)
             {
-                rbuffer = RenderBuffer2D.Create(RenderBufferFormat.Color, window.ClientSize.Width, window.ClientSize.Height);
+                rtargetColorBuffer = RenderBuffer2D.Create(RenderBufferFormat.Color, window.ClientSize.Width, window.ClientSize.Height);
+                rtargetDepthStencilBuffer = RenderBuffer2D.Create(RenderBufferFormat.Depth24Stencil8, window.ClientSize.Width, window.ClientSize.Height);
                 rtarget = RenderTarget2D.Create(window.ClientSize.Width, window.ClientSize.Height);
-                rtarget.Attach(rbuffer);
+                rtarget.Attach(rtargetColorBuffer);
+                rtarget.Attach(rtargetDepthStencilBuffer);
             }
 
             if (loader != null)
@@ -272,6 +274,7 @@ namespace TwistedLogik.Ultraviolet.Testing
 
         // The render target to which the test scene will be rendered.
         private RenderTarget2D rtarget;
-        private RenderBuffer2D rbuffer;
+        private RenderBuffer2D rtargetColorBuffer;
+        private RenderBuffer2D rtargetDepthStencilBuffer;
     }
 }
