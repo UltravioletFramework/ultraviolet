@@ -75,7 +75,9 @@ namespace TwistedLogik.Ultraviolet.OpenGL
             Contract.EnsureNotDisposed(this, Disposed);
 
             gl.ClearColor(color.R / 255f, color.G / 255f, color.B / 255f, color.A / 255f);
-            gl.Clear(gl.GL_COLOR_BUFFER_BIT);
+            gl.ClearDepth(1.0);
+            gl.ClearStencil(0);
+            gl.Clear(gl.GL_COLOR_BUFFER_BIT | gl.GL_DEPTH_BUFFER_BIT | gl.GL_STENCIL_BUFFER_BIT);
         }
 
         /// <inheritdoc/>

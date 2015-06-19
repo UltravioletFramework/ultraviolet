@@ -413,6 +413,9 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
             {
                 fixed (Color* pData = data)
                 {
+                    gl.ReadBuffer(gl.GL_COLOR_ATTACHMENT0);
+                    gl.ThrowIfError();
+
                     gl.ReadPixels(region.X, region.Y, region.Width, region.Height, gl.GL_RGBA, gl.GL_UNSIGNED_BYTE, pData);
                     gl.ThrowIfError();
                 }
