@@ -1,8 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <UIPanelDefinition>
-  <View ViewModelType="UvDebugSandbox.UI.Screens.DebugViewModel, UvDebugSandbox">
-
-    <Image Source="#Global:Textures:DefaultUIBackground 0 0 1161 685" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
+  <View ViewModelType="TwistedLogik.Ultraviolet.Tests.UI.Presentation.RenderTransformTestScreenViewModel, TwistedLogik.Ultraviolet.Tests">
 
     <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
       <StackPanel.RenderTransform>
@@ -26,6 +24,6 @@
         <ComboBoxItem>Item 3</ComboBoxItem>
       </ComboBox>
     </StackPanel>
-
+    
   </View>
 </UIPanelDefinition>

@@ -142,6 +142,7 @@
     <Compile Include="UI\Presentation\ComplexScreenViewModel.cs" />
     <Compile Include="UI\Presentation\CanvasTestScreen.cs" />
     <Compile Include="UI\Presentation\DockPanelTestScreen.cs" />
+    <Compile Include="UI\Presentation\RenderTransformTestScreen.cs" />
     <Compile Include="UI\Presentation\VerticalWrapPanelTestScreen.cs" />
     <Compile Include="UI\Presentation\HorizontalWrapPanelTestScreen.cs" />
     <Compile Include="UI\Presentation\HorizontalStackPanelTestScreen.cs" />
@@ -350,6 +351,30 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Expected\UI\Presentation\PresentationFoundation_Vertical_StackPanel_CorrectlyArrangesChildren.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Content\UI\Screens\RenderTransformTestScreen\RenderTransformTestScreen.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Content\SoundEffects\Click1.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\SoundEffects\rollover1.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\SoundEffects\rollover2.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\SoundEffects\rollover3.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Expected\UI\Presentation\PresentationFoundation_CorrectlyDrawsElementsWithRenderTransforms.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

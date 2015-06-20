@@ -85,6 +85,15 @@ namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation
             TheResultingImage(result).ShouldMatch(@"Resources\Expected\UI\Presentation\PresentationFoundation_CorrectlyLaysOutComplexScreen.png");
         }
 
+        [TestMethod]
+        [TestCategory("Rendering")]
+        public void PresentationFoundation_CorrectlyDrawsElementsWithRenderTransforms()
+        {
+            var result = RunPresentationTestFor<RenderTransformTestScreen>(content => new RenderTransformTestScreen(content));
+
+            TheResultingImage(result).ShouldMatch(@"Resources\Expected\UI\Presentation\PresentationFoundation_CorrectlyDrawsElementsWithRenderTransforms.png");
+        }
+
         /// <summary>
         /// Runs a standard test by spinning up an Ultraviolet application and displaying the specified UPF screen.
         /// </summary>

@@ -139,7 +139,7 @@ RadioButton
 	}
 }
 
-ChecBbox
+CheckBox
 {
 	transition (checkstate, unchecked): checkbox-to-unchecked;
 	transition (checkstate, checked): checkbox-to-checked;
