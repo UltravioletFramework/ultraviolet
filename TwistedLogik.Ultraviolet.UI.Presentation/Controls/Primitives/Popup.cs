@@ -323,7 +323,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
                 if (popup.IsLoaded)
                     return true;
 
-                popup.Loaded += OpenDeferred;
+                if (!popup.loadingDeferred)
+                {
+                    popup.loadingDeferred = true;
+                    popup.Loaded += OpenDeferred;
+                }
                 return false;
             }
             return value;
@@ -426,6 +430,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         private static void OpenDeferred(DependencyObject element, ref RoutedEventData data)
         {
             var popup = (Popup)element;
+            popup.loadingDeferred = false;
             popup.Loaded -= OpenDeferred;
             popup.IsOpen = true;
         }
@@ -982,6 +987,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         private readonly PopupRoot root;
         private Double popupX;
         private Double popupY;
+        private Boolean loadingDeferred;
         
         // The assumed size of the default cursor, since there's currently no way to query it.
         private const Int32 DefaultCursorWidth = 16;
