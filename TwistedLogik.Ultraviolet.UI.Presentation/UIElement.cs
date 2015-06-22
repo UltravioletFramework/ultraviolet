@@ -191,28 +191,26 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
                     if (!IsIdentityTransform(renderTransform))
                     {
-                        var matTransformToAncestor = GetTransformToAncestorMatrix(view.LayoutRoot);
+                        var pxRenderWidth = Display.DipsToPixels(RenderSize.Width);
+                        var pxRenderHeight = Display.DipsToPixels(RenderSize.Height);
 
-                        var rto = RenderTransformOrigin;
-                        Point2D rtoRelative = new Point2D(rto.X * RenderSize.Width, rto.Y * RenderSize.Height);
-                        Point2D rtoAbsolute;
-                        Point2D.Transform(ref rtoRelative, ref matTransformToAncestor, out rtoAbsolute);
+                        var rtoInClientSpace = new Vector2(
+                            (Single)(pxRenderWidth * RenderTransformOrigin.X),
+                            (Single)(pxRenderHeight * RenderTransformOrigin.Y));
+                        var rtoInScreenSpace = (Vector2)Display.DipsToPixels(AbsolutePosition) + rtoInClientSpace;
 
-                        var translateX = (Single)rtoAbsolute.X;
-                        var translateY = (Single)rtoAbsolute.Y;
+                        var mtxTranslateToOrigin = Matrix.CreateTranslation(-rtoInScreenSpace.X, -rtoInScreenSpace.Y, 0);
+                        var mtxRenderTransform = renderTransform.Value;
+                        var mtxTranslateToScreen = Matrix.CreateTranslation(rtoInScreenSpace.X, rtoInScreenSpace.Y, 0);
+                        var mtxSpriteBatch = state.TransformMatrix;
 
-                        var matSpriteBatch = state.TransformMatrix;
-                        var matRenderTransform = renderTransform.Value;
-                        var matTranslateToOrigin = Matrix.CreateTranslation(-translateX, -translateY, 0);
-                        var matTranslateToScreen = Matrix.CreateTranslation(translateX, translateY, 0);
-
-                        Matrix matTransformFinal;
-                        Matrix.Concat(ref matSpriteBatch, ref matTranslateToOrigin, out matTransformFinal);
-                        Matrix.Concat(ref matTransformFinal, ref matRenderTransform, out matTransformFinal);
-                        Matrix.Concat(ref matTransformFinal, ref matTranslateToScreen, out matTransformFinal);
+                        Matrix mtxTransform;
+                        Matrix.Concat(ref mtxTranslateToOrigin, ref mtxRenderTransform, out mtxTransform);
+                        Matrix.Concat(ref mtxTransform, ref mtxTranslateToScreen, out mtxTransform);
+                        Matrix.Concat(ref mtxTransform, ref mtxSpriteBatch, out mtxTransform);
 
                         dc.End();
-                        dc.Begin(SpriteSortMode.Deferred, null, matTransformFinal);
+                        dc.Begin(SpriteSortMode.Deferred, null, mtxTransform);
 
                         flush = true;
                     }
@@ -1987,12 +1985,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var imageAreaPix = (RectangleF)Display.DipsToPixels(imageAreaAbs);
 
             var origin = new Vector2(
-                (Int32)(imageAreaPix.Width / 2f),
-                (Int32)(imageAreaPix.Height / 2f));
+                (Int32)imageAreaPix.Width / 2,
+                (Int32)imageAreaPix.Height / 2);
 
             var position = new Vector2(
-                (Int32)(imageAreaPix.X + (imageAreaPix.Width / 2f)),
-                (Int32)(imageAreaPix.Y + (imageAreaPix.Height / 2f)));
+                (Int32)imageAreaPix.X + (imageAreaPix.Width / 2),
+                (Int32)imageAreaPix.Y + (imageAreaPix.Height / 2));
 
             dc.SpriteBatch.DrawImage(imageResource, position, (Int32)imageAreaPix.Width, (Int32)imageAreaPix.Height,
                 colorPlusOpacity, 0f, origin, SpriteEffects.None, 0f);

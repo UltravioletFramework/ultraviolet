@@ -18,8 +18,27 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (!element.IsHitTestVisible)
                 return false;
 
-            if (!element.HasRenderTransformedDescendants && !element.Bounds.Contains(point))
-                return false;
+            if (element.HasRenderTransformedDescendants)
+            {
+                var clip = element.ClipRectangle;
+                if (clip.HasValue)
+                {
+                    var absoluteClip = clip.Value;
+                    var relativeClip = new RectangleD(
+                        absoluteClip.X - element.AbsolutePosition.X, 
+                        absoluteClip.Y - element.AbsolutePosition.Y, 
+                        absoluteClip.Width, 
+                        absoluteClip.Height);
+
+                    if (!relativeClip.Contains(point))
+                        return false;
+                }
+            }
+            else
+            {
+                if (!element.Bounds.Contains(point))
+                    return false;
+            }
 
             return true;
         }

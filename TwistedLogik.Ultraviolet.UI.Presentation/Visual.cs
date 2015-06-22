@@ -253,16 +253,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                     var rtOriginOffsetX = rtOrigin.X * uiElement.RenderSize.Width;
                     var rtOriginOffsetY = rtOrigin.Y * uiElement.RenderSize.Height;
 
-                    var mtxTranslateIntoOriginRelativeSpace = Matrix.CreateTranslation(
+                    var mtxTranslateToOriginSpace = Matrix.CreateTranslation(-(Single)rtOriginOffsetX, -(Single)rtOriginOffsetY, 0);
+                    var mtxRenderTransform = rtTransform.Value;
+                    var mtxTranslateToClientSpace = Matrix.CreateTranslation(
                         (Single)(uiElement.RelativeBounds.X + rtOriginOffsetX),
                         (Single)(uiElement.RelativeBounds.Y + rtOriginOffsetY), 0);
-                    var mtxElementRenderTransform = rtTransform.Value;
-                    var mtxTranslateOriginToTopLeft = Matrix.CreateTranslation(-(Single)rtOriginOffsetX, -(Single)rtOriginOffsetY, 0);
 
                     Matrix mtxResult;
-                    Matrix.Multiply(ref mtxTranslateIntoOriginRelativeSpace, ref mtxElementRenderTransform, out mtxResult);
-                    Matrix.Multiply(ref mtxResult, ref mtxTranslateOriginToTopLeft, out mtxResult);
-                    Matrix.Multiply(ref mtxResult, ref mtxTransformation, out mtxTransformation);
+                    Matrix.Concat(ref mtxTransformation, ref mtxTranslateToOriginSpace, out mtxResult);
+                    Matrix.Concat(ref mtxResult, ref mtxRenderTransform, out mtxResult);
+                    Matrix.Concat(ref mtxResult, ref mtxTranslateToClientSpace, out mtxTransformation);
                 }
             }
 
