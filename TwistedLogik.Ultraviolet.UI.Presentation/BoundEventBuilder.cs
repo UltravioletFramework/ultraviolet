@@ -23,7 +23,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             CreateReturnTarget();
 
             var components = BindingExpressions.ParseBindingExpression(expression, false).ToArray();
-            var current    = AddDataSourceReference(expression, dataSource);
+            var current    = AddDataSourceReference(expression, dataSource, dataSourceType);
 
             for (int i = 0; i < components.Length; i++)
             {
@@ -79,8 +79,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         /// <param name="expression">The binding expression which is being evaluated.</param>
         /// <param name="dataSource">The data source to which the event is being bound.</param>
+        /// <param name="dataSourceType">The type of data source to which the event is being bound.</param>
         /// <returns>The current expression in the chain.</returns>
-        private Expression AddDataSourceReference(String expression, Object dataSource)
+        private Expression AddDataSourceReference(String expression, Object dataSource, Type dataSourceType)
         {
             var dataSourceVariable = Expression.Variable(dataSource.GetType(), "dataSource");
             variables.Add(dataSourceVariable);
@@ -89,6 +90,21 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             expressions.Add(dataSourceAssignment);
 
             AddNullCheck(dataSourceVariable);
+
+            var view = dataSource as PresentationFoundationView;
+            if (view != null)
+            {
+                var viewModelVariable = Expression.Variable(dataSourceType, "viewModel");
+                variables.Add(viewModelVariable);
+
+                var viewModelAssignment = Expression.Assign(viewModelVariable, 
+                    Expression.Convert(Expression.Property(dataSourceVariable, "ViewModel"), dataSourceType));
+                expressions.Add(viewModelAssignment);
+
+                AddNullCheck(viewModelVariable);
+
+                return viewModelVariable;
+            }
 
             return dataSourceVariable;
         }
