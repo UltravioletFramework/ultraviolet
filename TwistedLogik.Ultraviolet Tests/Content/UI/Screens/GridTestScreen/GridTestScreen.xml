@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <UIPanelDefinition>
-  <View ViewModelType="TwistedLogik.Ultraviolet.Tests.UI.Presentation.GridTestScreenViewModel, TwistedLogik.Ultraviolet.Tests">
+  <View ViewModelType="TwistedLogik.Ultraviolet.Tests.UI.Presentation.Screens.GridTestScreenViewModel, TwistedLogik.Ultraviolet.Tests">
 
     <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
       <Grid.ColumnDefinitions>

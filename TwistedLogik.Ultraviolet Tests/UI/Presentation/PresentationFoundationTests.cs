@@ -4,6 +4,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TwistedLogik.Ultraviolet.Content;
 using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
 using TwistedLogik.Ultraviolet.Testing;
+using TwistedLogik.Ultraviolet.Tests.UI.Presentation.Screens;
 using TwistedLogik.Ultraviolet.UI;
 using TwistedLogik.Ultraviolet.UI.Presentation;
 using TwistedLogik.Ultraviolet.UI.Presentation.Styles;

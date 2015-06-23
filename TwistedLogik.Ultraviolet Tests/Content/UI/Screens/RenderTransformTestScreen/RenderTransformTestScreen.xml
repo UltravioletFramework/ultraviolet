@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <UIPanelDefinition>
-  <View ViewModelType="TwistedLogik.Ultraviolet.Tests.UI.Presentation.RenderTransformTestScreenViewModel, TwistedLogik.Ultraviolet.Tests">
+  <View ViewModelType="TwistedLogik.Ultraviolet.Tests.UI.Presentation.Screens.RenderTransformTestScreenViewModel, TwistedLogik.Ultraviolet.Tests">
 
     <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
       <StackPanel.RenderTransform>
@@ -11,9 +11,15 @@
           <TransformGroup>
             <ScaleTransform ScaleX="1.5" ScaleY="2"/>
             <RotateTransform Angle="45"/>
+            <TranslateTransform X="100"/>
           </TransformGroup>
         </Button.RenderTransform>
-        Hello, world!
+        <Button>
+          <Button.RenderTransform>
+            <RotateTransform Angle="45"/>
+          </Button.RenderTransform>
+          Hello, world!
+        </Button>
       </Button>
       <ComboBox Margin="0 50 0 0" SelectedIndex="1" IsDropDownOpen="true">
         <Button.RenderTransform>
