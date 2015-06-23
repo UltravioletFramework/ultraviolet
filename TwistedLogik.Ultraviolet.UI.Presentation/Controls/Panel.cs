@@ -90,7 +90,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 return childMatch;
             }
 
-            return this;
+            return Bounds.Contains(point) ? this : null;
         }
 
         /// <summary>
@@ -119,8 +119,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         {
             foreach (var child in children)
             {
-                if (child.RelativeBounds.Left < 0 || child.RelativeBounds.Top < 0 ||
-                    child.RelativeBounds.Right > RenderSize.Width || child.RelativeBounds.Bottom > RenderSize.Height)
+                if (!Bounds.Contains(child.RelativeBounds))
                 {
                     return AbsoluteBounds;
                 }

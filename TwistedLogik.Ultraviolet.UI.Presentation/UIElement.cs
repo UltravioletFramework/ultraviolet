@@ -1538,7 +1538,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 }
             }
 
-            return this;
+            return Bounds.Contains(point) ? this : null;
         }
 
         /// <summary>

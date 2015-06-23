@@ -120,7 +120,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var state = new ClipState(clipRectangle, cumulativeClipRectangle);
             clipStack.Push(state);
 
-            FlushClipRectangle();
+            ApplyClipRectangleToDevice();
         }
 
         /// <summary>
@@ -130,46 +130,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             clipStack.Pop();
 
-            FlushClipRectangle();
+            ApplyClipRectangleToDevice();
         }
 
         /// <summary>
-        /// Reapplies the drawing context's clipping rectangle to the graphics device.
+        /// Applies the drawing context's clipping rectangle to the graphics device.
         /// </summary>
-        public void ReapplyClipRectangle()
-        {
-            FlushClipRectangle();
-        }
-
-        /// <summary>
-        /// Gets the <see cref="SpriteBatch"/> with which the layout will be rendered.
-        /// </summary>
-        public SpriteBatch SpriteBatch
-        {
-            get { return spriteBatch; }
-            internal set { spriteBatch = value; }
-        }
-
-        /// <summary>
-        /// Gets the current opacity.
-        /// </summary>
-        public Single Opacity
-        {
-            get { return opacityStack.Count > 0 ? opacityStack.Peek().CumulativeOpacity : 1f; }
-        }
-
-        /// <summary>
-        /// Gets the current clip rectangle in device-independent pixels.
-        /// </summary>
-        public RectangleD? ClipRectangle
-        {
-            get { return clipStack.Count > 0 ? clipStack.Peek().CumulativeClipRectangle : (RectangleD?)null; }
-        }
-
-        /// <summary>
-        /// Flushes the sprite batch and applies the current clip rectangle to the graphics device.
-        /// </summary>
-        private void FlushClipRectangle()
+        public void ApplyClipRectangleToDevice()
         {
             if (spriteBatch == null)
                 return;
@@ -197,6 +164,31 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             }
 
             Begin(SpriteSortMode.Deferred, null, state.TransformMatrix);
+        }
+
+        /// <summary>
+        /// Gets the <see cref="SpriteBatch"/> with which the layout will be rendered.
+        /// </summary>
+        public SpriteBatch SpriteBatch
+        {
+            get { return spriteBatch; }
+            internal set { spriteBatch = value; }
+        }
+
+        /// <summary>
+        /// Gets the current opacity.
+        /// </summary>
+        public Single Opacity
+        {
+            get { return opacityStack.Count > 0 ? opacityStack.Peek().CumulativeOpacity : 1f; }
+        }
+
+        /// <summary>
+        /// Gets the current clip rectangle in device-independent pixels.
+        /// </summary>
+        public RectangleD? ClipRectangle
+        {
+            get { return clipStack.Count > 0 ? clipStack.Peek().CumulativeClipRectangle : (RectangleD?)null; }
         }
 
         // Property values.
