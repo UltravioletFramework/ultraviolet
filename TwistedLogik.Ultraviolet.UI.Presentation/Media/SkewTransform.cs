@@ -4,10 +4,10 @@ using TwistedLogik.Nucleus;
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Media
 {
     /// <summary>
-    /// Represents a transformation which scales an object.
+    /// Represents a transformation which skews an object in two dimensions.
     /// </summary>
     [UvmlKnownType]
-    public sealed class ScaleTransform : Transform
+    public sealed class SkewTransform : Transform
     {
         /// <inheritdoc/>
         public override Matrix Value
@@ -28,25 +28,25 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media
         }
 
         /// <summary>
-        /// Gets or sets the transform's scaling factor along the x-axis.
+        /// Gets or sets the angle of skew in degrees along the x-axis.
         /// </summary>
-        public Single ScaleX
+        public Single AngleX
         {
-            get { return GetValue<Single>(ScaleXProperty); }
-            set { SetValue<Single>(ScaleXProperty, value); }
+            get { return GetValue<Single>(AngleXProperty); }
+            set { SetValue<Single>(AngleXProperty, value); }
         }
 
         /// <summary>
-        /// Gets or sets the transform's scaling factor along the y-axis.
+        /// Gets or sets the angle of skew in degrees along the y-axis.
         /// </summary>
-        public Single ScaleY
+        public Single AngleY
         {
-            get { return GetValue<Single>(ScaleYProperty); }
-            set { SetValue<Single>(ScaleYProperty, value); }
+            get { return GetValue<Single>(AngleYProperty); }
+            set { SetValue<Single>(AngleYProperty, value); }
         }
 
         /// <summary>
-        /// Gets or sets the x-coordinate around which the object is scaled.
+        /// Gets or sets the x-coordinate around which the object is rotated.
         /// </summary>
         public Double CenterX
         {
@@ -55,7 +55,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media
         }
 
         /// <summary>
-        /// Gets or sets the y-coordinate around which the object is scaled.
+        /// Gets or sets the y-coordinate around which the object is rotated.
         /// </summary>
         public Double CenterY
         {
@@ -64,35 +64,35 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media
         }
 
         /// <summary>
-        /// Identifies the <see cref="ScaleX"/> dependency property.
+        /// Identifies the <see cref="AngleX"/> dependency property.
         /// </summary>
-        public static readonly DependencyProperty ScaleXProperty = DependencyProperty.Register("ScaleX", typeof(Single), typeof(ScaleTransform),
-            new PropertyMetadata<Single>(CommonBoxedValues.Single.One, PropertyMetadataOptions.None, HandleScaleChanged));
+        public static readonly DependencyProperty AngleXProperty = DependencyProperty.Register("AngleX", typeof(Single), typeof(SkewTransform),
+            new PropertyMetadata<Single>(CommonBoxedValues.Single.Zero, PropertyMetadataOptions.None, HandleAngleChanged));
 
         /// <summary>
-        /// Identifies the <see cref="ScaleY"/> dependency property.
+        /// Identifies the <see cref="AngleY"/> dependency property.
         /// </summary>
-        public static readonly DependencyProperty ScaleYProperty = DependencyProperty.Register("ScaleY", typeof(Single), typeof(ScaleTransform),
-            new PropertyMetadata<Single>(CommonBoxedValues.Single.One, PropertyMetadataOptions.None, HandleScaleChanged));
+        public static readonly DependencyProperty AngleYProperty = DependencyProperty.Register("AngleY", typeof(Single), typeof(SkewTransform),
+            new PropertyMetadata<Single>(CommonBoxedValues.Single.Zero, PropertyMetadataOptions.None, HandleAngleChanged));
 
         /// <summary>
         /// Identifies the <see cref="CenterX"/> dependency property.
         /// </summary>
-        public static readonly DependencyProperty CenterXProperty = DependencyProperty.Register("CenterX", typeof(Double), typeof(ScaleTransform),
+        public static readonly DependencyProperty CenterXProperty = DependencyProperty.Register("CenterX", typeof(Double), typeof(SkewTransform),
             new PropertyMetadata<Double>(CommonBoxedValues.Double.Zero, PropertyMetadataOptions.None, HandleCenterChanged));
 
         /// <summary>
         /// Identifies the <see cref="CenterY"/> dependency property.
         /// </summary>
-        public static readonly DependencyProperty CenterYProperty = DependencyProperty.Register("CenterY", typeof(Double), typeof(ScaleTransform),
+        public static readonly DependencyProperty CenterYProperty = DependencyProperty.Register("CenterY", typeof(Double), typeof(SkewTransform),
             new PropertyMetadata<Double>(CommonBoxedValues.Double.Zero, PropertyMetadataOptions.None, HandleCenterChanged));
 
         /// <summary>
-        /// Called when the value of the <see cref="ScaleX"/> or <see cref="ScaleY"/> dependency properties change.
+        /// Called when the value of the <see cref="AngleX"/> or <see cref="AngleY"/> dependency properties changes.
         /// </summary>
-        private static void HandleScaleChanged(DependencyObject dobj, Single oldValue, Single newValue)
+        private static void HandleAngleChanged(DependencyObject dobj, Single oldValue, Single newValue)
         {
-            ((ScaleTransform)dobj).UpdateValue();
+            ((SkewTransform)dobj).UpdateValue();
         }
 
         /// <summary>
@@ -100,7 +100,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media
         /// </summary>
         private static void HandleCenterChanged(DependencyObject dobj, Double oldValue, Double newValue)
         {
-            ((ScaleTransform)dobj).UpdateValue();
+            ((SkewTransform)dobj).UpdateValue();
         }
 
         /// <summary>
@@ -111,26 +111,34 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media
             var centerX = (Single)CenterX;
             var centerY = (Single)CenterY;
 
+            var tanX = (Single)Math.Tan(Radians.FromDegrees(AngleX));
+            var tanY = (Single)Math.Tan(Radians.FromDegrees(AngleY));
+
+            var mtxSkew = new Matrix(
+                   1, tanX, 0, 0,
+                tanY,    1, 0, 0,
+                   0,    0, 1, 0,
+                   0,    0, 0, 1);
+
             var hasCenter = (centerX != 0 || centerY != 0);
             if (hasCenter)
             {
-                var mtxScale  = Matrix.CreateScale(ScaleX, ScaleY, 1f);
                 var mtxTransformCenter = Matrix.CreateTranslation(-centerX, -centerY, 0f);
                 var mtxTransformCenterInverse = Matrix.CreateTranslation(centerX, centerY, 0f);
 
                 Matrix mtxResult;
-                Matrix.Concat(ref mtxTransformCenter, ref mtxScale, out mtxResult);
+                Matrix.Concat(ref mtxTransformCenter, ref mtxSkew, out mtxResult);
                 Matrix.Concat(ref mtxResult, ref mtxTransformCenterInverse, out mtxResult);
 
                 this.value = mtxResult;
             }
             else
             {
-                this.value = Matrix.CreateScale(ScaleX, ScaleY, 1f);
+                this.value = mtxSkew;
             }
 
             Matrix invertedValue;
-            this.inverse = Matrix.TryInvert(value, out invertedValue) ? invertedValue : (Matrix?)null;
+            this.inverse = Matrix.TryInvert(value, out invertedValue) ? invertedValue : (Matrix?)null; 
             this.isIdentity = Matrix.Identity.Equals(value);
         }
 

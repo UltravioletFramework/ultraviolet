@@ -127,6 +127,7 @@
     <Compile Include="Media\IdentityTransform.cs" />
     <Compile Include="Media\MatrixTransform.cs" />
     <Compile Include="Media\RotateTransform.cs" />
+    <Compile Include="Media\SkewTransform.cs" />
     <Compile Include="Media\TransformCollection.cs" />
     <Compile Include="Media\TransformCollection.IEnumerable.cs" />
     <Compile Include="Media\TransformGroup.cs" />

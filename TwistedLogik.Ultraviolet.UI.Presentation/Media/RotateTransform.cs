@@ -93,18 +93,20 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media
         /// </summary>
         private void UpdateValue()
         {
-            var centerX = CenterX;
-            var centerY = CenterY;
+            var centerX = (Single)CenterX;
+            var centerY = (Single)CenterY;
             var radians = Radians.FromDegrees((Single)Angle);
 
             var hasCenter = (centerX != 0 || centerY != 0);
             if (hasCenter)
             {
-                var mtxCenter = Matrix.CreateTranslation(-(Single)centerX, -(Single)centerY, 0f);
                 var mtxRotate = Matrix.CreateRotationZ(radians);
+                var mtxTransformCenter = Matrix.CreateTranslation(-centerX, -centerY, 0f);
+                var mtxTransformCenterInverse = Matrix.CreateTranslation(centerX, centerY, 0f);
 
                 Matrix mtxResult;
-                Matrix.Multiply(ref mtxCenter, ref mtxRotate, out mtxResult);
+                Matrix.Concat(ref mtxTransformCenter, ref mtxRotate, out mtxResult);
+                Matrix.Concat(ref mtxResult, ref mtxTransformCenterInverse, out mtxResult);
 
                 this.value = mtxResult;
             }
@@ -113,16 +115,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media
                 this.value = Matrix.CreateRotationZ(radians);
             }
 
-            Matrix inverse;
-            if (Matrix.TryInvert(value, out inverse))
-            {
-                this.inverse = inverse;
-            }
-            else
-            {
-                this.inverse = null;
-            }
-
+            Matrix invertedValue;
+            this.inverse = Matrix.TryInvert(value, out invertedValue) ? invertedValue : (Matrix?)null;
             this.isIdentity = Matrix.Identity.Equals(value);
         }
 
