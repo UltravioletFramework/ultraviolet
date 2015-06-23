@@ -67,9 +67,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media
 
                 if (children != null && children.Count > 0)
                 {
+                    Matrix value;
                     foreach (var child in children)
                     {
-                        matrix *= child.Value;
+                        value = child.Value;
+                        Matrix.Concat(ref matrix, ref value, out matrix);
                     }
                 }
 
