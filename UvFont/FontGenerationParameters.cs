@@ -30,6 +30,8 @@ namespace UvFont
             FontName = args.First();
             FontSize = parser.GetArgumentOrDefault<Single>("fontsize", 16f);
             Overhang = parser.GetArgumentOrDefault<Int32>("overhang", 0);
+            PadLeft = parser.GetArgumentOrDefault<Int32>("pad-left", 0);
+            PadRight = parser.GetArgumentOrDefault<Int32>("pad-right", 0);
 
             SourceText    = parser.GetArgumentOrDefault<String>("sourcetext");
             SourceFile    = parser.GetArgumentOrDefault<String>("sourcefile");
@@ -65,6 +67,16 @@ namespace UvFont
         /// Gets or sets the amount of additional overhang space to include when generating glyphs.
         /// </summary>
         public Int32 Overhang { get; set; }
+
+        /// <summary>
+        /// Gets or sets the amount of additional padding space added to the left edge of every glyph.
+        /// </summary>
+        public Int32 PadLeft { get; set; }
+
+        /// <summary>
+        /// Gets or sets the amount of additional padding space added to the right edge of every glyph.
+        /// </summary>
+        public Int32 PadRight { get; set; }
 
         /// <summary>
         /// Gets or sets the source text to use when determining which glyphs to include in the font.

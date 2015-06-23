@@ -32,6 +32,8 @@ namespace UvFont
                         Console.WriteLine();
                         Console.WriteLine("UVFONT fontname [-nobold] [-noitalic] [-fontsize:emsize] [-sub:char]\n" +
                                           "                [-overhang:value]\n" +
+                                          "                [-pad-left:value]\n" +
+                                          "                [-pad-right:value]\n" +
                                           "                [-sourcetext:text]\n" +
                                           "                [-sourcefile:file]\n" +
                                           "                [-sourceculture:culture]\n" +
@@ -46,6 +48,11 @@ namespace UvFont
                                           "               Overhang adds additional space to the right side of every\n" +
                                           "               character, which is useful for flowing script fonts which\n" +
                                           "               don't fit properly under UvFont's default settings.\n" +
+                                          "               Unlike padding, kerning accounts for overhang.\n" +
+                                          "  -pad-left    Adds the specified number of pixels of padding to the\n" +
+                                          "               left edge of every glyph.\n" +
+                                          "  -pad-right   Adds the specified number of pixels of padding to the\n" +
+                                          "               right edge of every glyph.\n" +
                                           "  -sourcetext  Specifies the source text.  The source text is used to determine\n" +
                                           "               which glyphs must be included in the font.\n" +
                                           "  -sourcefile: A comma-delimited list of files from which to generate the\n" +
@@ -224,12 +231,20 @@ namespace UvFont
             using (var img = new Bitmap(1, 1))
             using (var gfx = Graphics.FromImage(img))
             {
+                var layoutArea = new SizeF(Single.MaxValue, Single.MaxValue);
+
                 foreach (var c in chars)
                 {
-                    var glyphSize               = gfx.MeasureString(c.ToString(), font);
-                    var glyphWidth              = (Int32)(Math.Ceiling(glyphSize.Width) / SupersampleFactor) + parameters.Overhang;
+                    var glyphIsWhiteSpace = Char.IsWhiteSpace(c);
+
+                    var glyphSize               = glyphIsWhiteSpace ? 
+                        gfx.MeasureString(c.ToString(), font) :    
+                        gfx.MeasureString(c.ToString(), font, layoutArea, StringFormat.GenericTypographic);
+
+                    var glyphPadding            = glyphIsWhiteSpace ? 0 : parameters.PadLeft + parameters.PadRight;
+                    var glyphWidth              = (Int32)(Math.Ceiling(glyphSize.Width) / SupersampleFactor) + parameters.Overhang + glyphPadding;
                     var glyphHeight             = (Int32)(Math.Ceiling(glyphSize.Height) / SupersampleFactor);
-                    var glyphSupersampledWidth  = (Int32)Math.Ceiling(glyphSize.Width) + (parameters.Overhang * SupersampleFactor);
+                    var glyphSupersampledWidth  = (Int32)Math.Ceiling(glyphSize.Width) + (parameters.Overhang * SupersampleFactor) + (glyphPadding * SupersampleFactor);
                     var glyphSupersampledHeight = (Int32)Math.Ceiling(glyphSize.Height);
 
                     var glyphImg = new Bitmap(glyphWidth, glyphHeight);
@@ -241,13 +256,15 @@ namespace UvFont
                         glyphSupersampledGfx.SmoothingMode = SmoothingMode.HighQuality;
 
                         glyphSupersampledGfx.Clear(Color.Transparent);
-                        glyphSupersampledGfx.DrawString(c.ToString(), font, Brushes.White, 0f, 0f);
+                        glyphSupersampledGfx.DrawString(c.ToString(), font, Brushes.White, 0f, 0f, StringFormat.GenericTypographic);
 
                         using (var glyphGfx = Graphics.FromImage(glyphImg))
                         {
+                            var rect = new Rectangle(glyphIsWhiteSpace ? 0 : parameters.PadLeft, 0, glyphWidth, glyphHeight);
+
                             glyphGfx.InterpolationMode = InterpolationMode.HighQualityBicubic;
                             glyphGfx.Clear(Color.Transparent);
-                            glyphGfx.DrawImage(glyphSupersampledImg, new Rectangle(0, 0, glyphWidth, glyphHeight));
+                            glyphGfx.DrawImage(glyphSupersampledImg, rect);
                         }
                     }
 
@@ -494,12 +511,13 @@ namespace UvFont
 
         private static Int32 MeasureKerning(FontGenerationParameters parameters, Graphics gfx, Font font, Char c1, Char c2)
         {
-            if (Char.IsWhiteSpace(c1) && Char.IsWhiteSpace(c2))
+            if (Char.IsWhiteSpace(c1) || Char.IsWhiteSpace(c2))
                 return 0;
 
-            var c1Size = gfx.MeasureString(c1.ToString(), font);
-            var c2Size = gfx.MeasureString(c2.ToString(), font);
-            var kernedSize = gfx.MeasureString(String.Format("{0}{1}", c1, c2), font);
+            var layoutArea = new SizeF(Single.MaxValue, Single.MaxValue);
+            var c1Size = gfx.MeasureString(c1.ToString(), font, layoutArea, StringFormat.GenericTypographic);
+            var c2Size = gfx.MeasureString(c2.ToString(), font, layoutArea, StringFormat.GenericTypographic);
+            var kernedSize = gfx.MeasureString(String.Format("{0}{1}", c1, c2), font, layoutArea, StringFormat.GenericTypographic);
             return (Int32)(kernedSize.Width - (c1Size.Width + c2Size.Width)) - parameters.Overhang;
         }
 
