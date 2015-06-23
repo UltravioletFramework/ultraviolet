@@ -407,30 +407,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             }
         }
 
-        /// <summary>
-        /// Registers the element with the specified namescope.
-        /// </summary>
-        /// <param name="namescope">The namescope with which to register the element.</param>
-        internal void RegisterElementWithNamescope(Namescope namescope)
-        {
-            if (String.IsNullOrEmpty(Name))
-                return;
-
-            namescope.RegisterElement(this);
-        }
-
-        /// <summary>
-        /// Unregisters the element from the specified namescope.
-        /// </summary>
-        /// <param name="namescope">The namescope from which to unregister the element.</param>
-        internal void UnregisterElementFromNamescope(Namescope namescope)
-        {
-            if (String.IsNullOrEmpty(Name))
-                return;
-
-            namescope.UnregisterElement(this);
-        }
-
         /// <inheritdoc/>
         internal override Object DependencyDataSource
         {
@@ -568,10 +544,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         protected override void CacheLayoutParametersCore()
         {
             var templatedParentControl = TemplatedParent as Control;
-            if (templatedParentControl != null)
+
+            var namescope = (templatedParentControl != null) ? templatedParentControl.ComponentTemplateNamescope :
+                (View != null) ? View.Namescope : null;
+
+            if (namescope != null)
             {
-                templatedParentControl.ComponentTemplateNamescope.UnregisterElement(this);
-                templatedParentControl.ComponentTemplateNamescope.RegisterElement(this);
+                namescope.UnregisterElement(this);
+                namescope.RegisterElement(this);
             }
 
             base.CacheLayoutParametersCore();

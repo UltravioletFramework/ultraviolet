@@ -51,6 +51,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (String.IsNullOrEmpty(element.Name))
                 return;
 
+            FrameworkElement existing;
+            if (elementsByName.TryGetValue(element.Name, out existing))
+            {
+                if (existing != element)
+                    return;
+            }
             elementsByName.Remove(element.Name);
         }
 
