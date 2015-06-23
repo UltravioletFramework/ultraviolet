@@ -7,7 +7,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
     /// <summary>
     /// Represents a storyboard target's collection of animations.
     /// </summary>
-    public sealed partial class StoryboardTargetAnimationCollection : IEnumerable<KeyValuePair<UvmlName, AnimationBase>>
+    public sealed partial class StoryboardTargetAnimationCollection : IEnumerable<KeyValuePair<StoryboardTargetAnimationKey, AnimationBase>>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="StoryboardTargetAnimationCollection"/> class.
@@ -32,7 +32,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
             Contract.Require(animation, "animation");
 
             var name = new UvmlName(property);
-            return Add(name, animation);
+            var key = new StoryboardTargetAnimationKey(name);
+            return Add(key, animation);
         }
 
         /// <summary>
@@ -45,13 +46,27 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
         {
             Contract.Require(animation, "animation");
 
-            Remove(property);
+            var key = new StoryboardTargetAnimationKey(property);
+            return Add(key, animation);
+        }
+
+        /// <summary>
+        /// Adds the specified animation to this collection.
+        /// </summary>
+        /// <param name="key">The key that identifies the animation to add to the collection.</param>
+        /// <param name="animation">The animation to add to the collection.</param>
+        /// <returns><c>true</c> if the animation was added to the collection; otherwise, <c>false</c>.</returns>
+        public Boolean Add(StoryboardTargetAnimationKey key, AnimationBase animation)
+        {
+            Contract.Require(animation, "animation");
+
+            Remove(key);
 
             if (animation.Target != null)
                 animation.Target.Animations.Remove(animation);
 
             animation.Target = Target;
-            animations.Add(property, animation);
+            animations.Add(key, animation);
             if (Target.Storyboard != null)
             {
                 Target.Storyboard.RecalculateDuration();
@@ -69,7 +84,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
             Contract.RequireNotEmpty(property, "property");
 
             var name = new UvmlName(property);
-            return Remove(name);
+            var key = new StoryboardTargetAnimationKey(name);
+            return Remove(key);
         }
 
         /// <summary>
@@ -79,11 +95,22 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
         /// <returns><c>true</c> if the animation was removed from the collection; otherwise, <c>false</c>.</returns>
         public Boolean Remove(UvmlName property)
         {
+            var key = new StoryboardTargetAnimationKey(property);
+            return Remove(key);
+        }
+
+        /// <summary>
+        /// Removes the animation for the specified property from this collection.
+        /// </summary>
+        /// <param name="key">The key that identifies the animation to remove from the collection.</param>
+        /// <returns><c>true</c> if the animation was removed from the collection; otherwise, <c>false</c>.</returns>
+        public Boolean Remove(StoryboardTargetAnimationKey key)
+        {
             AnimationBase animation;
-            if (!animations.TryGetValue(property, out animation))
+            if (!animations.TryGetValue(key, out animation))
                 return false;
 
-            animations.Remove(property);
+            animations.Remove(key);
             animation.Target = null;
 
             if (Target.Storyboard != null)
@@ -103,23 +130,23 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
         {
             Contract.Require(animation, "animation");
 
-            var property = default(UvmlName);
-            var found    = false;
+            var key   = default(StoryboardTargetAnimationKey);
+            var found = false;
 
             foreach (var kvp in animations)
             {
                 if (kvp.Value == animation)
                 {
-                    property = kvp.Key;
-                    found    = true;
+                    key   = kvp.Key;
+                    found = true;
                     break;
                 }
             }
 
-            if(!found)
+            if (!found)
                 return false;
 
-            return Remove(property);
+            return Remove(key);
         }
 
         /// <summary>
@@ -132,7 +159,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
             Contract.RequireNotEmpty(property, "property");
 
             var name = new UvmlName(property);
-            return animations.ContainsKey(name);
+            var key = new StoryboardTargetAnimationKey(name);
+            return animations.ContainsKey(key);
         }
 
         /// <summary>
@@ -142,7 +170,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
         /// <returns><c>true</c> if this collection contains an animation on the specified property; otherwise, <c>false</c>.</returns>
         public Boolean ContainsKey(UvmlName property)
         {
-            return animations.ContainsKey(property);
+            var key = new StoryboardTargetAnimationKey(property);
+            return animations.ContainsKey(key);
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the collection contains an animation on the specified property.
+        /// </summary>
+        /// <param name="key">The animation key to evaluate.</param>
+        /// <returns><c>true</c> if this collection contains an animation on the specified property; otherwise, <c>false</c>.</returns>
+        public Boolean ContainsKey(StoryboardTargetAnimationKey key)
+        {
+            return animations.ContainsKey(key);
         }
 
         /// <summary>
@@ -177,7 +216,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
         private readonly StoryboardTarget target;
 
         // State values.
-        private readonly Dictionary<UvmlName, AnimationBase> animations = 
-            new Dictionary<UvmlName, AnimationBase>();
+        private readonly Dictionary<StoryboardTargetAnimationKey, AnimationBase> animations = 
+            new Dictionary<StoryboardTargetAnimationKey, AnimationBase>();
     }
 }

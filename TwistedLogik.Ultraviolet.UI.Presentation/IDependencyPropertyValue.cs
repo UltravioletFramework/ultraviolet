@@ -116,6 +116,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         void ClockResumed();
 
         /// <summary>
+        /// Gets the dependency property's calculated value without regard for its type.
+        /// </summary>
+        /// <returns>The dependency property's calculated value.</returns>
+        Object GetUntypedValue();
+
+        /// <summary>
         /// Gets or sets the dependency object which owns this property value.
         /// </summary>
         DependencyObject Owner

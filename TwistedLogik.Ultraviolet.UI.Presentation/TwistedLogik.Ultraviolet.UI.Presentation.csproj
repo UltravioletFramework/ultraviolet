@@ -119,7 +119,23 @@
     <Compile Include="DependencyBoundValueNonConverting.cs" />
     <Compile Include="DependencyObject.cs" />
     <Compile Include="Documents\NamespaceDoc.cs" />
+    <Compile Include="DrawingContext.ClipStencilStates.cs" />
+    <Compile Include="HitTestUtil.cs" />
+    <Compile Include="IIndexable.cs" />
     <Compile Include="Input\NamespaceDoc.cs" />
+    <Compile Include="Media\GeneralTransform.cs" />
+    <Compile Include="Media\IdentityTransform.cs" />
+    <Compile Include="Media\MatrixTransform.cs" />
+    <Compile Include="Media\RotateTransform.cs" />
+    <Compile Include="Media\TransformCollection.cs" />
+    <Compile Include="Media\TransformCollection.IEnumerable.cs" />
+    <Compile Include="Media\TransformGroup.cs" />
+    <Compile Include="Media\TranslateTransform.cs" />
+    <Compile Include="Media\ScaleTransform.cs" />
+    <Compile Include="Media\Transform.cs" />
+    <Compile Include="PopupQueue.EnqueuedPopup.cs" />
+    <Compile Include="PresentationFoundationConfiguration.cs" />
+    <Compile Include="PresentationFoundationInitializer.cs" />
     <Compile Include="RoutedEventRaisedNotificationServer.cs" />
     <Compile Include="DependencyPropertyChangeNotificationServer.cs" />
     <Compile Include="DependencyProperty.cs" />
@@ -132,7 +148,10 @@
     <Compile Include="IRoutedEventRaisedNotificationSubscriber.cs" />
     <Compile Include="PopupQueue.cs" />
     <Compile Include="PropertyMetadata.cs" />
+    <Compile Include="Styles\NavigationExpression.cs" />
+    <Compile Include="Animations\StoryboardTargetAnimationKey.cs" />
     <Compile Include="Styles\TriggerComparisonOpExtensions.cs" />
+    <Compile Include="Styles\UvssNavigationExpression.cs" />
     <Compile Include="Styles\UvssStylePrioritizer.cs" />
     <Compile Include="Styles\UvssStylePrioritizer.PrioritizedStyle.cs" />
     <Compile Include="Styles\UvssStylePrioritizer.PrioritizedTrigger.cs" />
@@ -408,6 +427,7 @@
     <EmbeddedResource Include="Controls\Templates\ComboBox.xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Styles\UvssStylePrioritizer.StyleKey.cs" />
     <None Include="TwistedLogik.Ultraviolet.Licenses.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

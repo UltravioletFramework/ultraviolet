@@ -100,5 +100,20 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// Represents a comparison operator. 
         /// </summary>
         ComparisonOperator,
+
+        /// <summary>
+        /// Represents the pipe symbol (|).
+        /// </summary>
+        Pipe,
+
+        /// <summary>
+        /// Represents the "as" operator.
+        /// </summary>
+        AsOperator,
+
+        /// <summary>
+        /// Represents the index operator.
+        /// </summary>
+        IndexOperator,
     }
 }

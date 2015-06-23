@@ -9,6 +9,7 @@ using TwistedLogik.Ultraviolet.Platform;
 using TwistedLogik.Ultraviolet.UI.Presentation.Animations;
 using TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives;
 using TwistedLogik.Ultraviolet.UI.Presentation.Input;
+using TwistedLogik.Ultraviolet.UI.Presentation.Media;
 using TwistedLogik.Ultraviolet.UI.Presentation.Styles;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation
@@ -164,22 +165,65 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             {
                 if (clip.HasValue && clip.Value.IsEmpty)
                     shouldDraw = false;
-
-                var scissor = Ultraviolet.GetGraphics().GetScissorRectangle();
-                if (scissor.HasValue && !(this is Popup))
-                {
-                    var absBounds = Display.DipsToPixels(AbsoluteBounds);
-                    if (!absBounds.Intersects(scissor.Value))
-                        shouldDraw = false;
-                }
             }
 
             if (shouldDraw)
             {
                 dc.PushOpacity(Opacity);
 
+                var state = dc.SpriteBatch.GetCurrentState();
+                var flush = false;
+
+                if (this is PopupRoot)
+                {
+                    var transformMatrix = view.Popups.GetCurrentTransformMatrix();
+                    if (transformMatrix != null)
+                    {
+                        dc.End();
+                        dc.Begin(SpriteSortMode.Deferred, null, transformMatrix.Value);
+
+                        flush = true;
+                    }
+                }
+                else
+                {
+                    var renderTransform = RenderTransform;
+
+                    if (!IsIdentityTransform(renderTransform))
+                    {
+                        var pxRenderWidth = Display.DipsToPixels(RenderSize.Width);
+                        var pxRenderHeight = Display.DipsToPixels(RenderSize.Height);
+
+                        var rtoInClientSpace = new Vector2(
+                            (Single)(pxRenderWidth * RenderTransformOrigin.X),
+                            (Single)(pxRenderHeight * RenderTransformOrigin.Y));
+                        var rtoInScreenSpace = (Vector2)Display.DipsToPixels(AbsolutePosition) + rtoInClientSpace;
+
+                        var mtxTranslateToOrigin = Matrix.CreateTranslation(-rtoInScreenSpace.X, -rtoInScreenSpace.Y, 0);
+                        var mtxRenderTransform = renderTransform.Value;
+                        var mtxTranslateToScreen = Matrix.CreateTranslation(rtoInScreenSpace.X, rtoInScreenSpace.Y, 0);
+                        var mtxSpriteBatch = state.TransformMatrix;
+
+                        Matrix mtxTransform;
+                        Matrix.Concat(ref mtxTranslateToOrigin, ref mtxRenderTransform, out mtxTransform);
+                        Matrix.Concat(ref mtxTransform, ref mtxTranslateToScreen, out mtxTransform);
+                        Matrix.Concat(ref mtxTransform, ref mtxSpriteBatch, out mtxTransform);
+
+                        dc.End();
+                        dc.Begin(SpriteSortMode.Deferred, null, mtxTransform);
+
+                        flush = true;
+                    }
+                }
+
                 DrawCore(time, dc);
                 OnDrawing(time, dc);
+
+                if (flush)
+                {
+                    dc.End();
+                    dc.Begin(SpriteSortMode.Deferred, null, state.TransformMatrix);
+                }
 
                 dc.PopOpacity();
             }
@@ -284,10 +328,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 {
                     foreach (var animation in target.Animations)
                     {
-                        var dp = DependencyProperty.FindByName(Ultraviolet, this, animation.Key.Owner, animation.Key.Name);
-                        if (dp != null)
+                        var propertyName = animation.Key.PropertyName;
+
+                        var dpSource = animation.Key.NavigationExpression.HasValue ? 
+                            animation.Key.NavigationExpression.Value.ApplyExpression(Ultraviolet, this) : this;
+                        if (dpSource != null)
                         {
-                            Animate(dp, animation.Value, clock);
+                            var dp = DependencyProperty.FindByName(Ultraviolet, dpSource, propertyName.Owner, propertyName.Name);
+                            if (dp != null)
+                            {
+                                dpSource.Animate(dp, animation.Value, clock);
+                            }
                         }
                     }
                 }
@@ -436,7 +487,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             }
             this.isArrangeValid = true;
 
-            PositionElementAndPotentiallyChildren();
+            var forceInvalidatePosition = ((options & ArrangeOptions.ForceInvalidatePosition) == ArrangeOptions.ForceInvalidatePosition);
+            PositionElementAndPotentiallyChildren(forceInvalidatePosition);
 
             upf.ArrangeQueue.Remove(this);
         }
@@ -682,6 +734,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Gets a value indicating whether this element has a transform applied to it.
+        /// </summary>
+        public Boolean HasTransform
+        {
+            get { return !IsIdentityTransform(RenderTransform); }
+        }
+
+        /// <summary>
         /// Gets a value indicating whether the element's styling state is valid.
         /// </summary>
         public Boolean IsStyleValid
@@ -873,6 +933,24 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Gets or sets the element's rendering transformation.
+        /// </summary>
+        public Transform RenderTransform
+        {
+            get { return GetValue<Transform>(RenderTransformProperty); }
+            set { SetValue<Transform>(RenderTransformProperty, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets the relative center point of transforms applied to this element.
+        /// </summary>
+        public Point2D RenderTransformOrigin
+        {
+            get { return GetValue<Point2D>(RenderTransformOriginProperty); }
+            set { SetValue<Point2D>(RenderTransformOriginProperty, value); }
+        }
+
+        /// <summary>
         /// Occurs when a class is added to the element.
         /// </summary>
         public event UIElementClassEventHandler ClassAdded;
@@ -984,6 +1062,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             new PropertyMetadata<Single>(CommonBoxedValues.Single.One));
 
         /// <summary>
+        /// Identifies the <see cref="RenderTransform"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty RenderTransformProperty = DependencyProperty.Register("RenderTransform", typeof(Transform), typeof(UIElement),
+            new PropertyMetadata<Transform>(Transform.Identity, PropertyMetadataOptions.None, HandleRenderTransformChanged));
+
+        /// <summary>
+        /// Identifies the <see cref="RenderTransformOrigin"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty RenderTransformOriginProperty = DependencyProperty.Register("RenderTransformOrigin", typeof(Point2D), typeof(UIElement),
+            new PropertyMetadata<Point2D>(new Point2D(0.5, 0.5), PropertyMetadataOptions.None));
+
+        /// <summary>
         /// Applies a visual state transition to the element.
         /// </summary>
         /// <param name="style">The style which defines the state transition.</param>
@@ -1022,10 +1112,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <inheritdoc/>
-        internal override void OnVisualParentChangedInternal()
+        internal override void OnVisualParentChangedInternal(Visual oldParent, Visual newParent)
         {
+            var hasRenderTransform = !IsIdentityTransform(RenderTransform);
+
+            if (oldParent != null)
+                UpdateDescendantsWithRenderTransformsCounter(oldParent, -((hasRenderTransform ? 1 : 0) + descendantsWithRenderTransforms));
+
+            if (newParent != null)
+                UpdateDescendantsWithRenderTransformsCounter(newParent, +((hasRenderTransform ? 1 : 0) + descendantsWithRenderTransforms));
+
             OnLayoutCacheInvalidatedInternal();
-            base.OnVisualParentChangedInternal();
+            base.OnVisualParentChangedInternal(oldParent, newParent);
         }
 
         /// <summary>
@@ -1216,10 +1314,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             get { return isArranging; }
         }
 
+        /// <summary>
+        /// Gets a value indicating whether the element has any descendants with render transforms.
+        /// </summary>
+        internal Boolean HasRenderTransformedDescendants
+        {
+            get { return descendantsWithRenderTransforms > 0; }
+        }
+
         /// <inheritdoc/>
         internal override Object DependencyDataSource
         {
-            get { return ViewModel; }
+            get { return DeclarativeViewModelOrTemplate ?? ViewModel; }
         }
 
         /// <inheritdoc/>
@@ -1242,28 +1348,30 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             base.OnMeasureAffectingPropertyChanged();
         }
 
-        /// <summary>
-        /// Applies the specified style sheet's styles to this element and its children.
-        /// </summary>
-        /// <param name="styleSheet">The style sheet to apply to the element.</param>
+        /// <inheritdoc/>
         protected internal sealed override void ApplyStyles(UvssDocument styleSheet)
         {
             styleSheet.ApplyStyles(this);
         }
 
-        /// <summary>
-        /// Applies a style to the element.
-        /// </summary>
-        /// <param name="style">The style which is being applied.</param>
-        /// <param name="selector">The selector which caused the style to be applied.</param>
-        /// <param name="dprop">A <see cref="DependencyProperty"/> that identifies the dependency property which is being styled.</param>
-        protected internal sealed override void ApplyStyle(UvssStyle style, UvssSelector selector, DependencyProperty dprop)
+        /// <inheritdoc/>
+        protected internal sealed override void ApplyStyle(UvssStyle style, UvssSelector selector, NavigationExpression? navigationExpression, DependencyProperty dprop)
         {
             Contract.Require(style, "style");
             Contract.Require(selector, "selector");
 
+            var target = (DependencyObject)this;
+            if (navigationExpression.HasValue)
+            {
+                target = navigationExpression.Value.ApplyExpression(Ultraviolet, this);
+                if (target == null)
+                    return;
+
+                dprop = DependencyProperty.FindByStylingName(Ultraviolet, target, style.Owner, style.Name);
+            }
+
             var name = style.Name;
-            if (name == "transition")
+            if (name == "transition" && !navigationExpression.HasValue)
             {
                 ApplyStyledVisualStateTransition(style);
             }
@@ -1271,7 +1379,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             {
                 if (dprop != null)
                 {
-                    dprop.ApplyStyle(this, style, CultureInfo.InvariantCulture);
+                    dprop.ApplyStyle(target, style, CultureInfo.InvariantCulture);
                 }
             }
         }
@@ -1303,6 +1411,27 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Removes the specified child element from this element.
+        /// </summary>
+        /// <param name="child">The child element to remove from this element.</param>
+        protected internal virtual void RemoveLogicalChild(UIElement child)
+        {
+
+        }
+
+        /// <inheritdoc/>
+        protected override void OnDigesting(UltravioletTime time)
+        {
+            var renderTransform = RenderTransform;
+            if (renderTransform != null)
+            {
+                renderTransform.Digest(time);
+            }
+
+            base.OnDigesting(time);
+        }
+
+        /// <summary>
         /// Called when the desired size of one of the element's children is changed.
         /// </summary>
         /// <param name="child">The child element that was resized.</param>
@@ -1312,15 +1441,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             {
                 InvalidateMeasure();
             }
-        }
-
-        /// <summary>
-        /// Removes the specified child element from this element.
-        /// </summary>
-        /// <param name="child">The child element to remove from this element.</param>
-        protected internal virtual void RemoveLogicalChild(UIElement child)
-        {
-
         }
 
         /// <summary>
@@ -1371,10 +1491,37 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             }
         }
 
+        /// <summary>
+        /// Occurs when the element's transform state changes.
+        /// </summary>
+        protected virtual void OnTransformChanged()
+        {
+            var thisElementIsTransformed = !IsIdentityTransform(RenderTransform);
+
+            VisualTreeHelper.ForEachChild<UIElement>(this, CommonBoxedValues.Boolean.FromValue(thisElementIsTransformed), (child, state) =>
+            {
+                child.OnAncestorTransformChanged((Boolean)state);
+            });
+        }
+
+        /// <summary>
+        /// Occurs when the transform of one of this element's ancestors is changed.
+        /// </summary>
+        /// <param name="transformed">A value indicating whether any of this element's ancestors are currently transformed.</param>
+        protected virtual void OnAncestorTransformChanged(Boolean transformed)
+        {
+            var thisElementIsTransformed = transformed || !IsIdentityTransform(RenderTransform);
+
+            VisualTreeHelper.ForEachChild<UIElement>(this, CommonBoxedValues.Boolean.FromValue(thisElementIsTransformed), (child, state) =>
+            {
+                child.OnAncestorTransformChanged((Boolean)state);
+            });
+        }
+
         /// <inheritdoc/>
         protected override Visual HitTestCore(Point2D point)
         {
-            if (!IsHitTestVisible || !Bounds.Contains(point))
+            if (!HitTestUtil.IsPotentialHit(this, point))
                 return null;
 
             var children = VisualTreeHelper.GetChildrenCount(this);
@@ -1384,14 +1531,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 if (child == null)
                     continue;
 
-                var childMatch = child.HitTest(point - child.RelativeBounds.Location);
+                var childMatch = child.HitTest(TransformToDescendant(child, point));
                 if (childMatch != null)
                 {
                     return childMatch;
                 }
             }
 
-            return this;
+            return Bounds.Contains(point) ? this : null;
         }
 
         /// <summary>
@@ -1838,15 +1985,35 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var imageAreaPix = (RectangleF)Display.DipsToPixels(imageAreaAbs);
 
             var origin = new Vector2(
-                (Int32)(imageAreaPix.Width / 2f),
-                (Int32)(imageAreaPix.Height / 2f));
+                (Int32)imageAreaPix.Width / 2,
+                (Int32)imageAreaPix.Height / 2);
 
             var position = new Vector2(
-                (Int32)(imageAreaPix.X + (imageAreaPix.Width / 2f)),
-                (Int32)(imageAreaPix.Y + (imageAreaPix.Height / 2f)));
+                (Int32)imageAreaPix.X + (imageAreaPix.Width / 2),
+                (Int32)imageAreaPix.Y + (imageAreaPix.Height / 2));
 
             dc.SpriteBatch.DrawImage(imageResource, position, (Int32)imageAreaPix.Width, (Int32)imageAreaPix.Height,
                 colorPlusOpacity, 0f, origin, SpriteEffects.None, 0f);
+        }
+
+        /// <summary>
+        /// Checks to see whether this element, or any of its ancestors, is transformed.
+        /// </summary>
+        /// <returns></returns>
+        protected Boolean CheckIsTransformed()
+        {
+            var current = (DependencyObject)this;
+            while (current != null)
+            {
+                var uiElement = current as UIElement;
+                if (uiElement != null && uiElement.HasTransform)
+                {
+                    return true;
+                }
+
+                current = VisualTreeHelper.GetParent(current);
+            }
+            return false;
         }
 
         /// <summary>
@@ -1871,6 +2038,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         protected virtual Boolean IsEnabledCore
         {
             get { return true; }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the specified transformation is an identity transformation.
+        /// </summary>
+        /// <param name="transform">The transform to evaluate.</param>
+        /// <returns><c>true</c> if the specified transform is an identity transform; otherwise, <c>false</c>.</returns>
+        private static Boolean IsIdentityTransform(Transform transform)
+        {
+            return (transform == null || transform.IsIdentity);
         }
 
         /// <summary>
@@ -1934,6 +2111,26 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Occurs when the value of the <see cref="RenderTransform"/> dependency property changes.
+        /// </summary>
+        private static void HandleRenderTransformChanged(DependencyObject dobj, Transform oldValue, Transform newValue)
+        {
+            var element = (UIElement)dobj;
+            var uv      = element.Ultraviolet;
+
+            if (newValue == null || newValue is IdentityTransform)
+            {
+                element.UpdateDescendantsWithRenderTransformsCounter(element.VisualParent, -1);
+            }
+            else
+            {
+                element.UpdateDescendantsWithRenderTransformsCounter(element.VisualParent, +1);
+            }
+
+            element.OnTransformChanged();
+        }
+
+        /// <summary>
         /// Coerces the value of <see cref="IsEnabled"/> to ensure that elements cannot be disabled
         /// if their parents are disabled.
         /// </summary>
@@ -1950,17 +2147,41 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             }
             return false;
         }
+        
+        /// <summary>
+        /// Updates the counter used by this element's ancestors to track whether they have any
+        /// descendants with render transforms.
+        /// </summary>
+        /// <param name="parent">The parent object to update.</param>
+        /// <param name="count">The amount by which to adjust the counter.</param>
+        private void UpdateDescendantsWithRenderTransformsCounter(DependencyObject parent, Int32 count)
+        {
+            if (parent == null)
+                return;
+
+            var current = (DependencyObject)parent;
+            while (current != null)
+            {
+                var element = current as UIElement;
+                if (element != null)
+                {
+                    element.descendantsWithRenderTransforms += count;
+                }
+
+                current = VisualTreeHelper.GetParent(current);
+            }
+        }
 
         /// <summary>
         /// Updates the element's position and, if that position changes, the positions of the element's children.
         /// </summary>
-        private void PositionElementAndPotentiallyChildren()
+        private void PositionElementAndPotentiallyChildren(Boolean forceInvalidatePosition)
         {
             var oldAbsolutePosition = AbsolutePosition;
 
             Position(mostRecentPositionOffset);
 
-            if (!oldAbsolutePosition.Equals(AbsolutePosition))
+            if (forceInvalidatePosition || !oldAbsolutePosition.Equals(AbsolutePosition))
             {
                 PositionChildren();
             }
@@ -2109,6 +2330,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         private Size2D mostRecentAvailableSize;
         private Size2D mostRecentPositionOffset;
         private Int32 layoutDepth;
+        private Int32 descendantsWithRenderTransforms;
 
         // State values.
         private Boolean isStyling;

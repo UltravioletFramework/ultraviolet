@@ -1,4 +1,5 @@
-﻿using TwistedLogik.Nucleus;
+﻿using System;
+using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet.Platform;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation
@@ -120,6 +121,46 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var bottom = @this.DipsToInches(dips.Bottom);
 
             return new Thickness(left, top, right, bottom);
+        }
+
+        /// <summary>
+        /// Converts a <see cref="Matrix"/> representing a 2D transformation in display independent pixels to an
+        /// equivalent <see cref="Matrix"/> in display pixels.
+        /// </summary>
+        /// <param name="this">The <see cref="IUltravioletDisplay"/> with which to perform the conversion.</param>
+        /// <param name="matrix">The <see cref="Matrix"/> in display independent pixels to convert.</param>
+        /// <returns>The converted <see cref="Matrix"/> in display pixels.</returns>
+        public static Matrix DipsToPixels(this IUltravioletDisplay @this, Matrix matrix)
+        {
+            var x = (Single)@this.DipsToPixels(matrix.M14);
+            var y = (Single)@this.DipsToPixels(matrix.M24);
+            var z = (Single)@this.DipsToPixels(matrix.M34);
+
+            return new Matrix(
+                matrix.M11, matrix.M12, matrix.M13, x,
+                matrix.M21, matrix.M22, matrix.M23, y,
+                matrix.M31, matrix.M32, matrix.M33, z,
+                matrix.M41, matrix.M42, matrix.M43, matrix.M44);
+        }
+
+        /// <summary>
+        /// Converts a <see cref="Matrix"/> representing a 2D transformation in display independent pixels to an
+        /// equivalent <see cref="Matrix"/> in display pixels.
+        /// </summary>
+        /// <param name="this">The <see cref="IUltravioletDisplay"/> with which to perform the conversion.</param>
+        /// <param name="matrix">The <see cref="Matrix"/> in display independent pixels to convert.</param>
+        /// <param name="result">The converted <see cref="Matrix"/> in display pixels.</param>
+        public static void DipsToPixels(this IUltravioletDisplay @this, ref Matrix matrix, out Matrix result)
+        {
+            var x = (Single)@this.DipsToPixels(matrix.M14);
+            var y = (Single)@this.DipsToPixels(matrix.M24);
+            var z = (Single)@this.DipsToPixels(matrix.M34);
+
+            result = new Matrix(
+                matrix.M11, matrix.M12, matrix.M13, x,
+                matrix.M21, matrix.M22, matrix.M23, y,
+                matrix.M31, matrix.M32, matrix.M33, z,
+                matrix.M41, matrix.M42, matrix.M43, matrix.M44);
         }
     }
 }

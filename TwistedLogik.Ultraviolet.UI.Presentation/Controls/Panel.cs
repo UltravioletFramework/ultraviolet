@@ -6,6 +6,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
     /// <summary>
     /// Represents a framework element with child elements.
     /// </summary>
+    [UvmlKnownType]
     public abstract class Panel : Control
     {
         /// <summary>
@@ -80,7 +81,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <inheritdoc/>
         protected override Visual HitTestCore(Point2D point)
         {
-            if (!IsHitTestVisible || !Bounds.Contains(point))
+            if (!HitTestUtil.IsPotentialHit(this, point))
                 return null;
 
             var childMatch = HitTestChildren(point);
@@ -89,7 +90,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 return childMatch;
             }
 
-            return this;
+            return Bounds.Contains(point) ? this : null;
         }
 
         /// <summary>
@@ -104,7 +105,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             {
                 var child = children[i];
 
-                var childMatch = child.HitTest(point - child.RelativeBounds.Location);
+                var childMatch = child.HitTest(TransformToDescendant(child, point));
                 if (childMatch != null)
                 {
                     return childMatch;
@@ -118,8 +119,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         {
             foreach (var child in children)
             {
-                if (child.RelativeBounds.Left < 0 || child.RelativeBounds.Top < 0 ||
-                    child.RelativeBounds.Right > RenderSize.Width || child.RelativeBounds.Bottom > RenderSize.Height)
+                if (!Bounds.Contains(child.RelativeBounds))
                 {
                     return AbsoluteBounds;
                 }

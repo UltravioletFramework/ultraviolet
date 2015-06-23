@@ -45,6 +45,8 @@ namespace UvDebugSandbox.UI.Screens
             set;
         }
 
+        public Single Angle { get; set; }
+
         public Int32 Index
         {
             get;

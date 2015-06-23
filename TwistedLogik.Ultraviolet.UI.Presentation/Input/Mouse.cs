@@ -94,13 +94,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
             var uiElement = relativeTo as UIElement;
             if (uiElement != null && uiElement.View != null)
             {
-                var device = PrimaryDevice;
-                var dipPos = uiElement.View.Display.PixelsToDips((Point2D)device.Position);
-                var relPos = dipPos - uiElement.AbsolutePosition;
+                var positionPixs = PrimaryDevice.GetPositionInWindow(uiElement.View.Window);
+                if (positionPixs != null)
+                {
+                    var positionDips = uiElement.View.Display.PixelsToDips(positionPixs.Value);
+                    var positionTran = uiElement.View.LayoutRoot.TransformToDescendant(uiElement, positionDips);
 
-                return relPos;
+                    return (Point2D)positionTran;
+                }
             }
-            return Point2D.Zero;
+            return new Point2D(Double.NaN, Double.NaN);
         }
 
         /// <summary>

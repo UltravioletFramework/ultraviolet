@@ -75,6 +75,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL
             PumpEvents();
 
             InitializeContext();
+            InitializeViewProvider(configuration);
         }
 
         /// <inheritdoc/>
@@ -125,6 +126,10 @@ namespace TwistedLogik.Ultraviolet.OpenGL
         public override void Draw(UltravioletTime time)
         {
             Contract.EnsureNotDisposed(this, Disposed);
+
+            OnDrawing(time);
+
+            graphics.SetRenderTarget(null);
 
             var glcontext = graphics.OpenGLContext;
             var windowInfo = ((OpenGLUltravioletWindowInfo)platform.Windows);

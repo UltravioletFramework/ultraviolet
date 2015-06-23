@@ -70,11 +70,6 @@
       <Variant>Invalid kerning pair.</Variant>
     </en-US>
   </String>
-  <String Key="BUFFER_IS_TOO_SMALL">
-    <en-US>
-      <Variant>Buffer '{0}' is too small for the requested data.</Variant>
-    </en-US>
-  </String>
   <String Key="RENDER_TARGET_NEEDS_BUFFERS">
     <en-US>
       <Variant>The specified render target is not ready for rendering because no render buffers are attached.</Variant>
@@ -178,6 +173,11 @@
   <String Key="INVALID_CONTENT_ARCHIVE">
     <en-US>
       <Variant>The specified content archive contains invalid data.</Variant>
+    </en-US>
+  </String>
+  <String Key="CANNOT_RESIZE_ATTACHED_RENDER_BUFFER">
+    <en-US>
+      <Variant>The render buffer cannot be resized because it has been attached to a render target. Resize the render target instead.</Variant>
     </en-US>
   </String>
 </LocalizedStrings>

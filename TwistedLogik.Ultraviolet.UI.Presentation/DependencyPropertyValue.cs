@@ -253,6 +253,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 cachedBoundValue.SetFormatString(formatString);
             }
 
+            /// <inheritdoc/>
+            public Object GetUntypedValue()
+            {
+                return GetValue();
+            }
+
             /// <summary>
             /// Sets the dependency property's value.
             /// </summary>
@@ -265,10 +271,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 }
                 if (IsDataBound)
                 {
-                    if (cachedBoundValue.IsWritable)
-                    {
-                        cachedBoundValue.Set(value);
-                    }
+                    SetCachedBoundValue(value);
                 }
                 else
                 {
@@ -476,6 +479,35 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 }
 
                 return !type1.IsMutuallyConvertibleTo(type2);
+            }
+
+            /// <summary>
+            /// Sets the property's bound value.
+            /// </summary>
+            private void SetCachedBoundValue(T value)
+            {
+                if (!cachedBoundValue.IsWritable)
+                    return;
+
+                if (cachedBoundValue.SuppressDigest)
+                {
+                    var oldValue = GetValue();
+
+                    value = UpdateCoercedValue(value);
+                    cachedBoundValue.Set(value);
+
+                    var newValue = GetValue();
+
+                    if (!comparer(oldValue, newValue))
+                    {
+                        metadata.HandleChanged<T>(Owner, property, oldValue, newValue);
+                    }
+                }
+                else
+                {
+                    value = UpdateCoercedValue(value);
+                    cachedBoundValue.Set(value);
+                }
             }
 
             /// <summary>

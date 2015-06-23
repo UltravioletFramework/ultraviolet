@@ -67,6 +67,36 @@ namespace TwistedLogik.Ultraviolet.Testing
         }
 
         /// <summary>
+        /// Asserts that this value should be equal to the expected matrix.
+        /// </summary>
+        /// <param name="expected">The expected matrix value.</param>
+        /// <returns>The result object.</returns>
+        public MatrixResult ShouldBe(Matrix expected)
+        {
+            Assert.AreEqual(expected.M11, value.M11, delta);
+            Assert.AreEqual(expected.M12, value.M12, delta);
+            Assert.AreEqual(expected.M13, value.M13, delta);
+            Assert.AreEqual(expected.M14, value.M14, delta);
+
+            Assert.AreEqual(expected.M21, value.M21, delta);
+            Assert.AreEqual(expected.M22, value.M22, delta);
+            Assert.AreEqual(expected.M23, value.M23, delta);
+            Assert.AreEqual(expected.M24, value.M24, delta);
+
+            Assert.AreEqual(expected.M31, value.M31, delta);
+            Assert.AreEqual(expected.M32, value.M32, delta);
+            Assert.AreEqual(expected.M33, value.M33, delta);
+            Assert.AreEqual(expected.M34, value.M34, delta);
+
+            Assert.AreEqual(expected.M41, value.M41, delta);
+            Assert.AreEqual(expected.M42, value.M42, delta);
+            Assert.AreEqual(expected.M43, value.M43, delta);
+            Assert.AreEqual(expected.M44, value.M44, delta);
+
+            return this;
+        }
+
+        /// <summary>
         /// Specifies that subsequent comparisons should be within the specified delta.
         /// </summary>
         /// <param name="delta">The delta value to set.</param>

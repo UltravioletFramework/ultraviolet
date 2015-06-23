@@ -152,6 +152,27 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         public static readonly DependencyProperty PlacementRectangleProperty = DependencyProperty.Register("PlacementRectangle", typeof(RectangleD), typeof(Popup),
             new PropertyMetadata<RectangleD>(RectangleD.Empty, PropertyMetadataOptions.None, HandlePlacementRectangleChanged));
 
+        /// <summary>
+        /// Performs a hit test against the popup.
+        /// </summary>
+        /// <param name="point">The point in screen space to evaluate.</param>
+        /// <returns>The <see cref="Visual"/> at the specified point in screen space, or <c>null</c> if there is no such visual.</returns>
+        internal Visual PopupHitTest(Point2D point)
+        {
+            Matrix invertedTransform;
+            if (!Matrix.TryInvert(root.InheritedRenderTransform, out invertedTransform))
+                return null;
+
+            var source = PlacementTarget ?? this;
+            var popupOffsetX = root.AbsolutePosition.X - source.AbsolutePosition.X;
+            var popupOffsetY = root.AbsolutePosition.Y - source.AbsolutePosition.Y;
+
+            var pointRelToSourceCorner = Point2D.Transform(point, invertedTransform);
+            var pointRelToPopupCorner = new Point2D(pointRelToSourceCorner.X - popupOffsetX, pointRelToSourceCorner.Y - popupOffsetY);
+
+            return root.HitTest(pointRelToPopupCorner);
+        }
+
         /// <inheritdoc/>
         protected internal override UIElement GetLogicalChild(Int32 childIndex)
         {
@@ -182,6 +203,22 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         }
 
         /// <inheritdoc/>
+        protected override void OnVisualParentChanged(Visual oldParent, Visual newParent)
+        {
+            this.root.IsTransformed = CheckIsTransformed();
+
+            base.OnVisualParentChanged(oldParent, newParent);
+        }
+
+        /// <inheritdoc/>
+        protected override void OnAncestorTransformChanged(Boolean transformed)
+        {
+            this.root.IsTransformed = transformed;
+
+            base.OnAncestorTransformChanged(transformed);
+        }
+
+        /// <inheritdoc/>
         protected override void ReloadContentCore(Boolean recursive)
         {
             base.ReloadContentCore(recursive);
@@ -199,7 +236,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             {
                 if (IsOpen)
                 {
-                    View.Popups.Enqueue(this);
+                    var transform = dc.SpriteBatch.CurrentTransformMatrix;
+                    var transformed = !Matrix.Identity.Equals(transform);
+                    View.Popups.Enqueue(this, transformed ? transform : (Matrix?)null);
                 }
             }
         }
@@ -216,30 +255,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         {
             base.CacheLayoutParametersCore();
             root.CacheLayoutParameters();
-        }
-
-        /// <summary>
-        /// Raises the <see cref="Opened"/> event.
-        /// </summary>
-        protected virtual void OnOpened()
-        {
-            var temp = Opened;
-            if (temp != null)
-            {
-                temp(this);
-            }
-        }
-
-        /// <summary>
-        /// Raises the <see cref="Closed"/> event.
-        /// </summary>
-        protected virtual void OnClosed()
-        {
-            var temp = Closed;
-            if (temp != null)
-            {
-                temp(this);
-            }
         }
 
         /// <inheritdoc/>
@@ -269,7 +284,31 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <inheritdoc/>
         protected override Visual HitTestCore(Point2D point)
         {
-            return root.HitTest(point - new Point2D(popupX, popupY));
+            return null;
+        }
+
+        /// <summary>
+        /// Raises the <see cref="Opened"/> event.
+        /// </summary>
+        protected virtual void OnOpened()
+        {
+            var temp = Opened;
+            if (temp != null)
+            {
+                temp(this);
+            }
+        }
+
+        /// <summary>
+        /// Raises the <see cref="Closed"/> event.
+        /// </summary>
+        protected virtual void OnClosed()
+        {
+            var temp = Closed;
+            if (temp != null)
+            {
+                temp(this);
+            }
         }
 
         /// <summary>
@@ -284,7 +323,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
                 if (popup.IsLoaded)
                     return true;
 
-                popup.Loaded += OpenDeferred;
+                if (!popup.loadingDeferred)
+                {
+                    popup.loadingDeferred = true;
+                    popup.Loaded += OpenDeferred;
+                }
                 return false;
             }
             return value;
@@ -326,10 +369,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             if (newValue)
             {
                 root.EnsureIsLoaded(true);
+                root.IsOpen = true;
 
                 if (child != null)
                 {
                     child.ChangeVisualParent(root);
+
+                    root.UpdateTransform(popup.PlacementTarget);
 
                     popup.UpdatePopupStyle(popup.MostRecentStyleSheet);
                     popup.UpdatePopupMeasure();
@@ -340,6 +386,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             else
             {
                 root.EnsureIsLoaded(false);
+                root.IsOpen = false;
 
                 if (child != null)
                 {
@@ -383,6 +430,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         private static void OpenDeferred(DependencyObject element, ref RoutedEventData data)
         {
             var popup = (Popup)element;
+            popup.loadingDeferred = false;
             popup.Loaded -= OpenDeferred;
             popup.IsOpen = true;
         }
@@ -470,7 +518,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             popupX = popupArea.X;
             popupY = popupArea.Y;
 
-            root.Arrange(popupArea, ArrangeOptions.None);
+            root.Arrange(popupArea, ArrangeOptions.ForceInvalidatePosition);
         }
 
         /// <summary>
@@ -939,6 +987,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         private readonly PopupRoot root;
         private Double popupX;
         private Double popupY;
+        private Boolean loadingDeferred;
         
         // The assumed size of the default cursor, since there's currently no way to query it.
         private const Int32 DefaultCursorWidth = 16;

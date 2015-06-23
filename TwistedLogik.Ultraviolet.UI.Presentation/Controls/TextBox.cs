@@ -350,11 +350,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <inheritdoc/>
         protected override void OnMouseMove(MouseDevice device, Double x, Double y, Double dx, Double dy, ref RoutedEventData data)
         {
+            var cursorpos = Mouse.GetPosition(this);
+
             if (mouseSelectionInProgress && !String.IsNullOrEmpty(Text))
             {
                 // Cursor is inside box
-                var textArea = AbsoluteTextBounds;
-                if (textArea.Left <= x && textArea.Right > x)
+                var textArea = RelativeTextBounds;
+                if (textArea.Left <= cursorpos.X && textArea.Right > cursorpos.X)
                 {
                     var index = CalculateIndexFromCursor(device);
                     SelectToIndex(index);
@@ -365,14 +367,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                     var delta = (Int32)dx;
 
                     // Cursor is left of box, moving left
-                    if (x < textArea.Left && delta < 0)
+                    if (cursorpos.X < textArea.Left && delta < 0)
                     {
                         MoveSelectionLeft(Math.Abs(delta));
                         ScrollToSelectionHead();
                     }
 
                     // Cursor is right of box, moving right
-                    if (x >= textArea.Right && delta > 0)
+                    if (cursorpos.X >= textArea.Right && delta > 0)
                     {
                         MoveSelectionRight(Math.Abs(delta));
                         ScrollToSelectionHead();
@@ -380,6 +382,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 }
                 data.Handled = true;
             }
+
             base.OnMouseMove(device, x, y, dx, dy, ref data);
         }
 
@@ -954,9 +957,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <returns>The offset of the character beneath the mouse cursor.</returns>
         private Double CalculateOffsetFromCursor(MouseDevice mouse)
         {
-            var cursorpos  = Display.PixelsToDips((Point2D)mouse.Position) - AbsolutePosition;
-            var textOffset = (cursorpos.X - RelativeTextBounds.X) - textScrollOffset;
+            var cursorpos = Mouse.GetPosition(this);
 
+            var textOffset = (cursorpos.X - RelativeTextBounds.X) - textScrollOffset;
             return textOffset;
         }
 

@@ -14,6 +14,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
     /// <summary>
     /// Represents the base class for scroll bars.
     /// </summary>
+    [UvmlKnownType]
     public abstract class ScrollBarBase : RangeBase
     {
         /// <summary>

@@ -78,7 +78,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
             gl.DepthFunc(GetCompareFunctionGL(DepthBufferFunction));
             gl.ThrowIfError();
 
-            gl.Enable(gl.GL_STENCIL_TEST, StencilBuffer);
+            gl.Enable(gl.GL_STENCIL_TEST, StencilEnable);
             gl.ThrowIfError();
 
             if (TwoSidedStencilMode)

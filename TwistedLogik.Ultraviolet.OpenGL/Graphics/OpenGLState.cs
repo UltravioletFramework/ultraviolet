@@ -413,6 +413,20 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         }
 
         /// <summary>
+        /// Indicates that the specified texture has been deleted and updates the OpenGL state accordingly.
+        /// </summary>
+        /// <param name="texture">The texture to delete.</param>
+        public static void DeleteTexture2D(UInt32 texture)
+        {
+            if (OpenGLState.GL_TEXTURE_BINDING_2D == texture)
+            {
+                OpenGLState.GL_TEXTURE_BINDING_2D.Update(0);
+
+                OpenGLState.VerifyCache();
+            }
+        }
+
+        /// <summary>
         /// Indicates that the specified vertex array object has been deleted and updates the OpenGL state accordingly.
         /// </summary>
         /// <param name="vertexArrayObject">The vertex array object to delete.</param>

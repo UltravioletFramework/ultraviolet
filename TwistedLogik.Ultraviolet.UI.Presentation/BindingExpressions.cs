@@ -226,36 +226,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Creates an event handler which is bound to a method on a view model.
         /// </summary>
-        /// <param name="uiElement">The interface element to which the event will be bound.</param>
-        /// <param name="dataSourceType">The type of the data source to which the expression is being being bound.</param>
-        /// <param name="delegateType">The type of the event handler which is being bound.</param>
-        /// <param name="expression">The binding expression that represents the method to bind to the event.</param>
+        /// <param name="dataSource">The data source for the binding expression.</param>
+        /// <param name="dataSourceType">The type of the data source for the binding expression.</param>
+        /// <param name="delegateType">The type of the delegate to create.</param>
+        /// <param name="expression">The binding expression from which to create the delegate.</param>
         /// <returns>A <see cref="Delegate"/> which represents the bound event handler.</returns>
-        public static Delegate CreateViewModelBoundEventDelegate(UIElement uiElement, Type dataSourceType, Type delegateType, String expression)
+        public static Delegate CreateBoundEventDelegate(Object dataSource, Type dataSourceType, Type delegateType, String expression)
         {
-            Contract.Require(uiElement, "uiElement");
+            Contract.Require(dataSource, "dataSource");
             Contract.Require(dataSourceType, "dataSourceType");
             Contract.Require(delegateType, "delegateType");
             Contract.RequireNotEmpty(expression, "expression");
 
-            var builder = new BoundEventBuilder(uiElement, dataSourceType, delegateType, expression, false);
-            return builder.Compile();
-        }
-
-        /// <summary>
-        /// Creates an event handler which is bound to a method on an element.
-        /// </summary>
-        /// <param name="uiElement">The element to which the event will be bound.</param>
-        /// <param name="delegateType">The type of the event handler which is being bound.</param>
-        /// <param name="expression">The binding expression that represents the method to bind to the event.</param>
-        /// <returns>A <see cref="Delegate"/> which represents the bound event handler.</returns>
-        public static Delegate CreateElementBoundEventDelegate(UIElement uiElement, Type delegateType, String expression)
-        {
-            Contract.Require(uiElement, "uiElement");
-            Contract.Require(delegateType, "delegateType");
-            Contract.RequireNotEmpty(expression, "expression");
-
-            var builder = new BoundEventBuilder(uiElement, uiElement.GetType(), delegateType, expression, true);
+            var builder = new BoundEventBuilder(dataSource, dataSourceType, delegateType, expression);
             return builder.Compile();
         }
 

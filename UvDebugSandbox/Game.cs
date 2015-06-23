@@ -10,11 +10,11 @@ using TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text;
 using TwistedLogik.Ultraviolet.OpenGL;
 using TwistedLogik.Ultraviolet.Platform;
 using TwistedLogik.Ultraviolet.UI.Presentation;
+using TwistedLogik.Ultraviolet.UI.Presentation.Styles;
 using UvDebugSandbox.Assets;
 using UvDebugSandbox.Input;
 using UvDebugSandbox.UI;
 using UvDebugSandbox.UI.Screens;
-using TwistedLogik.Ultraviolet.UI.Presentation.Styles;
 
 namespace UvDebugSandbox
 {

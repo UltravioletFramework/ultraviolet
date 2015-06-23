@@ -54,6 +54,7 @@ namespace TwistedLogik.Ultraviolet
         public static readonly StringResource BeginCannotBeCalledAgain             = new StringResource(StringDatabase, "BEGIN_CANNOT_BE_CALLED_AGAIN");
         public static readonly StringResource BeginMustBeCalledBeforeEnd           = new StringResource(StringDatabase, "BEGIN_MUST_BE_CALLED_BEFORE_END");
         public static readonly StringResource BeginMustBeCalledBeforeDraw          = new StringResource(StringDatabase, "BEGIN_MUST_BE_CALLED_BEFORE_DRAW");
+        public static readonly StringResource BeginMustBeCalledBeforeStateQuery    = new StringResource(StringDatabase, "BEGIN_MUST_BE_CALLED_BEFORE_STATE_QUERY");
         public static readonly StringResource StateIsImmutableAfterBind            = new StringResource(StringDatabase, "STATE_IS_IMMUTABLE_AFTER_BIND");
         public static readonly StringResource InvalidHandle                        = new StringResource(StringDatabase, "INVALID_HANDLE");
         public static readonly StringResource InvalidIdentifier                    = new StringResource(StringDatabase, "INVALID_IDENTIFIER");
@@ -118,6 +119,7 @@ namespace TwistedLogik.Ultraviolet
         public static readonly StringResource StretchableImageNotLoaded            = new StringResource(StringDatabase, "STRETCHABLE_IMAGE_NOT_LOADED");
         public static readonly StringResource InvalidViewProviderAssembly          = new StringResource(StringDatabase, "INVALID_VIEW_PROVIDER_ASSEMBLY");
         public static readonly StringResource IncompatibleViewModel                = new StringResource(StringDatabase, "INCOMPATIBLE_VIEW_MODEL");
+        public static readonly StringResource BufferIsWrongSize                    = new StringResource(StringDatabase, "BUFFER_IS_WRONG_SIZE");
 #pragma warning restore 1591
     }
 }

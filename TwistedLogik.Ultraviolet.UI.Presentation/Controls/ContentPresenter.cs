@@ -197,7 +197,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             var contentElement = Content as UIElement;
             if (contentElement != null)
             {
-                if (!AbsoluteBounds.Contains(contentElement.AbsoluteBounds))
+                if (!Bounds.Contains(contentElement.RelativeBounds))
                 {
                     return AbsoluteBounds;
                 }

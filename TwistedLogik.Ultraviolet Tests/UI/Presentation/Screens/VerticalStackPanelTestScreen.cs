@@ -1,10 +1,8 @@
 ﻿using TwistedLogik.Ultraviolet.Content;
 using TwistedLogik.Ultraviolet.UI;
 
-namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation
+namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation.Screens
 {
-    public class VerticalStackPanelTestScreenViewModel { }
-
     public class VerticalStackPanelTestScreen : UIScreen
     {
         public VerticalStackPanelTestScreen(ContentManager globalContent)

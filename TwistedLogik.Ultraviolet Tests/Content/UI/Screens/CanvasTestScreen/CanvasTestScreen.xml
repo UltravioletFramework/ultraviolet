@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <UIPanelDefinition>
-  <View ViewModelType="TwistedLogik.Ultraviolet.Tests.UI.Presentation.CanvasTestScreenViewModel, TwistedLogik.Ultraviolet.Tests">
+  <View ViewModelType="TwistedLogik.Ultraviolet.Tests.UI.Presentation.Screens.CanvasTestScreenViewModel, TwistedLogik.Ultraviolet.Tests">
 
     <Canvas HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
 

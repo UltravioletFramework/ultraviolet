@@ -305,4 +305,24 @@
       <Variant>The asset identifier '{0}' is not valid.</Variant>
     </en-US>
   </String>
+  <String Key="ELEMENT_IS_NOT_AN_ANCESTOR">
+    <en-US>
+      <Variant>The specified element is not an ancestor of this element.</Variant>
+    </en-US>
+  </String>
+  <String Key="ELEMENT_IS_NOT_A_DESCENDANT">
+    <en-US>
+      <Variant>The specified element is not a descendant of this element.</Variant>
+    </en-US>
+  </String>
+  <String Key="INVALID_TRANSFORMATION">
+    <en-US>
+      <Variant>The specified transformation is not valid.</Variant>
+    </en-US>
+  </String>
+  <String Key="DRAWING_CONTEXT_DOES_NOT_HAVE_SPRITEBATCH">
+    <en-US>
+      <Drawing>The operation is invalid because the drawing context is not associated with a SpriteBatch object.</Drawing>
+    </en-US>
+  </String>
 </LocalizedStrings>

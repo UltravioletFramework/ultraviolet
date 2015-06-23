@@ -316,7 +316,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 if (row < childRow || row >= childRow + childRowSpan)
                     continue;
 
-                var childMatch = child.HitTest(point - child.RelativeBounds.Location);
+                var childMatch = child.HitTest(TransformToDescendant(child, point));
                 if (childMatch != null)
                 {
                     return childMatch;

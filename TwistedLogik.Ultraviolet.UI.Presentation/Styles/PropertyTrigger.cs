@@ -42,9 +42,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
                 DependencyProperty.RegisterChangeNotification(dobj, dprop, this);
             }
 
-            Evaluate(dobj);
-
             base.Attach(dobj);
+
+            Evaluate(dobj);
         }
 
         /// <inheritdoc/>

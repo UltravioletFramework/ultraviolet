@@ -152,7 +152,12 @@
   </String>
   <String Key="BEGIN_MUST_BE_CALLED_BEFORE_DRAW">
     <en-US>
-      <Variant>Begin must be called successfully before a Draw can be called.</Variant>
+      <Variant>Begin must be called successfully before Draw can be called.</Variant>
+    </en-US>
+  </String>
+  <String Key="BEGIN_MUST_BE_CALLED_BEFORE_STATE_QUERY">
+    <en-US>
+      <Variant>Begin must be called successfully before the sprite batch's state can be queried.</Variant>
     </en-US>
   </String>
   <String Key="STATE_IS_IMMUTABLE_AFTER_BIND">
@@ -473,6 +478,16 @@
   <String Key="INCOMPATIBLE_VIEW_MODEL">
     <en-US>
       <Variant>The specified view model cannot be bound to this view because the view requires a view model of type '{0}'.</Variant>
+    </en-US>
+  </String>
+  <String Key="INVALID_OPERATION_WHILE_BOUND">
+    <en-US>
+      <Variant>The specified operation is not currently valid because the resource in question is bound to the device.</Variant>
+    </en-US>
+  </String>
+  <String Key="BUFFER_IS_WRONG_SIZE">
+    <en-US>
+      <Variant>The specified buffer is either too big or too small for this operation.</Variant>
     </en-US>
   </String>
 </LocalizedStrings>

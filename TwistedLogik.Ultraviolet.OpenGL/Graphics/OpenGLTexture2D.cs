@@ -29,9 +29,8 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
             if (mode == gl.GL_NONE)
                 throw new NotSupportedException(OpenGLStrings.UnsupportedImageType);
 
-            this.width = surface.Width;
-            this.height = surface.Height;            
-            this.texture = CreateNativeTexture(uv, gl.GL_RGBA8, width, height, mode, gl.GL_UNSIGNED_BYTE, surface.Native->pixels);
+            CreateNativeTexture(uv, gl.GL_RGBA8, surface.Width, surface.Height, mode, 
+                gl.GL_UNSIGNED_BYTE, surface.Native->pixels, true);
         }
 
         /// <summary>
@@ -40,13 +39,12 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         /// <param name="uv">The Ultraviolet context.</param>
         /// <param name="width">The texture's width in pixels.</param>
         /// <param name="height">The texture's height in pixels.</param>
+        /// <param name="immutable">A value indicating whether to use immutable texture storage.</param>
         /// <returns>The instance of Texture2D that was created.</returns>
-        public OpenGLTexture2D(UltravioletContext uv, Int32 width, Int32 height)
+        public OpenGLTexture2D(UltravioletContext uv, Int32 width, Int32 height, Boolean immutable)
             : base(uv)
         {
-            this.width = width;
-            this.height = height;
-            this.texture = CreateNativeTexture(uv, gl.GL_RGBA8, width, height, gl.GL_RGBA, gl.GL_UNSIGNED_BYTE, null);
+            CreateNativeTexture(uv, gl.GL_RGBA8, width, height, gl.GL_RGBA, gl.GL_UNSIGNED_BYTE, null, immutable);
         }
 
         /// <summary>
@@ -59,21 +57,15 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         /// <param name="format">The texture's texel format.</param>
         /// <param name="type">The texture's texel type.</param>
         /// <param name="data">The texture's data.</param>
+        /// <param name="immutable">A value indicating whether to use immutable texture storage.</param>
         /// <returns>The instance of Texture2D that was created.</returns>
-        public OpenGLTexture2D(UltravioletContext uv, UInt32 internalformat, Int32 width, Int32 height, UInt32 format, UInt32 type, IntPtr data)
+        public OpenGLTexture2D(UltravioletContext uv, UInt32 internalformat, Int32 width, Int32 height, UInt32 format, UInt32 type, IntPtr data, Boolean immutable)
             : base(uv)
         {
-            this.width = width;
-            this.height = height;
-            this.texture = CreateNativeTexture(uv, internalformat, width, height, format, type, (void*)data);
+            CreateNativeTexture(uv, internalformat, width, height, format, type, (void*)data, immutable);
         }
 
-        /// <summary>
-        /// Compares the texture with another texture and returns a value indicating whether the current
-        /// instance comes before, after, or in the same position as the specified texture.
-        /// </summary>
-        /// <param name="other">The texture to compare to this instance.</param>
-        /// <returns>A value indicating the relative order of the objects being compared.</returns>
+        /// <inheritdoc/>
         public override Int32 CompareTo(Texture2D other)
         {
             var id1 = texture;
@@ -81,70 +73,112 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
             return id1.CompareTo(id2);
         }
 
-        /// <summary>
-        /// Sets the texture's data.
-        /// </summary>
-        /// <param name="data">An array containing the data to set.</param>
-        public override void SetData<T>(T[] data)
+        /// <inheritdoc/>
+        public override void Resize(Int32 width, Int32 height)
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
+            Contract.EnsureRange(width >= 1, "width");
+            Contract.EnsureRange(height >= 1, "height");
+
+            if (BoundForReading || BoundForWriting)
+                throw new InvalidOperationException(OpenGLStrings.InvalidOperationWhileBound);
+            
+            this.width  = width;
+            this.height = height;
+
+            if (immutable)
+            {
+                Ultraviolet.QueueWorkItem((state) =>
+                {
+                    var gltext = (OpenGLTexture2D)state;
+                    var glname = gltext.OpenGLName;
+
+                    gl.DeleteTexture(glname);
+                    gl.ThrowIfError();
+
+                    OpenGLState.DeleteTexture2D(glname);
+
+                    gltext.CreateNativeTexture(gltext.Ultraviolet, gltext.internalformat, 
+                        gltext.width, gltext.height, gltext.format, gltext.type, null, true);
+
+                }, this);
+            }
+            else
+            {
+                Ultraviolet.QueueWorkItem((state) =>
+                {
+                    var gltext = (OpenGLTexture2D)state;
+                    var glname = gltext.OpenGLName;
+
+                    using (OpenGLState.ScopedBindTexture2D(texture, true))
+                    {
+                        gl.TexImage2D(gl.GL_TEXTURE_2D, 0, (int)gltext.internalformat,
+                            gltext.width, gltext.height, 0, gltext.format, gltext.type, null);
+                    }
+
+                }, this);
+            }
+        }
+
+        /// <inheritdoc/>
+        public override void SetData<T>(T[] data, SetDataOrigin origin = SetDataOrigin.TopLeft)
         {
             SetData(0, null, data, 0, (data == null) ? 0 : data.Length);
         }
 
-        /// <summary>
-        /// Sets the texture's data.
-        /// </summary>
-        /// <param name="data">An array containing the data to set.</param>
-        /// <param name="offset">The index of the first element to set.</param>
-        /// <param name="count">The number of elements to set.</param>
-        public override void SetData<T>(T[] data, Int32 offset, Int32 count)
+        /// <inheritdoc/>
+        public override void SetData<T>(T[] data, Int32 offset, Int32 count, SetDataOrigin origin = SetDataOrigin.TopLeft)
         {
             SetData(0, null, data, offset, count);
         }
 
-        /// <summary>
-        /// Sets the texture's data.
-        /// </summary>
-        /// <param name="level">The mipmap level for which to set data.</param>
-        /// <param name="rect">A rectangle describing the position and size of the data to set.</param>
-        /// <param name="data">An array containing the data to set.</param>
-        /// <param name="offset">The index of the first element to set.</param>
-        /// <param name="count">The number of elements to set.</param>
-        /// <param name="stride">The number of elements in one row of data.</param>
-        public override void SetData<T>(Int32 level, Rectangle? rect, T[] data, Int32 offset, Int32 count, Int32 stride = 0)
+        /// <inheritdoc/>
+        public override void SetData<T>(Int32 level, Rectangle? rect, T[] data, Int32 offset, Int32 count, SetDataOrigin origin = SetDataOrigin.TopLeft)
         {
             Contract.EnsureNotDisposed(this, Disposed);
 
-            var pData = GCHandle.Alloc(data, GCHandleType.Pinned);
+            var handle = default(GCHandle);
             try
             {
-                SetDataInternal(level, rect, pData.AddrOfPinnedObject(), offset, count, stride, TextureDataFormat.RGBA);
+                handle = GCHandle.Alloc(data, GCHandleType.Pinned);
+
+                SetDataInternal(level, rect, handle.AddrOfPinnedObject(), offset, count, 0, TextureDataFormat.RGBA, origin);
             }
             finally
             {
-                pData.Free();
+                if (handle.IsAllocated)
+                    handle.Free();
             }
         }
 
-        /// <summary>
-        /// Sets the texture's data.
-        /// </summary>
-        /// <param name="level">The mipmap level for which to set data.</param>
-        /// <param name="rect">A rectangle describing the position and size of the data to set.</param>
-        /// <param name="data">A pointer to the data to set.</param>
-        /// <param name="offset">The index of the first element to set.</param>
-        /// <param name="count">The number of elements to set.</param>
-        /// <param name="stride">The number of elements in one row of data.</param>
-        /// <param name="format">The format of the data being set.</param>
-        public override void SetData(Int32 level, Rectangle? rect, IntPtr data, Int32 offset, Int32 count, Int32 stride, TextureDataFormat format)
+        /// <inheritdoc/>
+        public override void SetData<T>(Int32 level, Rectangle? rect, T[] data, Int32 offset, Int32 count, Int32 stride, SetDataOrigin origin = SetDataOrigin.TopLeft)
         {
             Contract.EnsureNotDisposed(this, Disposed);
 
-            SetDataInternal(level, rect, data, offset, count, stride, format);
+            var handle = default(GCHandle);
+            try
+            {
+                handle = GCHandle.Alloc(data, GCHandleType.Pinned);
+
+                SetDataInternal(level, rect, handle.AddrOfPinnedObject(), offset, count, stride, TextureDataFormat.RGBA, origin);
+            }
+            finally
+            {
+                if (handle.IsAllocated)
+                    handle.Free();
+            }
         }
 
-        /// <summary>
-        /// Binds the resource for reading.
-        /// </summary>
+        /// <inheritdoc/>
+        public override void SetData(Int32 level, Rectangle? rect, IntPtr data, Int32 offset, Int32 count, Int32 stride, TextureDataFormat format, SetDataOrigin origin = SetDataOrigin.TopLeft)
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
+
+            SetDataInternal(level, rect, data, offset, count, stride, format, origin);
+        }
+
+        /// <inheritdoc/>
         public void BindRead()
         {
             Contract.EnsureNotDisposed(this, Disposed);
@@ -153,9 +187,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
             boundRead = true;
         }
 
-        /// <summary>
-        /// Binds the resource for writing.
-        /// </summary>
+        /// <inheritdoc/>
         public void BindWrite()
         {
             Contract.EnsureNotDisposed(this, Disposed);
@@ -164,9 +196,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
             boundWrite = true;
         }
 
-        /// <summary>
-        /// Unbinds the resource for reading.
-        /// </summary>
+        /// <inheritdoc/>
         public void UnbindRead()
         {
             Contract.EnsureNotDisposed(this, Disposed);
@@ -175,9 +205,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
             boundRead = false;
         }
 
-        /// <summary>
-        /// Unbinds the resource for reading.
-        /// </summary>
+        /// <inheritdoc/>
         public void UnbindWrite()
         {
             Contract.EnsureNotDisposed(this, Disposed);
@@ -186,9 +214,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
             boundWrite = false;
         }
 
-        /// <summary>
-        /// Gets the OpenGL texture handle.
-        /// </summary>
+        /// <inheritdoc/>
         public UInt32 OpenGLName
         {
             get
@@ -199,9 +225,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
             }
         }
 
-        /// <summary>
-        /// Gets the texture's width in pixels.
-        /// </summary>
+        /// <inheritdoc/>
         public override Int32 Width
         {
             get
@@ -212,9 +236,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
             }
         }
 
-        /// <summary>
-        /// Gets the texture's height in pixels.
-        /// </summary>
+        /// <inheritdoc/>
         public override Int32 Height
         {
             get
@@ -225,9 +247,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
             }
         }
 
-        /// <summary>
-        /// Gets a value indicating whether the texture is bound to the device for reading.
-        /// </summary>
+        /// <inheritdoc/>
         public override Boolean BoundForReading
         {
             get
@@ -238,9 +258,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
             }
         }
 
-        /// <summary>
-        /// Gets a value indicating whether the texture is bound to the device for writing.
-        /// </summary>
+        /// <inheritdoc/>
         public override Boolean BoundForWriting
         {
             get
@@ -251,10 +269,18 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
             }
         }
 
-        /// <summary>
-        /// Releases resources associated with the object.
-        /// </summary>
-        /// <param name="disposing">true if the object is being disposed; false if the object is being finalized.</param>
+        /// <inheritdoc/>
+        public override Boolean ImmutableStorage
+        {
+            get 
+            {
+                Contract.EnsureNotDisposed(this, Disposed);
+
+                return immutable; 
+            }
+        }
+
+        /// <inheritdoc/>
         protected override void Dispose(Boolean disposing)
         {
             if (Disposed)
@@ -294,7 +320,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         }
 
         /// <summary>
-        /// Creates a native OpenGL texture with the specified format and data.
+        /// Creates the underlying native OpenGL texture with the specified format and data.
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
         /// <param name="internalformat">The texture's internal format.</param>
@@ -303,49 +329,68 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         /// <param name="format">The texel format.</param>
         /// <param name="type">The texel data type.</param>
         /// <param name="pixels">A pointer to the beginning of the texture's pixel data.</param>
-        /// <returns>The identifier of the OpenGL texture resource that was created.</returns>
-        private static UInt32 CreateNativeTexture(UltravioletContext uv, UInt32 internalformat, Int32 width, Int32 height, UInt32 format, UInt32 type, void* pixels)
+        /// <param name="immutable">A value indicating whether to use immutable texture storage.</param>
+        private void CreateNativeTexture(UltravioletContext uv, UInt32 internalformat, Int32 width, Int32 height, UInt32 format, UInt32 type, void* pixels, Boolean immutable)
         {
-            return uv.QueueWorkItemAndWait(() =>
+            this.width          = width;
+            this.height         = height;
+            this.internalformat = internalformat;
+            this.format         = format;
+            this.type           = type;
+            this.immutable      = immutable;
+
+            this.texture = uv.QueueWorkItemAndWait(() =>
             {
-                uint texture;
+                uint glname;
 
-                using (OpenGLState.ScopedCreateTexture2D(out texture))
+                using (OpenGLState.ScopedCreateTexture2D(out glname))
                 {
-                    gl.TextureParameteri(texture, gl.GL_TEXTURE_2D, gl.GL_TEXTURE_MAX_LEVEL, 0);
+                    gl.TextureParameteri(glname, gl.GL_TEXTURE_2D, gl.GL_TEXTURE_MAX_LEVEL, 0);
                     gl.ThrowIfError();
 
-                    gl.TextureParameteri(texture, gl.GL_TEXTURE_2D, gl.GL_TEXTURE_MIN_FILTER, (int)gl.GL_LINEAR);
+                    gl.TextureParameteri(glname, gl.GL_TEXTURE_2D, gl.GL_TEXTURE_MIN_FILTER, (int)gl.GL_LINEAR);
                     gl.ThrowIfError();
 
-                    gl.TextureParameteri(texture, gl.GL_TEXTURE_2D, gl.GL_TEXTURE_MAG_FILTER, (int)gl.GL_LINEAR);
+                    gl.TextureParameteri(glname, gl.GL_TEXTURE_2D, gl.GL_TEXTURE_MAG_FILTER, (int)gl.GL_LINEAR);
                     gl.ThrowIfError();
 
-                    gl.TextureParameteri(texture, gl.GL_TEXTURE_2D, gl.GL_TEXTURE_WRAP_S, (int)gl.GL_CLAMP_TO_EDGE);
+                    gl.TextureParameteri(glname, gl.GL_TEXTURE_2D, gl.GL_TEXTURE_WRAP_S, (int)gl.GL_CLAMP_TO_EDGE);
                     gl.ThrowIfError();
 
-                    gl.TextureParameteri(texture, gl.GL_TEXTURE_2D, gl.GL_TEXTURE_WRAP_T, (int)gl.GL_CLAMP_TO_EDGE);
+                    gl.TextureParameteri(glname, gl.GL_TEXTURE_2D, gl.GL_TEXTURE_WRAP_T, (int)gl.GL_CLAMP_TO_EDGE);
                     gl.ThrowIfError();
 
-                    if (gl.IsTextureStorageAvailable)
+                    if (immutable)
                     {
-                        gl.TextureStorage2D(texture, gl.GL_TEXTURE_2D, 1, internalformat, width, height);
-                        gl.ThrowIfError();
-
-                        if (pixels != null)
+                        if (gl.IsTextureStorageAvailable)
                         {
-                            gl.TextureSubImage2D(texture, gl.GL_TEXTURE_2D, 0, 0, 0, width, height, format, type, pixels);
+                            gl.TextureStorage2D(glname, gl.GL_TEXTURE_2D, 1, internalformat, width, height);
+                            gl.ThrowIfError();
+
+                            if (pixels != null)
+                            {
+                                gl.TextureSubImage2D(glname, gl.GL_TEXTURE_2D, 0, 0, 0, width, height, format, type, pixels);
+                                gl.ThrowIfError();
+                            }
+                        }
+                        else
+                        {
+                            gl.TextureImage2D(glname, gl.GL_TEXTURE_2D, 0, (int)internalformat, width, height, 0, format, type, pixels);
                             gl.ThrowIfError();
                         }
                     }
-                    else
+                }
+
+                if (!immutable)
+                {
+                    using (OpenGLState.ScopedBindTexture2D(glname, true))
                     {
-                        gl.TextureImage2D(texture, gl.GL_TEXTURE_2D, 0, (int)internalformat, width, height, 0, format, type, pixels);
+                        gl.TexImage2D(gl.GL_TEXTURE_2D, 0, (int)internalformat, width, height, 0, format, type, pixels);
                         gl.ThrowIfError();
                     }
                 }
 
-                return texture;
+                return glname;
             });
         }
 
@@ -359,19 +404,30 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         /// <param name="count">The number of elements to set.</param>
         /// <param name="stride">The number of elements in one row of data.</param>
         /// <param name="format">The format of the data being set.</param>
-        private void SetDataInternal(Int32 level, Rectangle? rect, IntPtr data, Int32 offset, Int32 count, Int32 stride, TextureDataFormat format)
+        /// <param name="origin">A <see cref="SetDataOrigin"/> value specifying the origin of the texture data in <paramref name="data"/>.</param>
+        private unsafe void SetDataInternal(Int32 level, Rectangle? rect, IntPtr data, Int32 offset, Int32 count, Int32 stride, TextureDataFormat format, SetDataOrigin origin)
         {
-            int xoffset = 0;
-            int yoffset = 0;
-            int width = this.width;
-            int height = this.height;
-            if (rect.HasValue)
+            var region = rect ?? new Rectangle(0, 0, width, height);
+            if (region.Width * region.Height != count)
             {
-                var rectval = rect.GetValueOrDefault();
-                xoffset = rectval.X;
-                yoffset = rectval.Y;
-                width = rectval.Width;
-                height = rectval.Height;
+                throw new InvalidOperationException(UltravioletStrings.BufferIsWrongSize);
+            }
+
+            const Int32 SizeOfTextureElementInBytes = 4;
+
+            var flipHorizontally = (origin == SetDataOrigin.TopRight || origin == SetDataOrigin.BottomRight);
+            var flipVertically   = (origin == SetDataOrigin.TopLeft || origin == SetDataOrigin.TopRight);
+
+            TextureUtil.ReorientTextureData(data.ToPointer(), region.Width, region.Height, 
+                SizeOfTextureElementInBytes, flipHorizontally, flipVertically);
+
+            if (flipHorizontally)
+            {
+                region = new Rectangle((width - region.Width) - region.X, region.Y, region.Width, region.Height);
+            }
+            if (flipVertically)
+            {
+                region = new Rectangle(region.X, (height - region.Height) - region.Y, region.Width, region.Height);
             }
 
             using (OpenGLState.ScopedBindTexture2D(texture))
@@ -382,7 +438,8 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
                 gl.PixelStorei(gl.GL_UNPACK_ALIGNMENT, 1);
                 gl.ThrowIfError();
 
-                gl.TextureSubImage2D(texture, gl.GL_TEXTURE_2D, level, xoffset, yoffset, width, height, GetOpenGLTextureFormat(format), gl.GL_UNSIGNED_BYTE, data.ToPointer());
+                gl.TextureSubImage2D(texture, gl.GL_TEXTURE_2D, level, region.X, region.Y, region.Width, region.Height, 
+                    GetOpenGLTextureFormat(format), gl.GL_UNSIGNED_BYTE, data.ToPointer());
                 gl.ThrowIfError();
 
                 gl.PixelStorei(gl.GL_UNPACK_ROW_LENGTH, 0);
@@ -391,9 +448,13 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         }
 
         // Property values.
-        private readonly UInt32 texture;
-        private readonly Int32 width;
-        private readonly Int32 height;
+        private UInt32 texture;
+        private Int32 width;
+        private Int32 height;
+        private UInt32 internalformat;
+        private UInt32 format;
+        private UInt32 type;
+        private Boolean immutable;
         private Boolean boundRead;
         private Boolean boundWrite;
     }

@@ -19,12 +19,48 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         }
 
         /// <summary>
+        /// Updates the popup root's transformation state.
+        /// </summary>
+        /// <param name="placementTarget">The popup's placement target, if it has one.</param>
+        public void UpdateTransform(UIElement placementTarget)
+        {
+            inheritedRenderTransform = (placementTarget == null) ? Matrix.Identity :
+                placementTarget.GetTransformToAncestorMatrix(placementTarget.View.LayoutRoot);
+        }
+
+        /// <summary>
         /// Gets or sets the popup root's child element.
         /// </summary>
         public UIElement Child
         {
             get { return GetValue<UIElement>(ChildProperty); }
             set { SetValue<UIElement>(ChildProperty, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the popup is currently open.
+        /// </summary>
+        public Boolean IsOpen
+        {
+            get { return isOpen; }
+            set { isOpen = value; } 
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the popup is being transformed.
+        /// </summary>
+        public Boolean IsTransformed
+        {
+            get { return isTransformed; }
+            set { isTransformed = value; }
+        }
+
+        /// <summary>
+        /// Gets the render transform which the popup inherits from its placement target.
+        /// </summary>
+        public Matrix InheritedRenderTransform
+        {
+            get { return inheritedRenderTransform; }
         }
 
         /// <summary>
@@ -92,6 +128,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         }
 
         /// <inheritdoc/>
+        protected override Visual HitTestCore(Point2D point)
+        {
+            var child = Child;
+            if (child == null)
+                return null;
+
+            return child.HitTest(new Point2D(point.X - child.RelativeBounds.X, point.Y - child.RelativeBounds.Y));
+        }
+
+        /// <inheritdoc/>
         protected override void OnChildDesiredSizeChanged(UIElement child)
         {
             var popup = Parent as Popup;
@@ -126,7 +172,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             }
         }
 
-        // The action to perform when the popup is resized.
+        // State values.
         private readonly Action resized;
+        private Boolean isOpen;
+        private Boolean isTransformed;
+        private Matrix inheritedRenderTransform;
     }
 }

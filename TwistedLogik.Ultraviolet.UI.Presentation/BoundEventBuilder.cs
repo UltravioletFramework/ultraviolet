@@ -12,19 +12,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Initializes a new instance of the <see cref="BoundEventBuilder"/> type.
         /// </summary>
-        /// <param name="uiElement">The interface element which provides the event's data source, if any.</param>
-        /// <param name="delegateType">The type of delegate that will be created to bind to the event.</param>
+        /// <param name="dataSource">The data source to which the event is being bound.</param>
         /// <param name="dataSourceType">The type of the data source to which the expression is being bound.</param>
+        /// <param name="delegateType">The type of delegate that will be created to bind to the event.</param>
         /// <param name="expression">The binding expression that represents the method to bind to the event.</param>
-        /// <param name="bindToElement">A value indicating whether to bind events to the element object, rather than the view model.</param>
-        public BoundEventBuilder(UIElement uiElement, Type dataSourceType, Type delegateType, String expression, Boolean bindToElement)
+        public BoundEventBuilder(Object dataSource, Type dataSourceType, Type delegateType, String expression)
             : base(dataSourceType)
         {
             CreateParameters(delegateType);
             CreateReturnTarget();
 
             var components = BindingExpressions.ParseBindingExpression(expression, false).ToArray();
-            var current    = AddDataSourceReference(expression, uiElement, bindToElement);
+            var current    = AddDataSourceReference(expression, dataSource, dataSourceType);
 
             for (int i = 0; i < components.Length; i++)
             {
@@ -79,56 +78,35 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// result in a <see cref="NullReferenceException"/>, the getter will return a default value.
         /// </summary>
         /// <param name="expression">The binding expression which is being evaluated.</param>
-        /// <param name="uiElement">The element to which the event is being bound.</param>
-        /// <param name="bindToElement">A value indicating whether to bind to the element, rather than the view.</param>
+        /// <param name="dataSource">The data source to which the event is being bound.</param>
+        /// <param name="dataSourceType">The type of data source to which the event is being bound.</param>
         /// <returns>The current expression in the chain.</returns>
-        private Expression AddDataSourceReference(String expression, UIElement uiElement, Boolean bindToElement)
+        private Expression AddDataSourceReference(String expression, Object dataSource, Type dataSourceType)
         {
-            if (bindToElement)
+            var dataSourceVariable = Expression.Variable(dataSource.GetType(), "dataSource");
+            variables.Add(dataSourceVariable);
+
+            var dataSourceAssignment = Expression.Assign(dataSourceVariable, Expression.Constant(dataSource));
+            expressions.Add(dataSourceAssignment);
+
+            AddNullCheck(dataSourceVariable);
+
+            var view = dataSource as PresentationFoundationView;
+            if (view != null)
             {
-                return AddElementReference(uiElement);
+                var viewModelVariable = Expression.Variable(dataSourceType, "viewModel");
+                variables.Add(viewModelVariable);
+
+                var viewModelAssignment = Expression.Assign(viewModelVariable, 
+                    Expression.Convert(Expression.Property(dataSourceVariable, "ViewModel"), dataSourceType));
+                expressions.Add(viewModelAssignment);
+
+                AddNullCheck(viewModelVariable);
+
+                return viewModelVariable;
             }
-            return AddViewModelReference(expression, uiElement);
-        }
 
-        /// <summary>
-        /// Adds a reference to the view model which contains the bound event method.
-        /// </summary>
-        /// <param name="expression">The binding expression which is being evaluated.</param>
-        /// <param name="uiElement">The element to which an event is being bound.</param>
-        /// <returns>The current expression in the chain.</returns>
-        private Expression AddViewModelReference(String expression, UIElement uiElement)
-        {
-            var elementVariable = Expression.Variable(typeof(UIElement), "uiElement");
-            variables.Add(elementVariable);
-
-            var elementAssignment = Expression.Assign(elementVariable, Expression.Constant(uiElement));
-            expressions.Add(elementAssignment);
-
-            AddNullCheck(elementVariable);
-
-            var refView      = AddSafeReference(expression, elementVariable, "View");
-            var refViewModel = AddSafeReference(expression, refView, "ViewModel", dataSourceType);
-
-            return refViewModel;
-        }
-
-        /// <summary>
-        /// Adds a reference to the element which contains the bound event method.
-        /// </summary>
-        /// <param name="uiElement">The element to which an event is being bound.</param>
-        /// <returns>The current expression in the chain.</returns>
-        private Expression AddElementReference(UIElement uiElement)
-        {
-            var userControlVariable = Expression.Variable(uiElement.GetType(), "uiElement");
-            variables.Add(userControlVariable);
-
-            var userControlAssignment = Expression.Assign(userControlVariable, Expression.Constant(uiElement));
-            expressions.Add(userControlAssignment);
-
-            AddNullCheck(userControlVariable);
-
-            return userControlVariable;
+            return dataSourceVariable;
         }
 
         /// <summary>

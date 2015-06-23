@@ -140,6 +140,12 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
                 gl.BlendFunc(src, dst);
                 gl.ThrowIfError();
             }
+
+            var writeRed = (ColorWriteChannels & ColorWriteChannels.Red) != 0;
+            var writeGreen = (ColorWriteChannels & ColorWriteChannels.Green) != 0;
+            var writeBlue = (ColorWriteChannels & ColorWriteChannels.Blue) != 0;
+            var writeAlpha = (ColorWriteChannels & ColorWriteChannels.Alpha) != 0;
+            gl.ColorMask(writeRed, writeGreen, writeBlue, writeAlpha);
         }
 
         /// <summary>

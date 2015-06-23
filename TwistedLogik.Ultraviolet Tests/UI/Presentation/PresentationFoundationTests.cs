@@ -4,6 +4,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TwistedLogik.Ultraviolet.Content;
 using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
 using TwistedLogik.Ultraviolet.Testing;
+using TwistedLogik.Ultraviolet.Tests.UI.Presentation.Screens;
 using TwistedLogik.Ultraviolet.UI;
 using TwistedLogik.Ultraviolet.UI.Presentation;
 using TwistedLogik.Ultraviolet.UI.Presentation.Styles;
@@ -83,6 +84,15 @@ namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation
             var result = RunPresentationTestFor<ComplexScreen>(content => new ComplexScreen(content));
 
             TheResultingImage(result).ShouldMatch(@"Resources\Expected\UI\Presentation\PresentationFoundation_CorrectlyLaysOutComplexScreen.png");
+        }
+
+        [TestMethod]
+        [TestCategory("Rendering")]
+        public void PresentationFoundation_CorrectlyDrawsElementsWithRenderTransforms()
+        {
+            var result = RunPresentationTestFor<RenderTransformTestScreen>(content => new RenderTransformTestScreen(content));
+
+            TheResultingImage(result).ShouldMatch(@"Resources\Expected\UI\Presentation\PresentationFoundation_CorrectlyDrawsElementsWithRenderTransforms.png");
         }
 
         /// <summary>

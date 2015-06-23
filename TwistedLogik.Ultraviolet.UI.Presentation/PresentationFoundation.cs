@@ -28,21 +28,23 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             RegisterCoreTypes();
 
-            this.styleQueue    = new LayoutQueue(InvalidateStyle, false);
-            this.measureQueue  = new LayoutQueue(InvalidateMeasure);
-            this.arrangeQueue  = new LayoutQueue(InvalidateArrange);
+            this.styleQueue   = new LayoutQueue(InvalidateStyle, false);
+            this.measureQueue = new LayoutQueue(InvalidateMeasure);
+            this.arrangeQueue = new LayoutQueue(InvalidateArrange);
         }
 
         /// <summary>
         /// Modifies the specified <see cref="UltravioletConfiguration"/> instance so that the Ultraviolet
         /// Presentation Foundation will be registered as the context's view provider.
         /// </summary>
-        /// <param name="configuration">The <see cref="UltravioletConfiguration"/> instance to modify.</param>
-        public static void Configure(UltravioletConfiguration configuration)
+        /// <param name="ultravioletConfig">The <see cref="UltravioletConfiguration"/> instance to modify.</param>
+        /// <param name="presentationConfig">Configuration settings for the Ultraviolet Presentation Foundation.</param>
+        public static void Configure(UltravioletConfiguration ultravioletConfig, PresentationFoundationConfiguration presentationConfig = null)
         {
-            Contract.Require(configuration, "configuration");
+            Contract.Require(ultravioletConfig, "configuration");
 
-            configuration.ViewProviderAssembly = typeof(PresentationFoundation).Assembly.FullName;
+            ultravioletConfig.ViewProviderAssembly      = typeof(PresentationFoundation).Assembly.FullName;
+            ultravioletConfig.ViewProviderConfiguration = presentationConfig;
         }
 
         /// <summary>
@@ -329,6 +331,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="styleSheet">The global style sheet to set.</param>
         public void SetGlobalStyleSheet(UvssDocument styleSheet)
         {
+            Contract.EnsureNotDisposed(this, Disposed);
+
             this.globalStyleSheet = styleSheet;
             OnGlobalStyleSheetChanged();
         }
@@ -338,7 +342,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         public PresentationFoundationPerformanceStats PerformanceStats
         {
-            get { return performanceStats; }
+            get 
+            {
+                Contract.EnsureNotDisposed(this, Disposed);
+
+                return performanceStats; 
+            }
         }
 
         /// <summary>
@@ -346,7 +355,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         public ComponentTemplateManager ComponentTemplates
         {
-            get { return componentTemplateManager; }
+            get
+            {
+                Contract.EnsureNotDisposed(this, Disposed);
+
+                return componentTemplateManager; 
+            }
         }
 
         /// <summary>

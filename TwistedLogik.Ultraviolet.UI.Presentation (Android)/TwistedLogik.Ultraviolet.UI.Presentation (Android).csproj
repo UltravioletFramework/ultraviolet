@@ -122,6 +122,9 @@
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Animations\StoryboardTargetAnimationCollection.IEnumerable.cs">
       <Link>Animations\StoryboardTargetAnimationCollection.IEnumerable.cs</Link>
     </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Animations\StoryboardTargetAnimationKey.cs">
+      <Link>Animations\StoryboardTargetAnimationKey.cs</Link>
+    </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Animations\StoryboardTargetCollection.cs">
       <Link>Animations\StoryboardTargetCollection.cs</Link>
     </Compile>
@@ -425,6 +428,9 @@
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\DrawingContext.ClipState.cs">
       <Link>DrawingContext.ClipState.cs</Link>
     </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\DrawingContext.ClipStencilStates.cs">
+      <Link>DrawingContext.ClipStencilStates.cs</Link>
+    </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\DrawingContext.cs">
       <Link>DrawingContext.cs</Link>
     </Compile>
@@ -446,6 +452,9 @@
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\GridUnitType.cs">
       <Link>GridUnitType.cs</Link>
     </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\HitTestUtil.cs">
+      <Link>HitTestUtil.cs</Link>
+    </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\HorizontalAlignment.cs">
       <Link>HorizontalAlignment.cs</Link>
     </Compile>
@@ -457,6 +466,9 @@
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\IDependencyPropertyValue.cs">
       <Link>IDependencyPropertyValue.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\IIndexable.cs">
+      <Link>IIndexable.cs</Link>
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\IInputElement.cs">
       <Link>IInputElement.cs</Link>
@@ -515,6 +527,36 @@
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\LogicalTreeHelper.cs">
       <Link>LogicalTreeHelper.cs</Link>
     </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Media\GeneralTransform.cs">
+      <Link>Media\GeneralTransform.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Media\IdentityTransform.cs">
+      <Link>Media\IdentityTransform.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Media\MatrixTransform.cs">
+      <Link>Media\MatrixTransform.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Media\RotateTransform.cs">
+      <Link>Media\RotateTransform.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Media\ScaleTransform.cs">
+      <Link>Media\ScaleTransform.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Media\Transform.cs">
+      <Link>Media\Transform.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Media\TransformCollection.cs">
+      <Link>Media\TransformCollection.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Media\TransformCollection.IEnumerable.cs">
+      <Link>Media\TransformCollection.IEnumerable.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Media\TransformGroup.cs">
+      <Link>Media\TransformGroup.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Media\TranslateTransform.cs">
+      <Link>Media\TranslateTransform.cs</Link>
+    </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Namescope.cs">
       <Link>Namescope.cs</Link>
     </Compile>
@@ -523,6 +565,9 @@
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\PopupQueue.cs">
       <Link>PopupQueue.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\PopupQueue.EnqueuedPopup.cs">
+      <Link>PopupQueue.EnqueuedPopup.cs</Link>
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\PresentationBoxedValues.cs">
       <Link>PresentationBoxedValues.cs</Link>
@@ -536,8 +581,14 @@
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\PresentationFoundation.KnownType.cs">
       <Link>PresentationFoundation.KnownType.cs</Link>
     </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\PresentationFoundationConfiguration.cs">
+      <Link>PresentationFoundationConfiguration.cs</Link>
+    </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\PresentationFoundationFactoryInitializer.cs">
       <Link>PresentationFoundationFactoryInitializer.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\PresentationFoundationInitializer.cs">
+      <Link>PresentationFoundationInitializer.cs</Link>
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\PresentationFoundationPerformanceStats.cs">
       <Link>PresentationFoundationPerformanceStats.cs</Link>
@@ -607,6 +658,9 @@
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Styles\NamespaceDoc.cs">
       <Link>Styles\NamespaceDoc.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Styles\NavigationExpression.cs">
+      <Link>Styles\NavigationExpression.cs</Link>
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Styles\PlaySoundEffectTriggerAction.cs">
       <Link>Styles\PlaySoundEffectTriggerAction.cs</Link>
@@ -685,6 +739,9 @@
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Styles\UvssNameGenerator.cs">
       <Link>Styles\UvssNameGenerator.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Styles\UvssNavigationExpression.cs">
+      <Link>Styles\UvssNavigationExpression.cs</Link>
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Styles\UvssParser.cs">
       <Link>Styles\UvssParser.cs</Link>
@@ -772,6 +829,9 @@
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Styles\UvssStylePrioritizer.PrioritizedTrigger.cs">
       <Link>Styles\UvssStylePrioritizer.PrioritizedTrigger.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Styles\UvssStylePrioritizer.StyleKey.cs">
+      <Link>Styles\UvssStylePrioritizer.StyleKey.cs</Link>
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Styles\UvssTriggerCollection.cs">
       <Link>Styles\UvssTriggerCollection.cs</Link>
@@ -936,9 +996,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="..\TwistedLogik.Ultraviolet.UI.Presentation\TwistedLogik.Ultraviolet.Licenses.txt">
+    <None Include="..\TwistedLogik.Ultraviolet.UI.Presentation\TwistedLogik.Ultraviolet.Licenses.txt">
       <Link>TwistedLogik.Ultraviolet.Licenses.txt</Link>
-    </Content>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <ProjectExtensions>

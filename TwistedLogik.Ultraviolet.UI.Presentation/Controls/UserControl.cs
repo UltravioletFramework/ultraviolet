@@ -6,6 +6,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
     /// Represents a <see cref="Control"/> which is defined by the user with a UVML document
     /// that is loaded at runtime.
     /// </summary>
+    [UvmlKnownType]
     public abstract class UserControl : Control
     {
         /// <summary>

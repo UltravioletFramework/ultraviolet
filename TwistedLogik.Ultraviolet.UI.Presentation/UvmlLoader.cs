@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
 using System.Xml.Linq;
@@ -21,9 +22,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         static UvmlLoader()
         {
-            miBindValue     = typeof(DependencyObject).GetMethod("BindValue");
-            miSetLocalValue = typeof(DependencyObject).GetMethod("SetLocalValue");
-            miGetValue      = typeof(DependencyObject).GetMethod("GetValue");
+            var dobjMethods = typeof(DependencyObject).GetMethods();
+
+            miBindValue     = dobjMethods.Where(x => x.Name == "BindValue").Single();
+            miSetLocalValue = dobjMethods.Where(x => x.Name == "SetLocalValue").Single();
+            miGetValue      = dobjMethods.Where(x => x.Name == "GetValue" && x.IsGenericMethod).Single();
         }
 
         /// <summary>
@@ -46,7 +49,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             }
 
             var view    = new PresentationFoundationView(uv, viewModelType);
-            var context = new InstantiationContext(uv, viewModelType);
+            var context = new InstantiationContext(uv, view, viewModelType);
 
             var fe = view.LayoutRoot as FrameworkElement;
             if (fe != null)
@@ -87,7 +90,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 return;
 
             var uv      = userControl.Ultraviolet;
-            var context = new InstantiationContext(uv, viewModelType, userControl, bindingContext);
+            var context = new InstantiationContext(uv, null, viewModelType, userControl, bindingContext);
 
             userControl.BeginInit();
             userControl.ComponentTemplateNamescope.Clear();
@@ -109,7 +112,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public static void LoadComponentTemplate(Control control, XDocument template)
         {
             var uv      = control.Ultraviolet;
-            var context = new InstantiationContext(uv, null, control, null);
+            var context = new InstantiationContext(uv, null, null, control, null);
 
             control.ComponentTemplateNamescope.Clear();
 
@@ -267,6 +270,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var fe = instance as FrameworkElement;
             if (fe != null)
                 fe.BeginInit();
+
+            instance.DeclarativeDataSource = context.DeclarativeDataSource;
 
             return instance;
         }
@@ -471,16 +476,103 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Loads an object using the Nucleus object serializer.
         /// </summary>
+        /// <param name="uv">The Ultraviolet context.</param>
         /// <param name="type">The type of object to load.</param>
         /// <param name="value">The XML element to load as an object.</param>
         /// <param name="context">The current instantiation context.</param>
         /// <returns>The object that was loaded.</returns>
-        private static Object LoadObjectWithSerializer(Type type, XElement value, InstantiationContext context)
+        private static Object LoadObjectWithSerializer(UltravioletContext uv, Type type, XElement value, InstantiationContext context)
         {
-            return ObjectLoader.LoadObject((loaderObj, loaderName, loaderValue) =>
+            var instance = default(Object);
+
+            if (type.IsAbstract)
             {
-                return DependencyPropertyResolutionHandler(loaderObj, loaderName, loaderValue, context);
-            }, type, value);
+                var child = value.Elements().SingleOrDefault();
+                if (child != null)
+                {
+                    Type childType;
+                    if (!uv.GetUI().GetPresentationFoundation().GetKnownType(child.Name.LocalName, out childType))
+                        throw new InvalidOperationException();
+
+                    instance = LoadObjectWithSerializer(uv, childType, child, context);
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            else
+            {
+                instance = ObjectLoader.LoadObject((loaderObj, loaderName, loaderValue, attribute) =>
+                {
+                    if (attribute)
+                    {
+                        return DependencyPropertyResolutionHandler(loaderObj, loaderName, loaderValue, context);
+                    }
+                    return true;
+                }, type, value);
+
+                LoadObjectDefaultProperty(uv, instance, value, context);
+            }
+
+            var dobj = instance as DependencyObject;
+            if (dobj != null)
+            {
+                dobj.DeclarativeDataSource = context.DeclarativeDataSource;
+            }
+
+            return instance;
+        }
+
+        /// <summary>
+        /// Loads the default property of the specified object which is being loaded by the Nucleus serializer.
+        /// </summary>
+        /// <param name="uv">The Ultraviolet context.</param>
+        /// <param name="instance">The object instance that is being loaded.</param>
+        /// <param name="value">The XML element to load as an object.</param>
+        /// <param name="context">The current instantiation context.</param>
+        private static void LoadObjectDefaultProperty(UltravioletContext uv, Object instance, XElement value, InstantiationContext context)
+        {
+            var defaultPropAttr = (DefaultPropertyAttribute)instance.GetType().GetCustomAttributes(
+                typeof(DefaultPropertyAttribute), true).SingleOrDefault();
+
+            if (defaultPropAttr == null)
+                return;
+
+            var defaultProp = instance.GetType().GetProperty(defaultPropAttr.Name);
+            if (defaultProp == null)
+                return;
+
+            var itemType = defaultProp.PropertyType.GetGenericListElementType();
+            if (itemType != null)
+            {
+                var listInstance  = Activator.CreateInstance(defaultProp.PropertyType);
+                var listAddMethod = defaultProp.PropertyType.GetMethod("Add", 
+                    BindingFlags.Public | BindingFlags.Instance, null, new[] { itemType }, null);
+
+                var children = value.Elements();
+                foreach (var child in children)
+                {
+                    Type childType;
+
+                    if (!uv.GetUI().GetPresentationFoundation().GetKnownType(child.Name.LocalName, out childType) || !itemType.IsAssignableFrom(childType))
+                        throw new InvalidOperationException();
+
+                    var childInstance = LoadObjectWithSerializer(uv, childType, child, context);
+                    listAddMethod.Invoke(listInstance, new[] { childInstance });
+                }
+
+                defaultProp.SetValue(instance, listInstance, null);
+            }
+            else
+            {
+                var child = value.Elements().SingleOrDefault();
+                if (child != null)
+                {
+                    var childInstance = LoadObjectWithSerializer(uv, defaultProp.PropertyType, child, context);
+                    defaultProp.SetValue(instance, childInstance, null);
+                }
+            }
         }
 
         /// <summary>
@@ -604,7 +696,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var dprop = FindElementDependencyProperty(context.Ultraviolet, uiElement, name);
             if (dprop != null)
             {
-                var propValue = LoadObjectWithSerializer(dprop.PropertyType, value, context);
+                var propValue = LoadObjectWithSerializer(context.Ultraviolet, dprop.PropertyType, value, context);
                 SetDependencyProperty(uiElement, dprop, propValue);
             }
             else
@@ -613,7 +705,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 if (!propInfo.CanWrite)
                     throw new InvalidOperationException(PresentationStrings.PropertyHasNoSetter.Format(name));
 
-                var propValue = LoadObjectWithSerializer(propInfo.PropertyType, value, context);
+                var propValue = LoadObjectWithSerializer(context.Ultraviolet, propInfo.PropertyType, value, context);
                 propInfo.SetValue(uiElement, propValue, null);
             }
         }
@@ -711,7 +803,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var items = (IList)Activator.CreateInstance(typeof(List<>).MakeGenericType(itemType));
             foreach (var itemElement in itemElements)
             {
-                var item = LoadObjectWithSerializer(itemType, itemElement, context);
+                var item = LoadObjectWithSerializer(context.Ultraviolet, itemType, itemElement, context);
                 items.Add(item);
             }
 
@@ -1005,15 +1097,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <returns>The specified delegate.</returns>
         private static Delegate CreateEventDelegate(UIElement uiElement, Type handlerType, String handlerName, InstantiationContext context)
         {
-            var templateParentElement = context.TemplatedParent as UIElement;
-            if (templateParentElement != null)
+            var dataSource = (Object)uiElement.View;
+            var dataSourceType = context.ViewModelType;
+
+            var templatedParent = context.TemplatedParent as UIElement;
+            if (templatedParent != null)
             {
-                return BindingExpressions.CreateElementBoundEventDelegate(templateParentElement, handlerType, handlerName);
+                dataSource = templatedParent;
+                dataSourceType = dataSource.GetType();
             }
-            else
-            {
-                return BindingExpressions.CreateViewModelBoundEventDelegate(uiElement, context.ViewModelType, handlerType, handlerName);
-            }
+
+            return BindingExpressions.CreateBoundEventDelegate(dataSource, dataSourceType, handlerType, handlerName);     
         }
 
         /// <summary>

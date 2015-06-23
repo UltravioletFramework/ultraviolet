@@ -46,7 +46,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
                     return true;
                 if (ConsumeUniversalSelector(input, output, line, ref ix))
                     return true;
-                if (ConsumeIdentifier(input, output, line, ref ix, ref isStoryboardIdentifier))
+                if (ConsumeIdentifierOrKeyword(input, output, line, ref ix, ref isStoryboardIdentifier))
                 {
                     if (!storyboard && isStoryboardIdentifier)
                     {
@@ -93,6 +93,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
                     return true;
                 if (ConsumeComma(input, output, line, ref ix))
                     return true;
+                if (ConsumePipe(input, output, line, ref ix))
+                    return true;
+                if (ConsumeIndexOperator(input, output, line, ref ix))
+                    return true;
 
                 return false;
             }
@@ -137,7 +141,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
                     return true;
                 if (ConsumeUniversalSelector(input, output, line, ref ix))
                     return true;
-                if (ConsumeIdentifier(input, output, line, ref ix, ref storyboard))
+                if (ConsumeIdentifierOrKeyword(input, output, line, ref ix, ref storyboard))
                     return true;
                 if (ConsumeNumber(input, output, line, ref ix))
                     return true;
@@ -200,7 +204,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
 
                 var storyboard = false;
 
-                if (ConsumeIdentifier(input, output, line, ref ix, ref storyboard))
+                if (ConsumeIdentifierOrKeyword(input, output, line, ref ix, ref storyboard))
                 {
                     if (LastTokenHasValue(output, "property"))
                     {
@@ -285,7 +289,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
                     {
                         ConsumeAllWhiteSpaceAndComments(input, output, ref line, ref ix);
 
-                        if (ConsumeIdentifier(input, output, line, ref ix, ref storyboard))
+                        if (ConsumeIdentifierOrKeyword(input, output, line, ref ix, ref storyboard))
                             continue;
                         if (ConsumeComma(input, output, line, ref ix))
                             continue;
@@ -327,7 +331,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
                         return true;
                     }
 
-                    if (!ConsumeIdentifier(input, output, line, ref ix, ref storyboard))
+                    if (!ConsumeIdentifierOrKeyword(input, output, line, ref ix, ref storyboard))
                         return false;
 
                     var type = GetLastTokenValue(output);

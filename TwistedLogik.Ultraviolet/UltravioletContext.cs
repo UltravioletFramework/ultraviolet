@@ -9,6 +9,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using TwistedLogik.Nucleus;
 using TwistedLogik.Nucleus.Messages;
+using TwistedLogik.Ultraviolet.UI;
 
 namespace TwistedLogik.Ultraviolet
 {
@@ -25,6 +26,13 @@ namespace TwistedLogik.Ultraviolet
     /// </summary>
     /// <param name="uv">The Ultraviolet context.</param>
     public delegate void UltravioletContextEventHandler(UltravioletContext uv);
+
+    /// <summary>
+    /// Represents the method that is called when an Ultraviolet context draw is about to draw the current scene.
+    /// </summary>
+    /// <param name="uv">The Ultraviolet context.</param>
+    /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Draw(UltravioletTime)"/>.</param>
+    public delegate void UltravioletContextDrawEventHandler(UltravioletContext uv, UltravioletTime time);
 
     /// <summary>
     /// Represents the method that is called when an Ultraviolet context updates the application state.
@@ -559,6 +567,12 @@ namespace TwistedLogik.Ultraviolet
         public static event EventHandler ContextInitialized;
 
         /// <summary>
+        /// Occurs when the context is preparing to draw the current scene. This event is called
+        /// before the context associates itself to any windows.
+        /// </summary>
+        public event UltravioletContextDrawEventHandler Drawing;
+
+        /// <summary>
         /// Occurs when the context is updating the application's state.
         /// </summary>
         public event UltravioletContextUpdateEventHandler Updating;
@@ -654,6 +668,20 @@ namespace TwistedLogik.Ultraviolet
         }
 
         /// <summary>
+        /// Initializes the context's view provider.
+        /// </summary>
+        /// <param name="configuration">The Ultraviolet Framework configuration settings for this context.</param>
+        protected void InitializeViewProvider(UltravioletConfiguration configuration)
+        {
+            var initializerFactory = TryGetFactoryMethod<UIViewProviderInitializerFactory>();
+            if (initializerFactory != null)
+            {
+                var initializer = initializerFactory();
+                initializer.Initialize(this, configuration.ViewProviderConfiguration);
+            }
+        }
+
+        /// <summary>
         /// Updates the context's state.
         /// </summary>
         /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Update(UltravioletTime)"/>.</param>
@@ -693,6 +721,19 @@ namespace TwistedLogik.Ultraviolet
             this.disposing = false;
 
             ReleaseContext();
+        }
+
+        /// <summary>
+        /// Raises the <see cref="Drawing"/> event.
+        /// </summary>
+        /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Draw(UltravioletTime)"/>.</param>
+        protected virtual void OnDrawing(UltravioletTime time)
+        {
+            var temp = Drawing;
+            if (temp != null)
+            {
+                temp(this, time);
+            }
         }
 
         /// <summary>

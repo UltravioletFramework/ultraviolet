@@ -87,11 +87,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
 
             foreach (var animationDefinition in targetDefinition.Animations)
             {
-                var animatedProperty = String.Empty;
-                var animation = ReifyStoryboardAnimation(uv, targetDefinition, animationDefinition, out animatedProperty);
+                var animationKey = default(StoryboardTargetAnimationKey);
+                var animation = ReifyStoryboardAnimation(uv, targetDefinition, animationDefinition, out animationKey);
                 if (animation != null)
                 {
-                    target.Animations.Add(animatedProperty, animation);
+                    target.Animations.Add(animationKey, animation);
                 }
             }
 
@@ -104,16 +104,25 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// <param name="uv">The Ultraviolet context.</param>
         /// <param name="targetDefinition">The type filter on the storyboard target.</param>
         /// <param name="animationDefinition">The storyboard animation definition.</param>
-        /// <param name="animatedProperty">The name of the dependency property which is being animated.</param>
+        /// <param name="animationKey">The name of the dependency property which is being animated.</param>
         /// <returns>The reified storyboard animation.</returns>
-        public static AnimationBase ReifyStoryboardAnimation(UltravioletContext uv, UvssStoryboardTarget targetDefinition, UvssStoryboardAnimation animationDefinition, out String animatedProperty)
+        public static AnimationBase ReifyStoryboardAnimation(UltravioletContext uv, UvssStoryboardTarget targetDefinition, UvssStoryboardAnimation animationDefinition, out StoryboardTargetAnimationKey animationKey)
         {
             Contract.Require(targetDefinition, "targetDefinition");
             Contract.Require(animationDefinition, "animationDefinition");
 
             var propertyName = animationDefinition.AnimatedProperty;
             var propertyType = GetDependencyPropertyType(uv, targetDefinition.Filter, ref propertyName);
-            animatedProperty = propertyName;
+
+            var navigationExpression = default(NavigationExpression?);
+            var navigationExpressionDef = animationDefinition.NavigationExpression;
+            if (navigationExpressionDef != null)
+            {
+                propertyType = GetDependencyPropertyType(uv, new[] { navigationExpressionDef.NavigationPropertyType }, ref propertyName);
+                navigationExpression = NavigationExpression.FromUvssNavigationExpression(uv, navigationExpressionDef);
+            }
+
+            animationKey = new StoryboardTargetAnimationKey(new UvmlName(propertyName), navigationExpression);
 
             if (propertyType == null)
                 return null;
@@ -175,15 +184,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         }
 
         /// <summary>
-        /// Resolves the specified element type name into a <see cref="Type"/> object.
+        /// Resolves the specified dependency object type name into a <see cref="Type"/> object.
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
-        /// <param name="name">The element type name to resolve.</param>
+        /// <param name="name">The dependency object type name to resolve.</param>
         /// <returns>The resolved <see cref="Type"/> object.</returns>
-        private static Type ResolveElementType(UltravioletContext uv, String name)
+        private static Type ResolveKnownType(UltravioletContext uv, String name)
         {
             Type type;
-            if (!uv.GetUI().GetPresentationFoundation().GetKnownElement(name, false, out type))
+            if (!uv.GetUI().GetPresentationFoundation().GetKnownType(name, false, out type))
             {
                 throw new InvalidOperationException(PresentationStrings.UnrecognizedType.Format(name));
             }
@@ -197,13 +206,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// <param name="filter">The type filter on the storyboard target.</param>
         /// <param name="property">The name of the dependency property being animated.</param>
         /// <returns>The type of the specified dependency property.</returns>
-        private static Type GetDependencyPropertyType(UltravioletContext uv, UvssStoryboardTargetFilter filter, ref String property)
+        private static Type GetDependencyPropertyType(UltravioletContext uv, IEnumerable<String> filter, ref String property)
         {
             var propertyName = property;
 
             var possiblePropertyMatches =
                 from f in filter
-                let elementType = ResolveElementType(uv, f)
+                let elementType = ResolveKnownType(uv, f)
                 let propertyID = DependencyProperty.FindByStylingName(propertyName, elementType)
                 let propertyType = (propertyID == null) ? null : propertyID.PropertyType
                 where propertyType != null

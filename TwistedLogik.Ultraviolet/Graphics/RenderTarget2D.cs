@@ -49,6 +49,13 @@ namespace TwistedLogik.Ultraviolet.Graphics
         public abstract void Attach(RenderBuffer2D buffer);
 
         /// <summary>
+        /// Resizes the render target.
+        /// </summary>
+        /// <param name="width">The render target's new width in pixels.</param>
+        /// <param name="height">The render target's new height in pixels.</param>
+        public abstract void Resize(Int32 width, Int32 height);
+
+        /// <summary>
         /// Gets the render target's data.
         /// </summary>
         /// <param name="data">An array to populate with the render target's data.</param>

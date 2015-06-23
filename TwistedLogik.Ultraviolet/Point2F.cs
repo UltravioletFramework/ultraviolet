@@ -200,6 +200,32 @@ namespace TwistedLogik.Ultraviolet
         }
 
         /// <summary>
+        /// Transforms a point by a matrix.
+        /// </summary>
+        /// <param name="point">The <see cref="Point2F"/> to transform.</param>
+        /// <param name="matrix">The matrix by which to transform the point.</param>
+        /// <returns>The transformed <see cref="Point2F"/>.</returns>
+        public static Point2F Transform(Point2F point, Matrix matrix)
+        {
+            var x = (matrix.M11 * point.X + matrix.M12 * point.Y) + matrix.M14;
+            var y = (matrix.M21 * point.X + matrix.M22 * point.Y) + matrix.M24;
+            return new Point2F(x, y);
+        }
+
+        /// <summary>
+        /// Transforms a point by a matrix.
+        /// </summary>
+        /// <param name="point">The <see cref="Point2F"/> to transform.</param>
+        /// <param name="matrix">The matrix by which to transform the point.</param>
+        /// <param name="result">The transformed <see cref="Point2F"/>.</param>
+        public static void Transform(ref Point2F point, ref Matrix matrix, out Point2F result)
+        {
+            var x = (matrix.M11 * point.X + matrix.M12 * point.Y) + matrix.M14;
+            var y = (matrix.M21 * point.X + matrix.M22 * point.Y) + matrix.M24;
+            result = new Point2F(x, y);
+        }
+
+        /// <summary>
         /// Gets the object's hash code.
         /// </summary>
         /// <returns>The object's hash code.</returns>

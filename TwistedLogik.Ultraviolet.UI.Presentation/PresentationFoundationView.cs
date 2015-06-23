@@ -30,7 +30,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             this.namescope      = new Namescope();
             this.resources      = new PresentationFoundationViewResources(this);
-            this.drawingContext = new DrawingContext(this);
+            this.drawingContext = new DrawingContext();
 
             this.layoutRoot = new Grid(uv, null);
             this.layoutRoot.HorizontalAlignment = HorizontalAlignment.Stretch;
@@ -84,8 +84,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (Window == null)
                 return;
 
-            drawingContext.Reset();
+            var previousSpriteBatchState = spriteBatch.GetCurrentState();
+            spriteBatch.End();
+
+            drawingContext.Reset(Display);
             drawingContext.SpriteBatch = spriteBatch;
+            drawingContext.Begin();
 
             var fe = layoutRoot as FrameworkElement;
             if (fe != null)
@@ -94,7 +98,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             layoutRoot.Draw(time, drawingContext);
             popupQueue.Draw(time, drawingContext);
 
+            drawingContext.End();
             drawingContext.SpriteBatch = null;
+
+            spriteBatch.Begin(previousSpriteBatchState);
         }
 
         /// <inheritdoc/>

@@ -9,8 +9,9 @@ namespace TwistedLogik.Ultraviolet.Graphics
     /// <param name="uv">The Ultraviolet context.</param>
     /// <param name="width">The texture's width in pixels.</param>
     /// <param name="height">The texture's height in pixels.</param>
+    /// <param name="immutable">A value indicating whether the texture should be created with immutable storage.</param>
     /// <returns>The instance of <see cref="Texture2D"/> that was created.</returns>
-    public delegate Texture2D Texture2DFactory(UltravioletContext uv, Int32 width, Int32 height);
+    public delegate Texture2D Texture2DFactory(UltravioletContext uv, Int32 width, Int32 height, Boolean immutable);
 
     /// <summary>
     /// Represents a two-dimensional texture.
@@ -35,13 +36,25 @@ namespace TwistedLogik.Ultraviolet.Graphics
         /// <returns>The instance of <see cref="Texture2D"/> that was created.</returns>
         public static Texture2D Create(Int32 width, Int32 height)
         {
+            return Create(width, height, true);
+        }
+
+        /// <summary>
+        /// Creates a new instance of the <see cref="Texture2D"/> class.
+        /// </summary>
+        /// <param name="width">The texture's width in pixels.</param>
+        /// <param name="height">The texture's height in pixels.</param>
+        /// <param name="immutable">A value indicating whether to use immutable storage.</param>
+        /// <returns>The instance of <see cref="Texture2D"/> that was created.</returns>
+        public static Texture2D Create(Int32 width, Int32 height, Boolean immutable)
+        {
             Contract.EnsureRange(width > 0, "width");
             Contract.EnsureRange(height > 0, "height");
 
             var uv = UltravioletContext.DemandCurrent();
-            return uv.GetFactoryMethod<Texture2DFactory>()(uv, width, height);
+            return uv.GetFactoryMethod<Texture2DFactory>()(uv, width, height, immutable);
         }
-        
+
         /// <summary>
         /// Compares the texture with another texture and returns a value indicating whether the current
         /// instance comes before, after, or in the same position as the specified texture.
@@ -51,11 +64,19 @@ namespace TwistedLogik.Ultraviolet.Graphics
         public abstract Int32 CompareTo(Texture2D other);
 
         /// <summary>
+        /// Resizes the texture.
+        /// </summary>
+        /// <param name="width">The texture's new width in pixels.</param>
+        /// <param name="height">The texture's new height in pixels.</param>
+        public abstract void Resize(Int32 width, Int32 height);
+
+        /// <summary>
         /// Sets the texture's data.
         /// </summary>
         /// <typeparam name="T">The type of the elements in the array being set as the texture's data.</typeparam>
         /// <param name="data">An array containing the data to set.</param>
-        public abstract void SetData<T>(T[] data) where T : struct;
+        /// <param name="origin">A <see cref="SetDataOrigin"/> value specifying the origin of the texture data in <paramref name="data"/>.</param>
+        public abstract void SetData<T>(T[] data, SetDataOrigin origin = SetDataOrigin.TopLeft) where T : struct;
 
         /// <summary>
         /// Sets the texture's data.
@@ -64,7 +85,20 @@ namespace TwistedLogik.Ultraviolet.Graphics
         /// <param name="data">An array containing the data to set.</param>
         /// <param name="offset">The index of the first element to set.</param>
         /// <param name="count">The number of elements to set.</param>
-        public abstract void SetData<T>(T[] data, Int32 offset, Int32 count) where T : struct;
+        /// <param name="origin">A <see cref="SetDataOrigin"/> value specifying the origin of the texture data in <paramref name="data"/>.</param>
+        public abstract void SetData<T>(T[] data, Int32 offset, Int32 count, SetDataOrigin origin = SetDataOrigin.TopLeft) where T : struct;
+
+        /// <summary>
+        /// Sets the texture's data.
+        /// </summary>
+        /// <typeparam name="T">The type of the elements of the array to set as the texture's data.</typeparam>
+        /// <param name="level">The mipmap level for which to set data.</param>
+        /// <param name="rect">A rectangle describing the position and size of the data to set, or <c>null</c> to set the entire texture.</param>
+        /// <param name="data">An array containing the data to set.</param>
+        /// <param name="offset">The index of the first element to set.</param>
+        /// <param name="count">The number of elements to set.</param>
+        /// <param name="origin">A <see cref="SetDataOrigin"/> value specifying the origin of the texture data in <paramref name="data"/>.</param>
+        public abstract void SetData<T>(Int32 level, Rectangle? rect, T[] data, Int32 offset, Int32 count, SetDataOrigin origin = SetDataOrigin.TopLeft) where T : struct;
 
         /// <summary>
         /// Sets the texture's data.
@@ -76,7 +110,8 @@ namespace TwistedLogik.Ultraviolet.Graphics
         /// <param name="offset">The index of the first element to set.</param>
         /// <param name="count">The number of elements to set.</param>
         /// <param name="stride">The number of elements in one row of data, or zero to use the width of <paramref name="rect"/>.</param>
-        public abstract void SetData<T>(Int32 level, Rectangle? rect, T[] data, Int32 offset, Int32 count, Int32 stride = 0) where T : struct;
+        /// <param name="origin">A <see cref="SetDataOrigin"/> value specifying the origin of the texture data in <paramref name="data"/>.</param>
+        public abstract void SetData<T>(Int32 level, Rectangle? rect, T[] data, Int32 offset, Int32 count, Int32 stride, SetDataOrigin origin = SetDataOrigin.TopLeft) where T : struct;
 
         /// <summary>
         /// Sets the texture's data.
@@ -88,7 +123,8 @@ namespace TwistedLogik.Ultraviolet.Graphics
         /// <param name="count">The number of elements to set.</param>
         /// <param name="stride">The number of elements in one row of data, or zero to use the width of <paramref name="rect"/>.</param>
         /// <param name="format">The format of the data being set.</param>
-        public abstract void SetData(Int32 level, Rectangle? rect, IntPtr data, Int32 offset, Int32 count, Int32 stride, TextureDataFormat format);
+        /// <param name="origin">A <see cref="SetDataOrigin"/> value specifying the origin of the texture data in <paramref name="data"/>.</param>
+        public abstract void SetData(Int32 level, Rectangle? rect, IntPtr data, Int32 offset, Int32 count, Int32 stride, TextureDataFormat format, SetDataOrigin origin = SetDataOrigin.TopLeft);
 
         /// <summary>
         /// Gets the texture's width in pixels.
@@ -118,6 +154,14 @@ namespace TwistedLogik.Ultraviolet.Graphics
         /// Gets a value indicating whether the texture is bound to the device for writing.
         /// </summary>
         public abstract Boolean BoundForWriting
+        {
+            get;
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the texture is using immutable storage.
+        /// </summary>
+        public abstract Boolean ImmutableStorage
         {
             get;
         }

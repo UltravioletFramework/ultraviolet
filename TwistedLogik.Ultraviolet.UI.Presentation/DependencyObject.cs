@@ -35,6 +35,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (wrapper.IsDataBound)
             {
                 wrapper.DigestImmediately();
+                OnDigestingImmediately(dp);
             }
         }
 
@@ -48,6 +49,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             var wrapper = GetDependencyPropertyValue(dp, dp.PropertyType);
             wrapper.DigestImmediately();
+            OnDigestingImmediately(dp);
         }
 
         /// <summary>
@@ -60,6 +62,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             {
                 digestedDependencyProperties[i].Digest(time);
             }
+            OnDigesting(time);
         }
 
         /// <summary>
@@ -278,10 +281,23 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
-        /// Gets the value typed value of the specified dependency property.
+        /// Gets the value of the specified dependency property, without regard for its type.
+        /// </summary>
+        /// <param name="dp">A <see cref="DependencyProperty"/> instance which identifies the dependency property for which to retrieve a value.</param>
+        /// <returns>The value of the specified dependency property.</returns>
+        public Object GetUntypedValue(DependencyProperty dp)
+        {
+            Contract.Require(dp, "dp");
+
+            var wrapper = GetDependencyPropertyValue(dp, dp.PropertyType);
+            return wrapper.GetUntypedValue();
+        }
+
+        /// <summary>
+        /// Gets the value of the specified dependency property.
         /// </summary>
         /// <typeparam name="T">The type of value contained by the dependency property.</typeparam>
-        /// <param name="dp">A <see cref="DependencyProperty"/> instance which identifies the dependency property for which to set a value.</param>
+        /// <param name="dp">A <see cref="DependencyProperty"/> instance which identifies the dependency property for which to retrieve a value.</param>
         /// <returns>The value of the specified dependency property.</returns>
         public T GetValue<T>(DependencyProperty dp)
         {
@@ -505,19 +521,48 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
-        /// Gets or sets the data source from which the object's dependency properties will retrieve values if they are data bound.
+        /// Gets or sets the object's data source according to the context in which it was declared. Usually this
+        /// will either be a view or a control's templated parent.
         /// </summary>
-        internal abstract Object DependencyDataSource
+        internal Object DeclarativeDataSource
         {
             get;
+            set;
+        }
+
+        /// <summary>
+        /// Gets the object's declarative view model or templated parent.
+        /// </summary>
+        internal Object DeclarativeViewModelOrTemplate
+        {
+            get
+            {
+                var view = DeclarativeDataSource as PresentationFoundationView;
+                if (view != null)
+                {
+                    return view.ViewModel;
+                }
+                return DeclarativeDataSource; 
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the data source from which the object's dependency properties will retrieve values if they are data bound.
+        /// </summary>
+        internal virtual Object DependencyDataSource
+        {
+            get 
+            {
+                return DeclarativeViewModelOrTemplate;
+            }
         }
 
         /// <summary>
         /// Gets the dependency object's containing object.
         /// </summary>
-        internal abstract DependencyObject DependencyContainer
+        internal virtual DependencyObject DependencyContainer
         {
-            get;
+            get { return null; }
         }
 
         /// <summary>
@@ -568,18 +613,36 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
-        /// Applies a style to this object.
+        /// Applies a style to the element.
         /// </summary>
         /// <param name="style">The style which is being applied.</param>
         /// <param name="selector">The selector which caused the style to be applied.</param>
-        /// <param name="dp">The dependency property to which to apply the style, or <c>null</c> if the style does
-        /// not apply to a dependency property.</param>
-        protected internal virtual void ApplyStyle(UvssStyle style, UvssSelector selector, DependencyProperty dp)
+        /// <param name="navigationExpression">The navigation expression associated with the style.</param>
+        /// <param name="dprop">A <see cref="DependencyProperty"/> that identifies the dependency property which is being styled.</param>
+        protected internal virtual void ApplyStyle(UvssStyle style, UvssSelector selector, NavigationExpression? navigationExpression, DependencyProperty dprop)
         {
-            if (dp != null)
+            if (dprop != null)
             {
-                dp.ApplyStyle(this, style);
+                dprop.ApplyStyle(this, style);
             }
+        }
+
+        /// <summary>
+        /// Called when a dependency property on this object is being immediately digested.
+        /// </summary>
+        /// <param name="dp">A <see cref="DependencyProperty"/> value which identifies the dependency property being digested.</param>
+        protected virtual void OnDigestingImmediately(DependencyProperty dp)
+        {
+
+        }
+
+        /// <summary>
+        /// Called when the object is being digested.
+        /// </summary>
+        /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Update(UltravioletTime)"/>.</param>
+        protected virtual void OnDigesting(UltravioletTime time)
+        {
+
         }
 
         /// <summary>

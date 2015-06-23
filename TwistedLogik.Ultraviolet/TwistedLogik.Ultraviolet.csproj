@@ -131,7 +131,7 @@
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <WarningLevel>4</WarningLevel>
-  </PropertyGroup>  
+  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)' == 'Production' And '$(OS)' != 'Unix'">
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
@@ -160,6 +160,7 @@
     <Compile Include="Circle.cs" />
     <Compile Include="CircleD.cs" />
     <Compile Include="CircleF.cs" />
+    <Compile Include="ClearOptions.cs" />
     <Compile Include="Color.cs" />
     <Compile Include="Content\ContentArchive.cs" />
     <Compile Include="Content\ContentArchiveNode.cs" />
@@ -207,6 +208,7 @@
     <Compile Include="CurveProcessor.cs" />
     <Compile Include="DebugColors.cs" />
     <Compile Include="Easings.cs" />
+    <Compile Include="Graphics\ColorWriteChannels.cs" />
     <Compile Include="Graphics\EffectImplementation.cs" />
     <Compile Include="Graphics\EffectPass.cs" />
     <Compile Include="Graphics\EffectPassCollection.cs" />
@@ -218,6 +220,7 @@
     <Compile Include="Graphics\Graphics2D\ISpriteBatchEffect.cs" />
     <Compile Include="Graphics\Graphics2D\NamespaceDoc.cs" />
     <Compile Include="Graphics\Graphics2D\SpriteAnimationID.cs" />
+    <Compile Include="Graphics\Graphics2D\SpriteBatchState.cs" />
     <Compile Include="Graphics\Graphics2D\sspack\OutOfSpaceException.cs" />
     <Compile Include="Graphics\Graphics2D\sspack\Packing\ArevaloRectanglePacker.cs" />
     <Compile Include="Graphics\Graphics2D\sspack\Packing\RectanglePacker.cs" />
@@ -269,12 +272,14 @@
     <Compile Include="Graphics\Graphics2D\Text\TextTableRow.cs" />
     <Compile Include="Graphics\Graphics2D\Text\TextTableCellCollection.cs" />
     <Compile Include="Graphics\Graphics2D\Text\TextTableRowCollection.cs" />
+    <Compile Include="Graphics\GraphicsCapabilities.cs" />
     <Compile Include="Graphics\IEffectMatrices.cs" />
     <Compile Include="Graphics\NamespaceDoc.cs" />
     <Compile Include="Graphics\RenderBuffer2D.cs" />
     <Compile Include="Graphics\RenderTarget2D.cs" />
     <Compile Include="Graphics\RenderBufferFormat.cs" />
     <Compile Include="Graphics\BasicEffect.cs" />
+    <Compile Include="Graphics\SetDataOrigin.cs" />
     <Compile Include="Graphics\Surface2D.cs" />
     <Compile Include="CursorCollectionProcessor.cs" />
     <Compile Include="Graphics\SurfaceSaver.cs" />
@@ -284,6 +289,7 @@
     <Compile Include="Graphics\TextureAtlasImage.cs" />
     <Compile Include="Graphics\TextureAtlasProcessor.cs" />
     <Compile Include="Graphics\TextureDataFormat.cs" />
+    <Compile Include="Graphics\TextureUtil.cs" />
     <Compile Include="IInterpolatable.cs" />
     <Compile Include="Input\ButtonState.cs" />
     <Compile Include="Input\GamePadAxis.cs" />
@@ -335,6 +341,7 @@
     <Compile Include="Point2D.cs" />
     <Compile Include="Point2F.cs" />
     <Compile Include="Point2.cs" />
+    <Compile Include="UI\UIViewProviderInitializer.cs" />
     <Compile Include="UltravioletBoxedValues.cs" />
     <Compile Include="Radians.cs" />
     <Compile Include="Rectangle.cs" />

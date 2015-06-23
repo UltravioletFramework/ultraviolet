@@ -3,7 +3,6 @@ using System.Reflection;
 using TwistedLogik.Ultraviolet.Desktop.Graphics;
 using TwistedLogik.Ultraviolet.Graphics;
 using TwistedLogik.Ultraviolet.Platform;
-using System.IO;
 
 namespace TwistedLogik.Ultraviolet.Desktop.Platform
 {

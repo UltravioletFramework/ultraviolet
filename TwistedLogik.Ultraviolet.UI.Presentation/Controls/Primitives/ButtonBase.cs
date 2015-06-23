@@ -1,6 +1,7 @@
 ﻿using System;
 using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet.Input;
+using TwistedLogik.Ultraviolet.UI.Presentation.Input;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
 {
@@ -105,7 +106,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             {
                 if (IsMouseCaptured && device.IsButtonDown(MouseButton.Left))
                 {
-                    IsPressed = AbsoluteBounds.Contains(x, y);
+                    var position = Mouse.GetPosition(this);
+                    IsPressed = Bounds.Contains(position);
                 }
             }
             base.OnMouseMove(device, x, y, dx, dy, ref data);
@@ -144,8 +146,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
 
                 if (clicked && ClickMode == ClickMode.Release)
                 {
-                    var position = device.GetPositionInWindow(View.Window);
-                    if (position != null && AbsoluteBounds.Contains(position.Value))
+                    var position = Mouse.GetPosition(this);
+                    if (Bounds.Contains(position))
                     {
                         OnClick();
                     }
@@ -203,22 +205,26 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             {
                 if (IsPressed)
                 {
+                    System.Diagnostics.Debug.WriteLine("pressed");
                     VisualStateGroups.GoToState("common", "pressed");
                 }
                 else
                 {
                     if (IsMouseOver)
                     {
+                        System.Diagnostics.Debug.WriteLine("hover");
                         VisualStateGroups.GoToState("common", "hover");
                     }
                     else
                     {
+                        System.Diagnostics.Debug.WriteLine("normal");
                         VisualStateGroups.GoToState("common", "normal");
                     }
                 }
             }
             else
             {
+                System.Diagnostics.Debug.WriteLine("disabled");
                 VisualStateGroups.GoToState("common", "disabled");
             }
         }

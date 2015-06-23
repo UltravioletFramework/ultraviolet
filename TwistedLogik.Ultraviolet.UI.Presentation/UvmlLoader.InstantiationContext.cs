@@ -15,10 +15,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             /// Initializes a new instance of the <see cref="InstantiationContext"/> class.
             /// </summary>
             /// <param name="uv">The Ultraviolet context.</param>
+            /// <param name="view">The view which is being loaded.</param>
             /// <param name="viewModelType">The type of view model to which the view is bound.</param>
-            public InstantiationContext(UltravioletContext uv, Type viewModelType)
+            public InstantiationContext(UltravioletContext uv, PresentationFoundationView view, Type viewModelType)
             {
                 this.uv            = uv;
+                this.view          = view;
                 this.viewModelType = viewModelType;
             }
 
@@ -26,12 +28,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             /// Initializes a new instance of the <see cref="InstantiationContext"/> class.
             /// </summary>
             /// <param name="uv">The Ultraviolet context.</param>
+            /// <param name="view">The view which is being loaded.</param>
             /// <param name="viewModelType">The type of view model to which the view is bound.</param>
             /// <param name="templatedParent">The template parent to assign to elements instantiated by this context.</param>
             /// <param name="initialBindingContext">The initial binding context.</param>
-            public InstantiationContext(UltravioletContext uv, Type viewModelType, DependencyObject templatedParent, String initialBindingContext)
+            public InstantiationContext(UltravioletContext uv, PresentationFoundationView view, Type viewModelType, DependencyObject templatedParent, String initialBindingContext)
             {
                 this.uv              = uv;
+                this.view            = view;
                 this.templatedParent = templatedParent;
                 this.viewModelType   = viewModelType;
 
@@ -113,6 +117,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             }
 
             /// <summary>
+            /// Gets the declarative data source for the current instantiation context.
+            /// </summary>
+            public Object DeclarativeDataSource
+            {
+                get { return view ?? (Object)templatedParent; }
+            }
+
+            /// <summary>
             /// Regenerates the value of the <see cref="BindingContext"/> property from the
             /// current binding context stack.
             /// </summary>
@@ -128,6 +140,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             // Property values.
             private readonly UltravioletContext uv;
+            private PresentationFoundationView view;
             private DependencyObject templatedParent;
             private String bindingContext;
             private Type viewModelType;

@@ -101,6 +101,9 @@
     <Compile Include="..\TwistedLogik.Nucleus\Collections\ObservableList.cs">
       <Link>Collections\ObservableList.cs</Link>
     </Compile>
+    <Compile Include="..\TwistedLogik.Nucleus\Collections\Pool.cs">
+      <Link>Collections\Pool.cs</Link>
+    </Compile>
     <Compile Include="..\TwistedLogik.Nucleus\Collections\PooledLinkedList.cs">
       <Link>Collections\PooledLinkedList.cs</Link>
     </Compile>
@@ -322,7 +325,7 @@
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" ProjectLinkReference="7da6158b-a0b9-4100-904e-22fd86949608" />
+      <UserProperties ProjectLinkReference="7da6158b-a0b9-4100-904e-22fd86949608" ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" />
     </VisualStudio>
   </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

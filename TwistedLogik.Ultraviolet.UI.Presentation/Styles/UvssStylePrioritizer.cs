@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using TwistedLogik.Nucleus;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
 {
@@ -20,32 +21,42 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// <summary>
         /// Adds a style to the prioritizer.
         /// </summary>
+        /// <param name="uv">The Ultraviolet context.</param>
         /// <param name="selector">The selector which caused this style to be considered.</param>
+        /// <param name="navigationExpression">The navigation expression associated with the style.</param>
         /// <param name="style">The style to add to the prioritizer.</param>
-        public void Add(UvssSelector selector, UvssStyle style)
+        public void Add(UltravioletContext uv, UvssSelector selector, NavigationExpression? navigationExpression, UvssStyle style)
         {
+            Contract.Require(uv, "uv");
+
+            var key = new StyleKey(style.CanonicalName, navigationExpression);
             var priority = CalculatePriorityFromSelector(selector, style.IsImportant);
 
             PrioritizedStyle existing;
-            if (!styles.TryGetValue(style.CanonicalName, out existing) || existing.Priority <= priority)
+            if (!styles.TryGetValue(key, out existing) || existing.Priority <= priority)
             {
-                styles[style.CanonicalName] = new PrioritizedStyle(style, selector, priority);
+                styles[key] = new PrioritizedStyle(style, selector, priority);
             }
         }
 
         /// <summary>
         /// Adds a trigger to the prioritizer.
         /// </summary>
+        /// <param name="uv">The Ultraviolet context.</param>
         /// <param name="selector">The selector which caused this style to be considered.</param>
+        /// <param name="navigationExpression">The navigation expression associated with the style.</param>
         /// <param name="trigger">The trigger to add to the prioritizer.</param>
-        public void Add(UvssSelector selector, Trigger trigger)
+        public void Add(UltravioletContext uv, UvssSelector selector, NavigationExpression? navigationExpression, Trigger trigger)
         {
+            Contract.Require(uv, "uv");
+
+            var key = new StyleKey(trigger.CanonicalName, navigationExpression);
             var priority = CalculatePriorityFromSelector(selector, false);
 
             PrioritizedTrigger existing;
-            if (!triggers.TryGetValue(trigger.CanonicalName, out existing) || existing.Priority <= priority)
+            if (!triggers.TryGetValue(key, out existing) || existing.Priority <= priority)
             {
-                triggers[trigger.CanonicalName] = new PrioritizedTrigger(trigger, selector, priority);
+                triggers[key] = new PrioritizedTrigger(trigger, selector, priority);
             }
         }
 
@@ -61,7 +72,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
                 var selector = kvp.Value.Selector;
                 var dprop    = DependencyProperty.FindByStylingName(element.Ultraviolet, element, style.Owner, style.Name);
 
-                element.ApplyStyle(style, selector, dprop);
+                element.ApplyStyle(style, selector, kvp.Key.NavigationExpression, dprop);
             }
 
             foreach (var kvp in triggers)
@@ -69,7 +80,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
                 if (kvp.Value.Trigger.Actions.Count == 0)
                     continue;
 
-                kvp.Value.Trigger.Attach(element);
+                var target = (DependencyObject)element;
+                if (kvp.Key.NavigationExpression.HasValue)
+                {
+                    target = kvp.Key.NavigationExpression.Value.ApplyExpression(element.Ultraviolet, element);
+                }
+
+                if (target != null)
+                    kvp.Value.Trigger.Attach(target);
             }
 
             Reset();
@@ -88,7 +106,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         }
 
         // State values.
-        private readonly Dictionary<String, PrioritizedStyle> styles = new Dictionary<String, PrioritizedStyle>();
-        private readonly Dictionary<String, PrioritizedTrigger> triggers = new Dictionary<String, PrioritizedTrigger>();
+        private readonly Dictionary<StyleKey, PrioritizedStyle> styles = new Dictionary<StyleKey, PrioritizedStyle>();
+        private readonly Dictionary<StyleKey, PrioritizedTrigger> triggers = new Dictionary<StyleKey, PrioritizedTrigger>();
     }
 }

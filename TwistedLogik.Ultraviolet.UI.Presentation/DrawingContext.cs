@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using TwistedLogik.Nucleus;
+using TwistedLogik.Ultraviolet.Graphics;
 using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
+using TwistedLogik.Ultraviolet.Platform;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation
 {
@@ -12,22 +14,67 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
     public sealed partial class DrawingContext
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="DrawingContext"/> class.
+        /// Resets the drawing context by clearing its render state stacks.
         /// </summary>
-        internal DrawingContext(PresentationFoundationView view)
+        /// <param name="display">The display on which the drawing context is rendering.</param>
+        public void Reset(IUltravioletDisplay display)
         {
-            Contract.Require(view, "view");
-
-            this.view = view;
+            this.display = display;
+            this.opacityStack.Clear();
+            this.clipStack.Clear();
+            this.currentStencil = null;
         }
 
         /// <summary>
-        /// Resets the drawing context by clearing its render state stacks.
+        /// Begins a new sprite batch using the appropriate settings for rendering UPF.
         /// </summary>
-        public void Reset()
+        public void Begin()
         {
-            opacityStack.Clear();
-            clipStack.Clear();
+            Begin(SpriteSortMode.Deferred, null, Matrix.Identity);
+        }
+
+        /// <summary>
+        /// Begins a new sprite batch using the appropriate settings for rendering UPF.
+        /// </summary>
+        public void Begin(SpriteSortMode sortMode)
+        {
+            Begin(sortMode, null, Matrix.Identity);
+        }
+
+        /// <summary>
+        /// Begins a new sprite batch using the appropriate settings for rendering UPF.
+        /// </summary>
+        /// <param name="sortMode">The sorting mode to use when rendering interface elements.</param>
+        /// <param name="effect">The custom effect to apply to the rendered interface elements.</param>
+        /// <param name="transform">The transform matrix to apply to the rendered interface elements.</param>
+        public void Begin(SpriteSortMode sortMode, Effect effect, Matrix transform)
+        {
+            if (spriteBatch == null)
+                throw new InvalidOperationException(PresentationStrings.DrawingContextDoesNotHaveSpriteBatch);
+
+            spriteBatch.Begin(sortMode, BlendState.AlphaBlend, SamplerState.LinearClamp, StencilReadDepthState, RasterizerState.CullCounterClockwise, null, transform);
+        }
+
+        /// <summary>
+        /// Ends the current sprite batch.
+        /// </summary>
+        public void End()
+        {
+            if (spriteBatch == null)
+                throw new InvalidOperationException(PresentationStrings.DrawingContextDoesNotHaveSpriteBatch);
+
+            spriteBatch.End();
+        }
+
+        /// <summary>
+        /// Flushes the current sprite batch.
+        /// </summary>
+        public void Flush()
+        {
+            if (spriteBatch == null)
+                throw new InvalidOperationException(PresentationStrings.DrawingContextDoesNotHaveSpriteBatch);
+
+            spriteBatch.Flush();
         }
 
         /// <summary>
@@ -73,7 +120,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var state = new ClipState(clipRectangle, cumulativeClipRectangle);
             clipStack.Push(state);
 
-            FlushClipRectangle();
+            ApplyClipRectangleToDevice();
         }
 
         /// <summary>
@@ -83,7 +130,40 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             clipStack.Pop();
 
-            FlushClipRectangle();
+            ApplyClipRectangleToDevice();
+        }
+
+        /// <summary>
+        /// Applies the drawing context's clipping rectangle to the graphics device.
+        /// </summary>
+        public void ApplyClipRectangleToDevice()
+        {
+            if (spriteBatch == null)
+                return;
+
+            var cliprect = (ClipRectangle == null || display == null) ? (Rectangle?)null : (Rectangle?)display.DipsToPixels(ClipRectangle.Value);
+            if (cliprect == currentStencil)
+                return;
+
+            var state = SpriteBatch.GetCurrentState();
+            SpriteBatch.End();
+
+            currentStencil = cliprect;
+            if (currentStencil.HasValue)
+            {
+                SpriteBatch.Ultraviolet.GetGraphics().Clear(ClearOptions.Stencil, Color.White, 0.0, 1);
+
+                SpriteBatch.Begin(SpriteSortMode.Immediate, StencilBlendState, SamplerState.LinearClamp,
+                    StencilWriteDepthState, RasterizerState.CullCounterClockwise, null, state.TransformMatrix);
+                SpriteBatch.Draw(StencilTexture, currentStencil.Value, Color.White);
+                SpriteBatch.End();
+            }
+            else
+            {
+                SpriteBatch.Ultraviolet.GetGraphics().Clear(ClearOptions.Stencil, Color.White, 0.0, 0);
+            }
+
+            Begin(SpriteSortMode.Deferred, null, state.TransformMatrix);
         }
 
         /// <summary>
@@ -111,31 +191,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             get { return clipStack.Count > 0 ? clipStack.Peek().CumulativeClipRectangle : (RectangleD?)null; }
         }
 
-        /// <summary>
-        /// Flushes the sprite batch and applies the current clip rectangle to the graphics device.
-        /// </summary>
-        private void FlushClipRectangle()
-        {
-            if (spriteBatch == null)
-                return;
-
-            var uv       = SpriteBatch.Ultraviolet;
-            var cliprect = (ClipRectangle == null) ? (Rectangle?)null : (Rectangle?)view.Display.DipsToPixels(ClipRectangle.Value);
-
-            var current = SpriteBatch.Ultraviolet.GetGraphics().GetScissorRectangle();
-            if (current == cliprect)
-                return;
-
-            SpriteBatch.Flush();
-            SpriteBatch.Ultraviolet.GetGraphics().SetScissorRectangle(cliprect);
-        }
-
         // Property values.
         private SpriteBatch spriteBatch;
 
         // State values.
-        private readonly PresentationFoundationView view;
+        private IUltravioletDisplay display;
         private readonly Stack<OpacityState> opacityStack = new Stack<OpacityState>(32);
         private readonly Stack<ClipState> clipStack = new Stack<ClipState>(32);
+        private Rectangle? currentStencil;
     }
 }

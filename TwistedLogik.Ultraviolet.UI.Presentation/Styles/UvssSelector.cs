@@ -81,7 +81,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
 
             var part = parts[0];
 
-            return !part.HasClasses && !part.HasID && String.Equals(part.Element, "view");
+            return !part.HasClasses && !part.HasID && String.Equals(part.Element, "view", StringComparison.OrdinalIgnoreCase);
         }
 
         /// <summary>

@@ -337,7 +337,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <inheritdoc/>
-        internal override void OnVisualParentChangedInternal()
+        internal override void OnVisualParentChangedInternal(Visual oldParent, Visual newParent)
         {
             var parent = VisualParent as FrameworkElement;
             if (parent != null)
@@ -362,7 +362,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 }
             }
 
-            base.OnVisualParentChangedInternal();
+            base.OnVisualParentChangedInternal(oldParent, newParent);
         }
 
         /// <inheritdoc/>
@@ -434,7 +434,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <inheritdoc/>
         internal override Object DependencyDataSource
         {
-            get { return TemplatedParent ?? ViewModel; }
+            get { return DeclarativeViewModelOrTemplate ?? TemplatedParent ?? ViewModel; }
         }
 
         /// <summary>

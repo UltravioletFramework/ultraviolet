@@ -248,6 +248,26 @@ namespace TwistedLogik.Ultraviolet.Graphics
         }
 
         /// <summary>
+        /// Gets a value specifying which color channels are written when this blend state is in effect.
+        /// </summary>
+        public ColorWriteChannels ColorWriteChannels
+        {
+            get
+            {
+                Contract.EnsureNotDisposed(this, Disposed);
+
+                return colorWriteChannels;
+            }
+            set
+            {
+                Contract.EnsureNotDisposed(this, Disposed);
+                Contract.EnsureNot(immutable, UltravioletStrings.StateIsImmutableAfterBind);
+
+                colorWriteChannels = value;
+            }
+        }
+
+        /// <summary>
         /// Makes the state object immutable.  Further attempts to modify
         /// the object will throw an exception.
         /// </summary>
@@ -281,6 +301,7 @@ namespace TwistedLogik.Ultraviolet.Graphics
         private Blend colorSourceBlend;
         private Blend colorDestinationBlend;
         private Color blendFactor;
+        private ColorWriteChannels colorWriteChannels = ColorWriteChannels.All;
 
         // State values.
         private Boolean immutable;

@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <UIPanelDefinition>
-  <View ViewModelType="TwistedLogik.Ultraviolet.Tests.UI.Presentation.VerticalWrapPanelTestScreenViewModel, TwistedLogik.Ultraviolet.Tests">
+  <View ViewModelType="TwistedLogik.Ultraviolet.Tests.UI.Presentation.Screens.VerticalWrapPanelTestScreenViewModel, TwistedLogik.Ultraviolet.Tests">
 
     <WrapPanel Orientation="Vertical" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
 

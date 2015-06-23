@@ -333,11 +333,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
                 return null;
 
             var selectors = ConsumeSelectorList(state);
+            var navigation = ConsumeOptionalNavigationExpression(state);
             var styles    = default(UvssStyleCollection);
             var triggers  = default(UvssTriggerCollection);
             ConsumeStyleList(state, out styles, out triggers);
 
-            return new UvssRule(selectors, styles, triggers);
+            return new UvssRule(selectors, navigation, styles, triggers);
         }
 
         /// <summary>
@@ -564,8 +565,59 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
 
             AdvanceBeyondWhiteSpaceOrFail(state);
 
+            var navigationExpression = ConsumeOptionalNavigationExpression(state);
             var keyframes = ConsumeStoryboardKeyframeList(state);
-            return new UvssStoryboardAnimation(state.Source.Substring(propertyNameStart, propertyNameLength), keyframes);
+            return new UvssStoryboardAnimation(state.Source.Substring(propertyNameStart, propertyNameLength), navigationExpression, keyframes);
+        }
+
+        /// <summary>
+        /// Consumes a sequence of tokens representing an optional navigation expression.
+        /// </summary>
+        /// <param name="state">The parser state.</param>
+        /// <returns>A new <see cref="UvssNavigationExpression"/> object representing the animation that was consumed.</returns>
+        private static UvssNavigationExpression ConsumeOptionalNavigationExpression(UvssParserState state)
+        {
+            if (state.CurrentToken.TokenType == UvssLexerTokenType.Pipe)
+            {
+                var navigationProperty = default(String);
+                var navigationPropertyType = default(String);
+                var navigationPropertyIndex = default(Int32?);
+
+                state.Consume();
+                state.AdvanceBeyondWhiteSpace();
+
+                var propertyToken = state.TryConsumeNonWhiteSpace();
+                MatchTokenOrFail(state, propertyToken, UvssLexerTokenType.Identifier);
+
+                navigationProperty = propertyToken.Value.Value;
+
+                state.AdvanceBeyondWhiteSpace();
+
+                if (state.CurrentToken.TokenType == UvssLexerTokenType.IndexOperator)
+                {
+                    var indexToken = state.Consume();
+                    state.AdvanceBeyondWhiteSpace();
+
+                    var indexValue = indexToken.Value;
+                    navigationPropertyIndex = Int32.Parse(indexValue.Substring(1, indexValue.Length - 2));
+                }
+
+                if (state.CurrentToken.TokenType == UvssLexerTokenType.AsOperator)
+                {
+                    state.Consume();
+
+                    var propertyTypeToken = state.TryConsumeNonWhiteSpace();
+                    MatchTokenOrFail(state, propertyTypeToken, UvssLexerTokenType.Identifier);
+
+                    navigationPropertyType = propertyTypeToken.Value.Value;
+                }
+
+                AdvanceBeyondWhiteSpaceOrFail(state);
+
+                return new UvssNavigationExpression(navigationProperty, navigationPropertyType, navigationPropertyIndex);
+            }
+
+            return null;
         }
 
         /// <summary>
@@ -740,7 +792,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
 
                 if (token.TokenType == UvssLexerTokenType.WhiteSpace ||
                     token.TokenType == UvssLexerTokenType.Comma ||
-                    token.TokenType == UvssLexerTokenType.OpenCurlyBrace)
+                    token.TokenType == UvssLexerTokenType.OpenCurlyBrace ||
+                    token.TokenType == UvssLexerTokenType.Pipe)
                 {
                     if (child && !valid)
                     {

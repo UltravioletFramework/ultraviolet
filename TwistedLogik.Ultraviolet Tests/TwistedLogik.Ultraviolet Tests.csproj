@@ -138,16 +138,25 @@
     <Compile Include="Size3DTests.cs" />
     <Compile Include="Size3FTests.cs" />
     <Compile Include="MatrixTests.cs" />
-    <Compile Include="UI\Presentation\ComplexScreen.cs" />
-    <Compile Include="UI\Presentation\ComplexScreenViewModel.cs" />
-    <Compile Include="UI\Presentation\CanvasTestScreen.cs" />
-    <Compile Include="UI\Presentation\DockPanelTestScreen.cs" />
-    <Compile Include="UI\Presentation\VerticalWrapPanelTestScreen.cs" />
-    <Compile Include="UI\Presentation\HorizontalWrapPanelTestScreen.cs" />
-    <Compile Include="UI\Presentation\HorizontalStackPanelTestScreen.cs" />
-    <Compile Include="UI\Presentation\VerticalStackPanelTestScreen.cs" />
-    <Compile Include="UI\Presentation\GridTestScreen.cs" />
+    <Compile Include="UI\Presentation\Screens\CanvasTestScreenViewModel.cs" />
+    <Compile Include="UI\Presentation\Screens\ComplexScreen.cs" />
+    <Compile Include="UI\Presentation\Screens\ComplexScreenViewModel.cs" />
+    <Compile Include="UI\Presentation\Screens\CanvasTestScreen.cs" />
+    <Compile Include="UI\Presentation\Screens\DockPanelTestScreen.cs" />
+    <Compile Include="UI\Presentation\Screens\DockPanelTestScreenViewModel.cs" />
+    <Compile Include="UI\Presentation\Screens\GridTestScreenViewModel.cs" />
+    <Compile Include="UI\Presentation\Screens\HorizontalStackPanelTestScreenViewModel.cs" />
+    <Compile Include="UI\Presentation\Screens\HorizontalWrapPanelTestScreenViewModel.cs" />
+    <Compile Include="UI\Presentation\Screens\RenderTransformTestScreen.cs" />
+    <Compile Include="UI\Presentation\Screens\RenderTransformTestScreenViewModel.cs" />
+    <Compile Include="UI\Presentation\Screens\VerticalStackPanelTestScreenViewModel.cs" />
+    <Compile Include="UI\Presentation\Screens\VerticalWrapPanelTestScreen.cs" />
+    <Compile Include="UI\Presentation\Screens\HorizontalWrapPanelTestScreen.cs" />
+    <Compile Include="UI\Presentation\Screens\HorizontalStackPanelTestScreen.cs" />
+    <Compile Include="UI\Presentation\Screens\VerticalStackPanelTestScreen.cs" />
+    <Compile Include="UI\Presentation\Screens\GridTestScreen.cs" />
     <Compile Include="UI\Presentation\PresentationFoundationTests.cs" />
+    <Compile Include="UI\Presentation\Screens\VerticalWrapPanelTestScreenViewModel.cs" />
     <Compile Include="Vector4Tests.cs" />
     <Compile Include="Vector3Tests.cs" />
     <Compile Include="Vector2Tests.cs" />
@@ -350,6 +359,30 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Expected\UI\Presentation\PresentationFoundation_Vertical_StackPanel_CorrectlyArrangesChildren.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Content\UI\Screens\RenderTransformTestScreen\RenderTransformTestScreen.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Content\SoundEffects\Click1.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\SoundEffects\rollover1.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\SoundEffects\rollover2.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\SoundEffects\rollover3.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Expected\UI\Presentation\PresentationFoundation_CorrectlyDrawsElementsWithRenderTransforms.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

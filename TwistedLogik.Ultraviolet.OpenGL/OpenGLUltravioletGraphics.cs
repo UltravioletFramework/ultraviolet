@@ -56,13 +56,12 @@ namespace TwistedLogik.Ultraviolet.OpenGL
             this.textures = new Texture2D[maxTextureStages];
             this.samplerStates = new SamplerState[maxTextureStages];
 
+            this.capabilities = new OpenGLGraphicsCapabilities();
+
             ResetDeviceStates();
         }
 
-        /// <summary>
-        /// Updates the subsystem's state.
-        /// </summary>
-        /// <param name="time">Time elapsed since the last call to Update.</param>
+        /// <inheritdoc/>
         public void Update(UltravioletTime time)
         {
             Contract.EnsureNotDisposed(this, Disposed);
@@ -70,24 +69,18 @@ namespace TwistedLogik.Ultraviolet.OpenGL
             OnUpdating(time);
         }
 
-        /// <summary>
-        /// Clears the back buffer to the specified color.
-        /// </summary>
-        /// <param name="color">The color to which to clear the buffer.</param>
+        /// <inheritdoc/>
         public void Clear(Color color)
         {
             Contract.EnsureNotDisposed(this, Disposed);
 
             gl.ClearColor(color.R / 255f, color.G / 255f, color.B / 255f, color.A / 255f);
-            gl.Clear(gl.GL_COLOR_BUFFER_BIT);
+            gl.ClearDepth(1.0);
+            gl.ClearStencil(0);
+            gl.Clear(gl.GL_COLOR_BUFFER_BIT | gl.GL_DEPTH_BUFFER_BIT | gl.GL_STENCIL_BUFFER_BIT);
         }
 
-        /// <summary>
-        /// Clears the back buffer to the specified color, depth, and stencil values.
-        /// </summary>
-        /// <param name="color">The color to which to clear the buffer.</param>
-        /// <param name="depth">The depth value to which to clear the buffer.</param>
-        /// <param name="stencil">The stencil value to which to clear the buffer.</param>
+        /// <inheritdoc/>
         public void Clear(Color color, Double depth, Int32 stencil)
         {
             Contract.EnsureNotDisposed(this, Disposed);
@@ -98,10 +91,35 @@ namespace TwistedLogik.Ultraviolet.OpenGL
             gl.Clear(gl.GL_COLOR_BUFFER_BIT | gl.GL_DEPTH_BUFFER_BIT | gl.GL_STENCIL_BUFFER_BIT);
         }
 
-        /// <summary>
-        /// Sets the render target.
-        /// </summary>
-        /// <param name="renderTarget">The render target to set, or null to revert to the default render target.</param>
+        /// <inheritdoc/>
+        public void Clear(ClearOptions options, Color color, Double depth, Int32 stencil)
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
+
+            var mask = 0u;
+
+            if ((options & ClearOptions.Target) == ClearOptions.Target)
+            {
+                gl.ClearColor(color.R / 255f, color.G / 255f, color.B / 255f, color.A / 255f);
+                mask |= gl.GL_COLOR_BUFFER_BIT;
+            }
+
+            if ((options & ClearOptions.DepthBuffer) == ClearOptions.DepthBuffer)
+            {
+                gl.ClearDepth(depth);
+                mask |= gl.GL_DEPTH_BUFFER_BIT;
+            }
+
+            if ((options & ClearOptions.Stencil) == ClearOptions.Stencil)
+            {
+                gl.ClearStencil(stencil);
+                mask |= gl.GL_STENCIL_BUFFER_BIT;
+            }
+
+            gl.Clear(mask);
+        }
+
+        /// <inheritdoc/>
         public void SetRenderTarget(RenderTarget2D renderTarget)
         {
             Contract.EnsureNotDisposed(this, Disposed);
@@ -115,7 +133,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL
                 var targetSize = Size2.Zero;
 
                 var currentWindow = Ultraviolet.GetPlatform().Windows.GetCurrent();
-                if (oglRenderTarget != null || currentWindow == null)
+                if (oglRenderTarget != null)
                 {
                     oglRenderTarget.ValidateStatus();
 
@@ -124,7 +142,8 @@ namespace TwistedLogik.Ultraviolet.OpenGL
                 }
                 else
                 {
-                    targetSize = currentWindow.ClientSize;
+                    if (currentWindow != null)
+                        targetSize = currentWindow.ClientSize;
                 }
 
                 OpenGLState.BindFramebuffer(targetName);
@@ -145,12 +164,9 @@ namespace TwistedLogik.Ultraviolet.OpenGL
                     Clear(Color.FromArgb(0xFF442288));
                 }
             }
-        }    
+        }
 
-        /// <summary>
-        /// Gets the device's render target.
-        /// </summary>
-        /// <returns>The device's render target.</returns>
+        /// <inheritdoc/>
         public RenderTarget2D GetRenderTarget()
         {
             Contract.EnsureNotDisposed(this, Disposed);
@@ -158,10 +174,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL
             return this.renderTarget;
         }
 
-        /// <summary>
-        /// Sets the viewport.
-        /// </summary>
-        /// <param name="viewport">The viewport to set.</param>
+        /// <inheritdoc/>
         public void SetViewport(Viewport viewport)
         {
             Contract.EnsureNotDisposed(this, Disposed);
@@ -181,10 +194,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL
             }
         }
 
-        /// <summary>
-        /// Gets the device's viewport.
-        /// </summary>
-        /// <returns>The device's viewport.</returns>
+        /// <inheritdoc/>
         public Viewport GetViewport()
         {
             Contract.EnsureNotDisposed(this, Disposed);
@@ -192,11 +202,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL
             return this.viewport;
         }
 
-        /// <summary>
-        /// Binds a texture to the specified texture state.
-        /// </summary>
-        /// <param name="sampler">The sampler index.</param>
-        /// <param name="texture">The texture to bind to the specified texture stage.</param>
+        /// <inheritdoc/>
         public void SetTexture(Int32 sampler, Texture2D texture)
         {
             Contract.EnsureRange(sampler >= 0 && sampler < maxTextureStages, "sampler");
@@ -232,11 +238,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL
             }
         }
 
-        /// <summary>
-        /// Gets the texture that is bound to the specified sampler.
-        /// </summary>
-        /// <param name="sampler">The sampler index.</param>
-        /// <returns>The texture that is bound to the specified sampler.</returns>
+        /// <inheritdoc/>
         public Texture2D GetTexture(Int32 sampler)
         {
             Contract.EnsureRange(sampler >= 0 && sampler < maxTextureStages, "sampler");
@@ -245,10 +247,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL
             return this.textures[sampler];
         }
 
-        /// <summary>
-        /// Binds a geometry stream to the graphics device.
-        /// </summary>
-        /// <param name="stream">The geometry stream to bind to the graphics device.</param>
+        /// <inheritdoc/>
         public void SetGeometryStream(GeometryStream stream)
         {
             Contract.EnsureNotDisposed(this, Disposed);
@@ -270,10 +269,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL
             }
         }
 
-        /// <summary>
-        /// Gets the geometry stream that is bound to the graphics device.
-        /// </summary>
-        /// <returns>The geometry stream that is bound to the graphics device.</returns>
+        /// <inheritdoc/>
         public GeometryStream GetGeometryStream()
         {
             Contract.EnsureNotDisposed(this, Disposed);
@@ -281,10 +277,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL
             return this.geometryStream;
         }
 
-        /// <summary>
-        /// Binds a blend state to the graphics device.
-        /// </summary>
-        /// <param name="state">The blend state to bind to the graphics device.</param>
+        /// <inheritdoc/>
         public void SetBlendState(BlendState state)
         {
             Contract.EnsureNotDisposed(this, Disposed);
@@ -298,10 +291,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL
             }
         }
 
-        /// <summary>
-        /// Gets the blend state that is bound to the device.
-        /// </summary>
-        /// <returns>The blend state that is bound to the device.</returns>
+        /// <inheritdoc/>
         public BlendState GetBlendState()
         {
             Contract.EnsureNotDisposed(this, Disposed);
@@ -309,10 +299,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL
             return this.blendState;
         }
 
-        /// <summary>
-        /// Binds a depth/stencil state to the graphics device.
-        /// </summary>
-        /// <param name="state">The depth/stencil state to bind to the graphics device.</param>
+        /// <inheritdoc/>
         public void SetDepthStencilState(DepthStencilState state)
         {
             Contract.EnsureNotDisposed(this, Disposed);
@@ -326,10 +313,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL
             }
         }
 
-        /// <summary>
-        /// Gets the depth/stencil state that is bound to the device.
-        /// </summary>
-        /// <returns>The depth/stencil state that is bound to the device.</returns>
+        /// <inheritdoc/>
         public DepthStencilState GetDepthStencilState()
         {
             Contract.EnsureNotDisposed(this, Disposed);
@@ -337,10 +321,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL
             return this.depthStencilState;
         }
 
-        /// <summary>
-        /// Binds a rasterizer state to the graphics device.
-        /// </summary>
-        /// <param name="state">The rasterizer state to bind to the graphics device.</param>
+        /// <inheritdoc/>
         public void SetRasterizerState(RasterizerState state)
         {
             Contract.EnsureNotDisposed(this, Disposed);
@@ -354,10 +335,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL
             }
         }
 
-        /// <summary>
-        /// Gets the rasterizer state that is bound to the device.
-        /// </summary>
-        /// <returns>The rasterizer state that is bound to the device.</returns>
+        /// <inheritdoc/>
         public RasterizerState GetRasterizerState()
         {
             Contract.EnsureNotDisposed(this, Disposed);
@@ -365,11 +343,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL
             return this.rasterizerState;
         }
 
-        /// <summary>
-        /// Binds a sampler state to the graphics device.
-        /// </summary>
-        /// <param name="sampler">The sampler index.</param>
-        /// <param name="state">The sampler state to bind to the graphics device.</param>
+        /// <inheritdoc/>
         public void SetSamplerState(Int32 sampler, SamplerState state)
         {
             Contract.EnsureRange(sampler >= 0 && sampler < maxTextureStages, "sampler");
@@ -384,11 +358,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL
             }
         }
 
-        /// <summary>
-        /// Gets the sampler state that is bound to the specified sampler.
-        /// </summary>
-        /// <param name="sampler">The sampler index.</param>
-        /// <returns></returns>
+        /// <inheritdoc/>
         public SamplerState GetSamplerState(Int32 sampler)
         {
             Contract.EnsureRange(sampler >= 0 && sampler < maxTextureStages, "sampler");
@@ -444,12 +414,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL
             return this.scissorRectangle;
         }
 
-        /// <summary>
-        /// Draws a collection of non-indexed geometric primitives of the specified type from the currently bound buffers.
-        /// </summary>
-        /// <param name="type">The type of primitive to render.</param>
-        /// <param name="start">The index of the first vertex to render.</param>
-        /// <param name="count">The number of primitives to render.</param>
+        /// <inheritdoc/>
         public void DrawPrimitives(PrimitiveType type, Int32 start, Int32 count)
         {
             Contract.EnsureRange(start >= 0, "start");
@@ -469,12 +434,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL
             gl.ThrowIfError();
         }
 
-        /// <summary>
-        /// Draws a collection of indexed geometric primitives of the specified type from the currently bound buffers.
-        /// </summary>
-        /// <param name="type">The type of primitive to render.</param>
-        /// <param name="start">The index of the first vertex to render.</param>
-        /// <param name="count">The number of primitives to render.</param>
+        /// <inheritdoc/>
         public void DrawIndexedPrimitives(PrimitiveType type, Int32 start, Int32 count)
         {
             Contract.EnsureRange(start >= 0, "start");
@@ -499,9 +459,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL
             gl.ThrowIfError();
         }
 
-        /// <summary>
-        /// Advances the device by one frame and updates the frame rate.
-        /// </summary>
+        /// <inheritdoc/>
         public void UpdateFrameRate()
         {
             frameRateDelta = (frameRateDelta * frameRateSmoothing) + (frameRateTimer.Elapsed.TotalMilliseconds * (1.0 - frameRateSmoothing));
@@ -509,9 +467,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL
             frameRateTimer.Restart();
         }
 
-        /// <summary>
-        /// Gets the current frame rate.
-        /// </summary>
+        /// <inheritdoc/>
         public Single FrameRate
         {
             get
@@ -520,6 +476,12 @@ namespace TwistedLogik.Ultraviolet.OpenGL
                 
                 return (Single)frameRate; 
             }
+        }
+
+        /// <inheritdoc/>
+        public GraphicsCapabilities Capabilities
+        {
+            get { return capabilities; }
         }
 
         /// <summary>
@@ -733,13 +695,25 @@ namespace TwistedLogik.Ultraviolet.OpenGL
         /// <param name="height">The height of the region to convert.</param>
         private void ConvertScreenRegionUvToGL(ref Int32 x, ref Int32 y, Int32 width, Int32 height)
         {
-            var currentWindow = Ultraviolet.GetPlatform().Windows.GetCurrent();
-            if (currentWindow == null)
-                return;
+            var renderTargetHeight = 0;
+            if (renderTarget != null)
+            {
+                renderTargetHeight = renderTarget.Height;
+            }
+            else
+            {
+                var currentWindow = Ultraviolet.GetPlatform().Windows.GetCurrent();
+                if (currentWindow == null)
+                    return;
 
-            var targetHeight = (renderTarget == null) ? currentWindow.ClientSize.Height : renderTarget.Height;
-            y = targetHeight - (height + y);
+                renderTargetHeight = currentWindow.ClientSize.Height;
+            }
+
+            y = renderTargetHeight - (height + y);
         }
+
+        // Property values.
+        private readonly GraphicsCapabilities capabilities;
 
         // Device state.
         private IntPtr context;

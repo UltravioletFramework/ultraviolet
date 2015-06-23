@@ -96,6 +96,9 @@
     <Compile Include="..\TwistedLogik.Ultraviolet\CircleF.cs">
       <Link>CircleF.cs</Link>
     </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\ClearOptions.cs">
+      <Link>ClearOptions.cs</Link>
+    </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet\Color.cs">
       <Link>Color.cs</Link>
     </Compile>
@@ -261,6 +264,9 @@
     <Compile Include="..\TwistedLogik.Ultraviolet\Graphics\BlendState.cs">
       <Link>Graphics\BlendState.cs</Link>
     </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Graphics\ColorWriteChannels.cs">
+      <Link>Graphics\ColorWriteChannels.cs</Link>
+    </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet\Graphics\CompareFunction.cs">
       <Link>Graphics\CompareFunction.cs</Link>
     </Compile>
@@ -362,6 +368,9 @@
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet\Graphics\Graphics2D\SpriteBatchInfo.cs">
       <Link>Graphics\Graphics2D\SpriteBatchInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Graphics\Graphics2D\SpriteBatchState.cs">
+      <Link>Graphics\Graphics2D\SpriteBatchState.cs</Link>
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet\Graphics\Graphics2D\SpriteDescription.cs">
       <Link>Graphics\Graphics2D\SpriteDescription.cs</Link>
@@ -507,6 +516,9 @@
     <Compile Include="..\TwistedLogik.Ultraviolet\Graphics\Graphics2D\Text\TextTableRowCollection.cs">
       <Link>Graphics\Graphics2D\Text\TextTableRowCollection.cs</Link>
     </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Graphics\GraphicsCapabilities.cs">
+      <Link>Graphics\GraphicsCapabilities.cs</Link>
+    </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet\Graphics\IEffectMatrices.cs">
       <Link>Graphics\IEffectMatrices.cs</Link>
     </Compile>
@@ -543,6 +555,9 @@
     <Compile Include="..\TwistedLogik.Ultraviolet\Graphics\SetDataOptions.cs">
       <Link>Graphics\SetDataOptions.cs</Link>
     </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Graphics\SetDataOrigin.cs">
+      <Link>Graphics\SetDataOrigin.cs</Link>
+    </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet\Graphics\StencilOperation.cs">
       <Link>Graphics\StencilOperation.cs</Link>
     </Compile>
@@ -578,6 +593,9 @@
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet\Graphics\TextureFilter.cs">
       <Link>Graphics\TextureFilter.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Graphics\TextureUtil.cs">
+      <Link>Graphics\TextureUtil.cs</Link>
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet\Graphics\VertexBuffer.cs">
       <Link>Graphics\VertexBuffer.cs</Link>
@@ -855,6 +873,9 @@
     <Compile Include="..\TwistedLogik.Ultraviolet\UI\UIView.cs">
       <Link>UI\UIView.cs</Link>
     </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\UI\UIViewProviderInitializer.cs">
+      <Link>UI\UIViewProviderInitializer.cs</Link>
+    </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet\UI\UltravioletUI.cs">
       <Link>UI\UltravioletUI.cs</Link>
     </Compile>
@@ -948,7 +969,7 @@
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" ProjectLinkReference="f071abe3-05e5-4df9-a929-cf71b01ec50a" />
+      <UserProperties ProjectLinkReference="f071abe3-05e5-4df9-a929-cf71b01ec50a" ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" />
     </VisualStudio>
   </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
