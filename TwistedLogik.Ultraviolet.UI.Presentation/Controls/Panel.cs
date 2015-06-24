@@ -113,19 +113,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             }
             return null;
         }
-
-        /// <inheritdoc/>
-        protected override RectangleD? ClipCore()
-        {
-            foreach (var child in children)
-            {
-                if (!Bounds.Contains(child.RelativeBounds))
-                {
-                    return AbsoluteBounds;
-                }
-            }
-            return null;
-        }
         
         // Property values.
         private readonly UIElementCollection children;
