@@ -32,6 +32,10 @@ namespace UvFont
             Overhang = parser.GetArgumentOrDefault<Int32>("overhang", 0);
             PadLeft = parser.GetArgumentOrDefault<Int32>("pad-left", 0);
             PadRight = parser.GetArgumentOrDefault<Int32>("pad-right", 0);
+            SuperSamplingFactor = parser.GetArgumentOrDefault<Int32>("supersample", 2);
+
+            if (SuperSamplingFactor < 1)
+                SuperSamplingFactor = 1;
 
             SourceText    = parser.GetArgumentOrDefault<String>("sourcetext");
             SourceFile    = parser.GetArgumentOrDefault<String>("sourcefile");
@@ -77,6 +81,11 @@ namespace UvFont
         /// Gets or sets the amount of additional padding space added to the right edge of every glyph.
         /// </summary>
         public Int32 PadRight { get; set; }
+
+        /// <summary>
+        /// Gets or sets the supersampling factor.
+        /// </summary>
+        public Int32 SuperSamplingFactor { get; set; }
 
         /// <summary>
         /// Gets or sets the source text to use when determining which glyphs to include in the font.

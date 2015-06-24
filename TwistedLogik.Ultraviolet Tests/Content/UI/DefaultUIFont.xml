@@ -2,22 +2,22 @@
 <SpriteFont>
   <Face Style="Regular">
     <Texture>DefaultUI.png</Texture>
-    <TextureRegion>0 0 128 126</TextureRegion>
+    <TextureRegion>0 0 255 76</TextureRegion>
     <Kernings DefaultAdjustment="0" />
   </Face>
   <Face Style="Bold">
     <Texture>DefaultUI.png</Texture>
-    <TextureRegion>0 126 254 72</TextureRegion>
+    <TextureRegion>0 76 255 76</TextureRegion>
     <Kernings DefaultAdjustment="0" />
   </Face>
   <Face Style="Italic">
     <Texture>DefaultUI.png</Texture>
-    <TextureRegion>0 198 128 126</TextureRegion>
+    <TextureRegion>0 152 255 76</TextureRegion>
     <Kernings DefaultAdjustment="0" />
   </Face>
   <Face Style="BoldItalic">
     <Texture>DefaultUI.png</Texture>
-    <TextureRegion>0 324 254 72</TextureRegion>
+    <TextureRegion>0 228 255 76</TextureRegion>
     <Kernings DefaultAdjustment="0" />
   </Face>
 </SpriteFont>

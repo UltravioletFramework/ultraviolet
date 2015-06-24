@@ -142,7 +142,6 @@ RadioButton
 RadioButton > Grid > .toggle-content
 {
 	margin: 4 0 0 0;
-	content-offset: 0 -1;
 }
 
 CheckBox
@@ -168,7 +167,6 @@ CheckBox
 CheckBox > Grid > .toggle-content
 {
 	margin: 4 0 0 0;
-	content-offset: 0 -1;
 }
 
 .radiobutton-component > .toggle-box

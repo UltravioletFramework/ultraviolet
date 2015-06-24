@@ -31,6 +31,7 @@ namespace UvFont
                         Console.WriteLine("Generates Ultraviolet-compatible SpriteFont definition files.");
                         Console.WriteLine();
                         Console.WriteLine("UVFONT fontname [-nobold] [-noitalic] [-fontsize:emsize] [-sub:char]\n" +
+                                          "                [-supersample:value]\n" +
                                           "                [-overhang:value]\n" +
                                           "                [-pad-left:value]\n" +
                                           "                [-pad-right:value]\n" +
@@ -44,6 +45,8 @@ namespace UvFont
                                           "  -noitalic    Disables generation of the italic and bol/italic font faces.\n" +
                                           "  -fontsize    Specifies the point size of the font.\n" +
                                           "  -sub         Specifies the font's substitution character.\n" +
+                                          "  -supersample Specifies the super sampling factor used when drawing\n" +
+                                          "               the font's glyphs. Defaults to 2.\n" +
                                           "  -overhang    Specifies the overhang value for this font.\n" +
                                           "               Overhang adds additional space to the right side of every\n" +
                                           "               character, which is useful for flowing script fonts which\n" +
@@ -106,7 +109,7 @@ namespace UvFont
 
                 foreach (var face in faces)
                 {
-                    using (var fontSupersampled = new Font(fontName, fontSize * SupersampleFactor, face.Font.Style))
+                    using (var fontSupersampled = new Font(fontName, fontSize * parameters.SuperSamplingFactor, face.Font.Style))
                     {
                         var glyphs      = CreateGlyphImages(parameters, fontSupersampled, chars);
                         var textureSize = Size.Empty;
@@ -241,10 +244,13 @@ namespace UvFont
                         gfx.MeasureString(c.ToString(), font) :    
                         gfx.MeasureString(c.ToString(), font, layoutArea, StringFormat.GenericTypographic);
 
+                    var sf1 = StringFormat.GenericDefault;
+                    var sf2 = StringFormat.GenericTypographic;
+
                     var glyphPadding            = glyphIsWhiteSpace ? 0 : parameters.PadLeft + parameters.PadRight;
-                    var glyphWidth              = (Int32)(Math.Ceiling(glyphSize.Width) / SupersampleFactor) + parameters.Overhang + glyphPadding;
-                    var glyphHeight             = (Int32)(Math.Ceiling(glyphSize.Height) / SupersampleFactor);
-                    var glyphSupersampledWidth  = (Int32)Math.Ceiling(glyphSize.Width) + (parameters.Overhang * SupersampleFactor) + (glyphPadding * SupersampleFactor);
+                    var glyphWidth              = (Int32)(Math.Ceiling(glyphSize.Width) / parameters.SuperSamplingFactor) + parameters.Overhang + glyphPadding;
+                    var glyphHeight             = (Int32)(Math.Ceiling(glyphSize.Height) / parameters.SuperSamplingFactor);
+                    var glyphSupersampledWidth  = (Int32)Math.Ceiling(glyphSize.Width) + (parameters.Overhang * parameters.SuperSamplingFactor) + (glyphPadding * parameters.SuperSamplingFactor);
                     var glyphSupersampledHeight = (Int32)Math.Ceiling(glyphSize.Height);
 
                     var glyphImg = new Bitmap(glyphWidth, glyphHeight);
@@ -521,7 +527,6 @@ namespace UvFont
             return (Int32)(kernedSize.Width - (c1Size.Width + c2Size.Width)) - parameters.Overhang;
         }
 
-        private const Int32 SupersampleFactor = 8;
-        private const Int32 MaxOutputSize     = 4096;
+        private const Int32 MaxOutputSize = 4096;
     }
 }
