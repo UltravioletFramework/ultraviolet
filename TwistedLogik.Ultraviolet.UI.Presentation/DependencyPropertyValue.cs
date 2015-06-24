@@ -505,7 +505,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 }
                 else
                 {
-                    value = UpdateCoercedValue(value);
                     cachedBoundValue.Set(value);
                 }
             }
