@@ -49,12 +49,20 @@ namespace TwistedLogik.Ultraviolet.OpenGL
                 versionRequested = versionRequired;
             }
 
-            SDL.GL_SetAttribute(SDL_GLattr.CONTEXT_PROFILE_MASK, (int)SDL_GLprofile.CORE);
-            SDL.GL_SetAttribute(SDL_GLattr.CONTEXT_MAJOR_VERSION, versionRequested.Major);
-            SDL.GL_SetAttribute(SDL_GLattr.CONTEXT_MINOR_VERSION, versionRequested.Minor);
+            if (SDL.GL_SetAttribute(SDL_GLattr.CONTEXT_PROFILE_MASK, (int)SDL_GLprofile.CORE) < 0)
+                throw new SDL2Exception();
 
-            SDL.GL_SetAttribute(SDL_GLattr.DEPTH_SIZE, configuration.BackBufferDepthSize);
-            SDL.GL_SetAttribute(SDL_GLattr.STENCIL_SIZE, configuration.BackBufferStencilSize);
+            if (SDL.GL_SetAttribute(SDL_GLattr.CONTEXT_MAJOR_VERSION, 3) < 0)
+                throw new SDL2Exception();
+
+            if (SDL.GL_SetAttribute(SDL_GLattr.CONTEXT_MINOR_VERSION, versionRequested.Minor) < 0)
+                throw new SDL2Exception();
+
+            if (SDL.GL_SetAttribute(SDL_GLattr.DEPTH_SIZE, configuration.BackBufferDepthSize) < 0)
+                throw new SDL2Exception();
+
+            if (SDL.GL_SetAttribute(SDL_GLattr.STENCIL_SIZE, configuration.BackBufferStencilSize) < 0)
+                throw new SDL2Exception();
 
             this.platform = new OpenGLUltravioletPlatform(this, configuration);
 

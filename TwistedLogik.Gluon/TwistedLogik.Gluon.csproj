@@ -145,6 +145,7 @@
     <Compile Include="DSA\DirectStateAccessEXTImpl.cs" />
     <Compile Include="DSA\DirectStateAccessNullImpl.cs" />
     <Compile Include="DSA\DirectStateAccessImpl.cs" />
+    <Compile Include="Extensions\ARB_texture_rg.cs" />
     <Compile Include="Extensions\ARB_texture_storage.cs" />
     <Compile Include="Extensions\ARB_debug_output.cs" />
     <Compile Include="Extensions\ARB_direct_state_access.cs" />

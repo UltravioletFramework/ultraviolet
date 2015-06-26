@@ -267,7 +267,7 @@ namespace TwistedLogik.Gluon
         /// <param name="name">The name of the field that represents the function to load.</param>
         /// <param name="checkRequirements">A value indicating whether to check the function's requirements.</param>
         /// <returns>true if the function was loaded; otherwise, false.</returns>
-        private static bool LoadFunction(IOpenGLInitializer initializer, String name, Boolean checkRequirements = true)
+        private static Boolean LoadFunction(IOpenGLInitializer initializer, String name, Boolean checkRequirements = true)
         {
             var field = typeof(gl).GetField(name, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static);
             if (field == null)
@@ -283,7 +283,7 @@ namespace TwistedLogik.Gluon
         /// <param name="field">The field that represents the function to load.</param>
         /// <param name="checkRequirements">A value indicating whether to check the function's requirements.</param>
         /// <returns>true if the function was loaded successfully, or wasn't loaded because its extension is not supported; otherwise, false.</returns>
-        private static bool LoadFunction(IOpenGLInitializer initializer, FieldInfo field, Boolean checkRequirements = true)
+        private static Boolean LoadFunction(IOpenGLInitializer initializer, FieldInfo field, Boolean checkRequirements = true)
         {
             var name = field.Name.StartsWith("gl") ? field.Name : "gl" + field.Name;
             var reqs = checkRequirements ? field.GetCustomAttributes(typeof(RequireAttribute), false).Cast<RequireAttribute>().FirstOrDefault() : null;
@@ -312,44 +312,46 @@ namespace TwistedLogik.Gluon
         }
 
         /// <summary>
+        /// Attempts to parse the version of the loaded OpenGL implementation from the string
+        /// returned by glGetString(GL_VERSION).
+        /// </summary>
+        private static Boolean TryParseOpenGLVersionFromString(String str, out Int32 major, out Int32 minor)
+        {
+            str = isGLES ? str.Substring("OpenGL ES ".Length) : str.Substring("OpenGL ".Length);
+
+            var components = str.Split(new[] { ' ', '.' }, StringSplitOptions.RemoveEmptyEntries);
+            if (components.Length < 2 || !Int32.TryParse(components[0], out major) || !Int32.TryParse(components[1], out minor))
+            {
+                major = 0;
+                minor = 0;
+                return false;
+            }
+            return true;            
+        }
+
+        /// <summary>
         /// Loads the OpenGL version number.
         /// </summary>
         private static void LoadVersion()
         {
-            Int32 majorVersion = 0, glesMajorVersion = 0;
-            Int32 minorVersion = 0, glesMinorVersion = 0;
+            var majorVersion = 0;
+            var minorVersion = 0;
 
             var version = gl.GetString(gl.GL_VERSION);
+            
             isGLES = version.StartsWith("OpenGL ES");
             isEmulated = false;
 
-            if (isGLES)
-            {
-                // Attempt to parse the OpenGL ES version.
-                // This number may be different than what's being reported by GL_MAJOR_VERSION
-                // if we're running inside of an emulator with native GPU enabled.
-                var versionString = version.Substring("OpenGL ES".Length);
-                var components    = versionString.Split(new[] { ' ', '.' }, StringSplitOptions.RemoveEmptyEntries);
-                if (components.Length < 2 || !Int32.TryParse(components[0], out glesMajorVersion) || !Int32.TryParse(components[1], out glesMinorVersion))
-                {
-                    // Something went really wrong here... assume GLES 2.0 and barrel on forward.
-                    glesMajorVersion = 2;
-                    glesMinorVersion = 0;
-                }
-            }
-
             gl.GetIntegerv(gl.GL_MAJOR_VERSION, &majorVersion);
+
             if (gl.GetError() == gl.GL_INVALID_ENUM) 
             {
-                var ixSpace = version.IndexOf(' ');
-                if (ixSpace >= 0)
+                if (!TryParseOpenGLVersionFromString(version, out gl.majorVersion, out gl.minorVersion))
                 {
-                    version = version.Substring(0, ixSpace);
+                    // Something is horribly wrong with our version string; be optimistic!
+                    gl.majorVersion = 4;
+                    gl.minorVersion = 0;
                 }
-
-                var versionComponents = version.Split('.');
-                gl.majorVersion = Int32.Parse(versionComponents[0]);
-                gl.minorVersion = versionComponents.Length > 1 ? Int32.Parse(versionComponents[1]) : 0;
             }
             else
             {
@@ -358,13 +360,21 @@ namespace TwistedLogik.Gluon
                 gl.minorVersion = minorVersion;
             }
 
+            // In the case of GLES, it's possible for the value reported by glGetIntegerv() to
+            // differ from the value specified in GL_VERSION if we're running inside of an emulator
+            // with native GPU enabled - so try to account for that case.
             if (isGLES)
             {
-                if (glesMajorVersion != majorVersion || glesMinorVersion != minorVersion)
+                Int32 glesMajorVersion;
+                Int32 glesMinorVersion;
+                if (TryParseOpenGLVersionFromString(gl.GetString(gl.GL_VERSION), out glesMajorVersion, out glesMinorVersion))
                 {
-                    gl.isEmulated = true;
-                    gl.majorVersion = glesMajorVersion;
-                    gl.minorVersion = glesMinorVersion;
+                    if (glesMajorVersion != gl.majorVersion || glesMinorVersion != gl.minorVersion)
+                    {
+                        gl.isEmulated = true;
+                        gl.majorVersion = glesMajorVersion;
+                        gl.minorVersion = glesMinorVersion;
+                    }
                 }
             }
         }

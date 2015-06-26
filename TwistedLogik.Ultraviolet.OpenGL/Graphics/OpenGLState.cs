@@ -831,6 +831,11 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         /// </summary>
         public static OpenGLStateInteger GL_CURRENT_PROGRAM { get { return glCurrentProgram; } }
 
+        /// <summary>
+        /// Gets a value indicating whether the current OpenGL context has support for vertex array objects (VAOs).
+        /// </summary>
+        public static Boolean SupportsVertexArrayObjects { get { return !gl.IsGLES || gl.IsVersionAtLeast(3, 0); } }
+
         // State values.
         private OpenGLStateType stateType;
         private Boolean disposed;

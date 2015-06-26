@@ -1,4 +1,7 @@
-﻿varying vec4 vColor;
+﻿precision mediump float;
+precision mediump int;
+
+varying vec4 vColor;
 
 void main()
 {

@@ -32,19 +32,19 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         {
             var vao = 0u;
 
-            uv.QueueWorkItemAndWait(() =>
+            if (OpenGLState.SupportsVertexArrayObjects)
             {
-                vao = gl.GenVertexArray();
-                gl.ThrowIfError();
-            });
+                uv.QueueWorkItemAndWait(() =>
+                {
+                    vao = gl.GenVertexArray();
+                    gl.ThrowIfError();
+                });
+            }
 
             this.vao = vao;
         }
 
-        /// <summary>
-        /// Attaches a vertex buffer to the geometry buffer.
-        /// </summary>
-        /// <param name="vbuffer">The vertex buffer to attach to the geometry buffer.</param>
+        /// <inheritdoc/>
         public override void Attach(VertexBuffer vbuffer)
         {
             Contract.Require(vbuffer, "vbuffer");
@@ -60,10 +60,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
             this.vbuffers.Add(sdlVertexBuffer);
         }
 
-        /// <summary>
-        /// Attaches an index buffer to the geometry buffer.
-        /// </summary>
-        /// <param name="ibuffer">The index buffer to attach to the geometry buffer.</param>
+        /// <inheritdoc/>
         public override void Attach(IndexBuffer ibuffer)
         {
             Contract.Require(ibuffer, "ibuffer");
@@ -80,10 +77,13 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
 
             this.ibuffers.Add(sdlIndexBuffer);
 
-            using (OpenGLState.ScopedBindVertexArrayObject(vao, 0, 0, true))
+            if (vao != 0)
             {
-                gl.BindBuffer(gl.GL_ELEMENT_ARRAY_BUFFER, sdlIndexBufferName);
-                gl.ThrowIfError();
+                using (OpenGLState.ScopedBindVertexArrayObject(vao, 0, 0, true))
+                {
+                    gl.BindBuffer(gl.GL_ELEMENT_ARRAY_BUFFER, sdlIndexBufferName);
+                    gl.ThrowIfError();
+                }
             }
 
             this.glElementArrayBufferBinding = sdlIndexBufferName;
@@ -97,7 +97,20 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         {
             Contract.EnsureNotDisposed(this, Disposed);
 
-            OpenGLState.BindVertexArrayObject(vao, 0, glElementArrayBufferBinding ?? 0);
+            if (vao != 0)
+            {
+                OpenGLState.BindVertexArrayObject(vao, 0, glElementArrayBufferBinding ?? 0);
+            }
+            else
+            {
+                if (this.ibuffers.Count > 0)
+                {
+                    foreach (var ibuffer in this.ibuffers)
+                    {
+                        OpenGLState.BindElementArrayBuffer(ibuffer.OpenGLName);
+                    }
+                }
+            }
         }
 
         /// <summary>
@@ -109,8 +122,11 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
             Contract.EnsureNotDisposed(this, Disposed);
             Contract.Ensure(IsValid, OpenGLStrings.InvalidGeometryStream);
 
-            if (this.program == program)
-                return;
+            if (vao != 0)
+            {
+                if (this.program == program)
+                    return;
+            }
 
             unsafe
             {
@@ -158,9 +174,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
             this.program = program;
         }
 
-        /// <summary>
-        /// Gets the resource's OpenGL name.
-        /// </summary>
+        /// <inheritdoc/>
         public UInt32 OpenGLName
         {
             get 
@@ -171,9 +185,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
             }
         }
 
-        /// <summary>
-        /// Gets a value indicating whether the geometry stream reads data from multiple vertex buffers.
-        /// </summary>
+        /// <inheritdoc/>
         public override Boolean HasMultipleSources
         {
             get
@@ -184,9 +196,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
             }
         }
 
-        /// <summary>
-        /// Gets a value indicating whether the geometry buffer has any vertex buffers attached to it.
-        /// </summary>
+        /// <inheritdoc/>
         public override Boolean HasVertices
         {
             get
@@ -197,9 +207,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
             }
         }
 
-        /// <summary>
-        /// Gets a value indicating whether the geometry buffer has any index buffers attached to it.
-        /// </summary>
+        /// <inheritdoc/>
         public override Boolean HasIndices
         {
             get
@@ -210,9 +218,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
             }
         }
 
-        /// <summary>
-        /// Gets the type of the elements in the stream's index buffer, if it has an index buffer.
-        /// </summary>
+        /// <inheritdoc/>
         public override IndexBufferElementType IndexBufferElementType
         {
             get
@@ -223,10 +229,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
             }
         }
 
-        /// <summary>
-        /// Releases resources associated with the object.
-        /// </summary>
-        /// <param name="disposing">true if the object is being disposed; false if the object is being finalized.</param>
+        /// <inheritdoc/>
         protected override void Dispose(Boolean disposing)
         {
             if (Disposed)
@@ -236,15 +239,18 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
             {
                 if (!Ultraviolet.Disposed)
                 {
-                    Ultraviolet.QueueWorkItem((state) =>
+                    if (vao != 0)
                     {
-                        var vao = ((OpenGLGeometryStream)state).vao;
+                        Ultraviolet.QueueWorkItem((state) =>
+                        {
+                            var vaoName = ((OpenGLGeometryStream)state).vao;
 
-                        gl.DeleteVertexArray(vao);
-                        gl.ThrowIfError();
+                            gl.DeleteVertexArray(vaoName);
+                            gl.ThrowIfError();
 
-                        OpenGLState.DeleteVertexArrayObject(vao, 0, glElementArrayBufferBinding ?? 0);
-                    }, this);
+                            OpenGLState.DeleteVertexArrayObject(vaoName, 0, glElementArrayBufferBinding ?? 0);
+                        }, this);
+                    }
                 }
                 vbuffers.Clear();
                 ibuffers.Clear();

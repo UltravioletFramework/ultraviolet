@@ -320,6 +320,89 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         }
 
         /// <summary>
+        /// Converts the specified OpenGL sized texture format to its base format.
+        /// </summary>
+        /// <param name="internalformat">The sized internal texture format to convert.</param>
+        /// <returns>The converted base internal texture format.</returns>
+        private static UInt32 GetBaseInternalFormat(UInt32 internalformat)
+        {
+            switch (internalformat)
+            {
+                case gl.GL_R8:
+                case gl.GL_R8_SNORM:
+                case gl.GL_R16:
+                case gl.GL_R16_SNORM:
+                case gl.GL_R16F:
+                case gl.GL_R32F:
+                case gl.GL_R8I:
+                case gl.GL_R8UI:
+                case gl.GL_R16I:
+                case gl.GL_R16UI:
+                case gl.GL_R32I:
+                case gl.GL_R32UI:
+                    return gl.GL_RED;
+
+                case gl.GL_RG8:
+                case gl.GL_RG8_SNORM:
+                case gl.GL_RG16:
+                case gl.GL_RG16_SNORM:
+                case gl.GL_RG16F:
+                case gl.GL_RG32F:
+                case gl.GL_RG8I:
+                case gl.GL_RG8UI:
+                case gl.GL_RG16I:
+                case gl.GL_RG16UI:
+                case gl.GL_RG32I:
+                case gl.GL_RG32UI:
+                    return gl.GL_RG;
+
+                case gl.GL_R3_G3_B2:
+                case gl.GL_RGB4:
+                case gl.GL_RGB5:
+                case gl.GL_RGB8:
+                case gl.GL_RGB8_SNORM:
+                case gl.GL_RGB10:
+                case gl.GL_RGB12:
+                case gl.GL_RGB16_SNORM:
+                case gl.GL_RGBA2:
+                case gl.GL_RGBA4:
+                case gl.GL_SRGB8:
+                case gl.GL_RGB16F:
+                case gl.GL_RGB32F:
+                case gl.GL_R11F_G11F_B10F:
+                case gl.GL_RGB9_E5:
+                case gl.GL_RGB8I:
+                case gl.GL_RGB8UI:
+                case gl.GL_RGB16I:
+                case gl.GL_RGB16UI:
+                case gl.GL_RGB32I:
+                case gl.GL_RGB32UI:
+                    return gl.GL_RGB;
+
+                case gl.GL_RGB5_A1:
+                case gl.GL_RGBA8:
+                case gl.GL_RGBA8_SNORM:
+                case gl.GL_RGB10_A2:
+                case gl.GL_RGB10_A2UI:
+                case gl.GL_RGBA12:
+                case gl.GL_RGBA16:
+                case gl.GL_SRGB8_ALPHA8:
+                case gl.GL_RGBA16F:
+                case gl.GL_RGBA32F:
+                case gl.GL_RGBA8I:
+                case gl.GL_RGBA8UI:
+                case gl.GL_RGBA16I:
+                case gl.GL_RGBA16UI:
+                case gl.GL_RGBA32I:
+                case gl.GL_RGBA32UI:
+                    return gl.GL_RGBA;
+
+                default:
+                    throw new ArgumentOutOfRangeException("internalformat");
+            }
+        }
+
+        /// <summary>
         /// Creates the underlying native OpenGL texture with the specified format and data.
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
@@ -375,7 +458,8 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
                         }
                         else
                         {
-                            gl.TextureImage2D(glname, gl.GL_TEXTURE_2D, 0, (int)internalformat, width, height, 0, format, type, pixels);
+                            gl.TextureImage2D(glname, gl.GL_TEXTURE_2D, 0, (int)GetBaseInternalFormat(internalformat), 
+                                width, height, 0, format, type, pixels);
                             gl.ThrowIfError();
                         }
                     }
