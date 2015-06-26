@@ -399,28 +399,20 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
             }
 
             // Attempt to create the OpenGL window. If that fails, reduce our requirements and try again before failing.
-            // Android devices running OpenGL ES 2.0 can't handle some of Ultraviolet's usual defaults.
             var masterptr = SDL.CreateWindow(isRunningOnAndroid ? caption : String.Empty, 0, 0, masterWidth, masterHeight, masterFlags);
             if (masterptr == IntPtr.Zero)
             {
-                if (configuration.BackBufferDepthSize > 16)
-                {
-                    if (SDL.GL_SetAttribute(SDL_GLattr.MULTISAMPLEBUFFERS, 0) < 0)
-                        throw new SDL2Exception();
+                if (SDL.GL_SetAttribute(SDL_GLattr.MULTISAMPLEBUFFERS, 0) < 0)
+                    throw new SDL2Exception();
 
-                    if (SDL.GL_SetAttribute(SDL_GLattr.MULTISAMPLESAMPLES, 0) < 0)
-                        throw new SDL2Exception();
+                if (SDL.GL_SetAttribute(SDL_GLattr.MULTISAMPLESAMPLES, 0) < 0)
+                    throw new SDL2Exception();
 
-                    if (SDL.GL_SetAttribute(SDL_GLattr.DEPTH_SIZE, 16) < 0)
-                        throw new SDL2Exception();
+                if (SDL.GL_SetAttribute(SDL_GLattr.DEPTH_SIZE, 16) < 0)
+                    throw new SDL2Exception();
 
-                    masterptr = SDL.CreateWindow(isRunningOnAndroid ? caption : String.Empty, 0, 0, masterWidth, masterHeight, masterFlags);
-                    if (masterptr == IntPtr.Zero)
-                    {
-                        throw new SDL2Exception();
-                    }
-                }
-                else
+                masterptr = SDL.CreateWindow(isRunningOnAndroid ? caption : String.Empty, 0, 0, masterWidth, masterHeight, masterFlags);
+                if (masterptr == IntPtr.Zero)
                 {
                     throw new SDL2Exception();
                 }

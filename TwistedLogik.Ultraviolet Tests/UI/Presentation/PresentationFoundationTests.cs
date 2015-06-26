@@ -12,7 +12,6 @@ using TwistedLogik.Ultraviolet.UI.Presentation.Styles;
 namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation
 {
     [TestClass]
-    [RenderToScreen]
     public class PresentationFoundationTests : UltravioletApplicationTestFramework
     {
         [TestMethod]
