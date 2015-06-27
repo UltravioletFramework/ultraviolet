@@ -531,8 +531,11 @@ namespace TwistedLogik.Ultraviolet.OpenGL
             /* FIX:
              * Without this line, Intel HD 4000 throws an AccessViolationException
              * when we call GL_DeleteContext(). Weird, huh? */
-            gl.BindVertexArray(0);
-            gl.Uninitialize();
+            if (OpenGLState.SupportsVertexArrayObjects)
+            {
+                gl.BindVertexArray(0);
+                gl.Uninitialize();
+            }
 
             SDL.GL_DeleteContext(context);
 
