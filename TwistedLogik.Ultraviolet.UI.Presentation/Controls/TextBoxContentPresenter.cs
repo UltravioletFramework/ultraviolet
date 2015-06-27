@@ -31,7 +31,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             {
                 var fontResource = font.Resource.Value.GetFace(container.FontStyle);
 
-                return new Size2D(fontResource.SpaceWidth, fontResource.LineSpacing);
+                return new Size2D(fontResource.SpaceWidth, Display.PixelsToDips(fontResource.LineSpacing));
             }
 
             return Size2D.Zero;

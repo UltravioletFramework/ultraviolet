@@ -512,7 +512,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             var textX      = textBounds.X;
             var textY      = textBounds.Y;
             var textWidth  = textBounds.Width;
-            var textHeight = (Font.IsLoaded) ? Font.Resource.Value.Regular.LineSpacing : textBounds.Height;
+            var textHeight = (Font.IsLoaded) ? Display.PixelsToDips(Font.Resource.Value.Regular.LineSpacing) : textBounds.Height;
 
             if (InsertionMode == TextBoxInsertionMode.Insert)
             {
