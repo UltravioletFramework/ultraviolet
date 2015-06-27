@@ -408,9 +408,6 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
                 if (SDL.GL_SetAttribute(SDL_GLattr.MULTISAMPLESAMPLES, 0) < 0)
                     throw new SDL2Exception();
 
-                if (SDL.GL_SetAttribute(SDL_GLattr.DEPTH_SIZE, 16) < 0)
-                    throw new SDL2Exception();
-
                 masterptr = SDL.CreateWindow(isRunningOnAndroid ? caption : String.Empty, 0, 0, masterWidth, masterHeight, masterFlags);
                 if (masterptr == IntPtr.Zero)
                 {
