@@ -928,57 +928,57 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\Primitives\Templates\HScrollBar.xml">
+    <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\Primitives\Templates\HScrollBar.xml">
       <Link>Controls\Primitives\Templates\HScrollBar.xml</Link>
-    </None>
-    <None Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\Primitives\Templates\ToggleButton.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\Primitives\Templates\ToggleButton.xml">
       <Link>Controls\Primitives\Templates\ToggleButton.xml</Link>
-    </None>
-    <None Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\Primitives\Templates\VScrollBar.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\Primitives\Templates\VScrollBar.xml">
       <Link>Controls\Primitives\Templates\VScrollBar.xml</Link>
-    </None>
-    <None Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\Templates\Border.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\Templates\Border.xml">
       <Link>Controls\Templates\Border.xml</Link>
-    </None>
-    <None Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\Templates\Button.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\Templates\Button.xml">
       <Link>Controls\Templates\Button.xml</Link>
-    </None>
-    <None Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\Templates\CheckBox.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\Templates\CheckBox.xml">
       <Link>Controls\Templates\CheckBox.xml</Link>
-    </None>
-    <None Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\Templates\ComboBox.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\Templates\ComboBox.xml">
       <Link>Controls\Templates\ComboBox.xml</Link>
-    </None>
-    <None Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\Templates\ComboBoxItem.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\Templates\ComboBoxItem.xml">
       <Link>Controls\Templates\ComboBoxItem.xml</Link>
-    </None>
-    <None Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\Templates\HSlider.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\Templates\HSlider.xml">
       <Link>Controls\Templates\HSlider.xml</Link>
-    </None>
-    <None Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\Templates\ListBox.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\Templates\ListBox.xml">
       <Link>Controls\Templates\ListBox.xml</Link>
-    </None>
-    <None Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\Templates\ListBoxItem.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\Templates\ListBoxItem.xml">
       <Link>Controls\Templates\ListBoxItem.xml</Link>
-    </None>
-    <None Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\Templates\NumericUpDown.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\Templates\NumericUpDown.xml">
       <Link>Controls\Templates\NumericUpDown.xml</Link>
-    </None>
-    <None Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\Templates\RadioButton.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\Templates\RadioButton.xml">
       <Link>Controls\Templates\RadioButton.xml</Link>
-    </None>
-    <None Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\Templates\RepeatButton.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\Templates\RepeatButton.xml">
       <Link>Controls\Templates\RepeatButton.xml</Link>
-    </None>
-    <None Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\Templates\ScrollViewer.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\Templates\ScrollViewer.xml">
       <Link>Controls\Templates\ScrollViewer.xml</Link>
-    </None>
-    <None Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\Templates\TextBox.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\Templates\TextBox.xml">
       <Link>Controls\Templates\TextBox.xml</Link>
-    </None>
-    <None Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\Templates\VSlider.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\Templates\VSlider.xml">
       <Link>Controls\Templates\VSlider.xml</Link>
-    </None>
+    </EmbeddedResource>
     <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Resources\Strings.xml">
       <Link>Resources\Strings.xml</Link>
     </EmbeddedResource>
@@ -1006,7 +1006,7 @@
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties ProjectLinkReference="7379d9e1-bb01-4b05-b4f7-5d39b393348f" ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" />
+      <UserProperties ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" ProjectLinkReference="7379d9e1-bb01-4b05-b4f7-5d39b393348f" />
     </VisualStudio>
   </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
