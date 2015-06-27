@@ -244,8 +244,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <inheritdoc/>
+        protected override void OnGotKeyboardFocus(ref RoutedEventData data)
+        {
+            Ultraviolet.GetInput().ShowSoftwareKeyboard();
+
+            base.OnGotKeyboardFocus(ref data);
+        }
+
+        /// <inheritdoc/>
         protected override void OnLostKeyboardFocus(ref RoutedEventData data)
         {
+            Ultraviolet.GetInput().HideSoftwareKeyboard();
+
             textSelectionLength = 0;
 
             base.OnLostKeyboardFocus(ref data);
