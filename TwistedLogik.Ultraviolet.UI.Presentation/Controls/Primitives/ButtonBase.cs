@@ -205,26 +205,22 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             {
                 if (IsPressed)
                 {
-                    System.Diagnostics.Debug.WriteLine("pressed");
                     VisualStateGroups.GoToState("common", "pressed");
                 }
                 else
                 {
                     if (IsMouseOver)
                     {
-                        System.Diagnostics.Debug.WriteLine("hover");
                         VisualStateGroups.GoToState("common", "hover");
                     }
                     else
                     {
-                        System.Diagnostics.Debug.WriteLine("normal");
                         VisualStateGroups.GoToState("common", "normal");
                     }
                 }
             }
             else
             {
-                System.Diagnostics.Debug.WriteLine("disabled");
                 VisualStateGroups.GoToState("common", "disabled");
             }
         }
