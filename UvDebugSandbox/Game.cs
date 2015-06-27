@@ -75,7 +75,7 @@ namespace UvDebugSandbox
         /// </summary>
         protected override void OnInitialized()
         {
-            SetFileSourceFromManifestIfExists("UltravioletGame.Content.uvarc");
+            SetFileSourceFromManifestIfExists("UvDebugSandbox.Content.uvarc");
 
             base.OnInitialized();
         }
