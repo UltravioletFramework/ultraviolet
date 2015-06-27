@@ -44,6 +44,13 @@ namespace UltravioletSample
             return new OpenGLUltravioletContext(this, configuration);
         }
 
+        protected override void OnInitialized()
+        {
+            SetFileSourceFromManifestIfExists("UltravioletSample.Content.uvarc");
+
+            base.OnInitialized();
+        }
+
         protected override void OnLoadingContent()
         {
             this.content = ContentManager.Create("Content");
