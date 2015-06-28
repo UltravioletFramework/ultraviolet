@@ -83,6 +83,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         public static readonly DependencyProperty MaxDropDownHeightProperty = DependencyProperty.Register("MaxDropDownHeight", "max-dropdown-height", typeof(Double), typeof(ComboBox),
             new PropertyMetadata<Double>(1080.0 / 3.0, PropertyMetadataOptions.None));
 
+        private static readonly DependencyPropertyKey ActualMaxDropDownHeightPropertyKey = DependencyProperty.RegisterReadOnly("ActualMaxDropDownHeight", typeof(Double), typeof(ComboBox),
+            new PropertyMetadata<Double>());
+
+        /// <summary>
+        /// Iden
+        /// </summary>
+        public static readonly DependencyProperty ActualMaxDropDownHeightProperty = ActualMaxDropDownHeightPropertyKey.DependencyProperty;
+
         /// <summary>
         /// Identifies the <see cref="IsDropDownOpen"/> dependency property.
         /// </summary>
@@ -242,6 +250,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 
             if (newValue)
             {
+                var primary = comboBox.Ultraviolet.GetPlatform().Windows.GetPrimary();
+
+                var actualMaxDropDownHeight = Math.Min(comboBox.MaxDropDownHeight, primary.ClientSize.Height / 3.0);
+                if (actualMaxDropDownHeight != comboBox.GetValue<Double>(ActualMaxDropDownHeightProperty))
+                {
+                    comboBox.SetValue<Double>(ActualMaxDropDownHeightPropertyKey, actualMaxDropDownHeight);
+                }
+
                 Mouse.Capture(comboBox.View, comboBox, CaptureMode.SubTree);
 
                 if (comboBox.PART_Arrow != null)

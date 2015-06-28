@@ -55,7 +55,7 @@
                         VerticalAlignment="Stretch"
                         VerticalContentAlignment="Stretch"
                         VerticalScrollBarVisibility="Auto"
-                        MaxHeight="{{MaxDropDownHeight}}">
+                        MaxHeight="{{ActualMaxDropDownHeight}}">
             
             <ItemsPanel HorizontalAlignment="Stretch"/>
 
