@@ -61,6 +61,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             if (PART_Input != null)
             {
                 PART_Input.InvalidateDisplayCache(TextBox.TextProperty);
+                PART_Input.MoveHome();
             }
             base.OnLostKeyboardFocus(ref data);
         }

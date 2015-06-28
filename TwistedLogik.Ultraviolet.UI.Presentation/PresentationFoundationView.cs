@@ -1116,6 +1116,22 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             }
         }
 
+        private UIElement GetNearestFocusableElement(IInputElement start)
+        {
+            var current = start as DependencyObject;
+
+            while (current != null)
+            {
+                var element = current as UIElement;
+                if (element != null && element.Focusable)
+                    return element;
+
+                current = VisualTreeHelper.GetParent(current);
+            }
+
+            return null;
+        }
+
         /// <summary>
         /// Handles the <see cref="MouseDevice.ButtonPressed"/> event.
         /// </summary>
@@ -1127,16 +1143,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             UpdateElementUnderMouse();
 
             var recipient = elementUnderMouse;
-            if (recipient != elementWithFocus)
+
+            var focusable = GetNearestFocusableElement(elementUnderMouse);
+            if (focusable != elementWithFocus)
             {
                 if (elementWithFocus != null)
                 {
                     BlurElement(elementWithFocus);
                 }
 
-                if (recipient != null && recipient.Focusable)
+                if (focusable != null)
                 {
-                    FocusElement(recipient);
+                    FocusElement(focusable);
                 }
             }
 
