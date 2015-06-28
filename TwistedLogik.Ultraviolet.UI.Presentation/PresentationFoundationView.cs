@@ -992,6 +992,28 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Starts at the specified element and moves up the visual tree to find
+        /// the nearest ancestor which is focusable.
+        /// </summary>
+        /// <param name="start">The element at which to begin searching.</param>
+        /// <returns>The nearest focusable element, or <c>null</c> if no focusable element was found.</returns>
+        private IInputElement GetNearestFocusableElement(IInputElement start)
+        {
+            var current = start as DependencyObject;
+
+            while (current != null)
+            {
+                var element = current as UIElement;
+                if (element != null && element.Focusable)
+                    return element;
+
+                current = VisualTreeHelper.GetParent(current);
+            }
+
+            return null;
+        }
+
+        /// <summary>
         /// Redirects mouse input to the element with mouse capture, if necessary.
         /// </summary>
         /// <param name="recipient">The element that will be the target of the input event prior to considering mouse capture.</param>
@@ -1114,22 +1136,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                     Mouse.RaiseMouseMove(dobj, device, dipsX, dipsY, dipsDeltaX, dipsDeltaY, ref mouseMoveData);
                 }
             }
-        }
-
-        private UIElement GetNearestFocusableElement(IInputElement start)
-        {
-            var current = start as DependencyObject;
-
-            while (current != null)
-            {
-                var element = current as UIElement;
-                if (element != null && element.Focusable)
-                    return element;
-
-                current = VisualTreeHelper.GetParent(current);
-            }
-
-            return null;
         }
 
         /// <summary>
