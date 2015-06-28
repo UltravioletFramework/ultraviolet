@@ -60,8 +60,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Dependencies\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="org.libsdl.app">
-      <HintPath>..\Dependencies\SDL2\Android\org.libsdl.app.dll</HintPath>
+    <Reference Include="Org.Libsdl.App, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Dependencies\SDL2\Android\Org.Libsdl.App.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -669,6 +670,9 @@
     <Compile Include="..\TwistedLogik.Ultraviolet\Input\KeyboardInputBinding.cs">
       <Link>Input\KeyboardInputBinding.cs</Link>
     </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Input\KeyboardMode.cs">
+      <Link>Input\KeyboardMode.cs</Link>
+    </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet\Input\MouseButton.cs">
       <Link>Input\MouseButton.cs</Link>
     </Compile>
@@ -683,6 +687,9 @@
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet\Input\Scancode.cs">
       <Link>Input\Scancode.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Input\SoftwareKeyboardService.cs">
+      <Link>Input\SoftwareKeyboardService.cs</Link>
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet\Input\TouchDevice.cs">
       <Link>Input\TouchDevice.cs</Link>

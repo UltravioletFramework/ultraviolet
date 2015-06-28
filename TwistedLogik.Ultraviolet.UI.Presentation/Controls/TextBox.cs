@@ -60,6 +60,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
+        /// Gets or sets the text box's current keyboard mode.
+        /// </summary>
+        public KeyboardMode KeyboardMode
+        {
+            get { return GetValue<KeyboardMode>(KeyboardModeProperty); }
+            set { SetValue<KeyboardMode>(KeyboardModeProperty, value); }
+        }
+
+        /// <summary>
         /// Gets or sets the text displayed by the text box.
         /// </summary>
         public String Text
@@ -166,6 +175,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
+        /// Identifies the <see cref="KeyboardMode"/> dependency property.
+        /// </summary>
+        /// <remarks>The styling name of this dependency property is 'keyboard-mode'.</remarks>
+        public static readonly DependencyProperty KeyboardModeProperty = DependencyProperty.Register("KeyboardMode", typeof(KeyboardMode), typeof(TextBox),
+            new PropertyMetadata<KeyboardMode>(KeyboardMode.Text, PropertyMetadataOptions.None));
+
+        /// <summary>
         /// Identifies the <see cref="Text"/> dependency property.
         /// </summary>
         /// <remarks>The styling name of this dependency property is 'text'.</remarks>
@@ -246,7 +262,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <inheritdoc/>
         protected override void OnGotKeyboardFocus(ref RoutedEventData data)
         {
-            Ultraviolet.GetInput().ShowSoftwareKeyboard();
+            Ultraviolet.GetInput().ShowSoftwareKeyboard(KeyboardMode);
 
             base.OnGotKeyboardFocus(ref data);
         }

@@ -7,10 +7,13 @@ using Android.App;
 using Org.Libsdl.App;
 using TwistedLogik.Nucleus;
 using TwistedLogik.Nucleus.Messages;
+using TwistedLogik.Ultraviolet.Android.Input;
 using TwistedLogik.Ultraviolet.Android.Platform;
 using TwistedLogik.Ultraviolet.Content;
+using TwistedLogik.Ultraviolet.Input;
 using TwistedLogik.Ultraviolet.Messages;
 using TwistedLogik.Ultraviolet.Platform;
+using TwistedLogik.Ultraviolet.SDL2.Native;
 
 namespace TwistedLogik.Ultraviolet
 {
@@ -107,6 +110,44 @@ namespace TwistedLogik.Ultraviolet
 
             running  = false;
             finished = true;
+        }
+
+        /// <summary>
+        /// Shows the software keyboard, if one is available.
+        /// </summary>
+        /// <param name="mode">The display mode of the software keyboard.</param>
+        public void ShowSoftwareKeyboard(KeyboardMode mode)
+        {
+            switch (mode)
+            {
+                case KeyboardMode.Text:
+                    MCurrentInputType = (int)global::Android.Text.InputTypes.ClassText;
+                    break;
+
+                case KeyboardMode.Number:
+                    MCurrentInputType = (int)global::Android.Text.InputTypes.ClassNumber;
+                    break;
+
+                case KeyboardMode.Phone:
+                    MCurrentInputType = (int)global::Android.Text.InputTypes.ClassPhone;
+                    break;
+
+                case KeyboardMode.Datetime:
+                    MCurrentInputType = (int)global::Android.Text.InputTypes.ClassDatetime;
+                    break;
+
+                default:
+                    throw new ArgumentOutOfRangeException("mode");
+            }
+            SDL.StartTextInput();
+        }
+
+        /// <summary>
+        /// Hides the software keyboard.
+        /// </summary>
+        public void HideSoftwareKeyboard()
+        {
+            SDL.StopTextInput();
         }
 
         /// <inheritdoc/>
@@ -365,6 +406,7 @@ namespace TwistedLogik.Ultraviolet
             base.OnCreate(savedInstanceState);
 
             AndroidScreenDensityService.Activity = this;
+            AndroidSoftwareKeyboardService.Activity = this;
         }
 
         /// <inheritdoc/>

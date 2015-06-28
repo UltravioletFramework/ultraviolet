@@ -78,8 +78,9 @@
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\Dependencies\Android\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="org.libsdl.app">
-      <HintPath>..\Dependencies\Android\org.libsdl.app.dll</HintPath>
+    <Reference Include="Org.Libsdl.App, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Dependencies\Android\Org.Libsdl.App.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -192,7 +193,7 @@
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties ProjectLinkReference="573824f0-2acc-46f4-95ee-79b78b0e36d6" ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" />
+      <UserProperties ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" ProjectLinkReference="573824f0-2acc-46f4-95ee-79b78b0e36d6" />
     </VisualStudio>
   </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

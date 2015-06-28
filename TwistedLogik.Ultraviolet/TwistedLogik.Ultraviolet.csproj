@@ -301,6 +301,7 @@
     <Compile Include="Input\InputBinding.cs" />
     <Compile Include="Input\InputDevice.cs" />
     <Compile Include="Input\GamePadInputBinding.cs" />
+    <Compile Include="Input\KeyboardMode.cs" />
     <Compile Include="Input\MouseInputBinding.cs" />
     <Compile Include="Input\KeyboardInputBinding.cs" />
     <Compile Include="Input\NamespaceDoc.cs" />
@@ -337,6 +338,7 @@
     <Compile Include="Platform\PowerManagementService.cs" />
     <Compile Include="Platform\ScreenDensityBucket.cs" />
     <Compile Include="Platform\ScreenDensityService.cs" />
+    <Compile Include="Input\SoftwareKeyboardService.cs" />
     <Compile Include="Platform\WindowFlags.cs" />
     <Compile Include="Point2D.cs" />
     <Compile Include="Point2F.cs" />

@@ -48,7 +48,7 @@
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <WarningLevel>4</WarningLevel>
-  </PropertyGroup>  
+  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)' == 'Production' And '$(OS)' != 'Unix'">
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
@@ -68,6 +68,7 @@
   <ItemGroup>
     <Compile Include="Graphics\DesktopSurfaceSaver.cs" />
     <Compile Include="Graphics\DesktopSurfaceSource.cs" />
+    <Compile Include="Input\DesktopSoftwareKeyboardService.cs" />
     <Compile Include="Platform\DesktopIconLoader.cs" />
     <Compile Include="Platform\DesktopScreenDensityService.cs" />
     <Compile Include="Platform\DesktopScreenOrientationService.cs" />
@@ -92,6 +93,7 @@
       <Link>TwistedLogik.Public.snk</Link>
     </None>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

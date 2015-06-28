@@ -43,8 +43,9 @@
   <ItemGroup>
     <Reference Include="Mono.Android" />
     <Reference Include="mscorlib" />
-    <Reference Include="org.libsdl.app">
-      <HintPath>..\Dependencies\SDL2\Android\org.libsdl.app.dll</HintPath>
+    <Reference Include="Org.Libsdl.App, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Dependencies\SDL2\Android\Org.Libsdl.App.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -76,8 +77,8 @@
     <Compile Include="..\UvDebugSandbox\UI\UIScreenService.cs">
       <Link>UI\UIScreenService.cs</Link>
     </Compile>
-    <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Resources\Resource.Designer.cs" />
   </ItemGroup>
   <ItemGroup>
     <AndroidNativeLibrary Include="..\Dependencies\BASS\Android\armeabi-v7a\libbass.so">
@@ -214,12 +215,12 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="..\UvDebugSandbox\Content\UI\DefaultUI-mdpi.png">
+    <None Include="..\UvDebugSandbox\Content\UI\DefaultUI-mdpi.png">
       <Link>Content\UI\DefaultUI-mdpi.png</Link>
-    </Content>
-    <Content Include="..\UvDebugSandbox\Content\UI\DefaultUIFont-mdpi.xml">
+    </None>
+    <None Include="..\UvDebugSandbox\Content\UI\DefaultUIFont-mdpi.xml">
       <Link>Content\UI\DefaultUIFont-mdpi.xml</Link>
-    </Content>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <ProjectExtensions>

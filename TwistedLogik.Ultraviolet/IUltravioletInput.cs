@@ -16,9 +16,14 @@ namespace TwistedLogik.Ultraviolet
     public interface IUltravioletInput : IUltravioletSubsystem
     {
         /// <summary>
-        /// Displays the software keyboard, if one is available.
+        /// Displays the software keyboard, if one is available, using <see cref="KeyboardMode.Text"/> as the keyboard mode.
         /// </summary>
         void ShowSoftwareKeyboard();
+
+        /// <summary>
+        /// Displays the software keyboard, if one is available, using the specified keyboard mode.
+        /// </summary>
+        void ShowSoftwareKeyboard(KeyboardMode mode);
 
         /// <summary>
         /// Hides the software keyboard.

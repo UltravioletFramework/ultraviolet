@@ -2,6 +2,8 @@
 using TwistedLogik.Ultraviolet.Android.Platform;
 using TwistedLogik.Ultraviolet.Graphics;
 using TwistedLogik.Ultraviolet.Platform;
+using TwistedLogik.Ultraviolet.Input;
+using TwistedLogik.Ultraviolet.Android.Input;
 
 namespace TwistedLogik.Ultraviolet.Android
 {
@@ -23,6 +25,9 @@ namespace TwistedLogik.Ultraviolet.Android
             factory.SetFactoryMethod<FileSystemServiceFactory>(() => new FileSystemService());
             factory.SetFactoryMethod<ScreenRotationServiceFactory>((display) => new AndroidScreenRotationService(display));
             factory.SetFactoryMethod<ScreenDensityServiceFactory>((display) => new AndroidScreenDensityService(display));
+
+            var softwareKeyboardService = new AndroidSoftwareKeyboardService();
+            factory.SetFactoryMethod<SoftwareKeyboardServiceFactory>(() => softwareKeyboardService);
         }
     }
 }

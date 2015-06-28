@@ -2,6 +2,8 @@
 using TwistedLogik.Ultraviolet.Desktop.Platform;
 using TwistedLogik.Ultraviolet.Graphics;
 using TwistedLogik.Ultraviolet.Platform;
+using TwistedLogik.Ultraviolet.Input;
+using TwistedLogik.Ultraviolet.Desktop.Input;
 
 namespace TwistedLogik.Ultraviolet.Desktop
 {
@@ -23,6 +25,9 @@ namespace TwistedLogik.Ultraviolet.Desktop
             factory.SetFactoryMethod<FileSystemServiceFactory>(() => new FileSystemService());
             factory.SetFactoryMethod<ScreenRotationServiceFactory>((display) => new DesktopScreenOrientationService(display));
             factory.SetFactoryMethod<ScreenDensityServiceFactory>((display) => new DesktopScreenDensityService(display));
+
+            var softwareKeyboardService = new DesktopSoftwareKeyboardService();
+            factory.SetFactoryMethod<SoftwareKeyboardServiceFactory>(() => softwareKeyboardService);
         }
     }
 }

@@ -28,4 +28,4 @@ cp "../../Binaries/Android/Release/TwistedLogik.Ultraviolet.SDL2.dll" Android/Tw
 cp "../../Binaries/Android/Release/TwistedLogik.Ultraviolet.BASS.dll" Android/TwistedLogik.Ultraviolet.BASS.dll
 cp "../../Binaries/Android/Release/TwistedLogik.Ultraviolet.Android.dll" Android/TwistedLogik.Ultraviolet.Android.dll
 cp "../../Binaries/Android/Release/TwistedLogik.Ultraviolet.UI.Presentation.dll" Android/TwistedLogik.Ultraviolet.UI.Presentation.dll
-cp "../../Binaries/Android/Release/org.libsdl.app.dll" Android/org.libsdl.app.dll
+cp "../../Binaries/Android/Release/Org.Libsdl.App.dll" Android/Org.Libsdl.App.dll
