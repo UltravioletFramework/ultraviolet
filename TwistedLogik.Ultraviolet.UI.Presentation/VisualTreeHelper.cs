@@ -56,6 +56,30 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Walks the visual tree to determine the visual root of the specified object.
+        /// </summary>
+        /// <param name="dobj">The object for which to retrieve the visual root.</param>
+        /// <returns>The visual root of <paramref name="dobj"/>.</returns>
+        public static DependencyObject GetRoot(DependencyObject dobj)
+        {
+            Contract.Require(dobj, "dobj");
+
+            var current = dobj;
+            var parent = default(DependencyObject);
+
+            while (current != null)
+            {
+                parent = VisualTreeHelper.GetParent(current);
+                if (parent == null)
+                    return current;
+
+                current = VisualTreeHelper.GetParent(current);
+            }
+
+            return null;
+        }
+
+        /// <summary>
         /// Gets the parent of the specified visual object.
         /// </summary>
         /// <param name="dobj">The object for which to retrieve a parent.</param>

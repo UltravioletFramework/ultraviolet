@@ -24,8 +24,22 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <param name="placementTarget">The popup's placement target, if it has one.</param>
         public void UpdateTransform(UIElement placementTarget)
         {
-            inheritedRenderTransform = (placementTarget == null) ? Matrix.Identity :
-                placementTarget.GetTransformToAncestorMatrix(placementTarget.View.LayoutRoot);
+            if (placementTarget == null)
+            {
+                inheritedRenderTransform = Matrix.Identity;
+            }
+            else
+            {
+                var visualRoot = VisualTreeHelper.GetRoot(placementTarget) as Visual;
+                if (visualRoot != null)
+                {
+                    inheritedRenderTransform = placementTarget.GetTransformToAncestorMatrix(visualRoot);
+                }
+                else
+                {
+                    inheritedRenderTransform = Matrix.Identity;
+                }
+            }
         }
 
         /// <summary>
