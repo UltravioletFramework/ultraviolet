@@ -38,7 +38,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 invalidate(current);
 
                 parent = VisualTreeHelper.GetParent(current) as UIElement;
-                if (parent == null)
+                if (parent == null || !bubble)
                 {
                     var entry = new Entry(current.LayoutDepth, current);
                     if (queue.ContainsKey(entry))
