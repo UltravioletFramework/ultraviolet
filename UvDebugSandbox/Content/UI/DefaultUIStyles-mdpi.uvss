@@ -12,7 +12,7 @@
 
 View
 {
-	blank-image: #Global:Textures:DefaultUI 220 593 30 30;
+	blank-image: #Global:Textures:DefaultUI 431 684 30 48;
 }
 
 Button, RepeatButton, ToggleButton
@@ -41,12 +41,12 @@ ToggleButton
 
 	trigger property checked = { false }, mouse-over = { true }
 	{
-		set source-image (*:trigger-root > Grid > .button-background) { #Global:Textures:DefaultUI 1 627 71 33 4 4 4 4 }	
+		set source-image (*:trigger-root > Grid > .button-background) { #Global:Textures:DefaultUI 1 660 142 66 8 8 8 8 }	
 	}
 	trigger property checked = { true }
 	{
 		set foreground { #ffaaaaaa }
-		set source-image (*:trigger-root > Grid > .button-background) { #Global:Textures:DefaultUI 1 661 71 33 4 4 4 4 }
+		set source-image (*:trigger-root > Grid > .button-background) { #Global:Textures:DefaultUI 1 727 142 66 8 8 8 8 }
 	}
 }
 
@@ -54,7 +54,7 @@ ToggleButton
 RepeatButton > Grid > .button-background,
 ToggleButton > Grid > .button-background
 {
-	source-image: #Global:Textures:DefaultUI 1 593 71 33 4 4 4 4;
+	source-image: #Global:Textures:DefaultUI 1 593 142 66 8 8 8 8;
 }
 
 @button-to-normal
@@ -91,7 +91,7 @@ ToggleButton > Grid > .button-background
 	{
 		animation source-image
 		{
-			keyframe 0 { #Global:Textures:DefaultUI 1 627 71 33 4 4 4 4 }
+			keyframe 0 { #Global:Textures:DefaultUI 1 339 71 33 4 4 4 4 }
 		}
 	}
 }
@@ -108,7 +108,7 @@ ToggleButton > Grid > .button-background
 	{
 		animation source-image
 		{
-			keyframe 0 { #Global:Textures:DefaultUI 1 661 71 33 4 4 4 4 }
+			keyframe 0 { #Global:Textures:DefaultUI 1 373 71 33 4 4 4 4 }
 		}
 	}
 }
@@ -171,14 +171,14 @@ CheckBox > Grid > .toggle-content
 
 .radiobutton-component > .toggle-box
 {
-	source-image: #Global:Textures:DefaultUI 73 653 16 17;
+	source-image: #Global:Textures:DefaultUI 1 911 32 34;
 	min-width: 16;
 	min-height: 17;
 }
 
 .radiobutton-component > .toggle-mark
 {
-	source-image: #Global:Textures:DefaultUI 90 653 16 17;
+	source-image: #Global:Textures:DefaultUI 34 911 32 34;
 	source-color: #ffcccccc;
 	min-width: 16;
 	min-height: 17;
@@ -186,14 +186,14 @@ CheckBox > Grid > .toggle-content
 
 .checkbox-component > .toggle-box
 {
-	source-image: #Global:Textures:DefaultUI 73 635 16 17;
+	source-image: #Global:Textures:DefaultUI 1 876 32 34;
 	min-width: 16;
-	min-height: 16;
+	min-height: 17;
 }
 
 .checkbox-component > .toggle-mark
 {
-	source-image: #Global:Textures:DefaultUI 90 635 16 17;
+	source-image: #Global:Textures:DefaultUI 34 876 32 34;
 	source-color: #ffcccccc;
 	min-width: 16;
 	min-height: 17;
@@ -271,7 +271,7 @@ CheckBox > Grid > .toggle-content
 	{
 		animation source-image
 		{
-			keyframe 0 { #Global:Textures:DefaultUI 124 635 16 17 }
+			keyframe 0 { #Global:Textures:DefaultUI 100 876 32 34 }
 		}
 		animation visibility
 		{
@@ -284,9 +284,9 @@ TextBox
 {
 	padding: 10 8 10 8;
 
-	caret-image: #Global:Textures:DefaultUI 220 593 30 30;
+	caret-image: #Global:Textures:DefaultUI 431 684 30 48;
 	caret-color: #ffffffff;
-	selection-image: #Global:Textures:DefaultUI 220 593 30 30;
+	selection-image: #Global:Textures:DefaultUI 431 684 30 48;
 	selection-color: #ff528cc9;
 
 	transition (focus, focused): textbox-to-focused;
@@ -295,7 +295,7 @@ TextBox
 
 .textbox-component .textbox-background
 {
-	source-image: #Global:Textures:DefaultUI 12 726 62 31 4 4 4 4;
+	source-image: #Global:Textures:DefaultUI 144 788 124 62 8 8 8 8;
 }
 
 @textbox-to-focused
@@ -345,12 +345,12 @@ VSlider .track-thumb
 
 HSlider .track-thumb .button-background
 {
-	source-image: #Global:Textures:DefaultUI 12 706 10 19;
+	source-image: #Global:Textures:DefaultUI 430 593 20 38;
 }
 
 VSlider .track-thumb .button-background
 {
-	source-image: #Global:Textures:DefaultUI 23 706 19 10;
+	source-image: #Global:Textures:DefaultUI 451 593 38 20;
 }
 
 HSlider .track-thumb, VSlider .track-thumb
@@ -364,13 +364,13 @@ HSlider .track-thumb, VSlider .track-thumb
 
 HSlider .slider-track-background
 {
-	source-image: #Global:Textures:DefaultUI 1 695 71 10 4 4;
+	source-image: #Global:Textures:DefaultUI 358 856 106 20 8 8;
 	height: 10;
 }
 
 VSlider .slider-track-background
 {
-	source-image: #Global:Textures:DefaultUI 1 706 10 71 4 4 vertical;
+	source-image: #Global:Textures:DefaultUI 337 788 20 106 8 8 vertical;
 	width: 10;
 }
 
@@ -382,8 +382,8 @@ Track Button, Track RepeatButton
 
 ProgressBar
 {
-	bar-image: #Global:Textures:DefaultUI 73 593 49 20 10 10 tile-center;
-	fill-image: #Global:Textures:DefaultUI 73 614 49 20 10 10 tile-center;
+	bar-image: #Global:Textures:DefaultUI 1 794 142 40 20 20 tile-center;
+	fill-image: #Global:Textures:DefaultUI 1 835 142 40 20 20 tile-center;
 	fill-color: #ff5ea0d2;
 	height: 20;
 }
@@ -393,12 +393,12 @@ ProgressBar
 	border-thickness: 0;
 }
 
-.listbox-scrollviewer > Grid > .scrollviewer-background
+.listbox-scrollviewer > Grid > Border > Canvas > .scrollviewer-background
 {
-	source-image: #Global:Textures:DefaultUI 147 736 62 31 4 4 4 4;
+	source-image: #Global:Textures:DefaultUI 144 851 124 62 8 8 8 8;
 }
 
-.listbox-scrollviewer > Grid > Border > ScrollContentPresenter
+.listbox-scrollviewer > Grid > Border > Canvas > ScrollContentPresenter
 {
 	margin: 1 2 1 2;
 }
@@ -410,7 +410,7 @@ ProgressBar
 
 .listbox-scrollviewer > Grid > HScrollBar
 {
-	margin: 0 1 0 0;
+	margin: 0 2 0 0;
 }
 
 .listbox-border
@@ -432,7 +432,7 @@ ListBoxItem
 
 .listboxitem-highlight
 {
-	source-image: #Global:Textures:DefaultUI 11 778 8 15 1 1;
+	source-image: #Global:Textures:DefaultUI 431 632 30 50;
 }
 
 ComboBox
@@ -465,7 +465,7 @@ ComboBox > Grid > ContentPresenter
 
 .combobox-dropdown-background
 {
-	source-image: #Global:Textures:DefaultUI 1 778 9 9 4 4 4 4;
+	source-image: #Global:Textures:DefaultUI 144 914 18 18 8 8 8 8;
 }
 
 .combobox-dropdown-border
@@ -485,7 +485,7 @@ ComboBox > Grid > ContentPresenter
 
 .combobox-arrow
 {
-	source-image: #Global:Textures:DefaultUI 44 758 11 9;
+	source-image: #Global:Textures:DefaultUI 224 915 22 18;
 	margin: 0 0 10 0;
 	width: 11;
 	height: 9;
@@ -524,7 +524,7 @@ ComboBox > Grid > ContentPresenter
 
 .comboboxitem-highlight
 {
-	source-image: #Global:Textures:DefaultUI 11 778 8 15 1 1;
+	source-image: #Global:Textures:DefaultUI 431 632 30 50;
 }
 
 NumericUpDown
@@ -548,12 +548,12 @@ NumericUpDown
 
 .updown-button-up > Grid > .button-background
 {
-	source-image: #Global:Textures:DefaultUI 75 671 71 32 4 4 4 4;
+	source-image: #Global:Textures:DefaultUI 144 593 142 64 8 8 8 8;
 }
 
 .updown-button-up-arrow
 {
-	source-image: #Global:Textures:DefaultUI 12 770 5 5;
+	source-image: #Global:Textures:DefaultUI 163 956 10 10;
 	width: 5;
 	height: 5;
 }
@@ -585,7 +585,7 @@ NumericUpDown
 	{
 		animation source-image
 		{
-			keyframe 0 { #Global:Textures:DefaultUI 147 671 71 32 4 4 4 4 }
+			keyframe 0 { #Global:Textures:DefaultUI 144 658 142 64 8 8 8 8 }
 		}
 	}
 	target Image (*:storyboard-root > .updown-button-up-arrow)
@@ -602,7 +602,7 @@ NumericUpDown
 	{
 		animation source-image
 		{
-			keyframe 0 { #Global:Textures:DefaultUI 75 736 71 32 4 4 4 4 }
+			keyframe 0 { #Global:Textures:DefaultUI 144 723 142 64 8 8 8 8 }
 		}
 	}
 	target Image (*:storyboard-root > .updown-button-up-arrow)
@@ -634,12 +634,12 @@ NumericUpDown
 
 .updown-button-down > Grid > .button-background
 {
-	source-image: #Global:Textures:DefaultUI 75 704 71 32 4 4 4 4;
+	source-image: #Global:Textures:DefaultUI 287 593 142 64 8 8 8 8;
 }
 
 .updown-button-down-arrow
 {
-	source-image: #Global:Textures:DefaultUI 18 770 5 5;
+	source-image: #Global:Textures:DefaultUI 174 956 10 10;
 	width: 5;
 	height: 5;
 }
@@ -671,7 +671,7 @@ NumericUpDown
 	{
 		animation source-image
 		{
-			keyframe 0 { #Global:Textures:DefaultUI 406 112 71 32 4 4 4 4 }
+			keyframe 0 { #Global:Textures:DefaultUI 287 658 142 64 8 8 8 8 }
 		}
 	}
 	target Image (*:storyboard-root > .updown-button-down-arrow)
@@ -688,7 +688,7 @@ NumericUpDown
 	{
 		animation source-image
 		{
-			keyframe 0 { #Global:Textures:DefaultUI 147 704 71 32 4 4 4 4 }
+			keyframe 0 { #Global:Textures:DefaultUI 287 723 142 64 8 8 8 8 }
 		}
 	}
 	target Image (*:storyboard-root > .updown-button-down-arrow)
@@ -736,31 +736,31 @@ VScrollBar
 
 .scroll-button-up-arrow
 {
-	source-image: #Global:Textures:DefaultUI 31 770 9 6;
+	source-image: #Global:Textures:DefaultUI 189 937 18 12;
 	width: 9;
 	height: 6;
 }
 
 .scroll-button-down-arrow
 {
-	source-image: #Global:Textures:DefaultUI 31 777 9 6;
+	source-image: #Global:Textures:DefaultUI 208 937 18 12;
 	width: 9;
 	height: 6;
 }
 
 .scroll-button-up > Grid > .button-background
 {
-	source-image: #Global:Textures:DefaultUI 57 758 17 21;
+	source-image: #Global:Textures:DefaultUI 269 788 34 42;
 }
 
 .scroll-button-down > Grid > .button-background
 {
-	source-image: #Global:Textures:DefaultUI 57 792 17 21;
+	source-image: #Global:Textures:DefaultUI 269 852 34 42;
 }
 
 .scroll-track-bg-vertical
 {
-	source-image: #Global:Textures:DefaultUI 57 780 17 11 8 4 8 4;
+	source-image: #Global:Textures:DefaultUI 269 830 34 22 16 8 16 8;
 }
 
 VScrollBar > Grid > Track > .track-thumb
@@ -771,7 +771,7 @@ VScrollBar > Grid > Track > .track-thumb
 
 VScrollBar > Grid > Track > .track-thumb > Grid > .button-background
 {
-	source-image: #Global:Textures:DefaultUI 57 814 17 55 8 8 vertical;
+	source-image: #Global:Textures:DefaultUI 304 788 32 106 16 16 vertical;
 }
 
 HScrollBar
@@ -794,31 +794,31 @@ HScrollBar
 
 .scroll-button-left-arrow
 {
-	source-image: #Global:Textures:DefaultUI 24 780 6 9;
+	source-image: #Global:Textures:DefaultUI 163 937 12 18;
 	width: 6;
 	height: 9;
 }
 
 .scroll-button-right-arrow
 {
-	source-image: #Global:Textures:DefaultUI 24 770 6 9;
+	source-image: #Global:Textures:DefaultUI 176 937 12 18;
 	width: 6;
 	height: 9;
 }
 
 .scroll-button-left > Grid > .button-background
 {
-	source-image: #Global:Textures:DefaultUI 1 804 21 17;
+	source-image: #Global:Textures:DefaultUI 358 788 42 34;
 }
 
 .scroll-button-right > Grid > .button-background
 {
-	source-image: #Global:Textures:DefaultUI 34 804 21 17;
+	source-image: #Global:Textures:DefaultUI 422 788 42 34;
 }
 
 .scroll-track-bg-horizontal
 {
-	source-image: #Global:Textures:DefaultUI 22 804 11 17 4 8 4 8;
+	source-image: #Global:Textures:DefaultUI 400 788 22 34 8 16 8 16;
 }
 
 HScrollBar > Grid > Track > .track-thumb
@@ -829,7 +829,7 @@ HScrollBar > Grid > Track > .track-thumb
 
 HScrollBar > Grid > Track > .track-thumb > Grid > .button-background
 {
-	source-image: #Global:Textures:DefaultUI 1 822 55 17 8 8;
+	source-image: #Global:Textures:DefaultUI 358 823 106 32 16 16;
 }
 
 @scrollbutton-to-normal
