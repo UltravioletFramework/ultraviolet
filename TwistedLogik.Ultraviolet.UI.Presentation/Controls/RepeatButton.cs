@@ -3,6 +3,7 @@ using System.Runtime.InteropServices;
 using System.Security;
 using TwistedLogik.Ultraviolet.Input;
 using TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives;
+using TwistedLogik.Ultraviolet.UI.Presentation.Input;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 {
@@ -145,9 +146,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             var input = Ultraviolet.GetInput();
             if (input.IsMouseSupported())
             {
-                var mouse = input.GetMouse();
-                if (!AbsoluteBounds.Contains(mouse.X, mouse.Y))
+                var position = Mouse.GetPosition(this);
+                if (!Bounds.Contains(position))
+                {
                     return;
+                }
             }
 
             repeatTimer += time.ElapsedTime.TotalMilliseconds;
