@@ -34,7 +34,7 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
+    <DefineConstants>TRACE;ANDROID</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AndroidUseSharedRuntime>False</AndroidUseSharedRuntime>
@@ -221,6 +221,9 @@
     <None Include="..\UvDebugSandbox\Content\UI\DefaultUIFont-mdpi.xml">
       <Link>Content\UI\DefaultUIFont-mdpi.xml</Link>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <LinkDescription Include="XamarinLinkDescription.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <ProjectExtensions>
