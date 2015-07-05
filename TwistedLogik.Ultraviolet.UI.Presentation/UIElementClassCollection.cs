@@ -101,6 +101,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         private readonly UIElement owner;
 
         // State values.
-        private readonly HashSet<String> classes = new HashSet<String>(StringComparer.InvariantCultureIgnoreCase);
+        private readonly HashSet<String> classes = new HashSet<String>(StringComparer.OrdinalIgnoreCase);
     }
 }
