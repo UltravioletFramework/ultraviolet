@@ -171,6 +171,9 @@
     <None Include="..\UltravioletSample12\Content\Manifests\Global.manifest">
       <Link>Content\Manifest\Global.manifest</Link>
     </None>
+    <None Include="..\UltravioletSample12\Content\UI\DefaultUIStyles-mdpi.uvss">
+      <Link>Content\UI\DefaultUIStyles-mdpi.uvss</Link>
+    </None>
     <None Include="..\UltravioletSample12\Content\UI\DefaultUIStyles.uvss">
       <Link>Content\UI\DefaultUIStyles.uvss</Link>
     </None>
@@ -215,10 +218,18 @@
   <ItemGroup>
     <LinkDescription Include="XamarinLinkDescription.xml" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\UltravioletSample12\Content\UI\DefaultUI-mdpi.png">
+      <Link>Content\UI\DefaultUI-mdpi.png</Link>
+    </Content>
+    <Content Include="..\UltravioletSample12\Content\UI\DefaultUIFont-mdpi.xml">
+      <Link>Content\UI\DefaultUIFont-mdpi.xml</Link>
+    </Content>
+  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties ProjectLinkReference="844f907a-e757-4d55-8b66-13a2ca51467d" ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" />
+      <UserProperties ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" ProjectLinkReference="844f907a-e757-4d55-8b66-13a2ca51467d" />
     </VisualStudio>
   </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

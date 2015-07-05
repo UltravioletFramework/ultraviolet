@@ -91,7 +91,7 @@ ToggleButton > Grid > .button-background
 	{
 		animation source-image
 		{
-			keyframe 0 { #Global:Textures:DefaultUI 1 339 71 33 4 4 4 4 }
+			keyframe 0 { #Global:Textures:DefaultUI 1 660 142 66 8 8 8 8 }
 		}
 	}
 }
@@ -108,7 +108,7 @@ ToggleButton > Grid > .button-background
 	{
 		animation source-image
 		{
-			keyframe 0 { #Global:Textures:DefaultUI 1 373 71 33 4 4 4 4 }
+			keyframe 0 { #Global:Textures:DefaultUI 1 727 142 66 8 8 8 8 }
 		}
 	}
 }
