@@ -42,6 +42,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
+        /// Gets the actual maximum height of the combo box's drop-down list, after
+        /// considering the amount of available space in the current window.
+        /// </summary>
+        public Double ActualMaxDropDownHeight
+        {
+            get { return GetValue<Double>(ActualMaxDropDownHeightProperty); }
+        }
+
+        /// <summary>
         /// Gets or sets a value indicating whether the combo box's drop-down list is currently open.
         /// </summary>
         public Boolean IsDropDownOpen
@@ -83,11 +92,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         public static readonly DependencyProperty MaxDropDownHeightProperty = DependencyProperty.Register("MaxDropDownHeight", "max-dropdown-height", typeof(Double), typeof(ComboBox),
             new PropertyMetadata<Double>(1080.0 / 3.0, PropertyMetadataOptions.None));
 
+        /// <summary>
+        /// The private access key for the <see cref="ActualMaxDropDownHeight"/> read-only dependency property.
+        /// </summary>
+        /// <remarks>The styling name of this dependency property is 'selection-box-item'.</remarks>
         private static readonly DependencyPropertyKey ActualMaxDropDownHeightPropertyKey = DependencyProperty.RegisterReadOnly("ActualMaxDropDownHeight", typeof(Double), typeof(ComboBox),
             new PropertyMetadata<Double>());
 
         /// <summary>
-        /// Iden
+        /// Identifies the <see cref="ActualMaxDropDownHeight"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty ActualMaxDropDownHeightProperty = ActualMaxDropDownHeightPropertyKey.DependencyProperty;
 
