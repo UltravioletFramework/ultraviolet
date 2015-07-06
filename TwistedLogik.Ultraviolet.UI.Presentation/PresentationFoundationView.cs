@@ -1234,6 +1234,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                     var mouseDownData = new RoutedEventData(dobj);
                     Mouse.RaisePreviewMouseDown(dobj, device, button, ref mouseDownData);
                     Mouse.RaiseMouseDown(dobj, device, button, ref mouseDownData);
+
+                    if (!Generic.IsTouchDeviceAvailable && button == MouseButton.Left)
+                    {
+                        var genericInteractionData = new RoutedEventData(dobj);
+                        Generic.RaisePreviewGenericInteraction(dobj, device, ref genericInteractionData);
+                        Generic.RaiseGenericInteraction(dobj, device, ref genericInteractionData);
+                    }
                 }
             }
         }
@@ -1332,13 +1339,20 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             var position = GetTouchCoordinates(x, y);
 
-            var recipient = HitTest(position) as DependencyObject;
+            var recipient = elementUnderMouse as DependencyObject;
             if (recipient == null)
                 return;
 
             var tapData = new RoutedEventData(recipient);
             Touch.RaisePreviewTap(recipient, device, fingerID, position.X, position.Y, ref tapData);
             Touch.RaiseTap(recipient, device, fingerID, position.X, position.Y, ref tapData);
+
+            if (fingerID == 0)
+            {
+                var genericInteractionData = new RoutedEventData(recipient);
+                Generic.RaisePreviewGenericInteraction(recipient, device, ref genericInteractionData);
+                Generic.RaiseGenericInteraction(recipient, device, ref genericInteractionData);
+            }
         }
 
         /// <summary>
@@ -1355,6 +1369,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var fingerDownData = new RoutedEventData(recipient);
             Touch.RaisePreviewFingerDown(recipient, device, fingerID, position.X, position.Y, pressure, ref fingerDownData);
             Touch.RaiseFingerDown(recipient, device, fingerID, position.X, position.Y, pressure, ref fingerDownData);
+
+            elementLastTouched = recipient as IInputElement;
         }
 
         /// <summary>
@@ -1364,13 +1380,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             var position = GetTouchCoordinates(x, y);
 
-            var recipient = HitTest(position) as DependencyObject;
+            var recipient = elementLastTouched as DependencyObject;
             if (recipient == null)
                 return;
 
             var fingerUpData = new RoutedEventData(recipient);
             Touch.RaisePreviewFingerUp(recipient, device, fingerID, position.X, position.Y, pressure, ref fingerUpData);
             Touch.RaiseFingerUp(recipient, device, fingerID, position.X, position.Y, pressure, ref fingerUpData);
+
+            elementLastTouched = null;
         }
 
         /// <summary>
@@ -1380,7 +1398,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             var position = GetTouchCoordinates(x, y);
 
-            var recipient = HitTest(position) as DependencyObject;
+            var recipient = elementLastTouched as DependencyObject;
             if (recipient == null)
                 return;
 
@@ -1413,6 +1431,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         private IInputElement elementUnderMouse;
         private IInputElement elementWithMouseCapture;
         private IInputElement elementWithFocus;
+        private IInputElement elementLastTouched;
         private CaptureMode mouseCaptureMode;
         private Boolean hookedGlobalStyleSheetChanged;
 

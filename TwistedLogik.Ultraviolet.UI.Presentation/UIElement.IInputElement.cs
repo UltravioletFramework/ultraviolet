@@ -360,6 +360,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             remove { RemoveHandler(Touch.FingerMotionEvent, value); }
         }
 
+        /// <inheritdoc/>
+        public event UpfGenericInteractionEventHandler PreviewGenericInteraction;
+
+        /// <inheritdoc/>
+        public event UpfGenericInteractionEventHandler GenericInteraction;
+
         /// <summary>
         /// Raises the <see cref="IsKeyboardFocusedChanged"/> event.
         /// </summary>
@@ -654,6 +660,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Invoked by the <see cref="Generic.GenericInteractionEvent"/> attached routed event.
+        /// </summary>
+        /// <param name="device">The input device.</param>
+        /// <param name="data">The routed event metadata for this event invocation.</param>
+        protected virtual void OnGenericInteraction(UltravioletResource device, ref RoutedEventData data)
+        {
+
+        }
+
+        /// <summary>
         /// Registers class handlers for this type's input events.
         /// </summary>
         private static void RegisterInputClassHandlers()
@@ -679,6 +695,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             EventManager.RegisterClassHandler(typeof(UIElement), Touch.FingerDownEvent, new UpfTouchEventHandler(OnFingerDownProxy));
             EventManager.RegisterClassHandler(typeof(UIElement), Touch.FingerUpEvent, new UpfTouchEventHandler(OnFingerUpProxy));
             EventManager.RegisterClassHandler(typeof(UIElement), Touch.FingerMotionEvent, new UpfTouchMotionEventHandler(OnFingerMotionProxy));
+
+            EventManager.RegisterClassHandler(typeof(UIElement), Generic.GenericInteractionEvent, new UpfGenericInteractionEventHandler(OnGenericInteractionProxy));
         }
 
         /// <summary>
@@ -837,6 +855,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             Double x, Double y, Double dx, Double dy, Single pressure, ref RoutedEventData data)
         {
             ((UIElement)element).OnFingerMotion(device, fingerID, x, y, dx, dy, pressure, ref data);
+        }
+
+        /// <summary>
+        /// Invokes the <see cref="OnGenericInteraction"/> method.
+        /// </summary>
+        private static void OnGenericInteractionProxy(DependencyObject element, UltravioletResource device, ref RoutedEventData data)
+        {
+            ((UIElement)element).OnGenericInteraction(device, ref data);
         }
 
         /// <summary>

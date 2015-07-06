@@ -213,16 +213,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <inheritdoc/>
         protected override void OnMouseWheel(MouseDevice device, Double x, Double y, ref RoutedEventData data)
         {
-            if (x != 0 && PART_HScroll != null)
+            if (!data.Handled)
             {
-                PART_HScroll.Value += ScrollDeltaMouseWheel * x;
+                if (x != 0 && PART_HScroll != null)
+                {
+                    PART_HScroll.Value += ScrollDeltaMouseWheel * x;
+                }
+                if (y != 0 && PART_VScroll != null)
+                {
+                    PART_VScroll.Value += ScrollDeltaMouseWheel * -y;
+                }
+                data.Handled = true;
             }
-            if (y != 0 && PART_VScroll != null)
-            {
-                PART_VScroll.Value += ScrollDeltaMouseWheel * -y;
-            }
-            data.Handled = true;
-
             base.OnMouseWheel(device, x, y, ref data);
         }
 
@@ -253,6 +255,24 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             }
 
             base.OnKeyDown(device, key, modifiers, ref data);
+        }
+
+        /// <inheritdoc/>
+        protected override void OnFingerMotion(TouchDevice device, Int64 fingerID, Double x, Double y, Double dx, Double dy, Single pressure, ref RoutedEventData data)
+        {
+            if (!data.Handled && fingerID == 0)
+            {
+                if (dx != 0 && PART_HScroll != null)
+                {
+                    PART_HScroll.Value -= dx;
+                }
+                if (dy != 0 && PART_VScroll != null)
+                {
+                    PART_VScroll.Value -= dy;
+                }
+                data.Handled = true;
+            }
+            base.OnFingerMotion(device, fingerID, x, y, dx, dy, pressure, ref data);
         }
 
         /// <summary>

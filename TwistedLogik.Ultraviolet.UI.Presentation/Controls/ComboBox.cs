@@ -200,6 +200,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         protected override void OnSelectionChanged()
         {
             UpdateSelectionBox();
+
+            IsDropDownOpen = false;
+
             base.OnSelectionChanged();
         }
 
@@ -209,18 +212,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             UpdateVisualState();
             base.OnIsMouseOverChanged();
         }
-
-        /// <inheritdoc/>
-        protected override void OnMouseDown(MouseDevice device, MouseButton button, ref RoutedEventData data)
-        {
-            if (button == MouseButton.Left)
-            {
-                IsDropDownOpen = false;
-                data.Handled = true;
-            }
-            base.OnMouseDown(device, button, ref data);
-        }
-
+        
         /// <summary>
         /// Raises the <see cref="DropDownOpened"/> event.
         /// </summary>

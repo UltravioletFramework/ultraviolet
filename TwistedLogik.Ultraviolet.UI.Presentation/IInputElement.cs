@@ -210,6 +210,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Occurs when a finger moves across the element via a touch device.
         /// </summary>
-        event UpfTouchMotionEventHandler FingerMotion;        
+        event UpfTouchMotionEventHandler FingerMotion;
+
+        /// <summary>
+        /// Occurs when the element is tapped (if a touch device is connected) or the primary 
+        /// mouse button is pressed (if not).
+        /// </summary>
+        event UpfGenericInteractionEventHandler PreviewGenericInteraction;
+
+        /// <summary>
+        /// Occurs when the element is tapped (if a touch device is connected) or the primary 
+        /// mouse button is pressed (if not).
+        /// </summary>
+        event UpfGenericInteractionEventHandler GenericInteraction;
     }
 }

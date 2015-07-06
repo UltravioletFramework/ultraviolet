@@ -39,22 +39,20 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             new PropertyMetadata<Boolean>(CommonBoxedValues.Boolean.False, PropertyMetadataOptions.None, HandleIsSelectedChanged));
 
         /// <inheritdoc/>
-        protected override void OnMouseDown(MouseDevice device, MouseButton button, ref RoutedEventData data)
+        protected override void OnGenericInteraction(UltravioletResource device, ref RoutedEventData data)
         {
-            if (!data.Handled && button == MouseButton.Left)
+            if (!data.Handled)
             {
                 var list = ItemsControl.ItemsControlFromItemContainer(this) as ListBox;
                 if (list != null)
                 {
                     list.HandleItemClicked(this);
                 }
+                data.Handled = true;
             }
-
-            data.Handled = true;
-
-            base.OnMouseDown(device, button, ref data);
+            base.OnGenericInteraction(device, ref data);
         }
-
+        
         /// <inheritdoc/>
         protected override void OnMouseEnter(MouseDevice device, ref RoutedEventData data)
         {
@@ -101,7 +99,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             get;
             set;
         }
-
+        
         /// <summary>
         /// Occurs when the value of the <see cref="IsSelected"/> dependency property changes.
         /// </summary>

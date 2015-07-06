@@ -424,7 +424,7 @@ ListBoxItem
 	height: 25;
 	content-valign: Center;
 
-	trigger event Mouse.mouse-down (handled)
+	trigger event Generic.generic-interaction (handled)
 	{
 		play-sfx { #Global:SoundEffects:Click1 }
 	}
@@ -446,8 +446,8 @@ ComboBoxItem
 	height: 25;
 	padding: 10 0 10 0;
 	content-valign: Center;
-
-	trigger event Mouse.mouse-down (handled)
+	
+	trigger event Generic.generic-interaction (handled)
 	{
 		play-sfx { #Global:SoundEffects:Click1 }
 	}

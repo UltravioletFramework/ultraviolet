@@ -479,6 +479,9 @@
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Input\FocusNavigationDirection.cs">
       <Link>Input\FocusNavigationDirection.cs</Link>
     </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Input\Generic.cs">
+      <Link>Input\Generic.cs</Link>
+    </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Input\IInputElementHelper.cs">
       <Link>Input\IInputElementHelper.cs</Link>
     </Compile>
@@ -1012,7 +1015,7 @@
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties ProjectLinkReference="7379d9e1-bb01-4b05-b4f7-5d39b393348f" ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" />
+      <UserProperties ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" ProjectLinkReference="7379d9e1-bb01-4b05-b4f7-5d39b393348f" />
     </VisualStudio>
   </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
