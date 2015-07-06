@@ -122,7 +122,9 @@
     <Compile Include="DrawingContext.ClipStencilStates.cs" />
     <Compile Include="HitTestUtil.cs" />
     <Compile Include="IIndexable.cs" />
+    <Compile Include="Input\Touch.TouchState.cs" />
     <Compile Include="Input\NamespaceDoc.cs" />
+    <Compile Include="Input\Touch.cs" />
     <Compile Include="Media\GeneralTransform.cs" />
     <Compile Include="Media\IdentityTransform.cs" />
     <Compile Include="Media\MatrixTransform.cs" />

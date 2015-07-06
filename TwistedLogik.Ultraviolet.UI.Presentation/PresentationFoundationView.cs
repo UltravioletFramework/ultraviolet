@@ -41,6 +41,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             HookKeyboardEvents();
             HookMouseEvents();
+            HookTouchEvents();
         }
 
         /// <summary>
@@ -743,6 +744,22 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Hooks into Ultraviolet's touch input events.
+        /// </summary>
+        private void HookTouchEvents()
+        {
+            var input = Ultraviolet.GetInput();
+            if (input.IsTouchSupported())
+            {
+                var touch           = input.GetTouchDevice();
+                touch.Tap          += touch_Tap;
+                touch.FingerUp     += touch_FingerUp;
+                touch.FingerDown   += touch_FingerDown;
+                touch.FingerMotion += touch_FingerMotion;
+            }
+        }
+
+        /// <summary>
         /// Unhooks from the <see cref="PresentationFoundation.GlobalStyleSheetChanged"/> event.
         /// </summary>
         private void UnhookGlobalStyleSheetChanged()
@@ -785,6 +802,22 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 mouse.Click          -= mouse_Click;
                 mouse.DoubleClick    -= mouse_DoubleClick;
                 mouse.WheelScrolled  -= mouse_WheelScrolled;
+            }
+        }
+
+        /// <summary>
+        /// Unhooks from Ultraviolet's touch input events.
+        /// </summary>
+        private void UnhookTouchEvents()
+        {
+            var input = Ultraviolet.GetInput();
+            if (input.IsTouchSupported())
+            {
+                var touch           = input.GetTouchDevice();
+                touch.Tap          -= touch_Tap;
+                touch.FingerUp     -= touch_FingerUp;
+                touch.FingerDown   -= touch_FingerDown;
+                touch.FingerMotion -= touch_FingerMotion;
             }
         }
 
@@ -946,6 +979,35 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
                 UpdateIsMouseOver(elementUnderMouse as UIElement);
             }
+        }
+
+        /// <summary>
+        /// Converts normalized touch device coordinates to view-relative coordinates.
+        /// </summary>
+        private Point2D GetTouchCoordinates(Single x, Single y)
+        {
+            var windowSize = Window.ClientSize;
+
+            var xRelativeToWindow = windowSize.Width * x;
+            var yRelativeToWindow = windowSize.Height * y;
+
+            var xRelativeToView = xRelativeToWindow - this.X;
+            var yRelativeToView = yRelativeToWindow - this.Y;
+
+            return (Point2D)Display.PixelsToDips(new Vector2(xRelativeToView, yRelativeToView));
+        }
+
+        /// <summary>
+        /// Converts a normalized touch delta to device-independent pixels.
+        /// </summary>
+        private Point2D GetTouchDelta(Single x, Single y)
+        {
+            var windowSize = Window.ClientSize;
+
+            var xPixels = windowSize.Width * x;
+            var yPixels = windowSize.Height * y;
+
+            return (Point2D)Display.PixelsToDips(new Vector2(xPixels, yPixels));
         }
 
         /// <summary>
@@ -1261,6 +1323,72 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                     Mouse.RaiseMouseWheel(dobj, device, dipsX, dipsY, ref mouseWheelData);
                 }
             }
+        }
+
+        /// <summary>
+        /// Handles the <see cref="TouchDevice.Tap"/> event.
+        /// </summary>
+        private void touch_Tap(TouchDevice device, Int64 fingerID, Single x, Single y)
+        {
+            var position = GetTouchCoordinates(x, y);
+
+            var recipient = HitTest(position) as DependencyObject;
+            if (recipient == null)
+                return;
+
+            var tapData = new RoutedEventData(recipient);
+            Touch.RaisePreviewTap(recipient, device, fingerID, position.X, position.Y, ref tapData);
+            Touch.RaiseTap(recipient, device, fingerID, position.X, position.Y, ref tapData);
+        }
+
+        /// <summary>
+        /// Handles the <see cref="TouchDevice.FingerDown"/> event.
+        /// </summary>
+        private void touch_FingerDown(TouchDevice device, Int64 fingerID, Single x, Single y, Single pressure)
+        {
+            var position = GetTouchCoordinates(x, y);
+
+            var recipient = HitTest(position) as DependencyObject;
+            if (recipient == null)
+                return;
+
+            var fingerDownData = new RoutedEventData(recipient);
+            Touch.RaisePreviewFingerDown(recipient, device, fingerID, position.X, position.Y, pressure, ref fingerDownData);
+            Touch.RaiseFingerDown(recipient, device, fingerID, position.X, position.Y, pressure, ref fingerDownData);
+        }
+
+        /// <summary>
+        /// Handles the <see cref="TouchDevice.FingerUp"/> event.
+        /// </summary>
+        private void touch_FingerUp(TouchDevice device, Int64 fingerID, Single x, Single y, Single pressure)
+        {
+            var position = GetTouchCoordinates(x, y);
+
+            var recipient = HitTest(position) as DependencyObject;
+            if (recipient == null)
+                return;
+
+            var fingerUpData = new RoutedEventData(recipient);
+            Touch.RaisePreviewFingerUp(recipient, device, fingerID, position.X, position.Y, pressure, ref fingerUpData);
+            Touch.RaiseFingerUp(recipient, device, fingerID, position.X, position.Y, pressure, ref fingerUpData);
+        }
+
+        /// <summary>
+        /// Handles the <see cref="TouchDevice.FingerMotion"/> event.
+        /// </summary>
+        private void touch_FingerMotion(TouchDevice device, Int64 fingerID, Single x, Single y, Single dx, Single dy, Single pressure)
+        {
+            var position = GetTouchCoordinates(x, y);
+
+            var recipient = HitTest(position) as DependencyObject;
+            if (recipient == null)
+                return;
+
+            var delta = GetTouchDelta(dx, dy);
+
+            var fingerMotionData = new RoutedEventData(recipient);
+            Touch.RaisePreviewFingerMotion(recipient, device, fingerID, position.X, position.Y, delta.X, delta.Y, pressure, ref fingerMotionData);
+            Touch.RaiseFingerMotion(recipient, device, fingerID, position.X, position.Y, delta.X, delta.Y, pressure, ref fingerMotionData);
         }
 
         /// <summary>

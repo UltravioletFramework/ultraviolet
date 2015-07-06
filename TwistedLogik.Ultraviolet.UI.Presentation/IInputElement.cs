@@ -171,5 +171,45 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Occurs when the mouse wheel is scrolled while the cursor is over the element.
         /// </summary>
         event UpfMouseWheelEventHandler MouseWheel;
+
+        /// <summary>
+        /// Occurs when the element is tapped via a touch device.
+        /// </summary>
+        event UpfTouchTapEventHandler PreviewTap;
+
+        /// <summary>
+        /// Occurs when a finger is pressed against the element via a touch device.
+        /// </summary>
+        event UpfTouchEventHandler PreviewFingerDown;
+
+        /// <summary>
+        /// Occurs when a finger is removed from the element via a touch device.
+        /// </summary>
+        event UpfTouchEventHandler PreviewFingerUp;
+
+        /// <summary>
+        /// Occurs when a finger moves across the element via a touch device.
+        /// </summary>
+        event UpfTouchMotionEventHandler PreviewFingerMotion;
+
+        /// <summary>
+        /// Occurs when the element is tapped via a touch device.
+        /// </summary>
+        event UpfTouchTapEventHandler Tap;
+
+        /// <summary>
+        /// Occurs when a finger is pressed against the element via a touch device.
+        /// </summary>
+        event UpfTouchEventHandler FingerDown;
+
+        /// <summary>
+        /// Occurs when a finger is removed from the element via a touch device.
+        /// </summary>
+        event UpfTouchEventHandler FingerUp;
+
+        /// <summary>
+        /// Occurs when a finger moves across the element via a touch device.
+        /// </summary>
+        event UpfTouchMotionEventHandler FingerMotion;        
     }
 }
