@@ -51,7 +51,7 @@ namespace TwistedLogik.Gluon
             {
                 if (!LoadFunction(initializer, function))
                 {
-                    Debug.WriteLine(GluonStrings.CouldNotLoadFunction.Format(function));
+                    VerboseLog(GluonStrings.CouldNotLoadFunction.Format(function));
                 }
             }
 
@@ -327,6 +327,15 @@ namespace TwistedLogik.Gluon
                 return false;
             }
             return true;            
+        }
+
+        /// <summary>
+        /// Writes a message to debug output, but only if the VERBOSE_LOGGING compilation symbol is specified.
+        /// </summary>
+        [Conditional("VERBOSE_LOGGING")]
+        private static void VerboseLog(String str)
+        {
+            Debug.WriteLine(str);
         }
 
         /// <summary>
