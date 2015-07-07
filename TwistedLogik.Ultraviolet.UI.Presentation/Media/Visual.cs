@@ -1,8 +1,7 @@
 ﻿using System;
 using TwistedLogik.Nucleus;
-using TwistedLogik.Ultraviolet.UI.Presentation.Media;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation
+namespace TwistedLogik.Ultraviolet.UI.Presentation.Media
 {
     /// <summary>
     /// Represents the base class for all visually rendered objects

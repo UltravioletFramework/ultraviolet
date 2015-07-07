@@ -1,7 +1,7 @@
 ﻿using System;
 using TwistedLogik.Nucleus;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation
+namespace TwistedLogik.Ultraviolet.UI.Presentation.Media
 {
     /// <summary>
     /// Contains helper methods for interacting with the visual tree.

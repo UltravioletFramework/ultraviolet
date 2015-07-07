@@ -120,7 +120,7 @@
     <Compile Include="DependencyObject.cs" />
     <Compile Include="Documents\NamespaceDoc.cs" />
     <Compile Include="DrawingContext.ClipStencilStates.cs" />
-    <Compile Include="HitTestUtil.cs" />
+    <Compile Include="Media\HitTestUtil.cs" />
     <Compile Include="IIndexable.cs" />
     <Compile Include="Input\Generic.cs" />
     <Compile Include="Input\Touch.TouchState.cs" />
@@ -349,16 +349,16 @@
     <Compile Include="UvmlObject.cs" />
     <Compile Include="VerticalAlignment.cs" />
     <Compile Include="Visibility.cs" />
-    <Compile Include="Visual.cs" />
-    <Compile Include="VisualCollection.IEnumerable.cs" />
-    <Compile Include="VisualCollection.cs" />
+    <Compile Include="Media\Visual.cs" />
+    <Compile Include="Media\VisualCollection.IEnumerable.cs" />
+    <Compile Include="Media\VisualCollection.cs" />
     <Compile Include="VisualState.cs" />
     <Compile Include="VisualStateGroup.cs" />
     <Compile Include="VisualStateGroup.IEnumerable.cs" />
     <Compile Include="VisualStateGroupCollection.cs" />
     <Compile Include="VisualStateGroupCollection.IEnumerable.cs" />
     <Compile Include="VisualStateTransitionKey.cs" />
-    <Compile Include="VisualTreeHelper.cs" />
+    <Compile Include="Media\VisualTreeHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TwistedLogik.Ultraviolet\TwistedLogik.Ultraviolet.csproj">

@@ -1,9 +1,9 @@
 ﻿using TwistedLogik.Ultraviolet.Android.Graphics;
+using TwistedLogik.Ultraviolet.Android.Input;
 using TwistedLogik.Ultraviolet.Android.Platform;
 using TwistedLogik.Ultraviolet.Graphics;
-using TwistedLogik.Ultraviolet.Platform;
 using TwistedLogik.Ultraviolet.Input;
-using TwistedLogik.Ultraviolet.Android.Input;
+using TwistedLogik.Ultraviolet.Platform;
 
 namespace TwistedLogik.Ultraviolet.Android
 {

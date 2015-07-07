@@ -452,9 +452,6 @@
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\GridUnitType.cs">
       <Link>GridUnitType.cs</Link>
     </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\HitTestUtil.cs">
-      <Link>HitTestUtil.cs</Link>
-    </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\HorizontalAlignment.cs">
       <Link>HorizontalAlignment.cs</Link>
     </Compile>
@@ -539,6 +536,9 @@
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Media\GeneralTransform.cs">
       <Link>Media\GeneralTransform.cs</Link>
     </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Media\HitTestUtil.cs">
+      <Link>Media\HitTestUtil.cs</Link>
+    </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Media\IdentityTransform.cs">
       <Link>Media\IdentityTransform.cs</Link>
     </Compile>
@@ -568,6 +568,18 @@
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Media\TranslateTransform.cs">
       <Link>Media\TranslateTransform.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Media\Visual.cs">
+      <Link>Media\Visual.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Media\VisualCollection.cs">
+      <Link>Media\VisualCollection.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Media\VisualCollection.IEnumerable.cs">
+      <Link>Media\VisualCollection.IEnumerable.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Media\VisualTreeHelper.cs">
+      <Link>Media\VisualTreeHelper.cs</Link>
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Namescope.cs">
       <Link>Namescope.cs</Link>
@@ -905,15 +917,6 @@
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Visibility.cs">
       <Link>Visibility.cs</Link>
     </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Visual.cs">
-      <Link>Visual.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\VisualCollection.cs">
-      <Link>VisualCollection.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\VisualCollection.IEnumerable.cs">
-      <Link>VisualCollection.IEnumerable.cs</Link>
-    </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\VisualState.cs">
       <Link>VisualState.cs</Link>
     </Compile>
@@ -931,9 +934,6 @@
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\VisualStateTransitionKey.cs">
       <Link>VisualStateTransitionKey.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\VisualTreeHelper.cs">
-      <Link>VisualTreeHelper.cs</Link>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -1015,7 +1015,7 @@
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" ProjectLinkReference="7379d9e1-bb01-4b05-b4f7-5d39b393348f" />
+      <UserProperties ProjectLinkReference="7379d9e1-bb01-4b05-b4f7-5d39b393348f" ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" />
     </VisualStudio>
   </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

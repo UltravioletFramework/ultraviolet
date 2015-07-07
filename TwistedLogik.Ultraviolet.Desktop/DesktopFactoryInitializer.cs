@@ -1,9 +1,9 @@
 ﻿using TwistedLogik.Ultraviolet.Desktop.Graphics;
+using TwistedLogik.Ultraviolet.Desktop.Input;
 using TwistedLogik.Ultraviolet.Desktop.Platform;
 using TwistedLogik.Ultraviolet.Graphics;
-using TwistedLogik.Ultraviolet.Platform;
 using TwistedLogik.Ultraviolet.Input;
-using TwistedLogik.Ultraviolet.Desktop.Input;
+using TwistedLogik.Ultraviolet.Platform;
 
 namespace TwistedLogik.Ultraviolet.Desktop
 {
