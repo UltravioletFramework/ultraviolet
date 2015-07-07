@@ -144,9 +144,17 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         {
             effects |= SpriteEffects.OriginRelativeToDestination;
 
+            position -= origin;
+
+            var realOrigin = new Vector2(
+                (int)((origin.X / width) * TextureRegion.Width), 
+                (int)((origin.Y / height) * TextureRegion.Height));
+
+            position += realOrigin;
+
             var srcRect = TextureRegion;
             var dstRect = new Rectangle((Int32)position.X, (Int32)position.Y, width, height);
-            spriteBatch.Draw(Texture, dstRect, srcRect, color, rotation, origin, effects, layerDepth, data);
+            spriteBatch.Draw(Texture, dstRect, srcRect, color, rotation, realOrigin, effects, layerDepth, data);
         }
     }
 }
