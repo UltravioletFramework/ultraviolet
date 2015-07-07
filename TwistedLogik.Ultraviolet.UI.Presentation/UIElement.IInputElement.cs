@@ -361,10 +361,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <inheritdoc/>
-        public event UpfGenericInteractionEventHandler PreviewGenericInteraction;
+        public event UpfGenericInteractionEventHandler PreviewGenericInteraction
+        {
+            add { AddHandler(Generic.PreviewGenericInteractionEvent, value); }
+            remove { RemoveHandler(Generic.PreviewGenericInteractionEvent, value); }
+        }
 
         /// <inheritdoc/>
-        public event UpfGenericInteractionEventHandler GenericInteraction;
+        public event UpfGenericInteractionEventHandler GenericInteraction
+        {
+            add { AddHandler(Generic.GenericInteractionEvent, value); }
+            remove { RemoveHandler(Generic.GenericInteractionEvent, value); }
+        }
 
         /// <summary>
         /// Raises the <see cref="IsKeyboardFocusedChanged"/> event.
