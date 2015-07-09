@@ -151,6 +151,34 @@ namespace TwistedLogik.Ultraviolet
             registry[name] = del;
         }
 
+        /// <summary>
+        /// Unregisters the default factory method of the specified delegate type.
+        /// </summary>
+        /// <typeparam name="T">The delegate type of the factory method to remove.</typeparam>
+        /// <returns><c>true</c> if the factory method was unregistered; otherwise, <c>false</c>.</returns>
+        public Boolean RemoveFactoryMethod<T>() where T : class
+        {
+            return defaultFactoryMethods.Remove(typeof(T));
+        }
+
+        /// <summary>
+        /// Unregisters a named factory method of the specified delegate type.
+        /// </summary>
+        /// <typeparam name="T">The delegate type of the factory method to remove.</typeparam>
+        /// <param name="name">The name of the factory method to unregister.</param>
+        /// <returns><c>true</c> if the factory method was unregistered; otherwise, <c>false</c>.</returns>
+        public Boolean RemoveFactoryMethod<T>(String name) where T : class
+        {
+            Contract.RequireNotEmpty(name, "name");
+
+            var key = typeof(T);
+            var registry = default(Dictionary<String, Delegate>);
+            if (!namedFactoryMethods.TryGetValue(key, out registry))
+                return false;
+
+            return registry.Remove(name);
+        }
+
         // The factory method registry.
         private readonly Dictionary<Type, Delegate> defaultFactoryMethods = 
             new Dictionary<Type, Delegate>();
