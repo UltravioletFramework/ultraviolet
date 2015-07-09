@@ -130,6 +130,18 @@
       <Link>TwistedLogik.Ultraviolet.SDL2.dll.config</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="..\Dependencies\x64\osx\libSDL2.dylib">
+      <Link>x64\osx\libSDL2.dylib</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\Dependencies\x64\osx\libbass.dylib">
+      <Link>x64\osx\libbass.dylib</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\Dependencies\x64\osx\libbass_fx.dylib">
+      <Link>x64\osx\libbass_fx.dylib</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Dependencies\x64\win32nt\bass.dll">
@@ -159,6 +171,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Content\Fonts\" />
+    <Folder Include="x64\osx\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Content\UI\DefaultUI.png">
