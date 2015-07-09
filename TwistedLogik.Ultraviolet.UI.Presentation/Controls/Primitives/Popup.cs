@@ -515,10 +515,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
                     popupArea = CalculatePopupPosition_Top(ref screenArea, root.DesiredSize);
                     break;
             }
-
-            popupX = popupArea.X;
-            popupY = popupArea.Y;
-
+				
             root.Arrange(popupArea, ArrangeOptions.ForceInvalidatePosition);
         }
 
@@ -986,8 +983,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
 
         // State values.
         private readonly PopupRoot root;
-        private Double popupX;
-        private Double popupY;
         private Boolean loadingDeferred;
         
         // The assumed size of the default cursor, since there's currently no way to query it.

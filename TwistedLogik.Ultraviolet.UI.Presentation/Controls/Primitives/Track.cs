@@ -414,8 +414,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// </summary>
         private void HandleThumbPreviewMouseDown(DependencyObject element, MouseDevice device, MouseButton pressed, ref RoutedEventData data)
         {
-            var uiElement = (UIElement)element;
-
             var relativeMousePosition = Mouse.GetPosition(Thumb);
 
             if (Orientation == Orientation.Vertical)

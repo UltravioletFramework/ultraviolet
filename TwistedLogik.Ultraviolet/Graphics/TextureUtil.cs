@@ -27,7 +27,6 @@ namespace TwistedLogik.Ultraviolet.Graphics
             if (!flipHorizontally && !flipVertically)
                 return;
 
-            var length = width * height;
             var bytes  = (byte*)buffer;
             var index  = 0;
 

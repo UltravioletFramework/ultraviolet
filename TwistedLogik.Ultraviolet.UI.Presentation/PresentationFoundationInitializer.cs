@@ -10,8 +10,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <inheritdoc/>
         public override void Initialize(UltravioletContext uv, Object configuration)
         {
-            var upf       = uv.GetUI().GetPresentationFoundation();
-            var upfconfig = (configuration as PresentationFoundationConfiguration) ?? new PresentationFoundationConfiguration();
-        }
+			
+		}
     }
 }
