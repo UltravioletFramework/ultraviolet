@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
 using TwistedLogik.Nucleus;
@@ -48,6 +49,23 @@ namespace TwistedLogik.Ultraviolet
         IMessageSubscriber<UltravioletMessageID>,
         IDisposable
     {
+        private static class Native
+        {
+            [StructLayout(LayoutKind.Sequential)]
+            public struct utsname
+            {
+                public IntPtr sysname;
+                public IntPtr nodename;
+                public IntPtr release;
+                public IntPtr version;
+                public IntPtr machine;
+                public IntPtr domainname;
+            }
+
+            [DllImport("libc")]
+            public static extern unsafe int uname(IntPtr buf);
+        }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="UltravioletContext"/> class.
         /// </summary>
@@ -59,6 +77,7 @@ namespace TwistedLogik.Ultraviolet
             Contract.Require(configuration, "configuration");
 
             AcquireContext();
+            DetectPlatform();
 
             this.host = host;
 
@@ -484,21 +503,7 @@ namespace TwistedLogik.Ultraviolet
             {
                 Contract.EnsureNotDisposed(this, Disposed);
 
-#if ANDROID
-                return UltravioletPlatform.Android;
-#else
-                switch (Environment.OSVersion.Platform)
-                {
-                    case PlatformID.Win32NT:
-                        return UltravioletPlatform.Windows;
-
-                    case PlatformID.Unix:
-                        return UltravioletPlatform.Linux;
-
-                    default:
-                        throw new NotSupportedException();
-                }
-#endif
+                return this.platform;
             }
         }
 
@@ -851,6 +856,7 @@ namespace TwistedLogik.Ultraviolet
                 {
                     case UltravioletPlatform.Windows:
                     case UltravioletPlatform.Linux:
+                    case UltravioletPlatform.OSX:
                         shim = Assembly.LoadFrom("TwistedLogik.Ultraviolet.Desktop.dll");
                         break;
 
@@ -929,6 +935,55 @@ namespace TwistedLogik.Ultraviolet
             }
         }
 
+        /// <summary>
+        /// Detects the platform on which the context is running.
+        /// </summary>
+        private void DetectPlatform()
+        {
+#if ANDROID
+            this.platform = UltravioletPlatform.Android;
+#else
+            switch (Environment.OSVersion.Platform)
+            {
+                case PlatformID.Win32NT:
+                    this.platform = UltravioletPlatform.Windows;
+                    break;
+
+                case PlatformID.Unix:
+                    {
+                        var buf = IntPtr.Zero;
+                        try
+                        {
+                            buf = Marshal.AllocHGlobal(8192);
+                            if (Native.uname(buf) == 0)
+                            {
+                                var os = Marshal.PtrToStringAnsi(buf);
+                                if (String.Equals("Darwin", os, StringComparison.OrdinalIgnoreCase))
+                                {
+                                    this.platform = UltravioletPlatform.OSX;
+                                }
+                                else
+                                {
+                                    this.platform = UltravioletPlatform.Linux;
+                                }
+                            }
+                        }
+                        finally
+                        {
+                            if (buf != IntPtr.Zero)
+                            {
+                                Marshal.FreeHGlobal(buf);
+                            }
+                        }
+                    }
+                    break;
+
+                default:
+                    throw new NotSupportedException();
+            }
+#endif
+        }
+
         // The singleton instance of the Ultraviolet context.
         private static readonly Object syncObject = new Object();
         private static UltravioletContext current;
@@ -941,6 +996,7 @@ namespace TwistedLogik.Ultraviolet
         private Boolean isInitialized;
         private Boolean disposed;
         private Boolean disposing;
+        private UltravioletPlatform platform;
 
         // The context's list of pending tasks.
         private readonly List<Task> tasksPending = new List<Task>();

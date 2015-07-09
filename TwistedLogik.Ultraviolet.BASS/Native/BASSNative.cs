@@ -74,43 +74,43 @@ namespace TwistedLogik.Ultraviolet.BASS.Native
         public const UInt32 BASS_SAMPLE_OVER_POS  = 0x20000;
         public const UInt32 BASS_SAMPLE_OVER_DIST = 0x30000;
 
-        [DllImport("bass", EntryPoint = "BASS_ErrorGetCode", CallingConvention = CallingConvention.StdCall)]
+        [DllImport("bass", EntryPoint = "BASS_ErrorGetCode")]
         public static extern Int32 ErrorGetCode();
 
-        [DllImport("bass", EntryPoint = "BASS_Init", CallingConvention = CallingConvention.StdCall)]
+        [DllImport("bass", EntryPoint = "BASS_Init")]
         public static extern Boolean Init(Int32 device, UInt32 freq, UInt32 flags, IntPtr win, IntPtr clsid);
 
-        [DllImport("bass", EntryPoint = "BASS_Free", CallingConvention = CallingConvention.StdCall)]
+        [DllImport("bass", EntryPoint = "BASS_Free")]
         public static extern Boolean Free();
 
-        [DllImport("bass", EntryPoint = "BASS_Update", CallingConvention = CallingConvention.StdCall)]
+        [DllImport("bass", EntryPoint = "BASS_Update")]
         public static extern Boolean Update(UInt32 length);
 
-        [DllImport("bass", EntryPoint = "BASS_PluginLoad", CallingConvention = CallingConvention.StdCall, BestFitMapping = false)]
+        [DllImport("bass", EntryPoint = "BASS_PluginLoad", BestFitMapping = false)]
         public static extern UInt32 PluginLoad([MarshalAs(UnmanagedType.LPStr)] string file, UInt32 flags);
 
-        [DllImport("bass", EntryPoint = "BASS_PluginFree", CallingConvention = CallingConvention.StdCall)]
+        [DllImport("bass", EntryPoint = "BASS_PluginFree")]
         public static extern Boolean PluginFree(UInt32 handle);
 
-        [DllImport("bass", EntryPoint = "BASS_GetConfig", CallingConvention = CallingConvention.StdCall)]
+        [DllImport("bass", EntryPoint = "BASS_GetConfig")]
         public static extern UInt32 GetConfig(BASSConfig option);
 
-        [DllImport("bass", EntryPoint = "BASS_SetConfig", CallingConvention = CallingConvention.StdCall)]
+        [DllImport("bass", EntryPoint = "BASS_SetConfig")]
         public static extern Boolean SetConfig(BASSConfig option, UInt32 value);
 
-        [DllImport("bass", EntryPoint = "BASS_GetVolume", CallingConvention = CallingConvention.StdCall)]
+        [DllImport("bass", EntryPoint = "BASS_GetVolume")]
         public static extern Single GetVolume();
 
-        [DllImport("bass", EntryPoint = "BASS_SetVolume", CallingConvention = CallingConvention.StdCall)]
+        [DllImport("bass", EntryPoint = "BASS_SetVolume")]
         public static extern Boolean SetVolume(Single volume);
 
-        [DllImport("bass", EntryPoint = "BASS_StreamCreate", CallingConvention = CallingConvention.StdCall)]
+        [DllImport("bass", EntryPoint = "BASS_StreamCreate")]
         public static extern UInt32 StreamCreate(UInt32 freq, UInt32 chans, UInt32 flags, StreamProc proc, IntPtr user);
 
-        [DllImport("bass", EntryPoint = "BASS_StreamCreate", CallingConvention = CallingConvention.StdCall)]
+        [DllImport("bass", EntryPoint = "BASS_StreamCreate")]
         public static extern UInt32 StreamCreate(UInt32 freq, UInt32 chans, UInt32 flags, IntPtr proc, IntPtr user);
 
-        [DllImport("bass", EntryPoint = "BASS_StreamCreateFile", CallingConvention = CallingConvention.StdCall)]
+        [DllImport("bass", EntryPoint = "BASS_StreamCreateFile")]
         private static extern UInt32 StreamCreateFile(Boolean mem, IntPtr file, UInt64 offset, UInt64 length, UInt32 flags);
 
         public static UInt32 StreamCreateFile(String file, UInt32 flags)
@@ -131,73 +131,73 @@ namespace TwistedLogik.Ultraviolet.BASS.Native
             return StreamCreateFile(true, file, offset, length, flags);
         }
 
-        [DllImport("bass", EntryPoint = "BASS_StreamCreateFileUser", CallingConvention = CallingConvention.StdCall)]
+        [DllImport("bass", EntryPoint = "BASS_StreamCreateFileUser")]
         public static extern UInt32 StreamCreateFileUser(UInt32 system, UInt32 flags, BASS_FILEPROCS* procs, IntPtr user);
 
-        [DllImport("bass", EntryPoint = "BASS_StreamPutData", CallingConvention = CallingConvention.StdCall)]
+        [DllImport("bass", EntryPoint = "BASS_StreamPutData")]
         public static extern UInt32 StreamPutData(UInt32 handle, IntPtr buffer, UInt32 length);
 
-        [DllImport("bass", EntryPoint = "BASS_StreamFree", CallingConvention = CallingConvention.StdCall)]
+        [DllImport("bass", EntryPoint = "BASS_StreamFree")]
         public static extern Boolean StreamFree(UInt32 handle);
 
-        [DllImport("bass", EntryPoint = "BASS_ChannelIsActive", CallingConvention = CallingConvention.StdCall)]
+        [DllImport("bass", EntryPoint = "BASS_ChannelIsActive")]
         public static extern UInt32 ChannelIsActive(UInt32 handle);
 
-        [DllImport("bass", EntryPoint = "BASS_ChannelIsSliding", CallingConvention = CallingConvention.StdCall)]
+        [DllImport("bass", EntryPoint = "BASS_ChannelIsSliding")]
         public static extern Boolean ChannelIsSliding(UInt32 handle, BASSAttrib attrib);
 
-        [DllImport("bass", EntryPoint = "BASS_ChannelFlags", CallingConvention = CallingConvention.StdCall)]
+        [DllImport("bass", EntryPoint = "BASS_ChannelFlags")]
         public static extern UInt32 ChannelFlags(UInt32 handle, UInt32 flags, UInt32 mask);
 
-        [DllImport("bass", EntryPoint = "BASS_ChannelGetInfo", CallingConvention = CallingConvention.StdCall)]
+        [DllImport("bass", EntryPoint = "BASS_ChannelGetInfo")]
         public static extern Boolean ChannelGetInfo(UInt32 handle, out BASS_CHANNELINFO info);
 
-        [DllImport("bass", EntryPoint = "BASS_ChannelBytes2Seconds", CallingConvention = CallingConvention.StdCall)]
+        [DllImport("bass", EntryPoint = "BASS_ChannelBytes2Seconds")]
         public static extern Double ChannelBytes2Seconds(UInt32 handle, UInt64 pos);
 
-        [DllImport("bass", EntryPoint = "BASS_ChannelSeconds2Bytes", CallingConvention = CallingConvention.StdCall)]
+        [DllImport("bass", EntryPoint = "BASS_ChannelSeconds2Bytes")]
         public static extern UInt64 ChannelSeconds2Bytes(UInt32 handle, Double pos);
 
-        [DllImport("bass", EntryPoint = "BASS_ChannelUpdate", CallingConvention = CallingConvention.StdCall)]
+        [DllImport("bass", EntryPoint = "BASS_ChannelUpdate")]
         public static extern Boolean ChannelUpdate(UInt32 handle, UInt32 length);
 
-        [DllImport("bass", EntryPoint = "BASS_ChannelPlay", CallingConvention = CallingConvention.StdCall)]
+        [DllImport("bass", EntryPoint = "BASS_ChannelPlay")]
         public static extern Boolean ChannelPlay(UInt32 handle, Boolean restart);
 
-        [DllImport("bass", EntryPoint = "BASS_ChannelStop", CallingConvention = CallingConvention.StdCall)]
+        [DllImport("bass", EntryPoint = "BASS_ChannelStop")]
         public static extern Boolean ChannelStop(UInt32 handle);
 
-        [DllImport("bass", EntryPoint = "BASS_ChannelPause", CallingConvention = CallingConvention.StdCall)]
+        [DllImport("bass", EntryPoint = "BASS_ChannelPause")]
         public static extern Boolean ChannelPause(UInt32 handle);
 
-        [DllImport("bass", EntryPoint = "BASS_ChannelGetData", CallingConvention = CallingConvention.StdCall)]
+        [DllImport("bass", EntryPoint = "BASS_ChannelGetData")]
         public static extern UInt32 ChannelGetData(UInt32 handle, IntPtr buffer, UInt32 length);
 
-        [DllImport("bass", EntryPoint = "BASS_ChannelGetAttribute", CallingConvention = CallingConvention.StdCall)]
+        [DllImport("bass", EntryPoint = "BASS_ChannelGetAttribute")]
         public static extern Boolean ChannelGetAttribute(UInt32 handle, BASSAttrib attrib, Single* value);
 
-        [DllImport("bass", EntryPoint = "BASS_ChannelSetAttribute", CallingConvention = CallingConvention.StdCall)]
+        [DllImport("bass", EntryPoint = "BASS_ChannelSetAttribute")]
         public static extern Boolean ChannelSetAttribute(UInt32 handle, BASSAttrib attrib, Single value);
 
-        [DllImport("bass", EntryPoint = "BASS_ChannelSlideAttribute", CallingConvention = CallingConvention.StdCall)]
+        [DllImport("bass", EntryPoint = "BASS_ChannelSlideAttribute")]
         public static extern Boolean ChannelSlideAttribute(UInt32 handle, BASSAttrib attrib, Single value, UInt32 time);
 
-        [DllImport("bass", EntryPoint = "BASS_ChannelGetPosition", CallingConvention = CallingConvention.StdCall)]
+        [DllImport("bass", EntryPoint = "BASS_ChannelGetPosition")]
         public static extern UInt64 ChannelGetPosition(UInt32 handle, UInt32 mode);
 
-        [DllImport("bass", EntryPoint = "BASS_ChannelSetPosition", CallingConvention = CallingConvention.StdCall)]
+        [DllImport("bass", EntryPoint = "BASS_ChannelSetPosition")]
         public static extern Boolean ChannelSetPosition(UInt32 handle, UInt64 pos, UInt32 mode);
 
-        [DllImport("bass", EntryPoint = "BASS_ChannelGetLength", CallingConvention = CallingConvention.StdCall)]
+        [DllImport("bass", EntryPoint = "BASS_ChannelGetLength")]
         public static extern UInt64 ChannelGetLength(UInt32 handle, UInt32 mode);
 
-        [DllImport("bass", EntryPoint = "BASS_ChannelSetSync", CallingConvention = CallingConvention.StdCall)]
+        [DllImport("bass", EntryPoint = "BASS_ChannelSetSync")]
         public static extern UInt32 ChannelSetSync(UInt32 handle, BASSSync type, UInt64 param, SyncProc proc, IntPtr user);
 
-        [DllImport("bass", EntryPoint = "BASS_ChannelRemoveSync", CallingConvention = CallingConvention.StdCall)]
+        [DllImport("bass", EntryPoint = "BASS_ChannelRemoveSync")]
         public static extern Boolean ChannelRemoveSync(UInt32 handle, UInt32 sync);
 
-        [DllImport("bass", EntryPoint = "BASS_SampleLoad", CallingConvention = CallingConvention.StdCall)]
+        [DllImport("bass", EntryPoint = "BASS_SampleLoad")]
         private static extern UInt32 SampleLoad(Boolean mem, IntPtr file, UInt64 offset, UInt32 length, UInt32 max, UInt32 flags);
 
         public static UInt32 SampleLoad(String file, UInt32 max, UInt32 flags)
@@ -215,36 +215,36 @@ namespace TwistedLogik.Ultraviolet.BASS.Native
 
         public static UInt32 SampleLoad(Byte[] data, UInt64 offset, UInt32 length, UInt32 max, UInt32 flags)
         {
-            fixed (Byte* pData = data)
-            {
-                return SampleLoad(true, (IntPtr)pData, offset, length, max, flags);
-            }
+			fixed (Byte* pData = data)
+			{
+				return SampleLoad(true, (IntPtr)pData, offset, length, max, flags);
+			}            
         }
 
-        [DllImport("bass", EntryPoint = "BASS_SampleFree", CallingConvention = CallingConvention.StdCall)]
+        [DllImport("bass", EntryPoint = "BASS_SampleFree")]
         public static extern Boolean SampleFree(UInt32 handle);
 
-        [DllImport("bass", EntryPoint = "BASS_SampleGetChannel", CallingConvention = CallingConvention.StdCall)]
+        [DllImport("bass", EntryPoint = "BASS_SampleGetChannel")]
         public static extern UInt32 SampleGetChannel(UInt32 handle, Boolean onlynew);
 
-        [DllImport("bass", EntryPoint = "BASS_SampleGetInfo", CallingConvention = CallingConvention.StdCall)]
+        [DllImport("bass", EntryPoint = "BASS_SampleGetInfo")]
         public static extern Boolean SampleGetInfo(UInt32 handle, out BASS_SAMPLE info);
 
-        [DllImport("bass", EntryPoint = "BASS_SampleGetData", CallingConvention = CallingConvention.StdCall)]
+        [DllImport("bass", EntryPoint = "BASS_SampleGetData")]
         public static extern Boolean SampleGetData(UInt32 handle, IntPtr buffer);
 
-        public static Boolean SampleGetData(UInt32 handle, Byte[] buffer)
-        {
-            fixed (Byte* pBuffer = buffer)
-            {
-                return SampleGetData(handle, (IntPtr)pBuffer);
-            }
-        }
+		public static Boolean SampleGetData(UInt32 handle, Byte[] buffer)
+		{
+			fixed (Byte* pBuffer = buffer)
+			{
+				return SampleGetData(handle, (IntPtr)pBuffer);
+			}
+		}
 
-        [DllImport("bass", EntryPoint = "BASS_Pause", CallingConvention = CallingConvention.StdCall)]
+        [DllImport("bass", EntryPoint = "BASS_Pause")]
         public static extern Boolean Pause();
 
-        [DllImport("bass", EntryPoint = "BASS_Start", CallingConvention = CallingConvention.StdCall)]
+        [DllImport("bass", EntryPoint = "BASS_Start")]
         public static extern Boolean Start();
     }
 }
