@@ -43,7 +43,19 @@ namespace TwistedLogik.Ultraviolet.OSX
 		/// <inheritdoc/>
 		public override ScreenDensityBucket DensityBucket
 		{
-			get { return ScreenDensityBucket.Desktop; }
+			get
+			{
+				if (densityScale == 1.0f)
+					return ScreenDensityBucket.Desktop;
+
+				if (densityScale == 2.0f)
+					return ScreenDensityBucket.Retina;
+
+				if (densityScale == 3.0f)
+					return ScreenDensityBucket.RetinaHD;
+
+				return ScreenDensityBucket.ExtraExtraExtraHigh;
+			}
 		}
 
 		// State values.
