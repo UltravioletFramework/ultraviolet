@@ -884,7 +884,7 @@ namespace TwistedLogik.Ultraviolet
                 {
                     try
                     {
-                        var osxOverrideShim = Assembly.Load("TwistedLogik.Ultraviolet.OSX.dll");
+                        var osxOverrideShim = Assembly.LoadFrom("TwistedLogik.Ultraviolet.OSX.dll");
                         if (osxOverrideShim != null)
                         {
                             InitializeFactoryMethodsInAssembly(osxOverrideShim);
