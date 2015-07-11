@@ -18,6 +18,9 @@ namespace TwistedLogik.Ultraviolet.Desktop.Platform
             if (InitWindows8_1(uv, display))
                 return;
 
+            if (InitOSX(uv, display))
+                return;
+
             InitFallback(uv, display);
         }
 
@@ -46,7 +49,7 @@ namespace TwistedLogik.Ultraviolet.Desktop.Platform
             }, IntPtr.Zero);
 
             if (hmonitor == IntPtr.Zero)
-                throw new InvalidOperationException("TODO");
+                return false;
 
             UInt32 x, y;
             Win32.GetDpiForMonitor(hmonitor, 0, out x, out y);
@@ -55,6 +58,21 @@ namespace TwistedLogik.Ultraviolet.Desktop.Platform
             this.densityY      = y;
             this.densityScale  = x / 96f;
             this.densityBucket = GuessBucketFromDensityScale(densityScale);
+
+            return true;
+        }
+
+        /// <summary>
+        /// Retrieves DPI information on OS X when the Mac-specific compatibility shim is missing.
+        /// </summary>
+        private Boolean InitOSX(UltravioletContext uv, IUltravioletDisplay display)
+        {
+            if (uv.Platform != UltravioletPlatform.OSX)
+                return false;
+
+            this.densityX     = 72f;
+            this.densityY     = 72f;
+            this.densityScale = 1.0f;
 
             return true;
         }
