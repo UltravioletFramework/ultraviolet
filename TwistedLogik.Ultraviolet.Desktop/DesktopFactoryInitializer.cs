@@ -24,7 +24,7 @@ namespace TwistedLogik.Ultraviolet.Desktop
             factory.SetFactoryMethod<IconLoaderFactory>(() => new DesktopIconLoader());
             factory.SetFactoryMethod<FileSystemServiceFactory>(() => new FileSystemService());
             factory.SetFactoryMethod<ScreenRotationServiceFactory>((display) => new DesktopScreenOrientationService(display));
-            factory.SetFactoryMethod<ScreenDensityServiceFactory>((display) => new DesktopScreenDensityService(display));
+            factory.SetFactoryMethod<ScreenDensityServiceFactory>((display) => new DesktopScreenDensityService(owner, display));
 
             var softwareKeyboardService = new DesktopSoftwareKeyboardService();
             factory.SetFactoryMethod<SoftwareKeyboardServiceFactory>(() => softwareKeyboardService);

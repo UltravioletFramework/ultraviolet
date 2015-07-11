@@ -71,6 +71,7 @@
     <Compile Include="Input\DesktopSoftwareKeyboardService.cs" />
     <Compile Include="Platform\DesktopIconLoader.cs" />
     <Compile Include="Platform\DesktopScreenDensityService.cs" />
+    <Compile Include="Platform\DesktopScreenDensityService.Win32.cs" />
     <Compile Include="Platform\DesktopScreenOrientationService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="DesktopFactoryInitializer.cs" />
