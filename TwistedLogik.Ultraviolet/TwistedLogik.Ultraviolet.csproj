@@ -455,12 +455,12 @@
     <EmbeddedResource Include="Resources\Strings.xml">
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="uv.ico" />
   </ItemGroup>
   <ItemGroup>
     <None Include="TwistedLogik.Ultraviolet.Licenses.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <Content Include="uv.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
