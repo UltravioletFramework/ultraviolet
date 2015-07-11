@@ -1747,9 +1747,14 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
             graphics.SetDepthStencilState(depthStencilState ?? DepthStencilState.None);
             graphics.SetRasterizerState(rasterizerState ?? RasterizerState.CullCounterClockwise);
 
-            var viewport = Ultraviolet.GetGraphics().GetViewport();
-            var projection = Matrix.CreateSpriteBatchProjection(viewport.Width, viewport.Height);
-            customEffect.Parameters["MatrixTransform"].SetValue(projection * transformMatrix);
+            var matrixTransformParam = customEffect.Parameters["MatrixTransform"];
+            if (matrixTransformParam != null)
+            {
+                var viewport = Ultraviolet.GetGraphics().GetViewport();
+                var projection = Matrix.CreateSpriteBatchProjection(viewport.Width, viewport.Height);
+                matrixTransformParam.SetValue(projection * transformMatrix);
+            }
+
             customEffect.CurrentTechnique.Passes[0].Apply();
         }
 
