@@ -51,9 +51,10 @@ namespace TwistedLogik.Ultraviolet.Desktop.Platform
             UInt32 x, y;
             Win32.GetDpiForMonitor(hmonitor, 0, out x, out y);
 
-            this.densityX     = x;
-            this.densityY     = y;
-            this.densityScale = x / 96f;
+            this.densityX      = x;
+            this.densityY      = y;
+            this.densityScale  = x / 96f;
+            this.densityBucket = GuessBucketFromDensityScale(densityScale);
 
             return true;
         }
@@ -65,9 +66,10 @@ namespace TwistedLogik.Ultraviolet.Desktop.Platform
         {
             using (var graphics = System.Drawing.Graphics.FromHwnd(IntPtr.Zero))
             {
-                this.densityX     = graphics.DpiX;
-                this.densityY     = graphics.DpiY;
-                this.densityScale = graphics.DpiX / 96f;
+                this.densityX      = graphics.DpiX;
+                this.densityY      = graphics.DpiY;
+                this.densityScale  = graphics.DpiX / 96f;
+                this.densityBucket = GuessBucketFromDensityScale(densityScale);
             }
             return true;
         }
@@ -93,12 +95,39 @@ namespace TwistedLogik.Ultraviolet.Desktop.Platform
         /// <inheritdoc/>
         public override ScreenDensityBucket DensityBucket
         {
-            get { return ScreenDensityBucket.Desktop; }
+            get { return densityBucket; }
+        }
+
+        /// <summary>
+        /// Attempts to guess at the appropriate <see cref="ScreenDensityBucket"/> for the specified density scale.
+        /// </summary>
+        private static ScreenDensityBucket GuessBucketFromDensityScale(Single scale)
+        {
+            if (scale >= 6f)
+                return ScreenDensityBucket.ExtraExtraExtraHigh;
+
+            if (scale >= 5f)
+                return ScreenDensityBucket.ExtraExtraHigh;
+
+            if (scale >= 3f)
+                return ScreenDensityBucket.ExtraHigh;
+
+            if (scale >= 2.5f)
+                return ScreenDensityBucket.High;
+
+            if (scale >= 1.5f)
+                return ScreenDensityBucket.Medium;
+
+            if (scale >= 1.25f)
+                return ScreenDensityBucket.Low;
+
+            return ScreenDensityBucket.Desktop;
         }
 
         // State values.
         private Single densityX;
         private Single densityY;
         private Single densityScale;
+        private ScreenDensityBucket densityBucket;
     }
 }
