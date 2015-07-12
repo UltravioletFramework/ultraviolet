@@ -476,7 +476,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 isArranging = true;
                 try
                 {
+                    finalRect = PerformLayoutRounding(finalRect);
+
                     this.renderSize = ArrangeCore(finalRect, options);
+                    this.renderSize = PerformLayoutRounding(this.renderSize);
+
                     SetValue<Double>(ActualWidthPropertyKey, this.renderSize.Width);
                     SetValue<Double>(ActualHeightPropertyKey, this.renderSize.Height);
                 }
@@ -1949,14 +1953,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 var imageAreaPix = (Rectangle)Display.DipsToPixels(imageAreaAbs);
 
                 var origin = new Vector2(
-                    (Int32)(imageAreaPix.Width / 2f),
-                    (Int32)(imageAreaPix.Height / 2f));
+                    (imageAreaPix.Width / 2f),
+                    (imageAreaPix.Height / 2f));
 
                 var position = new Vector2(
-                    (Int32)(imageAreaPix.X + (imageAreaPix.Width / 2f)),
-                    (Int32)(imageAreaPix.Y + (imageAreaPix.Height / 2f)));
+                    (imageAreaPix.X + (imageAreaPix.Width / 2f)),
+                    (imageAreaPix.Y + (imageAreaPix.Height / 2f)));
 
-                dc.SpriteBatch.DrawImage(imageResource, position, (Int32)imageAreaPix.Width, (Int32)imageAreaPix.Height,
+                dc.SpriteBatch.DrawImage(imageResource, position, imageAreaPix.Width, imageAreaPix.Height,
                     colorPlusOpacity, 0f, origin, SpriteEffects.None, 0f);
             }
         }
@@ -1994,6 +1998,52 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             dc.SpriteBatch.DrawImage(imageResource, position, (Int32)imageAreaPix.Width, (Int32)imageAreaPix.Height,
                 colorPlusOpacity, 0f, origin, SpriteEffects.None, 0f);
+        }
+        
+        /// <summary>
+        /// Performs layout rounding on the specified value.
+        /// </summary>
+        /// <param name="value">The value to round.</param>
+        /// <returns>The rounded value.</returns>
+        protected Double PerformLayoutRounding(Double value)
+        {
+            var scale = Display.DensityScale;
+            if (scale == 1.0f)
+                return Math.Round(value);
+
+            var rounded = Math.Round(value * scale) / scale;
+            if (Double.IsNaN(rounded) || Double.IsInfinity(rounded))
+            {
+                rounded = value;
+            }
+
+            return rounded;
+        }
+
+        /// <summary>
+        /// Performs layout rounding on the specified size.
+        /// </summary>
+        /// <param name="size">The size to round.</param>
+        /// <returns>The rounded size.</returns>
+        protected Size2D PerformLayoutRounding(Size2D size)
+        {
+            var width = PerformLayoutRounding(size.Width);
+            var height = PerformLayoutRounding(size.Height);
+            return new Size2D(width, height);
+        }
+
+        /// <summary>
+        /// Performs layout rounding on the specified rectangle.
+        /// </summary>
+        /// <param name="rect">The rectangle to round.</param>
+        /// <returns>The rounded rectangle.</returns>
+        protected RectangleD PerformLayoutRounding(RectangleD rect)
+        {
+            var x = PerformLayoutRounding(rect.X);
+            var y = PerformLayoutRounding(rect.Y);
+            var width = PerformLayoutRounding(rect.Width);
+            var height = PerformLayoutRounding(rect.Height);
+            return new RectangleD(x, y, width, height);
         }
 
         /// <summary>

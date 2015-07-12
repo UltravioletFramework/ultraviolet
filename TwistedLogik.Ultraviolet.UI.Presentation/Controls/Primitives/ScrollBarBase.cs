@@ -1,5 +1,6 @@
 ﻿using System;
 using TwistedLogik.Nucleus;
+using TwistedLogik.Ultraviolet.Input;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
 {
@@ -88,9 +89,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         {
             if (PART_Track != null)
             {
+                System.Diagnostics.Debug.WriteLine("invalidate");
                 PART_Track.InvalidateArrange();
             }
             base.OnValueChanged();
+        }
+
+        /// <inheritdoc/>
+        protected override void OnFingerMotion(TouchDevice device, Int64 fingerID, Double x, Double y, Double dx, Double dy, Single pressure, ref RoutedEventData data)
+        {
+            data.Handled = true;
+
+            base.OnFingerMotion(device, fingerID, x, y, dx, dy, pressure, ref data);
         }
 
         /// <summary>

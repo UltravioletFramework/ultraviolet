@@ -475,8 +475,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var tentativeWidth  = Math.Max(minWidth, Math.Min(maxWidth, availableWidthSansMargin));
             var tentativeHeight = Math.Max(minHeight, Math.Min(maxHeight, availableHeightSansMargin));
             var tentativeSize   = new Size2D(tentativeWidth, tentativeHeight);
+            tentativeSize = PerformLayoutRounding(tentativeSize);
 
-            var measuredSize   = MeasureOverride(tentativeSize);
+            var measuredSize = MeasureOverride(tentativeSize);
+            measuredSize = PerformLayoutRounding(measuredSize);
+
             var measuredWidth  = measuredSize.Width;
             var measuredHeight = measuredSize.Height;
             
@@ -512,7 +515,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var desiredSize   = new Size2D(desiredWidth, desiredHeight);
 
             var candidateSize = desiredSize - margin;
-            var usedSize      = ArrangeOverride(candidateSize, options);
+            candidateSize = PerformLayoutRounding(candidateSize);
+            
+            var usedSize = ArrangeOverride(candidateSize, options);
+            usedSize = PerformLayoutRounding(usedSize);
 
             var usedWidth  = Math.Min(usedSize.Width, candidateSize.Width);
             var usedHeight = Math.Min(usedSize.Height, candidateSize.Height);
