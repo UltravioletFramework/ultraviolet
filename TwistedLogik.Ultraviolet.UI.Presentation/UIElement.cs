@@ -1953,14 +1953,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 var imageAreaPix = (Rectangle)Display.DipsToPixels(imageAreaAbs);
 
                 var origin = new Vector2(
-                    (imageAreaPix.Width / 2f),
-                    (imageAreaPix.Height / 2f));
+                    (Int32)(imageAreaPix.Width / 2f),
+                    (Int32)(imageAreaPix.Height / 2f));
 
                 var position = new Vector2(
-                    (imageAreaPix.X + (imageAreaPix.Width / 2f)),
-                    (imageAreaPix.Y + (imageAreaPix.Height / 2f)));
+                    (Int32)(imageAreaPix.X + (imageAreaPix.Width / 2f)),
+                    (Int32)(imageAreaPix.Y + (imageAreaPix.Height / 2f)));
 
-                dc.SpriteBatch.DrawImage(imageResource, position, imageAreaPix.Width, imageAreaPix.Height,
+                dc.SpriteBatch.DrawImage(imageResource, position, (Int32)imageAreaPix.Width, (Int32)imageAreaPix.Height,
                     colorPlusOpacity, 0f, origin, SpriteEffects.None, 0f);
             }
         }
@@ -2018,6 +2018,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             }
 
             return rounded;
+        }
+
+        /// <summary>
+        /// Performs layout rounding on the specified point.
+        /// </summary>
+        /// <param name="point">The point to round.</param>
+        /// <returns>The rounded point.</returns>
+        protected Point2D PerformLayoutRounding(Point2D point)
+        {
+            var x = PerformLayoutRounding(point.X);
+            var y = PerformLayoutRounding(point.Y);
+            return new Point2D(x, y);
         }
 
         /// <summary>

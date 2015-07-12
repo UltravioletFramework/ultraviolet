@@ -257,6 +257,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 
             MeasureVirtualCells(3);
 
+            RoundDimensions(ColumnDefinitions);
+            RoundDimensions(RowDefinitions);
+
             var desiredWidth = 0.0;
             var desiredHeight = 0.0;
 
@@ -818,6 +821,34 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 def.Position = position;
                 position += def.ActualDimension;
             }
+        }
+        
+        /// <summary>
+        /// Performs layout rounding on the specified definition collection.
+        /// </summary>
+        /// <param name="definitions">The definition collection on which to perform layout rounding.</param>
+        private void RoundDimensions(IDefinitionBaseCollection definitions)
+        {
+            if (definitions.Count == 0)
+                return;
+
+            var errorContent = 0.0;
+            var error = 0.0;
+
+            for (int i = 0; i < definitions.Count - 1; i++)
+            {
+                var oldValueContent = definitions[i].MeasuredContentDimension;
+                var oldValue = definitions[i].MeasuredDimension;
+
+                definitions[i].MeasuredContentDimension = PerformLayoutRounding(oldValueContent);
+                definitions[i].MeasuredDimension = PerformLayoutRounding(oldValue);
+
+                errorContent += (definitions[i].MeasuredContentDimension - oldValueContent);
+                error += (definitions[i].MeasuredDimension - oldValue);
+            }
+
+            definitions[definitions.Count - 1].MeasuredContentDimension += errorContent;
+            definitions[definitions.Count - 1].MeasuredDimension += error;
         }
 
         /// <summary>

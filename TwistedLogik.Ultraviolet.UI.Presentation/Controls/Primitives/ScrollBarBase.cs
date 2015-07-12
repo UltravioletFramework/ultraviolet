@@ -89,7 +89,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         {
             if (PART_Track != null)
             {
-                System.Diagnostics.Debug.WriteLine("invalidate");
                 PART_Track.InvalidateArrange();
             }
             base.OnValueChanged();
