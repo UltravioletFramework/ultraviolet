@@ -16,7 +16,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// </summary>
         static ButtonBase()
         {
-            FocusableProperty.OverrideMetadata(typeof(ButtonBase), new PropertyMetadata<Boolean>(CommonBoxedValues.Boolean.True));
             IsEnabledProperty.OverrideMetadata(typeof(ButtonBase), new PropertyMetadata<Boolean>(HandleIsEnabledChanged));
         }
 

@@ -1,4 +1,5 @@
 ﻿using System;
+using TwistedLogik.Nucleus;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 {
@@ -9,6 +10,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
     [UvmlKnownType]
     public abstract class UserControl : Control
     {
+        /// <summary>
+        /// Initializes the <see cref="UserControl"/> type.
+        /// </summary>
+        static UserControl()
+        {
+            FocusableProperty.OverrideMetadata(typeof(UserControl), new PropertyMetadata<Boolean>(CommonBoxedValues.Boolean.False));
+        }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="UserControl"/> class.
         /// </summary>

@@ -1,4 +1,5 @@
 ﻿using System;
+using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
 using TwistedLogik.Ultraviolet.UI.Presentation.Documents;
 using TwistedLogik.Ultraviolet.UI.Presentation.Styles;
@@ -11,6 +12,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
     [UvmlKnownType]
     public abstract class Control : FrameworkElement
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Control"/> class.
+        /// </summary>
+        static Control()
+        {
+            FocusableProperty.OverrideMetadata(typeof(Control), new PropertyMetadata<Boolean>(CommonBoxedValues.Boolean.True));
+        }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="Control"/> class.
         /// </summary>

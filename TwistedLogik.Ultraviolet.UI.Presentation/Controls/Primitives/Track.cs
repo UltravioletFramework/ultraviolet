@@ -21,7 +21,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             this.Thumb = new Button(uv, null) 
             { 
                 HorizontalAlignment = HorizontalAlignment.Stretch, 
-                VerticalAlignment   = VerticalAlignment.Stretch 
+                VerticalAlignment   = VerticalAlignment.Stretch,
+                Focusable = false,
             };
             this.Thumb.Classes.Add("track-thumb");
             this.Thumb.ChangeLogicalAndVisualParents(this, this);

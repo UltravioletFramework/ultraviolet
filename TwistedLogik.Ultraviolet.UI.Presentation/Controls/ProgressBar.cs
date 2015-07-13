@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
@@ -16,6 +17,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         static ProgressBar()
         {
+            FocusableProperty.OverrideMetadata(typeof(ProgressBar), new PropertyMetadata<Boolean>(CommonBoxedValues.Boolean.False));
             MaximumProperty.OverrideMetadata(typeof(ProgressBar), new PropertyMetadata<Double>(100.0));
         }
 

@@ -19,6 +19,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
     public abstract class ScrollBarBase : RangeBase
     {
         /// <summary>
+        /// Initializes the <see cref="ScrollBarBase"/> type.
+        /// </summary>
+        static ScrollBarBase()
+        {
+            FocusableProperty.OverrideMetadata(typeof(ScrollBarBase), new PropertyMetadata<Boolean>(CommonBoxedValues.Boolean.False));
+        }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="ScrollBarBase"/> class.
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
