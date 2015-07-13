@@ -10,6 +10,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
     public class ToggleButton : ButtonBase
     {
         /// <summary>
+        /// Initializes the <see cref="ToggleButton"/> type.
+        /// </summary>
+        static ToggleButton()
+        {
+            HorizontalContentAlignmentProperty.OverrideMetadata(typeof(ToggleButton), new PropertyMetadata<HorizontalAlignment>(HorizontalAlignment.Center));
+            VerticalContentAlignmentProperty.OverrideMetadata(typeof(ToggleButton), new PropertyMetadata<VerticalAlignment>(VerticalAlignment.Center));
+        }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="ToggleButton"/> class.
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
@@ -18,9 +27,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             : base(uv, name)
         {
             VisualStateGroups.Create("checkstate", new[] { "unchecked", "checked", "indeterminate" });
-
-            SetDefaultValue<HorizontalAlignment>(HorizontalContentAlignmentProperty, HorizontalAlignment.Center);
-            SetDefaultValue<VerticalAlignment>(VerticalContentAlignmentProperty, VerticalAlignment.Center);
         }
 
         /// <summary>

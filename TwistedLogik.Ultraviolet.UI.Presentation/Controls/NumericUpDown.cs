@@ -13,6 +13,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
     public class NumericUpDown : RangeBase
     {
         /// <summary>
+        /// Initializes the <see cref="NumericUpDown"/> type.
+        /// </summary>
+        static NumericUpDown()
+        {
+            MinimumProperty.OverrideMetadata(typeof(NumericUpDown), new PropertyMetadata<Double>(0.0));
+            MaximumProperty.OverrideMetadata(typeof(NumericUpDown), new PropertyMetadata<Double>(100.0));
+            SmallChangeProperty.OverrideMetadata(typeof(NumericUpDown), new PropertyMetadata<Double>(1.0));
+        }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="NumericUpDown"/> class.
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
@@ -20,10 +30,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         public NumericUpDown(UltravioletContext uv, String name)
             : base(uv, name)
         {
-            SetDefaultValue<Double>(MinimumProperty, 0.0);
-            SetDefaultValue<Double>(MaximumProperty, 100.0);
-            SetDefaultValue<Double>(SmallChangeProperty, 1.0);
-
             InvalidateFormatString();
             InvalidatePattern();
         }

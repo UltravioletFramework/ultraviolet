@@ -10,6 +10,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
     public class Button : ButtonBase
     {
         /// <summary>
+        /// Initializes the button type.
+        /// </summary>
+        static Button()
+        {
+            HorizontalContentAlignmentProperty.OverrideMetadata(typeof(Button), new PropertyMetadata<HorizontalAlignment>(HorizontalAlignment.Center));
+            VerticalContentAlignmentProperty.OverrideMetadata(typeof(Button), new PropertyMetadata<VerticalAlignment>(VerticalAlignment.Center));
+        }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="Button"/> class.
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
@@ -17,8 +26,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         public Button(UltravioletContext uv, String name)
             : base(uv, name)
         {
-            SetDefaultValue<HorizontalAlignment>(HorizontalContentAlignmentProperty, HorizontalAlignment.Center);
-            SetDefaultValue<VerticalAlignment>(VerticalContentAlignmentProperty, VerticalAlignment.Center);
         }
     }
 }

@@ -12,6 +12,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
     public class ProgressBar : RangeBase
     {
         /// <summary>
+        /// Initializes the <see cref="ProgressBar"/> type.
+        /// </summary>
+        static ProgressBar()
+        {
+            MaximumProperty.OverrideMetadata(typeof(ProgressBar), new PropertyMetadata<Double>(100.0));
+        }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="ProgressBar"/> class.
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
@@ -19,7 +27,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         public ProgressBar(UltravioletContext uv, String name)
             : base(uv, name)
         {
-            SetDefaultValue<Double>(MaximumProperty, 100.0);
+
         }
 
         /// <summary>

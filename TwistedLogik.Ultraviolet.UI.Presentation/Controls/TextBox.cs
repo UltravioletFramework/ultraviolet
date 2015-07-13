@@ -23,6 +23,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         static TextBox()
         {
             FontProperty.AddOwner(typeof(TextBox), new PropertyMetadata<SourcedResource<SpriteFont>>(HandleFontChanged));
+
+            FocusableProperty.OverrideMetadata(typeof(TextBox), new PropertyMetadata<Boolean>(true));
         }
 
         /// <summary>
@@ -33,7 +35,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         public TextBox(UltravioletContext uv, String name)
             : base(uv, name)
         {
-            SetDefaultValue<Boolean>(FocusableProperty, true);
+
         }
 
         /// <summary>

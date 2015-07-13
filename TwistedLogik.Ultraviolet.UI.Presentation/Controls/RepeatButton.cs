@@ -23,6 +23,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
+        /// Initializes the <see cref="RepeatButton"/> type.
+        /// </summary>
+        static RepeatButton()
+        {
+            ClickModeProperty.OverrideMetadata(typeof(RepeatButton), new PropertyMetadata<ClickMode>(ClickMode.Press));
+        }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="RepeatButton"/> class.
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
@@ -30,7 +38,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         public RepeatButton(UltravioletContext uv, String name)
             : base(uv, name)
         {
-            SetDefaultValue<ClickMode>(ClickModeProperty, ClickMode.Press);
+
         }
 
         /// <summary>
