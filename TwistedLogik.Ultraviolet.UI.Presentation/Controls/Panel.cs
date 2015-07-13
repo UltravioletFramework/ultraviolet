@@ -8,7 +8,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
     /// Represents a framework element with child elements.
     /// </summary>
     [UvmlKnownType]
-    public abstract class Panel : Control
+    public abstract class Panel : FrameworkElement
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Panel"/> class.
@@ -44,14 +44,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         {
             Contract.EnsureRange(childIndex >= 0 && childIndex < children.Count + 1, "childIndex");
 
-            if (ComponentRoot != null)
-            {
-                if (childIndex == 0)
-                {
-                    return ComponentRoot;
-                }
-                childIndex--;
-            }
             return children[childIndex];
         }
 
