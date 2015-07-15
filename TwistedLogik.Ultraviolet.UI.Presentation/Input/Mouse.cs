@@ -557,14 +557,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// Identifies the GotMouseCapture routed event.
         /// </summary>
         /// <remarks>The styling name of this routed event is got-mouse-capture.</remarks>
-        public static readonly RoutedEvent GotMouseCaptureEvent = EventManager.RegisterRoutedEvent("GotMouseCapture", RoutingStrategy.Direct,
+        public static readonly RoutedEvent GotMouseCaptureEvent = EventManager.RegisterRoutedEvent("GotMouseCapture", RoutingStrategy.Bubble,
             typeof(UpfRoutedEventHandler), typeof(Mouse));
 
         /// <summary>
         /// Identifies the LostMouseCapture routed event.
         /// </summary>
         /// <remarks>The styling name of this routed event is lost-mouse-capture.</remarks>
-        public static readonly RoutedEvent LostMouseCaptureEvent = EventManager.RegisterRoutedEvent("LostMouseCapture", RoutingStrategy.Direct,
+        public static readonly RoutedEvent LostMouseCaptureEvent = EventManager.RegisterRoutedEvent("LostMouseCapture", RoutingStrategy.Bubble,
             typeof(UpfRoutedEventHandler), typeof(Mouse));
 
         /// <summary>

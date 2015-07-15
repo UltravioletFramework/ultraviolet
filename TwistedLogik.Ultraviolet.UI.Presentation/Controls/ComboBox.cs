@@ -1,7 +1,9 @@
 ﻿using System;
 using TwistedLogik.Nucleus;
+using TwistedLogik.Ultraviolet.Input;
 using TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives;
 using TwistedLogik.Ultraviolet.UI.Presentation.Input;
+using TwistedLogik.Ultraviolet.UI.Presentation.Media;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 {
@@ -16,6 +18,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         static ComboBox()
         {
+            EventManager.RegisterClassHandler(typeof(ComboBox), Mouse.LostMouseCaptureEvent, new UpfRoutedEventHandler(HandleLostMouseCapture));
+            EventManager.RegisterClassHandler(typeof(ComboBox), Mouse.MouseDownEvent, new UpfMouseButtonEventHandler(HandleMouseDown));
+
             IsEnabledProperty.OverrideMetadata(typeof(ComboBox), new PropertyMetadata<Boolean>(HandleIsEnabledChanged));
         }
 
@@ -290,6 +295,44 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
+        /// Occurs when the control handles a <see cref="Mouse.MouseDownEvent"/> routed event.
+        /// </summary>
+        private static void HandleMouseDown(DependencyObject dobj, MouseDevice device, MouseButton button, ref RoutedEventData data)
+        {
+            if (button != MouseButton.Left)
+                return;
+
+            var comboBox = (ComboBox)dobj;
+            if (comboBox == Mouse.GetCaptured(comboBox.View) && comboBox == data.OriginalSource)
+            {
+                comboBox.IsDropDownOpen = false;
+            }
+        }
+
+        /// <summary>
+        /// Occurs when the control handles a <see cref="Mouse.LostMouseCapture"/> routed event.
+        /// </summary>
+        private static void HandleLostMouseCapture(DependencyObject dobj, ref RoutedEventData data)
+        {
+            var comboBox = (ComboBox)dobj;
+            if (comboBox != data.OriginalSource)
+            {
+                if (comboBox.ContainsDescendant(data.OriginalSource as DependencyObject))
+                {
+                    if (Mouse.GetCaptured(comboBox.View) == null)
+                    {
+                        Mouse.Capture(comboBox.View, comboBox, CaptureMode.SubTree);
+                        data.Handled = true;
+                    }
+                }
+                else
+                {
+                    comboBox.IsDropDownOpen = false;
+                }
+            }
+        }
+
+        /// <summary>
         /// Updates the selection box.
         /// </summary>
         private void UpdateSelectionBox()
@@ -337,6 +380,36 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             {
                 VisualStateGroups.GoToState("opened", "closed");
             }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether this combo box contains the specified object as a descendant.
+        /// </summary>
+        /// <param name="dobj">The object to evaluate.</param>
+        /// <returns><c>true</c> if the specified object is a descendant of this combo box; otherwise, <c>false</c>.</returns>
+        private Boolean ContainsDescendant(DependencyObject dobj)
+        {
+            var current = dobj;
+
+            while (current != null)
+            {
+                if (current == this)
+                    return true;
+
+                var popupRoot = current as PopupRoot;
+                if (popupRoot != null)
+                {
+                    var popup = popupRoot.Parent as Popup;
+                    if (popup == null)
+                        return false;
+
+                    current = popup.Parent ?? popup.PlacementTarget;
+                }
+
+                current = VisualTreeHelper.GetParent(current);
+            }
+
+            return false;
         }
 
         // Component references.
