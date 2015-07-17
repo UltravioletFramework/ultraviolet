@@ -310,7 +310,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
-        /// Occurs when the control handles a <see cref="Mouse.LostMouseCapture"/> routed event.
+        /// Occurs when the control handles a <see cref="Mouse.LostMouseCaptureEvent"/> routed event.
         /// </summary>
         private static void HandleLostMouseCapture(DependencyObject dobj, ref RoutedEventData data)
         {
