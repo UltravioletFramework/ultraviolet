@@ -1338,6 +1338,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         private void touch_Tap(TouchDevice device, Int64 fingerID, Single x, Single y)
         {
+            if (Window == null)
+                return;
+
             var position = GetTouchCoordinates(x, y);
 
             var recipient = elementUnderMouse as DependencyObject;
@@ -1361,6 +1364,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         private void touch_FingerDown(TouchDevice device, Int64 fingerID, Single x, Single y, Single pressure)
         {
+            if (Window == null)
+                return;
+
             var position = GetTouchCoordinates(x, y);
 
             var recipient = HitTest(position) as DependencyObject;
@@ -1379,6 +1385,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         private void touch_FingerUp(TouchDevice device, Int64 fingerID, Single x, Single y, Single pressure)
         {
+            if (Window == null)
+                return;
+
             var position = GetTouchCoordinates(x, y);
 
             var recipient = elementLastTouched as DependencyObject;
@@ -1397,6 +1406,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         private void touch_FingerMotion(TouchDevice device, Int64 fingerID, Single x, Single y, Single dx, Single dy, Single pressure)
         {
+            if (Window == null)
+                return;
+
             var position = GetTouchCoordinates(x, y);
 
             var recipient = elementLastTouched as DependencyObject;
