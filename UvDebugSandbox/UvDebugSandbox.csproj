@@ -144,6 +144,10 @@
       <Project>{50AEFA93-FE53-414A-89FC-C061C165C673}</Project>
       <Name>TwistedLogik.Ultraviolet.SDL2</Name>
     </ProjectReference>
+    <ProjectReference Include="..\TwistedLogik.Ultraviolet.UI.Presentation.Compiler\TwistedLogik.Ultraviolet.UI.Presentation.Compiler.csproj">
+      <Project>{d27ab499-f06f-47ea-8645-285cf2315ec2}</Project>
+      <Name>TwistedLogik.Ultraviolet.UI.Presentation.Compiler</Name>
+    </ProjectReference>
     <ProjectReference Include="..\TwistedLogik.Ultraviolet.UI.Presentation\TwistedLogik.Ultraviolet.UI.Presentation.csproj">
       <Project>{7379D9E1-BB01-4B05-B4F7-5D39B393348F}</Project>
       <Name>TwistedLogik.Ultraviolet.UI.Presentation</Name>
@@ -197,6 +201,7 @@
   <ItemGroup>
     <None Include="Content\UI\Screens\DebugViewScreen\DebugViewScreen.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -243,7 +248,5 @@
   <Target Name="AfterBuild">
   </Target>
   -->
-  <ItemGroup>
-    <Folder Include="x64\osx\" />
-  </ItemGroup>
+  <ItemGroup />
 </Project>

@@ -16,6 +16,10 @@ using UvDebugSandbox.Input;
 using UvDebugSandbox.UI;
 using UvDebugSandbox.UI.Screens;
 
+#if !ANDROID
+using TwistedLogik.Ultraviolet.UI.Presentation.Compiler;
+#endif
+
 namespace UvDebugSandbox
 {
     /// <summary>
@@ -76,6 +80,10 @@ namespace UvDebugSandbox
         protected override void OnInitialized()
         {
             SetFileSourceFromManifestIfExists("UvDebugSandbox.Content.uvarc");
+
+#if !ANDROID
+            ExpressionCompiler.Compile(Ultraviolet, "Content");
+#endif
 
             base.OnInitialized();
         }

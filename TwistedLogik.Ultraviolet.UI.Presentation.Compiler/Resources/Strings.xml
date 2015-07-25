@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<LocalizedStrings>
+  <String Key="FAILED_EXPRESSION_VALIDATION_PASS">
+    <en-US>
+      <Variant>Expression compilation failed during the expression validation pass. Please see 'Compilation Errors.txt' in the compiler's working directory for more information.</Variant>
+    </en-US>
+  </String>
+  <String Key="FAILED_FINAL_PASS">
+    <en-US>
+      <Variant>Expression compilation failed during the final compiler pass. Please see 'Compilation Errors.txt' in the compiler's working directory for more information.</Variant>
+    </en-US>
+  </String>
+  <String Key="VIEW_MODEL_TYPE_IS_NOT_FULLY_QUALIFIED">
+    <en-US>
+      <Variant>The view model type specified by '{0}' is not valid because it does not use a fully-qualified type name.</Variant>
+    </en-US>
+  </String>
+  <String Key="VIEW_MODEL_IS_SEALED">
+    <en-US>
+      <Variant>The type '{0}' cannot be used as a view model because it is sealed.</Variant>
+    </en-US>
+  </String>
+  <String Key="VIEW_MODEL_IS_ABSTRACT">
+    <en-US>
+      <Variant>The type '{0}' cannot be used as a view model because it is abstract.</Variant>
+    </en-US>
+  </String>
+  <String Key="ONLY_DEPENDENCY_PROPERTIES_CAN_BE_BOUND">
+    <en-US>
+      <Variant>Attempted to bind to '{0}', but '{0}' is not a dependency property.</Variant>
+    </en-US>
+  </String>
+  <String Key="ELEMENT_DOES_NOT_HAVE_DEFAULT_PROPERTY">
+    <en-US>
+      <Variant>Attempted to bind to the default property of '{0}', but '{0}' does not have a default property.</Variant>
+    </en-US>
+  </String>
+</LocalizedStrings>
