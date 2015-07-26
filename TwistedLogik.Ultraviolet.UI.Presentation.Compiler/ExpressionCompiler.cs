@@ -70,11 +70,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
         /// <summary>
         /// Performs the first compilation pass, which generates expression getters in order to verify that the expressions are valid code.
         /// </summary>
-        private static CompilerResults PerformExpressionVerificationCompilationPass(CSharpCodeProvider compiler, IEnumerable<ViewModelInfo> viewModelInfos, ConcurrentBag<String> viewModelReferences)
+        private static CompilerResults PerformExpressionVerificationCompilationPass(CSharpCodeProvider compiler, IEnumerable<ViewModelWrapperInfo> viewModelInfos, ConcurrentBag<String> viewModelReferences)
         {
             Parallel.ForEach(viewModelInfos, viewModelInfo =>
             {
-                viewModelReferences.Add(viewModelInfo.ViewModelParentType.Assembly.Location);
+                viewModelReferences.Add(viewModelInfo.ViewModelType.Assembly.Location);
 
                 foreach (var expression in viewModelInfo.Expressions)
                 {
@@ -91,7 +91,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
         /// <summary>
         /// Performs the second compilation pass, which generates setters in order to determine which expressions support two-way bindings.
         /// </summary>
-        private static CompilerResults PerformSetterEliminationCompilationPass(CSharpCodeProvider compiler, IEnumerable<ViewModelInfo> viewModelInfos, ConcurrentBag<String> viewModelReferences)
+        private static CompilerResults PerformSetterEliminationCompilationPass(CSharpCodeProvider compiler, IEnumerable<ViewModelWrapperInfo> viewModelInfos, ConcurrentBag<String> viewModelReferences)
         {
             Parallel.ForEach(viewModelInfos, viewModelInfo =>
             {
@@ -108,7 +108,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
         /// <summary>
         /// Performs the final compilation pass, which removes invalid expression setters based on the results of the previous pass.
         /// </summary>
-        private static CompilerResults PerformFinalCompilationPass(CSharpCodeProvider compiler, IEnumerable<ViewModelInfo> viewModelInfos, ConcurrentBag<String> viewModelReferences, CompilerResults setterEliminationResult)
+        private static CompilerResults PerformFinalCompilationPass(CSharpCodeProvider compiler, IEnumerable<ViewModelWrapperInfo> viewModelInfos, ConcurrentBag<String> viewModelReferences, CompilerResults setterEliminationResult)
         {
             var errors = setterEliminationResult.Errors.Cast<CompilerError>().ToList();
 
@@ -132,10 +132,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
         /// Compiles the specified view model sources into a managed assembly.
         /// </summary>
         /// <param name="compiler">The compiler with which to compile the view model sources.</param>
-        /// <param name="infos">A collection of <see cref="ViewModelInfo"/> instances containing the source code to compile.</param>
+        /// <param name="infos">A collection of <see cref="ViewModelWrapperInfo"/> instances containing the source code to compile.</param>
         /// <param name="references">A collection of assembly locations which should be referenced by the compiled assembly.</param>
         /// <returns>A <see cref="CompilerResults"/> instance that represents the result of compilation.</returns>
-        private static CompilerResults CompileViewModelSources(CSharpCodeProvider compiler, IEnumerable<ViewModelInfo> infos, IEnumerable<String> references)
+        private static CompilerResults CompileViewModelSources(CSharpCodeProvider compiler, IEnumerable<ViewModelWrapperInfo> infos, IEnumerable<String> references)
         {
             var options = new CompilerParameters();
             options.OutputAssembly = "TwistedLogik.Ultraviolet.UI.Presentation.CompiledExpressions.dll";
@@ -152,10 +152,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
                 var path = GetWorkingFileForViewModel(info);
                 files.Add(path);
 
-                File.WriteAllText(path, info.ViewModelSource);
+                File.WriteAllText(path, info.ViewModelWrapperSource);
             }
 
-            return compiler.CompileAssemblyFromFile(options, files.ToArray());            
+            return compiler.CompileAssemblyFromFile(options, files.ToArray());
         }
 
         /// <summary>
@@ -181,7 +181,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
                     var viewdef = xml.Root.Element("View");
                     if (viewdef == null)
                         continue;
-                    
+
                     result.Add(new ViewDefinition(file, viewdef));
                 }
                 catch (XmlException) { continue; }
@@ -197,14 +197,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
         }
 
         /// <summary>
-        /// Creates an instance of <see cref="ViewModelInfo"/> for each of the specified view definitions.
+        /// Creates an instance of <see cref="ViewModelWrapperInfo"/> for each of the specified view definitions.
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
-        /// <param name="viewDefinitions">The collection of <see cref="ViewDefinition"/> objects for which to create <see cref="ViewModelInfo"/> instances.</param>
-        /// <returns>A collection containing the <see cref="ViewModelInfo"/ > instances which were created.</returns>
-        private static IEnumerable<ViewModelInfo> RetrieveViewModelInfos(UltravioletContext uv, IEnumerable<ViewDefinition> viewDefinitions)
+        /// <param name="viewDefinitions">The collection of <see cref="ViewDefinition"/> objects for which to create <see cref="ViewModelWrapperInfo"/> instances.</param>
+        /// <returns>A collection containing the <see cref="ViewModelWrapperInfo"/ > instances which were created.</returns>
+        private static IEnumerable<ViewModelWrapperInfo> RetrieveViewModelInfos(UltravioletContext uv, IEnumerable<ViewDefinition> viewDefinitions)
         {
-            var viewModelInfos = new ConcurrentBag<ViewModelInfo>();
+            var viewModelInfos = new ConcurrentBag<ViewModelWrapperInfo>();
 
             Parallel.ForEach(viewDefinitions, viewDefinition =>
             {
@@ -219,12 +219,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
         }
 
         /// <summary>
-        /// Creates a new instance of <see cref="ViewModelInfo"/> that represents the specified view model.
+        /// Creates a new instance of <see cref="ViewModelWrapperInfo"/> that represents the specified view model.
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
         /// <param name="viewdef">The view definition for which to retrieve view model info.</param>
-        /// <returns>The <see cref="ViewModelInfo"/> that was created to represent the specified view's view model.</returns>
-        private static ViewModelInfo GetViewModelInfo(UltravioletContext uv, ViewDefinition viewdef)
+        /// <returns>The <see cref="ViewModelWrapperInfo"/> that was created to represent the specified view's view model.</returns>
+        private static ViewModelWrapperInfo GetViewModelInfo(UltravioletContext uv, ViewDefinition viewdef)
         {
             var definedViewModelTypeName = (String)viewdef.Definition.Attribute("ViewModelType");
             if (definedViewModelTypeName == null)
@@ -236,7 +236,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
 
             var definedViewModelTypeAssemblyName = definedViewModelTypeName.Substring(typeNameCommaIx + 1).Trim();
             var definedViewModelTypeAssembly = Assembly.Load(definedViewModelTypeAssemblyName);
-            
+
             var definedViewModelType = Type.GetType(definedViewModelTypeName);
             if (definedViewModelType.IsSealed)
                 throw new InvalidOperationException(CompilerStrings.ViewModelIsSealed.Format(definedViewModelType.Name));
@@ -254,11 +254,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
                 FindBindingExpressionsInView(uv, element, inheritedViewModelExpressions);
             }
 
-            return new ViewModelInfo()
+            return new ViewModelWrapperInfo()
             {
                 ViewDefinition = viewdef,
-                ViewModelParentType = definedViewModelType,
-                ViewModelName = inheritedViewModelName,
+                ViewModelType = definedViewModelType,
+                ViewModelWrapperName = inheritedViewModelName,
                 Expressions = inheritedViewModelExpressions,
             };
         }
@@ -266,102 +266,86 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
         /// <summary>
         /// Writes the source code for the inherited view model for the specified view.
         /// </summary>
-        /// <param name="viewModelInfo">The <see cref="ViewModelInfo"/> that describes the view model being generated.</param>
-        private static void WriteSourceCodeForViewModel(ViewModelInfo viewModelInfo)
+        /// <param name="viewModelInfo">The <see cref="ViewModelWrapperInfo"/> that describes the view model being generated.</param>
+        private static void WriteSourceCodeForViewModel(ViewModelWrapperInfo viewModelInfo)
         {
-            var lineCount = 1;
-
-            using (var stringWriter = new StringWriter())
+            using (var writer = new ViewModelWrapperWriter())
             {
-                using (var writer = new IndentedTextWriter(stringWriter))
+                // Using statements
+                writer.WriteLine("using System;");
+                writer.WriteLine();
+
+                // Namespace and class declaration
+                writer.WriteLine("namespace TwistedLogik.Ultraviolet.UI.Presentation.CompiledExpressions");
+                writer.WriteLine("{");
+                writer.WriteLine("public sealed class {0} : {1}", viewModelInfo.ViewModelWrapperName, writer.GetCSharpTypeName(typeof(IViewModelWrapper)));
+                writer.WriteLine("{");
+
+                // Constructors
+                writer.WriteLine("#region Constructors");
+                writer.WriteConstructor(viewModelInfo);
+                writer.WriteLine("#endregion");
+                writer.WriteLine();
+
+                // IViewModelWrapper
+                writer.WriteLine("#region IViewModelWrapper");
+                writer.WriteIViewModelWrapperImplementation(viewModelInfo);
+                writer.WriteLine("#endregion");
+                writer.WriteLine();
+
+                // Methods
+                writer.WriteLine("#region Methods");
+                var methods = viewModelInfo.ViewModelType.GetMethods(BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static);
+                foreach (var method in methods)
                 {
-                    var write = new Action<String>(text => { writer.Write(text); lineCount += text.Count(c => c == '\n'); });
-                    var writeLine = new Action<String>(text => { writer.WriteLine(text); lineCount += 1 + text.Count(c => c == '\n'); });
+                    if (!NeedsWrapper(method))
+                        continue;
 
-                    writeLine("using System;");
-                    writeLine(String.Empty);
-
-                    writeLine("namespace TwistedLogik.Ultraviolet.UI.Presentation.CompiledExpressions");
-                    writeLine("{");
-                    writer.Indent++;
-
-                    writeLine("public sealed class " + viewModelInfo.ViewModelName + " : " + viewModelInfo.ViewModelParentType.FullName);
-                    writeLine("{");
-                    writer.Indent++;
-
-                    var ctors = viewModelInfo.ViewModelParentType.GetConstructors();
-                    foreach (var ctor in ctors)
-                    {
-                        if (ctor.IsPrivate)
-                            continue;
-
-                        var ctorParams = ctor.GetParameters();
-
-                        write("public " + viewModelInfo.ViewModelName + "(");
-                        write(String.Join(", ", ctorParams.Select(x => String.Format("{0} {1}", x.ParameterType.FullName, x.Name))));
-                        write(") : base(");
-                        write(String.Join(", ", ctorParams.Select(x => x.Name)));
-                        writeLine(")");
-
-                        writeLine("{");
-                        writer.Indent++;
-
-                        writer.Indent--;
-                        writeLine("}");
-                    }
-
-                    for (int i = 0; i < viewModelInfo.Expressions.Count; i++)
-                    {
-                        var expInfo = viewModelInfo.Expressions[i];
-
-                        writeLine("// " + expInfo.Expression);
-                        writeLine("public " + expInfo.Type.FullName  + " Expression" + i);
-                        writeLine("{");
-                        writer.Indent++;
-
-                        var expMemberPath = BindingExpressions.GetBindingMemberPathPart(expInfo.Expression);
-                        var expFormatString = BindingExpressions.GetBindingFormatStringPart(expInfo.Expression);
-
-                        if (expInfo.GenerateGetter)
-                        {
-                            expInfo.GetterLineStart = lineCount;
-
-                            if (expInfo.Type == typeof(String))
-                            {
-                                if (String.IsNullOrEmpty(expFormatString))
-                                {
-                                    expFormatString = "{0}";
-                                }
-                                writeLine(String.Format("get {{ return String.Format(\"{0}\", {1}); }}", expFormatString, expMemberPath));
-                            }
-                            else
-                            {
-                                writeLine(String.Format("get {{ return {0}; }}", expMemberPath));
-                            }
-
-                            expInfo.GetterLineEnd = lineCount - 1;
-                        }
-                        if (expInfo.GenerateSetter)
-                        {
-                            expInfo.SetterLineStart = lineCount;
-
-                            writeLine(String.Format("set {{ {0} = value; }}", expMemberPath));
-
-                            expInfo.SetterLineEnd = lineCount - 1;
-                        }
-
-                        writer.Indent--;
-                        writeLine("}");
-                    }
-
-                    writer.Indent--;
-                    writeLine("}");
-
-                    writer.Indent--;
-                    writeLine("}");
+                    writer.WriteWrapperMethod(method);
                 }
+                writer.WriteLine("#endregion");
+                writer.WriteLine();
 
-                viewModelInfo.ViewModelSource = stringWriter.ToString();
+                // Properties
+                writer.WriteLine("#region Properties");
+                var properties = viewModelInfo.ViewModelType.GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static);
+                foreach (var property in properties)
+                {
+                    if (!NeedsWrapper(property))
+                        continue;
+
+                    writer.WriteWrapperProperty(property);
+                }
+                writer.WriteLine("#endregion");
+                writer.WriteLine();
+
+                // Fields
+                writer.WriteLine("#region Fields");
+                var fields = viewModelInfo.ViewModelType.GetFields(BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static);
+                foreach (var field in fields)
+                {
+                    if (!NeedsWrapper(field))
+                        continue;
+
+                    writer.WriteWrapperProperty(field);
+                }
+                writer.WriteLine("#endregion");
+                writer.WriteLine();
+
+                // Expressions
+                writer.WriteLine("#region Expressions");
+                for (int i = 0; i < viewModelInfo.Expressions.Count; i++)
+                {
+                    var expressionInfo = viewModelInfo.Expressions[i];
+                    writer.WriteExpressionProperty(expressionInfo, i);
+                }
+                writer.WriteLine("#endregion");
+
+                // Source code generation complete
+                writer.WriteLine("}");
+                writer.WriteLine("}");
+
+                viewModelInfo.ViewModelWrapperSource = writer.ToString();
             }
         }
 
@@ -451,12 +435,85 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
         }
 
         /// <summary>
+        /// Gets a value indicating whether a wrapper should be generated for the specified method.
+        /// </summary>
+        private static Boolean NeedsWrapper(MethodInfo method)
+        {
+            if (method.IsSpecialName)
+                return false;
+
+            if (method.Name.StartsWith("get_") || method.Name.StartsWith("end_"))
+                return false;
+
+            if (method.DeclaringType == typeof(Object))
+                return false;
+
+            return true;
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether a wrapper should be generated for the specified property.
+        /// </summary>
+        private static Boolean NeedsWrapper(PropertyInfo property)
+        {
+            return true;
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether a wrapper should be generated for the specified field.
+        /// </summary>
+        private static Boolean NeedsWrapper(FieldInfo field)
+        {
+            return true;
+        }
+
+        /// <summary>
         /// Gets the name of the file in which the specified view model's source code is saved during compilation.
         /// </summary>
-        private static String GetWorkingFileForViewModel(ViewModelInfo viewModelInfo)
+        private static String GetWorkingFileForViewModel(ViewModelWrapperInfo viewModelInfo)
         {
-            var path = Path.ChangeExtension(Path.Combine(WorkingDirectory, viewModelInfo.ViewModelName), "cs");
+            var path = Path.ChangeExtension(Path.Combine(WorkingDirectory, viewModelInfo.ViewModelWrapperName), "cs");
             return path;
+        }
+
+        /// <summary>
+        /// Gets the C# name of the specified type, including by-ref specifications.
+        /// </summary>
+        private static String GetCSharpTypeName(Type type)
+        {
+            if (type == typeof(void))
+                return "void";
+
+            if (type.IsByRef)
+            {
+                return "ref " + type.GetElementType().FullName;
+            }
+
+            return type.FullName;
+        }
+
+        /// <summary>
+        /// Gets the source text for the specified parameter when it is part of a parameter list.
+        /// </summary>
+        private static String GetParameterText(ParameterInfo parameter)
+        {
+            return GetCSharpTypeName(parameter.ParameterType) + " " + parameter.Name;
+        }
+
+        /// <summary>
+        /// Gets the source text for the specified parameter when it is part of an argument list.
+        /// </summary>
+        private static String GetArgumentText(ParameterInfo parameter)
+        {
+            if (parameter.IsOut)
+            {
+                return "out " + parameter.Name;
+            }
+            if (parameter.ParameterType.IsByRef)
+            {
+                return "ref " + parameter.Name;
+            }
+            return parameter.Name;
         }
 
         // The name of the temporary directory in which the compiler operates.

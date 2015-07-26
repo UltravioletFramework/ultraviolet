@@ -43,11 +43,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ExpressionCompiler.cs" />
-    <Compile Include="ExpressionCompiler.BindingExpressionInfo.cs" />
-    <Compile Include="ExpressionCompiler.ViewModelInfo.cs" />
-    <Compile Include="ExpressionCompiler.ViewDefinition.cs" />
+    <Compile Include="BindingExpressionInfo.cs" />
+    <Compile Include="ViewModelWrapperInfo.cs" />
+    <Compile Include="ViewDefinition.cs" />
     <Compile Include="CompilerStrings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewModelWrapperWriter.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TwistedLogik.Nucleus\TwistedLogik.Nucleus.csproj">
