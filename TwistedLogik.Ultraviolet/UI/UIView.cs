@@ -74,7 +74,7 @@ namespace TwistedLogik.Ultraviolet.UI
         /// <summary>
         /// Grants focus to the view.
         /// </summary>
-        public void Focus()
+        public virtual void Focus()
         {
             if (focused)
                 return;
@@ -87,7 +87,7 @@ namespace TwistedLogik.Ultraviolet.UI
         /// <summary>
         /// Removes focus from the view.
         /// </summary>
-        public void Blur()
+        public virtual void Blur()
         {
             if (!focused)
                 return;
@@ -102,7 +102,7 @@ namespace TwistedLogik.Ultraviolet.UI
         /// </summary>
         /// <param name="global">The content manager used to load globally-sourced assets.</param>
         /// <param name="local">The content manager used to load locally-sourced assets.</param>
-        public void SetContentManagers(ContentManager global, ContentManager local)
+        public virtual void SetContentManagers(ContentManager global, ContentManager local)
         {
             this.globalContent = global;
             this.localContent  = local;
@@ -114,7 +114,7 @@ namespace TwistedLogik.Ultraviolet.UI
         /// Sets the view's associated view model.
         /// </summary>
         /// <param name="viewModel">The view's associated view model.</param>
-        public void SetViewModel(Object viewModel)
+        public virtual void SetViewModel(Object viewModel)
         {
             if (viewModel != null && viewModel.GetType() != viewModelType)
                 throw new ArgumentException(UltravioletStrings.IncompatibleViewModel.Format(viewModelType));
@@ -129,7 +129,7 @@ namespace TwistedLogik.Ultraviolet.UI
         /// </summary>
         /// <param name="window">The window on which to position the view.</param>
         /// <param name="area">The area on the window in which to position the view.</param>
-        public void SetViewPosition(IUltravioletWindow window, Rectangle area)
+        public virtual void SetViewPosition(IUltravioletWindow window, Rectangle area)
         {
             Contract.Require(window, "window");
 

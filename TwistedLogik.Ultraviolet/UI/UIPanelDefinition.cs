@@ -10,6 +10,11 @@ namespace TwistedLogik.Ultraviolet.UI
     public class UIPanelDefinition
     {
         /// <summary>
+        /// Gets the path to the asset file from which the panel definition was loaded.
+        /// </summary>
+        public String AssetFilePath { get; internal set; }
+
+        /// <summary>
         /// Gets the amount of time over which the panel will transition to
         /// its open state if no time is explicitly specified.
         /// </summary>

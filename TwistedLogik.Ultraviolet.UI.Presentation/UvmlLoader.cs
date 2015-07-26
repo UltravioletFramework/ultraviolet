@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
 using System.Xml.Linq;
+using TwistedLogik.Nucleus;
 using TwistedLogik.Nucleus.Data;
 using TwistedLogik.Nucleus.Xml;
 using TwistedLogik.Ultraviolet.UI.Presentation.Controls;
@@ -33,10 +34,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Loads an instance of the <see cref="PresentationFoundationView"/> from an XML node.
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
-        /// <param name="xml">The <see cref="XElement"/> from which to load the view.</param>
+        /// <param name="uiPanelDefinition">The <see cref="UIPanelDefinition"/> that defines the view.</param>
         /// <returns>The <see cref="PresentationFoundationView"/> that was loaded from the specified XML element.</returns>
-        public static PresentationFoundationView Load(UltravioletContext uv, XElement xml)
+        public static PresentationFoundationView Load(UltravioletContext uv, UIPanelDefinition uiPanelDefinition)
         {
+            Contract.Require(uv, "uv");
+            Contract.Require(uiPanelDefinition, "uiPanelDefinition");
+
+            var xml = uiPanelDefinition.ViewElement;
+
             var viewModelType      = default(Type);
             var viewModelTypeAttr  = xml.Attribute("ViewModelType");
             if (viewModelTypeAttr != null)
@@ -46,6 +52,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 {
                     throw new InvalidOperationException(PresentationStrings.ViewModelTypeNotFound.Format(viewModelTypeAttr.Value));
                 }
+                
+                var viewModelWrapperName = PresentationFoundationView.GetViewModelWrapperNameFromAssetPath(uiPanelDefinition.AssetFilePath);
+                var viewModelWrapperType = uv.GetUI().GetPresentationFoundation().GetViewModelWrapperTypeByName(viewModelWrapperName) ?? viewModelType;
+
+                viewModelType = viewModelWrapperType;
             }
 
             var view    = new PresentationFoundationView(uv, viewModelType);

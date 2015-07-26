@@ -232,23 +232,20 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
 
             if (definedViewModelType.IsAbstract)
                 throw new InvalidOperationException(CompilerStrings.ViewModelIsAbstract.Format(definedViewModelType.Name));
-
-            var pathComponents = viewdef.Path.Split(new[] { Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar });
-            pathComponents[pathComponents.Length - 1] = Path.GetFileNameWithoutExtension(pathComponents[pathComponents.Length - 1]);
-
-            var inheritedViewModelName = String.Format("{0}_VM_Impl", String.Join("_", pathComponents));
-            var inheritedViewModelExpressions = new List<BindingExpressionInfo>();
+            
+            var viewModelWrapperName = PresentationFoundationView.GetViewModelWrapperNameFromAssetPath(viewdef.Path);
+            var viewModelWrapperExpressions = new List<BindingExpressionInfo>();
             foreach (var element in viewdef.Definition.Elements())
             {
-                FindBindingExpressionsInView(uv, element, inheritedViewModelExpressions);
+                FindBindingExpressionsInView(uv, element, viewModelWrapperExpressions);
             }
 
             return new ViewModelWrapperInfo()
             {
                 ViewDefinition = viewdef,
                 ViewModelType = definedViewModelType,
-                ViewModelWrapperName = inheritedViewModelName,
-                Expressions = inheritedViewModelExpressions,
+                ViewModelWrapperName = viewModelWrapperName,
+                Expressions = viewModelWrapperExpressions,
             };
         }
 
@@ -265,7 +262,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
                 writer.WriteLine();
 
                 // Namespace and class declaration
-                writer.WriteLine("namespace TwistedLogik.Ultraviolet.UI.Presentation.CompiledExpressions");
+                writer.WriteLine("namespace " + PresentationFoundationView.GetViewModelWrapperNamespace());
                 writer.WriteLine("{");
                 writer.WriteLine("public sealed class {0} : {1}", viewModelInfo.ViewModelWrapperName, writer.GetCSharpTypeName(typeof(IViewModelWrapper)));
                 writer.WriteLine("{");

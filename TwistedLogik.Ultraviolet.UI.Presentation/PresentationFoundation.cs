@@ -52,6 +52,67 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Creates a new view model wrapper instance of the specified type which wraps the specified view model, if such a wrapper exists.
+        /// </summary>
+        /// <param name="name">The name of the view model wrapper type to instantiate.</param>
+        /// <param name="viewModel">The view model instance that will be wrapped by the view model wrapper.</param>
+        /// <returns>The view model wrapper that was created, or a reference to <paramref name="viewModel"/> if no valid wrapper exists.</returns>
+        public Object CreateViewModelWrapper(String name, Object viewModel)
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
+            Contract.RequireNotEmpty(name, "name");
+
+            if (viewModel == null)
+                return null;
+
+            Type wrapperType;
+            if (compiledViewModelWrappers.TryGetValue(name, out wrapperType))
+            {
+                viewModel = Activator.CreateInstance(wrapperType, new[] { viewModel });
+            }
+
+            return viewModel;
+        }
+
+        /// <summary>
+        /// Gets the view model wrapper type for the screen with the specified asset path.
+        /// </summary>
+        /// <param name="path">The path to the screen for which to retrieve a view model wrapper type.</param>
+        /// <returns>The view model wrapper type for the screen with the specified path, or <c>null</c> if no such wrapper exists.</returns>
+        public Type GetViewModelWrapperTypeByPath(String path)
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
+            Contract.RequireNotEmpty(path, "path");
+
+            var name = PresentationFoundationView.GetViewModelWrapperNameFromAssetPath(path);
+            
+            Type wrapperType;
+            if (compiledViewModelWrappers.TryGetValue(name, out wrapperType))
+            {
+                return wrapperType;
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// Gets the view model wrapper type with the specified name.
+        /// </summary>
+        /// <param name="name">The name of the view model wrapper type to retrieve.</param>
+        /// <returns>The view model wrapper type with the specified name, or <c>null</c> if no such wrapper exists.</returns>
+        public Type GetViewModelWrapperTypeByName(String name)
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
+            Contract.RequireNotEmpty(name, "name");
+
+            Type wrapperType;
+            if (compiledViewModelWrappers.TryGetValue(name, out wrapperType))
+            {
+                return wrapperType;
+            }
+            return null;
+        }
+
+        /// <summary>
         /// Compiles the binding expressions in the specified content directory tree.
         /// </summary>
         /// <param name="root">The root of the content directory tree to search for binding expressions to compile.</param>
@@ -89,8 +150,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             Contract.EnsureNotDisposed(this, Disposed);
 
-            compiledExpressionsAssembly = null;
-
+            Assembly compiledExpressionsAssembly = null;
             try
             {
                 switch (Ultraviolet.Platform)
@@ -112,6 +172,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             catch (FileNotFoundException e)
             {
                 throw new InvalidOperationException(PresentationStrings.CompiledExpressionsAssemblyNotFound, e);
+            }
+
+            compiledViewModelWrappers.Clear();
+
+            var viewModelWrapperTypes = compiledExpressionsAssembly.GetTypes();
+            foreach (var viewModelWrapperType in viewModelWrapperTypes)
+            {
+                compiledViewModelWrappers.Add(viewModelWrapperType.Name, viewModelWrapperType);
             }
         }
 
@@ -907,6 +975,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         private readonly Dictionary<String, KnownType> registeredTypes = 
             new Dictionary<String, KnownType>(StringComparer.OrdinalIgnoreCase);
 
+        // The registry of compiled view wrappers.
+        private readonly Dictionary<String, Type> compiledViewModelWrappers =
+            new Dictionary<String, Type>(StringComparer.Ordinal);
+
         // The queues of elements with invalid layouts.
         private readonly LayoutQueue styleQueue;
         private readonly LayoutQueue measureQueue;
@@ -915,9 +987,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         // The global style sheet.
         private UvssDocument globalStyleSheet;
 
-        // The assembly containing the application's compiled expressions.
+        // The compiler used to compile the game's binding expressions.
         private const String CompiledExpressionsAssemblyName = "TwistedLogik.Ultraviolet.UI.Presentation.CompiledExpressions.dll";
-        private Assembly compiledExpressionsAssembly;
         private IBindingExpressionCompiler bindingExpressionCompiler;
     }
 }

@@ -43,6 +43,7 @@ namespace TwistedLogik.Ultraviolet.UI
 
             return new UIPanelDefinition()
             {
+                AssetFilePath                  = metadata.AssetFilePath,
                 DefaultOpenTransitionDuration  = TimeSpan.FromMilliseconds(defaultOpenTransitionDuration),
                 DefaultCloseTransitionDuration = TimeSpan.FromMilliseconds(defaultCloseTransitionDuration),
                 RootElement                    = input.Root,

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet.Content;
 using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
@@ -59,14 +60,43 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (uiPanelDefinition.ViewElement == null)
                 return null;
 
-            var view = UvmlLoader.Load(uv, uiPanelDefinition.ViewElement);
+            var view = UvmlLoader.Load(uv, uiPanelDefinition);
 
             var uvss    = String.Join(Environment.NewLine, uiPanelDefinition.StyleSheets);
             var uvssdoc = UvssDocument.Parse(uvss);
 
             view.SetStyleSheet(uvssdoc);
 
+            if (!String.IsNullOrEmpty(uiPanelDefinition.AssetFilePath))
+            {
+                view.viewModelWrapperName = GetViewModelWrapperNameFromAssetPath(uiPanelDefinition.AssetFilePath);
+            }
+
             return view;
+        }
+
+        /// <summary>
+        /// Gets the name of the view model wrapper for the screen with the specified asset path.
+        /// </summary>
+        /// <param name="path">The asset path of the screen for which to retrieve a view model wrapper.</param>
+        /// <returns>The name of the view model wrapper for the screen with the specified asset path.</returns>
+        public static String GetViewModelWrapperNameFromAssetPath(String path)
+        {
+            Contract.RequireNotEmpty(path, "path");
+
+            var pathComponents = path.Split(new[] { Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar });
+            pathComponents[pathComponents.Length - 1] = Path.GetFileNameWithoutExtension(pathComponents[pathComponents.Length - 1]);
+
+            return String.Format("{0}_VM_Impl", String.Join("_", pathComponents));
+        }
+
+        /// <summary>
+        /// Gets the namespace that contains the game's view model wrappers.
+        /// </summary>
+        /// <returns>The namespace that contains the game's view model wrappers.</returns>
+        public static String GetViewModelWrapperNamespace()
+        {
+            return "TwistedLogik.Ultraviolet.UI.Presentation.CompiledExpressions";
         }
 
         /// <inheritdoc/>
@@ -117,6 +147,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             HandleUserInput();
 
             layoutRoot.Update(time);
+        }
+        
+        /// <inheritdoc/>
+        public override void SetViewModel(Object viewModel)
+        {
+            var upf = Ultraviolet.GetUI().GetPresentationFoundation();
+            var wrapper = upf.CreateViewModelWrapper(viewModelWrapperName, viewModel);
+
+            base.SetViewModel(wrapper);
         }
 
         /// <summary>
@@ -625,7 +664,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             base.OnViewSizeChanged();
         }
-
+        
         /// <summary>
         /// Performs a hit test against the layout root and any active popup windows.
         /// </summary>
@@ -1452,5 +1491,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         private readonly PopupQueue popupQueue = new PopupQueue();
         private Popup elementUnderMousePopupPrev;
         private Popup elementUnderMousePopup;
+
+        // View model wrapping.
+        private String viewModelWrapperName;
     }
 }
