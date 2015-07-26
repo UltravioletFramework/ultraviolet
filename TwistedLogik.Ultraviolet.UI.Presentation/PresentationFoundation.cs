@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Xml.Linq;
 using TwistedLogik.Nucleus;
@@ -31,6 +33,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             this.styleQueue   = new LayoutQueue(InvalidateStyle, false);
             this.measureQueue = new LayoutQueue(InvalidateMeasure);
             this.arrangeQueue = new LayoutQueue(InvalidateArrange);
+
+            LoadBindingExpressionCompiler();
         }
 
         /// <summary>
@@ -45,6 +49,70 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             ultravioletConfig.ViewProviderAssembly      = typeof(PresentationFoundation).Assembly.FullName;
             ultravioletConfig.ViewProviderConfiguration = presentationConfig;
+        }
+
+        /// <summary>
+        /// Compiles the binding expressions in the specified content directory tree.
+        /// </summary>
+        /// <param name="root">The root of the content directory tree to search for binding expressions to compile.</param>
+        public void CompileExpressions(String root)
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
+            Contract.RequireNotEmpty(root, "root");
+
+            if (Ultraviolet.Platform == UltravioletPlatform.Android)
+                throw new NotSupportedException();
+            
+            bindingExpressionCompiler.Compile(Ultraviolet, root, CompiledExpressionsAssemblyName);
+        }
+
+        /// <summary>
+        /// Compiles the binding expressions in the specified content directory tree if the application is running
+        /// one one of the platforms which supports doing so. Otherwise, this method has no effect.
+        /// </summary>
+        /// <param name="root">The root of the content directory tree to search for binding expressions to compile.</param>
+        public void CompileExpressionsIfSupported(String root)
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
+            Contract.RequireNotEmpty(root, "root");
+
+            if (Ultraviolet.Platform == UltravioletPlatform.Android)
+                return;
+            
+            CompileExpressions(root);
+        }
+
+        /// <summary>
+        /// Loads the assembly that contains the application's compiled binding expressions.
+        /// </summary>
+        public void LoadCompiledExpressions()
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
+
+            compiledExpressionsAssembly = null;
+
+            try
+            {
+                switch (Ultraviolet.Platform)
+                {
+                    case UltravioletPlatform.Windows:
+                    case UltravioletPlatform.Linux:
+                    case UltravioletPlatform.OSX:
+                        compiledExpressionsAssembly = Assembly.LoadFrom(CompiledExpressionsAssemblyName);
+                        break;
+
+                    case UltravioletPlatform.Android:
+                        compiledExpressionsAssembly = Assembly.Load(CompiledExpressionsAssemblyName);
+                        break;
+
+                    default:
+                        throw new NotSupportedException();
+                }
+            }
+            catch (FileNotFoundException e)
+            {
+                throw new InvalidOperationException(PresentationStrings.CompiledExpressionsAssemblyNotFound, e);
+            }
         }
 
         /// <summary>
@@ -411,6 +479,46 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         internal LayoutQueue ArrangeQueue
         {
             get { return arrangeQueue; }
+        }
+
+        /// <summary>
+        /// Loads the assembly which provides binding expression compilation services.
+        /// </summary>
+        private void LoadBindingExpressionCompiler()
+        {
+            if (Ultraviolet.Platform == UltravioletPlatform.Android)
+                return;
+
+#if PRODUCTION
+            var compilerAsmName = "TwistedLogik.Ultraviolet.UI.Presentation.Compiler, Version=1.2.0.0, Culture=neutral, PublicKeyToken=78da2f4877323311, processorArchitecture=MSIL";
+#else
+            var compilerAsmName = "TwistedLogik.Ultraviolet.UI.Presentation.Compiler, Version=1.2.0.0, Culture=neutral, processorArchitecture=MSIL";
+#endif
+
+            Assembly compilerAsm = null;
+            try
+            {
+                compilerAsm = Assembly.Load(compilerAsmName);
+            }
+            catch (FileNotFoundException e)
+            {
+                throw new InvalidOperationException(PresentationStrings.ExpressionCompilerNotFound.Format(compilerAsmName), e);
+            }
+
+            var compilerType = compilerAsm.GetTypes().Where(x => x.GetInterfaces().Contains(typeof(IBindingExpressionCompiler))).FirstOrDefault();
+            if (compilerType == null || compilerType.IsAbstract)
+            {
+                throw new InvalidOperationException(PresentationStrings.ExpressionCompilerTypeNotValid);
+            }
+
+            try
+            {
+                bindingExpressionCompiler = (IBindingExpressionCompiler)Activator.CreateInstance(compilerType);
+            }
+            catch (MissingMethodException e)
+            {
+                throw new InvalidOperationException(UltravioletStrings.NoValidConstructor.Format(compilerType.Name), e);
+            }
         }
 
         /// <summary>
@@ -806,5 +914,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
         // The global style sheet.
         private UvssDocument globalStyleSheet;
+
+        // The assembly containing the application's compiled expressions.
+        private const String CompiledExpressionsAssemblyName = "TwistedLogik.Ultraviolet.UI.Presentation.CompiledExpressions.dll";
+        private Assembly compiledExpressionsAssembly;
+        private IBindingExpressionCompiler bindingExpressionCompiler;
     }
 }

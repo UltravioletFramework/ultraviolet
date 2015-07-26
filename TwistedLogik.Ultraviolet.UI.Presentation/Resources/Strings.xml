@@ -322,7 +322,22 @@
   </String>
   <String Key="DRAWING_CONTEXT_DOES_NOT_HAVE_SPRITEBATCH">
     <en-US>
-      <Drawing>The operation is invalid because the drawing context is not associated with a SpriteBatch object.</Drawing>
+      <Variant>The operation is invalid because the drawing context is not associated with a SpriteBatch object.</Variant>
+    </en-US>
+  </String>
+  <String Key="COMPILED_EXPRESSIONS_ASSEMBLY_NOT_FOUND">
+    <en-US>
+      <Variant>Could not find the compiled expressions assembly.</Variant>
+    </en-US>
+  </String>
+  <String Key="EXPRESSION_COMPILER_NOT_FOUND">
+    <en-US>
+      <Variant>Could not find the expression compiler assembly '{0}'.</Variant>
+    </en-US>
+  </String>
+  <String Key="EXPRESSION_COMPILER_TYPE_NOT_VALID">
+    <en-US>
+      <Variant>Could not find a valid expression compiler type.</Variant>
     </en-US>
   </String>
 </LocalizedStrings>

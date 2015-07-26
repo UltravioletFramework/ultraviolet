@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Text;
 using TwistedLogik.Nucleus;
@@ -15,10 +16,6 @@ using UvDebugSandbox.Assets;
 using UvDebugSandbox.Input;
 using UvDebugSandbox.UI;
 using UvDebugSandbox.UI.Screens;
-
-#if !ANDROID
-using TwistedLogik.Ultraviolet.UI.Presentation.Compiler;
-#endif
 
 namespace UvDebugSandbox
 {
@@ -80,11 +77,7 @@ namespace UvDebugSandbox
         protected override void OnInitialized()
         {
             SetFileSourceFromManifestIfExists("UvDebugSandbox.Content.uvarc");
-
-#if !ANDROID
-            ExpressionCompiler.Compile(Ultraviolet, "Content");
-#endif
-
+                        
             base.OnInitialized();
         }
 
@@ -179,8 +172,13 @@ namespace UvDebugSandbox
         /// </summary>
         protected void LoadPresentation()
         {
+            var upf = Ultraviolet.GetUI().GetPresentationFoundation();
+
             var globalStyleSheet = content.Load<UvssDocument>("UI/DefaultUIStyles");
-            Ultraviolet.GetUI().GetPresentationFoundation().SetGlobalStyleSheet(globalStyleSheet);
+            upf.SetGlobalStyleSheet(globalStyleSheet);
+
+            CompileBindingExpressionsDebug(upf);
+            upf.LoadCompiledExpressions();
         }
 
         /// <summary>
@@ -250,6 +248,23 @@ namespace UvDebugSandbox
                 SafeDispose.DisposeRef(ref content);
             }
             base.Dispose(disposing);
+        }
+        
+        /// <summary>
+        /// Compiles the game's binding expressions.
+        /// </summary>
+        private void CompileBindingExpressions(PresentationFoundation upf)
+        {
+            upf.CompileExpressionsIfSupported("Content");
+        }
+
+        /// <summary>
+        /// Compiles the game's binding expressions, if the game was compiled in debug mode.
+        /// </summary>
+        [Conditional("DEBUG")]
+        private void CompileBindingExpressionsDebug(PresentationFoundation upf)
+        {
+            upf.CompileExpressionsIfSupported("Content");
         }
 
         // The global content manager.  Manages any content that should remain loaded for the duration of the game's execution.

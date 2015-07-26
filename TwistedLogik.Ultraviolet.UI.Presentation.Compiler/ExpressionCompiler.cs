@@ -16,16 +16,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
     /// <summary>
     /// Contains methods for compiling UPF binding expressions into a managed assembly.
     /// </summary>
-    public static partial class ExpressionCompiler
+    public class ExpressionCompiler : IBindingExpressionCompiler
     {
-        /// <summary>
-        /// Traverses the directory tree rooted in <paramref name="root"/> and builds an assembly containing the compiled binding
-        /// expressions of any UPF views which are found therein.
-        /// </summary>
-        /// <param name="uv">The Ultraviolet context.</param>
-        /// <param name="root">The path to the root directory to search.</param>
-        /// <returns>An assembly which contains the compiled binding expressions for the specified directory tree.</returns>
-        public static Assembly Compile(UltravioletContext uv, String root)
+        /// <inheritdoc/>
+        public void Compile(UltravioletContext uv, String root, String output)
         {
             Contract.Require(uv, "uv");
             Contract.RequireNotEmpty(root, "root");
@@ -47,24 +41,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
                 throw new InvalidOperationException(CompilerStrings.FailedExpressionValidationPass);
             }
 
-            var setterEliminationResult = PerformSetterEliminationCompilationPass(compiler, viewModelInfos, viewModelReferences);
-            if (setterEliminationResult.Errors.Count > 0)
-            {
-                var finalPassResult = PerformFinalCompilationPass(compiler, viewModelInfos, viewModelReferences, setterEliminationResult);
-                if (finalPassResult.Errors.Count > 0)
-                {
-                    WriteErrorsToWorkingDirectory(finalPassResult);
-                    throw new InvalidOperationException(CompilerStrings.FailedFinalPass);
-                }
+            var setterEliminationResult = 
+                PerformSetterEliminationCompilationPass(compiler, viewModelInfos, viewModelReferences);
 
-                DeleteWorkingDirectory();
-                return finalPassResult.CompiledAssembly;
-            }
-            else
+            var finalPassResult = PerformFinalCompilationPass(compiler, output, viewModelInfos, viewModelReferences, setterEliminationResult);
+            if (finalPassResult.Errors.Count > 0)
             {
-                DeleteWorkingDirectory();
-                return setterEliminationResult.CompiledAssembly;
+                WriteErrorsToWorkingDirectory(finalPassResult);
+                throw new InvalidOperationException(CompilerStrings.FailedFinalPass);
             }
+
+            DeleteWorkingDirectory();
         }
 
         /// <summary>
@@ -85,7 +72,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
                 WriteSourceCodeForViewModel(viewModelInfo);
             });
 
-            return CompileViewModelSources(compiler, viewModelInfos, viewModelReferences);
+            return CompileViewModelSources(compiler, null, viewModelInfos, viewModelReferences);
         }
 
         /// <summary>
@@ -102,13 +89,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
                 }
                 WriteSourceCodeForViewModel(viewModelInfo);
             });
-            return CompileViewModelSources(compiler, viewModelInfos, viewModelReferences);
+            return CompileViewModelSources(compiler, null, viewModelInfos, viewModelReferences);
         }
 
         /// <summary>
         /// Performs the final compilation pass, which removes invalid expression setters based on the results of the previous pass.
         /// </summary>
-        private static CompilerResults PerformFinalCompilationPass(CSharpCodeProvider compiler, IEnumerable<ViewModelWrapperInfo> viewModelInfos, ConcurrentBag<String> viewModelReferences, CompilerResults setterEliminationResult)
+        private static CompilerResults PerformFinalCompilationPass(CSharpCodeProvider compiler, String output, IEnumerable<ViewModelWrapperInfo> viewModelInfos, ConcurrentBag<String> viewModelReferences, CompilerResults setterEliminationResult)
         {
             var errors = setterEliminationResult.Errors.Cast<CompilerError>().ToList();
 
@@ -125,7 +112,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
                 WriteSourceCodeForViewModel(viewModelInfo);
             });
 
-            return CompileViewModelSources(compiler, viewModelInfos, viewModelReferences);
+            return CompileViewModelSources(compiler, output, viewModelInfos, viewModelReferences);
         }
 
         /// <summary>
@@ -135,10 +122,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
         /// <param name="infos">A collection of <see cref="ViewModelWrapperInfo"/> instances containing the source code to compile.</param>
         /// <param name="references">A collection of assembly locations which should be referenced by the compiled assembly.</param>
         /// <returns>A <see cref="CompilerResults"/> instance that represents the result of compilation.</returns>
-        private static CompilerResults CompileViewModelSources(CSharpCodeProvider compiler, IEnumerable<ViewModelWrapperInfo> infos, IEnumerable<String> references)
+        private static CompilerResults CompileViewModelSources(CSharpCodeProvider compiler, String output, IEnumerable<ViewModelWrapperInfo> infos, IEnumerable<String> references)
         {
+            var writeToFile = (output != null);
+
             var options = new CompilerParameters();
-            options.OutputAssembly = "TwistedLogik.Ultraviolet.UI.Presentation.CompiledExpressions.dll";
+            options.OutputAssembly = output;
             options.GenerateExecutable = false;
             options.GenerateInMemory = true;
             options.IncludeDebugInformation = false;

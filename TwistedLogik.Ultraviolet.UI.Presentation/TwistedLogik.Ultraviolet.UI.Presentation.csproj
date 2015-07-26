@@ -120,6 +120,7 @@
     <Compile Include="DependencyObject.cs" />
     <Compile Include="Documents\NamespaceDoc.cs" />
     <Compile Include="DrawingContext.ClipStencilStates.cs" />
+    <Compile Include="IBindingExpressionCompiler.cs" />
     <Compile Include="IViewModelWrapper.cs" />
     <Compile Include="Media\HitTestUtil.cs" />
     <Compile Include="IIndexable.cs" />

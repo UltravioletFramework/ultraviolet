@@ -88,6 +88,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public static readonly StringResource ElementIsNotADescendant              = new StringResource(StringDatabase, "ELEMENT_IS_NOT_A_DESCENDANT");
         public static readonly StringResource InvalidTransformation                = new StringResource(StringDatabase, "INVALID_TRANSFORMATION");
         public static readonly StringResource DrawingContextDoesNotHaveSpriteBatch = new StringResource(StringDatabase, "DRAWING_CONTEXT_DOES_NOT_HAVE_SPRITEBATCH");
+        public static readonly StringResource CompiledExpressionsAssemblyNotFound  = new StringResource(StringDatabase, "COMPILED_EXPRESSIONS_ASSEMBLY_NOT_FOUND");
+        public static readonly StringResource ExpressionCompilerNotFound           = new StringResource(StringDatabase, "EXPRESSION_COMPILER_NOT_FOUND");
+        public static readonly StringResource ExpressionCompilerTypeNotValid       = new StringResource(StringDatabase, "EXPRESSION_COMPILER_TYPE_NOT_VALID");
 #pragma warning restore 1591
     }
 }
