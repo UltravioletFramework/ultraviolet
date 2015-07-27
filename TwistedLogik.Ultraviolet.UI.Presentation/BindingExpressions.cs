@@ -63,7 +63,23 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (IsNullBindingExpression(expression))
                 return false;
 
-            return !braces || expression.StartsWith("{{") && expression.EndsWith("}}");
+            if (!braces)
+                return true;
+
+            if (!expression.StartsWith("{{"))
+                return false;
+
+            var closingBracesIx = expression.IndexOf("}}", "{{".Length);
+            if (closingBracesIx < 0)
+                return false;
+
+            if (closingBracesIx == expression.Length - "}}".Length)
+                return true;
+
+            if (expression[closingBracesIx + "}}".Length] == '[' && expression.EndsWith("]"))
+                return true;
+
+            return false;
         }
         
         /// <summary>
@@ -468,25 +484,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <returns>The part of the binding expression which represents the member navigation path, or <c>null</c> if no such part exists.</returns>
         private static String GetBindingMemberPathPartInternal(String expression, Boolean braces = true)
         {
-            var ixDelimiter = expression.IndexOf('|');
-            if (ixDelimiter >= 0)
-            {
-                var offset = braces ? 
-                    expression.StartsWith("{{::") ? 4 : 2 : 
-                    expression.StartsWith("::") ? 2 : 0;
+            if (!braces)
+                return expression;
 
-                return expression.Substring(offset, ixDelimiter - offset).Trim();
-            }
-            else
-            {
-                if (braces)
-                {
-                    return (expression.StartsWith("{{::") ? 
-                    expression.Substring(4, expression.Length - 6) : 
-                    expression.Substring(2, expression.Length - 4)).Trim();
-                }
-                return (expression.StartsWith("::") ? expression.Substring(2) : expression).Trim();
-            }
+            var closingBracesIndex = expression.IndexOf("}}", "{{".Length);
+
+            var offset = braces ?
+                expression.StartsWith("{{::") ? 4 : 2 :
+                expression.StartsWith("::") ? 2 : 0;
+
+            return expression.Substring(offset, closingBracesIndex - offset).Trim();
         }
 
         /// <summary>
@@ -497,13 +504,20 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <returns>The part of the binding expression which represents the format string, or <c>null</c> if no such part exists.</returns>
         private static String GetBindingFormatStringPartInternal(String expression, Boolean braces = true)
         {
-            var ixDelimiter = expression.IndexOf('|');
-            if (ixDelimiter >= 0)
-            {
-                var length = (expression.Length - (braces ? 2 : 0)) - (ixDelimiter + 1);
-                return expression.Substring(ixDelimiter + 1, length).Trim();
-            }
-            return null;
+            if (!braces)
+                return null;
+
+            var closingBracesIndex = expression.IndexOf("}}", "{{".Length);
+            if (closingBracesIndex == expression.Length - "}}".Length)
+                return null;            
+
+            var openFormatIndex = closingBracesIndex + "}}".Length;
+            if (expression[openFormatIndex] != '[' || !expression.EndsWith("]"))
+                return null;
+
+            var start = openFormatIndex + 1;
+            var length = expression.Length - (1 + start);
+            return expression.Substring(start, length);
         }
 
         /// <summary>
