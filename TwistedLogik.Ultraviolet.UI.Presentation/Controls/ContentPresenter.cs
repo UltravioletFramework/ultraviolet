@@ -116,10 +116,27 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         protected override Size2D MeasureOverride(Size2D availableSize)
         {
             var content = Content;
-            var contentText = content as String;
-            if (contentText != null)
+            if (content == null)
+                return Size2D.Zero;
+
+            var contentElement = content as UIElement;
+            if (contentElement != null)
             {
-                if (contentText == String.Empty)
+                contentElement.Measure(availableSize);
+
+                if (textParserResult != null)
+                    textParserResult.Clear();
+
+                if (textLayoutResult != null)
+                    textLayoutResult.Clear();
+
+                return new Size2D(
+                    Math.Min(availableSize.Width, contentElement.DesiredSize.Width),
+                    Math.Min(availableSize.Height, contentElement.DesiredSize.Height));
+            }
+            else
+            {
+                if (textParserResult == null || textParserResult.Count == 0)
                 {
                     if (containingControl != null && containingControl.Font.IsLoaded)
                     {
@@ -129,45 +146,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                     return Size2D.Zero;
                 }
 
-                UpdateTextParserCache();
                 UpdateTextLayoutCache(availableSize);
 
                 var textWidth  = Display.PixelsToDips(textLayoutResult.ActualWidth);
                 var textHeight = Display.PixelsToDips(textLayoutResult.ActualHeight);
                 return new Size2D(textWidth, textHeight);
             }
-            else
-            {
-                if (textParserResult != null)
-                    textParserResult.Clear();
-
-                if (textLayoutResult != null)
-                    textLayoutResult.Clear();
-            }
-
-            var contentElement = content as UIElement;
-            if (contentElement != null)
-            {
-                contentElement.Measure(availableSize);
-                return new Size2D(
-                    Math.Min(availableSize.Width, contentElement.DesiredSize.Width),
-                    Math.Min(availableSize.Height, contentElement.DesiredSize.Height));
-            }
-
-            return Size2D.Zero;
         }
 
         /// <inheritdoc/>
         protected override Size2D ArrangeOverride(Size2D finalSize, ArrangeOptions options)
         {
             var content = Content;
-
-            var contentText = content as String;
-            if (contentText != null)
-            {
-                UpdateTextLayoutCache(finalSize);
-                return finalSize;
-            }
 
             var contentElement = content as UIElement;
             if (contentElement != null)
@@ -176,6 +166,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 contentElement.Arrange(contentElementRect, options);
 
                 return finalSize;
+            }
+            else
+            {
+                if (textParserResult != null && textParserResult.Count > 0)
+                {
+                    UpdateTextLayoutCache(finalSize);
+                    return finalSize;
+                }
             }
 
             return Size2D.Zero;
