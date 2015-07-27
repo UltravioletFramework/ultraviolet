@@ -1,4 +1,5 @@
 ﻿using System;
+using TwistedLogik.Ultraviolet.UI.Presentation.Controls;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation
 {
@@ -137,7 +138,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             {
                 throw new InvalidOperationException(PresentationStrings.BindingIsReadOnly);
             }
-            return getter(dependencyValue.Owner.DependencyDataSource);
+            
+            return getter(PresentationFoundation.GetDataSourceWrapper(dependencyValue.Owner.DependencyDataSource));
         }
 
         /// <summary>
@@ -157,8 +159,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             {
                 value = metadata.CoerceValue<T>(owner, value);
             }
-
-            setter(dependencyValue.Owner.DependencyDataSource, value);
+            
+            setter(PresentationFoundation.GetDataSourceWrapper(dependencyValue.Owner.DependencyDataSource), value);
             dependencyValue.DigestImmediately();
         }
 

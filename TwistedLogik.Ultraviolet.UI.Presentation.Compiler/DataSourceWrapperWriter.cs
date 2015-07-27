@@ -3,26 +3,27 @@ using System.CodeDom.Compiler;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Text;
 using TwistedLogik.Nucleus;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
 {
     /// <summary>
-    /// Contains methods for writing the source code for a view model wrapper.
+    /// Contains methods for writing the source code for a data source wrapper.
     /// </summary>
-    internal class ViewModelWrapperWriter : IDisposable
+    internal class DataSourceWrapperWriter : IDisposable
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ViewModelWrapperWriter"/> class.
+        /// Initializes a new instance of the <see cref="DataSourceWrapperWriter"/> class.
         /// </summary>
-        public ViewModelWrapperWriter()
+        public DataSourceWrapperWriter()
         {
             LineCount = 1;
 
             strWriter = new StringWriter();
-            txtWriter = new IndentedTextWriter(strWriter);
+            txtWriter = new IndentedTextWriter(strWriter);           
         }
-
+        
         /// <inheritdoc/>
         public void Dispose()
         {
@@ -93,32 +94,32 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
         }
 
         /// <summary>
-        /// Writes a constructor for the specified view model.
+        /// Writes a constructor for the specified data source wrapper.
         /// </summary>
-        /// <param name="viewModelInfo">A <see cref="ViewModelWrapperInfo"/> describing the view model for which to write a constructor.</param>
-        public void WriteConstructor(ViewModelWrapperInfo viewModelInfo)
+        /// <param name="dataSourceWrapperInfo">A <see cref="DataSourceWrapperInfo"/> describing the data source for which to write a constructor.</param>
+        public void WriteConstructor(DataSourceWrapperInfo dataSourceWrapperInfo)
         {
-            WriteLine("public {0}({1} viewModel)", viewModelInfo.ViewModelWrapperName, GetCSharpTypeName(viewModelInfo.ViewModelType));
+            WriteLine("public {0}({1} dataSource)", dataSourceWrapperInfo.DataSourceWrapperName, GetCSharpTypeName(dataSourceWrapperInfo.DataSourceType));
             WriteLine("{");
 
-            WriteLine("this.viewModel = viewModel;");
+            WriteLine("this.dataSource = dataSource;");
 
             WriteLine("}");
         }
 
         /// <summary>
-        /// Writes an implementation of the <see cref="IViewModelWrapper"/> interface.
+        /// Writes an implementation of the <see cref="IDataSourceWrapper"/> interface.
         /// </summary>
-        /// <param name="viewModelInfo">A <see cref="ViewModelWrapperInfo"/> describing the view model for which to write an <see cref="IViewModelWrapper"/> implementation.</param>
-        public void WriteIViewModelWrapperImplementation(ViewModelWrapperInfo viewModelInfo)
+        /// <param name="dataSourceWrapperInfo">A <see cref="DataSourceWrapperInfo"/> describing the data source wrapper for which to write an <see cref="IDataSourceWrapper"/> implementation.</param>
+        public void WriteIDataSourceWrapperImplementation(DataSourceWrapperInfo dataSourceWrapperInfo)
         {
-            WriteLine("Object IViewModelWrapper.ViewModel");
+            WriteLine("Object IDataSourceWrapper.WrappedDataSource");
             WriteLine("{");
 
-            WriteLine("get { return viewModel; }");
+            WriteLine("get { return dataSource; }");
 
             WriteLine("}");
-            WriteLine("private readonly {0} viewModel;", GetCSharpTypeName(viewModelInfo.ViewModelType));
+            WriteLine("private readonly {0} dataSource;", GetCSharpTypeName(dataSourceWrapperInfo.DataSourceType));
         }
 
         /// <summary>
@@ -133,14 +134,88 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
             var methodStaticQualifier = isStatic ? "static " : String.Empty;
             var methodParameterList = String.Join(", ", parameters.Select(x => GetParameterText(x)));
             var methodArgumentList = String.Join(", ", parameters.Select(x => GetArgumentText(x)));
-
-            WriteLine("public {0}{1} {2}({3})", methodStaticQualifier, GetCSharpTypeName(method.ReturnType), method.Name, methodParameterList);
+            var methodGenericArgumentsList = method.IsGenericMethod ? "<" + String.Join(", ", method.GetGenericArguments().Select(x => x.Name)) + ">" : String.Empty;
+                       
+            WriteLine("public {0}{1} {2}{3}({4})", methodStaticQualifier, GetCSharpTypeName(method.ReturnType), method.Name, methodGenericArgumentsList, methodParameterList);
+            WriteGenericMethodConstraints(method);
             WriteLine("{");
 
-            var target = isStatic ? GetCSharpTypeName(method.DeclaringType) : "viewModel";
-            WriteLine("{0}.{1}({2});", target, method.Name, methodArgumentList);
+            var target = isStatic ? GetCSharpTypeName(method.DeclaringType) : "dataSource";
+            Write(method.ReturnType == typeof(void) ? String.Empty : "return ");
+            WriteLine("{0}.{1}{2}({3});", target, method.Name, methodGenericArgumentsList, methodArgumentList);
 
             WriteLine("}");
+        }
+
+        /// <summary>
+        /// Writes the specified method's list of generic constraints.
+        /// </summary>
+        /// <param name="method">The method for which to write generic constraints.</param>
+        public void WriteGenericMethodConstraints(MethodInfo method)
+        {
+            var methodGenericArguments = method.GetGenericArguments();
+            if (methodGenericArguments.Any())
+            {
+                txtWriter.Indent++;
+
+                foreach (var arg in methodGenericArguments)
+                {
+                    var constraints = arg.GetGenericParameterConstraints();
+                    var attributes = arg.GenericParameterAttributes;
+                    if (attributes == GenericParameterAttributes.None && !constraints.Any())
+                        continue;
+                    
+                    var buffer = new StringBuilder(String.Format("where {0} : ", arg.Name));
+
+                    // class
+                    if ((attributes & GenericParameterAttributes.ReferenceTypeConstraint) == GenericParameterAttributes.ReferenceTypeConstraint)
+                    {
+                        if (buffer.Length > 0)
+                        {
+                            buffer.Append(", ");
+                        }
+                        buffer.Append("class");
+                    }
+                    
+                    // struct
+                    if ((attributes & GenericParameterAttributes.NotNullableValueTypeConstraint) == GenericParameterAttributes.NotNullableValueTypeConstraint)
+                    {
+                        if (buffer.Length > 0)
+                        {
+                            buffer.Append(", ");
+                        }
+                        buffer.Append("struct");
+                    }
+
+                    // type constraints
+                    foreach (var constraint in constraints)
+                    {
+                        if (constraint == typeof(ValueType))
+                            continue;
+
+                        if (buffer.Length > 0)
+                        {
+                            buffer.Append(", ");
+                        }
+                        buffer.Append(constraint.FullName);
+                    }
+
+                    // new()
+                    if ((attributes & GenericParameterAttributes.DefaultConstructorConstraint) == GenericParameterAttributes.DefaultConstructorConstraint &&
+                        (attributes & GenericParameterAttributes.NotNullableValueTypeConstraint) != GenericParameterAttributes.NotNullableValueTypeConstraint)
+                    {
+                        if (buffer.Length > 0)
+                        {
+                            buffer.Append(", ");
+                        }
+                        buffer.Append("new()");
+                    }
+
+                    WriteLine(buffer.ToString());
+                }
+
+                txtWriter.Indent--;
+            }
         }
 
         /// <summary>
@@ -177,7 +252,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
                 GetCSharpTypeName(property.PropertyType), isIndexer ? "this" : property.Name, propertyIndexerParameterList);
             WriteLine("{");
 
-            var target = isStatic ? GetCSharpTypeName(property.DeclaringType) : "viewModel";
+            var target = isStatic ? GetCSharpTypeName(property.DeclaringType) : "dataSource";
 
             if (getter != null)
             {
@@ -206,7 +281,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
             WriteLine("public {0}{1} {2}", propertyStaticQualifier, GetCSharpTypeName(field.FieldType), field.Name);
             WriteLine("{");
 
-            var target = isStatic ? GetCSharpTypeName(field.DeclaringType) : "viewModel";
+            var target = isStatic ? GetCSharpTypeName(field.DeclaringType) : "dataSource";
 
             WriteLine("get {{ return {0}.{1}; }}", target, field.Name);
             if (!field.IsInitOnly && !field.IsLiteral)
@@ -216,13 +291,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
 
             WriteLine("}");
         }
-        
+
         /// <summary>
         /// Writes a property which wraps a binding expression.
         /// </summary>
+        /// <param name="dataSourceWrapperInfo">A <see cref="DataSourceWrapperInfo"/> describing the data source for which to write an expression property.</param>
         /// <param name="info">The binding expression for which to write a property.</param>
         /// <param name="id">The expression's identifier within the view model.</param>
-        public void WriteExpressionProperty(BindingExpressionInfo info, Int32 id)
+        public void WriteExpressionProperty(DataSourceWrapperInfo dataSourceWrapperInfo, BindingExpressionInfo info, Int32 id)
         {
             WriteLine("[{0}(@\"{1}\")]", typeof(CompiledBindingExpressionAttribute).FullName, info.Expression.Replace("\"", "\"\""));
             WriteLine("public {0} __UPF_Expression{1}", GetCSharpTypeName(info.Type), id);
@@ -238,11 +314,20 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
                 if (info.Type == typeof(String) || !String.IsNullOrEmpty(expFormatString))
                 {
                     expFormatString = String.IsNullOrEmpty(expFormatString) ? "{0}" : String.Format("{{0:{0}}}", expFormatString);
-                    WriteLine("get {{ return String.Format(\"{0}\", {1}); }}", expFormatString, expMemberPath);
+
+                    WriteLine("get");
+                    WriteLine("{");
+                    WriteLine("var value = {0};", expMemberPath);
+                    WriteLine("if (value == null || value.GetType() == typeof(String))");
+                    WriteLine("{");
+                    WriteLine("return (String)(Object)value;");
+                    WriteLine("}");
+                    WriteLine("return String.Format(\"{0}\", {1});", expFormatString, expMemberPath);
+                    WriteLine("}");
                 }
                 else
                 {
-                    WriteLine("get {{ return {0}; }}", expMemberPath);
+                    WriteLine("get {{ return ({0}){1}; }}", GetCSharpTypeName(info.Type), expMemberPath);
                 }
 
                 info.GetterLineEnd = LineCount - 1;
@@ -252,7 +337,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
             {
                 info.SetterLineStart = LineCount;
 
-                WriteLine("set {{ {0} = value; }}", expMemberPath);
+                if (info.NullableFixup)
+                {
+                    WriteLine("set {{ {0} = value ?? default({1}); }}", expMemberPath, GetCSharpTypeName(Nullable.GetUnderlyingType(info.Type)));
+                }
+                else
+                {
+                    WriteLine("set {{ {0} = value; }}", expMemberPath);
+                }
 
                 info.SetterLineEnd = LineCount - 1;
             }
@@ -268,12 +360,23 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
             if (type == typeof(void))
                 return "void";
 
-            if (type.IsByRef)
-            {
-                return "ref " + type.GetElementType().FullName;
-            }
+            var isByRef = type.IsByRef;
+            if (isByRef)
+                type = type.GetElementType();
 
-            return type.FullName;
+            var name = type.IsGenericParameter ? type.Name : type.FullName;
+
+            if (type.IsGenericType)
+            {
+                var genericTypeDef = type.GetGenericTypeDefinition();
+                var genericTypeName = genericTypeDef.FullName.Substring(0, genericTypeDef.FullName.IndexOf('`'));
+                var genericArguments = type.GetGenericArguments();
+
+                name = String.Format("{0}<{1}>", genericTypeName,
+                    String.Join(", ", genericArguments.Select(x => GetCSharpTypeName(x))));
+            }
+            
+            return isByRef ? "ref " + name : name;
         }
 
         /// <summary>

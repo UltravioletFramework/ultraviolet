@@ -317,11 +317,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (!IsBindingExpression(expression, braces))
                 throw new ArgumentException(PresentationStrings.InvalidBindingExpression.Format(expression));
 
+            /*
             var components = ParseBindingExpression(expression, braces);
             if (components.Count() != 1)
                 return null;
 
             return DependencyProperty.FindByName(components.Single(), dataSourceType);
+            */
+
+            return null;
         }
 
         /// <summary>

@@ -1,17 +1,19 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ComponentTemplate>
-  <Grid Class="button-component" 
-        HorizontalAlignment="Stretch" 
-        VerticalAlignment="Stretch">
-    
-    <Image Class="button-background" 
-           SourceColor="{{Background}}"
-           HorizontalAlignment="Stretch" 
-           VerticalAlignment="Stretch"/>
-    <ContentPresenter Class="button-content"
-                      HorizontalAlignment="{{HorizontalContentAlignment}}"
-                      VerticalAlignment="{{VerticalContentAlignment}}"
-                      Margin="{{Padding}}"/>
-    
-  </Grid>
+  <View>
+    <Grid Class="button-component"
+          HorizontalAlignment="Stretch"
+          VerticalAlignment="Stretch">
+
+      <Image Class="button-background"
+             SourceColor="{{Background}}"
+             HorizontalAlignment="Stretch"
+             VerticalAlignment="Stretch"/>
+      <ContentPresenter Class="button-content"
+                        HorizontalAlignment="{{HorizontalContentAlignment}}"
+                        VerticalAlignment="{{VerticalContentAlignment}}"
+                        Margin="{{Padding}}"/>
+
+    </Grid>
+  </View>
 </ComponentTemplate>

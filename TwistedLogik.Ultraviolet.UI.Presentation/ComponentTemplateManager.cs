@@ -9,12 +9,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
     /// Stores and manages the collection of component templates that are
     /// currently registered with the Ultraviolet Presentation Foundation.
     /// </summary>
-    public sealed class ComponentTemplateManager
+    public sealed partial class ComponentTemplateManager
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ComponentTemplateManager"/> class.
         /// </summary>
-        internal ComponentTemplateManager() 
+        internal ComponentTemplateManager()
         {
 
         }
@@ -47,12 +47,24 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <returns>The component template for the specified type, or <c>null</c> if no such template exists.</returns>
         public XDocument Get<T>() where T : UIElement
         {
+            return Get(typeof(T));
+        }
+
+        /// <summary>
+        /// Gets the component template for the specified element type, if one has been registered.
+        /// </summary>
+        /// <param name="type">The type of element for which to retrieve a component template.</param>
+        /// <returns>The component template for the specified type, or <c>null</c> if no such template exists.</returns>
+        public XDocument Get(Type type)
+        {
+            Contract.Require(type, "type");
+
             XDocument template;
             lock (sync)
             {
-                if (!templates.TryGetValue(typeof(T), out template))
+                if (!templates.TryGetValue(type, out template))
                 {
-                    defaults.TryGetValue(typeof(T), out template);
+                    defaults.TryGetValue(type, out template);
                 }
             }
             return template;
@@ -65,10 +77,22 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <returns>The default component template for the specified type, or <c>null</c> if no such template exists.</returns>
         public XDocument GetDefault<T>() where T : UIElement
         {
+            return GetDefault(typeof(T));
+        }
+
+        /// <summary>
+        /// Gets the default component template for the specified element type, if one has been registered.
+        /// </summary>
+        /// <param name="type">The type of element for which to retrieve the default component template.</param>
+        /// <returns>The default component template for the specified type, or <c>null</c> if no such template exists.</returns>
+        public XDocument GetDefault(Type type)
+        {
+            Contract.Require(type, "type");
+
             XDocument template;
             lock (sync)
             {
-                defaults.TryGetValue(typeof(T), out template);
+                defaults.TryGetValue(type, out template);
             }
             return template;
         }
@@ -80,11 +104,22 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="template">The template to register for the specified type.</param>
         public void Set<T>(XDocument template) where T : UIElement
         {
+            Set(typeof(T), template);
+        }
+
+        /// <summary>
+        /// Sets the component template for the specified element type.
+        /// </summary>
+        /// <param name="type">The type of element for which to register a component template.</param>
+        /// <param name="template">The template to register for the specified type.</param>
+        public void Set(Type type, XDocument template)
+        {
+            Contract.Require(type, "type");
             Contract.Require(template, "template");
 
             lock (sync)
             {
-                templates[typeof(T)] = template;
+                templates[type] = template;
             }
         }
 
@@ -95,11 +130,22 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="template">The template to register as the default for the specified type.</param>
         public void SetDefault<T>(XDocument template) where T : UIElement
         {
+            SetDefault(typeof(T), template);
+        }
+
+        /// <summary>
+        /// Sets the default component template for the specified element type.
+        /// </summary>
+        /// <param name="type">The type of element for which to register the default component template.</param>
+        /// <param name="template">The template to register as the default for the specified type.</param>
+        public void SetDefault(Type type, XDocument template)
+        {
+            Contract.Require(type, "type");
             Contract.Require(template, "template");
 
             lock (sync)
             {
-                defaults[typeof(T)] = template;
+                defaults[type] = template;
             }
         }
 
@@ -109,9 +155,20 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <typeparam name="T">The type of element for which to remove the component template.</typeparam>
         public void Remove<T>() where T : UIElement
         {
+            Remove(typeof(T));
+        }
+
+        /// <summary>
+        /// Removes the component template for the specified element type.
+        /// </summary>
+        /// <param name="type">The type of element for which to remove the component template.</param>
+        public void Remove(Type type)
+        {
+            Contract.Require(type, "type");
+
             lock (sync)
             {
-                templates.Remove(typeof(T));
+                templates.Remove(type);
             }
         }
 
@@ -121,9 +178,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <typeparam name="T">The type of element for which to remove the default component template.</typeparam>
         public void RemoveDefault<T>() where T : UIElement
         {
+            RemoveDefault(typeof(T));
+        }
+
+        /// <summary>
+        /// Removes the default component template for the specified element type.
+        /// </summary>
+        /// <param name="type">The type of element for which to remove the default component template.</param>
+        public void RemoveDefault(Type type)
+        {
             lock (sync)
             {
-                defaults.Remove(typeof(T));
+                defaults.Remove(type);
             }
         }
 
@@ -148,23 +214,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 defaults.Clear();
             }
         }
-
-        /// <summary>
-        /// Sets the default component template for the specified element type.
-        /// </summary>
-        /// <param name="type">The type of element for which to register the default component template.</param>
-        /// <param name="template">The template to register as the default for the specified type.</param>
-        internal void SetDefault(Type type, XDocument template)
-        {
-            Contract.Require(type, "type");
-            Contract.Require(template, "template");
-
-            lock (sync)
-            {
-                defaults[type] = template;
-            }
-        }
-
+                
         // State values.
         private readonly Object sync = new Object();
         private readonly Dictionary<Type, XDocument> defaults = new Dictionary<Type, XDocument>();

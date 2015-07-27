@@ -4,14 +4,14 @@ using System.Collections.Generic;
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
 {
     /// <summary>
-    /// Represents the information needed to generate a view model wrapper.
+    /// Represents the information needed to generate a data source wrapper.
     /// </summary>
-    internal class ViewModelWrapperInfo
+    internal class DataSourceWrapperInfo
     {
         /// <summary>
-        /// Gets or sets the view definition for the view model being compiled.
+        /// Gets or sets the definition of the data source for which a wrapper is being compiled.
         /// </summary>
-        public ViewDefinition ViewDefinition
+        public DataSourceDefinition DataSourceDefinition
         {
             get;
             set;
@@ -36,34 +36,34 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
         }
 
         /// <summary>
-        /// Gets or sets the type of view model being wrapped.
+        /// Gets or sets the type of data source being wrapped.
         /// </summary>
-        public Type ViewModelType
+        public Type DataSourceType
         {
             get;
             set;
         }
 
         /// <summary>
-        /// Gets or sets the source code that was generated for the view model wrapper.
+        /// Gets or sets the source code that was generated for the data source wrapper.
         /// </summary>
-        public String ViewModelWrapperSource
+        public String DataSourceWrapperSourceCode
         {
             get;
             set;
         }
 
         /// <summary>
-        /// Gets the name of the view model wrapper which is being generated.
+        /// Gets the name of the data source wrapper which is being generated.
         /// </summary>
-        public String ViewModelWrapperName
+        public String DataSourceWrapperName
         {
             get;
             set;
         }
 
         /// <summary>
-        /// Gets the view model's list of defined expressions.
+        /// Gets the data source's list of defined expressions.
         /// </summary>
         public IList<BindingExpressionInfo> Expressions
         {

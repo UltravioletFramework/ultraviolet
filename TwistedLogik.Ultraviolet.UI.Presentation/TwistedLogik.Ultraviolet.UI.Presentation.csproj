@@ -97,6 +97,8 @@
     <Compile Include="BindingExpressions.cs" />
     <Compile Include="BoundEventBuilder.cs" />
     <Compile Include="CompiledBindingExpressionAttribute.cs" />
+    <Compile Include="CompiledBindingExpressionKey.cs" />
+    <Compile Include="ComponentTemplateManager.IEnumerable.cs" />
     <Compile Include="ComponentTemplateManager.cs" />
     <Compile Include="Controls\ComboBox.cs" />
     <Compile Include="Controls\ComboBoxItem.cs" />
@@ -122,7 +124,7 @@
     <Compile Include="Documents\NamespaceDoc.cs" />
     <Compile Include="DrawingContext.ClipStencilStates.cs" />
     <Compile Include="IBindingExpressionCompiler.cs" />
-    <Compile Include="IViewModelWrapper.cs" />
+    <Compile Include="IDataSourceWrapper.cs" />
     <Compile Include="Media\HitTestUtil.cs" />
     <Compile Include="IIndexable.cs" />
     <Compile Include="Input\Generic.cs" />

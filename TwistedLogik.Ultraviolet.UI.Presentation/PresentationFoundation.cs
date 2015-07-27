@@ -55,7 +55,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="name">The name of the view model wrapper type to instantiate.</param>
         /// <param name="viewModel">The view model instance that will be wrapped by the view model wrapper.</param>
         /// <returns>The view model wrapper that was created, or a reference to <paramref name="viewModel"/> if no valid wrapper exists.</returns>
-        public Object CreateViewModelWrapper(String name, Object viewModel)
+        public Object CreateDataSourceWrapper(String name, Object viewModel)
         {
             Contract.EnsureNotDisposed(this, Disposed);
             Contract.RequireNotEmpty(name, "name");
@@ -64,7 +64,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 return null;
 
             Type wrapperType;
-            if (compiledViewModelWrappers.TryGetValue(name, out wrapperType))
+            if (compiledDataSourceWrappers.TryGetValue(name, out wrapperType))
             {
                 viewModel = Activator.CreateInstance(wrapperType, new[] { viewModel });
             }
@@ -73,19 +73,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
-        /// Gets the view model wrapper type for the screen with the specified asset path.
+        /// Gets the data source wrapper type for the view with the specified asset path.
         /// </summary>
-        /// <param name="path">The path to the screen for which to retrieve a view model wrapper type.</param>
-        /// <returns>The view model wrapper type for the screen with the specified path, or <c>null</c> if no such wrapper exists.</returns>
-        public Type GetViewModelWrapperTypeByPath(String path)
+        /// <param name="path">The path to the view for which to retrieve a data source wrapper type.</param>
+        /// <returns>The data source wrapper type for the view with the specified path, or <c>null</c> if no such wrapper exists.</returns>
+        public Type GetDataSourceWrapperTypeByViewPath(String path)
         {
             Contract.EnsureNotDisposed(this, Disposed);
             Contract.RequireNotEmpty(path, "path");
 
-            var name = PresentationFoundationView.GetViewModelWrapperNameFromAssetPath(path);
+            var name = PresentationFoundationView.GetDataSourceWrapperNameForView(path);
             
             Type wrapperType;
-            if (compiledViewModelWrappers.TryGetValue(name, out wrapperType))
+            if (compiledDataSourceWrappers.TryGetValue(name, out wrapperType))
             {
                 return wrapperType;
             }
@@ -93,17 +93,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
-        /// Gets the view model wrapper type with the specified name.
+        /// Gets the data source wrapper type with the specified name.
         /// </summary>
-        /// <param name="name">The name of the view model wrapper type to retrieve.</param>
-        /// <returns>The view model wrapper type with the specified name, or <c>null</c> if no such wrapper exists.</returns>
-        public Type GetViewModelWrapperTypeByName(String name)
+        /// <param name="name">The name of the data source wrapper type to retrieve.</param>
+        /// <returns>The data source wrapper type with the specified name, or <c>null</c> if no such wrapper exists.</returns>
+        public Type GetDataSourceWrapperTypeByName(String name)
         {
             Contract.EnsureNotDisposed(this, Disposed);
             Contract.RequireNotEmpty(name, "name");
 
             Type wrapperType;
-            if (compiledViewModelWrappers.TryGetValue(name, out wrapperType))
+            if (compiledDataSourceWrappers.TryGetValue(name, out wrapperType))
             {
                 return wrapperType;
             }
@@ -171,12 +171,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 throw new InvalidOperationException(PresentationStrings.CompiledExpressionsAssemblyNotFound, e);
             }
 
-            compiledViewModelWrappers.Clear();
-
-            var viewModelWrapperTypes = compiledExpressionsAssembly.GetTypes();
-            foreach (var viewModelWrapperType in viewModelWrapperTypes)
+            compiledDataSourceWrappers.Clear();            
+            foreach (var dataSourceWrapperType in compiledExpressionsAssembly.GetTypes())
             {
-                compiledViewModelWrappers.Add(viewModelWrapperType.Name, viewModelWrapperType);
+                compiledDataSourceWrappers.Add(dataSourceWrapperType.Name, dataSourceWrapperType);
             }
         }
 
@@ -213,7 +211,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="typeName">The name of the element to instantiate.</param>
         /// <param name="name">The ID with which to create the element.</param>
         /// <param name="viewModelType">The type of view model to which the element will be bound.</param>
-        /// <param name="bindingContext">The binding context to apply to the element which is instantiated.</param>
         /// <returns>The element that was created, or <c>null</c> if the element could not be created.</returns>
         public UIElement InstantiateElementByName(String typeName, String name, Type viewModelType)
         {
@@ -504,6 +501,21 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Occurs when the Presentation Foundation's global style sheet is changed.
         /// </summary>
         public event EventHandler GlobalStyleSheetChanged;
+
+        /// <summary>
+        /// Gets the data source wrapper that exposes the specified object's compiled binding expressions, if it has one.
+        /// </summary>
+        /// <param name="obj">The object for which to retrieve a data source wrapper.</param>
+        /// <returns>The data source wrapper for the specified object, or a reference to the original object if it does not have a data source wrapper.</returns>
+        internal static Object GetDataSourceWrapper(Object obj)
+        {
+            var control = obj as Control;
+            if (control != null)
+            {
+                return control.DataSourceWrapper;
+            }
+            return obj;
+        }
 
         /// <summary>
         /// Removes the specified UI element from all of the Foundation's processing queues.
@@ -971,8 +983,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         private readonly Dictionary<String, KnownType> registeredTypes = 
             new Dictionary<String, KnownType>(StringComparer.OrdinalIgnoreCase);
 
-        // The registry of compiled view wrappers.
-        private readonly Dictionary<String, Type> compiledViewModelWrappers =
+        // The registry of compiled data source wrappers.
+        private readonly Dictionary<String, Type> compiledDataSourceWrappers =
             new Dictionary<String, Type>(StringComparer.Ordinal);
 
         // The queues of elements with invalid layouts.

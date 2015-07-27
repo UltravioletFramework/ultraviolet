@@ -69,18 +69,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             if (!String.IsNullOrEmpty(uiPanelDefinition.AssetFilePath))
             {
-                view.viewModelWrapperName = GetViewModelWrapperNameFromAssetPath(uiPanelDefinition.AssetFilePath);
+                view.viewModelWrapperName = GetDataSourceWrapperNameForView(uiPanelDefinition.AssetFilePath);
             }
 
             return view;
         }
-
+        
         /// <summary>
-        /// Gets the name of the view model wrapper for the screen with the specified asset path.
+        /// Gets the name of the data source wrapper for a view which is defined in a file with the specified asset path.
         /// </summary>
-        /// <param name="path">The asset path of the screen for which to retrieve a view model wrapper.</param>
-        /// <returns>The name of the view model wrapper for the screen with the specified asset path.</returns>
-        public static String GetViewModelWrapperNameFromAssetPath(String path)
+        /// <param name="path">The asset path of the UVML file that defines the view.</param>
+        /// <returns>The name of the data source wrapper for the specified view.</returns>
+        public static String GetDataSourceWrapperNameForView(String path)
         {
             Contract.RequireNotEmpty(path, "path");
 
@@ -89,14 +89,33 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             return String.Format("{0}_VM_Impl", String.Join("_", pathComponents));
         }
+        
+        /// <summary>
+        /// Gets the name of the data source wrapper for a component template which is associated with the specified control type.
+        /// </summary>
+        /// <param name="type">The type of control with which the component template is associated.</param>
+        /// <returns>The name of the data source wrapper for the specified control type.</returns>
+        public static String GetDataSourceWrapperNameForComponentTemplate(Type type)
+        {
+            Contract.Require(type, "type");
+
+            return String.Format("{0}_Template_Impl", type.FullName.Replace('.', '_'));
+        }
 
         /// <summary>
-        /// Gets the namespace that contains the game's view model wrappers.
+        /// Gets the namespace that contains data source wrappers for views.
         /// </summary>
-        /// <returns>The namespace that contains the game's view model wrappers.</returns>
-        public static String GetViewModelWrapperNamespace()
+        public static String DataSourceWrapperNamespaceForViews
         {
-            return "TwistedLogik.Ultraviolet.UI.Presentation.CompiledExpressions";
+            get { return "TwistedLogik.Ultraviolet.UI.Presentation.CompiledExpressions"; }
+        }
+
+        /// <summary>
+        /// Gets the namespace that contains data source wrappers for component templates.
+        /// </summary>
+        public static String DataSourceWrapperNamespaceForComponentTemplates
+        {
+            get { return "TwistedLogik.Ultraviolet.UI.Presentation.CompiledExpressions"; }
         }
 
         /// <inheritdoc/>
@@ -153,7 +172,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public override void SetViewModel(Object viewModel)
         {
             var upf = Ultraviolet.GetUI().GetPresentationFoundation();
-            var wrapper = upf.CreateViewModelWrapper(viewModelWrapperName, viewModel);
+            var wrapper = upf.CreateDataSourceWrapper(viewModelWrapperName, viewModel);
 
             base.SetViewModel(wrapper);
         }

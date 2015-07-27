@@ -28,6 +28,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         public Control(UltravioletContext uv, String name)
             : base(uv, name)
         {
+            var dataSourceWrapperName = PresentationFoundationView.GetDataSourceWrapperNameForComponentTemplate(GetType());
+            dataSourceWrapper = uv.GetUI().GetPresentationFoundation().CreateDataSourceWrapper(dataSourceWrapperName, this);
+
             LoadComponentRoot();
         }
 
@@ -124,7 +127,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <remarks>The styling name of this dependency property is 'content-valign'.</remarks>
         public static readonly DependencyProperty VerticalContentAlignmentProperty = DependencyProperty.Register("VerticalContentAlignment", "content-valign",
             typeof(VerticalAlignment), typeof(ContentControl), new PropertyMetadata<VerticalAlignment>(PresentationBoxedValues.VerticalAlignment.Top, PropertyMetadataOptions.AffectsArrange));
-
+        
         /// <summary>
         /// Populates any fields of this object which represent references
         /// to components in the current component tree.
@@ -132,6 +135,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         internal void PopulateFieldsFromRegisteredElements()
         {
             componentTemplateNamescope.PopulateFieldsFromRegisteredElements(this);
+        }
+
+        /// <summary>
+        /// Gets the data source wrapper which exposes the compiled binding expressions for the control.
+        /// </summary>
+        internal Object DataSourceWrapper
+        {
+            get { return dataSourceWrapper; }
         }
 
         /// <summary>
@@ -286,8 +297,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             UvmlLoader.LoadComponentTemplate(this, template);
         }
 
-        // Property values.
-        private UIElement componentRoot;
+        // The control's data source wrapper, which exposes its compiled binding expressions.
+        private readonly Object dataSourceWrapper;
+
+        // The control's component template.
         private readonly Namescope componentTemplateNamescope = new Namescope();
+        private UIElement componentRoot;
     }
 }

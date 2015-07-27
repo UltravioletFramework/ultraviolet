@@ -153,6 +153,9 @@
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\CompiledBindingExpressionAttribute.cs">
       <Link>CompiledBindingExpressionAttribute.cs</Link>
     </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\CompiledBindingExpressionKey.cs">
+      <Link>CompiledBindingExpressionKey.cs</Link>
+    </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\ComponentTemplateManager.cs">
       <Link>ComponentTemplateManager.cs</Link>
     </Compile>
@@ -465,6 +468,9 @@
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\IBindingExpressionCompiler.cs">
       <Link>IBindingExpressionCompiler.cs</Link>
     </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\IDataSourceWrapper.cs">
+      <Link>IDataSourceWrapper.cs</Link>
+    </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\IDependencyBoundValue.cs">
       <Link>IDependencyBoundValue.cs</Link>
     </Compile>
@@ -527,9 +533,6 @@
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\IUltravioletUIExtensions.cs">
       <Link>IUltravioletUIExtensions.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\IViewModelWrapper.cs">
-      <Link>IViewModelWrapper.cs</Link>
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\LayoutQueue.cs">
       <Link>LayoutQueue.cs</Link>

@@ -35,6 +35,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
         }
 
         /// <summary>
+        /// Gets or sets a value indicating whether the expression compiler should perform nullable fixup on this expression's setter.
+        /// </summary>
+        public Boolean NullableFixup
+        {
+            get { return nullableFixup; }
+            set { nullableFixup = value; }
+        }
+
+        /// <summary>
         /// Gets or sets a value indicating whether a getter should be generated for this expression's property.
         /// </summary>
         public Boolean GenerateGetter
@@ -91,6 +100,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
         // Property values.
         private readonly String expression;
         private readonly Type type;
+        private Boolean nullableFixup;
         private Boolean generateGetter;
         private Boolean generateSetter;
         private Int32 getterLineStart;

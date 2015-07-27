@@ -38,6 +38,27 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         public static readonly DependencyProperty IsSelectedProperty = Selector.IsSelectedProperty.AddOwner(typeof(ListBoxItem),
             new PropertyMetadata<Boolean>(CommonBoxedValues.Boolean.False, PropertyMetadataOptions.None, HandleIsSelectedChanged));
 
+        /// <summary>
+        /// Gets the opacity of the list box item's selection highlight.
+        /// </summary>
+        public Double HighlightOpacity
+        {
+            get { return GetValue<Double>(HighlightOpacityProperty); }
+            private set { SetValue<Double>(HighlightOpacityPropertyKey, value); }
+        }
+        
+        /// <summary>
+        /// The private access key for the <see cref="HighlightOpacity"/> read-only dependency property.
+        /// </summary>
+        private static readonly DependencyPropertyKey HighlightOpacityPropertyKey = DependencyProperty.RegisterReadOnly("HighlightOpacity", typeof(Double), typeof(ListBoxItem),
+            new PropertyMetadata<Double>(CommonBoxedValues.Double.Zero));
+
+        /// <summary>
+        /// Identifies the <see cref="HighlightOpacity"/> dependency property.
+        /// </summary>
+        /// <remarks>The styling name of this dependency property is 'highlight-opacity'.</remarks>
+        public static readonly DependencyProperty HighlightOpacityProperty = HighlightOpacityPropertyKey.DependencyProperty;
+
         /// <inheritdoc/>
         protected override void OnGenericInteraction(UltravioletResource device, ref RoutedEventData data)
         {
@@ -71,15 +92,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 HighlightOpacity = 0.0;
             }
             base.OnMouseLeave(device, ref data);
-        }
-
-        /// <summary>
-        /// Gets the opacity of the list box item's selection highlight.
-        /// </summary>
-        protected Double HighlightOpacity
-        {
-            get { return GetValue<Double>(HighlightOpacityProperty); }
-            private set { SetValue<Double>(HighlightOpacityProperty, value); }
         }
 
         /// <summary>
@@ -124,11 +136,5 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             if (item.HighlightOnSelect)
                 item.HighlightOpacity = newValue ? 1.0 : 0.0;
         }
-
-        /// <summary>
-        /// Identifies the <see cref="HighlightOpacity"/> dependency property.
-        /// </summary>
-        private static readonly DependencyProperty HighlightOpacityProperty = DependencyProperty.Register("HighlightOpacity", typeof(Double), typeof(ListBoxItem),
-            new PropertyMetadata<Double>(CommonBoxedValues.Double.Zero));
     }
 }

@@ -1,13 +1,15 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ComponentTemplate>
-  <Grid Class="border-component" 
-        HorizontalAlignment="Stretch" 
-        VerticalAlignment="Stretch">
-    
-    <ContentPresenter Class="border-content" 
-                      HorizontalAlignment="{{HorizontalContentAlignment}}"
-                      VerticalAlignment="{{VerticalContentAlignment}}"
-                      Margin="{{BorderThickness}}"/>    
-    
-  </Grid>
+  <View>
+    <Grid Class="border-component"
+          HorizontalAlignment="Stretch"
+          VerticalAlignment="Stretch">
+
+      <ContentPresenter Class="border-content"
+                        HorizontalAlignment="{{HorizontalContentAlignment}}"
+                        VerticalAlignment="{{VerticalContentAlignment}}"
+                        Margin="{{BorderThickness}}"/>
+
+    </Grid>
+  </View>
 </ComponentTemplate>

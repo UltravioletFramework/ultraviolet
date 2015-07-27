@@ -27,25 +27,28 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
             var compiler = new CSharpCodeProvider(new Dictionary<String, String> { { "CompilerVersion", "v4.0" } });
             DeleteWorkingDirectory();
 
-            var viewDefinitions = RecursivelySearchForViews(root, root);
-            var viewModelInfos = RetrieveViewModelInfos(uv, viewDefinitions);
-            
-            var viewModelReferences = new ConcurrentBag<String>();
-            viewModelReferences.Add("TwistedLogik.Nucleus.dll");
-            viewModelReferences.Add("TwistedLogik.Ultraviolet.dll");
-            viewModelReferences.Add("TwistedLogik.Ultraviolet.UI.Presentation.dll"); 
+            var dataSourceWrapperInfos = GetDataSourceWrapperInfos(uv, root);
 
-            var expressionVerificationResult = PerformExpressionVerificationCompilationPass(compiler, viewModelInfos, viewModelReferences);
+            var referencedAssemblies = new ConcurrentBag<String>();
+            referencedAssemblies.Add("System.dll");
+            referencedAssemblies.Add("TwistedLogik.Nucleus.dll");
+            referencedAssemblies.Add("TwistedLogik.Ultraviolet.dll");
+            referencedAssemblies.Add("TwistedLogik.Ultraviolet.UI.Presentation.dll"); 
+
+            var expressionVerificationResult = PerformExpressionVerificationCompilationPass(compiler, dataSourceWrapperInfos, referencedAssemblies);
             if (expressionVerificationResult.Errors.Count > 0)
             {
                 WriteErrorsToWorkingDirectory(expressionVerificationResult);
                 throw new InvalidOperationException(CompilerStrings.FailedExpressionValidationPass);
             }
+            
+            var setterEliminationPassResult = 
+                PerformSetterEliminationCompilationPass(compiler, dataSourceWrapperInfos, referencedAssemblies);
 
-            var setterEliminationResult = 
-                PerformSetterEliminationCompilationPass(compiler, viewModelInfos, viewModelReferences);
+            var nullableFixupResult =
+                PerformNullableFixupCompilationPass(compiler, dataSourceWrapperInfos, referencedAssemblies, setterEliminationPassResult);
 
-            var finalPassResult = PerformFinalCompilationPass(compiler, output, viewModelInfos, viewModelReferences, setterEliminationResult);
+            var finalPassResult = PerformFinalCompilationPass(compiler, output, dataSourceWrapperInfos, referencedAssemblies, nullableFixupResult);
             if (finalPassResult.Errors.Count > 0)
             {
                 WriteErrorsToWorkingDirectory(finalPassResult);
@@ -58,76 +61,106 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
         /// <summary>
         /// Performs the first compilation pass, which generates expression getters in order to verify that the expressions are valid code.
         /// </summary>
-        private static CompilerResults PerformExpressionVerificationCompilationPass(CSharpCodeProvider compiler, IEnumerable<ViewModelWrapperInfo> viewModelInfos, ConcurrentBag<String> viewModelReferences)
+        private static CompilerResults PerformExpressionVerificationCompilationPass(CSharpCodeProvider compiler, IEnumerable<DataSourceWrapperInfo> models, ConcurrentBag<String> referencedAssemblies)
         {
-            Parallel.ForEach(viewModelInfos, viewModelInfo =>
+            Parallel.ForEach(models, model =>
             {
-                viewModelReferences.Add(viewModelInfo.ViewModelType.Assembly.Location);
-                foreach (var reference in viewModelInfo.References)
+                referencedAssemblies.Add(model.DataSourceType.Assembly.Location);
+                foreach (var reference in model.References)
                 {
-                    viewModelReferences.Add(reference);
+                    referencedAssemblies.Add(reference);
                 }
 
-                foreach (var expression in viewModelInfo.Expressions)
+                foreach (var expression in model.Expressions)
                 {
                     expression.GenerateGetter = true;
                     expression.GenerateSetter = false;
                 }
-
-                WriteSourceCodeForViewModel(viewModelInfo);
+                
+                WriteSourceCodeForDataSourceWrapper(model);
             });
 
-            return CompileViewModelSources(compiler, null, viewModelInfos, viewModelReferences);
+            return CompileDataSourceWrapperSources(compiler, null, models, referencedAssemblies);
         }
 
         /// <summary>
         /// Performs the second compilation pass, which generates setters in order to determine which expressions support two-way bindings.
         /// </summary>
-        private static CompilerResults PerformSetterEliminationCompilationPass(CSharpCodeProvider compiler, IEnumerable<ViewModelWrapperInfo> viewModelInfos, ConcurrentBag<String> viewModelReferences)
+        private static CompilerResults PerformSetterEliminationCompilationPass(CSharpCodeProvider compiler, IEnumerable<DataSourceWrapperInfo> models, ConcurrentBag<String> referencedAssemblies)
         {
-            Parallel.ForEach(viewModelInfos, viewModelInfo =>
+            Parallel.ForEach(models, model =>
             {
-                foreach (var expression in viewModelInfo.Expressions)
+                foreach (var expression in model.Expressions)
                 {
                     expression.GenerateGetter = true;
                     expression.GenerateSetter = true;
                 }
-                WriteSourceCodeForViewModel(viewModelInfo);
+
+                WriteSourceCodeForDataSourceWrapper(model);
             });
-            return CompileViewModelSources(compiler, null, viewModelInfos, viewModelReferences);
+            return CompileDataSourceWrapperSources(compiler, null, models, referencedAssemblies);
+        }
+
+        /// <summary>
+        /// Performs the third compilation pass, which attempts to fix any errors caused by nullable types that need to be cast to non-nullable types.
+        /// </summary>
+        private static CompilerResults PerformNullableFixupCompilationPass(CSharpCodeProvider compiler, IEnumerable<DataSourceWrapperInfo> models, ConcurrentBag<String> referencedAssemblies, CompilerResults setterEliminationResult)
+        {
+            var errors = setterEliminationResult.Errors.Cast<CompilerError>().ToList();
+
+            Parallel.ForEach(models, model =>
+            {
+                var dataSourceWrapperFilename = Path.GetFileName(GetWorkingFileForDataSourceWrapper(model));
+                var dataSourceWrapperErrors = errors.Where(x => Path.GetFileName(x.FileName) == dataSourceWrapperFilename).ToList();
+
+                foreach (var expression in model.Expressions)
+                {
+                    var setterErrors = dataSourceWrapperErrors.Where(x => x.Line >= expression.SetterLineStart && x.Line <= expression.SetterLineEnd).ToList();
+                    var setterIsNullable = Nullable.GetUnderlyingType(expression.Type) != null;
+                    
+                    expression.GenerateSetter = !setterErrors.Any() || (setterIsNullable && setterErrors.All(x => x.ErrorNumber == "CS0266"));
+                    expression.NullableFixup  = setterIsNullable;
+                }
+
+                WriteSourceCodeForDataSourceWrapper(model);
+            });
+            return CompileDataSourceWrapperSources(compiler, null, models, referencedAssemblies);
         }
 
         /// <summary>
         /// Performs the final compilation pass, which removes invalid expression setters based on the results of the previous pass.
         /// </summary>
-        private static CompilerResults PerformFinalCompilationPass(CSharpCodeProvider compiler, String output, IEnumerable<ViewModelWrapperInfo> viewModelInfos, ConcurrentBag<String> viewModelReferences, CompilerResults setterEliminationResult)
+        private static CompilerResults PerformFinalCompilationPass(CSharpCodeProvider compiler, String output, IEnumerable<DataSourceWrapperInfo> models, ConcurrentBag<String> referencedAssemblies, CompilerResults nullableFixupResult)
         {
-            var errors = setterEliminationResult.Errors.Cast<CompilerError>().ToList();
+            var errors = nullableFixupResult.Errors.Cast<CompilerError>().ToList();
 
-            Parallel.ForEach(viewModelInfos, viewModelInfo =>
+            Parallel.ForEach(models, model =>
             {
-                var viewModelFilename = Path.GetFileName(GetWorkingFileForViewModel(viewModelInfo));
-                var viewModelErrors = errors.Where(x => Path.GetFileName(x.FileName) == viewModelFilename).ToList();
+                var dataSourceWrapperFilename = Path.GetFileName(GetWorkingFileForDataSourceWrapper(model));
+                var dataSourceWrapperErrors = errors.Where(x => Path.GetFileName(x.FileName) == dataSourceWrapperFilename).ToList();
 
-                foreach (var expression in viewModelInfo.Expressions)
+                foreach (var expression in model.Expressions)
                 {
-                    expression.GenerateSetter = !viewModelErrors.Any(x => x.Line >= expression.SetterLineStart && x.Line <= expression.SetterLineEnd);
+                    if (expression.GenerateSetter && dataSourceWrapperErrors.Any(x => x.Line >= expression.SetterLineStart && x.Line <= expression.SetterLineEnd))
+                    {
+                        expression.GenerateSetter = false;
+                    }
                 }
 
-                WriteSourceCodeForViewModel(viewModelInfo);
+                WriteSourceCodeForDataSourceWrapper(model);
             });
 
-            return CompileViewModelSources(compiler, output, viewModelInfos, viewModelReferences);
+            return CompileDataSourceWrapperSources(compiler, output, models, referencedAssemblies);
         }
 
         /// <summary>
-        /// Compiles the specified view model sources into a managed assembly.
+        /// Compiles the specified data source wrapper sources into a managed assembly.
         /// </summary>
-        /// <param name="compiler">The compiler with which to compile the view model sources.</param>
-        /// <param name="infos">A collection of <see cref="ViewModelWrapperInfo"/> instances containing the source code to compile.</param>
+        /// <param name="compiler">The compiler with which to compile the data source wrapper sources.</param>
+        /// <param name="infos">A collection of <see cref="DataSourceWrapperInfo"/> instances containing the source code to compile.</param>
         /// <param name="references">A collection of assembly locations which should be referenced by the compiled assembly.</param>
         /// <returns>A <see cref="CompilerResults"/> instance that represents the result of compilation.</returns>
-        private static CompilerResults CompileViewModelSources(CSharpCodeProvider compiler, String output, IEnumerable<ViewModelWrapperInfo> infos, IEnumerable<String> references)
+        private static CompilerResults CompileDataSourceWrapperSources(CSharpCodeProvider compiler, String output, IEnumerable<DataSourceWrapperInfo> infos, IEnumerable<String> references)
         {
             var writeToFile = (output != null);
 
@@ -143,13 +176,31 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
 
             foreach (var info in infos)
             {
-                var path = GetWorkingFileForViewModel(info);
+                var path = GetWorkingFileForDataSourceWrapper(info);
                 files.Add(path);
 
-                File.WriteAllText(path, info.ViewModelWrapperSource);
+                File.WriteAllText(path, info.DataSourceWrapperSourceCode);
             }
 
             return compiler.CompileAssemblyFromFile(options, files.ToArray());
+        }
+
+        /// <summary>
+        /// Gets a collection of <see cref="DataSourceWrapperInfo"/> objects for all of the views defined within the specified root directory
+        /// as well as all of the component templates which are currently registered with the Ultraviolet context.
+        /// </summary>
+        /// <param name="uv">The Ultraviolet context.</param>
+        /// <param name="root">The root directory to search for views.</param>
+        /// <returns>A collection of <see cref="DataSourceWrapperInfo"/> instances which represent the views and templates which were found.</returns>
+        private static IEnumerable<DataSourceWrapperInfo> GetDataSourceWrapperInfos(UltravioletContext uv, String root)
+        {
+            var viewDefinitions = RecursivelySearchForViews(root, root);
+            var viewModelInfos = RetrieveDataSourceWrapperInfos(uv, viewDefinitions);
+
+            var templateDefinitions = RetrieveTemplateDefinitions(uv);
+            var templateModelInfos = RetrieveDataSourceWrapperInfos(uv, templateDefinitions);
+
+            return Enumerable.Union(viewModelInfos, templateModelInfos);
         }
 
         /// <summary>
@@ -157,10 +208,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
         /// </summary>
         /// <param name="root">The root directory from which the recursive search began.</param>
         /// <param name="directory">The root of the directory tree to search.</param>
-        /// <returns>A collection of <see cref="XElement"/> instances which represent UPF view definitions.</returns>
-        private static IEnumerable<ViewDefinition> RecursivelySearchForViews(String root, String directory)
+        /// <returns>A collection of <see cref="DataSourceDefinition"/> instances which represent UPF view definitions.</returns>
+        private static IEnumerable<DataSourceDefinition> RecursivelySearchForViews(String root, String directory)
         {
-            var result = new List<ViewDefinition>();
+            var result = new List<DataSourceDefinition>();
 
             var files = Directory.GetFiles(directory, "*.xml");
             foreach (var file in files)
@@ -176,7 +227,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
                     if (viewdef == null)
                         continue;
 
-                    result.Add(new ViewDefinition(file, viewdef));
+                    result.Add(DataSourceDefinition.FromView(file, viewdef));
                 }
                 catch (XmlException) { continue; }
             }
@@ -191,106 +242,120 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
         }
 
         /// <summary>
-        /// Creates an instance of <see cref="ViewModelWrapperInfo"/> for each of the specified view definitions.
+        /// Gets a collection of <see cref="DataSourceDefinition"/> instances for any component templates which
+        /// are currently registered with the Ultraviolet Presentation Foundation.
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
-        /// <param name="viewDefinitions">The collection of <see cref="ViewDefinition"/> objects for which to create <see cref="ViewModelWrapperInfo"/> instances.</param>
-        /// <returns>A collection containing the <see cref="ViewModelWrapperInfo"/ > instances which were created.</returns>
-        private static IEnumerable<ViewModelWrapperInfo> RetrieveViewModelInfos(UltravioletContext uv, IEnumerable<ViewDefinition> viewDefinitions)
+        /// <returns>A collection of <see cref="DataSourceDefinition"/> instances which represent UPF component template definitions.</returns>
+        private static IEnumerable<DataSourceDefinition> RetrieveTemplateDefinitions(UltravioletContext uv)
         {
-            var viewModelInfos = new ConcurrentBag<ViewModelWrapperInfo>();
-
-            Parallel.ForEach(viewDefinitions, viewDefinition =>
-            {
-                var viewModelInfo = GetViewModelInfo(uv, viewDefinition);
-                if (viewModelInfo == null)
-                    return;
-
-                viewModelInfos.Add(viewModelInfo);
-            });
-
-            return viewModelInfos;
+            var templates = uv.GetUI().GetPresentationFoundation().ComponentTemplates;
+            var templateDefs = from template in templates
+                               select DataSourceDefinition.FromComponentTemplate(template.Key, template.Value.Root.Element("View"));
+            return templateDefs.ToList();
         }
 
         /// <summary>
-        /// Creates a new instance of <see cref="ViewModelWrapperInfo"/> that represents the specified view model.
+        /// Creates an instance of <see cref="DataSourceWrapperInfo"/> for each of the specified data source definitions.
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
-        /// <param name="viewdef">The view definition for which to retrieve view model info.</param>
-        /// <returns>The <see cref="ViewModelWrapperInfo"/> that was created to represent the specified view's view model.</returns>
-        private static ViewModelWrapperInfo GetViewModelInfo(UltravioletContext uv, ViewDefinition viewdef)
+        /// <param name="dataSourceDefinitions">The collection of <see cref="DataSourceDefinition"/> objects for which to create <see cref="DataSourceWrapperInfo"/> instances.</param>
+        /// <returns>A collection containing the <see cref="DataSourceWrapperInfo"/> instances which were created.</returns>
+        private static IEnumerable<DataSourceWrapperInfo> RetrieveDataSourceWrapperInfos(UltravioletContext uv, IEnumerable<DataSourceDefinition> dataSourceDefinitions)
         {
-            var definedViewModelTypeName = (String)viewdef.Definition.Attribute("ViewModelType");
-            if (definedViewModelTypeName == null)
-                return null;
+            var dataSourceWrapperInfos = new ConcurrentBag<DataSourceWrapperInfo>();
 
-            var typeNameCommaIx = definedViewModelTypeName.IndexOf(',');
-            if (typeNameCommaIx < 0)
-                throw new InvalidOperationException(CompilerStrings.ViewModelTypeIsNotFullyQualified.Format(viewdef.Path));
-
-            var definedViewModelTypeAssemblyName = definedViewModelTypeName.Substring(typeNameCommaIx + 1).Trim();
-            var definedViewModelTypeAssembly = Assembly.Load(definedViewModelTypeAssemblyName);
-
-            var definedViewModelType = Type.GetType(definedViewModelTypeName);
-            if (definedViewModelType.IsSealed)
-                throw new InvalidOperationException(CompilerStrings.ViewModelIsSealed.Format(definedViewModelType.Name));
-
-            if (definedViewModelType.IsAbstract)
-                throw new InvalidOperationException(CompilerStrings.ViewModelIsAbstract.Format(definedViewModelType.Name));
-            
-            var viewModelWrapperName = PresentationFoundationView.GetViewModelWrapperNameFromAssetPath(viewdef.Path);
-            var viewModelWrapperExpressions = new List<BindingExpressionInfo>();
-            foreach (var element in viewdef.Definition.Elements())
+            Parallel.ForEach(dataSourceDefinitions, viewDefinition =>
             {
-                FindBindingExpressionsInView(uv, element, viewModelWrapperExpressions);
+                var dataSourceWrapperInfo = GetDataSourceWrapperInfo(uv, viewDefinition);
+                if (dataSourceWrapperInfo == null)
+                    return;
+
+                dataSourceWrapperInfos.Add(dataSourceWrapperInfo);
+            });
+
+            return dataSourceWrapperInfos;
+        }
+
+        /// <summary>
+        /// Creates a new instance of <see cref="DataSourceWrapperInfo"/> that represents the specified data source wrapper.
+        /// </summary>
+        /// <param name="uv">The Ultraviolet context.</param>
+        /// <param name="dataSourceDefinition">The data source definition for which to retrieve data source wrapper info.</param>
+        /// <returns>The <see cref="DataSourceWrapperInfo"/> that was created to represent the specified data source.</returns>
+        private static DataSourceWrapperInfo GetDataSourceWrapperInfo(UltravioletContext uv, DataSourceDefinition dataSourceDefinition)
+        {
+            var dataSourceWrappedType = dataSourceDefinition.TemplatedControl;
+            if (dataSourceWrappedType == null)
+            {
+                var definedDataSourceTypeName = (String)dataSourceDefinition.Definition.Attribute("ViewModelType");
+                if (definedDataSourceTypeName == null)
+                    return null;
+
+                var typeNameCommaIx = definedDataSourceTypeName.IndexOf(',');
+                if (typeNameCommaIx < 0)
+                    throw new InvalidOperationException(CompilerStrings.ViewModelTypeIsNotFullyQualified.Format(dataSourceDefinition.DataSourceIdentifier));
+
+                var definedDataSourceTypeAssemblyName = definedDataSourceTypeName.Substring(typeNameCommaIx + 1).Trim();
+                var definedDataSourceTypeAssembly = Assembly.Load(definedDataSourceTypeAssemblyName);
+
+                var definedDataSourceType = Type.GetType(definedDataSourceTypeName);               
+                dataSourceWrappedType = definedDataSourceType;
             }
 
-            viewModelWrapperExpressions = CollapseViewModelExpressions(viewModelWrapperExpressions);
+            var dataSourceWrapperName = dataSourceDefinition.DataSourceWrapperName;
+            var dataSourceWrapperExpressions = new List<BindingExpressionInfo>();
+            foreach (var element in dataSourceDefinition.Definition.Elements())
+            {
+                FindBindingExpressionsInDataSource(uv, element, dataSourceWrapperExpressions);
+            }
 
-            var viewModelReferences = new List<String>();
-            var viewModelImports = new List<String>();
+            dataSourceWrapperExpressions = CollapseDataSourceExpressions(dataSourceWrapperExpressions);
 
-            var xmlRoot = viewdef.Definition.Parent;
+            var dataSourceReferences = new List<String>();
+            var dataSourceImports = new List<String>();
+
+            var xmlRoot = dataSourceDefinition.Definition.Parent;
             var xmlDirectives = xmlRoot.Elements("Directive");
             foreach (var xmlDirective in xmlDirectives)
             {
                 var xmlDirectiveType = (String)xmlDirective.Attribute("Type");
                 if (String.IsNullOrEmpty(xmlDirectiveType))
-                    throw new InvalidDataException(UltravioletStrings.ViewDirectiveMustHaveType.Format(viewdef.Path));
+                    throw new InvalidDataException(UltravioletStrings.ViewDirectiveMustHaveType.Format(dataSourceDefinition.DataSourceIdentifier));
 
                 switch (xmlDirectiveType.ToLowerInvariant())
                 {
                     case "import":
-                        viewModelImports.Add(xmlDirective.Value.Trim());
+                        dataSourceImports.Add(xmlDirective.Value.Trim());
                         break;
 
                     case "reference":
-                        viewModelReferences.Add(xmlDirective.Value.Trim());
+                        dataSourceReferences.Add(xmlDirective.Value.Trim());
                         break;
                 }
             }
 
-            return new ViewModelWrapperInfo()
+            return new DataSourceWrapperInfo()
             {
-                References = viewModelReferences,
-                Imports = viewModelImports,
-                ViewDefinition = viewdef,
-                ViewModelType = definedViewModelType,
-                ViewModelWrapperName = viewModelWrapperName,
-                Expressions = viewModelWrapperExpressions,
+                References = dataSourceReferences,
+                Imports = dataSourceImports,
+                DataSourceDefinition = dataSourceDefinition,
+                DataSourceType = dataSourceWrappedType,
+                DataSourceWrapperName = dataSourceWrapperName,
+                Expressions = dataSourceWrapperExpressions,
             };
         }
 
         /// <summary>
-        /// Writes the source code for the inherited view model for the specified view.
+        /// Writes the source code for the specified data source wrapper.
         /// </summary>
-        /// <param name="viewModelInfo">The <see cref="ViewModelWrapperInfo"/> that describes the view model being generated.</param>
-        private static void WriteSourceCodeForViewModel(ViewModelWrapperInfo viewModelInfo)
+        /// <param name="dataSourceWrapperInfo">The <see cref="DataSourceWrapperInfo"/> that describes the data source wrapper being generated.</param>
+        private static void WriteSourceCodeForDataSourceWrapper(DataSourceWrapperInfo dataSourceWrapperInfo)
         {
-            using (var writer = new ViewModelWrapperWriter())
+            using (var writer = new DataSourceWrapperWriter())
             {
                 // Using statements
-                var imports = Enumerable.Union(new[] { "System" }, viewModelInfo.Imports).Distinct().OrderBy(x => x);
+                var imports = Enumerable.Union(new[] { "System" }, dataSourceWrapperInfo.Imports).Distinct().OrderBy(x => x);
                 foreach (var import in imports)
                 {
                     writer.WriteLine("using {0};", import);
@@ -298,26 +363,27 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
                 writer.WriteLine();
 
                 // Namespace and class declaration
-                writer.WriteLine("namespace " + PresentationFoundationView.GetViewModelWrapperNamespace());
+                var @namespace = dataSourceWrapperInfo.DataSourceDefinition.DataSourceWrapperNamespace;
+                writer.WriteLine("namespace " + @namespace);
                 writer.WriteLine("{");
-                writer.WriteLine("public sealed class {0} : {1}", viewModelInfo.ViewModelWrapperName, writer.GetCSharpTypeName(typeof(IViewModelWrapper)));
+                writer.WriteLine("public sealed class {0} : {1}", dataSourceWrapperInfo.DataSourceWrapperName, writer.GetCSharpTypeName(typeof(IDataSourceWrapper)));
                 writer.WriteLine("{");
 
                 // Constructors
                 writer.WriteLine("#region Constructors");
-                writer.WriteConstructor(viewModelInfo);
+                writer.WriteConstructor(dataSourceWrapperInfo);
                 writer.WriteLine("#endregion");
                 writer.WriteLine();
 
-                // IViewModelWrapper
-                writer.WriteLine("#region IViewModelWrapper");
-                writer.WriteIViewModelWrapperImplementation(viewModelInfo);
+                // IDataSourceWrapper
+                writer.WriteLine("#region IDataSourceWrapper");
+                writer.WriteIDataSourceWrapperImplementation(dataSourceWrapperInfo);
                 writer.WriteLine("#endregion");
                 writer.WriteLine();
 
                 // Methods
                 writer.WriteLine("#region Methods");
-                var methods = viewModelInfo.ViewModelType.GetMethods(BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static);
+                var methods = dataSourceWrapperInfo.DataSourceType.GetMethods(BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static);
                 foreach (var method in methods)
                 {
                     if (!NeedsWrapper(method))
@@ -330,7 +396,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
 
                 // Properties
                 writer.WriteLine("#region Properties");
-                var properties = viewModelInfo.ViewModelType.GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static);
+                var properties = dataSourceWrapperInfo.DataSourceType.GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static);
                 foreach (var property in properties)
                 {
                     if (!NeedsWrapper(property))
@@ -343,7 +409,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
 
                 // Fields
                 writer.WriteLine("#region Fields");
-                var fields = viewModelInfo.ViewModelType.GetFields(BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static);
+                var fields = dataSourceWrapperInfo.DataSourceType.GetFields(BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static);
                 foreach (var field in fields)
                 {
                     if (!NeedsWrapper(field))
@@ -356,10 +422,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
 
                 // Expressions
                 writer.WriteLine("#region Expressions");
-                for (int i = 0; i < viewModelInfo.Expressions.Count; i++)
+                for (int i = 0; i < dataSourceWrapperInfo.Expressions.Count; i++)
                 {
-                    var expressionInfo = viewModelInfo.Expressions[i];
-                    writer.WriteExpressionProperty(expressionInfo, i);
+                    var expressionInfo = dataSourceWrapperInfo.Expressions[i];
+                    writer.WriteExpressionProperty(dataSourceWrapperInfo, expressionInfo, i);
                 }
                 writer.WriteLine("#endregion");
 
@@ -367,7 +433,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
                 writer.WriteLine("}");
                 writer.WriteLine("}");
 
-                viewModelInfo.ViewModelWrapperSource = writer.ToString();
+                dataSourceWrapperInfo.DataSourceWrapperSourceCode = writer.ToString();
             }
         }
 
@@ -377,7 +443,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
         /// <param name="uv">The Ultraviolet context.</param>
         /// <param name="element">The root of the XML element tree to search.</param>
         /// <param name="expressions">The list to populate with any binding expressions that are found.</param>
-        private static void FindBindingExpressionsInView(UltravioletContext uv, XElement element, List<BindingExpressionInfo> expressions)
+        private static void FindBindingExpressionsInDataSource(UltravioletContext uv, XElement element, List<BindingExpressionInfo> expressions)
         {
             var upf = uv.GetUI().GetPresentationFoundation();
 
@@ -391,7 +457,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
                     if (!BindingExpressions.IsBindingExpression(attrValue))
                         continue;
 
-                    var dprop = DependencyProperty.FindByName(attrValue, elementType);
+                    var dprop = DependencyProperty.FindByName(attr.Name.LocalName, elementType);
                     if (dprop == null)
                         throw new InvalidOperationException(CompilerStrings.OnlyDependencyPropertiesCanBeBound.Format(attrValue));
 
@@ -423,7 +489,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
             var children = element.Elements();
             foreach (var child in children)
             {
-                FindBindingExpressionsInView(uv, child, expressions);
+                FindBindingExpressionsInDataSource(uv, child, expressions);
             }
         }
 
@@ -490,11 +556,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
         }
         
         /// <summary>
-        /// Gets the name of the file in which the specified view model's source code is saved during compilation.
+        /// Gets the name of the file in which the specified data source wrapper's source code is saved during compilation.
         /// </summary>
-        private static String GetWorkingFileForViewModel(ViewModelWrapperInfo viewModelInfo)
+        private static String GetWorkingFileForDataSourceWrapper(DataSourceWrapperInfo dataSourceWrapperInfo)
         {
-            var path = Path.ChangeExtension(Path.Combine(WorkingDirectory, viewModelInfo.ViewModelWrapperName), "cs");
+            var path = Path.ChangeExtension(Path.Combine(WorkingDirectory, dataSourceWrapperInfo.DataSourceWrapperName), "cs");
             return path;
         }
 
@@ -541,7 +607,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
         /// <summary>
         /// Collapses any redundant expressions in the specified collection into a single instance.
         /// </summary>
-        private static List<BindingExpressionInfo> CollapseViewModelExpressions(List<BindingExpressionInfo> expressions)
+        private static List<BindingExpressionInfo> CollapseDataSourceExpressions(List<BindingExpressionInfo> expressions)
         {
             var collapsed = from exp in expressions
                             group exp by new

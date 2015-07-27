@@ -53,8 +53,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                     throw new InvalidOperationException(PresentationStrings.ViewModelTypeNotFound.Format(viewModelTypeAttr.Value));
                 }
                 
-                var viewModelWrapperName = PresentationFoundationView.GetViewModelWrapperNameFromAssetPath(uiPanelDefinition.AssetFilePath);
-                var viewModelWrapperType = uv.GetUI().GetPresentationFoundation().GetViewModelWrapperTypeByName(viewModelWrapperName) ?? viewModelType;
+                var viewModelWrapperName = PresentationFoundationView.GetDataSourceWrapperNameForView(uiPanelDefinition.AssetFilePath);
+                var viewModelWrapperType = uv.GetUI().GetPresentationFoundation().GetDataSourceWrapperTypeByName(viewModelWrapperName) ?? viewModelType;
 
                 viewModelType = viewModelWrapperType;
             }
@@ -91,15 +91,21 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="viewModelType">The type of view model to which the user control will be bound.</param>
         public static void LoadUserControl(UserControl userControl, XDocument layout, Type viewModelType)
         {
-            var contentElement = layout.Root.Elements().SingleOrDefault();
+            var viewElement = layout.Root.Element("View");
+            if (viewElement == null)
+                return;
+
+            var contentElement = viewElement.Elements().SingleOrDefault();
             if (contentElement == null)
                 return;
 
-            var uv      = userControl.Ultraviolet;
+            var uv = userControl.Ultraviolet;
             var context = new InstantiationContext(uv, null, viewModelType, userControl);
 
             userControl.BeginInit();
             userControl.ComponentTemplateNamescope.Clear();
+
+            PopulateElementPropertiesAndEvents(uv, userControl, viewElement, context);
 
             var content           = InstantiateElement(uv, null, contentElement, context);
             var contentObjectTree = BuildObjectTree(uv, contentElement, content, context);
@@ -117,14 +123,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="template">The component template that specifies the control's component layout.</param>
         public static void LoadComponentTemplate(Control control, XDocument template)
         {
+            var viewElement = template.Root.Element("View");
+            if (viewElement == null)
+                return;
+
             var uv      = control.Ultraviolet;
-            var context = new InstantiationContext(uv, null, null, control);
-
+            var context = new InstantiationContext(uv, null, null, control);            
+            
             control.ComponentTemplateNamescope.Clear();
+            PopulateElementPropertiesAndEvents(uv, control, viewElement, context);
 
-            PopulateElementPropertiesAndEvents(uv, control, template.Root, context);
-
-            var rootElement = template.Root.Elements().SingleOrDefault();
+            var rootElement = viewElement.Elements().SingleOrDefault();
             if (rootElement == null)
                 return;
 
@@ -625,10 +634,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             var templateType = contentPresenter.TemplatedParent.GetType();
 
+            var templateWrapperName = PresentationFoundationView.GetDataSourceWrapperNameForComponentTemplate(templateType);
+            var templateWrapperType = uv.GetUI().GetPresentationFoundation().GetDataSourceWrapperTypeByName(templateWrapperName);
+
             var dpAliasedContent = DependencyProperty.FindByName(alias, templateType);
             if (dpAliasedContent != null)
             {
-                contentPresenter.BindValue(ContentPresenter.ContentProperty, templateType, 
+                contentPresenter.BindValue(ContentPresenter.ContentProperty, templateWrapperType, 
                     "{{" + dpAliasedContent.Name + "}}");
             }
 
@@ -637,7 +649,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 var dpAliasedContentStringFormat = DependencyProperty.FindByName(alias + "StringFormat", templateType);
                 if (dpAliasedContentStringFormat != null)
                 {
-                    contentPresenter.BindValue(ContentPresenter.ContentStringFormatProperty, templateType,
+                    contentPresenter.BindValue(ContentPresenter.ContentStringFormatProperty, templateWrapperType,
                         "{{" + dpAliasedContentStringFormat.Name + "}}");
                 }
             }
@@ -971,7 +983,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 if (context.ViewModelType == null)
                     throw new InvalidOperationException(PresentationStrings.NoViewModel);
                 
-                var compiledImpl = context.GetCompiledBindingExpression(expression);
+                var compiledImpl = context.GetCompiledBindingExpression(dprop.PropertyType, expression);
                 if (compiledImpl == null)
                     throw new InvalidOperationException(PresentationStrings.CompiledExpressionNotFound.Format(expression));
 
@@ -981,7 +993,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             }
             else
             {
-                miBindValue.Invoke(dobj, new Object[] { dprop, context.TemplatedParent.GetType(), expression });
+                var compiledImpl = context.GetCompiledBindingExpression(dprop.PropertyType, expression);
+                if (compiledImpl == null)
+                    throw new InvalidOperationException(PresentationStrings.CompiledExpressionNotFound.Format(expression));
+
+                expression = "{{" + compiledImpl.Name + "}}";
+
+                var dataSource = PresentationFoundation.GetDataSourceWrapper(context.TemplatedParent);
+                miBindValue.Invoke(dobj, new Object[] { dprop, dataSource.GetType(), expression });
             }
         }
 

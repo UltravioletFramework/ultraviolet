@@ -99,13 +99,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// The private access key for the <see cref="ActualMaxDropDownHeight"/> read-only dependency property.
         /// </summary>
-        /// <remarks>The styling name of this dependency property is 'selection-box-item'.</remarks>
         private static readonly DependencyPropertyKey ActualMaxDropDownHeightPropertyKey = DependencyProperty.RegisterReadOnly("ActualMaxDropDownHeight", typeof(Double), typeof(ComboBox),
             new PropertyMetadata<Double>());
 
         /// <summary>
         /// Identifies the <see cref="ActualMaxDropDownHeight"/> dependency property.
         /// </summary>
+        /// <remarks>The styling name of this dependency property is 'selection-box-item'.</remarks>
         public static readonly DependencyProperty ActualMaxDropDownHeightProperty = ActualMaxDropDownHeightPropertyKey.DependencyProperty;
 
         /// <summary>
@@ -118,25 +118,25 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// The private access key for the <see cref="SelectionBoxItem"/> read-only dependency property.
         /// </summary>
-        /// <remarks>The styling name of this dependency property is 'selection-box-item'.</remarks>
         private static readonly DependencyPropertyKey SelectionBoxItemPropertyKey = DependencyProperty.RegisterReadOnly("SelectionBoxItem", typeof(Object), typeof(ComboBox),
             new PropertyMetadata<Boolean>(null));
 
         /// <summary>
         /// Identifies the <see cref="SelectionBoxItem"/> dependency property.
         /// </summary>
+        /// <remarks>The styling name of this dependency property is 'selection-box-item'.</remarks>
         public static readonly DependencyProperty SelectionBoxItemProperty = SelectionBoxItemPropertyKey.DependencyProperty;
 
         /// <summary>
         /// The private access key for the <see cref="SelectionBoxItemStringFormat"/> read-only dependency property.
         /// </summary>
-        /// <remarks>The styling name of this dependency property is 'selection-box-item-string-format'.</remarks>
         private static readonly DependencyPropertyKey SelectionBoxItemStringFormatPropertyKey = DependencyProperty.RegisterReadOnly("SelectionBoxItemStringFormat", typeof(String), typeof(ComboBox),
             new PropertyMetadata<String>(null));
 
         /// <summary>
         /// Identifies the <see cref="SelectionBoxItemStringFormat"/> dependency property.
         /// </summary>
+        /// <remarks>The styling name of this dependency property is 'selection-box-item-string-format'.</remarks>
         public static readonly DependencyProperty SelectionBoxItemStringFormatProperty = SelectionBoxItemStringFormatPropertyKey.DependencyProperty;
 
         /// <summary>
