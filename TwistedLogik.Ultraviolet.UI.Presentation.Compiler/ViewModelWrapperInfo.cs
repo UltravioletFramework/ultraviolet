@@ -18,6 +18,24 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
         }
 
         /// <summary>
+        /// Gets the wrapper's list of reference directives.
+        /// </summary>
+        public IEnumerable<String> References
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Gets the wrapper's list of import directives.
+        /// </summary>
+        public IEnumerable<String> Imports
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
         /// Gets or sets the type of view model being wrapped.
         /// </summary>
         public Type ViewModelType

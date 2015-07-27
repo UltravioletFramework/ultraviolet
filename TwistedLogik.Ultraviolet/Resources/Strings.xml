@@ -490,4 +490,9 @@
       <Variant>The specified buffer is either too big or too small for this operation.</Variant>
     </en-US>
   </String>
+  <String Key="VIEW_DIRECTIVE_MUST_HAVE_TYPE">
+    <en-US>
+      <Variant>One of the view directives in '{0}' is invalid because it does not specify a type attribute.</Variant>
+    </en-US>
+  </String>
 </LocalizedStrings>

@@ -29,11 +29,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
 
             var viewDefinitions = RecursivelySearchForViews(root, root);
             var viewModelInfos = RetrieveViewModelInfos(uv, viewDefinitions);
-
+            
             var viewModelReferences = new ConcurrentBag<String>();
-            viewModelReferences.Add(typeof(Contract).Assembly.Location); // TwistedLogik.Nucleus.dll
-            viewModelReferences.Add(typeof(UIView).Assembly.Location); // TwistedLogik.Ultraviolet.dll
-            viewModelReferences.Add(typeof(PresentationFoundationView).Assembly.Location); // TwistedLogik.Ultraviolet.UI.Presentation.dll
+            viewModelReferences.Add("TwistedLogik.Nucleus.dll");
+            viewModelReferences.Add("TwistedLogik.Ultraviolet.dll");
+            viewModelReferences.Add("TwistedLogik.Ultraviolet.UI.Presentation.dll"); 
 
             var expressionVerificationResult = PerformExpressionVerificationCompilationPass(compiler, viewModelInfos, viewModelReferences);
             if (expressionVerificationResult.Errors.Count > 0)
@@ -63,6 +63,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
             Parallel.ForEach(viewModelInfos, viewModelInfo =>
             {
                 viewModelReferences.Add(viewModelInfo.ViewModelType.Assembly.Location);
+                foreach (var reference in viewModelInfo.References)
+                {
+                    viewModelReferences.Add(reference);
+                }
 
                 foreach (var expression in viewModelInfo.Expressions)
                 {
@@ -243,8 +247,33 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
 
             viewModelWrapperExpressions = CollapseViewModelExpressions(viewModelWrapperExpressions);
 
+            var viewModelReferences = new List<String>();
+            var viewModelImports = new List<String>();
+
+            var xmlRoot = viewdef.Definition.Parent;
+            var xmlDirectives = xmlRoot.Elements("Directive");
+            foreach (var xmlDirective in xmlDirectives)
+            {
+                var xmlDirectiveType = (String)xmlDirective.Attribute("Type");
+                if (String.IsNullOrEmpty(xmlDirectiveType))
+                    throw new InvalidDataException(UltravioletStrings.ViewDirectiveMustHaveType.Format(viewdef.Path));
+
+                switch (xmlDirectiveType.ToLowerInvariant())
+                {
+                    case "import":
+                        viewModelImports.Add(xmlDirective.Value.Trim());
+                        break;
+
+                    case "reference":
+                        viewModelReferences.Add(xmlDirective.Value.Trim());
+                        break;
+                }
+            }
+
             return new ViewModelWrapperInfo()
             {
+                References = viewModelReferences,
+                Imports = viewModelImports,
                 ViewDefinition = viewdef,
                 ViewModelType = definedViewModelType,
                 ViewModelWrapperName = viewModelWrapperName,
@@ -261,7 +290,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
             using (var writer = new ViewModelWrapperWriter())
             {
                 // Using statements
-                writer.WriteLine("using System;");
+                var imports = Enumerable.Union(new[] { "System" }, viewModelInfo.Imports).Distinct().OrderBy(x => x);
+                foreach (var import in imports)
+                {
+                    writer.WriteLine("using {0};", import);
+                }
                 writer.WriteLine();
 
                 // Namespace and class declaration
@@ -455,7 +488,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
         {
             return true;
         }
-
+        
         /// <summary>
         /// Gets the name of the file in which the specified view model's source code is saved during compilation.
         /// </summary>

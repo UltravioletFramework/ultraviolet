@@ -41,6 +41,18 @@ namespace TwistedLogik.Ultraviolet.UI
                 }
             }
 
+            var directives = new List<UIPanelDirective>();
+
+            var xmlDirectives = input.Root.Elements("Directive");
+            foreach (var xmlDirective in xmlDirectives)
+            {
+                var directiveType = (String)xmlDirective.Attribute("Type");
+                if (String.IsNullOrEmpty(directiveType))
+                    throw new InvalidDataException(UltravioletStrings.ViewDirectiveMustHaveType.Format(metadata.AssetFilePath));
+
+                directives.Add(new UIPanelDirective(directiveType, xmlDirective.Value));
+            }
+
             return new UIPanelDefinition()
             {
                 AssetFilePath                  = metadata.AssetFilePath,
@@ -49,6 +61,7 @@ namespace TwistedLogik.Ultraviolet.UI
                 RootElement                    = input.Root,
                 ViewElement                    = input.Root.Element("View"),
                 StyleSheets                    = styleSheetSources,
+                Directives                     = directives,
             };
         }    
     }
