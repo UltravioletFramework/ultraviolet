@@ -196,6 +196,10 @@
       <Project>{bf3c3975-5e7c-40c0-b49b-9a0cbd22bfcb}</Project>
       <Name>TwistedLogik.Ultraviolet.Testing</Name>
     </ProjectReference>
+    <ProjectReference Include="..\TwistedLogik.Ultraviolet.UI.Presentation.Compiler\TwistedLogik.Ultraviolet.UI.Presentation.Compiler.csproj">
+      <Project>{d27ab499-f06f-47ea-8645-285cf2315ec2}</Project>
+      <Name>TwistedLogik.Ultraviolet.UI.Presentation.Compiler</Name>
+    </ProjectReference>
     <ProjectReference Include="..\TwistedLogik.Ultraviolet.UI.Presentation\TwistedLogik.Ultraviolet.UI.Presentation.csproj">
       <Project>{7379d9e1-bb01-4b05-b4f7-5d39b393348f}</Project>
       <Name>TwistedLogik.Ultraviolet.UI.Presentation</Name>

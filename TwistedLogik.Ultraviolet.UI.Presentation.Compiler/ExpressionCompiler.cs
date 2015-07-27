@@ -31,8 +31,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
             var viewModelInfos = RetrieveViewModelInfos(uv, viewDefinitions);
 
             var viewModelReferences = new ConcurrentBag<String>();
-            viewModelReferences.Add(typeof(UIView).Assembly.Location);
-            viewModelReferences.Add(typeof(PresentationFoundationView).Assembly.Location);
+            viewModelReferences.Add(typeof(Contract).Assembly.Location); // TwistedLogik.Nucleus.dll
+            viewModelReferences.Add(typeof(UIView).Assembly.Location); // TwistedLogik.Ultraviolet.dll
+            viewModelReferences.Add(typeof(PresentationFoundationView).Assembly.Location); // TwistedLogik.Ultraviolet.UI.Presentation.dll
 
             var expressionVerificationResult = PerformExpressionVerificationCompilationPass(compiler, viewModelInfos, viewModelReferences);
             if (expressionVerificationResult.Errors.Count > 0)

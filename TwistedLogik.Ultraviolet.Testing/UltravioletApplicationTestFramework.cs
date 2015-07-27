@@ -24,17 +24,26 @@ namespace TwistedLogik.Ultraviolet.Testing
         [TestCleanup]
         public void UltravioletApplicationTestFrameworkCleanup()
         {
+            DestroyUltravioletApplication(application);
+            application = null;
+        }
+
+        /// <summary>
+        /// Destroys the specified test application.
+        /// </summary>
+        /// <param name="application">The test application to destroy.</param>
+        protected static void DestroyUltravioletApplication(IUltravioletTestApplication application)
+        {
             try
             {
                 if (application != null)
                 {
                     application.Dispose();
-                    application = null;
                 }
             }
             catch
             {
-                var context = (UltravioletContext)typeof(UltravioletContext).GetField("current", 
+                var context = (UltravioletContext)typeof(UltravioletContext).GetField("current",
                     BindingFlags.NonPublic | BindingFlags.Static).GetValue(null);
                 if (context != null)
                 {
@@ -42,6 +51,26 @@ namespace TwistedLogik.Ultraviolet.Testing
                 }
                 throw;
             }
+        }
+
+        /// <summary>
+        /// Creates a throwaway ultraviolet application. The lifetime of this application
+        /// must be managed manually by the caller of this method.
+        /// </summary>
+        /// <returns>The test application that was created.</returns>
+        protected static IUltravioletTestApplication GivenAThrowawayUltravioletApplication()
+        {
+            return new UltravioletTestApplication(null);
+        }
+
+        /// <summary>
+        /// Creates a throwaway Ultraviolet application with no window. The lifetime of this application
+        /// must be managed manually by the caller of this method.
+        /// </summary>
+        /// <returns>The test application that was created.</returns>
+        protected static IUltravioletTestApplication GivenAThrowawayUltravioletApplicationWithNoWindow()
+        {
+            return new UltravioletTestApplication(null, true);
         }
 
         /// <summary>

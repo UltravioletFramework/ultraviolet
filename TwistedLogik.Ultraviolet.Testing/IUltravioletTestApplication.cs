@@ -7,7 +7,7 @@ namespace TwistedLogik.Ultraviolet.Testing
     /// <summary>
     /// Represents an Ultraviolet application used in unit tests.
     /// </summary>
-    public interface IUltravioletTestApplication
+    public interface IUltravioletTestApplication : IDisposable
     {
         /// <summary>
         /// Specifies the application's audio subsystem assembly.

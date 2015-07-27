@@ -12,13 +12,30 @@ using TwistedLogik.Ultraviolet.UI.Presentation.Styles;
 namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation
 {
     [TestClass]
+    [DeploymentItem(@"TwistedLogik.Ultraviolet.UI.Presentation.Compiler.dll")]
     public class PresentationFoundationTests : UltravioletApplicationTestFramework
     {
+        [ClassInitialize]
+        public static void Initialize(TestContext textContext)
+        {
+            var application = GivenAThrowawayUltravioletApplicationWithNoWindow()
+               .WithPresentationFoundationConfigured()
+               .WithInitialization(uv =>
+               {
+                   var upf = uv.GetUI().GetPresentationFoundation();
+                   upf.CompileExpressions("Content");
+               });
+
+            application.RunForOneFrame();
+
+            DestroyUltravioletApplication(application);
+        }
+
         [TestMethod]
         [TestCategory("Rendering")]
         public void PresentationFoundation_Canvas_CorrectlyArrangesChildren()
         {
-            var result = RunPresentationTestFor<CanvasTestScreen>(content => new CanvasTestScreen(content));
+            var result = RunPresentationTestFor(content => new CanvasTestScreen(content));
 
             TheResultingImage(result).ShouldMatch(@"Resources\Expected\UI\Presentation\PresentationFoundation_Canvas_CorrectlyArrangesChildren.png");
         }
@@ -27,7 +44,7 @@ namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation
         [TestCategory("Rendering")]
         public void PresentationFoundation_Grid_CorrectlyArrangesChildren()
         {
-            var result = RunPresentationTestFor<GridTestScreen>(content => new GridTestScreen(content));
+            var result = RunPresentationTestFor(content => new GridTestScreen(content));
 
             TheResultingImage(result).ShouldMatch(@"Resources\Expected\UI\Presentation\PresentationFoundation_Grid_CorrectlyArrangesChildren.png");
         }
@@ -36,7 +53,7 @@ namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation
         [TestCategory("Rendering")]
         public void PresentationFoundation_Vertical_StackPanel_CorrectlyArrangesChildren()
         {
-            var result = RunPresentationTestFor<VerticalStackPanelTestScreen>(content => new VerticalStackPanelTestScreen(content));
+            var result = RunPresentationTestFor(content => new VerticalStackPanelTestScreen(content));
 
             TheResultingImage(result).ShouldMatch(@"Resources\Expected\UI\Presentation\PresentationFoundation_Vertical_StackPanel_CorrectlyArrangesChildren.png");
         }
@@ -45,7 +62,7 @@ namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation
         [TestCategory("Rendering")]
         public void PresentationFoundation_Horizontal_StackPanel_CorrectlyArrangesChildren()
         {
-            var result = RunPresentationTestFor<HorizontalStackPanelTestScreen>(content => new HorizontalStackPanelTestScreen(content));
+            var result = RunPresentationTestFor(content => new HorizontalStackPanelTestScreen(content));
 
             TheResultingImage(result).ShouldMatch(@"Resources\Expected\UI\Presentation\PresentationFoundation_Horizontal_StackPanel_CorrectlyArrangesChildren.png");
         }
@@ -54,7 +71,7 @@ namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation
         [TestCategory("Rendering")]
         public void PresentationFoundation_Vertical_WrapPanel_CorrectlyArrangesChildren()
         {
-            var result = RunPresentationTestFor<VerticalWrapPanelTestScreen>(content => new VerticalWrapPanelTestScreen(content));
+            var result = RunPresentationTestFor(content => new VerticalWrapPanelTestScreen(content));
 
             TheResultingImage(result).ShouldMatch(@"Resources\Expected\UI\Presentation\PresentationFoundation_Vertical_WrapPanel_CorrectlyArrangesChildren.png");
         }
@@ -63,7 +80,7 @@ namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation
         [TestCategory("Rendering")]
         public void PresentationFoundation_Horizontal_WrapPanel_CorrectlyArrangesChildren()
         {
-            var result = RunPresentationTestFor<HorizontalWrapPanelTestScreen>(content => new HorizontalWrapPanelTestScreen(content));
+            var result = RunPresentationTestFor(content => new HorizontalWrapPanelTestScreen(content));
 
             TheResultingImage(result).ShouldMatch(@"Resources\Expected\UI\Presentation\PresentationFoundation_Horizontal_WrapPanel_CorrectlyArrangesChildren.png");
         }
@@ -72,7 +89,7 @@ namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation
         [TestCategory("Rendering")]
         public void PresentationFoundation_DockPanel_CorrectlyArrangesChildren()
         {
-            var result = RunPresentationTestFor<DockPanelTestScreen>(content => new DockPanelTestScreen(content));
+            var result = RunPresentationTestFor(content => new DockPanelTestScreen(content));
 
             TheResultingImage(result).ShouldMatch(@"Resources\Expected\UI\Presentation\PresentationFoundation_DockPanel_CorrectlyArrangesChildren.png");
         }
@@ -81,7 +98,7 @@ namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation
         [TestCategory("Rendering")]
         public void PresentationFoundation_CorrectlyLaysOutComplexScreen()
         {
-            var result = RunPresentationTestFor<ComplexScreen>(content => new ComplexScreen(content));
+            var result = RunPresentationTestFor(content => new ComplexScreen(content));
 
             TheResultingImage(result).ShouldMatch(@"Resources\Expected\UI\Presentation\PresentationFoundation_CorrectlyLaysOutComplexScreen.png");
         }
@@ -90,7 +107,7 @@ namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation
         [TestCategory("Rendering")]
         public void PresentationFoundation_CorrectlyDrawsElementsWithRenderTransforms()
         {
-            var result = RunPresentationTestFor<RenderTransformTestScreen>(content => new RenderTransformTestScreen(content));
+            var result = RunPresentationTestFor(content => new RenderTransformTestScreen(content));
 
             TheResultingImage(result).ShouldMatch(@"Resources\Expected\UI\Presentation\PresentationFoundation_CorrectlyDrawsElementsWithRenderTransforms.png");
         }
@@ -102,6 +119,11 @@ namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation
         {
             return GivenAnUltravioletApplication()
                 .WithPresentationFoundationConfigured()
+                .WithInitialization(uv =>
+                {
+                    var upf = uv.GetUI().GetPresentationFoundation();
+                    upf.LoadCompiledExpressions();
+                })
                 .WithContent(content =>
                 {
                     var contentManifestFiles = content.GetAssetFilePathsInDirectory("Manifests");
