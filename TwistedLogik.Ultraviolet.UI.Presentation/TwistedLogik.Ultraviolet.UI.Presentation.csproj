@@ -96,6 +96,7 @@
     <Compile Include="BindingExpressionBuilder.cs" />
     <Compile Include="BindingExpressions.cs" />
     <Compile Include="BoundEventBuilder.cs" />
+    <Compile Include="CompiledBindingExpressionAttribute.cs" />
     <Compile Include="ComponentTemplateManager.cs" />
     <Compile Include="Controls\ComboBox.cs" />
     <Compile Include="Controls\ComboBoxItem.cs" />

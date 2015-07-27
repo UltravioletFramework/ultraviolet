@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation
 {
@@ -22,6 +24,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 this.uv            = uv;
                 this.view          = view;
                 this.viewModelType = viewModelType;
+
+                FindCompiledBindingExpressions();
             }
 
             /// <summary>
@@ -43,6 +47,24 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 {
                     PushBindingContext(initialBindingContext);
                 }
+
+                FindCompiledBindingExpressions();
+            }
+
+            /// <summary>
+            /// Gets the property that implements the compiled version of the specified binding expression.
+            /// </summary>
+            /// <param name="expression">The text of the expression for which to retrieve an implementing property.</param>
+            /// <returns>A <see cref="PropertyInfo"/> which represents the property that implements the compiled version of the specified binding expression,
+            /// or <c>null</c> if the expression has no compiled equivalent.</returns>
+            public PropertyInfo GetCompiledBindingExpression(String expression)
+            {
+                PropertyInfo property;
+                if (compiledBindingExpressions.TryGetValue(expression, out property))
+                {
+                    return property;
+                }
+                return null;
             }
 
             /// <summary>
@@ -114,7 +136,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             public Type ViewModelType
             {
                 get { return viewModelType; }
-            }
+            }            
 
             /// <summary>
             /// Gets the declarative data source for the current instantiation context.
@@ -137,6 +159,34 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 }
                 bindingContext = exp;
             }
+
+            /// <summary>
+            /// Finds all of the compiled binding expressions on the current view model and adds them to the context's registry.
+            /// </summary>
+            private void FindCompiledBindingExpressions()
+            {
+                if (viewModelType == null)
+                    return;
+
+                var properties = viewModelType.GetProperties().Where(x => x.Name.StartsWith("__UPF_Expression")).ToList();
+                var propertiesWithExpressions = from prop in properties
+                                                let attr = (CompiledBindingExpressionAttribute)prop.GetCustomAttributes(typeof(CompiledBindingExpressionAttribute), false).Single()
+                                                let expr = attr.Expression
+                                                select new
+                                                {
+                                                    Property = prop,
+                                                    Expression = expr,
+                                                };
+
+                foreach (var prop in propertiesWithExpressions)
+                {
+                    compiledBindingExpressions.Add(prop.Expression, prop.Property);
+                }
+            }
+
+            // Contains the property that implements each of the view model's compiled binding expressions.
+            private readonly Dictionary<String, PropertyInfo> compiledBindingExpressions =
+                new Dictionary<String, PropertyInfo>();
 
             // Property values.
             private readonly UltravioletContext uv;

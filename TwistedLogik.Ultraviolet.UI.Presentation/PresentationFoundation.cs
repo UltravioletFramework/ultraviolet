@@ -33,8 +33,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             this.styleQueue   = new LayoutQueue(InvalidateStyle, false);
             this.measureQueue = new LayoutQueue(InvalidateMeasure);
             this.arrangeQueue = new LayoutQueue(InvalidateArrange);
-
-            LoadBindingExpressionCompiler();
         }
 
         /// <summary>
@@ -120,10 +118,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             Contract.EnsureNotDisposed(this, Disposed);
             Contract.RequireNotEmpty(root, "root");
-
-            if (Ultraviolet.Platform == UltravioletPlatform.Android)
-                throw new NotSupportedException();
             
+            LoadBindingExpressionCompiler();
+
             bindingExpressionCompiler.Compile(Ultraviolet, root, CompiledExpressionsAssemblyName);
         }
 
@@ -555,6 +552,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         private void LoadBindingExpressionCompiler()
         {
             if (Ultraviolet.Platform == UltravioletPlatform.Android)
+                throw new NotSupportedException();
+
+            if (bindingExpressionCompiler != null)
                 return;
 
 #if PRODUCTION

@@ -224,7 +224,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
         /// <param name="id">The expression's identifier within the view model.</param>
         public void WriteExpressionProperty(BindingExpressionInfo info, Int32 id)
         {
-            WriteLine("// {0}", info.Expression);
+            WriteLine("[{0}(@\"{1}\")]", typeof(CompiledBindingExpressionAttribute).FullName, info.Expression);
             WriteLine("public {0} __UPF_Expression{1}", GetCSharpTypeName(info.Type), id);
             WriteLine("{");
 
@@ -235,12 +235,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
             {
                 info.GetterLineStart = LineCount;
 
-                if (info.Type == typeof(String))
+                if (info.Type == typeof(String) || !String.IsNullOrEmpty(expFormatString))
                 {
-                    if (String.IsNullOrEmpty(expFormatString))
-                    {
-                        expFormatString = "{0}";
-                    }
+                    expFormatString = String.IsNullOrEmpty(expFormatString) ? "{0}" : String.Format("{{0:{0}}}", expFormatString);
                     WriteLine("get {{ return String.Format(\"{0}\", {1}); }}", expFormatString, expMemberPath);
                 }
                 else

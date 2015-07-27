@@ -979,6 +979,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 var expressionType = dprop.PropertyType;
                 var expressionFull = BindingExpressions.Combine(context.BindingContext, expression);
 
+                var compiledImpl = context.GetCompiledBindingExpression(expressionFull);
+                if (compiledImpl == null)
+                    throw new InvalidOperationException(PresentationStrings.CompiledExpressionNotFound.Format(expressionFull));
+
+                expressionFull = String.Format("{{{{::{0}}}}}", compiledImpl.Name);
+
                 miBindValue.Invoke(dobj, new Object[] { dprop, context.ViewModelType, expressionFull });
             }
             else

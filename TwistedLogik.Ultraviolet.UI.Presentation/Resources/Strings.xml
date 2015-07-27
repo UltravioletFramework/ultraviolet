@@ -330,6 +330,11 @@
       <Variant>Could not find the compiled expressions assembly.</Variant>
     </en-US>
   </String>
+  <String Key="COMPILED_EXPRESSION_NOT_FOUND">
+    <en-US>
+      <Variant>Could not find a compiled implementation of the binding expression '{0}'.</Variant>
+    </en-US>
+  </String>
   <String Key="EXPRESSION_COMPILER_NOT_FOUND">
     <en-US>
       <Variant>Could not find the expression compiler assembly '{0}'.</Variant>

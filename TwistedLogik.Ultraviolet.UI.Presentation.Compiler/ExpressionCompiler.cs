@@ -240,6 +240,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
                 FindBindingExpressionsInView(uv, element, viewModelWrapperExpressions);
             }
 
+            viewModelWrapperExpressions = CollapseViewModelExpressions(viewModelWrapperExpressions);
+
             return new ViewModelWrapperInfo()
             {
                 ViewDefinition = viewdef,
@@ -500,6 +502,23 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
                 return "ref " + parameter.Name;
             }
             return parameter.Name;
+        }
+        
+        /// <summary>
+        /// Collapses any redundant expressions in the specified collection into a single instance.
+        /// </summary>
+        private static List<BindingExpressionInfo> CollapseViewModelExpressions(List<BindingExpressionInfo> expressions)
+        {
+            var collapsed = from exp in expressions
+                            group exp by new
+                            {
+                                exp.Expression,
+                                exp.Type,
+                            }
+                            into g
+                            select g;
+
+            return collapsed.Select(x => x.First()).ToList();
         }
 
         // The name of the temporary directory in which the compiler operates.
