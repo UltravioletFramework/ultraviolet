@@ -201,11 +201,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <typeparam name="TViewModel">The type of view model to which the element will be bound.</typeparam>
         /// <param name="typeName">The name of the element to instantiate.</param>
         /// <param name="name">The ID with which to create the element.</param>
-        /// <param name="bindingContext">The binding context to apply to the element which is instantiated.</param>
         /// <returns>The element that was created, or <c>null</c> if the element could not be created.</returns>
-        public UIElement InstantiateElementByName<TViewModel>(String typeName, String name, String bindingContext = null)
+        public UIElement InstantiateElementByName<TViewModel>(String typeName, String name)
         {
-            return InstantiateElementByName(typeName, name, typeof(TViewModel), bindingContext);
+            return InstantiateElementByName(typeName, name, typeof(TViewModel));
         }
 
         /// <summary>
@@ -216,13 +215,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="viewModelType">The type of view model to which the element will be bound.</param>
         /// <param name="bindingContext">The binding context to apply to the element which is instantiated.</param>
         /// <returns>The element that was created, or <c>null</c> if the element could not be created.</returns>
-        public UIElement InstantiateElementByName(String typeName, String name, Type viewModelType, String bindingContext = null)
+        public UIElement InstantiateElementByName(String typeName, String name, Type viewModelType)
         {
             Contract.EnsureNotDisposed(this, Disposed);
-
-            if (bindingContext != null && !BindingExpressions.IsBindingExpression(bindingContext))
-                throw new ArgumentException("bindingContext");
-
+            
             KnownElement registration;
             if (!GetKnownElementRegistration(typeName, out registration))
                 return null;
@@ -242,7 +238,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             if (registration.Layout != null)
             {
-                UvmlLoader.LoadUserControl((UserControl)instance, registration.Layout, viewModelType, bindingContext);
+                UvmlLoader.LoadUserControl((UserControl)instance, registration.Layout, viewModelType);
             }
 
             return instance;

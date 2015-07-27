@@ -95,11 +95,6 @@
       <Variant>The specified expression '{0}' is not a valid binding expression.</Variant>
     </en-US>
   </String>
-  <String Key="INVALID_BINDING_CONTEXT">
-    <en-US>
-      <Variant>The specified binding context '{0}' is not a valid binding expression.</Variant>
-    </en-US>
-  </String>
   <String Key="BINDING_IS_READ_ONLY">
     <en-US>
       <Variant>Attempted to write to a read-only data binding.</Variant>

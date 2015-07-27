@@ -19,34 +19,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             /// <param name="uv">The Ultraviolet context.</param>
             /// <param name="view">The view which is being loaded.</param>
             /// <param name="viewModelType">The type of view model to which the view is bound.</param>
-            public InstantiationContext(UltravioletContext uv, PresentationFoundationView view, Type viewModelType)
-            {
-                this.uv            = uv;
-                this.view          = view;
-                this.viewModelType = viewModelType;
-
-                FindCompiledBindingExpressions();
-            }
-
-            /// <summary>
-            /// Initializes a new instance of the <see cref="InstantiationContext"/> class.
-            /// </summary>
-            /// <param name="uv">The Ultraviolet context.</param>
-            /// <param name="view">The view which is being loaded.</param>
-            /// <param name="viewModelType">The type of view model to which the view is bound.</param>
-            /// <param name="templatedParent">The template parent to assign to elements instantiated by this context.</param>
-            /// <param name="initialBindingContext">The initial binding context.</param>
-            public InstantiationContext(UltravioletContext uv, PresentationFoundationView view, Type viewModelType, DependencyObject templatedParent, String initialBindingContext)
+            public InstantiationContext(UltravioletContext uv, PresentationFoundationView view, Type viewModelType, DependencyObject templatedParent = null)
             {
                 this.uv              = uv;
                 this.view            = view;
                 this.templatedParent = templatedParent;
                 this.viewModelType   = viewModelType;
-
-                if (!String.IsNullOrEmpty(initialBindingContext))
-                {
-                    PushBindingContext(initialBindingContext);
-                }
 
                 FindCompiledBindingExpressions();
             }
@@ -68,27 +46,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             }
 
             /// <summary>
-            /// Pushes a binding context expression onto the binding context stack and
-            /// updates the value of the <see cref="BindingContext"/> property.
-            /// </summary>
-            /// <param name="bindingContext">The binding context expression to push onto the stack.</param>
-            public void PushBindingContext(String bindingContext)
-            {
-                bindingContextStack.Push(bindingContext);
-                GenerateBindingContext();
-            }
-
-            /// <summary>
-            /// Pops a binding context expression off of the binding context stack
-            /// and updates the value of the <see cref="BindingContext"/> property.
-            /// </summary>
-            public void PopBindingContext()
-            {
-                bindingContextStack.Pop();
-                GenerateBindingContext();
-            }
-
-            /// <summary>
             /// Gets the Ultraviolet context.
             /// </summary>
             public UltravioletContext Ultraviolet
@@ -105,31 +62,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 get { return templatedParent; }
                 set { templatedParent = value; }
             }
-
-            /// <summary>
-            /// Gets or sets the current binding context. The binding context is prepended to all binding
-            /// expressions within the instantiation context.
-            /// </summary>
-            public String BindingContext
-            {
-                get { return bindingContext; }
-            }
-
-            /// <summary>
-            /// Gets the binding context that was most recently pushed onto the context stack.
-            /// </summary>
-            public String MostRecentBindingContext
-            {
-                get 
-                {
-                    if (bindingContextStack.Count > 0)
-                    {
-                        return bindingContextStack.Peek();
-                    }
-                    return null;
-                }
-            }
-
+            
             /// <summary>
             /// Gets the type of view model to which the view is bound.
             /// </summary>
@@ -145,21 +78,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             {
                 get { return view ?? (Object)templatedParent; }
             }
-
-            /// <summary>
-            /// Regenerates the value of the <see cref="BindingContext"/> property from the
-            /// current binding context stack.
-            /// </summary>
-            private void GenerateBindingContext()
-            {
-                var exp = default(String);
-                foreach (var context in bindingContextStack)
-                {
-                    exp = BindingExpressions.Combine(context, exp);
-                }
-                bindingContext = exp;
-            }
-
+            
             /// <summary>
             /// Finds all of the compiled binding expressions on the current view model and adds them to the context's registry.
             /// </summary>
@@ -192,11 +111,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             private readonly UltravioletContext uv;
             private PresentationFoundationView view;
             private DependencyObject templatedParent;
-            private String bindingContext;
             private Type viewModelType;
-
-            // State values.
-            private readonly Stack<String> bindingContextStack = new Stack<String>();
         }
     }
 }

@@ -78,10 +78,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <typeparam name="TViewModelType">The type of view model to which the user control will be bound.</typeparam>
         /// <param name="userControl">The instance of <see cref="UserControl"/> to initialize.</param>
         /// <param name="layout">The XML document that specifies the control's layout.</param>
-        /// <param name="bindingContext">The binding context for the user control, if any.</param>
-        public static void LoadUserControl<TViewModelType>(UserControl userControl, XDocument layout, String bindingContext = null)
+        public static void LoadUserControl<TViewModelType>(UserControl userControl, XDocument layout)
         {
-            LoadUserControl(userControl, layout, typeof(TViewModelType), bindingContext);
+            LoadUserControl(userControl, layout, typeof(TViewModelType));
         }
 
         /// <summary>
@@ -90,18 +89,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="userControl">The instance of <see cref="UserControl"/> to initialize.</param>
         /// <param name="layout">The XML document that specifies the control's layout.</param>
         /// <param name="viewModelType">The type of view model to which the user control will be bound.</param>
-        /// <param name="bindingContext">The binding context for the user control, if any.</param>
-        public static void LoadUserControl(UserControl userControl, XDocument layout, Type viewModelType, String bindingContext = null)
+        public static void LoadUserControl(UserControl userControl, XDocument layout, Type viewModelType)
         {
-            if (bindingContext != null && !BindingExpressions.IsBindingExpression(bindingContext))
-                throw new ArgumentException(PresentationStrings.InvalidBindingContext.Format(bindingContext));
-
             var contentElement = layout.Root.Elements().SingleOrDefault();
             if (contentElement == null)
                 return;
 
             var uv      = userControl.Ultraviolet;
-            var context = new InstantiationContext(uv, null, viewModelType, userControl, bindingContext);
+            var context = new InstantiationContext(uv, null, viewModelType, userControl);
 
             userControl.BeginInit();
             userControl.ComponentTemplateNamescope.Clear();
@@ -123,7 +118,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public static void LoadComponentTemplate(Control control, XDocument template)
         {
             var uv      = control.Ultraviolet;
-            var context = new InstantiationContext(uv, null, null, control, null);
+            var context = new InstantiationContext(uv, null, null, control);
 
             control.ComponentTemplateNamescope.Clear();
 
@@ -248,7 +243,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             }
             else
             {
-                instance = uv.GetUI().GetPresentationFoundation().InstantiateElementByName(typeName, name, context.ViewModelType, context.BindingContext);
+                instance = uv.GetUI().GetPresentationFoundation().InstantiateElementByName(typeName, name, context.ViewModelType);
                 if (instance == null)
                     throw new UvmlException(PresentationStrings.UnrecognizedType.Format(xmlElement.Name.LocalName));
             }
@@ -975,17 +970,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             {
                 if (context.ViewModelType == null)
                     throw new InvalidOperationException(PresentationStrings.NoViewModel);
-
-                var expressionType = dprop.PropertyType;
-                var expressionFull = BindingExpressions.Combine(context.BindingContext, expression);
-
-                var compiledImpl = context.GetCompiledBindingExpression(expressionFull);
+                
+                var compiledImpl = context.GetCompiledBindingExpression(expression);
                 if (compiledImpl == null)
-                    throw new InvalidOperationException(PresentationStrings.CompiledExpressionNotFound.Format(expressionFull));
+                    throw new InvalidOperationException(PresentationStrings.CompiledExpressionNotFound.Format(expression));
 
-                expressionFull = String.Format("{{{{::{0}}}}}", compiledImpl.Name);
+                expression = "{{" + compiledImpl.Name + "}}";
 
-                miBindValue.Invoke(dobj, new Object[] { dprop, context.ViewModelType, expressionFull });
+                miBindValue.Invoke(dobj, new Object[] { dprop, context.ViewModelType, expression });
             }
             else
             {
@@ -1207,25 +1199,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="context">The current instantiation context.</param>
         private static void PopulateObjectTree(UltravioletContext uv, UvmlObject root, InstantiationContext context)
         {
-            var bindingContext        = root.Xml.AttributeValueString("BindingContext");
-            var bindingContextDefined = (bindingContext != null);
-            if (bindingContextDefined)
-            {
-                if (!BindingExpressions.IsBindingExpression(bindingContext))
-                    throw new InvalidOperationException(PresentationStrings.InvalidBindingContext.Format(bindingContext));
-
-                context.PushBindingContext(bindingContext);
-            }
-
             PopulateElementPropertiesAndEvents(uv, root.Instance, root.Xml, context);
             foreach (var child in root.Children)
             {
                 PopulateObjectTree(uv, child, context);
-            }
-
-            if (bindingContextDefined)
-            {
-                context.PopBindingContext();
             }
 
             var fe = root.Instance as FrameworkElement;

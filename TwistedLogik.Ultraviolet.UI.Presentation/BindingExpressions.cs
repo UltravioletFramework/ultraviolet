@@ -83,28 +83,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
         
         /// <summary>
-        /// Gets a value indicating whether the specified binding expression is 
-        /// globally-scoped using the :: operator.
-        /// </summary>
-        /// <param name="expression">The expression string to evaluate.</param>
-        /// <param name="braces">A value indicating whether the binding expression includes its enclosing braces.</param>
-        /// <returns><c>true</c> if the specified string represents a globally-scoped binding expression; otherwise, <c>false</c>.</returns>
-        public static Boolean IsGloballyScopedBindingExpression(String expression, Boolean braces = true)
-        {
-            if (String.IsNullOrEmpty(expression))
-                return false;
-
-            if (IsNullBindingExpression(expression))
-                return false;
-
-            if (IsBindingExpression(expression))
-            {
-                return braces ? expression.StartsWith("{{::") : expression.StartsWith("::");
-            }
-            return false;
-        }
-
-        /// <summary>
         /// Gets a value indicating whether the specified binding expression is
         /// the special representation of a null reference (i.e. the {{null}} expression).
         /// </summary>
@@ -147,40 +125,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             return components;
         }
-
-        /// <summary>
-        /// Combines two binding expressions into a single binding expression.
-        /// </summary>
-        /// <param name="expression1">The first binding expression.</param>
-        /// <param name="expression2">The second binding expression.</param>
-        /// <param name="braces">A value indicating whether the expressions' containing braces are included.</param>
-        /// <returns>A binding expression that represents the combination of the specified binding expressions.</returns>
-        public static String Combine(String expression1, String expression2, Boolean braces = true)
-        {
-            Contract.Ensure<ArgumentException>(String.IsNullOrEmpty(expression1) || IsBindingExpression(expression1, braces), "expression1");
-            Contract.Ensure<ArgumentException>(String.IsNullOrEmpty(expression2) || IsBindingExpression(expression2, braces), "expression2");
-
-            if (String.IsNullOrEmpty(expression1))
-                return expression2;
-            if (String.IsNullOrEmpty(expression2))
-                return expression1;
-
-            if (IsGloballyScopedBindingExpression(expression2, braces))
-                return expression2;
-
-            var fmt1 = GetBindingFormatStringPartInternal(expression1, braces);
-            var fmt2 = GetBindingFormatStringPartInternal(expression2, braces);
-            
-            var path1 = GetBindingMemberPathPartInternal(expression1, braces);
-            var path2 = GetBindingMemberPathPartInternal(expression2, braces);
-
-            var combinedPath = path1 + "." + path2;
-            var combinedFmt  = fmt2 ?? fmt1;
-            var combinedExp  = String.Format((combinedFmt == null) ? "{0}" : "{0} | {1}", combinedPath, combinedFmt);
-
-            return braces ? "{{" + combinedExp + "}}" : combinedExp;
-        }
-
+        
         /// <summary>
         /// Gets the part of a binding expression which represents the member navigation path.
         /// </summary>
@@ -489,10 +434,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             var closingBracesIndex = expression.IndexOf("}}", "{{".Length);
 
-            var offset = braces ?
-                expression.StartsWith("{{::") ? 4 : 2 :
-                expression.StartsWith("::") ? 2 : 0;
-
+            var offset = braces ? "{{".Length : 0;
             return expression.Substring(offset, closingBracesIndex - offset).Trim();
         }
 

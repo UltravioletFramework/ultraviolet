@@ -42,7 +42,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public static readonly StringResource RoutedEventAlreadyRegistered         = new StringResource(StringDatabase, "ROUTED_EVENT_ALREADY_REGISTERED");
         public static readonly StringResource CannotResolveBindingExpression       = new StringResource(StringDatabase, "CANNOT_RESOLVE_BINDING_EXPRESSION");
         public static readonly StringResource InvalidBindingExpression             = new StringResource(StringDatabase, "INVALID_BINDING_EXPRESSION");
-        public static readonly StringResource InvalidBindingContext                = new StringResource(StringDatabase, "INVALID_BINDING_CONTEXT");
         public static readonly StringResource BindingIsReadOnly                    = new StringResource(StringDatabase, "BINDING_IS_READ_ONLY");
         public static readonly StringResource BindingIsWriteOnly                   = new StringResource(StringDatabase, "BINDING_IS_WRITE_ONLY");
         public static readonly StringResource UIElementInvalidCtor                 = new StringResource(StringDatabase, "UIELEMENT_INVALID_CTOR");
