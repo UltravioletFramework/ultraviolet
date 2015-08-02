@@ -125,7 +125,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
                     var setterErrors = dataSourceWrapperErrors.Where(x => x.Line >= expression.SetterLineStart && x.Line <= expression.SetterLineEnd).ToList();
                     var setterIsNullable = Nullable.GetUnderlyingType(expression.Type) != null;
 
-                    expression.GenerateSetter = setterIsNullable && setterErrors.All(x => fixableErrorNumbers.Contains(x.ErrorNumber));
+                    expression.GenerateSetter = !setterErrors.Any() || (setterIsNullable && setterErrors.All(x => fixableErrorNumbers.Contains(x.ErrorNumber)));
                     expression.NullableFixup  = setterIsNullable;
                 }
 
