@@ -93,7 +93,7 @@
     <Compile Include="Animations\StoryboardTargetCollection.IEnumerable.cs" />
     <Compile Include="ArrangeOptions.cs" />
     <Compile Include="AssetSource.cs" />
-    <Compile Include="BindingExpressionBuilder.cs" />
+    <Compile Include="DataSourceExpressionBuilder.cs" />
     <Compile Include="BindingExpressions.cs" />
     <Compile Include="BoundEventBuilder.cs" />
     <Compile Include="CompiledBindingExpressionAttribute.cs" />

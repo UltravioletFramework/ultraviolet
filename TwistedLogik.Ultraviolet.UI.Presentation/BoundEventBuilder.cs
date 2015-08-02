@@ -7,7 +7,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
     /// <summary>
     /// Represents an object which builds event delegates for bound events.
     /// </summary>
-    internal sealed class BoundEventBuilder : BindingExpressionBuilder
+    internal sealed class BoundEventBuilder : ExpressionBuilder
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="BoundEventBuilder"/> type.
@@ -22,28 +22,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             CreateParameters(delegateType);
             CreateReturnTarget();
 
-            var components = BindingExpressions.ParseBindingExpression(expression, false).ToArray();
-            var current    = AddDataSourceReference(expression, dataSource, dataSourceType);
+            var path = BindingExpressions.GetBindingMemberPathPart(expression, false);
+            var current = AddDataSourceReference(expression, dataSource, dataSourceType);
 
-            for (int i = 0; i < components.Length; i++)
-            {
-                var component = components[i];
-
-                if (i + 1 < components.Length)
-                {
-                    current = AddSafeReference(expression, current, component);
-                }
-                else
-                {
-                    current = AddMethodInvocation(expression, current, component);
-                }
-            }
+            current = AddMethodInvocation(expression, current, path);
 
             AddReturn();
             AddReturnLabel();
 
             var lambdaBody = Expression.Block(variables, expressions);
-            var lambda     = Expression.Lambda(delegateType, lambdaBody, parameters);
+            var lambda = Expression.Lambda(delegateType, lambdaBody, parameters);
 
             lambdaExpression = lambda;
         }

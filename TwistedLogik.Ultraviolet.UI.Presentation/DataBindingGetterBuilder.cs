@@ -6,7 +6,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
     /// <summary>
     /// Represents an object which builds instances of <see cref="DataBindingGetter{T}"/>.
     /// </summary>
-    internal sealed class DataBindingGetterBuilder : BindingExpressionBuilder
+    internal sealed class DataBindingGetterBuilder : ExpressionBuilder
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="DataBindingGetterBuilder"/> class.
@@ -21,13 +21,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             CreateReturnTarget(expressionType);
 
-            var components = BindingExpressions.ParseBindingExpression(expression);
-            var current    = AddDataSourceReference();
+            var path = BindingExpressions.GetBindingMemberPathPart(expression);
+            var current = AddDataSourceReference();
 
-            foreach (var component in components)
-            {
-                current = AddSafeReference(expression, current, component);
-            }
+            current = AddSafeReference(expression, current, path);
 
             var result = Expression.Convert(current, expressionType);
 
@@ -35,7 +32,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             AddReturnLabel();
 
             var lambdaBody = Expression.Block(variables, expressions);
-            var lambda     = Expression.Lambda(delegateType, lambdaBody, parameters);
+            var lambda = Expression.Lambda(delegateType, lambdaBody, parameters);
 
             lambdaExpression = lambda;
         }

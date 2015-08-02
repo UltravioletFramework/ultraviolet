@@ -108,24 +108,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             return GetSimpleDependencyProperty(dataSourceType, expression, braces) != null;
         }
-
-        /// <summary>
-        /// Parses the specified binding expression into its constituent components.
-        /// </summary>
-        /// <param name="expression">The binding expression to parse.</param>
-        /// <param name="braces">A value indicating whether the expression's containing braces are included.</param>
-        /// <returns>The specified binding expression's constituent components.</returns>
-        public static IEnumerable<String> ParseBindingExpression(String expression, Boolean braces = true)
-        {
-            if (!IsBindingExpression(expression, braces))
-                throw new ArgumentException(PresentationStrings.InvalidBindingExpression.Format(expression));
-
-            var path       = GetBindingMemberPathPartInternal(expression, braces);
-            var components = path.Split('.');
-
-            return components;
-        }
-        
+                
         /// <summary>
         /// Gets the part of a binding expression which represents the member navigation path.
         /// </summary>
@@ -167,21 +150,20 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <returns>The type of the binding expression.</returns>
         public static Type GetExpressionType(Type dataSourceType, String expression, Boolean braces = true)
         {
-            var components = ParseBindingExpression(expression);
-            var currentType = dataSourceType;
-            foreach (var component in components)
-            {
-                var members = currentType.GetMember(component, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
-                if (members == null || !members.Any())
-                    return null;
+            Contract.Require(dataSourceType, "dataSourceType");
+            Contract.RequireNotEmpty(expression, "expression");
 
-                var member = members.Where(x => 
-                    x.MemberType == MemberTypes.Property ||
-                    x.MemberType == MemberTypes.Field).FirstOrDefault() ?? members.First();
+            var expMemberPath = GetBindingMemberPathPart(expression, braces);
 
-                currentType = GetMemberType(member);
-            }
-            return currentType;
+            var members = dataSourceType.GetMember(expMemberPath, BindingFlags.Public | BindingFlags.Instance);
+            if (members == null || !members.Any())
+                return null;
+
+            var member = members.Where(x =>
+                x.MemberType == MemberTypes.Property ||
+                x.MemberType == MemberTypes.Field).FirstOrDefault() ?? members.First();
+
+            return GetMemberType(member);
         }
 
         /// <summary>

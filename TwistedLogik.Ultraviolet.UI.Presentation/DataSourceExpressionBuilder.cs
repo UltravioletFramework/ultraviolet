@@ -5,15 +5,15 @@ using System.Linq.Expressions;
 namespace TwistedLogik.Ultraviolet.UI.Presentation
 {
     /// <summary>
-    /// Represents an object which builds a binding expression.
+    /// Represents an object which is used to build expression trees associated with a particular data source.
     /// </summary>
-    internal class BindingExpressionBuilder
+    internal abstract class ExpressionBuilder
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="BindingExpressionBuilder"/> class.
+        /// Initializes a new instance of the <see cref="ExpressionBuilder"/> class.
         /// </summary>
         /// <param name="dataSourceType">The type of the data source to which the value is being bound.</param>
-        protected BindingExpressionBuilder(Type dataSourceType)
+        protected ExpressionBuilder(Type dataSourceType)
         {
             this.dataSourceType = dataSourceType;
         }
