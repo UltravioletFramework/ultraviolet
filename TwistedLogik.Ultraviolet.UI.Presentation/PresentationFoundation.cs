@@ -556,6 +556,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Gets or sets the name of the assembly from which to load the binding expressions compiler.
+        /// </summary>
+        internal String BindingExpressionCompilerAssemblyName
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
         /// Loads the assembly which provides binding expression compilation services.
         /// </summary>
         private void LoadBindingExpressionCompiler()
@@ -566,11 +575,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (bindingExpressionCompiler != null)
                 return;
 
-#if PRODUCTION
-            var compilerAsmName = "TwistedLogik.Ultraviolet.UI.Presentation.Compiler, Version=1.2.0.0, Culture=neutral, PublicKeyToken=78da2f4877323311, processorArchitecture=MSIL";
-#else
-            var compilerAsmName = "TwistedLogik.Ultraviolet.UI.Presentation.Compiler, Version=1.2.0.0, Culture=neutral, processorArchitecture=MSIL";
-#endif
+            var compilerAsmName = BindingExpressionCompilerAssemblyName;
+            if (String.IsNullOrEmpty(compilerAsmName))
+                throw new InvalidOperationException(PresentationStrings.InvalidBindingExpressionCompilerAsm);
 
             Assembly compilerAsm = null;
             try

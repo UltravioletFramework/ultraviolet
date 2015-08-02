@@ -92,6 +92,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public static readonly StringResource ExpressionCompilerNotFound           = new StringResource(StringDatabase, "EXPRESSION_COMPILER_NOT_FOUND");
         public static readonly StringResource ExpressionCompilerTypeNotValid       = new StringResource(StringDatabase, "EXPRESSION_COMPILER_TYPE_NOT_VALID");
         public static readonly StringResource CannotFindDependencyPropertyField    = new StringResource(StringDatabase, "CANNOT_FIND_DEPENDENCY_PROPERTY_FIELD");
+        public static readonly StringResource InvalidBindingExpressionCompilerAsm  = new StringResource(StringDatabase, "INVALID_BINDING_EXPRESSION_COMPILER_ASM");
 #pragma warning restore 1591
     }
 }

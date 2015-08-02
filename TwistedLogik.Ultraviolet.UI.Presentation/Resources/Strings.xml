@@ -345,4 +345,9 @@
       <Variant>Could not find the field which declares dependency property '{1}' for owner type '{0}'.</Variant>
     </en-US>
   </String>
+  <String Key="INVALID_BINDING_EXPRESSION_COMPILER_ASM">
+    <en-US>
+      <Variant>Could not load the binding expressions compiler because no compiler assembly was specified.</Variant>
+    </en-US>
+  </String>
 </LocalizedStrings>

@@ -177,7 +177,7 @@ namespace UvDebugSandbox
             var globalStyleSheet = content.Load<UvssDocument>("UI/DefaultUIStyles");
             upf.SetGlobalStyleSheet(globalStyleSheet);
 
-            CompileBindingExpressionsDebug(upf);
+            CompileBindingExpressions(upf);
             upf.LoadCompiledExpressions();
         }
 
@@ -255,18 +255,17 @@ namespace UvDebugSandbox
         /// </summary>
         private void CompileBindingExpressions(PresentationFoundation upf)
         {
-            upf.CompileExpressionsIfSupported("Content");
+#if DEBUG
+            var debug = true;
+#else
+            var debug = false;
+#endif
+            if (debug || Debugger.IsAttached)
+            {
+                upf.CompileExpressionsIfSupported("Content");
+            }
         }
-
-        /// <summary>
-        /// Compiles the game's binding expressions, if the game was compiled in debug mode.
-        /// </summary>
-        [Conditional("DEBUG")]
-        private void CompileBindingExpressionsDebug(PresentationFoundation upf)
-        {
-            upf.CompileExpressionsIfSupported("Content");
-        }
-
+        
         // The global content manager.  Manages any content that should remain loaded for the duration of the game's execution.
         private ContentManager content;
 

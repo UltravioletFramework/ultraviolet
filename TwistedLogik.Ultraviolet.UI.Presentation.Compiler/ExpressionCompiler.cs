@@ -41,7 +41,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
             catch (FileNotFoundException) { }
             catch (InvalidDataException) { }
 
-            var compiler = new CSharpCodeProvider(new Dictionary<String, String> { { "CompilerVersion", "v4.0" } });
+            var compiler = CreateCodeProvider();
             DeleteWorkingDirectory();
 
             var referencedAssemblies = new ConcurrentBag<String>();
@@ -73,6 +73,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
             cacheNew.Save(cacheFile);
 
             DeleteWorkingDirectory();
+        }
+
+        /// <summary>
+        /// Creates the code provider which is used to compile binding expressions.
+        /// </summary>
+        /// <returns>An instance of <see cref="CSharpCodeProvider"/> which is used to compile binding expressions.</returns>
+        protected virtual CSharpCodeProvider CreateCodeProvider()
+        {
+            return new CSharpCodeProvider(new Dictionary<String, String> { { "CompilerVersion", "v4.0" } });
         }
 
         /// <summary>
