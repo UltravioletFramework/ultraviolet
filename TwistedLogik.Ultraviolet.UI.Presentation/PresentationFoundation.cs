@@ -122,6 +122,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             LoadBindingExpressionCompiler();
 
             bindingExpressionCompiler.Compile(Ultraviolet, root, CompiledExpressionsAssemblyName);
+            GC.Collect(2, GCCollectionMode.Forced);
         }
 
         /// <summary>

@@ -23,11 +23,26 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
         {
             Contract.Require(uv, "uv");
             Contract.RequireNotEmpty(root, "root");
+            
+            var dataSourceWrapperInfos = GetDataSourceWrapperInfos(uv, root);
+
+            var cacheFile = Path.ChangeExtension(output, "cache");
+            var cacheNew = CompilerCache.FromDataSourceWrappers(dataSourceWrapperInfos);
+            try
+            {
+                if (File.Exists(output))
+                {
+                    var cacheOld = CompilerCache.FromFile(cacheFile);
+                    if (!cacheOld.IsDifferentFrom(cacheNew))
+                        return;
+                }
+            }
+            catch (DirectoryNotFoundException) { }
+            catch (FileNotFoundException) { }
+            catch (InvalidDataException) { }
 
             var compiler = new CSharpCodeProvider(new Dictionary<String, String> { { "CompilerVersion", "v4.0" } });
             DeleteWorkingDirectory();
-
-            var dataSourceWrapperInfos = GetDataSourceWrapperInfos(uv, root);
 
             var referencedAssemblies = new ConcurrentBag<String>();
             referencedAssemblies.Add("System.dll");
@@ -54,6 +69,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
                 WriteErrorsToWorkingDirectory(finalPassResult);
                 throw new InvalidOperationException(CompilerStrings.FailedFinalPass);
             }
+            
+            cacheNew.Save(cacheFile);
 
             DeleteWorkingDirectory();
         }

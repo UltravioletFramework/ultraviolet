@@ -54,6 +54,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CompilerCache.cs" />
     <Compile Include="ExpressionCompiler.cs" />
     <Compile Include="BindingExpressionInfo.cs" />
     <Compile Include="DataSourceWrapperInfo.cs" />
