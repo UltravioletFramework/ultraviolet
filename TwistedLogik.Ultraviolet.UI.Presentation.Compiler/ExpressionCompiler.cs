@@ -108,6 +108,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
         {
             var errors = setterEliminationResult.Errors.Cast<CompilerError>().ToList();
 
+            var fixableErrorNumbers = new List<String> 
+            {
+                "CS0266",
+                "CS1502",
+                "CS1503"
+            };
+
             Parallel.ForEach(models, model =>
             {
                 var dataSourceWrapperFilename = Path.GetFileName(GetWorkingFileForDataSourceWrapper(model));
@@ -117,8 +124,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
                 {
                     var setterErrors = dataSourceWrapperErrors.Where(x => x.Line >= expression.SetterLineStart && x.Line <= expression.SetterLineEnd).ToList();
                     var setterIsNullable = Nullable.GetUnderlyingType(expression.Type) != null;
-                    
-                    expression.GenerateSetter = !setterErrors.Any() || (setterIsNullable && setterErrors.All(x => x.ErrorNumber == "CS0266"));
+
+                    expression.GenerateSetter = setterIsNullable && setterErrors.All(x => fixableErrorNumbers.Contains(x.ErrorNumber));
                     expression.NullableFixup  = setterIsNullable;
                 }
 

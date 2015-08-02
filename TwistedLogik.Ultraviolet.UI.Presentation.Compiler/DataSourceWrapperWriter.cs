@@ -296,28 +296,60 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
         /// Writes a property which wraps a binding expression.
         /// </summary>
         /// <param name="dataSourceWrapperInfo">A <see cref="DataSourceWrapperInfo"/> describing the data source for which to write an expression property.</param>
-        /// <param name="info">The binding expression for which to write a property.</param>
+        /// <param name="expressionInfo">The binding expression for which to write a property.</param>
         /// <param name="id">The expression's identifier within the view model.</param>
-        public void WriteExpressionProperty(DataSourceWrapperInfo dataSourceWrapperInfo, BindingExpressionInfo info, Int32 id)
+        public void WriteExpressionProperty(DataSourceWrapperInfo dataSourceWrapperInfo, BindingExpressionInfo expressionInfo, Int32 id)
         {
-            WriteLine("[{0}(@\"{1}\")]", typeof(CompiledBindingExpressionAttribute).FullName, info.Expression.Replace("\"", "\"\""));
-            WriteLine("public {0} __UPF_Expression{1}", GetCSharpTypeName(info.Type), id);
+            var isDependencyProperty = false;
+            var isSimpleDependencyProperty = false;
+
+            var expMemberPath = BindingExpressions.GetBindingMemberPathPart(expressionInfo.Expression);
+            var expFormatString = BindingExpressions.GetBindingFormatStringPart(expressionInfo.Expression);
+
+            var dprop = DependencyProperty.FindByName(expMemberPath, dataSourceWrapperInfo.DataSourceType);
+            var dpropField = default(FieldInfo);
+            if (dprop != null)
+            {
+                isDependencyProperty = true;
+
+                dpropField =
+                    (from prop in dprop.OwnerType.GetFields(BindingFlags.Public | BindingFlags.Static)
+                     where
+                       prop.FieldType == typeof(DependencyProperty) &&
+                       prop.GetValue(null) == dprop
+                     select prop).SingleOrDefault();
+
+                if (dpropField == null)
+                    throw new InvalidOperationException(PresentationStrings.CannotFindDependencyPropertyField.Format(dprop.OwnerType.Name, dprop.Name));
+
+                if (String.IsNullOrEmpty(expFormatString))
+                {
+                    isSimpleDependencyProperty = true;
+                }
+            }
+
+            WriteLine("[{0}(@\"{1}\", SimpleDependencyPropertyOwner = {2}, SimpleDependencyPropertyName = {3})]", typeof(CompiledBindingExpressionAttribute).FullName, expressionInfo.Expression.Replace("\"", "\"\""),
+                isSimpleDependencyProperty ? "typeof(" + GetCSharpTypeName(dprop.OwnerType) + ")" : "null",
+                isSimpleDependencyProperty ? "\"" + dprop.Name + "\"" : "null");
+
+            WriteLine("public {0} __UPF_Expression{1}", GetCSharpTypeName(expressionInfo.Type), id);
             WriteLine("{");
 
-            var expMemberPath = BindingExpressions.GetBindingMemberPathPart(info.Expression);
-            var expFormatString = BindingExpressions.GetBindingFormatStringPart(info.Expression);
-
-            if (info.GenerateGetter)
+            if (expressionInfo.GenerateGetter)
             {
-                info.GetterLineStart = LineCount;
+                expressionInfo.GetterLineStart = LineCount;
+                
+                var getexp = isDependencyProperty ? String.Format("GetValue<{0}>({1}.{2})", 
+                    GetCSharpTypeName(dprop.PropertyType), 
+                    GetCSharpTypeName(dprop.OwnerType), dpropField.Name) : expMemberPath;
 
-                if (info.Type == typeof(String) || !String.IsNullOrEmpty(expFormatString))
+                if (expressionInfo.Type == typeof(String) || !String.IsNullOrEmpty(expFormatString))
                 {
                     expFormatString = String.IsNullOrEmpty(expFormatString) ? "{0}" : String.Format("{{0:{0}}}", expFormatString);
 
                     WriteLine("get");
                     WriteLine("{");
-                    WriteLine("var value = {0};", expMemberPath);
+                    WriteLine("var value = {0};", getexp);
                     WriteLine("if (value == null || value.GetType() == typeof(String))");
                     WriteLine("{");
                     WriteLine("return (String)(Object)value;");
@@ -327,26 +359,48 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
                 }
                 else
                 {
-                    WriteLine("get {{ return ({0}){1}; }}", GetCSharpTypeName(info.Type), expMemberPath);
+                    WriteLine("get {{ return ({0}){1}; }}", GetCSharpTypeName(expressionInfo.Type), getexp);
                 }
 
-                info.GetterLineEnd = LineCount - 1;
+                expressionInfo.GetterLineEnd = LineCount - 1;
             }
 
-            if (info.GenerateSetter)
-            {
-                info.SetterLineStart = LineCount;
+            if (dprop != null && dprop.IsReadOnly)
+                expressionInfo.GenerateSetter = false;
 
-                if (info.NullableFixup)
+            if (expressionInfo.GenerateSetter)
+            {
+                expressionInfo.SetterLineStart = LineCount;
+                if (isDependencyProperty)
                 {
-                    WriteLine("set {{ {0} = value ?? default({1}); }}", expMemberPath, GetCSharpTypeName(Nullable.GetUnderlyingType(info.Type)));
+                    if (expressionInfo.NullableFixup)
+                    {
+                        WriteLine("set {{ SetValue<{0}>({1}.{2}, value ?? default({0})); }}", 
+                            GetCSharpTypeName(dprop.PropertyType), 
+                            GetCSharpTypeName(dprop.OwnerType),
+                            dpropField.Name);
+                    }
+                    else
+                    {
+                        WriteLine("set {{ SetValue<{0}>({1}.{2}, value); }}", 
+                            GetCSharpTypeName(dprop.PropertyType),
+                            GetCSharpTypeName(dprop.OwnerType), 
+                            dpropField.Name);
+                    }
                 }
                 else
                 {
-                    WriteLine("set {{ {0} = value; }}", expMemberPath);
+                    if (expressionInfo.NullableFixup)
+                    {
+                        WriteLine("set {{ {0} = value ?? default({1}); }}", expMemberPath, GetCSharpTypeName(Nullable.GetUnderlyingType(expressionInfo.Type)));
+                    }
+                    else
+                    {
+                        WriteLine("set {{ {0} = value; }}", expMemberPath);
+                    }
                 }
 
-                info.SetterLineEnd = LineCount - 1;
+                expressionInfo.SetterLineEnd = LineCount - 1;
             }
             
             WriteLine("}");

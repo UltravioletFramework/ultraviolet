@@ -340,4 +340,9 @@
       <Variant>Could not find a valid expression compiler type.</Variant>
     </en-US>
   </String>
+  <String Key="CANNOT_FIND_DEPENDENCY_PROPERTY_FIELD">
+    <en-US>
+      <Variant>Could not find the field which declares dependency property '{1}' for owner type '{0}'.</Variant>
+    </en-US>
+  </String>
 </LocalizedStrings>

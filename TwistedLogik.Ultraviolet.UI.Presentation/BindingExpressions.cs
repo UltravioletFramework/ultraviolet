@@ -317,15 +317,20 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (!IsBindingExpression(expression, braces))
                 throw new ArgumentException(PresentationStrings.InvalidBindingExpression.Format(expression));
 
-            /*
-            var components = ParseBindingExpression(expression, braces);
-            if (components.Count() != 1)
+            var expMemberPath = GetBindingMemberPathPart(expression, braces);
+
+            var expProperty = dataSourceType.GetProperty(expMemberPath);
+            if (expProperty == null)
                 return null;
 
-            return DependencyProperty.FindByName(components.Single(), dataSourceType);
-            */
+            var expAttribute = (CompiledBindingExpressionAttribute)expProperty.GetCustomAttributes(typeof(CompiledBindingExpressionAttribute), false).SingleOrDefault();
+            if (expAttribute == null)
+                return null;
 
-            return null;
+            if (expAttribute.SimpleDependencyPropertyOwner == null)
+                return null;
+
+            return DependencyProperty.FindByName(expAttribute.SimpleDependencyPropertyName, expAttribute.SimpleDependencyPropertyOwner);
         }
 
         /// <summary>
@@ -474,7 +479,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             return new DataBindingGetter<T>((ds) =>
             {
-                return ((DependencyObject)ds).GetValue<T>(dprop);
+                var source = ds;
+                var wrapper = ds as IDataSourceWrapper;
+                if (wrapper != null)
+                {
+                    return ((DependencyObject)wrapper.WrappedDataSource).GetValue<T>(dprop);
+                }
+                else
+                {
+                    return ((DependencyObject)ds).GetValue<T>(dprop);
+                }
             });
         }
 
@@ -486,7 +500,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             return new DataBindingSetter<T>((ds, value) =>
             {
-                ((DependencyObject)ds).SetValue<T>(dprop, value);
+                var source = ds;
+                var wrapper = ds as IDataSourceWrapper;
+                if (wrapper != null)
+                {
+                    ((DependencyObject)wrapper.WrappedDataSource).SetValue(dprop, value);
+                }
+                else
+                {
+                    ((DependencyObject)ds).SetValue(dprop, value);
+                }
             });
         }
 

@@ -119,14 +119,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         /// <remarks>The styling name of this dependency property is 'content-halign'.</remarks>
         public static readonly DependencyProperty HorizontalContentAlignmentProperty = DependencyProperty.Register("HorizontalContentAlignment", "content-halign",
-            typeof(HorizontalAlignment), typeof(ContentControl), new PropertyMetadata<HorizontalAlignment>(PresentationBoxedValues.HorizontalAlignment.Left, PropertyMetadataOptions.AffectsArrange));
+            typeof(HorizontalAlignment), typeof(Control), new PropertyMetadata<HorizontalAlignment>(PresentationBoxedValues.HorizontalAlignment.Left, PropertyMetadataOptions.AffectsArrange));
 
         /// <summary>
         /// Identifies the <see cref="VerticalContentAlignment"/> dependency property.
         /// </summary>
         /// <remarks>The styling name of this dependency property is 'content-valign'.</remarks>
         public static readonly DependencyProperty VerticalContentAlignmentProperty = DependencyProperty.Register("VerticalContentAlignment", "content-valign",
-            typeof(VerticalAlignment), typeof(ContentControl), new PropertyMetadata<VerticalAlignment>(PresentationBoxedValues.VerticalAlignment.Top, PropertyMetadataOptions.AffectsArrange));
+            typeof(VerticalAlignment), typeof(Control), new PropertyMetadata<VerticalAlignment>(PresentationBoxedValues.VerticalAlignment.Top, PropertyMetadataOptions.AffectsArrange));
         
         /// <summary>
         /// Populates any fields of this object which represent references

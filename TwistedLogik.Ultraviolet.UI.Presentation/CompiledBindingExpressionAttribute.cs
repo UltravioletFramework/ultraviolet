@@ -27,5 +27,23 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             get;
             private set;
         }
+
+        /// <summary>
+        /// Gets or sets the name of the simple dependency property which is represented by this binding expression.
+        /// </summary>
+        public String SimpleDependencyPropertyName
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Gets or sets the owner type of the simple dependency property which is represented by this binding expression.
+        /// </summary>
+        public Type SimpleDependencyPropertyOwner
+        {
+            get;
+            set;
+        }
     }
 }
