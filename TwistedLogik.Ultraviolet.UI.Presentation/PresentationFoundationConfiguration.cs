@@ -12,7 +12,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         public PresentationFoundationConfiguration()
         {
-#if PRODUCTION
+#if SIGNED
             BindingExpressionCompilerAssembly = "TwistedLogik.Ultraviolet.UI.Presentation.Compiler, Version=1.2.0.0, Culture=neutral, PublicKeyToken=78da2f4877323311, processorArchitecture=MSIL";
 #else
             BindingExpressionCompilerAssembly = "TwistedLogik.Ultraviolet.UI.Presentation.Compiler, Version=1.2.0.0, Culture=neutral, processorArchitecture=MSIL";

@@ -90,11 +90,11 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Production|AnyCPU'">
-    <OutputPath>..\Binaries\AnyCPU\Production\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Signed|AnyCPU'">
+    <OutputPath>..\Binaries\AnyCPU\Signed\</OutputPath>
+    <DefineConstants>TRACE;SIGNED</DefineConstants>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <DocumentationFile>..\Binaries\AnyCPU\Production\TwistedLogik.Ultraviolet.BASS.XML</DocumentationFile>
+    <DocumentationFile>..\Binaries\AnyCPU\Signed\TwistedLogik.Ultraviolet.BASS.XML</DocumentationFile>
     <Optimize>true</Optimize>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <DebugType>pdbonly</DebugType>
@@ -103,8 +103,8 @@
     <CodeAnalysisRuleSet>..\UltravioletStyleRules.ruleset</CodeAnalysisRuleSet>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Production|x64'">
-    <OutputPath>bin\x64\Production\</OutputPath>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Signed|x64'">
+    <OutputPath>bin\x64\Signed\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <Optimize>true</Optimize>
@@ -115,8 +115,8 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Production|x86'">
-    <OutputPath>bin\x86\Production\</OutputPath>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Signed|x86'">
+    <OutputPath>bin\x86\Signed\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <Optimize>true</Optimize>
@@ -127,10 +127,10 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)' == 'Production' And '$(OS)' != 'Unix'">
+  <PropertyGroup Condition="'$(Configuration)' == 'Signed' And '$(OS)' != 'Unix'">
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)' == 'Production' And '$(OS)' != 'Unix'">
+  <PropertyGroup Condition="'$(Configuration)' == 'Signed' And '$(OS)' != 'Unix'">
     <DelaySign>true</DelaySign>
   </PropertyGroup>
   <ItemGroup>

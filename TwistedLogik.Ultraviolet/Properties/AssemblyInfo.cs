@@ -7,7 +7,7 @@ using System.Security;
 [assembly: CLSCompliant(true)]
 [assembly: AllowPartiallyTrustedCallers]
 
-#if PRODUCTION
+#if SIGNED
 [assembly: InternalsVisibleTo("TwistedLogik.Ultraviolet.Design, PublicKey=" +
     "00240000048000009400000006020000002400005253413100040000010001005dd0e010413925" +
     "79d63e81ea2cce6eeb67e8bde9256a39ba0ae06d5c96eef50905c7ee69ac28905ef5f2c9a8efce" +

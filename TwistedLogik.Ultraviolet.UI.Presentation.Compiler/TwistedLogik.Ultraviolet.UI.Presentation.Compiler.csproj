@@ -34,15 +34,15 @@
   <PropertyGroup>
     <AssemblyOriginatorKeyFile>..\TwistedLogik.Public.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)' == 'Production' And '$(OS)' != 'Unix'">
+  <PropertyGroup Condition="'$(Configuration)' == 'Signed' And '$(OS)' != 'Unix'">
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)' == 'Production' And '$(OS)' != 'Unix'">
+  <PropertyGroup Condition="'$(Configuration)' == 'Signed' And '$(OS)' != 'Unix'">
     <DelaySign>true</DelaySign>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Production|AnyCPU'">
-    <OutputPath>..\Binaries\AnyCPU\Production\</OutputPath>
-    <DefineConstants>PRODUCTION</DefineConstants>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Signed|AnyCPU'">
+    <OutputPath>..\Binaries\AnyCPU\Signed\</OutputPath>
+    <DefineConstants>SIGNED</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />

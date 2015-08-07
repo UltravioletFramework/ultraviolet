@@ -238,46 +238,46 @@
               </Component>
               <!-- Install reference DLLs -->
               <Component Id="TwistedLogik.Gluon">
-                <File Id="TwistedLogik.Gluon" Source="..\Binaries\AnyCPU\Production\TwistedLogik.Gluon.dll" />
+                <File Id="TwistedLogik.Gluon" Source="..\Binaries\AnyCPU\Signed\TwistedLogik.Gluon.dll" />
               </Component>
               <Component Id="TwistedLogik.Nucleus">
-                <File Id="TwistedLogik.Nucleus" Source="..\Binaries\AnyCPU\Production\TwistedLogik.Nucleus.dll" />
+                <File Id="TwistedLogik.Nucleus" Source="..\Binaries\AnyCPU\Signed\TwistedLogik.Nucleus.dll" />
               </Component>
               <Component Id="TwistedLogik.Nucleus_XML">
-                <File Id="TwistedLogik.Nucleus_XML" Source="..\Binaries\AnyCPU\Production\TwistedLogik.Nucleus.xml" />
+                <File Id="TwistedLogik.Nucleus_XML" Source="..\Binaries\AnyCPU\Signed\TwistedLogik.Nucleus.xml" />
               </Component>
               <Component Id="TwistedLogik.Ultraviolet">
-                <File Id="TwistedLogik.Ultraviolet" Source="..\Binaries\AnyCPU\Production\TwistedLogik.Ultraviolet.dll" />
+                <File Id="TwistedLogik.Ultraviolet" Source="..\Binaries\AnyCPU\Signed\TwistedLogik.Ultraviolet.dll" />
               </Component>
               <Component Id="TwistedLogik.Ultraviolet_XML">
-                <File Id="TwistedLogik.Ultraviolet_XML" Source="..\Binaries\AnyCPU\Production\TwistedLogik.Ultraviolet.xml" />
+                <File Id="TwistedLogik.Ultraviolet_XML" Source="..\Binaries\AnyCPU\Signed\TwistedLogik.Ultraviolet.xml" />
               </Component>
               <Component Id="TwistedLogik.Ultraviolet.BASS">
-                <File Id="TwistedLogik.Ultraviolet.BASS" Source="..\Binaries\AnyCPU\Production\TwistedLogik.Ultraviolet.BASS.dll" />
+                <File Id="TwistedLogik.Ultraviolet.BASS" Source="..\Binaries\AnyCPU\Signed\TwistedLogik.Ultraviolet.BASS.dll" />
               </Component>
               <Component Id="TwistedLogik.Ultraviolet.OpenGL">
-                <File Id="TwistedLogik.Ultraviolet.OpenGL" Source="..\Binaries\AnyCPU\Production\TwistedLogik.Ultraviolet.OpenGL.dll" />
+                <File Id="TwistedLogik.Ultraviolet.OpenGL" Source="..\Binaries\AnyCPU\Signed\TwistedLogik.Ultraviolet.OpenGL.dll" />
               </Component>
               <Component Id="TwistedLogik.Ultraviolet.OpenGL_XML">
-                <File Id="TwistedLogik.Ultraviolet.OpenGL_XML" Source="..\Binaries\AnyCPU\Production\TwistedLogik.Ultraviolet.OpenGL.xml" />
+                <File Id="TwistedLogik.Ultraviolet.OpenGL_XML" Source="..\Binaries\AnyCPU\Signed\TwistedLogik.Ultraviolet.OpenGL.xml" />
               </Component>
               <Component Id="TwistedLogik.Ultraviolet.SDL2">
-                <File Id="TwistedLogik.Ultraviolet.SDL2" Source="..\Binaries\AnyCPU\Production\TwistedLogik.Ultraviolet.SDL2.dll" />
+                <File Id="TwistedLogik.Ultraviolet.SDL2" Source="..\Binaries\AnyCPU\Signed\TwistedLogik.Ultraviolet.SDL2.dll" />
               </Component>
               <Component Id="TwistedLogik.Ultraviolet.WindowsForms">
-                <File Id="TwistedLogik.Ultraviolet.WindowsForms" Source="..\Binaries\AnyCPU\Production\TwistedLogik.Ultraviolet.WindowsForms.dll" />
+                <File Id="TwistedLogik.Ultraviolet.WindowsForms" Source="..\Binaries\AnyCPU\Signed\TwistedLogik.Ultraviolet.WindowsForms.dll" />
               </Component>
               <Component Id="TwistedLogik.Ultraviolet.WindowsForms_XML">
-                <File Id="TwistedLogik.Ultraviolet.WindowsForms_XML" Source="..\Binaries\AnyCPU\Production\TwistedLogik.Ultraviolet.WindowsForms.xml" />
+                <File Id="TwistedLogik.Ultraviolet.WindowsForms_XML" Source="..\Binaries\AnyCPU\Signed\TwistedLogik.Ultraviolet.WindowsForms.xml" />
               </Component>
               <Component Id="TwistedLogik.Ultraviolet.Desktop">
-                <File Id="TwistedLogik.Ultraviolet.Desktop" Source="..\Binaries\AnyCPU\Production\TwistedLogik.Ultraviolet.Desktop.dll" />
+                <File Id="TwistedLogik.Ultraviolet.Desktop" Source="..\Binaries\AnyCPU\Signed\TwistedLogik.Ultraviolet.Desktop.dll" />
               </Component>
               <Component Id="TwistedLogik.Ultraviolet.UI.Presentation">
-                <File Id="TwistedLogik.Ultraviolet.UI.Presentation" Source="..\Binaries\AnyCPU\Production\TwistedLogik.Ultraviolet.UI.Presentation.dll" />
+                <File Id="TwistedLogik.Ultraviolet.UI.Presentation" Source="..\Binaries\AnyCPU\Signed\TwistedLogik.Ultraviolet.UI.Presentation.dll" />
               </Component>
               <Component Id="TwistedLogik.Ultraviolet.UI.Presentation_XML">
-                <File Id="TwistedLogik.Ultraviolet.UI.Presentation_XML" Source="..\Binaries\AnyCPU\Production\TwistedLogik.Ultraviolet.UI.Presentation.xml" />
+                <File Id="TwistedLogik.Ultraviolet.UI.Presentation_XML" Source="..\Binaries\AnyCPU\Signed\TwistedLogik.Ultraviolet.UI.Presentation.xml" />
               </Component>
               <Component Id="Newtonsoft.Json">
                 <File Id="Newtonsoft.Json" Source="..\Dependencies\Newtonsoft.Json.dll" />
@@ -285,34 +285,34 @@
               <Directory Id="Android" Name="Android">
                 <!-- Android reference DLLs -->
                 <Component Id="Android_TwistedLogik.Gluon">
-                  <File Id="Android_TwistedLogik.Gluon" Source="..\Binaries\Android\Production\TwistedLogik.Gluon.dll" />
+                  <File Id="Android_TwistedLogik.Gluon" Source="..\Binaries\Android\Signed\TwistedLogik.Gluon.dll" />
                 </Component>
                 <Component Id="Android_TwistedLogik.Nucleus">
-                  <File Id="Android_TwistedLogik.Nucleus" Source="..\Binaries\Android\Production\TwistedLogik.Nucleus.dll" />
+                  <File Id="Android_TwistedLogik.Nucleus" Source="..\Binaries\Android\Signed\TwistedLogik.Nucleus.dll" />
                 </Component>
                 <Component Id="Android_TwistedLogik.Nucleus_XML">
-                  <File Id="Android_TwistedLogik.Nucleus_XML" Source="..\Binaries\Android\Production\TwistedLogik.Nucleus.xml" />
+                  <File Id="Android_TwistedLogik.Nucleus_XML" Source="..\Binaries\Android\Signed\TwistedLogik.Nucleus.xml" />
                 </Component>
                 <Component Id="Android_TwistedLogik.Ultraviolet">
-                  <File Id="Android_TwistedLogik.Ultraviolet" Source="..\Binaries\Android\Production\TwistedLogik.Ultraviolet.dll" />
+                  <File Id="Android_TwistedLogik.Ultraviolet" Source="..\Binaries\Android\Signed\TwistedLogik.Ultraviolet.dll" />
                 </Component>
                 <Component Id="Android_TwistedLogik.Ultraviolet_XML">
-                  <File Id="Android_TwistedLogik.Ultraviolet_XML" Source="..\Binaries\Android\Production\TwistedLogik.Ultraviolet.xml" />
+                  <File Id="Android_TwistedLogik.Ultraviolet_XML" Source="..\Binaries\Android\Signed\TwistedLogik.Ultraviolet.xml" />
                 </Component>
                 <Component Id="Android_TwistedLogik.Ultraviolet.BASS">
-                  <File Id="Android_TwistedLogik.Ultraviolet.BASS" Source="..\Binaries\Android\Production\TwistedLogik.Ultraviolet.BASS.dll" />
+                  <File Id="Android_TwistedLogik.Ultraviolet.BASS" Source="..\Binaries\Android\Signed\TwistedLogik.Ultraviolet.BASS.dll" />
                 </Component>
                 <Component Id="Android_TwistedLogik.Ultraviolet.OpenGL">
-                  <File Id="Android_TwistedLogik.Ultraviolet.OpenGL" Source="..\Binaries\Android\Production\TwistedLogik.Ultraviolet.OpenGL.dll" />
+                  <File Id="Android_TwistedLogik.Ultraviolet.OpenGL" Source="..\Binaries\Android\Signed\TwistedLogik.Ultraviolet.OpenGL.dll" />
                 </Component>
                 <Component Id="Android_TwistedLogik.Ultraviolet.OpenGL_XML">
-                  <File Id="Android_TwistedLogik.Ultraviolet.OpenGL_XML" Source="..\Binaries\Android\Production\TwistedLogik.Ultraviolet.OpenGL.xml" />
+                  <File Id="Android_TwistedLogik.Ultraviolet.OpenGL_XML" Source="..\Binaries\Android\Signed\TwistedLogik.Ultraviolet.OpenGL.xml" />
                 </Component>
                 <Component Id="Android_TwistedLogik.Ultraviolet.SDL2">
-                  <File Id="Android_TwistedLogik.Ultraviolet.SDL2" Source="..\Binaries\Android\Production\TwistedLogik.Ultraviolet.SDL2.dll" />
+                  <File Id="Android_TwistedLogik.Ultraviolet.SDL2" Source="..\Binaries\Android\Signed\TwistedLogik.Ultraviolet.SDL2.dll" />
                 </Component>
                 <Component Id="Android_TwistedLogik.Ultraviolet.Android">
-                  <File Id="Android_TwistedLogik.Ultraviolet.Android" Source="..\Binaries\Android\Production\TwistedLogik.Ultraviolet.Android.dll" />
+                  <File Id="Android_TwistedLogik.Ultraviolet.Android" Source="..\Binaries\Android\Signed\TwistedLogik.Ultraviolet.Android.dll" />
                 </Component>
                 <Component Id="Android_Newtonsoft.Json">
                   <File Id="Android_Newtonsoft.Json" Source="..\Dependencies\Newtonsoft.Json.dll" />
@@ -326,19 +326,19 @@
                 <Environment Id="Tools_PATH" Name="PATH" Value="[Tools]" Permanent="no" Part="last" Action="set" System="yes"/>
               </Component>
               <Component Id="Tools_TwistedLogik.Nucleus">
-                <File Id="Tools_TwistedLogik.Nucleus" Source="..\Binaries\AnyCPU\Production\TwistedLogik.Nucleus.dll" />
+                <File Id="Tools_TwistedLogik.Nucleus" Source="..\Binaries\AnyCPU\Signed\TwistedLogik.Nucleus.dll" />
               </Component>
               <Component Id="Tools_TwistedLogik.Ultraviolet">
-                <File Id="Tools_TwistedLogik.Ultraviolet" Source="..\Binaries\AnyCPU\Production\TwistedLogik.Ultraviolet.dll" />
+                <File Id="Tools_TwistedLogik.Ultraviolet" Source="..\Binaries\AnyCPU\Signed\TwistedLogik.Ultraviolet.dll" />
               </Component>
               <Component Id="Tools_TwistedLogik.Ultraviolet.Tooling">
-                <File Id="Tools_TwistedLogik.Ultraviolet.Tooling" Source="..\Binaries\AnyCPU\Production\TwistedLogik.Ultraviolet.Tooling.dll" />
+                <File Id="Tools_TwistedLogik.Ultraviolet.Tooling" Source="..\Binaries\AnyCPU\Signed\TwistedLogik.Ultraviolet.Tooling.dll" />
               </Component>
               <Component Id="Tools_UvFont">
-                <File Id="Tools_UvFont" Source="..\Binaries\AnyCPU\Production\uvfont.exe" />
+                <File Id="Tools_UvFont" Source="..\Binaries\AnyCPU\Signed\uvfont.exe" />
               </Component>
               <Component Id="Tools_UvArchive">
-                <File Id="Tools_UvArchive" Source="..\Binaries\AnyCPU\Production\uvarchive.exe" />
+                <File Id="Tools_UvArchive" Source="..\Binaries\AnyCPU\Signed\uvarchive.exe" />
               </Component>
             </Directory>
             <!-- Dependencies -->
