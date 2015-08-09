@@ -230,6 +230,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media
         }
 
         /// <summary>
+        /// Gets the visual's transformation matrix.
+        /// </summary>
+        /// <returns>The visual's transformation matrix.</returns>
+        protected virtual Matrix GetTransformMatrix()
+        {
+            return Matrix.Identity;
+        }
+
+        /// <summary>
         /// Returns a transformation matrix which can be used to transform coordinates from this visual to
         /// the specified descendant of this visual.
         /// </summary>
@@ -247,13 +256,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media
                 if (uiElement != null)
                 {
                     var rtOrigin    = uiElement.RenderTransformOrigin;
-                    var rtTransform = uiElement.RenderTransform ?? Transform.Identity;
-
+                    var rtTransform = uiElement.GetTransformMatrix();
+                    
                     var rtOriginOffsetX = rtOrigin.X * uiElement.RenderSize.Width;
                     var rtOriginOffsetY = rtOrigin.Y * uiElement.RenderSize.Height;
 
                     var mtxTranslateToOriginSpace = Matrix.CreateTranslation(-(Single)rtOriginOffsetX, -(Single)rtOriginOffsetY, 0);
-                    var mtxRenderTransform = rtTransform.Value;
+                    var mtxRenderTransform = rtTransform;
                     var mtxTranslateToClientSpace = Matrix.CreateTranslation(
                         (Single)(uiElement.RelativeBounds.X + rtOriginOffsetX),
                         (Single)(uiElement.RelativeBounds.Y + rtOriginOffsetY), 0);

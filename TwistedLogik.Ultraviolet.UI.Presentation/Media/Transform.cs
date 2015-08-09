@@ -8,6 +8,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media
     [UvmlKnownType]
     public abstract class Transform : GeneralTransform
     {
+        /// <summary>
+        /// Gets a value indicating whether the specified transformation is an identity transformation.
+        /// </summary>
+        /// <param name="transform">The transform to evaluate.</param>
+        /// <returns><c>true</c> if the specified transform is an identity transform; otherwise, <c>false</c>.</returns>
+        public static Boolean IsIdentityTransform(Transform transform)
+        {
+            return (transform == null || transform.IsIdentity);
+        }
+
         /// <inheritdoc/>
         public override Boolean TryTransform(Vector2 vector, out Vector2 result)
         {

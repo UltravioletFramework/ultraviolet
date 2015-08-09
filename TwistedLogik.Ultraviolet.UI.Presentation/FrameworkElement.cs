@@ -1,7 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
 using TwistedLogik.Nucleus;
-using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
 using TwistedLogik.Ultraviolet.UI.Presentation.Controls;
 using TwistedLogik.Ultraviolet.UI.Presentation.Media;
 using TwistedLogik.Ultraviolet.UI.Presentation.Styles;
@@ -159,6 +158,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Gets or sets the transformation which is applied to this element during layout.
+        /// </summary>
+        public Transform LayoutTransform
+        {
+            get { return GetValue<Transform>(LayoutTransformProperty); }
+            set { SetValue<Transform>(LayoutTransformProperty, value); }
+        }
+
+        /// <summary>
         /// Gets a value indicating whether the element has been fully initialized.
         /// </summary>
         public Boolean IsInitialized
@@ -250,6 +258,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             typeof(VerticalAlignment), typeof(FrameworkElement), new PropertyMetadata<VerticalAlignment>(PresentationBoxedValues.VerticalAlignment.Top, PropertyMetadataOptions.AffectsArrange));
 
         /// <summary>
+        /// Identifies the <see cref="LayoutTransform"/> dependency property.
+        /// </summary>
+        /// <remarks>The styling name of this dependency property is 'layout-transform'.</remarks>
+        public static readonly DependencyProperty LayoutTransformProperty = DependencyProperty.Register("LayoutTransform",
+            typeof(Transform), typeof(FrameworkElement), new PropertyMetadata<Transform>(Transform.Identity, PropertyMetadataOptions.AffectsMeasure, HandleLayoutTransformChanged));
+
+        /// <summary>
         /// Occurs when the element is loaded.
         /// </summary>
         public event UpfRoutedEventHandler Loaded
@@ -336,7 +351,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             SetIsLoaded(value);
             RaiseLoadedOrUnloaded(value);
         }
-
+        
         /// <inheritdoc/>
         internal override void OnVisualParentChangedInternal(Visual oldParent, Visual newParent)
         {
@@ -414,6 +429,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             get { return DeclarativeViewModelOrTemplate ?? TemplatedParent ?? ViewModel; }
         }
 
+        /// <inheritdoc/>
+        internal override Boolean HasLayoutTransform
+        {
+            get { return !Transform.IsIdentityTransform(LayoutTransform); }
+        }
+
         /// <summary>
         /// Gets the specified logical child of this element.
         /// </summary>
@@ -430,6 +451,24 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         protected internal virtual Int32 LogicalChildrenCount
         {
             get { return 0; }
+        }
+
+        /// <inheritdoc/>
+        protected override void OnDigesting(UltravioletTime time)
+        {
+            var layoutTransform = LayoutTransform;
+            if (layoutTransform != null)
+            {
+                layoutTransform.Digest(time);
+            }
+
+            base.OnDigesting(time);
+        }
+
+        /// <inheritdoc/>
+        protected override Matrix GetTransformMatrix()
+        {
+            return (LayoutTransform ?? Transform.Identity).Value * base.GetTransformMatrix();
         }
 
         /// <inheritdoc/>
@@ -683,6 +722,26 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             get { return visualStateGroups; }
         }
 
+        /// <summary>
+        /// Occurs when the value of the <see cref="LayoutTransform"/> dependency property changes.
+        /// </summary>
+        private static void HandleLayoutTransformChanged(DependencyObject dobj, Transform oldValue, Transform newValue)
+        {
+            var element = (FrameworkElement)dobj;
+            var uv = element.Ultraviolet;
+
+            if (newValue == null || newValue is IdentityTransform)
+            {
+                element.UpdateDescendantsWithLayoutTransformsCounter(element.VisualParent, -1);
+            }
+            else
+            {
+                element.UpdateDescendantsWithLayoutTransformsCounter(element.VisualParent, +1);
+            }
+
+            element.OnTransformChanged();
+        }
+
         // Standard visual state groups.
         private static readonly String[] VSGFocus = new[] { "blurred", "focused" };
 
@@ -694,6 +753,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         private Boolean isLoaded;
 
         // State values.
+        private Int32 descendantsWithLayoutTransforms;
         private Boolean isInitializing;
     }
 }

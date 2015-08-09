@@ -18,7 +18,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media
             if (!element.IsHitTestVisible)
                 return false;
 
-            if (element.HasRenderTransformedDescendants)
+            if (element.HasTransformedDescendants)
             {
                 var clip = element.ClipRectangle;
                 if (clip.HasValue)
