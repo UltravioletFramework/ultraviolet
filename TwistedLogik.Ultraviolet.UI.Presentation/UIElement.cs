@@ -192,23 +192,20 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                         var pxRenderWidth = Display.DipsToPixels(RenderSize.Width);
                         var pxRenderHeight = Display.DipsToPixels(RenderSize.Height);
 
-                        var rtoInClientSpace = new Vector2(
-                            (Single)(pxRenderWidth * RenderTransformOrigin.X),
-                            (Single)(pxRenderHeight * RenderTransformOrigin.Y));
-                        var rtoInScreenSpace = (Vector2)Display.DipsToPixels(AbsolutePosition) + rtoInClientSpace;
+                        var pixPosition = (Vector2)Display.DipsToPixels(AbsolutePosition);
 
-                        var mtxTranslateToOrigin = Matrix.CreateTranslation(-rtoInScreenSpace.X, -rtoInScreenSpace.Y, 0);
-                        var mtxRenderTransform = GetTransformMatrix();
-                        var mtxTranslateToScreen = Matrix.CreateTranslation(rtoInScreenSpace.X, rtoInScreenSpace.Y, 0);
+                        var mtxTranslateToClientSpace = Matrix.CreateTranslation(-pixPosition.X, -pixPosition.Y, 0f);
+                        var mtxTransform = GetTransformMatrix();
+                        var mtxTranslateToScreenSpace = Matrix.CreateTranslation(+pixPosition.X, +pixPosition.Y, 0f);
                         var mtxSpriteBatch = state.TransformMatrix;
 
-                        Matrix mtxTransform;
-                        Matrix.Concat(ref mtxTranslateToOrigin, ref mtxRenderTransform, out mtxTransform);
-                        Matrix.Concat(ref mtxTransform, ref mtxTranslateToScreen, out mtxTransform);
-                        Matrix.Concat(ref mtxTransform, ref mtxSpriteBatch, out mtxTransform);
-
+                        Matrix mtxFinal;
+                        Matrix.Concat(ref mtxTranslateToClientSpace, ref mtxTransform, out mtxFinal);
+                        Matrix.Concat(ref mtxFinal, ref mtxTranslateToScreenSpace, out mtxFinal);
+                        Matrix.Concat(ref mtxFinal, ref mtxSpriteBatch, out mtxFinal);
+                        
                         dc.End();
-                        dc.Begin(SpriteSortMode.Deferred, null, mtxTransform);
+                        dc.Begin(SpriteSortMode.Deferred, null, mtxFinal);
 
                         flush = true;
                     }
@@ -1641,7 +1638,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <inheritdoc/>
         protected override Matrix GetTransformMatrix()
         {
-            return (RenderTransform ?? Transform.Identity).Value;
+            var rtoInClientSpace = new Vector2(
+                (Single)(Display.DipsToPixels(RenderSize.Width) * RenderTransformOrigin.X),
+                (Single)(Display.DipsToPixels(RenderSize.Height) * RenderTransformOrigin.Y));
+
+            var mtxTranslateToOrigin = Matrix.CreateTranslation(-rtoInClientSpace.X, -rtoInClientSpace.Y, 0);
+            var mtxRenderTransform = (RenderTransform ?? Transform.Identity).Value;
+            var mtxTranslateToClient = Matrix.CreateTranslation(+rtoInClientSpace.X, +rtoInClientSpace.Y, 0);
+
+            Matrix mtxFinal;
+            Matrix.Concat(ref mtxTranslateToOrigin, ref mtxRenderTransform, out mtxFinal);
+            Matrix.Concat(ref mtxFinal, ref mtxTranslateToClient, out mtxFinal);
+
+            return mtxFinal;
         }
 
         /// <summary>

@@ -247,7 +247,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media
         /// <returns>A <see cref="Matrix"/> which represents the specified transformation.</returns>
         private Matrix MatrixTransformToDescendantInternal(Visual descendant, Boolean invert)
         {
-            var mtxTransformation = Matrix.Identity;
+            var mtxFinal = Matrix.Identity;
 
             DependencyObject current;
             for (current = descendant; current != null && current != this; current = VisualTreeHelper.GetParent(current))
@@ -255,22 +255,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media
                 var uiElement = current as UIElement;
                 if (uiElement != null)
                 {
-                    var rtOrigin    = uiElement.RenderTransformOrigin;
-                    var rtTransform = uiElement.GetTransformMatrix();
-                    
-                    var rtOriginOffsetX = rtOrigin.X * uiElement.RenderSize.Width;
-                    var rtOriginOffsetY = rtOrigin.Y * uiElement.RenderSize.Height;
-
-                    var mtxTranslateToOriginSpace = Matrix.CreateTranslation(-(Single)rtOriginOffsetX, -(Single)rtOriginOffsetY, 0);
-                    var mtxRenderTransform = rtTransform;
+                    var mtxTransform = uiElement.GetTransformMatrix();
                     var mtxTranslateToClientSpace = Matrix.CreateTranslation(
-                        (Single)(uiElement.RelativeBounds.X + rtOriginOffsetX),
-                        (Single)(uiElement.RelativeBounds.Y + rtOriginOffsetY), 0);
+                        (Single)uiElement.RelativeBounds.X, 
+                        (Single)uiElement.RelativeBounds.Y, 0f);
 
                     Matrix mtxResult;
-                    Matrix.Concat(ref mtxTransformation, ref mtxTranslateToOriginSpace, out mtxResult);
-                    Matrix.Concat(ref mtxResult, ref mtxRenderTransform, out mtxResult);
-                    Matrix.Concat(ref mtxResult, ref mtxTranslateToClientSpace, out mtxTransformation);
+                    Matrix.Concat(ref mtxFinal, ref mtxTransform, out mtxResult);
+                    Matrix.Concat(ref mtxResult, ref mtxTranslateToClientSpace, out mtxFinal);
                 }
             }
 
@@ -281,7 +273,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media
                 throw new ArgumentException(message, paramName);
             }
 
-            return invert ? mtxTransformation : Matrix.Invert(mtxTransformation);
+            return invert ? mtxFinal : Matrix.Invert(mtxFinal);
         }
 
         // State values.
