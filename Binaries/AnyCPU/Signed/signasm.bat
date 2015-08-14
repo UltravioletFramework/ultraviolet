@@ -34,7 +34,6 @@ GOTO :eof
 
 :test_nucleus
 sn.exe -R "TwistedLogik.Nucleus.dll" "%TLSN%" 
-sn.exe -R "TwistedLogik.Nucleus.Design.dll" "%TLSN%"
 GOTO :eof
 
 :test_ultraviolet
