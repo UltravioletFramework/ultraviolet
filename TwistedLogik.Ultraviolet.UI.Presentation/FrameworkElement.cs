@@ -1,7 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
 using TwistedLogik.Nucleus;
-using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
 using TwistedLogik.Ultraviolet.UI.Presentation.Controls;
 using TwistedLogik.Ultraviolet.UI.Presentation.Media;
 using TwistedLogik.Ultraviolet.UI.Presentation.Styles;
@@ -721,6 +720,142 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         protected VisualStateGroupCollection VisualStateGroups
         {
             get { return visualStateGroups; }
+        }
+        
+        /// <summary>
+        /// Given a pair of dimensions, this method calculates the size of the largest rectangle that will fit within
+        /// those dimensions after having the specified transformation applied to it.
+        /// </summary>
+        /// <param name="xmax">The available width.</param>
+        /// <param name="ymax">The available height.</param>
+        /// <param name="transform">The transformation matrix to apply.</param>
+        /// <returns>The size of the largest rectangle that will still fit within the available space after the specified transform is applied.</returns>
+        private static Size2D CalculateMaximumAvailableSizeBeforeLayoutTransform(Double xmax, Double ymax, Matrix transform)
+        {
+            /* When using layout transforms, it's possible for an element to produce a desired size which, after the transform
+             * is applied, will cause the element to lie outside of its maximum available layout area. To address this problem,
+             * we need to shrink the available size that is passed into MeasureCore() such that, even if the element is as big
+             * as it possibly can be, its post-transform bounds will still lie within the available layout area.
+             *
+             * To that end, we need to do a bit of calculus. Given the true maximum area (A_true) and a transformation
+             * matrix (M_transform), we need to calculate the largest possible rectangle that will fit within A_true
+             * after it has been subjected to M_transform. This will be the area that we pass into MeasureCore().
+             *
+             * For simplicity's sake, consider the case of a rotation transform. Rotating a rectangle will cause its x-dimension
+             * to point partially along both the x- and y-axes of the untransformed space. If we gradually make the rectangle wider,
+             * it will eventually reach a point where its size along the untransformed x-axis will exceed our maximum width, and another
+             * point where its size along the untransformed y-axis will exceed our maximum width. The smallest of these two widths
+             * is the largest possible width of the transformed rectangle. We can do likewise to constrain the rectangle's height;
+             * the biggest possible rectangle will have a width and height somewhere below the values established by these constraints. 
+             *
+             * We can use trigonometry to establish that there is a simple linear relationship between the width of the transformed 
+             * rectangle and its dimensions along the untransformed x- and y-axes, such that w / sin(theta) = h / cos(theta). We can
+             * use this to graph a pair of lines representing our transformed rectangle's width and height. We can then take the
+             * first derivative in order to find the biggest rectangle that will fit under the lines.
+             *
+             * Let a = w / sin(theta) and b = h / cos(theta).
+             *
+             * The line formed by intercepts a and b forms a right triangle with the axes, so the total area beneath it is .5ab.
+             * Given that we are trying to find the area of a rectangle beneath this line with dimensions x and y, we can equivalently
+             * say that the triangle's total area is .5ay + .5bx. Solving for y, we find that y = (ab - bx) / a. We can then plug
+             * this into the equation for the area of a rectangle, A = xy, to get A = x((ab - bx) / a). Taking the first derivative
+             * and solving for x, we find that x = a / 2. Doing the same for y reveals, likewise, that y = b / 2. Therefore, the 
+             * biggest rectangle has dimensions halfway between the intercepts that form the line. */
+
+            if (Double.IsInfinity(xmax) && Double.IsInfinity(ymax))
+                return new Size2D(Double.PositiveInfinity, Double.PositiveInfinity);
+
+            xmax = Double.IsInfinity(xmax) ? ymax : xmax;
+            ymax = Double.IsInfinity(ymax) ? xmax : ymax;
+
+            if (MathUtil.IsApproximatelyZero(xmax) || MathUtil.IsApproximatelyZero(ymax) || MathUtil.IsApproximatelyZero(transform.Determinant()))
+                return Size2D.Zero;
+            
+            var m11 = transform.M11;
+            var m21 = transform.M21;
+            var m12 = transform.M12;
+            var m22 = transform.M22;
+            
+            var w = 0.0;
+            var h = 0.0;
+
+            var xConstraintInterceptW = MathUtil.IsApproximatelyZero(m11) ? Double.NaN : Math.Abs(xmax / m11);
+            var xConstraintInterceptH = MathUtil.IsApproximatelyZero(m12) ? Double.NaN : Math.Abs(xmax / m12);
+            var yConstraintInterceptW = MathUtil.IsApproximatelyZero(m21) ? Double.NaN : Math.Abs(ymax / m21);
+            var yConstraintInterceptH = MathUtil.IsApproximatelyZero(m22) ? Double.NaN : Math.Abs(ymax / m22);
+
+            var xConstraintIsHorz = Double.IsNaN(xConstraintInterceptW);
+            var xConstraintIsVert = Double.IsNaN(xConstraintInterceptH);
+            var xConstraintIsHorzOrVert = xConstraintIsHorz || xConstraintIsVert;
+            
+            var yConstraintIsHorz = Double.IsNaN(yConstraintInterceptW);
+            var yConstraintIsVert = Double.IsNaN(yConstraintInterceptH);
+            var yConstraintIsHorzOrVert = yConstraintIsHorz || yConstraintIsVert;
+
+            /* Below, we handle special cases where one or both of the constraint lines is vertical or horizontal due to zeroes in
+             * the transformation matrix. This causes some of our intercepts to go undefined, which means their constraint lines
+             * don't constrain one (or either) of our dimensions. */
+
+            if (xConstraintIsHorzOrVert && yConstraintIsHorzOrVert)
+            {
+                w = xConstraintIsVert ? xConstraintInterceptW : yConstraintInterceptW;
+                h = xConstraintIsVert ? yConstraintInterceptH : xConstraintInterceptH;
+                return new Size2D(w, h);
+            }
+
+            if (xConstraintIsVert || yConstraintIsVert)
+            {
+                var slope = xConstraintIsVert ? m21 / m22 : m11 / m12;
+                w = xConstraintIsVert ? Math.Min(yConstraintInterceptW * 0.5, xConstraintInterceptW) : Math.Min(xConstraintInterceptW * 0.5, yConstraintInterceptW);
+                h = (xConstraintIsVert ? yConstraintInterceptH : xConstraintInterceptH) - (slope * w);
+                return new Size2D(w, h);
+            }
+
+            if (xConstraintIsHorz || yConstraintIsHorz)
+            {
+                var slope = xConstraintIsHorz ? m12 / m11 : m22 / m21;
+                h = xConstraintIsHorz ? Math.Min(yConstraintInterceptH * 0.5, xConstraintInterceptH) : Math.Min(xConstraintInterceptH * 0.5, yConstraintInterceptH);
+                w = (xConstraintIsHorz ? yConstraintInterceptW : xConstraintInterceptW) - (slope * h);
+                return new Size2D(w, h);
+            }
+            
+            /* If both constraint lines have a well-defined, non-zero slope, then the dimensions of the maximized rectangle lie halfway between the smaller line's
+             * intercepts, as we established above using the first derivative.
+             *
+             * This is only true if the lines do not cross - otherwise, there is no clear "smaller line." So what we have to do is draw a third line
+             * using the smallest intercept on both axes, then maximize beneath that instead. The result will actually be too small, since it doesn't correspond
+             * to either of our original constraint lines; to address this problem, we scale the resulting size upwards until it saturates our constraints. */
+             
+            w = Math.Min(xConstraintInterceptW, yConstraintInterceptW) * 0.5;
+            h = Math.Min(xConstraintInterceptH, yConstraintInterceptH) * 0.5;
+
+            var constraintXSlope = xConstraintInterceptH / xConstraintInterceptW;
+            var constraintYSlope = yConstraintInterceptH / xConstraintInterceptW;
+
+            var constraintLinesCross = !MathUtil.AreApproximatelyEqual(constraintXSlope, constraintYSlope);
+            if (constraintLinesCross)
+            {
+                var tl = new Vector2(0, 0);
+                var tr = new Vector2((Single)w, 0);
+                var bl = new Vector2(0, (Single)h);
+                var br = new Vector2((Single)w, (Single)h);
+
+                Vector2.Transform(ref tl, ref transform, out tl);
+                Vector2.Transform(ref tr, ref transform, out tr);
+                Vector2.Transform(ref bl, ref transform, out bl);
+                Vector2.Transform(ref br, ref transform, out br);
+
+                var minX = Math.Min(Math.Min(tl.X, tr.X), Math.Min(bl.X, br.X));
+                var maxX = Math.Max(Math.Max(tl.X, tr.X), Math.Max(bl.X, br.X));            
+                var minY = Math.Min(Math.Min(tl.Y, tr.Y), Math.Min(bl.Y, br.Y));
+                var maxY = Math.Max(Math.Max(tl.Y, tr.Y), Math.Max(bl.Y, br.Y));
+
+                var scale = Math.Min(xmax / (maxX - minX), ymax / (maxY - minY));
+                w *= scale;
+                h *= scale;
+            }
+
+            return new Size2D(w, h);
         }
 
         /// <summary>
