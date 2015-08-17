@@ -8,6 +8,186 @@ namespace TwistedLogik.Nucleus
     public static class MathUtil
     {
         /// <summary>
+        /// Gets a value indicating whether the specified <see cref="Single"/> value is zero to within a reasonable approximation.
+        /// </summary>
+        /// <param name="value">The value to evaluate.</param>
+        /// <returns><c>true</c> if the specified value is zero or approximately zero; otherwise, <c>false</c>.</returns>
+        public static Boolean IsZero(Single value)
+        {
+            return Math.Abs(value) < 1E-7;
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the specified <see cref="Single"/> value is non-zero to within a reasonable approximation.
+        /// </summary>
+        /// <param name="value">The value to evaluate.</param>
+        /// <returns><c>true</c> if the specified value is non-zero; otherwise, <c>false</c>.</returns>
+        public static Boolean IsNonZero(Single value)
+        {
+            return Math.Abs(value) >= 1E-7;
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether <paramref name="value1"/> is greater than <paramref name="value2"/> to within a reasonable approximation.
+        /// </summary>
+        /// <param name="value1">The first value to evaluate.</param>
+        /// <param name="value2">The second value to evaluate.</param>
+        /// <returns><c>true</c> if <paramref name="value1"/> is greater than <paramref name="value2"/>; otherwise, <c>false</c>.</returns>
+        public static Boolean IsApproximatelyGreaterThan(Single value1, Single value2)
+        {
+            if (value1 == value2)
+                return true;
+
+            return Math.Abs(value1 - value2) >= 1E-7 && value1 > value2;
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether <paramref name="value1"/> is greater than or equal to <paramref name="value2"/> to within a reasonable approximation.
+        /// </summary>
+        /// <param name="value1">The first value to evaluate.</param>
+        /// <param name="value2">The second value to evaluate.</param>
+        /// <returns><c>true</c> if <paramref name="value1"/> is greater than or equal to <paramref name="value2"/>; otherwise, <c>false</c>.</returns>
+        public static Boolean IsApproximatelyGreaterThanOrEqual(Single value1, Single value2)
+        {
+            if (value1 == value2)
+                return true;
+
+            return Math.Abs(value1 - value2) < 1E-7 || value1 > value2;
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether <paramref name="value1"/> is less than <paramref name="value2"/> to within a reasonable approximation.
+        /// </summary>
+        /// <param name="value1">The first value to evaluate.</param>
+        /// <param name="value2">The second value to evaluate.</param>
+        /// <returns><c>true</c> if <paramref name="value1"/> is less than <paramref name="value2"/>; otherwise, <c>false</c>.</returns>
+        public static Boolean IsApproximatelyLessThan(Single value1, Single value2)
+        {
+            if (value1 == value2)
+                return true;
+
+            return Math.Abs(value1 - value2) >= 1E-7 && value1 < value2;
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether <paramref name="value1"/> is less than or equal to <paramref name="value2"/> to within a reasonable approximation.
+        /// </summary>
+        /// <param name="value1">The first value to evaluate.</param>
+        /// <param name="value2">The second value to evaluate.</param>
+        /// <returns><c>true</c> if <paramref name="value1"/> is less than or equal to <paramref name="value2"/>; otherwise, <c>false</c>.</returns>
+        public static Boolean IsApproximatelyLessThanOrEqualTo(Single value1, Single value2)
+        {
+            if (value1 == value2)
+                return true;
+
+            return Math.Abs(value1 - value2) < 1E-7 || value1 < value2;
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether <paramref name="value1"/> is equal to <paramref name="value2"/> to within a reasonable approximation.
+        /// </summary>
+        /// <param name="value1">The first value to evaluate.</param>
+        /// <param name="value2">The second value to evaluate.</param>
+        /// <returns><c>true</c> if <paramref name="value1"/> is equal to <paramref name="value2"/>; otherwise, <c>false</c>.</returns>
+        public static Boolean AreApproximatelyEqual(Single value1, Single value2)
+        {
+            if (value1 == value2)
+                return true;
+
+            return Math.Abs(value1 - value2) < 1E-7;
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the specified <see cref="Double"/> value is zero to within a reasonable approximation.
+        /// </summary>
+        /// <param name="value">The value to evaluate.</param>
+        /// <returns><c>true</c> if the specified value is zero or approximately zero; otherwise, <c>false</c>.</returns>
+        public static Boolean IsZero(Double value)
+        {
+            return Math.Abs(value) < 1E-15;
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the specified <see cref="Double"/> value is non-zero to within a reasonable approximation.
+        /// </summary>
+        /// <param name="value">The value to evaluate.</param>
+        /// <returns><c>true</c> if the specified value is non-zero; otherwise, <c>false</c>.</returns>
+        public static Boolean IsNonZero(Double value)
+        {
+            return Math.Abs(value) >= 1E-15;
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether <paramref name="value1"/> is greater than <paramref name="value2"/> to within a reasonable approximation.
+        /// </summary>
+        /// <param name="value1">The first value to evaluate.</param>
+        /// <param name="value2">The second value to evaluate.</param>
+        /// <returns><c>true</c> if <paramref name="value1"/> is greater than <paramref name="value2"/>; otherwise, <c>false</c>.</returns>
+        public static Boolean IsApproximatelyGreaterThan(Double value1, Double value2)
+        {
+            if (value1 == value2)
+                return true;
+
+            return Math.Abs(value1 - value2) >= 1E-15 && value1 > value2;
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether <paramref name="value1"/> is greater than or equal to <paramref name="value2"/> to within a reasonable approximation.
+        /// </summary>
+        /// <param name="value1">The first value to evaluate.</param>
+        /// <param name="value2">The second value to evaluate.</param>
+        /// <returns><c>true</c> if <paramref name="value1"/> is greater than or equal to <paramref name="value2"/>; otherwise, <c>false</c>.</returns>
+        public static Boolean IsApproximatelyGreaterThanOrEqual(Double value1, Double value2)
+        {
+            if (value1 == value2)
+                return true;
+
+            return Math.Abs(value1 - value2) < 1E-15 || value1 > value2;
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether <paramref name="value1"/> is less than <paramref name="value2"/> to within a reasonable approximation.
+        /// </summary>
+        /// <param name="value1">The first value to evaluate.</param>
+        /// <param name="value2">The second value to evaluate.</param>
+        /// <returns><c>true</c> if <paramref name="value1"/> is less than <paramref name="value2"/>; otherwise, <c>false</c>.</returns>
+        public static Boolean IsApproximatelyLessThan(Double value1, Double value2)
+        {
+            if (value1 == value2)
+                return true;
+
+            return Math.Abs(value1 - value2) >= 1E-15 && value1 < value2;
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether <paramref name="value1"/> is less than or equal to <paramref name="value2"/> to within a reasonable approximation.
+        /// </summary>
+        /// <param name="value1">The first value to evaluate.</param>
+        /// <param name="value2">The second value to evaluate.</param>
+        /// <returns><c>true</c> if <paramref name="value1"/> is less than or equal to <paramref name="value2"/>; otherwise, <c>false</c>.</returns>
+        public static Boolean IsApproximatelyLessThanOrEqualTo(Double value1, Double value2)
+        {
+            if (value1 == value2)
+                return true;
+
+            return Math.Abs(value1 - value2) < 1E-15 || value1 < value2;
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether <paramref name="value1"/> is equal to <paramref name="value2"/> to within a reasonable approximation.
+        /// </summary>
+        /// <param name="value1">The first value to evaluate.</param>
+        /// <param name="value2">The second value to evaluate.</param>
+        /// <returns><c>true</c> if <paramref name="value1"/> is equal to <paramref name="value2"/>; otherwise, <c>false</c>.</returns>
+        public static Boolean AreApproximatelyEqual(Double value1, Double value2)
+        {
+            if (value1 == value2)
+                return true;
+            
+            return Math.Abs(value1 - value2) < 1E-15;
+        }        
+
+        /// <summary>
         /// Finds the next power of two that is higher than the specified value.
         /// </summary>
         /// <param name="k">The value to evaluate.</param>
