@@ -12,7 +12,7 @@ namespace TwistedLogik.Nucleus
         /// </summary>
         /// <param name="value">The value to evaluate.</param>
         /// <returns><c>true</c> if the specified value is zero or approximately zero; otherwise, <c>false</c>.</returns>
-        public static Boolean IsZero(Single value)
+        public static Boolean IsApproximatelyZero(Single value)
         {
             return Math.Abs(value) < 1E-7;
         }
@@ -22,7 +22,7 @@ namespace TwistedLogik.Nucleus
         /// </summary>
         /// <param name="value">The value to evaluate.</param>
         /// <returns><c>true</c> if the specified value is non-zero; otherwise, <c>false</c>.</returns>
-        public static Boolean IsNonZero(Single value)
+        public static Boolean IsApproximatelyNonZero(Single value)
         {
             return Math.Abs(value) >= 1E-7;
         }
@@ -102,7 +102,7 @@ namespace TwistedLogik.Nucleus
         /// </summary>
         /// <param name="value">The value to evaluate.</param>
         /// <returns><c>true</c> if the specified value is zero or approximately zero; otherwise, <c>false</c>.</returns>
-        public static Boolean IsZero(Double value)
+        public static Boolean IsApproximatelyZero(Double value)
         {
             return Math.Abs(value) < 1E-15;
         }
@@ -112,7 +112,7 @@ namespace TwistedLogik.Nucleus
         /// </summary>
         /// <param name="value">The value to evaluate.</param>
         /// <returns><c>true</c> if the specified value is non-zero; otherwise, <c>false</c>.</returns>
-        public static Boolean IsNonZero(Double value)
+        public static Boolean IsApproximatelyNonZero(Double value)
         {
             return Math.Abs(value) >= 1E-15;
         }
