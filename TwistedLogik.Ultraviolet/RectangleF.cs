@@ -332,6 +332,58 @@ namespace TwistedLogik.Ultraviolet
         }
 
         /// <summary>
+        /// Transforms the specified rectangle and retrieves the axis-aligned bounding box of the result.
+        /// </summary>
+        /// <param name="rectangle">The rectangle to transform.</param>
+        /// <param name="transform">The transform matrix.</param>
+        /// <returns>The axis-aligned bounding box of <paramref name="rectangle"/> after it has been transformed.</returns>
+        public static RectangleF TransformAxisAligned(RectangleF rectangle, Matrix transform)
+        {
+            var tl = new Vector2(rectangle.Left, rectangle.Top);
+            var tr = new Vector2(rectangle.Right, rectangle.Top);
+            var bl = new Vector2(rectangle.Left, rectangle.Bottom);
+            var br = new Vector2(rectangle.Right, rectangle.Bottom);
+
+            Vector2.Transform(ref tl, ref transform, out tl);
+            Vector2.Transform(ref tr, ref transform, out tr);
+            Vector2.Transform(ref bl, ref transform, out bl);
+            Vector2.Transform(ref br, ref transform, out br);
+
+            var minX = Math.Min(Math.Min(tl.X, tr.X), Math.Min(bl.X, br.X));
+            var maxX = Math.Max(Math.Max(tl.X, tr.X), Math.Max(bl.X, br.X));
+            var minY = Math.Min(Math.Min(tl.Y, tr.Y), Math.Min(bl.Y, br.Y));
+            var maxY = Math.Max(Math.Max(tl.Y, tr.Y), Math.Max(bl.Y, br.Y));
+
+            return new RectangleF(minX, minY, maxX - minX, maxY - minY);
+        }
+
+        /// <summary>
+        /// Transforms the specified rectangle and retrieves the axis-aligned bounding box of the result.
+        /// </summary>
+        /// <param name="rectangle">The rectangle to transform.</param>
+        /// <param name="transform">The transform matrix.</param>
+        /// <param name="result">The axis-aligned bounding box of <paramref name="rectangle"/> after it has been transformed.</param>
+        public static void TransformAxisAligned(ref RectangleF rectangle, ref Matrix transform, out RectangleF result)
+        {
+            var tl = new Vector2((Single)rectangle.Left, (Single)rectangle.Top);
+            var tr = new Vector2((Single)rectangle.Right, (Single)rectangle.Top);
+            var bl = new Vector2((Single)rectangle.Left, (Single)rectangle.Bottom);
+            var br = new Vector2((Single)rectangle.Right, (Single)rectangle.Bottom);
+
+            Vector2.Transform(ref tl, ref transform, out tl);
+            Vector2.Transform(ref tr, ref transform, out tr);
+            Vector2.Transform(ref bl, ref transform, out bl);
+            Vector2.Transform(ref br, ref transform, out br);
+
+            var minX = Math.Min(Math.Min(tl.X, tr.X), Math.Min(bl.X, br.X));
+            var maxX = Math.Max(Math.Max(tl.X, tr.X), Math.Max(bl.X, br.X));
+            var minY = Math.Min(Math.Min(tl.Y, tr.Y), Math.Min(bl.Y, br.Y));
+            var maxY = Math.Max(Math.Max(tl.Y, tr.Y), Math.Max(bl.Y, br.Y));
+
+            result = new RectangleF(minX, minY, maxX - minX, maxY - minY);
+        }
+
+        /// <summary>
         /// Converts the object to a human-readable string.
         /// </summary>
         /// <returns>A human-readable string that represents the object.</returns>

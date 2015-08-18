@@ -136,7 +136,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                     }
                     else
                     {
-                        yOffset = (space.Width - content.Width) / 2.0;
+                        yOffset = (space.Height - content.Height) / 2.0;
                     }
                     break;
 
