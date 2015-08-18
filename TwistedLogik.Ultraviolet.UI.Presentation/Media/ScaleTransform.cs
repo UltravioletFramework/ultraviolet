@@ -92,7 +92,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media
         /// </summary>
         private static void HandleScaleChanged(DependencyObject dobj, Single oldValue, Single newValue)
         {
-            ((ScaleTransform)dobj).UpdateValue();
+            var transform = (ScaleTransform)dobj;
+            transform.UpdateValue();
+            transform.InvalidateDependencyObject();
         }
 
         /// <summary>
@@ -100,7 +102,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media
         /// </summary>
         private static void HandleCenterChanged(DependencyObject dobj, Double oldValue, Double newValue)
         {
-            ((ScaleTransform)dobj).UpdateValue();
+            var transform = (ScaleTransform)dobj;
+            transform.UpdateValue();
+            transform.InvalidateDependencyObject();
         }
 
         /// <summary>

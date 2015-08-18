@@ -10,6 +10,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
     internal interface IDependencyPropertyValue
     {
         /// <summary>
+        /// Called when the property's value is forcibly invalidated.
+        /// </summary>
+        void HandleForcedInvalidation();
+
+        /// <summary>
         /// Called when the data source attached to the object which owns this value changes.
         /// </summary>
         /// <param name="dataSource">The new value of the <see cref="DependencyObject.DependencyDataSource"/> property.</param>

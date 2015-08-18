@@ -58,10 +58,20 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Update(UltravioletTime)"/>.</param>
         public void Digest(UltravioletTime time)
         {
+            foreach (var value in dependencyPropertyValuesOfTypeDependencyObject)
+            {
+                var dobj = (DependencyObject)value.Value.GetUntypedValue();
+                if (dobj.WasInvalidatedLastDigest)
+                {
+                    value.Value.HandleForcedInvalidation();
+                }
+            }
+
             for (int i = 0; i < digestedDependencyProperties.Count; i++)
             {
                 digestedDependencyProperties[i].Digest(time);
             }
+
             OnDigesting(time);
         }
 
@@ -264,6 +274,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             var wrapper = GetDependencyPropertyValue(dp, dp.PropertyType);
             wrapper.CoerceValue();
+        }
+
+        /// <summary>
+        /// Invalidates the value of this dependency object. During the next digest cycle, it will be
+        /// treated as if it has changed, even if it is the same instance.
+        /// </summary>
+        public void InvalidateDependencyObject()
+        {
+            invalidatedDigestCount1 = invalidatedDigestCount2;
+            invalidatedDigestCount2 = PresentationFoundation.Instance.DigestCycleID + 1;
         }
 
         /// <summary>
@@ -521,6 +541,30 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Gets a value indicating whether this dependency object was forcibly invalidated during the current digest.
+        /// </summary>
+        public virtual Boolean WasInvalidatedThisDigest
+        {
+            get
+            {
+                var digest = PresentationFoundation.Instance.DigestCycleID;
+                return digest > 0 && (digest == invalidatedDigestCount2);
+            }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether this dependency object was forcibly invalidated during the previous digest cycle.
+        /// </summary>
+        public virtual Boolean WasInvalidatedLastDigest
+        {
+            get
+            {
+                var digest = PresentationFoundation.Instance.DigestCycleID;
+                return digest > 0 && (digest == invalidatedDigestCount1 || digest == invalidatedDigestCount2);
+            }
+        }
+
+        /// <summary>
         /// Gets or sets the object's data source according to the context in which it was declared. Usually this
         /// will either be a view or a control's templated parent.
         /// </summary>
@@ -708,6 +752,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 var dpValueType = typeof(DependencyPropertyValue<>).MakeGenericType(type);
                 valueWrapper = (IDependencyPropertyValue)Activator.CreateInstance(dpValueType, this, dp);
                 dependencyPropertyValues[dp.ID] = valueWrapper;
+
+                if (typeof(DependencyObject).IsAssignableFrom(type))
+                {
+                    dependencyPropertyValuesOfTypeDependencyObject[dp.ID] = valueWrapper;
+                }
             }
             return valueWrapper;
         }
@@ -759,9 +808,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         // The list of values for this object's dependency properties.
         private readonly Dictionary<Int64, IDependencyPropertyValue> dependencyPropertyValues =
             new Dictionary<Int64, IDependencyPropertyValue>();
+        private readonly Dictionary<Int64, IDependencyPropertyValue> dependencyPropertyValuesOfTypeDependencyObject =
+            new Dictionary<Int64, IDependencyPropertyValue>();
 
         // The list of dependency properties which need to participate in the digest cycle.
         private readonly List<IDependencyPropertyValue> digestedDependencyProperties = 
             new List<IDependencyPropertyValue>();
+
+        // State values.
+        private Int64 invalidatedDigestCount1;
+        private Int64 invalidatedDigestCount2;
     }
 }

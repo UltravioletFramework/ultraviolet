@@ -44,6 +44,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             }
 
             /// <inheritdoc/>
+            public void HandleForcedInvalidation()
+            {
+                var value = GetValue();
+                metadata.HandleChanged(Owner, property, value, value);
+            }
+
+            /// <inheritdoc/>
             public void HandleDataSourceChanged(Object dataSource)
             {
                 if (cachedBoundValue != null)

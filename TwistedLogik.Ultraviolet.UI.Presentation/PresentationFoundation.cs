@@ -178,22 +178,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 compiledDataSourceWrappers.Add(dataSourceWrapperType.Name, dataSourceWrapperType);
             }
         }
-
-        /// <summary>
-        /// Updates the state of the Presentation Foundation.
-        /// </summary>
-        /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Update(UltravioletTime)"/>.</param>
-        public void Update(UltravioletTime time)
-        {
-            Contract.EnsureNotDisposed(this, Disposed);
-
-            PerformanceStats.BeginFrame();
-
-            ProcessStyleQueue();
-            ProcessMeasureQueue();
-            ProcessArrangeQueue();
-        }
-
+        
         /// <summary>
         /// Attempts to create an instance of the element with the specified name.
         /// </summary>
@@ -517,7 +502,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             }
             return obj;
         }
-
+        
         /// <summary>
         /// Removes the specified UI element from all of the Foundation's processing queues.
         /// </summary>
@@ -529,6 +514,22 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             StyleQueue.Remove(element);
             MeasureQueue.Remove(element);
             ArrangeQueue.Remove(element);
+        }
+
+        /// <summary>
+        /// Gets the singleton instance of the Presentation Foundation.
+        /// </summary>
+        internal static PresentationFoundation Instance
+        {
+            get { return instance; }
+        }
+
+        /// <summary>
+        /// Gets the identifier of the current digest cycle.
+        /// </summary>
+        internal Int64 DigestCycleID
+        {
+            get { return digestCycleID; }
         }
 
         /// <summary>
@@ -656,6 +657,30 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 throw new InvalidOperationException(PresentationStrings.InvalidUserControlType.Format(type.Name));
 
             return type;
+        }
+
+        /// <summary>
+        /// Called when the Ultraviolet context is about to update its subsystems.
+        /// </summary>
+        /// <param name="uv">The Ultraviolet context.</param>
+        /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Update(UltravioletTime)"/>.</param>
+        private void OnUpdatingSubsystems(UltravioletContext uv, UltravioletTime time)
+        {
+            digestCycleID++;
+        }
+
+        /// <summary>
+        /// Called when the Ultraviolet UI subsystem is being updated.
+        /// </summary>
+        /// <param name="subsystem">The Ultraviolet subsystem.</param>
+        /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Update(UltravioletTime)"/>.</param>
+        private void OnUpdatingUI(IUltravioletSubsystem subsystem, UltravioletTime time)
+        {
+            PerformanceStats.BeginFrame();
+
+            ProcessStyleQueue();
+            ProcessMeasureQueue();
+            ProcessArrangeQueue();
         }
 
         /// <summary>
@@ -974,6 +999,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 ComponentTemplates.SetDefault(type, template);
             }
         }
+        
+        // The singleton instance of the Ultraviolet Presentation Foundation.
+        private static readonly UltravioletSingleton<PresentationFoundation> instance =
+            new UltravioletSingleton<PresentationFoundation>((uv) =>
+            {
+                var instance = new PresentationFoundation(uv);
+                uv.UpdatingSubsystems += instance.OnUpdatingSubsystems;
+                uv.GetUI().Updating += instance.OnUpdatingUI;
+                return instance;
+            });
 
         // Performance stats.
         private readonly PresentationFoundationPerformanceStats performanceStats = 
@@ -1006,5 +1041,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         // The compiler used to compile the game's binding expressions.
         private const String CompiledExpressionsAssemblyName = "TwistedLogik.Ultraviolet.UI.Presentation.CompiledExpressions.dll";
         private IBindingExpressionCompiler bindingExpressionCompiler;
+
+        // The identifier of the current digest cycle.
+        private Int64 digestCycleID;
     }
 }

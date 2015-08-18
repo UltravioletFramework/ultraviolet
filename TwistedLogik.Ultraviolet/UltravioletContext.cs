@@ -578,6 +578,11 @@ namespace TwistedLogik.Ultraviolet
         public event UltravioletContextDrawEventHandler Drawing;
 
         /// <summary>
+        /// Occurs when the context is about to update the state of its subsystems.
+        /// </summary>
+        public event UltravioletContextUpdateEventHandler UpdatingSubsystems;
+
+        /// <summary>
         /// Occurs when the context is updating the application's state.
         /// </summary>
         public event UltravioletContextUpdateEventHandler Updating;
@@ -742,9 +747,22 @@ namespace TwistedLogik.Ultraviolet
         }
 
         /// <summary>
+        /// Raises the <see cref="UpdatingSubsystems"/> event.
+        /// </summary>
+        /// <param name="time">Time elapsed since the last call to <see cref="Update(UltravioletTime)"/>.</param>
+        protected virtual void OnUpdatingSubsystems(UltravioletTime time)
+        {
+            var temp = UpdatingSubsystems;
+            if (temp != null)
+            {
+                temp(this, time);
+            }
+        }
+
+        /// <summary>
         /// Raises the <see cref="Updating"/> event.
         /// </summary>
-        /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Update(UltravioletTime)"/>.</param>
+        /// <param name="time">Time elapsed since the last call to <see cref="Update(UltravioletTime)"/>.</param>
         protected virtual void OnUpdating(UltravioletTime time)
         {
             var temp = Updating;

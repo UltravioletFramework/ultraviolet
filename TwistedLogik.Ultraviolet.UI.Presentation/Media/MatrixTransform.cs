@@ -76,6 +76,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media
             }
 
             transform.isIdentity = Matrix.Identity.Equals(newValue);
+            transform.InvalidateDependencyObject();
         }
 
         // The matrix's cached inverse.

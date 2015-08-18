@@ -92,7 +92,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media
         /// </summary>
         private static void HandleAngleChanged(DependencyObject dobj, Single oldValue, Single newValue)
         {
-            ((SkewTransform)dobj).UpdateValue();
+            var transform = (SkewTransform)dobj;
+            transform.UpdateValue();
+            transform.InvalidateDependencyObject();
         }
 
         /// <summary>
@@ -100,7 +102,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media
         /// </summary>
         private static void HandleCenterChanged(DependencyObject dobj, Double oldValue, Double newValue)
         {
-            ((SkewTransform)dobj).UpdateValue();
+            var transform = (SkewTransform)dobj;
+            transform.UpdateValue();
+            transform.InvalidateDependencyObject();
         }
 
         /// <summary>

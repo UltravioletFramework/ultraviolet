@@ -112,6 +112,34 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media
             }
         }
 
+        /// <inheritdoc/>
+        public override Boolean WasInvalidatedThisDigest
+        {
+            get
+            {
+                foreach (var child in Children)
+                {
+                    if (child.WasInvalidatedThisDigest)
+                        return true;
+                }
+                return false;
+            }
+        }
+
+        /// <inheritdoc/>
+        public override Boolean WasInvalidatedLastDigest
+        {
+            get
+            {
+                foreach (var child in Children)
+                {
+                    if (child.WasInvalidatedLastDigest)
+                        return true;
+                }
+                return false;
+            }
+        }
+
         /// <summary>
         /// Gets or sets the transform group's list of child transformations.
         /// </summary>

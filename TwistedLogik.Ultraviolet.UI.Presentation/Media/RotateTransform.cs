@@ -33,7 +33,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media
         public Single Angle
         {
             get { return GetValue<Single>(AngleProperty); }
-            set { SetValue<Single>(AngleProperty, value); }
+            set { SetValue(AngleProperty, value); }
         }
 
         /// <summary>
@@ -42,7 +42,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media
         public Double CenterX
         {
             get { return GetValue<Double>(CenterXProperty); }
-            set { SetValue<Double>(CenterXProperty, value); }
+            set { SetValue(CenterXProperty, value); }
         }
 
         /// <summary>
@@ -51,7 +51,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media
         public Double CenterY
         {
             get { return GetValue<Double>(CenterYProperty); }
-            set { SetValue<Double>(CenterYProperty, value); }
+            set { SetValue(CenterYProperty, value); }
         }
 
         /// <summary>
@@ -77,7 +77,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media
         /// </summary>
         private static void HandleAngleChanged(DependencyObject dobj, Single oldValue, Single newValue)
         {
-            ((RotateTransform)dobj).UpdateValue();
+            var transform = (RotateTransform)dobj;
+            transform.UpdateValue();
+            transform.InvalidateDependencyObject();
         }
 
         /// <summary>
@@ -85,7 +87,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media
         /// </summary>
         private static void HandleCenterChanged(DependencyObject dobj, Double oldValue, Double newValue)
         {
-            ((RotateTransform)dobj).UpdateValue();
+            var transform = (RotateTransform)dobj;
+            transform.UpdateValue();
+            transform.InvalidateDependencyObject();
         }
 
         /// <summary>

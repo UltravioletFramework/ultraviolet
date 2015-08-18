@@ -116,6 +116,8 @@ namespace TwistedLogik.Ultraviolet.OpenGL
 
             ProcessMessages();
 
+            OnUpdatingSubsystems(time);
+
             platform.Update(time);
             content.Update(time);
             graphics.Update(time);

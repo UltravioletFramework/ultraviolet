@@ -19,7 +19,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media
         {
             Contract.Require(ancestor, "ancestor");
 
-            return ancestor.MatrixTransformToDescendantInternal(this, true);
+            return ancestor.MatrixTransformToDescendantInternal(this, false);
         }
 
         /// <summary>
@@ -32,7 +32,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media
         {
             Contract.Require(descendant, "descendant");
 
-            return MatrixTransformToDescendantInternal(descendant, false);
+            return MatrixTransformToDescendantInternal(descendant, true);
         }
 
         /// <summary>
@@ -273,7 +273,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media
                 throw new ArgumentException(message, paramName);
             }
 
-            return invert ? mtxFinal : Matrix.Invert(mtxFinal);
+            if (invert)
+            {
+                if (Matrix.TryInvert(mtxFinal, out mtxFinal))
+                {
+                    return mtxFinal;
+                }
+                return Matrix.Identity;
+            }
+            return mtxFinal;
         }
 
         // State values.
