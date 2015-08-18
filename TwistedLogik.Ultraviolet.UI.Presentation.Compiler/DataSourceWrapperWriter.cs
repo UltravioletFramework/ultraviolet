@@ -359,7 +359,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
                 }
                 else
                 {
-                    WriteLine("get {{ return ({0}){1}; }}", GetCSharpTypeName(expressionInfo.Type), getexp);
+                    WriteLine("get {{ return ({0})({1}); }}", GetCSharpTypeName(expressionInfo.Type), getexp);
                 }
 
                 expressionInfo.GetterLineEnd = LineCount - 1;
