@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Linq;
@@ -60,10 +61,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
             var setterEliminationPassResult = 
                 PerformSetterEliminationCompilationPass(compiler, dataSourceWrapperInfos, referencedAssemblies);
 
-            var nullableFixupResult =
-                PerformNullableFixupCompilationPass(compiler, dataSourceWrapperInfos, referencedAssemblies, setterEliminationPassResult);
+            var conversionFixupPassResult =
+                PerformConversionFixupCompilationPass(compiler, dataSourceWrapperInfos, referencedAssemblies, setterEliminationPassResult);
 
-            var finalPassResult = PerformFinalCompilationPass(compiler, output, dataSourceWrapperInfos, referencedAssemblies, nullableFixupResult);
+            var finalPassResult = PerformFinalCompilationPass(compiler, output, dataSourceWrapperInfos, referencedAssemblies, conversionFixupPassResult);
             if (finalPassResult.Errors.Count > 0)
             {
                 WriteErrorsToWorkingDirectory(finalPassResult);
@@ -128,9 +129,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
         }
 
         /// <summary>
-        /// Performs the third compilation pass, which attempts to fix any errors caused by nullable types that need to be cast to non-nullable types.
+        /// Performs the third compilation pass, which attempts to fix any errors caused by non-implicit conversions and nullable types that need to be cast to non-nullable types.
         /// </summary>
-        private static CompilerResults PerformNullableFixupCompilationPass(CSharpCodeProvider compiler, IEnumerable<DataSourceWrapperInfo> models, ConcurrentBag<String> referencedAssemblies, CompilerResults setterEliminationResult)
+        private static CompilerResults PerformConversionFixupCompilationPass(CSharpCodeProvider compiler, IEnumerable<DataSourceWrapperInfo> models, ConcurrentBag<String> referencedAssemblies, CompilerResults setterEliminationResult)
         {
             var errors = setterEliminationResult.Errors.Cast<CompilerError>().ToList();
 
@@ -153,6 +154,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
 
                     expression.GenerateSetter = !setterErrors.Any() || (setterIsNullable && setterErrors.All(x => fixableErrorNumbers.Contains(x.ErrorNumber)));
                     expression.NullableFixup  = setterIsNullable;
+
+                    if (setterErrors.Count == 1 && setterErrors.Single().ErrorNumber == "CS0266")
+                    {
+                        var error = setterErrors.Single();
+                        var match = regexCS0266.Match(error.ErrorText);
+                        expression.CS0266SourceType = match.Groups["source"].Value;
+                        expression.CS0266TargetType = match.Groups["target"].Value;
+                        expression.GenerateSetter = true;
+                    }
                 }
 
                 WriteSourceCodeForDataSourceWrapper(model);
@@ -656,5 +666,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
 
         // The name of the temporary directory in which the compiler operates.
         private const String WorkingDirectory = "UV_CompiledExpressions";
+
+        // Regular expressions for error parsing
+        private static readonly Regex regexCS0266 = new Regex(@"Cannot implicitly convert type \'(?<source>\S+)\' to \'(?<target>\S+)\'\. An explicit conversion exists \(are you missing a cast\?\)", 
+            RegexOptions.Compiled | RegexOptions.Singleline);
     }
 }

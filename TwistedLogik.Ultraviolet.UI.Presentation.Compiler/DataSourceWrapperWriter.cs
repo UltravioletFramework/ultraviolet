@@ -370,33 +370,36 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
 
             if (expressionInfo.GenerateSetter)
             {
+                var targetTypeName = expressionInfo.CS0266TargetType ?? GetCSharpTypeName(expressionInfo.Type);
+
                 expressionInfo.SetterLineStart = LineCount;
                 if (isDependencyProperty)
                 {
                     if (expressionInfo.NullableFixup)
                     {
-                        WriteLine("set {{ SetValue<{0}>({1}.{2}, value ?? default({0})); }}", 
+                        WriteLine("set {{ SetValue<{0}>({1}.{2}, ({3})(value ?? default({0}))); }}", 
                             GetCSharpTypeName(dprop.PropertyType), 
                             GetCSharpTypeName(dprop.OwnerType),
-                            dpropField.Name);
+                            dpropField.Name, targetTypeName);
                     }
                     else
                     {
-                        WriteLine("set {{ SetValue<{0}>({1}.{2}, value); }}", 
+                        WriteLine("set {{ SetValue<{0}>({1}.{2}, ({3})(value)); }}", 
                             GetCSharpTypeName(dprop.PropertyType),
                             GetCSharpTypeName(dprop.OwnerType), 
-                            dpropField.Name);
+                            dpropField.Name, targetTypeName);
                     }
                 }
                 else
                 {
                     if (expressionInfo.NullableFixup)
                     {
-                        WriteLine("set {{ {0} = value ?? default({1}); }}", expMemberPath, GetCSharpTypeName(Nullable.GetUnderlyingType(expressionInfo.Type)));
+                        WriteLine("set {{ {0} = ({2})(value ?? default({1})); }}",
+                            expMemberPath, GetCSharpTypeName(Nullable.GetUnderlyingType(expressionInfo.Type)), targetTypeName);
                     }
                     else
                     {
-                        WriteLine("set {{ {0} = value; }}", expMemberPath);
+                        WriteLine("set {{ {0} = ({1})(value); }}", expMemberPath, targetTypeName);
                     }
                 }
 

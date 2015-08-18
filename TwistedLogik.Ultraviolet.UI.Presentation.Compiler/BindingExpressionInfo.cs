@@ -97,6 +97,24 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
             set { setterLineEnd = value; }
         }
 
+        /// <summary>
+        /// Gets or sets the source type identified by the CS0266 error that was raised for this expression, if this expression raised such an error.
+        /// </summary>
+        public String CS0266SourceType
+        {
+            get { return cs0266SourceType; }
+            set { cs0266SourceType = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the target type identified by the CS0266 error that was raised for this expression, if this expression raised such an error.
+        /// </summary>
+        public String CS0266TargetType
+        {
+            get { return cs0266TargetType; }
+            set { cs0266TargetType = value; }
+        }
+
         // Property values.
         private readonly String expression;
         private readonly Type type;
@@ -107,5 +125,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
         private Int32 getterLineEnd;
         private Int32 setterLineStart;
         private Int32 setterLineEnd;
+        private String cs0266SourceType;
+        private String cs0266TargetType;
     }
 }
