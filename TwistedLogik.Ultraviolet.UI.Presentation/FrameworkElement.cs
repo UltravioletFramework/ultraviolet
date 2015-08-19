@@ -432,7 +432,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <inheritdoc/>
         internal override Boolean HasLayoutTransform
         {
-            get { return !Transform.IsIdentityTransform(LayoutTransform); }
+            get { return isLayoutTransformed; }
         }
 
         /// <summary>
@@ -468,7 +468,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <inheritdoc/>
         protected override Matrix GetTransformMatrix()
         {
-            return (LayoutTransform ?? Transform.Identity).Value * base.GetTransformMatrix();
+            if (isLayoutTransformed)
+            {
+                return layoutTransformUsedDuringLayout * base.GetTransformMatrix();
+            }
+            return base.GetTransformMatrix();
         }
 
         /// <inheritdoc/>
@@ -512,9 +516,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var availableHeightSansMargin = Math.Max(0, availableSize.Height - yMargin);
             var availableSizeSansMargin = new Size2D(availableWidthSansMargin, availableHeightSansMargin);
 
-            var hasLayoutTransform = !Transform.IsIdentityTransform(LayoutTransform);
-            if (hasLayoutTransform)
+            isLayoutTransformed = !Transform.IsIdentityTransform(LayoutTransform);
+            if (isLayoutTransformed)
             {
+                layoutTransformUsedDuringLayout = LayoutTransform.Value;
+
                 availableSizeSansMargin = CalculateMaximumAvailableSizeBeforeLayoutTransform(
                     availableWidthSansMargin, availableHeightSansMargin, LayoutTransform.Value);
             }
@@ -534,14 +540,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             measuredHeight = Math.Max(minHeight, Math.Min(maxHeight, measuredHeight));
             measuredSize = new Size2D(measuredWidth, measuredHeight);
             
-            untransformedDesiredSize = measuredSize;
+            layoutTransformDesiredSizeBeforeTransform = measuredSize;
 
-            if (hasLayoutTransform)
+            if (isLayoutTransformed)
             {
                 var transform = LayoutTransform.Value;
                 RectangleD area = new RectangleD(0, 0, measuredWidth, measuredHeight);
                 RectangleD.TransformAxisAligned(ref area, ref transform, out area);
-                measuredSize = new Size2D(area.Width, area.Height);
+                measuredSize = new Size2D(area.Width, area.Height);                
             }
 
             var finalWidth = Math.Max(0, xMargin + measuredSize.Width);
@@ -560,21 +566,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var desiredWidth = DesiredSize.Width;
             var desiredHeight = DesiredSize.Height;
 
-            var hasLayoutTransform = !Transform.IsIdentityTransform(LayoutTransform);
-            if (hasLayoutTransform)
+            if (isLayoutTransformed)
             {
-                desiredWidth = untransformedDesiredSize.Width;
-                desiredHeight = untransformedDesiredSize.Height;
-
-                var maximumAvailableArea = CalculateMaximumAvailableSizeBeforeLayoutTransform(
-                    finalRectSansMargins.Width, finalRectSansMargins.Height, LayoutTransform.Value);
-
-                if (MathUtil.IsApproximatelyGreaterThanOrEqual(maximumAvailableArea.Width, desiredWidth) &&
-                    MathUtil.IsApproximatelyGreaterThanOrEqual(maximumAvailableArea.Height, desiredHeight))
-                {
-                    desiredWidth = maximumAvailableArea.Width;
-                    desiredHeight = maximumAvailableArea.Height;
-                }
+                desiredWidth = layoutTransformDesiredSizeBeforeTransform.Width;
+                desiredHeight = layoutTransformDesiredSizeBeforeTransform.Height;                
             }
 
             var fill   = (options & ArrangeOptions.Fill) == ArrangeOptions.Fill;
@@ -604,21 +599,20 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var xOffset = 0.0;
             var yOffset = 0.0;
 
-            if (hasLayoutTransform)
+            if (isLayoutTransformed)
             {
-                var transform = LayoutTransform.Value;
                 RectangleD area = new RectangleD(0, 0, usedWidth, usedHeight);
-                RectangleD.TransformAxisAligned(ref area, ref transform, out area);
+                RectangleD.TransformAxisAligned(ref area, ref layoutTransformUsedDuringLayout, out area);
                 usedSize = new Size2D(area.Width, area.Height);
 
-                xOffset = -area.X;
-                yOffset = -area.Y;
+                xOffset -= area.X;
+                yOffset -= area.Y;
             }
 
             xOffset += margin.Left + LayoutUtil.PerformHorizontalAlignment(finalRectSansMargins.Size, usedSize, fill ? HorizontalAlignment.Left : hAlign);
             yOffset += margin.Top + LayoutUtil.PerformVerticalAlignment(finalRectSansMargins.Size, usedSize, fill ? VerticalAlignment.Top : vAlign);
 
-            RenderOffset = new Point2D(PerformLayoutRounding(xOffset), PerformLayoutRounding(yOffset));
+            RenderOffset = PerformLayoutRounding(new Point2D(xOffset, yOffset));
 
             return untransformedUsedSize;
         }
@@ -928,8 +922,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         private Boolean isLoaded;
 
         // State values.
-        private Size2D untransformedDesiredSize;
         private Int32 descendantsWithLayoutTransforms;
+        private Matrix layoutTransformUsedDuringLayout;
+        private Size2D layoutTransformDesiredSizeBeforeTransform;
+        private Boolean isLayoutTransformed;
         private Boolean isInitializing;
     }
 }
