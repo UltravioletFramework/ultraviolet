@@ -282,6 +282,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         public void InvalidateDependencyObject()
         {
+            var digestCycleID = PresentationFoundation.Instance.DigestCycleID;
+            if (digestCycleID == invalidatedDigestCount1 || digestCycleID == invalidatedDigestCount2)
+                return;
+
             invalidatedDigestCount1 = invalidatedDigestCount2;
             invalidatedDigestCount2 = PresentationFoundation.Instance.DigestCycleID + 1;
         }
