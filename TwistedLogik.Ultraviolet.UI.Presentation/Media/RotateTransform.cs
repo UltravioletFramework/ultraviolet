@@ -99,7 +99,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media
         {
             var centerX = (Single)CenterX;
             var centerY = (Single)CenterY;
-            var radians = Radians.FromDegrees((Single)Angle);
+
+            var degrees = MathUtil.IsApproximatelyZero(Angle % 360) ? 0f : Angle;
+            var radians = Radians.FromDegrees(degrees);
 
             var hasCenter = (centerX != 0 || centerY != 0);
             if (hasCenter)

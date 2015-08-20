@@ -78,6 +78,25 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Pushes a transform onto the context.
+        /// </summary>
+        public void PushTransform()
+        {
+            transforms++;
+        }
+
+        /// <summary>
+        /// Pops a transform off of the context.
+        /// </summary>
+        public void PopTransform()
+        {
+            if (transforms == 0)
+                throw new InvalidOperationException();
+
+            transforms--;
+        }
+
+        /// <summary>
         /// Pushes an opacity value onto the render state stack.
         /// </summary>
         /// <param name="opacity">The opacity value to push onto the stack.</param>
@@ -176,6 +195,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Gets a value indicating whether the drawing context is currently under the effect of a transform.
+        /// </summary>
+        public Boolean IsTransformed
+        {
+            get { return transforms > 0; }
+        }
+
+        /// <summary>
         /// Gets the current opacity.
         /// </summary>
         public Single Opacity
@@ -199,5 +226,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         private readonly Stack<OpacityState> opacityStack = new Stack<OpacityState>(32);
         private readonly Stack<ClipState> clipStack = new Stack<ClipState>(32);
         private Rectangle? currentStencil;
+        private Int32 transforms;
     }
 }

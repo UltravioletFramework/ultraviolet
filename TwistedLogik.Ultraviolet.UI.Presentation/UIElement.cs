@@ -171,6 +171,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             {
                 dc.PushOpacity(Opacity);
 
+                var hasNonIdentityTransform = HasNonIdentityTransform;
+                if (hasNonIdentityTransform)
+                {
+                    dc.PushTransform();
+                }
+
                 var state = dc.SpriteBatch.GetCurrentState();
                 var flush = false;
 
@@ -218,6 +224,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 {
                     dc.End();
                     dc.Begin(SpriteSortMode.Deferred, null, state.TransformMatrix);
+                }
+
+                if (hasNonIdentityTransform)
+                {
+                    dc.PopTransform();
                 }
 
                 dc.PopOpacity();
@@ -2078,14 +2089,24 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 var imageAreaRel = area ?? new RectangleD(0, 0, RenderSize.Width, RenderSize.Height);
                 var imageAreaAbs = imageAreaRel + AbsolutePosition;
                 var imageAreaPix = (RectangleF)Display.DipsToPixels(imageAreaAbs);
-
+                
                 var origin = new Vector2(
                     imageAreaPix.Width / 2f,
                     imageAreaPix.Height / 2f);
-
-                var position = new Vector2(
-                    imageAreaPix.X + (imageAreaPix.Width / 2f),
-                    imageAreaPix.Y + (imageAreaPix.Height / 2f));
+                
+                Vector2 position;
+                if (dc.IsTransformed)
+                {
+                    position = new Vector2(
+                        imageAreaPix.X + (imageAreaPix.Width / 2f),
+                        imageAreaPix.Y + (imageAreaPix.Height / 2f));
+                }
+                else
+                {
+                    position = new Vector2(
+                        (Single)Math.Floor(imageAreaPix.X) + (imageAreaPix.Width / 2f),
+                        (Single)Math.Floor(imageAreaPix.Y) + (imageAreaPix.Height / 2f));
+                }
 
                 dc.SpriteBatch.DrawImage(imageResource, position, imageAreaPix.Width, imageAreaPix.Height,
                     colorPlusOpacity, 0f, origin, SpriteEffects.None, 0f);
@@ -2119,9 +2140,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 imageAreaPix.Width / 2,
                 imageAreaPix.Height / 2);
 
-            var position = new Vector2(
-                imageAreaPix.X + (imageAreaPix.Width / 2),
-                imageAreaPix.Y + (imageAreaPix.Height / 2));
+            Vector2 position;
+            if (dc.IsTransformed)
+            {
+                position = new Vector2(
+                    imageAreaPix.X + (imageAreaPix.Width / 2f),
+                    imageAreaPix.Y + (imageAreaPix.Height / 2f));
+            }
+            else
+            {
+                position = new Vector2(
+                    (Single)Math.Floor(imageAreaPix.X) + (imageAreaPix.Width / 2f),
+                    (Single)Math.Floor(imageAreaPix.Y) + (imageAreaPix.Height / 2f));
+            }
 
             dc.SpriteBatch.DrawImage(imageResource, position, imageAreaPix.Width, imageAreaPix.Height,
                 colorPlusOpacity, 0f, origin, SpriteEffects.None, 0f);
