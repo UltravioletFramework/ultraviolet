@@ -60,7 +60,7 @@ namespace TwistedLogik.Ultraviolet.Testing
         /// <returns>The test application that was created.</returns>
         protected static IUltravioletTestApplication GivenAThrowawayUltravioletApplication()
         {
-            return new UltravioletTestApplication(null);
+            return new UltravioletTestApplication();
         }
 
         /// <summary>
@@ -70,7 +70,7 @@ namespace TwistedLogik.Ultraviolet.Testing
         /// <returns>The test application that was created.</returns>
         protected static IUltravioletTestApplication GivenAThrowawayUltravioletApplicationWithNoWindow()
         {
-            return new UltravioletTestApplication(null, true);
+            return new UltravioletTestApplication(true);
         }
 
         /// <summary>
@@ -81,21 +81,8 @@ namespace TwistedLogik.Ultraviolet.Testing
         {
             if (application != null)
                 throw new InvalidOperationException("An application has already been created.");
-
-#if DEBUG
-            /* NOTE: We only allow render-to-screen if we're built in DEBUG mode, BUT
-             * there is NOT a debugger currently attached. Having an attached debugger
-             * causes some kind of issue that prevents the application window from opening,
-             * which defeats the purpose of visual debugging. */
-            var rtsAttribute = default(RenderToScreenAttribute);
-            if (!Debugger.IsAttached)
-            {
-                rtsAttribute = GetRenderToScreenAttribute();
-            }
-            application = new UltravioletTestApplication(rtsAttribute);
-#else
-            application = new UltravioletTestApplication(null);
-#endif
+            
+            application = new UltravioletTestApplication();
 
             return application;
         }
@@ -109,7 +96,7 @@ namespace TwistedLogik.Ultraviolet.Testing
             if (application != null)
                 throw new InvalidOperationException("An application has already been created.");
 
-            application = new UltravioletTestApplication(null, true);
+            application = new UltravioletTestApplication(true);
 
             return application;
         }
@@ -122,19 +109,6 @@ namespace TwistedLogik.Ultraviolet.Testing
         protected BitmapResult TheResultingImage(Bitmap bitmap)
         {
             return new BitmapResult(bitmap);
-        }
-
-        /// <summary>
-        /// Gets the test class' <see cref="RenderToScreenAttribute"/>, if it is annotated with one.
-        /// </summary>
-        /// <returns>The instance of <see cref="RenderToScreenAttribute"/> associated with the test class,
-        /// or <c>null</c> if the test class is not annotated with the attribute.</returns>
-        private RenderToScreenAttribute GetRenderToScreenAttribute()
-        {
-            var type = GetType();
-            var attr = type.GetCustomAttributes(typeof(RenderToScreenAttribute), true);
-
-            return (RenderToScreenAttribute)attr.SingleOrDefault();
         }
 
         // State values.

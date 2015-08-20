@@ -60,7 +60,6 @@
     <Compile Include="Point2DResult.cs" />
     <Compile Include="Point2FResult.cs" />
     <Compile Include="RectangleDResult.cs" />
-    <Compile Include="RenderToScreenAttribute.cs" />
     <Compile Include="Size2DResult.cs" />
     <Compile Include="Point2Result.cs" />
     <Compile Include="Size3DResult.cs" />

@@ -19,14 +19,12 @@ namespace TwistedLogik.Ultraviolet.Testing
         /// <summary>
         /// Initializes a new instance of the UltravioletTestApplication class.
         /// </summary>
-        /// <param name="rtsAttribute">The <see cref="RenderToScreenAttribute"/> attached to the current test class.</param>
         /// <param name="headless">A value indicating whether to create a headless context.</param>
-        public UltravioletTestApplication(RenderToScreenAttribute rtsAttribute, Boolean headless = false)
+        public UltravioletTestApplication(Boolean headless = false)
             : base("TwistedLogik", "Ultraviolet Unit Tests")
         {
             PreserveApplicationSettings = false;
-
-            this.rtsAttribute = rtsAttribute;
+            
             this.headless = headless;
         }
 
@@ -79,20 +77,10 @@ namespace TwistedLogik.Ultraviolet.Testing
             if (headless)
                 throw new InvalidOperationException("Cannot render a headless window.");
 
-            if (rtsAttribute != null)
-            {
-                this.shouldExit = () => Ultraviolet.GetInput().GetKeyboard().IsKeyPressed(Key.Escape);
-            }
-            else
-            {
-                this.shouldExit = () => true;
-            }
+            this.shouldExit = () => true;
 
             this.renderer = renderer;
             this.Run();
-
-            if (rtsAttribute != null)
-                Assert.Inconclusive("Test was rendered to the screen for visual debugging.");
 
             return bmp;
         }
@@ -152,14 +140,7 @@ namespace TwistedLogik.Ultraviolet.Testing
             {
                 initializer(Ultraviolet);
             }
-
-            if (rtsAttribute != null && rtsAttribute.LaunchDebugger)
-            {
-                if (Debugger.Launch() && Debugger.IsAttached)
-                {
-                    Debugger.Break();
-                }
-            }
+            
             base.OnInitialized();
         }
 
@@ -212,10 +193,7 @@ namespace TwistedLogik.Ultraviolet.Testing
         {
             if (framesToSkip == 0)
             {
-                if (rtsAttribute == null)
-                {
-                    Ultraviolet.GetGraphics().SetRenderTarget(rtarget);
-                }
+                Ultraviolet.GetGraphics().SetRenderTarget(rtarget);
                 Ultraviolet.GetGraphics().Clear(Color.Black);
 
                 if (renderer != null)
@@ -223,11 +201,8 @@ namespace TwistedLogik.Ultraviolet.Testing
                     renderer(Ultraviolet);
                 }
 
-                if (rtsAttribute == null)
-                {
-                    Ultraviolet.GetGraphics().SetRenderTarget(null);
-                    bmp = ConvertRenderTargetToBitmap(rtarget);
-                }
+                Ultraviolet.GetGraphics().SetRenderTarget(null);
+                bmp = ConvertRenderTargetToBitmap(rtarget);
             }
             else
             {
@@ -260,7 +235,6 @@ namespace TwistedLogik.Ultraviolet.Testing
         }
 
         // State values.
-        private readonly RenderToScreenAttribute rtsAttribute;
         private readonly Boolean headless;
         private Boolean configureUPF;
         private String audioSubsystem;
