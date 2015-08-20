@@ -708,7 +708,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
         /// <summary>
         /// When overridden in a derived class, draws the element using the 
-        /// specified <see cref="SpriteBatch"/> for a <see cref="FrameworkElement"/> derived class.
+        /// specified <see cref="Graphics.Graphics2D.SpriteBatch"/> for a <see cref="FrameworkElement"/> derived class.
         /// </summary>
         /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Draw(UltravioletTime)"/>.</param>
         /// <param name="dc">The drawing context that describes the render state of the layout.</param>
