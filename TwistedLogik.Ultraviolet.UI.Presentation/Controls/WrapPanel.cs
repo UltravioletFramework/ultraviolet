@@ -74,7 +74,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <returns><c>true</c> if the specified elements are in the same layout row; otherwise, <c>false</c>.</returns>
         private static Boolean AreInSameRow(UIElement e1, UIElement e2)
         {
-            return e1.AbsoluteLayoutBounds.Y == e2.AbsoluteLayoutBounds.Y;
+            return e1.MostRecentFinalRect.Y == e2.MostRecentFinalRect.Y;
         }
 
         /// <summary>
@@ -85,7 +85,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <returns><c>true</c> if the specified elements are in the same layout column; otherwise, <c>false</c>.</returns>
         private static Boolean AreInSameColumn(UIElement e1, UIElement e2)
         {
-            return e1.AbsoluteLayoutBounds.X == e2.AbsoluteLayoutBounds.X;
+            return e1.MostRecentFinalRect.X == e2.MostRecentFinalRect.X;
         }
 
         /// <summary>

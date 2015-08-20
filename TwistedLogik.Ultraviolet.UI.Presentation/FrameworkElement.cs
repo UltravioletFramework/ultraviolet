@@ -424,6 +424,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <inheritdoc/>
+        internal override RectangleD GetAbsoluteTransformedBounds()
+        {
+            if (HasLayoutTransform)
+            {
+                return new RectangleD(AbsolutePosition - layoutTransformOffset, layoutTransformSizeUsedAfterTransform);
+            }
+            return base.GetAbsoluteTransformedBounds();
+        }
+
+        /// <inheritdoc/>
         internal override Object DependencyDataSource
         {
             get { return DeclarativeViewModelOrTemplate ?? TemplatedParent ?? ViewModel; }
@@ -540,7 +550,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             measuredHeight = Math.Max(minHeight, Math.Min(maxHeight, measuredHeight));
             measuredSize = new Size2D(measuredWidth, measuredHeight);
             
-            layoutTransformDesiredSizeBeforeTransform = measuredSize;
+            layoutTransformSizeDesiredBeforeTransform = measuredSize;
 
             if (isLayoutTransformed)
             {
@@ -568,8 +578,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             if (isLayoutTransformed)
             {
-                desiredWidth = layoutTransformDesiredSizeBeforeTransform.Width;
-                desiredHeight = layoutTransformDesiredSizeBeforeTransform.Height;                
+                desiredWidth = layoutTransformSizeDesiredBeforeTransform.Width;
+                desiredHeight = layoutTransformSizeDesiredBeforeTransform.Height;                
             }
 
             var fill   = (options & ArrangeOptions.Fill) == ArrangeOptions.Fill;
@@ -605,6 +615,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 RectangleD.TransformAxisAligned(ref area, ref layoutTransformUsedDuringLayout, out area);
                 usedSize = new Size2D(area.Width, area.Height);
 
+                layoutTransformSizeUsedAfterTransform = usedSize;
+                layoutTransformOffset = new Size2D(-area.X, -area.Y);
+
                 xOffset -= area.X;
                 yOffset -= area.Y;
             }
@@ -612,7 +625,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             xOffset += margin.Left + LayoutUtil.PerformHorizontalAlignment(finalRectSansMargins.Size, usedSize, fill ? HorizontalAlignment.Left : hAlign);
             yOffset += margin.Top + LayoutUtil.PerformVerticalAlignment(finalRectSansMargins.Size, usedSize, fill ? VerticalAlignment.Top : vAlign);
 
-            RenderOffset = PerformLayoutRounding(new Point2D(xOffset, yOffset));
+            RenderOffset = new Point2D(xOffset, yOffset);
 
             return untransformedUsedSize;
         }
@@ -924,7 +937,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         // State values.
         private Int32 descendantsWithLayoutTransforms;
         private Matrix layoutTransformUsedDuringLayout;
-        private Size2D layoutTransformDesiredSizeBeforeTransform;
+        private Size2D layoutTransformSizeDesiredBeforeTransform;
+        private Size2D layoutTransformSizeUsedAfterTransform;
+        private Size2D layoutTransformOffset;
         private Boolean isLayoutTransformed;
         private Boolean isInitializing;
     }

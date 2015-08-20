@@ -826,6 +826,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Gets the position of the element in absolute screen coordinates as of the
+        /// last call to the <see cref="Position(Size2D)"/> method and after any transforms
+        /// have been applied to its layout region.
+        /// </summary>
+        public Point2D AbsoluteTransformedPosition
+        {
+            get { return HasLayoutTransform ? GetAbsoluteTransformedBounds().Location : AbsolutePosition; }
+        }
+
+        /// <summary>
         /// Gets or sets the offset from the top-left corner of the element's layout
         /// area to the top-left corner of the element itself.
         /// </summary>
@@ -864,15 +874,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 return desiredSize;
             }
         }
-
-        /// <summary>
-        /// Gets the absolute bounding box of the layout area in which the element was most recently arranged.
-        /// </summary>
-        public RectangleD AbsoluteLayoutBounds
-        {
-            get { return mostRecentFinalRect; }
-        }
-
+        
         /// <summary>
         /// Gets the element's bounds in element-local space.
         /// </summary>
@@ -895,6 +897,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public RectangleD AbsoluteBounds
         {
             get { return absoluteBounds; }
+        }
+
+        /// <summary>
+        /// Gets the element's bounds in absolute screen space, after any transforms have been applied to its layout region.
+        /// </summary>
+        public RectangleD AbsoluteTransformedBounds
+        {
+            get { return HasLayoutTransform ? GetAbsoluteTransformedBounds() : AbsoluteBounds; }
         }
 
         /// <summary>
@@ -1287,6 +1297,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Gets the element's transformed layout region in absolute screen space.
+        /// </summary>
+        /// <returns>The element's transformed layout region in absolute screen space.</returns>
+        internal virtual RectangleD GetAbsoluteTransformedBounds()
+        {
+            return AbsoluteBounds;
+        }
+
+        /// <summary>
         /// Gets the element's list of event handlers for the specified routed event.
         /// </summary>
         /// <param name="evt">A <see cref="RoutedEvent"/> that identifies the routed event for which to retrieve handlers.</param>
@@ -1335,7 +1354,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             get { return mostRecentPositionOffset; }
         }
-
+        
         /// <summary>
         /// Gets the element's depth within the layout tree.
         /// </summary>
