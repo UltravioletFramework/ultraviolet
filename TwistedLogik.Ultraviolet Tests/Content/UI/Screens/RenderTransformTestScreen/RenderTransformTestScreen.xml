@@ -21,7 +21,7 @@
           Hello, world!
         </Button>
       </Button>
-      <ComboBox Margin="0 50 0 0" SelectedIndex="1" IsDropDownOpen="true">
+      <ComboBox HorizontalAlignment="Left" Margin="0 50 0 0" SelectedIndex="1" IsDropDownOpen="true">
         <Button.RenderTransform>
           <RotateTransform Angle="-15"/>
         </Button.RenderTransform>
