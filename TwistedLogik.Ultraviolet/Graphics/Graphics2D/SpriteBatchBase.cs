@@ -396,7 +396,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// <param name="position">The sprite's position in screen coordinates.</param>
         /// <param name="width">The width in pixels of the destination rectangle, or <c>null</c> to use the width of the sprite.</param>
         /// <param name="height">The height in pixels of the destination rectangle, or <c>null</c> to use the height of the sprite.</param>
-        public void DrawSprite(SpriteAnimationController animation, Vector2 position, Int32? width, Int32? height)
+        public void DrawSprite(SpriteAnimationController animation, Vector2 position, Single? width, Single? height)
         {
             DrawSprite(animation, position, width, height, Color.White, 0f, SpriteEffects.None, 0f, default(SpriteData));
         }
@@ -410,7 +410,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// <param name="height">The height in pixels of the destination rectangle, or <c>null</c> to use the height of the sprite.</param>
         /// <param name="color">The sprite's tint color.</param>
         /// <param name="rotation">The sprite's rotation in radians.</param>
-        public void DrawSprite(SpriteAnimationController animation, Vector2 position, Int32? width, Int32? height, Color color, Single rotation)
+        public void DrawSprite(SpriteAnimationController animation, Vector2 position, Single? width, Single? height, Color color, Single rotation)
         {
             DrawSprite(animation, position, width, height, color, rotation, SpriteEffects.None, 0f, default(SpriteData));
         }
@@ -426,7 +426,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// <param name="rotation">The sprite's rotation in radians.</param>
         /// <param name="effects">The sprite's rendering effects.</param>
         /// <param name="layerDepth">The sprite's layer depth.</param>
-        public void DrawSprite(SpriteAnimationController animation, Vector2 position, Int32? width, Int32? height, Color color, Single rotation, SpriteEffects effects, Single layerDepth)
+        public void DrawSprite(SpriteAnimationController animation, Vector2 position, Single? width, Single? height, Color color, Single rotation, SpriteEffects effects, Single layerDepth)
         {
             DrawSprite(animation, position, width, height, color, rotation, effects, layerDepth, default(SpriteData));
         }
@@ -450,7 +450,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// <param name="width">The width in pixels of the destination rectangle, or <c>null</c> to use the width of the sprite.</param>
         /// <param name="height">The height in pixels of the destination rectangle, or <c>null</c> to use the height of the sprite.</param>
         /// <param name="data">The sprite's custom data.</param>
-        public void DrawSprite(SpriteAnimationController animation, Vector2 position, Int32? width, Int32? height, SpriteData data)
+        public void DrawSprite(SpriteAnimationController animation, Vector2 position, Single? width, Single? height, SpriteData data)
         {
             DrawSprite(animation, position, width, height, Color.White, 0f, SpriteEffects.None, 0f, data);
         }
@@ -465,7 +465,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// <param name="color">The sprite's tint color.</param>
         /// <param name="rotation">The sprite's rotation in radians.</param>
         /// <param name="data">The sprite's custom data.</param>
-        public void DrawSprite(SpriteAnimationController animation, Vector2 position, Int32? width, Int32? height, Color color, Single rotation, SpriteData data)
+        public void DrawSprite(SpriteAnimationController animation, Vector2 position, Single? width, Single? height, Color color, Single rotation, SpriteData data)
         {
             DrawSprite(animation, position, width, height, color, rotation, SpriteEffects.None, 0f, data);
         }
@@ -482,7 +482,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// <param name="effects">The sprite's rendering effects.</param>
         /// <param name="layerDepth">The sprite's layer depth.</param>
         /// <param name="data">The sprite's custom data.</param>
-        public void DrawSprite(SpriteAnimationController animation, Vector2 position, Int32? width, Int32? height, Color color, Single rotation, SpriteEffects effects, Single layerDepth, SpriteData data)
+        public void DrawSprite(SpriteAnimationController animation, Vector2 position, Single? width, Single? height, Color color, Single rotation, SpriteEffects effects, Single layerDepth, SpriteData data)
         {
             Contract.Require(animation, "animation");
             Contract.EnsureNotDisposed(this, Disposed);
@@ -494,8 +494,8 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
                 return;
 
             // Draw the sprite.
-            var scaleX = (width ?? frame.Width) / (float)frame.Width;
-            var scaleY = (height ?? frame.Height) / (float)frame.Height;
+            var scaleX = (width ?? frame.Width) / frame.Width;
+            var scaleY = (height ?? frame.Height) / frame.Height;
             var scale = new Vector2(scaleX, scaleY);
             var source = new Rectangle(frame.X, frame.Y, frame.Width, frame.Height);
             var origin = new Vector2(frame.OriginX, frame.OriginY);
@@ -1012,7 +1012,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// <param name="width">The width of the image in pixels.</param>
         /// <param name="height">The height of the image in pixels.</param>
         /// <param name="color">The image's color.</param>
-        public void DrawImage(TextureImage image, Vector2 position, Int32 width, Int32 height, Color color)
+        public void DrawImage(TextureImage image, Vector2 position, Single width, Single height, Color color)
         {
             DrawImage(image, position, width, height, color, 0f, Vector2.Zero, SpriteEffects.None, 0f, default(SpriteData));
         }        
@@ -1029,7 +1029,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// <param name="origin">The image's point of origin.</param>
         /// <param name="effects">The image's rendering effects.</param>
         /// <param name="layerDepth">The image's layer depth.</param>
-        public void DrawImage(TextureImage image, Vector2 position, Int32 width, Int32 height, Color color, Single rotation, Vector2 origin, SpriteEffects effects, Single layerDepth)
+        public void DrawImage(TextureImage image, Vector2 position, Single width, Single height, Color color, Single rotation, Vector2 origin, SpriteEffects effects, Single layerDepth)
         {
             DrawImage(image, position, width, height, color, rotation, origin, effects, layerDepth, default(SpriteData));
         }
@@ -1043,7 +1043,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// <param name="height">The height of the image in pixels.</param>
         /// <param name="color">The image's color.</param>
         /// <param name="data">The image's custom data.</param>
-        public void DrawImage(TextureImage image, Vector2 position, Int32 width, Int32 height, Color color, SpriteData data)
+        public void DrawImage(TextureImage image, Vector2 position, Single width, Single height, Color color, SpriteData data)
         {
             DrawImage(image, position, width, height, color, 0f, Vector2.Zero, SpriteEffects.None, 0f, data);
         }        
@@ -1061,7 +1061,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// <param name="effects">The image's rendering effects.</param>
         /// <param name="layerDepth">The image's layer depth.</param>
         /// <param name="data">The image's custom data.</param>
-        public void DrawImage(TextureImage image, Vector2 position, Int32 width, Int32 height, Color color, Single rotation, Vector2 origin, SpriteEffects effects, Single layerDepth, SpriteData data)
+        public void DrawImage(TextureImage image, Vector2 position, Single width, Single height, Color color, Single rotation, Vector2 origin, SpriteEffects effects, Single layerDepth, SpriteData data)
         {
             Contract.Require(image, "image");
             Contract.EnsureNotDisposed(this, Disposed);
@@ -1070,7 +1070,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
             if (!image.IsLoaded)
                 throw new ArgumentException(UltravioletStrings.StretchableImageNotLoaded.Format("image"));
 
-            image.Draw<VertexType, SpriteData>(this, position, width, height, color, rotation, origin, effects, layerDepth, data);
+            image.Draw(this, position, width, height, color, rotation, origin, effects, layerDepth, data);
         }
 
         /// <summary>
@@ -1620,8 +1620,8 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
 
             // Calculate the size of the area in which the text will be rendered.
             var measure = fontFace.MeasureString(ref text);
-            var areaTL = new Vector2((int)position.X - origin.X, (int)position.Y - origin.Y);
-            var areaBR = new Vector2((int)position.X - origin.X + measure.Width, (int)position.Y - origin.Y + measure.Height);
+            var areaTL = new Vector2(position.X - origin.X, position.Y - origin.Y);
+            var areaBR = new Vector2(position.X - origin.X + measure.Width, position.Y - origin.Y + measure.Height);
 
             // Calculate the transformation matrix.
             var transformRotation = Matrix.CreateRotationZ(rotation);

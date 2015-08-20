@@ -140,7 +140,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         }
 
         /// <inheritdoc/>
-        internal override void Draw<VertexType, SpriteData>(SpriteBatchBase<VertexType, SpriteData> spriteBatch, Vector2 position, Int32 width, Int32 height, Color color, Single rotation, Vector2 origin, SpriteEffects effects, Single layerDepth, SpriteData data)
+        internal override void Draw<VertexType, SpriteData>(SpriteBatchBase<VertexType, SpriteData> spriteBatch, Vector2 position, Single width, Single height, Color color, Single rotation, Vector2 origin, SpriteEffects effects, Single layerDepth, SpriteData data)
         {
             effects |= SpriteEffects.OriginRelativeToDestination;
 
@@ -153,7 +153,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
             position += realOrigin;
 
             var srcRect = TextureRegion;
-            var dstRect = new Rectangle((Int32)position.X, (Int32)position.Y, width, height);
+            var dstRect = new RectangleF(position.X, position.Y, width, height);
             spriteBatch.Draw(Texture, dstRect, srcRect, color, rotation, realOrigin, effects, layerDepth, data);
         }
     }

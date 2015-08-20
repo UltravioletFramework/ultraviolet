@@ -210,10 +210,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                         flush = true;
                     }
                 }
-
+                
                 DrawCore(time, dc);
                 OnDrawing(time, dc);
-
+                
                 if (flush)
                 {
                     dc.End();
@@ -2058,17 +2058,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             {
                 var imageAreaRel = area ?? new RectangleD(0, 0, RenderSize.Width, RenderSize.Height);
                 var imageAreaAbs = imageAreaRel + AbsolutePosition;
-                var imageAreaPix = (Rectangle)Display.DipsToPixels(imageAreaAbs);
+                var imageAreaPix = (RectangleF)Display.DipsToPixels(imageAreaAbs);
 
                 var origin = new Vector2(
-                    (Int32)(imageAreaPix.Width / 2f),
-                    (Int32)(imageAreaPix.Height / 2f));
+                    imageAreaPix.Width / 2f,
+                    imageAreaPix.Height / 2f);
 
                 var position = new Vector2(
-                    (Int32)(imageAreaPix.X + (imageAreaPix.Width / 2f)),
-                    (Int32)(imageAreaPix.Y + (imageAreaPix.Height / 2f)));
+                    imageAreaPix.X + (imageAreaPix.Width / 2f),
+                    imageAreaPix.Y + (imageAreaPix.Height / 2f));
 
-                dc.SpriteBatch.DrawImage(imageResource, position, (Int32)imageAreaPix.Width, (Int32)imageAreaPix.Height,
+                dc.SpriteBatch.DrawImage(imageResource, position, imageAreaPix.Width, imageAreaPix.Height,
                     colorPlusOpacity, 0f, origin, SpriteEffects.None, 0f);
             }
         }
@@ -2097,17 +2097,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var imageAreaPix = (RectangleF)Display.DipsToPixels(imageAreaAbs);
 
             var origin = new Vector2(
-                (Int32)imageAreaPix.Width / 2,
-                (Int32)imageAreaPix.Height / 2);
+                imageAreaPix.Width / 2,
+                imageAreaPix.Height / 2);
 
             var position = new Vector2(
-                (Int32)imageAreaPix.X + (imageAreaPix.Width / 2),
-                (Int32)imageAreaPix.Y + (imageAreaPix.Height / 2));
+                imageAreaPix.X + (imageAreaPix.Width / 2),
+                imageAreaPix.Y + (imageAreaPix.Height / 2));
 
-            dc.SpriteBatch.DrawImage(imageResource, position, (Int32)imageAreaPix.Width, (Int32)imageAreaPix.Height,
+            dc.SpriteBatch.DrawImage(imageResource, position, imageAreaPix.Width, imageAreaPix.Height,
                 colorPlusOpacity, 0f, origin, SpriteEffects.None, 0f);
         }
-        
+
         /// <summary>
         /// Performs layout rounding on the specified value.
         /// </summary>

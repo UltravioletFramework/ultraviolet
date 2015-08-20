@@ -248,7 +248,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         }
 
         /// <inheritdoc/>
-        internal override void Draw<VertexType, SpriteData>(SpriteBatchBase<VertexType, SpriteData> spriteBatch, Vector2 position, Int32 width, Int32 height, Color color, Single rotation, Vector2 origin, SpriteEffects effects, Single layerDepth, SpriteData data)
+        internal override void Draw<VertexType, SpriteData>(SpriteBatchBase<VertexType, SpriteData> spriteBatch, Vector2 position, Single width, Single height, Color color, Single rotation, Vector2 origin, SpriteEffects effects, Single layerDepth, SpriteData data)
         {
             effects |= SpriteEffects.OriginRelativeToDestination;
 
@@ -264,13 +264,13 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
 
             if (width < MinimumRecommendedSize.Width)
             {
-                var scale = width / (float)MinimumRecommendedSize.Width;
+                var scale = width / MinimumRecommendedSize.Width;
                 dstLeft   = (Int32)Math.Floor(dstLeft * scale);
                 dstRight  = (Int32)Math.Ceiling(dstRight * scale);
             }
             if (height < MinimumRecommendedSize.Height)
             {
-                var scale = height / (float)MinimumRecommendedSize.Height;
+                var scale = height / MinimumRecommendedSize.Height;
                 dstTop    = (Int32)Math.Floor(dstTop * scale);
                 dstBottom = (Int32)Math.Ceiling(dstBottom * scale);
             }
