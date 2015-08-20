@@ -564,7 +564,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             get
             {
                 var digest = PresentationFoundation.Instance.DigestCycleID;
-                return digest > 0 && (digest == invalidatedDigestCount1 || digest == invalidatedDigestCount2);
+                return digest > 1 && (digest == invalidatedDigestCount1 || digest == invalidatedDigestCount2);
             }
         }
 

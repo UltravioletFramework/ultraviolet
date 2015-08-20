@@ -370,21 +370,22 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
 
             if (expressionInfo.GenerateSetter)
             {
-                var targetTypeName = expressionInfo.CS0266TargetType ?? GetCSharpTypeName(expressionInfo.Type);
+                var targetTypeName = expressionInfo.CS0266TargetType;
+                var targetTypeSpecified = !String.IsNullOrEmpty(targetTypeName);
 
                 expressionInfo.SetterLineStart = LineCount;
                 if (isDependencyProperty)
                 {
                     if (expressionInfo.NullableFixup)
                     {
-                        WriteLine("set {{ SetValue<{0}>({1}.{2}, ({3})(value ?? default({0}))); }}", 
+                        WriteLine(targetTypeSpecified ? "set {{ SetValue<{0}>({1}.{2}, ({3})(value ?? default({0}))); }}" : "set {{ SetValue<{0}>({1}.{2}, value ?? default({0})); }}", 
                             GetCSharpTypeName(dprop.PropertyType), 
                             GetCSharpTypeName(dprop.OwnerType),
                             dpropField.Name, targetTypeName);
                     }
                     else
                     {
-                        WriteLine("set {{ SetValue<{0}>({1}.{2}, ({3})(value)); }}", 
+                        WriteLine(targetTypeSpecified ? "set {{ SetValue<{0}>({1}.{2}, ({3})(value)); }}" : "set {{ SetValue<{0}>({1}.{2}, value); }}", 
                             GetCSharpTypeName(dprop.PropertyType),
                             GetCSharpTypeName(dprop.OwnerType), 
                             dpropField.Name, targetTypeName);
@@ -394,12 +395,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
                 {
                     if (expressionInfo.NullableFixup)
                     {
-                        WriteLine("set {{ {0} = ({2})(value ?? default({1})); }}",
+                        WriteLine(targetTypeSpecified ? "set {{ {0} = ({2})(value ?? default({1})); }}" : "set {{ {0} = value ?? default({1}); }}",
                             expMemberPath, GetCSharpTypeName(Nullable.GetUnderlyingType(expressionInfo.Type)), targetTypeName);
                     }
                     else
                     {
-                        WriteLine("set {{ {0} = ({1})(value); }}", expMemberPath, targetTypeName);
+                        WriteLine(targetTypeSpecified ? "set {{ {0} = ({1})(value); }}" : "set {{ {0} = value; }}", expMemberPath, targetTypeName);
                     }
                 }
 

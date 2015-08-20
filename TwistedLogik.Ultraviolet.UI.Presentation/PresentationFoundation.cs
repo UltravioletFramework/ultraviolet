@@ -1043,6 +1043,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         private IBindingExpressionCompiler bindingExpressionCompiler;
 
         // The identifier of the current digest cycle.
-        private Int64 digestCycleID;
+        private Int64 digestCycleID = 1;
     }
 }
