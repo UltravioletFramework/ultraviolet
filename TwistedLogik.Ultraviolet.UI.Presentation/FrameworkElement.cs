@@ -563,7 +563,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var finalWidth = Math.Max(0, xMargin + measuredSize.Width);
             var finalHeight = Math.Max(0, yMargin + measuredSize.Height);
 
-            return new Size2D(finalWidth, finalHeight);
+            return PerformLayoutRounding(new Size2D(finalWidth, finalHeight));
         }
 
         /// <inheritdoc/>
@@ -579,7 +579,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (isLayoutTransformed)
             {
                 desiredWidth = layoutTransformSizeDesiredBeforeTransform.Width;
-                desiredHeight = layoutTransformSizeDesiredBeforeTransform.Height;                
+                desiredHeight = layoutTransformSizeDesiredBeforeTransform.Height;
             }
 
             var fill   = (options & ArrangeOptions.Fill) == ArrangeOptions.Fill;
@@ -591,6 +591,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             if (Double.IsNaN(Height) && vAlign == VerticalAlignment.Stretch)
                 desiredHeight = finalRect.Height;
+
+            if (isLayoutTransformed)
+            {
+                var arrangedSizeAfterLayoutTransform = 
+                    CalculateMaximumAvailableSizeBeforeLayoutTransform(desiredWidth, desiredHeight, layoutTransformUsedDuringLayout);
+
+                if (MathUtil.IsApproximatelyGreaterThanOrEqual(arrangedSizeAfterLayoutTransform.Width, layoutTransformSizeDesiredBeforeTransform.Width) &&
+                    MathUtil.IsApproximatelyGreaterThanOrEqual(arrangedSizeAfterLayoutTransform.Height, layoutTransformSizeDesiredBeforeTransform.Height))
+                {
+                    desiredWidth = arrangedSizeAfterLayoutTransform.Width;
+                    desiredHeight = arrangedSizeAfterLayoutTransform.Height;
+                }
+            }
 
             var desiredSize = new Size2D(desiredWidth, desiredHeight);
 
