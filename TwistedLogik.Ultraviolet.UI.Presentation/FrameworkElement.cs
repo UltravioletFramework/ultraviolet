@@ -948,7 +948,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         private Boolean isLoaded;
 
         // State values.
-        private Int32 descendantsWithLayoutTransforms;
         private Matrix layoutTransformUsedDuringLayout;
         private Size2D layoutTransformSizeDesiredBeforeTransform;
         private Size2D layoutTransformSizeUsedAfterTransform;
