@@ -4,34 +4,34 @@
 
     <WrapPanel Orientation="Horizontal" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
 
-      <Rectangle FillColor="#ffff0000" Width="32" Height="32"/>
+      <Rectangle FillColor="#ffff0000" Width="32" Height="32" VerticalAlignment="Top"/>
       <Rectangle FillColor="#ff00ff00" Width="32" Height="128"/>
       <Rectangle FillColor="#ff0000ff" Width="32" Height="32" VerticalAlignment="Bottom"/>
-      <Rectangle FillColor="#ffff0000" Width="32" Height="32"/>
+      <Rectangle FillColor="#ffff0000" Width="32" Height="32" VerticalAlignment="Top"/>
       <Rectangle FillColor="#ff00ff00" Width="32" Height="128"/>
       <Rectangle FillColor="#ff0000ff" Width="32" Height="32" VerticalAlignment="Bottom"/>
-      <Rectangle FillColor="#ffff0000" Width="32" Height="32"/>
+      <Rectangle FillColor="#ffff0000" Width="32" Height="32" VerticalAlignment="Top"/>
       <Rectangle FillColor="#ff00ff00" Width="32" Height="128"/>
       <Rectangle FillColor="#ff0000ff" Width="32" Height="32" VerticalAlignment="Bottom"/>
-      <Rectangle FillColor="#ffff0000" Width="32" Height="32"/>
+      <Rectangle FillColor="#ffff0000" Width="32" Height="32" VerticalAlignment="Top"/>
       <Rectangle FillColor="#ff00ff00" Width="32" Height="128"/>
       <Rectangle FillColor="#ff0000ff" Width="32" Height="32" VerticalAlignment="Bottom"/>
-      <Rectangle FillColor="#ffff0000" Width="32" Height="32"/>
+      <Rectangle FillColor="#ffff0000" Width="32" Height="32" VerticalAlignment="Top"/>
       <Rectangle FillColor="#ff00ff00" Width="32" Height="128"/>
       <Rectangle FillColor="#ff0000ff" Width="32" Height="32" VerticalAlignment="Bottom"/>
-      <Rectangle FillColor="#ffff0000" Width="32" Height="32"/>
+      <Rectangle FillColor="#ffff0000" Width="32" Height="32" VerticalAlignment="Top"/>
       <Rectangle FillColor="#ff00ff00" Width="32" Height="128"/>
       <Rectangle FillColor="#ff0000ff" Width="32" Height="32" VerticalAlignment="Bottom"/>
-      <Rectangle FillColor="#ffff0000" Width="32" Height="32"/>
+      <Rectangle FillColor="#ffff0000" Width="32" Height="32" VerticalAlignment="Top"/>
       <Rectangle FillColor="#ff00ff00" Width="32" Height="128"/>
       <Rectangle FillColor="#ff0000ff" Width="32" Height="32" VerticalAlignment="Bottom"/>
-      <Rectangle FillColor="#ffff0000" Width="32" Height="32"/>
+      <Rectangle FillColor="#ffff0000" Width="32" Height="32" VerticalAlignment="Top"/>
       <Rectangle FillColor="#ff00ff00" Width="32" Height="128"/>
       <Rectangle FillColor="#ff0000ff" Width="32" Height="32" VerticalAlignment="Bottom"/>
-      <Rectangle FillColor="#ffff0000" Width="32" Height="32"/>
+      <Rectangle FillColor="#ffff0000" Width="32" Height="32" VerticalAlignment="Top"/>
       <Rectangle FillColor="#ff00ff00" Width="32" Height="128"/>
       <Rectangle FillColor="#ff0000ff" Width="32" Height="32" VerticalAlignment="Bottom"/>
-      <Rectangle FillColor="#ffff0000" Width="32" Height="32"/>
+      <Rectangle FillColor="#ffff0000" Width="32" Height="32" VerticalAlignment="Top"/>
       <Rectangle FillColor="#ff00ff00" Width="32" Height="128"/>
       <Rectangle FillColor="#ff0000ff" Width="32" Height="32" VerticalAlignment="Bottom"/>
 
