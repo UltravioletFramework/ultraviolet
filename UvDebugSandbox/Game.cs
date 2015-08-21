@@ -270,7 +270,7 @@ namespace UvDebugSandbox
 #if DEBUG
             return true;
 #else
-            return upfcompile || Debugger.IsAttached;
+            return upfcompile || System.Diagnostics.Debugger.IsAttached;
 #endif
         }
 
