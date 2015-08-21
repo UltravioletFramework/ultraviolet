@@ -563,7 +563,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
             SDLMacro.SDL_VERSION(&sysInfo.version);
 
             if (!SDL.GetWindowWMInfo(ptr, &sysInfo))
-                throw new SDL2Exception();
+                return;
 
             switch (sysInfo.subsystem)
             {
