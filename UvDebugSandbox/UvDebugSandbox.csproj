@@ -250,9 +250,9 @@
   -->
   <ItemGroup />
   <PropertyGroup>
-    <PostBuildEvent>if not $(ConfigurationName) == Signed (
-    cd "$(TargetDir)"
-    start "Expression Compiler" /wait UvDebugSandbox.exe -upfcompile
-)</PostBuildEvent>
+    <PostBuildEvent>if not "%25UvSkipAndroidUpdate%25"=="" exit 
+
+cd "$(TargetDir)"
+start "Expression Compiler" /wait UvDebugSandbox.exe -upfcompile</PostBuildEvent>
   </PropertyGroup>
 </Project>

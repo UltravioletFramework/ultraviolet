@@ -34,11 +34,21 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE;ANDROID SIGNED</DefineConstants>
+    <DefineConstants>TRACE;ANDROID</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AndroidUseSharedRuntime>False</AndroidUseSharedRuntime>
     <AndroidLinkMode>SdkOnly</AndroidLinkMode>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Signed|AnyCPU'">
+    <OutputPath>bin\Signed\</OutputPath>
+    <DefineConstants>TRACE;ANDROID SIGNED</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Mono.Android" />
@@ -189,10 +199,10 @@
 xcopy Content.uvarc "..\UvDebugSandbox (Android)\Content.uvarc" /Y
 del Content.uvarc
 
-if not $(ConfigurationName) == Signed (
-    cd "bin\$(ConfigurationName)"
-    copy TwistedLogik.Ultraviolet.UI.Presentation.CompiledExpressions.dll "$(ProjectDir)Presentation"
-)</PreBuildEvent>
+if not "%25UvSkipAndroidUpdate%25"=="" exit
+
+cd "bin\$(ConfigurationName)"
+copy TwistedLogik.Ultraviolet.UI.Presentation.CompiledExpressions.dll "$(ProjectDir)Presentation"</PreBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
     <PostBuildEvent>
