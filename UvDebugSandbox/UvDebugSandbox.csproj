@@ -250,7 +250,9 @@
   -->
   <ItemGroup />
   <PropertyGroup>
-    <PostBuildEvent>cd "$(TargetDir)"
-start "Expression Compiler" /wait UvDebugSandbox.exe -upfcompile</PostBuildEvent>
+    <PostBuildEvent>if not $(ConfigurationName) == Signed (
+    cd "$(TargetDir)"
+    start "Expression Compiler" /wait UvDebugSandbox.exe -upfcompile
+)</PostBuildEvent>
   </PropertyGroup>
 </Project>
