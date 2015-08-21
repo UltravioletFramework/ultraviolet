@@ -1,7 +1,6 @@
 ﻿using System;
-using System.Linq;
-using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Text;
 using TwistedLogik.Nucleus;
 using TwistedLogik.Nucleus.Text;
@@ -58,7 +57,7 @@ namespace UvDebugSandbox
         protected override UltravioletContext OnCreatingUltravioletContext()
         {
             var configuration = new OpenGLUltravioletConfiguration();
-            configuration.Headless = upfcompile;
+            configuration.EnableServiceMode = ShouldRunInServiceMode();
             PopulateConfiguration(configuration);
 
             PresentationFoundation.Configure(configuration);
@@ -252,21 +251,37 @@ namespace UvDebugSandbox
             }
             base.Dispose(disposing);
         }
-        
+
+        /// <summary>
+        /// Gets a value indicating whether the game should run in service mode.
+        /// </summary>
+        /// <returns><c>true</c> if the game should run in service mode; otherwise, <c>false</c>.</returns>
+        private Boolean ShouldRunInServiceMode()
+        {
+            return upfcompile;
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the game should compile binding expressions.
+        /// </summary>
+        /// <returns><c>true</c> if the game should compile binding expressions; otherwise, <c>false</c>.</returns>
+        private Boolean ShouldCompileBindingExpressions()
+        {
+#if DEBUG
+            return true;
+#else
+            return upfcompile || Debugger.IsAttached;
+#endif
+        }
+
         /// <summary>
         /// Compiles the game's binding expressions.
         /// </summary>
         private void CompileBindingExpressions()
-        {
-            var upf = Ultraviolet.GetUI().GetPresentationFoundation();
-
-#if DEBUG
-            var debug = true;
-#else
-            var debug = false;
-#endif
-            if (upfcompile || debug || Debugger.IsAttached)
+        {            
+            if (ShouldCompileBindingExpressions())
             {
+                var upf = Ultraviolet.GetUI().GetPresentationFoundation();
                 upf.CompileExpressionsIfSupported("Content");
 
                 if (upfcompile)

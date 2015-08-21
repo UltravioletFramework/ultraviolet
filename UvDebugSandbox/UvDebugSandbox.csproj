@@ -250,9 +250,7 @@
   -->
   <ItemGroup />
   <PropertyGroup>
-    <PostBuildEvent>if not "%25UvSkipAndroidUpdate%25"=="" exit 
-
-rem cd "$(TargetDir)"
-rem start "Expression Compiler" /wait UvDebugSandbox.exe -upfcompile</PostBuildEvent>
+    <PostBuildEvent>cd "$(TargetDir)"
+start "Expression Compiler" /wait UvDebugSandbox.exe -upfcompile</PostBuildEvent>
   </PropertyGroup>
 </Project>
