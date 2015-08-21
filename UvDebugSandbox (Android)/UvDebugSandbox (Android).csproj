@@ -117,15 +117,6 @@
     <AndroidNativeLibrary Include="..\Dependencies\SDL2\Android\x86\libSDL2main.so">
       <Link>lib\x86\libSDL2main.so</Link>
     </AndroidNativeLibrary>
-    <None Include="..\UvDebugSandbox\Content\Manifests\Global.manifest">
-      <Link>Content\Manifests\Global.manifest</Link>
-    </None>
-    <None Include="..\UvDebugSandbox\Content\UI\DefaultUIStyles-mdpi.uvss">
-      <Link>Content\UI\DefaultUIStyles-mdpi.uvss</Link>
-    </None>
-    <None Include="..\UvDebugSandbox\Content\UI\DefaultUIStyles.uvss">
-      <Link>Content\UI\DefaultUIStyles.uvss</Link>
-    </None>
     <EmbeddedResource Include="Content.uvarc" />
     <None Include="Resources\AboutResources.txt" />
   </ItemGroup>
@@ -139,45 +130,6 @@
     <AndroidResource Include="Resources\drawable\Icon.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\UvDebugSandbox\Content\Cursors\Cursors.xml">
-      <Link>Content\Cursors\Cursors.xml</Link>
-    </None>
-    <None Include="..\UvDebugSandbox\Content\Cursors\CursorsImage.png">
-      <Link>Content\Cursors\CursorsImage.png</Link>
-    </None>
-    <None Include="..\UvDebugSandbox\Content\Fonts\SegoeUI.xml">
-      <Link>Content\Fonts\SegoeUI.xml</Link>
-    </None>
-    <None Include="..\UvDebugSandbox\Content\Fonts\SegoeUITexture.png">
-      <Link>Content\Fonts\SegoeUITexture.png</Link>
-    </None>
-    <None Include="..\UvDebugSandbox\Content\Localization\GameStrings.xml">
-      <Link>Content\Localization\GameStrings.xml</Link>
-    </None>
-    <None Include="..\UvDebugSandbox\Content\SoundEffects\Click1.wav">
-      <Link>Content\SoundEffects\Click1.wav</Link>
-    </None>
-    <None Include="..\UvDebugSandbox\Content\SoundEffects\rollover1.wav">
-      <Link>Content\SoundEffects\rollover1.wav</Link>
-    </None>
-    <None Include="..\UvDebugSandbox\Content\SoundEffects\rollover2.wav">
-      <Link>Content\SoundEffects\rollover2.wav</Link>
-    </None>
-    <None Include="..\UvDebugSandbox\Content\SoundEffects\rollover3.wav">
-      <Link>Content\SoundEffects\rollover3.wav</Link>
-    </None>
-    <None Include="..\UvDebugSandbox\Content\UI\DefaultUI.png">
-      <Link>Content\UI\DefaultUI.png</Link>
-    </None>
-    <None Include="..\UvDebugSandbox\Content\UI\DefaultUIBackground.png">
-      <Link>Content\UI\DefaultUIBackground.png</Link>
-    </None>
-    <None Include="..\UvDebugSandbox\Content\UI\DefaultUIFont.xml">
-      <Link>Content\UI\DefaultUIFont.xml</Link>
-    </None>
-    <None Include="..\UvDebugSandbox\Content\UI\Screens\DebugViewScreen\DebugViewScreen.xml">
-      <Link>Content\UI\Screens\DebugViewScreen\DebugViewScreen.xml</Link>
-    </None>
     <None Include="Properties\AndroidManifest.xml" />
   </ItemGroup>
   <ItemGroup>
@@ -215,20 +167,12 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\UvDebugSandbox\Content\UI\DefaultUI-mdpi.png">
-      <Link>Content\UI\DefaultUI-mdpi.png</Link>
-    </None>
-    <None Include="..\UvDebugSandbox\Content\UI\DefaultUIFont-mdpi.xml">
-      <Link>Content\UI\DefaultUIFont-mdpi.xml</Link>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
     <LinkDescription Include="XamarinLinkDescription.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties ProjectLinkReference="a8c85c23-03c2-41c6-8331-48835d257634" ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" />
+      <UserProperties ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" ProjectLinkReference="a8c85c23-03c2-41c6-8331-48835d257634" />
     </VisualStudio>
   </ProjectExtensions>
   <PropertyGroup>
