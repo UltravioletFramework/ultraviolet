@@ -207,8 +207,13 @@
     <Compile Include="CurveLoopType.cs" />
     <Compile Include="CurveProcessor.cs" />
     <Compile Include="DebugColors.cs" />
+    <Compile Include="DummyUltravioletAudio.cs" />
+    <Compile Include="DummyUltravioletGraphics.cs" />
+    <Compile Include="DummyUltravioletInput.cs" />
+    <Compile Include="DummyUltravioletPlatform.cs" />
     <Compile Include="Easings.cs" />
     <Compile Include="Graphics\ColorWriteChannels.cs" />
+    <Compile Include="Graphics\DummyGraphicsCapabilities.cs" />
     <Compile Include="Graphics\EffectImplementation.cs" />
     <Compile Include="Graphics\EffectPass.cs" />
     <Compile Include="Graphics\EffectPassCollection.cs" />
@@ -324,6 +329,9 @@
     <Compile Include="MutableVector2.cs" />
     <Compile Include="MutableVector3.cs" />
     <Compile Include="NamespaceDoc.cs" />
+    <Compile Include="Platform\DummyUltravioletClipboardInfo.cs" />
+    <Compile Include="Platform\DummyUltravioletDisplayInfo.cs" />
+    <Compile Include="Platform\DummyUltravioletWindowInfo.cs" />
     <Compile Include="Platform\FileSource.cs" />
     <Compile Include="Platform\FileSourceNode.cs" />
     <Compile Include="Platform\FileSystemService.cs" />

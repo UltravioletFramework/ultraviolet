@@ -415,6 +415,9 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         /// <param name="immutable">A value indicating whether to use immutable texture storage.</param>
         private void CreateNativeTexture(UltravioletContext uv, UInt32 internalformat, Int32 width, Int32 height, UInt32 format, UInt32 type, void* pixels, Boolean immutable)
         {
+            if (uv.IsRunningInServiceMode)
+                throw new NotSupportedException(UltravioletStrings.NotSupportedInServiceMode);
+
             this.width          = width;
             this.height         = height;
             this.internalformat = internalformat;

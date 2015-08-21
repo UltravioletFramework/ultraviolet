@@ -39,7 +39,11 @@ namespace TwistedLogik.Ultraviolet.OpenGL
         {
             Contract.Require(configuration, "configuration");
 
-            if (SDL.Init(SDL_Init.TIMER | SDL_Init.VIDEO | SDL_Init.JOYSTICK | SDL_Init.GAMECONTROLLER | SDL_Init.EVENTS) != 0)
+            var sdlFlags = configuration.EnableServiceMode ?
+                SDL_Init.TIMER | SDL_Init.EVENTS :
+                SDL_Init.TIMER | SDL_Init.VIDEO | SDL_Init.JOYSTICK | SDL_Init.GAMECONTROLLER | SDL_Init.EVENTS;
+
+            if (SDL.Init(sdlFlags) != 0)
                 throw new SDL2Exception();
 
             var versionRequired  = new Version(3, 0);
@@ -49,33 +53,38 @@ namespace TwistedLogik.Ultraviolet.OpenGL
                 versionRequested = versionRequired;
             }
 
-            if (SDL.GL_SetAttribute(SDL_GLattr.CONTEXT_PROFILE_MASK, (int)SDL_GLprofile.CORE) < 0)
-                throw new SDL2Exception();
+            if (!configuration.EnableServiceMode)
+            {
+                if (SDL.GL_SetAttribute(SDL_GLattr.CONTEXT_PROFILE_MASK, (int)SDL_GLprofile.CORE) < 0)
+                    throw new SDL2Exception();
 
-            if (SDL.GL_SetAttribute(SDL_GLattr.CONTEXT_MAJOR_VERSION, 3) < 0)
-                throw new SDL2Exception();
+                if (SDL.GL_SetAttribute(SDL_GLattr.CONTEXT_MAJOR_VERSION, 3) < 0)
+                    throw new SDL2Exception();
 
-            if (SDL.GL_SetAttribute(SDL_GLattr.CONTEXT_MINOR_VERSION, versionRequested.Minor) < 0)
-                throw new SDL2Exception();
+                if (SDL.GL_SetAttribute(SDL_GLattr.CONTEXT_MINOR_VERSION, versionRequested.Minor) < 0)
+                    throw new SDL2Exception();
 
-            if (SDL.GL_SetAttribute(SDL_GLattr.DEPTH_SIZE, configuration.BackBufferDepthSize) < 0)
-                throw new SDL2Exception();
+                if (SDL.GL_SetAttribute(SDL_GLattr.DEPTH_SIZE, configuration.BackBufferDepthSize) < 0)
+                    throw new SDL2Exception();
 
-            if (SDL.GL_SetAttribute(SDL_GLattr.STENCIL_SIZE, configuration.BackBufferStencilSize) < 0)
-                throw new SDL2Exception();
+                if (SDL.GL_SetAttribute(SDL_GLattr.STENCIL_SIZE, configuration.BackBufferStencilSize) < 0)
+                    throw new SDL2Exception();
+            }
 
-            this.platform = new OpenGLUltravioletPlatform(this, configuration);
+            this.platform = IsRunningInServiceMode ? (IUltravioletPlatform)(new DummyUltravioletPlatform(this)) : new OpenGLUltravioletPlatform(this, configuration);
 
             PumpEvents();
 
-            this.graphics = new OpenGLUltravioletGraphics(this, configuration);
-            this.audio = InitializeAudioSubsystem(configuration);
-            this.input = new SDL2UltravioletInput(this);
-            this.content = new UltravioletContent(this);
-            this.ui = new UltravioletUI(this, configuration);
+            this.graphics = IsRunningInServiceMode ? (IUltravioletGraphics)(new DummyUltravioletGraphics(this)) : new OpenGLUltravioletGraphics(this, configuration);
+            this.audio    = IsRunningInServiceMode ? new DummyUltravioletAudio(this) : InitializeAudioSubsystem(configuration);
+            this.input    = IsRunningInServiceMode ? (IUltravioletInput)(new DummyUltravioletInput(this)) : new SDL2UltravioletInput(this);
+            this.content  = new UltravioletContent(this);
+            this.ui       = new UltravioletUI(this, configuration);
 
             this.content.RegisterImportersAndProcessors(new[] 
             {
+                typeof(SDL2.Native.SDL).Assembly,
+                String.IsNullOrEmpty(configuration.AudioSubsystemAssembly) ? null : Assembly.Load(configuration.AudioSubsystemAssembly),
                 String.IsNullOrEmpty(configuration.ViewProviderAssembly) ? null : Assembly.Load(configuration.ViewProviderAssembly)
             });
             this.content.Importers.RegisterImporter<XmlContentImporter>("prog");
@@ -107,7 +116,9 @@ namespace TwistedLogik.Ultraviolet.OpenGL
             Contract.Require(time, "time");
             Contract.EnsureNotDisposed(this, Disposed);
 
-            input.ResetDeviceStates();
+            var sdlinput = input as SDL2UltravioletInput;
+            if (sdlinput != null)
+                sdlinput.ResetDeviceStates();
 
             if (!PumpEvents())
             {
@@ -120,7 +131,12 @@ namespace TwistedLogik.Ultraviolet.OpenGL
 
             platform.Update(time);
             content.Update(time);
-            graphics.Update(time);
+
+            if (!IsRunningInServiceMode)
+            {
+                graphics.Update(time);
+            }
+
             audio.Update(time);
             input.Update(time);
             ui.Update(time);
@@ -139,23 +155,27 @@ namespace TwistedLogik.Ultraviolet.OpenGL
 
             OnDrawing(time);
 
-            graphics.SetRenderTarget(null);
-
-            var glcontext = graphics.OpenGLContext;
-            var windowInfo = ((OpenGLUltravioletWindowInfo)platform.Windows);
-            foreach (OpenGLUltravioletWindow window in windowInfo)
+            var oglgfx = graphics as OpenGLUltravioletGraphics;
+            if (oglgfx != null)
             {
-                windowInfo.DesignateCurrent(window, glcontext);
+                oglgfx.SetRenderTarget(null);
 
-                var size = window.ClientSize;
-                graphics.SetViewport(new Viewport(0, 0, size.Width, size.Height));
-                graphics.Clear(Color.CornflowerBlue, 1.0, 0);
+                var glcontext = oglgfx.OpenGLContext;
+                var windowInfo = ((OpenGLUltravioletWindowInfo)platform.Windows);
+                foreach (OpenGLUltravioletWindow window in windowInfo)
+                {
+                    windowInfo.DesignateCurrent(window, glcontext);
 
-                windowInfo.Draw(time);
+                    var size = window.ClientSize;
+                    oglgfx.SetViewport(new Viewport(0, 0, size.Width, size.Height));
+                    oglgfx.Clear(Color.CornflowerBlue, 1.0, 0);
+
+                    windowInfo.Draw(time);
+                }
+
+                windowInfo.DesignateCurrent(null, glcontext);
+                oglgfx.UpdateFrameRate();
             }
-
-            windowInfo.DesignateCurrent(null, glcontext);
-            graphics.UpdateFrameRate();
 
             base.Draw(time);
         }
@@ -309,11 +329,11 @@ namespace TwistedLogik.Ultraviolet.OpenGL
         }
 
         // Ultraviolet subsystems.
-        private readonly OpenGLUltravioletPlatform platform;
+        private readonly IUltravioletPlatform platform;
         private readonly IUltravioletContent content;
-        private readonly OpenGLUltravioletGraphics graphics;
+        private readonly IUltravioletGraphics graphics;
         private readonly IUltravioletAudio audio;
-        private readonly SDL2UltravioletInput input;
+        private readonly IUltravioletInput input;
         private readonly IUltravioletUI ui;
     }
 }

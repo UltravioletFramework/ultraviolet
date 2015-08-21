@@ -34,7 +34,8 @@ namespace TwistedLogik.Ultraviolet.OpenGL
 
                 if (this.cursor == null)
                 {
-                    throw new SDL2Exception();
+                    this.width  = 0;
+                    this.height = 0;
                 }
             }
             else

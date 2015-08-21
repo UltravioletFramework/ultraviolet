@@ -121,6 +121,7 @@ namespace TwistedLogik.Ultraviolet
         public static readonly StringResource IncompatibleViewModel                = new StringResource(StringDatabase, "INCOMPATIBLE_VIEW_MODEL");
         public static readonly StringResource BufferIsWrongSize                    = new StringResource(StringDatabase, "BUFFER_IS_WRONG_SIZE");
         public static readonly StringResource ViewDirectiveMustHaveType            = new StringResource(StringDatabase, "VIEW_DIRECTIVE_MUST_HAVE_TYPE");
+        public static readonly StringResource NotSupportedInServiceMode            = new StringResource(StringDatabase, "NOT_SUPPORTED_IN_SERVICE_MODE");
 #pragma warning restore 1591
     }
 }

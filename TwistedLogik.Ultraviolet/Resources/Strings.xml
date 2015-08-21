@@ -495,4 +495,9 @@
       <Variant>One of the view directives in '{0}' is invalid because it does not specify a type attribute.</Variant>
     </en-US>
   </String>
+  <String Key="NOT_SUPPORTED_IN_SERVICE_MODE">
+    <en-US>
+      <Variant>This operation is not supported because the Ultraviolet context is running in service mode.</Variant>
+    </en-US>
+  </String>
 </LocalizedStrings>

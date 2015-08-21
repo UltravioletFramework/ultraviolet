@@ -28,6 +28,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public PresentationFoundationView(UltravioletContext uv, Type viewModelType)
             : base(uv, viewModelType)
         {
+            if (uv.IsRunningInServiceMode)
+                throw new NotSupportedException(UltravioletStrings.NotSupportedInServiceMode);
+
             this.combinedStyleSheet = new UvssDocument(null, null);
 
             this.namescope      = new Namescope();
@@ -129,6 +132,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             Contract.Require(time, "time");
             Contract.Require(spriteBatch, "spriteBatch");
+
+            if (Ultraviolet.IsRunningInServiceMode)
+                throw new NotSupportedException(UltravioletStrings.NotSupportedInServiceMode);
 
             popupQueue.Clear();
 

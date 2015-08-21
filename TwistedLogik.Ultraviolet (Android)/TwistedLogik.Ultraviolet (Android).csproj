@@ -250,6 +250,18 @@
     <Compile Include="..\TwistedLogik.Ultraviolet\DebugLevels.cs">
       <Link>DebugLevels.cs</Link>
     </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\DummyUltravioletAudio.cs">
+      <Link>DummyUltravioletAudio.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\DummyUltravioletGraphics.cs">
+      <Link>DummyUltravioletGraphics.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\DummyUltravioletInput.cs">
+      <Link>DummyUltravioletInput.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\DummyUltravioletPlatform.cs">
+      <Link>DummyUltravioletPlatform.cs</Link>
+    </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet\Easings.cs">
       <Link>Easings.cs</Link>
     </Compile>
@@ -276,6 +288,9 @@
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet\Graphics\DepthStencilState.cs">
       <Link>Graphics\DepthStencilState.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Graphics\DummyGraphicsCapabilities.cs">
+      <Link>Graphics\DummyGraphicsCapabilities.cs</Link>
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet\Graphics\DynamicIndexBuffer.cs">
       <Link>Graphics\DynamicIndexBuffer.cs</Link>
@@ -747,6 +762,15 @@
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet\Platform\DisplayMode.cs">
       <Link>Platform\DisplayMode.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Platform\DummyUltravioletClipboardInfo.cs">
+      <Link>Platform\DummyUltravioletClipboardInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Platform\DummyUltravioletDisplayInfo.cs">
+      <Link>Platform\DummyUltravioletDisplayInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Platform\DummyUltravioletWindowInfo.cs">
+      <Link>Platform\DummyUltravioletWindowInfo.cs</Link>
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet\Platform\FileSource.cs">
       <Link>Platform\FileSource.cs</Link>

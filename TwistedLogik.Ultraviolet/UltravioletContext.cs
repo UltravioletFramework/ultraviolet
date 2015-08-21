@@ -79,6 +79,8 @@ namespace TwistedLogik.Ultraviolet
             AcquireContext();
             DetectPlatform();
 
+            this.isRunningInServiceMode = configuration.EnableServiceMode;
+
             this.host = host;
 
             this.thread = Thread.CurrentThread;
@@ -526,6 +528,19 @@ namespace TwistedLogik.Ultraviolet
         public IMessageQueue<UltravioletMessageID> Messages
         {
             get { return messages; }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the context is running in service mode.
+        /// </summary>
+        public Boolean IsRunningInServiceMode
+        {
+            get
+            {
+                Contract.EnsureNotDisposed(this, Disposed);
+
+                return isRunningInServiceMode;
+            }
         }
 
         /// <summary>
@@ -1031,6 +1046,7 @@ namespace TwistedLogik.Ultraviolet
         private readonly UltravioletFactory factory = new UltravioletFactory();
         private readonly ConcurrentQueue<Task> queuedWorkItems = new ConcurrentQueue<Task>();
         private readonly Thread thread;
+        private Boolean isRunningInServiceMode;
         private Boolean isInitialized;
         private Boolean disposed;
         private Boolean disposing;
