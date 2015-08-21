@@ -47,6 +47,7 @@ namespace UvDebugSandbox.UI.Screens
         }
 
         public Single Angle { get { return (DateTime.Now.Millisecond / 1000.0f) * 360f; } }
+        public Single Angle2 { get; set; }
 
         public Int32 Index
         {

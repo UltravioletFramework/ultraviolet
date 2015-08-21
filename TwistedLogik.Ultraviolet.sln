@@ -73,6 +73,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UvTestRunnerClient", "UvTestRunnerClient\UvTestRunnerClient.csproj", "{B8AE9615-2077-4A1F-A71F-D36B4BAAF4B5}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UvDebugSandbox (Android)", "UvDebugSandbox (Android)\UvDebugSandbox (Android).csproj", "{FEC3B657-42E7-4E8E-8760-9FD7EFF1D0E5}"
+	ProjectSection(ProjectDependencies) = postProject
+		{A8C85C23-03C2-41C6-8331-48835D257634} = {A8C85C23-03C2-41C6-8331-48835D257634}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwistedLogik.Ultraviolet.UI.Presentation.Compiler", "TwistedLogik.Ultraviolet.UI.Presentation.Compiler\TwistedLogik.Ultraviolet.UI.Presentation.Compiler.csproj", "{D27AB499-F06F-47EA-8645-285CF2315EC2}"
 EndProject

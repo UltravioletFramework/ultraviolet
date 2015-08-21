@@ -249,4 +249,8 @@
   </Target>
   -->
   <ItemGroup />
+  <PropertyGroup>
+    <PostBuildEvent>cd "$(TargetDir)"
+start "Expression Compiler" /wait UvDebugSandbox.exe -upfcompile</PostBuildEvent>
+  </PropertyGroup>
 </Project>

@@ -51,6 +51,10 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Xml" />
+    <Reference Include="TwistedLogik.Ultraviolet.UI.Presentation.CompiledExpressions, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Presentation\TwistedLogik.Ultraviolet.UI.Presentation.CompiledExpressions.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\UvDebugSandbox\Assets\GlobalFontID.cs">
@@ -169,6 +173,10 @@
   <ItemGroup>
     <LinkDescription Include="XamarinLinkDescription.xml" />
   </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <None Include="Presentation\TwistedLogik.Ultraviolet.UI.Presentation.CompiledExpressions.dll" />
+  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
@@ -179,7 +187,14 @@
     <PreBuildEvent>cd "$(SolutionDir)UvDebugSandbox"
 ..\Binaries\AnyCPU\$(ConfigurationName)\uvarchive.exe -pack Content Content
 xcopy Content.uvarc "..\UvDebugSandbox (Android)\Content.uvarc" /Y
-del Content.uvarc</PreBuildEvent>
+del Content.uvarc
+
+cd "bin\$(ConfigurationName)"
+copy TwistedLogik.Ultraviolet.UI.Presentation.CompiledExpressions.dll "$(ProjectDir)Presentation"</PreBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PostBuildEvent>
+    </PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
      Other similar extension points exist, see Microsoft.Common.targets.

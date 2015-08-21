@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Diagnostics;
 using System.IO;
 using System.Text;
@@ -45,6 +46,7 @@ namespace UvDebugSandbox
         {
             using (var game = new Game())
             {
+                game.upfcompile = args.Contains("-upfcompile");
                 game.Run();
             }
         }
@@ -56,6 +58,7 @@ namespace UvDebugSandbox
         protected override UltravioletContext OnCreatingUltravioletContext()
         {
             var configuration = new OpenGLUltravioletConfiguration();
+            configuration.Headless = upfcompile;
             PopulateConfiguration(configuration);
 
             PresentationFoundation.Configure(configuration);
@@ -177,7 +180,7 @@ namespace UvDebugSandbox
             var globalStyleSheet = content.Load<UvssDocument>("UI/DefaultUIStyles");
             upf.SetGlobalStyleSheet(globalStyleSheet);
 
-            CompileBindingExpressions(upf);
+            CompileBindingExpressions();
             upf.LoadCompiledExpressions();
         }
 
@@ -253,16 +256,23 @@ namespace UvDebugSandbox
         /// <summary>
         /// Compiles the game's binding expressions.
         /// </summary>
-        private void CompileBindingExpressions(PresentationFoundation upf)
+        private void CompileBindingExpressions()
         {
+            var upf = Ultraviolet.GetUI().GetPresentationFoundation();
+
 #if DEBUG
             var debug = true;
 #else
             var debug = false;
 #endif
-            if (debug || Debugger.IsAttached)
+            if (upfcompile || debug || Debugger.IsAttached)
             {
                 upf.CompileExpressionsIfSupported("Content");
+
+                if (upfcompile)
+                {
+                    Environment.Exit(0);
+                }
             }
         }
         
@@ -276,5 +286,8 @@ namespace UvDebugSandbox
         private TextRenderer textRenderer;
         private StringFormatter textFormatter;
         private StringBuilder textBuffer;
+
+        // State values.
+        private Boolean upfcompile;
     }
 }

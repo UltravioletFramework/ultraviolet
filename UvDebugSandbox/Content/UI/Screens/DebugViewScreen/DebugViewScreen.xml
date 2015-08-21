@@ -2,21 +2,24 @@
 <UIPanelDefinition>
   <View ViewModelType="UvDebugSandbox.UI.Screens.DebugViewModel, UvDebugSandbox">
 
-    <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
-      <StackPanel Orientation="Horizontal">
-        <Button Width="128" Height="128">1</Button>
-        <Button Width="128" Height="128">
-          <Button.LayoutTransform>
-            <TransformGroup>
-              <ScaleTransform ScaleX="2" />
-              <RotateTransform Angle="45" />              
-            </TransformGroup>
-          </Button.LayoutTransform>
-          2
-        </Button>
-        <Button Width="128" Height="128">3</Button>        
-      </StackPanel>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="*"/>
+      <RowDefinition Height="32"/>
+    </Grid.RowDefinitions>
+    
+    <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
+      <Button Width="128" Height="128" Content="Button"></Button>
+      <Button Width="128" Height="128" Content="Button">
+        <Button.LayoutTransform>
+          <TransformGroup>
+            <RotateTransform Angle="{{Angle2}}" />              
+          </TransformGroup>
+        </Button.LayoutTransform>
+      </Button>
+      <Button Width="128" Height="128" Content="Button"/>
     </StackPanel>
+
+    <HSlider Grid.Row="1" Width="200" Maximum="360" Value="{{Angle2}}"/>
         
   </View>
 </UIPanelDefinition>
