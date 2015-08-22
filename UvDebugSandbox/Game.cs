@@ -23,9 +23,9 @@ namespace UvDebugSandbox
     /// Represents the main application object.
     /// </summary>
 #if ANDROID
-    [Android.App.Activity(Label = "GameActivity", MainLauncher = true, ConfigurationChanges = 
-        Android.Content.PM.ConfigChanges.Orientation | 
-        Android.Content.PM.ConfigChanges.ScreenSize | 
+    [Android.App.Activity(Label = "GameActivity", MainLauncher = true, ConfigurationChanges =
+        Android.Content.PM.ConfigChanges.Orientation |
+        Android.Content.PM.ConfigChanges.ScreenSize |
         Android.Content.PM.ConfigChanges.KeyboardHidden)]
     public class Game : UltravioletActivity
 #else
@@ -45,7 +45,8 @@ namespace UvDebugSandbox
         {
             using (var game = new Game())
             {
-                game.upfcompile = args.Contains("-upfcompile");
+                game.compileContent = args.Contains("-compile:content");
+                game.compileExpressions = args.Contains("-compile:expressions");
                 game.Run();
             }
         }
@@ -79,7 +80,7 @@ namespace UvDebugSandbox
         protected override void OnInitialized()
         {
             SetFileSourceFromManifestIfExists("UvDebugSandbox.Content.uvarc");
-                        
+
             base.OnInitialized();
         }
 
@@ -90,25 +91,34 @@ namespace UvDebugSandbox
         {
             this.content = ContentManager.Create("Content");
 
-            LoadLocalizationDatabases();
-            LoadInputBindings();
-            LoadContentManifests();
-            LoadCursors();
-            LoadPresentation();
+            if (Ultraviolet.IsRunningInServiceMode)
+            {
+                CompileContent();
+                CompileBindingExpressions();
+                Environment.Exit(0);
+            }
+            else
+            {
+                LoadLocalizationDatabases();
+                LoadInputBindings();
+                LoadContentManifests();
+                LoadCursors();
+                LoadPresentation();
 
-            this.spriteBatch = SpriteBatch.Create();
-            this.spriteFont = this.content.Load<SpriteFont>(GlobalFontID.SegoeUI);
+                this.spriteBatch = SpriteBatch.Create();
+                this.spriteFont = this.content.Load<SpriteFont>(GlobalFontID.SegoeUI);
 
-            this.textRenderer = new TextRenderer();
-            this.textFormatter = new StringFormatter();
-            this.textBuffer = new StringBuilder();
+                this.textRenderer = new TextRenderer();
+                this.textFormatter = new StringFormatter();
+                this.textBuffer = new StringBuilder();
 
-            GC.Collect(2);
+                GC.Collect(2);
 
-            var screenService = new UIScreenService(content);
-            var screen = screenService.Get<DebugViewScreen>();
+                var screenService = new UIScreenService(content);
+                var screen = screenService.Get<DebugViewScreen>();
 
-            Ultraviolet.GetUI().GetScreens().Open(screen);
+                Ultraviolet.GetUI().GetScreens().Open(screen);
+            }
 
             base.OnLoadingContent();
         }
@@ -258,7 +268,16 @@ namespace UvDebugSandbox
         /// <returns><c>true</c> if the game should run in service mode; otherwise, <c>false</c>.</returns>
         private Boolean ShouldRunInServiceMode()
         {
-            return upfcompile;
+            return compileContent || compileExpressions;
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the game should compile its content into an archive.
+        /// </summary>
+        /// <returns></returns>
+        private Boolean ShouldCompileContent()
+        {
+            return compileContent;
         }
 
         /// <summary>
@@ -270,8 +289,29 @@ namespace UvDebugSandbox
 #if DEBUG
             return true;
 #else
-            return upfcompile || System.Diagnostics.Debugger.IsAttached;
+            return compileExpressions || System.Diagnostics.Debugger.IsAttached;
 #endif
+        }
+
+        /// <summary>
+        /// Compiles the game's content into an archive file.
+        /// </summary>
+        private void CompileContent()
+        {
+            if (ShouldCompileContent())
+            {
+                if (Ultraviolet.Platform == UltravioletPlatform.Android)
+                    throw new NotSupportedException();
+
+                var archive = ContentArchive.FromFileSystem(new[] { "Content" });
+                using (var stream = File.OpenWrite("Content.uvarc"))
+                {
+                    using (var writer = new BinaryWriter(stream))
+                    {
+                        archive.Save(writer);
+                    }
+                }
+            }
         }
 
         /// <summary>
@@ -282,12 +322,7 @@ namespace UvDebugSandbox
             if (ShouldCompileBindingExpressions())
             {
                 var upf = Ultraviolet.GetUI().GetPresentationFoundation();
-                upf.CompileExpressionsIfSupported("Content");
-
-                if (upfcompile)
-                {
-                    Environment.Exit(0);
-                }
+                upf.CompileExpressionsIfSupported("Content");                
             }
         }
         
@@ -303,6 +338,7 @@ namespace UvDebugSandbox
         private StringBuilder textBuffer;
 
         // State values.
-        private Boolean upfcompile;
+        private Boolean compileContent;
+        private Boolean compileExpressions;
     }
 }

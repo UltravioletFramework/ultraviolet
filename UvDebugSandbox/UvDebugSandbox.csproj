@@ -251,6 +251,6 @@
   <ItemGroup />
   <PropertyGroup>
     <PostBuildEvent>cd "$(TargetDir)"
-start "Expression Compiler" /wait UvDebugSandbox.exe -upfcompile</PostBuildEvent>
+start "" /wait UvDebugSandbox.exe -compile:content -compile:expressions</PostBuildEvent>
   </PropertyGroup>
 </Project>
