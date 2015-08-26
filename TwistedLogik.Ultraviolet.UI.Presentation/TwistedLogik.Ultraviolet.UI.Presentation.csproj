@@ -122,6 +122,9 @@
     <Compile Include="DependencyBoundValueConverting.cs" />
     <Compile Include="DependencyBoundValueNonConverting.cs" />
     <Compile Include="DependencyObject.cs" />
+    <Compile Include="Documents\Adorner.cs" />
+    <Compile Include="Documents\AdornerDecorator.cs" />
+    <Compile Include="Documents\AdornerLayer.cs" />
     <Compile Include="Documents\NamespaceDoc.cs" />
     <Compile Include="DrawingContext.ClipStencilStates.cs" />
     <Compile Include="IBindingExpressionCompiler.cs" />
