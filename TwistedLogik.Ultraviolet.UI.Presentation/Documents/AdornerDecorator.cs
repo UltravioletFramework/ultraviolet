@@ -21,6 +21,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Documents
             this.adornerLayer = new AdornerLayer(uv, null);
         }
 
+        /// <summary>
+        /// Gets the decorator's adorner layer.
+        /// </summary>
+        public AdornerLayer AdornerLayer
+        {
+            get { return adornerLayer; }
+        }
+
         /// <inheritdoc/>
         public override UIElement Child
         {

@@ -759,9 +759,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             {
                 defaultProperty = defaultPropertyAttr.Name;
             }
-
+            
             var ctor = type.GetConstructor(new[] { typeof(UltravioletContext), typeof(String) });
-            if (ctor == null)
+            if (ctor == null && !type.IsAbstract)
                 throw new InvalidOperationException(PresentationStrings.UIElementInvalidCtor.Format(type.Name));
 
             RuntimeHelpers.RunClassConstructor(type.TypeHandle);

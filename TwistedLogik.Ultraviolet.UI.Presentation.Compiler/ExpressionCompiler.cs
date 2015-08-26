@@ -502,7 +502,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
 
                     var dprop = DependencyProperty.FindByName(attr.Name.LocalName, elementType);
                     if (dprop == null)
-                        throw new InvalidOperationException(CompilerStrings.OnlyDependencyPropertiesCanBeBound.Format(attrValue));
+                        throw new InvalidOperationException(CompilerStrings.OnlyDependencyPropertiesCanBeBound.Format(attr.Name.LocalName));
 
                     expressions.Add(new BindingExpressionInfo(attrValue, dprop.PropertyType) { GenerateGetter = true });
                 }
