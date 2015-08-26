@@ -5,8 +5,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
     /// <summary>
     /// Represents a control which renders a border around its content.
     /// </summary>
-    [UvmlKnownType(null, "TwistedLogik.Ultraviolet.UI.Presentation.Controls.Templates.Border.xml")]
-    public class Border : ContentControl
+    [UvmlKnownType]
+    public class Border : Decorator
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Control"/> class.
@@ -50,7 +50,50 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <remarks>The styling name of this dependency property is 'border-color'.</remarks>
         public static readonly DependencyProperty BorderColorProperty = DependencyProperty.Register("BorderColor", typeof(Color), typeof(Border),
             new PropertyMetadata<Color>(UltravioletBoxedValues.Color.Black));
-        
+
+        /// <inheritdoc/>
+        protected override Size2D MeasureOverride(Size2D availableSize)
+        {
+            var totalPadding = BorderThickness + Padding;
+            var totalPaddingWidth = totalPadding.Left + totalPadding.Right;
+            var totalPaddingHeight = totalPadding.Top + totalPadding.Bottom;
+
+            var child = Child;
+            if (child == null)
+            {
+                return new Size2D(totalPaddingWidth, totalPaddingHeight);
+            }
+
+            var childAvailableSize = availableSize - totalPadding;
+            child.Measure(childAvailableSize);
+
+            return new Size2D(
+                child.DesiredSize.Width + totalPaddingWidth, 
+                child.DesiredSize.Height + totalPaddingHeight);
+        }
+
+        /// <inheritdoc/>
+        protected override Size2D ArrangeOverride(Size2D finalSize, ArrangeOptions options)
+        {
+            var totalPadding = BorderThickness + Padding;
+            var totalPaddingWidth = totalPadding.Left + totalPadding.Right;
+            var totalPaddingHeight = totalPadding.Top + totalPadding.Bottom;
+
+            var child = Child;
+            if (child != null)
+            {
+                var childArrangeRect = new RectangleD(
+                    totalPadding.Left, 
+                    totalPadding.Right,
+                    finalSize.Width - totalPaddingWidth, 
+                    finalSize.Height - totalPaddingHeight);
+
+                child.Arrange(childArrangeRect, options);
+            }
+
+            return finalSize;
+        }
+
         /// <inheritdoc/>
         protected override void DrawOverride(UltravioletTime time, DrawingContext dc)
         {

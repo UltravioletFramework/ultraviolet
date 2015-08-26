@@ -11,9 +11,7 @@
              VerticalAlignment="Stretch"/>
       <Border Class="listbox-border"
               HorizontalAlignment="Stretch"
-              HorizontalContentAlignment="Stretch"
-              VerticalAlignment="Stretch"
-              VerticalContentAlignment="Stretch">
+              VerticalAlignment="Stretch">
 
         <ScrollViewer Class="listbox-scrollviewer"
                       HorizontalAlignment="Stretch"

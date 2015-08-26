@@ -195,6 +195,9 @@
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\Control.cs">
       <Link>Controls\Control.cs</Link>
     </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\Decorator.cs">
+      <Link>Controls\Decorator.cs</Link>
+    </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\DefinitionBase.cs">
       <Link>Controls\DefinitionBase.cs</Link>
     </Compile>
@@ -961,9 +964,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\Primitives\Templates\VScrollBar.xml">
       <Link>Controls\Primitives\Templates\VScrollBar.xml</Link>
-    </EmbeddedResource>
-    <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\Templates\Border.xml">
-      <Link>Controls\Templates\Border.xml</Link>
     </EmbeddedResource>
     <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\Templates\Button.xml">
       <Link>Controls\Templates\Button.xml</Link>

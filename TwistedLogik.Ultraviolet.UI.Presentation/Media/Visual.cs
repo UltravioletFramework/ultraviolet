@@ -160,7 +160,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media
         /// <param name="child">The child object to add to this object.</param>
         protected internal void AddVisualChild(Visual child)
         {
-            Contract.Require(child, "child");
+            if (child == null)
+                return;
 
             if (child.visualParent != null)
                 throw new InvalidOperationException(PresentationStrings.VisualAlreadyHasAParent);
@@ -181,7 +182,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media
         /// <param name="child">The child object to remove from this object.</param>
         protected internal void RemoveVisualChild(Visual child)
         {
-            Contract.Require(child, "child");
+            if (child == null || child.visualParent == null)
+                return;
 
             if (child.visualParent == this)
             {

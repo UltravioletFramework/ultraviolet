@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet.UI.Presentation.Media;
 
@@ -8,6 +9,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
     /// Represents a framework element with child elements.
     /// </summary>
     [UvmlKnownType]
+    [DefaultProperty("Children")]
     public abstract class Panel : FrameworkElement
     {
         /// <summary>
@@ -20,7 +22,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         {
             this.children = new UIElementCollection(this, this);
         }
-
+        
         /// <summary>
         /// Gets the panel's collection of children.
         /// </summary>
@@ -106,7 +108,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             }
             return null;
         }
-        
+
         // Property values.
         private readonly UIElementCollection children;
     }

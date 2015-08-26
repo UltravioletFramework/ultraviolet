@@ -93,6 +93,7 @@
     <Compile Include="Animations\StoryboardTargetCollection.IEnumerable.cs" />
     <Compile Include="ArrangeOptions.cs" />
     <Compile Include="AssetSource.cs" />
+    <Compile Include="Controls\Decorator.cs" />
     <Compile Include="DataSourceExpressionBuilder.cs" />
     <Compile Include="BindingExpressions.cs" />
     <Compile Include="BoundEventBuilder.cs" />
@@ -417,9 +418,6 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Controls\Primitives\Templates\ToggleButton.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Controls\Templates\Border.xml" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Controls\Primitives\Templates\HScrollBar.xml" />

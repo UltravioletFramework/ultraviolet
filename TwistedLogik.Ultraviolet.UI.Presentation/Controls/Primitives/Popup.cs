@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet.UI.Presentation.Media;
 using TwistedLogik.Ultraviolet.UI.Presentation.Styles;
@@ -13,6 +14,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
     /// described on that page. See in particular the tables under the "How the Properties Work Together" and 
     /// "When the Popup Encounters the Edge of the Screen" headings.</remarks>
     [UvmlKnownType]
+    [DefaultProperty("Child")]
     public partial class Popup : FrameworkElement
     {
         /// <summary>
@@ -29,7 +31,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             });
             this.root.ChangeLogicalParent(this);
         }
-
+        
         /// <summary>
         /// Gets or sets the popup's content.
         /// </summary>

@@ -13,9 +13,7 @@
 
       <Border
         HorizontalAlignment="Stretch"
-        HorizontalContentAlignment="Stretch"
-        VerticalAlignment="Stretch"
-        VerticalContentAlignment="Stretch">
+        VerticalAlignment="Stretch">
 
         <Canvas
           HorizontalAlignment="Stretch"

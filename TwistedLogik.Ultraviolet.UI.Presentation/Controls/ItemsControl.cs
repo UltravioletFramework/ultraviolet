@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
+using TwistedLogik.Nucleus;
 using TwistedLogik.Nucleus.Collections;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
@@ -9,6 +11,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
     /// Represents a control which presents the user with a list of items to select.
     /// </summary>
     [UvmlKnownType]
+    [DefaultProperty("Items")]
     public abstract class ItemsControl : Control
     {
         /// <summary>
@@ -51,7 +54,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 
             return null;
         }
-
+        
         /// <summary>
         /// Gets the <see cref="ItemContainerGenerator"/> for this control.
         /// </summary>

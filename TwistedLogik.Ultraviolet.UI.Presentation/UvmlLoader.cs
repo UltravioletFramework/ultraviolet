@@ -9,7 +9,6 @@ using TwistedLogik.Nucleus;
 using TwistedLogik.Nucleus.Data;
 using TwistedLogik.Nucleus.Xml;
 using TwistedLogik.Ultraviolet.UI.Presentation.Controls;
-using TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation
 {
@@ -266,21 +265,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 instance.Classes.Add(className);
             }
 
-            var panel = parent as Panel;
-            if (panel != null)
-                panel.Children.Add(instance);
-
-            var itemsControl = parent as ItemsControl;
-            if (itemsControl != null)
-                itemsControl.Items.Add(instance);
-
-            var contentControl = parent as ContentControl;
-            if (contentControl != null)
-                contentControl.Content = instance;
-
-            var popupControl = parent as Popup;
-            if (popupControl != null)
-                popupControl.Child = instance;
+            PopulateParentDefaultPropertyWithChildIfApplicable(uv, parent, instance, context);
 
             var fe = instance as FrameworkElement;
             if (fe != null)
@@ -903,14 +888,78 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             if (defaultProperty != null && !String.IsNullOrEmpty(xmlElement.Value))
             {
-                var dprop = DependencyProperty.FindByName(defaultProperty, uiElement.GetType());
-                if (dprop == null)
-                    throw new InvalidOperationException(PresentationStrings.InvalidDefaultProperty.Format(defaultProperty, uiElement.GetType()));
-
                 var value = String.Join(String.Empty, xmlElement.Nodes().Where(x => x is XText).Select(x => ((XText)x).Value.Trim()));
                 if (!String.IsNullOrEmpty(value))
                 {
-                    BindOrSetDependencyProperty(uiElement, dprop, value, context);
+                    PopulateElementProperty(uiElement, defaultProperty, value, context);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Populates the specified element's default property with the specified child element, if applicable.
+        /// </summary>
+        /// <param name="uv">The Ultraviolet context.</param>
+        /// <param name="parent">The parent element.</param>
+        /// <param name="child">The child element.</param>
+        /// <param name="context">The current instantiation context.</param>
+        private static void PopulateParentDefaultPropertyWithChildIfApplicable(UltravioletContext uv, UIElement parent, UIElement child, InstantiationContext context)
+        {
+            if (parent == null || child == null)
+                return;
+
+            String defaultProperty;
+            if (!uv.GetUI().GetPresentationFoundation().GetElementDefaultProperty(parent.GetType(), out defaultProperty))
+                return;
+
+            if (String.IsNullOrEmpty(defaultProperty))
+                return;
+
+            var type = GetPropertyType(uv, parent, defaultProperty);
+            if (type.IsAssignableFrom(child.GetType()))
+            {
+                var value = GetPropertyValue(uv, parent, defaultProperty);
+                if (value != null)
+                {
+                    throw new InvalidOperationException(PresentationStrings.InvalidChildElements.Format(parent.UvmlName));
+                }
+
+                SetPropertyValue(uv, parent, defaultProperty, child);
+            }
+            else
+            {
+                var ienum = (from iface in type.GetInterfaces()
+                             where
+                                 iface.IsGenericType &&
+                                 iface.GetGenericTypeDefinition() == typeof(IEnumerable<>) &&
+                                 iface.GetGenericArguments()[0].IsAssignableFrom(child.GetType())
+                             select iface).SingleOrDefault();
+
+                if (ienum != null)
+                {
+                    var value = GetPropertyValue(uv, parent, defaultProperty);
+                    if (value == null)
+                    {
+                        var ctor = type.GetConstructor(Type.EmptyTypes);
+                        if (ctor != null)
+                            throw new InvalidOperationException(UltravioletStrings.NoValidConstructor.Format(type.Name));
+
+                        value = ctor.Invoke(null);
+                        SetPropertyValue(uv, parent, defaultProperty, value);
+                    }
+
+                    var addMethod = (from method in value.GetType().GetMethods()
+                                     let methodName = method.Name
+                                     let methodParams = method.GetParameters()
+                                     where
+                                        methodName == "Add" &&
+                                        methodParams.Length == 1 &&
+                                        methodParams[0].ParameterType.IsAssignableFrom(child.GetType())
+                                     select method).FirstOrDefault();
+                    if (addMethod != null)
+                    {
+                        addMethod.Invoke(value, new[] { child });
+                    }
                 }
             }
         }
@@ -1082,6 +1131,30 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Gets the type of the specified property.
+        /// </summary>
+        /// <param name="uv">The Ultraviolet context.</param>
+        /// <param name="uiElement">The UI element from which to retrieve the property value.</param>
+        /// <param name="name">The name of the property to retrieve.</param>
+        /// <returns>The type of the specified property.</returns>
+        private static Type GetPropertyType(UltravioletContext uv, UIElement uiElement, String name)
+        {
+            var dprop = FindElementDependencyProperty(uv, uiElement, name);
+            if (dprop != null)
+            {
+                return dprop.PropertyType;
+            }
+            else
+            {
+                var propInfo = FindElementStandardProperty(uiElement, name);
+                if (!propInfo.CanRead)
+                    throw new InvalidOperationException(PresentationStrings.PropertyHasNoGetter.Format(name));
+
+                return propInfo.PropertyType;
+            }
+        }
+
+        /// <summary>
         /// Gets a value indicating whether the specified attribute name represents an attached property.
         /// </summary>
         /// <param name="name">The attribute name to evaluate.</param>
@@ -1162,50 +1235,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <returns>The object tree's root object.</returns>
         private static UvmlObject BuildObjectTree(UltravioletContext uv, UvmlObject root, InstantiationContext context)
         {
-            var debugName   = root.Instance.GetType().Name;
+            var debugName = root.Instance.GetType().Name;
             var childrenXml = root.Xml.Elements().Where(x => !ElementNameRepresentsProperty(x));
 
-            // Single child
-            if (root.Instance is ContentControl || root.Instance is Popup)
+            foreach (var childXml in childrenXml)
             {
-                var fe = root.Instance as FrameworkElement;
-                if (fe != null)
-                    debugName = fe.Name;
+                var child = InstantiateElement(uv, root.Instance, childXml, context);
+                var childObject = new UvmlObject(childXml, child);
 
-                if (childrenXml.Count() > 1)
-                    throw new InvalidOperationException(PresentationStrings.InvalidChildElements.Format(debugName));
+                root.Children.Add(childObject);
 
-                var childXml = childrenXml.SingleOrDefault();
-                if (childXml != null)
-                {
-                    var child       = InstantiateElement(uv, root.Instance, childXml, context);
-                    var childObject = new UvmlObject(childXml, child);
-
-                    root.Children.Add(childObject);
-
-                    BuildObjectTree(uv, childObject, context);
-                }
-                return root;
+                BuildObjectTree(uv, childObject, context);
             }
-
-            // Multiple children
-            if (root.Instance is Panel || root.Instance is ItemsControl)
-            {
-                foreach (var childXml in childrenXml)
-                {
-                    var child       = InstantiateElement(uv, root.Instance, childXml, context);
-                    var childObject = new UvmlObject(childXml, child);
-
-                    root.Children.Add(childObject);
-
-                    BuildObjectTree(uv, childObject, context);
-                }
-                return root;
-            }
-
-            // No children
-            if (childrenXml.Any())
-                throw new InvalidOperationException(debugName);
 
             return root;
         }

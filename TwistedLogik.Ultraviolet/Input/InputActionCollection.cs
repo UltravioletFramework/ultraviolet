@@ -34,7 +34,7 @@ namespace TwistedLogik.Ultraviolet.Input
         {
             var ctor = typeof(T).GetConstructor(new[] { typeof(UltravioletContext) });
             if (ctor == null)
-                throw new InvalidOperationException(UltravioletStrings.NoValidConstructor);
+                throw new InvalidOperationException(UltravioletStrings.NoValidConstructor.Format(typeof(T).Name));
 
             return new UltravioletSingleton<T>((uv) =>
             {

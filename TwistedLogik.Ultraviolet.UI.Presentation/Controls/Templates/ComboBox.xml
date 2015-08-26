@@ -45,9 +45,7 @@
                      VerticalAlignment="Stretch"/>
           <Border Class="combobox-dropdown-border"
                   HorizontalAlignment="Stretch"
-                  HorizontalContentAlignment="Stretch"
-                  VerticalAlignment="Stretch"
-                  VerticalContentAlignment="Stretch">
+                  VerticalAlignment="Stretch">
 
             <ScrollViewer Class="combobox-dropdown-scrollviewer"
                           HorizontalAlignment="Stretch"
