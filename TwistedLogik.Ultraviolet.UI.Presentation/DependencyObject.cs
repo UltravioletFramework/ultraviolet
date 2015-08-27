@@ -61,7 +61,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             foreach (var value in dependencyPropertyValuesOfTypeDependencyObject)
             {
                 var dobj = (DependencyObject)value.Value.GetUntypedValue();
-                if (dobj.WasInvalidatedLastDigest)
+                if (dobj != null && dobj.WasInvalidatedLastDigest)
                 {
                     value.Value.HandleForcedInvalidation();
                 }
