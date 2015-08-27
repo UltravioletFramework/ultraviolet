@@ -517,6 +517,24 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Indicates that the specified element is interested in receiving <see cref="UIElement.LayoutUpdated"/> events.
+        /// </summary>
+        /// <param name="element">The element to register.</param>
+        internal void RegisterForLayoutUpdated(UIElement element)
+        {
+            elementsWithLayoutUpdatedHandlers.AddLast(element);
+        }
+
+        /// <summary>
+        /// Indicates that the specified element is no longer interested in receiving <see cref="UIElement.LayoutUpdated"/> events.
+        /// </summary>
+        /// <param name="element">The element to unregister.</param>
+        internal void UnregisterForLayoutUpdated(UIElement element)
+        {
+            elementsWithLayoutUpdatedHandlers.Remove(element);
+        }
+
+        /// <summary>
         /// Gets the singleton instance of the Presentation Foundation.
         /// </summary>
         internal static PresentationFoundation Instance
@@ -678,9 +696,46 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             PerformanceStats.BeginFrame();
 
-            ProcessStyleQueue();
-            ProcessMeasureQueue();
-            ProcessArrangeQueue();
+            while (ElementNeedsStyle || ElementNeedsMeasure || ElementNeedsArrange)
+            {
+                // 1. Style
+                while (ElementNeedsStyle)
+                {
+                    var element = styleQueue.Dequeue();
+                    if (element.IsStyleValid)
+                        continue;
+
+                    element.Style(element.View.StyleSheet);
+                    element.InvalidateMeasure();
+                }
+
+                // 2. Measure
+                while (ElementNeedsMeasure && !ElementNeedsStyle)
+                {
+                    var element = measureQueue.Dequeue();
+                    if (element.IsMeasureValid)
+                        continue;
+
+                    element.Measure(element.MostRecentAvailableSize);
+                    element.InvalidateArrange();
+                }
+
+                // 3. Arrange
+                while (ElementNeedsArrange && !ElementNeedsStyle && !ElementNeedsMeasure)
+                {
+                    var element = arrangeQueue.Dequeue();
+                    if (element.IsArrangeValid)
+                        continue;
+
+                    element.Arrange(element.MostRecentFinalRect, element.MostRecentArrangeOptions);
+                }
+
+                if (ElementNeedsStyle || ElementNeedsMeasure || ElementNeedsArrange)
+                    continue;
+
+                // 4. Raise LayoutUpdated events
+                RaiseLayoutUpdated();
+            }
         }
 
         /// <summary>
@@ -894,54 +949,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 temp(this, EventArgs.Empty);
             }
         }
-
-        /// <summary>
-        /// Processes the queue of elements with invalid styling states.
-        /// </summary>
-        private void ProcessStyleQueue()
-        {
-            while (styleQueue.Count > 0)
-            {
-                var element = styleQueue.Dequeue();
-                if (element.IsStyleValid)
-                    continue;
-
-                element.Style(element.View.StyleSheet);
-                element.InvalidateMeasure();
-            }
-        }
-
-        /// <summary>
-        /// Processes the queue of elements with invalid measurement states.
-        /// </summary>
-        private void ProcessMeasureQueue()
-        {
-            while (measureQueue.Count > 0)
-            {
-                var element = measureQueue.Dequeue();
-                if (element.IsMeasureValid)
-                    continue;
-
-                element.Measure(element.MostRecentAvailableSize);
-                element.InvalidateArrange();
-            }
-        }
-
-        /// <summary>
-        /// Processes the queue of elements with invalid arrangement states.
-        /// </summary>
-        private void ProcessArrangeQueue()
-        {
-            while (arrangeQueue.Count > 0)
-            {
-                var element = arrangeQueue.Dequeue();
-                if (element.IsArrangeValid)
-                    continue;
-
-                element.Arrange(element.MostRecentFinalRect, element.MostRecentArrangeOptions);
-            }
-        }
-
+        
         /// <summary>
         /// Invalidates the specified element's style.
         /// </summary>
@@ -999,7 +1007,42 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 ComponentTemplates.SetDefault(type, template);
             }
         }
-        
+
+        /// <summary>
+        /// Raises the <see cref="UIElement.LayoutUpdated"/> event for elements which have registered handlers.
+        /// </summary>
+        private void RaiseLayoutUpdated()
+        {
+            elementsWithLayoutUpdatedHandlers.ForEach((element) =>
+            {
+                element.RaiseLayoutUpdated();
+            });
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether any elements are awaiting styling.
+        /// </summary>
+        private Boolean ElementNeedsStyle
+        {
+            get { return styleQueue.Count > 0; }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether any elements are awaiting measurement.
+        /// </summary>
+        private Boolean ElementNeedsMeasure
+        {
+            get { return measureQueue.Count > 0; }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether any elements are awaiting arrangement.
+        /// </summary>
+        private Boolean ElementNeedsArrange
+        {
+            get { return arrangeQueue.Count > 0; }
+        }
+
         // The singleton instance of the Ultraviolet Presentation Foundation.
         private static readonly UltravioletSingleton<PresentationFoundation> instance =
             new UltravioletSingleton<PresentationFoundation>((uv) =>
@@ -1034,6 +1077,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         private readonly LayoutQueue styleQueue;
         private readonly LayoutQueue measureQueue;
         private readonly LayoutQueue arrangeQueue;
+        private readonly WeakLinkedList<UIElement> elementsWithLayoutUpdatedHandlers = 
+            new WeakLinkedList<UIElement>();
 
         // The global style sheet.
         private UvssDocument globalStyleSheet;

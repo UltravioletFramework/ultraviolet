@@ -971,6 +971,35 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Occurs after the Presentation Foundation has finished a layout pass.
+        /// </summary>
+        public event EventHandler LayoutUpdated
+        {
+            add
+            {
+                var oldNull = (layoutUpdated == null);
+                layoutUpdated += value;
+                var newNull = (layoutUpdated == null);
+
+                if (oldNull && !newNull)
+                {
+                    Ultraviolet.GetUI().GetPresentationFoundation().RegisterForLayoutUpdated(this);
+                }
+            }
+            remove
+            {
+                var oldNull = (layoutUpdated == null);
+                layoutUpdated -= value;
+                var newNull = (layoutUpdated == null);
+
+                if (!oldNull && newNull)
+                {
+                    Ultraviolet.GetUI().GetPresentationFoundation().UnregisterForLayoutUpdated(this);
+                }
+            }
+        }
+
+        /// <summary>
         /// Occurs when a class is added to the element.
         /// </summary>
         public event UIElementClassEventHandler ClassAdded;
@@ -1151,6 +1180,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             OnLayoutCacheInvalidatedInternal();
             OnLogicalParentChanged();
+        }
+
+        /// <summary>
+        /// Raises the <see cref="LayoutUpdated"/> event.
+        /// </summary>
+        internal void RaiseLayoutUpdated()
+        {
+            var temp = this.layoutUpdated;
+            if (temp != null)
+            {
+                temp(null, EventArgs.Empty);
+            }
         }
 
         /// <summary>
@@ -2508,6 +2549,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         private RectangleD relativeBounds;
         private RectangleD absoluteBounds;
         private RectangleD? clipRectangle;
+        private event EventHandler layoutUpdated;
 
         // Layout parameters.
         private UvssDocument mostRecentStyleSheet;
@@ -2523,7 +2565,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         private Boolean isStyling;
         private Boolean isMeasuring;
         private Boolean isArranging;
-
+        
         // The collection of active storyboard clocks on this element.
         private readonly Dictionary<Storyboard, StoryboardClock> storyboardClocks = 
             new Dictionary<Storyboard, StoryboardClock>();

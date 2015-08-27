@@ -368,6 +368,7 @@
     <Compile Include="VisualStateGroupCollection.IEnumerable.cs" />
     <Compile Include="VisualStateTransitionKey.cs" />
     <Compile Include="Media\VisualTreeHelper.cs" />
+    <Compile Include="WeakLinkedList.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TwistedLogik.Ultraviolet\TwistedLogik.Ultraviolet.csproj">

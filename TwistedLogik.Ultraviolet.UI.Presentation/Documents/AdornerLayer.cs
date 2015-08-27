@@ -66,7 +66,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Documents
 
             adorners.Add(adorner);
             adorner.ChangeLogicalParent(this);
-            
+
             InvalidateMeasure();
             InvalidateArrange();
 
@@ -145,6 +145,22 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Documents
         }
 
         /// <inheritdoc/>
+        protected override void OnVisualParentChanged(Visual oldParent, Visual newParent)
+        {
+            if (oldParent == null && newParent != null)
+            {
+                LayoutUpdated += AdornerLayer_LayoutUpdated;
+            }
+
+            if (oldParent != null && newParent == null)
+            {
+                LayoutUpdated -= AdornerLayer_LayoutUpdated;
+            }
+
+            base.OnVisualParentChanged(oldParent, newParent);
+        }
+
+        /// <inheritdoc/>
         protected internal override UIElement GetLogicalChild(Int32 childIndex)
         {
             return (UIElement)adorners[childIndex];
@@ -212,6 +228,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Documents
                     child.PositionChildren();
                 }
             });
+        }
+        
+        /// <summary>
+        /// Handles the adorner layer's <see cref="UIElement.LayoutUpdated"/> event.
+        /// </summary>
+        private void AdornerLayer_LayoutUpdated(Object sender, EventArgs e)
+        {
+
         }
 
         // State values.
