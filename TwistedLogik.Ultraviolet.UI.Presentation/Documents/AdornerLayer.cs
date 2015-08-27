@@ -11,7 +11,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Documents
     /// Represents a layer for containing adorners
     /// </summary>
     [UvmlKnownType]
-    public class AdornerLayer : FrameworkElement
+    public partial class AdornerLayer : FrameworkElement
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="AdornerLayer"/> class.
@@ -22,6 +22,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Documents
             : base(uv, name)
         {
             adorners = new VisualCollection(this);
+            adornersStates = new List<AdornerState>();
         }
 
         /// <summary>
@@ -64,14 +65,22 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Documents
         {
             Contract.Require(adorner, "adorner");
 
+            var state = new AdornerState(adorner);
+            state.LastX = adorner.AdornedElement.AbsolutePosition.X;
+            state.LastY = adorner.AdornedElement.AbsolutePosition.Y;
+            state.LastRenderWidth = adorner.AdornedElement.RenderSize.Width;
+            state.LastRenderHeight = adorner.AdornedElement.RenderSize.Height;
+
             adorners.Add(adorner);
+            adornersStates.Add(state);
+
             adorner.ChangeLogicalParent(this);
 
             InvalidateMeasure();
-            InvalidateArrange();
+            InvalidateArrange(true);
 
             Measure(MostRecentAvailableSize);
-            Arrange(MostRecentFinalRect, MostRecentArrangeOptions | ArrangeOptions.ForceInvalidatePosition);
+            Arrange(MostRecentFinalRect, MostRecentArrangeOptions);
         }
 
         /// <summary>
@@ -82,8 +91,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Documents
         {
             Contract.Require(adorner, "adorner");
 
-            adorners.Remove(adorner);
-            adorner.ChangeLogicalParent(null);
+            var index = adorners.IndexOf(adorner);
+            if (index >= 0)
+            {
+                adorners.RemoveAt(index);
+                adornersStates.RemoveAt(index);
+
+                adorner.ChangeLogicalParent(null);
+            }
         }
 
         /// <summary>
@@ -193,8 +208,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Documents
         /// <inheritdoc/>
         protected override Size2D MeasureOverride(Size2D availableSize)
         {
-            foreach (Adorner adorner in adorners)
+            for (int i = 0; i < adorners.Count; i++)
             {
+                var adorner = (Adorner)adorners[i];
                 adorner.Measure(availableSize);
             }
             return Size2D.Zero;
@@ -203,8 +219,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Documents
         /// <inheritdoc/>
         protected override Size2D ArrangeOverride(Size2D finalSize, ArrangeOptions options)
         {
-            foreach (Adorner adorner in adorners)
+            for (int i = 0; i < adorners.Count; i++)
             {
+                var state = adornersStates[i];
+
+                var adorner = (Adorner)adorners[i];
+                var adornedElement = adorner.AdornedElement;
+
+                state.LastX = adornedElement.AbsolutePosition.X;
+                state.LastY = adornedElement.AbsolutePosition.Y;
+                state.LastRenderWidth = adornedElement.RenderSize.Width;
+                state.LastRenderHeight = adornedElement.RenderSize.Height;
+
                 var adornerRect = new RectangleD(Point2D.Zero, adorner.DesiredSize);
                 adorner.Arrange(adornerRect);
             }
@@ -235,10 +261,34 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Documents
         /// </summary>
         private void AdornerLayer_LayoutUpdated(Object sender, EventArgs e)
         {
+            var needsUpdate = false;
 
+            for (int i = 0; i < adorners.Count; i++)
+            {
+                var state = adornersStates[i];
+
+                var adorner = (Adorner)adorners[i];
+                var adornedElement = adorner.AdornedElement;
+
+                if (!MathUtil.AreApproximatelyEqual(state.LastX, adornedElement.AbsolutePosition.X) ||
+                    !MathUtil.AreApproximatelyEqual(state.LastY, adornedElement.AbsolutePosition.Y) ||
+                    !MathUtil.AreApproximatelyEqual(state.LastRenderWidth, adornedElement.RenderSize.Width) ||
+                    !MathUtil.AreApproximatelyEqual(state.LastRenderHeight, adornedElement.RenderSize.Height))
+                {
+                    adorner.InvalidateMeasure();
+                    needsUpdate = true;
+                }
+            }
+
+            if (needsUpdate)
+            {
+                InvalidateMeasure();
+                InvalidateArrange(true);
+            }
         }
 
         // State values.
         private readonly VisualCollection adorners;
+        private readonly List<AdornerState> adornersStates; 
     }
 }

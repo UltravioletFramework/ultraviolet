@@ -124,6 +124,7 @@
     <Compile Include="DependencyObject.cs" />
     <Compile Include="Documents\Adorner.cs" />
     <Compile Include="Documents\AdornerDecorator.cs" />
+    <Compile Include="Documents\AdornerLayer.AdornerState.cs" />
     <Compile Include="Documents\AdornerLayer.cs" />
     <Compile Include="Documents\NamespaceDoc.cs" />
     <Compile Include="DrawingContext.ClipStencilStates.cs" />

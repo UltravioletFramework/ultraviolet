@@ -497,7 +497,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             }
             this.isArrangeValid = true;
 
-            var forceInvalidatePosition = ((options & ArrangeOptions.ForceInvalidatePosition) == ArrangeOptions.ForceInvalidatePosition);
+            var forceInvalidatePosition = this.forceInvalidatePosition || ((options & ArrangeOptions.ForceInvalidatePosition) == ArrangeOptions.ForceInvalidatePosition);
             PositionElementAndPotentiallyChildren(forceInvalidatePosition);
 
             upf.ArrangeQueue.Remove(this);
@@ -601,17 +601,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Invalidates the element's arrangement state.
         /// </summary>
-        public void InvalidateArrange()
+        /// <param name="forceInvalidatePosition">A value indicating whether to force the element to reposition its children.</param>
+        public void InvalidateArrange(Boolean forceInvalidatePosition = false)
         {
             if (View == null || !IsArrangeValid || IsArranging)
                 return;
 
             this.isArrangeValid = false;
+            this.forceInvalidatePosition = forceInvalidatePosition;
 
             var upf = uv.GetUI().GetPresentationFoundation();
             upf.PerformanceStats.InvalidateArrangeCountLastFrame++;
             upf.ArrangeQueue.Enqueue(this);
-        }
+        }        
 
         /// <summary>
         /// Adds a handler for a routed event to the element.
@@ -2404,8 +2406,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         private void PositionElementAndPotentiallyChildren(Boolean forceInvalidatePosition)
         {
-            var oldAbsolutePosition = AbsolutePosition;
+            this.forceInvalidatePosition = false;
 
+            var oldAbsolutePosition = AbsolutePosition;
             Position(mostRecentPositionOffset);
 
             if (forceInvalidatePosition || !oldAbsolutePosition.Equals(AbsolutePosition))
@@ -2560,6 +2563,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         private Int32 layoutDepth;
         private Int32 descendantsWithLayoutTransforms;
         private Int32 descendantsWithRenderTransforms;
+        private Boolean forceInvalidatePosition;
 
         // State values.
         private Boolean isStyling;
