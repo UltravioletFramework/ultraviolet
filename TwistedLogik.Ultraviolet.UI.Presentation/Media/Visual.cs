@@ -62,7 +62,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media
         {
             Contract.Require(ancestor, "ancestor");
 
-            return ancestor.MatrixTransformToDescendantInternal(this, false);
+            return this.MatrixTransformToAncestorInternal(ancestor, false);
         }
 
         /// <summary>
@@ -75,7 +75,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media
         {
             Contract.Require(descendant, "descendant");
 
-            return MatrixTransformToDescendantInternal(descendant, true);
+            return descendant.MatrixTransformToAncestorInternal(this, true);
         }
 
         /// <summary>
@@ -285,17 +285,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media
 
         /// <summary>
         /// Returns a transformation matrix which can be used to transform coordinates from this visual to
-        /// the specified descendant of this visual.
+        /// the specified ancestor of this visual.
         /// </summary>
-        /// <param name="descendant">The descendnat to which coordinates will be transformed.</param>
+        /// <param name="ancestor">The ancestor to which coordinates will be transformed.</param>
         /// <param name="invert">A value indicating whether to invert the resulting matrix.</param>
         /// <returns>A <see cref="Matrix"/> which represents the specified transformation.</returns>
-        private Matrix MatrixTransformToDescendantInternal(Visual descendant, Boolean invert)
+        private Matrix MatrixTransformToAncestorInternal(Visual ancestor, Boolean invert)
         {
             var mtxFinal = Matrix.Identity;
 
             DependencyObject current;
-            for (current = descendant; current != null && current != this; current = VisualTreeHelper.GetParent(current))
+            for (current = this; current != null && current != ancestor; current = VisualTreeHelper.GetParent(current))
             {
                 var uiElement = current as UIElement;
                 if (uiElement != null)
@@ -311,10 +311,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media
                 }
             }
 
-            if (current != this)
+            if (current != ancestor)
             {
-                var paramName = invert ? "ancestor" : "descendant";
-                var message = invert ? PresentationStrings.ElementIsNotAnAncestor : PresentationStrings.ElementIsNotADescendant;
+                var paramName = invert ? "descendant" : "ancestor";
+                var message = invert ? PresentationStrings.ElementIsNotADescendant : PresentationStrings.ElementIsNotAnAncestor;
                 throw new ArgumentException(message, paramName);
             }
 
