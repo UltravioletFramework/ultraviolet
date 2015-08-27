@@ -432,6 +432,15 @@
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\DependencyPropertyValue.cs">
       <Link>DependencyPropertyValue.cs</Link>
     </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Documents\Adorner.cs">
+      <Link>Documents\Adorner.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Documents\AdornerDecorator.cs">
+      <Link>Documents\AdornerDecorator.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Documents\AdornerLayer.cs">
+      <Link>Documents\AdornerLayer.cs</Link>
+    </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Documents\NamespaceDoc.cs">
       <Link>Documents\NamespaceDoc.cs</Link>
     </Compile>

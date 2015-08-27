@@ -55,6 +55,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Documents
         }
 
         /// <inheritdoc/>
+        protected override Visual HitTestCore(Point2D point)
+        {
+            var child = Child;
+            if (child == null)
+                return null;
+
+            return child.HitTest(TransformToDescendant(child, point));
+        }
+
+        /// <inheritdoc/>
         protected override Size2D MeasureOverride(Size2D availableSize)
         {
             var desiredSize = base.MeasureOverride(availableSize);

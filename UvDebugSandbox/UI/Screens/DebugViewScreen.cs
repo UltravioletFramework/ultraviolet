@@ -4,9 +4,32 @@ using TwistedLogik.Ultraviolet.UI.Presentation;
 using TwistedLogik.Ultraviolet.UI.Presentation.Controls;
 using TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives;
 using TwistedLogik.Ultraviolet.UI.Presentation.Media;
+using TwistedLogik.Ultraviolet.UI.Presentation.Documents;
+using TwistedLogik.Ultraviolet;
 
 namespace UvDebugSandbox.UI.Screens
-{
+{    
+    // Adorners must subclass the abstract base class Adorner.
+    public class SimpleCircleAdorner : Adorner
+    {
+        // Be sure to call the base class constructor.
+        public SimpleCircleAdorner(UIElement adornedElement)
+          : base(adornedElement)
+        {
+
+        }
+
+        protected override void OnDrawing(UltravioletTime time, DrawingContext dc)
+        {
+            DrawBlank(dc, new RectangleD(-8, -8, 16, 16), Color.Red);
+            DrawBlank(dc, new RectangleD(AdornedElement.RenderSize.Width - 8, -8, 16, 16), Color.Red);
+            DrawBlank(dc, new RectangleD(-8, AdornedElement.RenderSize.Height - 8, 16, 16), Color.Red);
+            DrawBlank(dc, new RectangleD(AdornedElement.RenderSize.Width - 8, AdornedElement.RenderSize.Height - 8, 16, 16), Color.Red);
+
+            base.OnDrawing(time, dc);
+        }
+    }
+
     public class DebugViewModel
     {
         private PresentationFoundationView view;
@@ -98,7 +121,14 @@ namespace UvDebugSandbox.UI.Screens
             asdf.IsOpen = !asdf.IsOpen;
         }
 
+        public void Loading(DependencyObject dobj, ref RoutedEventData data)
+        {
+            var adornerLayer = AdornerLayer.GetAdornerLayer(btn);
+            adornerLayer.Add(new SimpleCircleAdorner(btn));
+        }
+
         private readonly Popup asdf = null;
+        private readonly Button btn = null;
     }
 
     public class DebugViewScreen : UvDebugScreen

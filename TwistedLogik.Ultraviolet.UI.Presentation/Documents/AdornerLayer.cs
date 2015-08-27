@@ -66,6 +66,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Documents
 
             adorners.Add(adorner);
             adorner.ChangeLogicalParent(this);
+            
+            InvalidateMeasure();
+            InvalidateArrange();
+
+            Measure(MostRecentAvailableSize);
+            Arrange(MostRecentFinalRect, MostRecentArrangeOptions | ArrangeOptions.ForceInvalidatePosition);
         }
 
         /// <summary>
@@ -160,6 +166,52 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Documents
         protected internal override Int32 VisualChildrenCount
         {
             get { return adorners.Count; }
+        }
+
+        /// <inheritdoc/>
+        protected override Visual HitTestCore(Point2D point)
+        {
+            return AdornerHitTest(point);
+        }
+
+        /// <inheritdoc/>
+        protected override Size2D MeasureOverride(Size2D availableSize)
+        {
+            foreach (Adorner adorner in adorners)
+            {
+                adorner.Measure(availableSize);
+            }
+            return Size2D.Zero;
+        }
+
+        /// <inheritdoc/>
+        protected override Size2D ArrangeOverride(Size2D finalSize, ArrangeOptions options)
+        {
+            foreach (Adorner adorner in adorners)
+            {
+                var adornerRect = new RectangleD(Point2D.Zero, adorner.DesiredSize);
+                adorner.Arrange(adornerRect);
+            }
+            return finalSize;
+        }
+
+        /// <inheritdoc/>
+        protected override void PositionChildrenOverride()
+        {
+            VisualTreeHelper.ForEachChild<UIElement>(this, this, (child, state) =>
+            {
+                var target = child as Adorner;
+                if (target != null)
+                {
+                    var abspos = ((UIElement)state).AbsolutePosition;
+                    var offset = new Size2D(
+                        target.AdornedElement.AbsolutePosition.X - abspos.X, 
+                        target.AdornedElement.AbsolutePosition.Y - abspos.Y);
+
+                    child.Position(offset);
+                    child.PositionChildren();
+                }
+            });
         }
 
         // State values.
