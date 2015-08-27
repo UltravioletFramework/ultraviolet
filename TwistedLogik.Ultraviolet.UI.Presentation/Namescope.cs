@@ -81,6 +81,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             Contract.Require(obj, "obj");
 
+            if (obj is IDataSourceWrapper)
+                obj = ((IDataSourceWrapper)obj).WrappedDataSource;
+
             var type = obj.GetType();
 
             while (type != null)
