@@ -10,6 +10,49 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media
     public abstract class Visual : DependencyObject
     {
         /// <summary>
+        /// Gets a value indicating whether this object is a descendant of the specified ancestor.
+        /// </summary>
+        /// <param name="descendant">The object to compare to this object.</param>
+        /// <returns><c>true</c> if this object is an ancestor of <paramref name="descendant"/>; otherwise, <c>false</c>.</returns>
+        public Boolean IsAncestorOf(DependencyObject descendant)
+        {
+            Contract.Require(descendant, "descendant");
+            
+            var descendantVisual = descendant as Visual;
+            if (descendantVisual == null)
+                throw new InvalidOperationException(PresentationStrings.NotVisualObject);
+
+            return descendantVisual.IsDescendantOf(this);
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether this object is a descendant of the specified descendant.
+        /// </summary>
+        /// <param name="ancestor">The object to compare to this object.</param>
+        /// <returns><c>true</c> if this object is an descendant of <paramref name="ancestor"/>; otherwise, <c>false</c>.</returns>
+        public Boolean IsDescendantOf(DependencyObject ancestor)
+        {
+            Contract.Require(ancestor, "ancestor");
+
+            var ancestorVisual = ancestor as Visual;
+            if (ancestorVisual == null)
+                throw new InvalidOperationException(PresentationStrings.NotVisualObject);
+
+            var current = VisualTreeHelper.GetParent(this);
+            
+            while (current != null)
+            {
+                if (current == ancestorVisual)
+                {
+                    return true;
+                }
+                current = VisualTreeHelper.GetParent(current);
+            }
+
+            return false;
+        }
+
+        /// <summary>
         /// Returns a transformation matrix which can be used to transform coordinates from this visual to
         /// the specified ancestor of this visual.
         /// </summary>

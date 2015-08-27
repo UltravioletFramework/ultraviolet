@@ -23,6 +23,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Documents
         {
             adorners = new VisualCollection(this);
             adornersStates = new List<AdornerState>();
+            adornersTemp = new List<Adorner>();
         }
 
         /// <summary>
@@ -261,34 +262,56 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Documents
         /// </summary>
         private void AdornerLayer_LayoutUpdated(Object sender, EventArgs e)
         {
-            var needsUpdate = false;
-
-            for (int i = 0; i < adorners.Count; i++)
+            adornersTemp.Clear();
+            try
             {
-                var state = adornersStates[i];
+                var needsUpdate = false;
 
-                var adorner = (Adorner)adorners[i];
-                var adornedElement = adorner.AdornedElement;
+                var layerParent = VisualTreeHelper.GetParent(this) as Visual;
+                if (layerParent == null)
+                    return;
 
-                if (!MathUtil.AreApproximatelyEqual(state.LastX, adornedElement.AbsolutePosition.X) ||
-                    !MathUtil.AreApproximatelyEqual(state.LastY, adornedElement.AbsolutePosition.Y) ||
-                    !MathUtil.AreApproximatelyEqual(state.LastRenderWidth, adornedElement.RenderSize.Width) ||
-                    !MathUtil.AreApproximatelyEqual(state.LastRenderHeight, adornedElement.RenderSize.Height))
+                for (int i = 0; i < adorners.Count; i++)
                 {
-                    adorner.InvalidateMeasure();
-                    needsUpdate = true;
+                    var state = adornersStates[i];
+
+                    var adorner = (Adorner)adorners[i];
+                    var adornedElement = adorner.AdornedElement;
+
+                    if (!adornedElement.IsDescendantOf(layerParent))
+                    {
+                        adornersTemp.Add(adorner);
+                        continue;
+                    }
+
+                    if (!MathUtil.AreApproximatelyEqual(state.LastX, adornedElement.AbsolutePosition.X) ||
+                        !MathUtil.AreApproximatelyEqual(state.LastY, adornedElement.AbsolutePosition.Y) ||
+                        !MathUtil.AreApproximatelyEqual(state.LastRenderWidth, adornedElement.RenderSize.Width) ||
+                        !MathUtil.AreApproximatelyEqual(state.LastRenderHeight, adornedElement.RenderSize.Height))
+                    {
+                        adorner.InvalidateMeasure();
+                        needsUpdate = true;
+                    }
+                }
+
+                foreach (var adorner in adornersTemp)
+                    Remove(adorner);
+
+                if (needsUpdate)
+                {
+                    InvalidateMeasure();
+                    InvalidateArrange(true);
                 }
             }
-
-            if (needsUpdate)
+            finally
             {
-                InvalidateMeasure();
-                InvalidateArrange(true);
+                adornersTemp.Clear();
             }
         }
 
         // State values.
         private readonly VisualCollection adorners;
-        private readonly List<AdornerState> adornersStates; 
+        private readonly List<AdornerState> adornersStates;
+        private readonly List<Adorner> adornersTemp;
     }
 }
