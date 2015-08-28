@@ -37,7 +37,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             this.resources      = new PresentationFoundationViewResources(this);
             this.drawingContext = new DrawingContext();
 
-            this.layoutRoot = new Grid(uv, null);
+            this.layoutRoot = new PresentationFoundationViewRoot(uv, null);
             this.layoutRoot.HorizontalAlignment = HorizontalAlignment.Stretch;
             this.layoutRoot.VerticalAlignment = VerticalAlignment.Stretch;
             this.layoutRoot.View = this;
@@ -592,14 +592,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
-        /// Gets the root element of the view's layout.
-        /// </summary>
-        public UIElement LayoutRoot
-        {
-            get { return layoutRoot; }
-        }
-
-        /// <summary>
         /// Gets the element that is currently under the mouse cursor.
         /// </summary>
         public IInputElement ElementUnderMouse
@@ -621,6 +613,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public IInputElement ElementWithMouseCapture
         {
             get { return elementWithMouseCapture; }
+        }
+        
+        /// <summary>
+        /// Gets the root element of the view's layout.
+        /// </summary>
+        public PresentationFoundationViewRoot LayoutRoot
+        {
+            get { return layoutRoot; }
         }
 
         /// <summary>
@@ -1499,7 +1499,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         private readonly PresentationFoundationViewResources resources;
         private readonly UvssDocument combinedStyleSheet;
         private UvssDocument localStyleSheet;
-        private Grid layoutRoot;
+        private PresentationFoundationViewRoot layoutRoot;
 
         // State values.
         private readonly HashSet<DependencyObject> isMouseOverSet = new HashSet<DependencyObject>();

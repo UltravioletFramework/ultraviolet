@@ -9,6 +9,7 @@ using TwistedLogik.Nucleus;
 using TwistedLogik.Nucleus.Data;
 using TwistedLogik.Nucleus.Xml;
 using TwistedLogik.Ultraviolet.UI.Presentation.Controls;
+using TwistedLogik.Ultraviolet.UI.Presentation.Documents;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation
 {
@@ -60,12 +61,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             var view    = new PresentationFoundationView(uv, viewModelType);
             var context = new InstantiationContext(uv, view, viewModelType);
+            
+            var root = view.LayoutRoot;
+            root.BeginInit();
 
-            var fe = view.LayoutRoot as FrameworkElement;
-            if (fe != null)
-                fe.BeginInit();
+            var rootAdornerDecorator = new AdornerDecorator(uv, null);
+            root.Child = rootAdornerDecorator;
+            rootAdornerDecorator.BeginInit();
 
-            var objectTree = BuildObjectTree(uv, xml, view.LayoutRoot, context);
+            var rootGrid = new Grid(uv, null);
+            rootAdornerDecorator.Child = rootGrid;
+            rootGrid.BeginInit();
+
+            var objectTree = BuildObjectTree(uv, xml, rootGrid, context);
             PopulateObjectTree(uv, objectTree, context);
 
             return view;
