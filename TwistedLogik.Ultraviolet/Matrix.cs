@@ -1895,6 +1895,32 @@ namespace TwistedLogik.Ultraviolet
         }
 
         /// <summary>
+        /// Determines whether this instance is equal to the specified object.
+        /// </summary>
+        /// <param name="other">The object to compare to this instance.</param>
+        /// <returns><c>true</c> if this instance is equal to the specified object; otherwise, <c>false</c>.</returns>
+        public Boolean EqualsRef(ref Matrix other)
+        {
+            return
+                m11 == other.m11 &&
+                m12 == other.m12 &&
+                m13 == other.m13 &&
+                m14 == other.m14 &&
+                m21 == other.m21 &&
+                m22 == other.m22 &&
+                m23 == other.m23 &&
+                m24 == other.m24 &&
+                m31 == other.m31 &&
+                m32 == other.m32 &&
+                m33 == other.m33 &&
+                m34 == other.m34 &&
+                m41 == other.m41 &&
+                m42 == other.m42 &&
+                m43 == other.m43 &&
+                m44 == other.m44;
+        }
+
+        /// <summary>
         /// Calculates the matrix's determinant.
         /// </summary>
         /// <returns>The matrix's determinant.</returns>

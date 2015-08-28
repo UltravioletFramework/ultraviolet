@@ -1,6 +1,5 @@
-﻿using System;
+﻿using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet.UI.Presentation.Media;
-using TwistedLogik.Nucleus;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Documents
 {
@@ -20,6 +19,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Documents
             Contract.Require(adornedElement, "adornedElement");
 
             this.adornedElement = adornedElement;
+        }
+
+        /// <summary>
+        /// Provides the <see cref="Adorner"/> a chance to modify the transformation matrix which will be applied to it.
+        /// </summary>
+        /// <param name="transform">The transformation matrix which is being applied to the adorner.</param>
+        public virtual void GetDesiredTransform(ref Matrix transform)
+        {
+
         }
 
         /// <summary>

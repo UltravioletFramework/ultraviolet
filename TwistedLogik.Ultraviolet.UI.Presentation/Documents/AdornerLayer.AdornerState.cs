@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Documents
 {
@@ -30,25 +27,25 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Documents
             }
 
             /// <summary>
-            /// Gets the absolute x-coordinate of the adorned element as of the last time the adorner was updated.
+            /// Gets or sets the absolute x-coordinate of the adorned element as of the last time the adorner was updated.
             /// </summary>
-            public Double LastX
+            public Double LastAbsoluteX
             {
                 get;
                 set;
             }
 
             /// <summary>
-            /// Gets the absolute y-coordinate of the adorned element as of the last time the adorner was updated.
+            /// Gets or sets the absolute y-coordinate of the adorned element as of the last time the adorner was updated.
             /// </summary>
-            public Double LastY
+            public Double LastAbsoluteY
             {
                 get;
                 set;
             }
 
             /// <summary>
-            /// Gets the render width of the adorned element as of the last time the adorner was updated.
+            /// Gets or sets the render width of the adorned element as of the last time the adorner was updated.
             /// </summary>
             public Double LastRenderWidth
             {
@@ -57,9 +54,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Documents
             }
 
             /// <summary>
-            /// Gets the render height of the adorned element as of the last time the adorner was updated.
+            /// Gets or sets the render height of the adorned element as of the last time the adorner was updated.
             /// </summary>
             public Double LastRenderHeight
+            {
+                get;
+                set;
+            }
+
+            /// <summary>
+            /// Gets or sets the last transform matrix that was applied to the adorner.
+            /// </summary>
+            public Matrix LastTransform
             {
                 get;
                 set;

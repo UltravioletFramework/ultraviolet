@@ -67,8 +67,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Documents
             Contract.Require(adorner, "adorner");
 
             var state = new AdornerState(adorner);
-            state.LastX = adorner.AdornedElement.AbsolutePosition.X;
-            state.LastY = adorner.AdornedElement.AbsolutePosition.Y;
+            state.LastAbsoluteX = adorner.AdornedElement.AbsolutePosition.X;
+            state.LastAbsoluteY = adorner.AdornedElement.AbsolutePosition.Y;
             state.LastRenderWidth = adorner.AdornedElement.RenderSize.Width;
             state.LastRenderHeight = adorner.AdornedElement.RenderSize.Height;
 
@@ -159,18 +159,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Documents
 
             return matches.Any() ? matches.ToArray() : null;
         }
-
+        
         /// <inheritdoc/>
         protected override void OnVisualParentChanged(Visual oldParent, Visual newParent)
         {
             if (oldParent == null && newParent != null)
             {
-                LayoutUpdated += AdornerLayer_LayoutUpdated;
+                LayoutUpdated += CheckAdornersForChangedOnLayoutUpdated;
             }
 
             if (oldParent != null && newParent == null)
             {
-                LayoutUpdated -= AdornerLayer_LayoutUpdated;
+                LayoutUpdated -= CheckAdornersForChangedOnLayoutUpdated;
             }
 
             base.OnVisualParentChanged(oldParent, newParent);
@@ -199,11 +199,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Documents
         {
             get { return adorners.Count; }
         }
-
+        
         /// <inheritdoc/>
-        protected override Visual HitTestCore(Point2D point)
+        protected override void UpdateOverride(UltravioletTime time)
         {
-            return AdornerHitTest(point);
+            CheckAdornersForChanges(false);
+            base.UpdateOverride(time);
         }
 
         /// <inheritdoc/>
@@ -220,6 +221,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Documents
         /// <inheritdoc/>
         protected override Size2D ArrangeOverride(Size2D finalSize, ArrangeOptions options)
         {
+            var layerParent = VisualTreeHelper.GetParent(this) as Visual;
+
             for (int i = 0; i < adorners.Count; i++)
             {
                 var state = adornersStates[i];
@@ -227,10 +230,21 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Documents
                 var adorner = (Adorner)adorners[i];
                 var adornedElement = adorner.AdornedElement;
 
-                state.LastX = adornedElement.AbsolutePosition.X;
-                state.LastY = adornedElement.AbsolutePosition.Y;
+                state.LastAbsoluteX = adornedElement.AbsolutePosition.X;
+                state.LastAbsoluteY = adornedElement.AbsolutePosition.Y;
                 state.LastRenderWidth = adornedElement.RenderSize.Width;
                 state.LastRenderHeight = adornedElement.RenderSize.Height;
+
+                var transformMatrix = adornedElement.GetTransformToAncestorMatrix(layerParent);
+                state.LastTransform = transformMatrix;
+
+                adorner.GetDesiredTransform(ref transformMatrix);
+
+                var transformObject = adorner.RenderTransform as MatrixTransform ?? new MatrixTransform();
+                transformObject.Matrix = transformMatrix;
+
+                adorner.RenderTransformOrigin = Point2D.Zero;
+                adorner.RenderTransform = transformObject;
 
                 var adornerRect = new RectangleD(Point2D.Zero, adorner.DesiredSize);
                 adorner.Arrange(adornerRect);
@@ -239,33 +253,29 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Documents
         }
 
         /// <inheritdoc/>
-        protected override void PositionChildrenOverride()
+        protected override Visual HitTestCore(Point2D point)
         {
-            VisualTreeHelper.ForEachChild<UIElement>(this, this, (child, state) =>
-            {
-                var target = child as Adorner;
-                if (target != null)
-                {
-                    var abspos = ((UIElement)state).AbsolutePosition;
-                    var offset = new Size2D(
-                        target.AdornedElement.AbsolutePosition.X - abspos.X, 
-                        target.AdornedElement.AbsolutePosition.Y - abspos.Y);
-
-                    child.Position(offset);
-                    child.PositionChildren();
-                }
-            });
+            return AdornerHitTest(point);
         }
-        
+
         /// <summary>
         /// Handles the adorner layer's <see cref="UIElement.LayoutUpdated"/> event.
         /// </summary>
-        private void AdornerLayer_LayoutUpdated(Object sender, EventArgs e)
+        private void CheckAdornersForChangedOnLayoutUpdated(Object sender, EventArgs e)
+        {
+            CheckAdornersForChanges(true);
+        }
+        
+        /// <summary>
+        /// Checks the layers adorners to determine if their adorned elements underwent any changes that require
+        /// us to perform a new layout pass.
+        /// </summary>
+        private void CheckAdornersForChanges(Boolean checkForLayoutChanges)
         {
             adornersTemp.Clear();
             try
             {
-                var needsUpdate = false;
+                var invalidateLayer = false;
 
                 var layerParent = VisualTreeHelper.GetParent(this) as Visual;
                 if (layerParent == null)
@@ -284,20 +294,36 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Documents
                         continue;
                     }
 
-                    if (!MathUtil.AreApproximatelyEqual(state.LastX, adornedElement.AbsolutePosition.X) ||
-                        !MathUtil.AreApproximatelyEqual(state.LastY, adornedElement.AbsolutePosition.Y) ||
+                    var invalidateAdorner = false;
+
+                    if (checkForLayoutChanges && (
+                        !MathUtil.AreApproximatelyEqual(state.LastAbsoluteX, adornedElement.AbsolutePosition.X) ||
+                        !MathUtil.AreApproximatelyEqual(state.LastAbsoluteY, adornedElement.AbsolutePosition.Y) ||
                         !MathUtil.AreApproximatelyEqual(state.LastRenderWidth, adornedElement.RenderSize.Width) ||
-                        !MathUtil.AreApproximatelyEqual(state.LastRenderHeight, adornedElement.RenderSize.Height))
+                        !MathUtil.AreApproximatelyEqual(state.LastRenderHeight, adornedElement.RenderSize.Height)))
+                    {
+                        invalidateAdorner = true;
+                    }
+                    else
+                    {
+                        var transformMatrix = adornedElement.GetTransformToAncestorMatrix(layerParent);
+                        if (!state.LastTransform.EqualsRef(ref transformMatrix))
+                        {
+                            invalidateAdorner = true;
+                        }
+                    }
+
+                    if (invalidateAdorner)
                     {
                         adorner.InvalidateMeasure();
-                        needsUpdate = true;
+                        invalidateLayer = true;
                     }
                 }
 
                 foreach (var adorner in adornersTemp)
                     Remove(adorner);
 
-                if (needsUpdate)
+                if (invalidateLayer)
                 {
                     InvalidateMeasure();
                     InvalidateArrange(true);
