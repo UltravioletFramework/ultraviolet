@@ -652,6 +652,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Occurs when a dependency property which potentially affects the object's visual bounds is changed.
+        /// </summary>
+        protected internal virtual void OnVisualBoundsAffectingPropertyChanged()
+        {
+
+        }
+
+        /// <summary>
         /// Applies the styles from the specified style sheet to this object.
         /// </summary>
         /// <param name="document">The style sheet to apply to this object.</param>

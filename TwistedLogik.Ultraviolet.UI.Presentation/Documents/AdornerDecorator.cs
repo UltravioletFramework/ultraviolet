@@ -57,6 +57,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Documents
         /// <inheritdoc/>
         protected override Visual HitTestCore(Point2D point)
         {
+            var adorner = adornerLayer.HitTest(TransformToDescendant(adornerLayer, point));
+            if (adorner != null)
+            {
+                System.Diagnostics.Debug.WriteLine("adorner!");
+                return adorner;
+            }
+
             var child = Child;
             if (child == null)
                 return null;

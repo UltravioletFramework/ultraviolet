@@ -55,7 +55,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Documents
         /// <returns>The <see cref="Adorner"/> at the specified point, or <c>null</c> if there is no adorner at that point.</returns>
         public Adorner AdornerHitTest(Point2D point)
         {
-            return VisualTreeHelper.HitTest(this, point) as Adorner;
+            return HitTest(point) as Adorner;
         }
 
         /// <summary>
@@ -75,6 +75,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Documents
             adorners.Add(adorner);
             adornersStates.Add(state);
 
+            adorner.InvalidateMeasure();
             adorner.ChangeLogicalParent(this);
 
             InvalidateMeasure();
@@ -251,11 +252,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Documents
             }
             return finalSize;
         }
-
+        
         /// <inheritdoc/>
         protected override Visual HitTestCore(Point2D point)
         {
-            return AdornerHitTest(point);
+            var result = base.HitTestCore(point);
+            return (result == this) ? null : result;
         }
 
         /// <summary>

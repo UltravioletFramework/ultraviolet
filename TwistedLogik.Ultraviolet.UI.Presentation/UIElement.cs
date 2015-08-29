@@ -487,8 +487,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                     this.renderSize = ArrangeCore(finalRect, options);
                     this.renderSize = PerformLayoutRounding(this.renderSize);
 
-                    SetValue<Double>(ActualWidthPropertyKey, this.renderSize.Width);
-                    SetValue<Double>(ActualHeightPropertyKey, this.renderSize.Height);
+                    SetValue(ActualWidthPropertyKey, this.renderSize.Width);
+                    SetValue(ActualHeightPropertyKey, this.renderSize.Height);
                 }
                 finally
                 {
@@ -501,6 +501,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             PositionElementAndPotentiallyChildren(forceInvalidatePosition);
 
             upf.ArrangeQueue.Remove(this);
+
+            InvalidateVisualBounds();
         }
 
         /// <summary>
@@ -530,6 +532,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             PositionCore();
 
             Clip();
+
+            InvalidateVisualBounds();
         }
 
         /// <summary>
@@ -613,7 +617,24 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var upf = uv.GetUI().GetPresentationFoundation();
             upf.PerformanceStats.InvalidateArrangeCountLastFrame++;
             upf.ArrangeQueue.Enqueue(this);
-        }        
+        }
+
+        /// <summary>
+        /// Invalidates the element's cached visual bounds.
+        /// </summary>
+        public void InvalidateVisualBounds()
+        {
+            if (visualBounds.HasValue)
+                return;
+
+            visualBounds = null;
+
+            var parent = VisualTreeHelper.GetParent(this) as UIElement;
+            if (parent != null)
+            {
+                parent.InvalidateVisualBounds();
+            }
+        }
 
         /// <summary>
         /// Adds a handler for a routed event to the element.
@@ -830,6 +851,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Gets the position of the element relative to its parent as of the
+        /// last call to the <see cref="Position(Size2D)"/> method.
+        /// </summary>
+        public Point2D RelativePosition
+        {
+            get { return relativeBounds.Location; }
+        }
+
+        /// <summary>
         /// Gets the position of the element in absolute screen coordinates as of the
         /// last call to the <see cref="Position(Size2D)"/> method.
         /// </summary>
@@ -918,6 +948,21 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public RectangleD AbsoluteTransformedBounds
         {
             get { return HasLayoutTransform ? GetAbsoluteTransformedBounds() : AbsoluteBounds; }
+        }
+
+        /// <summary>
+        /// Gets the visual bounds of the element and all of its descendants in absolute screen coordinates.
+        /// </summary>
+        public RectangleD VisualBounds
+        {
+            get
+            {
+                if (visualBounds.HasValue)
+                    return visualBounds.Value;
+
+                visualBounds = CalculateVisualBounds();
+                return visualBounds.Value;
+            }
         }
 
         /// <summary>
@@ -1116,7 +1161,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Identifies the <see cref="RenderTransform"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty RenderTransformProperty = DependencyProperty.Register("RenderTransform", typeof(Transform), typeof(UIElement),
-            new PropertyMetadata<Transform>(Transform.Identity, PropertyMetadataOptions.None, HandleRenderTransformChanged));
+            new PropertyMetadata<Transform>(Transform.Identity, PropertyMetadataOptions.AffectsVisualBounds, HandleRenderTransformChanged));
 
         /// <summary>
         /// Identifies the <see cref="RenderTransformOrigin"/> dependency property.
@@ -1127,21 +1172,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <inheritdoc/>
         internal override void OnVisualParentChangedInternal(Visual oldParent, Visual newParent)
         {
-            var hasLayoutTransform = HasLayoutTransform;
-            var hasRenderTransform = HasRenderTransform;
-
-            if (oldParent != null)
-            {
-                UpdateDescendantsWithLayoutTransformsCounter(oldParent, -((hasLayoutTransform ? 1 : 0) + descendantsWithLayoutTransforms));
-                UpdateDescendantsWithRenderTransformsCounter(oldParent, -((hasRenderTransform ? 1 : 0) + descendantsWithRenderTransforms));
-            }
-
-            if (newParent != null)
-            {
-                UpdateDescendantsWithLayoutTransformsCounter(newParent, +((hasLayoutTransform ? 1 : 0) + descendantsWithLayoutTransforms));
-                UpdateDescendantsWithRenderTransformsCounter(newParent, +((hasRenderTransform ? 1 : 0) + descendantsWithRenderTransforms));
-            }
-
             OnLayoutCacheInvalidatedInternal();
             base.OnVisualParentChangedInternal(oldParent, newParent);
         }
@@ -1301,55 +1331,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 StoryboardClockPool.Instance.Release(clock);
             }
         }
-
-        /// <summary>
-        /// Updates the counter used by this element's ancestors to track whether they have any
-        /// descendants with layout transforms.
-        /// </summary>
-        /// <param name="parent">The parent object to update.</param>
-        /// <param name="count">The amount by which to adjust the counter.</param>
-        internal void UpdateDescendantsWithLayoutTransformsCounter(DependencyObject parent, Int32 count)
-        {
-            if (parent == null)
-                return;
-
-            var current = parent;
-            while (current != null)
-            {
-                var element = current as UIElement;
-                if (element != null)
-                {
-                    element.descendantsWithLayoutTransforms += count;
-                }
-
-                current = VisualTreeHelper.GetParent(current);
-            }
-        }
-
-        /// <summary>
-        /// Updates the counter used by this element's ancestors to track whether they have any
-        /// descendants with render transforms.
-        /// </summary>
-        /// <param name="parent">The parent object to update.</param>
-        /// <param name="count">The amount by which to adjust the counter.</param>
-        internal void UpdateDescendantsWithRenderTransformsCounter(DependencyObject parent, Int32 count)
-        {
-            if (parent == null)
-                return;
-
-            var current = parent;
-            while (current != null)
-            {
-                var element = current as UIElement;
-                if (element != null)
-                {
-                    element.descendantsWithRenderTransforms += count;
-                }
-
-                current = VisualTreeHelper.GetParent(current);
-            }
-        }
-
+        
         /// <summary>
         /// Gets the element's transformed layout region in absolute screen space.
         /// </summary>
@@ -1456,31 +1438,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             get { return !Transform.IsIdentityTransform(RenderTransform); }
         }
-
-        /// <summary>
-        /// Gets a value indicating whether the element has any descendants with layout transforms.
-        /// </summary>
-        internal Boolean HasLayoutTransformedDescendants
-        {
-            get { return descendantsWithLayoutTransforms > 0; }
-        }
-
-        /// <summary>
-        /// Gets a value indicating whether the element has any descendants with render transforms.
-        /// </summary>
-        internal Boolean HasRenderTransformedDescendants
-        {
-            get { return descendantsWithRenderTransforms > 0; }
-        }
-
-        /// <summary>
-        /// Gets a value indicating whether the element has any descendants with transforms.
-        /// </summary>
-        internal Boolean HasTransformedDescendants
-        {
-            get { return HasLayoutTransformedDescendants || HasRenderTransformedDescendants; }
-        }
-
+        
         /// <summary>
         /// Gets a value indicating whether this element has a non-identity transform.
         /// </summary>
@@ -1513,6 +1471,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             InvalidateArrange();
             base.OnMeasureAffectingPropertyChanged();
+        }
+
+        /// <inheritdoc/>
+        protected internal sealed override void OnVisualBoundsAffectingPropertyChanged()
+        {
+            InvalidateVisualBounds();
+            base.OnVisualBoundsAffectingPropertyChanged();
         }
 
         /// <inheritdoc/>
@@ -1986,6 +1951,32 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Calculates the visual bounds of this visual, including any descendants.
+        /// </summary>
+        /// <returns>The visual bounds of this visual, including any descendants.</returns>
+        protected virtual RectangleD CalculateVisualBounds()
+        {
+            var visualBounds = Bounds;
+
+            var childCount = VisualTreeHelper.GetChildrenCount(this);
+            for (int i = 0; i < childCount; i++)
+            {
+                var child = VisualTreeHelper.GetChild(this, i) as UIElement;
+                if (child != null)
+                {
+                    var childBounds = child.VisualBounds;
+                    if (childBounds.IsEmpty)
+                        continue;
+
+                    childBounds = new RectangleD(childBounds.Location + child.RelativePosition, childBounds.Size);
+                    RectangleD.Union(ref visualBounds, ref childBounds, out visualBounds);
+                }
+            }
+
+            return visualBounds;
+        }
+
+        /// <summary>
         /// Loads the specified asset from the global content manager.
         /// </summary>
         /// <typeparam name="TOutput">The type of object being loaded.</typeparam>
@@ -2369,17 +2360,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         private static void HandleRenderTransformChanged(DependencyObject dobj, Transform oldValue, Transform newValue)
         {
             var element = (UIElement)dobj;
-            var uv      = element.Ultraviolet;
-
-            if (newValue == null || newValue is IdentityTransform)
-            {
-                element.UpdateDescendantsWithRenderTransformsCounter(element.VisualParent, -1);
-            }
-            else
-            {
-                element.UpdateDescendantsWithRenderTransformsCounter(element.VisualParent, +1);
-            }
-
             element.OnTransformChanged();
         }
 
@@ -2551,6 +2531,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         private Size2D desiredSize;
         private RectangleD relativeBounds;
         private RectangleD absoluteBounds;
+        private RectangleD? visualBounds;
         private RectangleD? clipRectangle;
         private event EventHandler layoutUpdated;
 
@@ -2561,8 +2542,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         private Size2D mostRecentAvailableSize;
         private Size2D mostRecentPositionOffset;
         private Int32 layoutDepth;
-        private Int32 descendantsWithLayoutTransforms;
-        private Int32 descendantsWithRenderTransforms;
         private Boolean forceInvalidatePosition;
 
         // State values.

@@ -56,6 +56,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Documents
             return desiredSize;
         }
 
+        /// <inheritdoc/>
+        protected override Size2D ArrangeOverride(Size2D finalSize, ArrangeOptions options)
+        {
+            return base.ArrangeOverride(finalSize, options);
+        }
+
+        /// <inheritdoc/>
+        protected override Visual HitTestCore(Point2D point)
+        {
+            var result = base.HitTestCore(point);
+            return (result == this) ? null : result;
+        }
+        
         // Property values.
         private readonly UIElement adornedElement;
     }

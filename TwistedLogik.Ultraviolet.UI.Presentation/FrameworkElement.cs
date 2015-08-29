@@ -923,17 +923,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         private static void HandleLayoutTransformChanged(DependencyObject dobj, Transform oldValue, Transform newValue)
         {
             var element = (FrameworkElement)dobj;
-            var uv = element.Ultraviolet;
-
-            if (newValue == null || newValue is IdentityTransform)
-            {
-                element.UpdateDescendantsWithLayoutTransformsCounter(element.VisualParent, -1);
-            }
-            else
-            {
-                element.UpdateDescendantsWithLayoutTransformsCounter(element.VisualParent, +1);
-            }
-
             element.OnTransformChanged();
         }
 
