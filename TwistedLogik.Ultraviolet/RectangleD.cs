@@ -250,8 +250,8 @@ namespace TwistedLogik.Ultraviolet
             return new RectangleD(
                 rectangle.X - horizontalAmount,
                 rectangle.Y - verticalAmount,
-                rectangle.Width + horizontalAmount,
-                rectangle.Height + verticalAmount
+                rectangle.Width + (2.0 * horizontalAmount),
+                rectangle.Height + (2.0 * verticalAmount)
             );
         }
 
@@ -267,8 +267,8 @@ namespace TwistedLogik.Ultraviolet
             result = new RectangleD(
                 rectangle.X - horizontalAmount,
                 rectangle.Y - verticalAmount,
-                rectangle.Width + horizontalAmount,
-                rectangle.Height + verticalAmount
+                rectangle.Width + (2.0 * horizontalAmount),
+                rectangle.Height + (2.0 * verticalAmount)
             );
         }
 
