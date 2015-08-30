@@ -65,6 +65,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Gets a value indicating whether this binding should suppress digestion, even if it would
         /// otherwise need to be part of the digest cycle.
         /// </summary>
-        Boolean SuppressDigest { get; }
+        Boolean SuppressDigestForDataBinding { get; }
     }
 }

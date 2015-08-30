@@ -104,7 +104,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Gets a value indicating whether this binding should suppress digestion, even if it would
         /// otherwise need to be part of the digest cycle.
         /// </summary>
-        public Boolean SuppressDigest
+        public Boolean SuppressDigestForDataBinding
         {
             get { return dpropReference != null; }
         }

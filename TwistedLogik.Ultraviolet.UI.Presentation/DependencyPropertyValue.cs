@@ -496,7 +496,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 if (!cachedBoundValue.IsWritable)
                     return;
 
-                if (cachedBoundValue.SuppressDigest)
+                if (cachedBoundValue.SuppressDigestForDataBinding && GetValueSource() == ValueSource.BoundValue)
                 {
                     var oldValue = GetValue();
 
@@ -601,8 +601,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 var requiresDigestNew = IsDataBound || IsAnimated || 
                     (metadata.IsInherited && !hasLocalValue && !hasStyledValue);
 
-                if (cachedBoundValue != null && cachedBoundValue.SuppressDigest)
-                    requiresDigestNew = false;
+                if (GetValueSource() == ValueSource.BoundValue)
+                {
+                    if (cachedBoundValue != null && cachedBoundValue.SuppressDigestForDataBinding)
+                        requiresDigestNew = false;
+                }
 
                 if (requiresDigestNew != requiresDigest)
                 {
@@ -653,7 +656,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 animation.GetKeyframes(animationClock.ElapsedTime, out kf1, out kf2);
 
                 // Determine which values correspond to our keyframes.
-                T value1 = (kf1 == null) ? animatedHandOffValue : (!kf1.HasValue) ? GetValueInternal(false) : kf1.Value;
+                T value1 = (kf1 == null) ? GetValueInternal(false) : (!kf1.HasValue) ? GetValueInternal(false) : kf1.Value;
                 T value2 = default(T);
                 if (kf2 == null)
                 {
@@ -768,7 +771,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 {
                     return cachedBoundValue.Get();
                 }
-                if (hasLocalValue)
+                if (HasLocalValue)
                 {
                     return localValue;
                 }
@@ -776,7 +779,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 {
                     return triggeredValue;
                 }
-                if (hasStyledValue)
+                if (HasStyledValue)
                 {
                     return styledValue;
                 }
@@ -800,6 +803,44 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                     return coercedValue;
                 }
                 return value;
+            }
+
+            /// <summary>
+            /// Gets a <see cref="ValueSource"/> value which indicates from where the data property is currently
+            /// retrieving its value.
+            /// </summary>
+            /// <returns>The <see cref="ValueSource"/> value for this dependency property.</returns>
+            private ValueSource GetValueSource()
+            {
+                if (IsCoerced)
+                {
+                    return ValueSource.CoervedValue;
+                }
+                if (IsAnimated)
+                {
+                    return ValueSource.AnimatedValue;
+                }
+                if (IsDataBound)
+                {
+                    return ValueSource.BoundValue;
+                }
+                if (HasLocalValue)
+                {
+                    return ValueSource.LocalValue;
+                }
+                if (HasTriggeredValue)
+                {
+                    return ValueSource.TriggeredValue;
+                }
+                if (HasStyledValue)
+                {
+                    return ValueSource.StyledValue;
+                }
+                if (metadata.IsInherited && Owner.DependencyContainer != null)
+                {
+                    return ValueSource.InheritedValue;
+                }
+                return ValueSource.DefaultValue;
             }
 
             // Property values.

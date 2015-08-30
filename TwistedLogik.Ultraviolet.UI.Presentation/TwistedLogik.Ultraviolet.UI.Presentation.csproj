@@ -94,6 +94,7 @@
     <Compile Include="ArrangeOptions.cs" />
     <Compile Include="AssetSource.cs" />
     <Compile Include="Controls\Decorator.cs" />
+    <Compile Include="DependencyObject.ValueSource.cs" />
     <Compile Include="PresentationFoundationViewRoot.cs" />
     <Compile Include="DataSourceExpressionBuilder.cs" />
     <Compile Include="BindingExpressions.cs" />
