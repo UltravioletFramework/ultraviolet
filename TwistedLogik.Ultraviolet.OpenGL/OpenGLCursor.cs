@@ -2,7 +2,6 @@
 using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet.Graphics;
 using TwistedLogik.Ultraviolet.OpenGL.Graphics;
-using TwistedLogik.Ultraviolet.SDL2;
 using TwistedLogik.Ultraviolet.SDL2.Native;
 
 namespace TwistedLogik.Ultraviolet.OpenGL

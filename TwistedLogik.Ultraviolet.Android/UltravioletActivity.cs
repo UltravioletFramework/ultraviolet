@@ -3,7 +3,6 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading;
-using Android.App;
 using Org.Libsdl.App;
 using TwistedLogik.Nucleus;
 using TwistedLogik.Nucleus.Messages;

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.ComponentModel;
-using TwistedLogik.Nucleus;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 {

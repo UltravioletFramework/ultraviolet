@@ -1,5 +1,4 @@
 using System;
-using Android.App;
 using TwistedLogik.Ultraviolet.Input;
 
 namespace TwistedLogik.Ultraviolet.Android.Input
