@@ -27,7 +27,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
-        /// Gets the number of <see cref="UIElement.InvalidateArrange()"/> calls made in the last frame.
+        /// Gets the number of <see cref="UIElement.InvalidateArrange(bool)"/> calls made in the last frame.
         /// </summary>
         public Int32 InvalidateArrangeCountLastFrame
         {
