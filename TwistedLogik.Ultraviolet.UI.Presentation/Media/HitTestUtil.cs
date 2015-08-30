@@ -21,6 +21,20 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media
             if (!element.VisualBounds.Contains(point))
                 return false;
 
+            var clip = element.ClipRectangle;
+            if (clip.HasValue)
+            {
+                var absoluteClip = clip.Value;
+                var relativeClip = new RectangleD(
+                    absoluteClip.X - element.AbsolutePosition.X,
+                    absoluteClip.Y - element.AbsolutePosition.Y,
+                    absoluteClip.Width,
+                    absoluteClip.Height);
+
+                if (!relativeClip.Contains(point))
+                    return false;
+            }
+
             return true;
         }
     }

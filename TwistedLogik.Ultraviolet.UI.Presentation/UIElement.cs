@@ -613,7 +613,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         public void InvalidateVisualBounds()
         {
-            if (visualBounds.HasValue)
+            if (!visualBounds.HasValue)
                 return;
 
             visualBounds = null;
