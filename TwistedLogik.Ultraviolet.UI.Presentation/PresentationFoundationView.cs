@@ -149,8 +149,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             drawingContext.Begin();
 
             var fe = layoutRoot as FrameworkElement;
-            if (fe != null)
+            if (fe != null && !fe.IsLoaded)
+            {
                 fe.EnsureIsLoaded(true);
+                Ultraviolet.GetUI().GetPresentationFoundation().PerformLayout();
+            }
 
             layoutRoot.Draw(time, drawingContext);
             popupQueue.Draw(time, drawingContext);

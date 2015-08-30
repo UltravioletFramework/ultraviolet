@@ -502,7 +502,54 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             }
             return obj;
         }
-        
+
+        /// <summary>
+        /// Performs the layout process for any elements which currently need it.
+        /// </summary>
+        internal void PerformLayout()
+        {
+            while (ElementNeedsStyle || ElementNeedsMeasure || ElementNeedsArrange)
+            {
+                // 1. Style
+                while (ElementNeedsStyle)
+                {
+                    var element = styleQueue.Dequeue();
+                    if (element.IsStyleValid)
+                        continue;
+
+                    element.Style(element.View.StyleSheet);
+                    element.InvalidateMeasure();
+                }
+
+                // 2. Measure
+                while (ElementNeedsMeasure && !ElementNeedsStyle)
+                {
+                    var element = measureQueue.Dequeue();
+                    if (element.IsMeasureValid)
+                        continue;
+
+                    element.Measure(element.MostRecentAvailableSize);
+                    element.InvalidateArrange();
+                }
+
+                // 3. Arrange
+                while (ElementNeedsArrange && !ElementNeedsStyle && !ElementNeedsMeasure)
+                {
+                    var element = arrangeQueue.Dequeue();
+                    if (element.IsArrangeValid)
+                        continue;
+
+                    element.Arrange(element.MostRecentFinalRect, element.MostRecentArrangeOptions);
+                }
+
+                if (ElementNeedsStyle || ElementNeedsMeasure || ElementNeedsArrange)
+                    continue;
+
+                // 4. Raise LayoutUpdated events
+                RaiseLayoutUpdated();
+            }
+        }
+
         /// <summary>
         /// Removes the specified UI element from all of the Foundation's processing queues.
         /// </summary>
@@ -696,46 +743,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             PerformanceStats.BeginFrame();
 
-            while (ElementNeedsStyle || ElementNeedsMeasure || ElementNeedsArrange)
-            {
-                // 1. Style
-                while (ElementNeedsStyle)
-                {
-                    var element = styleQueue.Dequeue();
-                    if (element.IsStyleValid)
-                        continue;
-
-                    element.Style(element.View.StyleSheet);
-                    element.InvalidateMeasure();
-                }
-
-                // 2. Measure
-                while (ElementNeedsMeasure && !ElementNeedsStyle)
-                {
-                    var element = measureQueue.Dequeue();
-                    if (element.IsMeasureValid)
-                        continue;
-
-                    element.Measure(element.MostRecentAvailableSize);
-                    element.InvalidateArrange();
-                }
-
-                // 3. Arrange
-                while (ElementNeedsArrange && !ElementNeedsStyle && !ElementNeedsMeasure)
-                {
-                    var element = arrangeQueue.Dequeue();
-                    if (element.IsArrangeValid)
-                        continue;
-
-                    element.Arrange(element.MostRecentFinalRect, element.MostRecentArrangeOptions);
-                }
-
-                if (ElementNeedsStyle || ElementNeedsMeasure || ElementNeedsArrange)
-                    continue;
-
-                // 4. Raise LayoutUpdated events
-                RaiseLayoutUpdated();
-            }
+            PerformLayout();
         }
 
         /// <summary>

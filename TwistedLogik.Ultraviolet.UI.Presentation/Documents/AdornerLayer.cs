@@ -74,15 +74,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Documents
 
             adorners.Add(adorner);
             adornersStates.Add(state);
-
+            
             adorner.InvalidateMeasure();
             adorner.ChangeLogicalParent(this);
 
             InvalidateMeasure();
             InvalidateArrange(true);
-
-            Measure(MostRecentAvailableSize);
-            Arrange(MostRecentFinalRect, MostRecentArrangeOptions);
         }
 
         /// <summary>

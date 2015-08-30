@@ -288,18 +288,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             CacheLayoutDepth();
             CacheView();
-
-            if (View != view)
-            {
-                InvalidateStyle();
-
-                var styleSheet = View.StyleSheet;
-                if (styleSheet != null)
-                {
-                    Style(styleSheet);
-                }
-            }
-
+            
             CacheLayoutParametersCore();
         }
 
@@ -1173,6 +1162,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         internal override void OnVisualParentChangedInternal(Visual oldParent, Visual newParent)
         {
             OnLayoutCacheInvalidatedInternal();
+            
+            if (VisualParent != null)
+            {
+                InvalidateStyle();
+
+                var parent = VisualParent as UIElement;
+                if (parent != null && parent.MostRecentStyleSheet != null)
+                {
+                    Style(parent.MostRecentStyleSheet);
+                }
+            }
+
             base.OnVisualParentChangedInternal(oldParent, newParent);
         }
         
@@ -1192,16 +1193,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         internal virtual void OnLayoutCacheInvalidatedInternal()
         {
             CacheLayoutParameters();
-            if (VisualParent != null)
-            {
-                InvalidateStyle();
-
-                var parent = VisualParent as UIElement;
-                if (parent != null && parent.MostRecentStyleSheet != null)
-                {
-                    Style(parent.MostRecentStyleSheet);
-                }
-            }
             OnLayoutCacheInvalidated();
         }
 
