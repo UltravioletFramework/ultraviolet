@@ -489,6 +489,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             }
 
             /// <summary>
+            /// Gets a value indicating whether the property's coerced value is different from its cached bound value.
+            /// </summary>
+            private Boolean IsCoercedValueDifferentFromCachedBoundValue()
+            {
+                return IsCoerced && !comparer(coercedValue, cachedBoundValue.Get());
+            }
+
+            /// <summary>
             /// Sets the property's bound value.
             /// </summary>
             private void SetCachedBoundValue(T value)
@@ -529,38 +537,39 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                     UpdateAnimation(time);
                 }
 
-                var value    = default(T);
-                var changed  = false;
+                var value = default(T);
+                var potentiallyChanged = false;
 
                 if (cachedBoundValue != null)
                 {
-                    if (cachedBoundValue.CheckHasChanged())
+                    if (cachedBoundValue.CheckHasChanged() || IsCoercedValueDifferentFromCachedBoundValue())
                     {
-                        value   = cachedBoundValue.Get();
-                        changed = true;
+                        value = cachedBoundValue.Get();
+                        potentiallyChanged = true;
                     }
                 }
                 else
                 {
-                    value    = GetValue();
-                    changed  = !comparer(value, previousValue);
+                    value = GetValue();
+                    potentiallyChanged = !comparer(value, previousValue);
                 }
 
-                if (changed)
+                if (potentiallyChanged)
                 {
                     var oldValue = original;
                     var newValue = value;
 
                     if (IsCoerced)
                     {
-                        coercedValue = metadata.CoerceValue<T>(owner, value);
-                        changed      = !comparer(coercedValue, original);
-                        newValue     = coercedValue;
+                        coercedValue = metadata.CoerceValue(owner, value);
+                        potentiallyChanged = !comparer(coercedValue, original);
+                        newValue = coercedValue;
                     }
 
-                    if (changed)
+                    var definitelyChanged = potentiallyChanged;
+                    if (definitelyChanged)
                     {
-                        metadata.HandleChanged<T>(Owner, property, oldValue, newValue);
+                        metadata.HandleChanged(Owner, property, oldValue, newValue);
                     }
                 }
                 previousValue = value;
