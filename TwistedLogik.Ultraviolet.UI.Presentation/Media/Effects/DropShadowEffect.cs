@@ -84,7 +84,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media.Effects
         /// <summary>
         /// Identifies the <see cref="BlurRadius"/> dependency property.
         /// </summary>
-        public static readonly DependencyProperty BlurRadiusProperty = DependencyProperty.Register("BlurRadius", typeof(double), typeof(DropShadowEffect),
+        public static readonly DependencyProperty BlurRadiusProperty = DependencyProperty.Register("BlurRadius", typeof(Double), typeof(DropShadowEffect),
             new PropertyMetadata<Double>(5.0, PropertyMetadataOptions.None));
 
         /// <summary>
@@ -107,6 +107,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media.Effects
             var gfx = dc.SpriteBatch.Ultraviolet.GetGraphics();
             gfx.SetRenderTarget(shadowTarget);
             gfx.Clear(Color.Transparent);
+
+            effect.Value.Radius = GetBlurRadiusInPixels(element);
+            effect.Value.Direction = BlurDirection.Vertical;
 
             dc.Begin(SpriteSortMode.Immediate, effect, Matrix.Identity);
 
@@ -137,9 +140,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media.Effects
             var positionRounded = new Vector2((Int32)position.X, (Int32)position.Y);
 
             dc.End();
-            dc.Begin(SpriteSortMode.Immediate, effect, Matrix.Identity);
 
+            effect.Value.Radius = GetBlurRadiusInPixels(element);
             effect.Value.Direction = BlurDirection.Vertical;
+
+            dc.Begin(SpriteSortMode.Immediate, effect, Matrix.Identity);
 
             var shadowTexture = target.Next.ColorBuffer;
             dc.SpriteBatch.Draw(shadowTexture, positionRounded + shadowVector, null, Color * Opacity, 0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0f);
@@ -156,14 +161,23 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media.Effects
         /// <inheritdoc/>
         protected internal override void ModifyVisualBounds(ref RectangleD bounds)
         {
-            var depth = ShadowDepth + BlurRadius;
-            RectangleD.Inflate(ref bounds, depth, depth, out bounds);
+            var radius = ShadowDepth + BlurRadius;
+            RectangleD.Inflate(ref bounds, radius, radius, out bounds);
+        }
+
+        /// <summary>
+        /// Gets the shadow blur radius for the specified element, in pixels.
+        /// </summary>
+        private Single GetBlurRadiusInPixels(UIElement element)
+        {
+            var display = element.View.Display;
+            return (Single)display.DipsToPixels(BlurRadius);
         }
 
         // The singleton instance of effect used to render the shadow.
-        private static readonly UltravioletSingleton<BlurEffect> effect = new UltravioletSingleton<BlurEffect>((uv) =>
+        private static readonly UltravioletSingleton<Graphics.BlurEffect> effect = new UltravioletSingleton<Graphics.BlurEffect>((uv) =>
         {
-            return BlurEffect.Create();
+            return Graphics.BlurEffect.Create();
         });
     }
 }
