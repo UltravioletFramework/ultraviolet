@@ -2401,7 +2401,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var upf = element.Ultraviolet.GetUI().GetPresentationFoundation();
             if (oldValue == null && newValue != null)
             {
-                upf.OutOfBandRenderer.Register(element);
+                upf.OutOfBandRenderer.Register(element, newValue.AdditionalRenderTargetsRequired);
             }
             else if (oldValue != null && newValue == null)
             {

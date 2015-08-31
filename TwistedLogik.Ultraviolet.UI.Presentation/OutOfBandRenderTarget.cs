@@ -178,6 +178,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             internal set;
         }
 
+        /// <summary>
+        /// Gets the next target in the render target chain.
+        /// </summary>
+        public OutOfBandRenderTarget Next
+        {
+            get;
+            internal set;
+        }
+
         /// <inheritdoc/>
         protected override void Dispose(Boolean disposing)
         {
@@ -185,6 +194,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             {
                 SafeDispose.Dispose(renderTarget);
                 SafeDispose.Dispose(colorBuffer);
+                SafeDispose.Dispose(depthBuffer);
             }
             base.Dispose(disposing);
         }

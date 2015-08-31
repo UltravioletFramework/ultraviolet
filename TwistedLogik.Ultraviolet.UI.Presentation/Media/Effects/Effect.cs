@@ -41,6 +41,26 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media.Effects
         }
 
         /// <summary>
+        /// Gets the number of additional render targets which are required by this effect.
+        /// </summary>
+        /// <remarks>This property is only examined when the effect is first applied to an element. Changing it after that point will do nothing.</remarks>
+        public virtual Int32 AdditionalRenderTargetsRequired
+        {
+            get { return 0; }
+        }
+
+        /// <summary>
+        /// Draws the effect's additional render targets, if it has any.
+        /// </summary>
+        /// <param name="dc">The current drawing context.</param>
+        /// <param name="element">The element being drawn.</param>
+        /// <param name="target">The render target that contains the element's graphics.</param>
+        protected internal virtual void DrawRenderTargets(DrawingContext dc, UIElement element, OutOfBandRenderTarget target)
+        {
+
+        }
+
+        /// <summary>
         /// Draws the specified element using an out-of-band render target.
         /// </summary>
         /// <param name="dc">The current drawing context.</param>

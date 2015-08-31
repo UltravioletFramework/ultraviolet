@@ -9,6 +9,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media.Effects
     [UvmlKnownType]
     public sealed class DropShadowEffect : Effect
     {
+        /// <inheritdoc/>
+        public override Int32 AdditionalRenderTargetsRequired
+        {
+            get { return 1; }
+        }
+
         /// <summary>
         /// Gets or sets the color of the drop shadow.
         /// </summary>
@@ -38,7 +44,21 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media.Effects
         /// </summary>
         public static readonly DependencyProperty ShadowDepthProperty = DependencyProperty.Register("ShadowDepth", typeof(Double), typeof(DropShadowEffect),
             new PropertyMetadata<Double>(5.0, PropertyMetadataOptions.None));
-        
+
+        /// <inheritdoc/>
+        protected internal override void DrawRenderTargets(DrawingContext dc, UIElement element, OutOfBandRenderTarget target)
+        {
+            var shadowTarget = target.Next.RenderTarget;
+
+            var gfx = dc.SpriteBatch.Ultraviolet.GetGraphics();
+            gfx.SetRenderTarget(shadowTarget);
+            gfx.Clear(Color.Transparent);
+
+            dc.Begin(SpriteSortMode.Immediate, null, Matrix.Identity);
+            dc.SpriteBatch.Draw(target.ColorBuffer, Vector2.Zero, Color.Black);
+            dc.End();
+        }
+
         /// <inheritdoc/>
         protected internal override void Draw(DrawingContext dc, UIElement element, OutOfBandRenderTarget target)
         {
@@ -62,7 +82,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media.Effects
             dc.End();
             dc.Begin(SpriteSortMode.Immediate, null, Matrix.Identity);
 
-            dc.SpriteBatch.Draw(target.ColorBuffer, positionRounded + shadowVector, null, Color.Black, 0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0f);
+            var shadowTexture = target.Next.ColorBuffer;
+            dc.SpriteBatch.Draw(shadowTexture, positionRounded + shadowVector, null, Color.White, 0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0f);
             
             dc.End();
             dc.Begin(SpriteSortMode.Immediate, null, Matrix.Identity);

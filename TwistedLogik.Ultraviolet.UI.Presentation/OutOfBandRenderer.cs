@@ -83,9 +83,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Registers an element with the out-of-band renderer.
         /// </summary>
         /// <param name="element">The element to register.</param>
-        public void Register(UIElement element)
+        /// <param name="additional">The number of additional render targets to reserve.</param>
+        public void Register(UIElement element, Int32 additional)
         {
             Contract.Require(element, "element");
+            Contract.EnsureRange(additional >= 0, "additional");
             Contract.EnsureNotDisposed(this, Disposed);
 
             if (IsRenderedOutOfBand(element))
@@ -94,6 +96,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var target = renderTargetPool.Retrieve();
             var bounds = default(RectangleD);
             target.ResizeForElement(element, out bounds);
+
+            var currentTarget = target;
+            currentTarget.Next = null;
+
+            for (int i = 0; i < additional; i++)
+            {
+                var additionalTarget = renderTargetPool.Retrieve();
+                additionalTarget.Next = null;
+                additionalTarget.Resize(target.Width, target.Height);
+
+                currentTarget.Next = additionalTarget;
+            }
 
             registeredElements.Add(element, target);
         }
@@ -110,8 +124,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             OutOfBandRenderTarget rt;
             if (registeredElements.TryGetValue(element, out rt))
             {
-                rt.Resize(1, 1);
-                renderTargetPool.Release(rt);
+                for (OutOfBandRenderTarget current = rt, next = null; current != null; current = next)
+                {
+                    next = current.Next;
+                    current.Resize(1, 1);
+                    current.Next = null;
+                    renderTargetPool.Release(current);
+                }
                 registeredElements.Remove(element);
             }
         }
@@ -143,7 +162,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
                     var bounds = default(RectangleD);
                     rtarget.ResizeForElement(element, out bounds);
-                    
+
+                    for (var current = rtarget.Next; current != null; current = current.Next)
+                        current.Resize(rtarget.Width, rtarget.Height);
+
                     graphics.SetRenderTarget(rtarget.RenderTarget);
                     graphics.Clear(Color.Transparent);
 
@@ -163,13 +185,23 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
                     var elementTranslation = new Vector2(pxOffsetX, pxOffsetY);
                     var elementTransform = Matrix.CreateTranslation(elementTranslation.X, elementTranslation.Y, 0);
+                    
+                    rtarget.CumulativeTransform = cumulativeTransform;
+                    rtarget.VisualBounds = bounds;
 
                     drawingContext.Begin(SpriteSortMode.Deferred, null, elementTransform * cumulativeTransformParent);
                     element.Draw(time, drawingContext);
                     drawingContext.End();
 
-                    rtarget.CumulativeTransform = cumulativeTransform;
-                    rtarget.VisualBounds = bounds;
+                    if (rtarget.Next != null)
+                    {
+                        var effect = element.Effect;
+                        if (effect != null)
+                        {
+                            effect.DrawRenderTargets(drawingContext, element, rtarget);
+                        }
+                    }
+
                     rtarget.IsReady = true;
                 }
             }
