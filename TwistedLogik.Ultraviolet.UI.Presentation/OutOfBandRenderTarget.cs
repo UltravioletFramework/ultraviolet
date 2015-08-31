@@ -166,7 +166,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public RectangleD VisualBounds
         {
             get;
-            set;
+            internal set;
+        }
+
+        /// <summary>
+        /// Gets the cumulative transform of all ancestors of the rendered element.
+        /// </summary>
+        public Matrix CumulativeTransform
+        {
+            get;
+            internal set;
         }
 
         /// <inheritdoc/>

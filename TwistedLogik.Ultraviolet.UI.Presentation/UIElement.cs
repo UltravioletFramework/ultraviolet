@@ -58,7 +58,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             Contract.Require(uv, "uv");
 
-            this.uv      = uv;
+            this.uv = uv;
             this.classes = new UIElementClassCollection(this);
 
             var attr = (UvmlKnownTypeAttribute)GetType().GetCustomAttributes(typeof(UvmlKnownTypeAttribute), false).SingleOrDefault();
@@ -197,23 +197,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 {
                     if (HasNonIdentityTransform)
                     {
-                        var pxRenderWidth = Display.DipsToPixels(RenderSize.Width);
-                        var pxRenderHeight = Display.DipsToPixels(RenderSize.Height);
-
-                        var pixPosition = (Vector2)Display.DipsToPixels(AbsolutePosition);
-
-                        var mtxTranslateToClientSpace = Matrix.CreateTranslation(-pixPosition.X, -pixPosition.Y, 0f);
-                        var mtxTransform = GetTransformMatrix();
-                        var mtxTranslateToScreenSpace = Matrix.CreateTranslation(+pixPosition.X, +pixPosition.Y, 0f);
-                        var mtxSpriteBatch = state.TransformMatrix;
-
-                        Matrix mtxFinal;
-                        Matrix.Concat(ref mtxTranslateToClientSpace, ref mtxTransform, out mtxFinal);
-                        Matrix.Concat(ref mtxFinal, ref mtxTranslateToScreenSpace, out mtxFinal);
-                        Matrix.Concat(ref mtxFinal, ref mtxSpriteBatch, out mtxFinal);
+                        var mtxTransformParent = state.TransformMatrix;
+                        var mtxTransformBatch = GetSpriteBatchTransform(ref mtxTransformParent);
 
                         dc.End();
-                        dc.Begin(SpriteSortMode.Deferred, null, mtxFinal);
+                        dc.Begin(SpriteSortMode.Deferred, null, mtxTransformBatch);
 
                         flush = true;
                     }
@@ -1361,7 +1349,29 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 StoryboardClockPool.Instance.Release(clock);
             }
         }
-        
+
+        /// <summary>
+        /// Gets the transformation matrix which is passed into the element's sprite batch prior to rendering the element.
+        /// </summary>
+        /// <param name="parent">The sprite batch transform of the element's parent.</param>
+        /// <returns>The transformation matrix which is passed into the element's sprite batch prior to rendering the element.</returns>
+        internal Matrix GetSpriteBatchTransform(ref Matrix parent)
+        {
+            var pixPosition = (Vector2)Display.DipsToPixels(AbsolutePosition);
+
+            var mtxTranslateToClientSpace = Matrix.CreateTranslation(-pixPosition.X, -pixPosition.Y, 0f);
+            var mtxTransform = GetTransformMatrix();
+            var mtxTranslateToScreenSpace = Matrix.CreateTranslation(+pixPosition.X, +pixPosition.Y, 0f);
+            var mtxSpriteBatch = parent;
+
+            Matrix mtxFinal;
+            Matrix.Concat(ref mtxTranslateToClientSpace, ref mtxTransform, out mtxFinal);
+            Matrix.Concat(ref mtxFinal, ref mtxTranslateToScreenSpace, out mtxFinal);
+            Matrix.Concat(ref mtxFinal, ref mtxSpriteBatch, out mtxFinal);
+
+            return mtxFinal;
+        }
+
         /// <summary>
         /// Gets the element's transformed layout region in absolute screen space.
         /// </summary>

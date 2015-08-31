@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using TwistedLogik.Nucleus;
 using TwistedLogik.Nucleus.Collections;
-using TwistedLogik.Ultraviolet.Graphics;
 using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation
@@ -29,6 +28,27 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             this.drawingContext = new DrawingContext();
             this.drawingContext.SpriteBatch = spriteBatch;
+        }
+
+        /// <summary>
+        /// Calculates the cumulative sprite batch transform applied to the specified element.
+        /// </summary>
+        /// <param name="element">The element for which to calculate a cumulative transform.</param>
+        /// <param name="parentTransform">The cumulative sprite batch transform of the specified element's parent element.</param>
+        /// <returns>The cumulative sprite batch transform of the specified element.</returns>
+        public Matrix CalculateCumulativeSpriteBatchTransform(UIElement element, out Matrix parentTransform)
+        {
+            var mtxParentTransform = Matrix.Identity;
+
+            var parent = Media.VisualTreeHelper.GetParent(element) as UIElement;
+            if (parent != null)
+            {
+                Matrix prevprev;
+                mtxParentTransform = CalculateCumulativeSpriteBatchTransform(parent, out prevprev);
+            }
+
+            parentTransform = mtxParentTransform;
+            return element.GetSpriteBatchTransform(ref mtxParentTransform);
         }
 
         /// <summary>
@@ -138,13 +158,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                     var pxOffsetX = -(Int32)display.DipsToPixels(bounds.X);
                     var pxOffsetY = -(Int32)display.DipsToPixels(bounds.Y);
 
-                    var translate = new Vector2(pxOffsetX, pxOffsetY);
-                    var transform = Matrix.CreateTranslation(translate.X, translate.Y, 0);
+                    var cumulativeTransformParent = Matrix.Identity;
+                    var cumulativeTransform = CalculateCumulativeSpriteBatchTransform(element, out cumulativeTransformParent);
 
-                    drawingContext.Begin(SpriteSortMode.Deferred, null, transform);
+                    var elementTranslation = new Vector2(pxOffsetX, pxOffsetY);
+                    var elementTransform = Matrix.CreateTranslation(elementTranslation.X, elementTranslation.Y, 0);
+
+                    drawingContext.Begin(SpriteSortMode.Deferred, null, elementTransform * cumulativeTransformParent);
                     element.Draw(time, drawingContext);
                     drawingContext.End();
 
+                    rtarget.CumulativeTransform = cumulativeTransform;
                     rtarget.VisualBounds = bounds;
                     rtarget.IsReady = true;
                 }

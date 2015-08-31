@@ -95,6 +95,7 @@
     <Compile Include="AssetSource.cs" />
     <Compile Include="Controls\Decorator.cs" />
     <Compile Include="DependencyObject.ValueSource.cs" />
+    <Compile Include="Media\Effects\DropShadowEffect.cs" />
     <Compile Include="Media\Effects\Effect.cs" />
     <Compile Include="Media\Effects\ShaderEffect.cs" />
     <Compile Include="OutOfBandRenderer.cs" />
