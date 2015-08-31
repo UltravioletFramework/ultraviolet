@@ -36,6 +36,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL
             // Core effects
             factory.SetFactoryMethod<BasicEffectFactory>((uv) => new OpenGLBasicEffect(uv));
             factory.SetFactoryMethod<SpriteBatchEffectFactory>((uv) => new OpenGLSpriteBatchEffect(uv));
+            factory.SetFactoryMethod<BlurEffectFactory>((uv) => new OpenGLBlurEffect(uv));
 
             // BlendState
             var blendStateOpaque = OpenGLBlendState.CreateOpaque(owner);

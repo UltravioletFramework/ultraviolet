@@ -1,5 +1,6 @@
 ﻿using System;
 using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
+using TwistedLogik.Ultraviolet.Graphics;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Media.Effects
 {
@@ -9,6 +10,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media.Effects
     [UvmlKnownType]
     public sealed class DropShadowEffect : Effect
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DropShadowEffect"/> class.
+        /// </summary>
+        public DropShadowEffect()
+        {
+            effect.Value.Mix = 1f;
+        }
+
         /// <inheritdoc/>
         public override Int32 AdditionalRenderTargetsRequired
         {
@@ -16,12 +25,30 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media.Effects
         }
 
         /// <summary>
-        /// Gets or sets the color of the drop shadow.
+        /// Gets or sets the angle in degrees at which the drop shadow is offset from its element.
         /// </summary>
-        public Color Color
+        public Single Direction
         {
-            get { return GetValue<Color>(ColorProperty); }
-            set { SetValue(ColorProperty, value); }
+            get { return GetValue<Single>(DirectionProperty); }
+            set { SetValue(DirectionProperty, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets the drop shadow's opacity.
+        /// </summary>
+        public Single Opacity
+        {
+            get { return GetValue<Single>(OpacityProperty); }
+            set { SetValue(OpacityProperty, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets the radius of the blur which is applied to the drop shadow.
+        /// </summary>
+        public Double BlurRadius
+        {
+            get { return GetValue<Double>(BlurRadiusProperty); }
+            set { SetValue(BlurRadiusProperty, value); }
         }
 
         /// <summary>
@@ -34,16 +61,43 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media.Effects
         }
 
         /// <summary>
-        /// Identifies the <see cref="Color"/> dependency property.
+        /// Gets or sets the color of the drop shadow.
         /// </summary>
-        public static readonly DependencyProperty ColorProperty = DependencyProperty.Register("Color", typeof(Color), typeof(DropShadowEffect),
-            new PropertyMetadata<Color>(Color.Black, PropertyMetadataOptions.None));
+        public Color Color
+        {
+            get { return GetValue<Color>(ColorProperty); }
+            set { SetValue(ColorProperty, value); }
+        }
+
+        /// <summary>
+        /// Identifies the <see cref="Direction"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty DirectionProperty = DependencyProperty.Register("Direction", typeof(Single), typeof(DropShadowEffect),
+            new PropertyMetadata<Single>(315f, PropertyMetadataOptions.None));
+
+        /// <summary>
+        /// Identifies the <see cref="Opacity"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty OpacityProperty = DependencyProperty.Register("Opacity", typeof(Single), typeof(DropShadowEffect),
+            new PropertyMetadata<Single>(1f, PropertyMetadataOptions.None));
+
+        /// <summary>
+        /// Identifies the <see cref="BlurRadius"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty BlurRadiusProperty = DependencyProperty.Register("BlurRadius", typeof(double), typeof(DropShadowEffect),
+            new PropertyMetadata<Double>(5.0, PropertyMetadataOptions.None));
 
         /// <summary>
         /// Identifies the <see cref="ShadowDepth"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty ShadowDepthProperty = DependencyProperty.Register("ShadowDepth", typeof(Double), typeof(DropShadowEffect),
             new PropertyMetadata<Double>(5.0, PropertyMetadataOptions.None));
+
+        /// <summary>
+        /// Identifies the <see cref="Color"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty ColorProperty = DependencyProperty.Register("Color", typeof(Color), typeof(DropShadowEffect),
+            new PropertyMetadata<Color>(Color.Black, PropertyMetadataOptions.None));
 
         /// <inheritdoc/>
         protected internal override void DrawRenderTargets(DrawingContext dc, UIElement element, OutOfBandRenderTarget target)
@@ -54,8 +108,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media.Effects
             gfx.SetRenderTarget(shadowTarget);
             gfx.Clear(Color.Transparent);
 
-            dc.Begin(SpriteSortMode.Immediate, null, Matrix.Identity);
-            dc.SpriteBatch.Draw(target.ColorBuffer, Vector2.Zero, Color.Black);
+            dc.Begin(SpriteSortMode.Immediate, effect, Matrix.Identity);
+
+            effect.Value.Direction = BlurDirection.Horizontal;
+
+            dc.SpriteBatch.Draw(target.ColorBuffer, Vector2.Zero, Color);
             dc.End();
         }
 
@@ -63,11 +120,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media.Effects
         protected internal override void Draw(DrawingContext dc, UIElement element, OutOfBandRenderTarget target)
         {
             var cumulativeTransform = target.CumulativeTransform;
-
+            
             var shadowVectorStart = new Vector2(0, 0);
             Vector2.Transform(ref shadowVectorStart, ref cumulativeTransform, out shadowVectorStart);
 
-            var shadowVectorEnd = new Vector2(1, 1);
+            var shadowVectorEnd = Vector2.Transform(new Vector2(1, 0), Matrix.CreateRotationZ(Radians.FromDegrees(-Direction)));
             Vector2.Transform(ref shadowVectorEnd, ref cumulativeTransform, out shadowVectorEnd);
 
             var display = element.View.Display;
@@ -80,10 +137,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media.Effects
             var positionRounded = new Vector2((Int32)position.X, (Int32)position.Y);
 
             dc.End();
-            dc.Begin(SpriteSortMode.Immediate, null, Matrix.Identity);
+            dc.Begin(SpriteSortMode.Immediate, effect, Matrix.Identity);
+
+            effect.Value.Direction = BlurDirection.Vertical;
 
             var shadowTexture = target.Next.ColorBuffer;
-            dc.SpriteBatch.Draw(shadowTexture, positionRounded + shadowVector, null, Color.White, 0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0f);
+            dc.SpriteBatch.Draw(shadowTexture, positionRounded + shadowVector, null, Color * Opacity, 0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0f);
             
             dc.End();
             dc.Begin(SpriteSortMode.Immediate, null, Matrix.Identity);
@@ -93,5 +152,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media.Effects
             dc.End();
             dc.Begin(state.SortMode, state.Effect, state.TransformMatrix);
         }
+
+        /// <inheritdoc/>
+        protected internal override void ModifyVisualBounds(ref RectangleD bounds)
+        {
+            var depth = ShadowDepth + BlurRadius;
+            RectangleD.Inflate(ref bounds, depth, depth, out bounds);
+        }
+
+        // The singleton instance of effect used to render the shadow.
+        private static readonly UltravioletSingleton<BlurEffect> effect = new UltravioletSingleton<BlurEffect>((uv) =>
+        {
+            return BlurEffect.Create();
+        });
     }
 }

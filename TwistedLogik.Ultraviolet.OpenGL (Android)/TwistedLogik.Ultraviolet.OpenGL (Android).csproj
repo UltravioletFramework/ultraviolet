@@ -107,6 +107,9 @@
     <Compile Include="..\TwistedLogik.Ultraviolet.OpenGL\Graphics\OpenGLBlendState.cs">
       <Link>Graphics\OpenGLBlendState.cs</Link>
     </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet.OpenGL\Graphics\OpenGLBlurEffect.cs">
+      <Link>Graphics\OpenGLBlurEffect.cs</Link>
+    </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet.OpenGL\Graphics\OpenGLDepthStencilState.cs">
       <Link>Graphics\OpenGLDepthStencilState.cs</Link>
     </Compile>
@@ -345,6 +348,12 @@
     <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.OpenGL\Resources\uv64.png">
       <Link>Resources\uv64.png</Link>
     </EmbeddedResource>
+    <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.OpenGL\Resources\BlurEffect.frag">
+      <Link>Resources\BlurEffect.frag</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.OpenGL\Resources\BlurEffect.vert">
+      <Link>Resources\BlurEffect.vert</Link>
+    </EmbeddedResource>
     <None Include="..\TwistedLogik.Ultraviolet.OpenGL\TwistedLogik.Ultraviolet.OpenGL.Licenses.txt">
       <Link>TwistedLogik.Ultraviolet.OpenGL.Licenses.txt</Link>
     </None>
@@ -352,7 +361,7 @@
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties ProjectLinkReference="40d272db-90e1-4332-a32f-6effeb44fe87" ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" />
+      <UserProperties ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" ProjectLinkReference="40d272db-90e1-4332-a32f-6effeb44fe87" />
     </VisualStudio>
   </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

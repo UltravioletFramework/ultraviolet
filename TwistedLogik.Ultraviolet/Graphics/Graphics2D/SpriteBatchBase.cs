@@ -1797,6 +1797,21 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
             // Set the sprite texture.
             var graphics = Ultraviolet.GetGraphics();
             graphics.SetTexture(0, texture);
+            
+            var effectTextureSizes = customEffect as IEffectTextureSizes;
+            if (effectTextureSizes != null)
+            {
+                if (texture == null)
+                {
+                    effectTextureSizes.TextureWidth = 0;
+                    effectTextureSizes.TextureHeight = 0;
+                }
+                else
+                {
+                    effectTextureSizes.TextureWidth = texture.Width;
+                    effectTextureSizes.TextureHeight = texture.Height;
+                }
+            }
 
             // Draw the sprites in this batch.
             var options = SetDataOptions.NoOverwrite;

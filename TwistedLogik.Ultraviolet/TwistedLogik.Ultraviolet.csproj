@@ -212,6 +212,8 @@
     <Compile Include="DummyUltravioletInput.cs" />
     <Compile Include="DummyUltravioletPlatform.cs" />
     <Compile Include="Easings.cs" />
+    <Compile Include="Graphics\BlurDirection.cs" />
+    <Compile Include="Graphics\BlurEffect.cs" />
     <Compile Include="Graphics\ColorWriteChannels.cs" />
     <Compile Include="Graphics\DummyGraphicsCapabilities.cs" />
     <Compile Include="Graphics\EffectImplementation.cs" />
@@ -278,6 +280,7 @@
     <Compile Include="Graphics\Graphics2D\Text\TextTableCellCollection.cs" />
     <Compile Include="Graphics\Graphics2D\Text\TextTableRowCollection.cs" />
     <Compile Include="Graphics\GraphicsCapabilities.cs" />
+    <Compile Include="Graphics\IEffectTextureSizes.cs" />
     <Compile Include="Graphics\IEffectMatrices.cs" />
     <Compile Include="Graphics\NamespaceDoc.cs" />
     <Compile Include="Graphics\RenderBuffer2D.cs" />

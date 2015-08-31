@@ -277,6 +277,12 @@
     <Compile Include="..\TwistedLogik.Ultraviolet\Graphics\BlendState.cs">
       <Link>Graphics\BlendState.cs</Link>
     </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Graphics\BlurDirection.cs">
+      <Link>Graphics\BlurDirection.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Graphics\BlurEffect.cs">
+      <Link>Graphics\BlurEffect.cs</Link>
+    </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet\Graphics\ColorWriteChannels.cs">
       <Link>Graphics\ColorWriteChannels.cs</Link>
     </Compile>
@@ -537,6 +543,9 @@
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet\Graphics\IEffectMatrices.cs">
       <Link>Graphics\IEffectMatrices.cs</Link>
+    </Compile>
+    <Compile Include="..\TwistedLogik.Ultraviolet\Graphics\IEffectTextureSizes.cs">
+      <Link>Graphics\IEffectTextureSizes.cs</Link>
     </Compile>
     <Compile Include="..\TwistedLogik.Ultraviolet\Graphics\IndexBuffer.cs">
       <Link>Graphics\IndexBuffer.cs</Link>

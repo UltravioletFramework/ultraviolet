@@ -148,6 +148,7 @@
     <Compile Include="Graphics\Graphics2D\OpenGLSpriteFontHelper.cs" />
     <Compile Include="Graphics\Graphics2D\OpenGLSpriteFontProcessor.cs" />
     <Compile Include="Graphics\Graphics2D\OpenGLSpriteFontTextureProcessor.cs" />
+    <Compile Include="Graphics\OpenGLBlurEffect.cs" />
     <Compile Include="Graphics\OpenGLGraphicsCapabilities.cs" />
     <Compile Include="Graphics\OpenGLStateInteger.cs" />
     <Compile Include="Graphics\OpenGLEffectProcessor.cs" />
@@ -256,6 +257,8 @@
     <EmbeddedResource Include="Resources\BasicEffectTexturedES.frag" />
     <EmbeddedResource Include="Resources\BasicEffectColoredTexturedES.frag" />
     <EmbeddedResource Include="Resources\BasicEffectColoredTexturedES.vert" />
+    <EmbeddedResource Include="Resources\BlurEffect.vert" />
+    <EmbeddedResource Include="Resources\BlurEffect.frag" />
     <None Include="TwistedLogik.Ultraviolet.OpenGL.Licenses.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
