@@ -70,10 +70,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             if (IsRenderedOutOfBand(element))
                 return;
+            
+            var target = renderTargetPool.Retrieve();
+            var bounds = default(RectangleD);
+            target.ResizeForElement(element, out bounds);
 
-            var rt = renderTargetPool.Retrieve();
-            rt.Resize(renderTargetSize, renderTargetSize);
-            registeredElements.Add(element, rt);
+            registeredElements.Add(element, target);
         }
 
         /// <summary>
@@ -115,7 +117,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 {
                     var element = kvp.Key;
                     var rtarget = kvp.Value;
+                    
+                    if (element.TransformedVisualBounds.IsEmpty)
+                        continue;
 
+                    var bounds = default(RectangleD);
+                    rtarget.ResizeForElement(element, out bounds);
+                    
                     graphics.SetRenderTarget(rtarget.RenderTarget);
                     graphics.Clear(Color.Transparent);
 
@@ -126,19 +134,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                     var centerY = rtarget.RenderTarget.Height / 2f;
 
                     var display = element.View.Display;
+                    
+                    var pxOffsetX = -(Int32)display.DipsToPixels(bounds.X);
+                    var pxOffsetY = -(Int32)display.DipsToPixels(bounds.Y);
 
-                    var pxRenderOriginX = (Single)display.DipsToPixels(element.RenderSize.Width * element.RenderTransformOrigin.X);
-                    var pxRenderOriginY = (Single)display.DipsToPixels(element.RenderSize.Height * element.RenderTransformOrigin.Y);
-                    var pxPositionX = (Single)display.DipsToPixels(element.AbsolutePosition.X);
-                    var pxPositionY = (Single)display.DipsToPixels(element.AbsolutePosition.Y);
-
-                    var translate = new Vector2(centerX - (pxPositionX + pxRenderOriginX), centerY - (pxPositionY + pxRenderOriginY));
+                    var translate = new Vector2(pxOffsetX, pxOffsetY);
                     var transform = Matrix.CreateTranslation(translate.X, translate.Y, 0);
 
                     drawingContext.Begin(SpriteSortMode.Deferred, null, transform);
                     element.Draw(time, drawingContext);
                     drawingContext.End();
 
+                    rtarget.VisualBounds = bounds;
                     rtarget.IsReady = true;
                 }
             }
@@ -150,14 +157,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             graphics.SetRenderTarget(null);
             graphics.Clear(Color.Transparent);
         }
-
+        
         /// <summary>
-        /// Gets the texture that represents the specified element.
+        /// Gets the render target that represents the specified element.
         /// </summary>
-        /// <param name="element">The element for which to retrieve a texture.</param>
-        /// <returns>The texture associated with the specified out-of-band element, or <c>null</c> if the element is
-        /// not registered for out-of-band rendering.</returns>
-        public Texture2D GetElementTexture(UIElement element)
+        /// <param name="element">The element for which to retrieve a render target.</param>
+        /// <returns>The render target associated with the specified out-of-band element, or <c>null if the element is
+        /// not registered for out-of-band rendering.</c></returns>
+        public OutOfBandRenderTarget GetElementRenderTarget(UIElement element)
         {
             Contract.Require(element, "element");
             Contract.EnsureNotDisposed(this, Disposed);
@@ -165,7 +172,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             OutOfBandRenderTarget buffer;
             if (registeredElements.TryGetValue(element, out buffer))
             {
-                return buffer.ColorBuffer;
+                return buffer;
             }
             return null;
         }
@@ -196,37 +203,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 return isDrawingRenderTargets;
             }
         }
-
-        /// <summary>
-        /// Gets or sets the size of the renderer's render targets.
-        /// </summary>
-        public Int32 RenderTargetSize
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return renderTargetSize;
-            }
-            set
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                var max = Ultraviolet.GetGraphics().Capabilities.MaximumTextureSize;
-                var clamped = Math.Min(max, value);
-
-                if (clamped != renderTargetSize)
-                {
-                    renderTargetSize = clamped;
-
-                    foreach (var kvp in registeredElements)
-                    {
-                        kvp.Value.Resize(renderTargetSize, renderTargetSize);
-                    }
-                }
-            }
-        }
-
+       
         /// <inheritdoc/>
         protected override void Dispose(Boolean disposing)
         {
@@ -255,7 +232,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         private readonly SpriteBatch spriteBatch;
 
         // Property values.
-        private Int32 renderTargetSize = 1;
         private bool isDrawingRenderTargets;
     }
 }

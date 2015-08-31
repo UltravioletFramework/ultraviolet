@@ -95,8 +95,10 @@
     <Compile Include="AssetSource.cs" />
     <Compile Include="Controls\Decorator.cs" />
     <Compile Include="DependencyObject.ValueSource.cs" />
+    <Compile Include="Media\Effects\Effect.cs" />
+    <Compile Include="Media\Effects\ShaderEffect.cs" />
     <Compile Include="OutOfBandRenderer.cs" />
-    <Compile Include="OutOfBandRenderer.OutOfBandRenderTarget.cs" />
+    <Compile Include="OutOfBandRenderTarget.cs" />
     <Compile Include="OutOfBandRenderer.UIElementComparer.cs" />
     <Compile Include="PresentationFoundationViewRoot.cs" />
     <Compile Include="DataSourceExpressionBuilder.cs" />

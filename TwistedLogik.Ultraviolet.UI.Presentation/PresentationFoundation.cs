@@ -30,6 +30,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             RegisterCoreTypes();
 
+            this.outOfBandRenderer = uv.IsRunningInServiceMode ? null : new OutOfBandRenderer(uv);
+
             this.styleQueue   = new LayoutQueue(InvalidateStyle, false);
             this.measureQueue = new LayoutQueue(InvalidateMeasure);
             this.arrangeQueue = new LayoutQueue(InvalidateArrange);
@@ -359,6 +361,26 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Registers any UVML-known types in the specified assembly.
+        /// </summary>
+        /// <param name="asm">The assembly for which to register known types.</param>
+        public void RegisterKnownTypes(Assembly asm)
+        {
+            Contract.Require(asm, "asm");
+            
+            var knownTypes = from t in asm.GetTypes()
+                             let attr = t.GetCustomAttributes(typeof(UvmlKnownTypeAttribute), false).SingleOrDefault()
+                             where
+                              attr != null
+                             select t;
+
+            foreach (var knownType in knownTypes)
+            {
+                RegisterElementInternal(registeredTypes, knownType, null);
+            }
+        }
+
+        /// <summary>
         /// Registers a custom element type with the Presentation Foundation.
         /// </summary>
         /// <param name="type">The type that implements the custom element.</param>
@@ -598,6 +620,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Gets the renderer which is used to draw elements out-of-band.
+        /// </summary>
+        internal OutOfBandRenderer OutOfBandRenderer
+        {
+            get
+            {
+                Contract.EnsureNotDisposed(this, Disposed);
+
+                return outOfBandRenderer;
+            }
+        }
+
+        /// <summary>
         /// Gets the queue of elements with invalid styling states.
         /// </summary>
         internal LayoutQueue StyleQueue
@@ -628,6 +663,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             get;
             set;
+        }
+
+        /// <inheritdoc/>
+        protected override void Dispose(Boolean disposing)
+        {
+            if (disposing)
+            {
+                SafeDispose.Dispose(outOfBandRenderer);
+            }
+            base.Dispose(disposing);
         }
 
         /// <summary>
@@ -722,6 +767,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 throw new InvalidOperationException(PresentationStrings.InvalidUserControlType.Format(type.Name));
 
             return type;
+        }
+
+        /// <summary>
+        /// Called when the Ultraviolet context is about to draw a frame.
+        /// </summary>
+        /// <param name="uv">The Ultraviolet context.</param>
+        /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Draw(UltravioletTime)"/>.</param>
+        private void OnDrawing(UltravioletContext uv, UltravioletTime time)
+        {
+            if (uv.IsRunningInServiceMode)
+                return;
+
+            OutOfBandRenderer.DrawRenderTargets(time);
         }
 
         /// <summary>
@@ -1057,6 +1115,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             {
                 var instance = new PresentationFoundation(uv);
                 uv.UpdatingSubsystems += instance.OnUpdatingSubsystems;
+                uv.Drawing += instance.OnDrawing;
                 uv.GetUI().Updating += instance.OnUpdatingUI;
                 return instance;
             });
@@ -1080,6 +1139,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         // The registry of compiled data source wrappers.
         private readonly Dictionary<String, Type> compiledDataSourceWrappers =
             new Dictionary<String, Type>(StringComparer.Ordinal);
+        
+        // The out-of-band element renderer.
+        private readonly OutOfBandRenderer outOfBandRenderer;
 
         // The queues of elements with invalid layouts.
         private readonly LayoutQueue styleQueue;

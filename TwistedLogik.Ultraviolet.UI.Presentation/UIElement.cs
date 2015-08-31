@@ -10,6 +10,7 @@ using TwistedLogik.Ultraviolet.UI.Presentation.Animations;
 using TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives;
 using TwistedLogik.Ultraviolet.UI.Presentation.Input;
 using TwistedLogik.Ultraviolet.UI.Presentation.Media;
+using TwistedLogik.Ultraviolet.UI.Presentation.Media.Effects;
 using TwistedLogik.Ultraviolet.UI.Presentation.Styles;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation
@@ -85,6 +86,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// of this element's child elements.</param>
         public void ReloadContent(Boolean recursive = true)
         {
+            ReloadEffect();
             ReloadContentCore(recursive);
         }
 
@@ -157,7 +159,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var clip = ClipRectangle;
             if (clip != null)
                 dc.PushClipRectangle(clip.Value);
-
+            
             var shouldDraw = true;
 
             var popup = this as Popup;
@@ -167,7 +169,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                     shouldDraw = false;
             }
 
-            if (shouldDraw)
+            if (shouldDraw && !DrawOutOfBandTexture(dc))
             {
                 dc.PushOpacity(Opacity);
 
@@ -209,17 +211,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                         Matrix.Concat(ref mtxTranslateToClientSpace, ref mtxTransform, out mtxFinal);
                         Matrix.Concat(ref mtxFinal, ref mtxTranslateToScreenSpace, out mtxFinal);
                         Matrix.Concat(ref mtxFinal, ref mtxSpriteBatch, out mtxFinal);
-                        
+
                         dc.End();
                         dc.Begin(SpriteSortMode.Deferred, null, mtxFinal);
 
                         flush = true;
                     }
                 }
-                
+
                 DrawCore(time, dc);
                 OnDrawing(time, dc);
-                
+
                 if (flush)
                 {
                     dc.End();
@@ -277,6 +279,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             ClearTriggeredValues();
             CleanupStoryboards();
             CleanupCore();
+
+            Ultraviolet.GetUI().GetPresentationFoundation().OutOfBandRenderer.Unregister(this);
         }
 
         /// <summary>
@@ -617,6 +621,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 return;
 
             visualBounds = null;
+            transformedVisualBounds = null;
 
             var parent = VisualTreeHelper.GetParent(this) as UIElement;
             if (parent != null)
@@ -940,7 +945,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
-        /// Gets the visual bounds of the element and all of its descendants in absolute screen coordinates.
+        /// Gets the visual bounds of the element and all of its descendants.
         /// </summary>
         public RectangleD VisualBounds
         {
@@ -951,6 +956,25 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
                 visualBounds = CalculateVisualBounds();
                 return visualBounds.Value;
+            }
+        }
+
+        /// <summary>
+        /// Gets the transformed visual bounds of the element and all of its descendants.
+        /// </summary>
+        public RectangleD TransformedVisualBounds
+        {
+            get
+            {
+                if (transformedVisualBounds.HasValue)
+                    return transformedVisualBounds.Value;
+
+                var bounds = CalculateVisualBounds();
+                var transform = GetTransformToAncestorMatrix(View.LayoutRoot);
+                RectangleD.TransformAxisAligned(ref bounds, ref transform, out bounds);
+                transformedVisualBounds = bounds;
+
+                return bounds;
             }
         }
 
@@ -1004,6 +1028,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             get { return GetValue<Point2D>(RenderTransformOriginProperty); }
             set { SetValue<Point2D>(RenderTransformOriginProperty, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets the <see cref="Effect"/> which is applied to this element.
+        /// </summary>
+        public Effect Effect
+        {
+            get { return GetValue<Effect>(EffectProperty); }
+            set { SetValue(EffectProperty, value); }
         }
 
         /// <summary>
@@ -1157,6 +1190,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         public static readonly DependencyProperty RenderTransformOriginProperty = DependencyProperty.Register("RenderTransformOrigin", typeof(Point2D), typeof(UIElement),
             new PropertyMetadata<Point2D>(new Point2D(0.5, 0.5), PropertyMetadataOptions.None));
+
+        /// <summary>
+        /// Identifies the <see cref="Effect"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty EffectProperty = DependencyProperty.Register("Effect", typeof(Effect), typeof(UIElement),
+            new PropertyMetadata<Effect>(null, PropertyMetadataOptions.None, HandleEffectChanged));
 
         /// <inheritdoc/>
         internal override void OnVisualParentChangedInternal(Visual oldParent, Visual newParent)
@@ -1470,7 +1509,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             InvalidateVisualBounds();
             base.OnVisualBoundsAffectingPropertyChanged();
         }
-
+        
         /// <inheritdoc/>
         protected internal sealed override void ApplyStyles(UvssDocument styleSheet)
         {
@@ -1545,6 +1584,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <inheritdoc/>
         protected override void OnDigesting(UltravioletTime time)
         {
+            var effect = Effect;
+            if (effect != null)
+            {
+                effect.Digest(time);
+            }
+
             var renderTransform = RenderTransform;
             if (renderTransform != null)
             {
@@ -2355,6 +2400,26 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Occurs when the value of the <see cref="Effect"/> dependency property changes.
+        /// </summary>
+        private static void HandleEffectChanged(DependencyObject dobj, Effect oldValue, Effect newValue)
+        {
+            var element = (UIElement)dobj;
+            
+            var upf = element.Ultraviolet.GetUI().GetPresentationFoundation();
+            if (oldValue == null && newValue != null)
+            {
+                upf.OutOfBandRenderer.Register(element);
+            }
+            else if (oldValue != null && newValue == null)
+            {
+                upf.OutOfBandRenderer.Unregister(element);
+            }
+
+            element.ReloadEffect();
+        }
+
+        /// <summary>
         /// Coerces the value of <see cref="IsEnabled"/> to ensure that elements cannot be disabled
         /// if their parents are disabled.
         /// </summary>
@@ -2368,6 +2433,34 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                     var uiElement = (UIElement)dobj;
                     return uiElement.IsEnabledCore;
                 }
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Draws the element's out-of-band texture, if it has one.
+        /// </summary>
+        /// <param name="dc">The drawing context that describes the render state of the layout.</param>
+        /// <returns><c>true</c> if the element's out-of-band texture was drawn; otherwise, <c>false</c>.</returns>
+        private Boolean DrawOutOfBandTexture(DrawingContext dc)
+        {
+            var upf = Ultraviolet.GetUI().GetPresentationFoundation();
+            if (upf.OutOfBandRenderer.IsTextureReady(this))
+            {
+                var target = upf.OutOfBandRenderer.GetElementRenderTarget(this);
+                if (target != null)
+                {
+                    var effect = Effect;
+                    if (effect != null)
+                    {
+                        effect.Draw(dc, this, target);
+                    }
+                    else
+                    {
+                        Effect.DrawRenderTargetAtVisualBounds(dc, this, target);
+                    }
+                }
+                return true;
             }
             return false;
         }
@@ -2508,6 +2601,23 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             }
         }
 
+        /// <summary>
+        /// Reloads the element's effect resources.
+        /// </summary>
+        private void ReloadEffect()
+        {
+            var effect = Effect;
+            if (effect == null)
+                return;
+
+            var global = View.GlobalContent;
+            var local = View.LocalContent;
+            if (global != null || local != null)
+            {
+                effect.ReloadResources(global, local);
+            }
+        }
+
         // Property values.
         private readonly UltravioletContext uv;
         private readonly UIElementClassCollection classes;
@@ -2523,6 +2633,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         private RectangleD relativeBounds;
         private RectangleD absoluteBounds;
         private RectangleD? visualBounds;
+        private RectangleD? transformedVisualBounds;
         private RectangleD? clipRectangle;
         private event EventHandler layoutUpdated;
 

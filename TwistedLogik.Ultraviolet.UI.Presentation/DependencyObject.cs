@@ -287,7 +287,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 return;
 
             invalidatedDigestCount1 = invalidatedDigestCount2;
-            invalidatedDigestCount2 = PresentationFoundation.Instance.DigestCycleID + 1;
+            invalidatedDigestCount2 = digestCycleID;
         }
 
         /// <summary>
@@ -563,8 +563,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             get
             {
-                var digest = PresentationFoundation.Instance.DigestCycleID;
-                return digest > 1 && (digest == invalidatedDigestCount1 || digest == invalidatedDigestCount2);
+                var digest = PresentationFoundation.Instance.DigestCycleID - 1;
+                return digest > 0 && (digest == invalidatedDigestCount1 || digest == invalidatedDigestCount2);
             }
         }
 
