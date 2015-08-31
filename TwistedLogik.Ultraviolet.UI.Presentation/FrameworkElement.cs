@@ -464,18 +464,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <inheritdoc/>
-        protected override void OnDigesting(UltravioletTime time)
-        {
-            var layoutTransform = LayoutTransform;
-            if (layoutTransform != null)
-            {
-                layoutTransform.Digest(time);
-            }
-
-            base.OnDigesting(time);
-        }
-
-        /// <inheritdoc/>
         protected override Matrix GetTransformMatrix()
         {
             if (isLayoutTransformed)

@@ -1580,25 +1580,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
 
         }
-
-        /// <inheritdoc/>
-        protected override void OnDigesting(UltravioletTime time)
-        {
-            var effect = Effect;
-            if (effect != null)
-            {
-                effect.Digest(time);
-            }
-
-            var renderTransform = RenderTransform;
-            if (renderTransform != null)
-            {
-                renderTransform.Digest(time);
-            }
-
-            base.OnDigesting(time);
-        }
-
+        
         /// <summary>
         /// Called when the desired size of one of the element's children is changed.
         /// </summary>
