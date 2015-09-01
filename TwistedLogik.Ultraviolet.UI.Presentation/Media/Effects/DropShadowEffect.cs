@@ -109,12 +109,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media.Effects
             gfx.Clear(Color.Transparent);
 
             effect.Value.Radius = GetBlurRadiusInPixels(element);
-            effect.Value.Direction = BlurDirection.Vertical;
-
-            dc.Begin(SpriteSortMode.Immediate, effect, Matrix.Identity);
-
             effect.Value.Direction = BlurDirection.Horizontal;
 
+            dc.Begin(SpriteSortMode.Immediate, effect, Matrix.Identity);
             dc.SpriteBatch.Draw(target.ColorBuffer, Vector2.Zero, Color);
             dc.End();
         }
