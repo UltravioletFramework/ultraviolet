@@ -45,6 +45,28 @@ namespace TwistedLogik.Ultraviolet
         }
 
         /// <summary>
+        /// Adds a <see cref="Size2D"/> to another <see cref="Size2D"/>.
+        /// </summary>
+        /// <param name="s1">The <see cref="Size2D"/> on the left side of the operator.</param>
+        /// <param name="s2">The <see cref="Size2D"/> on the right side of the operator.</param>
+        /// <returns>The result of adding the two instances.</returns>
+        public static Size2D operator +(Size2D s1, Size2D s2)
+        {
+            return new Size2D(s1.Width + s2.Width, s1.Height + s2.Height);
+        }
+
+        /// <summary>
+        /// Subtracts a <see cref="Size2D"/> from another <see cref="Size2D"/>.
+        /// </summary>
+        /// <param name="s1">The <see cref="Size2D"/> on the left side of the operator.</param>
+        /// <param name="s2">The <see cref="Size2D"/> on the right side of the operator.</param>
+        /// <returns>The result of subtracting the two instances.</returns>
+        public static Size2D operator -(Size2D s1, Size2D s2)
+        {
+            return new Size2D(s1.Width - s2.Width, s1.Height - s2.Height);
+        }
+
+        /// <summary>
         /// Explicitly converts a <see cref="Size2D"/> structure to a <see cref="Size2"/> structure.
         /// </summary>
         /// <param name="size">The structure to convert.</param>
