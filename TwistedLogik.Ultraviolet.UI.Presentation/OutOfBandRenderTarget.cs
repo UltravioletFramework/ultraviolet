@@ -161,12 +161,25 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
-        /// Gets the transformed visual bounds of the elements contained by this buffer.
+        /// Gets the transformed visual bounds of the elements contained by this buffer in absolute screen space.
         /// </summary>
-        public RectangleD VisualBounds
+        public RectangleD AbsoluteVisualBounds
         {
             get;
             internal set;
+        }
+
+        /// <summary>
+        /// Gets the transformed visual bounds of the elements contained by this buffer in relative viewport space.
+        /// </summary>
+        public RectangleD RelativeVisualBounds
+        {
+            get
+            {
+                var bounds = AbsoluteVisualBounds;
+                var offset = Ultraviolet.GetUI().GetPresentationFoundation().OutOfBandRenderer.OutOfBandViewportOffset;
+                return new RectangleD(bounds.X - offset.Width, bounds.Y - offset.Height, bounds.Width, bounds.Height);
+            }
         }
 
         /// <summary>

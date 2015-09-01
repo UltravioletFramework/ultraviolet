@@ -135,8 +135,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media.Effects
             var shadowVector = Vector2.Normalize(shadowVectorEnd - shadowVectorStart) * shadowDepth;
 
             var state = dc.SpriteBatch.GetCurrentState();
-            
-            var position = (Vector2)element.View.Display.DipsToPixels(target.VisualBounds.Location);
+
+            var position = (Vector2)element.View.Display.DipsToPixels(target.RelativeVisualBounds.Location);
             var positionRounded = new Vector2((Int32)position.X, (Int32)position.Y);
 
             dc.End();
@@ -150,11 +150,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media.Effects
             dc.SpriteBatch.Draw(shadowTexture, positionRounded + shadowVector, null, Color * Opacity, 0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0f);
             
             dc.End();
+
             dc.Begin(SpriteSortMode.Immediate, null, Matrix.Identity);
-
             dc.SpriteBatch.Draw(target.ColorBuffer, positionRounded, null, Color.White, 0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0f);
-
             dc.End();
+
             dc.Begin(state.SortMode, state.Effect, state.TransformMatrix);
         }
 

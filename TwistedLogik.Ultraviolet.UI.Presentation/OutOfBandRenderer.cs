@@ -187,11 +187,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                     var elementTransform = Matrix.CreateTranslation(elementTranslation.X, elementTranslation.Y, 0);
                     
                     rtarget.CumulativeTransform = cumulativeTransform;
-                    rtarget.VisualBounds = bounds;
+                    rtarget.AbsoluteVisualBounds = bounds;
+
+                    OutOfBandViewportOffset += new Size2D(rtarget.AbsoluteVisualBounds.X, rtarget.AbsoluteVisualBounds.Y);
 
                     drawingContext.Begin(SpriteSortMode.Deferred, null, elementTransform * cumulativeTransformParent);
                     element.Draw(time, drawingContext);
                     drawingContext.End();
+
+                    OutOfBandViewportOffset -= new Size2D(rtarget.AbsoluteVisualBounds.X, rtarget.AbsoluteVisualBounds.Y);
 
                     if (rtarget.Next != null)
                     {
@@ -204,6 +208,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
                     rtarget.IsReady = true;
                 }
+
+                OutOfBandViewportOffset = Size2D.Zero;
             }
             finally
             {
@@ -259,7 +265,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 return isDrawingRenderTargets;
             }
         }
-       
+
+        /// <summary>
+        /// Gets the offset from the top-left corner to the screen to the top-left corner of the out-of-band render target
+        /// which is currently being rendered.
+        /// </summary>
+        public Size2D OutOfBandViewportOffset
+        {
+            get;
+            private set;
+        }
+
         /// <inheritdoc/>
         protected override void Dispose(Boolean disposing)
         {
