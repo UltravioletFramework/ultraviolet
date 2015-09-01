@@ -13,7 +13,7 @@ namespace TwistedLogik.Ultraviolet.Graphics
     /// <summary>
     /// Represents an <see cref="Effect"/> which draws 2D drop shadows using a two-pass Gaussian blur.
     /// </summary>
-    public class BlurEffect : Effect, IEffectMatrices, IEffectTextureSizes
+    public class BlurEffect : Effect, IEffectMatrices, IEffectTextureSize
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="BlurEffect"/> class.
@@ -93,44 +93,22 @@ namespace TwistedLogik.Ultraviolet.Graphics
         }
 
         /// <inheritdoc/>
-        public Int32 TextureWidth
+        public Size2 TextureSize
         {
             get
             {
                 Contract.EnsureNotDisposed(this, Disposed);
 
-                return textureWidth;
+                return textureSize;
             }
             set
             {
 
                 Contract.EnsureNotDisposed(this, Disposed);
 
-                if (textureWidth != value)
+                if (textureSize != value)
                 {
-                    textureWidth = value;
-                    OnTextureSizeChanged();
-                }
-            }
-        }
-
-        /// <inheritdoc/>
-        public Int32 TextureHeight
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return textureHeight;
-            }
-            set
-            {
-
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                if (textureHeight != value)
-                {
-                    textureHeight = value;
+                    textureSize = value;
                     OnTextureSizeChanged();
                 }
             }
@@ -225,8 +203,7 @@ namespace TwistedLogik.Ultraviolet.Graphics
 
         // Property values.
         private BlurDirection direction;
-        private Int32 textureWidth;
-        private Int32 textureHeight;
+        private Size2 textureSize;
 
         // Cached effect parameters.
         private readonly EffectParameter epWorld;

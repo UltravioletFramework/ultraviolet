@@ -280,7 +280,7 @@
     <Compile Include="Graphics\Graphics2D\Text\TextTableCellCollection.cs" />
     <Compile Include="Graphics\Graphics2D\Text\TextTableRowCollection.cs" />
     <Compile Include="Graphics\GraphicsCapabilities.cs" />
-    <Compile Include="Graphics\IEffectTextureSizes.cs" />
+    <Compile Include="Graphics\IEffectTextureSize.cs" />
     <Compile Include="Graphics\IEffectMatrices.cs" />
     <Compile Include="Graphics\NamespaceDoc.cs" />
     <Compile Include="Graphics\RenderBuffer2D.cs" />

@@ -1798,19 +1798,11 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
             var graphics = Ultraviolet.GetGraphics();
             graphics.SetTexture(0, texture);
             
-            var effectTextureSizes = customEffect as IEffectTextureSizes;
+            var effectTextureSizes = customEffect as IEffectTextureSize;
             if (effectTextureSizes != null)
             {
-                if (texture == null)
-                {
-                    effectTextureSizes.TextureWidth = 0;
-                    effectTextureSizes.TextureHeight = 0;
-                }
-                else
-                {
-                    effectTextureSizes.TextureWidth = texture.Width;
-                    effectTextureSizes.TextureHeight = texture.Height;
-                }
+                effectTextureSizes.TextureSize = (texture == null) ? Size2.Zero : 
+                    new Size2(texture.Width, texture.Height);
             }
 
             // Draw the sprites in this batch.
@@ -1839,9 +1831,13 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
                 var spriteMetadata = batchInfo.GetHeaders();
                 var spriteCustomData = batchInfo.GetData();
                 GenerateVertices(texture, spriteMetadata, vertices, spriteCustomData, offset, drawn);
-                vertexBuffer.SetData<VertexType>(vertices, vertexBufferPosition * 4, drawn * 4, options);
+                vertexBuffer.SetData(vertices, vertexBufferPosition * 4, drawn * 4, options);
 
-                graphics.DrawIndexedPrimitives(PrimitiveType.TriangleList, vertexBufferPosition * 6, drawn * 2);
+                foreach (var pass in customEffect.CurrentTechnique.Passes)
+                {
+                    pass.Apply();
+                    graphics.DrawIndexedPrimitives(PrimitiveType.TriangleList, vertexBufferPosition * 6, drawn * 2);
+                }
 
                 // Advance the batch position.
                 vertexBufferPosition += drawn;

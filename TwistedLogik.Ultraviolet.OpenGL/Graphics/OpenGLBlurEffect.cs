@@ -51,7 +51,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics.Graphics2D
         /// </summary>
         private void UpdateResolution()
         {
-            var resolution = (Direction == BlurDirection.Horizontal) ? TextureWidth : TextureHeight;
+            var resolution = (Direction == BlurDirection.Horizontal) ? TextureSize.Width : TextureSize.Height;
             epResolution.SetValue((Single)resolution);
         }
 
