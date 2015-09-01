@@ -2598,6 +2598,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         private void ReloadEffect()
         {
+            if (View == null)
+                return;
+
             var effect = Effect;
             if (effect == null)
                 return;
