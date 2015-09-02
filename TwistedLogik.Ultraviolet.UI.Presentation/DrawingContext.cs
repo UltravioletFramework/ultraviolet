@@ -35,6 +35,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             this.opacityStack.Clear();
             this.clipStack.Clear();
             this.currentStencil = null;
+            this.transforms = 0;
+            this.outOfBand = 0;
         }
 
         /// <summary>
@@ -569,25 +571,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
-        /// Pushes a transform onto the context.
-        /// </summary>
-        public void PushTransform()
-        {
-            transforms++;
-        }
-
-        /// <summary>
-        /// Pops a transform off of the context.
-        /// </summary>
-        public void PopTransform()
-        {
-            if (transforms == 0)
-                throw new InvalidOperationException();
-
-            transforms--;
-        }
-
-        /// <summary>
         /// Pushes an opacity value onto the render state stack.
         /// </summary>
         /// <param name="opacity">The opacity value to push onto the stack.</param>
@@ -709,6 +692,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Gets a value indicating whether the drawing context is inside of an element that was drawn out of band.
+        /// </summary>
+        public Boolean IsInsideOutOfBandElement
+        {
+            get { return outOfBand > 0; }
+        }
+
+        /// <summary>
         /// Gets the current opacity.
         /// </summary>
         public Single Opacity
@@ -740,7 +731,45 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             get { return clipStack.Count > 0 ? clipStack.Peek().CumulativeClipRectangle : (RectangleD?)null; }
         }
-        
+
+        /// <summary>
+        /// Pushes a transform onto the context.
+        /// </summary>
+        internal void PushTransform()
+        {
+            transforms++;
+        }
+
+        /// <summary>
+        /// Pops a transform off of the context.
+        /// </summary>
+        internal void PopTransform()
+        {
+            if (transforms == 0)
+                throw new InvalidOperationException();
+
+            transforms--;
+        }
+
+        /// <summary>
+        /// Pushes a flag onto the context indicating that it is inside of an element which was drawn out-of-band.
+        /// </summary>
+        internal void PushDrawingOutOfBand()
+        {
+            outOfBand++;
+        }
+
+        /// <summary>
+        /// Pops a flag off of the context indicating that it is inside of an element which was drawn out-of-band.
+        /// </summary>
+        internal void PopDrawingOutOfBand()
+        {
+            if (outOfBand == 0)
+                throw new InvalidOperationException();
+
+            outOfBand--;
+        }
+
         /// <summary>
         /// Gets the <see cref="SpriteBatch"/> with which the layout will be rendered.
         /// </summary>
@@ -756,6 +785,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         private readonly Stack<ClipState> clipStack = new Stack<ClipState>(32);
         private Rectangle? currentStencil;
         private Int32 transforms;
+        private Int32 outOfBand;
         private Matrix localTransform = Matrix.Identity;
         private Matrix globalTransform = Matrix.Identity;
     }

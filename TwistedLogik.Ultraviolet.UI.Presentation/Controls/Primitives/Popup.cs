@@ -31,7 +31,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             });
             this.root.ChangeLogicalParent(this);
         }
-        
+
         /// <summary>
         /// Gets or sets the popup's content.
         /// </summary>
@@ -156,6 +156,21 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             new PropertyMetadata<RectangleD>(RectangleD.Empty, PropertyMetadataOptions.None, HandlePlacementRectangleChanged));
 
         /// <summary>
+        /// If the popup is currently open, this method adds it to the view's popup queue for drawing.
+        /// </summary>
+        /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Draw(UltravioletTime)"/>.</param>
+        /// <param name="dc">The drawing context that describes the render state of the layout.</param>
+        internal void EnqueueForDrawing(UltravioletTime time, DrawingContext dc)
+        {
+            if (!IsOpen)
+                return;
+            
+            var transform = dc.LocalTransform;
+            var transformed = !Matrix.Identity.Equals(transform);
+            View.Popups.Enqueue(this, transformed ? transform : (Matrix?)null);
+        }
+
+        /// <summary>
         /// Performs a hit test against the popup.
         /// </summary>
         /// <param name="point">The point in screen space to evaluate.</param>
@@ -237,12 +252,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             }
             else
             {
-                if (IsOpen)
-                {
-                    var transform = dc.LocalTransform;
-                    var transformed = !Matrix.Identity.Equals(transform);
-                    View.Popups.Enqueue(this, transformed ? transform : (Matrix?)null);
-                }
+                EnqueueForDrawing(time, dc);
             }
         }
 

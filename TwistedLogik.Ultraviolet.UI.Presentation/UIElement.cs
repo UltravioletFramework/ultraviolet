@@ -159,7 +159,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var clip = ClipRectangle;
             if (clip != null)
                 dc.PushClipRectangle(clip.Value);
-            
+
             var shouldDraw = true;
 
             var popup = this as Popup;
@@ -169,8 +169,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                     shouldDraw = false;
             }
 
-            if (shouldDraw && !DrawOutOfBandTexture(dc))
+            if (shouldDraw)
             {
+                var drawingOutOfBand = DrawOutOfBandTexture(dc);
+                if (drawingOutOfBand)
+                    dc.PushDrawingOutOfBand();
+
                 dc.PushOpacity(Opacity);
 
                 var hasNonIdentityTransform = HasNonIdentityTransform;
@@ -207,8 +211,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                     }
                 }
 
-                DrawCore(time, dc);
-                OnDrawing(time, dc);
+                if (dc.IsInsideOutOfBandElement)
+                {
+                    RegisterPopupsInVisualSubTree(time, dc);
+                }
+                else
+                {
+                    DrawCore(time, dc);
+                    OnDrawing(time, dc);
+                }
 
                 if (flush)
                 {
@@ -222,6 +233,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 }
 
                 dc.PopOpacity();
+
+                if (drawingOutOfBand)
+                    dc.PopDrawingOutOfBand();
             }
 
             if (clip != null)
@@ -2640,6 +2654,26 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (global != null || local != null)
             {
                 effect.ReloadResources(global, local);
+            }
+        }
+
+        /// <summary>
+        /// Recurses through the element's descendants and registers any open popups for drawing.
+        /// </summary>
+        private void RegisterPopupsInVisualSubTree(UltravioletTime time, DrawingContext dc)
+        {
+            var popup = this as Popup;
+            if (popup != null)
+                popup.EnqueueForDrawing(time, dc);
+
+            var childCount = VisualTreeHelper.GetChildrenCount(this);
+            for (int i = 0; i < childCount; i++)
+            {
+                var child = VisualTreeHelper.GetChild(this, i) as UIElement;
+                if (child != null)
+                {
+                    child.Draw(time, dc);
+                }
             }
         }
 
