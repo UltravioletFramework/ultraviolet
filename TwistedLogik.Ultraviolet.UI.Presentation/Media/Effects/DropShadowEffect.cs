@@ -15,7 +15,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media.Effects
         /// </summary>
         public DropShadowEffect()
         {
-            effect.Value.Mix = 1f;
+            var effectValue = effect.Value;
+            if (effectValue != null)
+            {
+                effectValue.Mix = 1f;
+            }
         }
 
         /// <inheritdoc/>
@@ -174,7 +178,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media.Effects
         // The singleton instance of effect used to render the shadow.
         private static readonly UltravioletSingleton<Graphics.BlurEffect> effect = new UltravioletSingleton<Graphics.BlurEffect>((uv) =>
         {
-            return Graphics.BlurEffect.Create();
+            return uv.IsRunningInServiceMode ? null : Graphics.BlurEffect.Create();
         });
     }
 }
