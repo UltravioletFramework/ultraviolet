@@ -72,23 +72,13 @@ namespace TwistedLogik.Ultraviolet.OpenGL
         /// <inheritdoc/>
         public void Clear(Color color)
         {
-            Contract.EnsureNotDisposed(this, Disposed);
-
-            gl.ClearColor(color.R / 255f, color.G / 255f, color.B / 255f, color.A / 255f);
-            gl.ClearDepth(1.0);
-            gl.ClearStencil(0);
-            gl.Clear(gl.GL_COLOR_BUFFER_BIT | gl.GL_DEPTH_BUFFER_BIT | gl.GL_STENCIL_BUFFER_BIT);
+            Clear(ClearOptions.Target | ClearOptions.DepthBuffer | ClearOptions.Stencil, color, 1.0, 0);
         }
 
         /// <inheritdoc/>
         public void Clear(Color color, Double depth, Int32 stencil)
         {
-            Contract.EnsureNotDisposed(this, Disposed);
-
-            gl.ClearColor(color.R / 255f, color.G / 255f, color.B / 255f, color.A / 255f);
-            gl.ClearDepth(depth);
-            gl.ClearStencil(stencil);
-            gl.Clear(gl.GL_COLOR_BUFFER_BIT | gl.GL_DEPTH_BUFFER_BIT | gl.GL_STENCIL_BUFFER_BIT);
+            Clear(ClearOptions.Target | ClearOptions.DepthBuffer | ClearOptions.Stencil, color, depth, stencil);
         }
 
         /// <inheritdoc/>
@@ -97,26 +87,73 @@ namespace TwistedLogik.Ultraviolet.OpenGL
             Contract.EnsureNotDisposed(this, Disposed);
 
             var mask = 0u;
+            var resetColorWriteChannels = false;
+            var resetDepthTest = false;
+            var resetStencilTest = false;
 
             if ((options & ClearOptions.Target) == ClearOptions.Target)
             {
+                if (blendState.ColorWriteChannels != ColorWriteChannels.All)
+                {
+                    resetColorWriteChannels = true;
+                    gl.ColorMask(true, true, true, true);
+                }
+
                 gl.ClearColor(color.R / 255f, color.G / 255f, color.B / 255f, color.A / 255f);
                 mask |= gl.GL_COLOR_BUFFER_BIT;
             }
 
             if ((options & ClearOptions.DepthBuffer) == ClearOptions.DepthBuffer)
             {
+                if (!depthStencilState.DepthBufferEnable)
+                {
+                    resetDepthTest = true;
+                    gl.Enable(gl.GL_DEPTH_TEST);
+                    gl.DepthMask(true);
+                }
+
                 gl.ClearDepth(depth);
                 mask |= gl.GL_DEPTH_BUFFER_BIT;
             }
 
             if ((options & ClearOptions.Stencil) == ClearOptions.Stencil)
             {
+                if (!depthStencilState.StencilEnable)
+                {
+                    resetStencilTest = true;
+                    gl.Enable(gl.GL_STENCIL_TEST);
+                }
+
                 gl.ClearStencil(stencil);
                 mask |= gl.GL_STENCIL_BUFFER_BIT;
             }
 
             gl.Clear(mask);
+
+            if (resetColorWriteChannels)
+            {
+                gl.ColorMask(
+                    (blendState.ColorWriteChannels & ColorWriteChannels.Red) == ColorWriteChannels.Red, 
+                    (blendState.ColorWriteChannels & ColorWriteChannels.Green) == ColorWriteChannels.Green, 
+                    (blendState.ColorWriteChannels & ColorWriteChannels.Blue) == ColorWriteChannels.Blue, 
+                    (blendState.ColorWriteChannels & ColorWriteChannels.Alpha) == ColorWriteChannels.Alpha);
+                gl.ThrowIfError();
+            }
+
+            if (resetDepthTest)
+            {
+                gl.Enable(gl.GL_DEPTH_TEST, depthStencilState.DepthBufferEnable);
+                gl.ThrowIfError();
+
+                gl.DepthMask(depthStencilState.DepthBufferWriteEnable);
+                gl.ThrowIfError();
+            }
+
+            if (resetStencilTest)
+            {
+                gl.Enable(gl.GL_STENCIL_TEST, depthStencilState.StencilEnable);
+                gl.ThrowIfError();                
+            }
         }
 
         /// <inheritdoc/>

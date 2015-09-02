@@ -146,6 +146,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
             var writeBlue = (ColorWriteChannels & ColorWriteChannels.Blue) != 0;
             var writeAlpha = (ColorWriteChannels & ColorWriteChannels.Alpha) != 0;
             gl.ColorMask(writeRed, writeGreen, writeBlue, writeAlpha);
+            gl.ThrowIfError();
         }
 
         /// <summary>
