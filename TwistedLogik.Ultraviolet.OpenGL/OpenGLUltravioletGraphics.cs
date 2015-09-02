@@ -317,6 +317,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL
         /// <inheritdoc/>
         public void SetBlendState(BlendState state)
         {
+            Contract.Require(state, "state");
             Contract.EnsureNotDisposed(this, Disposed);
 
             Ultraviolet.ValidateResource(state);
@@ -339,6 +340,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL
         /// <inheritdoc/>
         public void SetDepthStencilState(DepthStencilState state)
         {
+            Contract.Require(state, "state");
             Contract.EnsureNotDisposed(this, Disposed);
 
             Ultraviolet.ValidateResource(state);
@@ -361,6 +363,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL
         /// <inheritdoc/>
         public void SetRasterizerState(RasterizerState state)
         {
+            Contract.Require(state, "state");
             Contract.EnsureNotDisposed(this, Disposed);
 
             Ultraviolet.ValidateResource(state);
@@ -384,6 +387,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL
         public void SetSamplerState(Int32 sampler, SamplerState state)
         {
             Contract.EnsureRange(sampler >= 0 && sampler < maxTextureStages, "sampler");
+            Contract.Require(state, "state");
             Contract.EnsureNotDisposed(this, Disposed);
 
             Ultraviolet.ValidateResource(state);
