@@ -201,6 +201,20 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <inheritdoc/>
+        protected override void UpdateOverride(UltravioletTime time)
+        {
+            if (IsDropDownOpen)
+            {
+                if (View == null || !viewSize.Equals(View.Area.Size))
+                {
+                    viewSize = View.Area.Size;
+                    IsDropDownOpen = false;
+                }
+            }
+            base.UpdateOverride(time);
+        }        
+
+        /// <inheritdoc/>
         protected override void OnSelectionChanged()
         {
             UpdateSelectionBox();
@@ -264,7 +278,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 var actualMaxDropDownHeight = Math.Min(comboBox.MaxDropDownHeight, primary.ClientSize.Height / 3.0);
                 if (actualMaxDropDownHeight != comboBox.GetValue<Double>(ActualMaxDropDownHeightProperty))
                 {
-                    comboBox.SetValue<Double>(ActualMaxDropDownHeightPropertyKey, actualMaxDropDownHeight);
+                    comboBox.SetValue(ActualMaxDropDownHeightPropertyKey, actualMaxDropDownHeight);
                 }
 
                 Mouse.Capture(comboBox.View, comboBox, CaptureMode.SubTree);
@@ -277,6 +291,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 
                 comboBox.UpdateVisualState();
                 comboBox.OnDropDownOpened();
+
+                comboBox.viewSize = comboBox.View.Area.Size;
             }
             else
             {
@@ -414,5 +430,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 
         // Component references.
         private readonly UIElement PART_Arrow = null;
+
+        // State values.
+        private Size2 viewSize;
     }
 }
