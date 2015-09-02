@@ -646,24 +646,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
-        /// Invalidates the element's cached visual bounds.
-        /// </summary>
-        public void InvalidateVisualBounds()
-        {
-            if (!visualBounds.HasValue)
-                return;
-
-            visualBounds = null;
-            transformedVisualBounds = null;
-
-            var parent = VisualTreeHelper.GetParent(this) as UIElement;
-            if (parent != null)
-            {
-                parent.InvalidateVisualBounds();
-            }
-        }
-
-        /// <summary>
         /// Adds a handler for a routed event to the element.
         /// </summary>
         /// <param name="evt">A <see cref="RoutedEvent"/> that identifies the routed event for which to add a handler.</param>
@@ -1002,12 +984,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 if (transformedVisualBounds.HasValue)
                     return transformedVisualBounds.Value;
 
-                var bounds = CalculateVisualBounds();
-                var transform = GetTransformToAncestorMatrix(View.LayoutRoot);
-                RectangleD.TransformAxisAligned(ref bounds, ref transform, out bounds);
-                transformedVisualBounds = bounds;
-
-                return bounds;
+                transformedVisualBounds = CalculateTransformedVisualBounds();
+                return transformedVisualBounds.Value;
             }
         }
 
@@ -1426,8 +1404,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         internal Matrix GetCumulativeSpriteBatchTransform()
         {
             var mtxParentTransform = Matrix.Identity;
-
-            var parent = VisualTreeHelper.GetParent(this) as UIElement;
+            
+            var parent = (this is PopupRoot) ? this.Parent as Popup : VisualTreeHelper.GetParent(this) as UIElement;
             if (parent != null)
                 mtxParentTransform = parent.GetCumulativeSpriteBatchTransform();
 
@@ -1615,6 +1593,24 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 {
                     dprop.ApplyStyle(target, style, CultureInfo.InvariantCulture);
                 }
+            }
+        }
+
+        /// <summary>
+        /// Invalidates the element's cached visual bounds.
+        /// </summary>
+        protected internal virtual void InvalidateVisualBounds()
+        {
+            if (!visualBounds.HasValue)
+                return;
+
+            visualBounds = null;
+            transformedVisualBounds = null;
+
+            var parent = VisualTreeHelper.GetParent(this) as UIElement;
+            if (parent != null)
+            {
+                parent.InvalidateVisualBounds();
             }
         }
 
@@ -2062,8 +2058,53 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                     RectangleD.Union(ref visualBounds, ref childBounds, out visualBounds);
                 }
             }
+            
+            if (ClipRectangle.HasValue)
+            {
+                var relativeClip = ClipRectangle.Value - AbsolutePosition;
+                RectangleD.Intersect(ref visualBounds, ref relativeClip, out visualBounds);
+            }
 
             return visualBounds;
+        }
+
+        /// <summary>
+        /// Calculates the transformed visual bounds of this visual, including any descendants.
+        /// </summary>
+        /// <returns>The transformed visual bounds of this visual, including any descendants.</returns>
+        protected virtual RectangleD CalculateTransformedVisualBounds()
+        {
+            var visualBounds = VisualBounds;
+
+            var visualTreeRoot = VisualTreeHelper.GetRoot(this) as UIElement;
+            if (visualTreeRoot == null)
+                return visualBounds;
+
+            var transform = GetTransformToAncestorMatrix(visualTreeRoot);
+
+            while (visualTreeRoot != View.LayoutRoot)
+            {
+                var currentChild = visualTreeRoot.Parent;
+                var currentRoot = VisualTreeHelper.GetRoot(currentChild) as UIElement;
+                var currentTransform = currentChild.GetTransformToAncestorMatrix(currentRoot);
+                Matrix.Concat(ref transform, ref currentTransform, out transform);
+
+                if (currentChild is Popup)
+                {
+                    var root = ((Popup)currentChild).Root;
+                    var offx = (Single)(-currentChild.AbsolutePosition.X + root.AbsolutePosition.X);
+                    var offy = (Single)(-currentChild.AbsolutePosition.Y + root.AbsolutePosition.Y); 
+                    transform = Matrix.Concat(Matrix.CreateTranslation(offx, offy, 0), transform);
+
+                }
+
+                visualTreeRoot = currentRoot;
+            }
+
+            RectangleD bounds;
+            RectangleD.TransformAxisAligned(ref visualBounds, ref transform, out bounds);
+            
+            return bounds;
         }
 
         /// <summary>
@@ -2502,7 +2543,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (upf.OutOfBandRenderer.IsTextureReady(this))
             {
                 var target = upf.OutOfBandRenderer.GetElementRenderTarget(this);
-                if (target != null)
+                if (target != null && target.IsReady)
                 {
                     var effect = Effect;
                     if (effect != null)
@@ -2682,7 +2723,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             var popup = this as Popup;
             if (popup != null)
-                popup.EnqueueForDrawing(time, dc);
+                popup.EnqueueForDrawingIfOpen(time, dc);
 
             var childCount = VisualTreeHelper.GetChildrenCount(this);
             for (int i = 0; i < childCount; i++)

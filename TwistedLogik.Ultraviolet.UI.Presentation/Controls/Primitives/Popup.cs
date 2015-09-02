@@ -69,6 +69,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         }
 
         /// <summary>
+        /// Gets or sets the rectangle relative to which the popup is positioned.
+        /// </summary>
+        public RectangleD PlacementRectangle
+        {
+            get { return GetValue<RectangleD>(PlacementRectangleProperty); }
+            set { SetValue<RectangleD>(PlacementRectangleProperty, value); }
+        }
+
+        /// <summary>
         /// Gets or sets the <see cref="PlacementMode"/> value which specifies how the <see cref="Popup"/> is
         /// positioned relative to its placement target.
         /// </summary>
@@ -77,7 +86,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             get { return GetValue<PlacementMode>(PlacementProperty); }
             set { SetValue<PlacementMode>(PlacementProperty, value); }
         }
-
+        
         /// <summary>
         /// Gets or sets <see cref="UIElement"/> relative to which the <see cref="Popup"/> will be positioned.
         /// </summary>
@@ -88,12 +97,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         }
 
         /// <summary>
-        /// Gets or sets the rectangle relative to which the popup is positioned.
+        /// Gets the root element of the popup's visual tree.
         /// </summary>
-        public RectangleD PlacementRectangle
+        public UIElement Root
         {
-            get { return GetValue<RectangleD>(PlacementRectangleProperty); }
-            set { SetValue<RectangleD>(PlacementRectangleProperty, value); }
+            get { return root; }
         }
 
         /// <summary>
@@ -156,18 +164,28 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             new PropertyMetadata<RectangleD>(RectangleD.Empty, PropertyMetadataOptions.None, HandlePlacementRectangleChanged));
 
         /// <summary>
-        /// If the popup is currently open, this method adds it to the view's popup queue for drawing.
+        /// Adds the popup to the view's popup queue for drawing.
         /// </summary>
         /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Draw(UltravioletTime)"/>.</param>
         /// <param name="dc">The drawing context that describes the render state of the layout.</param>
         internal void EnqueueForDrawing(UltravioletTime time, DrawingContext dc)
         {
-            if (!IsOpen)
-                return;
-            
             var transform = dc.LocalTransform;
             var transformed = !Matrix.Identity.Equals(transform);
             View.Popups.Enqueue(this, transformed ? transform : (Matrix?)null);
+        }
+
+        /// <summary>
+        /// If the popup is currently open, this method adds it to the view's popup queue for drawing.
+        /// </summary>
+        /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Draw(UltravioletTime)"/>.</param>
+        /// <param name="dc">The drawing context that describes the render state of the layout.</param>
+        internal void EnqueueForDrawingIfOpen(UltravioletTime time, DrawingContext dc)
+        {
+            if (!IsOpen)
+                return;
+
+            EnqueueForDrawing(time, dc);
         }
 
         /// <summary>
@@ -177,6 +195,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <returns>The <see cref="Visual"/> at the specified point in screen space, or <c>null</c> if there is no such visual.</returns>
         internal Visual PopupHitTest(Point2D point)
         {
+            if (!IsOpen)
+                return null;
+
             Matrix invertedTransform;
             if (!Matrix.TryInvert(root.InheritedRenderTransform, out invertedTransform))
                 return null;
@@ -189,6 +210,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             var pointRelToPopupCorner = new Point2D(pointRelToSourceCorner.X - popupOffsetX, pointRelToSourceCorner.Y - popupOffsetY);
 
             return root.HitTest(pointRelToPopupCorner);
+        }
+        
+        /// <inheritdoc/>
+        protected internal override void InvalidateVisualBounds()
+        {
+            root.InvalidateVisualBounds();
+            base.InvalidateVisualBounds();
         }
 
         /// <inheritdoc/>
@@ -252,7 +280,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             }
             else
             {
-                EnqueueForDrawing(time, dc);
+                EnqueueForDrawingIfOpen(time, dc);
             }
         }
 
@@ -298,6 +326,27 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         protected override Visual HitTestCore(Point2D point)
         {
             return null;
+        }
+
+        /// <inheritdoc/>
+        protected override RectangleD CalculateVisualBounds()
+        {
+            if (IsOpen)
+            {
+                var relativePosition = root.AbsolutePosition - this.AbsolutePosition;
+                return new RectangleD(relativePosition, root.VisualBounds.Size);
+            }
+            return RectangleD.Empty;
+        }
+
+        /// <inheritdoc/>
+        protected override RectangleD CalculateTransformedVisualBounds()
+        {
+            if (IsOpen)
+            {
+                return root.TransformedVisualBounds;
+            }
+            return RectangleD.Empty;
         }
 
         /// <summary>
@@ -394,6 +443,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
                     popup.UpdatePopupMeasure();
                     popup.UpdatePopupArrange(popup.MostRecentFinalRect.Size);
                 }
+                
+                popup.InvalidateVisualBounds();
                 popup.OnOpened();
             }
             else
@@ -405,6 +456,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
                 {
                     child.ChangeVisualParent(null);
                 }
+                
+                popup.InvalidateVisualBounds();
                 popup.OnClosed();
             }
         }

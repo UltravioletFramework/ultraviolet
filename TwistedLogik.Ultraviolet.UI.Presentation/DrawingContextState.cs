@@ -15,12 +15,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="customEffect">The drawing context's custom effect.</param>
         /// <param name="localTransform">The drawing context's local transformation matrix.</param>
         /// <param name="globalTransform">The drawing context's global transformation matrix.</param>
-        internal DrawingContextState(SpriteSortMode sortMode, Effect customEffect, Matrix localTransform, Matrix globalTransform)
+        /// <param name="combinedTransform">The drawing context's combined transformation matrix.</param>
+        internal DrawingContextState(SpriteSortMode sortMode, Effect customEffect, ref Matrix localTransform, ref Matrix globalTransform, ref Matrix combinedTransform)
         {
             this.sortMode = sortMode;
             this.customEffect = customEffect;
             this.localTransform = localTransform;
             this.globalTransform = globalTransform;
+            this.combinedTransform = combinedTransform;
         }
 
         /// <summary>
@@ -55,10 +57,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             get { return globalTransform; }
         }
 
+        /// <summary>
+        /// Gets the combined transform matrix which is in effect for the context.
+        /// </summary>
+        public Matrix CombinedTransform
+        {
+            get { return combinedTransform; }
+        }
+
         // Property values.
         private readonly SpriteSortMode sortMode;
         private readonly Effect customEffect;
         private readonly Matrix localTransform;
         private readonly Matrix globalTransform;
+        private readonly Matrix combinedTransform;
     }
 }

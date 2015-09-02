@@ -163,7 +163,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             spriteBatch.Begin(previousSpriteBatchState);
         }
-
+        
         /// <inheritdoc/>
         public override void Update(UltravioletTime time)
         {

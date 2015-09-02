@@ -67,9 +67,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 throw new InvalidOperationException(PresentationStrings.DrawingContextDoesNotHaveSpriteBatch);
 
             this.localTransform = localTransform;
-
-            Matrix combinedTransform;
+            this.combinedTransform = Matrix.Identity;
             Matrix.Concat(ref localTransform, ref globalTransform, out combinedTransform);
+
             SpriteBatch.Begin(sortMode, BlendState.AlphaBlend, SamplerState.LinearClamp, StencilReadDepthState, RasterizerState.CullCounterClockwise, effect, combinedTransform);
         }
 
@@ -638,16 +638,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (cliprect == currentStencil)
                 return;
 
-            var state = SpriteBatch.GetCurrentState();
-            SpriteBatch.End();
+            var state = GetCurrentState();
+            End();
 
             currentStencil = cliprect;
             if (currentStencil.HasValue)
             {
                 SpriteBatch.Ultraviolet.GetGraphics().Clear(ClearOptions.Stencil, Color.White, 0.0, 1);
-
+                
                 SpriteBatch.Begin(SpriteSortMode.Immediate, StencilBlendState, SamplerState.LinearClamp,
-                    StencilWriteDepthState, RasterizerState.CullCounterClockwise, null, state.TransformMatrix);
+                    StencilWriteDepthState, RasterizerState.CullCounterClockwise, null, state.CombinedTransform);
                 SpriteBatch.Draw(StencilTexture, currentStencil.Value, Color.White);
                 SpriteBatch.End();
             }
@@ -656,7 +656,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 SpriteBatch.Ultraviolet.GetGraphics().Clear(ClearOptions.Stencil, Color.White, 0.0, 0);
             }
 
-            Begin(SpriteSortMode.Deferred, null, state.TransformMatrix);
+            Begin(state);
         }
 
         /// <summary>
@@ -666,7 +666,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public DrawingContextState GetCurrentState()
         {
             var state = SpriteBatch.GetCurrentState();
-            return new DrawingContextState(state.SortMode, state.Effect, localTransform, globalTransform);
+            return new DrawingContextState(state.SortMode, state.Effect, ref localTransform, ref globalTransform, ref combinedTransform);
         }
 
         /// <summary>
@@ -722,6 +722,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             get { return globalTransform; }
             internal set { globalTransform = value; }
+        }
+
+        /// <summary>
+        /// Gets the combined transform which has been applied to this drawing context.
+        /// </summary>
+        public Matrix CombinedTransform
+        {
+            get { return combinedTransform; }
         }
 
         /// <summary>
@@ -788,5 +796,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         private Int32 outOfBand;
         private Matrix localTransform = Matrix.Identity;
         private Matrix globalTransform = Matrix.Identity;
+        private Matrix combinedTransform = Matrix.Identity;
     }
 }

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using TwistedLogik.Nucleus;
 using TwistedLogik.Nucleus.Collections;
 using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
+using TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives;
+using TwistedLogik.Ultraviolet.UI.Presentation.Media;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation
 {
@@ -136,10 +138,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                     var element = kvp.Key;
                     var rtarget = kvp.Value;
 
-                    if (element.TransformedVisualBounds.IsEmpty)
-                        continue;
-
                     var bounds = default(RectangleD);
+                    var effect = element.Effect;
                     rtarget.ResizeForElement(element, out bounds);
 
                     for (var current = rtarget.Next; current != null; current = current.Next)
@@ -147,24 +147,35 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
                     graphics.SetRenderTarget(rtarget.RenderTarget);
                     graphics.Clear(Color.Transparent);
-
-                    drawingContext.Reset(element.View.Display);
-
-                    rtarget.CumulativeTransform = element.GetCumulativeSpriteBatchTransform();
-                    rtarget.VisualBounds = bounds;
-
-                    element.DrawToRenderTarget(time, drawingContext, rtarget.RenderTarget, rtarget.CumulativeTransform);
                     
-                    if (rtarget.Next != null)
+                    var popup = element as Popup;
+                    if (popup != null)
                     {
-                        var effect = element.Effect;
-                        if (effect != null)
-                        {
-                            effect.DrawRenderTargets(drawingContext, element, rtarget);
-                        }
+                        if (!popup.IsOpen)
+                            continue;
+
+                        element = popup.Root;
                     }
-                    
-                    rtarget.IsReady = true;
+
+                    if (!element.TransformedVisualBounds.IsEmpty && !IsVisuallyDisconnectedFromRoot(element))
+                    {
+                        drawingContext.Reset(element.View.Display);
+
+                        rtarget.CumulativeTransform = element.GetCumulativeSpriteBatchTransform();
+                        rtarget.VisualBounds = bounds;
+
+                        element.DrawToRenderTarget(time, drawingContext, rtarget.RenderTarget, rtarget.CumulativeTransform);
+                        
+                        if (rtarget.Next != null)
+                        {
+                            if (effect != null)
+                            {
+                                effect.DrawRenderTargets(drawingContext, element, rtarget);
+                            }
+                        }
+
+                        rtarget.IsReady = true;
+                    }
                 }
             }
             finally
@@ -237,7 +248,38 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             }
             base.Dispose(disposing);
         }
-        
+
+        /// <summary>
+        /// Gets a value indicating whether the specified element has become disconnected from the view's layout root through the visual tree.
+        /// </summary>
+        /// <param name="element">The element to evaluate.</param>
+        /// <returns><c>true</c> if the specified element is visually disconnected; otherwise, <c>false</c>.</returns>
+        private static Boolean IsVisuallyDisconnectedFromRoot(UIElement element)
+        {
+            var current = VisualTreeHelper.GetParent(element) as UIElement;
+
+            while (current != null)
+            {
+                if (current == element.View.LayoutRoot)
+                    return false;
+
+                if (current is PopupRoot)
+                {
+                    var popup = current.Parent as Popup;
+                    if (popup == null || !popup.IsOpen)
+                        return true;
+
+                    current = popup;
+                }
+                else
+                {
+                    current = VisualTreeHelper.GetParent(current) as UIElement;
+                }
+            }
+
+            return true;
+        }
+
         // The pool of available render buffers.
         private readonly IPool<OutOfBandRenderTarget> renderTargetPool;
 
