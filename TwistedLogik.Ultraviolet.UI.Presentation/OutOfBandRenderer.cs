@@ -256,8 +256,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <returns><c>true</c> if the specified element is visually disconnected; otherwise, <c>false</c>.</returns>
         private static Boolean IsVisuallyDisconnectedFromRoot(UIElement element)
         {
-            var current = VisualTreeHelper.GetParent(element) as UIElement;
-
+            var current = element;
+            
             while (current != null)
             {
                 if (current == element.View.LayoutRoot)
