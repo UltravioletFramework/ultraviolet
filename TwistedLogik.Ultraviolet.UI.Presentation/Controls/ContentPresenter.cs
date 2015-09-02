@@ -1,4 +1,5 @@
 ﻿using System;
+using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
 using TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text;
 using TwistedLogik.Ultraviolet.UI.Presentation.Media;
 
@@ -108,7 +109,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 
                 var color = containingControl.Foreground;
 
-                View.Resources.TextRenderer.Draw(dc.SpriteBatch, textLayoutResult, positionRounded, color);
+                View.Resources.TextRenderer.Draw((SpriteBatch)dc, textLayoutResult, positionRounded, color);
             }
 
             base.DrawOverride(time, dc);

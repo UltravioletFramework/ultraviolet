@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
 using TwistedLogik.Nucleus;
+using TwistedLogik.Nucleus.Text;
 using TwistedLogik.Ultraviolet.Graphics;
 using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
 using TwistedLogik.Ultraviolet.Platform;
@@ -13,6 +15,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
     /// </summary>
     public sealed partial class DrawingContext
     {
+        /// <summary>
+        /// Explicitly converts an instance of <see cref="DrawingContext"/> to its underlying <see cref="SpriteBatch"/>.
+        /// </summary>
+        /// <param name="dc">The <see cref="DrawingContext"/> instance to convert.</param>
+        /// <returns>The drawing context's underlying <see cref="SpriteBatch"/> instance.</returns>
+        public static explicit operator SpriteBatch(DrawingContext dc)
+        {
+            return dc.SpriteBatch;
+        }
+
         /// <summary>
         /// Resets the drawing context by clearing its render state stacks.
         /// </summary>
@@ -46,13 +58,30 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         /// <param name="sortMode">The sorting mode to use when rendering interface elements.</param>
         /// <param name="effect">The custom effect to apply to the rendered interface elements.</param>
-        /// <param name="transform">The transform matrix to apply to the rendered interface elements.</param>
-        public void Begin(SpriteSortMode sortMode, Effect effect, Matrix transform)
+        /// <param name="localTransform">The transform matrix to apply to the rendered interface elements.</param>
+        public void Begin(SpriteSortMode sortMode, Effect effect, Matrix localTransform)
         {
-            if (spriteBatch == null)
+            if (SpriteBatch == null)
                 throw new InvalidOperationException(PresentationStrings.DrawingContextDoesNotHaveSpriteBatch);
 
-            spriteBatch.Begin(sortMode, BlendState.AlphaBlend, SamplerState.LinearClamp, StencilReadDepthState, RasterizerState.CullCounterClockwise, effect, transform);
+            this.localTransform = localTransform;
+
+            Matrix combinedTransform;
+            Matrix.Concat(ref localTransform, ref globalTransform, out combinedTransform);
+            SpriteBatch.Begin(sortMode, BlendState.AlphaBlend, SamplerState.LinearClamp, StencilReadDepthState, RasterizerState.CullCounterClockwise, effect, combinedTransform);
+        }
+
+        /// <summary>
+        /// Begins a new sprite batch using the specified state values.
+        /// </summary>
+        /// <param name="state">A <see cref="DrawingContextState"/> specifying the state values to use for drawing.</param>
+        public void Begin(DrawingContextState state)
+        {
+            if (SpriteBatch == null)
+                throw new InvalidOperationException(PresentationStrings.DrawingContextDoesNotHaveSpriteBatch);
+
+            GlobalTransform = state.GlobalTransform;
+            Begin(state.SortMode, state.Effect, state.LocalTransform);
         }
 
         /// <summary>
@@ -60,10 +89,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         public void End()
         {
-            if (spriteBatch == null)
+            if (SpriteBatch == null)
                 throw new InvalidOperationException(PresentationStrings.DrawingContextDoesNotHaveSpriteBatch);
 
-            spriteBatch.End();
+            SpriteBatch.End();
         }
 
         /// <summary>
@@ -71,10 +100,472 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         public void Flush()
         {
-            if (spriteBatch == null)
+            if (SpriteBatch == null)
                 throw new InvalidOperationException(PresentationStrings.DrawingContextDoesNotHaveSpriteBatch);
 
-            spriteBatch.Flush();
+            SpriteBatch.Flush();
+        }
+
+        /// <summary>
+        /// Adds a sprite to the batch.
+        /// </summary>
+        /// <param name="texture">The sprite's texture.</param>
+        /// <param name="destinationRectangle">A rectangle which indicates where on the screen the sprite will be drawn.</param>
+        /// <param name="color">The sprite's tint color.</param>
+        public void Draw(Texture2D texture, RectangleF destinationRectangle, Color color)
+        {
+            if (SpriteBatch == null)
+                throw new InvalidOperationException(PresentationStrings.DrawingContextDoesNotHaveSpriteBatch);
+
+            SpriteBatch.Draw(texture, destinationRectangle, color);
+        }
+
+        /// <summary>
+        /// Adds a sprite to the batch.
+        /// </summary>
+        /// <param name="texture">The sprite's texture.</param>
+        /// <param name="destinationRectangle">A rectangle which indicates where on the screen the sprite will be drawn.</param>
+        /// <param name="sourceRectangle">The sprite's position on its texture, or <c>null</c> to draw the entire texture.</param>
+        /// <param name="color">The sprite's tint color.</param>
+        public void Draw(Texture2D texture, RectangleF destinationRectangle, Rectangle? sourceRectangle, Color color)
+        {
+            if (SpriteBatch == null)
+                throw new InvalidOperationException(PresentationStrings.DrawingContextDoesNotHaveSpriteBatch);
+
+            SpriteBatch.Draw(texture, destinationRectangle, sourceRectangle, color);
+        }
+
+        /// <summary>
+        /// Adds a sprite to the batch.
+        /// </summary>
+        /// <param name="texture">The sprite's texture.</param>
+        /// <param name="destinationRectangle">A rectangle which indicates where on the screen the sprite will be drawn.</param>
+        /// <param name="sourceRectangle">The sprite's position on its texture, or <c>null</c> to draw the entire texture.</param>
+        /// <param name="color">The sprite's tint color.</param>
+        /// <param name="rotation">The sprite's rotation in radians.</param>
+        /// <param name="origin">The sprite's origin point.</param>
+        /// <param name="effects">The sprite's rendering effects.</param>
+        /// <param name="layerDepth">The sprite's layer depth.</param>
+        public void Draw(Texture2D texture, RectangleF destinationRectangle, Rectangle? sourceRectangle, Color color, Single rotation, Vector2 origin, SpriteEffects effects, Single layerDepth)
+        {
+            if (SpriteBatch == null)
+                throw new InvalidOperationException(PresentationStrings.DrawingContextDoesNotHaveSpriteBatch);
+
+            SpriteBatch.Draw(texture, destinationRectangle, sourceRectangle, color, rotation, origin, effects, layerDepth);
+        }
+
+        /// <summary>
+        /// Adds a sprite to the batch.
+        /// </summary>
+        /// <param name="texture">The sprite's texture.</param>
+        /// <param name="position">The sprite's position in screen coordinates.</param>
+        /// <param name="color">The sprite's tint color.</param>
+        public void Draw(Texture2D texture, Vector2 position, Color color)
+        {
+            if (SpriteBatch == null)
+                throw new InvalidOperationException(PresentationStrings.DrawingContextDoesNotHaveSpriteBatch);
+
+            SpriteBatch.Draw(texture, position, color);
+        }
+
+        /// <summary>
+        /// Adds a sprite to the batch.
+        /// </summary>
+        /// <param name="texture">The sprite's texture.</param>
+        /// <param name="position">The sprite's position in screen coordinates.</param>
+        /// <param name="sourceRectangle">The sprite's position on its texture, or <c>null</c> to draw the entire texture.</param>
+        /// <param name="color">The sprite's tint color.</param>
+        public void Draw(Texture2D texture, Vector2 position, Rectangle? sourceRectangle, Color color)
+        {
+            if (SpriteBatch == null)
+                throw new InvalidOperationException(PresentationStrings.DrawingContextDoesNotHaveSpriteBatch);
+
+            SpriteBatch.Draw(texture, position, sourceRectangle, color);
+        }
+
+        /// <summary>
+        /// Adds a sprite to the batch.
+        /// </summary>
+        /// <param name="texture">The sprite's texture.</param>
+        /// <param name="position">The sprite's position in screen coordinates.</param>
+        /// <param name="sourceRectangle">The sprite's position on its texture, or <c>null</c> to draw the entire texture.</param>
+        /// <param name="color">The sprite's tint color.</param>
+        /// <param name="rotation">The sprite's rotation in radians.</param>
+        /// <param name="origin">The sprite's origin point.</param>
+        /// <param name="scale">The sprite's scale factor.</param>
+        /// <param name="effects">The sprite's rendering effects.</param>
+        /// <param name="layerDepth">The sprite's layer depth.</param>
+        public void Draw(Texture2D texture, Vector2 position, Rectangle? sourceRectangle, Color color, Single rotation, Vector2 origin, Single scale, SpriteEffects effects, Single layerDepth)
+        {
+            if (SpriteBatch == null)
+                throw new InvalidOperationException(PresentationStrings.DrawingContextDoesNotHaveSpriteBatch);
+
+            SpriteBatch.Draw(texture, position, sourceRectangle, color, rotation, origin, scale, effects, layerDepth);
+        }
+
+        /// <summary>
+        /// Adds a sprite to the batch.
+        /// </summary>
+        /// <param name="texture">The sprite's texture.</param>
+        /// <param name="position">The sprite's position in screen coordinates.</param>
+        /// <param name="sourceRectangle">The sprite's position on its texture, or <c>null</c> to draw the entire texture.</param>
+        /// <param name="color">The sprite's tint color.</param>
+        /// <param name="rotation">The sprite's rotation in radians.</param>
+        /// <param name="origin">The sprite's origin point.</param>
+        /// <param name="scale">The sprite's scale factor.</param>
+        /// <param name="effects">The sprite's rendering effects.</param>
+        /// <param name="layerDepth">The sprite's layer depth.</param>
+        public void Draw(Texture2D texture, Vector2 position, Rectangle? sourceRectangle, Color color, Single rotation, Vector2 origin, Vector2 scale, SpriteEffects effects, Single layerDepth)
+        {
+            if (SpriteBatch == null)
+                throw new InvalidOperationException(PresentationStrings.DrawingContextDoesNotHaveSpriteBatch);
+
+            SpriteBatch.Draw(texture, position, sourceRectangle, color, rotation, origin, scale, effects, layerDepth);
+        }
+        
+        /// <summary>
+        /// Draws a sprite animation.
+        /// </summary>
+        /// <param name="animation">A <see cref="SpriteAnimationController"/> representing the sprite animation to draw.</param>
+        /// <param name="position">The sprite's position in screen coordinates.</param>
+        public void DrawSprite(SpriteAnimationController animation, Vector2 position)
+        {
+            if (SpriteBatch == null)
+                throw new InvalidOperationException(PresentationStrings.DrawingContextDoesNotHaveSpriteBatch);
+
+            SpriteBatch.DrawSprite(animation, position);
+        }
+
+        /// <summary>
+        /// Draws a sprite animation.
+        /// </summary>
+        /// <param name="animation">A <see cref="SpriteAnimationController"/> representing the sprite animation to draw.</param>
+        /// <param name="position">The sprite's position in screen coordinates.</param>
+        /// <param name="width">The width in pixels of the destination rectangle, or <c>null</c> to use the width of the sprite.</param>
+        /// <param name="height">The height in pixels of the destination rectangle, or <c>null</c> to use the height of the sprite.</param>
+        public void DrawSprite(SpriteAnimationController animation, Vector2 position, Single? width, Single? height)
+        {
+            if (SpriteBatch == null)
+                throw new InvalidOperationException(PresentationStrings.DrawingContextDoesNotHaveSpriteBatch);
+
+            SpriteBatch.DrawSprite(animation, position, width, height);
+        }
+
+        /// <summary>
+        /// Draws a sprite animation.
+        /// </summary>
+        /// <param name="animation">A <see cref="SpriteAnimationController"/> representing the sprite animation to draw.</param>
+        /// <param name="position">The sprite's position in screen coordinates.</param>
+        /// <param name="width">The width in pixels of the destination rectangle, or <c>null</c> to use the width of the sprite.</param>
+        /// <param name="height">The height in pixels of the destination rectangle, or <c>null</c> to use the height of the sprite.</param>
+        /// <param name="color">The sprite's tint color.</param>
+        /// <param name="rotation">The sprite's rotation in radians.</param>
+        public void DrawSprite(SpriteAnimationController animation, Vector2 position, Single? width, Single? height, Color color, Single rotation)
+        {
+            if (SpriteBatch == null)
+                throw new InvalidOperationException(PresentationStrings.DrawingContextDoesNotHaveSpriteBatch);
+
+            SpriteBatch.DrawSprite(animation, position, width, height, color, rotation);
+        }
+
+        /// <summary>
+        /// Draws a sprite animation.
+        /// </summary>
+        /// <param name="animation">A <see cref="SpriteAnimationController"/> representing the sprite animation to draw.</param>
+        /// <param name="position">The sprite's position in screen coordinates.</param>
+        /// <param name="width">The width in pixels of the destination rectangle, or <c>null</c> to use the width of the sprite.</param>
+        /// <param name="height">The height in pixels of the destination rectangle, or <c>null</c> to use the height of the sprite.</param>
+        /// <param name="color">The sprite's tint color.</param>
+        /// <param name="rotation">The sprite's rotation in radians.</param>
+        /// <param name="effects">The sprite's rendering effects.</param>
+        /// <param name="layerDepth">The sprite's layer depth.</param>
+        public void DrawSprite(SpriteAnimationController animation, Vector2 position, Single? width, Single? height, Color color, Single rotation, SpriteEffects effects, Single layerDepth)
+        {
+            if (SpriteBatch == null)
+                throw new InvalidOperationException(PresentationStrings.DrawingContextDoesNotHaveSpriteBatch);
+
+            SpriteBatch.DrawSprite(animation, position, width, height, color, rotation, effects, layerDepth);
+        }
+        
+        /// <summary>
+        /// Draws a sprite animation with the specified scaling factor.
+        /// </summary>
+        /// <param name="animation">A <see cref="SpriteAnimationController"/> representing the sprite animation to draw.</param>
+        /// <param name="position">The sprite's position in screen coordinates.</param>
+        /// <param name="scale">The sprite's scale factor.</param>
+        public void DrawScaledSprite(SpriteAnimationController animation, Vector2 position, Vector2 scale)
+        {
+            if (SpriteBatch == null)
+                throw new InvalidOperationException(PresentationStrings.DrawingContextDoesNotHaveSpriteBatch);
+
+            SpriteBatch.DrawScaledSprite(animation, position, scale);
+        }
+
+        /// <summary>
+        /// Draws a sprite animation with the specified scaling factor.
+        /// </summary>
+        /// <param name="animation">A <see cref="SpriteAnimationController"/> representing the sprite animation to draw.</param>
+        /// <param name="position">The sprite's position in screen coordinates.</param>
+        /// <param name="scale">The sprite's scale factor.</param>
+        /// <param name="color">The sprite's tint color.</param>
+        /// <param name="rotation">The sprite's rotation in radians.</param>
+        public void DrawScaledSprite(SpriteAnimationController animation, Vector2 position, Vector2 scale, Color color, Single rotation)
+        {
+            if (SpriteBatch == null)
+                throw new InvalidOperationException(PresentationStrings.DrawingContextDoesNotHaveSpriteBatch);
+
+            SpriteBatch.DrawScaledSprite(animation, position, scale, color, rotation);
+        }
+
+        /// <summary>
+        /// Draws a sprite animation with the specified scaling factor.
+        /// </summary>
+        /// <param name="animation">A <see cref="SpriteAnimationController"/> representing the sprite animation to draw.</param>
+        /// <param name="position">The sprite's position in screen coordinates.</param>
+        /// <param name="scale">The sprite's scale factor.</param>
+        /// <param name="color">The sprite's color.</param>
+        /// <param name="rotation">The sprite's rotation in radians.</param>
+        /// <param name="effects">The sprite's rendering effects.</param>
+        /// <param name="layerDepth">The sprite's layer depth.</param>
+        public void DrawScaledSprite(SpriteAnimationController animation, Vector2 position, Vector2 scale, Color color, Single rotation, SpriteEffects effects, Single layerDepth)
+        {
+            if (SpriteBatch == null)
+                throw new InvalidOperationException(PresentationStrings.DrawingContextDoesNotHaveSpriteBatch);
+
+            SpriteBatch.DrawScaledSprite(animation, position, scale, color, rotation, effects, layerDepth);
+        }
+        
+        /// <summary>
+        /// Draws a single animation frame.
+        /// </summary>
+        /// <param name="frame">The <see cref="SpriteFrame"/> to draw.</param>
+        /// <param name="destinationRectangle">A rectangle which indicates where on the screen the sprite will be drawn.</param>
+        /// <param name="color">The sprite's tint color.</param>
+        /// <param name="rotation">The sprite's rotation in radians.</param>
+        public void DrawFrame(SpriteFrame frame, Rectangle destinationRectangle, Color color, Single rotation)
+        {
+            if (SpriteBatch == null)
+                throw new InvalidOperationException(PresentationStrings.DrawingContextDoesNotHaveSpriteBatch);
+
+            SpriteBatch.DrawFrame(frame, destinationRectangle, color, rotation);
+        }
+
+        /// <summary>
+        /// Draws a single animation frame.
+        /// </summary>
+        /// <param name="frame">The <see cref="SpriteFrame"/> to draw.</param>
+        /// <param name="destinationRectangle">A rectangle which indicates where on the screen the sprite will be drawn.</param>
+        /// <param name="color">The sprite's tint color.</param>
+        /// <param name="rotation">The sprite's rotation in radians.</param>
+        /// <param name="effects">The sprite's rendering effects.</param>
+        /// <param name="layerDepth">The sprite's layer depth.</param>
+        public void DrawFrame(SpriteFrame frame, Rectangle destinationRectangle, Color color, Single rotation, SpriteEffects effects, Single layerDepth)
+        {
+            if (SpriteBatch == null)
+                throw new InvalidOperationException(PresentationStrings.DrawingContextDoesNotHaveSpriteBatch);
+
+            SpriteBatch.DrawFrame(frame, destinationRectangle, color, rotation, effects, layerDepth);
+        }
+        
+        /// <summary>
+        /// Draws a string of text.
+        /// </summary>
+        /// <param name="fontFace">The <see cref="SpriteFontFace"/> with which to draw the text.</param>
+        /// <param name="text">The text to draw.</param>
+        /// <param name="position">The text's position.</param>
+        /// <param name="color">The text's color.</param>
+        public void DrawString(SpriteFontFace fontFace, String text, Vector2 position, Color color)
+        {
+            if (SpriteBatch == null)
+                throw new InvalidOperationException(PresentationStrings.DrawingContextDoesNotHaveSpriteBatch);
+
+            SpriteBatch.DrawString(fontFace, text, position, color);
+        }
+
+        /// <summary>
+        /// Draws a string of text.
+        /// </summary>
+        /// <param name="fontFace">The <see cref="SpriteFontFace"/> with which to draw the text.</param>
+        /// <param name="text">The text to draw.</param>
+        /// <param name="position">The text's position.</param>
+        /// <param name="color">The text's color.</param>
+        /// <param name="rotation">The text's rotation in radians.</param>
+        /// <param name="origin">The text's point of origin relative to its top-left corner.</param>
+        /// <param name="scale">The text's scale factor.</param>
+        /// <param name="effects">The text's rendering effects.</param>
+        /// <param name="layerDepth">The text's layer depth.</param>
+        public void DrawString(SpriteFontFace fontFace, String text, Vector2 position, Color color, Single rotation, Vector2 origin, Single scale, SpriteEffects effects, Single layerDepth)
+        {
+            if (SpriteBatch == null)
+                throw new InvalidOperationException(PresentationStrings.DrawingContextDoesNotHaveSpriteBatch);
+
+            SpriteBatch.DrawString(fontFace, text, position, color, rotation, origin, scale, effects, layerDepth);
+        }
+
+        /// <summary>
+        /// Draws a string of text.
+        /// </summary>
+        /// <param name="fontFace">The <see cref="SpriteFontFace"/> with which to draw the text.</param>
+        /// <param name="text">The text to draw.</param>
+        /// <param name="position">The text's position.</param>
+        /// <param name="color">The text's color.</param>
+        /// <param name="rotation">The text's rotation in radians.</param>
+        /// <param name="origin">The text's point of origin relative to its top-left corner.</param>
+        /// <param name="scale">The text's scale factor.</param>
+        /// <param name="effects">The text's rendering effects.</param>
+        /// <param name="layerDepth">The text's layer depth.</param>
+        public void DrawString(SpriteFontFace fontFace, String text, Vector2 position, Color color, Single rotation, Vector2 origin, Vector2 scale, SpriteEffects effects, Single layerDepth)
+        {
+            if (SpriteBatch == null)
+                throw new InvalidOperationException(PresentationStrings.DrawingContextDoesNotHaveSpriteBatch);
+
+            SpriteBatch.DrawString(fontFace, text, position, color, rotation, origin, scale, effects, layerDepth);
+        }
+        
+        /// <summary>
+        /// Draws a string of text.
+        /// </summary>
+        /// <param name="fontFace">The <see cref="SpriteFontFace"/> with which to draw the text.</param>
+        /// <param name="text">The text to draw.</param>
+        /// <param name="position">The text's position.</param>
+        /// <param name="color">The text's color.</param>
+        public void DrawString(SpriteFontFace fontFace, StringBuilder text, Vector2 position, Color color)
+        {
+            if (SpriteBatch == null)
+                throw new InvalidOperationException(PresentationStrings.DrawingContextDoesNotHaveSpriteBatch);
+
+            SpriteBatch.DrawString(fontFace, text, position, color);
+        }
+
+        /// <summary>
+        /// Draws a string of text.
+        /// </summary>
+        /// <param name="fontFace">The <see cref="SpriteFontFace"/> with which to draw the text.</param>
+        /// <param name="text">The text to draw.</param>
+        /// <param name="position">The text's position.</param>
+        /// <param name="color">The text's color.</param>
+        /// <param name="rotation">The text's rotation in radians.</param>
+        /// <param name="origin">The text's point of origin relative to its top-left corner.</param>
+        /// <param name="scale">The text's scale factor.</param>
+        /// <param name="effects">The text's rendering effects.</param>
+        /// <param name="layerDepth">The text's layer depth.</param>
+        public void DrawString(SpriteFontFace fontFace, StringBuilder text, Vector2 position, Color color, Single rotation, Vector2 origin, Single scale, SpriteEffects effects, Single layerDepth)
+        {
+            if (SpriteBatch == null)
+                throw new InvalidOperationException(PresentationStrings.DrawingContextDoesNotHaveSpriteBatch);
+
+            SpriteBatch.DrawString(fontFace, text, position, color, rotation, origin, scale, effects, layerDepth);
+        }
+
+        /// <summary>
+        /// Draws a string of text.
+        /// </summary>
+        /// <param name="fontFace">The <see cref="SpriteFontFace"/> with which to draw the text.</param>
+        /// <param name="text">The text to draw.</param>
+        /// <param name="position">The text's position.</param>
+        /// <param name="color">The text's color.</param>
+        /// <param name="rotation">The text's rotation in radians.</param>
+        /// <param name="origin">The text's point of origin relative to its top-left corner.</param>
+        /// <param name="scale">The text's scale factor.</param>
+        /// <param name="effects">The text's rendering effects.</param>
+        /// <param name="layerDepth">The text's layer depth.</param>
+        public void DrawString(SpriteFontFace fontFace, StringBuilder text, Vector2 position, Color color, Single rotation, Vector2 origin, Vector2 scale, SpriteEffects effects, Single layerDepth)
+        {
+            if (SpriteBatch == null)
+                throw new InvalidOperationException(PresentationStrings.DrawingContextDoesNotHaveSpriteBatch);
+
+            SpriteBatch.DrawString(fontFace, text, position, color, rotation, origin, scale, effects, layerDepth);
+        }
+        
+        /// <summary>
+        /// Draws a string of text.
+        /// </summary>
+        /// <param name="fontFace">The <see cref="SpriteFontFace"/> with which to draw the text.</param>
+        /// <param name="text">The text to draw.</param>
+        /// <param name="position">The text's position.</param>
+        /// <param name="color">The text's color.</param>
+        public void DrawString(SpriteFontFace fontFace, StringSegment text, Vector2 position, Color color)
+        {
+            if (SpriteBatch == null)
+                throw new InvalidOperationException(PresentationStrings.DrawingContextDoesNotHaveSpriteBatch);
+
+            SpriteBatch.DrawString(fontFace, text, position, color);
+        }
+
+        /// <summary>
+        /// Draws a string of text.
+        /// </summary>
+        /// <param name="fontFace">The <see cref="SpriteFontFace"/> with which to draw the text.</param>
+        /// <param name="text">The text to draw.</param>
+        /// <param name="position">The text's position.</param>
+        /// <param name="color">The text's color.</param>
+        /// <param name="rotation">The text's rotation in radians.</param>
+        /// <param name="origin">The text's point of origin relative to its top-left corner.</param>
+        /// <param name="scale">The text's scale factor.</param>
+        /// <param name="effects">The text's rendering effects.</param>
+        /// <param name="layerDepth">The text's layer depth.</param>
+        public void DrawString(SpriteFontFace fontFace, StringSegment text, Vector2 position, Color color, Single rotation, Vector2 origin, Single scale, SpriteEffects effects, Single layerDepth)
+        {
+            if (SpriteBatch == null)
+                throw new InvalidOperationException(PresentationStrings.DrawingContextDoesNotHaveSpriteBatch);
+
+            SpriteBatch.DrawString(fontFace, text, position, color, rotation, origin, scale, effects, layerDepth);
+        }
+
+        /// <summary>
+        /// Draws a string of text.
+        /// </summary>
+        /// <param name="fontFace">The <see cref="SpriteFontFace"/> with which to draw the text.</param>
+        /// <param name="text">The text to draw.</param>
+        /// <param name="position">The text's position.</param>
+        /// <param name="color">The text's color.</param>
+        /// <param name="rotation">The text's rotation in radians.</param>
+        /// <param name="origin">The text's point of origin relative to its top-left corner.</param>
+        /// <param name="scale">The text's scale factor.</param>
+        /// <param name="effects">The text's rendering effects.</param>
+        /// <param name="layerDepth">The text's layer depth.</param>
+        public void DrawString(SpriteFontFace fontFace, StringSegment text, Vector2 position, Color color, Single rotation, Vector2 origin, Vector2 scale, SpriteEffects effects, Single layerDepth)
+        {
+            if (SpriteBatch == null)
+                throw new InvalidOperationException(PresentationStrings.DrawingContextDoesNotHaveSpriteBatch);
+
+            SpriteBatch.DrawString(fontFace, text, position, color, rotation, origin, scale, effects, layerDepth);
+        }
+        
+        /// <summary>
+        /// Draws an image.
+        /// </summary>
+        /// <param name="image">An <see cref="TextureImage"/> that represents the image to draw.</param>
+        /// <param name="position">The position at which to draw the image.</param>
+        /// <param name="width">The width of the image in pixels.</param>
+        /// <param name="height">The height of the image in pixels.</param>
+        /// <param name="color">The image's color.</param>
+        public void DrawImage(TextureImage image, Vector2 position, Single width, Single height, Color color)
+        {
+            if (SpriteBatch == null)
+                throw new InvalidOperationException(PresentationStrings.DrawingContextDoesNotHaveSpriteBatch);
+
+            SpriteBatch.DrawImage(image, position, width, height, color);
+        }
+
+        /// <summary>
+        /// Draws an image.
+        /// </summary>
+        /// <param name="image">An <see cref="TextureImage"/> that represents the image to draw.</param>
+        /// <param name="position">The position at which to draw the image.</param>
+        /// <param name="width">The width of the image in pixels.</param>
+        /// <param name="height">The height of the image in pixels.</param>
+        /// <param name="color">The image's color.</param>
+        /// <param name="rotation">The image's rotation in radians.</param>
+        /// <param name="origin">The image's point of origin.</param>
+        /// <param name="effects">The image's rendering effects.</param>
+        /// <param name="layerDepth">The image's layer depth.</param>
+        public void DrawImage(TextureImage image, Vector2 position, Single width, Single height, Color color, Single rotation, Vector2 origin, SpriteEffects effects, Single layerDepth)
+        {
+            if (SpriteBatch == null)
+                throw new InvalidOperationException(PresentationStrings.DrawingContextDoesNotHaveSpriteBatch);
+
+            SpriteBatch.DrawImage(image, position, width, height, color, rotation, origin, effects, layerDepth);
         }
 
         /// <summary>
@@ -157,7 +648,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         public void ApplyClipRectangleToDevice()
         {
-            if (spriteBatch == null)
+            if (SpriteBatch == null)
                 return;
 
             var cliprect = (ClipRectangle == null || display == null) ? (Rectangle?)null : (Rectangle?)display.DipsToPixels(ClipRectangle.Value);
@@ -186,12 +677,27 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
-        /// Gets the <see cref="SpriteBatch"/> with which the layout will be rendered.
+        /// Gets the drawing context's current state values.
         /// </summary>
-        public SpriteBatch SpriteBatch
+        /// <returns>A <see cref="DrawingContextState"/> that describes the drawing context's current state.</returns>
+        public DrawingContextState GetCurrentState()
         {
-            get { return spriteBatch; }
-            internal set { spriteBatch = value; }
+            var state = SpriteBatch.GetCurrentState();
+            return new DrawingContextState(state.SortMode, state.Effect, localTransform, globalTransform);
+        }
+
+        /// <summary>
+        /// Gets the Ultraviolet context currently associated with the drawing context.
+        /// </summary>
+        public UltravioletContext Ultraviolet
+        {
+            get
+            {
+                if (SpriteBatch == null)
+                    throw new InvalidOperationException(PresentationStrings.DrawingContextDoesNotHaveSpriteBatch);
+
+                return SpriteBatch.Ultraviolet;
+            }
         }
 
         /// <summary>
@@ -211,15 +717,38 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Gets the local transform which has been applied to this drawing context.
+        /// </summary>
+        public Matrix LocalTransform
+        {
+            get { return localTransform; }
+        }
+
+        /// <summary>
+        /// Gets the global transform which has been applied to this drawing context.
+        /// </summary>
+        public Matrix GlobalTransform
+        {
+            get { return globalTransform; }
+            internal set { globalTransform = value; }
+        }
+
+        /// <summary>
         /// Gets the current clip rectangle in device-independent pixels.
         /// </summary>
         public RectangleD? ClipRectangle
         {
             get { return clipStack.Count > 0 ? clipStack.Peek().CumulativeClipRectangle : (RectangleD?)null; }
         }
-
-        // Property values.
-        private SpriteBatch spriteBatch;
+        
+        /// <summary>
+        /// Gets the <see cref="SpriteBatch"/> with which the layout will be rendered.
+        /// </summary>
+        internal SpriteBatch SpriteBatch
+        {
+            private get;
+            set;
+        }
 
         // State values.
         private IUltravioletDisplay display;
@@ -227,5 +756,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         private readonly Stack<ClipState> clipStack = new Stack<ClipState>(32);
         private Rectangle? currentStencil;
         private Int32 transforms;
+        private Matrix localTransform = Matrix.Identity;
+        private Matrix globalTransform = Matrix.Identity;
     }
 }

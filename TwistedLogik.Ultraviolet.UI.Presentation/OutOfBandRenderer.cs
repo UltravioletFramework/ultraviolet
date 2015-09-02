@@ -31,27 +31,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
-        /// Calculates the cumulative sprite batch transform applied to the specified element.
-        /// </summary>
-        /// <param name="element">The element for which to calculate a cumulative transform.</param>
-        /// <param name="parentTransform">The cumulative sprite batch transform of the specified element's parent element.</param>
-        /// <returns>The cumulative sprite batch transform of the specified element.</returns>
-        public Matrix CalculateCumulativeSpriteBatchTransform(UIElement element, out Matrix parentTransform)
-        {
-            var mtxParentTransform = Matrix.Identity;
-
-            var parent = Media.VisualTreeHelper.GetParent(element) as UIElement;
-            if (parent != null)
-            {
-                Matrix prevprev;
-                mtxParentTransform = CalculateCumulativeSpriteBatchTransform(parent, out prevprev);
-            }
-
-            parentTransform = mtxParentTransform;
-            return element.GetSpriteBatchTransform(ref mtxParentTransform);
-        }
-
-        /// <summary>
         /// Gets a value indicating whether the specified element is rendered out-of-band.
         /// </summary>
         /// <param name="element">The element to evaluate.</param>
@@ -156,7 +135,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 {
                     var element = kvp.Key;
                     var rtarget = kvp.Value;
-                    
+
                     if (element.TransformedVisualBounds.IsEmpty)
                         continue;
 
@@ -170,33 +149,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                     graphics.Clear(Color.Transparent);
 
                     drawingContext.Reset(element.View.Display);
-                    drawingContext.SpriteBatch = spriteBatch;
-
-                    var centerX = rtarget.RenderTarget.Width / 2f;
-                    var centerY = rtarget.RenderTarget.Height / 2f;
-
-                    var display = element.View.Display;
                     
-                    var pxOffsetX = -(Int32)display.DipsToPixels(bounds.X);
-                    var pxOffsetY = -(Int32)display.DipsToPixels(bounds.Y);
+                    rtarget.CumulativeTransform = CalculateCumulativeSpriteBatchTransform(element);
+                    rtarget.VisualBounds = bounds;
 
-                    var cumulativeTransformParent = Matrix.Identity;
-                    var cumulativeTransform = CalculateCumulativeSpriteBatchTransform(element, out cumulativeTransformParent);
-
-                    var elementTranslation = new Vector2(pxOffsetX, pxOffsetY);
-                    var elementTransform = Matrix.CreateTranslation(elementTranslation.X, elementTranslation.Y, 0);
+                    element.DrawToRenderTarget(time, drawingContext, rtarget.RenderTarget);
                     
-                    rtarget.CumulativeTransform = cumulativeTransform;
-                    rtarget.AbsoluteVisualBounds = bounds;
-
-                    OutOfBandViewportOffset += new Size2D(rtarget.AbsoluteVisualBounds.X, rtarget.AbsoluteVisualBounds.Y);
-
-                    drawingContext.Begin(SpriteSortMode.Deferred, null, elementTransform * cumulativeTransformParent);
-                    element.Draw(time, drawingContext);
-                    drawingContext.End();
-
-                    OutOfBandViewportOffset -= new Size2D(rtarget.AbsoluteVisualBounds.X, rtarget.AbsoluteVisualBounds.Y);
-
                     if (rtarget.Next != null)
                     {
                         var effect = element.Effect;
@@ -205,11 +163,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                             effect.DrawRenderTargets(drawingContext, element, rtarget);
                         }
                     }
-
+                    
                     rtarget.IsReady = true;
                 }
-
-                OutOfBandViewportOffset = Size2D.Zero;
             }
             finally
             {
@@ -265,17 +221,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 return isDrawingRenderTargets;
             }
         }
-
-        /// <summary>
-        /// Gets the offset from the top-left corner to the screen to the top-left corner of the out-of-band render target
-        /// which is currently being rendered.
-        /// </summary>
-        public Size2D OutOfBandViewportOffset
-        {
-            get;
-            private set;
-        }
-
+        
         /// <inheritdoc/>
         protected override void Dispose(Boolean disposing)
         {
@@ -290,6 +236,22 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 registeredElements.Clear();
             }
             base.Dispose(disposing);
+        }
+        
+        /// <summary>
+        /// Calculates the cumulative sprite batch transform applied to the specified element.
+        /// </summary>
+        /// <param name="element">The element for which to calculate a cumulative transform.</param>
+        /// <returns>The cumulative sprite batch transform of the specified element.</returns>
+        private Matrix CalculateCumulativeSpriteBatchTransform(UIElement element)
+        {
+            var mtxParentTransform = Matrix.Identity;
+
+            var parent = Media.VisualTreeHelper.GetParent(element) as UIElement;
+            if (parent != null)
+                mtxParentTransform = CalculateCumulativeSpriteBatchTransform(parent);
+
+            return element.GetSpriteBatchTransform(ref mtxParentTransform);
         }
 
         // The pool of available render buffers.

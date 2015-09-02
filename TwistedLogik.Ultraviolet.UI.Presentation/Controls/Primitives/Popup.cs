@@ -239,7 +239,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             {
                 if (IsOpen)
                 {
-                    var transform = dc.SpriteBatch.CurrentTransformMatrix;
+                    var transform = dc.LocalTransform;
                     var transformed = !Matrix.Identity.Equals(transform);
                     View.Popups.Enqueue(this, transformed ? transform : (Matrix?)null);
                 }

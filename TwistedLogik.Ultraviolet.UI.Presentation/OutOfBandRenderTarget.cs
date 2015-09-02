@@ -96,6 +96,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Gets the cumulative transform of all ancestors of the rendered element.
+        /// </summary>
+        public Matrix CumulativeTransform
+        {
+            get;
+            internal set;
+        }
+
+        /// <summary>
         /// Gets the width of the render target in pixels.
         /// </summary>
         public Int32 Width
@@ -119,6 +128,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
                 return renderTarget.Height;
             }
+        }
+
+        /// <summary>
+        /// Gets the transformed visual bounds of the elements contained by this buffer in absolute screen space.
+        /// </summary>
+        public RectangleD VisualBounds
+        {
+            get;
+            internal set;
         }
 
         /// <summary>
@@ -158,37 +176,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
                 return depthBuffer;
             }
-        }
-
-        /// <summary>
-        /// Gets the transformed visual bounds of the elements contained by this buffer in absolute screen space.
-        /// </summary>
-        public RectangleD AbsoluteVisualBounds
-        {
-            get;
-            internal set;
-        }
-
-        /// <summary>
-        /// Gets the transformed visual bounds of the elements contained by this buffer in relative viewport space.
-        /// </summary>
-        public RectangleD RelativeVisualBounds
-        {
-            get
-            {
-                var bounds = AbsoluteVisualBounds;
-                var offset = Ultraviolet.GetUI().GetPresentationFoundation().OutOfBandRenderer.OutOfBandViewportOffset;
-                return new RectangleD(bounds.X - offset.Width, bounds.Y - offset.Height, bounds.Width, bounds.Height);
-            }
-        }
-
-        /// <summary>
-        /// Gets the cumulative transform of all ancestors of the rendered element.
-        /// </summary>
-        public Matrix CumulativeTransform
-        {
-            get;
-            internal set;
         }
 
         /// <summary>

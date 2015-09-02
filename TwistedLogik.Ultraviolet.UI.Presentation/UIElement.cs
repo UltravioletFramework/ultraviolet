@@ -150,7 +150,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
-        /// Draws the element using the specified <see cref="SpriteBatch"/>.
+        /// Draws the element using the specified <see cref="DrawingContext"/>.
         /// </summary>
         /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Draw(UltravioletTime)"/>.</param>
         /// <param name="dc">The drawing context that describes the render state of the layout.</param>
@@ -179,7 +179,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                     dc.PushTransform();
                 }
 
-                var state = dc.SpriteBatch.GetCurrentState();
+                var state = dc.GetCurrentState();
                 var flush = false;
 
                 if (this is PopupRoot)
@@ -197,7 +197,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 {
                     if (HasNonIdentityTransform)
                     {
-                        var mtxTransformParent = state.TransformMatrix;
+                        var mtxTransformParent = state.LocalTransform;
                         var mtxTransformBatch = GetSpriteBatchTransform(ref mtxTransformParent);
 
                         dc.End();
@@ -213,7 +213,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 if (flush)
                 {
                     dc.End();
-                    dc.Begin(SpriteSortMode.Deferred, null, state.TransformMatrix);
+                    dc.Begin(SpriteSortMode.Deferred, null, state.LocalTransform);
                 }
 
                 if (hasNonIdentityTransform)
@@ -226,6 +226,36 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             if (clip != null)
                 dc.PopClipRectangle();
+        }
+
+        /// <summary>
+        /// Draws the element to a render target using the specified <see cref="DrawingContext"/>.
+        /// </summary>
+        /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Draw(UltravioletTime)"/>.</param>
+        /// <param name="dc">The drawing context that describes the render state of the layout.</param>
+        /// <param name="target">The render target to which to draw the element.</param>
+        public void DrawToRenderTarget(UltravioletTime time, DrawingContext dc, Graphics.RenderTarget2D target)
+        {
+            Contract.Require(dc, "dc");
+            Contract.Require(target, "target");
+
+            var graphics = Ultraviolet.GetGraphics();
+            graphics.SetRenderTarget(target);
+            graphics.Clear(Color.Transparent);
+            
+            var x = TransformedVisualBounds.X + (TransformedVisualBounds.Width - target.Width) / 2.0;
+            var y = TransformedVisualBounds.Y + (TransformedVisualBounds.Height - target.Height) / 2.0;
+
+            var visualBounds = (Vector2)(Point2)Display.DipsToPixels(new Point2D(x, y));
+            dc.GlobalTransform = Matrix.CreateTranslation(-visualBounds.X, -visualBounds.Y, 0);
+            dc.Begin(SpriteSortMode.Deferred, null, Matrix.Identity);
+
+            Draw(time, dc);
+
+            dc.End();
+            dc.GlobalTransform = Matrix.Identity;
+
+            graphics.SetRenderTarget(null);
         }
 
         /// <summary>
@@ -2170,7 +2200,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                         (Single)Math.Floor(imageAreaPix.Y) + (imageAreaPix.Height / 2f));
                 }
 
-                dc.SpriteBatch.DrawImage(imageResource, position, imageAreaPix.Width, imageAreaPix.Height,
+                dc.DrawImage(imageResource, position, imageAreaPix.Width, imageAreaPix.Height,
                     colorPlusOpacity, 0f, origin, SpriteEffects.None, 0f);
             }
         }
@@ -2216,7 +2246,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                     (Single)Math.Floor(imageAreaPix.Y) + (imageAreaPix.Height / 2f));
             }
 
-            dc.SpriteBatch.DrawImage(imageResource, position, imageAreaPix.Width, imageAreaPix.Height,
+            dc.DrawImage(imageResource, position, imageAreaPix.Width, imageAreaPix.Height,
                 colorPlusOpacity, 0f, origin, SpriteEffects.None, 0f);
         }
 

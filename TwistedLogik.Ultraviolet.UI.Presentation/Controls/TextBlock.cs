@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
 using TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text;
 using TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives;
 
@@ -53,7 +54,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             {
                 var position = Display.DipsToPixels(AbsolutePosition);
                 var positionRounded = dc.IsTransformed ? (Vector2)position : (Vector2)(Point2)position;
-                View.Resources.TextRenderer.Draw(dc.SpriteBatch, textLayoutResult, positionRounded, Foreground * dc.Opacity);
+                View.Resources.TextRenderer.Draw((SpriteBatch)dc, textLayoutResult, positionRounded, Foreground * dc.Opacity);
             }
             base.DrawOverride(time, dc);
         }

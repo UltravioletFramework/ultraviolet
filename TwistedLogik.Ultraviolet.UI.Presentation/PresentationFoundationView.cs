@@ -144,6 +144,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             spriteBatch.End();
 
             drawingContext.Reset(Display);
+
             drawingContext.SpriteBatch = spriteBatch;
             drawingContext.Begin();
 
