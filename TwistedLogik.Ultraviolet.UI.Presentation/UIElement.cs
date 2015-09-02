@@ -248,7 +248,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Draw(UltravioletTime)"/>.</param>
         /// <param name="dc">The drawing context that describes the render state of the layout.</param>
         /// <param name="target">The render target to which to draw the element.</param>
-        public void DrawToRenderTarget(UltravioletTime time, DrawingContext dc, Graphics.RenderTarget2D target)
+        /// <param name="transform">The transformation matrix to apply to the element, or <c>null</c> to use the cumulative sprite batch transformation.</param>
+        public void DrawToRenderTarget(UltravioletTime time, DrawingContext dc, Graphics.RenderTarget2D target, Matrix? transform = null)
         {
             Contract.Require(dc, "dc");
             Contract.Require(target, "target");
@@ -262,7 +263,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             var visualBounds = (Vector2)(Point2)Display.DipsToPixels(new Point2D(x, y));
             dc.GlobalTransform = Matrix.CreateTranslation(-visualBounds.X, -visualBounds.Y, 0);
-            dc.Begin(SpriteSortMode.Deferred, null, Matrix.Identity);
+            dc.Begin(SpriteSortMode.Deferred, null, transform ?? GetCumulativeSpriteBatchTransform());
 
             Draw(time, dc);
 
@@ -1414,6 +1415,23 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             Matrix.Concat(ref mtxFinal, ref mtxSpriteBatch, out mtxFinal);
 
             return mtxFinal;
+        }
+
+        /// <summary>
+        /// Gets the cumulative transformation matrix which is passed into the element's sprite batch prior to rendering the element. This includes
+        /// the contributions of all of the element's ancestors.
+        /// </summary>
+        /// <param name="parent">The sprite batch transform of the element's parent.</param>
+        /// <returns>The cumulative transformation matrix which is passed into the element's sprite batch prior to rendering the element.</returns>
+        internal Matrix GetCumulativeSpriteBatchTransform()
+        {
+            var mtxParentTransform = Matrix.Identity;
+
+            var parent = VisualTreeHelper.GetParent(this) as UIElement;
+            if (parent != null)
+                mtxParentTransform = parent.GetCumulativeSpriteBatchTransform();
+
+            return GetSpriteBatchTransform(ref mtxParentTransform);
         }
 
         /// <summary>

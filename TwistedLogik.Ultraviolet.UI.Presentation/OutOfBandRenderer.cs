@@ -149,11 +149,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                     graphics.Clear(Color.Transparent);
 
                     drawingContext.Reset(element.View.Display);
-                    
-                    rtarget.CumulativeTransform = CalculateCumulativeSpriteBatchTransform(element);
+
+                    rtarget.CumulativeTransform = element.GetCumulativeSpriteBatchTransform();
                     rtarget.VisualBounds = bounds;
 
-                    element.DrawToRenderTarget(time, drawingContext, rtarget.RenderTarget);
+                    element.DrawToRenderTarget(time, drawingContext, rtarget.RenderTarget, rtarget.CumulativeTransform);
                     
                     if (rtarget.Next != null)
                     {
@@ -238,22 +238,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             base.Dispose(disposing);
         }
         
-        /// <summary>
-        /// Calculates the cumulative sprite batch transform applied to the specified element.
-        /// </summary>
-        /// <param name="element">The element for which to calculate a cumulative transform.</param>
-        /// <returns>The cumulative sprite batch transform of the specified element.</returns>
-        private Matrix CalculateCumulativeSpriteBatchTransform(UIElement element)
-        {
-            var mtxParentTransform = Matrix.Identity;
-
-            var parent = Media.VisualTreeHelper.GetParent(element) as UIElement;
-            if (parent != null)
-                mtxParentTransform = CalculateCumulativeSpriteBatchTransform(parent);
-
-            return element.GetSpriteBatchTransform(ref mtxParentTransform);
-        }
-
         // The pool of available render buffers.
         private readonly IPool<OutOfBandRenderTarget> renderTargetPool;
 
