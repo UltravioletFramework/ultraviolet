@@ -16,12 +16,7 @@
                     HorizontalContentAlignment="Left"
                     HorizontalAlignment="Stretch"
                     VerticalAlignment="Stretch"
-                    IsChecked="{{IsDropDownOpen}}">
-        <ToggleButton.Effect>
-          <DropShadowEffect/>
-        </ToggleButton.Effect>
-
-      </ToggleButton>
+                    IsChecked="{{IsDropDownOpen}}"/>
       <ContentPresenter Name="PART_ContentPresenter"
                         Class="combobox-content"
                         Grid.Row="0"
