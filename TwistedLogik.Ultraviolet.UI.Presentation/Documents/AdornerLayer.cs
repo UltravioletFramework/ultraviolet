@@ -66,6 +66,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Documents
         {
             Contract.Require(adorner, "adorner");
 
+            // NOTE: In WPF this doesn't work but it also doesn't produce an error, so we just fail silently here
+            var adornerLayerParent = VisualTreeHelper.GetParent(this);
+            if (!adorner.AdornedElement.IsDescendantOf(adornerLayerParent))
+                return;
+
             var state = new AdornerState(adorner);
             state.LastAbsoluteX = adorner.AdornedElement.AbsolutePosition.X;
             state.LastAbsoluteY = adorner.AdornedElement.AbsolutePosition.Y;
