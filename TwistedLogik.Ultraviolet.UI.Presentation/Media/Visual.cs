@@ -60,30 +60,22 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media
         /// <returns></returns>
         public Matrix GetTransformToViewMatrix()
         {
-            var mtxTransform = Matrix.Identity;
-            var mtxElement = Matrix.Identity;
-
             var element = this as UIElement;
             if (element == null)
                 return Matrix.Identity;
 
-            while (true)
+            var root = VisualTreeHelper.GetRoot(element) as UIElement;
+            if (root == null || root == element)
+                return Matrix.Identity;
+
+            var mtxTransform = Matrix.Identity;
+            var mtxElement = element.GetTransformToAncestorMatrix(root);
+            Matrix.Concat(ref mtxElement, ref mtxTransform, out mtxTransform);
+
+            if (root is PopupRoot)
             {
-                var root = VisualTreeHelper.GetRoot(element) as UIElement;
-                if (root == null || root == element)
-                    break;
-
-                mtxElement = (element is Popup) ? ((Popup)element).PopupTransformToAncestor : element.GetTransformToAncestorMatrix(root);
-                Matrix.Concat(ref mtxElement, ref mtxTransform, out mtxTransform);
-
-                if (root is PopupRoot)
-                {
-                    element = root.Parent;
-                }
-                else
-                {
-                    break;
-                }
+                var mtxPopup = ((Popup)root.Parent).PopupTransformToAncestor;
+                Matrix.Concat(ref mtxTransform, ref mtxPopup, out mtxTransform);
             }
 
             return mtxTransform;

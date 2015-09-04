@@ -1093,7 +1093,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// </summary>
         private void ComputeTransformationMatrices()
         {
-            var rawTransform = GetTransformToAncestorMatrix((UIElement)VisualTreeHelper.GetRoot(this));
+            var rawTransform = GetTransformToViewMatrix();
 
             transformToAncestor = new Matrix(
                 rawTransform.M11, rawTransform.M12, rawTransform.M13, (Single)(popupPosition.X + alignmentX),
