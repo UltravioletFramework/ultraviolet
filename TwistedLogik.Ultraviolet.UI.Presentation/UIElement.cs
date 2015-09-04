@@ -1404,10 +1404,21 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         internal Matrix GetCumulativeSpriteBatchTransform()
         {
             var mtxParentTransform = Matrix.Identity;
-            
-            var parent = (this is PopupRoot) ? this.Parent as Popup : VisualTreeHelper.GetParent(this) as UIElement;
-            if (parent != null)
-                mtxParentTransform = parent.GetCumulativeSpriteBatchTransform();
+
+            if (this is PopupRoot)
+            {
+                var popup = this.Parent as Popup;
+                if (popup == null)
+                    return Matrix.Identity;
+
+                return popup.PopupTransformToAncestor;
+            }
+            else
+            {
+                var parent = VisualTreeHelper.GetParent(this) as UIElement;
+                if (parent != null)
+                    mtxParentTransform = parent.GetCumulativeSpriteBatchTransform();
+            }
 
             return GetSpriteBatchTransform(ref mtxParentTransform);
         }
@@ -2081,24 +2092,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 return visualBounds;
 
             var transform = GetTransformToAncestorMatrix(visualTreeRoot);
-
-            while (visualTreeRoot != View.LayoutRoot)
+            if (visualTreeRoot is PopupRoot)
             {
-                var currentChild = visualTreeRoot.Parent;
-                var currentRoot = VisualTreeHelper.GetRoot(currentChild) as UIElement;
-                var currentTransform = currentChild.GetTransformToAncestorMatrix(currentRoot);
-                Matrix.Concat(ref transform, ref currentTransform, out transform);
-
-                if (currentChild is Popup)
+                var popup = visualTreeRoot.Parent as Popup;
+                if (popup != null)
                 {
-                    var root = ((Popup)currentChild).Root;
-                    var offx = (Single)(-currentChild.AbsolutePosition.X + root.AbsolutePosition.X);
-                    var offy = (Single)(-currentChild.AbsolutePosition.Y + root.AbsolutePosition.Y); 
-                    transform = Matrix.Concat(Matrix.CreateTranslation(offx, offy, 0), transform);
-
+                    var popupTransform = popup.PopupTransformToAncestorWithOrigin;
+                    Matrix.Concat(ref transform, ref popupTransform, out transform);
                 }
-
-                visualTreeRoot = currentRoot;
             }
 
             RectangleD bounds;

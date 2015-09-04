@@ -1,6 +1,7 @@
 ﻿using System;
 using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet.Input;
+using TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives;
 using TwistedLogik.Ultraviolet.UI.Presentation.Media;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
@@ -103,9 +104,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
                         return new Point2D(Double.NaN, Double.NaN);
 
                     var positionDips = uiElement.View.Display.PixelsToDips(positionPixs.Value);
-                    var positionTran = visualRoot.TransformToDescendant(uiElement, positionDips);
+                    
+                    if (visualRoot is PopupRoot)
+                    {
+                        var popup = visualRoot.Parent as Popup;
+                        if (popup == null)
+                            return new Point2D(Double.NaN, Double.NaN);
 
-                    return (Point2D)positionTran;
+                        positionDips = (Vector2)popup.ScreenToPopup((Point2D)positionDips);
+                    }
+                    
+                    return (Point2D)visualRoot.TransformToDescendant(uiElement, positionDips);
                 }
             }
             return new Point2D(Double.NaN, Double.NaN);

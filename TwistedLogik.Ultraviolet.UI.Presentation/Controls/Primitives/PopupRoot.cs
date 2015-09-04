@@ -18,31 +18,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         {
             this.resized = resized;
         }
-
-        /// <summary>
-        /// Updates the popup root's transformation state.
-        /// </summary>
-        /// <param name="placementTarget">The popup's placement target, if it has one.</param>
-        public void UpdateTransform(UIElement placementTarget)
-        {
-            if (placementTarget == null)
-            {
-                inheritedRenderTransform = Matrix.Identity;
-            }
-            else
-            {
-                var visualRoot = VisualTreeHelper.GetRoot(placementTarget) as Visual;
-                if (visualRoot != null)
-                {
-                    inheritedRenderTransform = placementTarget.GetTransformToAncestorMatrix(visualRoot);
-                }
-                else
-                {
-                    inheritedRenderTransform = Matrix.Identity;
-                }
-            }
-        }
-
+        
         /// <summary>
         /// Gets or sets the popup root's child element.
         /// </summary>
@@ -60,24 +36,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             get { return isOpen; }
             set { isOpen = value; } 
         }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether the popup is being transformed.
-        /// </summary>
-        public Boolean IsTransformed
-        {
-            get { return isTransformed; }
-            set { isTransformed = value; }
-        }
-
-        /// <summary>
-        /// Gets the render transform which the popup inherits from its placement target.
-        /// </summary>
-        public Matrix InheritedRenderTransform
-        {
-            get { return inheritedRenderTransform; }
-        }
-
+        
         /// <summary>
         /// Identifies the <see cref="Child"/> dependency property.
         /// </summary>
@@ -166,6 +125,27 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             base.OnChildDesiredSizeChanged(child);
         }
 
+        /// <inheritdoc/>
+        protected override RectangleD CalculateVisualBounds()
+        {
+            return base.CalculateVisualBounds();
+        }
+
+        /// <inheritdoc/>
+        protected override RectangleD CalculateTransformedVisualBounds()
+        {
+            var popup = Parent as Popup;
+            if (popup == null)
+                return RectangleD.Empty;
+
+            var visualBounds = VisualBounds;
+
+            var popupTransform = popup.PopupTransformToAncestorWithOrigin;
+            RectangleD.TransformAxisAligned(ref visualBounds, ref popupTransform, out visualBounds);
+
+            return visualBounds;
+        }
+
         /// <summary>
         /// Occurs when the value of the <see cref="Child"/> dependency property changes.
         /// </summary>
@@ -190,7 +170,5 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         // State values.
         private readonly Action resized;
         private Boolean isOpen;
-        private Boolean isTransformed;
-        private Matrix inheritedRenderTransform;
     }
 }

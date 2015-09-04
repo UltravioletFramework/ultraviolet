@@ -10,7 +10,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
     /// Represents a popup window.
     /// </summary>
     /// <remarks>For more information on the calculations used to position popups, see the MSDN article on how it's 
-    /// handled in WPF (https://msdn.microsoft.com/en-us/library/bb613596.aspx). Ultraviolet follows the algorithms 
+    /// handled in WPF (https://msdn.microsoft.com/en-us/library/bb613596(v=vs.90).aspx). Ultraviolet follows the algorithms 
     /// described on that page. See in particular the tables under the "How the Properties Work Together" and 
     /// "When the Popup Encounters the Edge of the Screen" headings.</remarks>
     [UvmlKnownType]
@@ -164,15 +164,24 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             new PropertyMetadata<RectangleD>(RectangleD.Empty, PropertyMetadataOptions.None, HandlePlacementRectangleChanged));
 
         /// <summary>
+        /// Converts the specified point in screen coordinates to popup coordinates.
+        /// </summary>
+        /// <param name="point">The point to convert.</param>
+        /// <returns>The converted point.</returns>
+        internal Point2D ScreenToPopup(Point2D point)
+        {
+            Point2D.Transform(ref point, ref transformToAncestorInverse, out point);
+            return point + popupTransformOrigin;
+        }
+
+        /// <summary>
         /// Adds the popup to the view's popup queue for drawing.
         /// </summary>
         /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Draw(UltravioletTime)"/>.</param>
         /// <param name="dc">The drawing context that describes the render state of the layout.</param>
         internal void EnqueueForDrawing(UltravioletTime time, DrawingContext dc)
         {
-            var transform = dc.LocalTransform;
-            var transformed = !Matrix.Identity.Equals(transform);
-            View.Popups.Enqueue(this, transformed ? transform : (Matrix?)null);
+            View.Popups.Enqueue(this, transformToAncestor);
         }
 
         /// <summary>
@@ -198,10 +207,26 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             if (!IsOpen)
                 return null;
 
-            point -= root.AbsolutePosition;
-            return root.HitTest(point);
+            Point2D.Transform(ref point, ref transformToAncestorInverse, out point);
+            return root.HitTest(point + popupTransformOrigin);
         }
         
+        /// <summary>
+        /// Gets the transformation matrix which is used to render the popup.
+        /// </summary>
+        internal Matrix PopupTransformToAncestor
+        {
+            get { return transformToAncestor; }
+        }
+
+        /// <summary>
+        /// Gets the transformation matrix which is used to render the popup, offset by the popup's transform origin.
+        /// </summary>
+        internal Matrix PopupTransformToAncestorWithOrigin
+        {
+            get { return transformToAncestorWithOrigin; }
+        }
+
         /// <inheritdoc/>
         protected internal override void InvalidateVisualBounds()
         {
@@ -237,23 +262,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         {
             get { return base.VisualChildrenCount; }
         }
-
-        /// <inheritdoc/>
-        protected override void OnVisualParentChanged(Visual oldParent, Visual newParent)
-        {
-            this.root.IsTransformed = CheckIsTransformed();
-
-            base.OnVisualParentChanged(oldParent, newParent);
-        }
-
-        /// <inheritdoc/>
-        protected override void OnAncestorTransformChanged(Boolean transformed)
-        {
-            this.root.IsTransformed = transformed;
-
-            base.OnAncestorTransformChanged(transformed);
-        }
-
+        
         /// <inheritdoc/>
         protected override void ReloadContentCore(Boolean recursive)
         {
@@ -426,9 +435,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
                 if (child != null)
                 {
                     child.ChangeVisualParent(root);
-
-                    root.UpdateTransform(popup.PlacementTarget);
-
+                    
                     popup.UpdatePopupStyle(popup.MostRecentStyleSheet);
                     popup.UpdatePopupMeasure();
                     popup.UpdatePopupArrange(popup.MostRecentFinalRect.Size);
@@ -582,28 +589,46 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <param name="edges">A set of <see cref="PopupScreenEdges"/> values indicating which edges should be aligned.</param>
         private void AlignToScreenEdges(ref RectangleD screenArea, ref RectangleD popupArea, PopupScreenEdges edges)
         {
+            RectangleD transformedPopupArea;
+            RectangleD.TransformAxisAligned(ref popupArea, ref transformToAncestor, out transformedPopupArea);
+
+            alignmentX = 0;
+            alignmentY = 0;
+
             if ((edges & PopupScreenEdges.Left) == PopupScreenEdges.Left)
             {
                 if (IsCrossingScreenEdge(ref screenArea, ref popupArea, PopupScreenEdges.Left))
-                    popupArea = new RectangleD(screenArea.Left, popupArea.Top, popupArea.Width, popupArea.Height);
+                {
+                    alignmentX -= transformedPopupArea.X;
+                    ComputeTransformationMatrices();
+                }
             }
 
             if ((edges & PopupScreenEdges.Top) == PopupScreenEdges.Top)
             {
                 if (IsCrossingScreenEdge(ref screenArea, ref popupArea, PopupScreenEdges.Top))
-                    popupArea = new RectangleD(popupArea.Left, screenArea.Top, popupArea.Width, popupArea.Height);
+                {
+                    alignmentY -= transformedPopupArea.Y;
+                    ComputeTransformationMatrices();
+                }
             }
 
             if ((edges & PopupScreenEdges.Right) == PopupScreenEdges.Right)
             {
                 if (IsCrossingScreenEdge(ref screenArea, ref popupArea, PopupScreenEdges.Right))
-                    popupArea = new RectangleD(screenArea.Right - popupArea.Width, popupArea.Top, popupArea.Width, popupArea.Height);
+                {
+                    alignmentX -= transformedPopupArea.Right - screenArea.Width;
+                    ComputeTransformationMatrices();
+                }
             }
 
             if ((edges & PopupScreenEdges.Bottom) == PopupScreenEdges.Bottom)
             {
                 if (IsCrossingScreenEdge(ref screenArea, ref popupArea, PopupScreenEdges.Bottom))
-                    popupArea = new RectangleD(popupArea.Left, screenArea.Bottom - popupArea.Height, popupArea.Width, popupArea.Height);
+                {
+                    alignmentY -= transformedPopupArea.Bottom - screenArea.Height;
+                    ComputeTransformationMatrices();
+                }
             }
         }
 
@@ -616,20 +641,20 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <returns><c>true</c> if the popup is crossing the specified screen edge; otherwise, <c>false</c>.</returns>
         private Boolean IsCrossingScreenEdge(ref RectangleD screenArea, ref RectangleD popupArea, PopupScreenEdges edge)
         {
-            switch (edge)
-            {
-                case PopupScreenEdges.Left:
-                    return popupArea.Left < screenArea.Left;
+            var transformedPopupArea = popupArea;
+            RectangleD.TransformAxisAligned(ref popupArea, ref transformToAncestor, out transformedPopupArea);
 
-                case PopupScreenEdges.Top:
-                    return popupArea.Top < screenArea.Top;
+            if (((edge & PopupScreenEdges.Left) == PopupScreenEdges.Left) && transformedPopupArea.Left < screenArea.Left)
+                return true;
+            
+            if (((edge & PopupScreenEdges.Top) == PopupScreenEdges.Top) && transformedPopupArea.Top < screenArea.Top)
+                return true;
 
-                case PopupScreenEdges.Right:
-                    return popupArea.Right > screenArea.Right;
+            if (((edge & PopupScreenEdges.Right) == PopupScreenEdges.Right) && transformedPopupArea.Right > screenArea.Right)
+                return true;
 
-                case PopupScreenEdges.Bottom:
-                    return popupArea.Bottom > screenArea.Bottom;
-            }
+            if (((edge & PopupScreenEdges.Bottom) == PopupScreenEdges.Bottom) && transformedPopupArea.Bottom > screenArea.Bottom)
+                return true;
 
             return false;
         }
@@ -646,35 +671,35 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// values of <see cref="HorizontalOffset"/> and <see cref="VerticalOffset"/> properties.</returns>
         private RectangleD PositionRects(UIElement actualTargetElement, PopupAlignmentPoint targetOrigin, RectangleD target, PopupAlignmentPoint popupOrigin, Size2D popup)
         {
-            var transformX = 0.0;
+            var transformOriginX = 0.0;
             switch (popupOrigin)
             {
                 case PopupAlignmentPoint.TopCenter:
                 case PopupAlignmentPoint.Center:
                 case PopupAlignmentPoint.BottomCenter:
-                    transformX = -popup.Width / 2.0;
+                    transformOriginX = popup.Width / 2.0;
                     break;
 
                 case PopupAlignmentPoint.TopRight:
                 case PopupAlignmentPoint.MiddleRight:
                 case PopupAlignmentPoint.BottomRight:
-                    transformX = -popup.Width;
+                    transformOriginX = popup.Width;
                     break;
             }
 
-            var transformY = 0.0;
+            var transformOriginY = 0.0;
             switch (popupOrigin)
             {
                 case PopupAlignmentPoint.MiddleLeft:
                 case PopupAlignmentPoint.Center:
                 case PopupAlignmentPoint.MiddleRight:
-                    transformY = -popup.Height / 2.0;
+                    transformOriginY = popup.Height / 2.0;
                     break;
 
                 case PopupAlignmentPoint.BottomLeft:
                 case PopupAlignmentPoint.BottomCenter:
                 case PopupAlignmentPoint.BottomRight:
-                    transformY = -popup.Height;
+                    transformOriginY = popup.Height;
                     break;
             }
 
@@ -729,19 +754,22 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
                     break;
             }
 
-            var transformMatrix = Matrix.Identity;
+            popupTransformOrigin = new Point2D(transformOriginX, transformOriginY);
+
             if (actualTargetElement != null)
             {
-                var root = VisualTreeHelper.GetRoot(actualTargetElement) as UIElement;
-                transformMatrix = actualTargetElement.GetTransformToAncestorMatrix(root);
+                var actualTargetTransform = actualTargetElement.GetTransformToAncestorMatrix(actualTargetElement.View.LayoutRoot);
+                var actualTargetPosition = new Point2D(HorizontalOffset + resultX, VerticalOffset + resultY);
+                Point2D.Transform(ref actualTargetPosition, ref actualTargetTransform, out popupPosition);
+            }
+            else
+            {
+                popupPosition = new Point2D(HorizontalOffset + resultX - transformOriginX, VerticalOffset + resultY - transformOriginY);
             }
 
-            var posX = resultX + transformX + HorizontalOffset;
-            var posY = resultY + transformY + VerticalOffset;
+            ComputeTransformationMatrices();
 
-            var pos = Point2D.Transform(new Point2D(posX, posY), transformMatrix);
-
-            return new RectangleD(pos.X, pos.Y, popup.Width, popup.Height);
+            return new RectangleD(-transformOriginX, -transformOriginY, popup.Width, popup.Height);
         }
 
         /// <summary>
@@ -1073,6 +1101,25 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             return new RectangleD(mousePos.X, mousePos.Y, mouseWidth, mouseHeight);
         }
 
+        /// <summary>
+        /// Computes the values of the popup's transformation matrices.
+        /// </summary>
+        private void ComputeTransformationMatrices()
+        {
+            var rawTransform = GetTransformToAncestorMatrix((UIElement)VisualTreeHelper.GetRoot(this));
+
+            transformToAncestor = new Matrix(
+                rawTransform.M11, rawTransform.M12, rawTransform.M13, (Single)(popupPosition.X + alignmentX),
+                rawTransform.M21, rawTransform.M22, rawTransform.M23, (Single)(popupPosition.Y + alignmentY),
+                rawTransform.M31, rawTransform.M32, rawTransform.M33, 0,
+                rawTransform.M41, rawTransform.M42, rawTransform.M44, 1);
+
+            transformToAncestorWithOrigin = Matrix.Concat(
+                Matrix.CreateTranslation(-(Single)popupTransformOrigin.X, -(Single)popupTransformOrigin.Y, 0), transformToAncestor);
+
+            transformToAncestorInverse = Matrix.Invert(transformToAncestor);
+        }
+
         // State values.
         private readonly PopupRoot root;
         private Boolean loadingDeferred;
@@ -1080,5 +1127,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         // The assumed size of the default cursor, since there's currently no way to query it.
         private const Int32 DefaultCursorWidth = 16;
         private const Int32 DefaultCursorHeight = 16;
+
+        // Popup position values
+        private Point2D popupTransformOrigin;
+        private Point2D popupPosition;
+        private Matrix transformToAncestor;
+        private Matrix transformToAncestorWithOrigin;
+        private Matrix transformToAncestorInverse;
+        private Double alignmentX;
+        private Double alignmentY;
     }
 }
