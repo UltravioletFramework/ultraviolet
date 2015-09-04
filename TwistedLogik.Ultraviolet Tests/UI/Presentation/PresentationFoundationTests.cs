@@ -123,6 +123,24 @@ namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation
 
         [TestMethod]
         [TestCategory("Rendering")]
+        public void PresentationFoundation_CorrectlyDrawsTransformedElementsWithShaderEffects()
+        {
+            var result = RunPresentationTestFor(content => new EffectsUnderTransformTestScreen(content));
+
+            TheResultingImage(result).ShouldMatch(@"Resources\Expected\UI\Presentation\PresentationFoundation_CorrectlyDrawsTransformedElementsWithShaderEffects.png");
+        }
+
+        [TestMethod]
+        [TestCategory("Rendering")]
+        public void PresentationFoundation_CorrectlyDrawsAdorners()
+        {
+            var result = RunPresentationTestFor(content => new AdornersTestScreen(content));
+
+            TheResultingImage(result).ShouldMatch(@"Resources\Expected\UI\Presentation\PresentationFoundation_CorrectlyDrawsAdorners.png");
+        }
+
+        [TestMethod]
+        [TestCategory("Rendering")]
         public void PresentationFoundation_Popup_LaysOutCorrectlyWithPlacementTarget()
         {
             var result = RunPresentationTestFor(content => new PopupLayoutWithTargetTestScreen(content));
@@ -173,6 +191,15 @@ namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation
             var result = RunPresentationTestFor(content => new PopupLayoutWhenNestedTestScreen(content));
 
             TheResultingImage(result).ShouldMatch(@"Resources\Expected\UI\Presentation\PresentationFoundation_Popup_LaysOutCorrectlyWhenNestedInsidePopup.png");
+        }
+
+        [TestMethod]
+        [TestCategory("Rendering")]
+        public void PresentationFoundation_Popup_LaysOutCorrectlyWhenNestedInsidePopupAndTransformed()
+        {
+            var result = RunPresentationTestFor(content => new PopupLayoutWhenNestedAndTransformedTestScreen(content));
+
+            TheResultingImage(result).ShouldMatch(@"Resources\Expected\UI\Presentation\PresentationFoundation_Popup_LaysOutCorrectlyWhenNestedInsidePopupAndTransformed.png");
         }
 
         [TestMethod]
