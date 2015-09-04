@@ -139,7 +139,9 @@
     <Compile Include="Size3FTests.cs" />
     <Compile Include="MatrixTests.cs" />
     <Compile Include="UI\Presentation\Screens\CanvasTestScreenViewModel.cs" />
+    <Compile Include="UI\Presentation\Screens\EffectsTestScreen.cs" />
     <Compile Include="UI\Presentation\Screens\ComplexScreen.cs" />
+    <Compile Include="UI\Presentation\Screens\EffectsTestScreenViewModel.cs" />
     <Compile Include="UI\Presentation\Screens\ComplexScreenViewModel.cs" />
     <Compile Include="UI\Presentation\Screens\CanvasTestScreen.cs" />
     <Compile Include="UI\Presentation\Screens\DockPanelTestScreen.cs" />
@@ -387,6 +389,16 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Expected\UI\Presentation\PresentationFoundation_CorrectlyDrawsElementsWithRenderTransforms.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Content\UI\Screens\EffectsTestScreen\EffectsTestScreen.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Expected\UI\Presentation\PresentationFoundation_CorrectlyDrawsElementsWithShaderEffects.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
