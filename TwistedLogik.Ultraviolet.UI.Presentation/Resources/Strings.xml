@@ -350,4 +350,9 @@
       <Variant>Could not load the binding expressions compiler because no compiler assembly was specified.</Variant>
     </en-US>
   </String>
+  <String Key="ATTACHABLE_PROPERTY_NOT_FOUND">
+    <en-US>
+      <Variant>The attachable property '{0}' was not found in type '{1}'.</Variant>
+    </en-US>
+  </String>
 </LocalizedStrings>

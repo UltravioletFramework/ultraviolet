@@ -313,11 +313,24 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var attachedProperty  = String.Empty;
             if (IsAttachedPropertyOrEvent(name, out attachedContainer, out attachedProperty))
             {
-                Type attachedContainerType;
-                if (!uv.GetUI().GetPresentationFoundation().GetKnownType(attachedContainer, out attachedContainerType))
-                    throw new InvalidOperationException(PresentationStrings.UnrecognizedType.Format(attachedContainer));
+                if (String.Equals(attachedContainer, uiElement.UvmlName, StringComparison.InvariantCulture))
+                {
+                    return FindDependencyPropertyByName(attachedProperty, uiElement.GetType(), out isAttachedEvent);
+                }
+                else
+                {
+                    Type attachedContainerType;
+                    if (!uv.GetUI().GetPresentationFoundation().GetKnownType(attachedContainer, out attachedContainerType))
+                        throw new InvalidOperationException(PresentationStrings.UnrecognizedType.Format(attachedContainer));
 
-                return FindDependencyPropertyByName(attachedProperty, attachedContainerType, out isAttachedEvent);
+                    var dprop = FindDependencyPropertyByName(attachedProperty, attachedContainerType, out isAttachedEvent);
+                    if (dprop.IsAttached)
+                    {
+                        return dprop;
+                    }
+
+                    throw new InvalidOperationException(PresentationStrings.AttachablePropertyNotFound.Format(attachedProperty, attachedContainer));
+                }
             }
             else
             {
