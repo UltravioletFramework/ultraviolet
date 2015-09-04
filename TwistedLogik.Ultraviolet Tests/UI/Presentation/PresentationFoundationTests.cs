@@ -132,6 +132,24 @@ namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation
 
         [TestMethod]
         [TestCategory("Rendering")]
+        public void PresentationFoundation_Popup_LaysOutCorrectlyWithTransformedPlacementTarget()
+        {
+            var result = RunPresentationTestFor(content => new PopupLayoutWithTransformedTargetTestScreen(content));
+
+            TheResultingImage(result).ShouldMatch(@"Resources\Expected\UI\Presentation\PresentationFoundation_Popup_LaysOutCorrectlyWithTransformedPlacementTarget.png");
+        }
+
+        [TestMethod]
+        [TestCategory("Rendering")]
+        public void PresentationFoundation_Popup_LaysOutCorrectlyWithPlacementTargetAndTransform()
+        {
+            var result = RunPresentationTestFor(content => new PopupLayoutWithTargetAndTransformTestScreen(content));
+
+            TheResultingImage(result).ShouldMatch(@"Resources\Expected\UI\Presentation\PresentationFoundation_Popup_LaysOutCorrectlyWithPlacementTargetAndTransform.png");
+        }
+
+        [TestMethod]
+        [TestCategory("Rendering")]
         public void PresentationFoundation_Popup_LaysOutCorrectlyWithPlacementRectangle()
         {
             var result = RunPresentationTestFor(content => new PopupLayoutWithRectTestScreen(content));

@@ -147,8 +147,12 @@
     <Compile Include="UI\Presentation\Screens\DockPanelTestScreen.cs" />
     <Compile Include="UI\Presentation\Screens\DockPanelTestScreenViewModel.cs" />
     <Compile Include="UI\Presentation\Screens\PopupLayoutWithRectTestScreen.cs" />
+    <Compile Include="UI\Presentation\Screens\PopupLayoutWithTargetAndTransformTestScreen.cs" />
+    <Compile Include="UI\Presentation\Screens\PopupLayoutWithTransformedTargetTestScreen.cs" />
     <Compile Include="UI\Presentation\Screens\PopupLayoutWithTargetTestScreen.cs" />
     <Compile Include="UI\Presentation\Screens\PopupLayoutWithRectTestScreenViewModel.cs" />
+    <Compile Include="UI\Presentation\Screens\PopupLayoutWithTargetAndTransformTestScreenViewModel.cs" />
+    <Compile Include="UI\Presentation\Screens\PopupLayoutWithTransformedTargetTestScreenViewModel.cs" />
     <Compile Include="UI\Presentation\Screens\PopupLayoutWithTargetTestScreenViewModel.cs" />
     <Compile Include="UI\Presentation\Screens\GridTestScreenViewModel.cs" />
     <Compile Include="UI\Presentation\Screens\HorizontalStackPanelTestScreenViewModel.cs" />
@@ -424,6 +428,26 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Expected\UI\Presentation\PresentationFoundation_Popup_LaysOutCorrectlyWithPlacementTarget.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Content\UI\Screens\PopupLayoutWithTransformedTargetTestScreen\PopupLayoutWithTransformedTargetTestScreen.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Expected\UI\Presentation\PresentationFoundation_Popup_LaysOutCorrectlyWithTransformedPlacementTarget.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Content\UI\Screens\PopupLayoutWithTargetAndTransformTestScreen\PopupLayoutWithTargetAndTransformTestScreen.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Expected\UI\Presentation\PresentationFoundation_Popup_LaysOutCorrectlyWithPlacementTargetAndTransform.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
