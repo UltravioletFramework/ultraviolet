@@ -1038,6 +1038,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <summary>
         /// Gets the bounds of the region around which the popup is placed.
         /// </summary>
+        /// <param name="target">The element being targeted, if any.</param>
         /// <param name="ignorePlacementTarget">A value indicating whether to ignore the value of the <see cref="PlacementTarget"/> property.</param>
         /// <returns>The bounds of the region around which the popup is placed.</returns>
         private RectangleD GetPlacementTargetArea(out UIElement target, Boolean ignorePlacementTarget = false)

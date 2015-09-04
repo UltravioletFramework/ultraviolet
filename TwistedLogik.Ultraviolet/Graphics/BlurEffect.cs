@@ -178,7 +178,7 @@ namespace TwistedLogik.Ultraviolet.Graphics
         }
 
         /// <summary>
-        /// Occurs when the value of the <see cref="TextureWidth"/> or <see cref="TextureHeight"/> properties change.
+        /// Occurs when the value of the <see cref="TextureSize"/> property changes.
         /// </summary>
         protected virtual void OnTextureSizeChanged()
         {
