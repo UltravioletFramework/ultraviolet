@@ -535,6 +535,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             if (!IsOpen)
                 return;
 
+            alignmentX = 0;
+            alignmentY = 0;
+
             var screenArea = Display.PixelsToDips(View.Area);
             var popupArea  = RectangleD.Empty;
 
@@ -584,7 +587,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
                     popupArea = CalculatePopupPosition_Top(ref screenArea, root.DesiredSize);
                     break;
             }
-				
+
+            AlignToScreenEdges(ref screenArea, ref popupArea, PopupScreenEdges.All);
+
             root.Arrange(popupArea, ArrangeOptions.ForceInvalidatePosition);
         }
 
@@ -598,10 +603,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         {
             RectangleD transformedPopupArea;
             RectangleD.TransformAxisAligned(ref popupArea, ref transformToAncestor, out transformedPopupArea);
-
-            alignmentX = 0;
-            alignmentY = 0;
-
+            
             if ((edges & PopupScreenEdges.Left) == PopupScreenEdges.Left)
             {
                 if (IsCrossingScreenEdge(ref screenArea, ref popupArea, PopupScreenEdges.Left))
@@ -765,7 +767,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
 
             if (actualTargetElement != null)
             {
-                var actualTargetTransform = actualTargetElement.GetTransformToAncestorMatrix(actualTargetElement.View.LayoutRoot);
+                var actualTargetTransform = actualTargetElement.GetTransformToViewMatrix();
                 var actualTargetPosition = new Point2D(HorizontalOffset + resultX, VerticalOffset + resultY);
                 Point2D.Transform(ref actualTargetPosition, ref actualTargetTransform, out popupPosition);
             }
@@ -793,9 +795,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             var popupArea = PositionRects(actualTargetElement,
                 PopupAlignmentPoint.TopLeft, placementArea,
                 PopupAlignmentPoint.TopLeft, popupSize);
-
-            AlignToScreenEdges(ref screenArea, ref popupArea, PopupScreenEdges.All);
-
+            
             return popupArea;
         }
 
@@ -811,8 +811,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             var popupArea = PositionRects(actualTargetElement,
                 PopupAlignmentPoint.TopLeft, placementArea,
                 PopupAlignmentPoint.TopLeft, popupSize);
-
-            AlignToScreenEdges(ref screenArea, ref popupArea, PopupScreenEdges.All);
 
             return popupArea;
         }
@@ -837,8 +835,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
                     PopupAlignmentPoint.BottomLeft, popupSize);
             }
 
-            AlignToScreenEdges(ref screenArea, ref popupArea, PopupScreenEdges.Left | PopupScreenEdges.Top | PopupScreenEdges.Right);
-
             return popupArea;
         }
 
@@ -854,9 +850,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             var popupArea = PositionRects(actualTargetElement,
                 PopupAlignmentPoint.Center, placementArea,
                 PopupAlignmentPoint.Center, popupSize);
-
-            AlignToScreenEdges(ref screenArea, ref popupArea, PopupScreenEdges.All);
-
+            
             return popupArea;
         }
 
@@ -879,8 +873,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
                     PopupAlignmentPoint.TopLeft, placementArea,
                     PopupAlignmentPoint.TopRight, popupSize);
             }
-
-            AlignToScreenEdges(ref screenArea, ref popupArea, PopupScreenEdges.Left | PopupScreenEdges.Top | PopupScreenEdges.Bottom);
 
             return popupArea;
         }
@@ -913,9 +905,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
                     PopupAlignmentPoint.TopLeft, placementArea,
                     PopupAlignmentPoint.TopRight, popupSize);
             }
-
-            AlignToScreenEdges(ref screenArea, ref popupArea, PopupScreenEdges.Left | PopupScreenEdges.Top);
-
+            
             return popupArea;
         }
 
@@ -946,8 +936,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
                     PopupAlignmentPoint.TopRight, popupSize);
             }
 
-            AlignToScreenEdges(ref screenArea, ref popupArea, PopupScreenEdges.Left | PopupScreenEdges.Top);
-
             return popupArea;
         }
 
@@ -970,8 +958,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
                     PopupAlignmentPoint.TopLeft, placementArea,
                     PopupAlignmentPoint.BottomLeft, popupSize);
             }
-
-            AlignToScreenEdges(ref screenArea, ref popupArea, PopupScreenEdges.Left | PopupScreenEdges.Top | PopupScreenEdges.Right);
 
             return popupArea;
         }
@@ -1002,9 +988,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
                     PopupAlignmentPoint.BottomLeft, placementArea,
                     PopupAlignmentPoint.TopRight, popupSize);
             }
-
-            AlignToScreenEdges(ref screenArea, ref popupArea, PopupScreenEdges.Left | PopupScreenEdges.Top);
-
+            
             return popupArea;
         }
 
@@ -1028,8 +1012,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
                     PopupAlignmentPoint.TopLeft, popupSize);
             }
 
-            AlignToScreenEdges(ref screenArea, ref popupArea, PopupScreenEdges.Top | PopupScreenEdges.Right | PopupScreenEdges.Bottom);
-
             return popupArea;
         }
 
@@ -1052,8 +1034,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
                     PopupAlignmentPoint.BottomLeft, placementArea,
                     PopupAlignmentPoint.TopLeft, popupSize);
             }
-
-            AlignToScreenEdges(ref screenArea, ref popupArea, PopupScreenEdges.Left | PopupScreenEdges.Right | PopupScreenEdges.Bottom);
 
             return popupArea;
         }
@@ -1138,9 +1118,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         // Popup position values
         private Point2D popupTransformOrigin;
         private Point2D popupPosition;
-        private Matrix transformToAncestor;
-        private Matrix transformToAncestorWithOrigin;
-        private Matrix transformToAncestorInverse;
+        private Matrix transformToAncestor = Matrix.Identity;
+        private Matrix transformToAncestorWithOrigin = Matrix.Identity;
+        private Matrix transformToAncestorInverse = Matrix.Identity;
         private Double alignmentX;
         private Double alignmentY;
     }

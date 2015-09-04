@@ -1,5 +1,6 @@
 ﻿using System;
 using TwistedLogik.Nucleus;
+using TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Media
 {
@@ -50,6 +51,42 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media
             }
 
             return false;
+        }
+
+        /// <summary>
+        /// Returns a transformation matrix which can be used to transform coordinates from this visual to
+        /// the layout root of the visual's view, irrespective of whether this 
+        /// </summary>
+        /// <returns></returns>
+        public Matrix GetTransformToViewMatrix()
+        {
+            var mtxTransform = Matrix.Identity;
+            var mtxElement = Matrix.Identity;
+
+            var element = this as UIElement;
+            if (element == null)
+                return Matrix.Identity;
+
+            while (true)
+            {
+                var root = VisualTreeHelper.GetRoot(element) as UIElement;
+                if (root == null || root == element)
+                    break;
+
+                mtxElement = (element is Popup) ? ((Popup)element).PopupTransformToAncestor : element.GetTransformToAncestorMatrix(root);
+                Matrix.Concat(ref mtxElement, ref mtxTransform, out mtxTransform);
+
+                if (root is PopupRoot)
+                {
+                    element = root.Parent;
+                }
+                else
+                {
+                    element = VisualTreeHelper.GetParent(element) as UIElement;
+                }
+            }
+
+            return mtxTransform;
         }
 
         /// <summary>
