@@ -342,7 +342,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
                 var definedDataSourceTypeAssemblyName = definedDataSourceTypeName.Substring(typeNameCommaIx + 1).Trim();
                 var definedDataSourceTypeAssembly = Assembly.Load(definedDataSourceTypeAssemblyName);
 
-                var definedDataSourceType = Type.GetType(definedDataSourceTypeName);               
+                var definedDataSourceType = Type.GetType(definedDataSourceTypeName);
+                if (definedDataSourceType == null)
+                    throw new InvalidOperationException(PresentationStrings.ViewModelTypeNotFound.Format(definedDataSourceTypeName));
+
                 dataSourceWrappedType = definedDataSourceType;
             }
 
