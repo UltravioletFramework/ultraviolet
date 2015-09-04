@@ -21,7 +21,6 @@ void main()
 
 	float step = 1.0 / Resolution;
 	float sigma = Radius;
-	float kernelSize = 1.0 + (Radius * 2.0);
 
 	vec3 incrementalGaussian;
 	incrementalGaussian.x = 1.0f / (sqrt(2.0f * PI) * sigma);
@@ -35,7 +34,7 @@ void main()
 	coefficientSum += incrementalGaussian.x;
 	incrementalGaussian.xy *= incrementalGaussian.yz;
 
-	for (float i = 1.0f; i <= kernelSize; i++) 
+	for (float i = 1.0f; i <= Radius; i++) 
 	{ 
 		avgValue += texture2D(Texture, vTextureCoordinate.xy - i * step * Direction) * incrementalGaussian.x;         
 		avgValue += texture2D(Texture, vTextureCoordinate.xy + i * step * Direction) * incrementalGaussian.x;         

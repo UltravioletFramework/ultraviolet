@@ -171,9 +171,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             if (shouldDraw)
             {
-                var drawingOutOfBand = DrawOutOfBandTexture(dc);
-                if (drawingOutOfBand)
+                var drawingOutOfBand = false;
+                if (!dc.IsInsideOutOfBandElement && DrawOutOfBandTexture(dc))
+                {
+                    drawingOutOfBand = true;
                     dc.PushDrawingOutOfBand();
+                }
 
                 dc.PushOpacity(Opacity);
 
