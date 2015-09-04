@@ -181,7 +181,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <param name="dc">The drawing context that describes the render state of the layout.</param>
         internal void EnqueueForDrawing(UltravioletTime time, DrawingContext dc)
         {
-            View.Popups.Enqueue(this, transformToAncestor);
+            var mtxDips = transformToAncestor;
+            var mtxPixs = new Matrix(
+                mtxDips.M11, mtxDips.M12, mtxDips.M13, (Int32)Display.DipsToPixels(mtxDips.M14),
+                mtxDips.M21, mtxDips.M22, mtxDips.M23, (Int32)Display.DipsToPixels(mtxDips.M24),
+                mtxDips.M31, mtxDips.M32, mtxDips.M33, mtxDips.M34,
+                mtxDips.M41, mtxDips.M42, mtxDips.M43, mtxDips.M44);
+
+            View.Popups.Enqueue(this, mtxPixs);
         }
 
         /// <summary>

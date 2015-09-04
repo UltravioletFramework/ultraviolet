@@ -443,8 +443,8 @@ ComboBox
 
 ComboBoxItem
 {
-	height: 25;
-	padding: 10 0 10 0;
+	min-height: 25;
+	padding: 10 1 10 1;
 	content-valign: Center;
 
 	trigger event Generic.generic-interaction (handled)
@@ -460,7 +460,7 @@ ComboBox > Grid > ContentPresenter
 
 .combobox-dropdown-grid
 {
-	margin: 0 2 0 0;
+	margin: 0 0 0 0;
 }
 
 .combobox-dropdown-background
@@ -481,6 +481,11 @@ ComboBox > Grid > ContentPresenter
 .combobox-dropdown-scrollviewer > Grid > .scrollviewer-vscroll
 {
 	margin: 2 0 2 0;
+}
+
+.combobox-dropdown-popup
+{
+	voffset: 2;
 }
 
 .combobox-arrow

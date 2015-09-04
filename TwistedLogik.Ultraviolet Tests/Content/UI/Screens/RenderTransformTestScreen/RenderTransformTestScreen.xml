@@ -2,6 +2,8 @@
 <UIPanelDefinition>
   <View ViewModelType="TwistedLogik.Ultraviolet.Tests.UI.Presentation.Screens.RenderTransformTestScreenViewModel, TwistedLogik.Ultraviolet.Tests">
 
+    <Rectangle HorizontalAlignment="Stretch" VerticalAlignment="Stretch" FillColor="#ffffffff"/>
+    
     <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
       <StackPanel.RenderTransform>
         <RotateTransform Angle="30"/>
