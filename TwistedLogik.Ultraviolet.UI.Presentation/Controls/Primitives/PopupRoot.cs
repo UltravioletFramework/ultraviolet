@@ -92,11 +92,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <inheritdoc/>
         protected override Visual HitTestCore(Point2D point)
         {
-            var child = Child;
-            if (child == null)
-                return null;
-
-            return child.HitTest(new Point2D(point.X - child.RelativeBounds.X, point.Y - child.RelativeBounds.Y));
+            return nonLogicalAdornerDecorator.HitTest(point);
         }
 
         /// <inheritdoc/>
