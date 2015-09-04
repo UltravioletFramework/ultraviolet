@@ -139,7 +139,9 @@
     <Compile Include="Size3DTests.cs" />
     <Compile Include="Size3FTests.cs" />
     <Compile Include="MatrixTests.cs" />
+    <Compile Include="UI\Presentation\Screens\AdornersInsidePopupTestScreen.cs" />
     <Compile Include="UI\Presentation\Screens\AdornersTestScreen.cs" />
+    <Compile Include="UI\Presentation\Screens\AdornersInsidePopupTestScreenViewModel.cs" />
     <Compile Include="UI\Presentation\Screens\AdornersTestScreenViewModel.cs" />
     <Compile Include="UI\Presentation\Screens\CanvasTestScreenViewModel.cs" />
     <Compile Include="UI\Presentation\Screens\EffectsUnderTransformTestScreen.cs" />
@@ -465,9 +467,15 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\UI\Screens\AdornersInsidePopupTestScreen\AdornersInsidePopupTestScreen.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\UI\Screens\AdornersTestScreen\AdornersTestScreen.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="Resources\Expected\UI\Presentation\PresentationFoundation_CorrectlyDrawsAdornersInsidePopups.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Resources\Expected\UI\Presentation\PresentationFoundation_CorrectlyDrawsAdorners.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
