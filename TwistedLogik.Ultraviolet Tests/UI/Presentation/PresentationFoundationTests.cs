@@ -157,6 +157,24 @@ namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation
             TheResultingImage(result).ShouldMatch(@"Resources\Expected\UI\Presentation\PresentationFoundation_Popup_LaysOutCorrectlyWithPlacementRectangle.png");
         }
 
+        [TestMethod]
+        [TestCategory("Rendering")]
+        public void PresentationFoundation_Popup_LaysOutCorrectlyWithPopupPlacementTarget()
+        {
+            var result = RunPresentationTestFor(content => new PopupWithPopupTargetTestScreen(content));
+
+            TheResultingImage(result).ShouldMatch(@"Resources\Expected\UI\Presentation\PresentationFoundation_Popup_LaysOutCorrectlyWithPopupPlacementTarget.png");
+        }
+
+        [TestMethod]
+        [TestCategory("Rendering")]
+        public void PresentationFoundation_Popup_DrawsCorrectlyWithPopupPlacementTargetAndEffects()
+        {
+            var result = RunPresentationTestFor(content => new PopupWithPopupTargetEffectsTestScreen(content));
+
+            TheResultingImage(result).ShouldMatch(@"Resources\Expected\UI\Presentation\PresentationFoundation_Popup_DrawsCorrectlyWithPopupPlacementTargetAndEffects.png");
+        }
+
         /// <summary>
         /// Runs a standard test by spinning up an Ultraviolet application and displaying the specified UPF screen.
         /// </summary>

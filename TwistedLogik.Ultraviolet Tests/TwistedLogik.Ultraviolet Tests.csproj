@@ -139,8 +139,12 @@
     <Compile Include="Size3FTests.cs" />
     <Compile Include="MatrixTests.cs" />
     <Compile Include="UI\Presentation\Screens\CanvasTestScreenViewModel.cs" />
+    <Compile Include="UI\Presentation\Screens\PopupWithPopupTargetEffectsTestScreen.cs" />
+    <Compile Include="UI\Presentation\Screens\PopupWithPopupTargetTestScreen.cs" />
     <Compile Include="UI\Presentation\Screens\EffectsTestScreen.cs" />
     <Compile Include="UI\Presentation\Screens\ComplexScreen.cs" />
+    <Compile Include="UI\Presentation\Screens\PopupWithPopupTargetEffectsTestScreenViewModel.cs" />
+    <Compile Include="UI\Presentation\Screens\PopupWithPopupTargetTestScreenViewModel.cs" />
     <Compile Include="UI\Presentation\Screens\EffectsTestScreenViewModel.cs" />
     <Compile Include="UI\Presentation\Screens\ComplexScreenViewModel.cs" />
     <Compile Include="UI\Presentation\Screens\CanvasTestScreen.cs" />
@@ -448,6 +452,20 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Expected\UI\Presentation\PresentationFoundation_Popup_LaysOutCorrectlyWithPlacementTargetAndTransform.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\UI\Screens\PopupWithPopupTargetEffectsTestScreen\PopupWithPopupTargetEffectsTestScreen.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\UI\Screens\PopupWithPopupTargetTestScreen\PopupWithPopupTargetTestScreen.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Include="Resources\Expected\UI\Presentation\PresentationFoundation_Popup_DrawsCorrectlyWithPopupPlacementTargetAndEffects.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\Expected\UI\Presentation\PresentationFoundation_Popup_LaysOutCorrectlyWithPopupPlacementTarget.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
