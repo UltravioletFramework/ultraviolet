@@ -770,7 +770,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             }
             else
             {
-                popupPosition = new Point2D(HorizontalOffset + resultX - transformOriginX, VerticalOffset + resultY - transformOriginY);
+                popupPosition = new Point2D(
+                    PlacementRectangle.X + HorizontalOffset + resultX, 
+                    PlacementRectangle.Y + VerticalOffset + resultY);
             }
 
             ComputeTransformationMatrices();
@@ -1063,7 +1065,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
                     return target.Bounds;
                 }
                 target = null;
-                return placementArea;
+                return new RectangleD(0, 0, placementArea.Width, placementArea.Height);
             }
         }
 
