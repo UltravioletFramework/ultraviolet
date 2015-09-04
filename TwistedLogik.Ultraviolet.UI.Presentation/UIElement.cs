@@ -264,7 +264,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var x = TransformedVisualBounds.X + (TransformedVisualBounds.Width - target.Width) / 2.0;
             var y = TransformedVisualBounds.Y + (TransformedVisualBounds.Height - target.Height) / 2.0;
 
-            var visualBounds = (Vector2)(Point2)Display.DipsToPixels(new Point2D(x, y));
+            var visualBounds = (Vector2)Display.DipsToPixels(new Point2D(x, y));
             dc.GlobalTransform = Matrix.CreateTranslation(-visualBounds.X, -visualBounds.Y, 0);
             dc.Begin(SpriteSortMode.Deferred, null, transform ?? GetCumulativeSpriteBatchTransform());
 
@@ -1615,7 +1615,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         protected internal virtual void InvalidateVisualBounds()
         {
-            if (!visualBounds.HasValue)
+            if (!visualBounds.HasValue && !transformedVisualBounds.HasValue)
                 return;
 
             visualBounds = null;

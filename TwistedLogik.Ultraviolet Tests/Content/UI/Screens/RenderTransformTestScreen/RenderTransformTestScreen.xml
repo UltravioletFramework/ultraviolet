@@ -24,9 +24,9 @@
         </Button>
       </Button>
       <ComboBox HorizontalAlignment="Left" Margin="0 50 0 0" SelectedIndex="1" IsDropDownOpen="true">
-        <Button.RenderTransform>
+        <ComboBox.RenderTransform>
           <RotateTransform Angle="-15"/>
-        </Button.RenderTransform>
+        </ComboBox.RenderTransform>
         <ComboBoxItem>Item 1</ComboBoxItem>
         <ComboBoxItem>Item 2</ComboBoxItem>
         <ComboBoxItem>Item 3</ComboBoxItem>

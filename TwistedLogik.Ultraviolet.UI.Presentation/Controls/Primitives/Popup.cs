@@ -181,6 +181,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <param name="dc">The drawing context that describes the render state of the layout.</param>
         internal void EnqueueForDrawing(UltravioletTime time, DrawingContext dc)
         {
+            if (View.Popups.IsDrawingPopup(this))
+                return;
+
             var mtxDips = transformToAncestor;
             var mtxPixs = new Matrix(
                 mtxDips.M11, mtxDips.M12, mtxDips.M13, (Int32)Display.DipsToPixels(mtxDips.M14),
@@ -432,23 +435,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             var popup = (Popup)dobj;
 
             var child = popup.Child;
-            var root  = popup.root;
+            var root = popup.root;
 
             if (newValue)
             {
                 root.EnsureIsLoaded(true);
                 root.IsOpen = true;
 
-                if (child != null)
-                {
-                    child.ChangeVisualParent(root);
-                    
-                    popup.UpdatePopupStyle(popup.MostRecentStyleSheet);
-                    popup.UpdatePopupMeasure();
-                    popup.UpdatePopupArrange(popup.MostRecentFinalRect.Size);
-                }
+                root.HookIntoVisualTree();
+
+                popup.UpdatePopupStyle(popup.MostRecentStyleSheet);
+                popup.UpdatePopupMeasure();
+                popup.UpdatePopupArrange(popup.MostRecentFinalRect.Size);
                 
-                popup.InvalidateVisualBounds();
                 popup.OnOpened();
             }
             else
@@ -456,12 +455,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
                 root.EnsureIsLoaded(false);
                 root.IsOpen = false;
 
-                if (child != null)
-                {
-                    child.ChangeVisualParent(null);
-                }
+                root.UnhookFromVisualTree();
                 
-                popup.InvalidateVisualBounds();
                 popup.OnClosed();
             }
         }
@@ -591,6 +586,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             AlignToScreenEdges(ref screenArea, ref popupArea, PopupScreenEdges.All);
 
             root.Arrange(popupArea, ArrangeOptions.ForceInvalidatePosition);
+
+            InvalidateVisualBounds();
         }
 
         /// <summary>

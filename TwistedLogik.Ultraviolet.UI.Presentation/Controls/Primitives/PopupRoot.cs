@@ -1,4 +1,5 @@
 ﻿using System;
+using TwistedLogik.Ultraviolet.UI.Presentation.Documents;
 using TwistedLogik.Ultraviolet.UI.Presentation.Media;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
@@ -17,6 +18,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             : base(uv, null)
         {
             this.resized = resized;
+
+            this.nonLogicalAdornerDecorator = new NonLogicalAdornerDecorator(uv, null);
+            this.nonLogicalAdornerDecorator.ChangeVisualParent(this);
         }
         
         /// <summary>
@@ -47,7 +51,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <inheritdoc/>
         protected internal override Int32 VisualChildrenCount
         {
-            get { return (Child != null ? 1 : 0) + base.VisualChildrenCount; }
+            get { return 1; }
         }
 
         /// <inheritdoc/>
@@ -59,16 +63,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <inheritdoc/>
         protected internal override UIElement GetVisualChild(Int32 childIndex)
         {
-            var child = Child;
-            if (child != null)
-            {
-                if (childIndex == 0)
-                {
-                    return child;
-                }
-                return base.GetVisualChild(childIndex - 1);
-            }
-            return base.GetVisualChild(childIndex);
+            if (childIndex != 0)
+                throw new ArgumentOutOfRangeException("childIndex");
+
+            return nonLogicalAdornerDecorator;
         }
 
         /// <inheritdoc/>
@@ -80,25 +78,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <inheritdoc/>
         protected override Size2D MeasureOverride(Size2D availableSize)
         {
-            var child = Child;
-            if (child != null)
-            {
-                child.Measure(availableSize);
-                return child.DesiredSize;
-            }
-            return Size2D.Zero;
+            nonLogicalAdornerDecorator.Measure(availableSize);
+            return nonLogicalAdornerDecorator.DesiredSize;
         }
 
         /// <inheritdoc/>
         protected override Size2D ArrangeOverride(Size2D finalSize, ArrangeOptions options)
         {
-            var child = Child;
-            if (child != null)
-            {
-                child.Arrange(new RectangleD(Point2D.Zero, finalSize), options);
-                return child.RenderSize;
-            }
-            return base.ArrangeOverride(finalSize, options);
+            nonLogicalAdornerDecorator.Arrange(new RectangleD(Point2D.Zero, finalSize), options);
+            return nonLogicalAdornerDecorator.RenderSize;
         }
 
         /// <inheritdoc/>
@@ -147,28 +135,37 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         }
 
         /// <summary>
+        /// Hooks the popup root's children into the visual tree of its parent popup.
+        /// </summary>
+        internal void HookIntoVisualTree()
+        {
+            nonLogicalAdornerDecorator.ChangeVisualParent(this);
+        }
+
+        /// <summary>
+        /// Unhooks the popup root's children from the visual tree of its parent popup.
+        /// </summary>
+        internal void UnhookFromVisualTree()
+        {
+            nonLogicalAdornerDecorator.ChangeVisualParent(null);
+        }
+
+        /// <summary>
         /// Occurs when the value of the <see cref="Child"/> dependency property changes.
         /// </summary>
         private static void HandleChildChanged(DependencyObject dobj, UIElement oldValue, UIElement newValue)
         {
             var popupRoot = (PopupRoot)dobj;
-            var popup     = popupRoot.Parent as Popup;
+            var popup = popupRoot.Parent as Popup;
 
-            if (oldValue != null)
-                oldValue.ChangeVisualParent(null);
-
-            if (popup.IsOpen)
-            {
-                newValue.ChangeVisualParent(popupRoot);
-            }
-            else
-            {
-                newValue.ChangeVisualParent(null);
-            }
+            popupRoot.nonLogicalAdornerDecorator.Child = newValue;
         }
 
         // State values.
         private readonly Action resized;
         private Boolean isOpen;
+
+        // Popup components.
+        private readonly NonLogicalAdornerDecorator nonLogicalAdornerDecorator;
     }
 }

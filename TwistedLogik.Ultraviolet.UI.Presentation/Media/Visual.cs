@@ -82,7 +82,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media
                 }
                 else
                 {
-                    element = VisualTreeHelper.GetParent(element) as UIElement;
+                    break;
                 }
             }
 

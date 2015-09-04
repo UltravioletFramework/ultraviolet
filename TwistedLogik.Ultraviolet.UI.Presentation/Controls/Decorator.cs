@@ -41,7 +41,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 this.child = newChild;
 
                 if (newChild != null)
-                    newChild.ChangeLogicalAndVisualParents(this, this);
+                    newChild.ChangeLogicalAndVisualParents(HooksChildIntoLogicalTree ? this : Parent, this);
 
                 InvalidateMeasure();
             }
@@ -108,6 +108,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 Child = null;
             }
             base.RemoveLogicalChild(child);
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether this decorator hooks its children into the logical tree.
+        /// </summary>
+        internal virtual Boolean HooksChildIntoLogicalTree
+        {
+            get { return true; }
         }
 
         // Property values.
