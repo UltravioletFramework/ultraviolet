@@ -123,7 +123,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media.Effects
         /// <inheritdoc/>
         protected internal override void Draw(DrawingContext dc, UIElement element, OutOfBandRenderTarget target)
         {
-            var cumulativeTransform = target.CumulativeTransform;
+            var cumulativeTransform = target.VisualTransform;
             
             var shadowVectorStart = new Vector2(0, 0);
             Vector2.Transform(ref shadowVectorStart, ref cumulativeTransform, out shadowVectorStart);

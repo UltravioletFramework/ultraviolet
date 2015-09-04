@@ -161,10 +161,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                     {
                         drawingContext.Reset(element.View.Display);
 
-                        rtarget.CumulativeTransform = element.GetCumulativeSpriteBatchTransform();
+                        rtarget.VisualTransform = element.GetVisualTransformMatrix();
                         rtarget.VisualBounds = bounds;
 
-                        element.DrawToRenderTarget(time, drawingContext, rtarget.RenderTarget, rtarget.CumulativeTransform);
+                        element.DrawToRenderTarget(time, drawingContext, rtarget.RenderTarget, rtarget.VisualTransform);
                         
                         if (rtarget.Next != null)
                         {

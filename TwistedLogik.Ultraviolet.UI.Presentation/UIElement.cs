@@ -205,7 +205,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                     if (HasNonIdentityTransform)
                     {
                         var mtxTransformParent = state.LocalTransform;
-                        var mtxTransformBatch = GetSpriteBatchTransform(ref mtxTransformParent);
+                        var mtxTransformBatch = GetVisualTransformMatrix(ref mtxTransformParent);
 
                         dc.End();
                         dc.Begin(SpriteSortMode.Deferred, null, mtxTransformBatch);
@@ -266,7 +266,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             var visualBounds = (Vector2)Display.DipsToPixels(new Point2D(x, y));
             dc.GlobalTransform = Matrix.CreateTranslation(-visualBounds.X, -visualBounds.Y, 0);
-            dc.Begin(SpriteSortMode.Deferred, null, transform ?? GetCumulativeSpriteBatchTransform());
+            dc.Begin(SpriteSortMode.Deferred, null, transform ?? GetVisualTransformMatrix());
 
             Draw(time, dc);
 
@@ -879,17 +879,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             get { return absoluteBounds.Location; }
         }
-
-        /// <summary>
-        /// Gets the position of the element in absolute screen coordinates as of the
-        /// last call to the <see cref="Position(Size2D)"/> method and after any transforms
-        /// have been applied to its layout region.
-        /// </summary>
-        public Point2D AbsoluteTransformedPosition
-        {
-            get { return HasLayoutTransform ? GetAbsoluteTransformedBounds().Location : AbsolutePosition; }
-        }
-
+        
         /// <summary>
         /// Gets or sets the offset from the top-left corner of the element's layout
         /// area to the top-left corner of the element itself.
@@ -953,15 +943,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             get { return absoluteBounds; }
         }
-
-        /// <summary>
-        /// Gets the element's bounds in absolute screen space, after any transforms have been applied to its layout region.
-        /// </summary>
-        public RectangleD AbsoluteTransformedBounds
-        {
-            get { return HasLayoutTransform ? GetAbsoluteTransformedBounds() : AbsoluteBounds; }
-        }
-
+        
         /// <summary>
         /// Gets the visual bounds of the element and all of its descendants.
         /// </summary>
@@ -1375,36 +1357,33 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 StoryboardClockPool.Instance.Release(clock);
             }
         }
-
+        
         /// <summary>
         /// Gets the transformation matrix which is passed into the element's sprite batch prior to rendering the element.
         /// </summary>
-        /// <param name="parent">The sprite batch transform of the element's parent.</param>
+        /// <param name="mtxParentTransform">The visual transform of the element's parent.</param>
         /// <returns>The transformation matrix which is passed into the element's sprite batch prior to rendering the element.</returns>
-        internal Matrix GetSpriteBatchTransform(ref Matrix parent)
+        internal Matrix GetVisualTransformMatrix(ref Matrix mtxParentTransform)
         {
             var pixPosition = (Vector2)Display.DipsToPixels(AbsolutePosition);
 
             var mtxTranslateToClientSpace = Matrix.CreateTranslation(-pixPosition.X, -pixPosition.Y, 0f);
             var mtxTransform = GetTransformMatrix();
             var mtxTranslateToScreenSpace = Matrix.CreateTranslation(+pixPosition.X, +pixPosition.Y, 0f);
-            var mtxSpriteBatch = parent;
 
             Matrix mtxFinal;
             Matrix.Concat(ref mtxTranslateToClientSpace, ref mtxTransform, out mtxFinal);
             Matrix.Concat(ref mtxFinal, ref mtxTranslateToScreenSpace, out mtxFinal);
-            Matrix.Concat(ref mtxFinal, ref mtxSpriteBatch, out mtxFinal);
+            Matrix.Concat(ref mtxFinal, ref mtxParentTransform, out mtxFinal);
 
             return mtxFinal;
         }
 
         /// <summary>
-        /// Gets the cumulative transformation matrix which is passed into the element's sprite batch prior to rendering the element. This includes
-        /// the contributions of all of the element's ancestors.
+        /// Gets the transformation matrix which is passed into the element's sprite batch prior to rendering the element.
         /// </summary>
-        /// <param name="parent">The sprite batch transform of the element's parent.</param>
-        /// <returns>The cumulative transformation matrix which is passed into the element's sprite batch prior to rendering the element.</returns>
-        internal Matrix GetCumulativeSpriteBatchTransform()
+        /// <returns>The transformation matrix which is passed into the element's sprite batch prior to rendering the element.</returns>
+        internal Matrix GetVisualTransformMatrix()
         {
             var mtxParentTransform = Matrix.Identity;
 
@@ -1420,21 +1399,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             {
                 var parent = VisualTreeHelper.GetParent(this) as UIElement;
                 if (parent != null)
-                    mtxParentTransform = parent.GetCumulativeSpriteBatchTransform();
+                    mtxParentTransform = parent.GetVisualTransformMatrix();
             }
 
-            return GetSpriteBatchTransform(ref mtxParentTransform);
+            return GetVisualTransformMatrix(ref mtxParentTransform);
         }
-
-        /// <summary>
-        /// Gets the element's transformed layout region in absolute screen space.
-        /// </summary>
-        /// <returns>The element's transformed layout region in absolute screen space.</returns>
-        internal virtual RectangleD GetAbsoluteTransformedBounds()
-        {
-            return AbsoluteBounds;
-        }
-
+        
         /// <summary>
         /// Gets the element's list of event handlers for the specified routed event.
         /// </summary>

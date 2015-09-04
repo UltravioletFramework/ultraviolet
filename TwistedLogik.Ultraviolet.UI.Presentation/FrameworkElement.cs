@@ -422,17 +422,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 }
             }
         }
-
-        /// <inheritdoc/>
-        internal override RectangleD GetAbsoluteTransformedBounds()
-        {
-            if (HasLayoutTransform)
-            {
-                return new RectangleD(AbsolutePosition - layoutTransformOffset, layoutTransformSizeUsedAfterTransform);
-            }
-            return base.GetAbsoluteTransformedBounds();
-        }
-
+        
         /// <inheritdoc/>
         internal override Object DependencyDataSource
         {
