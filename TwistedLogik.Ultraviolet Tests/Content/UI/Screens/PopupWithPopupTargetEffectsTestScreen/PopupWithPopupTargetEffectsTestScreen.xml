@@ -3,26 +3,41 @@
   <View ViewModelType="TwistedLogik.Ultraviolet.Tests.UI.Presentation.Screens.PopupWithPopupTargetEffectsTestScreenViewModel, TwistedLogik.Ultraviolet.Tests">
 
     <Image Source="#Global:Textures:DefaultUIBackground 0 0 1161 685" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
-
+    
     <Popup PlacementTarget="target" Placement="Right" IsOpen="true">
-      <Button Name="popup1" Width="64" Height="64" Content="1">
+      <Button Name="popup1" Width="64" Height="64">
         <Button.Effect>
           <DropShadowEffect/>
         </Button.Effect>
+        <Button Width="32" Height="32">
+          <Button.Effect>
+            <DropShadowEffect/>
+          </Button.Effect>
+        </Button>
       </Button>
     </Popup>
     <Popup PlacementTarget="popup1" Placement="Bottom" IsOpen="true">
-      <Button Name="popup2" Width="64" Height="64" Content="2">
+      <Button Name="popup2" Width="64" Height="64">
         <Button.Effect>
           <DropShadowEffect/>
         </Button.Effect>
+        <Button Width="32" Height="32">
+          <Button.Effect>
+            <DropShadowEffect/>
+          </Button.Effect>
+        </Button>
       </Button>
     </Popup>
     <Popup PlacementTarget="popup2" Placement="Right" IsOpen="true">
-      <Button Name="popup3" Width="64" Height="64" Content="3">
+      <Button Name="popup3" Width="64" Height="64">
         <Button.Effect>
           <DropShadowEffect/>
         </Button.Effect>
+        <Button Width="32" Height="32">
+          <Button.Effect>
+            <DropShadowEffect/>
+          </Button.Effect>
+        </Button>
       </Button>
     </Popup>
 

@@ -139,6 +139,8 @@
     <Compile Include="Size3FTests.cs" />
     <Compile Include="MatrixTests.cs" />
     <Compile Include="UI\Presentation\Screens\CanvasTestScreenViewModel.cs" />
+    <Compile Include="UI\Presentation\Screens\PopupLayoutWhenNestedTestScreen.cs" />
+    <Compile Include="UI\Presentation\Screens\PopupLayoutWhenNestedTestScreenViewModel.cs" />
     <Compile Include="UI\Presentation\Screens\PopupWithPopupTargetEffectsTestScreen.cs" />
     <Compile Include="UI\Presentation\Screens\PopupWithPopupTargetTestScreen.cs" />
     <Compile Include="UI\Presentation\Screens\EffectsTestScreen.cs" />
@@ -456,6 +458,12 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\Expected\UI\Presentation\PresentationFoundation_Popup_LaysOutCorrectlyWhenNestedInsidePopup.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\UI\Screens\PopupLayoutWhenNestedTestScreen\PopupLayoutWhenNestedTestScreen.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <Content Include="Content\UI\Screens\PopupWithPopupTargetEffectsTestScreen\PopupWithPopupTargetEffectsTestScreen.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

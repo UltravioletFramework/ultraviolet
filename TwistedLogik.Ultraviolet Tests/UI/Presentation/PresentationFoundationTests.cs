@@ -168,6 +168,15 @@ namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation
 
         [TestMethod]
         [TestCategory("Rendering")]
+        public void PresentationFoundation_Popup_LaysOutCorrectlyWhenNestedInsidePopup()
+        {
+            var result = RunPresentationTestFor(content => new PopupLayoutWhenNestedTestScreen(content));
+
+            TheResultingImage(result).ShouldMatch(@"Resources\Expected\UI\Presentation\PresentationFoundation_Popup_LaysOutCorrectlyWhenNestedInsidePopup.png");
+        }
+
+        [TestMethod]
+        [TestCategory("Rendering")]
         public void PresentationFoundation_Popup_DrawsCorrectlyWithPopupPlacementTargetAndEffects()
         {
             var result = RunPresentationTestFor(content => new PopupWithPopupTargetEffectsTestScreen(content));
