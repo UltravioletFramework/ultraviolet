@@ -58,6 +58,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             while (true)
             {
                 position = (position == null) ? queue.First : position.Next;
+                next     = position.Next;
 
                 var popup = position.Value.Popup;
 
@@ -66,8 +67,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 popup.EnsureIsLoaded(true);
                 popup.Draw(time, dc);
 
-                var next = position.Next;
-                if (next == null)
+                if (position.Next == null)
                     break;
             }
 
