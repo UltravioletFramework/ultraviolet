@@ -59,10 +59,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Documents
         {
             var adorner = adornerLayer.HitTest(TransformToDescendant(adornerLayer, point));
             if (adorner != null)
-            {
-                System.Diagnostics.Debug.WriteLine("adorner!");
                 return adorner;
-            }
 
             var child = Child;
             if (child == null)
