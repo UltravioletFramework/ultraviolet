@@ -131,13 +131,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 isDrawingRenderTargets = true;
 
                 foreach (var kvp in registeredElements)
+                {
                     kvp.Value.IsReady = false;
+                    kvp.Key.View.EnsureIsLoaded();
+                }
 
                 foreach (var kvp in registeredElements)
                 {
                     var element = kvp.Key;
                     var rtarget = kvp.Value;
-
+                    
                     var bounds = default(RectangleD);
                     var effect = element.Effect;
                     rtarget.ResizeForElement(element, out bounds);

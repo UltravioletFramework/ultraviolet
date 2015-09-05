@@ -140,6 +140,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (Window == null)
                 return;
 
+            EnsureIsLoaded();
+
             var previousSpriteBatchState = spriteBatch.GetCurrentState();
             spriteBatch.End();
 
@@ -147,14 +149,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             drawingContext.SpriteBatch = spriteBatch;
             drawingContext.Begin();
-
-            var fe = layoutRoot as FrameworkElement;
-            if (fe != null && !fe.IsLoaded)
-            {
-                fe.EnsureIsLoaded(true);
-                Ultraviolet.GetUI().GetPresentationFoundation().PerformLayout();
-            }
-
+            
             layoutRoot.Draw(time, drawingContext);
             popupQueue.Draw(time, drawingContext);
 
@@ -633,7 +628,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             get { return resources; }
         }
-        
+
+        /// <summary>
+        /// Ensures that the view and its elements have been loaded.
+        /// </summary>
+        internal void EnsureIsLoaded()
+        {
+            if (layoutRoot.IsLoaded)
+                return;
+
+            layoutRoot.EnsureIsLoaded(true);
+            Ultraviolet.GetUI().GetPresentationFoundation().PerformLayout();
+        }
+
         /// <summary>
         /// Gets the namescope for the view layout.
         /// </summary>
