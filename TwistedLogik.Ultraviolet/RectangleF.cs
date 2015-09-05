@@ -190,7 +190,7 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="offsetX">The amount by which to offset the rectangle along the x-axis.</param>
         /// <param name="offsetY">The amount by which to offset the rectangle along the y-axis.</param>
         /// <returns>The offset <see cref="RectangleF"/>.</returns>
-        public static RectangleF Offset(RectangleF rectangle, Int32 offsetX, Int32 offsetY)
+        public static RectangleF Offset(RectangleF rectangle, Single offsetX, Single offsetY)
         {
             return new RectangleF(rectangle.X + offsetX, rectangle.Y + offsetY, rectangle.Width, rectangle.Height);
         }
@@ -202,7 +202,7 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="offsetX">The amount by which to offset the rectangle along the x-axis.</param>
         /// <param name="offsetY">The amount by which to offset the rectangle along the y-axis.</param>
         /// <param name="result">The offset <see cref="RectangleF"/>.</param>
-        public static void Offset(ref RectangleF rectangle, Int32 offsetX, Int32 offsetY, out RectangleF result)
+        public static void Offset(ref RectangleF rectangle, Single offsetX, Single offsetY, out RectangleF result)
         {
             result = new RectangleF(rectangle.X + offsetX, rectangle.Y + offsetY, rectangle.Width, rectangle.Height);
         }

@@ -53,7 +53,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 return;
             }
 
-            bounds = element.TransformedVisualBounds;
+            bounds = element.AbsoluteVisualBounds;
 
             var effect = element.Effect;
             if (effect != null)

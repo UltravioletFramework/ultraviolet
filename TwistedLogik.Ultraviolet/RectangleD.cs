@@ -199,7 +199,7 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="offsetX">The amount by which to offset the rectangle along the x-axis.</param>
         /// <param name="offsetY">The amount by which to offset the rectangle along the y-axis.</param>
         /// <returns>The offset <see cref="RectangleD"/>.</returns>
-        public static RectangleD Offset(RectangleD rectangle, Int32 offsetX, Int32 offsetY)
+        public static RectangleD Offset(RectangleD rectangle, Double offsetX, Double offsetY)
         {
             return new RectangleD(rectangle.X + offsetX, rectangle.Y + offsetY, rectangle.Width, rectangle.Height);
         }
@@ -211,7 +211,7 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="offsetX">The amount by which to offset the rectangle along the x-axis.</param>
         /// <param name="offsetY">The amount by which to offset the rectangle along the y-axis.</param>
         /// <param name="result">The offset <see cref="RectangleD"/>.</param>
-        public static void Offset(ref RectangleD rectangle, Int32 offsetX, Int32 offsetY, out RectangleD result)
+        public static void Offset(ref RectangleD rectangle, Double offsetX, Double offsetY, out RectangleD result)
         {
             result = new RectangleD(rectangle.X + offsetX, rectangle.Y + offsetY, rectangle.Width, rectangle.Height);
         }
@@ -222,7 +222,7 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="rectangle">The <see cref="RectangleD"/> to offset.</param>
         /// <param name="offset">The amount by which to offset the rectangle.</param>
         /// <returns>The offset <see cref="RectangleD"/>.</returns>
-        public static RectangleD Offset(RectangleD rectangle, Vector2 offset)
+        public static RectangleD Offset(RectangleD rectangle, Point2D offset)
         {
             return new RectangleD(rectangle.X + offset.X, rectangle.Y + offset.Y, rectangle.Width, rectangle.Height);
         }
@@ -233,7 +233,7 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="rectangle">The <see cref="RectangleD"/> to offset.</param>
         /// <param name="offset">The amount by which to offset the rectangle.</param>
         /// <param name="result">The offset <see cref="RectangleD"/>.</param>
-        public static void Offset(ref RectangleD rectangle, ref Vector2 offset, out RectangleD result)
+        public static void Offset(ref RectangleD rectangle, ref Point2D offset, out RectangleD result)
         {
             result = new RectangleD(rectangle.X + offset.X, rectangle.Y + offset.Y, rectangle.Width, rectangle.Height);
         }

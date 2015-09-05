@@ -261,8 +261,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             graphics.SetRenderTarget(target);
             graphics.Clear(Color.Transparent);
             
-            var x = TransformedVisualBounds.X + (TransformedVisualBounds.Width - target.Width) / 2.0;
-            var y = TransformedVisualBounds.Y + (TransformedVisualBounds.Height - target.Height) / 2.0;
+            var x = AbsoluteVisualBounds.X + (AbsoluteVisualBounds.Width - target.Width) / 2.0;
+            var y = AbsoluteVisualBounds.Y + (AbsoluteVisualBounds.Height - target.Height) / 2.0;
 
             var visualBounds = (Vector2)Display.DipsToPixels(new Point2D(x, y));
             dc.GlobalTransform = Matrix.CreateTranslation(-visualBounds.X, -visualBounds.Y, 0);
@@ -945,31 +945,31 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
         
         /// <summary>
-        /// Gets the visual bounds of the element and all of its descendants.
+        /// Gets the visual bounds of the element and all of its descendants in client-relative coordinates.
         /// </summary>
-        public RectangleD VisualBounds
+        public RectangleD RelativeVisualBounds
         {
             get
             {
                 if (visualBounds.HasValue)
                     return visualBounds.Value;
 
-                visualBounds = CalculateVisualBounds();
+                visualBounds = CalculateRelativeVisualBounds();
                 return visualBounds.Value;
             }
         }
 
         /// <summary>
-        /// Gets the transformed visual bounds of the element and all of its descendants.
+        /// Gets the visual bounds of the element and all of its descendants in screen-relative coordinates.
         /// </summary>
-        public RectangleD TransformedVisualBounds
+        public RectangleD AbsoluteVisualBounds
         {
             get
             {
                 if (transformedVisualBounds.HasValue)
                     return transformedVisualBounds.Value;
 
-                transformedVisualBounds = CalculateTransformedVisualBounds();
+                transformedVisualBounds = CalculateAbsoluteVisualBounds();
                 return transformedVisualBounds.Value;
             }
         }
@@ -2021,12 +2021,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
-        /// Calculates the visual bounds of this visual, including any descendants.
+        /// Gets the visual bounds of the element and all of its descendants in client-relative coordinates.
         /// </summary>
-        /// <returns>The visual bounds of this visual, including any descendants.</returns>
-        protected virtual RectangleD CalculateVisualBounds()
+        /// <returns>The visual bounds of the element and all of its descendants in client-relative coordinates.</returns>
+        protected virtual RectangleD CalculateRelativeVisualBounds()
         {
-            var visualBounds = Bounds;
+            if (this is Controls.Button && ((Controls.Button)this).Name == "bar")
+            {
+                Console.WriteLine();
+            }
+
+            var elementBounds = Bounds;
+            var elementTransform = GetTransformMatrix();
+            RectangleD.TransformAxisAligned(ref elementBounds, ref elementTransform, out elementBounds);
 
             var childCount = VisualTreeHelper.GetChildrenCount(this);
             for (int i = 0; i < childCount; i++)
@@ -2034,37 +2041,43 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 var child = VisualTreeHelper.GetChild(this, i) as UIElement;
                 if (child != null)
                 {
-                    var childBounds = child.VisualBounds;
+                    var childBounds = child.RelativeVisualBounds;
                     if (childBounds.IsEmpty)
                         continue;
 
                     childBounds = new RectangleD(childBounds.Location + child.RelativePosition, childBounds.Size);
-                    RectangleD.Union(ref visualBounds, ref childBounds, out visualBounds);
+                    RectangleD.Union(ref elementBounds, ref childBounds, out elementBounds);
                 }
             }
             
             if (ClipRectangle.HasValue)
             {
                 var relativeClip = ClipRectangle.Value - AbsolutePosition;
-                RectangleD.Intersect(ref visualBounds, ref relativeClip, out visualBounds);
+                RectangleD.Intersect(ref elementBounds, ref relativeClip, out elementBounds);
             }
 
-            return visualBounds;
+            return elementBounds;
         }
 
         /// <summary>
-        /// Calculates the transformed visual bounds of this visual, including any descendants.
+        /// Gets the visual bounds of the element and all of its descendants in screen-relative coordinates.
         /// </summary>
-        /// <returns>The transformed visual bounds of this visual, including any descendants.</returns>
-        protected virtual RectangleD CalculateTransformedVisualBounds()
+        /// <returns>The visual bounds of the element and all of its descendants in screen-relative coordinates.</returns>
+        protected virtual RectangleD CalculateAbsoluteVisualBounds()
         {
-            var visualBounds = VisualBounds;
+            var visualBounds = RelativeVisualBounds;
 
-            var visualTreeRoot = VisualTreeHelper.GetRoot(this) as UIElement;
+            var parent = VisualTreeHelper.GetParent(this) as UIElement;
+            if (parent == null)
+                return visualBounds;
+            
+            var visualTreeRoot = VisualTreeHelper.GetRoot(parent) as UIElement;
             if (visualTreeRoot == null)
                 return visualBounds;
 
-            var transform = GetTransformToAncestorMatrix(visualTreeRoot);
+            visualBounds = RectangleD.Offset(visualBounds, RelativePosition);
+
+            var transform = parent.GetTransformToAncestorMatrix(visualTreeRoot);
             if (visualTreeRoot is PopupRoot)
             {
                 var popup = visualTreeRoot.Parent as Popup;

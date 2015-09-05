@@ -338,22 +338,22 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         }
 
         /// <inheritdoc/>
-        protected override RectangleD CalculateVisualBounds()
+        protected override RectangleD CalculateRelativeVisualBounds()
         {
             if (IsOpen)
             {
                 var relativePosition = root.AbsolutePosition - this.AbsolutePosition;
-                return new RectangleD(relativePosition, root.VisualBounds.Size);
+                return new RectangleD(relativePosition, root.RelativeVisualBounds.Size);
             }
             return RectangleD.Empty;
         }
 
         /// <inheritdoc/>
-        protected override RectangleD CalculateTransformedVisualBounds()
+        protected override RectangleD CalculateAbsoluteVisualBounds()
         {
             if (IsOpen)
             {
-                return root.TransformedVisualBounds;
+                return root.AbsoluteVisualBounds;
             }
             return RectangleD.Empty;
         }

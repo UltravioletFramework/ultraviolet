@@ -34,9 +34,9 @@ namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation.Controls
         }
 
         /// <inheritdoc/>
-        protected override RectangleD CalculateVisualBounds()
+        protected override RectangleD CalculateRelativeVisualBounds()
         {
-            var bounds = AdornedElement.VisualBounds;
+            var bounds = AdornedElement.RelativeVisualBounds;
             RectangleD.Inflate(ref bounds, HalfBoxSize, HalfBoxSize, out bounds);
             return bounds;
         }

@@ -157,7 +157,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                         element = popup.Root;
                     }
 
-                    if (!element.TransformedVisualBounds.IsEmpty && !IsVisuallyDisconnectedFromRoot(element))
+                    if (!element.AbsoluteVisualBounds.IsEmpty && !IsVisuallyDisconnectedFromRoot(element))
                     {
                         drawingContext.Reset(element.View.Display);
 
