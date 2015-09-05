@@ -355,4 +355,9 @@
       <Variant>The attachable property '{0}' was not found in type '{1}'.</Variant>
     </en-US>
   </String>
+  <String Key="INCOMPATIBLE_TYPE">
+    <en-US>
+      <Variant>The type '{0}' is not assignable from the type '{1}'.</Variant>
+    </en-US>
+  </String>
 </LocalizedStrings>

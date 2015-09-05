@@ -576,8 +576,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 {
                     Type childType;
 
-                    if (!uv.GetUI().GetPresentationFoundation().GetKnownType(child.Name.LocalName, out childType) || !itemType.IsAssignableFrom(childType))
-                        throw new InvalidOperationException();
+                    if (!uv.GetUI().GetPresentationFoundation().GetKnownType(child.Name.LocalName, out childType))
+                        throw new InvalidOperationException(PresentationStrings.UnrecognizedType.Format(child.Name.LocalName));
+
+                    if (!itemType.IsAssignableFrom(childType))
+                        throw new InvalidOperationException(PresentationStrings.IncompatibleType.Format(itemType, childType));
 
                     var childInstance = LoadObjectWithSerializer(uv, childType, child, context);
                     listAddMethod.Invoke(listInstance, new[] { childInstance });
