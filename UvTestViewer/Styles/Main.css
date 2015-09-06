@@ -196,6 +196,21 @@ table thead tr:nth-child(2) td {
     border: 1px solid #9d831b;
 }
 
+.testname {
+    margin: 0;
+    font-weight: bold;
+    font-size: 14pt;
+}
+
+.testdesc {
+    margin: 0;
+    font-family: 'Segoe UI', Arial, sans-serif;
+}
+
+.testname + .testdesc {    
+    padding-top: 5px;
+}
+
 .vendoricon {
     width: 24px;
     height: 24px;

@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Web;
 using System.Xml.Linq;
+using System.Xml.Serialization;
 using UvTestViewer.Models;
 
 namespace UvTestViewer.Services
@@ -26,6 +27,8 @@ namespace UvTestViewer.Services
             if (directory == null)
                 return null;
 
+            var cachedTestInfos = RetrieveCachedTestInfo(directory);
+
             var images       = directory.GetFiles("*.png");
             var imagesByTest = from file in images
                                let filename = Path.GetFileName(file.FullName)
@@ -37,21 +40,19 @@ namespace UvTestViewer.Services
 
             var outputDir = VirtualPathUtility.ToAbsolute(String.Format("~/TestResults/{0}/{1}", vendor, id));
             
-            var failedTests = GetFailedTests(directory);
-
             var tests = new List<RenderingTest>();
-            foreach (var imageGroup in imagesByTest)
+            foreach (var cachedTestInfo in cachedTestInfos)
             {
-                var testExpected = imageGroup.Where(x => x.EndsWith("_Expected.png")).SingleOrDefault();
-                var testActual   = imageGroup.Where(x => x.EndsWith("_Actual.png")).SingleOrDefault();
-                var testDiff     = imageGroup.Where(x => x.EndsWith("_Diff.png")).SingleOrDefault();
+                var testExpected = String.Format("{0}_Expected.png", cachedTestInfo.Name);
+                var testActual = String.Format("{0}_Actual.png", cachedTestInfo.Name);
+                var testDiff =  String.Format("{0}_Diff.png", cachedTestInfo.Name);
 
-                var test = new RenderingTest(imageGroup.Key,
+                var test = new RenderingTest(cachedTestInfo.Name, cachedTestInfo.Description,
                     GetRelativeUrlOfImage(outputDir, testExpected),
                     GetRelativeUrlOfImage(outputDir, testActual),
                     GetRelativeUrlOfImage(outputDir, testDiff));
 
-                test.Failed = failedTests.Contains(imageGroup.Key);
+                test.Failed = (cachedTestInfo.Status == CachedTestInfoStatus.Failed);
 
                 tests.Add(test);
             }
@@ -90,7 +91,7 @@ namespace UvTestViewer.Services
         private static DirectoryInfo GetMostRecentTestResultsDirectory(GpuVendor vendor, out Int64 id)
         {
             var root       = ConfigurationManager.AppSettings["TestResultRootDirectory"];
-            var rootMapped = HttpContext.Current.Server.MapPath(root);
+            var rootMapped = Path.IsPathRooted(root) ? root : HttpContext.Current.Server.MapPath(root);
 
             switch (vendor)
             {
@@ -165,43 +166,65 @@ namespace UvTestViewer.Services
 
             return null;
         }
-
+        
         /// <summary>
-        /// Gets a set containing the name of any failing tests.
+        /// Retrieves the collection of <see cref="CachedTestInfo"/> objects which represent the tests in the specified directory.
         /// </summary>
-        /// <param name="dir">The directory that contains the test run.</param>
-        /// <returns>A <see cref="HashSet{String}"/> containing the names of any failing tests.</returns>
-        private static HashSet<String> GetFailedTests(DirectoryInfo dir)
+        private static IEnumerable<CachedTestInfo> RetrieveCachedTestInfo(DirectoryInfo dir)
         {
-            var cacheFilename = Path.Combine(dir.FullName, "ResultCache.txt");
+            var serializer = new XmlSerializer(typeof(List<CachedTestInfo>));
+
+            var cacheFilename = Path.Combine(dir.FullName, "ResultCache.xml");
             try
             {
-                var cacheText = File.ReadAllLines(cacheFilename);
-                return new HashSet<String>(cacheText);
+                if (File.Exists(cacheFilename))
+                {
+                    using (var stream = File.OpenRead(cacheFilename))
+                        return (List<CachedTestInfo>)serializer.Deserialize(stream);
+                }
             }
             catch (IOException) { }
 
             try
             {
-                var resultFilename = Path.Combine(dir.FullName, "Result.trx");
-                var resultXml      = XDocument.Load(resultFilename);
-                var resultNs       = resultXml.Root.GetDefaultNamespace();
-                var resultNodes    = resultXml.Root.Descendants(resultNs + "UnitTestResult");
+                var testResultFilename = Path.Combine(dir.FullName, "Result.trx");
+                var testResultXml = XDocument.Load(testResultFilename);
+                var testResultNamespace = testResultXml.Root.GetDefaultNamespace();
 
-                var names = from r in resultNodes
-                            let testName = (String)r.Attribute("testName")
-                            let outcome  = (String)r.Attribute("outcome")
-                            where 
-                                outcome == "Failed"
-                            select testName;
+                var unitTests = testResultXml.Root.Descendants(testResultNamespace + "UnitTest")
+                    .Where(x => x.Descendants(testResultNamespace + "TestCategoryItem").Any(y => (String)y.Attribute("TestCategory") == "Rendering"));
+                var unitTestResults = testResultXml.Root.Descendants(testResultNamespace + "UnitTestResult");
+                
+                var failedTestNames = new HashSet<String>
+                    (from r in unitTestResults
+                     let testName = (String)r.Attribute("testName")
+                     let outcome = (String)r.Attribute("outcome")
+                     where
+                         outcome == "Failed"
+                     select testName);
 
-                File.WriteAllLines(cacheFilename, names);
+                var cachedTestInfos =
+                    (from node in unitTests
+                     let name = (String)node.Attribute("name")
+                     let desc = (String)node.Element(testResultNamespace + "Description")
+                     let status = failedTestNames.Contains(name) ? CachedTestInfoStatus.Failed : CachedTestInfoStatus.Succeeded
+                     select new CachedTestInfo
+                     {
+                         Name = name,
+                         Description = desc,
+                         Status = status,
+                     }).ToList();
 
-                return new HashSet<String>(names);
+                using (var stream = File.OpenWrite(cacheFilename))
+                {
+                    serializer.Serialize(stream, cachedTestInfos);
+                }
+
+                return cachedTestInfos;
             }
             catch (IOException)
             {
-                return new HashSet<String>();
+                return Enumerable.Empty<CachedTestInfo>();
             }
         }
     }

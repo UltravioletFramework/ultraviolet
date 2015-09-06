@@ -19,6 +19,7 @@
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -95,6 +96,8 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\CachedTestInfo.cs" />
+    <Compile Include="Models\CachedTestInfoStatus.cs" />
     <Compile Include="Models\GpuVendor.cs" />
     <Compile Include="Models\RenderingTest.cs" />
     <Compile Include="Models\RenderingTestOverview.cs" />

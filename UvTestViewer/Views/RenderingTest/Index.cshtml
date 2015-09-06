@@ -39,13 +39,16 @@
     @if (Model.TestRunID != 0) { 
         <div class="testrun-container">
             <div class="testrun"> 
-                @foreach (var test in Model.Tests)
+                @foreach (var test in Model.Tests.OrderBy(x => x.Name))
                 {
                     <div class="test @(test.Failed ? "failed" : "passed")">
                         <table>
                             <thead>
                                 <tr>
-                                    <td colspan="3">@String.Format("{0}{1}", test.Name, test.Failed ? " (FAILED)" : String.Empty)</td>
+                                    <td colspan="3">
+                                        <p class="testname">@String.Format("{0}{1}", test.Name, test.Failed ? " (FAILED)" : String.Empty)</p>
+                                        <p class="testdesc">@test.Description</p>
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td>Expected</td>

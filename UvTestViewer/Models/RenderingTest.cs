@@ -11,21 +11,32 @@ namespace UvTestViewer.Models
         /// Initializes a new instance of the <see cref="RenderingTest"/> class.
         /// </summary>
         /// <param name="name">The test's name.</param>
+        /// <param name="description">The test's description.</param>
         /// <param name="expected">The path to the "expected" image.</param>
         /// <param name="actual">The path to the "actual" image.</param>
         /// <param name="diff">The path to the "diff" image.</param>
-        public RenderingTest(String name, String expected, String actual, String diff)
+        public RenderingTest(String name, String description, String expected, String actual, String diff)
         {
-            this.Name     = name;
-            this.Expected = expected;
-            this.Actual   = actual;
-            this.Diff     = diff;
+            this.Name        = name;
+            this.Description = description;
+            this.Expected    = expected;
+            this.Actual      = actual;
+            this.Diff        = diff;
         }
 
         /// <summary>
         /// Gets the test's name.
         /// </summary>
         public String Name
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
+        /// Gets the test's description.
+        /// </summary>
+        public String Description
         {
             get;
             private set;
