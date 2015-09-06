@@ -193,7 +193,7 @@
     </VisualStudio>
   </ProjectExtensions>
   <PropertyGroup>
-    <PreBuildEvent>cd "$(SolutionDir)UvDebugSandbox\bin\$(ConfigurationName)"
+    <PreBuildEvent>cd "$(SolutionDir)UvDebugSandbox (Desktop)\bin\$(ConfigurationName)"
 copy Content.uvarc "$(ProjectDir)" 
 copy TwistedLogik.Ultraviolet.UI.Presentation.CompiledExpressions.dll "$(ProjectDir)Presentation"</PreBuildEvent>
   </PropertyGroup>

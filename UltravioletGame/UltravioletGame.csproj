@@ -230,36 +230,39 @@
     <Content Include="uv.ico" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\TwistedLogik.Gluon\TwistedLogik.Gluon.csproj">
-      <Project>{0E4BAFBF-5211-4E2F-AF39-092EC6671581}</Project>
-      <Name>TwistedLogik.Gluon</Name>
+    <ProjectReference Include="..\TwistedLogik.Gluon %28Desktop%29\TwistedLogik.Gluon %28Desktop%29.csproj">
+      <Project>{08b2b8d5-152f-45fb-b4eb-8c09010a9908}</Project>
+      <Name>TwistedLogik.Gluon %28Desktop%29</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TwistedLogik.Nucleus %28Desktop%29\TwistedLogik.Nucleus %28Desktop%29.csproj">
+      <Project>{7da6158b-a0b9-4100-904e-22fd86949608}</Project>
+      <Name>TwistedLogik.Nucleus %28Desktop%29</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TwistedLogik.Ultraviolet %28Desktop%29\TwistedLogik.Ultraviolet %28Desktop%29.csproj">
+      <Project>{f071abe3-05e5-4df9-a929-cf71b01ec50a}</Project>
+      <Name>TwistedLogik.Ultraviolet %28Desktop%29</Name>
     </ProjectReference>
     <ProjectReference Include="..\TwistedLogik.Ultraviolet.BASS %28Desktop%29\TwistedLogik.Ultraviolet.BASS %28Desktop%29.csproj">
-      <Project>{EA948CF3-AD34-480A-B8CE-E7EC5CAA4D77}</Project>
-      <Name>TwistedLogik.Ultraviolet.BASS</Name>
+      <Project>{ea948cf3-ad34-480a-b8ce-e7ec5caa4d77}</Project>
+      <Name>TwistedLogik.Ultraviolet.BASS %28Desktop%29</Name>
     </ProjectReference>
     <ProjectReference Include="..\TwistedLogik.Ultraviolet.Desktop\TwistedLogik.Ultraviolet.Desktop.csproj">
-      <Project>{073CAFC1-86CB-414D-A71E-46440E25A3F4}</Project>
+      <Project>{073cafc1-86cb-414d-a71e-46440e25a3f4}</Project>
       <Name>TwistedLogik.Ultraviolet.Desktop</Name>
     </ProjectReference>
     <ProjectReference Include="..\TwistedLogik.Ultraviolet.OpenGL %28Desktop%29\TwistedLogik.Ultraviolet.OpenGL %28Desktop%29.csproj">
-      <Project>{40D272DB-90E1-4332-A32F-6EFFEB44FE87}</Project>
-      <Name>TwistedLogik.Ultraviolet.OpenGL</Name>
+      <Project>{40d272db-90e1-4332-a32f-6effeb44fe87}</Project>
+      <Name>TwistedLogik.Ultraviolet.OpenGL %28Desktop%29</Name>
     </ProjectReference>
     <ProjectReference Include="..\TwistedLogik.Ultraviolet.SDL2 %28Desktop%29\TwistedLogik.Ultraviolet.SDL2 %28Desktop%29.csproj">
-      <Project>{50AEFA93-FE53-414A-89FC-C061C165C673}</Project>
-      <Name>TwistedLogik.Ultraviolet.SDL2</Name>
+      <Project>{50aefa93-fe53-414a-89fc-c061c165c673}</Project>
+      <Name>TwistedLogik.Ultraviolet.SDL2 %28Desktop%29</Name>
     </ProjectReference>
-    <ProjectReference Include="..\TwistedLogik.Ultraviolet %28Desktop%29\TwistedLogik.Ultraviolet %28Desktop%29.csproj">
-      <Project>{F071ABE3-05E5-4DF9-A929-CF71B01EC50A}</Project>
-      <Name>TwistedLogik.Ultraviolet</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\TwistedLogik.Nucleus %28Desktop%29\TwistedLogik.Nucleus %28Desktop%29.csproj">
-      <Project>{7DA6158B-A0B9-4100-904E-22FD86949608}</Project>
-      <Name>TwistedLogik.Nucleus</Name>
+    <ProjectReference Include="..\TwistedLogik.Ultraviolet.UI.Presentation %28Desktop%29\TwistedLogik.Ultraviolet.UI.Presentation %28Desktop%29.csproj">
+      <Project>{7379d9e1-bb01-4b05-b4f7-5d39b393348f}</Project>
+      <Name>TwistedLogik.Ultraviolet.UI.Presentation %28Desktop%29</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
