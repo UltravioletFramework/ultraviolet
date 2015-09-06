@@ -11,6 +11,7 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
     {
         [TestMethod]
         [TestCategory("Rendering")]
+        [Description("Ensures that the TextRenderer class correctly parses and renders color tags.")]
         public void TextRenderer_CanRenderColoredStrings()
         {
             var spriteBatch  = default(SpriteBatch);
@@ -39,6 +40,7 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
 
         [TestMethod]
         [TestCategory("Rendering")]
+        [Description("Ensures that the TextRenderer class correctly parses and renders styling tags.")]
         public void TextRenderer_CanRenderStyledStrings()
         {
             var spriteBatch  = default(SpriteBatch);
@@ -71,6 +73,7 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
 
         [TestMethod]
         [TestCategory("Rendering")]
+        [Description("Ensures that the TextRenderer class correctly aligns text in accordance with the TextFlags values specified in TextLayoutSettings.")]
         public void TextRenderer_CanAlignTextWithinAnArea()
         {
             var spriteBatch  = default(SpriteBatch);
@@ -127,6 +130,7 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
 
         [TestMethod]
         [TestCategory("Rendering")]
+        [Description("Ensures that the TextRenderer class takes font kerning into account even when crossing the boundaries between layout tokens.")]
         public void TextRenderer_CorrectlyAlignsKernedTextAcrossTokenBoundaries()
         {
             var spriteBatch  = default(SpriteBatch);

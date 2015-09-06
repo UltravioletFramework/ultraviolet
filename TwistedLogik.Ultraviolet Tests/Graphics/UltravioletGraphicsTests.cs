@@ -10,6 +10,7 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics
     {
         [TestMethod]
         [TestCategory("Rendering")]
+        [Description("Ensures that the Graphics subsystem can render a single untextured triangle.")]
         public void UltravioletGraphics_CanRenderAColoredTriangle()
         {
             var effect         = default(BasicEffect);
@@ -58,6 +59,7 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics
         
         [TestMethod]
         [TestCategory("Rendering")]
+        [Description("Ensures that the Graphics subsystem can render a single textured triangle.")]
         public void UltravioletGraphics_CanRenderATexturedTriangle()
         {
             var effect         = default(BasicEffect);
