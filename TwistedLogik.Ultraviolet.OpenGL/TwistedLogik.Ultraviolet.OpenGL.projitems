@@ -91,6 +91,8 @@
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\BasicEffectTextured.vert" />
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\BasicEffectTexturedES.frag" />
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\BasicEffectTexturedES.vert" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\BlurEffectES.frag" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\BlurEffectES.vert" />
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\BlurEffect.frag" />
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\BlurEffect.vert" />
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\SpriteBatchEffect.frag" />
