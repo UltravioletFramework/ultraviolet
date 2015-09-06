@@ -89,30 +89,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\UvDebugSandbox\Assets\GlobalFontID.cs">
-      <Link>Assets\GlobalFontID.cs</Link>
-    </Compile>
-    <Compile Include="..\UvDebugSandbox\Assets\GlobalTextureID.cs">
-      <Link>Assets\GlobalTextureID.cs</Link>
-    </Compile>
-    <Compile Include="..\UvDebugSandbox\Game.cs">
-      <Link>Game.cs</Link>
-    </Compile>
-    <Compile Include="..\UvDebugSandbox\Input\GameInputActions.cs">
-      <Link>Input\GameInputActions.cs</Link>
-    </Compile>
-    <Compile Include="..\UvDebugSandbox\Input\IUltravioletInputExtensions.cs">
-      <Link>Input\IUltravioletInputExtensions.cs</Link>
-    </Compile>
-    <Compile Include="..\UvDebugSandbox\UI\Screens\DebugViewScreen.cs">
-      <Link>UI\Screens\DebugViewScreen.cs</Link>
-    </Compile>
-    <Compile Include="..\UvDebugSandbox\UI\Screens\UvDebugScreen.cs">
-      <Link>UI\Screens\UvDebugScreen.cs</Link>
-    </Compile>
-    <Compile Include="..\UvDebugSandbox\UI\UIScreenService.cs">
-      <Link>UI\UIScreenService.cs</Link>
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
   </ItemGroup>
@@ -209,10 +185,11 @@
   <ItemGroup>
     <None Include="Presentation\TwistedLogik.Ultraviolet.UI.Presentation.CompiledExpressions.dll" />
   </ItemGroup>
+  <Import Project="..\UvDebugSandbox\UvDebugSandbox.projitems" Label="Shared" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" ProjectLinkReference="a8c85c23-03c2-41c6-8331-48835d257634" />
+      <UserProperties ProjectLinkReference="a8c85c23-03c2-41c6-8331-48835d257634" ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" />
     </VisualStudio>
   </ProjectExtensions>
   <PropertyGroup>

@@ -60,87 +60,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\TwistedLogik.Ultraviolet.BASS\Audio\BASSMediaImporter.cs">
-      <Link>Audio\BASSMediaImporter.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet.BASS\Audio\BASSSong.cs">
-      <Link>Audio\BASSSong.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet.BASS\Audio\BASSSongInstanceManager.cs">
-      <Link>Audio\BASSSongInstanceManager.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet.BASS\Audio\BASSSongPlayer.cs">
-      <Link>Audio\BASSSongPlayer.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet.BASS\Audio\BASSSongProcessor.cs">
-      <Link>Audio\BASSSongProcessor.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet.BASS\Audio\BASSSoundEffect.cs">
-      <Link>Audio\BASSSoundEffect.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet.BASS\Audio\BASSSoundEffectPlayer.cs">
-      <Link>Audio\BASSSoundEffectPlayer.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet.BASS\Audio\BASSSoundEffectProcessor.cs">
-      <Link>Audio\BASSSoundEffectProcessor.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet.BASS\Audio\BASSUtil.cs">
-      <Link>Audio\BASSUtil.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet.BASS\BASSException.cs">
-      <Link>BASSException.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet.BASS\BASSStrings.cs">
-      <Link>BASSStrings.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet.BASS\BASSUltravioletAudio.cs">
-      <Link>BASSUltravioletAudio.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet.BASS\BASSUltravioletFactoryInitializer.cs">
-      <Link>BASSUltravioletFactoryInitializer.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet.BASS\Native\BASSAttrib.cs">
-      <Link>Native\BASSAttrib.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet.BASS\Native\BASSConfig.cs">
-      <Link>Native\BASSConfig.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet.BASS\Native\BASSFXNative.cs">
-      <Link>Native\BASSFXNative.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet.BASS\Native\BASSNative.cs">
-      <Link>Native\BASSNative.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet.BASS\Native\BASSSync.cs">
-      <Link>Native\BASSSync.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet.BASS\Native\BASS_CHANNELINFO.cs">
-      <Link>Native\BASS_CHANNELINFO.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet.BASS\Native\BASS_FILEPROCS.cs">
-      <Link>Native\BASS_FILEPROCS.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet.BASS\Native\BASS_SAMPLE.cs">
-      <Link>Native\BASS_SAMPLE.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Ultraviolet.BASS\Properties\AssemblyInfo.cs">
-      <Link>Properties\AssemblyInfo.cs</Link>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="..\TwistedLogik.Public.snk">
       <Link>TwistedLogik.Public.snk</Link>
     </None>
-    <None Include="..\TwistedLogik.Ultraviolet.BASS\TwistedLogik.Ultraviolet.BASS.dll.config">
-      <Link>TwistedLogik.Ultraviolet.BASS.dll.config</Link>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.BASS\Resources\Strings.xml">
-      <Link>Resources\Strings.xml</Link>
-    </EmbeddedResource>
-    <None Include="..\TwistedLogik.Ultraviolet.BASS\TwistedLogik.Ultraviolet.BASS.Licenses.txt">
-      <Link>TwistedLogik.Ultraviolet.BASS.Licenses.txt</Link>
+    <None Include="TwistedLogik.Ultraviolet.BASS.dll.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -153,6 +77,10 @@
       <Name>TwistedLogik.Ultraviolet %28Android%29</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <Import Project="..\TwistedLogik.Ultraviolet.BASS\TwistedLogik.Ultraviolet.BASS.projitems" Label="Shared" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>

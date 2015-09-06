@@ -143,55 +143,24 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Audio\BASSSongInstanceManager.cs" />
-    <Compile Include="Audio\BASSSongPlayer.cs" />
-    <Compile Include="Audio\BASSSoundEffectPlayer.cs" />
-    <Compile Include="Audio\BASSSoundEffectProcessor.cs" />
-    <Compile Include="Audio\BASSMediaImporter.cs" />
-    <Compile Include="Audio\BASSSoundEffect.cs" />
-    <Compile Include="Audio\BASSSong.cs" />
-    <Compile Include="Audio\BASSSongProcessor.cs" />
-    <Compile Include="Audio\BASSUtil.cs" />
-    <Compile Include="BASSException.cs" />
-    <Compile Include="BASSUltravioletAudio.cs" />
-    <Compile Include="Native\BASSFXNative.cs" />
-    <Compile Include="Native\BASSSync.cs" />
-    <Compile Include="Native\BASSConfig.cs" />
-    <Compile Include="Native\BASSAttrib.cs" />
-    <Compile Include="Native\BASSNative.cs" />
-    <Compile Include="Native\BASS_CHANNELINFO.cs" />
-    <Compile Include="BASSUltravioletFactoryInitializer.cs" />
-    <Compile Include="Native\BASS_FILEPROCS.cs" />
-    <Compile Include="Native\BASS_SAMPLE.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="BASSStrings.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\TwistedLogik.Ultraviolet\TwistedLogik.Ultraviolet.csproj">
-      <Project>{F071ABE3-05E5-4DF9-A929-CF71B01EC50A}</Project>
-      <Name>TwistedLogik.Ultraviolet</Name>
+    <ProjectReference Include="..\TwistedLogik.Nucleus %28Desktop%29\TwistedLogik.Nucleus %28Desktop%29.csproj">
+      <Project>{7da6158b-a0b9-4100-904e-22fd86949608}</Project>
+      <Name>TwistedLogik.Nucleus %28Desktop%29</Name>
     </ProjectReference>
-    <ProjectReference Include="..\TwistedLogik.Nucleus\TwistedLogik.Nucleus.csproj">
-      <Project>{7DA6158B-A0B9-4100-904E-22FD86949608}</Project>
-      <Name>TwistedLogik.Nucleus</Name>
+    <ProjectReference Include="..\TwistedLogik.Ultraviolet %28Desktop%29\TwistedLogik.Ultraviolet %28Desktop%29.csproj">
+      <Project>{F071ABE3-05E5-4DF9-A929-CF71B01EC50A}</Project>
+      <Name>TwistedLogik.Ultraviolet %28Desktop%29</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\TwistedLogik.Public.snk">
       <Link>TwistedLogik.Public.snk</Link>
     </None>
-    <None Include="TwistedLogik.Ultraviolet.BASS.dll.config">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Resources\Strings.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="TwistedLogik.Ultraviolet.BASS.Licenses.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
+  <Import Project="..\TwistedLogik.Ultraviolet.BASS\TwistedLogik.Ultraviolet.BASS.projitems" Label="Shared" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

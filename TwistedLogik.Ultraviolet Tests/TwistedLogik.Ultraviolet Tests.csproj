@@ -198,29 +198,25 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\TwistedLogik.Gluon\TwistedLogik.Gluon.csproj">
-      <Project>{0e4bafbf-5211-4e2f-af39-092ec6671581}</Project>
-      <Name>TwistedLogik.Gluon</Name>
+    <ProjectReference Include="..\TwistedLogik.Nucleus %28Desktop%29\TwistedLogik.Nucleus %28Desktop%29.csproj">
+      <Project>{7da6158b-a0b9-4100-904e-22fd86949608}</Project>
+      <Name>TwistedLogik.Nucleus %28Desktop%29</Name>
     </ProjectReference>
     <ProjectReference Include="..\TwistedLogik.Nucleus.Testing\TwistedLogik.Nucleus.Testing.csproj">
       <Project>{6a17d1a8-ac32-4bb4-8446-d76f6b160246}</Project>
       <Name>TwistedLogik.Nucleus.Testing</Name>
     </ProjectReference>
-    <ProjectReference Include="..\TwistedLogik.Nucleus\TwistedLogik.Nucleus.csproj">
-      <Project>{7da6158b-a0b9-4100-904e-22fd86949608}</Project>
-      <Name>TwistedLogik.Nucleus</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\TwistedLogik.Ultraviolet.BASS\TwistedLogik.Ultraviolet.BASS.csproj">
+    <ProjectReference Include="..\TwistedLogik.Ultraviolet.BASS %28Desktop%29\TwistedLogik.Ultraviolet.BASS %28Desktop%29.csproj">
       <Project>{ea948cf3-ad34-480a-b8ce-e7ec5caa4d77}</Project>
-      <Name>TwistedLogik.Ultraviolet.BASS</Name>
+      <Name>TwistedLogik.Ultraviolet.BASS %28Desktop%29</Name>
     </ProjectReference>
-    <ProjectReference Include="..\TwistedLogik.Ultraviolet.OpenGL\TwistedLogik.Ultraviolet.OpenGL.csproj">
+    <ProjectReference Include="..\TwistedLogik.Ultraviolet.OpenGL %28Desktop%29\TwistedLogik.Ultraviolet.OpenGL %28Desktop%29.csproj">
       <Project>{40d272db-90e1-4332-a32f-6effeb44fe87}</Project>
-      <Name>TwistedLogik.Ultraviolet.OpenGL</Name>
+      <Name>TwistedLogik.Ultraviolet.OpenGL %28Desktop%29</Name>
     </ProjectReference>
-    <ProjectReference Include="..\TwistedLogik.Ultraviolet.SDL2\TwistedLogik.Ultraviolet.SDL2.csproj">
+    <ProjectReference Include="..\TwistedLogik.Ultraviolet.SDL2 %28Desktop%29\TwistedLogik.Ultraviolet.SDL2 %28Desktop%29.csproj">
       <Project>{50aefa93-fe53-414a-89fc-c061c165c673}</Project>
-      <Name>TwistedLogik.Ultraviolet.SDL2</Name>
+      <Name>TwistedLogik.Ultraviolet.SDL2 %28Desktop%29</Name>
     </ProjectReference>
     <ProjectReference Include="..\TwistedLogik.Ultraviolet.Testing\TwistedLogik.Ultraviolet.Testing.csproj">
       <Project>{bf3c3975-5e7c-40c0-b49b-9a0cbd22bfcb}</Project>
@@ -230,13 +226,13 @@
       <Project>{d27ab499-f06f-47ea-8645-285cf2315ec2}</Project>
       <Name>TwistedLogik.Ultraviolet.UI.Presentation.Compiler</Name>
     </ProjectReference>
-    <ProjectReference Include="..\TwistedLogik.Ultraviolet.UI.Presentation\TwistedLogik.Ultraviolet.UI.Presentation.csproj">
+    <ProjectReference Include="..\TwistedLogik.Ultraviolet.UI.Presentation %28Desktop%29\TwistedLogik.Ultraviolet.UI.Presentation %28Desktop%29.csproj">
       <Project>{7379d9e1-bb01-4b05-b4f7-5d39b393348f}</Project>
-      <Name>TwistedLogik.Ultraviolet.UI.Presentation</Name>
+      <Name>TwistedLogik.Ultraviolet.UI.Presentation %28Desktop%29</Name>
     </ProjectReference>
-    <ProjectReference Include="..\TwistedLogik.Ultraviolet\TwistedLogik.Ultraviolet.csproj">
+    <ProjectReference Include="..\TwistedLogik.Ultraviolet %28Desktop%29\TwistedLogik.Ultraviolet %28Desktop%29.csproj">
       <Project>{f071abe3-05e5-4df9-a929-cf71b01ec50a}</Project>
-      <Name>TwistedLogik.Ultraviolet</Name>
+      <Name>TwistedLogik.Ultraviolet %28Desktop%29</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

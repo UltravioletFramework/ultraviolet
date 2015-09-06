@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>62e8c883-b858-4fcc-82ec-c313fefbad34</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>TwistedLogik.Ultraviolet.BASS</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Audio\BASSMediaImporter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Audio\BASSSong.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Audio\BASSSongInstanceManager.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Audio\BASSSongPlayer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Audio\BASSSongProcessor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Audio\BASSSoundEffect.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Audio\BASSSoundEffectPlayer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Audio\BASSSoundEffectProcessor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Audio\BASSUtil.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)BASSException.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)BASSStrings.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)BASSUltravioletAudio.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)BASSUltravioletFactoryInitializer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Native\BASSAttrib.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Native\BASSConfig.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Native\BASSFXNative.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Native\BASSNative.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Native\BASSSync.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Native\BASS_CHANNELINFO.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Native\BASS_FILEPROCS.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Native\BASS_SAMPLE.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Strings.xml">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <None Include="$(MSBuildThisFileDirectory)TwistedLogik.Ultraviolet.BASS.Licenses.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+</Project>
