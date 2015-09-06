@@ -33,8 +33,6 @@ if %2 EQU Android (
 	copy "%DIR%\TwistedLogik.Nucleus.xml" %2\TwistedLogik.Nucleus.xml /Y > nul
 	copy "%DIR%\TwistedLogik.Ultraviolet.xml" %2\TwistedLogik.Ultraviolet.xml /Y > nul
 	copy "%DIR%\TwistedLogik.Ultraviolet.OpenGL.xml" %2\TwistedLogik.Ultraviolet.OpenGL.xml /Y > nul
-	copy "%DIR%\TwistedLogik.Ultraviolet.SDL2.dll.config" %2\TwistedLogik.Ultraviolet.SDL2.dll.config /Y > nul
-	copy "%DIR%\TwistedLogik.Ultraviolet.BASS.dll.config" %2\TwistedLogik.Ultraviolet.BASS.dll.config /Y > nul
 	
 ) ELSE (
 
@@ -62,8 +60,6 @@ if %2 EQU Android (
 	copy "%DIR%\TwistedLogik.Nucleus.xml" TwistedLogik.Nucleus.xml /Y > nul
 	copy "%DIR%\TwistedLogik.Ultraviolet.xml" TwistedLogik.Ultraviolet.xml /Y > nul
 	copy "%DIR%\TwistedLogik.Ultraviolet.OpenGL.xml" TwistedLogik.Ultraviolet.OpenGL.xml /Y > nul
-	copy "%DIR%\TwistedLogik.Ultraviolet.SDL2.dll.config" TwistedLogik.Ultraviolet.SDL2.dll.config /Y > nul
-	copy "%DIR%\TwistedLogik.Ultraviolet.BASS.dll.config" TwistedLogik.Ultraviolet.BASS.dll.config /Y > nul
 	
 )
 

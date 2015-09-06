@@ -15,9 +15,7 @@
             <RotateTransform Angle="{{Angle3}}" />              
           </TransformGroup>
         </Button.LayoutTransform>
-        <Button.Effect>
-          <DropShadowEffect/>
-        </Button.Effect>
+
       </Button>
       <Button Width="128" Height="128" Content="3"/>
     </StackPanel>

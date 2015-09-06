@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>9491b997-483c-4f11-8a96-13b122e5419a</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>UltravioletSample10</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Assets\GlobalFontID.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Assets\GlobalTextureID.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Game.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Input\GameInputActions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Input\IUltravioletInputExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\Screens\GameplayScreen.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\Screens\LoadingScreen.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\UIScreenService.cs" />
+  </ItemGroup>
+</Project>

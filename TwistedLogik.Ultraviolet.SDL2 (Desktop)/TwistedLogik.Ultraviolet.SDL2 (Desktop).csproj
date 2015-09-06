@@ -157,6 +157,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="TwistedLogik.Public.snk" />
+    <None Include="TwistedLogik.Ultraviolet.SDL2.dll.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <Import Project="..\TwistedLogik.Ultraviolet.SDL2\TwistedLogik.Ultraviolet.SDL2.projitems" Label="Shared" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
