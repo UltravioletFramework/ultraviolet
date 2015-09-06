@@ -1416,6 +1416,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Gets the out-of-band render target which is currently assigned to this element, if any.
+        /// </summary>
+        internal OutOfBandRenderTarget OutOfBandRenderTarget
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
         /// Gets the style sheet that was most recently passed to the <see cref="Style(UvssDocument)"/> method.
         /// </summary>
         internal UvssDocument MostRecentStyleSheet

@@ -104,6 +104,8 @@
     <Compile Include="OutOfBandRenderer.cs" />
     <Compile Include="OutOfBandRenderTarget.cs" />
     <Compile Include="OutOfBandRenderer.UIElementComparer.cs" />
+    <Compile Include="PresentationFoundationPool.Assignment.cs" />
+    <Compile Include="PresentationFoundationPool.cs" />
     <Compile Include="PresentationFoundationViewRoot.cs" />
     <Compile Include="DataSourceExpressionBuilder.cs" />
     <Compile Include="BindingExpressions.cs" />

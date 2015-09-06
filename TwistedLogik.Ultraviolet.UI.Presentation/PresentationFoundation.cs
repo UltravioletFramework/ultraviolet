@@ -802,6 +802,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             PerformanceStats.BeginFrame();
 
             PerformLayout();
+
+            OutOfBandRenderer.Update();
         }
 
         /// <summary>

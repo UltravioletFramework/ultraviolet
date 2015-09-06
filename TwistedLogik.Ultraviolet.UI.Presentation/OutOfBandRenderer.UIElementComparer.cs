@@ -8,21 +8,33 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// A comparer which sorts instances of <see cref="UIElement"/> according to their layout depths.
         /// </summary>
-        private class UIElementComparer : IComparer<UIElement>
+        private class UIElementComparer : IComparer<WeakReference>
         {
             /// <inheritdoc/>
-            public Int32 Compare(UIElement x, UIElement y)
+            public Int32 Compare(WeakReference x, WeakReference y)
             {
-                var depthComparison = y.LayoutDepth.CompareTo(x.LayoutDepth);
+                var xElem = (UIElement)x.Target;
+                var yElem = (UIElement)y.Target;
+
+                var xLayoutDepth = (xElem == null) ? 0 : xElem.LayoutDepth;
+                var yLayoutDepth = (yElem == null) ? 0 : yElem.LayoutDepth;
+
+                var depthComparison = yLayoutDepth.CompareTo(xLayoutDepth);
                 if (depthComparison == 0)
                 {
-                    if (Object.ReferenceEquals(x, y))
+                    if (ReferenceEquals(x, y))
                         return 0;
 
-                    var hashCompare = y.GetHashCode().CompareTo(x.GetHashCode());
+                    var xHashCode = (xElem == null) ? 0 : xElem.GetHashCode();
+                    var yHashCode = (yElem == null) ? 0 : yElem.GetHashCode();
+
+                    var hashCompare = yHashCode.CompareTo(xHashCode);
                     if (hashCompare == 0)
                     {
-                        return y.GetType().TypeHandle.Value.ToInt64().CompareTo(x.GetType().TypeHandle.Value.ToInt64());
+                        var xTypeHandle = (xElem == null) ? 0L : xElem.GetType().TypeHandle.Value.ToInt64();
+                        var yTypeHandle = (yElem == null) ? 0L : yElem.GetType().TypeHandle.Value.ToInt64();
+
+                        return yTypeHandle.CompareTo(xTypeHandle);
                     }
                     return hashCompare;
                 }
