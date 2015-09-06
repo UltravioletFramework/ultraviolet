@@ -24,6 +24,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             Contract.EnsureRange(capacity >= 0, "capacity");
             Contract.EnsureRange(watermark >= 0, "watermark");
 
+            this.gcCounts = new Int32[GC.MaxGeneration + 1];
+            for (int i = 0; i <= GC.MaxGeneration; i++)
+            {
+                gcCounts[i] = GC.CollectionCount(i);
+            }
+
             this.watermark = watermark;
             this.allocator = allocator;
             this.pool = new List<Assignment>(capacity);
@@ -106,6 +112,20 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         public void Update()
         {
+            var requiresUpdate = false;
+            for (int i = 0; i <= GC.MaxGeneration; i++)
+            {
+                var count = GC.CollectionCount(i);
+                if (count != gcCounts[i])
+                {
+                    requiresUpdate = true;
+                    gcCounts[i] = count;
+                }
+            }
+
+            if (!requiresUpdate)
+                return;
+
             var anyObjectsWereReleased = false;
 
             for (int i = 0; i < active; i++)
@@ -194,5 +214,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         private readonly List<Assignment> pool;
         private Int32 watermark;
         private Int32 active;
+        private Int32[] gcCounts;
     }
 }
