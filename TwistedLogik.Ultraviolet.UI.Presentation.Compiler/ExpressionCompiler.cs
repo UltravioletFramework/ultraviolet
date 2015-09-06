@@ -606,7 +606,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
         /// </summary>
         private static String GetWorkingFileForDataSourceWrapper(DataSourceWrapperInfo dataSourceWrapperInfo)
         {
-            var path = Path.ChangeExtension(Path.Combine(WorkingDirectory, dataSourceWrapperInfo.DataSourceWrapperName), "cs");
+            var path = Path.ChangeExtension(Path.Combine(WorkingDirectory, dataSourceWrapperInfo.UniqueID.ToString()), "cs");
             return path;
         }
 

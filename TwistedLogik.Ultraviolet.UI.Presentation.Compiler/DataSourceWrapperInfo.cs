@@ -9,6 +9,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
     internal class DataSourceWrapperInfo
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="DataSourceWrapperInfo"/> class.
+        /// </summary>
+        public DataSourceWrapperInfo()
+        {
+            UniqueID = Guid.NewGuid();
+        }
+
+        /// <summary>
         /// Gets or sets the definition of the data source for which a wrapper is being compiled.
         /// </summary>
         public DataSourceDefinition DataSourceDefinition
@@ -69,6 +77,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
         {
             get;
             set;
+        }
+
+        /// <summary>
+        /// Gets or sets a value which uniquely identifies this wrapper.
+        /// </summary>
+        public Guid UniqueID
+        {
+            get;
+            private set;
         }
     }
 }

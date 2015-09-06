@@ -139,53 +139,54 @@
     <Compile Include="Size3DTests.cs" />
     <Compile Include="Size3FTests.cs" />
     <Compile Include="MatrixTests.cs" />
-    <Compile Include="UI\Presentation\Screens\LayoutAndRenderTransformTestScreen.cs" />
-    <Compile Include="UI\Presentation\Screens\LayoutTransformTestScreen.cs" />
-    <Compile Include="UI\Presentation\Screens\AdornersInsidePopupTestScreen.cs" />
-    <Compile Include="UI\Presentation\Screens\LayoutAndRenderTransformTestScreenViewModel.cs" />
-    <Compile Include="UI\Presentation\Screens\LayoutTransformTestScreenViewModel.cs" />
-    <Compile Include="UI\Presentation\Screens\AdornersTestScreen.cs" />
-    <Compile Include="UI\Presentation\Screens\AdornersInsidePopupTestScreenViewModel.cs" />
-    <Compile Include="UI\Presentation\Screens\AdornersTestScreenViewModel.cs" />
-    <Compile Include="UI\Presentation\Screens\CanvasTestScreenViewModel.cs" />
-    <Compile Include="UI\Presentation\Screens\EffectsUnderTransformTestScreen.cs" />
-    <Compile Include="UI\Presentation\Screens\EffectsUnderTransformTestScreenViewModel.cs" />
-    <Compile Include="UI\Presentation\Screens\PopupLayoutWhenNestedAndTransformedTestScreen.cs" />
-    <Compile Include="UI\Presentation\Screens\PopupLayoutWhenNestedTestScreen.cs" />
-    <Compile Include="UI\Presentation\Screens\PopupLayoutWhenNestedAndTransformedTestScreenViewModel.cs" />
-    <Compile Include="UI\Presentation\Screens\PopupLayoutWhenNestedTestScreenViewModel.cs" />
-    <Compile Include="UI\Presentation\Screens\PopupWithPopupTargetEffectsTestScreen.cs" />
-    <Compile Include="UI\Presentation\Screens\PopupWithPopupTargetTestScreen.cs" />
-    <Compile Include="UI\Presentation\Screens\EffectsTestScreen.cs" />
-    <Compile Include="UI\Presentation\Screens\ComplexScreen.cs" />
-    <Compile Include="UI\Presentation\Screens\PopupWithPopupTargetEffectsTestScreenViewModel.cs" />
-    <Compile Include="UI\Presentation\Screens\PopupWithPopupTargetTestScreenViewModel.cs" />
-    <Compile Include="UI\Presentation\Screens\EffectsTestScreenViewModel.cs" />
-    <Compile Include="UI\Presentation\Screens\ComplexScreenViewModel.cs" />
-    <Compile Include="UI\Presentation\Screens\CanvasTestScreen.cs" />
-    <Compile Include="UI\Presentation\Screens\DockPanelTestScreen.cs" />
-    <Compile Include="UI\Presentation\Screens\DockPanelTestScreenViewModel.cs" />
-    <Compile Include="UI\Presentation\Screens\PopupLayoutWithRectTestScreen.cs" />
-    <Compile Include="UI\Presentation\Screens\PopupLayoutWithTargetAndTransformTestScreen.cs" />
-    <Compile Include="UI\Presentation\Screens\PopupLayoutWithTransformedTargetTestScreen.cs" />
-    <Compile Include="UI\Presentation\Screens\PopupLayoutWithTargetTestScreen.cs" />
-    <Compile Include="UI\Presentation\Screens\PopupLayoutWithRectTestScreenViewModel.cs" />
-    <Compile Include="UI\Presentation\Screens\PopupLayoutWithTargetAndTransformTestScreenViewModel.cs" />
-    <Compile Include="UI\Presentation\Screens\PopupLayoutWithTransformedTargetTestScreenViewModel.cs" />
-    <Compile Include="UI\Presentation\Screens\PopupLayoutWithTargetTestScreenViewModel.cs" />
-    <Compile Include="UI\Presentation\Screens\GridTestScreenViewModel.cs" />
-    <Compile Include="UI\Presentation\Screens\HorizontalStackPanelTestScreenViewModel.cs" />
-    <Compile Include="UI\Presentation\Screens\HorizontalWrapPanelTestScreenViewModel.cs" />
-    <Compile Include="UI\Presentation\Screens\RenderTransformTestScreen.cs" />
-    <Compile Include="UI\Presentation\Screens\RenderTransformTestScreenViewModel.cs" />
-    <Compile Include="UI\Presentation\Screens\VerticalStackPanelTestScreenViewModel.cs" />
-    <Compile Include="UI\Presentation\Screens\VerticalWrapPanelTestScreen.cs" />
-    <Compile Include="UI\Presentation\Screens\HorizontalWrapPanelTestScreen.cs" />
-    <Compile Include="UI\Presentation\Screens\HorizontalStackPanelTestScreen.cs" />
-    <Compile Include="UI\Presentation\Screens\VerticalStackPanelTestScreen.cs" />
-    <Compile Include="UI\Presentation\Screens\GridTestScreen.cs" />
+    <Compile Include="UI\Presentation\Screens\UPF_UIElement_ArrangesCorrectly_WithLayoutAndRenderTransform.cs" />
+    <Compile Include="UI\Presentation\Screens\UPF_UIElement_ArrangesCorrectly_WithLayoutTransform.cs" />
+    <Compile Include="UI\Presentation\Screens\UPF_Adorner_DrawsCorrectly_WhenInsideOfAPopup.cs" />
+    <Compile Include="UI\Presentation\Screens\UPF_UIElement_ArrangesCorrectly_WithLayoutAndRenderTransform_VM.cs" />
+    <Compile Include="UI\Presentation\Screens\UPF_UIElement_ArrangesCorrectly_WithLayoutTransform_VM.cs" />
+    <Compile Include="UI\Presentation\Screens\UPF_Adorner_DrawsCorrectly.cs" />
+    <Compile Include="UI\Presentation\Screens\UPF_Adorner_DrawsCorrectly_WhenInsideOfAPopup_VM.cs" />
+    <Compile Include="UI\Presentation\Screens\UPF_Adorner_DrawsCorrectly_VM.cs" />
+    <Compile Include="UI\Presentation\Screens\UPF_Canvas_ArrangesChildrenCorrectly_VM.cs" />
+    <Compile Include="UI\Presentation\Screens\UPF_UIElement_DrawsCorrectly_WithEffectAndTransform.cs" />
+    <Compile Include="UI\Presentation\Screens\UPF_UIElement_DrawsCorrectly_WithEffectAndTransform_VM.cs" />
+    <Compile Include="UI\Presentation\Screens\UPF_Popup_LaidOutCorrectly_WithTransformedPlacementTarget_WhenNestedInsidePopup.cs" />
+    <Compile Include="UI\Presentation\Screens\UPF_Popup_LaidOutCorrectly_WhenNestedInsidePopup.cs" />
+    <Compile Include="UI\Presentation\Screens\UPF_Popup_LaidOutCorrectly_WithTransformedPlacementTarget_WhenNestedInsidePopup_VM.cs" />
+    <Compile Include="UI\Presentation\Screens\UPF_Popup_LaidOutCorrectly_WhenNestedInsidePopup_VM.cs" />
+    <Compile Include="UI\Presentation\Screens\UPF_Popup_DrawsCorrectly_WithPlacementTargetInsidePopupAndEffect.cs" />
+    <Compile Include="UI\Presentation\Screens\UPF_Popup_LaidOutCorrectly_WithPlacementTargetInsidePopup.cs" />
+    <Compile Include="UI\Presentation\Screens\UPF_UIElement_DrawsCorrectly_WithEffect.cs" />
+    <Compile Include="UI\Presentation\Screens\UPF_ArrangesComplexScreenCorrectly.cs" />
+    <Compile Include="UI\Presentation\Screens\UPF_Popup_DrawsCorrectly_WithPlacementTargetInsidePopupAndEffect_VM.cs" />
+    <Compile Include="UI\Presentation\Screens\UPF_Popup_LaidOutCorrectly_WithPlacementTargetInsidePopup_VM.cs" />
+    <Compile Include="UI\Presentation\Screens\UPF_UIElement_DrawsCorrectly_WithEffect_VM.cs" />
+    <Compile Include="UI\Presentation\Screens\UPF_ArrangesComplexScreenCorrectly_VM.cs" />
+    <Compile Include="UI\Presentation\Screens\UPF_Canvas_ArrangesChildrenCorrectly.cs" />
+    <Compile Include="UI\Presentation\Screens\UPF_DockPanel_ArrangesChildrenCorrectly.cs" />
+    <Compile Include="UI\Presentation\Screens\UPF_DockPanel_ArrangesChildrenCorrectly_VM.cs" />
+    <Compile Include="UI\Presentation\Screens\UPF_Popup_LaidOutCorrectly_WithPlacementRectangle.cs" />
+    <Compile Include="UI\Presentation\Screens\UPF_Popup_LaidOutCorrectly_WithPlacementTargetAndTransform.cs" />
+    <Compile Include="UI\Presentation\Screens\UPF_Popup_LaidOutCorrectly_WithTransformedPlacementTarget.cs" />
+    <Compile Include="UI\Presentation\Screens\UPF_Popup_LaidOutCorrectly_WithPlacementTarget.cs" />
+    <Compile Include="UI\Presentation\Screens\UPF_Popup_LaidOutCorrectly_WithPlacementRectangle_VM.cs" />
+    <Compile Include="UI\Presentation\Screens\UPF_Popup_LaidOutCorrectly_WithPlacementTargetAndTransform_VM.cs" />
+    <Compile Include="UI\Presentation\Screens\UPF_Popup_LaidOutCorrectly_WithTransformedPlacementTarget_VM.cs" />
+    <Compile Include="UI\Presentation\Screens\UPF_Popup_LaidOutCorrectly_WithPlacementTarget_VM.cs" />
+    <Compile Include="UI\Presentation\Screens\UPF_Grid_ArrangesChildrenCorrectly_VM.cs" />
+    <Compile Include="UI\Presentation\Screens\UPF_StackPanel_ArrangesChildrenCorrectly_WithHorizontalOrientation_VM.cs" />
+    <Compile Include="UI\Presentation\Screens\UPF_WrapPanel_ArrangesChildrenCorrectly_WithHorizontalOrientation_VM.cs" />
+    <Compile Include="UI\Presentation\Screens\UPF_UIElement_DrawsCorrectly_WithRenderTransform.cs" />
+    <Compile Include="UI\Presentation\Screens\UPF_UIElement_DrawsCorrectly_WithRenderTransform_VM.cs" />
+    <Compile Include="UI\Presentation\Screens\UPF_StackPanel_ArrangesChildrenCorrectly_WithVerticalOrientation_VM.cs" />
+    <Compile Include="UI\Presentation\Screens\UPF_WrapPanel_ArrangesChildrenCorrectly_WithVerticalOrientation.cs" />
+    <Compile Include="UI\Presentation\Screens\UPF_WrapPanel_ArrangesChildrenCorrectly_WithHorizontalOrientation.cs" />
+    <Compile Include="UI\Presentation\Screens\UPF_StackPanel_ArrangesChildrenCorrectly_WithHorizontalOrientation.cs" />
+    <Compile Include="UI\Presentation\Screens\UPF_StackPanel_ArrangesChildrenCorrectly_WithVerticalOrientation.cs" />
+    <Compile Include="UI\Presentation\Screens\UPF_Grid_ArrangesChildrenCorrectly.cs" />
     <Compile Include="UI\Presentation\PresentationFoundationTests.cs" />
-    <Compile Include="UI\Presentation\Screens\VerticalWrapPanelTestScreenViewModel.cs" />
+    <Compile Include="UI\Presentation\Screens\UPF_WrapPanel_ArrangesChildrenCorrectly_WithVerticalOrientation_VM.cs" />
+    <Compile Include="UI\Presentation\Screens\TestScreenBase.cs" />
     <Compile Include="Vector4Tests.cs" />
     <Compile Include="Vector3Tests.cs" />
     <Compile Include="Vector2Tests.cs" />
@@ -311,12 +312,12 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\Expected\UI\Presentation\PresentationFoundation_CorrectlyLaysOutComplexScreen.png">
+    <None Include="Resources\Expected\UI\Presentation\UPF_ArrangesComplexScreenCorrectly.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Content\UI\Screens\ComplexScreen\ComplexScreen.xml">
+    <None Include="Content\UI\Screens\UPF_ArrangesComplexScreenCorrectly\View.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
@@ -331,67 +332,67 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Content\UI\Screens\GridTestScreen\GridTestScreen.xml">
+    <None Include="Content\UI\Screens\UPF_Grid_ArrangesChildrenCorrectly\View.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Content\UI\Screens\CanvasTestScreen\CanvasTestScreen.xml">
+    <None Include="Content\UI\Screens\UPF_Canvas_ArrangesChildrenCorrectly\View.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Content\UI\Screens\VerticalStackPanelTestScreen\VerticalStackPanelTestScreen.xml">
+    <None Include="Content\UI\Screens\UPF_StackPanel_ArrangesChildrenCorrectly_WithVerticalOrientation\View.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Content\UI\Screens\HorizontalStackPanelTestScreen\HorizontalStackPanelTestScreen.xml">
+    <None Include="Content\UI\Screens\UPF_StackPanel_ArrangesChildrenCorrectly_WithHorizontalOrientation\View.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Content\UI\Screens\HorizontalWrapPanelTestScreen\HorizontalWrapPanelTestScreen.xml">
+    <None Include="Content\UI\Screens\UPF_WrapPanel_ArrangesChildrenCorrectly_WithHorizontalOrientation\View.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Content\UI\Screens\VerticalWrapPanelTestScreen\VerticalWrapPanelTestScreen.xml">
+    <None Include="Content\UI\Screens\UPF_WrapPanel_ArrangesChildrenCorrectly_WithVerticalOrientation\View.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Content\UI\Screens\DockPanelTestScreen\DockPanelTestScreen.xml">
+    <None Include="Content\UI\Screens\UPF_DockPanel_ArrangesChildrenCorrectly\View.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\Expected\UI\Presentation\PresentationFoundation_Canvas_CorrectlyArrangesChildren.png">
+    <None Include="Resources\Expected\UI\Presentation\UPF_Canvas_ArrangesChildrenCorrectly.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\Expected\UI\Presentation\PresentationFoundation_DockPanel_CorrectlyArrangesChildren.png">
+    <None Include="Resources\Expected\UI\Presentation\UPF_DockPanel_ArrangesChildrenCorrectly.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\Expected\UI\Presentation\PresentationFoundation_Grid_CorrectlyArrangesChildren.png">
+    <None Include="Resources\Expected\UI\Presentation\UPF_Grid_ArrangesChildrenCorrectly.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\Expected\UI\Presentation\PresentationFoundation_Horizontal_StackPanel_CorrectlyArrangesChildren.png">
+    <None Include="Resources\Expected\UI\Presentation\UPF_StackPanel_ArrangesChildrenCorrectly_WithHorizontalOrientation.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\Expected\UI\Presentation\PresentationFoundation_Horizontal_WrapPanel_CorrectlyArrangesChildren.png">
+    <None Include="Resources\Expected\UI\Presentation\UPF_WrapPanel_ArrangesChildrenCorrectly_WithHorizontalOrientation.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\Expected\UI\Presentation\PresentationFoundation_Vertical_WrapPanel_CorrectlyArrangesChildren.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Expected\UI\Presentation\PresentationFoundation_Vertical_StackPanel_CorrectlyArrangesChildren.png">
+    <None Include="Resources\Expected\UI\Presentation\UPF_WrapPanel_ArrangesChildrenCorrectly_WithVerticalOrientation.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Content\UI\Screens\RenderTransformTestScreen\RenderTransformTestScreen.xml">
+    <None Include="Resources\Expected\UI\Presentation\UPF_StackPanel_ArrangesChildrenCorrectly_WithVerticalOrientation.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Content\UI\Screens\UPF_UIElement_DrawsCorrectly_WithRenderTransform\View.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <SubType>Designer</SubType>
     </None>
@@ -416,113 +417,113 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Content\UI\Screens\EffectsTestScreen\EffectsTestScreen.xml">
+    <None Include="Content\UI\Screens\UPF_UIElement_DrawsCorrectly_WithEffect\View.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\Expected\UI\Presentation\PresentationFoundation_CorrectlyDrawsElementsWithShaderEffects.png">
+    <None Include="Resources\Expected\UI\Presentation\UPF_UIElement_DrawsCorrectly_WithEffect.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\Expected\UI\Presentation\PresentationFoundation_CorrectlyDrawsElementsWithRenderTransforms.png">
+    <None Include="Resources\Expected\UI\Presentation\UPF_UIElement_DrawsCorrectly_WithRenderTransform.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Content\UI\Screens\PopupLayoutWithTargetTestScreen\PopupLayoutWithTargetTestScreen.xml">
+    <None Include="Content\UI\Screens\UPF_Popup_LaidOutCorrectly_WithPlacementTarget\View.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Content\UI\Screens\PopupLayoutWithRectTestScreen\PopupLayoutWithRectTestScreen.xml">
+    <None Include="Content\UI\Screens\UPF_Popup_LaidOutCorrectly_WithPlacementRectangle\View.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\Expected\UI\Presentation\PresentationFoundation_Popup_LaysOutCorrectlyWithPlacementRectangle.png">
+    <None Include="Resources\Expected\UI\Presentation\UPF_Popup_LaidOutCorrectly_WithPlacementRectangle.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\Expected\UI\Presentation\PresentationFoundation_Popup_LaysOutCorrectlyWithPlacementTarget.png">
+    <None Include="Resources\Expected\UI\Presentation\UPF_Popup_LaidOutCorrectly_WithPlacementTarget.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Content\UI\Screens\PopupLayoutWithTransformedTargetTestScreen\PopupLayoutWithTransformedTargetTestScreen.xml">
+    <None Include="Content\UI\Screens\UPF_Popup_LaidOutCorrectly_WithTransformedPlacementTarget\View.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\Expected\UI\Presentation\PresentationFoundation_Popup_LaysOutCorrectlyWithTransformedPlacementTarget.png">
+    <None Include="Resources\Expected\UI\Presentation\UPF_Popup_LaidOutCorrectly_WithTransformedPlacementTarget.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Content\UI\Screens\PopupLayoutWithTargetAndTransformTestScreen\PopupLayoutWithTargetAndTransformTestScreen.xml">
+    <None Include="Content\UI\Screens\UPF_Popup_LaidOutCorrectly_WithPlacementTargetAndTransform\View.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\Expected\UI\Presentation\PresentationFoundation_Popup_LaysOutCorrectlyWithPlacementTargetAndTransform.png">
+    <None Include="Resources\Expected\UI\Presentation\UPF_Popup_LaidOutCorrectly_WithPlacementTargetAndTransform.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\UI\Screens\LayoutAndRenderTransformTestScreen\LayoutAndRenderTransformTestScreen.xml">
+    <None Include="Content\UI\Screens\UPF_Popup_LaidOutCorrectly_WithTransformedPlacementTarget_WhenNestedInsidePopup\View.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <Content Include="Content\UI\Screens\UPF_UIElement_ArrangesCorrectly_WithLayoutAndRenderTransform\View.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\UI\Screens\LayoutTransformTestScreen\LayoutTransformTestScreen.xml">
+    <Content Include="Content\UI\Screens\UPF_UIElement_ArrangesCorrectly_WithLayoutTransform\View.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\UI\Screens\AdornersInsidePopupTestScreen\AdornersInsidePopupTestScreen.xml">
+    <Content Include="Content\UI\Screens\UPF_Adorner_DrawsCorrectly_WhenInsideOfAPopup\View.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\UI\Screens\AdornersTestScreen\AdornersTestScreen.xml">
+    <Content Include="Content\UI\Screens\UPF_Adorner_DrawsCorrectly\View.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <None Include="Resources\Expected\UI\Presentation\PresentationFoundation_CorrectlyLaysOutElementsWithLayoutAndRenderTransforms.png">
+    <None Include="Resources\Expected\UI\Presentation\UPF_UIElement_ArrangesCorrectly_WithLayoutAndRenderTransform.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\Expected\UI\Presentation\PresentationFoundation_CorrectlyLaysOutElementsWithLayoutTransforms.png">
+    <None Include="Resources\Expected\UI\Presentation\UPF_UIElement_ArrangesCorrectly_WithLayoutTransform.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\Expected\UI\Presentation\PresentationFoundation_CorrectlyDrawsAdornersInsidePopups.png">
+    <None Include="Resources\Expected\UI\Presentation\UPF_Adorner_DrawsCorrectly_WhenInsideOfAPopup.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\Expected\UI\Presentation\PresentationFoundation_CorrectlyDrawsAdorners.png">
+    <None Include="Resources\Expected\UI\Presentation\UPF_Adorner_DrawsCorrectly.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\Expected\UI\Presentation\PresentationFoundation_CorrectlyDrawsTransformedElementsWithShaderEffects.png">
+    <None Include="Resources\Expected\UI\Presentation\UPF_UIElement_DrawsCorrectly_WithEffectAndTransform.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Content\UI\Screens\EffectsUnderTransformTestScreen\EffectsUnderTransformTestScreen.xml">
+    <None Include="Content\UI\Screens\UPF_UIElement_DrawsCorrectly_WithEffectAndTransform\View.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\Expected\UI\Presentation\PresentationFoundation_Popup_LaysOutCorrectlyWhenNestedInsidePopupAndTransformed.png">
+    <None Include="Resources\Expected\UI\Presentation\UPF_Popup_LaidOutCorrectly_WithTransformedPlacementTarget_WhenNestedInsidePopup.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Content\UI\Screens\PopupLayoutWhenNestedAndTransformedTestScreen\PopupLayoutWhenNestedAndTransformedTestScreen.xml">
+    <None Include="Resources\Expected\UI\Presentation\UPF_Popup_LaidOutCorrectly_WhenNestedInsidePopup.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\Expected\UI\Presentation\PresentationFoundation_Popup_LaysOutCorrectlyWhenNestedInsidePopup.png">
+    <None Include="Content\UI\Screens\UPF_Popup_LaidOutCorrectly_WhenNestedInsidePopup\View.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Content\UI\Screens\PopupLayoutWhenNestedTestScreen\PopupLayoutWhenNestedTestScreen.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <Content Include="Content\UI\Screens\PopupWithPopupTargetEffectsTestScreen\PopupWithPopupTargetEffectsTestScreen.xml">
+    <Content Include="Content\UI\Screens\UPF_Popup_DrawsCorrectly_WithPlacementTargetInsidePopupAndEffect\View.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\UI\Screens\PopupWithPopupTargetTestScreen\PopupWithPopupTargetTestScreen.xml">
+    <Content Include="Content\UI\Screens\UPF_Popup_LaidOutCorrectly_WithPlacementTargetInsidePopup\View.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <None Include="Resources\Expected\UI\Presentation\PresentationFoundation_Popup_DrawsCorrectlyWithPopupPlacementTargetAndEffects.png">
+    <None Include="Resources\Expected\UI\Presentation\UPF_Popup_DrawsCorrectly_WithPlacementTargetInsidePopupAndEffect.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\Expected\UI\Presentation\PresentationFoundation_Popup_LaysOutCorrectlyWithPopupPlacementTarget.png">
+    <None Include="Resources\Expected\UI\Presentation\UPF_Popup_LaidOutCorrectly_WithPlacementTargetInsidePopup.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
