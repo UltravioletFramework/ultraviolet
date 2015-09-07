@@ -16,15 +16,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 var xElem = (UIElement)x.Target;
                 var yElem = (UIElement)y.Target;
 
+                if (ReferenceEquals(xElem, yElem))
+                    return 0;
+
                 var xLayoutDepth = (xElem == null) ? 0 : xElem.LayoutDepth;
                 var yLayoutDepth = (yElem == null) ? 0 : yElem.LayoutDepth;
 
                 var depthComparison = yLayoutDepth.CompareTo(xLayoutDepth);
                 if (depthComparison == 0)
                 {
-                    if (ReferenceEquals(x, y))
-                        return 0;
-
                     var xHashCode = (xElem == null) ? 0 : xElem.GetHashCode();
                     var yHashCode = (yElem == null) ? 0 : yElem.GetHashCode();
 

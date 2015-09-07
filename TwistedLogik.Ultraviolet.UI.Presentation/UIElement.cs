@@ -309,8 +309,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         public void Cleanup()
         {
-            var upf = Ultraviolet.GetUI().GetPresentationFoundation();
-            upf.OutOfBandRenderer.Unregister(this);
+            if (RequiredOutOfBandTargets > 0)
+            {
+                var upf = Ultraviolet.GetUI().GetPresentationFoundation();
+                upf.OutOfBandRenderer.Unregister(this);
+            }
 
             ClearAnimations(false);
             ClearTriggeredValues();
@@ -1209,16 +1212,22 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="visualParent">The element's new visual parent.</param>
         internal void ChangeLogicalAndVisualParents(UIElement logicalParent, Visual visualParent)
         {
-            if (this.Parent != null)
-                this.Parent = null;
+            if (this.Parent != logicalParent)
+            {
+                if (this.Parent != null)
+                    this.Parent = null;
 
-            this.Parent = logicalParent;
+                this.Parent = logicalParent;
+            }
 
-            if (this.VisualParent != null)
-                this.VisualParent.RemoveVisualChild(this);
+            if (this.VisualParent != visualParent)
+            {
+                if (this.VisualParent != null)
+                    this.VisualParent.RemoveVisualChild(this);
 
-            if (visualParent != null)
-                visualParent.AddVisualChild(this);
+                if (visualParent != null)
+                    visualParent.AddVisualChild(this);
+            }
         }
 
         /// <summary>
@@ -1227,6 +1236,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="logicalParent">The element's new logical parent.</param>
         internal void ChangeLogicalParent(UIElement logicalParent)
         {
+            if (this.Parent == logicalParent)
+                return;
+
             if (this.Parent != null)
                 this.Parent = null;
 
@@ -1239,6 +1251,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="visualParent">The element's new visual parent.</param>
         internal void ChangeVisualParent(Visual visualParent)
         {
+            if (this.VisualParent == visualParent)
+                return;
+
             if (this.VisualParent != null)
                 this.VisualParent.RemoveVisualChild(this);
 
@@ -1729,7 +1744,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 child.OnAncestorTransformChanged((Boolean)state);
             });
         }
-
+        
         /// <inheritdoc/>
         protected override Visual HitTestCore(Point2D point)
         {
@@ -2584,6 +2599,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         private void CacheView()
         {
+            if (this is PresentationFoundationViewRoot)
+                return;
+
+            var oldView = View;
+
             var logicalParent = LogicalTreeHelper.GetParent(this) as UIElement;
             if (logicalParent != null)
             {
@@ -2601,20 +2621,27 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             else
             {
                 var visualParent = VisualTreeHelper.GetParent(this) as UIElement;
-                if (visualParent == null)
-                    return;
-
-                this.view = null;
-
-                for (var current = visualParent; current != null; current = VisualTreeHelper.GetParent(current) as UIElement)
+                if (visualParent != null)
                 {
-                    if (current.View != null)
+                    this.view = null;
+
+                    for (var current = visualParent; current != null; current = VisualTreeHelper.GetParent(current) as UIElement)
                     {
-                        this.view = current.View;
-                        break;
+                        if (current.View != null)
+                        {
+                            this.view = current.View;
+                            break;
+                        }
                     }
                 }
+                else
+                {
+                    this.view = null;
+                }
             }
+
+            if (oldView != View)
+                OnViewChanged(oldView, View);
         }
 
         /// <summary>
@@ -2689,6 +2716,24 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Occurs when the element's associated view changes.
+        /// </summary>
+        private void OnViewChanged(PresentationFoundationView oldView, PresentationFoundationView newView)
+        {
+            if (oldView == null)
+            {
+                if (newView.LayoutRoot.IsLoaded)
+                {
+                    EnsureOutOfBandRenderTargetsExist();
+                }
+            }
+            else
+            {
+                Cleanup();
+            }
+        }
+
+        /// <summary>
         /// Reloads the element's effect resources.
         /// </summary>
         private void ReloadEffect()
@@ -2751,11 +2796,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 if (requiredOutOfBandTargets == value)
                     return;
 
-                var upf = Ultraviolet.GetUI().GetPresentationFoundation();
-                upf.OutOfBandRenderer.Unregister(this);
+                if (requiredOutOfBandTargets > 0)
+                {
+                    var upf = Ultraviolet.GetUI().GetPresentationFoundation();
+                    upf.OutOfBandRenderer.Unregister(this);
+                }
 
                 requiredOutOfBandTargets = value;
-
                 EnsureOutOfBandRenderTargetsExist();
             }
         }

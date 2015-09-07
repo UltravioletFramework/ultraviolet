@@ -71,12 +71,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 
         /// <inheritdoc/>
         public Boolean Remove(UIElement item)
-            {
+        {
             Contract.Require(item, "element");
 
             if (visualChildren.Remove(item))
             {
-                AddLogicalChild(item);
+                RemoveLogicalChild(item);
                 visualParent.InvalidateMeasure();
                 return true;
             }
@@ -118,7 +118,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// Gets the visual parent of items in the collection.
         /// </summary>
         public UIElement VisualParent
-            {
+        {
             get { return visualParent; }
         }
 
@@ -150,7 +150,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         {
             var uiElement = child as UIElement;
             if (uiElement != null)
-        {
+            {
                 uiElement.Parent = logicalParent;
             }
         }
@@ -163,7 +163,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         {
             var uiElement = child as UIElement;
             if (uiElement != null)
-        {
+            {
                 uiElement.Parent = null;
             }
         }

@@ -102,7 +102,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 currentTarget.NextInternal = additionalTarget;
             }
             
-            registeredElements.Add(weakRef, target);
+            registeredElements.Add(weakRef);
             element.OutOfBandRenderTarget = target;
         }
 
@@ -114,10 +114,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             Contract.Require(element, "element");
             Contract.EnsureNotDisposed(this, Disposed);
-
+            
             foreach (var registeredElement in registeredElements)
             {
-                var weakRefTarget = (UIElement)registeredElement.Key.Target;
+                var weakRefTarget = (UIElement)registeredElement.Target;
                 if (weakRefTarget != element)
                     continue;
 
@@ -129,11 +129,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                     renderTargetPool.Release(current);
                 }
 
-                registeredElements.Remove(registeredElement.Key);
+                registeredElements.Remove(registeredElement);
                 element.OutOfBandRenderTarget = null;
 
-                registeredElement.Key.Target = null;
-                weakReferencePool.Release(registeredElement.Key);
+                registeredElement.Target = null;
+                weakReferencePool.Release(registeredElement);
 
                 break;
             }            
@@ -148,32 +148,46 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             Contract.EnsureNotDisposed(this, Disposed);
 
             var graphics = Ultraviolet.GetGraphics();
-
+            
             try
             {
                 isDrawingRenderTargets = true;
 
-                foreach (var kvp in registeredElements)
-                    kvp.Value.Value.IsReady = false;
-
-                foreach (var kvp in registeredElements)
+                foreach (var registeredElement in registeredElements)
                 {
-                    var element = (UIElement)kvp.Key.Target;
+                    var element = (UIElement)registeredElement.Target;
+                    if (element != null && element.OutOfBandRenderTarget != null)
+                    {
+                        element.OutOfBandRenderTarget.Value.IsReady = false;
+                    }
+
+                    if (element.View != null && !element.View.LayoutRoot.IsLoaded)
+                        viewsNeedingLoading.Add(element.View);
+                }
+
+                foreach (var view in viewsNeedingLoading)
+                {
+                    view.EnsureIsLoaded();
+                }
+                viewsNeedingLoading.Clear();
+
+                registeredElements.Sort(uiElementComparer);
+                foreach (var registeredElement in registeredElements)
+                {
+                    var element = (UIElement)registeredElement.Target;
                     if (element == null)
                     {
-                        deadReferences.Add(kvp.Key);
+                        deadReferences.Add(registeredElement);
                         continue;
                     }
 
                     if (element.View == null)
-                        continue;
-                    
-                    element.View.EnsureIsLoaded();
+                        continue;                    
 
                     var bounds = default(RectangleD);
                     var effect = element.Effect;
 
-                    var rtarget = kvp.Value.Value;
+                    var rtarget = element.OutOfBandRenderTarget.Value;
                     rtarget.ResizeForElement(element, out bounds);
 
                     for (var current = rtarget.Next; current != null; current = current.Next)
@@ -224,7 +238,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             {
                 isDrawingRenderTargets = false;
             }
-            deadReferences.Clear();
+            deadReferences.Clear();            
 
             graphics.SetRenderTarget(null);
             graphics.Clear(Color.Transparent);
@@ -319,11 +333,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         // Object pools.
         private readonly UpfPool<OutOfBandRenderTarget> renderTargetPool;
         private readonly ExpandingPool<WeakReference> weakReferencePool;
-        private readonly List<WeakReference> deadReferences = new List<WeakReference>();
 
         // The collection of registered elements and their render buffers.
-        private readonly SortedDictionary<WeakReference, UpfPool<OutOfBandRenderTarget>.PooledObject> registeredElements =
-            new SortedDictionary<WeakReference, UpfPool<OutOfBandRenderTarget>.PooledObject>(new UIElementComparer());
+        private readonly List<PresentationFoundationView> viewsNeedingLoading = new List<PresentationFoundationView>();
+        private readonly List<WeakReference> deadReferences = new List<WeakReference>();
+        private readonly List<WeakReference> registeredElements = new List<WeakReference>();
+        private readonly UIElementComparer uiElementComparer = new UIElementComparer();
 
         // The drawing context used to render elements.
         private readonly DrawingContext drawingContext;

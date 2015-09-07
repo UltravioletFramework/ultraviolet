@@ -159,7 +159,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 if (this.storyboardInstance != storyboardInstance)
                     return;
 
-                Animate(null, null);
+                ClearAnimation();
             }
 
             /// <inheritdoc/>
