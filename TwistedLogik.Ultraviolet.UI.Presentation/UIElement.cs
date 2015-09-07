@@ -156,6 +156,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="dc">The drawing context that describes the render state of the layout.</param>
         public void Draw(UltravioletTime time, DrawingContext dc)
         {
+            EnsureOutOfBandRenderTargetsExist();
+
             var clip = ClipRectangle;
             if (clip != null)
                 dc.PushClipRectangle(clip.Value);
@@ -307,13 +309,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         public void Cleanup()
         {
-            ClearBindings(false);
+            var upf = Ultraviolet.GetUI().GetPresentationFoundation();
+            upf.OutOfBandRenderer.Unregister(this);
+
             ClearAnimations(false);
             ClearTriggeredValues();
-
-            var upf = Ultraviolet.GetUI().GetPresentationFoundation();
-            if (upf.OutOfBandRenderer.IsRenderedOutOfBand(this))
-                upf.OutOfBandRenderer.Unregister(this);
 
             CleanupStoryboards();
             CleanupCore();
@@ -2499,11 +2499,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var upf = element.Ultraviolet.GetUI().GetPresentationFoundation();
             if (oldValue == null && newValue != null)
             {
-                upf.OutOfBandRenderer.Register(element, newValue.AdditionalRenderTargetsRequired);
+                element.RequiredOutOfBandTargets = Math.Min(1, 1 + newValue.AdditionalRenderTargetsRequired);
             }
             else if (oldValue != null && newValue == null)
             {
-                upf.OutOfBandRenderer.Unregister(element);
+                element.RequiredOutOfBandTargets = 0;
             }
 
             element.ReloadEffect();
@@ -2728,6 +2728,38 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             }
         }
 
+        /// <summary>
+        /// Ensures that this element has been assigned its required out-of-band render targets.
+        /// </summary>
+        private void EnsureOutOfBandRenderTargetsExist()
+        {
+            if (OutOfBandRenderTarget == null && RequiredOutOfBandTargets > 0)
+            {
+                var upf = Ultraviolet.GetUI().GetPresentationFoundation();
+                upf.OutOfBandRenderer.Register(this, Math.Min(1, 1 + RequiredOutOfBandTargets));
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the number of out-of-band render targets required by this element.
+        /// </summary>
+        private Int32 RequiredOutOfBandTargets
+        {
+            get { return requiredOutOfBandTargets; }
+            set
+            {
+                if (requiredOutOfBandTargets == value)
+                    return;
+
+                var upf = Ultraviolet.GetUI().GetPresentationFoundation();
+                upf.OutOfBandRenderer.Unregister(this);
+
+                requiredOutOfBandTargets = value;
+
+                EnsureOutOfBandRenderTargetsExist();
+            }
+        }
+
         // Property values.
         private readonly UltravioletContext uv;
         private readonly UIElementClassCollection classes;
@@ -2760,6 +2792,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         private Boolean isStyling;
         private Boolean isMeasuring;
         private Boolean isArranging;
+        private Int32 requiredOutOfBandTargets;
         
         // The collection of active storyboard instances on this element.
         private readonly Dictionary<Storyboard, UpfPool<StoryboardInstance>.PooledObject> storyboardInstances = 

@@ -101,7 +101,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
                 currentTarget.NextInternal = additionalTarget;
             }
-
+            
             registeredElements.Add(weakRef, target);
             element.OutOfBandRenderTarget = target;
         }
@@ -159,7 +159,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 foreach (var kvp in registeredElements)
                 {
                     var element = (UIElement)kvp.Key.Target;
-                    if (element == null || element.View == null)
+                    if (element == null)
+                    {
+                        deadReferences.Add(kvp.Key);
+                        continue;
+                    }
+
+                    if (element.View == null)
                         continue;
                     
                     element.View.EnsureIsLoaded();
@@ -210,11 +216,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                         rtarget.IsReady = true;
                     }
                 }
+
+                foreach (var deadReference in deadReferences)
+                    registeredElements.Remove(deadReference);
             }
             finally
             {
                 isDrawingRenderTargets = false;
             }
+            deadReferences.Clear();
 
             graphics.SetRenderTarget(null);
             graphics.Clear(Color.Transparent);
@@ -309,6 +319,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         // Object pools.
         private readonly UpfPool<OutOfBandRenderTarget> renderTargetPool;
         private readonly ExpandingPool<WeakReference> weakReferencePool;
+        private readonly List<WeakReference> deadReferences = new List<WeakReference>();
 
         // The collection of registered elements and their render buffers.
         private readonly SortedDictionary<WeakReference, UpfPool<OutOfBandRenderTarget>.PooledObject> registeredElements =
