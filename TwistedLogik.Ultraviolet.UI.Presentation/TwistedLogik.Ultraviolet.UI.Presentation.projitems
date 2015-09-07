@@ -213,8 +213,10 @@
     <Compile Include="$(MSBuildThisFileDirectory)PresentationFoundationFactoryInitializer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)PresentationFoundationInitializer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)PresentationFoundationPerformanceStats.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)PresentationFoundationPool.Assignment.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)PresentationFoundationPool.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UpfPool.IPooledObject.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UpfPoolList.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UpfPool.PooledObject.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UpfPool.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)PresentationFoundationView.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)PresentationFoundationViewResources.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)PresentationFoundationViewRoot.cs" />

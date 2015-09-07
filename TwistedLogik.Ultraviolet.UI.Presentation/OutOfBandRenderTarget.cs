@@ -183,8 +183,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         public OutOfBandRenderTarget Next
         {
+            get { return NextInternal == null ? null : NextInternal.Value; }
+        }
+
+        /// <summary>
+        /// Gets the next target in the render target chain.
+        /// </summary>
+        internal UpfPool<OutOfBandRenderTarget>.PooledObject NextInternal
+        {
             get;
-            internal set;
+            set;
         }
 
         /// <inheritdoc/>

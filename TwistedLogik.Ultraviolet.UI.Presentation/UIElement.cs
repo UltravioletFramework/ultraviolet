@@ -1418,7 +1418,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Gets the out-of-band render target which is currently assigned to this element, if any.
         /// </summary>
-        internal OutOfBandRenderTarget OutOfBandRenderTarget
+        internal UpfPool<OutOfBandRenderTarget>.PooledObject OutOfBandRenderTarget
         {
             get;
             set;
