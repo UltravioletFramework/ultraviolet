@@ -91,9 +91,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Xml\XElementExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Strings.xml" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="$(MSBuildThisFileDirectory)TwistedLogik.Nucleus.Licenses.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

@@ -32,9 +32,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Native\BASS_SAMPLE.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Strings.xml">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </EmbeddedResource>
     <None Include="$(MSBuildThisFileDirectory)TwistedLogik.Ultraviolet.BASS.Licenses.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

@@ -83,15 +83,96 @@
     <None Include="..\TwistedLogik.Public.snk">
       <Link>TwistedLogik.Public.snk</Link>
     </None>
+    <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.OpenGL\Resources\BasicEffect.frag">
+      <Link>Resources\BasicEffect.frag</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.OpenGL\Resources\BasicEffect.vert">
+      <Link>Resources\BasicEffect.vert</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.OpenGL\Resources\BasicEffectColored.frag">
+      <Link>Resources\BasicEffectColored.frag</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.OpenGL\Resources\BasicEffectColored.vert">
+      <Link>Resources\BasicEffectColored.vert</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.OpenGL\Resources\BasicEffectColoredES.frag">
+      <Link>Resources\BasicEffectColoredES.frag</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.OpenGL\Resources\BasicEffectColoredES.vert">
+      <Link>Resources\BasicEffectColoredES.vert</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.OpenGL\Resources\BasicEffectColoredTextured.frag">
+      <Link>Resources\BasicEffectColoredTextured.frag</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.OpenGL\Resources\BasicEffectColoredTextured.vert">
+      <Link>Resources\BasicEffectColoredTextured.vert</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.OpenGL\Resources\BasicEffectColoredTexturedES.frag">
+      <Link>Resources\BasicEffectColoredTexturedES.frag</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.OpenGL\Resources\BasicEffectColoredTexturedES.vert">
+      <Link>Resources\BasicEffectColoredTexturedES.vert</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.OpenGL\Resources\BasicEffectES.frag">
+      <Link>Resources\BasicEffectES.frag</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.OpenGL\Resources\BasicEffectES.vert">
+      <Link>Resources\BasicEffectES.vert</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.OpenGL\Resources\BasicEffectTextured.frag">
+      <Link>Resources\BasicEffectTextured.frag</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.OpenGL\Resources\BasicEffectTextured.vert">
+      <Link>Resources\BasicEffectTextured.vert</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.OpenGL\Resources\BasicEffectTexturedES.frag">
+      <Link>Resources\BasicEffectTexturedES.frag</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.OpenGL\Resources\BasicEffectTexturedES.vert">
+      <Link>Resources\BasicEffectTexturedES.vert</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.OpenGL\Resources\BlurEffect.frag">
+      <Link>Resources\BlurEffect.frag</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.OpenGL\Resources\BlurEffect.vert">
+      <Link>Resources\BlurEffect.vert</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.OpenGL\Resources\BlurEffectES.frag">
+      <Link>Resources\BlurEffectES.frag</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.OpenGL\Resources\BlurEffectES.vert">
+      <Link>Resources\BlurEffectES.vert</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.OpenGL\Resources\SpriteBatchEffect.frag">
+      <Link>Resources\SpriteBatchEffect.frag</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.OpenGL\Resources\SpriteBatchEffect.vert">
+      <Link>Resources\SpriteBatchEffect.vert</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.OpenGL\Resources\SpriteBatchEffectES.frag">
+      <Link>Resources\SpriteBatchEffectES.frag</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.OpenGL\Resources\SpriteBatchEffectES.vert">
+      <Link>Resources\SpriteBatchEffectES.vert</Link>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Resources\Resource.Designer.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.OpenGL\Resources\Strings.xml">
+      <Link>Resources\Strings.xml</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.OpenGL\Resources\uv64.png">
+      <Link>Resources\uv64.png</Link>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="..\TwistedLogik.Ultraviolet.OpenGL\TwistedLogik.Ultraviolet.OpenGL.projitems" Label="Shared" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties ProjectLinkReference="40d272db-90e1-4332-a32f-6effeb44fe87" ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" />
+      <UserProperties ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" ProjectLinkReference="40d272db-90e1-4332-a32f-6effeb44fe87" />
     </VisualStudio>
   </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

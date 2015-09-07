@@ -319,7 +319,4 @@
     </None>
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)uv.ico" />
   </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Strings.xml" />
-  </ItemGroup>
 </Project>

@@ -154,6 +154,11 @@
       <Link>TwistedLogik.Public.snk</Link>
     </None>
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="..\TwistedLogik.Gluon\Resources\Strings.xml">
+      <Link>Resources\Strings.xml</Link>
+    </EmbeddedResource>
+  </ItemGroup>
   <Import Project="..\TwistedLogik.Gluon\TwistedLogik.Gluon.projitems" Label="Shared" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

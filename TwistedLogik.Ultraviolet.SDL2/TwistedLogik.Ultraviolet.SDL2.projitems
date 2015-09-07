@@ -95,7 +95,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)SDL2UltravioletMessages.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Strings.xml" />
     <None Include="$(MSBuildThisFileDirectory)TwistedLogik.Ultraviolet.SDL2.Licenses.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

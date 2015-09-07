@@ -324,29 +324,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)WeakLinkedList.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Controls\Primitives\Templates\HScrollBar.xml" />
-    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Controls\Primitives\Templates\ToggleButton.xml" />
-    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Controls\Primitives\Templates\VScrollBar.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Controls\Templates\Button.xml" />
-    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Controls\Templates\CheckBox.xml" />
-    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Controls\Templates\ComboBox.xml" />
-    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Controls\Templates\ComboBoxItem.xml" />
-    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Controls\Templates\HSlider.xml" />
-    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Controls\Templates\ListBox.xml" />
-    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Controls\Templates\ListBoxItem.xml" />
-    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Controls\Templates\NumericUpDown.xml" />
-    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Controls\Templates\RadioButton.xml" />
-    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Controls\Templates\RepeatButton.xml" />
-    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Controls\Templates\ScrollViewer.xml" />
-    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Controls\Templates\TextBox.xml" />
-    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Controls\Templates\VSlider.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Strings.xml" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="$(MSBuildThisFileDirectory)TwistedLogik.Ultraviolet.Licenses.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
