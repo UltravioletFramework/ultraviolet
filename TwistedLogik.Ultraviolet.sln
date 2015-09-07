@@ -351,8 +351,8 @@ Global
 		{08B2B8D5-152F-45FB-B4EB-8C09010A9908}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{08B2B8D5-152F-45FB-B4EB-8C09010A9908}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{08B2B8D5-152F-45FB-B4EB-8C09010A9908}.Release|Any CPU.Build.0 = Release|Any CPU
-		{08B2B8D5-152F-45FB-B4EB-8C09010A9908}.Signed|Any CPU.ActiveCfg = Release|Any CPU
-		{08B2B8D5-152F-45FB-B4EB-8C09010A9908}.Signed|Any CPU.Build.0 = Release|Any CPU
+		{08B2B8D5-152F-45FB-B4EB-8C09010A9908}.Signed|Any CPU.ActiveCfg = Signed|Any CPU
+		{08B2B8D5-152F-45FB-B4EB-8C09010A9908}.Signed|Any CPU.Build.0 = Signed|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
