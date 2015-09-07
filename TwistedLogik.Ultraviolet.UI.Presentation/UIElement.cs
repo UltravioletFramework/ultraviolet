@@ -282,9 +282,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Update(UltravioletTime)"/>.</param>
         public void Update(UltravioletTime time)
         {
-            foreach (var clock in storyboardClocks)
-                clock.Value.Update(time);
-
             Digest(time);
 
             UpdateCore(time);
@@ -1326,19 +1323,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="storyboard">The storyboard to begin on this element.</param>
         internal void BeginStoryboard(Storyboard storyboard)
         {
-            StoryboardClock existingClock;
+            UpfPool<StoryboardClock>.PooledObject existingClock;
             storyboardClocks.TryGetValue(storyboard, out existingClock);
 
             var clock = StoryboardClockPool.Instance.Retrieve(storyboard);
             storyboardClocks[storyboard] = clock;
 
-            Animate(storyboard, clock, this);
-
-            clock.Start();
+            Animate(storyboard, clock.Value, this);
+            clock.Value.Start();
 
             if (existingClock != null)
             {
-                existingClock.Stop();
+                existingClock.Value.Stop();
                 StoryboardClockPool.Instance.Release(existingClock);
             }
         }
@@ -1349,10 +1345,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="storyboard">The storyboard to stop on this element.</param>
         internal void StopStoryboard(Storyboard storyboard)
         {
-            StoryboardClock clock;
+            UpfPool<StoryboardClock>.PooledObject clock;
             if (storyboardClocks.TryGetValue(storyboard, out clock))
             {
-                clock.Stop();
+                clock.Value.Stop();
                 storyboardClocks.Remove(storyboard);
                 StoryboardClockPool.Instance.Release(clock);
             }
@@ -2626,7 +2622,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var pool = StoryboardClockPool.Instance;
             foreach (var kvp in storyboardClocks)
             {
-                kvp.Value.Stop();
+                kvp.Value.Value.Stop();
                 pool.Release(kvp.Value);
             }
             storyboardClocks.Clear();
@@ -2766,8 +2762,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         private Boolean isArranging;
         
         // The collection of active storyboard clocks on this element.
-        private readonly Dictionary<Storyboard, StoryboardClock> storyboardClocks = 
-            new Dictionary<Storyboard, StoryboardClock>();
+        private readonly Dictionary<Storyboard, UpfPool<StoryboardClock>.PooledObject> storyboardClocks = 
+            new Dictionary<Storyboard, UpfPool<StoryboardClock>.PooledObject>();
 
         // The element's routed event manager.
         private readonly RoutedEventManager routedEventManager = new RoutedEventManager();
