@@ -136,9 +136,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             /// <param name="duration">The animation's duration.</param>
             public void Animate(T value, EasingFunction fn, LoopBehavior loopBehavior, TimeSpan duration)
             {
-                var clock = SimpleClockPool.Instance.Retrieve(loopBehavior, duration);
-                clock.Start();
-                Animate(value, fn, clock);
+                var clock = SimpleClockPool.Instance.Retrieve(this);
+                var clockValue = clock.Value;
+
+                clockValue.SetLoopBehavior(loopBehavior);
+                clockValue.SetDuration(duration);
+                clockValue.Start();
+
+                Animate(value, fn, clockValue);
             }
 
             /// <inheritdoc/>
@@ -735,9 +740,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 if (simpleClock == null)
                     return;
 
-                if (simpleClock.IsPooled)
+                if (simpleClock.PooledObject != null)
                 {
-                    SimpleClockPool.Instance.Release(simpleClock);
+                    SimpleClockPool.Instance.Release(simpleClock.PooledObject);
                     animationClock = null;
                 }
             }

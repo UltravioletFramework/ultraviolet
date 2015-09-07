@@ -1,5 +1,4 @@
 ﻿using System;
-using TwistedLogik.Nucleus.Collections;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
 {
@@ -18,21 +17,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
             this.loopBehavior = loopBehavior;
             this.duration = duration;
         }
-
-        /// <summary>
-        /// Finalizes the object.
-        /// </summary>
-        ~SimpleClock()
-        {
-            var pool = poolref.Target as IPool<SimpleClock>;
-            if (pool != null)
-            {
-                HandleReleased();
-                pool.Release(this);
-                GC.ReRegisterForFinalize(this);
-            }
-        }
-
+        
         /// <inheritdoc/>
         public override LoopBehavior LoopBehavior
         {
@@ -46,34 +31,31 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
         }
 
         /// <summary>
-        /// Called when the clock is retrieved from the clock pool.
+        /// Sets the clock's loop behavior.
         /// </summary>
-        /// <param name="pool">The pool from which the clock was retrieved.</param>
-        /// <param name="loopBehavior">A <see cref="LoopBehavior"/> value specifying the clock's loop behavior.</param>
+        /// <param name="loopBehavior">The clock's loop behavior.</param>
+        internal void SetLoopBehavior(LoopBehavior loopBehavior)
+        {
+            this.loopBehavior = loopBehavior;
+        }
+
+        /// <summary>
+        /// Sets the clock's duration.
+        /// </summary>
         /// <param name="duration">The clock's duration.</param>
-        internal void HandleRetrieved(IPool<SimpleClock> pool, LoopBehavior loopBehavior, TimeSpan duration)
+        internal void SetDuration(TimeSpan duration)
         {
-            this.loopBehavior   = loopBehavior;
-            this.duration       = duration;
-            this.pooled         = true;
-            this.poolref.Target = pool;
+            this.duration = duration;
         }
-
+        
         /// <summary>
-        /// Called when the clock is released back into the clock pool.
+        /// Gets the <see cref="UpfPool{TPooledType}.PooledObject"/> that represents this clock, if the clock
+        /// was retrieved from an internal pool.
         /// </summary>
-        internal void HandleReleased()
+        internal UpfPool<SimpleClock>.PooledObject PooledObject
         {
-            this.pooled         = false;
-            this.poolref.Target = null;
-        }
-
-        /// <summary>
-        /// Gets a value indicating whhether the clock was retrieved from the clock pool.
-        /// </summary>
-        internal Boolean IsPooled
-        {
-            get { return pooled; }
+            get;
+            set;
         }
 
         /// <inheritdoc/>
@@ -85,7 +67,5 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
         // Property values.
         private LoopBehavior loopBehavior;
         private TimeSpan duration;
-        private Boolean pooled;
-        private readonly WeakReference poolref = new WeakReference(null);
     }
 }
