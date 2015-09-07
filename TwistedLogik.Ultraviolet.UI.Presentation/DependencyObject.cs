@@ -549,6 +549,25 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Enlists a dependency property on this object into the specified storyboard instance.
+        /// </summary>
+        /// <param name="dp">A <see cref="DependencyProperty"/> that identifies the dependency property to enlist.</param>
+        /// <param name="storyboardInstance">The <see cref="StoryboardInstance"/> into which to enlist the dependency property.</param>
+        /// <param name="animation">The animation to apply to the dependency property.</param>
+        internal void EnlistDependencyPropertyInStoryboard(DependencyProperty dp, StoryboardInstance storyboardInstance, AnimationBase animation)
+        {
+            Contract.Require(dp, "dp");
+            Contract.Require(storyboardInstance, "storyboardInstance");
+            Contract.Require(animation, "animation");
+
+            if (dp.IsReadOnly)
+                throw new InvalidOperationException(PresentationStrings.DependencyPropertyIsReadOnly.Format(dp.Name));
+            
+            var wrapper = GetDependencyPropertyValue(dp, dp.PropertyType);
+            storyboardInstance.Enlist(wrapper, animation);
+        }
+
+        /// <summary>
         /// Gets a value indicating whether this dependency object was forcibly invalidated during the current digest.
         /// </summary>
         public virtual Boolean WasInvalidatedThisDigest

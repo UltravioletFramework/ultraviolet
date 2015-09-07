@@ -23,16 +23,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
         /// <summary>
         /// Retrieves a clock from the pool.
         /// </summary>
-        /// <param name="storyboard">The storyboard that will be driven by this clock.</param>
+        /// <param name="storyboardInstance">The storyboard instance that will be driven by this clock.</param>
         /// <returns>The clock that was retrieved.</returns>
-        public UpfPool<StoryboardClock>.PooledObject Retrieve(Storyboard storyboard)
+        public UpfPool<StoryboardClock>.PooledObject Retrieve(StoryboardInstance storyboardInstance)
         {
-            Contract.Require(storyboard, "storyboard");
+            Contract.Require(storyboardInstance, "storyboardInstance");
             Contract.EnsureNotDisposed(this, Disposed);
 
-            var clock = pool.Retrieve(storyboard);
+            var clock = pool.Retrieve(storyboardInstance);
 
-            clock.Value.Storyboard = storyboard;
+            clock.Value.StoryboardInstance = storyboardInstance;
             return clock;
         }
 
@@ -45,7 +45,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
             Contract.Require(clock, "clock");
             Contract.EnsureNotDisposed(this, Disposed);
 
-            clock.Value.Storyboard = null;
+            clock.Value.StoryboardInstance.Stop();
+            clock.Value.StoryboardInstance = null;
             pool.Release(clock);
         }
 
@@ -58,7 +59,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
             Contract.Require(clock, "clock");
             Contract.EnsureNotDisposed(this, Disposed);
 
-            clock.Value.Storyboard = null;
+            clock.Value.StoryboardInstance.Stop();
+            clock.Value.StoryboardInstance = null;
             pool.Release(clock);
 
             clock = null;

@@ -25,8 +25,12 @@
     <Compile Include="$(MSBuildThisFileDirectory)Animations\SimpleClockPool.PoolImpl.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Animations\Storyboard.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Animations\StoryboardClock.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Animations\StoryboardInstance.Enlistment.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Animations\StoryboardInstancePool.PoolImpl.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Animations\StoryboardClockPool.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Animations\StoryboardClockPool.PoolImpl.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Animations\StoryboardInstance.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Animations\StoryboardInstancePool.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Animations\StoryboardTarget.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Animations\StoryboardTargetAnimationCollection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Animations\StoryboardTargetAnimationCollection.IEnumerable.cs" />

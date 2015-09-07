@@ -147,6 +147,22 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             }
 
             /// <inheritdoc/>
+            public void BeginStoryboard(AnimationBase animation, StoryboardInstance storyboardInstance)
+            {
+                Animate(animation, storyboardInstance.StoryboardClock);
+                this.storyboardInstance = storyboardInstance;
+            }
+
+            /// <inheritdoc/>
+            public void StopStoryboard(AnimationBase animation, StoryboardInstance storyboardInstance)
+            {
+                if (this.storyboardInstance != storyboardInstance)
+                    return;
+
+                Animate(null, null);
+            }
+
+            /// <inheritdoc/>
             public void Bind(Type dataSourceType, String expression)
             {
                 Contract.Require(dataSourceType, "dataSourceType");
@@ -211,9 +227,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
                 ReleasePooledAnimationClock();
 
-                this.animation       = null;
-                this.animationClock  = null;
-                this.animationEasing = null;
+                this.animation          = null;
+                this.animationClock     = null;
+                this.animationEasing    = null;
+                this.storyboardInstance = null;
 
                 UpdateRequiresDigest(oldValue);
             }
@@ -886,6 +903,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             private T animatedTargetValue;
             private T animatedHandOffValue;
             private EasingFunction animationEasing;
+            private StoryboardInstance storyboardInstance;
         }
     }
 }

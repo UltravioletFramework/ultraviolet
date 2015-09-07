@@ -45,6 +45,20 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         void Animate(AnimationBase animation, Clock clock);
 
         /// <summary>
+        /// Starts the specified storyboard animation on this property.
+        /// </summary>
+        /// <param name="animation">The animation to apply to the value.</param>
+        /// <param name="storyboardInstance">The storyboard instance which is applying the value.</param>
+        void BeginStoryboard(AnimationBase animation, StoryboardInstance storyboardInstance);
+
+        /// <summary>
+        /// Stops the specified storyboard animation in this property.
+        /// </summary>
+        /// <param name="animation">The animation to stop.</param>
+        /// <param name="storyboardInstance">The storyboard instance which applied the value.</param>
+        void StopStoryboard(AnimationBase animation, StoryboardInstance storyboardInstance);
+
+        /// <summary>
         /// Binds the dependency property.
         /// </summary>
         /// <param name="dataSourceType">The type of the data source to which to bind the dependency property.</param>

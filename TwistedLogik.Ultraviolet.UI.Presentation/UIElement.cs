@@ -333,56 +333,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
-        /// Animates this element using the specified storyboard.
-        /// </summary>
-        /// <param name="storyboard">The storyboard being applied to the element.</param>
-        /// <param name="clock">The storyboard clock that tracks playback.</param>
-        /// <param name="root">The root element to which the storyboard is being applied.</param>
-        public void Animate(Storyboard storyboard, StoryboardClock clock, UIElement root)
-        {
-            Contract.Require(storyboard, "storyboard");
-            Contract.Require(clock, "clock");
-            Contract.Require(root, "root");
-
-            foreach (var target in storyboard.Targets)
-            {
-                var targetAppliesToElement = false;
-                if (target.Selector == null)
-                {
-                    if (this == root)
-                    {
-                        targetAppliesToElement = true;
-                    }
-                }
-                else
-                {
-                    targetAppliesToElement = target.Selector.MatchesElement(this, root);
-                }
-
-                if (targetAppliesToElement)
-                {
-                    foreach (var animation in target.Animations)
-                    {
-                        var propertyName = animation.Key.PropertyName;
-
-                        var dpSource = animation.Key.NavigationExpression.HasValue ? 
-                            animation.Key.NavigationExpression.Value.ApplyExpression(Ultraviolet, this) : this;
-                        if (dpSource != null)
-                        {
-                            var dp = DependencyProperty.FindByName(Ultraviolet, dpSource, propertyName.Owner, propertyName.Name);
-                            if (dp != null)
-                            {
-                                dpSource.Animate(dp, animation.Value, clock);
-                            }
-                        }
-                    }
-                }
-            }
-
-            AnimateCore(storyboard, clock, root);
-        }
-
-        /// <summary>
         /// Applies the specified style sheet to this element.
         /// </summary>
         /// <param name="styleSheet">The style sheet to apply to this element.</param>
@@ -1326,18 +1276,22 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="storyboard">The storyboard to begin on this element.</param>
         internal void BeginStoryboard(Storyboard storyboard)
         {
-            UpfPool<StoryboardClock>.PooledObject existingClock;
-            storyboardClocks.TryGetValue(storyboard, out existingClock);
+            UpfPool<StoryboardInstance>.PooledObject existingInstance;
+            storyboardInstances.TryGetValue(storyboard, out existingInstance);
+            
+            var storyboardInstance = StoryboardInstancePool.Instance.Retrieve(this);
+            var storyboardClock = StoryboardClockPool.Instance.Retrieve(storyboardInstance.Value);
+            storyboardInstance.Value.AssociateWith(storyboard, storyboardClock, this);
 
-            var clock = StoryboardClockPool.Instance.Retrieve(storyboard);
-            storyboardClocks[storyboard] = clock;
+            storyboardInstances[storyboard] = storyboardInstance;
 
-            Animate(storyboard, clock.Value, this);
-            clock.Value.Start();
+            Animate(storyboardInstance.Value);
+            storyboardInstance.Value.Start();
 
-            if (existingClock != null)
+            if (existingInstance != null)
             {
-                StoryboardClockPool.Instance.Release(existingClock);
+                existingInstance.Value.Stop();
+                StoryboardInstancePool.Instance.Release(existingInstance);
             }
         }
 
@@ -1347,14 +1301,64 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="storyboard">The storyboard to stop on this element.</param>
         internal void StopStoryboard(Storyboard storyboard)
         {
-            UpfPool<StoryboardClock>.PooledObject clock;
-            if (storyboardClocks.TryGetValue(storyboard, out clock))
+            UpfPool<StoryboardInstance>.PooledObject storyboardInstance;
+            if (storyboardInstances.TryGetValue(storyboard, out storyboardInstance))
             {
-                storyboardClocks.Remove(storyboard);
-                StoryboardClockPool.Instance.Release(clock);
+                storyboardInstance.Value.Stop();
+                StoryboardInstancePool.Instance.Release(storyboardInstance);
+
+                storyboardInstances.Remove(storyboard);
             }
         }
-        
+
+        /// <summary>
+        /// Animates this element using the specified storyboard.
+        /// </summary>
+        /// <param name="storyboard">The storyboard being applied to the element.</param>
+        /// <param name="clock">The storyboard clock that tracks playback.</param>
+        /// <param name="root">The root element to which the storyboard is being applied.</param>
+        internal void Animate(StoryboardInstance storyboardInstance)
+        {
+            Contract.Require(storyboardInstance, "storyboardInstance");
+
+            foreach (var target in storyboardInstance.Storyboard.Targets)
+            {
+                var targetAppliesToElement = false;
+                if (target.Selector == null)
+                {
+                    if (this == storyboardInstance.Target)
+                    {
+                        targetAppliesToElement = true;
+                    }
+                }
+                else
+                {
+                    targetAppliesToElement = target.Selector.MatchesElement(this, storyboardInstance.Target);
+                }
+
+                if (targetAppliesToElement)
+                {
+                    foreach (var animation in target.Animations)
+                    {
+                        var propertyName = animation.Key.PropertyName;
+
+                        var dpSource = animation.Key.NavigationExpression.HasValue ?
+                            animation.Key.NavigationExpression.Value.ApplyExpression(Ultraviolet, this) : this;
+                        if (dpSource != null)
+                        {
+                            var dp = DependencyProperty.FindByName(Ultraviolet, dpSource, propertyName.Owner, propertyName.Name);
+                            if (dp != null)
+                            {
+                                EnlistDependencyPropertyInStoryboard(dp, storyboardInstance, animation.Value);
+                            }
+                        }
+                    }
+                }
+            }
+
+            AnimateCore(storyboardInstance);
+        }
+
         /// <summary>
         /// Gets the transformation matrix which is passed into the element's sprite batch prior to rendering the element.
         /// </summary>
@@ -1943,10 +1947,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// When overridden in a derived class, animates this element using the specified storyboard.
         /// </summary>
-        /// <param name="storyboard">The storyboard being applied to the element.</param>
-        /// <param name="clock">The storyboard clock that tracks playback.</param>
-        /// <param name="root">The root element to which the storyboard is being applied.</param>
-        protected virtual void AnimateCore(Storyboard storyboard, StoryboardClock clock, UIElement root)
+        /// <param name="storyboardInstance">The storyboard instance being applied to the element.</param>
+        protected virtual void AnimateCore(StoryboardInstance storyboardInstance)
         {
             var children = VisualTreeHelper.GetChildrenCount(this);
             for (int i = 0; i < children; i++)
@@ -1954,7 +1956,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 var child = VisualTreeHelper.GetChild(this, i) as UIElement;
                 if (child != null)
                 {
-                    child.Animate(storyboard, clock, root);
+                    child.Animate(storyboardInstance);
                 }
             }
         }
@@ -2620,11 +2622,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         private void CleanupStoryboards()
         {
-            foreach (var kvp in storyboardClocks)
-            {
-                StoryboardClockPool.Instance.Release(kvp.Value);
-            }
-            storyboardClocks.Clear();
+            foreach (var kvp in storyboardInstances)
+                StoryboardInstancePool.Instance.Release(kvp.Value);
+
+            storyboardInstances.Clear();
         }
 
         /// <summary>
@@ -2760,9 +2761,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         private Boolean isMeasuring;
         private Boolean isArranging;
         
-        // The collection of active storyboard clocks on this element.
-        private readonly Dictionary<Storyboard, UpfPool<StoryboardClock>.PooledObject> storyboardClocks = 
-            new Dictionary<Storyboard, UpfPool<StoryboardClock>.PooledObject>();
+        // The collection of active storyboard instances on this element.
+        private readonly Dictionary<Storyboard, UpfPool<StoryboardInstance>.PooledObject> storyboardInstances = 
+            new Dictionary<Storyboard, UpfPool<StoryboardInstance>.PooledObject>();
 
         // The element's routed event manager.
         private readonly RoutedEventManager routedEventManager = new RoutedEventManager();

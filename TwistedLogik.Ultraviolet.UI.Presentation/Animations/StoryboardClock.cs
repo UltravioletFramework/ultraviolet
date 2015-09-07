@@ -29,6 +29,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
         /// </summary>
         public Storyboard Storyboard
         {
+            get { return StoryboardInstance == null ? null : StoryboardInstance.Storyboard; }
+        }
+
+        /// <summary>
+        /// Gets the clock's associated storyboard instance.
+        /// </summary>
+        public StoryboardInstance StoryboardInstance
+        {
             get;
             internal set;
         }
@@ -36,7 +44,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
         /// <inheritdoc/>
         protected override Boolean IsValid
         {
-            get { return Storyboard != null; }
+            get { return StoryboardInstance != null; }
         }
     }
 }
