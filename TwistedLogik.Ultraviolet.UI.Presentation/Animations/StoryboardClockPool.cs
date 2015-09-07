@@ -6,7 +6,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
     /// <summary>
     /// Represents the Presentation Foundation's internal pool of <see cref="StoryboardClock"/> objects.
     /// </summary>
-    internal class StoryboardClockPool : UltravioletResource
+    internal partial class StoryboardClockPool : UltravioletResource
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="StoryboardClockPool"/> class.
@@ -17,7 +17,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
         {
             uv.GetUI().Updating += StoryboardClockPool_Updating;
 
-            this.pool = new UpfPool<StoryboardClock>(uv, 32, 256, () => new StoryboardClock());
+            this.pool = new PoolImpl(uv, 32, 256, () => new StoryboardClock());
         }
 
         /// <summary>
@@ -28,6 +28,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
         public UpfPool<StoryboardClock>.PooledObject Retrieve(Storyboard storyboard)
         {
             Contract.Require(storyboard, "storyboard");
+            Contract.EnsureNotDisposed(this, Disposed);
 
             var clock = pool.Retrieve(storyboard);
 
@@ -42,6 +43,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
         public void Release(UpfPool<StoryboardClock>.PooledObject clock)
         {
             Contract.Require(clock, "clock");
+            Contract.EnsureNotDisposed(this, Disposed);
 
             clock.Value.Storyboard = null;
             pool.Release(clock);
@@ -54,6 +56,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
         public void ReleaseRef(ref UpfPool<StoryboardClock>.PooledObject clock)
         {
             Contract.Require(clock, "clock");
+            Contract.EnsureNotDisposed(this, Disposed);
 
             clock.Value.Storyboard = null;
             pool.Release(clock);
@@ -75,6 +78,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
             if (disposing && !Ultraviolet.Disposed)
             {
                 Ultraviolet.GetUI().Updating -= StoryboardClockPool_Updating;
+
+                SafeDispose.DisposeRef(ref pool);
             }
 
             base.Dispose(disposing);

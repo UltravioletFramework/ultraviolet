@@ -50,15 +50,6 @@ namespace TwistedLogik.Ultraviolet.UI
         }
 
         /// <summary>
-        /// Cleans up the view and its elements.
-        /// </summary>
-        /// <remarks>The <see cref="Cleanup()"/> method releases any internal resources which the view
-        /// and its elements may be holding, allowing them to be reused by the Presentation Foundation.
-        /// The view remains usable after a call to this method, but certain state values (such as
-        /// animations, dependency property values, etc.) may be reset.</remarks>
-        public abstract void Cleanup();
-
-        /// <summary>
         /// Draws the view.
         /// </summary>
         /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Draw(UltravioletTime)"/>.</param>
@@ -343,6 +334,16 @@ namespace TwistedLogik.Ultraviolet.UI
         {
             get { return Ultraviolet.GetPlatform().Displays.PrimaryDisplay; }
         }
+
+        /// <summary>
+        /// Occurs when the view is being opened.
+        /// </summary>
+        protected internal abstract void OnOpened();
+
+        /// <summary>
+        /// Occurs when the view is being closed.
+        /// </summary>
+        protected internal abstract void OnClosed();
 
         /// <summary>
         /// Called when the view is focused.

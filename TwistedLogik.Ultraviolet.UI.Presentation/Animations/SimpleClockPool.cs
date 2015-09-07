@@ -6,7 +6,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
     /// <summary>
     /// Represents a pool of <see cref="SimpleClock"/> instances.
     /// </summary>
-    internal class SimpleClockPool : UltravioletResource
+    internal partial class SimpleClockPool : UltravioletResource
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="SimpleClockPool"/> class.
@@ -17,7 +17,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
         {
             uv.GetUI().Updating += SimpleClockPool_Updating;
 
-            this.pool = new UpfPool<SimpleClock>(uv, 32, 256, () => new SimpleClock(LoopBehavior.None, TimeSpan.Zero));
+            this.pool = new PoolImpl(uv, 32, 256, () => new SimpleClock(LoopBehavior.None, TimeSpan.Zero));
         }
 
         /// <summary>
@@ -27,6 +27,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
         /// <returns>The clock that was retrieved.</returns>
         public UpfPool<SimpleClock>.PooledObject Retrieve(Object owner)
         {
+            Contract.EnsureNotDisposed(this, Disposed);
+
             var clock = pool.Retrieve(owner);
             var clockValue = clock.Value;
             
@@ -41,6 +43,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
         public void Release(UpfPool<SimpleClock>.PooledObject clock)
         {
             Contract.Require(clock, "clock");
+            Contract.EnsureNotDisposed(this, Disposed);
 
             clock.Value.PooledObject = null;
             pool.Release(clock);
@@ -53,6 +56,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
         public void ReleaseRef(ref UpfPool<SimpleClock>.PooledObject clock)
         {
             Contract.Require(clock, "clock");
+            Contract.EnsureNotDisposed(this, Disposed);
 
             clock.Value.PooledObject = null;
             pool.Release(clock);
@@ -74,6 +78,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
             if (disposing && !Ultraviolet.Disposed)
             {
                 Ultraviolet.GetUI().Updating -= SimpleClockPool_Updating;
+
+                SafeDispose.DisposeRef(ref pool);
             }
 
             base.Dispose(disposing);

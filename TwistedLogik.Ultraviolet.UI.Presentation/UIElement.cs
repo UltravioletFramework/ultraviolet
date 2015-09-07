@@ -310,10 +310,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             ClearBindings(false);
             ClearAnimations(false);
             ClearTriggeredValues();
+
+            var upf = Ultraviolet.GetUI().GetPresentationFoundation();
+            if (upf.OutOfBandRenderer.IsRenderedOutOfBand(this))
+                upf.OutOfBandRenderer.Unregister(this);
+
             CleanupStoryboards();
             CleanupCore();
-
-            Ultraviolet.GetUI().GetPresentationFoundation().OutOfBandRenderer.Unregister(this);
         }
 
         /// <summary>
@@ -1334,7 +1337,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             if (existingClock != null)
             {
-                existingClock.Value.Stop();
                 StoryboardClockPool.Instance.Release(existingClock);
             }
         }
@@ -1348,7 +1350,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             UpfPool<StoryboardClock>.PooledObject clock;
             if (storyboardClocks.TryGetValue(storyboard, out clock))
             {
-                clock.Value.Stop();
                 storyboardClocks.Remove(storyboard);
                 StoryboardClockPool.Instance.Release(clock);
             }
@@ -2619,11 +2620,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         private void CleanupStoryboards()
         {
-            var pool = StoryboardClockPool.Instance;
             foreach (var kvp in storyboardClocks)
             {
-                kvp.Value.Value.Stop();
-                pool.Release(kvp.Value);
+                StoryboardClockPool.Instance.Release(kvp.Value);
             }
             storyboardClocks.Clear();
         }

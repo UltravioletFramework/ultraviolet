@@ -22,9 +22,11 @@
     <Compile Include="$(MSBuildThisFileDirectory)Animations\NamespaceDoc.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Animations\SimpleClock.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Animations\SimpleClockPool.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Animations\SimpleClockPool.PoolImpl.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Animations\Storyboard.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Animations\StoryboardClock.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Animations\StoryboardClockPool.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Animations\StoryboardClockPool.PoolImpl.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Animations\StoryboardTarget.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Animations\StoryboardTargetAnimationCollection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Animations\StoryboardTargetAnimationCollection.IEnumerable.cs" />

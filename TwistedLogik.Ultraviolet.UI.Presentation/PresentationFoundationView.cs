@@ -119,13 +119,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             get { return "TwistedLogik.Ultraviolet.UI.Presentation.CompiledExpressions"; }
         }
-
-        /// <inheritdoc/>
-        public override void Cleanup()
-        {
-            layoutRoot.Cleanup();
-        }
-
+        
         /// <inheritdoc/>
         public override void Draw(UltravioletTime time, SpriteBatch spriteBatch)
         {
@@ -655,6 +649,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         internal PopupQueue Popups
         {
             get { return popupQueue; }
+        }
+
+        /// <inheritdoc/>
+        protected override void OnOpened()
+        {
+
+        }
+
+        /// <inheritdoc/>
+        protected override void OnClosed()
+        {
+            layoutRoot.Cleanup();
         }
 
         /// <inheritdoc/>

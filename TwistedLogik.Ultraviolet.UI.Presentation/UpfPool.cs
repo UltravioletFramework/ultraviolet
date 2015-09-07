@@ -38,7 +38,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 var poolObject = new PooledObject(allocator());
                 AvailableAddLast(poolObject);
             }
-        }
+        }        
 
         /// <summary>
         /// Retrieves an object from the pool and assigns it to the specified owner.
@@ -65,6 +65,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             }
 
             @object.Assign(owner);
+            OnInitializingObject(@object.Value);
 
             return (PooledObject)@object;
         }
@@ -83,6 +84,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 return;
 
             ActiveRemove(pooledObject);
+            OnCleaningUpObject(pooledObject.Value);
             AvailableAddLast(pooledObject);
         }
 
@@ -171,6 +173,24 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             available = 0;
 
             base.Dispose(disposing);
+        }
+
+        /// <summary>
+        /// Called when an object is being retrieved from the pool.
+        /// </summary>
+        /// <param name="@object">The object which is being retrieved from the pool.</param>
+        protected virtual void OnInitializingObject(TPooledType @object)
+        {
+
+        }
+
+        /// <summary>
+        /// Called when an object is being returned to the pool.
+        /// </summary>
+        /// <param name="@object">The object which is being returned to the pool.</param>
+        protected virtual void OnCleaningUpObject(TPooledType @object)
+        {
+
         }
 
         /// <summary>
