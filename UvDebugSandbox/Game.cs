@@ -47,8 +47,19 @@ namespace UvDebugSandbox
             {
                 game.compileContent = args.Contains("-compile:content");
                 game.compileExpressions = args.Contains("-compile:expressions");
+                
+                if (game.ShouldRunInServiceMode())
+                {
+                    AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
+                }
+
                 game.Run();
             }
+        }
+
+        private static void CurrentDomain_UnhandledException(Object sender, UnhandledExceptionEventArgs e)
+        {
+            System.Diagnostics.Debugger.Launch();
         }
 
         /// <summary>

@@ -239,7 +239,8 @@
   <ItemGroup />
   <Import Project="..\UvDebugSandbox\UvDebugSandbox.projitems" Label="Shared" />
   <PropertyGroup>
-    <PostBuildEvent>cd "$(TargetDir)"
+    <PostBuildEvent>if $(ConfigurationName)==Signed exit
+cd "$(TargetDir)"
 start "" /wait UvDebugSandbox.exe -compile:content -compile:expressions</PostBuildEvent>
   </PropertyGroup>
 </Project>
