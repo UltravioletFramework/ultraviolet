@@ -12,7 +12,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             /// <summary>
             /// Initializes a new instance of the <see cref="Assignment"/> class.
             /// </summary>
-            /// <param name="@object">The pooled object which is being assigned.</param>
+            /// <param name="object">The pooled object which is being assigned.</param>
             public Assignment(TPooledType @object)
             {
                 this.Owner = new WeakReference(null);
