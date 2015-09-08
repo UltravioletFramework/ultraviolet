@@ -152,7 +152,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                     kvp.Value.ClearStyledValue();
                 }
             }
-            OnClearingStyles();
+
+            if (attachedTriggers != null)
+            {
+                foreach (var trigger in attachedTriggers)
+                {
+                    trigger.DetachInternal(this, false);
+                }
+                attachedTriggers.Clear();
+            }
         }
 
         /// <summary>
@@ -167,7 +175,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                     kvp.Value.ClearTriggeredValue();
                 }
             }
-            OnClearingTriggers();
         }
 
         /// <summary>
@@ -549,6 +556,30 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Attaches a trigger to this object.
+        /// </summary>
+        /// <param name="trigger">The trigger to attach to this object.</param>
+        internal void AttachTrigger(Trigger trigger)
+        {
+            if (attachedTriggers == null)
+                attachedTriggers = new List<Trigger>();
+
+            attachedTriggers.Add(trigger);
+        }
+
+        /// <summary>
+        /// Detaches a trigger from this object.
+        /// </summary>
+        /// <param name="trigger">The trigger to detach from this object.</param>
+        internal void DetachTrigger(Trigger trigger)
+        {
+            if (attachedTriggers == null)
+                throw new InvalidOperationException();
+
+            attachedTriggers.Remove(trigger);
+        }
+        
+        /// <summary>
         /// Enlists a dependency property on this object into the specified storyboard instance.
         /// </summary>
         /// <param name="dp">A <see cref="DependencyProperty"/> that identifies the dependency property to enlist.</param>
@@ -635,17 +666,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             get { return null; }
         }
-
-        /// <summary>
-        /// Occurs when the dependency object is clearing its styles.
-        /// </summary>
-        internal event UpfEventHandler ClearingStyles;
-
-        /// <summary>
-        /// Occurs when the dependency object is clearing its triggers.
-        /// </summary>
-        internal event UpfEventHandler ClearingTriggers;
-
+        
         /// <summary>
         /// Occurs when the value of one of the object's dependency properties changes.
         /// </summary>
@@ -815,30 +836,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 digestedDependencyProperties.Remove(value);
             }
         }
-
-        /// <summary>
-        /// Raises the <see cref="ClearingStyles"/> event.
-        /// </summary>
-        private void OnClearingStyles()
-        {
-            var temp = ClearingStyles;
-            if (temp != null)
-            {
-                temp(this);
-            }
-        }
-
-        /// <summary>
-        /// Raises the <see cref="ClearingTriggers"/> event.
-        /// </summary>
-        private void OnClearingTriggers()
-        {
-            var temp = ClearingTriggers;
-            if (temp != null)
-            {
-                temp(this);
-            }
-        }
+        
+        // The list of attached triggers.
+        private List<Trigger> attachedTriggers;
 
         // The list of values for this object's dependency properties.
         private readonly Dictionary<Int64, IDependencyPropertyValue> dependencyPropertyValues =

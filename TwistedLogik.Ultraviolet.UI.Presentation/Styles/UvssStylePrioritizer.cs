@@ -87,7 +87,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
                 }
 
                 if (target != null)
-                    kvp.Value.Trigger.Attach(target);
+                    kvp.Value.Trigger.AttachInternal(target, true);
             }
 
             Reset();
