@@ -10,6 +10,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using TwistedLogik.Nucleus;
 using TwistedLogik.Nucleus.Messages;
+using TwistedLogik.Ultraviolet.Platform;
 using TwistedLogik.Ultraviolet.UI;
 
 namespace TwistedLogik.Ultraviolet
@@ -29,11 +30,19 @@ namespace TwistedLogik.Ultraviolet
     public delegate void UltravioletContextEventHandler(UltravioletContext uv);
 
     /// <summary>
-    /// Represents the method that is called when an Ultraviolet context draw is about to draw the current scene.
+    /// Represents the method that is called when an Ultraviolet context is about to draw the current scene.
     /// </summary>
     /// <param name="uv">The Ultraviolet context.</param>
     /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Draw(UltravioletTime)"/>.</param>
     public delegate void UltravioletContextDrawEventHandler(UltravioletContext uv, UltravioletTime time);
+
+    /// <summary>
+    /// Represents the method that is called when an Ultraviolet context has drawn or is about to draw a particular window.
+    /// </summary>
+    /// <param name="uv">The Ultraviolet context.</param>
+    /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Draw(UltravioletTime)"/>.</param>
+    /// <param name="window">The window that was drawn or is about to be drawn.</param>
+    public delegate void UltravioletContextWindowDrawEventHandler(UltravioletContext uv, UltravioletTime time, IUltravioletWindow window);
 
     /// <summary>
     /// Represents the method that is called when an Ultraviolet context updates the application state.
@@ -49,8 +58,13 @@ namespace TwistedLogik.Ultraviolet
         IMessageSubscriber<UltravioletMessageID>,
         IDisposable
     {
+        /// <summary>
+        /// Contains native method declarations.
+        /// </summary>
         private static class Native
         {
+            #region Native Methods
+
             [StructLayout(LayoutKind.Sequential)]
             public struct utsname
             {
@@ -64,6 +78,8 @@ namespace TwistedLogik.Ultraviolet
 
             [DllImport("libc")]
             public static extern unsafe int uname(IntPtr buf);
+
+            #endregion
         }
 
         /// <summary>
@@ -153,6 +169,22 @@ namespace TwistedLogik.Ultraviolet
         public virtual void UpdateSuspended()
         {
 
+        }
+
+        /// <summary>
+        /// Called when a new frame is started.
+        /// </summary>
+        public void HandleFrameStart()
+        {
+            OnFrameStart();
+        }
+
+        /// <summary>
+        /// Called when a frame is completed.
+        /// </summary>
+        public void HandleFrameEnd()
+        {
+            OnFrameEnd();
         }
 
         /// <summary>
@@ -587,10 +619,30 @@ namespace TwistedLogik.Ultraviolet
         public static event EventHandler ContextInitialized;
 
         /// <summary>
+        /// Occurs when a new frame is started.
+        /// </summary>
+        public event UltravioletContextEventHandler FrameStart;
+
+        /// <summary>
+        /// Occurs when a frame is completed.
+        /// </summary>
+        public event UltravioletContextEventHandler FrameEnd;
+
+        /// <summary>
         /// Occurs when the context is preparing to draw the current scene. This event is called
         /// before the context associates itself to any windows.
         /// </summary>
         public event UltravioletContextDrawEventHandler Drawing;
+
+        /// <summary>
+        /// Occurs when the context is preparing to draw a particular window.
+        /// </summary>
+        public event UltravioletContextWindowDrawEventHandler WindowDrawing;
+
+        /// <summary>
+        /// Occurs after the context has drawn a particular window.
+        /// </summary>
+        public event UltravioletContextWindowDrawEventHandler WindowDrawn;
 
         /// <summary>
         /// Occurs when the context is about to update the state of its subsystems.
@@ -749,6 +801,30 @@ namespace TwistedLogik.Ultraviolet
         }
 
         /// <summary>
+        /// Raises the <see cref="FrameStart"/> event.
+        /// </summary>
+        protected virtual void OnFrameStart()
+        {
+            var temp = FrameStart;
+            if (temp != null)
+            {
+                temp(this);
+            }
+        }
+
+        /// <summary>
+        /// Raises the <see cref="FrameEnd"/> event.
+        /// </summary>
+        protected virtual void OnFrameEnd()
+        {
+            var temp = FrameEnd;
+            if (temp != null)
+            {
+                temp(this);
+            }
+        }
+
+        /// <summary>
         /// Raises the <see cref="Drawing"/> event.
         /// </summary>
         /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Draw(UltravioletTime)"/>.</param>
@@ -758,6 +834,34 @@ namespace TwistedLogik.Ultraviolet
             if (temp != null)
             {
                 temp(this, time);
+            }
+        }
+
+        /// <summary>
+        /// Raises the <see cref="WindowDrawing"/> event.
+        /// </summary>
+        /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Draw(UltravioletTime)"/>.</param>
+        /// <param name="window">The window that is about to be drawn.</param>
+        protected virtual void OnWindowDrawing(UltravioletTime time, IUltravioletWindow window)
+        {
+            var temp = WindowDrawing;
+            if (temp != null)
+            {
+                temp(this, time, window);
+            }
+        }
+
+        /// <summary>
+        /// Raises the <see cref="WindowDrawn"/> event.
+        /// </summary>
+        /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Draw(UltravioletTime)"/>.</param>
+        /// <param name="window">The window that was just drawn.</param>
+        protected virtual void OnWindowDrawn(UltravioletTime time, IUltravioletWindow window)
+        {
+            var temp = WindowDrawn;
+            if (temp != null)
+            {
+                temp(this, time, window);
             }
         }
 

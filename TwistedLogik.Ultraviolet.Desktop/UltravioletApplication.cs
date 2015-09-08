@@ -244,6 +244,8 @@ namespace TwistedLogik.Ultraviolet
 
                     uv.Updating -= uv_Updating;
                     uv.Shutdown -= uv_Shutdown;
+                    uv.WindowDrawing -= uv_WindowDrawing;
+                    uv.WindowDrawn -= uv_WindowDrawn;
 
                     hostcore = null;
                 }
@@ -289,6 +291,26 @@ namespace TwistedLogik.Ultraviolet
         /// </summary>
         /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Draw(UltravioletTime)"/>.</param>
         protected virtual void OnDrawing(UltravioletTime time)
+        {
+
+        }
+
+        /// <summary>
+        /// Called when one of the application's windows is about to be drawn.
+        /// </summary>
+        /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Draw(UltravioletTime)"/>.</param>
+        /// <param name="window">The window that is about to be drawn.</param>
+        protected virtual void OnWindowDrawing(UltravioletTime time, IUltravioletWindow window)
+        {
+
+        }
+
+        /// <summary>
+        /// Called after one of the application's windows has been drawn.
+        /// </summary>
+        /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Draw(UltravioletTime)"/>.</param>
+        /// <param name="window">The window that was just drawn.</param>
+        protected virtual void OnWindowDrawn(UltravioletTime time, IUltravioletWindow window)
         {
 
         }
@@ -420,6 +442,8 @@ namespace TwistedLogik.Ultraviolet
             this.uv.Messages.Subscribe(this, UltravioletMessages.Quit);
             this.uv.Updating += uv_Updating;
             this.uv.Shutdown += uv_Shutdown;
+            this.uv.WindowDrawing += uv_WindowDrawing;
+            this.uv.WindowDrawn += uv_WindowDrawn;
 
             this.uv.GetPlatform().Windows.PrimaryWindowChanging += uv_PrimaryWindowChanging;
             this.uv.GetPlatform().Windows.PrimaryWindowChanged  += uv_PrimaryWindowChanged;
@@ -535,6 +559,22 @@ namespace TwistedLogik.Ultraviolet
         private void uv_Shutdown(UltravioletContext uv)
         {
             OnShutdown();
+        }
+
+        /// <summary>
+        /// Handles the Ultraviolet context's <see cref="UltravioletContext.WindowDrawing"/> event.
+        /// </summary>
+        private void uv_WindowDrawing(UltravioletContext uv, UltravioletTime time, IUltravioletWindow window)
+        {
+            OnWindowDrawing(time, window);
+        }
+
+        /// <summary>
+        /// Handles the Ultraviolet context's <see cref="UltravioletContext.WindowDrawn"/> event.
+        /// </summary>
+        private void uv_WindowDrawn(UltravioletContext uv, UltravioletTime time, IUltravioletWindow window)
+        {
+            OnWindowDrawn(time, window);
         }
 
         // Property values.

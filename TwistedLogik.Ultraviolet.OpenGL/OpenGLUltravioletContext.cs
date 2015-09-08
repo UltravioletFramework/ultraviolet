@@ -170,7 +170,13 @@ namespace TwistedLogik.Ultraviolet.OpenGL
                     oglgfx.SetViewport(new Viewport(0, 0, size.Width, size.Height));
                     oglgfx.Clear(Color.CornflowerBlue, 1.0, 0);
 
+                    OnWindowDrawing(time, window);
+
                     windowInfo.Draw(time);
+
+                    OnWindowDrawn(time, window);
+
+                    windowInfo.Swap();
                 }
 
                 windowInfo.DesignateCurrent(null, glcontext);

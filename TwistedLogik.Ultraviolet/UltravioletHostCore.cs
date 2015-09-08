@@ -63,6 +63,8 @@ namespace TwistedLogik.Ultraviolet
                     tickTimer.Restart();
                     tickElapsed -= targetElapsedTime.TotalMilliseconds * (int)(tickElapsed / targetElapsedTime.TotalMilliseconds);
 
+                    uv.HandleFrameStart();
+
                     const Double CatchUpThreshold = 1.05;
                     if (frameElapsed > 0 && frameElapsed > targetElapsedTime.TotalMilliseconds * CatchUpThreshold)
                     {
@@ -106,6 +108,8 @@ namespace TwistedLogik.Ultraviolet
                     var uvTimeDraw = timeTrackerDraw.Increment(targetElapsedTime, isRunningSlowly);
                     uv.Draw(uvTimeDraw);
 
+                    uv.HandleFrameEnd();
+
                     frameElapsed = frameTimer.Elapsed.TotalMilliseconds;
                 }
             }
@@ -113,6 +117,8 @@ namespace TwistedLogik.Ultraviolet
             {
                 var time = tickTimer.Elapsed.TotalMilliseconds;
                 tickTimer.Restart();
+
+                uv.HandleFrameStart();
 
                 var uvTimeDelta  = TimeSpan.FromTicks((long)(time * TimeSpan.TicksPerMillisecond));
                 var uvTimeUpdate = timeTrackerUpdate.Increment(uvTimeDelta, false);
@@ -123,6 +129,8 @@ namespace TwistedLogik.Ultraviolet
 
                 var uvTimeDraw = uvTimeUpdate;
                 uv.Draw(uvTimeDraw);
+
+                uv.HandleFrameEnd();
             }
         }
 

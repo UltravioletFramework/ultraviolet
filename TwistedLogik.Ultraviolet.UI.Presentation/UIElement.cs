@@ -351,7 +351,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 return;
 
             var upf = Ultraviolet.GetUI().GetPresentationFoundation();
-            upf.PerformanceStats.StyleCountLastFrame++;
+            upf.PerformanceStats.StyleCount++;
 
             this.mostRecentStyleSheet = styleSheet;
 
@@ -394,7 +394,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 return;
 
             var upf = Ultraviolet.GetUI().GetPresentationFoundation();
-            upf.PerformanceStats.MeasureCountLastFrame++;
+            upf.PerformanceStats.MeasureCount++;
 
             this.mostRecentAvailableSize = availableSize;
 
@@ -450,7 +450,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 return;
 
             var upf = Ultraviolet.GetUI().GetPresentationFoundation();
-            upf.PerformanceStats.ArrangeCountLastFrame++;
+            upf.PerformanceStats.ArrangeCount++;
 
             this.mostRecentArrangeOptions = options;
             this.mostRecentFinalRect = finalRect;
@@ -499,7 +499,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             mostRecentPositionOffset = offset;
 
             var upf = Ultraviolet.GetUI().GetPresentationFoundation();
-            upf.PerformanceStats.PositionCountLastFrame++;
+            upf.PerformanceStats.PositionCount++;
 
             var parent         = VisualTreeHelper.GetParent(this) as UIElement;
             var parentPosition = (parent == null) ? Point2D.Zero : parent.AbsolutePosition;
@@ -556,7 +556,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 this.isStyleValid = false;
 
                 var upf = uv.GetUI().GetPresentationFoundation();
-                upf.PerformanceStats.InvalidateStyleCountLastFrame++;
+                upf.PerformanceStats.InvalidateStyleCount++;
                 upf.StyleQueue.Enqueue(this);
             }
 
@@ -580,7 +580,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             this.isMeasureValid = false;
 
             var upf = uv.GetUI().GetPresentationFoundation();
-            upf.PerformanceStats.InvalidateMeasureCountLastFrame++;
+            upf.PerformanceStats.InvalidateMeasureCount++;
             upf.MeasureQueue.Enqueue(this);
         }
 
@@ -597,7 +597,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             this.forceInvalidatePosition = forceInvalidatePosition;
 
             var upf = uv.GetUI().GetPresentationFoundation();
-            upf.PerformanceStats.InvalidateArrangeCountLastFrame++;
+            upf.PerformanceStats.InvalidateArrangeCount++;
             upf.ArrangeQueue.Enqueue(this);
         }
 
@@ -1329,9 +1329,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Animates this element using the specified storyboard.
         /// </summary>
-        /// <param name="storyboard">The storyboard being applied to the element.</param>
-        /// <param name="clock">The storyboard clock that tracks playback.</param>
-        /// <param name="root">The root element to which the storyboard is being applied.</param>
+        /// <param name="storyboardInstance">The storyboard instance for which to animate this element.</param>
         internal void Animate(StoryboardInstance storyboardInstance)
         {
             Contract.Require(storyboardInstance, "storyboardInstance");

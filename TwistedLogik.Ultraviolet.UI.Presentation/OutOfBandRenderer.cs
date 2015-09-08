@@ -62,7 +62,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         public void Update()
         {
+            var upf = Ultraviolet.GetUI().GetPresentationFoundation();
+            upf.PerformanceStats.BeginUpdate();
+
             renderTargetPool.Update();
+
+            upf.PerformanceStats.EndUpdate();
         }
 
         /// <summary>
@@ -148,7 +153,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             Contract.EnsureNotDisposed(this, Disposed);
 
             var graphics = Ultraviolet.GetGraphics();
-            
+
+            var upf = Ultraviolet.GetUI().GetPresentationFoundation();
+            upf.PerformanceStats.BeginDraw();
+
             try
             {
                 isDrawingRenderTargets = true;
@@ -242,6 +250,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             graphics.SetRenderTarget(null);
             graphics.Clear(Color.Transparent);
+
+            upf.PerformanceStats.EndDraw();
         }
         
         /// <summary>
@@ -286,6 +296,38 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             }
         }
         
+        /// <summary>
+        /// Gets the number of active out-of-band render targets which have been allocated from the internal pool.
+        /// </summary>
+        public Int32 ActiveRenderTargets
+        {
+            get { return renderTargetPool.Active; }
+        }
+
+        /// <summary>
+        /// Gets the number of available out-of-band render targets in the internal pool.
+        /// </summary>
+        public Int32 AvailableRenderTargets
+        {
+            get { return renderTargetPool.Available; }
+        }
+
+        /// <summary>
+        /// Gets the number of active weak references which have been allocated from the internal pool.
+        /// </summary>
+        public Int32 ActiveWeakRefs
+        {
+            get { return weakReferencePool.Count; }
+        }
+
+        /// <summary>
+        /// Gets the number of available weak references in the internal pool.
+        /// </summary>
+        public Int32 AvailableWeakRefs
+        {
+            get { return weakReferencePool.Capacity - weakReferencePool.Count; }
+        }
+
         /// <inheritdoc/>
         protected override void Dispose(Boolean disposing)
         {

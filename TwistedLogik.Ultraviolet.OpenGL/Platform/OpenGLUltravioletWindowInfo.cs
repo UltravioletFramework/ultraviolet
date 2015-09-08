@@ -38,8 +38,17 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
         public void Draw(UltravioletTime time)
         {
             var oglwin = (OpenGLUltravioletWindow)current;
-
+            
             oglwin.Draw(time);
+        }
+
+        /// <summary>
+        /// Swaps the back buffer and the front buffer.
+        /// </summary>
+        public void Swap()
+        {
+            var oglwin = (OpenGLUltravioletWindow)current;
+
             SDL.GL_SwapWindow((IntPtr)oglwin);
         }
 

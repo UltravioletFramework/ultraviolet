@@ -178,7 +178,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Called when an object is being retrieved from the pool.
         /// </summary>
-        /// <param name="@object">The object which is being retrieved from the pool.</param>
+        /// <param name="object">The object which is being retrieved from the pool.</param>
         protected virtual void OnInitializingObject(TPooledType @object)
         {
 
@@ -187,7 +187,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Called when an object is being returned to the pool.
         /// </summary>
-        /// <param name="@object">The object which is being returned to the pool.</param>
+        /// <param name="object">The object which is being returned to the pool.</param>
         protected virtual void OnCleaningUpObject(TPooledType @object)
         {
 

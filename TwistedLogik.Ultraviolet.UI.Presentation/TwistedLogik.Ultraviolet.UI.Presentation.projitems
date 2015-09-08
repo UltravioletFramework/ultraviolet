@@ -213,6 +213,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)PopupQueue.EnqueuedPopup.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)PresentationBoxedValues.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)PresentationFoundation.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)PresentationFoundation.DiagnosticsPanel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)PresentationFoundation.KnownElement.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)PresentationFoundation.KnownType.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)PresentationFoundationConfiguration.cs" />

@@ -125,9 +125,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             Contract.Require(time, "time");
             Contract.Require(spriteBatch, "spriteBatch");
-
+            
             if (Ultraviolet.IsRunningInServiceMode)
                 throw new NotSupportedException(UltravioletStrings.NotSupportedInServiceMode);
+            
+            var upf = Ultraviolet.GetUI().GetPresentationFoundation();
+            upf.PerformanceStats.BeginDraw();
 
             popupQueue.Clear();
 
@@ -151,6 +154,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             drawingContext.SpriteBatch = null;
 
             spriteBatch.Begin(previousSpriteBatchState);
+
+            upf.PerformanceStats.EndDraw();
         }
         
         /// <inheritdoc/>
@@ -161,9 +166,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (Window == null)
                 return;
 
-            HandleUserInput();
+            var upf = Ultraviolet.GetUI().GetPresentationFoundation();
+            upf.PerformanceStats.BeginUpdate();
 
+            HandleUserInput();
             layoutRoot.Update(time);
+
+            upf.PerformanceStats.EndUpdate();
         }
         
         /// <inheritdoc/>

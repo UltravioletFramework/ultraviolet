@@ -74,6 +74,22 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
             get { return instance.Value; }
         }
 
+        /// <summary>
+        /// Gets the number of active objects which have been allocated from the pool.
+        /// </summary>
+        public Int32 Active
+        {
+            get { return pool.Active; }
+        }
+
+        /// <summary>
+        /// Gets the number of available objects in the pool.
+        /// </summary>
+        public Int32 Available
+        {
+            get { return pool.Available; }
+        }
+
         /// <inheritdoc/>
         protected override void Dispose(Boolean disposing)
         {
@@ -92,10 +108,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
         /// </summary>
         private void StoryboardClockPool_Updating(IUltravioletSubsystem subsystem, UltravioletTime time)
         {
+            var upf = Ultraviolet.GetUI().GetPresentationFoundation();
+            upf.PerformanceStats.BeginUpdate();
+
             pool.Update(time, (value, state) =>
             {
                 value.Value.Update((UltravioletTime)state);
             });
+
+            upf.PerformanceStats.EndUpdate();
         }
 
         // Storyboard clocks.

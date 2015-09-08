@@ -52,6 +52,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Draws a diagnostics panel containing various Presentation Foundation performance metrics.
+        /// </summary>
+        public void DrawDiagnosticsPanel()
+        {
+            if (diagnosticsPanel == null)
+                diagnosticsPanel = new DiagnosticsPanel(Ultraviolet);
+
+            diagnosticsPanel.Draw();
+        }
+        
+        /// <summary>
         /// Creates a new view model wrapper instance of the specified type which wraps the specified view model, if such a wrapper exists.
         /// </summary>
         /// <param name="name">The name of the view model wrapper type to instantiate.</param>
@@ -770,16 +781,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
-        /// Called when the Ultraviolet context is about to draw a frame.
+        /// Called when the Ultraviolet context blah blah blah
         /// </summary>
-        /// <param name="uv">The Ultraviolet context.</param>
-        /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Draw(UltravioletTime)"/>.</param>
-        private void OnDrawing(UltravioletContext uv, UltravioletTime time)
+        /// <param name="uv"></param>
+        private void OnFrameStart(UltravioletContext uv)
         {
-            if (uv.IsRunningInServiceMode)
-                return;
-
-            OutOfBandRenderer.DrawRenderTargets(time);
+            PerformanceStats.OnFrameStart();
         }
 
         /// <summary>
@@ -799,11 +806,25 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Update(UltravioletTime)"/>.</param>
         private void OnUpdatingUI(IUltravioletSubsystem subsystem, UltravioletTime time)
         {
-            PerformanceStats.BeginFrame();
+            PerformanceStats.BeginUpdate();
 
             PerformLayout();
-
             OutOfBandRenderer.Update();
+
+            PerformanceStats.EndUpdate();
+        }
+
+        /// <summary>
+        /// Called when the Ultraviolet context is about to draw a frame.
+        /// </summary>
+        /// <param name="uv">The Ultraviolet context.</param>
+        /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Draw(UltravioletTime)"/>.</param>
+        private void OnDrawing(UltravioletContext uv, UltravioletTime time)
+        {
+            if (uv.IsRunningInServiceMode)
+                return;
+
+            OutOfBandRenderer.DrawRenderTargets(time);
         }
 
         /// <summary>
@@ -1026,7 +1047,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (element.IsStyleValid)
             {
                 element.InvalidateStyleInternal();
-                PerformanceStats.InvalidateStyleCountLastFrame++;
+                PerformanceStats.InvalidateStyleCount++;
             }
         }
 
@@ -1038,7 +1059,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (element.IsMeasureValid)
             {
                 element.InvalidateMeasureInternal();
-                PerformanceStats.InvalidateMeasureCountLastFrame++;
+                PerformanceStats.InvalidateMeasureCount++;
             }
         }
 
@@ -1050,7 +1071,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (element.IsArrangeValid)
             {
                 element.InvalidateArrangeInternal();
-                PerformanceStats.InvalidateArrangeCountLastFrame++;
+                PerformanceStats.InvalidateArrangeCount++;
             }
         }
 
@@ -1116,11 +1137,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             new UltravioletSingleton<PresentationFoundation>((uv) =>
             {
                 var instance = new PresentationFoundation(uv);
+                uv.FrameStart += instance.OnFrameStart;
                 uv.UpdatingSubsystems += instance.OnUpdatingSubsystems;
-                uv.Drawing += instance.OnDrawing;
                 uv.GetUI().Updating += instance.OnUpdatingUI;
+                uv.Drawing += instance.OnDrawing;
                 return instance;
             });
+
+        // The diagnostics panel used to display performance metrics.
+        private DiagnosticsPanel diagnosticsPanel;
 
         // Performance stats.
         private readonly PresentationFoundationPerformanceStats performanceStats = 
