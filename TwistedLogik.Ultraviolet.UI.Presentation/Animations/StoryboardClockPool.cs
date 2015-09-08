@@ -16,8 +16,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
             : base(uv)
         {
             uv.GetUI().Updating += StoryboardClockPool_Updating;
-
-            this.pool = new PoolImpl(uv, 32, 256, () => new StoryboardClock());
         }
 
         /// <summary>
@@ -29,6 +27,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
         {
             Contract.Require(storyboardInstance, "storyboardInstance");
             Contract.EnsureNotDisposed(this, Disposed);
+
+            EnsurePoolExists();
 
             var clock = pool.Retrieve(storyboardInstance);
 
@@ -45,6 +45,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
             Contract.Require(clock, "clock");
             Contract.EnsureNotDisposed(this, Disposed);
 
+            EnsurePoolExists();
+
             clock.Value.StoryboardInstance.Stop();
             clock.Value.StoryboardInstance = null;
             pool.Release(clock);
@@ -58,6 +60,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
         {
             Contract.Require(clock, "clock");
             Contract.EnsureNotDisposed(this, Disposed);
+
+            EnsurePoolExists();
 
             clock.Value.StoryboardInstance.Stop();
             clock.Value.StoryboardInstance = null;
@@ -79,7 +83,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
         /// </summary>
         public Int32 Active
         {
-            get { return pool.Active; }
+            get { return (pool == null) ? 0 : pool.Active; }
         }
 
         /// <summary>
@@ -87,7 +91,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
         /// </summary>
         public Int32 Available
         {
-            get { return pool.Available; }
+            get { return (pool == null) ? 0 : pool.Available; }
         }
 
         /// <inheritdoc/>
@@ -104,10 +108,24 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
         }
 
         /// <summary>
+        /// Ensures that the underlying pool exists.
+        /// </summary>
+        private void EnsurePoolExists()
+        {
+            if (pool != null)
+                return;
+            
+            this.pool = new PoolImpl(Ultraviolet, 32, 256, () => new StoryboardClock());
+        }
+
+        /// <summary>
         /// Updates the active clock instances when the UI subsystem is updated.
         /// </summary>
         private void StoryboardClockPool_Updating(IUltravioletSubsystem subsystem, UltravioletTime time)
         {
+            if (pool == null)
+                return;
+
             var upf = Ultraviolet.GetUI().GetPresentationFoundation();
             upf.PerformanceStats.BeginUpdate();
 

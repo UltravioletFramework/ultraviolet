@@ -16,8 +16,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
             : base(uv)
         {
             uv.GetUI().Updating += StoryboardInstancePool_Updating;
-
-            this.pool = new PoolImpl(uv, 32, 256, () => new StoryboardInstance());
         }
 
         /// <summary>
@@ -28,6 +26,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
         public UpfPool<StoryboardInstance>.PooledObject Retrieve(Object owner)
         {
             Contract.EnsureNotDisposed(this, Disposed);
+
+            EnsurePoolExists();
 
             return pool.Retrieve(owner);
         }
@@ -40,7 +40,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
         {
             Contract.Require(storyboardInstance, "storyboardInstance");
             Contract.EnsureNotDisposed(this, Disposed);
-            
+
+            EnsurePoolExists();
+
             pool.Release(storyboardInstance);
         }
 
@@ -52,7 +54,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
         {
             Contract.Require(storyboardInstance, "storyboardInstance");
             Contract.EnsureNotDisposed(this, Disposed);
-            
+
+            EnsurePoolExists();
+
             pool.Release(storyboardInstance);
 
             storyboardInstance = null;
@@ -71,7 +75,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
         /// </summary>
         public Int32 Active
         {
-            get { return pool.Active; }
+            get { return (pool == null) ? 0 : pool.Active; }
         }
 
         /// <summary>
@@ -79,7 +83,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
         /// </summary>
         public Int32 Available
         {
-            get { return pool.Available; }
+            get { return (pool == null) ? 0 : pool.Available; }
         }
 
         /// <inheritdoc/>
@@ -96,10 +100,24 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
         }
 
         /// <summary>
+        /// Ensures that the underlying pool exists.
+        /// </summary>
+        private void EnsurePoolExists()
+        {
+            if (pool != null)
+                return;
+            
+            this.pool = new PoolImpl(Ultraviolet, 32, 256, () => new StoryboardInstance());
+        }
+
+        /// <summary>
         /// Updates the Presentation Foundation's pool of storyboard instances when the UI subsystem is updated.
         /// </summary>
         private void StoryboardInstancePool_Updating(IUltravioletSubsystem subsystem, UltravioletTime time)
         {
+            if (pool == null)
+                return;
+
             var upf = Ultraviolet.GetUI().GetPresentationFoundation();
             upf.PerformanceStats.BeginUpdate();
 

@@ -21,9 +21,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public OutOfBandRenderer(UltravioletContext uv)
             : base(uv)
         {
-            this.renderTargetPool = new UpfPool<OutOfBandRenderTarget>(uv, 4, 32, () => new OutOfBandRenderTarget(uv));
-            this.weakReferencePool = new ExpandingPool<WeakReference>(4, 32, () => new WeakReference(null));
-
             this.spriteBatch = SpriteBatch.Create();
 
             this.drawingContext = new DrawingContext();
@@ -62,6 +59,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         public void Update()
         {
+            if (renderTargetPool == null)
+                return;
+
             var upf = Ultraviolet.GetUI().GetPresentationFoundation();
             upf.PerformanceStats.BeginUpdate();
 
@@ -84,12 +84,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (IsRenderedOutOfBand(element))
                 return;
 
+            EnsurePoolsExist();
+
             var weakRef = weakReferencePool.Retrieve();
             weakRef.Target = element;
-            
+
             var target = renderTargetPool.Retrieve(element);
             var targetObject = target.Value;
-            
+
             var bounds = default(RectangleD);
             targetObject.ResizeForElement(element, out bounds);
 
@@ -106,7 +108,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
                 currentTarget.NextInternal = additionalTarget;
             }
-            
+
             registeredElements.Add(weakRef);
             element.OutOfBandRenderTarget = target;
         }
@@ -119,7 +121,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             Contract.Require(element, "element");
             Contract.EnsureNotDisposed(this, Disposed);
-            
+
             foreach (var registeredElement in registeredElements)
             {
                 var weakRefTarget = (UIElement)registeredElement.Target;
@@ -141,7 +143,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 weakReferencePool.Release(registeredElement);
 
                 break;
-            }            
+            }
         }
 
         /// <summary>
@@ -190,7 +192,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                     }
 
                     if (element.View == null)
-                        continue;                    
+                        continue;
 
                     var bounds = default(RectangleD);
                     var effect = element.Effect;
@@ -246,14 +248,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             {
                 isDrawingRenderTargets = false;
             }
-            deadReferences.Clear();            
+            deadReferences.Clear();
 
             graphics.SetRenderTarget(null);
             graphics.Clear(Color.Transparent);
 
             upf.PerformanceStats.EndDraw();
         }
-        
+
         /// <summary>
         /// Gets the render target that represents the specified element.
         /// </summary>
@@ -295,13 +297,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 return isDrawingRenderTargets;
             }
         }
-        
+
         /// <summary>
         /// Gets the number of active out-of-band render targets which have been allocated from the internal pool.
         /// </summary>
         public Int32 ActiveRenderTargets
         {
-            get { return renderTargetPool.Active; }
+            get { return (renderTargetPool == null) ? 0 : renderTargetPool.Active; }
         }
 
         /// <summary>
@@ -309,7 +311,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         public Int32 AvailableRenderTargets
         {
-            get { return renderTargetPool.Available; }
+            get { return (renderTargetPool == null) ? 0 : renderTargetPool.Available; }
         }
 
         /// <summary>
@@ -317,7 +319,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         public Int32 ActiveWeakRefs
         {
-            get { return weakReferencePool.Count; }
+            get { return (weakReferencePool == null) ? 0 : weakReferencePool.Count; }
         }
 
         /// <summary>
@@ -325,7 +327,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         public Int32 AvailableWeakRefs
         {
-            get { return weakReferencePool.Capacity - weakReferencePool.Count; }
+            get { return (weakReferencePool == null) ? 0 : weakReferencePool.Capacity - weakReferencePool.Count; }
         }
 
         /// <inheritdoc/>
@@ -349,7 +351,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         private static Boolean IsVisuallyDisconnectedFromRoot(UIElement element)
         {
             var current = element;
-            
+
             while (current != null)
             {
                 if (current == element.View.LayoutRoot)
@@ -372,9 +374,21 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             return true;
         }
 
+        /// <summary>
+        /// Ensures that the out-of-band renderer's internal pools have been created.
+        /// </summary>
+        private void EnsurePoolsExist()
+        {
+            if (renderTargetPool != null)
+                return;
+
+            renderTargetPool = new UpfPool<OutOfBandRenderTarget>(Ultraviolet, 8, 32, () => new OutOfBandRenderTarget(Ultraviolet));
+            weakReferencePool = new ExpandingPool<WeakReference>(4, 32, () => new WeakReference(null));
+        }
+
         // Object pools.
-        private readonly UpfPool<OutOfBandRenderTarget> renderTargetPool;
-        private readonly ExpandingPool<WeakReference> weakReferencePool;
+        private UpfPool<OutOfBandRenderTarget> renderTargetPool;
+        private ExpandingPool<WeakReference> weakReferencePool;
 
         // The collection of registered elements and their render buffers.
         private readonly List<PresentationFoundationView> viewsNeedingLoading = new List<PresentationFoundationView>();

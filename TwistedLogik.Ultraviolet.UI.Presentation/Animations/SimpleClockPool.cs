@@ -15,9 +15,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
         private SimpleClockPool(UltravioletContext uv)
             : base(uv)
         {
-            uv.GetUI().Updating += SimpleClockPool_Updating;
-
-            this.pool = new PoolImpl(uv, 32, 256, () => new SimpleClock(LoopBehavior.None, TimeSpan.Zero));
+            uv.GetUI().Updating += SimpleClockPool_Updating;            
         }
 
         /// <summary>
@@ -28,6 +26,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
         public UpfPool<SimpleClock>.PooledObject Retrieve(Object owner)
         {
             Contract.EnsureNotDisposed(this, Disposed);
+
+            EnsurePoolExists();
 
             var clock = pool.Retrieve(owner);
             var clockValue = clock.Value;
@@ -45,6 +45,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
             Contract.Require(clock, "clock");
             Contract.EnsureNotDisposed(this, Disposed);
 
+            EnsurePoolExists();
+
             clock.Value.PooledObject = null;
             pool.Release(clock);
         }
@@ -57,6 +59,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
         {
             Contract.Require(clock, "clock");
             Contract.EnsureNotDisposed(this, Disposed);
+
+            EnsurePoolExists();
 
             clock.Value.PooledObject = null;
             pool.Release(clock);
@@ -77,7 +81,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
         /// </summary>
         public Int32 Active
         {
-            get { return pool.Active; }
+            get { return (pool == null) ? 0 : pool.Active; }
         }
 
         /// <summary>
@@ -85,7 +89,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
         /// </summary>
         public Int32 Available
         {
-            get { return pool.Available; }
+            get { return (pool == null) ? 0 : pool.Available; }
         }
 
         /// <inheritdoc/>
@@ -102,10 +106,24 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
         }
 
         /// <summary>
+        /// Ensures that the underlying pool exists.
+        /// </summary>
+        private void EnsurePoolExists()
+        {
+            if (pool != null)
+                return;
+
+            this.pool = new PoolImpl(Ultraviolet, 32, 256, () => new SimpleClock(LoopBehavior.None, TimeSpan.Zero));
+        }
+
+        /// <summary>
         /// Updates the active clock instances when the UI subsystem is updated.
         /// </summary>
         private void SimpleClockPool_Updating(IUltravioletSubsystem subsystem, UltravioletTime time)
         {
+            if (pool == null)
+                return;
+
             var upf = Ultraviolet.GetUI().GetPresentationFoundation();
             upf.PerformanceStats.BeginUpdate();
 
