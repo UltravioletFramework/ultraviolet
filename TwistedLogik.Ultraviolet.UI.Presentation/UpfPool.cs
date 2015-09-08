@@ -31,7 +31,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             this.watermark = watermark;
             this.allocator = allocator;
-            this.available = capacity;
 
             for (int i = 0; i < capacity; i++)
             {
@@ -56,6 +55,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 if (available + active < watermark)
                 {
                     ActiveAddLast(@object);
+                }
+                else
+                {
+                    Console.WriteLine();
                 }
             }
             else
