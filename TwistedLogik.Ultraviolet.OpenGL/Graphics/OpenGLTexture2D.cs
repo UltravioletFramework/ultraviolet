@@ -88,35 +88,25 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
 
             if (immutable)
             {
-                Ultraviolet.QueueWorkItem((state) =>
+                if (Ultraviolet.IsExecutingOnCurrentThread)
                 {
-                    var gltext = (OpenGLTexture2D)state;
-                    var glname = gltext.OpenGLName;
-
-                    gl.DeleteTexture(glname);
-                    gl.ThrowIfError();
-
-                    OpenGLState.DeleteTexture2D(glname);
-
-                    gltext.CreateNativeTexture(gltext.Ultraviolet, gltext.internalformat, 
-                        gltext.width, gltext.height, gltext.format, gltext.type, null, true);
-
-                }, this);
+                    ProcessResizeImmutable();
+                }
+                else
+                {
+                    Ultraviolet.QueueWorkItem((state) => { ((OpenGLTexture2D)state).ProcessResizeImmutable(); }, this);
+                }
             }
             else
             {
-                Ultraviolet.QueueWorkItem((state) =>
+                if (Ultraviolet.IsExecutingOnCurrentThread)
                 {
-                    var gltext = (OpenGLTexture2D)state;
-                    var glname = gltext.OpenGLName;
-
-                    using (OpenGLState.ScopedBindTexture2D(texture, true))
-                    {
-                        gl.TexImage2D(gl.GL_TEXTURE_2D, 0, (int)gltext.internalformat,
-                            gltext.width, gltext.height, 0, gltext.format, gltext.type, null);
-                    }
-
-                }, this);
+                    ProcessResizeMutable();
+                }
+                else
+                {
+                    Ultraviolet.QueueWorkItem((state) => { ((OpenGLTexture2D)state).ProcessResizeMutable(); }, this);
+                }
             }
         }
 
@@ -479,6 +469,32 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
 
                 return glname;
             });
+        }
+
+        /// <summary>
+        /// Processes a resize operation for an immutable texture.
+        /// </summary>
+        private void ProcessResizeImmutable()
+        {
+            gl.DeleteTexture(OpenGLName);
+            gl.ThrowIfError();
+
+            OpenGLState.DeleteTexture2D(OpenGLName);
+
+            CreateNativeTexture(Ultraviolet, internalformat,
+                width, height, format, type, null, true);
+        }
+
+        /// <summary>
+        /// Processes a resize operation for an immutable texture.
+        /// </summary>
+        private void ProcessResizeMutable()
+        {
+            using (OpenGLState.ScopedBindTexture2D(texture, true))
+            {
+                gl.TexImage2D(gl.GL_TEXTURE_2D, 0, (int)internalformat,
+                    width, height, 0, format, type, null);
+            }
         }
 
         /// <summary>
