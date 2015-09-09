@@ -55,6 +55,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Ensures that the out-of-band renderer's internal pools have been created.
+        /// </summary>
+        public void InitializePools()
+        {
+            if (renderTargetPool != null)
+                return;
+
+            renderTargetPool = new UpfPool<OutOfBandRenderTarget>(Ultraviolet, 8, 32, () => new OutOfBandRenderTarget(Ultraviolet));
+            weakReferencePool = new ExpandingPool<WeakReference>(4, 32, () => new WeakReference(null));
+        }
+
+        /// <summary>
         /// Updates the state of the out-of-band renderer.
         /// </summary>
         public void Update()
@@ -84,7 +96,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (IsRenderedOutOfBand(element))
                 return;
 
-            EnsurePoolsExist();
+            InitializePools();
 
             var weakRef = weakReferencePool.Retrieve();
             weakRef.Target = element;
@@ -153,6 +165,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public void DrawRenderTargets(UltravioletTime time)
         {
             Contract.EnsureNotDisposed(this, Disposed);
+
+            if (registeredElements.Count == 0)
+                return;
 
             var graphics = Ultraviolet.GetGraphics();
 
@@ -228,7 +243,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
                         element.DrawToRenderTarget(time, drawingContext, rtarget.RenderTarget,
                             (element is PopupRoot) ? visualTransformOfElement : visualTransformOfParent);
-
+                        
                         if (rtarget.Next != null)
                         {
                             if (effect != null)
@@ -372,18 +387,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             }
 
             return true;
-        }
-
-        /// <summary>
-        /// Ensures that the out-of-band renderer's internal pools have been created.
-        /// </summary>
-        private void EnsurePoolsExist()
-        {
-            if (renderTargetPool != null)
-                return;
-
-            renderTargetPool = new UpfPool<OutOfBandRenderTarget>(Ultraviolet, 8, 32, () => new OutOfBandRenderTarget(Ultraviolet));
-            weakReferencePool = new ExpandingPool<WeakReference>(4, 32, () => new WeakReference(null));
         }
 
         // Object pools.
