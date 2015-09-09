@@ -156,6 +156,11 @@
       <ComponentRef Id="Android_SDL2main_x86" />
       <ComponentRef Id="Android_bass_x86" />
       <ComponentRef Id="Android_bass_fx_x86" />
+      <!-- Dependencies (Android/arm64-v8a) -->
+      <ComponentRef Id="Android_SDL2_arm64v8a" />
+      <ComponentRef Id="Android_SDL2main_arm64v8a" />
+      <ComponentRef Id="Android_bass_arm64v8a" />
+      <ComponentRef Id="Android_bass_fx_arm64v8a" />
     </Feature>
     <!-- Visual Studio integration -->
     <Feature Id="VSIntegrationFeature" Level="1" Title="Visual Studio Integration" Description="Integrates the Ultraviolet Framework with Visual Studio." Display="expand">
@@ -432,6 +437,20 @@
                   </Component>
                   <Component Id="Android_bass_fx_x86">
                     <File Id="Android_bass_fx_x86" Source="..\Dependencies\BASS\Android\x86\libbass_fx.so" />
+                  </Component>
+                </Directory>
+                <Directory Id="Dependencies_Android_arm64v8a" Name="arm64-v8a">
+                  <Component Id="Android_SDL2_arm64v8a">
+                    <File Id="Android_SDL2_arm64v8a" Source="..\Dependencies\SDL2\Android\arm64-v8a\libSDL2.so" />
+                  </Component>
+                  <Component Id="Android_SDL2main_arm64v8a">
+                    <File Id="Android_SDL2main_arm64v8a" Source="..\Dependencies\SDL2\Android\arm64-v8a\libSDL2main.so" />
+                  </Component>
+                  <Component Id="Android_bass_arm64v8a">
+                    <File Id="Android_bass_arm64v8a" Source="..\Dependencies\BASS\Android\arm64-v8a\libbass.so" />
+                  </Component>
+                  <Component Id="Android_bass_fx_arm64v8a">
+                    <File Id="Android_bass_fx_arm64v8a" Source="..\Dependencies\BASS\Android\arm64-v8a\libbass_fx.so" />
                   </Component>
                 </Directory>
               </Directory>
