@@ -2787,7 +2787,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 return;
 
             var upf = Ultraviolet.GetUI().GetPresentationFoundation();
-            upf.OutOfBandRenderer.Register(this, 1 + RequiredOutOfBandTargets);
+            upf.OutOfBandRenderer.Register(this, RequiredOutOfBandTargets);
         }
 
         /// <summary>
