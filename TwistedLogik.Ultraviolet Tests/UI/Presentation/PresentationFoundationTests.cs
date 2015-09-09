@@ -284,7 +284,7 @@ namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation
                     var screen = ctor(content);
                     content.Ultraviolet.GetUI().GetScreens().Open(screen);
                 })
-                .SkipFrames(1).Render(uv =>
+                .Render(uv =>
                 {
                     using (var spriteBatch = SpriteBatch.Create())
                     {

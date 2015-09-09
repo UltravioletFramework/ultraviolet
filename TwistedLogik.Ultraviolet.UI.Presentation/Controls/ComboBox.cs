@@ -18,6 +18,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         static ComboBox()
         {
+            EventManager.RegisterClassHandler(typeof(ComboBox), LoadedEvent, new UpfRoutedEventHandler(HandleLoaded));
+
             EventManager.RegisterClassHandler(typeof(ComboBox), Mouse.LostMouseCaptureEvent, new UpfRoutedEventHandler(HandleLostMouseCapture));
             EventManager.RegisterClassHandler(typeof(ComboBox), Mouse.MouseDownEvent, new UpfMouseButtonEventHandler(HandleMouseDown));
 
@@ -205,7 +207,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         {
             if (IsDropDownOpen)
             {
-                if (View == null || !viewSize.Equals(View.Area.Size))
+                if (View == null || (View.LayoutRoot.IsLoaded && !viewSize.Equals(View.Area.Size)))
                 {
                     viewSize = View.Area.Size;
                     IsDropDownOpen = false;
@@ -308,6 +310,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 comboBox.UpdateVisualState();
                 comboBox.OnDropDownClosed();
             }
+        }
+        
+        /// <summary>
+        /// Occurs when the control handles a <see cref="FrameworkElement.Loaded"/> routed event.
+        /// </summary>
+        private static void HandleLoaded(DependencyObject dobj, ref RoutedEventData data)
+        {
+            var comboBox = (ComboBox)dobj;
+            comboBox.viewSize = (comboBox.View == null) ? Size2.Zero : comboBox.View.Area.Size;
         }
 
         /// <summary>

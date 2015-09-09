@@ -309,15 +309,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         public void Cleanup()
         {
-            if (RequiredOutOfBandTargets > 0)
-            {
-                var upf = Ultraviolet.GetUI().GetPresentationFoundation();
-                upf.OutOfBandRenderer.Unregister(this);
-            }
-
             ClearAnimations(false);
             ClearTriggeredValues();
 
+            CleanupOutOfBandTargets();
             CleanupStoryboards();
             CleanupCore();
         }
@@ -2643,6 +2638,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Cleans up the element's out-of-band render targets by returning them to the global pool.
+        /// </summary>
+        private void CleanupOutOfBandTargets()
+        {
+            if (RequiredOutOfBandTargets == 0)
+                return;
+
+            var upf = Ultraviolet.GetUI().GetPresentationFoundation();
+            upf.OutOfBandRenderer.Unregister(this);
+        }
+
+        /// <summary>
         /// Cleans up the element's storyboards by returning any storyboard clocks to the global pool.
         /// </summary>
         private void CleanupStoryboards()
@@ -2776,11 +2783,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         private void EnsureOutOfBandRenderTargetsExist()
         {
-            if (OutOfBandRenderTarget == null && RequiredOutOfBandTargets > 0)
-            {
-                var upf = Ultraviolet.GetUI().GetPresentationFoundation();
-                upf.OutOfBandRenderer.Register(this, Math.Min(1, 1 + RequiredOutOfBandTargets));
-            }
+            if (OutOfBandRenderTarget != null || RequiredOutOfBandTargets <= 0)
+                return;
+
+            var upf = Ultraviolet.GetUI().GetPresentationFoundation();
+            upf.OutOfBandRenderer.Register(this, 1 + RequiredOutOfBandTargets);
         }
 
         /// <summary>
