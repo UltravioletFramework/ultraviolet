@@ -27,7 +27,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
         {
             Contract.EnsureNotDisposed(this, Disposed);
 
-            EnsurePoolExists();
+            Initialize();
 
             return pool.Retrieve(owner);
         }
@@ -41,7 +41,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
             Contract.Require(storyboardInstance, "storyboardInstance");
             Contract.EnsureNotDisposed(this, Disposed);
 
-            EnsurePoolExists();
+            Initialize();
 
             pool.Release(storyboardInstance);
         }
@@ -55,11 +55,22 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
             Contract.Require(storyboardInstance, "storyboardInstance");
             Contract.EnsureNotDisposed(this, Disposed);
 
-            EnsurePoolExists();
+            Initialize();
 
             pool.Release(storyboardInstance);
 
             storyboardInstance = null;
+        }
+
+        /// <summary>
+        /// Ensures that the underlying pool exists.
+        /// </summary>
+        public void Initialize()
+        {
+            if (pool != null)
+                return;
+
+            this.pool = new PoolImpl(Ultraviolet, 32, 256, () => new StoryboardInstance());
         }
 
         /// <summary>
@@ -97,17 +108,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
             }
 
             base.Dispose(disposing);
-        }
-
-        /// <summary>
-        /// Ensures that the underlying pool exists.
-        /// </summary>
-        private void EnsurePoolExists()
-        {
-            if (pool != null)
-                return;
-            
-            this.pool = new PoolImpl(Ultraviolet, 32, 256, () => new StoryboardInstance());
         }
 
         /// <summary>

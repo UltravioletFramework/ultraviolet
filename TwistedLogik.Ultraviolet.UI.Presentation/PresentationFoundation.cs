@@ -483,6 +483,41 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Initializes the specified collection of the Presentation Foundation's internal object pools.
+        /// </summary>
+        /// <param name="pools">A collection of <see cref="InternalPool"/> values indicating which pools to initialize.</param>
+        /// <remarks>In order to save memory, the Presentation Foundation does not initialize any of its internal object pools until 
+        /// it determines that they are required. This method allows an application to manually initialize any pools which it
+        /// knows ahead of time that it's going to need.</remarks>
+        public void InitializeInternalPools(params InternalPool[] pools)
+        {
+            if (pools == null)
+                return;
+
+            foreach (var pool in pools)
+            {
+                switch (pool)
+                {
+                    case InternalPool.SimpleClocks:
+                        SimpleClockPool.Instance.Initialize();
+                        break;
+
+                    case InternalPool.StoryboardInstances:
+                        StoryboardInstancePool.Instance.Initialize();
+                        break;
+
+                    case InternalPool.StoryboardClocks:
+                        StoryboardClockPool.Instance.Initialize();
+                        break;
+
+                    case InternalPool.OutOfBandRenderer:
+                        OutOfBandRenderer.InitializePools();
+                        break;
+                }
+            }
+        }
+
+        /// <summary>
         /// Gets the performance statistics which have been collected by the Ultraviolet Presentation Foundation.
         /// </summary>
         public PresentationFoundationPerformanceStats PerformanceStats
