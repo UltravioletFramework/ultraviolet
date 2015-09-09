@@ -263,8 +263,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             graphics.SetRenderTarget(target);
             graphics.Clear(Color.Transparent);
             
-            var x = AbsoluteVisualBounds.X + (AbsoluteVisualBounds.Width - target.Width) / 2.0;
-            var y = AbsoluteVisualBounds.Y + (AbsoluteVisualBounds.Height - target.Height) / 2.0;
+            var x = AbsoluteVisualBounds.X + (AbsoluteVisualBounds.Width - Display.PixelsToDips(target.Width)) / 2.0;
+            var y = AbsoluteVisualBounds.Y + (AbsoluteVisualBounds.Height - Display.PixelsToDips(target.Height)) / 2.0;
 
             var visualBounds = (Vector2)Display.DipsToPixels(new Point2D(x, y));
             dc.GlobalTransform = Matrix.CreateTranslation(-visualBounds.X, -visualBounds.Y, 0);
@@ -2042,11 +2042,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <returns>The visual bounds of the element and all of its descendants in client-relative coordinates.</returns>
         protected virtual RectangleD CalculateRelativeVisualBounds()
         {
-            if (this is Controls.Button && ((Controls.Button)this).Name == "bar")
-            {
-                Console.WriteLine();
-            }
-
             var elementBounds = Bounds;
             var elementTransform = GetTransformMatrix();
             RectangleD.TransformAxisAligned(ref elementBounds, ref elementTransform, out elementBounds);

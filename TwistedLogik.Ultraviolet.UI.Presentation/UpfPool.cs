@@ -56,10 +56,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 {
                     ActiveAddLast(@object);
                 }
-                else
-                {
-                    Console.WriteLine();
-                }
             }
             else
             {
