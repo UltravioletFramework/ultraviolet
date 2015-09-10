@@ -66,7 +66,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="localTransform">The transform matrix to apply to the rendered interface elements.</param>
         public void Begin(SpriteSortMode sortMode, Effect effect, Matrix localTransform)
         {
-            Begin(sortMode, null, null, null, localTransform);
+            Begin(sortMode, null, null, effect, localTransform);
         }
 
         /// <summary>
