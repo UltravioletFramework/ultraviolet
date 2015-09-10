@@ -67,6 +67,52 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         }
 
         /// <summary>
+        /// Creates a new instance of the <see cref="StretchableImage3"/> class.
+        /// </summary>
+        /// <param name="texture">The texture that contains the image.</param>
+        /// <param name="left">The distance in pixels between the left edge of the image and the left edge of the image's center segment.</param>
+        /// <param name="right">The distance in pixels between the right edge of the image and the right edge of the image's center segment.</param>
+        /// <returns>The new instance of <see cref="StretchableImage3"/> that was created.</returns>
+        public static StretchableImage3 Create(Texture2D texture, Int32 left, Int32 right)
+        {
+            return Create(texture, 0, 0, 0, 0, left, right);
+        }
+
+        /// <summary>
+        /// Creates a new instance of the <see cref="StretchableImage3"/> class.
+        /// </summary>
+        /// <param name="texture">The texture that contains the image.</param>
+        /// <param name="x">The x-coordinate of the region on the image's texture that contains the image.</param>
+        /// <param name="y">The y-coordinate of the region on the image's texture that contains the image.</param>
+        /// <param name="width">The width of the region on the image's texture that contains the image.</param>
+        /// <param name="height">The height of the region on the image's texture that contains the image.</param>
+        /// <param name="left">The distance in pixels between the left edge of the image and the left edge of the image's center segment.</param>
+        /// <param name="right">The distance in pixels between the right edge of the image and the right edge of the image's center segment.</param>
+        /// <returns>The new instance of <see cref="StretchableImage3"/> that was created.</returns>
+        public static StretchableImage3 Create(Texture2D texture, Int32 x, Int32 y, Int32 width, Int32 height, Int32 left, Int32 right)
+        {
+            var img = new StretchableImage3();
+            img.Texture = texture;
+            img.TextureRegion = new Rectangle(x, y, width, height);
+            img.Left = left;
+            img.Right = right;
+            return img;
+        }
+
+        /// <summary>
+        /// Creates a new instance of the <see cref="StretchableImage3"/> class.
+        /// </summary>
+        /// <param name="texture">The texture that contains the image.</param>
+        /// <param name="textureRegion">The region of the image's texture which contains the image.</param>
+        /// <param name="left">The distance in pixels between the left edge of the image and the left edge of the image's center segment.</param>
+        /// <param name="right">The distance in pixels between the right edge of the image and the right edge of the image's center segment.</param>
+        /// <returns>The new instance of <see cref="StretchableImage3"/> that was created.</returns>
+        public static StretchableImage3 Create(Texture2D texture, Rectangle textureRegion, Int32 left, Int32 right)
+        {
+            return Create(texture, textureRegion.X, textureRegion.Y, textureRegion.Width, textureRegion.Height, left, right);
+        }
+
+        /// <summary>
         /// Converts the string representation of a stretchable image into an instance of the <see cref="StretchableImage3"/> class.
         /// A return value indicates whether the conversion succeeded.
         /// </summary>

@@ -138,6 +138,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)DependencyPropertyKey.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DependencyPropertySystem.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DependencyPropertyValue.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Diagnostics.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Documents\Adorner.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Documents\AdornerDecorator.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Documents\AdornerLayer.AdornerState.cs" />

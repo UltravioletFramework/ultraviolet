@@ -59,6 +59,44 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         }
 
         /// <summary>
+        /// Creates a new instance of the <see cref="StaticImage"/> class.
+        /// </summary>
+        /// <param name="texture">The texture that contains the image.</param>
+        /// <returns>The new instance of <see cref="StaticImage"/> that was created.</returns>
+        public static StaticImage Create(Texture2D texture)
+        {
+            return Create(texture, 0, 0, 0, 0);
+        }
+
+        /// <summary>
+        /// Creates a new instance of the <see cref="StaticImage"/> class.
+        /// </summary>
+        /// <param name="texture">The texture that contains the image.</param>
+        /// <param name="x">The x-coordinate of the region on the image's texture that contains the image.</param>
+        /// <param name="y">The y-coordinate of the region on the image's texture that contains the image.</param>
+        /// <param name="width">The width of the region on the image's texture that contains the image.</param>
+        /// <param name="height">The height of the region on the image's texture that contains the image.</param>
+        /// <returns>The new instance of <see cref="StaticImage"/> that was created.</returns>
+        public static StaticImage Create(Texture2D texture, Int32 x, Int32 y, Int32 width, Int32 height)
+        {
+            var img = new StaticImage();
+            img.Texture = texture;
+            img.TextureRegion = new Rectangle(x, y, width, height);
+            return img;
+        }
+
+        /// <summary>
+        /// Creates a new instance of the <see cref="StaticImage"/> class.
+        /// </summary>
+        /// <param name="texture">The texture that contains the image.</param>
+        /// <param name="textureRegion">The region of the image's texture which contains the image.</param>
+        /// <returns>The new instance of <see cref="StaticImage"/> that was created.</returns>
+        public static StaticImage Create(Texture2D texture, Rectangle textureRegion)
+        {
+            return Create(texture, textureRegion.X, textureRegion.Y, textureRegion.Width, textureRegion.Height);
+        }
+
+        /// <summary>
         /// Converts the string representation of a static image into an instance of the <see cref="StaticImage"/> class.
         /// A return value indicates whether the conversion succeeded.
         /// </summary>

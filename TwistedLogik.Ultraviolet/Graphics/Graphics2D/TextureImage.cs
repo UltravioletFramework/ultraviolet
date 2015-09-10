@@ -35,6 +35,9 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         {
             Contract.Require(content, "content");
 
+            if (!TextureID.IsValid)
+                return;
+
             texture = content.Load<Texture2D>(TextureID);
             if (textureRegion.IsEmpty && texture != null)
             {
@@ -48,6 +51,11 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         public Texture2D Texture
         {
             get { return texture; }
+            protected set
+            {
+                texture = value;
+                textureID = AssetID.Invalid;
+            }
         }
 
         /// <summary>

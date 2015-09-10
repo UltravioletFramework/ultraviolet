@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet.Content;
+using TwistedLogik.Ultraviolet.Graphics;
 using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
 using TwistedLogik.Ultraviolet.Input;
 using TwistedLogik.Ultraviolet.Platform;
@@ -151,6 +152,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             popupQueue.Draw(time, drawingContext);
 
             drawingContext.End();
+
+            if (Diagnostics.DrawDiagnosticsVisuals)
+            {
+                drawingContext.Begin(SpriteSortMode.Deferred, null, SamplerState.PointClamp, null, Matrix.Identity);
+                DrawDiagnosticsVisuals(drawingContext, layoutRoot);
+                drawingContext.End();
+            }
+
             drawingContext.SpriteBatch = null;
 
             spriteBatch.Begin(previousSpriteBatchState);
@@ -714,7 +723,42 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             base.OnViewSizeChanged();
         }
-        
+
+        /// <summary>
+        /// Draws the diagnostics visuals for the specified element.
+        /// </summary>
+        /// <param name="drawingContext">The drawing context with which to draw the visuals.</param>
+        /// <param name="element">The element for which to draw visuals.</param>
+        private static void DrawDiagnosticsVisuals(DrawingContext drawingContext, UIElement element)
+        {
+            if (Diagnostics.GetDrawVisualBounds(element))
+            {
+                var display  = element.View.Display;
+                var bounds   = element.AbsoluteVisualBounds;
+                var position = (Vector2)(Point2)display.DipsToPixels(bounds.Location);
+                var width    = (Int32)display.DipsToPixels(bounds.Width);
+                var height   = (Int32)display.DipsToPixels(bounds.Height);
+                var color    = Diagnostics.GetDrawVisualBoundsColor(element);
+                drawingContext.DrawImage(Diagnostics.BoundingBoxImage, position, width, height, color);
+            }
+
+            var popup = element as Popup;
+            if (popup != null)
+            {
+                if (popup.IsOpen)
+                {
+                    DrawDiagnosticsVisuals(drawingContext, ((Popup)element).Root);
+                }
+            }
+            else
+            {
+                VisualTreeHelper.ForEachChild<UIElement>(element, drawingContext, (child, state) =>
+                {
+                    DrawDiagnosticsVisuals((DrawingContext)state, child);
+                });
+            }
+        }
+
         /// <summary>
         /// Performs a hit test against the layout root and any active popup windows.
         /// </summary>

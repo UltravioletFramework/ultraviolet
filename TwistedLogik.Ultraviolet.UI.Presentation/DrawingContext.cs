@@ -37,6 +37,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             this.currentStencil = null;
             this.transforms = 0;
             this.outOfBand = 0;
+            this.localTransform = Matrix.Identity;
+            this.globalTransform = Matrix.Identity;
+            this.combinedTransform = Matrix.Identity;
         }
 
         /// <summary>
@@ -44,7 +47,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         public void Begin()
         {
-            Begin(SpriteSortMode.Deferred, null, Matrix.Identity);
+            Begin(SpriteSortMode.Deferred, null, null, null, Matrix.Identity);
         }
 
         /// <summary>
@@ -52,7 +55,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         public void Begin(SpriteSortMode sortMode)
         {
-            Begin(sortMode, null, Matrix.Identity);
+            Begin(sortMode, null, null, null, Matrix.Identity);
         }
 
         /// <summary>
@@ -63,6 +66,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="localTransform">The transform matrix to apply to the rendered interface elements.</param>
         public void Begin(SpriteSortMode sortMode, Effect effect, Matrix localTransform)
         {
+            Begin(sortMode, null, null, null, localTransform);
+        }
+
+        /// <summary>
+        /// Begins a new sprite batch using the appropriate settings for rendering UPF.
+        /// </summary>
+        /// <param name="sortMode">The sorting mode to use when rendering interface elements.</param>
+        /// <param name="blendState">The blend state to apply to the rendered elements.</param>
+        /// <param name="samplerState">The sampler state to apply to the rendered interface elements.</param>
+        /// <param name="effect">The custom effect to apply to the rendered interface elements.</param>
+        /// <param name="localTransform">The transform matrix to apply to the rendered interface elements.</param>
+        public void Begin(SpriteSortMode sortMode, BlendState blendState, SamplerState samplerState, Effect effect, Matrix localTransform)
+        {
             if (SpriteBatch == null)
                 throw new InvalidOperationException(PresentationStrings.DrawingContextDoesNotHaveSpriteBatch);
 
@@ -70,7 +86,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             this.combinedTransform = Matrix.Identity;
             Matrix.Concat(ref localTransform, ref globalTransform, out combinedTransform);
 
-            SpriteBatch.Begin(sortMode, BlendState.AlphaBlend, SamplerState.LinearClamp, StencilReadDepthState, RasterizerState.CullCounterClockwise, effect, combinedTransform);
+            SpriteBatch.Begin(sortMode, 
+                blendState ?? BlendState.AlphaBlend,
+                samplerState ?? SamplerState.LinearClamp, 
+                StencilReadDepthState, RasterizerState.CullCounterClockwise, effect, combinedTransform);
         }
 
         /// <summary>
@@ -83,7 +102,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 throw new InvalidOperationException(PresentationStrings.DrawingContextDoesNotHaveSpriteBatch);
 
             GlobalTransform = state.GlobalTransform;
-            Begin(state.SortMode, state.Effect, state.LocalTransform);
+            Begin(state.SortMode, state.BlendState, state.SamplerState, state.Effect, state.LocalTransform);
         }
 
         /// <summary>
@@ -666,7 +685,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public DrawingContextState GetCurrentState()
         {
             var state = SpriteBatch.GetCurrentState();
-            return new DrawingContextState(state.SortMode, state.Effect, ref localTransform, ref globalTransform, ref combinedTransform);
+            return new DrawingContextState(state.SortMode, state.BlendState, state.SamplerState, state.Effect, ref localTransform, ref globalTransform, ref combinedTransform);
         }
 
         /// <summary>

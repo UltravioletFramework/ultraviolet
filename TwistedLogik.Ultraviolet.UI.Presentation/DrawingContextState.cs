@@ -12,13 +12,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Initializes a new instance of the <see cref="DrawingContextState"/> structure.
         /// </summary>
         /// <param name="sortMode">The drawing context's sort mode.</param>
+        /// <param name="blendState">The drawing context's blend state.</param>
+        /// <param name="samplerState">The drawing context's sampler state.</param>
         /// <param name="customEffect">The drawing context's custom effect.</param>
         /// <param name="localTransform">The drawing context's local transformation matrix.</param>
         /// <param name="globalTransform">The drawing context's global transformation matrix.</param>
         /// <param name="combinedTransform">The drawing context's combined transformation matrix.</param>
-        internal DrawingContextState(SpriteSortMode sortMode, Effect customEffect, ref Matrix localTransform, ref Matrix globalTransform, ref Matrix combinedTransform)
+        internal DrawingContextState(SpriteSortMode sortMode, BlendState blendState, SamplerState samplerState, Effect customEffect, ref Matrix localTransform, ref Matrix globalTransform, ref Matrix combinedTransform)
         {
             this.sortMode = sortMode;
+            this.blendState = blendState;
+            this.samplerState = samplerState;
             this.customEffect = customEffect;
             this.localTransform = localTransform;
             this.globalTransform = globalTransform;
@@ -31,6 +35,22 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public SpriteSortMode SortMode
         {
             get { return sortMode; }
+        }
+
+        /// <summary>
+        /// Gets the <see cref="BlendState"/> which is in effect for the context.
+        /// </summary>
+        public BlendState BlendState
+        {
+            get { return blendState; }
+        }
+
+        /// <summary>
+        /// Gets the <see cref="SamplerState"/> which is in effect for the context.
+        /// </summary>
+        public SamplerState SamplerState
+        {
+            get { return samplerState; }
         }
 
         /// <summary>
@@ -67,6 +87,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
         // Property values.
         private readonly SpriteSortMode sortMode;
+        private readonly BlendState blendState;
+        private readonly SamplerState samplerState;
         private readonly Effect customEffect;
         private readonly Matrix localTransform;
         private readonly Matrix globalTransform;
