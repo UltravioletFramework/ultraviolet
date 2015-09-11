@@ -70,12 +70,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Documents
         }
 
         /// <inheritdoc/>
-        protected override RectangleD CalculateAbsoluteVisualBounds()
+        protected override RectangleD CalculateTransformedVisualBounds()
         {
             if (AdornedElement == null)
-                return base.CalculateAbsoluteVisualBounds();
+                return base.CalculateTransformedVisualBounds();
 
-            return UnionAbsoluteVisualBoundsWithChildrenAndApplyClipping(AdornedElement.AbsoluteVisualBounds);
+            var clipTransformMatrix = AdornedElement.GetTransformToViewMatrix();
+            return UnionAbsoluteVisualBoundsWithChildrenAndApplyClipping(AdornedElement.TransformedVisualBounds, ref clipTransformMatrix);
         }        
 
         // Property values.

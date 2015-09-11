@@ -108,21 +108,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             }
             base.OnChildDesiredSizeChanged(child);
         }
-
+        
         /// <inheritdoc/>
-        protected override RectangleD CalculateRelativeVisualBounds()
-        {
-            return base.CalculateRelativeVisualBounds();
-        }
-
-        /// <inheritdoc/>
-        protected override RectangleD CalculateAbsoluteVisualBounds()
+        protected override RectangleD CalculateTransformedVisualBounds()
         {
             var popup = Parent as Popup;
             if (popup == null)
                 return RectangleD.Empty;
 
-            var visualBounds = RelativeVisualBounds;
+            var visualBounds = UntransformedVisualBounds;
 
             var popupTransform = popup.PopupTransformToViewWithOrigin;
             RectangleD.TransformAxisAligned(ref visualBounds, ref popupTransform, out visualBounds);

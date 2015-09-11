@@ -267,9 +267,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             graphics.SetRenderTarget(target);
             graphics.Clear(Color.Transparent);
 
-            var bounds = Display.DipsToPixels(AbsoluteVisualBounds);
-            var x = (Int32)AbsoluteVisualBounds.X + (AbsoluteVisualBounds.Width - target.Width) / 2.0;
-            var y = (Int32)AbsoluteVisualBounds.Y + (AbsoluteVisualBounds.Height - target.Height) / 2.0;
+            var bounds = Display.DipsToPixels(TransformedVisualBounds);
+            var x = (Int32)TransformedVisualBounds.X + (TransformedVisualBounds.Width - target.Width) / 2.0;
+            var y = (Int32)TransformedVisualBounds.Y + (TransformedVisualBounds.Height - target.Height) / 2.0;
 
             var visualBounds = (Vector2)new Point2D(x, y);
             dc.GlobalTransform = Matrix.CreateTranslation(-visualBounds.X, -visualBounds.Y, 0);
@@ -913,32 +913,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
         
         /// <summary>
-        /// Gets the visual bounds of the element and all of its descendants in transformed client-relative coordinates.
+        /// Gets the visual bounds of the element and all of its descendants in transformed screen-relative coordinates.
         /// </summary>
-        public RectangleD RelativeVisualBounds
+        public RectangleD TransformedVisualBounds
         {
             get
             {
-                if (relativeVisualBounds.HasValue)
-                    return relativeVisualBounds.Value;
+                if (transformedVisualBounds.HasValue)
+                    return transformedVisualBounds.Value;
 
-                relativeVisualBounds = CalculateRelativeVisualBounds();
-                return relativeVisualBounds.Value;
-            }
-        }
-
-        /// <summary>
-        /// Gets the visual bounds of the element and all of its descendants in screen-relative coordinates.
-        /// </summary>
-        public RectangleD AbsoluteVisualBounds
-        {
-            get
-            {
-                if (absoluteVisualBounds.HasValue)
-                    return absoluteVisualBounds.Value;
-
-                absoluteVisualBounds = CalculateAbsoluteVisualBounds();
-                return absoluteVisualBounds.Value;
+                transformedVisualBounds = CalculateTransformedVisualBounds();
+                return transformedVisualBounds.Value;
             }
         }
 
@@ -1213,8 +1198,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// applies the element's clipping rectangle, if it has one.
         /// </summary>
         /// <param name="absoluteVisualBounds">The visual bounds to extend and clip.</param>
+        /// <param name="clipTransformMatrix">The transformation matrix to apply to the clip rectangle.</param>
         /// <returns>The extended and clipped visual bounds.</returns>
-        internal RectangleD UnionAbsoluteVisualBoundsWithChildrenAndApplyClipping(RectangleD absoluteVisualBounds)
+        internal RectangleD UnionAbsoluteVisualBoundsWithChildrenAndApplyClipping(RectangleD absoluteVisualBounds, ref Matrix clipTransformMatrix)
         {
             var childCount = VisualTreeHelper.GetChildrenCount(this);
             for (int i = 0; i < childCount; i++)
@@ -1222,7 +1208,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 var child = VisualTreeHelper.GetChild(this, i) as UIElement;
                 if (child != null && !(child is Popup))
                 {
-                    var childBounds = child.AbsoluteVisualBounds;
+                    var childBounds = child.TransformedVisualBounds;
                     if (childBounds.IsEmpty)
                         continue;
 
@@ -1233,6 +1219,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (ClipRectangle.HasValue)
             {
                 var relativeClip = ClipRectangle.Value;
+                RectangleD.TransformAxisAligned(ref relativeClip, ref clipTransformMatrix, out relativeClip);
                 RectangleD.Intersect(ref absoluteVisualBounds, ref relativeClip, out absoluteVisualBounds);
             }
 
@@ -1661,16 +1648,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 untransformedVisualBounds = null;
                 invalidated = true;
             }
-
-            if (relativeVisualBounds.HasValue)
+            
+            if (transformedVisualBounds.HasValue)
             {
-                relativeVisualBounds = null;
-                invalidated = true;
-            }
-
-            if (absoluteVisualBounds.HasValue)
-            {
-                absoluteVisualBounds = null;
+                transformedVisualBounds = null;
                 invalidated = true;
             }
 
@@ -2120,7 +2101,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 var child = VisualTreeHelper.GetChild(this, i) as UIElement;
                 if (child != null && !(child is Popup))
                 {
-                    var childBounds = child.RelativeVisualBounds;
+                    var childBounds = child.UntransformedVisualBounds;
+                    var childTransform = child.GetTransformMatrix();
+                    RectangleD.TransformAxisAligned(ref childBounds, ref childTransform, out childBounds);
+
                     if (childBounds.IsEmpty)
                         continue;
 
@@ -2139,23 +2123,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
-        /// Gets the visual bounds of the element and all of its descendants in transformed client-relative coordinates.
+        /// Gets the visual bounds of the element and all of its descendants in transformed screen-relative coordinates.
         /// </summary>
-        /// <returns>The visual bounds of the element and all of its descendants in transformed client-relative coordinates.</returns>
-        protected virtual RectangleD CalculateRelativeVisualBounds()
-        {
-            var elementBounds = UntransformedVisualBounds;
-            var elementTransform = GetTransformMatrix();
-            RectangleD.TransformAxisAligned(ref elementBounds, ref elementTransform, out elementBounds);
-
-            return elementBounds;
-        }
-
-        /// <summary>
-        /// Gets the visual bounds of the element and all of its descendants in screen-relative coordinates.
-        /// </summary>
-        /// <returns>The visual bounds of the element and all of its descendants in screen-relative coordinates.</returns>
-        protected virtual RectangleD CalculateAbsoluteVisualBounds()
+        /// <returns>The visual bounds of the element and all of its descendants in transformed screen-relative coordinates.</returns>
+        protected virtual RectangleD CalculateTransformedVisualBounds()
         {
             var visualBounds = Bounds;            
 
@@ -2170,7 +2141,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var transform = GetTransformToViewMatrix();
             RectangleD.TransformAxisAligned(ref visualBounds, ref transform, out visualBounds);
 
-            return UnionAbsoluteVisualBoundsWithChildrenAndApplyClipping(visualBounds);
+            return UnionAbsoluteVisualBoundsWithChildrenAndApplyClipping(visualBounds, ref transform);
         }
 
         /// <summary>
@@ -2898,8 +2869,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         private RectangleD relativeBounds;
         private RectangleD absoluteBounds;
         private RectangleD? untransformedVisualBounds;
-        private RectangleD? relativeVisualBounds;
-        private RectangleD? absoluteVisualBounds;
+        private RectangleD? transformedVisualBounds;
         private RectangleD? clipRectangle;
         private event EventHandler layoutUpdated;
 

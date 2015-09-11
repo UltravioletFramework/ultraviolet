@@ -734,7 +734,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (Diagnostics.GetDrawVisualBounds(element))
             {
                 var display  = element.View.Display;
-                var bounds   = element.AbsoluteVisualBounds;
+                var bounds   = element.TransformedVisualBounds;
                 var position = (Vector2)(Point2)display.DipsToPixels(bounds.Location);
                 var width    = (Int32)display.DipsToPixels(bounds.Width);
                 var height   = (Int32)display.DipsToPixels(bounds.Height);
