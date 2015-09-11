@@ -74,8 +74,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media
 
             if (root is PopupRoot)
             {
-                var mtxPopup = ((Popup)root.Parent).PopupTransformToAncestor;
-                Matrix.Concat(ref mtxTransform, ref mtxPopup, out mtxTransform);
+                var popup = root.Parent as Popup;
+                var popupMatrix = (popup == null) ? Matrix.Identity : popup.PopupTransformToView;
+                Matrix.Concat(ref mtxTransform, ref popupMatrix, out mtxTransform);
             }
 
             return mtxTransform;
@@ -306,8 +307,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media
         /// <summary>
         /// Gets the visual's transformation matrix.
         /// </summary>
+        /// <param name="inDevicePixels">A value indicating whether the transform is scaled to device pixels (<c>true</c>) or device-independent pixels (<c>false</c>).</param>
         /// <returns>The visual's transformation matrix.</returns>
-        protected virtual Matrix GetTransformMatrix()
+        protected virtual Matrix GetTransformMatrix(Boolean inDevicePixels = false)
         {
             return Matrix.Identity;
         }

@@ -235,14 +235,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                         drawingContext.Reset(element.View.Display);
 
                         var visualParent = VisualTreeHelper.GetParent(element) as UIElement;
-                        var visualTransformOfParent = (visualParent == null) ? popup.PopupTransformToAncestor : visualParent.GetVisualTransformMatrix();
+                        var visualTransformOfParent = (visualParent == null) ? popup.PopupTransformToView : visualParent.GetVisualTransformMatrix();
                         var visualTransformOfElement = element.GetVisualTransformMatrix(ref visualTransformOfParent);
 
                         rtarget.VisualTransform = visualTransformOfElement;
                         rtarget.VisualBounds = bounds;
 
                         element.DrawToRenderTarget(time, drawingContext, rtarget.RenderTarget,
-                            (element is PopupRoot) ? visualTransformOfElement : visualTransformOfParent);
+                            (popup != null) ? popup.PopupTransformToViewInDevicePixels : visualTransformOfParent);
                         
                         if (rtarget.Next != null)
                         {

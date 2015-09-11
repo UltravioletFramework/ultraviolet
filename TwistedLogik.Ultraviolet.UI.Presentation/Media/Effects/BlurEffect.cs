@@ -46,10 +46,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media.Effects
         /// <inheritdoc/>
         protected internal override void DrawRenderTargets(DrawingContext dc, UIElement element, OutOfBandRenderTarget target)
         {
-            var shadowTarget = target.Next.RenderTarget;
+            var blurTarget = target.Next.RenderTarget;
 
             var gfx = dc.Ultraviolet.GetGraphics();
-            gfx.SetRenderTarget(shadowTarget);
+            gfx.SetRenderTarget(blurTarget);
             gfx.Clear(Color.Transparent);
 
             effect.Value.Radius = GetRadiusInPixels(element);

@@ -212,7 +212,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)OutOfBandRenderer.UIElementComparer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)OutOfBandRenderTarget.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)PopupQueue.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)PopupQueue.EnqueuedPopup.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)PresentationBoxedValues.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)PresentationFoundation.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)PresentationFoundation.DiagnosticsPanel.cs" />

@@ -84,7 +84,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             get { return GetValue<Double>(MinWidthProperty); }
             set { SetValue<Double>(MinWidthProperty, value); }
         }
-        
+
         /// <summary>
         /// Gets or sets the element's maximum width in device independent pixels.
         /// </summary>
@@ -193,7 +193,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <remarks>The styling name of this dependency property is 'width'.</remarks>
         public static readonly DependencyProperty WidthProperty = DependencyProperty.Register("Width", typeof(Double), typeof(FrameworkElement),
             new PropertyMetadata<Double>(CommonBoxedValues.Double.NaN, PropertyMetadataOptions.AffectsMeasure));
-        
+
         /// <summary>
         /// Identifies the <see cref="MinWidth"/> dependency property.
         /// </summary>
@@ -247,9 +247,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Identifies the <see cref="HorizontalAlignment"/> dependency property.
         /// </summary>
         /// <remarks>The styling name of this dependency property is 'halign'.</remarks>
-        public static readonly DependencyProperty HorizontalAlignmentProperty = DependencyProperty.Register("HorizontalAlignment", "halign", 
+        public static readonly DependencyProperty HorizontalAlignmentProperty = DependencyProperty.Register("HorizontalAlignment", "halign",
             typeof(HorizontalAlignment), typeof(FrameworkElement), new PropertyMetadata<HorizontalAlignment>(PresentationBoxedValues.HorizontalAlignment.Stretch, PropertyMetadataOptions.AffectsArrange));
-        
+
         /// <summary>
         /// Identifies the <see cref="VerticalAlignment"/> dependency property.
         /// </summary>
@@ -351,7 +351,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             SetIsLoaded(value);
             RaiseLoadedOrUnloaded(value);
         }
-        
+
         /// <inheritdoc/>
         internal override void OnVisualParentChangedInternal(Visual oldParent, Visual newParent)
         {
@@ -422,7 +422,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 }
             }
         }
-        
+
         /// <inheritdoc/>
         internal override Object DependencyDataSource
         {
@@ -454,13 +454,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <inheritdoc/>
-        protected override Matrix GetTransformMatrix()
+        protected override Matrix GetTransformMatrix(Boolean inDevicePixels = false)
         {
             if (isLayoutTransformed)
             {
                 return layoutTransformUsedDuringLayout * base.GetTransformMatrix();
             }
-            return base.GetTransformMatrix();
+            return base.GetTransformMatrix(inDevicePixels);
         }
 
         /// <inheritdoc/>

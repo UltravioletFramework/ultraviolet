@@ -26,6 +26,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         public Button(UltravioletContext uv, String name)
             : base(uv, name)
         {
+
         }
     }
 }

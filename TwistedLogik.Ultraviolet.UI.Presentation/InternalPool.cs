@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace TwistedLogik.Ultraviolet.UI.Presentation
+﻿namespace TwistedLogik.Ultraviolet.UI.Presentation
 {
     /// <summary>
     /// Represents the Presentation Foundation's internal collection of object pools.
@@ -8,17 +6,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
     public enum InternalPool
     {
         /// <summary>
-        /// The pool which contains instances of the <see cref="SimpleClock"/> class used by the animation system.
+        /// The pool which contains instances of the <see cref="Animations.SimpleClock"/> class used by the animation system.
         /// </summary>
         SimpleClocks,
 
         /// <summary>
-        /// The pool which contains instances of the <see cref="StoryboardInstance"/> class used by the animation system.
+        /// The pool which contains instances of the <see cref="Animations.StoryboardInstance"/> class used by the animation system.
         /// </summary>
         StoryboardInstances,
 
         /// <summary>
-        /// The pool which contains instances of the <see cref="StoryboardClock"/> class used by the animation system.
+        /// The pool which contains instances of the <see cref="Animations.StoryboardClock"/> class used by the animation system.
         /// </summary>
         StoryboardClocks,
 

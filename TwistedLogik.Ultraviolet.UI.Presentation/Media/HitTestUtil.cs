@@ -18,7 +18,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media
             if (!element.IsHitTestVisible)
                 return false;
 
-            if (!element.RelativeVisualBounds.Contains(point))
+            if (!element.UntransformedVisualBounds.Contains(point))
                 return false;
 
             var clip = element.ClipRectangle;

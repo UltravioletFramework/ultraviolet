@@ -193,13 +193,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
                 if (this is PopupRoot)
                 {
-                    var transformMatrix = view.Popups.GetCurrentTransformMatrix();
-                    if (transformMatrix != null)
+                    var parentPopup = this.Parent as Popup;
+                    if (parentPopup != null)
                     {
-                        dc.End();
-                        dc.Begin(SpriteSortMode.Deferred, null, transformMatrix.Value);
+                        var transformMatrix = parentPopup.PopupTransformToViewInDevicePixels;
+                        if (transformMatrix != null)
+                        {
+                            dc.End();
+                            dc.Begin(SpriteSortMode.Deferred, null, transformMatrix);
 
-                        flush = true;
+                            flush = true;
+                        }
                     }
                 }
                 else
@@ -262,11 +266,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var graphics = Ultraviolet.GetGraphics();
             graphics.SetRenderTarget(target);
             graphics.Clear(Color.Transparent);
-            
-            var x = AbsoluteVisualBounds.X + (AbsoluteVisualBounds.Width - Display.PixelsToDips(target.Width)) / 2.0;
-            var y = AbsoluteVisualBounds.Y + (AbsoluteVisualBounds.Height - Display.PixelsToDips(target.Height)) / 2.0;
 
-            var visualBounds = (Vector2)Display.DipsToPixels(new Point2D(x, y));
+            var bounds = Display.DipsToPixels(AbsoluteVisualBounds);
+            var x = (Int32)AbsoluteVisualBounds.X + (AbsoluteVisualBounds.Width - target.Width) / 2.0;
+            var y = (Int32)AbsoluteVisualBounds.Y + (AbsoluteVisualBounds.Height - target.Height) / 2.0;
+
+            var visualBounds = (Vector2)new Point2D(x, y);
             dc.GlobalTransform = Matrix.CreateTranslation(-visualBounds.X, -visualBounds.Y, 0);
             dc.Begin(SpriteSortMode.Deferred, null, transform ?? GetVisualTransformMatrix());
 
@@ -891,19 +896,34 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             get { return absoluteBounds; }
         }
+
+        /// <summary>
+        /// Gets the visual bounds of the element and all of its descendants in untransformed client-relative coordinates.
+        /// </summary>
+        public RectangleD UntransformedVisualBounds
+        {
+            get
+            {
+                if (untransformedVisualBounds.HasValue)
+                    return untransformedVisualBounds.Value;
+
+                untransformedVisualBounds = CalculateUntransformedVisualBounds();
+                return untransformedVisualBounds.Value;
+            }
+        }
         
         /// <summary>
-        /// Gets the visual bounds of the element and all of its descendants in client-relative coordinates.
+        /// Gets the visual bounds of the element and all of its descendants in transformed client-relative coordinates.
         /// </summary>
         public RectangleD RelativeVisualBounds
         {
             get
             {
-                if (visualBounds.HasValue)
-                    return visualBounds.Value;
+                if (relativeVisualBounds.HasValue)
+                    return relativeVisualBounds.Value;
 
-                visualBounds = CalculateRelativeVisualBounds();
-                return visualBounds.Value;
+                relativeVisualBounds = CalculateRelativeVisualBounds();
+                return relativeVisualBounds.Value;
             }
         }
 
@@ -914,11 +934,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             get
             {
-                if (transformedVisualBounds.HasValue)
-                    return transformedVisualBounds.Value;
+                if (absoluteVisualBounds.HasValue)
+                    return absoluteVisualBounds.Value;
 
-                transformedVisualBounds = CalculateAbsoluteVisualBounds();
-                return transformedVisualBounds.Value;
+                absoluteVisualBounds = CalculateAbsoluteVisualBounds();
+                return absoluteVisualBounds.Value;
             }
         }
 
@@ -1377,14 +1397,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var pixPosition = (Vector2)Display.DipsToPixels(AbsolutePosition);
 
             var mtxTranslateToClientSpace = Matrix.CreateTranslation(-pixPosition.X, -pixPosition.Y, 0f);
-            var mtxTransform = GetTransformMatrix();
+            var mtxTransform = GetTransformMatrix(true);
             var mtxTranslateToScreenSpace = Matrix.CreateTranslation(+pixPosition.X, +pixPosition.Y, 0f);
 
             Matrix mtxFinal;
             Matrix.Concat(ref mtxTranslateToClientSpace, ref mtxTransform, out mtxFinal);
             Matrix.Concat(ref mtxFinal, ref mtxTranslateToScreenSpace, out mtxFinal);
             Matrix.Concat(ref mtxFinal, ref mtxParentTransform, out mtxFinal);
-
+            
             return mtxFinal;
         }
 
@@ -1402,7 +1422,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 if (popup == null)
                     return Matrix.Identity;
 
-                return popup.PopupTransformToAncestor;
+                return popup.PopupTransformToView;
             }
             else
             {
@@ -1603,16 +1623,33 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         protected internal virtual void InvalidateVisualBounds()
         {
-            if (!visualBounds.HasValue && !transformedVisualBounds.HasValue)
-                return;
+            var invalidated = true;
 
-            visualBounds = null;
-            transformedVisualBounds = null;
-
-            var parent = VisualTreeHelper.GetParent(this) as UIElement;
-            if (parent != null)
+            if (untransformedVisualBounds.HasValue)
             {
-                parent.InvalidateVisualBounds();
+                untransformedVisualBounds = null;
+                invalidated = true;
+            }
+
+            if (relativeVisualBounds.HasValue)
+            {
+                relativeVisualBounds = null;
+                invalidated = true;
+            }
+
+            if (absoluteVisualBounds.HasValue)
+            {
+                absoluteVisualBounds = null;
+                invalidated = true;
+            }
+
+            if (invalidated)
+            {
+                var parent = VisualTreeHelper.GetParent(this) as UIElement;
+                if (parent != null)
+                {
+                    parent.InvalidateVisualBounds();
+                }
             }
         }
 
@@ -1761,12 +1798,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             return Bounds.Contains(point) ? this : null;
         }
 
-        /// <inheritdoc/>
-        protected override Matrix GetTransformMatrix()
+        public Matrix Foo()
         {
+            return GetTransformMatrix();
+        }
+
+        /// <inheritdoc/>
+        protected override Matrix GetTransformMatrix(Boolean inDevicePixels = false)
+        {
+            var scaledRenderSize = inDevicePixels ? Display.DipsToPixels(RenderSize) : RenderSize;
+
             var rtoInClientSpace = new Vector2(
-                (Single)(Display.DipsToPixels(RenderSize.Width) * RenderTransformOrigin.X),
-                (Single)(Display.DipsToPixels(RenderSize.Height) * RenderTransformOrigin.Y));
+                (Single)(scaledRenderSize.Width * RenderTransformOrigin.X),
+                (Single)(scaledRenderSize.Height * RenderTransformOrigin.Y));
 
             var mtxTranslateToOrigin = Matrix.CreateTranslation(-rtoInClientSpace.X, -rtoInClientSpace.Y, 0);
             var mtxRenderTransform = (RenderTransform ?? Transform.Identity).Value;
@@ -2037,20 +2081,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
-        /// Gets the visual bounds of the element and all of its descendants in client-relative coordinates.
+        /// Gets the visual bounds of the element and all of its descendants in untransformed client-relative coordinates.
         /// </summary>
-        /// <returns>The visual bounds of the element and all of its descendants in client-relative coordinates.</returns>
-        protected virtual RectangleD CalculateRelativeVisualBounds()
+        /// <returns>The visual bounds of the element and all of its descendants in untransformed client-relative coordinates.</returns>
+        protected virtual RectangleD CalculateUntransformedVisualBounds()
         {
             var elementBounds = Bounds;
-            var elementTransform = GetTransformMatrix();
-            RectangleD.TransformAxisAligned(ref elementBounds, ref elementTransform, out elementBounds);
 
             var childCount = VisualTreeHelper.GetChildrenCount(this);
             for (int i = 0; i < childCount; i++)
             {
                 var child = VisualTreeHelper.GetChild(this, i) as UIElement;
-                if (child != null)
+                if (child != null && !(child is Popup))
                 {
                     var childBounds = child.RelativeVisualBounds;
                     if (childBounds.IsEmpty)
@@ -2060,7 +2102,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                     RectangleD.Union(ref elementBounds, ref childBounds, out elementBounds);
                 }
             }
-            
+
             if (ClipRectangle.HasValue)
             {
                 var relativeClip = ClipRectangle.Value - AbsolutePosition;
@@ -2071,12 +2113,25 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Gets the visual bounds of the element and all of its descendants in transformed client-relative coordinates.
+        /// </summary>
+        /// <returns>The visual bounds of the element and all of its descendants in transformed client-relative coordinates.</returns>
+        protected virtual RectangleD CalculateRelativeVisualBounds()
+        {
+            var elementBounds = UntransformedVisualBounds;
+            var elementTransform = GetTransformMatrix();
+            RectangleD.TransformAxisAligned(ref elementBounds, ref elementTransform, out elementBounds);
+
+            return elementBounds;
+        }
+
+        /// <summary>
         /// Gets the visual bounds of the element and all of its descendants in screen-relative coordinates.
         /// </summary>
         /// <returns>The visual bounds of the element and all of its descendants in screen-relative coordinates.</returns>
         protected virtual RectangleD CalculateAbsoluteVisualBounds()
         {
-            var visualBounds = RelativeVisualBounds;
+            var visualBounds = RelativeVisualBounds;            
 
             var parent = VisualTreeHelper.GetParent(this) as UIElement;
             if (parent == null)
@@ -2094,7 +2149,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 var popup = visualTreeRoot.Parent as Popup;
                 if (popup != null)
                 {
-                    var popupTransform = popup.PopupTransformToAncestorWithOrigin;
+                    var popupTransform = popup.PopupTransformToView;
                     Matrix.Concat(ref transform, ref popupTransform, out transform);
                 }
             }
@@ -2537,20 +2592,28 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <returns><c>true</c> if the element's out-of-band texture was drawn; otherwise, <c>false</c>.</returns>
         private Boolean DrawOutOfBandTexture(DrawingContext dc)
         {
+            if (this is Popup)
+                return false;
+
+            var element = this;
+
+            if (this is PopupRoot)
+                element = Parent as Popup;
+
             var upf = Ultraviolet.GetUI().GetPresentationFoundation();
-            if (upf.OutOfBandRenderer.IsTextureReady(this))
+            if (upf.OutOfBandRenderer.IsTextureReady(element))
             {
-                var target = upf.OutOfBandRenderer.GetElementRenderTarget(this);
+                var target = upf.OutOfBandRenderer.GetElementRenderTarget(element);
                 if (target != null && target.IsReady)
                 {
-                    var effect = Effect;
+                    var effect = element.Effect;
                     if (effect != null)
                     {
-                        effect.Draw(dc, this, target);
+                        effect.Draw(dc, element, target);
                     }
                     else
                     {
-                        Effect.DrawRenderTargetAtVisualBounds(dc, this, target);
+                        Effect.DrawRenderTargetAtVisualBounds(dc, element, target);
                     }
                 }
                 return true;
@@ -2821,8 +2884,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         private Size2D desiredSize;
         private RectangleD relativeBounds;
         private RectangleD absoluteBounds;
-        private RectangleD? visualBounds;
-        private RectangleD? transformedVisualBounds;
+        private RectangleD? untransformedVisualBounds;
+        private RectangleD? relativeVisualBounds;
+        private RectangleD? absoluteVisualBounds;
         private RectangleD? clipRectangle;
         private event EventHandler layoutUpdated;
 

@@ -13,36 +13,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
     internal partial class PopupQueue
     {
         /// <summary>
-        /// Gets the transformation matrix associated with the popup that is currently being drawn.
-        /// </summary>
-        /// <returns>The transformation matrix associated with the popup that is currently being drawn.</returns>
-        public Matrix? GetCurrentTransformMatrix()
-        {
-            if (position == null)
-                return null;
-
-            return position.Value.Transform;
-        }
-
-        /// <summary>
         /// Gets a value indicating whether the queue is currently drawing the specified popup.
         /// </summary>
         /// <param name="popup">The popup to evaluate.</param>
         /// <returns><c>true</c> if the queue is currently drawing the specified popup; otherwise, <c>false</c>.</returns>
         public Boolean IsDrawingPopup(Popup popup)
         {
-            return position != null && position.Value.Popup == popup;
+            return position != null && position.Value == popup;
         }
-
-        /// <summary>
-        /// Gets a value indicating whether the popup which is being drawn has a non-identity transformation matrix.
-        /// </summary>
-        /// <returns><c>true</c> if the current popup is being transformed; otherwise, <c>false</c>.</returns>
-        public Boolean IsTransformed()
-        {
-            return position != null && position.Value.Transform.HasValue;
-        }
-
+        
         /// <summary>
         /// Draws the contents of the queue.
         /// </summary>
@@ -60,7 +39,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 position = (position == null) ? queue.First : position.Next;
                 next     = position.Next;
 
-                var popup = position.Value.Popup;
+                var popup = position.Value;
 
                 dc.Reset(popup.View.Display);
 
@@ -87,18 +66,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Enqueues a popup at the next position within the queue.
         /// </summary>
         /// <param name="popup">The popup to enqueue.</param>
-        /// <param name="transform">The popup's transformation matrix.</param>
-        public void Enqueue(Popup popup, Matrix? transform)
+        public void Enqueue(Popup popup)
         {
             Contract.Require(popup, "popup");
 
             if (next == null)
             {
-                queue.AddLast(new EnqueuedPopup(popup, transform));
+                queue.AddLast(popup);
             }
             else
             {
-                queue.AddBefore(next, new EnqueuedPopup(popup, transform));
+                queue.AddBefore(next, popup);
             }
         }
 
@@ -119,10 +97,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             for (var current = queue.Last; current != null; current = current.Previous)
             {
-                var match = current.Value.Popup.PopupHitTest(point);
+                var match = current.Value.PopupHitTest(point);
                 if (match != null)
                 {
-                    popup = current.Value.Popup;
+                    popup = current.Value;
                     return match;
                 }
             }
@@ -140,8 +118,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         // State values.
-        private readonly PooledLinkedList<EnqueuedPopup> queue = new PooledLinkedList<EnqueuedPopup>(8);
-        private LinkedListNode<EnqueuedPopup> position;
-        private LinkedListNode<EnqueuedPopup> next;
+        private readonly PooledLinkedList<Popup> queue = new PooledLinkedList<Popup>(8);
+        private LinkedListNode<Popup> position;
+        private LinkedListNode<Popup> next;
     }
 }
