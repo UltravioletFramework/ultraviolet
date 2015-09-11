@@ -50,7 +50,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL
             if (gl.IsGLES)
             {
                 var glesName = Path.ChangeExtension(Path.GetFileNameWithoutExtension(name) + "ES", Path.GetExtension(name));
-                if (manifestResourceNames.Contains(glesName))
+                if (manifestResourceNames.Contains("TwistedLogik.Ultraviolet.OpenGL.Resources." + glesName))
                 {
                     name = glesName;
                 }
