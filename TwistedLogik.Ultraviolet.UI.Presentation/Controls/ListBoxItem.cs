@@ -94,6 +94,20 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             base.OnMouseLeave(device, ref data);
         }
 
+        /// <inheritdoc/>
+        protected override void OnFingerDown(TouchDevice device, Int64 fingerID, Double x, Double y, Single pressure, ref RoutedEventData data)
+        {
+            HighlightOpacity = 1.0;
+            base.OnFingerDown(device, fingerID, x, y, pressure, ref data);
+        }
+
+        /// <inheritdoc/>
+        protected override void OnFingerUp(TouchDevice device, Int64 fingerID, Double x, Double y, Single pressure, ref RoutedEventData data)
+        {
+            HighlightOpacity = (HighlightOnSelect && IsSelected) || (HighlightOnMouseOver && IsMouseDirectlyOver) ? 1.0 : 0.0;
+            base.OnFingerUp(device, fingerID, x, y, pressure, ref data);
+        }
+
         /// <summary>
         /// Gets or sets a value indicating whether this list box is highlighted when it is selected.
         /// </summary>
